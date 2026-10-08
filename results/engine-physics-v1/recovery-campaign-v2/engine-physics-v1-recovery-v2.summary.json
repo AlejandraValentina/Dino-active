@@ -1,0 +1,31 @@
+{
+  "name": "engine-physics-v1-recovery-v2",
+  "command": [
+    "python",
+    "scripts/engine_physics_v1_recovery_campaign.py",
+    "--output",
+    "results/engine-physics-v1/recovery-campaign-v2"
+  ],
+  "started_at": "2026-10-07T13:36:14+00:00",
+  "finished_at": "2026-10-07T13:36:15+00:00",
+  "duration_s": 0.297,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "results\\engine-physics-v1\\recovery-campaign-v2\\engine-physics-v1-recovery-v2.log",
+  "log_lines": 7,
+  "log_bytes": 464,
+  "error_lines": [
+    "1: Traceback (most recent call last):",
+    "6:     raise ValueError(f\"recovery output exists: {output}\")",
+    "7: ValueError: recovery output exists: E:\\dino\\Dino\\results\\engine-physics-v1\\recovery-campaign-v2"
+  ],
+  "tail": [
+    "Traceback (most recent call last):",
+    "  File \"E:\\dino\\Dino\\scripts\\engine_physics_v1_recovery_campaign.py\", line 155, in <module>",
+    "    value = run((ROOT / args.output).resolve())",
+    "            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"E:\\dino\\Dino\\scripts\\engine_physics_v1_recovery_campaign.py\", line 138, in run",
+    "    raise ValueError(f\"recovery output exists: {output}\")",
+    "ValueError: recovery output exists: E:\\dino\\Dino\\results\\engine-physics-v1\\recovery-campaign-v2"
+  ]
+}

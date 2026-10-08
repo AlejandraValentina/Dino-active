@@ -1,0 +1,9 @@
+{
+  "_comment": "Verify agent_command flags against your installed Codex CLI version before use. {prompt} is replaced by the rendered prompt text, {prompt_file} by its path.",
+  "agent_command": ["codex", "exec", "{prompt}"],
+  "log_dir": ".agent-sessions",
+  "max_sessions": 20,
+  "session_timeout_s": 14400,
+  "max_no_progress_sessions": 2,
+  "cooldown_s": 30
+}

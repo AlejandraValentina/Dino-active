@@ -1,0 +1,68 @@
+{
+  "phase": "P4_R3_STRUCTURAL",
+  "objective": "Structural block full G1 equivalence and intermediate profile",
+  "enabled": true,
+  "depends_on": [
+    "P2"
+  ],
+  "allowed_paths": [
+    "dev_orchestrator/runs/"
+  ],
+  "forbidden_paths": [
+    "motorsim/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Evidence only; source committed before run."
+  ],
+  "forbidden_changes": [
+    "Toda modificación de producto en esta versión."
+  ],
+  "commands": [
+    {
+      "id": "benchmark_command",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p4_r3_benchmark",
+        "--run-dir",
+        "{run_dir}"
+      ],
+      "timeout": 700,
+      "result_file": "artifacts/result.json"
+    },
+    {
+      "id": "profile_command",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p4_r3_profile",
+        "--run-dir",
+        "{run_dir}/profile",
+        "--backend",
+        "STRUCTURAL"
+      ],
+      "timeout": 180,
+      "result_file": "profile/artifacts/result.json"
+    }
+  ],
+  "required_tests": [],
+  "required_checks": [
+    "benchmark_command",
+    "benchmark_equivalence",
+    "profile_command",
+    "profile_complete"
+  ],
+  "required_evidence": [
+    "artifacts/benchmark.json",
+    "profile/artifacts/profile-summary.json"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 0,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": false,
+  "timeout": 1000
+}

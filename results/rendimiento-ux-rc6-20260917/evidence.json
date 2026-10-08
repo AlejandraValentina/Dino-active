@@ -1,0 +1,106 @@
+{
+  "base_commit": "0aa21b46a3bef8378aa2e77e44fa98ddecd51c3d",
+  "automated_tests": {
+    "suite": 274,
+    "seconds": 62.259,
+    "passed": true,
+    "after_cancel_fix": 16,
+    "affected_seconds": 16.568
+  },
+  "real_windows_runs": {
+    "2T": {
+      "path": "E:\\MotorSim distribucion\\Rendimiento UX rc6\\recorrido-20260917\\barrido-2T",
+      "state": "converged",
+      "integration_seconds": 39.328000000678,
+      "points": [
+        {
+          "rpm": 2500,
+          "state": "converged"
+        },
+        {
+          "rpm": 3000,
+          "state": "converged"
+        },
+        {
+          "rpm": 3500,
+          "state": "converged"
+        }
+      ],
+      "sha256": {
+        "series.json": "c43bc9776122a371f82233df6b3826f513fcd94d45e7751b09d8477155f5ddb3",
+        "point-01\\case.json": "adb9d0542ebb104127e47dba0b221dd260deaa3f7e7d532b129bc71107c3762b",
+        "point-01\\manifest.json": "570d63e72d99f3df33079172f501d728d1f30400f2df782c020c7a3a881f4193",
+        "point-01\\samples.json": "1ba427fd7279cd7fce321d1e361a04b4dc4f7f580b14b64b5382551fd1a8b3ba",
+        "point-01\\summary.json": "1d8f1e7d453b6282bf438198fee92931073c2268bacae7a9ff5941ae95c57bd2",
+        "point-02\\case.json": "175af6417d164138eba8c3fb519c0c587494b26d838642205f7dc5364773250e",
+        "point-02\\manifest.json": "9cdc70c12900325560c399773207a5a2112626eef810da05d59b0952e12f36aa",
+        "point-02\\samples.json": "a2d9f761a88f90e0242cc4882e6d63df090d43ef084590108fe36258b43fdf48",
+        "point-02\\summary.json": "4b13703affdf9777868a57ef81d6873fffad0a6b3ea1c907dd32cdccddb62438",
+        "point-03\\case.json": "b8021de657259580b2e33f6dd404f10b9c981bb1c09dcf7af7276aa59434a9b1",
+        "point-03\\manifest.json": "61ec494bb22b49122f9b69594817616d2fe6a8f0131b0bec7c6ebf8e0780d262",
+        "point-03\\samples.json": "965b21cc32ff6f7768c9383b572cabde4ea465d30890531d0d3ccd923ebbea1d",
+        "point-03\\summary.json": "69d7e4d7d80363b1f206df7ff25540d5a63e84595e5f738c8c296d1843b3e782"
+      }
+    },
+    "4T": {
+      "path": "E:\\MotorSim distribucion\\Rendimiento UX rc6\\recorrido-20260917\\barrido-4T",
+      "state": "converged",
+      "integration_seconds": 43.561999999918044,
+      "points": [
+        {
+          "rpm": 2500,
+          "state": "converged"
+        },
+        {
+          "rpm": 3000,
+          "state": "converged"
+        },
+        {
+          "rpm": 3500,
+          "state": "converged"
+        }
+      ],
+      "sha256": {
+        "series.json": "24211105d3410744184032f0098fb585e7fc16708e4ae4d0d11e61c8ed1e8cc1",
+        "point-01\\case.json": "42bc9fb1c40237a2ca6f64224548b92c55e34316644ef68d4fd0fc18f2bc8c96",
+        "point-01\\manifest.json": "eb4ce6b68d27cc6db38655d91b7637e48bb37e3c4f1bc76bce017223c470af00",
+        "point-01\\samples.json": "9485d7c6cb131f1f5b578b425f04492f9bf59f0543a6d035efdffce471024b59",
+        "point-01\\summary.json": "bf703bff79c993bf7b33dd50695bae5963a1d5e9d1d377402019d454f1411acb",
+        "point-02\\case.json": "b62cde2009872e1d8a2b813c5317e2bb7c8d0d730e6b69944bd28cada6744590",
+        "point-02\\manifest.json": "b7555aa3490fef220276bc6783bc2fc4ed4a74c7c598074c89bbd6bfcb115cf6",
+        "point-02\\samples.json": "9859dbb8ab0349651bc40a75f0430b89839accb743982acb0b7d64321cfe1be9",
+        "point-02\\summary.json": "781187ae2adb469d9eb265044cf2ab89667df2ea42946d3dee77766db6817b0c",
+        "point-03\\case.json": "11852ad0694d82b08b5a4e87501984adf882c5be2b767315d4f24d10f4315e53",
+        "point-03\\manifest.json": "92c81d2a45f80f2b376dc0fbfde3adc2641c8d9ab66b1d208e7c84115f08fdac",
+        "point-03\\samples.json": "124fe414f96b6519449a89f225d27a7c2aec179e52367f42b16f350ff7f680dc",
+        "point-03\\summary.json": "ae5718669e78deec43ac9f244c93dc7bfbacded52f7809ae2ac39634db3d8aa0"
+      }
+    },
+    "cancel": {
+      "path": "E:\\MotorSim distribucion\\Rendimiento UX rc6\\cancelacion-20260917\\cancelado",
+      "state": "cancelled",
+      "integration_seconds": 0.0,
+      "points": [
+        {
+          "rpm": 2500,
+          "state": "not_executed"
+        },
+        {
+          "rpm": 3000,
+          "state": "not_executed"
+        },
+        {
+          "rpm": 3500,
+          "state": "not_executed"
+        }
+      ],
+      "sha256": {
+        "series.json": "a622f4c51deb77758268c9fb819f37f9a64c07a5db7c81265d3d2173ced4f6ea"
+      }
+    }
+  },
+  "manual_acceptance": false,
+  "packaged": false,
+  "independent_review": "CTA cancelado sin curva corregido; sin otros hallazgos",
+  "harness_issue": "Prefijo cancel-start corregido después de ambos barridos; cancelación ejecutada aparte, sin repetir barridos"
+}

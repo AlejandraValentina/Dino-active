@@ -1,0 +1,221 @@
+{
+  "phase": "P4-R11",
+  "classification": "P4_R11_PERIOD2_LAG2_CLOSURE_CONFIRMED",
+  "p4_state": "P4_BLOCKED_PERIODIC_CONVERGENCE",
+  "p4_pass": false,
+  "p5_started": false,
+  "e13_modified": false,
+  "n500_executed": false,
+  "first_3x": {
+    "N350": 49,
+    "N400": 51,
+    "N300": 46
+  },
+  "max_streak": {
+    "N350": 3,
+    "N400": 3
+  },
+  "cycles_executed": {
+    "300": 6,
+    "350": 9,
+    "400": 11
+  },
+  "even_vs_odd": {
+    "300": {
+      "even": [
+        [
+          42,
+          0.00015311320912511986,
+          true
+        ],
+        [
+          44,
+          0.00017921831017338711,
+          true
+        ],
+        [
+          46,
+          3.5761832329648094e-05,
+          true
+        ]
+      ],
+      "odd": [
+        [
+          41,
+          0.015446014563896647,
+          "False"
+        ],
+        [
+          43,
+          0.007828304869927166,
+          "False"
+        ],
+        [
+          45,
+          0.004984748313104935,
+          true
+        ]
+      ],
+      "even_streak": 3,
+      "odd_streak": 3
+    },
+    "350": {
+      "even": [
+        [
+          42,
+          0.015267478077295695,
+          "False"
+        ],
+        [
+          44,
+          0.009868601443125817,
+          "False"
+        ],
+        [
+          46,
+          0.008210399256414315,
+          "False"
+        ],
+        [
+          48,
+          0.0047785362503791895,
+          true
+        ]
+      ],
+      "odd": [
+        [
+          41,
+          0.0010088105488762003,
+          true
+        ],
+        [
+          43,
+          0.0003238390016954063,
+          true
+        ],
+        [
+          45,
+          0.0003064566850528741,
+          true
+        ],
+        [
+          47,
+          3.8200794178377995e-05,
+          true
+        ],
+        [
+          49,
+          2.9404625844910498e-05,
+          true
+        ]
+      ],
+      "even_streak": 3,
+      "odd_streak": 3
+    },
+    "400": {
+      "even": [
+        [
+          42,
+          0.014920916392408947,
+          "False"
+        ],
+        [
+          44,
+          0.011123400025062888,
+          "False"
+        ],
+        [
+          46,
+          0.007597857857305206,
+          "False"
+        ],
+        [
+          48,
+          0.008183885715879876,
+          "False"
+        ],
+        [
+          50,
+          0.004445793450588176,
+          true
+        ]
+      ],
+      "odd": [
+        [
+          41,
+          0.0003252457005537714,
+          true
+        ],
+        [
+          43,
+          0.00030862948347587494,
+          true
+        ],
+        [
+          45,
+          7.14901961236888e-05,
+          true
+        ],
+        [
+          47,
+          7.833980560291116e-05,
+          true
+        ],
+        [
+          49,
+          4.6474574377643113e-05,
+          true
+        ],
+        [
+          51,
+          7.60847303458792e-05,
+          true
+        ]
+      ],
+      "even_streak": 3,
+      "odd_streak": 3
+    }
+  },
+  "work_ab": {
+    "300": {
+      "W_even": 13.651244855706693,
+      "W_odd": 13.406573848550451,
+      "mean": 13.528909352128572,
+      "amp": 0.12233550357812106,
+      "sensor_even": 0.6020875561628637,
+      "sensor_odd": 0.602087384466592
+    },
+    "350": {
+      "W_even": 13.647120072173774,
+      "W_odd": 13.407597183169395,
+      "mean": 13.527358627671585,
+      "amp": 0.11976144450218928,
+      "sensor_even": 0.6045360214761174,
+      "sensor_odd": 0.6045346401630647
+    },
+    "400": {
+      "W_even": 13.641713185720333,
+      "W_odd": 13.409437854142446,
+      "mean": 13.52557551993139,
+      "amp": 0.11613766578894325,
+      "sensor_even": 0.6033459067172531,
+      "sensor_odd": 0.6033467934401243
+    }
+  },
+  "conservation": {
+    "N350": true,
+    "N400": true
+  },
+  "evidence_paths": {
+    "temporal_N300": "results/p4-r11-20260922/temporal_metrics_N300.json",
+    "temporal_N350": "results/p4-r11-20260922/temporal_metrics_N350.json",
+    "temporal_N400": "results/p4-r11-20260922/temporal_metrics_N400.json",
+    "evaluation": "results/p4-r11-20260922/evaluation.json",
+    "multicore_runtime": "results/p4-r11-20260922/multicore_runtime_stageA.json",
+    "campaign": "results/p4-r11-20260922/campaign_stageA/"
+  },
+  "implementation_agent": "OpenCode / Muse Spark 1.2",
+  "independent_review": "INDEPENDENT_REVIEW_PENDING",
+  "timestamp": "2026-09-22",
+  "commit_base": "6d5e242"
+}

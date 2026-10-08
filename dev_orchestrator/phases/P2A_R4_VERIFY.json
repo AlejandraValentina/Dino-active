@@ -1,0 +1,85 @@
+{
+  "phase": "P2A_R4_VERIFY",
+  "objective": "Verify T11 under reviewed R4 first, then hash-preserved offline P2A regression; no P2B.",
+  "enabled": true,
+  "depends_on": [
+    "P0",
+    "P1",
+    "P1_R4_CFL_REVIEW"
+  ],
+  "allowed_paths": [
+    "dev_orchestrator/runs/"
+  ],
+  "forbidden_paths": [
+    "motorsim/",
+    "docs/gasdynamic/",
+    "docs/baselines/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Run evidence only; implementation committed before verification."
+  ],
+  "forbidden_changes": [
+    "No solver, previous contracts, UI, 0D, P2B or P3 changes."
+  ],
+  "commands": [
+    {
+      "id": "r4_gate_tests",
+      "kind": "test",
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p1_r4*.py",
+        "-v"
+      ],
+      "timeout": 60
+    },
+    {
+      "id": "t11_then_p2a",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p1_r4_gate",
+        "--run-dir",
+        "{run_dir}"
+      ],
+      "timeout": 240,
+      "result_file": "artifacts/result.json"
+    }
+  ],
+  "required_tests": [
+    "r4_gate_tests"
+  ],
+  "required_checks": [
+    "r4_gate_tests",
+    "t11_then_p2a",
+    "baseline_intact",
+    "contract_frozen",
+    "dependencies_accepted",
+    "implementation_contracts_frozen",
+    "r4_scientific_review",
+    "previous_campaign_source_identical",
+    "six_fresh_t11",
+    "T11_R4",
+    "offline_52_remeasured",
+    "P2A_R4"
+  ],
+  "required_evidence": [
+    "artifacts/t11-r4.json",
+    "artifacts/p2a-r4.json",
+    "artifacts/inventory.json",
+    "artifacts/result.json"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 0,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": true,
+  "timeout": 360
+}

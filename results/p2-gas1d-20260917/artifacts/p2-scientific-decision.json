@@ -1,0 +1,885 @@
+{
+  "state": "SCIENTIFIC_CHANGE_REQUIRED",
+  "P2A": "NOT_APPROVED",
+  "P2B": "NOT_IMPLEMENTED",
+  "P3": "NOT_STARTED",
+  "run_id": "20260917T164812-P2-07051b7effd6",
+  "source_commit": "63e2863921a1d7c2434899247876aa6bb03990fb",
+  "orchestrator_raw_gate": "FAILED_INFRASTRUCTURE",
+  "orchestrator_raw_errors": [
+    "command_failed:p2a_campaign"
+  ],
+  "raw_evidence_sha256": "90ac4392b174f19b95029077921ece628eac7da7c7c6691dda21cf3c5c5f21ba",
+  "interruption": "Explicit STOP of campaign child after independent T02 diagnosis; runner technical failure is preserved, not an installation error or full campaign.",
+  "matrix": {
+    "T01": "PASS",
+    "T02": "FAIL",
+    "T03": "PASS",
+    "T04": "PASS",
+    "T05": "FAIL",
+    "T06": "PASS",
+    "T07": "PASS",
+    "T08": "PARTIAL_NOT_VERIFIED",
+    "T09": "NOT_EXECUTED",
+    "T10": "NOT_EXECUTED",
+    "T11": "NOT_EXECUTED",
+    "T12": "NOT_EXECUTED"
+  },
+  "completed_subcases": 12,
+  "pass_subcases": 10,
+  "fail_subcases": 2,
+  "completed_solver_wall_seconds": 96.76800000201911,
+  "campaign_command_wall_seconds": 113.76599999982864,
+  "rows": [
+    {
+      "case": "T01_moving",
+      "status": "PASS",
+      "reason": "final_time",
+      "failed_checks": [],
+      "metrics": {
+        "worst_ledger": 1.5767157641315817e-16,
+        "errors": {
+          "rho": {
+            "L1": 1.6441514816278866e-16,
+            "L2": 2.5073075035848645e-16,
+            "Linf": 7.647216193618078e-16
+          },
+          "u": {
+            "L1": 1.017048270968585e-16,
+            "L2": 1.3167914868301701e-16,
+            "Linf": 4.1682306187237085e-16
+          },
+          "p": {
+            "L1": 1.1059455573558805e-16,
+            "L2": 1.7218058297584108e-16,
+            "Linf": 4.3655745685100557e-16
+          },
+          "Y": {
+            "L1": 8.770761894538736e-17,
+            "L2": 1.112995121386374e-16,
+            "Linf": 2.7755575615628914e-16
+          }
+        },
+        "rho_Linf": 7.647216193618078e-16,
+        "u_Linf": 4.1682306187237085e-16,
+        "p_Linf": 4.3655745685100557e-16,
+        "Y_Linf": 2.7755575615628914e-16,
+        "T_Linf": 9.473903143468002e-16
+      },
+      "runtime": {
+        "steps": 300,
+        "time": 0.0029331315408247477,
+        "wall_seconds": 0.48499999940395355,
+        "minimum_dt": 9.777105136082387e-06,
+        "max_CFL": 0.4000000000000001,
+        "rejected_steps": 0,
+        "extrema": {
+          "min_rho": 1.1614401858304284,
+          "min_p": 99999.99999999993,
+          "min_T": 299.9999999999998,
+          "min_Y": 0.2999999999999998,
+          "max_Y": 0.30000000000000027,
+          "max_Mach": 0.20000000000000048
+        },
+        "hlle_fallback_count": 0
+      },
+      "hllc_counter_status": "NOT_CERTIFIED: includes direct boundary fluxes and duplicate periodic face"
+    },
+    {
+      "case": "T01_rest",
+      "status": "PASS",
+      "reason": "final_time",
+      "failed_checks": [],
+      "metrics": {
+        "worst_ledger": 3.7339922820400776e-17,
+        "errors": {
+          "rho": {
+            "L1": 8.029577003298988e-17,
+            "L2": 1.2389906303876086e-16,
+            "Linf": 1.9118040484045195e-16
+          },
+          "u": {
+            "L1": 1.0105496686365763e-17,
+            "L2": 1.8450028299720787e-17,
+            "Linf": 3.368498895455289e-17
+          },
+          "p": {
+            "L1": 1.1932570487260827e-16,
+            "L2": 1.8635544219964798e-16,
+            "Linf": 2.9103830456733706e-16
+          },
+          "Y": {
+            "L1": 4.2299497238218494e-16,
+            "L2": 1.3206755042005218e-15,
+            "Linf": 6.6058269965196814e-15
+          }
+        },
+        "rho_Linf": 1.9118040484045195e-16,
+        "u_Linf": 3.368498895455289e-17,
+        "p_Linf": 2.9103830456733706e-16,
+        "Y_Linf": 6.6058269965196814e-15,
+        "T_Linf": 1.8947806286936006e-16
+      },
+      "runtime": {
+        "steps": 250,
+        "time": 0.0029331315408247477,
+        "wall_seconds": 0.45299999974668026,
+        "minimum_dt": 1.1732526163298871e-05,
+        "max_CFL": 0.4,
+        "rejected_steps": 0,
+        "extrema": {
+          "min_rho": 1.1614401858304293,
+          "min_p": 99999.99999999997,
+          "min_T": 299.99999999999994,
+          "min_Y": 0.2999999999999936,
+          "max_Y": 0.3000000000000066,
+          "max_Mach": 6.73699779091058e-17
+        },
+        "hlle_fallback_count": 0
+      },
+      "hllc_counter_status": "NOT_CERTIFIED: includes direct boundary fluxes and duplicate periodic face"
+    },
+    {
+      "case": "T02_sod",
+      "status": "FAIL",
+      "reason": "final_time",
+      "failed_checks": [
+        "contact_position_error"
+      ],
+      "metrics": {
+        "worst_ledger": 2.3870077516745483e-16,
+        "errors": {
+          "rho": {
+            "L1": 0.007234420657998945,
+            "L2": 0.014461578915897498,
+            "Linf": 0.08384099295708325
+          },
+          "u": {
+            "L1": 0.009914628988566649,
+            "L2": 0.03209123365343793,
+            "Linf": 0.3920068315641908
+          },
+          "p": {
+            "L1": 0.005656595570414916,
+            "L2": 0.012494970209240891,
+            "Linf": 0.06617237870068293
+          },
+          "Y": {
+            "L1": 0.015436030308129284,
+            "L2": 0.06764906969651716,
+            "Linf": 0.5445904508718983
+          }
+        },
+        "rho_L1": 0.007234420657998945,
+        "rho_L2": 0.014461578915897498,
+        "p_L1": 0.005656595570414916,
+        "p_L2": 0.012494970209240891,
+        "u_L1": 0.009914628988566649,
+        "u_L2": 0.03209123365343793,
+        "reference_root_residual": 1.0252709183302044e-14,
+        "shock_position": 0.8525,
+        "shock_exact": 0.8504311464060379,
+        "shock_position_error": 0.002068853593962139,
+        "contact_position": 0.6924999999999999,
+        "contact_exact": 0.6854905240097903,
+        "contact_position_error": 0.007009475990209624,
+        "rarefaction_Linf": 0.04463092077190822
+      },
+      "runtime": {
+        "steps": 435,
+        "time": 0.2,
+        "wall_seconds": 2.610000000335276,
+        "minimum_dt": 0.00020383814968283342,
+        "max_CFL": 0.4000000000000001,
+        "rejected_steps": 0,
+        "extrema": {
+          "min_rho": 0.12499999999999997,
+          "min_p": 0.09999999999999998,
+          "min_T": 0.7121948348164715,
+          "min_Y": 0.0,
+          "max_Y": 1.0,
+          "max_Mach": 0.9310158165211867
+        },
+        "hlle_fallback_count": 0
+      },
+      "hllc_counter_status": "NOT_CERTIFIED: includes direct boundary fluxes and duplicate periodic face"
+    },
+    {
+      "case": "T03",
+      "status": "PASS",
+      "reason": "final_time",
+      "failed_checks": [],
+      "metrics": {
+        "worst_ledger": 1.4962799450635613e-16,
+        "errors": {
+          "rho": {
+            "L1": 8.922781379615282e-07,
+            "L2": 2.4120374463944082e-06,
+            "Linf": 1.19458634710623e-05
+          },
+          "u": {
+            "L1": 8.922902232634478e-07,
+            "L2": 2.4122706292890066e-06,
+            "Linf": 1.194743617349122e-05
+          },
+          "p": {
+            "L1": 1.2044766272661946e-06,
+            "L2": 3.2561171889824224e-06,
+            "Linf": 1.61259860926657e-05
+          },
+          "Y": {
+            "L1": 4.643507800494715e-16,
+            "L2": 7.537772538842907e-16,
+            "Linf": 5.440092820663267e-15
+          }
+        },
+        "pressure_L1": 0.012044766272661945,
+        "pressure_L2": 0.03256117188982423,
+        "speed": 340.94208932806356,
+        "speed_relative_error": 2.7995802831748406e-05,
+        "amplitude": 8.384220393956639,
+        "amplitude_ratio": 0.838694972116835
+      },
+      "runtime": {
+        "steps": 901,
+        "time": 0.0013199091933711366,
+        "wall_seconds": 13.593999999575317,
+        "minimum_dt": 1.0478208156651167e-07,
+        "max_CFL": 0.4,
+        "rejected_steps": 0,
+        "extrema": {
+          "min_rho": 1.1614401840922701,
+          "min_p": 99999.99979795257,
+          "min_T": 299.99999971802384,
+          "min_Y": 0.29999999999999466,
+          "max_Y": 0.3000000000000056,
+          "max_Mach": 7.404900897791133e-05
+        },
+        "hlle_fallback_count": 0
+      },
+      "hllc_counter_status": "NOT_CERTIFIED: includes direct boundary fluxes and duplicate periodic face"
+    },
+    {
+      "case": "T04",
+      "status": "PASS",
+      "reason": "final_time",
+      "failed_checks": [],
+      "metrics": {
+        "worst_ledger": 2.749733968069548e-16,
+        "errors": {
+          "rho": {
+            "L1": 5.251825279913292e-06,
+            "L2": 1.3813257218555637e-05,
+            "Linf": 5.137407206085998e-05
+          },
+          "u": {
+            "L1": 5.2517088523146604e-06,
+            "L2": 1.3813034676911912e-05,
+            "Linf": 5.137302656532633e-05
+          },
+          "p": {
+            "L1": 7.089958256751379e-06,
+            "L2": 1.8648055071064603e-05,
+            "Linf": 6.935567561231437e-05
+          },
+          "Y": {
+            "L1": 9.92331217197773e-16,
+            "L2": 1.6414284630833912e-15,
+            "Linf": 1.3600232051658168e-14
+          }
+        },
+        "incident_amplitude": 8.52584833309811,
+        "reflected_amplitude": 7.1827569629240315,
+        "reflection_coefficient": 0.8424683013700728,
+        "peak_time_scaled": 1.0000000000000002,
+        "reflection_error": 0.15753169862992722,
+        "peak_time_error": 2.220446049250313e-16
+      },
+      "runtime": {
+        "steps": 3450,
+        "time": 0.0033731012719484597,
+        "wall_seconds": 52.203000000678,
+        "minimum_dt": 5.915597569086661e-11,
+        "max_CFL": 0.4,
+        "rejected_steps": 0,
+        "extrema": {
+          "min_rho": 1.16144018409228,
+          "min_p": 99999.99979795355,
+          "min_T": 299.99999971802436,
+          "min_Y": 0.2999999999999863,
+          "max_Y": 0.30000000000001376,
+          "max_Mach": 7.404900897791133e-05
+        },
+        "hlle_fallback_count": 0
+      },
+      "hllc_counter_status": "NOT_CERTIFIED: includes direct boundary fluxes and duplicate periodic face"
+    },
+    {
+      "case": "T05",
+      "status": "FAIL",
+      "reason": "No consistent open-boundary branch",
+      "failed_checks": [
+        "completed"
+      ],
+      "metrics": {
+        "worst_ledger": 1.493589068911744e-16
+      },
+      "runtime": {
+        "steps": 17,
+        "time": 1.759853465839452e-05,
+        "wall_seconds": 0.23500000033527613,
+        "minimum_dt": 2.5472530113271276e-10,
+        "max_CFL": 0.4,
+        "rejected_steps": 0,
+        "extrema": {
+          "min_rho": 1.1614401858304286,
+          "min_p": 99999.99999999993,
+          "min_T": 299.9999999999999,
+          "min_Y": 0.2999999999999996,
+          "max_Y": 0.3000000000000003,
+          "max_Mach": 7.404900897791133e-05
+        },
+        "hlle_fallback_count": 0
+      },
+      "hllc_counter_status": "NOT_CERTIFIED: includes direct boundary fluxes and duplicate periodic face"
+    },
+    {
+      "case": "T06_contact",
+      "status": "PASS",
+      "reason": "final_time",
+      "failed_checks": [],
+      "metrics": {
+        "worst_ledger": 1.742529731618703e-15,
+        "errors": {
+          "rho": {
+            "L1": 0.054483077755058354,
+            "L2": 0.12630625116457217,
+            "Linf": 0.4896181496418574
+          },
+          "u": {
+            "L1": 2.8635744350631904e-16,
+            "L2": 3.2936935298987117e-16,
+            "Linf": 7.502815113702675e-16
+          },
+          "p": {
+            "L1": 7.283233571797625e-16,
+            "L2": 7.704960849393462e-16,
+            "Linf": 1.4551915228366853e-15
+          },
+          "Y": {
+            "L1": 0.05871481411881252,
+            "L2": 0.14375998159253425,
+            "Linf": 0.6573740234505624
+          }
+        },
+        "Y_L1": 0.05871481411881252,
+        "rho_L1_halfscale": 0.027241538877529177,
+        "p_Linf": 1.4551915228366853e-15,
+        "u_Linf": 7.502815113702675e-16
+      },
+      "runtime": {
+        "steps": 3000,
+        "time": 0.007332828852061869,
+        "wall_seconds": 22.375,
+        "minimum_dt": 2.4442762838732673e-06,
+        "max_CFL": 0.4000000000000001,
+        "rejected_steps": 0,
+        "extrema": {
+          "min_rho": 1.1614401858304275,
+          "min_p": 99999.99999999983,
+          "min_T": 150.0,
+          "min_Y": 0.0,
+          "max_Y": 1.0,
+          "max_Mach": 0.2828427124746194
+        },
+        "hlle_fallback_count": 0
+      },
+      "hllc_counter_status": "NOT_CERTIFIED: includes direct boundary fluxes and duplicate periodic face"
+    },
+    {
+      "case": "T07_closed",
+      "status": "PASS",
+      "reason": "final_time",
+      "failed_checks": [],
+      "metrics": {
+        "worst_ledger": 1.493589068911744e-16,
+        "errors": {
+          "rho": {
+            "L1": 1.0503572382971113e-05,
+            "L2": 2.0900851770203486e-05,
+            "Linf": 7.368996776536019e-05
+          },
+          "u": {
+            "L1": 1.0503531895595328e-05,
+            "L2": 2.090085920780328e-05,
+            "Linf": 7.369081346094278e-05
+          },
+          "p": {
+            "L1": 1.4179906558450602e-05,
+            "L2": 2.8216383886713198e-05,
+            "Linf": 9.948262903621071e-05
+          },
+          "Y": {
+            "L1": 2.0178303472562224e-16,
+            "L2": 2.7169292023988037e-16,
+            "Linf": 1.0547118733938987e-15
+          }
+        }
+      },
+      "runtime": {
+        "steps": 251,
+        "time": 0.0014665657704123738,
+        "wall_seconds": 0.8909999998286366,
+        "minimum_dt": 9.462287628393337e-08,
+        "max_CFL": 0.4,
+        "rejected_steps": 0,
+        "extrema": {
+          "min_rho": 1.1614401836001758,
+          "min_p": 99999.9997407666,
+          "min_T": 299.9999996588631,
+          "min_Y": 0.2999999999999991,
+          "max_Y": 0.30000000000000104,
+          "max_Mach": 7.368912326271264e-05
+        },
+        "hlle_fallback_count": 0
+      },
+      "hllc_counter_status": "NOT_CERTIFIED: includes direct boundary fluxes and duplicate periodic face"
+    },
+    {
+      "case": "T07_open",
+      "status": "PASS",
+      "reason": "final_time",
+      "failed_checks": [],
+      "metrics": {
+        "worst_ledger": 1.8231278603004464e-16,
+        "errors": {
+          "rho": {
+            "L1": 2.72432076897644e-16,
+            "L2": 3.7730895076099864e-16,
+            "Linf": 9.559020242022597e-16
+          },
+          "u": {
+            "L1": 2.7239387093359437e-16,
+            "L2": 3.3611811548450503e-16,
+            "Linf": 6.669168989957933e-16
+          },
+          "p": {
+            "L1": 3.5288394428789606e-16,
+            "L2": 4.595963894783564e-16,
+            "Linf": 8.731149137020111e-16
+          },
+          "Y": {
+            "L1": 6.60582699651968e-17,
+            "L2": 8.77708367144175e-17,
+            "Linf": 2.7755575615628914e-16
+          }
+        }
+      },
+      "runtime": {
+        "steps": 300,
+        "time": 0.0014665657704123738,
+        "wall_seconds": 0.8910000007599592,
+        "minimum_dt": 4.8885525680411395e-06,
+        "max_CFL": 0.4,
+        "rejected_steps": 0,
+        "extrema": {
+          "min_rho": 1.1614401858304284,
+          "min_p": 99999.99999999991,
+          "min_T": 299.9999999999997,
+          "min_Y": 0.29999999999999977,
+          "max_Y": 0.30000000000000027,
+          "max_Mach": 0.20000000000000046
+        },
+        "hlle_fallback_count": 0
+      },
+      "hllc_counter_status": "NOT_CERTIFIED: includes direct boundary fluxes and duplicate periodic face"
+    },
+    {
+      "case": "T07_periodic",
+      "status": "PASS",
+      "reason": "final_time",
+      "failed_checks": [],
+      "metrics": {
+        "worst_ledger": 1.2446640940133593e-16,
+        "errors": {
+          "rho": {
+            "L1": 0.19999980127507033,
+            "L2": 0.41916082166181073,
+            "Linf": 0.99999999897427
+          },
+          "u": {
+            "L1": 9.607771576158147e-17,
+            "L2": 1.183733464293516e-16,
+            "Linf": 2.917761433106596e-16
+          },
+          "p": {
+            "L1": 1.5497789718210697e-16,
+            "L2": 2.1012280308341215e-16,
+            "Linf": 4.3655745685100557e-16
+          },
+          "Y": {
+            "L1": 0.20019149238075282,
+            "L2": 0.41975923143424354,
+            "Linf": 0.9999999979485403
+          }
+        }
+      },
+      "runtime": {
+        "steps": 300,
+        "time": 0.0014665657704123738,
+        "wall_seconds": 1.031000000424683,
+        "minimum_dt": 4.888552568041141e-06,
+        "max_CFL": 0.4,
+        "rejected_steps": 0,
+        "extrema": {
+          "min_rho": 1.1614401858304284,
+          "min_p": 99999.99999999993,
+          "min_T": 150.00000000000003,
+          "min_Y": 0.0,
+          "max_Y": 1.0,
+          "max_Mach": 0.282842712474619
+        },
+        "hlle_fallback_count": 0
+      },
+      "hllc_counter_status": "NOT_CERTIFIED: includes direct boundary fluxes and duplicate periodic face"
+    },
+    {
+      "case": "T08_constant_rest_100",
+      "status": "PASS",
+      "reason": "final_time",
+      "failed_checks": [],
+      "metrics": {
+        "worst_ledger": 3.7339922820400776e-17,
+        "errors": {
+          "rho": {
+            "L1": 8.029577003298988e-17,
+            "L2": 1.2389906303876086e-16,
+            "Linf": 1.9118040484045195e-16
+          },
+          "u": {
+            "L1": 9.431796907274714e-18,
+            "L2": 1.782442073794072e-17,
+            "Linf": 3.368498895455252e-17
+          },
+          "p": {
+            "L1": 1.2223608791828164e-16,
+            "L2": 1.8861437852051642e-16,
+            "Linf": 2.9103830456733706e-16
+          },
+          "Y": {
+            "L1": 4.2188474935755976e-16,
+            "L2": 1.32151521318948e-15,
+            "Linf": 6.6058269965196814e-15
+          }
+        },
+        "rho_Linf": 1.9118040484045195e-16,
+        "u_Linf": 3.368498895455252e-17,
+        "p_Linf": 2.9103830456733706e-16
+      },
+      "runtime": {
+        "steps": 250,
+        "time": 0.0029331315408247477,
+        "wall_seconds": 0.4060000004246831,
+        "minimum_dt": 1.1732526163298871e-05,
+        "max_CFL": 0.4,
+        "rejected_steps": 0,
+        "extrema": {
+          "min_rho": 1.1614401858304293,
+          "min_p": 99999.99999999997,
+          "min_T": 299.99999999999994,
+          "min_Y": 0.2999999999999936,
+          "max_Y": 0.3000000000000066,
+          "max_Mach": 6.736997790910505e-17
+        },
+        "hlle_fallback_count": 0
+      },
+      "hllc_counter_status": "NOT_CERTIFIED: includes direct boundary fluxes and duplicate periodic face"
+    },
+    {
+      "case": "T08_constant_rest_200",
+      "status": "PASS",
+      "reason": "final_time",
+      "failed_checks": [],
+      "metrics": {
+        "worst_ledger": 3.7339922820400776e-17,
+        "errors": {
+          "rho": {
+            "L1": 7.456035788777633e-17,
+            "L2": 1.1939212455616182e-16,
+            "Linf": 1.9118040484045195e-16
+          },
+          "u": {
+            "L1": 1.7853044145912658e-17,
+            "L2": 2.4523042120834024e-17,
+            "Linf": 3.368498895455292e-17
+          },
+          "p": {
+            "L1": 1.1496013030409819e-16,
+            "L2": 1.8291473810643274e-16,
+            "Linf": 2.9103830456733706e-16
+          },
+          "Y": {
+            "L1": 4.3520742565306175e-16,
+            "L2": 2.055974475021786e-15,
+            "Linf": 1.3877787807814457e-14
+          }
+        },
+        "rho_Linf": 1.9118040484045195e-16,
+        "u_Linf": 3.368498895455292e-17,
+        "p_Linf": 2.9103830456733706e-16
+      },
+      "runtime": {
+        "steps": 500,
+        "time": 0.0029331315408247477,
+        "wall_seconds": 1.5940000005066395,
+        "minimum_dt": 5.8662630816493705e-06,
+        "max_CFL": 0.4,
+        "rejected_steps": 0,
+        "extrema": {
+          "min_rho": 1.1614401858304293,
+          "min_p": 99999.99999999997,
+          "min_T": 299.99999999999994,
+          "min_Y": 0.2999999999999863,
+          "max_Y": 0.30000000000001387,
+          "max_Mach": 6.736997790910433e-17
+        },
+        "hlle_fallback_count": 0
+      },
+      "hllc_counter_status": "NOT_CERTIFIED: includes direct boundary fluxes and duplicate periodic face"
+    }
+  ],
+  "repair_attempts_used": 0,
+  "repair_limit": 3,
+  "stop_reason": "Frozen T02 criterion not met; no justified implementation repair to change this result. Contract change requires authorization.",
+  "baseline_postcheck": {
+    "checks": {
+      "baseline_intact": true,
+      "contract_frozen": true,
+      "dependencies_accepted": true
+    },
+    "historical_regressions": [
+      {
+        "rpm": 2500,
+        "reference": "results/frontera-baja-2t-20260917/2500.json",
+        "reference_sha256": "973f6529ae5c974374de4ce447b76684ab636c77efbd3bc4a865f9dfb238fc3b",
+        "manifest_equal": true,
+        "fields": {
+          "profile": true,
+          "step_deg": true,
+          "cycles": true,
+          "controller": true,
+          "last_two_cycles": true,
+          "partial": true,
+          "stop": true,
+          "converged": true,
+          "final_angle_deg": true,
+          "attempts": true,
+          "accepted_steps": true,
+          "rejected_steps": true,
+          "rejections_by_cause": true,
+          "rhs_evaluations": true,
+          "actual_substep_deg": true,
+          "rk_stage_evaluations": true,
+          "endpoint_evaluations": true
+        },
+        "passed": true,
+        "ignored_fields": [
+          "seconds"
+        ]
+      },
+      {
+        "rpm": 3000,
+        "reference": "results/frontera-baja-2t-20260917/3000.json",
+        "reference_sha256": "f2a6665c5440bc72567dd102cc4bdfaa36b665600711bdf3f55f942c8937ef60",
+        "manifest_equal": true,
+        "fields": {
+          "profile": true,
+          "step_deg": true,
+          "cycles": true,
+          "controller": true,
+          "last_two_cycles": true,
+          "partial": true,
+          "stop": true,
+          "converged": true,
+          "final_angle_deg": true,
+          "attempts": true,
+          "accepted_steps": true,
+          "rejected_steps": true,
+          "rejections_by_cause": true,
+          "rhs_evaluations": true,
+          "actual_substep_deg": true,
+          "rk_stage_evaluations": true,
+          "endpoint_evaluations": true
+        },
+        "passed": true,
+        "ignored_fields": [
+          "seconds"
+        ]
+      },
+      {
+        "rpm": 5000,
+        "reference": "results/rendimiento-dominio-2t-20260917/5000.json",
+        "reference_sha256": "4fc9b0015b78e6506be4df9d0bc14213a8ae95071a678557b8ea4b6a1a016754",
+        "manifest_equal": true,
+        "fields": {
+          "profile": true,
+          "step_deg": true,
+          "cycles": true,
+          "controller": true,
+          "last_two_cycles": true,
+          "partial": true,
+          "stop": true,
+          "converged": true,
+          "final_angle_deg": true,
+          "attempts": true,
+          "accepted_steps": true,
+          "rejected_steps": true,
+          "rejections_by_cause": true,
+          "rhs_evaluations": true,
+          "actual_substep_deg": true,
+          "rk_stage_evaluations": true,
+          "endpoint_evaluations": true
+        },
+        "passed": true,
+        "ignored_fields": [
+          "seconds"
+        ]
+      },
+      {
+        "rpm": 8000,
+        "reference": "results/rendimiento-dominio-2t-20260917/8000.json",
+        "reference_sha256": "7374f2a0617c53458d6f9310f3232c1d3cdd3faace818a1d181f5f864346796f",
+        "manifest_equal": true,
+        "fields": {
+          "profile": true,
+          "step_deg": true,
+          "cycles": true,
+          "controller": true,
+          "last_two_cycles": true,
+          "partial": true,
+          "stop": true,
+          "converged": true,
+          "final_angle_deg": true,
+          "attempts": true,
+          "accepted_steps": true,
+          "rejected_steps": true,
+          "rejections_by_cause": true,
+          "rhs_evaluations": true,
+          "actual_substep_deg": true,
+          "rk_stage_evaluations": true,
+          "endpoint_evaluations": true
+        },
+        "passed": true,
+        "ignored_fields": [
+          "seconds"
+        ]
+      },
+      {
+        "rpm": 10000,
+        "reference": "results/rendimiento-dominio-2t-20260917/10000.json",
+        "reference_sha256": "823fb3598f79a6e11b67144a80e137b4190d6e169afbd2ce196d3969421cdcb3",
+        "manifest_equal": true,
+        "fields": {
+          "profile": true,
+          "step_deg": true,
+          "cycles": true,
+          "controller": true,
+          "last_two_cycles": true,
+          "partial": true,
+          "stop": true,
+          "converged": true,
+          "final_angle_deg": true,
+          "attempts": true,
+          "accepted_steps": true,
+          "rejected_steps": true,
+          "rejections_by_cause": true,
+          "rhs_evaluations": true,
+          "actual_substep_deg": true,
+          "rk_stage_evaluations": true,
+          "endpoint_evaluations": true
+        },
+        "passed": true,
+        "ignored_fields": [
+          "seconds"
+        ]
+      },
+      {
+        "rpm": 12000,
+        "reference": "results/rendimiento-dominio-2t-20260917/12000.json",
+        "reference_sha256": "c7e8e6470de239d6082b1e6e7431fa914e8de28a3a2c6629d017ab594e08009a",
+        "manifest_equal": true,
+        "fields": {
+          "profile": true,
+          "step_deg": true,
+          "cycles": true,
+          "controller": true,
+          "last_two_cycles": true,
+          "partial": true,
+          "stop": true,
+          "converged": true,
+          "final_angle_deg": true,
+          "attempts": true,
+          "accepted_steps": true,
+          "rejected_steps": true,
+          "rejections_by_cause": true,
+          "rhs_evaluations": true,
+          "actual_substep_deg": true,
+          "rk_stage_evaluations": true,
+          "endpoint_evaluations": true
+        },
+        "passed": true,
+        "ignored_fields": [
+          "seconds"
+        ]
+      },
+      {
+        "rpm": 15000,
+        "reference": "results/rendimiento-dominio-2t-20260917/15000.json",
+        "reference_sha256": "730106fb9aaf4610d37f835856cf4a572bfa261d0c46f3613c41984cf8e23ef0",
+        "manifest_equal": true,
+        "fields": {
+          "profile": true,
+          "step_deg": true,
+          "cycles": true,
+          "controller": true,
+          "last_two_cycles": true,
+          "partial": true,
+          "stop": true,
+          "converged": true,
+          "final_angle_deg": true,
+          "attempts": true,
+          "accepted_steps": true,
+          "rejected_steps": true,
+          "rejections_by_cause": true,
+          "rhs_evaluations": true,
+          "actual_substep_deg": true,
+          "rk_stage_evaluations": true,
+          "endpoint_evaluations": true
+        },
+        "passed": true,
+        "ignored_fields": [
+          "seconds"
+        ]
+      }
+    ],
+    "mode": "Hash verification and exact offline comparisons; no 0D integrations"
+  },
+  "review": {
+    "status": "BLOCKED",
+    "findings": [
+      "T02 contact position error 2.80379 dx exceeds frozen 2 dx; no concrete implementation defect found.",
+      "HLLC counters include direct characteristic fluxes and duplicated periodic face; boundary fallback states not actual ghost.",
+      "Nonreflecting boundary with explicit base uses default incoming entropy/composition.",
+      "T05 near-rest open-boundary branch fails on opposite floating-point signs."
+    ],
+    "blocking_findings": [
+      "T02_contract_requires_scientific_decision",
+      "P2A_incomplete",
+      "implementation_defects_pending"
+    ],
+    "scientific_change_required": true,
+    "notes": "Independent read-only review /root/p2_review. Verified 12 case hashes and source commit63e2863921a1d7c2434899247876aa6bb03990fb. T02 exact/contact gradient verified offline; no integrations. T05 outgoing -2.273737e-13 vs incoming +4.547474e-13 at rest. Preserve raw FAILED_INFRASTRUCTURE from explicit interruption; scientific decision separate. No P2B/P3.",
+    "kind": "independent"
+  },
+  "scope_violations": []
+}

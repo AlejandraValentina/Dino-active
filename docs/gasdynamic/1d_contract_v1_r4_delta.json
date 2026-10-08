@@ -1,0 +1,18 @@
+{
+  "base": "1D_CONTRACT_V1_R3",
+  "base_sha256": "03a2a7961712f96379835de417c84c422a5988aced0421dc77707a8b891cfa88",
+  "revision": "1D_CONTRACT_V1_R4",
+  "changes": [
+    {
+      "path": "/model_version",
+      "old": "1D_CONTRACT_V1_R3",
+      "new": "1D_CONTRACT_V1_R4"
+    },
+    {
+      "path": "/verification_cases/10/definition",
+      "old": "## T11 — Sensibilidad CFL\n\nRepetir T02 N400 y T03 N800 con CFL0.2,0.4,0.6, mismas IC/BC/t_final.\nCada ejecución cumple gates del caso padre. Comparar contra CFL0.2:\nT02 diferencias E1 normalizadas de ρ,p,u≤0.015;\nT03 cambio velocidad≤0.5% a0 y amplitud ≤0.08*amplitud inicial.\nReportar CFL realmente usado, rechazos y tiempo. No elegir solo CFL que pasa;\nsi0.6 falla, gate T11 falla y requiere decisión explícita antes de cerrar P2.\n",
+      "new": "## T11 — Sensibilidad CFL (R4 first-order)\n\nT02 N400 con CFL0.2/0.4/0.6: todos los gates padre y diferencias E1 rho/p/u<=0.015\nfrente CFL0.2, intactos. T03 N800: comparación velocidad<=0.005a0 intacta.\nPara FIRST_ORDER+Forward Euler, sustituir exclusivamente el límite comparativo\namplitud<=0.08 por refinamiento N400/800/1600 para CFL0.2/0.4/0.6.\nMismas IC/BC/t_final originales; completar todos los casos, admisibilidad estricta\nsin clipping y cuatro ledgers<=1e-10. A(N,C)=max_i(p_i(t_final)-p0), en Pa;\nS(N;a,b)=abs(A(N,a)-A(N,b))/(1e-4*p0). Exigir S400>S800>S1600 para las\nTRES parejas(.2,.4),(.4,.6),(.2,.6), en ambas transiciones.\nE_A=abs(A-A_ref(N))/(1e-4*p0), con A_ref pico de primitivas de integrales\nconservadas de referencia acústica T03 original. Exigir E_A400>E_A800>E_A1600\npara cada CFL productivo. A N800 y N1600 todos los gates T03 originales:\npico/analítica[0.65,1.05], E1p<=0.025,E2p<=0.08,error velocidad<=0.01a0 y ledger.\nN400 es diagnóstico de exactitud; CFL0.1 diagnóstico temporal, no producción.\nRegistrar diferencia absoluta Pa y normalizada, dt/pasos/CFL real, extrema,\nrechazos/fallbacks, conservación, coste y errores. Registrar0.08 histórico\ncomo diagnóstico: R4 RETIRA su garantía en N800, no afirma equivalencia.\nSolo este caso/método; tres mallas no prueban límite asintótico universal.\nMUSCL/SSP-RK2 no cambia en R4 y conserva T11 original. Ver 1d_cfl_sensitivity_v1_r4.md.\n"
+    }
+  ],
+  "note": "Only first-order acoustic amplitude sensitivity revised. Prior contracts, Sod, speed, parent accuracy, solver and P0 unchanged."
+}

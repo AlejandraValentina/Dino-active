@@ -1,0 +1,127 @@
+{
+  "schema": "AUD11_KT100_OPEN_END_PLENUM_V2_CAMPAIGN_AUDIT_V1",
+  "recorded_at": "2026-10-05",
+  "preregistration": "results/2t-commercial-core-20261002/preregistration/open-end-plenum-v2.json",
+  "campaign_directory": "results/kt100-hybrid-model-fixture-v2-harness-20261002-r6-open-end-plenum-v2",
+  "campaign_invocations": 1,
+  "campaign_was_rerun": false,
+  "configuration": "configs/fixtures/kt100_open_end_plenum_v2.json",
+  "configuration_sha256": "6dc9b7f5a61ac35534c25a8e06e7cd6370a06e7955c31b45c8b22d169ae0d8b9",
+  "classification": "EVIDENCE_WRITER_FAILURE_AFTER_ANGULAR_ADVANCE",
+  "interpretation": {
+    "cycle_primaries_emitted": 0,
+    "periodicity_result": "NOT_AVAILABLE",
+    "physical_boundary_result": "NOT_QUALIFIED_BY_THIS_CAMPAIGN",
+    "observed_failure": "The accepted-step loop reached 390 degrees at every RPM. In advance_cycle the system/admissibility/species checks precede make_cycle_record; the latter failed while mapping product labels transfer1/transfer2 to P6 state keys tr1/tr2.",
+    "offline_audit_pass_scope": "The offline PASS certifies internal consistency of the saved explicit failure receipt and source binding only; it does not certify a cycle or simulation acceptance.",
+    "bug_fix": "Evidence-layer mapping transfer1->tr1 and transfer2->tr2, covered by test_cycle_evidence_maps_transfer_output_names_to_p6_species_names.",
+    "retroactive_repair": "The post-run fix does not create missing primary evidence in R6.",
+    "retry_policy": "The one-run preregistration is consumed; no campaign retry is authorized by it."
+  },
+  "points": [
+    {
+      "rpm": 5000,
+      "classification": "NUMERICAL_FAILURE",
+      "complete_cycles": 0,
+      "converged_cycle": null,
+      "failure": {
+        "accepted_steps": 954,
+        "angle_deg": 390.0,
+        "cycle_index": 1,
+        "exception_type": "KeyError",
+        "message": "'transfer1'",
+        "status": "NUMERICAL_FAILURE"
+      },
+      "summary_sha256": "27c6223246cdc867de447bc800cfaf07cea5189f657d063ade9a71b608f1284b",
+      "failure_sha256": "bcd7a1a7bcc3d8e566e01fde3a06209a900fe7b7ec3e644f0019aad67f88628b",
+      "manifest_sha256": "6df8accda1c2d6fdd134ab290a8fae866f640332cc92d9d23892f5c8024c8906"
+    },
+    {
+      "rpm": 7000,
+      "classification": "NUMERICAL_FAILURE",
+      "complete_cycles": 0,
+      "converged_cycle": null,
+      "failure": {
+        "accepted_steps": 682,
+        "angle_deg": 390.0,
+        "cycle_index": 1,
+        "exception_type": "KeyError",
+        "message": "'transfer1'",
+        "status": "NUMERICAL_FAILURE"
+      },
+      "summary_sha256": "21e5e9de545575fc78ac4d4322f1d23d6a5b2c1da3b146f5e15a4cd553fcd557",
+      "failure_sha256": "18bee2b073a1144d28d83b14dfd82beb61ea33d8ab05756fc01b12333a3712fb",
+      "manifest_sha256": "5927511688ecf40a47fe6a2ecf83d3f37873484c23809a308d7bbd43114c8c15"
+    },
+    {
+      "rpm": 9000,
+      "classification": "NUMERICAL_FAILURE",
+      "complete_cycles": 0,
+      "converged_cycle": null,
+      "failure": {
+        "accepted_steps": 532,
+        "angle_deg": 390.0,
+        "cycle_index": 1,
+        "exception_type": "KeyError",
+        "message": "'transfer1'",
+        "status": "NUMERICAL_FAILURE"
+      },
+      "summary_sha256": "4e69aeeaa6967f43019363b4d064d68ac9c4dfefcc3a6a1a2fc8339e94a954da",
+      "failure_sha256": "af237a3ef62e2478df3e28c1c5d49af9638651939465cfef4b5843c27a2a6686",
+      "manifest_sha256": "d1ce0839cfeb60d9012f692aa236a4e499f33b8070a7be488af6c6fa4b8d54d7"
+    },
+    {
+      "rpm": 11000,
+      "classification": "NUMERICAL_FAILURE",
+      "complete_cycles": 0,
+      "converged_cycle": null,
+      "failure": {
+        "accepted_steps": 430,
+        "angle_deg": 390.0,
+        "cycle_index": 1,
+        "exception_type": "KeyError",
+        "message": "'transfer1'",
+        "status": "NUMERICAL_FAILURE"
+      },
+      "summary_sha256": "bcf3708ceaca9f6eddba43b46319bc74096c8bb3f8434c9a0008c6a914a7fb34",
+      "failure_sha256": "f3fd475e254e4e36d26c346004ed0d0aa06832fd7551cdc0e2d1b7b8ad12be3c",
+      "manifest_sha256": "083096bee401d178654cc50282d54f50d2cf36c5c962ab2d6a064c867a95fdd2"
+    },
+    {
+      "rpm": 13000,
+      "classification": "NUMERICAL_FAILURE",
+      "complete_cycles": 0,
+      "converged_cycle": null,
+      "failure": {
+        "accepted_steps": 367,
+        "angle_deg": 390.0,
+        "cycle_index": 1,
+        "exception_type": "KeyError",
+        "message": "'transfer1'",
+        "status": "NUMERICAL_FAILURE"
+      },
+      "summary_sha256": "2f44b260433ceacaa9039b3e8e2b2253dcc9c1472a7f0d4d442c74d5ad1e4198",
+      "failure_sha256": "11f27c28aec87df9cd22a41c4a12d933d2c4467cbfe21612fee8dd3bb9c35937",
+      "manifest_sha256": "9ffb92a33649e04ad48f259e4fedd6990381aa35c365abcb3fea722eb6a393bb"
+    }
+  ],
+  "verification_after_fix": {
+    "focused_campaign_producer_and_harness_command": "python -m pytest tests/test_kt100_open_end_plenum_v2.py tests/test_reference_harness.py tests/test_integrated_cycle_evidence_producer.py -q",
+    "focused_campaign_producer_and_harness_result": "24 passed in 2.06s",
+    "open_end_plenum_suite_command": "python -m pytest tests/test_open_end_plenum_v2.py tests/test_kt100_open_end_plenum_v2.py -q",
+    "open_end_plenum_suite_result": "22 passed in 0.27s",
+    "openspec_strict_command": "openspec validate --all --strict --no-interactive",
+    "openspec_strict_result": "32 passed, 0 failed",
+    "git_diff_check": "PASS",
+    "p9_contract_sha256": "79fbe9b88d26fc4af5083d65d468f59c9208535f0ab389d2f3cb9a7654b88a4d"
+  },
+  "scientific_scope": {
+    "AUD_11": "CASE B — CAPABILITY LIMITATION (human/scientific decision)",
+    "capability": "OPEN_END_PLENUM_V2",
+    "provenance": "SYNTHETIC_ASSUMPTION",
+    "calibrated_walbro_WB40": false,
+    "historical_V1_fixtures_or_P3_R1_changed": false,
+    "P4_dependency": "CONDITIONAL_ON_P4"
+  },
+  "evidence_writer_fix_commit": "df5cbd7"
+}

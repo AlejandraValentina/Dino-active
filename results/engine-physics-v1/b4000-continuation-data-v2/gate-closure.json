@@ -1,0 +1,24 @@
+{
+  "schema": "ENGINE_PHYSICS_V1_GATE_CLOSURE_V2",
+  "objective": "ENGINE_PHYSICS_V1",
+  "classification": "ENGINE_PHYSICS_V1_FAIL_TERMINAL",
+  "continuation": "OWNER_AUTHORIZED_OPERATIONAL_CONTINUATION",
+  "mode": "B4000_OPERATIONAL_RESTART_AFTER_TIMEOUT",
+  "checkpoint": "NONE_VALID; original initial-condition restart used",
+  "determinism": {"cycles_reproduced": 9, "continuity_verified": true},
+  "points": {
+    "ENGINE_A_3000": {"periodicity": "PERIOD_1", "cycle": 73, "hard_gate": "HARD_PHYSICAL_INVALID", "hard_failures": ["RELATIONSHIP_INVALID:partition_conservation"]},
+    "ENGINE_A_4000": {"periodicity": "PERIOD_1", "cycle": 88, "hard_gate": "HARD_PHYSICAL_INVALID", "hard_failures": ["RELATIONSHIP_INVALID:partition_conservation"]},
+    "ENGINE_B_3000": {"periodicity": "PERIOD_1", "cycle": 34, "hard_gate": "HARD_PHYSICAL_INVALID", "hard_failures": ["RELATIONSHIP_INVALID:partition_conservation"]},
+    "ENGINE_B_4000": {"periodicity": "PERIOD_1", "cycle": 38, "hard_gate": "HARD_PHYSICAL_INVALID", "hard_failures": ["RELATIONSHIP_INVALID:partition_conservation"]}
+  },
+  "gate_reason": "All four points reached accepted detector periodicity, but the corrected V2 partition-conservation hard gate fails at each final periodic output. No PASS is legitimate.",
+  "horizon": {"B4000_max_cycles": 47, "extension_after_cycle_47": false},
+  "sha256": {
+    "B4000_result": "5e80e43d4b3d597e694f472b0387470e942e7e9a60f82de5e3d9fe6b57247db0",
+    "B4000_final_output": "4f4eef4d482af95282b4e50aab333b9000e3c56d0154a5f944b897aa1964baf2",
+    "B4000_run_summary": "4cd697063a3e28a9544f4191d923247c811addd283a53ae1914cec14371a5ab1",
+    "continuation_producer": "78b041b80fc4468449ffaee3330ebe0afdb628c26918a5a0dae6a9e2f2c5eec0"
+  },
+  "scope_stop": ["FULL_RPM_SWEEP_V1", "KT100", "R3", "new physics", "additional extension"]
+}

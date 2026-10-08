@@ -1,0 +1,41 @@
+{
+  "checks": [
+    {
+      "id": "focal_gate",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "Equivalence and >=1.2x"
+    },
+    {
+      "id": "micro_rhs_gate",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "5.512x >=1.15"
+    },
+    {
+      "id": "benchmark_gate",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "19.16 <=20"
+    },
+    {
+      "id": "regressions",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "101+ tests PASS"
+    },
+    {
+      "id": "frozen",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "151 hashes"
+    }
+  ],
+  "metrics": {
+    "focal_speedup": 1.335,
+    "micro_speedup": 5.512,
+    "median_cycle": 19.16
+  },
+  "scientific_change_required": false,
+  "implementation_agent": "OpenCode / Muse Spark 1.2"
+}

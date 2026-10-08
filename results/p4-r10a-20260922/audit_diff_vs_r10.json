@@ -1,0 +1,44 @@
+{
+  "L2_error_math_corrected": true,
+  "L2_original_formula": "L2_outside/L2_total*100 (RMS ratio, wrong N)",
+  "L2_corrected_formula": "E_inside/E_total (sum diff^2 ratio)",
+  "impact": "Original gave 60-88% inside, corrected gives 33% N250, 28% N300, 65% N350, 66% N400 for +-3 cells. N250/N300 now show distributed, N350/N400 localized.",
+  "front_switching": "Original global argmax alternated between x~0.005 and 0.23 (different waves). Corrected per-pair tracking chooses same front near sensor (0.09 vs 0.10) with delta 0, but still shows two fronts (even at 0.09, odd at 0.009) corresponding to period-2 A/B orbits. Tracking per lag-2 pair (even-even, odd-odd) correctly tracks same front, delta 0.",
+  "labels_corrected": "Original labels 5 vs3 etc. corrected to 40 vs38,39 vs37,38 vs36 (actual cycle numbers 36-40). Data already corresponded to 36-40, only metadata wrong.",
+  "width_old_vs_new": {
+    "N250_orig_cells": 83.33333333333333,
+    "N250_width_A_cells": 9.000000000000002,
+    "N250_width_B_cells": 82.33333333333333,
+    "note": "Original 83 cells was broader wavefront width (0.5*max), corrected separates local strongest 9 cells (0.9*max) vs broader 82 cells. Original 'few cells' description incorrect; corrected shows local 9-11 cells but broader 50-90."
+  },
+  "plateau_vs_adjacent": {
+    "N350_jump_adj": 4264.5848161760005,
+    "N350_plateau_jump": 7360.675636599124,
+    "note": "Adjacent jump 7 Pa vs plateau 649 Pa for N250, 4264 vs 7360 for N350. Original called 1480-2805 'jump strength' without distinguishing. Corrected reports both."
+  },
+  "delta_x_per_pair": {
+    "250": [
+      0.0,
+      -0.003000000000000001,
+      0.0
+    ],
+    "300": [
+      0.0,
+      0.0024999999999999996,
+      0.0
+    ],
+    "350": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "400": [
+      null,
+      0.0,
+      null
+    ]
+  },
+  "classification_original": "P4_R10_SHOCK_LOCALIZED_NUMERICAL_NONCLOSURE",
+  "classification_corrected": "P4_R10_MIXED_SHOCK_AND_GLOBAL_NONCLOSURE",
+  "classification_sustained": false
+}

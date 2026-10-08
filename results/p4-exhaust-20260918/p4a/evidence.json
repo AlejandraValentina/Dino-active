@@ -1,0 +1,160 @@
+{
+  "run_id": "20260918T165623-P4A-b40336ff4e97",
+  "phase_id": "P4A",
+  "started_at": "2026-09-18T16:56:23.475222+00:00",
+  "finished_at": "2026-09-18T16:57:39.960774+00:00",
+  "git_commit": "4e79c1f0e343e4ce05b7de7e2152746c7f43a90c",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "port_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_exhaust_port.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.75,
+      "status": "passed",
+      "stdout_log": "logs/1-port_tests.stdout.log",
+      "stderr_log": "logs/1-port_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "bank",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p4_bench",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260918T165623-P4A-b40336ff4e97"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 28.063000000081956,
+      "status": "passed",
+      "stdout_log": "logs/1-bank.stdout.log",
+      "stderr_log": "logs/1-bank.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "port_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "bank",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "P4A",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "E01-E05 port bank"
+    }
+  ],
+  "tests": [
+    {
+      "id": "port_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_exhaust_port.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.75,
+      "status": "passed",
+      "stdout_log": "logs/1-port_tests.stdout.log",
+      "stderr_log": "logs/1-port_tests.stderr.log",
+      "error": ""
+    }
+  ],
+  "metrics": {
+    "cases": 3
+  },
+  "review": {
+    "status": "BLOCKED",
+    "findings": [
+      "No hay reviewer independiente conectado."
+    ],
+    "blocking_findings": [
+      "reviewer_unavailable"
+    ],
+    "scientific_change_required": false,
+    "notes": "No se llamó a ningún proveedor externo.",
+    "kind": "none"
+  },
+  "gate": "BLOCKED",
+  "gate_reasons": [
+    "review_not_approved"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "review_not_approved",
+      "state": "BLOCKED"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "artifacts/summary.json",
+      "sha256": "765dd58f306c0853ca9d8e581cb4bf9af34b801b77d9a061308180889e7fb5db",
+      "bytes": 4092
+    },
+    {
+      "path": "artifacts/inventory.json",
+      "sha256": "c9f22f30e5b43c2f1030e340f0e5510948976fadccc454125f85c7cf46ece998",
+      "bytes": 312
+    },
+    {
+      "path": "artifacts/result.json",
+      "sha256": "f61603aff9fcb972ced380fb0f7d544796f39fce6b3afcaa430c679c5fcb8c7d",
+      "bytes": 226
+    }
+  ],
+  "phase_definition_sha256": "a1fafffe0ba772bc784cc832ab06e38585193f2000124640a5581a0ae181f37d",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P2": "docs\\gasdynamic\\p2_accepted_dependency.json"
+    }
+  },
+  "continue_requested": false
+}

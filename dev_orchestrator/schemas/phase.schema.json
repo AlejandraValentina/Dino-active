@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "phase",
+  "type": "object",
+  "properties": {
+    "phase": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "depends_on": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "allowed_paths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "forbidden_paths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "allowed_changes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "forbidden_changes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "commands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$"
+          },
+          "argv": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1
+          },
+          "kind": {
+            "enum": [
+              "test",
+              "command"
+            ],
+            "type": "string"
+          },
+          "timeout": {
+            "type": "number",
+            "minimum": 0.05,
+            "maximum": 3600
+          },
+          "result_file": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "argv",
+          "kind"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required_tests": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "required_checks": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "required_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "gate": {
+      "type": "string",
+      "enum": [
+        "default"
+      ]
+    },
+    "max_repair_attempts": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "review": {
+      "type": "string",
+      "enum": [
+        "required",
+        "none"
+      ]
+    },
+    "human_gate": {
+      "type": "boolean"
+    },
+    "scientific_changes_authorized": {
+      "type": "boolean"
+    },
+    "timeout": {
+      "type": "number",
+      "minimum": 0.05,
+      "maximum": 7200
+    }
+  },
+  "required": [
+    "phase",
+    "objective",
+    "enabled",
+    "depends_on",
+    "allowed_paths",
+    "forbidden_paths",
+    "allowed_changes",
+    "forbidden_changes",
+    "commands",
+    "required_tests",
+    "required_checks",
+    "required_evidence",
+    "gate",
+    "max_repair_attempts",
+    "review",
+    "human_gate",
+    "scientific_changes_authorized",
+    "timeout"
+  ],
+  "additionalProperties": false
+}

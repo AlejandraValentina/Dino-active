@@ -1,0 +1,35 @@
+{
+  "N400_cycle54_valid": true,
+  "N400_cycle54_source": "restart_cycle50 -> normal cycles 51,52,53,54; no d1/d2 history drives run_cycle",
+  "N400_cycle54_d2_vs": [
+    52,
+    54
+  ],
+  "N400_even_sequence": [
+    true,
+    true,
+    false
+  ],
+  "N350_even_sequence": [
+    true,
+    true,
+    true
+  ],
+  "streaks": {
+    "N350": {
+      "odd_max": 5,
+      "even_max": 3
+    },
+    "N400": {
+      "odd_max": 6,
+      "even_max": 2
+    }
+  },
+  "R11_classification": "P4_R11_PERIOD2_LAG2_CLOSURE_CONFIRMED",
+  "R12_classification": "P4_R12_ONE_BRANCH_NONCLOSURE",
+  "conservation_admissibility": {
+    "N350_cycle52": true,
+    "N400_cycle54": true
+  },
+  "scientific_extension": false
+}

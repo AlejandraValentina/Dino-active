@@ -1,0 +1,708 @@
+{
+  "state": "P4_R1_PERFORMANCE_DIAGNOSTIC_REQUIRED",
+  "metric_defect_confirmed": true,
+  "solver_frozen": true,
+  "comparison": {
+    "values": {
+      "Q_pressure": [
+        [
+          100,
+          164.74234696169054
+        ],
+        [
+          200,
+          164.85474898233795
+        ],
+        [
+          400,
+          164.90322780389366
+        ]
+      ],
+      "Q_mass": [
+        [
+          100,
+          -9.700566033221414e-05
+        ],
+        [
+          200,
+          -9.700772869391448e-05
+        ],
+        [
+          400,
+          -9.700999337738677e-05
+        ]
+      ]
+    },
+    "differences": {
+      "Q_pressure": [
+        {
+          "meshes": [
+            100,
+            200
+          ],
+          "signed": 0.11240202064740856,
+          "absolute": 0.11240202064740856
+        },
+        {
+          "meshes": [
+            200,
+            400
+          ],
+          "signed": 0.0484788215557046,
+          "absolute": 0.0484788215557046
+        }
+      ],
+      "Q_mass": [
+        {
+          "meshes": [
+            100,
+            200
+          ],
+          "signed": -2.0683617003381186e-09,
+          "absolute": 2.0683617003381186e-09
+        },
+        {
+          "meshes": [
+            200,
+            400
+          ],
+          "signed": -2.2646834722876404e-09,
+          "absolute": 2.2646834722876404e-09
+        }
+      ]
+    },
+    "temporal": {
+      "Q_pressure": {
+        "200": {
+          "nominal": 164.85474898233795,
+          "half_CFL": 164.85463129893247,
+          "absolute": 0.00011768340547746448,
+          "spatial_D200_400": 0.0484788215557046,
+          "ratio": 0.002427521992097938,
+          "small": true,
+          "comparable": false,
+          "temporal_class": "small"
+        },
+        "400": {
+          "nominal": 164.90322780389366,
+          "half_CFL": 164.90318343250956,
+          "absolute": 4.4371384092301014e-05,
+          "spatial_D200_400": 0.0484788215557046,
+          "ratio": 0.0009152735703634228,
+          "small": true,
+          "comparable": false,
+          "temporal_class": "small"
+        }
+      },
+      "Q_mass": {
+        "200": {
+          "nominal": -9.700772869391448e-05,
+          "half_CFL": -9.700773604485309e-05,
+          "absolute": 7.350938610530162e-12,
+          "spatial_D200_400": 2.2646834722876404e-09,
+          "ratio": 0.003245901116196476,
+          "small": true,
+          "comparable": false,
+          "temporal_class": "small"
+        },
+        "400": {
+          "nominal": -9.700999337738677e-05,
+          "half_CFL": -9.700999594603901e-05,
+          "absolute": 2.5686522407784157e-12,
+          "spatial_D200_400": 2.2646834722876404e-09,
+          "ratio": 0.0011342213038644756,
+          "small": true,
+          "comparable": false,
+          "temporal_class": "small"
+        }
+      }
+    }
+  },
+  "control_converges": true,
+  "cases": [
+    {
+      "name": "blowdown_N100_CFL0.4",
+      "kind": "blowdown",
+      "N": 100,
+      "CFL": 0.4,
+      "brackets": [
+        0.099,
+        0.10499999999999998,
+        0.16666666666666743
+      ],
+      "initial_pressure": 100000.0,
+      "initial_mass": 0.00017421602787456446,
+      "requested_end": 0.012222222222222223,
+      "observed_wrapper_seconds": 17.96900000050664,
+      "metrics": {
+        "interval": [
+          0.0,
+          0.012222222222222223
+        ],
+        "Q_pressure": 164.74234696169054,
+        "Q_pressure_signed": 164.74234696169054,
+        "Q_mass": -9.700566033221414e-05,
+        "mass_from_stages": -9.700566033221444e-05,
+        "mass_from_inventory": -9.700566033221451e-05,
+        "mass_ledger_residual": 9.307525319605713e-16,
+        "arrival": 0.0008763254918959405,
+        "arrival_angle": 95.77385885412693,
+        "peak": 145785.18928834112,
+        "minimum": 100000.0,
+        "steps": 2673,
+        "dt_min": 7.982491719536744e-07,
+        "dt_max": 7.0395156979792715e-06,
+        "CFL_max": 0.4000000000000001,
+        "runtime": 17.96900000050664,
+        "counts": {
+          "rhs": 5921,
+          "HLLC": 597209,
+          "HLLE": 0,
+          "characteristic": 5921,
+          "rejected": 575,
+          "downgrades": 0
+        },
+        "conservation": 1.98546499761504e-15,
+        "admissibility": true,
+        "opening": {
+          "time": 0.0005555555555555556,
+          "angle": 90.0
+        },
+        "closing": {
+          "time": 0.010555555555555556,
+          "angle": 270.0
+        },
+        "candidate_postclosing_peak": null,
+        "reflection_definition": "First post-closing local maximum with >=2000Pa prominence; candidate only, not causal identification of reflection. Null does not imply absence of waves."
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "mass_ledger": true
+      },
+      "complete": true
+    },
+    {
+      "name": "blowdown_N200_CFL0.4",
+      "kind": "blowdown",
+      "N": 200,
+      "CFL": 0.4,
+      "brackets": [
+        0.0975,
+        0.1005,
+        0.8333333333333334
+      ],
+      "initial_pressure": 100000.0,
+      "initial_mass": 0.00017421602787456446,
+      "requested_end": 0.012222222222222223,
+      "observed_wrapper_seconds": 71.0,
+      "metrics": {
+        "interval": [
+          0.0,
+          0.012222222222222223
+        ],
+        "Q_pressure": 164.85474898233795,
+        "Q_pressure_signed": 164.85474898233795,
+        "Q_mass": -9.700772869391448e-05,
+        "mass_from_stages": -9.700772869391498e-05,
+        "mass_from_inventory": -9.700772869391582e-05,
+        "mass_ledger_residual": 3.4127592838554287e-15,
+        "arrival": 0.0008774345295838874,
+        "arrival_angle": 95.79382153250998,
+        "peak": 145880.00321298264,
+        "minimum": 100000.0,
+        "steps": 5405,
+        "dt_min": 3.92088191461179e-07,
+        "dt_max": 3.51975784898957e-06,
+        "CFL_max": 0.4000000000000001,
+        "runtime": 71.0,
+        "counts": {
+          "rhs": 12018,
+          "HLLC": 2413958,
+          "HLLE": 0,
+          "characteristic": 12018,
+          "rejected": 1208,
+          "downgrades": 0
+        },
+        "conservation": 3.378286967856889e-15,
+        "admissibility": true,
+        "opening": {
+          "time": 0.0005555555555555556,
+          "angle": 90.0
+        },
+        "closing": {
+          "time": 0.010555555555555556,
+          "angle": 270.0
+        },
+        "candidate_postclosing_peak": null,
+        "reflection_definition": "First post-closing local maximum with >=2000Pa prominence; candidate only, not causal identification of reflection. Null does not imply absence of waves."
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "mass_ledger": true
+      },
+      "complete": true
+    },
+    {
+      "name": "blowdown_N400_CFL0.4",
+      "kind": "blowdown",
+      "N": 400,
+      "CFL": 0.4,
+      "brackets": [
+        0.09975,
+        0.10124999999999999,
+        0.1666666666666682
+      ],
+      "initial_pressure": 100000.0,
+      "initial_mass": 0.00017421602787456446,
+      "requested_end": 0.012222222222222223,
+      "observed_wrapper_seconds": 286.6720000002533,
+      "metrics": {
+        "interval": [
+          0.0,
+          0.012222222222222223
+        ],
+        "Q_pressure": 164.90322780389366,
+        "Q_pressure_signed": 164.90322780389366,
+        "Q_mass": -9.700999337738677e-05,
+        "mass_from_stages": -9.700999337738636e-05,
+        "mass_from_inventory": -9.700999337738635e-05,
+        "mass_ledger_residual": 1.0686417959547302e-15,
+        "arrival": 0.0008755830727585814,
+        "arrival_angle": 95.76049530965446,
+        "peak": 145934.19732594726,
+        "minimum": 100000.0,
+        "steps": 10868,
+        "dt_min": 1.5918075376049334e-08,
+        "dt_max": 1.759878924494785e-06,
+        "CFL_max": 0.4000000000000001,
+        "runtime": 286.6720000002533,
+        "counts": {
+          "rhs": 24161,
+          "HLLC": 9685325,
+          "HLLE": 0,
+          "characteristic": 24161,
+          "rejected": 2425,
+          "downgrades": 0
+        },
+        "conservation": 2.706076805885365e-15,
+        "admissibility": true,
+        "opening": {
+          "time": 0.0005555555555555556,
+          "angle": 90.0
+        },
+        "closing": {
+          "time": 0.010555555555555556,
+          "angle": 270.0
+        },
+        "candidate_postclosing_peak": null,
+        "reflection_definition": "First post-closing local maximum with >=2000Pa prominence; candidate only, not causal identification of reflection. Null does not imply absence of waves."
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "mass_ledger": true
+      },
+      "complete": true
+    },
+    {
+      "name": "blowdown_N200_CFL0.2",
+      "kind": "blowdown",
+      "N": 200,
+      "CFL": 0.2,
+      "brackets": [
+        0.0975,
+        0.1005,
+        0.8333333333333334
+      ],
+      "initial_pressure": 100000.0,
+      "initial_mass": 0.00017421602787456446,
+      "requested_end": 0.012222222222222223,
+      "observed_wrapper_seconds": 137.98500000033528,
+      "metrics": {
+        "interval": [
+          0.0,
+          0.012222222222222223
+        ],
+        "Q_pressure": 164.85463129893247,
+        "Q_pressure_signed": 164.85463129893247,
+        "Q_mass": -9.700773604485309e-05,
+        "mass_from_stages": -9.700773604485317e-05,
+        "mass_from_inventory": -9.700773604485384e-05,
+        "mass_ledger_residual": 1.8959773799196827e-15,
+        "arrival": 0.0008774812289146411,
+        "arrival_angle": 95.79466212046354,
+        "peak": 145880.01635059284,
+        "minimum": 100000.0,
+        "steps": 10765,
+        "dt_min": 3.1375487744966096e-07,
+        "dt_max": 1.759878924494785e-06,
+        "CFL_max": 0.20000000000000004,
+        "runtime": 137.98500000033528,
+        "counts": {
+          "rhs": 23860,
+          "HLLC": 4792712,
+          "HLLE": 0,
+          "characteristic": 23860,
+          "rejected": 2330,
+          "downgrades": 0
+        },
+        "conservation": 6.2109417874111506e-15,
+        "admissibility": true,
+        "opening": {
+          "time": 0.0005555555555555556,
+          "angle": 90.0
+        },
+        "closing": {
+          "time": 0.010555555555555556,
+          "angle": 270.0
+        },
+        "candidate_postclosing_peak": null,
+        "reflection_definition": "First post-closing local maximum with >=2000Pa prominence; candidate only, not causal identification of reflection. Null does not imply absence of waves."
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "mass_ledger": true
+      },
+      "complete": true
+    },
+    {
+      "name": "blowdown_N400_CFL0.2",
+      "kind": "blowdown",
+      "N": 400,
+      "CFL": 0.2,
+      "brackets": [
+        0.09975,
+        0.10124999999999999,
+        0.1666666666666682
+      ],
+      "initial_pressure": 100000.0,
+      "initial_mass": 0.00017421602787456446,
+      "requested_end": 0.012222222222222223,
+      "observed_wrapper_seconds": 559.9220000002533,
+      "metrics": {
+        "interval": [
+          0.0,
+          0.012222222222222223
+        ],
+        "Q_pressure": 164.90318343250956,
+        "Q_pressure_signed": 164.90318343250956,
+        "Q_mass": -9.700999594603901e-05,
+        "mass_from_stages": -9.700999594603921e-05,
+        "mass_from_inventory": -9.700999594603864e-05,
+        "mass_ledger_residual": 9.307525319605713e-16,
+        "arrival": 0.0008756033341481524,
+        "arrival_angle": 95.76086001466675,
+        "peak": 145934.14063322204,
+        "minimum": 100000.0,
+        "steps": 21700,
+        "dt_min": 1.264635145345125e-07,
+        "dt_max": 8.799394622473925e-07,
+        "CFL_max": 0.20000000000000004,
+        "runtime": 559.9220000002533,
+        "counts": {
+          "rhs": 48182,
+          "HLLC": 19314651,
+          "HLLE": 0,
+          "characteristic": 48182,
+          "rejected": 4782,
+          "downgrades": 0
+        },
+        "conservation": 4.827967922759117e-15,
+        "admissibility": true,
+        "opening": {
+          "time": 0.0005555555555555556,
+          "angle": 90.0
+        },
+        "closing": {
+          "time": 0.010555555555555556,
+          "angle": 270.0
+        },
+        "candidate_postclosing_peak": null,
+        "reflection_definition": "First post-closing local maximum with >=2000Pa prominence; candidate only, not causal identification of reflection. Null does not imply absence of waves."
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "mass_ledger": true
+      },
+      "complete": true
+    },
+    {
+      "name": "control_N100_CFL0.4",
+      "kind": "control",
+      "N": 100,
+      "CFL": 0.4,
+      "brackets": [
+        0.09375,
+        0.10125,
+        0.8333333333333334
+      ],
+      "initial_pressure": 100019.1871276132,
+      "initial_mass": 0.00011614401858304297,
+      "requested_end": 0.003,
+      "observed_wrapper_seconds": 2.1569999996572733,
+      "metrics": {
+        "interval": [
+          0.0,
+          0.003
+        ],
+        "Q_pressure": 0.007541617105785832,
+        "Q_pressure_signed": 0.007539210685027542,
+        "Q_mass": -3.6561413300820764e-13,
+        "mass_from_stages": -3.656141330082075e-13,
+        "mass_from_inventory": -3.656141687145842e-13,
+        "mass_ledger_residual": 9.159964825769066e-17,
+        "arrival": 2.008493799925032e-05,
+        "arrival_angle": 180.3615288839865,
+        "peak": 100075.03186492437,
+        "minimum": 99999.99674242956,
+        "steps": 342,
+        "dt_min": 2.5545749261406472e-06,
+        "dt_max": 8.799394526746786e-06,
+        "CFL_max": 0.4,
+        "runtime": 2.1569999996572733,
+        "counts": {
+          "rhs": 684,
+          "HLLC": 69084,
+          "HLLE": 0,
+          "characteristic": 684,
+          "rejected": 0,
+          "downgrades": 0
+        },
+        "conservation": 4.578090049616194e-16,
+        "admissibility": true,
+        "linear_reference_L1": 0.006237275719899893,
+        "arrival_exact_linear": 2.203274797480907e-05,
+        "area_range": [
+          0.00019999999999999998,
+          0.00019999999999999998
+        ]
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "mass_ledger": true
+      },
+      "complete": true
+    },
+    {
+      "name": "control_N200_CFL0.4",
+      "kind": "control",
+      "N": 200,
+      "CFL": 0.4,
+      "brackets": [
+        0.099375,
+        0.103125,
+        0.1666666666666673
+      ],
+      "initial_pressure": 100017.48059522208,
+      "initial_mass": 0.00011614401858304297,
+      "requested_end": 0.003,
+      "observed_wrapper_seconds": 8.563000000081956,
+      "metrics": {
+        "interval": [
+          0.0,
+          0.003
+        ],
+        "Q_pressure": 0.007580344250256558,
+        "Q_pressure_signed": 0.007578001088946418,
+        "Q_mass": -3.479762774394319e-13,
+        "mass_from_stages": -3.4797627743943244e-13,
+        "mass_from_inventory": -3.479761509321555e-13,
+        "mass_ledger_residual": 3.245364872660998e-16,
+        "arrival": 2.0691418487637402e-05,
+        "arrival_angle": 180.37244553277748,
+        "peak": 100088.2600745447,
+        "minimum": 99999.99583316388,
+        "steps": 699,
+        "dt_min": 6.408287310335527e-07,
+        "dt_max": 4.399697285679838e-06,
+        "CFL_max": 0.4,
+        "runtime": 8.563000000081956,
+        "counts": {
+          "rhs": 1429,
+          "HLLC": 287229,
+          "HLLE": 0,
+          "characteristic": 1429,
+          "rejected": 31,
+          "downgrades": 0
+        },
+        "conservation": 6.253467628529684e-16,
+        "admissibility": true,
+        "linear_reference_L1": 0.0021643294674447994,
+        "arrival_exact_linear": 2.203274797480907e-05,
+        "area_range": [
+          0.00019999999999999998,
+          0.00019999999999999998
+        ]
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "mass_ledger": true
+      },
+      "complete": true
+    },
+    {
+      "name": "control_N400_CFL0.4",
+      "kind": "control",
+      "N": 400,
+      "CFL": 0.4,
+      "brackets": [
+        0.09843750000000001,
+        0.1003125,
+        0.8333333333333358
+      ],
+      "initial_pressure": 100017.05212792652,
+      "initial_mass": 0.00011614401858304297,
+      "requested_end": 0.003,
+      "observed_wrapper_seconds": 34.938000000081956,
+      "metrics": {
+        "interval": [
+          0.0,
+          0.003
+        ],
+        "Q_pressure": 0.007571613213065683,
+        "Q_pressure_signed": 0.007569491486024528,
+        "Q_mass": -3.201751655362256e-13,
+        "mass_from_stages": -3.2017516553622605e-13,
+        "mass_from_inventory": -3.2017514724549945e-13,
+        "mass_ledger_residual": 4.6922265537843355e-17,
+        "arrival": 2.191874214231946e-05,
+        "arrival_angle": 180.39453735856176,
+        "peak": 100094.87551451949,
+        "minimum": 99999.99438373707,
+        "steps": 1403,
+        "dt_min": 9.401554710583918e-07,
+        "dt_max": 2.1998486341161927e-06,
+        "CFL_max": 0.4,
+        "runtime": 34.938000000081956,
+        "counts": {
+          "rhs": 2882,
+          "HLLC": 1155682,
+          "HLLE": 0,
+          "characteristic": 2882,
+          "rejected": 76,
+          "downgrades": 0
+        },
+        "conservation": 7.938648579209299e-16,
+        "admissibility": true,
+        "linear_reference_L1": 0.0007105596478879479,
+        "arrival_exact_linear": 2.203274797480907e-05,
+        "area_range": [
+          0.00019999999999999998,
+          0.00019999999999999998
+        ]
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "mass_ledger": true
+      },
+      "complete": true
+    },
+    {
+      "name": "blowdown_N800_CFL0.4",
+      "kind": "blowdown",
+      "N": 800,
+      "CFL": 0.4,
+      "brackets": [
+        0.09937499999999999,
+        0.10012499999999999,
+        0.8333333333333518
+      ],
+      "initial_pressure": 100000.0,
+      "initial_mass": 0.00017421602787456446,
+      "requested_end": 0.012222222222222223,
+      "observed_wrapper_seconds": 900.0310000004247,
+      "metrics": {
+        "interval": [
+          0.0,
+          0.008968816321386268
+        ],
+        "Q_pressure": 159.3173647418679,
+        "Q_pressure_signed": 159.3173647418679,
+        "Q_mass": -9.538417249462383e-05,
+        "mass_from_stages": -9.538417249462375e-05,
+        "mass_from_inventory": -9.538417249462459e-05,
+        "mass_ledger_residual": 1.9304496959182224e-15,
+        "arrival": 0.0008745722624310988,
+        "arrival_angle": 95.74230072375978,
+        "peak": 145965.97710125073,
+        "minimum": 100000.0,
+        "steps": 16963,
+        "dt_min": 2.0698540829401646e-07,
+        "dt_max": 8.799394622473274e-07,
+        "CFL_max": 0.4000000000000001,
+        "runtime": 900.0310000004247,
+        "counts": {
+          "rhs": 38700,
+          "HLLC": 30997419,
+          "HLLE": 0,
+          "characteristic": 38700,
+          "rejected": 4774,
+          "downgrades": 0
+        },
+        "conservation": 6.608845934951281e-15,
+        "admissibility": true,
+        "opening": {
+          "time": 0.0005555555555555556,
+          "angle": 90.0
+        },
+        "closing": {
+          "time": 0.010555555555555556,
+          "angle": 270.0
+        },
+        "candidate_postclosing_peak": null,
+        "reflection_definition": "First post-closing local maximum with >=2000Pa prominence; candidate only, not causal identification of reflection. Null does not imply absence of waves."
+      },
+      "checks": {
+        "completed": false,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": false,
+        "CFL": true,
+        "mass_ledger": true
+      },
+      "complete": false
+    }
+  ],
+  "P4_gate_changed": false,
+  "P4C_started": false
+}

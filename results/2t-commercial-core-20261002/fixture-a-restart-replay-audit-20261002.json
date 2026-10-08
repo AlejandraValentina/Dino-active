@@ -1,0 +1,143 @@
+{
+  "schema": "MOTORSIM_INTEGRATED_2T_CONTINUOUS_RESTART_REPLAY_AUDIT_V1",
+  "fixture": "INTERNAL_SYNTHETIC_A",
+  "synthetic_only": true,
+  "settings": {
+    "rpm": 3000.0,
+    "max_cfl": 0.4,
+    "cycles": 6,
+    "restart_after_cycle": 3
+  },
+  "continuous_vs_checkpoint_restart_full_snapshot_equal": true,
+  "independent_runs_cycle_primary_and_engineering_outputs_equal": true,
+  "final_angle_unwrapped_deg": 2160.0,
+  "final_cycle": 6,
+  "total_accepted_steps": 11176,
+  "cycle_records": [
+    {
+      "cycle": 1,
+      "angle_end_deg": 360.0,
+      "accepted_steps": 1963,
+      "cfl_max": 0.39990795665325524,
+      "mass_residual_kg": -3.2526065174565133e-18,
+      "energy_residual_j": -9.726663918740996e-13,
+      "species_residual_kg": [
+        -3.5236570605778894e-19,
+        -3.917527381051139e-21,
+        -3.7878254610028243e-19,
+        0.0
+      ],
+      "indicated_work_j": -111.57639388564951,
+      "p7_heat_j": 96.81032169249315,
+      "fuel_delivered_kg": null,
+      "brake_work_status": "DEFINED",
+      "output_schema": "MOTORSIM_ENGINEERING_OUTPUTS_V2",
+      "fuel_delivered_status": "NOT_EMITTED_AS_CYCLE_OBSERVABLE; present in cycle_ledgers and engineering output"
+    },
+    {
+      "cycle": 2,
+      "angle_end_deg": 720.0,
+      "accepted_steps": 2162,
+      "cfl_max": 0.36688192882784004,
+      "mass_residual_kg": -1.4704491964334654e-18,
+      "energy_residual_j": -4.765077221691172e-13,
+      "species_residual_kg": [
+        1.8973538018496328e-19,
+        -2.1175823681357508e-20,
+        -6.606856988583543e-20,
+        1.8973538018496328e-19
+      ],
+      "indicated_work_j": 17.28410778174108,
+      "p7_heat_j": 106.0798772980225,
+      "fuel_delivered_kg": null,
+      "brake_work_status": "DEFINED",
+      "output_schema": "MOTORSIM_ENGINEERING_OUTPUTS_V2",
+      "fuel_delivered_status": "NOT_EMITTED_AS_CYCLE_OBSERVABLE; present in cycle_ledgers and engineering output"
+    },
+    {
+      "cycle": 3,
+      "angle_end_deg": 1080.0,
+      "accepted_steps": 1929,
+      "cfl_max": 0.3999429915092084,
+      "mass_residual_kg": 3.7947076036992655e-18,
+      "energy_residual_j": -1.0740297540223764e-12,
+      "species_residual_kg": [
+        -3.5236570605778894e-19,
+        -8.470329472543003e-22,
+        -2.710505431213761e-20,
+        -5.149960319306146e-19
+      ],
+      "indicated_work_j": 52.25984567109532,
+      "p7_heat_j": 103.20792420703638,
+      "fuel_delivered_kg": null,
+      "brake_work_status": "DEFINED",
+      "output_schema": "MOTORSIM_ENGINEERING_OUTPUTS_V2",
+      "fuel_delivered_status": "NOT_EMITTED_AS_CYCLE_OBSERVABLE; present in cycle_ledgers and engineering output"
+    },
+    {
+      "cycle": 4,
+      "angle_end_deg": 1440.0,
+      "accepted_steps": 1706,
+      "cfl_max": 0.39997292578185634,
+      "mass_residual_kg": 8.402566836762659e-19,
+      "energy_residual_j": -6.612488334667432e-13,
+      "species_residual_kg": [
+        8.944667923005412e-19,
+        1.6517142471458857e-20,
+        1.8973538018496328e-19,
+        2.710505431213761e-19
+      ],
+      "indicated_work_j": 57.12273548034092,
+      "p7_heat_j": 104.5192459787848,
+      "fuel_delivered_kg": null,
+      "brake_work_status": "DEFINED",
+      "output_schema": "MOTORSIM_ENGINEERING_OUTPUTS_V2",
+      "fuel_delivered_status": "NOT_EMITTED_AS_CYCLE_OBSERVABLE; present in cycle_ledgers and engineering output"
+    },
+    {
+      "cycle": 5,
+      "angle_end_deg": 1800.0,
+      "accepted_steps": 1707,
+      "cfl_max": 0.39996577947660306,
+      "mass_residual_kg": 2.3852447794681098e-18,
+      "energy_residual_j": 7.682743330406083e-14,
+      "species_residual_kg": [
+        1.3010426069826053e-18,
+        7.623296525288703e-21,
+        6.776263578034403e-21,
+        -1.0842021724855044e-19
+      ],
+      "indicated_work_j": 53.21647444738308,
+      "p7_heat_j": 107.83397033546544,
+      "fuel_delivered_kg": null,
+      "brake_work_status": "DEFINED",
+      "output_schema": "MOTORSIM_ENGINEERING_OUTPUTS_V2",
+      "fuel_delivered_status": "NOT_EMITTED_AS_CYCLE_OBSERVABLE; present in cycle_ledgers and engineering output"
+    },
+    {
+      "cycle": 6,
+      "angle_end_deg": 2160.0,
+      "accepted_steps": 1709,
+      "cfl_max": 0.3999820664555614,
+      "mass_residual_kg": -1.0537089863843496e-18,
+      "energy_residual_j": -4.671818487622659e-13,
+      "species_residual_kg": [
+        -1.2468324983583301e-18,
+        -3.6422416731934915e-20,
+        1.3552527156068805e-20,
+        2.439454888092385e-19
+      ],
+      "indicated_work_j": 50.453655644445604,
+      "p7_heat_j": 109.97841993465161,
+      "fuel_delivered_kg": null,
+      "brake_work_status": "DEFINED",
+      "output_schema": "MOTORSIM_ENGINEERING_OUTPUTS_V2",
+      "fuel_delivered_status": "NOT_EMITTED_AS_CYCLE_OBSERVABLE; present in cycle_ledgers and engineering output"
+    }
+  ],
+  "periodicity_comparisons": "See primary-cycle comparisons in fixture-a-integrated-cycles-20261002-v2.json.gz; audit intentionally makes no P1/P2 claim.",
+  "classification_claim": "NO_P1_P2; fixture A remains blocked",
+  "comparison_basis": "direct structural equality of full checkpoint snapshots, six primary records, and six validated engineering outputs; not digest-only",
+  "elapsed_s": 173.6712957000127,
+  "primary_evidence_artifact": "results/2t-commercial-core-20261002/fixture-a-integrated-cycles-20261002-v2.json.gz"
+}

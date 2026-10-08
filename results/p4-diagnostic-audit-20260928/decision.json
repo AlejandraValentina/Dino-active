@@ -1,0 +1,51 @@
+{
+  "audit_date": "2026-09-28",
+  "scope": "read-only independent scientific diagnosis after P8 reproduction",
+  "p8_gate": "P8_WIDE_RPM_PERFORMANCE_VERIFIED_CONDITIONAL",
+  "p4_status": "BLOCKED / NOT_GRANTED",
+  "p9_status": "STOPPED / NOT_AUTHORIZED",
+  "new_p4_simulation": false,
+  "classification": "SCIENTIFIC_CHANGE_REQUIRED",
+  "blocking_gates": {
+    "C3": "INCONCLUSIVE",
+    "E13_G2": "NOT_CLOSED_UNDER_CURRENT_CONTRACT"
+  },
+  "diagnosis": {
+    "numerical_defect": "NOT_IDENTIFIED",
+    "slow_transient": "NOT_SUFFICIENT_AS_SOLE_EXPLANATION",
+    "periodic_orbit": "PERIOD_2_SUPPORTED_BUT_NOT_A_P4_PASS",
+    "closure_metric_defect": "NOT_IDENTIFIED",
+    "evidence_insufficiency": "YES_FOR_C3_AND_E13_R1"
+  },
+  "evidence": [
+    "docs/gasdynamic/p4_final_resolution.md",
+    "docs/gasdynamic/p4_final_closure.md",
+    "docs/gasdynamic/p4_r10a_diagnostic_audit.md",
+    "docs/gasdynamic/p4_r11_long_horizon_period2.md",
+    "docs/gasdynamic/p4_r12_period2_branch_closure.md",
+    "docs/gasdynamic/p4_r13a_evidence_gap_closure.md",
+    "docs/gasdynamic/p4_r4_numba.md",
+    "results/p4-final-resolution-20260923/gate_matrix.json",
+    "results/p4-r13a-20260923/decision.json",
+    "results/p8-audit-20260928/p8-wide-rpm.json"
+  ],
+  "findings": [
+    "Conservation, admissibility and CFL remain passing in the cited P4 studies.",
+    "R10A corrected the spatial metric and found mixed localized/distributed nonclosure, not a single sensor bug.",
+    "R11-R13A support a reproducible period-2 response across mesh/CFL/backend checks, but R12 exposed branch nonclosure and R13A only established eventual N400 even closure.",
+    "C3 lacks the contractual exact-Riemann return comparison and independent momentum-face terms, so the coupling return gate is not established.",
+    "P4-R4 measured 26.599 s for the second hot G1 cycle, but that result is historical and was superseded by P4-R5 NUMBA_FUSED performance PASS: 19.519/19.223 s wall, median approximately 19.164 s/cycle; the latest gate matrix marks performance PASS."
+  ],
+  "p8_cross_campaign": {
+    "comparison": "results/p8-audit-20260928 vs results/p8-wide-rpm-20260927",
+    "byte_identical_anchors": [5000, 8000, 11000, 15000],
+    "roundoff_only_anchor": {
+      "rpm": 2500,
+      "delta_W_cycle_J": 9.769962616701378e-14,
+      "delta_P_indicated_W": 4.064304448547773e-12,
+      "delta_p_max_Pa": -2.3283064365386963e-09
+    },
+    "contract_assessment": "No determinism contract contradiction: replay/restart are exact within each run; cross-campaign bitwise identity is not required. No gate relaxed."
+  },
+  "next_scientific_action": "Obtain an explicitly authorized C3 evidence run/instrumentation that records the exact-Riemann return and independent momentum balance, or make an explicit human scientific decision on the E13 periodicity contract. Do not change physics or authorize P4/P9 from this audit."
+}

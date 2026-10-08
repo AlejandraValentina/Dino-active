@@ -1,0 +1,329 @@
+{
+  "schema": "KT100_V2_EVIDENCE_RECOVERY_R1_PREREGISTRATION_V1",
+  "id": "KT100_V2_EVIDENCE_RECOVERY_R1",
+  "status": "PREREGISTERED_BEFORE_RECOVERY_CAMPAIGN",
+  "authorized_by": "User order 2026-10-05",
+  "preregistration_commit": "SELF_LOCATED_FROM_GIT_HISTORY_BY_FROZEN_RUNNER",
+  "original_campaign": {
+    "campaign_id": "KT100_HYBRID_MODEL_FIXTURE_V2_OPEN_END_PLENUM_V2",
+    "directory": "results/kt100-hybrid-model-fixture-v2-harness-20261002-r6-open-end-plenum-v2",
+    "authorized_runs": 1,
+    "actual_runs": 1,
+    "points": {
+      "5000": {
+        "configuration_sha256": "ecaa226afeb4b30fa93253cf69ca98e06bc94a110e6e991e9faae9c466f13d8d",
+        "source_sha256": {
+          "motorsim/ducts.py": "2f26ab0cefb97cd49377660a82c514a83715ed8b05918ae90c20b05df6ba1165",
+          "motorsim/exhaust_port.py": "7fa88d28c30193e5511d2df0ee3eae30fe9184276f8da12b99b9d42dfdefe454",
+          "motorsim/gas1d/boundary.py": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+          "motorsim/gas1d/eos.py": "22bae4c37c3a6edde31940d26d59430cf0c466fbfb706df1dfe4ecad1c4e21bf",
+          "motorsim/gas1d/mesh.py": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+          "motorsim/gas1d/riemann.py": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+          "motorsim/gas1d/solver.py": "b4b3f6978d0fc2433a49b11d03fd3f4914ab3890f1b4e0d498f3345f12f7e60c",
+          "motorsim/kt100_reference.py": "07aa8677d1f8addc3add4860051d212ac450d18c0e9e42f47adad00b2baa4cad",
+          "motorsim/p5b.py": "8be0889b2e470e344741fbff042a761f64338df99aca275fd5431a594aec24e4",
+          "motorsim/p5c.py": "399a1688bdd1a57389d3b3cf25b1c3ceda78c05ed011ea2e926b5178b6b18fbe",
+          "motorsim/p6_species.py": "3dfe276cf0a77c0e39d6114d0b5ddf01fae45e7272c5a4fba49338914af8e2cf",
+          "motorsim/p7_prescribed.py": "529e0db5877b796464fa002c7fb10127097774d70e12d73e5a8391f2aa39758c",
+          "motorsim/project.py": "93e2307c05f708aea4b060fd623c9dd4b342f5ef9d0a44d0c8041a1561e348d0",
+          "motorsim/reference_harness/campaign.py": "a8685c1fa5512629cee16686b4db767efd109de04f0151e6055346f7e77f81ae",
+          "motorsim/reference_harness/checkpoint.py": "a5b80133b71164a9d915e05284f6ee9fcaf8986751dec5def746c18eee13b952",
+          "motorsim/reference_harness/config.py": "4d9df8e90c659a097bd1fa559d2e56e0aff83cae6bc7061713ba09961542a4df",
+          "motorsim/reference_harness/convergence.py": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+          "motorsim/reference_harness/evidence.py": "7f84efe2ea22c8427189c0168926e9fbaf026304fbd6ab5dda852eba4522285d",
+          "motorsim/reference_harness/runtime.py": "187b9e53f77600280401c66a14d0b27768639d152b34ce295c5bca1f1567a72d",
+          "motorsim/simulation.py": "f88bd1d4ee09a8a086760d707d328d85ad89f52feb6856e54cc7b9cc6b9ff7eb",
+          "motorsim/simulation_case.py": "cf05f89cba01952f6931bf1416a1294343c0cb559f1c1c61e3977ccf7060676e"
+        },
+        "files": {
+          "failure.json.gz": "bcd7a1a7bcc3d8e566e01fde3a06209a900fe7b7ec3e644f0019aad67f88628b",
+          "manifest.json.gz": "6df8accda1c2d6fdd134ab290a8fae866f640332cc92d9d23892f5c8024c8906",
+          "summary.json.gz": "27c6223246cdc867de447bc800cfaf07cea5189f657d063ade9a71b608f1284b"
+        },
+        "failure": {
+          "accepted_steps": 954,
+          "angle_deg": 390.0,
+          "cycle_index": 1,
+          "exception_type": "KeyError",
+          "message": "'transfer1'",
+          "status": "NUMERICAL_FAILURE"
+        },
+        "complete_cycles": 0,
+        "recoverable_primary_files": []
+      },
+      "7000": {
+        "configuration_sha256": "3e2a88a9db8b69b348ffd0a28b8e90c5e741b337435fda9479af293a0fa25c37",
+        "source_sha256": {
+          "motorsim/ducts.py": "2f26ab0cefb97cd49377660a82c514a83715ed8b05918ae90c20b05df6ba1165",
+          "motorsim/exhaust_port.py": "7fa88d28c30193e5511d2df0ee3eae30fe9184276f8da12b99b9d42dfdefe454",
+          "motorsim/gas1d/boundary.py": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+          "motorsim/gas1d/eos.py": "22bae4c37c3a6edde31940d26d59430cf0c466fbfb706df1dfe4ecad1c4e21bf",
+          "motorsim/gas1d/mesh.py": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+          "motorsim/gas1d/riemann.py": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+          "motorsim/gas1d/solver.py": "b4b3f6978d0fc2433a49b11d03fd3f4914ab3890f1b4e0d498f3345f12f7e60c",
+          "motorsim/kt100_reference.py": "07aa8677d1f8addc3add4860051d212ac450d18c0e9e42f47adad00b2baa4cad",
+          "motorsim/p5b.py": "8be0889b2e470e344741fbff042a761f64338df99aca275fd5431a594aec24e4",
+          "motorsim/p5c.py": "399a1688bdd1a57389d3b3cf25b1c3ceda78c05ed011ea2e926b5178b6b18fbe",
+          "motorsim/p6_species.py": "3dfe276cf0a77c0e39d6114d0b5ddf01fae45e7272c5a4fba49338914af8e2cf",
+          "motorsim/p7_prescribed.py": "529e0db5877b796464fa002c7fb10127097774d70e12d73e5a8391f2aa39758c",
+          "motorsim/project.py": "93e2307c05f708aea4b060fd623c9dd4b342f5ef9d0a44d0c8041a1561e348d0",
+          "motorsim/reference_harness/campaign.py": "a8685c1fa5512629cee16686b4db767efd109de04f0151e6055346f7e77f81ae",
+          "motorsim/reference_harness/checkpoint.py": "a5b80133b71164a9d915e05284f6ee9fcaf8986751dec5def746c18eee13b952",
+          "motorsim/reference_harness/config.py": "4d9df8e90c659a097bd1fa559d2e56e0aff83cae6bc7061713ba09961542a4df",
+          "motorsim/reference_harness/convergence.py": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+          "motorsim/reference_harness/evidence.py": "7f84efe2ea22c8427189c0168926e9fbaf026304fbd6ab5dda852eba4522285d",
+          "motorsim/reference_harness/runtime.py": "187b9e53f77600280401c66a14d0b27768639d152b34ce295c5bca1f1567a72d",
+          "motorsim/simulation.py": "f88bd1d4ee09a8a086760d707d328d85ad89f52feb6856e54cc7b9cc6b9ff7eb",
+          "motorsim/simulation_case.py": "cf05f89cba01952f6931bf1416a1294343c0cb559f1c1c61e3977ccf7060676e"
+        },
+        "files": {
+          "failure.json.gz": "18bee2b073a1144d28d83b14dfd82beb61ea33d8ab05756fc01b12333a3712fb",
+          "manifest.json.gz": "5927511688ecf40a47fe6a2ecf83d3f37873484c23809a308d7bbd43114c8c15",
+          "summary.json.gz": "21e5e9de545575fc78ac4d4322f1d23d6a5b2c1da3b146f5e15a4cd553fcd557"
+        },
+        "failure": {
+          "accepted_steps": 682,
+          "angle_deg": 390.0,
+          "cycle_index": 1,
+          "exception_type": "KeyError",
+          "message": "'transfer1'",
+          "status": "NUMERICAL_FAILURE"
+        },
+        "complete_cycles": 0,
+        "recoverable_primary_files": []
+      },
+      "9000": {
+        "configuration_sha256": "d6b739cbd4b758881d5232b8031b75268efabd000d25c2e32efd12518e3c819c",
+        "source_sha256": {
+          "motorsim/ducts.py": "2f26ab0cefb97cd49377660a82c514a83715ed8b05918ae90c20b05df6ba1165",
+          "motorsim/exhaust_port.py": "7fa88d28c30193e5511d2df0ee3eae30fe9184276f8da12b99b9d42dfdefe454",
+          "motorsim/gas1d/boundary.py": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+          "motorsim/gas1d/eos.py": "22bae4c37c3a6edde31940d26d59430cf0c466fbfb706df1dfe4ecad1c4e21bf",
+          "motorsim/gas1d/mesh.py": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+          "motorsim/gas1d/riemann.py": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+          "motorsim/gas1d/solver.py": "b4b3f6978d0fc2433a49b11d03fd3f4914ab3890f1b4e0d498f3345f12f7e60c",
+          "motorsim/kt100_reference.py": "07aa8677d1f8addc3add4860051d212ac450d18c0e9e42f47adad00b2baa4cad",
+          "motorsim/p5b.py": "8be0889b2e470e344741fbff042a761f64338df99aca275fd5431a594aec24e4",
+          "motorsim/p5c.py": "399a1688bdd1a57389d3b3cf25b1c3ceda78c05ed011ea2e926b5178b6b18fbe",
+          "motorsim/p6_species.py": "3dfe276cf0a77c0e39d6114d0b5ddf01fae45e7272c5a4fba49338914af8e2cf",
+          "motorsim/p7_prescribed.py": "529e0db5877b796464fa002c7fb10127097774d70e12d73e5a8391f2aa39758c",
+          "motorsim/project.py": "93e2307c05f708aea4b060fd623c9dd4b342f5ef9d0a44d0c8041a1561e348d0",
+          "motorsim/reference_harness/campaign.py": "a8685c1fa5512629cee16686b4db767efd109de04f0151e6055346f7e77f81ae",
+          "motorsim/reference_harness/checkpoint.py": "a5b80133b71164a9d915e05284f6ee9fcaf8986751dec5def746c18eee13b952",
+          "motorsim/reference_harness/config.py": "4d9df8e90c659a097bd1fa559d2e56e0aff83cae6bc7061713ba09961542a4df",
+          "motorsim/reference_harness/convergence.py": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+          "motorsim/reference_harness/evidence.py": "7f84efe2ea22c8427189c0168926e9fbaf026304fbd6ab5dda852eba4522285d",
+          "motorsim/reference_harness/runtime.py": "187b9e53f77600280401c66a14d0b27768639d152b34ce295c5bca1f1567a72d",
+          "motorsim/simulation.py": "f88bd1d4ee09a8a086760d707d328d85ad89f52feb6856e54cc7b9cc6b9ff7eb",
+          "motorsim/simulation_case.py": "cf05f89cba01952f6931bf1416a1294343c0cb559f1c1c61e3977ccf7060676e"
+        },
+        "files": {
+          "failure.json.gz": "af237a3ef62e2478df3e28c1c5d49af9638651939465cfef4b5843c27a2a6686",
+          "manifest.json.gz": "d1ce0839cfeb60d9012f692aa236a4e499f33b8070a7be488af6c6fa4b8d54d7",
+          "summary.json.gz": "4e69aeeaa6967f43019363b4d064d68ac9c4dfefcc3a6a1a2fc8339e94a954da"
+        },
+        "failure": {
+          "accepted_steps": 532,
+          "angle_deg": 390.0,
+          "cycle_index": 1,
+          "exception_type": "KeyError",
+          "message": "'transfer1'",
+          "status": "NUMERICAL_FAILURE"
+        },
+        "complete_cycles": 0,
+        "recoverable_primary_files": []
+      },
+      "11000": {
+        "configuration_sha256": "47dc0fba2d394c4bc30493dff40883b6f12d1c1d6cafa53dd5f52918925e58a0",
+        "source_sha256": {
+          "motorsim/ducts.py": "2f26ab0cefb97cd49377660a82c514a83715ed8b05918ae90c20b05df6ba1165",
+          "motorsim/exhaust_port.py": "7fa88d28c30193e5511d2df0ee3eae30fe9184276f8da12b99b9d42dfdefe454",
+          "motorsim/gas1d/boundary.py": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+          "motorsim/gas1d/eos.py": "22bae4c37c3a6edde31940d26d59430cf0c466fbfb706df1dfe4ecad1c4e21bf",
+          "motorsim/gas1d/mesh.py": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+          "motorsim/gas1d/riemann.py": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+          "motorsim/gas1d/solver.py": "b4b3f6978d0fc2433a49b11d03fd3f4914ab3890f1b4e0d498f3345f12f7e60c",
+          "motorsim/kt100_reference.py": "07aa8677d1f8addc3add4860051d212ac450d18c0e9e42f47adad00b2baa4cad",
+          "motorsim/p5b.py": "8be0889b2e470e344741fbff042a761f64338df99aca275fd5431a594aec24e4",
+          "motorsim/p5c.py": "399a1688bdd1a57389d3b3cf25b1c3ceda78c05ed011ea2e926b5178b6b18fbe",
+          "motorsim/p6_species.py": "3dfe276cf0a77c0e39d6114d0b5ddf01fae45e7272c5a4fba49338914af8e2cf",
+          "motorsim/p7_prescribed.py": "529e0db5877b796464fa002c7fb10127097774d70e12d73e5a8391f2aa39758c",
+          "motorsim/project.py": "93e2307c05f708aea4b060fd623c9dd4b342f5ef9d0a44d0c8041a1561e348d0",
+          "motorsim/reference_harness/campaign.py": "a8685c1fa5512629cee16686b4db767efd109de04f0151e6055346f7e77f81ae",
+          "motorsim/reference_harness/checkpoint.py": "a5b80133b71164a9d915e05284f6ee9fcaf8986751dec5def746c18eee13b952",
+          "motorsim/reference_harness/config.py": "4d9df8e90c659a097bd1fa559d2e56e0aff83cae6bc7061713ba09961542a4df",
+          "motorsim/reference_harness/convergence.py": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+          "motorsim/reference_harness/evidence.py": "7f84efe2ea22c8427189c0168926e9fbaf026304fbd6ab5dda852eba4522285d",
+          "motorsim/reference_harness/runtime.py": "187b9e53f77600280401c66a14d0b27768639d152b34ce295c5bca1f1567a72d",
+          "motorsim/simulation.py": "f88bd1d4ee09a8a086760d707d328d85ad89f52feb6856e54cc7b9cc6b9ff7eb",
+          "motorsim/simulation_case.py": "cf05f89cba01952f6931bf1416a1294343c0cb559f1c1c61e3977ccf7060676e"
+        },
+        "files": {
+          "failure.json.gz": "f3fd475e254e4e36d26c346004ed0d0aa06832fd7551cdc0e2d1b7b8ad12be3c",
+          "manifest.json.gz": "083096bee401d178654cc50282d54f50d2cf36c5c962ab2d6a064c867a95fdd2",
+          "summary.json.gz": "bcf3708ceaca9f6eddba43b46319bc74096c8bb3f8434c9a0008c6a914a7fb34"
+        },
+        "failure": {
+          "accepted_steps": 430,
+          "angle_deg": 390.0,
+          "cycle_index": 1,
+          "exception_type": "KeyError",
+          "message": "'transfer1'",
+          "status": "NUMERICAL_FAILURE"
+        },
+        "complete_cycles": 0,
+        "recoverable_primary_files": []
+      },
+      "13000": {
+        "configuration_sha256": "f3fd4c5247590637a07181d1a5b8153151dfa1e92dad9d06ee4727e61a67e6d5",
+        "source_sha256": {
+          "motorsim/ducts.py": "2f26ab0cefb97cd49377660a82c514a83715ed8b05918ae90c20b05df6ba1165",
+          "motorsim/exhaust_port.py": "7fa88d28c30193e5511d2df0ee3eae30fe9184276f8da12b99b9d42dfdefe454",
+          "motorsim/gas1d/boundary.py": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+          "motorsim/gas1d/eos.py": "22bae4c37c3a6edde31940d26d59430cf0c466fbfb706df1dfe4ecad1c4e21bf",
+          "motorsim/gas1d/mesh.py": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+          "motorsim/gas1d/riemann.py": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+          "motorsim/gas1d/solver.py": "b4b3f6978d0fc2433a49b11d03fd3f4914ab3890f1b4e0d498f3345f12f7e60c",
+          "motorsim/kt100_reference.py": "07aa8677d1f8addc3add4860051d212ac450d18c0e9e42f47adad00b2baa4cad",
+          "motorsim/p5b.py": "8be0889b2e470e344741fbff042a761f64338df99aca275fd5431a594aec24e4",
+          "motorsim/p5c.py": "399a1688bdd1a57389d3b3cf25b1c3ceda78c05ed011ea2e926b5178b6b18fbe",
+          "motorsim/p6_species.py": "3dfe276cf0a77c0e39d6114d0b5ddf01fae45e7272c5a4fba49338914af8e2cf",
+          "motorsim/p7_prescribed.py": "529e0db5877b796464fa002c7fb10127097774d70e12d73e5a8391f2aa39758c",
+          "motorsim/project.py": "93e2307c05f708aea4b060fd623c9dd4b342f5ef9d0a44d0c8041a1561e348d0",
+          "motorsim/reference_harness/campaign.py": "a8685c1fa5512629cee16686b4db767efd109de04f0151e6055346f7e77f81ae",
+          "motorsim/reference_harness/checkpoint.py": "a5b80133b71164a9d915e05284f6ee9fcaf8986751dec5def746c18eee13b952",
+          "motorsim/reference_harness/config.py": "4d9df8e90c659a097bd1fa559d2e56e0aff83cae6bc7061713ba09961542a4df",
+          "motorsim/reference_harness/convergence.py": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+          "motorsim/reference_harness/evidence.py": "7f84efe2ea22c8427189c0168926e9fbaf026304fbd6ab5dda852eba4522285d",
+          "motorsim/reference_harness/runtime.py": "187b9e53f77600280401c66a14d0b27768639d152b34ce295c5bca1f1567a72d",
+          "motorsim/simulation.py": "f88bd1d4ee09a8a086760d707d328d85ad89f52feb6856e54cc7b9cc6b9ff7eb",
+          "motorsim/simulation_case.py": "cf05f89cba01952f6931bf1416a1294343c0cb559f1c1c61e3977ccf7060676e"
+        },
+        "files": {
+          "failure.json.gz": "11f27c28aec87df9cd22a41c4a12d933d2c4467cbfe21612fee8dd3bb9c35937",
+          "manifest.json.gz": "9ffb92a33649e04ad48f259e4fedd6990381aa35c365abcb3fea722eb6a393bb",
+          "summary.json.gz": "2f44b260433ceacaa9039b3e8e2b2253dcc9c1472a7f0d4d442c74d5ad1e4198"
+        },
+        "failure": {
+          "accepted_steps": 367,
+          "angle_deg": 390.0,
+          "cycle_index": 1,
+          "exception_type": "KeyError",
+          "message": "'transfer1'",
+          "status": "NUMERICAL_FAILURE"
+        },
+        "complete_cycles": 0,
+        "recoverable_primary_files": []
+      }
+    },
+    "campaign_summary_sha256": "799f477b6bd03b20b4f872364724e75f7fae36fa38bb872fee934498458f8afd",
+    "failure": "KeyError(transfer1) while constructing primary evidence after accepted-step advancement to 390 degrees; transfer output labels were transfer1/transfer2 while P6 species state keys are tr1/tr2.",
+    "decision_evidence": "No periodicity result, no physical boundary decision result, and no cycle primary. Persisted point folders have failure, summary, and manifest only; no cycle JSON, trajectory, step trace, or checkpoint exists, so offline primary reconstruction is impossible."
+  },
+  "recovery_change": {
+    "only_product_code_delta": "motorsim/reference_harness/evidence.py::_duct_observables maps evidence labels transfer1->tr1 and transfer2->tr2; fix committed as df5cbd7 and covered by tests/test_kt100_open_end_plenum_v2.py::test_cycle_evidence_maps_transfer_output_names_to_p6_species_names.",
+    "source_binding_original_r6": {
+      "motorsim/ducts.py": "2f26ab0cefb97cd49377660a82c514a83715ed8b05918ae90c20b05df6ba1165",
+      "motorsim/exhaust_port.py": "7fa88d28c30193e5511d2df0ee3eae30fe9184276f8da12b99b9d42dfdefe454",
+      "motorsim/gas1d/boundary.py": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+      "motorsim/gas1d/eos.py": "22bae4c37c3a6edde31940d26d59430cf0c466fbfb706df1dfe4ecad1c4e21bf",
+      "motorsim/gas1d/mesh.py": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+      "motorsim/gas1d/riemann.py": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+      "motorsim/gas1d/solver.py": "b4b3f6978d0fc2433a49b11d03fd3f4914ab3890f1b4e0d498f3345f12f7e60c",
+      "motorsim/kt100_reference.py": "07aa8677d1f8addc3add4860051d212ac450d18c0e9e42f47adad00b2baa4cad",
+      "motorsim/p5b.py": "8be0889b2e470e344741fbff042a761f64338df99aca275fd5431a594aec24e4",
+      "motorsim/p5c.py": "399a1688bdd1a57389d3b3cf25b1c3ceda78c05ed011ea2e926b5178b6b18fbe",
+      "motorsim/p6_species.py": "3dfe276cf0a77c0e39d6114d0b5ddf01fae45e7272c5a4fba49338914af8e2cf",
+      "motorsim/p7_prescribed.py": "529e0db5877b796464fa002c7fb10127097774d70e12d73e5a8391f2aa39758c",
+      "motorsim/project.py": "93e2307c05f708aea4b060fd623c9dd4b342f5ef9d0a44d0c8041a1561e348d0",
+      "motorsim/reference_harness/campaign.py": "a8685c1fa5512629cee16686b4db767efd109de04f0151e6055346f7e77f81ae",
+      "motorsim/reference_harness/checkpoint.py": "a5b80133b71164a9d915e05284f6ee9fcaf8986751dec5def746c18eee13b952",
+      "motorsim/reference_harness/config.py": "4d9df8e90c659a097bd1fa559d2e56e0aff83cae6bc7061713ba09961542a4df",
+      "motorsim/reference_harness/convergence.py": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+      "motorsim/reference_harness/evidence.py": "7f84efe2ea22c8427189c0168926e9fbaf026304fbd6ab5dda852eba4522285d",
+      "motorsim/reference_harness/runtime.py": "187b9e53f77600280401c66a14d0b27768639d152b34ce295c5bca1f1567a72d",
+      "motorsim/simulation.py": "f88bd1d4ee09a8a086760d707d328d85ad89f52feb6856e54cc7b9cc6b9ff7eb",
+      "motorsim/simulation_case.py": "cf05f89cba01952f6931bf1416a1294343c0cb559f1c1c61e3977ccf7060676e"
+    },
+    "source_binding_after_evidence_fix": {
+      "motorsim/exhaust_port.py": "7fa88d28c30193e5511d2df0ee3eae30fe9184276f8da12b99b9d42dfdefe454",
+      "motorsim/p5b.py": "8be0889b2e470e344741fbff042a761f64338df99aca275fd5431a594aec24e4",
+      "motorsim/p5c.py": "399a1688bdd1a57389d3b3cf25b1c3ceda78c05ed011ea2e926b5178b6b18fbe",
+      "motorsim/p6_species.py": "3dfe276cf0a77c0e39d6114d0b5ddf01fae45e7272c5a4fba49338914af8e2cf",
+      "motorsim/p7_prescribed.py": "529e0db5877b796464fa002c7fb10127097774d70e12d73e5a8391f2aa39758c",
+      "motorsim/project.py": "93e2307c05f708aea4b060fd623c9dd4b342f5ef9d0a44d0c8041a1561e348d0",
+      "motorsim/ducts.py": "2f26ab0cefb97cd49377660a82c514a83715ed8b05918ae90c20b05df6ba1165",
+      "motorsim/simulation.py": "f88bd1d4ee09a8a086760d707d328d85ad89f52feb6856e54cc7b9cc6b9ff7eb",
+      "motorsim/simulation_case.py": "cf05f89cba01952f6931bf1416a1294343c0cb559f1c1c61e3977ccf7060676e",
+      "motorsim/kt100_reference.py": "07aa8677d1f8addc3add4860051d212ac450d18c0e9e42f47adad00b2baa4cad",
+      "motorsim/gas1d/eos.py": "22bae4c37c3a6edde31940d26d59430cf0c466fbfb706df1dfe4ecad1c4e21bf",
+      "motorsim/gas1d/mesh.py": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+      "motorsim/gas1d/solver.py": "b4b3f6978d0fc2433a49b11d03fd3f4914ab3890f1b4e0d498f3345f12f7e60c",
+      "motorsim/gas1d/riemann.py": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+      "motorsim/gas1d/boundary.py": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+      "motorsim/reference_harness/config.py": "4d9df8e90c659a097bd1fa559d2e56e0aff83cae6bc7061713ba09961542a4df",
+      "motorsim/reference_harness/convergence.py": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+      "motorsim/reference_harness/runtime.py": "187b9e53f77600280401c66a14d0b27768639d152b34ce295c5bca1f1567a72d",
+      "motorsim/reference_harness/evidence.py": "53b9ee95af3ef0780c1e29e525c837e61ff17041f1f3c41c863f92de0cb2d967",
+      "motorsim/reference_harness/checkpoint.py": "a5b80133b71164a9d915e05284f6ee9fcaf8986751dec5def746c18eee13b952",
+      "motorsim/reference_harness/campaign.py": "a8685c1fa5512629cee16686b4db767efd109de04f0151e6055346f7e77f81ae"
+    },
+    "changed_product_source_paths": [
+      "motorsim/reference_harness/evidence.py"
+    ],
+    "solver_changed": false,
+    "physics_changed": false,
+    "boundary_equations_changed": false,
+    "geometry_changed": false,
+    "rpm_changed": false,
+    "cfl_changed": false,
+    "thresholds_changed": false,
+    "maximum_cycles_changed": false,
+    "synthetic_engine_parameters_changed": false,
+    "configuration_path": "configs/fixtures/kt100_open_end_plenum_v2.json",
+    "configuration_sha256": "6dc9b7f5a61ac35534c25a8e06e7cd6370a06e7955c31b45c8b22d169ae0d8b9",
+    "configuration_sha256_by_rpm": {
+      "5000": "ecaa226afeb4b30fa93253cf69ca98e06bc94a110e6e991e9faae9c466f13d8d",
+      "7000": "3e2a88a9db8b69b348ffd0a28b8e90c5e741b337435fda9479af293a0fa25c37",
+      "9000": "d6b739cbd4b758881d5232b8031b75268efabd000d25c2e32efd12518e3c819c",
+      "11000": "47dc0fba2d394c4bc30493dff40883b6f12d1c1d6cafa53dd5f52918925e58a0",
+      "13000": "f3fd4c5247590637a07181d1a5b8153151dfa1e92dad9d06ee4727e61a67e6d5"
+    }
+  },
+  "frozen_campaign": {
+    "rpms": [
+      5000,
+      7000,
+      9000,
+      11000,
+      13000
+    ],
+    "cfl": 0.4,
+    "mesh_target_m": 0.03,
+    "max_cycles": 400,
+    "precision": "binary64",
+    "fastmath": false,
+    "parallel": false,
+    "convergence_contract": "REFERENCE_PERIODIC_CONVERGENCE_V1",
+    "boundary": "OPEN_END_PLENUM_V2",
+    "provenance": "SYNTHETIC_ASSUMPTION",
+    "p4_dependency": "CONDITIONAL_ON_P4"
+  },
+  "runner": "scripts/run_kt100_open_end_plenum_v2_recovery_r1.py",
+  "runner_sha256": "4898b3a634dc163179495e7e1ef103577d1728c0041c33d5e73eed442aeb67e3",
+  "campaign": {
+    "runs": 1,
+    "command": "python scripts/run_kt100_open_end_plenum_v2_recovery_r1.py",
+    "output": "results/kt100-hybrid-model-fixture-v2-harness-20261002-r6-open-end-plenum-v2-recovery-r1/",
+    "retry_allowed": false,
+    "selection_rule": "Use OPEN_END_PLENUM_V2 because the human scientific decision selected this capability, never because of observed convergence.",
+    "classification_rule": "Record the fixed-horizon contract outcome exactly; no tuning or post hoc threshold/configuration changes."
+  },
+  "scope": {
+    "aud_11": "CASE_B_CAPABILITY_LIMITATION",
+    "open_end_plenum_v2": "SYNTHETIC_ASSUMPTION; ideal lossless stationary plenum, not calibrated WB40",
+    "experimental_validation": "NOT_PERFORMED",
+    "p4_dependency": "CONDITIONAL_ON_P4",
+    "commercial_core_ready": false
+  }
+}

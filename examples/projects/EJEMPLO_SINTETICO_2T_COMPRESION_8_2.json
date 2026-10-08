@@ -1,0 +1,95 @@
+{
+  "format_version": 6,
+  "name": "EJEMPLO SINTÉTICO 2T — REFERENCIA",
+  "cycle": "2T",
+  "manufacturer": "",
+  "model": "",
+  "cylinder_count": 1,
+  "bore_mm": 54,
+  "stroke_mm": 56,
+  "rod_length_mm": 100,
+  "compression_ratio": 8.2,
+  "notes": "EJEMPLO SINTÉTICO — NO MEDIDO.\nCaso de demostración de MotorSim. No representa validación experimental.",
+  "ports": [
+    {
+      "name": "Escape",
+      "function": "escape",
+      "top_mm": 32,
+      "height_mm": 10,
+      "width_mm": 20
+    },
+    {
+      "name": "Transferencia 1",
+      "function": "transfer",
+      "top_mm": 44,
+      "height_mm": 10,
+      "width_mm": 12
+    },
+    {
+      "name": "Transferencia 2",
+      "function": "transfer",
+      "top_mm": 44,
+      "height_mm": 10,
+      "width_mm": 12
+    }
+  ],
+  "crankcase_volume_bdc_cm3": 250,
+  "intake": {
+    "mode": "piston_port",
+    "top_mm": 64,
+    "height_mm": 10,
+    "width_mm": 20,
+    "skirt_mm": 42,
+    "reference": "straight-skirt-peripheral-tdc-developed-v1"
+  },
+  "ducts": {
+    "reference": "ordered-circular-inner-axial-linear-2t-v1",
+    "intake": [
+      {
+        "name": "Tubo I",
+        "length_mm": 100,
+        "start_diameter_mm": 20,
+        "end_diameter_mm": 20
+      }
+    ],
+    "exhaust": [
+      {
+        "name": "Tubo E",
+        "length_mm": 100,
+        "start_diameter_mm": 20,
+        "end_diameter_mm": 20
+      },
+      {
+        "name": "Cono E",
+        "length_mm": 100,
+        "start_diameter_mm": 20,
+        "end_diameter_mm": 40
+      }
+    ]
+  },
+  "four_stroke": {
+    "intake": {
+      "seat_mm": null,
+      "throat_mm": null,
+      "stem_mm": null,
+      "lift_mm": null,
+      "opening_deg": null,
+      "duration_deg": null
+    },
+    "exhaust": {
+      "seat_mm": null,
+      "throat_mm": null,
+      "stem_mm": null,
+      "lift_mm": null,
+      "opening_deg": null,
+      "duration_deg": null
+    },
+    "ducts": {
+      "reference": "ordered-circular-inner-axial-linear-4t-v1",
+      "intake": [],
+      "exhaust": []
+    },
+    "reference": "sin-squared-cylindrical-curtain-annular-cap-720-v1"
+  },
+  "two_stroke_reference": "rectangular-peripheral-tdc-developed-bdc-v1"
+}

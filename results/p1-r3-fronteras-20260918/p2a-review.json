@@ -1,0 +1,13 @@
+{
+  "status": "BLOCKED",
+  "findings": [
+    "52 individual cases PASS; aggregate T11 FAIL. No measurement defect identified.",
+    "NR01 and T05 N200/N400 are source-bound historical evidence, not rerun on b353e90."
+  ],
+  "blocking_findings": [
+    "T11 pulse amplitude sensitivity: 0.0833638270618394 > 0.08"
+  ],
+  "scientific_change_required": false,
+  "kind": "independent",
+  "notes": "Read-only /root/p1_r3_review confirmed amplitudes from arrays, original T11 gate, all hashes/counters, admissibility and ledgers. R3 remains PASS; P2A BLOCKED. No new scientific change is proposed or authorized by this receipt; continuation requires explicit decision. Repair budget 3/3, no further repair/P2B/P3. Not human acceptance."
+}

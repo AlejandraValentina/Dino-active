@@ -1,0 +1,22 @@
+schema: spec-driven
+
+context: |
+  MotorSim (repositorio Dino) es una aplicación de escritorio para Windows.
+  Python, PySide6/Qt Widgets y biblioteca estándar; archivos locales JSON.
+  El trabajo actual es changes/rendimiento-indicado/: derivados de barridos y rc6.
+  base-escritorio conserva sus requisitos y registros de comprobaciones históricas.
+  Escribir contenido en español; conservar los encabezados y palabras clave
+  que OpenSpec necesita para interpretar requisitos y escenarios.
+  Leer AGENTS.md: establece autoridad, revisión y condición de parada.
+  La existencia de una propuesta o de tareas no autoriza su implementación.
+
+rules:
+  proposal:
+    - Mantener un cambio pequeño y no ampliar el producto sin petición explícita.
+  specs:
+    - Describir comportamiento comprobable y errores, no una arquitectura futura.
+  design:
+    - Elegir pocos módulos y explicar solo las decisiones necesarias para el cambio.
+  tasks:
+    - Vincular tareas a los requisitos y marcar únicamente trabajo comprobado.
+    - Distinguir pruebas automatizadas, revisión y comprobación manual en Windows.

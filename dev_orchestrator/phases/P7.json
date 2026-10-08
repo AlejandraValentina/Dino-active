@@ -1,0 +1,29 @@
+{
+  "phase": "P7",
+  "objective": "Declaración futura: Heat/combustion improvements. Sin implementación ni autorización de ejecución.",
+  "enabled": false,
+  "depends_on": [
+    "P6"
+  ],
+  "allowed_paths": [],
+  "forbidden_paths": [
+    "motorsim/",
+    "packaging/"
+  ],
+  "allowed_changes": [],
+  "forbidden_changes": [
+    "Toda modificación de producto en esta versión."
+  ],
+  "commands": [],
+  "required_tests": [],
+  "required_checks": [
+    "phase_not_implemented"
+  ],
+  "required_evidence": [],
+  "gate": "default",
+  "max_repair_attempts": 3,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": false,
+  "timeout": 120
+}

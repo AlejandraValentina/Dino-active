@@ -1,0 +1,160 @@
+{
+  "run_id": "20260918T162609-P3B-d94280d404fc",
+  "phase_id": "P3B",
+  "started_at": "2026-09-18T16:26:09.382910+00:00",
+  "finished_at": "2026-09-18T16:27:08.780124+00:00",
+  "git_commit": "50b215f995d0a8596eda1aaf4d417d19d69660e5",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "stage_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_coupled.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 13.015999999828637,
+      "status": "passed",
+      "stdout_log": "logs/1-stage_tests.stdout.log",
+      "stderr_log": "logs/1-stage_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "finite_cases",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p3_finite",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260918T162609-P3B-d94280d404fc"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 10.860000000335276,
+      "status": "passed",
+      "stdout_log": "logs/1-finite_cases.stdout.log",
+      "stderr_log": "logs/1-finite_cases.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "stage_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "finite_cases",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "P3B",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "Finite fixed-volume gate"
+    }
+  ],
+  "tests": [
+    {
+      "id": "stage_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_coupled.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 13.015999999828637,
+      "status": "passed",
+      "stdout_log": "logs/1-stage_tests.stdout.log",
+      "stderr_log": "logs/1-stage_tests.stderr.log",
+      "error": ""
+    }
+  ],
+  "metrics": {
+    "cases": 8
+  },
+  "review": {
+    "status": "BLOCKED",
+    "findings": [
+      "No hay reviewer independiente conectado."
+    ],
+    "blocking_findings": [
+      "reviewer_unavailable"
+    ],
+    "scientific_change_required": false,
+    "notes": "No se llamó a ningún proveedor externo.",
+    "kind": "none"
+  },
+  "gate": "BLOCKED",
+  "gate_reasons": [
+    "review_not_approved"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "review_not_approved",
+      "state": "BLOCKED"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "artifacts/summary.json",
+      "sha256": "426b532e70558a6d0e19ed0a915c9b51c5c6c87ea6e7a12246213a8527964adc",
+      "bytes": 11172
+    },
+    {
+      "path": "artifacts/inventory.json",
+      "sha256": "a7d30aa8e1b4fbb8e7ec9283867cb6ad5fabf6d4a84be4e86fc31c362f15418e",
+      "bytes": 837
+    },
+    {
+      "path": "artifacts/result.json",
+      "sha256": "cc6a7433aa889925423709b9884627372e826f3e265673af0fe002bedebd4774",
+      "bytes": 233
+    }
+  ],
+  "phase_definition_sha256": "0d746c9fe4398945dd880bfb1b8679cfe2cefa231fa5811629da78e15de4a2af",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P2": "docs\\gasdynamic\\p2_accepted_dependency.json"
+    }
+  },
+  "continue_requested": false
+}

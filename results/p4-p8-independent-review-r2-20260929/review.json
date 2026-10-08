@@ -1,0 +1,49 @@
+{
+  "reviewed_head": "e6a5de0a2aee55332dac4e06150fd3069a11914b",
+  "origin_main": "d616e2946d84080be44e21867602855d12f7c54a",
+  "range": "d616e29..e6a5de0",
+  "classification": "INDEPENDENT_REVIEW_BLOCKED_MAJOR",
+  "independent_review_pass": false,
+  "personal_independence": "NOT_CLAIMED_SAME_THREAD_AS_IMPLEMENTATION",
+  "previous_findings": {
+    "G2V2-001_missing_E13_inputs": "OBSERVED_METRIC_INPUTS_RESTORED",
+    "G2V2-002_detector_restart": "SEED_REDERIVED_AND_RESTORED_WITH_IDENTITY",
+    "G2V2-003_missing_CFL_stop_gate": "OUTER_BOOLEAN_GATE_FIXED_BUT_MALFORMED_RAW_CFL_ACCEPTED"
+  },
+  "independent_recomputation": {
+    "seed_cycle30": {"lag1_streak": 0, "branch_A_streak": 5, "branch_B_streak": 0},
+    "cycle44_vs42": {"work": 1.9749243875189903e-05, "cylinder": 4.022484817293433e-06, "sensor_max": 0.00618179998843072, "port": 2.637969429534017e-06, "inventories_max": 1.2280713579358987e-05, "passed": false},
+    "cycle48_vs46": {"work": 5.8789619741320155e-06, "cylinder": 1.693134173610229e-06, "sensor_max": 0.0005056779434901066, "port": 2.458101660543472e-06, "inventories_max": 4.551791193378778e-06, "passed": true},
+    "cycle50_vs48": {"work": 3.448745742014707e-06, "cylinder": 1.2208537075965786e-06, "sensor_max": 0.000508629756519752, "port": 1.7154993175382645e-06, "inventories_max": 3.071306129902531e-06, "passed": true},
+    "period": 2,
+    "first_detected_cycle": 50,
+    "branch_A_streak": 15,
+    "branch_B_streak": 3,
+    "lag1_streak": 0,
+    "historical_source_hashes_verified": 30,
+    "new_cycles": "31-50 only",
+    "historical_terminal_parity": "20/20 exact numeric equality after JSON decode for begin,end,state,cells",
+    "persisted_gate_inputs": {"stages": 702617, "malformed": 0, "CFL_violations": 0, "conservation_violations": 0, "admissibility_violations": 0, "maximum_balance": 3.374388913987309e-14, "maximum_stage_residual": 1.9895217603354292e-14}
+  },
+  "findings": [
+    {
+      "id": "G2V2-R2-001",
+      "severity": "MAJOR",
+      "location": "dev_orchestrator/p4_g2_v2_offline_audit.py:45,132",
+      "summary": "Boolean dt=false is accepted as a finite CFL step and the offline auditor returns E13_G2_V2_PASS for a malformed closing checkpoint",
+      "reproduction": "In a temporary copy, set checkpoint_cycle050.json.gz inputs.gate_inputs.segments[0].stages[0].dt to JSON false, update only decision.closing_checkpoint_sha256, then audit(copy) returns E13_G2_V2_PASS/CONVERGED_PERIOD2/cycle50",
+      "actual_recorded_dt_valid": true,
+      "affected": ["CFL evidence validation", "G2-v2 independent certification", "P4-P8 independent ratification"]
+    }
+  ],
+  "blockers": [],
+  "majors": ["G2V2-R2-001"],
+  "minors": [],
+  "phase_review": {"P4": "NOT_RATIFIED", "C3_R5": "LFS_INTEGRITY_VERIFIED_SCIENCE_NOT_FULLY_AUDITED", "P5": "NOT_RATIFIED", "P6": "NOT_RATIFIED", "P7": "NOT_RATIFIED", "P8": "NOT_RATIFIED"},
+  "tests": {"p4_e13_focal": "25 passed", "p5_p8": "NOT_RUN_HARD_STOP", "p8_physical_campaign": "NOT_RERUN_HARD_STOP", "openspec_strict": ["p4-escape-1d PASS", "p5-intake-transfer PASS", "p7-prescribed-heat-burn PASS", "p8-wide-rpm-performance PASS"], "git_diff_check": "PASS", "git_lfs_fsck": "PASS"},
+  "c3_lfs_sha256": "cf51eafd6a8058afb325278bf0dc5a2db241dff49d82c014f83d90a29b7536cb",
+  "p8_semantics": "BOUNDED_TRANSIENT_INDICATED; historical result not ratified by this review",
+  "experimental_validation": "NOT_PERFORMED",
+  "p9": "STOPPED_NOT_AUTHORIZED",
+  "push": false
+}

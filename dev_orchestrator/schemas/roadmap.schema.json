@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "roadmap",
+  "type": "object",
+  "properties": {
+    "phases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "objective": {
+            "type": "string",
+            "minLength": 1
+          },
+          "depends_on": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "allowed_paths": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "forbidden_paths": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "required_checks": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "gate_policy": {
+            "type": "string",
+            "enum": [
+              "default"
+            ]
+          },
+          "max_repair_attempts": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10
+          },
+          "requires_human_approval": {
+            "type": "boolean"
+          },
+          "next_phase": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "objective",
+          "depends_on",
+          "allowed_paths",
+          "forbidden_paths",
+          "required_checks",
+          "gate_policy",
+          "max_repair_attempts",
+          "requires_human_approval",
+          "next_phase"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "phases"
+  ],
+  "additionalProperties": false
+}

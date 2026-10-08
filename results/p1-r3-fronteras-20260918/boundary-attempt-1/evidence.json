@@ -1,0 +1,253 @@
+{
+  "run_id": "20260918T104559-P1_R3_BOUNDARY_SEMANTICS_REVIEW-3ed72943d462",
+  "phase_id": "P1_R3_BOUNDARY_SEMANTICS_REVIEW",
+  "started_at": "2026-09-18T10:45:59.666975+00:00",
+  "finished_at": "2026-09-18T10:48:14.730387+00:00",
+  "git_commit": "18691114d46e2fd98cc78bebbfd7db33d758e390",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "boundary_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p1_r3.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.8899999996647239,
+      "status": "passed",
+      "stdout_log": "logs/1-boundary_tests.stdout.log",
+      "stderr_log": "logs/1-boundary_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "fix_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p2_fixes.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 1.7649999996647239,
+      "status": "passed",
+      "stdout_log": "logs/1-fix_tests.stdout.log",
+      "stderr_log": "logs/1-fix_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "boundary_study",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p1_r3_boundaries",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260918T104559-P1_R3_BOUNDARY_SEMANTICS_REVIEW-3ed72943d462"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 110.92200000025332,
+      "status": "passed",
+      "stdout_log": "logs/1-boundary_study.stdout.log",
+      "stderr_log": "logs/1-boundary_study.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "boundary_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "fix_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "boundary_study",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "baseline_intact",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R3_BOUNDARY_CONTRACT_UNRESOLVED"
+    },
+    {
+      "id": "contract_frozen",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R3_BOUNDARY_CONTRACT_UNRESOLVED"
+    },
+    {
+      "id": "dependencies_accepted",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R3_BOUNDARY_CONTRACT_UNRESOLVED"
+    },
+    {
+      "id": "T05",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R3_BOUNDARY_CONTRACT_UNRESOLVED"
+    },
+    {
+      "id": "mesh_sign",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R3_BOUNDARY_CONTRACT_UNRESOLVED"
+    },
+    {
+      "id": "all_ledgers",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R3_BOUNDARY_CONTRACT_UNRESOLVED"
+    },
+    {
+      "id": "NR01_recorded",
+      "passed": false,
+      "kind": "numerical",
+      "reason": "P1_R3_BOUNDARY_CONTRACT_UNRESOLVED"
+    },
+    {
+      "id": "counter_identity",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R3_BOUNDARY_CONTRACT_UNRESOLVED"
+    }
+  ],
+  "tests": [
+    {
+      "id": "boundary_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p1_r3.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.8899999996647239,
+      "status": "passed",
+      "stdout_log": "logs/1-boundary_tests.stdout.log",
+      "stderr_log": "logs/1-boundary_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "fix_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p2_fixes.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 1.7649999996647239,
+      "status": "passed",
+      "stdout_log": "logs/1-fix_tests.stdout.log",
+      "stderr_log": "logs/1-fix_tests.stderr.log",
+      "error": ""
+    }
+  ],
+  "metrics": {
+    "cases": 4
+  },
+  "review": {
+    "status": "BLOCKED",
+    "findings": [
+      "No hay reviewer independiente conectado."
+    ],
+    "blocking_findings": [
+      "reviewer_unavailable"
+    ],
+    "scientific_change_required": false,
+    "notes": "No se llamó a ningún proveedor externo.",
+    "kind": "none"
+  },
+  "gate": "BLOCKED",
+  "gate_reasons": [
+    "required_check_failed:NR01_recorded",
+    "review_not_approved"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "required_check_failed:NR01_recorded; review_not_approved",
+      "state": "BLOCKED"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "artifacts/boundary-summary.json",
+      "sha256": "7debe9140f8851ea0cfe211f6f1cc35dd0d97a11d7e758bf39ffafe45d4c90df",
+      "bytes": 8738
+    },
+    {
+      "path": "artifacts/inventory.json",
+      "sha256": "a02c9c2fdf3f58ad21e5fed41f188fe220c6c850b21d4babb6cb98310f747f63",
+      "bytes": 732
+    },
+    {
+      "path": "artifacts/result.json",
+      "sha256": "fb9ad3013f876167083d637ee09bb7dec9d293b708cb69574c78f8c5e7c2c1ab",
+      "bytes": 1303
+    }
+  ],
+  "phase_definition_sha256": "ff688ab63e09bfb60deca001b9d427a38eb2c0cc5645837b1c49bc8e1f4847c6",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P0": "docs\\gasdynamic\\p0_accepted_dependency.json",
+      "P1": "docs\\gasdynamic\\p1_accepted_dependency.json",
+      "P1_R2": "results\\p1-r2-contacto-20260918\\reviewed-evidence.json"
+    }
+  },
+  "continue_requested": false
+}

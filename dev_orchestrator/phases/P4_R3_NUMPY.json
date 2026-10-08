@@ -1,0 +1,91 @@
+{
+  "phase": "P4_R3_NUMPY",
+  "objective": "Float64 batching equivalence, two full G1 measurements and final profile",
+  "enabled": true,
+  "depends_on": [
+    "P2"
+  ],
+  "allowed_paths": [
+    "dev_orchestrator/runs/"
+  ],
+  "forbidden_paths": [
+    "motorsim/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Evidence only; source committed before run."
+  ],
+  "forbidden_changes": [
+    "Toda modificación de producto en esta versión."
+  ],
+  "commands": [
+    {
+      "id": "batch_tests",
+      "kind": "test",
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_gas1d_batch.py",
+        "-v"
+      ],
+      "timeout": 60
+    },
+    {
+      "id": "benchmark_command",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p4_r3_benchmark",
+        "--run-dir",
+        "{run_dir}",
+        "--backend",
+        "NUMPY",
+        "--repeats",
+        "2"
+      ],
+      "timeout": 1350,
+      "result_file": "artifacts/result.json"
+    },
+    {
+      "id": "profile_command",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p4_r3_profile",
+        "--run-dir",
+        "{run_dir}/profile",
+        "--backend",
+        "NUMPY"
+      ],
+      "timeout": 180,
+      "result_file": "profile/artifacts/result.json"
+    }
+  ],
+  "required_tests": [
+    "batch_tests"
+  ],
+  "required_checks": [
+    "benchmark_command",
+    "benchmark_equivalence",
+    "profile_command",
+    "profile_complete",
+    "batch_tests"
+  ],
+  "required_evidence": [
+    "artifacts/benchmark.json",
+    "profile/artifacts/profile-summary.json"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 0,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": false,
+  "timeout": 1800
+}

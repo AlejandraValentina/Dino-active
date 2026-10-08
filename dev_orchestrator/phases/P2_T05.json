@@ -1,0 +1,78 @@
+{
+  "phase": "P2_T05",
+  "objective": "Exact T05 after R2 PASS and bounded implementation fixes.",
+  "enabled": true,
+  "depends_on": [
+    "P0",
+    "P1",
+    "P1_R2"
+  ],
+  "allowed_paths": [
+    "dev_orchestrator/runs/"
+  ],
+  "forbidden_paths": [
+    "motorsim/",
+    "docs/gasdynamic/",
+    "docs/baselines/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Run evidence only; implementation committed before verification."
+  ],
+  "forbidden_changes": [
+    "Toda modificaci\u00c3\u00b3n de producto en esta versi\u00c3\u00b3n."
+  ],
+  "commands": [
+    {
+      "id": "fix_tests",
+      "kind": "test",
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p2_fixes.py",
+        "-v"
+      ],
+      "timeout": 60
+    },
+    {
+      "id": "t05",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p2_t05",
+        "--run-dir",
+        "{run_dir}"
+      ],
+      "timeout": 150,
+      "result_file": "artifacts/result.json"
+    }
+  ],
+  "required_tests": [
+    "fix_tests"
+  ],
+  "required_checks": [
+    "fix_tests",
+    "t05",
+    "T05",
+    "baseline_intact",
+    "contract_frozen",
+    "dependencies_accepted"
+  ],
+  "required_evidence": [
+    "artifacts/T05.json.gz",
+    "artifacts/t05-summary.json",
+    "artifacts/result.json"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 0,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": false,
+  "timeout": 240
+}

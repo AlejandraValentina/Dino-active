@@ -1,0 +1,190 @@
+{
+  "run_id": "20260917T162700-P1-3b9e685fa1f4",
+  "phase_id": "P1",
+  "started_at": "2026-09-17T16:27:00.089908+00:00",
+  "finished_at": "2026-09-17T16:29:22.283951+00:00",
+  "git_commit": "ca3532b8b325f3e7d067f5ff2dc3ce185d30891c",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "p1_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p1_contract.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.7350000003352761,
+      "status": "passed",
+      "stdout_log": "logs/1-p1_tests.stdout.log",
+      "stderr_log": "logs/1-p1_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "p1_contract",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p1_contract",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260917T162700-P1-3b9e685fa1f4"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 1.5159999998286366,
+      "status": "passed",
+      "stdout_log": "logs/1-p1_contract.stdout.log",
+      "stderr_log": "logs/1-p1_contract.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "p1_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "p1_contract",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "contract_complete",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "Documentos, T01–T12 y D1–D11 íntegros"
+    },
+    {
+      "id": "p0_accepted",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "Aceptación usuaria vinculada al P0 PASS original"
+    },
+    {
+      "id": "scope_preserved",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "Hashes producción/baseline intactos, P2–P9 deshabilitadas"
+    }
+  ],
+  "tests": [
+    {
+      "id": "p1_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p1_contract.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.7350000003352761,
+      "status": "passed",
+      "stdout_log": "logs/1-p1_tests.stdout.log",
+      "stderr_log": "logs/1-p1_tests.stderr.log",
+      "error": ""
+    }
+  ],
+  "metrics": {
+    "verification_cases": 12,
+    "decisions": 11,
+    "numerical_tests_executed": 0
+  },
+  "review": {
+    "status": "PASS",
+    "findings": [],
+    "blocking_findings": [],
+    "scientific_change_required": false,
+    "notes": "Revisión independiente de solo lectura del contrato P1: ecuaciones, signos, conservados, fuente geométrica, EOS, HLLC/HLLE, integración, CFL, especie, positividad, fronteras, futuro acoplamiento y T01–T12. Las precisiones solicitadas sobre fuente geométrica y referencias conservadas quedaron resueltas. Dictamen vinculado al run 20260917T162700-P1-3b9e685fa1f4; evidencia inicial SHA256 68fdebaf29aebcb5184f0ef94884d1d096d50ced320d5dce4acaed05a8ebe6e5; contract-inventory.json SHA256 85eb1086e904c3e72b5b68252939207c99da7ea29bac368fe74129248f80fe0f; manifest SHA256 97ce1c0b47d80c10aaa9a2cbc9abb133d60961617b8f5a706fb73128e8451aee. Verificados los seis hashes del inventario, tres artefactos de evidencia y hashes de tres documentos, dos archivos baseline y 39 archivos de producción. Evidencia registra cinco checks aprobados y log de once pruebas contractuales aprobadas; sin errores ni violaciones de alcance. No ejecuté simulaciones ni modifiqué archivos. El PASS acredita preparación contractual, no ejecución de T01–T12, implementación del solver, validación experimental ni aceptación humana de P1. El cierre debe conservar la evidencia inicial del stub y detenerse en WAITING_HUMAN_APPROVAL, sin comenzar P2.",
+    "kind": "independent"
+  },
+  "gate": "PASS",
+  "gate_reasons": [
+    "all_required_checks_passed"
+  ],
+  "execution_status": "WAITING_HUMAN_APPROVAL",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "review_not_approved",
+      "state": "BLOCKED"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "artifacts/result.json",
+      "sha256": "aee10b985b5eda463dfd22c0e4b6755c9de30d8d933827d353c1b3abec94d845",
+      "bytes": 693
+    },
+    {
+      "path": "artifacts/contract-inventory.json",
+      "sha256": "85eb1086e904c3e72b5b68252939207c99da7ea29bac368fe74129248f80fe0f",
+      "bytes": 704
+    },
+    {
+      "path": "artifacts/git-before.json",
+      "sha256": "93580e48a987a961a71cd31a5de0669a32051b273b1c1280da20b7d7c5762b50",
+      "bytes": 142101
+    },
+    {
+      "path": "artifacts/pre-review-evidence.json",
+      "sha256": "68fdebaf29aebcb5184f0ef94884d1d096d50ced320d5dce4acaed05a8ebe6e5",
+      "bytes": 4578
+    },
+    {
+      "path": "artifacts/pre-review-summary.md",
+      "sha256": "d10acce4c444824f19a86e7da95d182dc3da531a40076f670464da1589c81e59",
+      "bytes": 1117
+    },
+    {
+      "path": "artifacts/independent-review.json",
+      "sha256": "056037d28e77c54cac68e7f929e47689c31ff908de8f7d1832d8b0b2b7728a87",
+      "bytes": 2332
+    },
+    {
+      "path": "artifacts/p1-decision.json",
+      "sha256": "65c52847643e3128d349bb7e881392e3657213f68531e2ded446e85f1390fea9",
+      "bytes": 144
+    }
+  ],
+  "phase_definition_sha256": "aee2bb4f69656870aa92fcd0ded6e9a6b737f693b2618091d17192088e92036a",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P0": "docs\\gasdynamic\\p0_accepted_dependency.json"
+    }
+  },
+  "continue_requested": false
+}

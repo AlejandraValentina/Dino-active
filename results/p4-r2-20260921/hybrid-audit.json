@@ -1,0 +1,98 @@
+{
+  "state": "P4_BLOCKED_PERFORMANCE",
+  "complete_cycles": 1,
+  "multicycle_executed": false,
+  "G2_executed": false,
+  "phase_interval": [
+    180.0,
+    540.0
+  ],
+  "runtime": 263.3279999997467,
+  "projection_30": 7899.8399999924,
+  "budget": 600,
+  "mesh_N": 250,
+  "G2_defined_N": 251,
+  "global_initial": [
+    0.0006195811344741494,
+    220.6397660398205,
+    0.00035324413387127833
+  ],
+  "global_final": [
+    0.000620651677262106,
+    215.09713479682807,
+    0.00038831619086138755
+  ],
+  "external": [
+    1.0705427879538976e-06,
+    -5.542631242993426,
+    3.5072056990108385e-05
+  ],
+  "independently_resummed_residual": [
+    4.45676482772932e-15,
+    4.5246265515109725e-15,
+    1.3561689291740754e-15
+  ],
+  "internal_port_exchange": [
+    -3.29831226778163e-05,
+    -23.08635686087578,
+    -3.2452581289976822e-06
+  ],
+  "max_stage_residual": 3.534593946195017e-16,
+  "max_segment_global_residual": 1.1471980053291883e-14,
+  "pipe_extrema": {
+    "rho": 0.5198278509960266,
+    "p": 99983.44220428444,
+    "T": 499.9978761411793,
+    "Y_min": 0.0,
+    "Y_max": 0.44812538047613687
+  },
+  "saved_0D_trace_extrema": {
+    "rho": [
+      0.5480513138737827,
+      3.845675542061597
+    ],
+    "p": [
+      91346.10732865997,
+      1410384.7069480591
+    ],
+    "T": [
+      299.0043888392979,
+      1277.8929182761071
+    ],
+    "Y": [
+      0.0,
+      1.0
+    ]
+  },
+  "zeroD_extent_note": "Extrema of saved RHS traces only; frozen solver validates also intermediate Euler and accepted states.",
+  "closed_traces": 13634,
+  "closed_exchange_exact_zero": true,
+  "backflow_traces": 0,
+  "backflow_species_max_error": null,
+  "counts": {
+    "rhs": 35379,
+    "HLLC": 8861357,
+    "HLLE": 0,
+    "rejected": 9051,
+    "characteristic": 35379
+  },
+  "accepted_steps": 13164,
+  "sensor_positions": [
+    0.10049999999999999,
+    0.2985,
+    0.4995
+  ],
+  "work_indicated_J": -0.41816866400067815,
+  "power_indicated_W": -20.908433200033908,
+  "torque_indicated_Nm": -0.06655360992184184,
+  "diagnostic_only_not_periodic": true,
+  "analytical_burn_kg": 6.538484785489726e-07,
+  "heat_numeric_J": 0.5230787832730578,
+  "heat_primitive_J": 0.5230787828391781,
+  "E12": "PASS for measured cycle only",
+  "E15": "PASS for measured cycle only",
+  "E13": "NOT_EXECUTED",
+  "E14": "NOT_EXECUTED",
+  "reflected_wave_timing": null,
+  "P4_PASS": false
+}

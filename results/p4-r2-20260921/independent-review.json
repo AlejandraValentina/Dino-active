@@ -1,0 +1,21 @@
+{
+  "reviewer": "/root/p3_review",
+  "mode": "independent read-only",
+  "state": "P4_BLOCKED_PERFORMANCE",
+  "R2": "P4_R2_PASS_REFINEMENT_CONTRACT",
+  "P4B": "P4B_PASS_EXHAUST_WAVE_PHYSICS",
+  "findings": [
+    "Source/analytical species adaptation faithful to legacy; frozen solvers unchanged",
+    "CFL evaluator and strict species bounds corrected before integration",
+    "G1 complete 180 to 540 degrees, conservative and admissible",
+    "263.328 seconds per cycle; 7899.84 projected for 30 exceeds 600-second budget",
+    "88 regression tests and 8 adapter tests PASS",
+    "Offline P0/P2/P3 regressions PASS; P4A/P4B evidence intact",
+    "No backflow observed; local backflow check is vacuous",
+    "G2, periodic convergence and causal wave return pending"
+  ],
+  "native_reviewer_hook_blocks_preserved": true,
+  "new_integrations_by_reviewer": 0,
+  "P4_PASS": false,
+  "P5_authorized": false
+}

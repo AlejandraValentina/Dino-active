@@ -1,0 +1,324 @@
+{
+  "campaign_dir": "results\\p4-r12-20260922\\campaign_N350_45_52",
+  "workers": 1,
+  "workers_param": 1,
+  "wall_seconds": 202.7435668995604,
+  "sequential_estimated_seconds": 201.6225049002096,
+  "speedup": 0.9944705421903416,
+  "efficiency": 0.9944705421903416,
+  "jobs": [
+    {
+      "job_id": "G1_N350_45_52",
+      "func": "dev_orchestrator.p4_r11_jobs.p4_r11_cycle_job",
+      "args": [],
+      "kwargs": {
+        "N": 350,
+        "dx_target": 0.002142857142857143,
+        "start_cycle": 45,
+        "max_cycle": 52,
+        "backend": "NUMBA_FUSED",
+        "cfl": 0.4
+      },
+      "job_type": "INDEPENDENT",
+      "chain_id": null,
+      "estimated_memory_mb": 100,
+      "config_hash": "",
+      "input_hash": "",
+      "backend": "unknown",
+      "status": "PASS",
+      "worker_id": 0,
+      "start_ts": 1790095576.5794864,
+      "end_ts": 1790095778.208229,
+      "runtime": 201.6225049002096,
+      "result": {
+        "job_id": "G1_N350_45_52",
+        "N": 350,
+        "dx_target": 0.002142857142857143,
+        "start_cycle": 45,
+        "max_cycle": 52,
+        "cycles_executed": 5,
+        "temporal": [
+          {
+            "cycle": 46,
+            "work": 13.647175936339028,
+            "d1_work": null,
+            "d1_sensor_max": null,
+            "d1_cyl": null,
+            "d1_passed": false,
+            "d2_work": null,
+            "d2_sensor_max": null,
+            "d2_cyl": null,
+            "d2_passed": false,
+            "d2_details": null,
+            "vec1": {
+              "max_norm": 1
+            },
+            "vec2": {
+              "max_norm": 1
+            },
+            "port_exchange": -6.598789978377807e-05,
+            "pipe_mass": 0.0001486070235691717,
+            "pipe_energy": 71.66596287541132,
+            "pipe_species": 3.91223575112585e-05,
+            "global_balance": [
+              1.863310633689555e-14,
+              2.1548541510156263e-14,
+              -7.774077478307414e-15
+            ],
+            "admissibility": true,
+            "conservation_pass": true,
+            "wall": 37.28099999949336
+          },
+          {
+            "cycle": 47,
+            "work": 13.407455416907759,
+            "d1_work": null,
+            "d1_sensor_max": null,
+            "d1_cyl": null,
+            "d1_passed": false,
+            "d2_work": null,
+            "d2_sensor_max": null,
+            "d2_cyl": null,
+            "d2_passed": false,
+            "d2_details": null,
+            "vec1": {
+              "max_norm": 1
+            },
+            "vec2": {
+              "max_norm": 1
+            },
+            "port_exchange": -4.836410305730054e-05,
+            "pipe_mass": 0.00010496624582172918,
+            "pipe_energy": 48.94292826444915,
+            "pipe_species": 3.6980774338578556e-05,
+            "global_balance": [
+              2.9722345499226534e-14,
+              2.7265311404981185e-14,
+              3.298441554063304e-14
+            ],
+            "admissibility": true,
+            "conservation_pass": true,
+            "wall": 32.561999999918044
+          },
+          {
+            "cycle": 48,
+            "work": 13.647120072173774,
+            "d1_work": 0.017561555404988844,
+            "d1_sensor_max": 0.6045360214761174,
+            "d1_cyl": 0.1585405971780374,
+            "d1_passed": false,
+            "d2_work": 4.09345973959726e-06,
+            "d2_sensor_max": 0.0047785362503791895,
+            "d2_cyl": 8.487834091009057e-06,
+            "d2_passed": true,
+            "d2_details": [
+              {
+                "sensor_index": 0,
+                "phase": 123.5,
+                "p_prev": 42964.531495093186,
+                "p_cur": 43238.44062917943,
+                "diff": 273.9091340862433,
+                "denom": 111402.317491604,
+                "metric": 0.002458738204498186,
+                "grad_prev": 17127.430720785112,
+                "grad_cur": 17129.643825380255
+              },
+              {
+                "sensor_index": 1,
+                "phase": 114.0,
+                "p_prev": 47729.53336832545,
+                "p_cur": 48261.53208333018,
+                "diff": 531.9987150047309,
+                "denom": 111330.89446847148,
+                "metric": 0.0047785362503791895,
+                "grad_prev": 22945.901785646653,
+                "grad_cur": 22969.421355294267
+              },
+              {
+                "sensor_index": 2,
+                "phase": 174.5,
+                "p_prev": 86816.61087966737,
+                "p_cur": 87325.81750477958,
+                "diff": 509.206625112216,
+                "denom": 111790.00446371453,
+                "metric": 0.004555028220591022,
+                "grad_prev": 16684.147248931724,
+                "grad_cur": 16749.6741578324
+              }
+            ],
+            "vec1": {
+              "max_norm": 0.3170671465830704,
+              "l2": 0.12001395747910452
+            },
+            "vec2": {
+              "max_norm": 3.706686485925865e-06,
+              "l2": 1.3337903774317272e-06
+            },
+            "port_exchange": -6.598859257002894e-05,
+            "pipe_mass": 0.00014860647272952574,
+            "pipe_energy": 71.665798503575,
+            "pipe_species": 3.9122286225149236e-05,
+            "global_balance": [
+              3.634072144716631e-14,
+              2.906117534584838e-14,
+              1.8916918838202362e-14
+            ],
+            "admissibility": true,
+            "conservation_pass": true,
+            "wall": 34.10900000017136
+          },
+          {
+            "cycle": 49,
+            "work": 13.407597183169395,
+            "d1_work": 0.017551167406576963,
+            "d1_sensor_max": 0.6045346401630647,
+            "d1_cyl": 0.15853967219310708,
+            "d1_passed": false,
+            "d2_work": 1.0573577032467315e-05,
+            "d2_sensor_max": 2.9404625844910498e-05,
+            "d2_cyl": 1.6794784383343575e-06,
+            "d2_passed": true,
+            "d2_details": [
+              {
+                "sensor_index": 0,
+                "phase": 342.5,
+                "p_prev": 97498.48966033243,
+                "p_cur": 97500.8423437063,
+                "diff": 2.3526833738724235,
+                "denom": 115283.44152086815,
+                "metric": 2.0407816966901965e-05,
+                "grad_prev": -1938.6843640828592,
+                "grad_cur": -1938.6840864920086
+              },
+              {
+                "sensor_index": 1,
+                "phase": 334.0,
+                "p_prev": 96903.97504492865,
+                "p_cur": 96906.59862965811,
+                "diff": 2.623584729459253,
+                "denom": 115259.52701437993,
+                "metric": 2.2762411033770175e-05,
+                "grad_prev": -2058.046133857046,
+                "grad_cur": -2058.0648512605985
+              },
+              {
+                "sensor_index": 2,
+                "phase": 325.0,
+                "p_prev": 98040.80291265143,
+                "p_cur": 98044.18981402909,
+                "diff": 3.3869013776566135,
+                "denom": 115182.60410862652,
+                "metric": 2.9404625844910498e-05,
+                "grad_prev": -2948.3031788220833,
+                "grad_cur": -2948.1990001792146
+              }
+            ],
+            "vec1": {
+              "max_norm": 0.31706691515681296,
+              "l2": 0.12001424953967697
+            },
+            "vec2": {
+              "max_norm": 2.7337682740592185e-06,
+              "l2": 1.1671815198112653e-06
+            },
+            "port_exchange": -4.8363820714410045e-05,
+            "pipe_mass": 0.00010496595886833648,
+            "pipe_energy": 48.94294484979671,
+            "pipe_species": 3.698112492496672e-05,
+            "global_balance": [
+              3.771274349842053e-14,
+              2.964902241310574e-14,
+              3.0847614784422335e-14
+            ],
+            "admissibility": true,
+            "conservation_pass": true,
+            "wall": 31.936999999918044
+          },
+          {
+            "cycle": 50,
+            "work": 13.64710625168065,
+            "d1_work": 0.017550172475704114,
+            "d1_sensor_max": 0.6045447547023328,
+            "d1_cyl": 0.15854288865482272,
+            "d1_passed": false,
+            "d2_work": 1.0127040027618646e-06,
+            "d2_sensor_max": 0.0021984718086562496,
+            "d2_cyl": 3.7555711110994527e-06,
+            "d2_passed": true,
+            "d2_details": [
+              {
+                "sensor_index": 0,
+                "phase": 123.5,
+                "p_prev": 43238.44062917943,
+                "p_cur": 43359.03755233504,
+                "diff": 120.59692315560824,
+                "denom": 111402.10546908432,
+                "metric": 0.0010825371984470762,
+                "grad_prev": 17129.643825380255,
+                "grad_cur": 17132.192438278427
+              },
+              {
+                "sensor_index": 1,
+                "phase": 114.0,
+                "p_prev": 48261.53208333018,
+                "p_cur": 48506.28942547384,
+                "diff": 244.75734214366094,
+                "denom": 111330.6712326057,
+                "metric": 0.0021984718086562496,
+                "grad_prev": 22969.421355294267,
+                "grad_cur": 22975.14196639187
+              },
+              {
+                "sensor_index": 2,
+                "phase": 103.0,
+                "p_prev": 44140.251843075916,
+                "p_cur": 44266.122788289875,
+                "diff": 125.8709452139592,
+                "denom": 111789.78809338408,
+                "metric": 0.0011259610324049667,
+                "grad_prev": 22495.49294421349,
+                "grad_cur": 22524.893672053942
+              }
+            ],
+            "vec1": {
+              "max_norm": 0.3170672629084605,
+              "l2": 0.12001420812571126
+            },
+            "vec2": {
+              "max_norm": 1.1841991915599419e-06,
+              "l2": 4.5646952496558445e-07
+            },
+            "port_exchange": -6.598902175459983e-05,
+            "pipe_mass": 0.00014860634783973222,
+            "pipe_energy": 71.66583499604063,
+            "pipe_species": 3.9122284926366066e-05,
+            "global_balance": [
+              1.9422840208124933e-14,
+              2.858472583478012e-14,
+              1.9768354519324107e-14
+            ],
+            "admissibility": true,
+            "conservation_pass": true,
+            "wall": 33.35999999940395
+          }
+        ],
+        "max_streak": 3,
+        "first_3x_cycle": 50,
+        "lag2_streak_final": 3,
+        "total_wall": 201.08467689994723,
+        "avg_wall": 40.216935379989444,
+        "work_last_two": [
+          13.407597183169395,
+          13.64710625168065
+        ],
+        "d1_final": false,
+        "d2_final": true
+      },
+      "error": null
+    }
+  ],
+  "passed": 1,
+  "failed": 0,
+  "cancelled": 0,
+  "blocked": 0
+}

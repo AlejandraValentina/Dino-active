@@ -1,0 +1,28 @@
+{
+  "name": "focused-tests",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_engine_physics_v1.py",
+    "tests/test_integrated_2t.py",
+    "tests/test_integrated_cycle_evidence_producer.py",
+    "tests/test_integrated_cycle_evaluator.py",
+    "-q",
+    "--tb=short"
+  ],
+  "started_at": "2026-10-07T12:58:52+00:00",
+  "finished_at": "2026-10-07T13:02:21+00:00",
+  "duration_s": 208.297,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\engine-physics-v1\\regression\\focused-tests.log",
+  "log_lines": 3,
+  "log_bytes": 191,
+  "error_lines": [],
+  "tail": [
+    "........................................................................ [ 82%]",
+    "...............                                                          [100%]",
+    "87 passed in 207.40s (0:03:27)"
+  ]
+}

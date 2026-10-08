@@ -1,0 +1,20 @@
+{
+  "state": "FAILED_INFRASTRUCTURE",
+  "native_runner_gate": "BLOCKED",
+  "P2B": "INCOMPLETE",
+  "P2": "NOT_VERIFIED",
+  "P3": "NOT_STARTED",
+  "repair_budget_used": 1,
+  "repair_budget_limit": 3,
+  "cause": "T04 wall_timeout: 120.062s, t=0.002684548582421251 < target 0.00337310127194846. No budget extension or repeat after timeout.",
+  "review": "independent-review.json",
+  "regression": "regression.json",
+  "openspec": "openspec validate p2-nucleo-gas1d --strict --no-interactive: PASS",
+  "note": "Runner command returned a complete report with P2B=false and an unavailable scientific reviewer hook, hence native BLOCKED. Campaign classifies the actual solver wall_timeout as FAILED_INFRASTRUCTURE. Neither is overwritten.",
+  "artifacts": {
+    "results/p2b-gas1d-20260918/attempt-2/evidence.json": "bba600a5b74ea3c3a13afbdd2b494a529871b516da393aebb8d28397a30b7add",
+    "results/p2b-gas1d-20260918/attempt-2/artifacts/p2b-summary.json": "da70572da49d3cc6f43ec19a0d6da26d66be982847cc6446afdc6ffe5960ed41",
+    "results/p2b-gas1d-20260918/independent-review.json": "00e856941cba85a455e0b41adfb59a06be176be50a2c8f28ace19f92173d7ff1",
+    "results/p2b-gas1d-20260918/regression.json": "d03559a11b1a63150c2274fb2cb74d17ca741400e7d847e5e32eb2ab0ef1bceb"
+  }
+}

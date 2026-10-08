@@ -1,0 +1,12 @@
+{
+  "classification": "P4_SCI_B1_BOUNDARY_LINEAR_VERIFIED",
+  "reasoning": "Reflected/incoming component remains <0.002 Pa (ratio <3e-05) at all resolutions, essentially zero; error to analytic characteristic reference decreases monotonically 74\u219248 Pa with refinement (pulse resolves better), truncated/extended agreement error <0.002 Pa well before extended return, consistent with pure outgoing L_in\u22480.",
+  "trend_checks": {
+    "err_vs_analytic_decreasing": true,
+    "err_vs_ext_small": true,
+    "reflection_tiny": true,
+    "amp_increasing_toward_analytic": true,
+    "conservation_pass": true
+  },
+  "p4_pass": false
+}

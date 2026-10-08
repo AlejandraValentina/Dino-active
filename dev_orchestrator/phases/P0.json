@@ -1,0 +1,80 @@
+{
+  "phase": "P0",
+  "objective": "Verificar la malla numérica 2T 2500–15000 RPM y congelar baseline 0D; stress condicionado hasta20000. Sin P1.",
+  "enabled": true,
+  "depends_on": [],
+  "allowed_paths": [
+    "dev_orchestrator/runs/",
+    "docs/baselines/0d_2t_baseline_v1.md",
+    "docs/baselines/0d_2t_baseline_v1.json",
+    "dev_orchestrator/p0_finalize.py",
+    "dev_orchestrator/p0_plots.py",
+    "tests/test_p0_baseline.py",
+    "dev_orchestrator/phases/P0.json",
+    "dev_orchestrator/roadmap/gasdynamic.json"
+  ],
+  "forbidden_paths": [
+    "motorsim/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Evidencia de P0 y freeze numérico condicionado."
+  ],
+  "forbidden_changes": [
+    "Toda modificación de producto en esta versión."
+  ],
+  "commands": [
+    {
+      "id": "p0_tests",
+      "kind": "test",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p0_campaign",
+        "--checks",
+        "--run-dir",
+        "{run_dir}"
+      ],
+      "timeout": 500
+    },
+    {
+      "id": "p0_campaign",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p0_campaign",
+        "--run-dir",
+        "{run_dir}"
+      ],
+      "timeout": 1850,
+      "result_file": "artifacts/result.json"
+    }
+  ],
+  "required_tests": [
+    "p0_tests"
+  ],
+  "required_checks": [
+    "p0_tests",
+    "main_complete",
+    "continuous_domain",
+    "historical_regression",
+    "production_unchanged",
+    "no_experimental_imports",
+    "artifact_inventory"
+  ],
+  "required_evidence": [
+    "artifacts/campaign.json",
+    "artifacts/regression.json",
+    "artifacts/table.csv",
+    "artifacts/inventory.json",
+    "artifacts/git-before.json",
+    "artifacts/result.json"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 0,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": false,
+  "timeout": 2400
+}

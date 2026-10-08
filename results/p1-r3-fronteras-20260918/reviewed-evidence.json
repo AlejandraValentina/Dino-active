@@ -1,0 +1,255 @@
+{
+  "run_id": "20260918T105101-P1_R3_BOUNDARY_SEMANTICS_REVIEW-c14095b2e293",
+  "phase_id": "P1_R3_BOUNDARY_SEMANTICS_REVIEW",
+  "started_at": "2026-09-18T10:51:01.153235+00:00",
+  "finished_at": "2026-09-18T10:51:56.685096+00:00",
+  "git_commit": "e5d3d6af1f9b8d4d32c93d1833059db8b28c0ef4",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "boundary_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p1_r3.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.29700000025331974,
+      "status": "passed",
+      "stdout_log": "logs/1-boundary_tests.stdout.log",
+      "stderr_log": "logs/1-boundary_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "fix_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p2_fixes.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.32799999974668026,
+      "status": "passed",
+      "stdout_log": "logs/1-fix_tests.stdout.log",
+      "stderr_log": "logs/1-fix_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "boundary_study",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p1_r3_boundaries",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260918T105101-P1_R3_BOUNDARY_SEMANTICS_REVIEW-c14095b2e293",
+        "--reuse-t05",
+        "results/p1-r3-fronteras-20260918/boundary-attempt-1"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 48.0,
+      "status": "passed",
+      "stdout_log": "logs/1-boundary_study.stdout.log",
+      "stderr_log": "logs/1-boundary_study.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "boundary_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "fix_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "boundary_study",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "baseline_intact",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R3_PASS_BOUNDARIES_SEPARATED"
+    },
+    {
+      "id": "contract_frozen",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R3_PASS_BOUNDARIES_SEPARATED"
+    },
+    {
+      "id": "dependencies_accepted",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R3_PASS_BOUNDARIES_SEPARATED"
+    },
+    {
+      "id": "T05",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R3_PASS_BOUNDARIES_SEPARATED"
+    },
+    {
+      "id": "mesh_sign",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R3_PASS_BOUNDARIES_SEPARATED"
+    },
+    {
+      "id": "all_ledgers",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R3_PASS_BOUNDARIES_SEPARATED"
+    },
+    {
+      "id": "NR01_recorded",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R3_PASS_BOUNDARIES_SEPARATED"
+    },
+    {
+      "id": "counter_identity",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R3_PASS_BOUNDARIES_SEPARATED"
+    }
+  ],
+  "tests": [
+    {
+      "id": "boundary_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p1_r3.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.29700000025331974,
+      "status": "passed",
+      "stdout_log": "logs/1-boundary_tests.stdout.log",
+      "stderr_log": "logs/1-boundary_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "fix_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p2_fixes.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.32799999974668026,
+      "status": "passed",
+      "stdout_log": "logs/1-fix_tests.stdout.log",
+      "stderr_log": "logs/1-fix_tests.stderr.log",
+      "error": ""
+    }
+  ],
+  "metrics": {
+    "cases": 4
+  },
+  "review": {
+    "status": "PASS",
+    "findings": [],
+    "blocking_findings": [],
+    "scientific_change_required": false,
+    "kind": "independent",
+    "notes": "Read-only /root/p1_r3_review: P1_R3_PASS_BOUNDARIES_SEPARATED. Concept before code, BC consistent, T05 N800 original gate PASS and stable negative sign in 200/400/800; reused T05 explicitly recorded. NR01 complete |Rp|4.77011e-7 diagnostic, no new threshold. Hashes/counters/CFL/minimum/ledger/admissibility verified. Event scheduler fix reviewed; P2A must rerun T05. User authorizes conditional P2A continuation; no P2A/P2B/P3 approval yet."
+  },
+  "gate": "PASS",
+  "gate_reasons": [
+    "all_required_checks_passed"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "review_not_approved",
+      "state": "BLOCKED"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "artifacts/boundary-summary.json",
+      "sha256": "caf1d3466059bfe8441428e040f5cefae47a8e1bc4555a2625cea3125820e59d",
+      "bytes": 10310
+    },
+    {
+      "path": "artifacts/inventory.json",
+      "sha256": "0989ea1a7bf7a8c1774efc0050ff185d931c0e757cd91e4d329849fde37fd987",
+      "bytes": 732
+    },
+    {
+      "path": "artifacts/result.json",
+      "sha256": "4666825a63192d7c0d429b352bc54aca6c058fa6e442c62813fa32ea8fa0d3b1",
+      "bytes": 1278
+    }
+  ],
+  "phase_definition_sha256": "f5a458d3454ee7fc86ec40c82093e5b387268dff0eebfa9969a1420f4af9fd7f",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P0": "docs\\gasdynamic\\p0_accepted_dependency.json",
+      "P1": "docs\\gasdynamic\\p1_accepted_dependency.json",
+      "P1_R2": "results\\p1-r2-contacto-20260918\\reviewed-evidence.json"
+    },
+    "review_provenance": {
+      "original_evidence_sha256": "ae181cdda8f8066fffa5f8ab26ba3cabe7a36d5e7aa5887229bcfacb40287c69",
+      "reviewer": "/root/p1_r3_review",
+      "note": "Derived reviewed gate; original native evidence retained."
+    }
+  },
+  "continue_requested": false
+}

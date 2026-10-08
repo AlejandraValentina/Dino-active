@@ -1,0 +1,42 @@
+{
+  "checks": [
+    {
+      "id": "main_complete",
+      "passed": true,
+      "kind": "infrastructure"
+    },
+    {
+      "id": "continuous_domain",
+      "passed": true,
+      "kind": "numerical"
+    },
+    {
+      "id": "historical_regression",
+      "passed": true,
+      "kind": "numerical"
+    },
+    {
+      "id": "production_unchanged",
+      "passed": true,
+      "kind": "infrastructure"
+    },
+    {
+      "id": "no_experimental_imports",
+      "passed": true,
+      "kind": "infrastructure"
+    },
+    {
+      "id": "artifact_inventory",
+      "passed": true,
+      "kind": "infrastructure"
+    }
+  ],
+  "metrics": {
+    "main_pass": 26,
+    "main_count": 26,
+    "stress_count": 3,
+    "integration_total": 458.86099999956787,
+    "wall_total": 471.39099999982864
+  },
+  "scientific_change_required": false
+}

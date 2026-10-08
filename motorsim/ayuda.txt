@@ -1,0 +1,91 @@
+MotorSim 0.1.0-rc6 — candidata Windows x64
+
+Extraé la carpeta completa y abrí MotorSim.exe. Conservá MotorSimWorker.exe y
+_internal junto a la aplicación. No hace falta instalar Python ni usar consola.
+
+Archivo → Nuevo / Abrir / Guardar / Guardar como. Los proyectos JSON pueden
+quedar incompletos; texto numérico inválido impide guardar. Se aceptan coma o
+punto en el editor. Cambiar 2T/4T conserva sus configuraciones independientes.
+
+Ejemplos: Archivo → Cargar ejemplo ofrece 2T referencia, 2T compresión 8.2,
+4T referencia y 4T compresión 8.2. Todos son EJEMPLO SINTÉTICO — NO MEDIDO,
+sin calibración ni validación experimental. La variante cambia solo compresión.
+Se cargan como proyectos editables con cambios pendientes y sin archivo asociado;
+Guardar solicita un destino. Se respetan Guardar/Descartar/Cancelar del proyecto
+anterior. La próxima simulación queda en Proyecto actual y usa lo cargado.
+Los mismos cuatro JSON se incluyen en Ejemplos, sin resultados precalculados.
+
+La navegación izquierda separa proyecto, configuración, cálculo y análisis.
+Resumen muestra los datos y dirige a las secciones que requieren atención.
+Resumen → Datos del proyecto permite editar nombre, fabricante/modelo y ciclo.
+Geometría reúne dimensiones y gráficos; Motor 2T/4T agrupa la configuración
+del ciclo activo y sus conductos. Cambiar de sección conserva los borradores.
+Resultados permite abrir resultados/barridos y consultar sus puntos. Comparar
+y Datos externos están integrados en la navegación; no ejecutan simulaciones.
+
+El modelo actual es 0D y no resuelve propagación/reflexión de ondas ni resonancia
+del escape. La curva no representa todavía la respuesta de un escape 2T sintonizado.
+Tras P0 y autorización explícita: 2500–15000 rpm para 2T; 2500–3500 rpm
+para 4T. La zona baja 1000/2000 sigue excluida. Sin validación experimental.
+
+Rendimiento reutiliza la curva compatible del proyecto en esta sesión. Si no hay,
+Calcular rendimiento inicia explícitamente el barrido existente con el intervalo
+indicado; muestra progreso y Cancelar y presenta la curva al terminar. Entrar no
+ejecuta cálculos. Abrir barrido existente es una opción secundaria para históricos.
+Los campos RPM permanecen visibles después del cálculo. Cambiar el plan conserva
+la curva anterior y muestra un aviso hasta pulsar Recalcular rendimiento. Durante
+la ejecución se bloquean los campos y se identifica la curva anterior; cancelar
+o fallar la conserva, junto con las RPM nuevas, para permitir otro intento.
+Muestra potencia indicada [kW] y par indicado equivalente [N·m], derivados del
+trabajo p·dV guardado y de las RPM/ciclo de cada resultado, independientemente
+del editor. No incluyen fricción ni pérdidas mecánicas ni representan valores al
+eje. Seleccioná un punto con clic/flechas o desde la tabla para consultar detalle
+y abrir su resultado. Los huecos no se interpolan; los mayores valores son solo
+entre los puntos calculados. CSV conserva W y N·m con precisión completa.
+
+Los paneles se apilan al reducir el ancho. En cada motor, el contexto resume
+eventos, conductos y observaciones del ciclo activo. Simulación separa preparación,
+progreso y resultado; este último conserva su procedencia aunque cambie el proyecto.
+Comparar distingue la base A y alternativa B y muestra su compatibilidad.
+Datos externos sigue cuatro pasos: importar/abrir datos, seleccionar barrido,
+consultar contraste y exportar. Exportar se habilita al existir un contraste válido.
+Las advertencias describen límites del modelo, no validación experimental.
+
+Simulación: elegí referencia 2T/4T o Proyecto actual con condiciones de referencia.
+Comprobar entradas informa ausencias/incompatibilidades. Ejecutar usa una copia
+de los datos válidos, incluidos cambios sin guardar. No rellena dimensiones.
+Cancelar detiene el cálculo; cerrar durante un cálculo también lo cancela.
+Una ejecución fallida/cancelada conserva diagnóstico, no un resultado aceptado.
+
+Barrido del proyecto: 2T 2500–15000 rpm; 4T 2500–3500 rpm, 2–5 puntos exactos, perfil B/100 Pa,
+secuencial y con parada al primer fallo. Cada punto comienza independientemente.
+Reabrir: Abrir resultado → manifest.json; Abrir barrido → series.json.
+Los resultados quedan en %LOCALAPPDATA%\MotorSim\Resultados, fuera del paquete.
+Editar el proyecto no modifica resultados; se señala configuración anterior.
+
+Comparar resultados: seleccionar A y B compatibles, revisar entradas, resumen
+y curvas; Exportar CSV crea una carpeta nueva. No compara ciclos 2T con 4T.
+Datos externos: importar CSV UTF-8 rpm,value; declarar magnitud, ciclo, unidad
+y procedencia; revisar antes de confirmar. Contraste con RPM exactas, sin interpolar.
+Proyectos, importaciones y exportaciones se guardan donde elijas.
+
+Límites: monocilíndrico, modelo 0D, energía prescrita, alzada idealizada en 4T,
+sin ondas, calibración ni validación experimental. No predice potencia al eje,
+par ni sintonía. Límites por punto: 30 ciclos, 60 s y 512 MiB del cálculo.
+Un resultado individual no repite el estudio de aceptación numérica.
+
+Acerca de identifica la versión y el commit fuente sin Internet. JSON v6 y
+versiones físicas no cambian por empaquetar. Diagnóstico técnico local en
+%LOCALAPPDATA%\MotorSim\Diagnostico si ocurre una excepción inesperada.
+No se recopilan ni envían datos. No hay actualización automática.
+Ejecutable no firmado; no desactives protecciones del equipo para abrirlo.
+Esta candidata no implica aceptación manual ni validación experimental.
+Avisos de dependencias y licencias: carpeta Licencias y AVISOS.txt.
+
+Candidata rc5 — interfaz técnica CAE
+Resumen reúne identidad, geometría y preparación. El selector de ejemplos usa
+los JSON incluidos como COPIAS editables: sin ruta, con cambios pendientes;
+Guardar pide un destino. Son EJEMPLOS SINTÉTICOS — NO MEDIDOS, sin resultados.
+Simulación separa preparación, estado y contexto colapsable. Los ejes vacíos no
+son resultados; las curvas corresponden a un ciclo convergido real. Detalles
+conserva parámetros/identificadores. Abrir históricos no ejecuta el modelo.

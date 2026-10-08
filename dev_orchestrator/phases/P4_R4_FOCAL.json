@@ -1,0 +1,69 @@
+{
+  "phase": "P4_R4_FOCAL",
+  "objective": "Numba tests and three representative frozen G1 windows",
+  "enabled": true,
+  "depends_on": [
+    "P2"
+  ],
+  "allowed_paths": [
+    "dev_orchestrator/runs/"
+  ],
+  "forbidden_paths": [
+    "motorsim/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Evidence only; source committed before run."
+  ],
+  "forbidden_changes": [
+    "Toda modificaci\u00c3\u00b3n de producto en esta versi\u00c3\u00b3n."
+  ],
+  "commands": [
+    {
+      "id": "numba_tests",
+      "kind": "test",
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_gas1d_numba.py",
+        "-v"
+      ],
+      "timeout": 120
+    },
+    {
+      "id": "focal_command",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p4_r4_focal",
+        "--run-dir",
+        "{run_dir}"
+      ],
+      "timeout": 120,
+      "result_file": "artifacts/result.json"
+    }
+  ],
+  "required_tests": [
+    "numba_tests"
+  ],
+  "required_checks": [
+    "numba_tests",
+    "focal_command",
+    "focal_gate"
+  ],
+  "required_evidence": [
+    "artifacts/focal.json"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 0,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": false,
+  "timeout": 300
+}

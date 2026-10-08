@@ -1,0 +1,321 @@
+{
+  "review_id": "P4-P8-INDEPENDENT-FINAL-RATIFICATION-20260930",
+  "baseline": {
+    "head": "722691dfee48a163198ce81b04e0b21a77bf2646",
+    "branch": "main",
+    "origin_main": "722691dfee48a163198ce81b04e0b21a77bf2646",
+    "working_tree_at_start": "clean"
+  },
+  "classification": "INDEPENDENT_REVIEW_BLOCKED",
+  "decision": {
+    "P4": "P4_PASS_TECHNICAL_ONLY; independent acceptance NOT_GRANTED",
+    "P5": "P5_IMPLEMENTATION_VERIFIED_CONDITIONAL; revalidated, conditional on unresolved P4",
+    "P6": "P6_SPECIES_SCAVENGING_VERIFIED_CONDITIONAL; revalidated, conditional on unresolved P4",
+    "P7": "P7_PRESCRIBED_COMBUSTION_VERIFIED_CONDITIONAL; revalidated, conditional on unresolved P4",
+    "P8": "P8_WIDE_RPM_PERFORMANCE_VERIFIED_CONDITIONAL; primary campaign passes, independent ratification BLOCKED by finding FINAL-001",
+    "experimental_validation": "NOT_PERFORMED",
+    "P9": "STOPPED_NOT_AUTHORIZED"
+  },
+  "blockers": [
+    {
+      "id": "FINAL-001",
+      "severity": "BLOCKER",
+      "gate": "P8 primary terminal/replay binding",
+      "summary": "A concordant edit to both primary terminal conservative states and their restart terminal states, with producer digests, artifact hashes/sizes, and summary digests regenerated, passes _audit_p8 while the corresponding final state in the raw gas history is unchanged."
+    }
+  ],
+  "majors": [],
+  "minors": [],
+  "historical_R4": {
+    "classification": "INDEPENDENT_REVIEW_BLOCKED",
+    "R4-001": "preserved as historical evidence",
+    "report_unchanged": true,
+    "receipt_unchanged": true
+  },
+  "R4_001_mutations": [
+    {
+      "mutation": "fresh_mass_delivered_kg",
+      "copy": "consolidated only",
+      "closure_ok": false,
+      "primary_audit_ok": false,
+      "csv_equal": true
+    },
+    {
+      "mutation": "fresh_mass_delivered_kg",
+      "copy": "individual only",
+      "closure_ok": false,
+      "primary_audit_ok": false,
+      "csv_equal": true
+    },
+    {
+      "mutation": "fresh_mass_delivered_kg",
+      "copy": "consolidated and individual coherently",
+      "closure_ok": false,
+      "primary_audit_ok": false,
+      "csv_equal": true
+    },
+    {
+      "mutation": "fresh_short_circuit_mass_kg",
+      "copy": "consolidated only",
+      "closure_ok": false,
+      "primary_audit_ok": false,
+      "csv_equal": true
+    },
+    {
+      "mutation": "fresh_short_circuit_mass_kg",
+      "copy": "individual only",
+      "closure_ok": false,
+      "primary_audit_ok": false,
+      "csv_equal": true
+    },
+    {
+      "mutation": "fresh_short_circuit_mass_kg",
+      "copy": "consolidated and individual coherently",
+      "closure_ok": false,
+      "primary_audit_ok": false,
+      "csv_equal": true
+    },
+    {
+      "mutation": "replay_terminal_digests.first",
+      "copy": "consolidated only",
+      "closure_ok": false,
+      "primary_audit_ok": false,
+      "csv_equal": true
+    },
+    {
+      "mutation": "replay_terminal_digests.first",
+      "copy": "individual only",
+      "closure_ok": false,
+      "primary_audit_ok": false,
+      "csv_equal": true
+    },
+    {
+      "mutation": "replay_terminal_digests.first",
+      "copy": "consolidated and individual coherently",
+      "closure_ok": false,
+      "primary_audit_ok": false,
+      "csv_equal": true
+    },
+    {
+      "mutation": "fresh delivery + short circuit + digest",
+      "copy": "all corresponding JSON summaries coherently",
+      "closure_ok": false,
+      "primary_audit_ok": false,
+      "csv_equal": true
+    }
+  ],
+  "FINAL_001_reproduction": {
+    "isolation": "temporary copy of results/p8-wide-rpm-auditable-r4-final-20260930; repository evidence unchanged",
+    "for_each_primary_run": [
+      "terminal.conservative_state[0][0] += 0.25",
+      "restart.terminal_state.conservative_state[0][0] += 0.25",
+      "recompute producer_terminal_digest from canonical terminal preimage"
+    ],
+    "secondary_updates": [
+      "gzip SHA-256 and byte size",
+      "consolidated and individual primary_evidence references",
+      "consolidated and individual replay_terminal_digests"
+    ],
+    "unchanged_field": "terminal.gas_history[-1].stage_states[-1][0][0]",
+    "unchanged_history_value_kg": 0.00032609255306421015,
+    "mutated_terminal_value_kg": 0.2503260925530642,
+    "audit_result": {
+      "campaign_status": "P8_WIDE_RPM_PERFORMANCE_VERIFIED_CONDITIONAL",
+      "closure_ok": true,
+      "primary_audit_ok": true,
+      "anchor_files_equal": true,
+      "csv_equal": true
+    },
+    "conclusion": "The auditor checks the edited terminal against an equally edited restart terminal and digest, but does not check that terminal.conservative_state equals the final raw gas-history stage. This defeats the required primary/replay integrity gate."
+  },
+  "P8_campaign": {
+    "path": "results/p8-wide-rpm-auditable-r4-final-20260930/",
+    "auditor_receipt": "results/p8-wide-rpm-auditable-r4-final-20260930/primary-audit.json",
+    "primary_audit_passed": true,
+    "classification": "P8_PRIMARY_EVIDENCE_REAUDIT_PASS",
+    "superseded_campaign_used": false,
+    "anchors": {
+      "2500": {
+        "passed_primary_reaudit": true,
+        "work_J": 4.360064431757779,
+        "power_W": 181.6693513232408,
+        "torque_Nm": 0.6939258065134064,
+        "p_max_Pa": 1754839.8989528634,
+        "fresh_delivered_kg": 1.0712899252620962e-05,
+        "fresh_short_circuit_kg": 3.682464980732959e-06,
+        "mass_residual_kg": 1.9949319973733282e-17,
+        "energy_residual_J": -7.361666831684488e-12,
+        "species_total_residual_kg": 3.469446951953614e-18,
+        "max_abs_species_balance_kg": 4.445228907190568e-18,
+        "max_CFL": 0.4,
+        "replay_digest_equal": true
+      },
+      "5000": {
+        "passed_primary_reaudit": true,
+        "work_J": 2.0562492362787825,
+        "power_W": 171.3541030232319,
+        "torque_Nm": 0.3272622301827029,
+        "p_max_Pa": 1738504.6946132828,
+        "fresh_delivered_kg": 5.337809888432449e-06,
+        "fresh_short_circuit_kg": 6.555698444361781e-07,
+        "mass_residual_kg": 1.485356976305141e-17,
+        "energy_residual_J": -2.858828625218468e-13,
+        "species_total_residual_kg": 6.938893903907228e-18,
+        "max_abs_species_balance_kg": 6.5526468799592674e-18,
+        "max_CFL": 0.4,
+        "replay_digest_equal": true
+      },
+      "8000": {
+        "passed_primary_reaudit": true,
+        "work_J": 0.6691194967847296,
+        "power_W": 89.2159329046306,
+        "torque_Nm": 0.10649367543245129,
+        "p_max_Pa": 1687764.6907165232,
+        "fresh_delivered_kg": 2.7369281374379333e-06,
+        "fresh_short_circuit_kg": 1.257943552924221e-07,
+        "mass_residual_kg": 1.0001765041178778e-17,
+        "energy_residual_J": -4.2216230511371577e-13,
+        "species_total_residual_kg": 0.0,
+        "max_abs_species_balance_kg": 7.272624885125423e-18,
+        "max_CFL": 0.4,
+        "replay_digest_equal": true
+      },
+      "11000": {
+        "passed_primary_reaudit": true,
+        "work_J": 0.1371532969733605,
+        "power_W": 25.14477111178276,
+        "torque_Nm": 0.021828625174661012,
+        "p_max_Pa": 1685182.7187811628,
+        "fresh_delivered_kg": 1.492520126867454e-06,
+        "fresh_short_circuit_kg": 3.444858730087946e-08,
+        "mass_residual_kg": 5.637851296924623e-18,
+        "energy_residual_J": 3.241407142695607e-12,
+        "species_total_residual_kg": 3.469446951953614e-18,
+        "max_abs_species_balance_kg": 2.97223861191534e-18,
+        "max_CFL": 0.4,
+        "replay_digest_equal": true
+      },
+      "15000": {
+        "passed_primary_reaudit": true,
+        "work_J": -0.09811184796898713,
+        "power_W": -24.527961992246784,
+        "torque_Nm": -0.015614985580144835,
+        "p_max_Pa": 1716040.4740701027,
+        "fresh_delivered_kg": 6.660292631712978e-07,
+        "fresh_short_circuit_kg": 8.663303027031088e-09,
+        "mass_residual_kg": 1.3444106938820255e-17,
+        "energy_residual_J": -2.930988785010413e-14,
+        "species_total_residual_kg": -1.3877787807814457e-17,
+        "max_abs_species_balance_kg": 7.66395410675691e-18,
+        "max_CFL": 0.4,
+        "replay_digest_equal": true
+      }
+    },
+    "semantics": "BOUNDED_TRANSIENT_INDICATED",
+    "conditional_on_P4": true,
+    "experimental_validation": "NOT_PERFORMED"
+  },
+  "G2": {
+    "classification": "E13_G2_V2_PASS",
+    "period": 2,
+    "stop_cycle": 50,
+    "branch_A_streak": 15,
+    "branch_B_streak": 3,
+    "conservation": "PASS recomputed from primary ledgers",
+    "CFL": "PASS",
+    "admissibility": "PASS",
+    "sample_recomputed_ledgers": {
+      "31": {
+        "max_global_residual": 1.6639210220556484e-14,
+        "max_stage_residual": 3.453970407318372e-16
+      },
+      "40": {
+        "max_global_residual": 1.3629425666972786e-14,
+        "max_stage_residual": 3.6289470990945283e-16
+      },
+      "50": {
+        "max_global_residual": 1.3744927068197056e-14,
+        "max_stage_residual": 3.505612190798079e-16
+      }
+    }
+  },
+  "R2_dt_false": {
+    "result": "INCONCLUSIVE / MALFORMED_CFL_DT",
+    "pass": false,
+    "test": "tests/test_p4_g2_v2_recovery.py -k malformed_dt_is_invalid_evidence_not_a_physical_fail or positive_finite_dt_passes_type_validation",
+    "passed": 11
+  },
+  "C3": {
+    "classification": "P4_SCI_C3_PASS historical evidence",
+    "runtime_binding": {
+      "source_count": 7,
+      "all_hashes_match": true
+    },
+    "acquisition_repeated": false,
+    "sample": {
+      "history_index": 694,
+      "sample_time_pre_step_s": 0.002654656914619853,
+      "positive_return_flux": 0.0012316180513726382,
+      "A": "PASS",
+      "B0": "PASS",
+      "B1_stage_A": "PASS",
+      "B1_stage_B": "PASS",
+      "B2": "PASS",
+      "conservation_delta_mass_energy_species": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "completion_status": "completed",
+      "solver_time_s": 0.003,
+      "target_final_time_s": 0.003
+    }
+  },
+  "suites": {
+    "P8_audit_mutation_replay": "20 passed, 1 campaign test deselected; final campaign audited separately",
+    "P5_P6_P7": "113 passed",
+    "P4_E13_G2_focal": "76 passed, 1 acquisition test deselected",
+    "R2_dt_false": "11 passed",
+    "OpenSpec_strict": {
+      "p4-escape-1d": "PASS",
+      "p5-intake-transfer": "PASS",
+      "p7-prescribed-heat-burn": "PASS",
+      "p8-wide-rpm-performance": "PASS"
+    },
+    "git_diff_check": "PASS",
+    "git_lfs_fsck": "PASS"
+  },
+  "product_code_modified_by_review": false,
+  "P9_executed": false,
+  "push": false,
+  "report": "docs/gasdynamic/p4_p8_independent_final_ratification_20260930.md",
+  "reviewer_independence_note": "Esta misma instancia/hilo de Codex produjo la remediaciÃ³n R4-001 en el turno anterior. La presente evaluaciÃ³n fue de solo lectura y no es una ratificaciÃ³n positiva independiente de otra persona; en cualquier caso, el BLOCKER FINAL-001 por sÃ­ solo impide el PASS.",
+  "P5_P6_P7_feature_provenance": {
+    "source": "docs/gasdynamic/p5_p8_revalidation_20260929.md and results/p5-p8-revalidation-20260929/revalidation.json",
+    "P5": [
+      "intake/transfer geometry and topology",
+      "backflow",
+      "global ledgers",
+      "restart",
+      "determinism"
+    ],
+    "P6": [
+      "four-species transport",
+      "forward/reverse donor semantics",
+      "independent species ledgers",
+      "scavenging/short circuit",
+      "restart",
+      "determinism"
+    ],
+    "P7": [
+      "non-vacuous event",
+      "source admissibility",
+      "heat-to-burn consistency",
+      "energy ledger",
+      "restart",
+      "replay"
+    ],
+    "review_run": "113 pertinent P5/P6/P7 tests passed; P4–P7 runtime/product source paths unchanged in the two remediation commits.",
+    "conditionality": "All remain CONDITIONAL_ON_P4; this blocked final review does not remove dependency."
+  }
+}

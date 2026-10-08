@@ -1,0 +1,39 @@
+{
+  "state": "P2_PASS_1D_CORE_VERIFIED",
+  "execution_status": "WAITING_HUMAN_APPROVAL",
+  "scientific_state": "P1_R5_PASS_CFL_SECOND_ORDER_CONTRACT",
+  "contract": "1D_CONTRACT_V1_R5",
+  "checks": {
+    "baseline_intact": true,
+    "contract_frozen": true,
+    "dependencies_accepted": true,
+    "first_order_contracts_frozen": true,
+    "p1_r4_accepted": true,
+    "p2a_accepted": true,
+    "FIRST_ORDER_R4": true,
+    "P0_regression": true,
+    "P2B": true,
+    "all_final": true,
+    "T12_ten": true,
+    "conservation": true,
+    "admissibility": true,
+    "solver_unchanged": true
+  },
+  "independent_review": "PASS",
+  "closure_sha256": "1da24aa9012a9271af940560fdb09e390d4d67bd0fd5c21fb636059e7de4bc6f",
+  "scientific_review_sha256": "9411e8644a356a6fde204d026112f6628a9a97fafad6ab05773ae7511dbed6a7",
+  "final_review_sha256": "1609b22c111c2bd8da9d7c5b4eaf74dcaefa38f8e46716de5390f68fb9792cd0",
+  "native_acquisition_gate": "BLOCKED",
+  "native_verification_gate": "BLOCKED",
+  "native_reason": "review_not_approved: no real reviewer connected to runner; original reports preserved. Independent read-only review attached; this is an explicit derived decision.",
+  "new_integrations": 2,
+  "closure_integrations": 0,
+  "P2_HUMAN_ACCEPTED": false,
+  "P3": "NOT_STARTED",
+  "repair_budget": "P2B3/3 historical, no scientific/solver repairs in R5E",
+  "commits": {
+    "acquisition": "a503b87",
+    "scientific_adoption": "1228907",
+    "verification_source": "664af5f"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "OPEN_END_PLENUM_V2_PREREGISTRATION_V1",
+  "contract": "OPEN_END_PLENUM_CONTRACT_V1",
+  "status": "PREREGISTERED_BEFORE_IMPLEMENTATION_AND_KT100_CAMPAIGN",
+  "decision": {
+    "audit_item": "AUD-11",
+    "classification": "CASE B — CAPABILITY LIMITATION",
+    "authority": "user scientific decision, 2026-10-05",
+    "v1": "LEGACY_CHARACTERISTIC_V1, equations frozen",
+    "v2": "OPEN_END_PLENUM_V2",
+    "assumption": "SYNTHETIC_ASSUMPTION: isentropic, lossless inflow from stationary large plenum",
+    "walbro_wb40": "NOT_REPRESENTED_OR_CALIBRATED",
+    "restricted_nozzle": "RESTRICTED_NOZZLE_V1 interface only; explicit Cd, area, provenance required; not implemented",
+    "mass_flow_inlet": "NOT_INCLUDED",
+    "fixtures_a_b": "existing endpoint selections unchanged"
+  },
+  "equations": "docs/gasdynamic/open_end_plenum_v2_preregistration.md",
+  "openspec": "openspec/changes/motorsim-2t-commercial-core/specs/motorsim-2t-commercial-core/spec.md",
+  "frozen_test_groups": [
+    "reduction_to_v1_equal_entropy",
+    "reversal_continuity_multi_temperature",
+    "analytic_fixed_point",
+    "inflow_choking",
+    "outflow_choking",
+    "acoustic_pressure_reflection",
+    "normal_reversal_symmetry",
+    "species_donor_both_directions",
+    "incoming_flow_energy_equals_stagnation_enthalpy",
+    "deterministic_admissibility_grid",
+    "legacy_v1_regression_and_unchanged_source",
+    "instrumented_replay_of_preserved_kt100_r5_failure_faces"
+  ],
+  "campaign": {
+    "runs": 1,
+    "points_rpm": [5000, 7000, 9000, 11000, 13000],
+    "boundary": "OPEN_END_PLENUM_V2",
+    "unchanged_parameters": {
+      "fixture": "KT100_HYBRID_MODEL_FIXTURE_V2",
+      "cfl": 0.4,
+      "mesh_target_m": 0.03,
+      "max_cycles": 400,
+      "precision": "float64",
+      "fastmath": false,
+      "parallel": false,
+      "periodicity_contract": "REFERENCE_PERIODIC_CONVERGENCE_V1"
+    },
+    "output": "results/kt100-hybrid-model-fixture-v2-harness-20261002-r6-open-end-plenum-v2/",
+    "selection_rule": "model selected from human scientific decision, never campaign convergence",
+    "p4_dependency": "CONDITIONAL_ON_P4",
+    "experimental_validation": "NOT_PERFORMED"
+  },
+  "preregistration_commit": "PENDING_THIS_COMMIT",
+  "implementation": false,
+  "campaign_started": false
+}

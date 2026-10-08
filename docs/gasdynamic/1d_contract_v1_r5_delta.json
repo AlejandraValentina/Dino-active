@@ -1,0 +1,20 @@
+{
+  "base": "1D_CONTRACT_V1_R4",
+  "base_sha256": "9c747d2005c36b46d5d5a15389c0c25fb645b9e76b3451b2923d5a3f7ee9f2a9",
+  "revision": "1D_CONTRACT_V1_R5",
+  "scope": "SECOND_ORDER T11 only; FIRST_ORDER retains R4. Operative extension of R4 to MUSCL recorded in P2 design.",
+  "changes": [
+    {
+      "path": "/model_version",
+      "old": "1D_CONTRACT_V1_R4",
+      "new": "1D_CONTRACT_V1_R5"
+    },
+    {
+      "path": "/verification_cases/10/definition",
+      "old": "## T11 — Sensibilidad CFL (R4 first-order)\n\nT02 N400 con CFL0.2/0.4/0.6: todos los gates padre y diferencias E1 rho/p/u<=0.015\nfrente CFL0.2, intactos. T03 N800: comparación velocidad<=0.005a0 intacta.\nPara FIRST_ORDER+Forward Euler, sustituir exclusivamente el límite comparativo\namplitud<=0.08 por refinamiento N400/800/1600 para CFL0.2/0.4/0.6.\nMismas IC/BC/t_final originales; completar todos los casos, admisibilidad estricta\nsin clipping y cuatro ledgers<=1e-10. A(N,C)=max_i(p_i(t_final)-p0), en Pa;\nS(N;a,b)=abs(A(N,a)-A(N,b))/(1e-4*p0). Exigir S400>S800>S1600 para las\nTRES parejas(.2,.4),(.4,.6),(.2,.6), en ambas transiciones.\nE_A=abs(A-A_ref(N))/(1e-4*p0), con A_ref pico de primitivas de integrales\nconservadas de referencia acústica T03 original. Exigir E_A400>E_A800>E_A1600\npara cada CFL productivo. A N800 y N1600 todos los gates T03 originales:\npico/analítica[0.65,1.05], E1p<=0.025,E2p<=0.08,error velocidad<=0.01a0 y ledger.\nN400 es diagnóstico de exactitud; CFL0.1 diagnóstico temporal, no producción.\nRegistrar diferencia absoluta Pa y normalizada, dt/pasos/CFL real, extrema,\nrechazos/fallbacks, conservación, coste y errores. Registrar0.08 histórico\ncomo diagnóstico: R4 RETIRA su garantía en N800, no afirma equivalencia.\nSolo este caso/método; tres mallas no prueban límite asintótico universal.\nMUSCL/SSP-RK2 no cambia en R4 y conserva T11 original. Ver 1d_cfl_sensitivity_v1_r4.md.\n",
+      "new": "## T11 — Sensibilidad CFL por método (R5)\n\nFIRST_ORDER+Forward Euler conserva íntegro el criterio 1D_CONTRACT_V1_R4.\nLa extensión operativa de R4 a MUSCL documentada en P2 se sustituye\nexclusivamente por la siguiente rama SECOND_ORDER/MUSCL_SSPRK2.\n\nT02 N400 con CFL0.2/0.4/0.6: gates padre y diferencias E1 rho/p/u<=0.015\nfrente CFL0.2 intactos. T03 N800: diferencia de velocidad<=0.005a0 intacta.\nPara MUSCL/minmod+SSP-RK2: completar T03 N400/800/1600 con CFL0.2/0.4/0.6,\nmismas IC, BC, EOS y t_final; admisibilidad estricta sin clipping, CFL de\ncada etapa dentro de su límite y cuatro balances de paso/etapa<=1e-10.\nEn N800 y N1600 se conservan todos los gates T03 originales:\nA/A_ref en [0.65,1.05], E1p<=0.025, E2p<=0.08, error velocidad<=0.01a0.\nN400 conserva su carácter diagnóstico de exactitud.\n\nA(N,C)=max_i(p_i(t_final)-p0); A_ref(N) es el pico de primitivas derivadas de\nintegrales conservadas de referencia acústica T03, no el pico continuo.\nE_A(N,C)=abs(A-A_ref)/(1e-4*p0). Exigir E_A400>E_A800>E_A1600 para CADA CFL.\nS(N;a,b)=abs(A(N,a)-A(N,b))/(1e-4*p0).\nPara CADA pareja (.2,.4),(.4,.6),(.2,.6), exigir S1600<S400.\nSe retira SOLO la exigencia de S400>S800>S1600 en ambas transiciones\npara segundo orden; N800 se conserva y ambas transiciones se registran siempre.\nNo se agrega límite absoluto de sensibilidad ni se ajusta una tolerancia a datos.\nRegistrar errores L1/L2 de presión y fase/velocidad por CFL como corroboración\ncientífica del perfil, además del pico; cualquier deterioro sistemático\ncontradictorio requiere revisión científica, no aprobación por amplitud aislada.\nTres mallas y este benchmark no prueban convergencia asintótica universal.\nTodos los demás criterios, T01-T10/T12, T02/T06 y física permanecen intactos.\n"
+    }
+  ],
+  "removes_guarantee": "Strict sensitivity decrease at every refinement for SECOND_ORDER; not equivalent to R4.",
+  "unchanged": "T01-T10/T12, parent accuracy, all numerical methods and FIRST_ORDER."
+}

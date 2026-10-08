@@ -1,0 +1,71 @@
+{
+  "phase": "P3B",
+  "objective": "Fixed-volume finite coupled gates after R1 independent PASS",
+  "enabled": true,
+  "depends_on": [
+    "P2"
+  ],
+  "allowed_paths": [
+    "dev_orchestrator/runs/"
+  ],
+  "forbidden_paths": [
+    "motorsim/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Evidence only; source committed before run."
+  ],
+  "forbidden_changes": [
+    "Toda modificación de producto en esta versión."
+  ],
+  "commands": [
+    {
+      "id": "stage_tests",
+      "kind": "test",
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_coupled.py",
+        "-v"
+      ],
+      "timeout": 180
+    },
+    {
+      "id": "finite_cases",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p3_finite",
+        "--run-dir",
+        "{run_dir}"
+      ],
+      "timeout": 2500,
+      "result_file": "artifacts/result.json"
+    }
+  ],
+  "required_tests": [
+    "stage_tests"
+  ],
+  "required_checks": [
+    "stage_tests",
+    "finite_cases",
+    "P3B"
+  ],
+  "required_evidence": [
+    "artifacts/summary.json",
+    "artifacts/inventory.json",
+    "artifacts/result.json"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 0,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": false,
+  "timeout": 2600
+}

@@ -1,0 +1,260 @@
+{
+  "returncode": 0,
+  "duration": 268.78998947143555,
+  "HEAD_after": "7fbd48a0df872bb3dee8af863cdc6a32fd481fc9",
+  "status_after": [
+    "D redme.txt",
+    "?? results/roadmap-executor/invocations/d5b042dda8/",
+    "?? results/roadmap-executor/supervisor.lock"
+  ],
+  "state_after": {
+    "current_phase": "P5_B",
+    "current_subphase": "P5B-05 contractual_volume_work",
+    "base_commit": "854e59e",
+    "latest_commit": "aece044",
+    "classification": "IMPLEMENTED_CHECKPOINT",
+    "attempt": 0,
+    "gates": {
+      "implementation": "PASS",
+      "numerical": "PASS",
+      "regression": "PASS",
+      "openspec": "PASS"
+    },
+    "blockers": [],
+    "dependencies": {
+      "P4": "UNRESOLVED",
+      "P5": "CONDITIONAL"
+    },
+    "started_at": "2026-09-23T16:18:57.340428+00:00",
+    "completed_at": "2026-09-23T16:18:57.340428+00:00",
+    "next_action": "Audit contractual volume-work behavior and proceed with P5B-05"
+  },
+  "tasks_after": {
+    "phase": "P5_B",
+    "tasks": [
+      {
+        "id": "P5B-01",
+        "phase": "P5_B",
+        "description": "interior_gas1d_rhs",
+        "status": "DONE",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": "4 focused tests PASS",
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-02",
+        "phase": "P5_B",
+        "description": "coupled_ssprk2_stage1",
+        "status": "DONE",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": "5 focused tests PASS",
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-03",
+        "phase": "P5_B",
+        "description": "coupled_ssprk2_stage2",
+        "status": "DONE",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": "5 focused tests PASS",
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-04",
+        "phase": "P5_B",
+        "description": "chamber_conservative_rhs",
+        "status": "DONE",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": "8 focused P5B checks PASS; 3 coupled unittest tests PASS; py_compile PASS",
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-05",
+        "phase": "P5_B",
+        "description": "contractual_volume_work",
+        "status": "TODO",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": null,
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-06",
+        "phase": "P5_B",
+        "description": "interface_flux_single_source_audit",
+        "status": "TODO",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": null,
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-07",
+        "phase": "P5_B",
+        "description": "mass_global_ledger",
+        "status": "TODO",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": null,
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-08",
+        "phase": "P5_B",
+        "description": "species_global_ledger",
+        "status": "TODO",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": null,
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-09",
+        "phase": "P5_B",
+        "description": "energy_global_ledger",
+        "status": "TODO",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": null,
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-10",
+        "phase": "P5_B",
+        "description": "closed_volume_work_fixture",
+        "status": "TODO",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": null,
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-11",
+        "phase": "P5_B",
+        "description": "single_0d1d_fixture",
+        "status": "TODO",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": null,
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-12",
+        "phase": "P5_B",
+        "description": "one_transfer_fixture",
+        "status": "TODO",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": null,
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-13",
+        "phase": "P5_B",
+        "description": "two_transfer_fixture",
+        "status": "TODO",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": null,
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-14",
+        "phase": "P5_B",
+        "description": "complete_p5b_fixture",
+        "status": "TODO",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": null,
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-15",
+        "phase": "P5_B",
+        "description": "integrated_closed_port_fixture",
+        "status": "TODO",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": null,
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-16",
+        "phase": "P5_B",
+        "description": "restart_physical_state",
+        "status": "TODO",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": null,
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-17",
+        "phase": "P5_B",
+        "description": "determinism_physical_state",
+        "status": "TODO",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": null,
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-18",
+        "phase": "P5_B",
+        "description": "p5b_regressions",
+        "status": "TODO",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": null,
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-19",
+        "phase": "P5_B",
+        "description": "openspec_validation",
+        "status": "TODO",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": null,
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      },
+      {
+        "id": "P5B-20",
+        "phase": "P5_B",
+        "description": "p5b_final_gate",
+        "status": "TODO",
+        "dependencies": [],
+        "attempts": 0,
+        "verification": null,
+        "commit_if_checkpoint": true,
+        "blocker_if_failed": "BLOCKED_NUMERICAL"
+      }
+    ],
+    "active_task": "P5B-05",
+    "last_completed_task": "P5B-04",
+    "tasks_remaining": 16
+  }
+}

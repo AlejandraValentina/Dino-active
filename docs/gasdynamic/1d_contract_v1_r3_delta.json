@@ -1,0 +1,23 @@
+{
+  "base": "1D_CONTRACT_V1_R2",
+  "base_sha256": "89d2bf0d0140db9e452769f06c360a64174340ef38313b35cbb2f2e9b20018f6",
+  "revision": "1D_CONTRACT_V1_R3",
+  "changes": [
+    {
+      "path": "/model_version",
+      "old": "1D_CONTRACT_V1_R2",
+      "new": "1D_CONTRACT_V1_R3"
+    },
+    {
+      "path": "/boundaries/2",
+      "old": "ideal_open_pressure",
+      "new": "ideal_open_pressure_release"
+    },
+    {
+      "path": "/verification_cases/4/definition",
+      "old": "## T05 — Reflexión abierta ideal\n\nMismas IC/dominio/sensor/ventanas/t_final/métricas de T04, sustituyendo derecha\npor presión abierta p=p0, composición exterior Y0,T0. Referencia R/I=−1.\n|R/I+1|≤0.30 primer orden, ≤0.15 MUSCL, R<0, tiempo error≤0.02L/a0;\nmisma cota de señal incidente y denominador. Referencia ideal acústica, no una\nboca de escape real ni BC no reflectiva. Ledger incluye flujos del extremo abierto.\n",
+      "new": "## T05 — Reflexión abierta ideal\n\nMismas IC/dominio/sensor/ventanas/t_final/métricas de T04, sustituyendo derecha\npor ideal_open_pressure_release p_b=p0, continuación K_b=K_i,Y_b=Y_i\nen ambos sentidos y J+ interior; definición en 1d_boundary_semantics_v1_r3.md. Referencia R/I=−1.\n|R/I+1|≤0.30 primer orden, ≤0.15 MUSCL, R<0, tiempo error≤0.02L/a0;\nmisma cota de señal incidente y denominador. Referencia ideal acústica, no una\nboca de escape real ni BC no reflectiva. Ledger incluye flujos del extremo abierto.\n"
+    }
+  ],
+  "normative_override": "Only the ideal open acoustic paragraph of v1 is superseded by 1d_boundary_semantics_v1_r3.md. Nonreflecting, reservoir, T04/T02/T06 and thresholds unchanged."
+}

@@ -1,0 +1,81 @@
+{
+  "state": "P4_BLOCKED_WAVE_PHYSICS",
+  "scientific_state": "SCIENTIFIC_CHANGE_REQUIRED",
+  "P3": "P3_HUMAN_ACCEPTED",
+  "E01_E05": "PASS",
+  "E06_E11_individual": "PASS",
+  "P4B": "FAIL: blowdown refinement",
+  "E12_E14": "NOT_RUN",
+  "E15": "Bench-only PASS; hybrid NOT_RUN",
+  "tests": {
+    "count": 88,
+    "status": "PASS",
+    "seconds": 23.571
+  },
+  "regressions": {
+    "P0": "PASS offline",
+    "P2": "PASS offline",
+    "P3": "PASS offline"
+  },
+  "finite_cases": 19,
+  "finite_wall_seconds": 510.90700000245124,
+  "max_case_seconds": 271.25,
+  "max_global_residual": 3.378286967856889e-15,
+  "failed_metrics": {
+    "arrival": {
+      "values": [
+        0.0008747724705496624,
+        0.0008792962154978552,
+        0.0008749014071691907
+      ],
+      "decreasing": true
+    },
+    "pressure_integral": {
+      "values": [
+        164.72931965066442,
+        164.80499877841976,
+        164.89973448238882
+      ],
+      "decreasing": false
+    },
+    "mass_exchange": {
+      "values": [
+        -9.700566033221414e-05,
+        -9.700772869391448e-05,
+        -9.700999337738677e-05
+      ],
+      "decreasing": false
+    }
+  },
+  "aggregate": {
+    "E10_length": true,
+    "E11_RPM": true,
+    "wave_arrival": true,
+    "refinement_diffuser": true,
+    "refinement_blowdown": false,
+    "CFL_diffuser": true,
+    "CFL_blowdown": true
+  },
+  "native_closure": "FAILED_INFRASTRUCTURE: duplicate check ID historical; fixed config only, not rerun",
+  "P4C_implemented": false,
+  "P5_started": false,
+  "published": false,
+  "time_step_event_angles": [
+    0.0,
+    90.0,
+    112.20409610022972,
+    128.01547485298534,
+    180.0,
+    231.98452514701466,
+    247.79590389977028,
+    270.0,
+    360.0
+  ],
+  "physical_port_events": {
+    "opening": 90.0,
+    "full_opening": 112.20409610022972,
+    "full_opening_end": 247.79590389977028,
+    "closing": 270.0,
+    "maximum_area_mm2": 200.0
+  }
+}

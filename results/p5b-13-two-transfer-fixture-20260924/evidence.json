@@ -1,0 +1,60 @@
+{
+  "task": "P5B-13",
+  "fixture": "two_transfer_fixture",
+  "status": "PASS",
+  "implementation": {
+    "factory": "motorsim.p5b.make_two_transfer_fixture",
+    "class": "motorsim.p5b.TwoTransferFixture",
+    "topology": "one crankcase 0-D and one cylinder 0-D coupled by two independent finite transfer ducts",
+    "interface_solver": "motorsim.duct_network.interface_exchange",
+    "time_integrator": "SSPRK2 two-stage",
+    "external_boundaries": "none",
+    "sources": "contractual -p*dV/dt chamber work only",
+    "independence": "separate path meshes, duct cells, histories and ledgers; aggregate chamber RHS before update"
+  },
+  "numeric_verification": {
+    "open_interface_calls": 64,
+    "open_interface_expected_calls": 64,
+    "open_calls_per_step": 8,
+    "open_calls_per_stage": 4,
+    "symmetric_max_interface_abs_diff": 0.0,
+    "asymmetric_max_interface_abs_diff": 850.461674389725,
+    "open_mass_delta": -4.1081097941833566e-19,
+    "open_species_delta": 2.3759274170483125e-19,
+    "open_energy_delta": 8.051337374581635e-13,
+    "open_applied_mass": -2.625802136488333e-27,
+    "open_applied_species": -8.597384414631148e-27,
+    "open_applied_energy": -1.143529715363911e-20,
+    "open_energy_integration_residual": -1.143529715363911e-20,
+    "open_duct_interior_max_abs_delta": 497.7374485867913,
+    "closed_interface_fluxes_exact_zero": true,
+    "closed_mass_delta": 0.0,
+    "closed_species_delta": 0.0,
+    "closed_applied_energy": 1.5000082147558963e-05,
+    "closed_chamber_work": 1.500008214755895e-05,
+    "closed_energy_integration_residual": 1.3552527156068805e-20,
+    "open_stored_balance_roundoff": 9.094947017729282e-13,
+    "open_stored_balance_roundoff_bound": 8.861483781559385e-11,
+    "closed_stored_balance_roundoff": -1.3642420526593924e-12,
+    "closed_stored_balance_roundoff_bound": 8.123026061314571e-11,
+    "admissible": true
+  },
+  "verification": {
+    "focused": "PASS: 5 P5B-13 tests",
+    "full_p5b": "PASS: 35 tests in tests/test_p5b_integrated_coupling.py",
+    "p5_coupling_regressions": "PASS: 31 tests",
+    "py_compile": "PASS",
+    "diff_check": "PASS: git diff --check",
+    "energy_gate_note": "strict gate applies to applied SSPRK2 stage quadrature; final stored-state subtraction is separately bounded machine roundoff"
+  },
+  "governance": {
+    "p4": "BLOCKED / NOT_GRANTED",
+    "scope": "isolated P5B only; no P4 acceptance inferred",
+    "no_alternate_physics": true,
+    "no_push": true
+  },
+  "checkpoint": {
+    "status": "LOCAL_COMMIT",
+    "commit": "bd3dcbf"
+  }
+}

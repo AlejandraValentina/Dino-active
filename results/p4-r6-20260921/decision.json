@@ -1,0 +1,24 @@
+{
+  "phase": "P4-R6",
+  "gate": "P4_R6_PERIOD_2_ORBIT_CONFIRMED",
+  "r5_performance": "P4_R5_NUMBA_FUSED_PERFORMANCE_PASS",
+  "p4_state": "P4_BLOCKED_PERIODIC_CONVERGENCE",
+  "classification": "PERIOD_2_ORBIT_CONFIRMED",
+  "evidence": {
+    "d1_cycles": 30,
+    "d2_converges": true,
+    "d1_sensor_max": 0.60377,
+    "d2_sensor_max_last": 0.01518,
+    "vec_lag1_max": 0.32483,
+    "vec_lag2_max": 0.00024,
+    "invariance_360": "PASS",
+    "handoff": "PASS",
+    "restart": "PASS",
+    "odd_even": "two stable states",
+    "g2_pattern": "same period-2"
+  },
+  "thresholds_unchanged": true,
+  "scientific_change_required": true,
+  "implementation_agent": "OpenCode / Muse Spark 1.2",
+  "next": "STOP, no P5, scientific decision required for period-2 acceptance"
+}

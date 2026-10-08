@@ -1,0 +1,64 @@
+{
+  "task": "P5B-12",
+  "fixture": "one_transfer_fixture",
+  "status": "PASS",
+  "implementation": {
+    "factory": "motorsim.p5b.make_one_transfer_fixture",
+    "class": "motorsim.p5b.OneTransferFixture",
+    "topology": "crankcase 0-D <-> one finite transfer duct <-> cylinder 0-D",
+    "interface_solver": "motorsim.duct_network.interface_exchange",
+    "time_integrator": "SSPRK2 two-stage",
+    "external_boundaries": "none",
+    "sources": "contractual -p*dV/dt chamber work only"
+  },
+  "gates": {
+    "mass": "conserved",
+    "passive_species": "conserved",
+    "energy_applied_stage_quadrature": "conserved against chamber work",
+    "stored_state_roundoff": "reported and bounded",
+    "closed_interface_flux": "exact zero",
+    "duct_interior_evolution": "nonzero",
+    "stage_consistency": "verified",
+    "admissibility": "verified"
+  },
+  "numeric_verification": {
+    "open_interface_calls": 32,
+    "open_interface_expected_calls": 32,
+    "open_calls_per_ssprk2_stage": 2,
+    "open_normals_first_two_stages": [-1, 1, -1, 1],
+    "open_face_flux_opposite_sign_reuse": true,
+    "open_duct_interior_max_abs_delta": 497.74114381405525,
+    "open_mass_delta": 2.022291161569642e-19,
+    "open_species_delta": -1.4046982639028503e-18,
+    "open_energy_delta": -6.875056079991282e-13,
+    "closed_interfaces": [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]],
+    "closed_exact_zero_interface_flux": true,
+    "closed_mass_delta": 0.0,
+    "closed_species_delta": 0.0,
+    "closed_external_energy": 0.0,
+    "closed_cc_work": 0.0001120000756000594,
+    "closed_cylinder_work": -9.699999345250045e-05,
+    "closed_chamber_work": 1.500008214755895e-05,
+    "closed_applied_delta_energy": 1.5000082147558963e-05,
+    "closed_integration_residual": 1.3552527156068805e-20,
+    "stored_balance_roundoff": -1.3642420526593924e-12,
+    "stored_balance_roundoff_bound": 5.415350707543047e-11,
+    "stored_roundoff_within_bound": true
+  },
+  "verification": {
+    "focused": "PASS: 4 one-transfer tests",
+    "regressions": "PASS: 63 relevant P5/P5B/coupling tests",
+    "py_compile": "PASS",
+    "diff_check": "PASS: git diff --check",
+    "energy_gate_note": "strict gate applies to applied SSPRK2 stage quadrature; final stored-state subtraction is separately bounded machine roundoff"
+  },
+  "governance": {
+    "p4": "BLOCKED / NOT_GRANTED",
+    "scope": "isolated P5B only; no P4 acceptance inferred",
+    "no_alternate_physics": true,
+    "no_push": true
+  },
+  "checkpoint": {
+    "status": "PENDING_LOCAL_COMMIT"
+  }
+}

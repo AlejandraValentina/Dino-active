@@ -1,0 +1,34 @@
+{
+  "state": "P3_PASS_0D_1D_COUPLING_VERIFIED",
+  "human_state": "WAITING_HUMAN_APPROVAL",
+  "reviewer": "/root/p3_review",
+  "mode": "independent read-only",
+  "checks": {
+    "R1": true,
+    "P3B": true,
+    "P3C": true,
+    "adapter": true,
+    "adiabatic_isolated_test": true,
+    "tests_83": true,
+    "P2_offline": true,
+    "P0_offline": true,
+    "frozen_27": true
+  },
+  "artifacts": {
+    "r1-reviewed.json": "97b274203f47e55600f257c92ef7c05bf74fbaac0cde1132109f4aa99bfec3ee",
+    "p3b-reviewed.json": "b669cf8a7d40379203aaf5e413eb89a0f9ccdfca355a0f5c192bffcf75cc6788",
+    "p3c-reviewed.json": "4e91ae5963c59fb2794b4ed247e753502c6ac809ffee9f5986058d388e2f424c",
+    "closure\\artifacts\\r1.json": "3cd34d95275b155814cf345b7d73546a30293b57aadfacb686ddb885eef8805b"
+  },
+  "code": {
+    "motorsim/coupling.py": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+    "motorsim/coupled.py": "a64c64c0c29a99ee3709fcc45b142740838537b78066336131ea1ea92adae3a8",
+    "motorsim/coupling_adapter.py": "34bc543b214de01da80c8a440c35ace50139a6ed2a296b79c29e10c1452bca45",
+    "tests/test_coupling_adapter.py": "726ce59209f4df4c31a5fb94f12a0e03d040c14ae652dfe1d08e354b9a1ddce4",
+    "tests/test_coupled.py": "e0e8f8fe56b7189deac625df3e2e411750bf3ab6930297746b3f9a45335d8f64"
+  },
+  "findings": [],
+  "native_review_hook_approved": false,
+  "P4_started": false,
+  "notes": "Final review combined with independent R1/B/C reviews. No open findings. Offline historical verification is not a new physical campaign; no experimental validation."
+}

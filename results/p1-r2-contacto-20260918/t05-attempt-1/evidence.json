@@ -1,0 +1,181 @@
+{
+  "run_id": "20260918T103045-P2_T05-d75114a4f362",
+  "phase_id": "P2_T05",
+  "started_at": "2026-09-18T10:30:45.552238+00:00",
+  "finished_at": "2026-09-18T10:31:39.750367+00:00",
+  "git_commit": "de1d89621aa15d79b015c3ae324def46d16c142f",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "fix_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p2_fixes.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.9690000005066395,
+      "status": "passed",
+      "stdout_log": "logs/1-fix_tests.stdout.log",
+      "stderr_log": "logs/1-fix_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "t05",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p2_t05",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260918T103045-P2_T05-d75114a4f362"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 40.21800000034273,
+      "status": "passed",
+      "stdout_log": "logs/1-t05.stdout.log",
+      "stderr_log": "logs/1-t05.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "fix_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "t05",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "baseline_intact",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "Exact contractual T05"
+    },
+    {
+      "id": "contract_frozen",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "Exact contractual T05"
+    },
+    {
+      "id": "dependencies_accepted",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "Exact contractual T05"
+    },
+    {
+      "id": "T05",
+      "passed": false,
+      "kind": "numerical",
+      "reason": "Exact contractual T05"
+    }
+  ],
+  "tests": [
+    {
+      "id": "fix_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p2_fixes.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.9690000005066395,
+      "status": "passed",
+      "stdout_log": "logs/1-fix_tests.stdout.log",
+      "stderr_log": "logs/1-fix_tests.stderr.log",
+      "error": ""
+    }
+  ],
+  "metrics": {
+    "wall_seconds": 39.07799999974668
+  },
+  "review": {
+    "status": "BLOCKED",
+    "findings": [
+      "No hay reviewer independiente conectado."
+    ],
+    "blocking_findings": [
+      "reviewer_unavailable"
+    ],
+    "scientific_change_required": false,
+    "notes": "No se llamó a ningún proveedor externo.",
+    "kind": "none"
+  },
+  "gate": "BLOCKED",
+  "gate_reasons": [
+    "required_check_failed:T05",
+    "review_not_approved"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "required_check_failed:T05; review_not_approved",
+      "state": "BLOCKED"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "artifacts/T05.json.gz",
+      "sha256": "1ba6bf703b5cdea59482f8ceceb41519be66d8a7b29fbdfbcccbc50494378234",
+      "bytes": 532313
+    },
+    {
+      "path": "artifacts/t05-summary.json",
+      "sha256": "5964784160b0c55bba7567861cac99b3fc66fbb13282dce0118d5ebf6552b45e",
+      "bytes": 655
+    },
+    {
+      "path": "artifacts/result.json",
+      "sha256": "ab63b5215f183ff54ef110471e5465c0b7e698b8e5a1b98698b534a3289aaaad",
+      "bytes": 677
+    }
+  ],
+  "phase_definition_sha256": "c5856cb1c5148721e8359f4c5733326b2618a3f5155d209aa8b8289761bda013",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P0": "docs\\gasdynamic\\p0_accepted_dependency.json",
+      "P1": "docs\\gasdynamic\\p1_accepted_dependency.json",
+      "P1_R2": "results\\p1-r2-contacto-20260918\\reviewed-evidence.json"
+    }
+  },
+  "continue_requested": false
+}

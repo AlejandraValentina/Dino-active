@@ -1,0 +1,76 @@
+{
+  "audits": {
+    "fail": "PIPELINE_EXPECTED_FAIL",
+    "inconclusive": "PIPELINE_EXPECTED_INCONCLUSIVE",
+    "pass": "P9_PIPELINE_QUALIFIED_WITH_SYNTHETIC_DATA"
+  },
+  "date": "2026-10-01",
+  "experimental_validation": "NOT_PERFORMED",
+  "frozen_contract_sha256": "79fbe9b88d26fc4af5083d65d468f59c9208535f0ab389d2f3cb9a7654b88a4d",
+  "no_calibration_or_comparison_performed": true,
+  "no_motorsim_simulation_run": true,
+  "no_real_dataset_ingested": true,
+  "p9_pass_emitted": false,
+  "p9_status": "P9_PREREGISTERED_AWAITING_EXPERIMENTAL_DATA",
+  "predictive_validation": "NOT_CLAIMED",
+  "scenarios": [
+    {
+      "cycles_per_point": 50,
+      "operating_points": 7,
+      "raw_files": [
+        {
+          "path": "experiment.csv.gz",
+          "sha256": "1c36ca973544b2d0bf5d70e8b93841b3b830cd50deb0b55444d75653d803fb6d",
+          "size_bytes": 1070304
+        },
+        {
+          "path": "simulation_primary.csv.gz",
+          "sha256": "bb35193e352bebc5657fa88bb66252b4f63b4caa32feffcfebaace5fddec0fb4",
+          "size_bytes": 1070273
+        }
+      ],
+      "scenario": "pass",
+      "status": "P9_PIPELINE_QUALIFIED_WITH_SYNTHETIC_DATA",
+      "synthetic_label": "SYNTHETIC_PIPELINE_QUALIFICATION_ONLY"
+    },
+    {
+      "cycles_per_point": 50,
+      "operating_points": 7,
+      "raw_files": [
+        {
+          "path": "experiment.csv.gz",
+          "sha256": "1c36ca973544b2d0bf5d70e8b93841b3b830cd50deb0b55444d75653d803fb6d",
+          "size_bytes": 1070304
+        },
+        {
+          "path": "simulation_primary.csv.gz",
+          "sha256": "e96a927cf7efa2801be6ead1a1925e4d9a45ac2d16bae598340ed62e57c47829",
+          "size_bytes": 1070238
+        }
+      ],
+      "scenario": "fail",
+      "status": "PIPELINE_EXPECTED_FAIL",
+      "synthetic_label": "SYNTHETIC_PIPELINE_QUALIFICATION_ONLY"
+    },
+    {
+      "cycles_per_point": 50,
+      "operating_points": 0,
+      "raw_files": [
+        {
+          "path": "experiment.csv.gz",
+          "sha256": "1c36ca973544b2d0bf5d70e8b93841b3b830cd50deb0b55444d75653d803fb6d",
+          "size_bytes": 1070304
+        },
+        {
+          "path": "simulation_primary.csv.gz",
+          "sha256": "bb35193e352bebc5657fa88bb66252b4f63b4caa32feffcfebaace5fddec0fb4",
+          "size_bytes": 1070273
+        }
+      ],
+      "scenario": "inconclusive",
+      "status": "PIPELINE_EXPECTED_INCONCLUSIVE",
+      "synthetic_label": "SYNTHETIC_PIPELINE_QUALIFICATION_ONLY"
+    }
+  ],
+  "schema": "motorsim-p9-synthetic-pipeline-qualification-v1"
+}

@@ -1,0 +1,46 @@
+{
+  "phase": "P4-R5",
+  "gate": "P4_R5_NUMBA_FUSED_PERFORMANCE_PASS",
+  "performance": {
+    "backend": "NUMBA_FUSED",
+    "wall_seconds_measurement_1": 19.51922219991684,
+    "wall_seconds_measurement_2": 19.22276240028441,
+    "cycle_seconds_1": 19.140999999828637,
+    "cycle_seconds_2": 19.186999999918044,
+    "median_cycle_seconds": 19.16399999987334,
+    "threshold": 20.0,
+    "projection_30": 574.92,
+    "speedup_vs_scalar": 13.74,
+    "speedup_vs_r4": 1.42,
+    "passed": true
+  },
+  "equivalence": {
+    "passed": true,
+    "max_abs": 0.0
+  },
+  "focal": {
+    "passed": true,
+    "aggregate_speedup": 1.335
+  },
+  "micro_rhs": {
+    "passed": true,
+    "speedup": 5.512
+  },
+  "periodic": {
+    "G1_passed": false,
+    "G2_passed": false,
+    "cycles_G1": 30,
+    "note": "P4_BLOCKED_PERIODIC_CONVERGENCE"
+  },
+  "regressions": {
+    "passed": true,
+    "tests": 101,
+    "numba_tests": 5,
+    "fused_tests": 3
+  },
+  "open_spec": "PASS",
+  "scientific_change": false,
+  "implementation_agent": "OpenCode / Muse Spark 1.2",
+  "state": "P4_R5_NUMBA_FUSED_PERFORMANCE_PASS / P4_BLOCKED_PERIODIC_CONVERGENCE",
+  "next": "P4 requires periodic PASS or scientific decision; no P5"
+}

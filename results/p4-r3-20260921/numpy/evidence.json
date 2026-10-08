@@ -1,0 +1,190 @@
+{
+  "run_id": "20260921T131302-P4_R3_NUMPY-7ffd07472aae",
+  "phase_id": "P4_R3_NUMPY",
+  "started_at": "2026-09-21T13:13:02.544069+00:00",
+  "finished_at": "2026-09-21T13:14:50.496566+00:00",
+  "git_commit": "5e7680e171cbd3d6c5efb376082e0e2b814d825f",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "batch_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_gas1d_batch.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 1.5930000003427267,
+      "status": "passed",
+      "stdout_log": "logs/1-batch_tests.stdout.log",
+      "stderr_log": "logs/1-batch_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "benchmark_command",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p4_r3_benchmark",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260921T131302-P4_R3_NUMPY-7ffd07472aae",
+        "--backend",
+        "NUMPY",
+        "--repeats",
+        "2"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 81.40599999949336,
+      "status": "passed",
+      "stdout_log": "logs/1-benchmark_command.stdout.log",
+      "stderr_log": "logs/1-benchmark_command.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "profile_command",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p4_r3_profile",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260921T131302-P4_R3_NUMPY-7ffd07472aae/profile",
+        "--backend",
+        "NUMPY"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 3.014999999664724,
+      "status": "passed",
+      "stdout_log": "logs/1-profile_command.stdout.log",
+      "stderr_log": "logs/1-profile_command.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "batch_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "benchmark_command",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "benchmark_equivalence",
+      "kind": "numerical",
+      "passed": true,
+      "reason": "Fixed G1 vs frozen R2"
+    },
+    {
+      "id": "profile_command",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "profile_complete",
+      "kind": "numerical",
+      "passed": true,
+      "reason": "Three representative bounded windows"
+    }
+  ],
+  "tests": [
+    {
+      "id": "batch_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_gas1d_batch.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 1.5930000003427267,
+      "status": "passed",
+      "stdout_log": "logs/1-batch_tests.stdout.log",
+      "stderr_log": "logs/1-batch_tests.stderr.log",
+      "error": ""
+    }
+  ],
+  "metrics": {
+    "measurements": 2
+  },
+  "review": {
+    "status": "BLOCKED",
+    "findings": [
+      "No hay reviewer independiente conectado."
+    ],
+    "blocking_findings": [
+      "reviewer_unavailable"
+    ],
+    "scientific_change_required": false,
+    "notes": "No se llamó a ningún proveedor externo.",
+    "kind": "none"
+  },
+  "gate": "BLOCKED",
+  "gate_reasons": [
+    "review_not_approved"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "review_not_approved",
+      "state": "BLOCKED"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "artifacts/benchmark.json",
+      "sha256": "c300e99792b204f3a73a19bf403f6d16c364781e796ed3af73740a02ebfd58f9",
+      "bytes": 7257
+    },
+    {
+      "path": "profile/artifacts/profile-summary.json",
+      "sha256": "e0d6fb275b2e93202990084909899205f9c0e74362c7214f1f6ef0f3ca560d55",
+      "bytes": 1926
+    }
+  ],
+  "phase_definition_sha256": "e045018275fb7e24d2e4de3b555d8e0603737fc422d50e90ae34fa72f6a5620e",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P2": "docs\\gasdynamic\\p2_accepted_dependency.json"
+    }
+  },
+  "continue_requested": false
+}

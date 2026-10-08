@@ -1,0 +1,151 @@
+{
+  "schema": "P4_P8_INDEPENDENT_FINAL_REVIEW_V1",
+  "reviewed_head": "78615563ad7f8e4f1dde9ee05226119ffc3433a4",
+  "reviewed_branch": "main",
+  "baseline_clean_and_equal_to_origin_main": true,
+  "decision": "INDEPENDENT_REVIEW_PASS",
+  "blockers": [],
+  "majors": [],
+  "minors": [
+    {
+      "finding": "Four NumPy deprecation warnings in tests/test_p4_r10a.py during test_rhoE_formula.",
+      "impact": "No effect on current acceptance; unrelated to numerical gate results."
+    }
+  ],
+  "final_001_attack": {
+    "performed_on_temporary_copy": true,
+    "mutations": [
+      "terminal conservative mass",
+      "matching restart terminal conservative state",
+      "producer terminal digests",
+      "compressed primary artifact hashes and byte sizes",
+      "both anchor summary copies"
+    ],
+    "accepted_trajectory_untouched": true,
+    "rejected": true,
+    "reason": "trajectory_terminal_mismatch: conservative_state",
+    "tracked_campaign_modified": false
+  },
+  "trajectory_terminal": {
+    "status": "PASS",
+    "accepted_endpoint_capture": "After P6IntegratedSystem.step returns, after P8 elapsed time advances; captures installed SSPRK2 state and updated P6/P7 state before next step.",
+    "terminal_fields_exactly_bound": [
+      "conservative_state",
+      "species_masses",
+      "species_initial",
+      "species_external",
+      "gas_external_cumulative",
+      "gas_last_external",
+      "gas_ledger",
+      "gas_initial",
+      "gas_previous_totals",
+      "fresh_delivered",
+      "fresh_delivered_tr1",
+      "fresh_delivered_tr2",
+      "fresh_short_circuit",
+      "p7_events",
+      "p7_source_delta",
+      "p7_enabled",
+      "p7_angular_rate_deg_s",
+      "cycle_index",
+      "elapsed_time_s",
+      "angle"
+    ],
+    "q_n_vs_installed_state": "One-ULP raw SSPRK2 q_n difference after chamber primitive conversion/reconstruction is documented. Exact binding uses the installed accepted state; no tolerance added.",
+    "validation_order": [
+      "trajectory_to_terminal",
+      "recompute_counters_from_raw_fluxes",
+      "canonical_terminal_preimage",
+      "recompute_and_compare_digest",
+      "compare_independent_replay_and_restart"
+    ],
+    "restart_replay_and_digest": "PASS"
+  },
+  "p8_campaign": {
+    "path": "results/p8-wide-rpm-trajectory-bound-20260930",
+    "offline_audit": "P8_PRIMARY_EVIDENCE_REAUDIT_PASS",
+    "all_five_anchors_pass": true,
+    "semantics": "BOUNDED_TRANSIENT_INDICATED",
+    "periodic_convergence": "NOT_GRANTED_BY_P4",
+    "experimental_validation": "NOT_PERFORMED",
+    "anchors": [
+      {"rpm": 2500, "steps": 1867, "work_J": 4.360064431757779, "power_W": 181.6693513232408, "p_max_Pa": 1754839.8989528634, "mass_residual_kg": 1.9949319973733282e-17, "energy_residual_J": -7.361666831684488e-12, "species_residual_kg": 3.469446951953614e-18, "max_cfl": 0.4, "passed": true},
+      {"rpm": 5000, "steps": 996, "work_J": 2.0562492362787825, "power_W": 171.3541030232319, "p_max_Pa": 1738504.6946132828, "mass_residual_kg": 1.485356976305141e-17, "energy_residual_J": -2.858828625218468e-13, "species_residual_kg": 6.938893903907228e-18, "max_cfl": 0.4, "passed": true},
+      {"rpm": 8000, "steps": 647, "work_J": 0.6691194967847296, "power_W": 89.2159329046306, "p_max_Pa": 1687764.6907165232, "mass_residual_kg": 1.0001765041178778e-17, "energy_residual_J": -4.2216230511371577e-13, "species_residual_kg": 0.0, "max_cfl": 0.4, "passed": true},
+      {"rpm": 11000, "steps": 478, "work_J": 0.1371532969733605, "power_W": 25.14477111178276, "p_max_Pa": 1685182.7187811628, "mass_residual_kg": 5.637851296924623e-18, "energy_residual_J": 3.241407142695607e-12, "species_residual_kg": 3.469446951953614e-18, "max_cfl": 0.4, "passed": true},
+      {"rpm": 15000, "steps": 358, "work_J": -0.09811184796898713, "power_W": -24.527961992246784, "p_max_Pa": 1716040.4740701027, "mass_residual_kg": 1.3444106938820255e-17, "energy_residual_J": -2.930988785010413e-14, "species_residual_kg": -1.3877787807814457e-17, "max_cfl": 0.4, "passed": true}
+    ],
+    "per_anchor_gates": [
+      "finite",
+      "geometry_rebase",
+      "admissibility",
+      "four_species_state_and_balance",
+      "non_vacuous_P7_event_source_and_heat_consistency",
+      "CFL",
+      "global_mass_and_energy_balance",
+      "restart",
+      "deterministic_replay",
+      "fresh_delivery",
+      "short_circuit",
+      "terminal_digest"
+    ]
+  },
+  "p4": {
+    "status": "P4_PASS",
+    "acceptance": "GRANTED_BY_INDEPENDENT_REVIEW",
+    "g2": {
+      "status": "E13_G2_V2_PASS",
+      "period": 2,
+      "converged_cycle": 50,
+      "branch_A_streak": 15,
+      "branch_B_streak": 3,
+      "conservation_cfl_admissibility": "PASS",
+      "offline_audit": "results/p4-g2-v2-ledger-recovery-20260929-retry/offline-audit.json"
+    },
+    "r2_false_dt_regression": {
+      "input": "cycle 50 dt=false with closing hash updated",
+      "classification": "E13_G2_V2_INCONCLUSIVE",
+      "reason": "MALFORMED_CFL_DT"
+    },
+    "c3": {
+      "status": "P4_SCI_C3_PASS",
+      "acquisition_path": "results/p4-c3-r5-20260928/acquisition-evaluation.json",
+      "runtime_source_hash_count": 7,
+      "runtime_source_hashes_match_reviewed_tree": true,
+      "offline_re_evaluation_records": 777,
+      "causal_return_A_B0_B1_stage_A_B1_stage_B_B2": "PASS for every record",
+      "max_global_residual": 6.964551734577821e-16,
+      "solver_completed_at_target": true,
+      "physical_acquisition_repeated": false
+    },
+    "remaining_historical_gates": "P4 final gate matrix records P4A/P4B, E12, E13-G1, E14/E15, B1/B2/C1/C2, performance, checkpoint/restart, regressions and OpenSpec PASS; original G2 max-30 failure remains preserved as historical evidence."
+  },
+  "p5_p8": {
+    "p5": "REVALIDATED_ON_P4_PASS",
+    "p6": "REVALIDATED_ON_P4_PASS",
+    "p7": "REVALIDATED_ON_P4_PASS",
+    "p8": "REVALIDATED_ON_P4_PASS",
+    "product_code_changed_in_reviewed_head": ["motorsim/p8_performance.py"],
+    "p4_p7_product_code_changed": false,
+    "evidence": "P5-P7 and coupling regression suites pass; P8 accepted-state implementation and five-anchor campaign reaudited at this HEAD."
+  },
+  "tests": {
+    "p4_e13": "190 passed",
+    "r2_false_dt_exact_regression": "1 passed",
+    "p5_p7_and_coupling": "100 passed",
+    "p8_r4": "23 passed; physical campaign test deselected because current committed campaign was audited separately"
+  },
+  "openspec_strict": {
+    "p4-escape-1d": "PASS",
+    "p5-intake-transfer": "PASS",
+    "p7-prescribed-heat-burn": "PASS",
+    "p8-wide-rpm-performance": "PASS"
+  },
+  "git_lfs_fsck": "PASS",
+  "experimental_validation": "NOT_PERFORMED",
+  "p8_semantics": "BOUNDED_TRANSIENT_INDICATED",
+  "p9_readiness": "READY_FOR_P9_HUMAN_AUTHORIZATION",
+  "p9_started": false,
+  "historical_blocked_reviews_preserved": true,
+  "report": "docs/gasdynamic/p4_p8_independent_final_pass_20260930.md"
+}

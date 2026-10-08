@@ -1,0 +1,28 @@
+{
+  "decision": "LOW_RPM_FAILURE_MECHANISM_IDENTIFIED",
+  "lowest_observed_pass_rpm": 2250,
+  "highest_observed_failure_rpm": 2000,
+  "observed_transition": "monotonic in sampled terminal states; no inference between samples",
+  "candidate_boundary": ">2000 and <=2250 rpm; refinement not performed",
+  "public_domain_unchanged": [
+    2500,
+    3500
+  ],
+  "production_changes": false,
+  "integration_seconds_total": 66.82700000051409,
+  "integration_seconds_boundary": 66.81100000068545,
+  "campaign_wall_seconds": 68.59399999957532,
+  "scientific_regression_exact_rpms": [
+    1000,
+    2000,
+    3000
+  ],
+  "no_new_high_rpm_campaign": true,
+  "no_4t_campaign": true,
+  "no_candidate": true,
+  "limitations": [
+    "Potential final RK result not evaluated through invalid stage.",
+    "Next smaller step not integrated; avoidance of violation not established.",
+    "No experimental validation or general-domain proof."
+  ]
+}

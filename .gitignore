@@ -1,0 +1,30 @@
+.venv/
+.venv-build/
+/build/windows/
+/dist/
+__pycache__/
+*.py[cod]
+/dev_orchestrator/runs/
+/.agent-sessions/
+
+# Local tool state / caches
+/.opencode/tools/
+/.opencode/cache/
+/.opencode/ostacky-state.json
+/.opencode/ostacky-state.json.backup*
+/.opencode/ostacky-state.json.lock.*
+/.opencode/ostacky-audit.jsonl
+/.codegraph/
+
+# Heavy simulation artifacts stay outside the active Git repository.
+# Keep compact manifests/summaries/results, but never raw cycles/checkpoints/primaries.
+/results/**/*.json.gz
+/results/**/*cycle*.json
+/results/**/*checkpoint*.json
+/results/**/*primary*.json
+/results/**/*trace*.jsonl
+/results/**/*.npz
+/results/**/*.prof
+/results/**/*.log
+/results/distribucion-windows/
+/results/simulacion-2t/

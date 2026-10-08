@@ -1,0 +1,36 @@
+         110851 function calls in 0.054 seconds
+
+   Ordered by: cumulative time
+   List reduced from 39 to 30 due to restriction <30>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.001    0.001    0.054    0.054 E:\dino\Dino\dev_orchestrator\p4_r1_profile.py:29(snapshot)
+      801    0.009    0.000    0.034    0.000 E:\dino\Dino\motorsim\gas1d\riemann.py:29(hllc_flux)
+        1    0.005    0.005    0.020    0.020 E:\dino\Dino\motorsim\gas1d\second_order.py:16(reconstruct)
+     6420    0.006    0.000    0.017    0.000 {built-in method builtins.all}
+     4015    0.005    0.000    0.016    0.000 E:\dino\Dino\motorsim\gas1d\eos.py:25(validate)
+    20075    0.005    0.000    0.007    0.000 E:\dino\Dino\motorsim\gas1d\eos.py:27(<genexpr>)
+      801    0.001    0.000    0.007    0.000 E:\dino\Dino\motorsim\gas1d\eos.py:33(conservative)
+      801    0.003    0.000    0.005    0.000 E:\dino\Dino\motorsim\gas1d\riemann.py:6(estimate_wave_speeds)
+      800    0.002    0.000    0.005    0.000 E:\dino\Dino\motorsim\gas1d\second_order.py:36(<listcomp>)
+    32097    0.004    0.000    0.004    0.000 {built-in method math.isfinite}
+     3200    0.002    0.000    0.003    0.000 E:\dino\Dino\motorsim\gas1d\second_order.py:10(minmod)
+     6408    0.002    0.000    0.002    0.000 E:\dino\Dino\motorsim\gas1d\riemann.py:51(<genexpr>)
+     4005    0.001    0.000    0.001    0.000 E:\dino\Dino\motorsim\gas1d\eos.py:36(<genexpr>)
+     4000    0.001    0.000    0.001    0.000 E:\dino\Dino\motorsim\gas1d\second_order.py:37(<genexpr>)
+     4000    0.001    0.000    0.001    0.000 E:\dino\Dino\motorsim\gas1d\second_order.py:38(<genexpr>)
+     4005    0.001    0.000    0.001    0.000 E:\dino\Dino\motorsim\gas1d\riemann.py:58(<genexpr>)
+     1603    0.001    0.000    0.001    0.000 E:\dino\Dino\motorsim\gas1d\eos.py:48(flux)
+     1608    0.001    0.000    0.001    0.000 E:\dino\Dino\motorsim\gas1d\eos.py:46(sound_speed)
+     4011    0.001    0.000    0.001    0.000 {built-in method math.sqrt}
+     5748    0.001    0.000    0.001    0.000 {built-in method builtins.abs}
+     3202    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+      800    0.000    0.000    0.000    0.000 E:\dino\Dino\motorsim\gas1d\mesh.py:23(n)
+      804    0.000    0.000    0.000    0.000 {built-in method builtins.min}
+        1    0.000    0.000    0.000    0.000 E:\dino\Dino\motorsim\exhaust_port.py:37(port_flux)
+      802    0.000    0.000    0.000    0.000 {built-in method builtins.max}
+      800    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+        2    0.000    0.000    0.000    0.000 E:\dino\Dino\motorsim\gas1d\boundary.py:70(flux)
+        4    0.000    0.000    0.000    0.000 E:\dino\Dino\motorsim\gas1d\boundary.py:16(face_state)
+        1    0.000    0.000    0.000    0.000 E:\dino\Dino\motorsim\coupling.py:76(interface_flux)
+        1    0.000    0.000    0.000    0.000 E:\dino\Dino\motorsim\coupling.py:20(thermodynamics)

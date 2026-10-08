@@ -1,0 +1,15 @@
+{
+  "fixture": "P5B-10 closed_volume_work_fixture",
+  "date": "2026-09-24",
+  "implementation": "motorsim.p5b.make_closed_volume_work_fixture",
+  "test": "tests/test_p5b_integrated_coupling.py::test_closed_volume_work_fixture_conserves_inventories_and_has_no_flux",
+  "steps": 20,
+  "dt_s": 0.001,
+  "ports_closed": true,
+  "final_volumes_m3": [0.0009979999999999989, 0.010001999999999988],
+  "mass": {"initial_mass": 0.031, "final_mass": 0.031, "delta_mass": 0.0, "external_mass": 0.0, "residual": 0.0},
+  "species": {"initial_species": 0.0055, "final_species": 0.0055, "delta_species": 0.0, "external_species": 0.0, "residual": 0.0},
+  "energy": {"initial_energy": 8932.857142857141, "final_energy": 8932.85742539121, "delta_energy": 0.00028253406890144106, "external_energy": 0.0, "cc_work": 0.20025688794203833, "cyl_work": -0.19997435387252419, "chamber_work": 0.0002825340695141454, "accounted_energy": 0.0002825340695141454, "residual": -6.127043317150083e-13},
+  "admissible": true,
+  "interpretation": "positive crankcase work is compression; negative cylinder work is expansion; P4 remains BLOCKED/NOT_GRANTED"
+}

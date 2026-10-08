@@ -1,0 +1,427 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "evidence",
+  "type": "object",
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "phase_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "started_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "finished_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "git_commit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "git_dirty": {
+      "type": "boolean"
+    },
+    "preexisting_changes": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "preexisting_untracked": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "commands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "argv": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "returncode": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "duration_seconds": {
+            "type": "number",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "passed",
+              "failed",
+              "timeout",
+              "cancelled",
+              "error"
+            ]
+          },
+          "stdout_log": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stderr_log": {
+            "type": "string",
+            "minLength": 1
+          },
+          "error": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "argv",
+          "kind",
+          "returncode",
+          "duration_seconds",
+          "status",
+          "stdout_log",
+          "stderr_log",
+          "error"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "test",
+              "benchmark",
+              "numerical",
+              "infrastructure"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "passed",
+          "kind"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "argv": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "returncode": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "duration_seconds": {
+            "type": "number",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "passed",
+              "failed",
+              "timeout",
+              "cancelled",
+              "error"
+            ]
+          },
+          "stdout_log": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stderr_log": {
+            "type": "string",
+            "minLength": 1
+          },
+          "error": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "argv",
+          "kind",
+          "returncode",
+          "duration_seconds",
+          "status",
+          "stdout_log",
+          "stderr_log",
+          "error"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "BLOCKED",
+            "NOT_RUN"
+          ]
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "blocking_findings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "scientific_change_required": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "dummy_stub",
+            "independent",
+            "none"
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "findings",
+        "blocking_findings",
+        "scientific_change_required",
+        "notes",
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "gate": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "BLOCKED",
+        "SCIENTIFIC_CHANGE_REQUIRED",
+        "FAILED_INFRASTRUCTURE"
+      ]
+    },
+    "gate_reasons": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "execution_status": {
+      "type": "string",
+      "enum": [
+        "COMPLETED",
+        "WAITING_HUMAN_APPROVAL"
+      ]
+    },
+    "attempts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "cause": {
+            "type": "string",
+            "minLength": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "PASS",
+              "BLOCKED",
+              "SCIENTIFIC_CHANGE_REQUIRED",
+              "FAILED_INFRASTRUCTURE"
+            ]
+          }
+        },
+        "required": [
+          "number",
+          "kind",
+          "cause",
+          "state"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "files_changed": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "scope_violations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "preexisting_touched": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "minLength": 1
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "path",
+          "sha256",
+          "bytes"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "phase_definition_sha256": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "config": {
+      "type": "object"
+    },
+    "continue_requested": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "run_id",
+    "phase_id",
+    "started_at",
+    "finished_at",
+    "git_commit",
+    "git_dirty",
+    "preexisting_changes",
+    "preexisting_untracked",
+    "commands",
+    "checks",
+    "tests",
+    "metrics",
+    "review",
+    "gate",
+    "gate_reasons",
+    "execution_status",
+    "attempts",
+    "files_changed",
+    "scope_violations",
+    "preexisting_touched",
+    "errors",
+    "artifacts",
+    "phase_definition_sha256",
+    "config",
+    "continue_requested"
+  ],
+  "additionalProperties": false
+}

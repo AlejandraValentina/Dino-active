@@ -1,0 +1,85 @@
+{
+  "phase": "P2B_RESUME",
+  "objective": "Resume unchanged P2B with 300s per case, T04 first, validated checkpoints; no P3.",
+  "enabled": true,
+  "depends_on": [
+    "P0",
+    "P1_R4_CFL_REVIEW",
+    "P2A_R4_VERIFY"
+  ],
+  "allowed_paths": [
+    "dev_orchestrator/runs/"
+  ],
+  "forbidden_paths": [
+    "motorsim/",
+    "docs/gasdynamic/",
+    "docs/baselines/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Run evidence only; implementation committed before verification."
+  ],
+  "forbidden_changes": [
+    "Toda modificaci\u00c3\u00b3n de producto en esta versi\u00c3\u00b3n."
+  ],
+  "commands": [
+    {
+      "id": "resume_tests",
+      "kind": "test",
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p2b*.py",
+        "-v"
+      ],
+      "timeout": 60
+    },
+    {
+      "id": "resume_campaign",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p2b_resume",
+        "--run-dir",
+        "{run_dir}"
+      ],
+      "timeout": 3600,
+      "result_file": "artifacts/result.json"
+    }
+  ],
+  "required_tests": [
+    "resume_tests"
+  ],
+  "required_checks": [
+    "resume_tests",
+    "resume_campaign",
+    "P2B",
+    "baseline_intact",
+    "contract_frozen",
+    "dependencies_accepted",
+    "first_order_contracts_frozen",
+    "p1_r4_accepted",
+    "p2a_accepted",
+    "first_order_R4_control",
+    "solver_unchanged"
+  ],
+  "required_evidence": [
+    "artifacts/result.json",
+    "artifacts/p2b-summary.json",
+    "artifacts/inventory.json",
+    "artifacts/first-order-control.json",
+    "artifacts/resume-checkpoint.json"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 3,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": false,
+  "timeout": 3700
+}

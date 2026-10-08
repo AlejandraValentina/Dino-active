@@ -1,0 +1,83 @@
+{
+  "source_commit": "799b7d6f9bf6b0061bd9a1de60af682e8061630a",
+  "build": {
+    "app_version": "0.1.0-rc6",
+    "source_commit": "799b7d6f9bf6b0061bd9a1de60af682e8061630a",
+    "source_dirty": false,
+    "trial": false,
+    "built_utc": "20260917T123654Z",
+    "python": "3.11.0 (main, Oct 24 2022, 18:26:48) [MSC v.1933 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "architecture": "AMD64",
+    "project_format": 6,
+    "result_formats": {
+      "two_stroke": [
+        1,
+        2,
+        3
+      ],
+      "four_stroke": 4
+    },
+    "models": {
+      "two_stroke": "four-cv-0d-prescribed-heat-v1-external-regularized-rk4-v1",
+      "four_stroke": "three-cv-0d-prescribed-heat-720-v1-external-regularized-rk4-v1"
+    },
+    "dependencies": {
+      "altgraph": "0.17.5",
+      "packaging": "26.3",
+      "pefile": "2024.8.26",
+      "pip": "22.3",
+      "pyinstaller": "6.22.3",
+      "pyinstaller-hooks-contrib": "2026.7",
+      "PySide6": "6.11.2",
+      "PySide6_Addons": "6.11.2",
+      "PySide6_Essentials": "6.11.2",
+      "pywin32-ctypes": "0.2.3",
+      "setuptools": "65.5.0",
+      "shiboken6": "6.11.2",
+      "pywinauto": "0.6.9",
+      "comtypes": "1.4.16",
+      "pywin32": "312",
+      "six": "1.17.0"
+    }
+  },
+  "zip": "E:\\dino\\Dino\\dist\\MotorSim-0.1.0-rc6-windows-x64-799b7d6f.zip",
+  "sha256": "0b5d8eaa46a5c82ff2ae82305ed5846467197c4c53b58ff80ef2198dd93e2db1",
+  "zip_bytes": 43440060,
+  "extracted": "E:\\MotorSim distribucion\\Candidata Rendimiento 0.1.0-rc6\\MotorSim",
+  "files_verified": 162,
+  "folder_bytes": 104938807,
+  "rc5_sha256_unchanged": "f3159c9dd91ddf64e7b02901a9488e6eea60f4c9346eed768bbf2e4f835c9d18",
+  "values": {
+    "2T referencia": {
+      "path": "results\\simulacion-2t\\barrido-20260915\\gui-sweep\\point-02\\manifest.json",
+      "rpm": 3000,
+      "cycle": "2T",
+      "W_C_J": 16.49050751206088,
+      "p_max_Pa": 1331530.846070603,
+      "indicated_power_W": 824.525375603044,
+      "indicated_torque_Nm": 2.624545784638522
+    },
+    "4T compresión 8.2": {
+      "path": "results\\simulacion-2t\\cuatro-tiempos-20260916\\R2\\gui-compression\\manifest.json",
+      "rpm": 3000,
+      "cycle": "4T",
+      "W_C_J": 50.95490295791647,
+      "p_max_Pa": 2685606.691957945,
+      "indicated_power_W": 1273.8725739479116,
+      "indicated_torque_Nm": 4.054862340260122
+    }
+  },
+  "new_simulations": 0,
+  "physical_campaigns": 0,
+  "manual_acceptance": false,
+  "independent_review": "Sin defectos concretos; solo lectura",
+  "automated_tests": {
+    "count": 269,
+    "seconds": 54.86,
+    "passed": true,
+    "after_visual_fix_count": 10,
+    "after_visual_fix_seconds": 10.124
+  },
+  "visual_inspection": "Capturas Windows fuente100/125/150 y EXE100; contraste seleccionado corregido; no aceptación humana"
+}

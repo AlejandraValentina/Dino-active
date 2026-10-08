@@ -1,0 +1,51 @@
+{
+  "phase": "dummy",
+  "objective": "Comprobar infraestructura con test, artefacto temporal y hash.",
+  "enabled": true,
+  "depends_on": [],
+  "allowed_paths": [
+    "dev_orchestrator/runs/"
+  ],
+  "forbidden_paths": [
+    "motorsim/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Artefactos y logs del directorio exclusivo de esta ejecución."
+  ],
+  "forbidden_changes": [
+    "Cambiar código o datos de MotorSim."
+  ],
+  "commands": [
+    {
+      "id": "dummy_test",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.tests.smoke",
+        "--run-dir",
+        "{run_dir}"
+      ],
+      "kind": "test",
+      "timeout": 15,
+      "result_file": "artifacts/dummy.json"
+    }
+  ],
+  "required_tests": [
+    "dummy_test"
+  ],
+  "required_checks": [
+    "dummy_test",
+    "artifact_hash"
+  ],
+  "required_evidence": [
+    "artifacts/payload.txt",
+    "artifacts/dummy.json"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 3,
+  "review": "required",
+  "human_gate": false,
+  "scientific_changes_authorized": false,
+  "timeout": 120
+}

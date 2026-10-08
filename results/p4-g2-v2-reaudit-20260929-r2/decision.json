@@ -1,0 +1,71 @@
+{
+  "contract": "G2-v2",
+  "status": "E13_G2_V2_PASS",
+  "stop_reason": "CONVERGED_PERIOD2",
+  "last_cycle": 50,
+  "cycles_executed": 20,
+  "max_cycles": 400,
+  "detector": {
+    "anchor_cycle": 1,
+    "branch_map": {
+      "A": "odd_relative_to_anchor",
+      "B": "even_relative_to_anchor"
+    },
+    "lag1_streak": 0,
+    "branch_A_streak": 15,
+    "branch_B_streak": 3,
+    "detected_period": 2,
+    "converged_cycle": 50,
+    "history_identity": {
+      "configuration_hash": "p4-r6-g2-chain",
+      "scientific_contract_id": "E13-R1",
+      "solver": "NUMBA_FUSED",
+      "backend": "NUMBA_FUSED",
+      "mesh": 251,
+      "geometry": "chain",
+      "rpm": 3000,
+      "operating_point": "G2",
+      "cycle_convention": "360",
+      "anchor_cycle": 1,
+      "branch_map": {
+        "A": "odd_relative_to_anchor",
+        "B": "even_relative_to_anchor"
+      }
+    },
+    "last_metrics": {
+      "work": 0.03661950625041488,
+      "cylinder": 0.0057974271985816285,
+      "sensor": [
+        0.5335845274204299,
+        0.4397421469117333,
+        0.41992392872174134
+      ],
+      "sensor_max": 0.5335845274204299,
+      "port": 0.013706803584892185,
+      "inventories": [
+        0.00018278104572245528,
+        3.958023603599043e-16,
+        0.00015026140857710146,
+        0.004954061129708093,
+        0.006671332403207339,
+        7.423624439695242e-05,
+        0.0015130040526806683,
+        0.006508090634992223,
+        0.011311047087669723,
+        0.03695533676885037,
+        0.00481419249450348,
+        0.04419102092296798
+      ],
+      "cylinder_pressure": 0.0057974271985816285,
+      "sensor_pressure": [
+        0.5335845274204299,
+        0.4397421469117333,
+        0.41992392872174134
+      ],
+      "port_mass": 0.013706803584892185,
+      "passed": false
+    }
+  },
+  "closing_checkpoint_sha256": "51ce4b99efc93fe84324b6ef7f97680457d194b21751552585e0056f0e282b71",
+  "prior_acquisition": "historical compact-only evidence; not an audit basis"
+}

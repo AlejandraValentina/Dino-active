@@ -1,0 +1,52 @@
+{
+  "R2": "P4_R2_PASS_REFINEMENT_CONTRACT",
+  "P4B": "P4B_PASS_EXHAUST_WAVE_PHYSICS",
+  "semantics": "verified refinement contraction over the tested fine-grid transition",
+  "aggregate": {
+    "E10_length": true,
+    "E11_RPM": true,
+    "wave_arrival": true,
+    "refinement_diffuser": true,
+    "refinement_blowdown": true,
+    "CFL_diffuser": true,
+    "CFL_blowdown": true
+  },
+  "historical_aggregate": {
+    "E10_length": true,
+    "E11_RPM": true,
+    "wave_arrival": true,
+    "refinement_diffuser": true,
+    "refinement_blowdown": false,
+    "CFL_diffuser": true,
+    "CFL_blowdown": true
+  },
+  "cases_verified": 16,
+  "old_case_hashes": {
+    "straight_N100_CFL0.4_RPM3000.json.gz": "bc277abd3153d3f41d1664da15b3b252680469e9a431a0dcf9ed03c0c8972fb1",
+    "diffuser_N100_CFL0.4_RPM3000.json.gz": "d842b3541b9454a98bcf2708e4deeb716471c7c34c156595e8e487601ebe32af",
+    "converger_N100_CFL0.4_RPM3000.json.gz": "76b6e3e523f251f2743b0c90d243044f1f54d009cc9a7080451280811376f2cb",
+    "chain_N100_CFL0.4_RPM3000.json.gz": "17ff8a15081be75b8092ea4254b434633b4978cf290baf595081cbec4aa9e14f",
+    "long_N100_CFL0.4_RPM3000.json.gz": "b92db3a63ef752616ae396075d9fd8f979048678d78d9ae2ce8b7ffe764e94de",
+    "equal_volume_N100_CFL0.4_RPM3000.json.gz": "dc84f5d7943c89e29533ff543fa0bebbd80bbd3f9f274370777b7cf4c072ae13",
+    "chain_N100_CFL0.4_RPM2500.json.gz": "75e5ce3df72203eb9ae709f94b0931b71a36bf9ccd72ab91381413e98f4ffc28",
+    "chain_N100_CFL0.4_RPM3500.json.gz": "f20c6c8762e1bd78c0f2026251bb0668a7559e88999ec25336595a7b24c9584b",
+    "diffuser_N200_CFL0.4_RPM3000.json.gz": "42dea7f17961dd8f4871e3b38c8bf431e94fead4e30b11b4769f808d887263e5",
+    "diffuser_N400_CFL0.4_RPM3000.json.gz": "e96a3d9f877887a3bb39e670db38c33ddd2ab58e8194bc4bebfcc46b31aedb09",
+    "diffuser_N100_CFL0.2_RPM3000.json.gz": "74e9877cbf82026923c38fc7c03076bac0a54bdf0e9dd8069c85b6c8336474ff",
+    "diffuser_N100_CFL0.6_RPM3000.json.gz": "f90e13fc5a234299ea80570e2ddefab94ea0a12b31bb8ffc55e8a50500a138f1",
+    "blowdown_N200_CFL0.4.json.gz": "03e66758ad2f051da15be3b26288149565af41490ee0b2a9a2e7d5cf73fbd15c",
+    "blowdown_N400_CFL0.4.json.gz": "a728876db4462909c404ea1e83a0cd17db1c9b9e638d545479bbe461b4c0f40a",
+    "blowdown_N100_CFL0.2.json.gz": "93601dcef0148d98aafccc4be4dbeaa4966da0485f546c206eac9cab804f0548",
+    "blowdown_N100_CFL0.6.json.gz": "dcf2f1ac2bc38198257e1a9df42af955a7a023cf4d52b6d003f09f11aebfb5b6"
+  },
+  "new_integrations": 0,
+  "contractions": {
+    "Q_pressure": 0.4097775882638235,
+    "Q_mass": 0.7326626631561178,
+    "arrival": 0.5459540366627194
+  },
+  "reviewer": "/root/p3_review",
+  "review_mode": "independent read-only; approved PartA and B before P4C",
+  "P4_accepted": false,
+  "P5_authorized": false
+}

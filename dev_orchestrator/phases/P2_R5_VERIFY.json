@@ -1,0 +1,78 @@
+{
+  "phase": "P2_R5_VERIFY",
+  "objective": "Offline closure under independently adopted R5, no integrations or human acceptance.",
+  "enabled": true,
+  "depends_on": [
+    "P0",
+    "P1_R4_CFL_REVIEW",
+    "P2A_R4_VERIFY"
+  ],
+  "allowed_paths": [
+    "dev_orchestrator/runs/"
+  ],
+  "forbidden_paths": [
+    "motorsim/",
+    "docs/gasdynamic/",
+    "docs/baselines/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Run evidence only; implementation committed before verification."
+  ],
+  "forbidden_changes": [
+    "Toda modificaci\u00c3\u00b3n de producto en esta versi\u00c3\u00b3n."
+  ],
+  "commands": [
+    {
+      "id": "focal_tests",
+      "kind": "test",
+      "argv": [
+        "{python}",
+        "-c",
+        "import unittest; patterns=['test_p2b*.py', 'test_gas1d.py', 'test_p2_fixes.py', 'test_p1_r2.py', 'test_p1_r3.py', 'test_p1_r4.py', 'test_p1_r4_gate.py', 'test_p1_r5*.py']; suite=unittest.TestSuite(unittest.defaultTestLoader.discover(\"tests\",pattern=p) for p in patterns); result=unittest.TextTestRunner(verbosity=2).run(suite); raise SystemExit(not result.wasSuccessful())"
+      ],
+      "timeout": 180
+    },
+    {
+      "id": "offline_closure",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p1_r5_close",
+        "--run-dir",
+        "{run_dir}"
+      ],
+      "timeout": 180,
+      "result_file": "artifacts/result.json"
+    }
+  ],
+  "required_tests": [
+    "focal_tests"
+  ],
+  "required_checks": [
+    "focal_tests",
+    "offline_closure",
+    "P2B",
+    "P0_regression",
+    "FIRST_ORDER_R4",
+    "all_final",
+    "T12_ten",
+    "conservation",
+    "admissibility",
+    "solver_unchanged",
+    "baseline_intact",
+    "contract_frozen",
+    "first_order_contracts_frozen"
+  ],
+  "required_evidence": [
+    "artifacts/result.json",
+    "artifacts/closure.json"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 0,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": false,
+  "timeout": 400
+}

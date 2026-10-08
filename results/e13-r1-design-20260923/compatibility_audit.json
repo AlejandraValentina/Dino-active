@@ -1,0 +1,67 @@
+{
+  "phase": "E13-R1 compatibility audit (no history rewrite)",
+  "thresholds_changed": false,
+  "solver_changed": false,
+  "audit": {
+    "P4-R5": {
+      "classification": "P4_BLOCKED_PERIODIC_CONVERGENCE (pre-periodic, single G1 cycle measured)",
+      "impact": "DIAGNOSTIC_ONLY",
+      "reason": "No periodicity evaluation yet; E13-R1 would evaluate same thresholds but not change cost guard."
+    },
+    "P4-R6": {
+      "classification": "P4_R6_PERIOD_2_ORBIT_CANDIDATE (D2 global)",
+      "impact": "REINTERPRETED_BY_E13_R1",
+      "reason": "Used global D2 and vector lag without branch separation; under E13-R1 would require branch streak 3. Diagnosis remains valid as candidate, but not as convergence proof."
+    },
+    "P4-R7": {
+      "classification": "P4_R7_PERIOD_2_ROBUST_NUMERICAL_ORBIT",
+      "impact": "REINTERPRETED_BY_E13_R1",
+      "reason": "Robustness (backend/CFL/spatial) still holds; streak 3 global would be re-evaluated per branch."
+    },
+    "P4-R8": {
+      "classification": "P4_BLOCKED_PERIODIC_CONVERGENCE, baseline for R11",
+      "impact": "UNCHANGED",
+      "reason": "No periodic gate applied."
+    },
+    "P4-R9": {
+      "classification": "sensor metric audit",
+      "impact": "DIAGNOSTIC_ONLY",
+      "reason": "No periodic gate; metric definition unchanged."
+    },
+    "P4-R10": {
+      "classification": "shock localization",
+      "impact": "UNCHANGED",
+      "reason": "Spatial diagnostic, not periodic."
+    },
+    "P4-R10A": {
+      "classification": "diagnostic audit",
+      "impact": "UNCHANGED",
+      "reason": "Correction of localization metric, not periodic."
+    },
+    "P4-R11": {
+      "classification": "P4_R11_PERIOD2_LAG2_CLOSURE_CONFIRMED (first_3x 46/49/51 global)",
+      "impact": "REINTERPRETED_BY_E13_R1",
+      "reason": "Global 3x mixes branches (e.g., 49,50,51 = odd,even,odd). Under branch-aware: N300 odd incomplete, N400 even only 1 at 51. R11 remains valid under its contract but not under E13-R1 convergence. No commit rewrite.",
+      "details": "N300: global 44-46 vs branch even 3/odd 1; N400: global 49-51 vs even 1/odd 6. See counterfactual_meshes.json."
+    },
+    "P4-R12": {
+      "classification": "P4_R12_ONE_BRANCH_NONCLOSURE",
+      "impact": "UNCHANGED",
+      "reason": "Already branch-aware (even/odd separated, requires 3 per branch). E13-R1 formalizes same rule."
+    },
+    "P4-R13": {
+      "classification": "P4_R13_N400_EVEN_INTERMITTENT_NONCLOSURE (gap 56 vs 54)",
+      "impact": "REINTERPRETED_BY_E13_R1",
+      "reason": "Gap 56 vs 54 was explicit. With E13-R1 semantics unchanged, classification stays until gap closed."
+    },
+    "P4-R13A": {
+      "classification": "P4_R13_N400_EVEN_EVENTUAL_CLOSURE (56 vs 54 PASS)",
+      "impact": "UNCHANGED",
+      "reason": "Exactly the E13-R1 acceptance case: 50,52,54F,56,58,60 with both branches 3 at 60."
+    }
+  },
+  "preservation": "All commits and artifacts preserved; reinterpretation does not delete or amend history.",
+  "p4_pass": false,
+  "p5_started": false,
+  "open_spec_strict": "PASS (no spec change yet, proposal only)"
+}

@@ -1,0 +1,17 @@
+{
+  "state": "P4A_PASS",
+  "reviewer": "/root/p3_review",
+  "mode": "independent read-only",
+  "checks": {
+    "E01": true,
+    "E02": true,
+    "E03": true,
+    "E04": true,
+    "E05": true
+  },
+  "integrator_sha256": "b7e4919cb76b22eb5b9f56d8e34dc87bebac5ae42e5ae502363a2b702e325293",
+  "port_sha256": "7fa88d28c30193e5511d2df0ee3eae30fe9184276f8da12b99b9d42dfdefe454",
+  "summary_sha256": "765dd58f306c0853ca9d8e581cb4bf9af34b801b77d9a061308180889e7fb5db",
+  "max_residual": 1.9855e-15,
+  "notes": "No finite thermal boundary jump in actual traces. Boundary not validated as real radiation. Port, events, stage conservation and backflow Y independently checked."
+}

@@ -1,0 +1,40 @@
+{
+  "phase": "P4-R10",
+  "classification": "P4_R10_SHOCK_LOCALIZED_NUMERICAL_NONCLOSURE",
+  "p4_state": "P4_BLOCKED_PERIODIC_CONVERGENCE",
+  "p4_pass": false,
+  "p5_started": false,
+  "e13_modified": false,
+  "n500_executed": false,
+  "n500_reason": "Not needed: N250-N400 already allow conclusion (localized, width decreasing, delta_x small). Mechanism resolved without N500.",
+  "key_metrics": {
+    "front_width_cells_avg": 72.75,
+    "front_width_m_trend": [
+      0.247,
+      0.2333333333333333,
+      0.11285714285714288,
+      0.10999999999999999
+    ],
+    "delta_x_avg": -0.00019791666666666677,
+    "delta_x_dx_avg": -0.08333333333333337,
+    "jump_strength_avg": 2167.1923502634245,
+    "lag2_L2_total_avg": 109.55050795761571,
+    "lag2_outside_avg": 20.135494331848687,
+    "localized_inside_avg": 83.05647487277307,
+    "error_support_90_avg": 0.2170639880952381
+  },
+  "evidence_paths": {
+    "front_tracking": "results/p4-r10-20260922/front_tracking.json",
+    "spatial_error": "results/p4-r10-20260922/spatial_error.json",
+    "mesh_trend": "results/p4-r10-20260922/mesh_trend.json",
+    "sensor_front": "results/p4-r10-20260922/sensor_front_relation.json",
+    "orbit_ab": "results/p4-r10-20260922/orbit_ab_vs_lag2.json",
+    "evaluation": "results/p4-r10-20260922/evaluation.json",
+    "r9_evaluation": "results/p4-r9-20260922/evaluation.json",
+    "docs": "docs/gasdynamic/p4_r10_shock_localization.md"
+  },
+  "implementation_agent": "OpenCode / Muse Spark 1.2",
+  "independent_review": "INDEPENDENT_REVIEW_PENDING",
+  "timestamp": "2026-09-22",
+  "commit_base": "65b4f1b"
+}

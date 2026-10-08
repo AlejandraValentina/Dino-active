@@ -1,0 +1,59 @@
+{
+  "task": "P5B-14",
+  "fixture": "complete_p5b_fixture",
+  "status": "PASS",
+  "implementation": {
+    "class": "motorsim.p5b.IntegratedIntakeTransfer",
+    "topology": "atmosphere boundary <-> finite intake <-> crankcase <-> two independent finite transfers <-> cylinder",
+    "stored_components": "crankcase, cylinder, intake[4], TR1[4], TR2[4]",
+    "time_integrator": "one global two-stage SSPRK2 update",
+    "interface_solver": "motorsim.duct_network.interface_exchange, one solve per physical interface per stage",
+    "interior_solver": "existing gas1d HLLC face fluxes with mesh areas",
+    "external_boundary": "atmosphere/intake far boundary only",
+    "sources": "contractual chamber -p*dV/dt work only; no exhaust, heat, combustion, periodicity, or P6 semantics",
+    "independence": "separate intake/TR1/TR2 paths, cells and conservative tuples"
+  },
+  "numeric_verification": {
+    "angles_deg": [0.0, 120.0, 150.0, 300.0, 330.0],
+    "steps": 5,
+    "dt_s": 1e-7,
+    "ssprk_stages_per_step": 2,
+    "physical_interfaces_per_stage": 5,
+    "interface_calls": 50,
+    "duct_cells": [4, 4, 4],
+    "admissible": true,
+    "mass_delta": 3.389390938052239e-10,
+    "mass_external": 3.389390919646567e-10,
+    "mass_applied": 3.3893909196465663e-10,
+    "mass_integration_residual": -5.169878828456423e-26,
+    "mass_stored_residual": 1.840567232412408e-18,
+    "species_delta": 6.778781832736391e-11,
+    "species_external": 6.778781839293133e-11,
+    "species_applied": 6.778781839293133e-11,
+    "species_integration_residual": 0.0,
+    "energy_delta": 0.00013246611888462212,
+    "energy_external": 0.00013246611894625375,
+    "energy_applied": 0.00013246611894625375,
+    "energy_integration_residual": 0.0,
+    "stored_energy_roundoff": -6.163163512526437e-14,
+    "stored_energy_roundoff_bound": 2.1943832835663125e-10,
+    "closed_physical_ports_exact_zero": true,
+    "all_three_duct_families_evolved": true,
+    "deterministic_replay": true
+  },
+  "verification": {
+    "focused_p5b14": "PASS: 5 tests",
+    "full_p5b": "PASS: 40 tests",
+    "p5_coupling_regressions": "PASS: 63 tests",
+    "py_compile": "PASS",
+    "diff_check": "PASS: git diff --check",
+    "openspec": "PASS: openspec validate p5-intake-transfer --strict",
+    "energy_gate": "strict gate uses applied SSPRK2 quadrature; stored-state subtraction is separately bounded"
+  },
+  "governance": {
+    "p4": "BLOCKED / NOT_GRANTED",
+    "scope": "isolated P5B only; no P4 acceptance inferred",
+    "no_push": true,
+    "p5b15_started": false
+  }
+}

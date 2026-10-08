@@ -1,0 +1,20 @@
+{
+  "reviewer": "/root/p3_review",
+  "mode": "independent read-only",
+  "state": "P4_R1_PERFORMANCE_DIAGNOSTIC_REQUIRED",
+  "solver_changes": false,
+  "new_integrations_by_reviewer": 0,
+  "verified": [
+    "120 frozen hashes",
+    "9 artifacts",
+    "3 nominal exact historical solutions/stages/dt/ledger",
+    "fixed sensor and absolute PL quadrature",
+    "CFL contrasts",
+    "constant-area control",
+    "partial N800 excluded",
+    "ledger/admissibility",
+    "counts and offline profile"
+  ],
+  "correction": "N800 closing is scheduled, not reached; postclosing window unobserved. Recorded in diagnostics.json and tasks.md.",
+  "acceptance": "P4 not accepted; no P4C/P5; no timeout extension or gate amendment"
+}

@@ -1,0 +1,33 @@
+{
+  "classification": "P5_C_IMPLEMENTATION_VERIFIED_CONDITIONAL_PARTIAL",
+  "dependency": "CONDITIONAL_ON_P4",
+  "p4_status": "BLOCKED / NOT_GRANTED",
+  "fixtures": [
+    "P5C-F01",
+    "P5C-F02",
+    "P5C-F03",
+    "P5C-F04",
+    "P5C-F06",
+    "P5C-F07"
+  ],
+  "tests": {
+    "p5c": 3,
+    "p5b_regressions": 40,
+    "passed": 43
+  },
+  "bounded_horizon": true,
+  "periodic_convergence": "NOT_REQUIRED",
+  "fixtures_verified": [
+    "P5C-F01 closed ports",
+    "P5C-F03 bounded exhaust",
+    "P5C-F06 restart",
+    "P5C-F07 deterministic replay"
+  ],
+  "fixtures_pending": [
+    "P5C-F02 explicit retained-path evidence",
+    "P5C-F04 full-topology ledger evidence",
+    "P5C-F05 controlled backflow",
+    "causality travel-delay fixture",
+    "global energy/mass/mY contractual reports"
+  ]
+}

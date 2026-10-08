@@ -1,0 +1,41 @@
+{
+  "phase": "P4-R9",
+  "classification": "P4_R9_REAL_LAG2_NONCLOSURE",
+  "p4_state": "P4_BLOCKED_PERIODIC_CONVERGENCE",
+  "p4_pass": false,
+  "p5_started": false,
+  "e13_modified": false,
+  "sampling_defect": false,
+  "phase_dominated": false,
+  "key_metrics": {
+    "N250_delta": 0.010000000000000897,
+    "N300_delta": 0.0033333333333342243,
+    "N350_delta": 0.023333333333334243,
+    "N400_delta": 0.010000000000000897,
+    "N250_original": 0.007577062730260128,
+    "N250_aligned": 0.005186286602006259,
+    "N350_original": 0.01402603836955052,
+    "N350_aligned": 0.009761261698975288,
+    "N400_original": 0.013723491606529881,
+    "N400_aligned": 0.01108292994218601,
+    "sampling_defect": false,
+    "metric_reconstruction_ok": true
+  },
+  "evidence_paths": {
+    "sensor_tables": "results/p4-r9-20260922/sensor_tables.json",
+    "phase_shift": "results/p4-r9-20260922/phase_shift.json",
+    "spatial_trend": "results/p4-r9-20260922/spatial_trend.json",
+    "sampling_audit": "results/p4-r9-20260922/sampling_audit.json",
+    "grid_sensitivity": "results/p4-r9-20260922/grid_sensitivity.json",
+    "alternative_metrics": "results/p4-r9-20260922/alternative_metrics.json",
+    "synthetic_tests": "results/p4-r9-20260922/synthetic_tests.json",
+    "r8_evaluation": "results/p4-r8-20260922/artifacts/evaluation.json",
+    "r6_g1_cycles": "results/p4-r6-20260921/artifacts/g1_cycles/",
+    "r7_spatial": "results/p4-r7-20260921/",
+    "r8_campaign": "results/p4-r8-20260922/campaign_N350_N400/"
+  },
+  "implementation_agent": "OpenCode / Muse Spark 1.2",
+  "independent_review": "INDEPENDENT_REVIEW_PENDING",
+  "timestamp": "2026-09-22",
+  "commit_base": "253cf11"
+}

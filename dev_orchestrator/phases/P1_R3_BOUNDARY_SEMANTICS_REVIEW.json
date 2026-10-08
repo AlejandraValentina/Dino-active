@@ -1,0 +1,102 @@
+{
+  "phase": "P1_R3_BOUNDARY_SEMANTICS_REVIEW",
+  "objective": "Separate ideal pressure-release from nonreflecting and reservoir; T05 and NR01 gates before P2A.",
+  "enabled": true,
+  "depends_on": [
+    "P0",
+    "P1",
+    "P1_R2"
+  ],
+  "allowed_paths": [
+    "dev_orchestrator/runs/"
+  ],
+  "forbidden_paths": [
+    "motorsim/",
+    "docs/gasdynamic/",
+    "docs/baselines/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Run evidence only; implementation committed before verification."
+  ],
+  "forbidden_changes": [
+    "Toda modificaci\u00c3\u00b3n de producto en esta versi\u00c3\u00b3n."
+  ],
+  "commands": [
+    {
+      "id": "boundary_tests",
+      "kind": "test",
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p1_r3.py",
+        "-v"
+      ],
+      "timeout": 60
+    },
+    {
+      "id": "fix_tests",
+      "kind": "test",
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p2_fixes.py",
+        "-v"
+      ],
+      "timeout": 60
+    },
+    {
+      "id": "boundary_study",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p1_r3_boundaries",
+        "--run-dir",
+        "{run_dir}",
+        "--reuse-t05",
+        "results/p1-r3-fronteras-20260918/boundary-attempt-1"
+      ],
+      "timeout": 650,
+      "result_file": "artifacts/result.json"
+    }
+  ],
+  "required_tests": [
+    "boundary_tests",
+    "fix_tests"
+  ],
+  "required_checks": [
+    "boundary_tests",
+    "fix_tests",
+    "boundary_study",
+    "T05",
+    "mesh_sign",
+    "all_ledgers",
+    "NR01_recorded",
+    "counter_identity",
+    "baseline_intact",
+    "contract_frozen",
+    "dependencies_accepted"
+  ],
+  "required_evidence": [
+    "artifacts/boundary-summary.json",
+    "artifacts/inventory.json",
+    "artifacts/result.json"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 0,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": true,
+  "timeout": 800
+}

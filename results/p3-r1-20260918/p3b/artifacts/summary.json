@@ -1,0 +1,458 @@
+{
+  "state": "P3B_READY_FOR_REVIEW",
+  "matrix": {
+    "C01": {
+      "status": "PASS",
+      "cases": [
+        "equilibrium_FIRST_ORDER",
+        "equilibrium_MUSCL_SSPRK2"
+      ]
+    },
+    "C02": {
+      "status": "PASS",
+      "cases": [
+        "blowdown_FIRST_ORDER",
+        "blowdown_MUSCL_SSPRK2"
+      ]
+    },
+    "C03": {
+      "status": "PASS",
+      "cases": [
+        "filling_FIRST_ORDER",
+        "filling_MUSCL_SSPRK2"
+      ]
+    },
+    "C04": {
+      "status": "PASS",
+      "cases": [
+        "reversal_FIRST_ORDER",
+        "reversal_MUSCL_SSPRK2"
+      ]
+    },
+    "C05": {
+      "status": "PASS",
+      "cases": [
+        "blowdown_FIRST_ORDER",
+        "blowdown_MUSCL_SSPRK2"
+      ]
+    },
+    "C06": {
+      "status": "PASS",
+      "cases": [
+        "filling_FIRST_ORDER",
+        "reversal_FIRST_ORDER",
+        "filling_MUSCL_SSPRK2",
+        "reversal_MUSCL_SSPRK2"
+      ]
+    },
+    "C07": {
+      "status": "PASS",
+      "cases": [
+        "equilibrium_FIRST_ORDER",
+        "blowdown_FIRST_ORDER",
+        "filling_FIRST_ORDER",
+        "reversal_FIRST_ORDER",
+        "equilibrium_MUSCL_SSPRK2",
+        "blowdown_MUSCL_SSPRK2",
+        "filling_MUSCL_SSPRK2",
+        "reversal_MUSCL_SSPRK2"
+      ]
+    }
+  },
+  "passed": true,
+  "cases": [
+    {
+      "name": "equilibrium_FIRST_ORDER",
+      "inputs": {
+        "N": 60,
+        "CFL": 0.4,
+        "method": "FIRST_ORDER",
+        "final_time": 0.0015,
+        "chamber": {
+          "mass": 0.00011614401858304297,
+          "internal_energy": 28.571428571428566,
+          "fresh_mass": 3.484320557491289e-05,
+          "volume": 0.0001
+        },
+        "pipe_state": [
+          1.1614401858304297,
+          0.0,
+          100000.0,
+          0.3
+        ],
+        "length": 0.3,
+        "area": 0.0003
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "species": true,
+        "equilibrium": true
+      },
+      "status": "PASS",
+      "species_error": 0.0,
+      "runtime": 0.32799999974668026,
+      "counts": {
+        "rhs": 256,
+        "HLLC": 15616,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 0
+      },
+      "reversals": [],
+      "max_residual": 0.0
+    },
+    {
+      "name": "blowdown_FIRST_ORDER",
+      "inputs": {
+        "N": 60,
+        "CFL": 0.4,
+        "method": "FIRST_ORDER",
+        "final_time": 0.0003,
+        "chamber": {
+          "mass": 0.00013937282229965157,
+          "internal_energy": 34.28571428571428,
+          "fresh_mass": 0.00011149825783972126,
+          "volume": 0.0001
+        },
+        "pipe_state": [
+          1.1614401858304297,
+          0.0,
+          100000.0,
+          0.2
+        ],
+        "length": 0.3,
+        "area": 0.0003
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "species": true,
+        "mass_energy_direction": true,
+        "wave_sign": true
+      },
+      "status": "PASS",
+      "species_error": 8.673617379884035e-19,
+      "runtime": 0.06199999991804361,
+      "counts": {
+        "rhs": 55,
+        "HLLC": 3355,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 0
+      },
+      "reversals": [],
+      "max_residual": 3.552713678800502e-16
+    },
+    {
+      "name": "filling_FIRST_ORDER",
+      "inputs": {
+        "N": 60,
+        "CFL": 0.4,
+        "method": "FIRST_ORDER",
+        "final_time": 0.0003,
+        "chamber": {
+          "mass": 9.291521486643438e-05,
+          "internal_energy": 22.85714285714285,
+          "fresh_mass": 7.433217189314751e-05,
+          "volume": 0.0001
+        },
+        "pipe_state": [
+          1.1614401858304297,
+          0.0,
+          100000.0,
+          0.2
+        ],
+        "length": 0.3,
+        "area": 0.0003
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "species": true,
+        "mass_energy_direction": true,
+        "wave_sign": true
+      },
+      "status": "PASS",
+      "species_error": 4.336808689942018e-19,
+      "runtime": 0.06199999991804361,
+      "counts": {
+        "rhs": 55,
+        "HLLC": 3355,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 0
+      },
+      "reversals": [],
+      "max_residual": 2.0591869202426897e-16
+    },
+    {
+      "name": "reversal_FIRST_ORDER",
+      "inputs": {
+        "N": 60,
+        "CFL": 0.4,
+        "method": "FIRST_ORDER",
+        "final_time": 0.004,
+        "chamber": {
+          "mass": 0.00013937282229965157,
+          "internal_energy": 34.28571428571428,
+          "fresh_mass": 0.00011149825783972126,
+          "volume": 0.0001
+        },
+        "pipe_state": [
+          1.1614401858304297,
+          0.0,
+          100000.0,
+          0.2
+        ],
+        "length": 0.3,
+        "area": 0.0003
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "species": true,
+        "natural_reversal": true
+      },
+      "status": "PASS",
+      "species_error": 8.673617379884035e-19,
+      "runtime": 1.0630000000819564,
+      "counts": {
+        "rhs": 709,
+        "HLLC": 43249,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 0
+      },
+      "reversals": [
+        {
+          "bracket": [
+            0.001717873631870915,
+            0.0017235095918322128
+          ],
+          "linear_estimate": 0.001719620266225581
+        },
+        {
+          "bracket": [
+            0.0028886445673630664,
+            0.0028944089736108866
+          ],
+          "linear_estimate": 0.0028900012261915795
+        }
+      ],
+      "max_residual": 1.5558301175166989e-15
+    },
+    {
+      "name": "equilibrium_MUSCL_SSPRK2",
+      "inputs": {
+        "N": 60,
+        "CFL": 0.4,
+        "method": "MUSCL_SSPRK2",
+        "final_time": 0.0015,
+        "chamber": {
+          "mass": 0.00011614401858304297,
+          "internal_energy": 28.571428571428566,
+          "fresh_mass": 3.484320557491289e-05,
+          "volume": 0.0001
+        },
+        "pipe_state": [
+          1.1614401858304297,
+          0.0,
+          100000.0,
+          0.3
+        ],
+        "length": 0.3,
+        "area": 0.0003
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "species": true,
+        "equilibrium": true
+      },
+      "status": "PASS",
+      "species_error": 0.0,
+      "runtime": 0.9690000005066395,
+      "counts": {
+        "rhs": 512,
+        "HLLC": 31232,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 0
+      },
+      "reversals": [],
+      "max_residual": 0.0
+    },
+    {
+      "name": "blowdown_MUSCL_SSPRK2",
+      "inputs": {
+        "N": 60,
+        "CFL": 0.4,
+        "method": "MUSCL_SSPRK2",
+        "final_time": 0.0003,
+        "chamber": {
+          "mass": 0.00013937282229965157,
+          "internal_energy": 34.28571428571428,
+          "fresh_mass": 0.00011149825783972126,
+          "volume": 0.0001
+        },
+        "pipe_state": [
+          1.1614401858304297,
+          0.0,
+          100000.0,
+          0.2
+        ],
+        "length": 0.3,
+        "area": 0.0003
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "species": true,
+        "mass_energy_direction": true,
+        "wave_sign": true
+      },
+      "status": "PASS",
+      "species_error": 1.734723475976807e-18,
+      "runtime": 0.3439999995753169,
+      "counts": {
+        "rhs": 221,
+        "HLLC": 13481,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 55
+      },
+      "reversals": [],
+      "max_residual": 8.289665250534505e-16
+    },
+    {
+      "name": "filling_MUSCL_SSPRK2",
+      "inputs": {
+        "N": 60,
+        "CFL": 0.4,
+        "method": "MUSCL_SSPRK2",
+        "final_time": 0.0003,
+        "chamber": {
+          "mass": 9.291521486643438e-05,
+          "internal_energy": 22.85714285714285,
+          "fresh_mass": 7.433217189314751e-05,
+          "volume": 0.0001
+        },
+        "pipe_state": [
+          1.1614401858304297,
+          0.0,
+          100000.0,
+          0.2
+        ],
+        "length": 0.3,
+        "area": 0.0003
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "species": true,
+        "mass_energy_direction": true,
+        "wave_sign": true
+      },
+      "status": "PASS",
+      "species_error": 2.168404344971009e-19,
+      "runtime": 0.3439999995753169,
+      "counts": {
+        "rhs": 211,
+        "HLLC": 12871,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 51
+      },
+      "reversals": [],
+      "max_residual": 4.1183738404853793e-16
+    },
+    {
+      "name": "reversal_MUSCL_SSPRK2",
+      "inputs": {
+        "N": 60,
+        "CFL": 0.4,
+        "method": "MUSCL_SSPRK2",
+        "final_time": 0.004,
+        "chamber": {
+          "mass": 0.00013937282229965157,
+          "internal_energy": 34.28571428571428,
+          "fresh_mass": 0.00011149825783972126,
+          "volume": 0.0001
+        },
+        "pipe_state": [
+          1.1614401858304297,
+          0.0,
+          100000.0,
+          0.2
+        ],
+        "length": 0.3,
+        "area": 0.0003
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "species": true,
+        "natural_reversal": true
+      },
+      "status": "PASS",
+      "species_error": 1.734723475976807e-18,
+      "runtime": 4.07799999974668,
+      "counts": {
+        "rhs": 2270,
+        "HLLC": 138470,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 426
+      },
+      "reversals": [
+        {
+          "bracket": [
+            0.001715918639974524,
+            0.0017187258892251667
+          ],
+          "linear_estimate": 0.0017181398230876215
+        },
+        {
+          "bracket": [
+            0.002880109862477723,
+            0.00288299030848841
+          ],
+          "linear_estimate": 0.0028827580478866374
+        },
+        {
+          "bracket": [
+            0.003993005036641615,
+            0.00399722517836087
+          ],
+          "linear_estimate": 0.003993904220797832
+        }
+      ],
+      "max_residual": 2.0003530082357557e-15
+    }
+  ]
+}

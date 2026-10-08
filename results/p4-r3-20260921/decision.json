@@ -1,0 +1,116 @@
+{
+  "state": "P4_R3_COMPILED_BACKEND_DECISION_REQUIRED",
+  "human_acceptance": [
+    "P4_R2_HUMAN_ACCEPTED",
+    "P4B_HUMAN_ACCEPTED"
+  ],
+  "P4_HUMAN_ACCEPTED": false,
+  "benchmark": {
+    "N": 250,
+    "CFL": 0.4,
+    "RPM": 3000,
+    "angle": [
+      180,
+      540
+    ],
+    "scalar_reference_seconds": 263.3279999997467,
+    "structural_seconds": 226.77352880034596,
+    "numpy_seconds": [
+      35.46919929981232,
+      35.443038400262594
+    ],
+    "cpu_seconds": [
+      35.40625,
+      35.25
+    ],
+    "speedups": [
+      7.424131505588853,
+      7.4296113393539
+    ],
+    "projections_30": [
+      1064.0759789943695,
+      1063.2911520078778
+    ],
+    "target_seconds": 20,
+    "budget_seconds": 600,
+    "exact_equivalence": true,
+    "additional_speedup_required": 1.7734599649906158,
+    "wall_reduction_required": 0.43613049082543487
+  },
+  "full_profile": {
+    "wall_seconds": 63.68249800056219,
+    "cpu_seconds": 63.203125,
+    "included_in_benchmark": false,
+    "exact_equivalence": true
+  },
+  "counters": {
+    "accepted_steps": 13164,
+    "accepted_RHS_stages": 26328,
+    "RHS": 35379,
+    "HLLC": 8861357,
+    "HLLE": 0,
+    "stage_CFL_rejections": 9051,
+    "MUSCL_batch_calls": 35379,
+    "MUSCL_cell_reconstructions": 8844750,
+    "primitive_batch_calls": 48546,
+    "primitive_cells": 12136500,
+    "scalar_reference_primitive_cells_derived": 30855000,
+    "scalar_conservative_calls": 51985,
+    "batch_conservative_calls": 35379,
+    "boundary_face_state_calls": 176895,
+    "boundary_flux_calls": 70758,
+    "coupling_calls": 16607
+  },
+  "tests": {
+    "passed": 101
+  },
+  "regressions": {
+    "P4A_replay": true,
+    "P4B_replay": true,
+    "original_individual_checks": true,
+    "historical": true,
+    "frozen": true,
+    "R3_reference": true
+  },
+  "replay": {
+    "banks": 19,
+    "states": 190,
+    "faces": 27050,
+    "exact": true,
+    "new_campaign_integrations": 0
+  },
+  "frozen_historical_151": true,
+  "R3_frozen_five": true,
+  "scientific_changes": false,
+  "NumPy_version": "2.3.0",
+  "environment": {
+    "platform": "Windows-10-10.0.19045-SP0",
+    "python": "3.11.0 (main, Oct 24 2022, 18:26:48) [MSC v.1933 64 bit (AMD64)]",
+    "CPU": "Intel Core i5-10400 2.90GHz",
+    "physical_cores": 6,
+    "logical_processors": 12
+  },
+  "performance_PASS": false,
+  "periodicity_executed": false,
+  "G2_executed": false,
+  "E14": "PENDING",
+  "P4_PASS": false,
+  "P5_started": false,
+  "pending_decisions": [
+    "continue NumPy/structural work",
+    "authorize an isolated Numba experiment",
+    "authorize compiled extension work",
+    "separate future numerical-resolution study"
+  ],
+  "independent_review": "independent-review.json",
+  "namespace_correction": "namespace-correction.json",
+  "commits": [
+    "75210ad",
+    "655b9a9",
+    "5e7680e",
+    "2675763",
+    "d89dc70",
+    "11ff512"
+  ],
+  "published": false
+}

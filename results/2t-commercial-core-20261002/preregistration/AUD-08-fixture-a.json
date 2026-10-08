@@ -1,0 +1,22 @@
+{
+  "schema": "MOTORSIM_COMMERCIAL_CYCLE_PREREGISTRATION_V1",
+  "campaign_id": "AUD-08-fixture-a-fixed-horizon-20261005",
+  "fixture_id": "A",
+  "engine_configuration_sha256": "57e8855d67b6944cac16deea85c0c55ec62003bc9c775ecf0810ed24aa551302",
+  "fixture_selection": "Fixture A only; the canonical baseline configuration after AUD-01..AUD-04. Fixture B is excluded because the external audit found its sole 20% chamber-length variation insufficiently distinct.",
+  "selection_rationale": "Select the canonical baseline by definition, not by comparing regenerated outcomes. The existing A/B artifacts are superseded and are not acceptance evidence.",
+  "horizon_cycles": 20,
+  "horizon_policy": "Run and persist all 20 complete 360-degree cycles; no early stop when a detector classifies. This is a fixed prospective horizon, separate from the result and detector thresholds.",
+  "restart_cycle": 3,
+  "restart_policy": "At the terminal cycle-3 snapshot, reconstruct from the committed fixture, restore the exact snapshot, advance one full cycle, and require exact full-snapshot equality with the continuous run.",
+  "cycle_convergence_contract": "REFERENCE_PERIODIC_CONVERGENCE_V1",
+  "cycle_convergence_contract_sha256": "32a69536f7d83de0c1fc6a5188ab648aff5bef2608fce6a3546ca6ead683d6e1",
+  "threshold_policy": "Use the existing committed detector thresholds and three consecutive valid comparisons unchanged; report PASS, FAIL, and INVALID distinctly.",
+  "rejected_step_policy": "Record every rejected trial with angle, attempted step and reason before halving; preserve all accepted-step traces.",
+  "acceptance_scope": "Synthetic and CONDITIONAL_ON_P4 only. This run cannot promote P4/P5-P8, establish experimental validation, or accept the Commercial Core.",
+  "outputs": [
+    "cycle-001.json.gz through cycle-020.json.gz",
+    "restart-audit.json",
+    "manifest.json"
+  ]
+}

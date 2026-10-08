@@ -1,0 +1,71 @@
+{
+  "phase": "P3_R1",
+  "objective": "Riemann interface scientific gate before finite coupling",
+  "enabled": true,
+  "depends_on": [
+    "P2"
+  ],
+  "allowed_paths": [
+    "dev_orchestrator/runs/"
+  ],
+  "forbidden_paths": [
+    "motorsim/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Evidence only; source committed before run."
+  ],
+  "forbidden_changes": [
+    "Toda modificación de producto en esta versión."
+  ],
+  "commands": [
+    {
+      "id": "regression_tests",
+      "kind": "test",
+      "argv": [
+        "{python}",
+        "-c",
+        "import unittest; patterns=['test_p2b*.py', 'test_gas1d.py', 'test_p2_fixes.py', 'test_p1_r2.py', 'test_p1_r3.py', 'test_p1_r4.py', 'test_p1_r4_gate.py', 'test_p1_r5*.py', 'test_coupling*.py']; suite=unittest.TestSuite(unittest.defaultTestLoader.discover(\"tests\",pattern=p) for p in patterns); result=unittest.TextTestRunner(verbosity=2).run(suite); raise SystemExit(not result.wasSuccessful())"
+      ],
+      "timeout": 180
+    },
+    {
+      "id": "r1",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p3_r1",
+        "--run-dir",
+        "{run_dir}"
+      ],
+      "timeout": 180,
+      "result_file": "artifacts/result.json"
+    }
+  ],
+  "required_tests": [
+    "regression_tests"
+  ],
+  "required_checks": [
+    "regression_tests",
+    "r1",
+    "C00",
+    "C00B",
+    "forward_reverse",
+    "species",
+    "shared_energy",
+    "P2_frozen",
+    "P2_regression",
+    "P0_regression"
+  ],
+  "required_evidence": [
+    "artifacts/r1.json",
+    "artifacts/result.json"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 0,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": false,
+  "timeout": 400
+}

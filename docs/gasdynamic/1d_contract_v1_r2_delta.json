@@ -1,0 +1,20 @@
+{
+  "contract": "1D_CONTRACT_V1_R2",
+  "base_sha256": "97ce1c0b47d80c10aaa9a2cbc9abb133d60961617b8f5a706fb73128e8451aee",
+  "scientific_changes": [
+    {
+      "path": "/verification_cases/1/definition",
+      "old": "Shock y contacto: localizarlos por máximo gradiente\nde p y Y respectivamente, restringido a ±0.05 alrededor de posición exacta;\nerror de posición ≤2Δx.",
+      "new": "Shock: máximo gradiente de p restringido a ±0.05 alrededor de posición exacta.\nContacto: detector hidrodinámico independiente HYDRO_CONTACT_CHARACTERISTIC_V1,\ndefinido en docs/gasdynamic/1d_contact_observable_v1_r2.md; sin Y ni posición exacta\npara detectar. Error de posición de ambos ≤2Δx. A/B/C de Y quedan diagnósticos."
+    }
+  ],
+  "metadata_changes": {
+    "model_version": [
+      "gas1d-contract-v1",
+      "1D_CONTRACT_V1_R2"
+    ]
+  },
+  "T06": "UNCHANGED",
+  "threshold_dx": 2,
+  "reviewed_evidence": "results/p1-r2-contacto-20260918/reviewed-evidence.json"
+}

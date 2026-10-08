@@ -1,0 +1,42 @@
+{
+  "P4A": "PASS",
+  "P4B": "PASS",
+  "E12": "PASS",
+  "E13_G1": "PASS_PERIOD2_CYCLE60",
+  "E13_G2_original": "FAIL_MAX30_PRESERVED",
+  "E13_G2_v2": "PASS_PERIOD2_CYCLE50",
+  "E14": "PASS_HISTORICAL_CAUSAL_EVIDENCE",
+  "E15": "PASS",
+  "B1": "PASS",
+  "B2": "PASS",
+  "C1": "PASS",
+  "C2": "PASS",
+  "C3": "P4_SCI_C3_PASS",
+  "performance": "PASS",
+  "checkpoint_restart": "PASS",
+  "regressions": "PASS",
+  "OpenSpec": "PASS",
+  "P4": "P4_PASS",
+  "acceptance": "PENDING_INDEPENDENT_REVIEW",
+  "independent_review": "INDEPENDENT_REVIEW_PENDING",
+  "P5": "NOT_STARTED",
+  "P9": "STOPPED_NOT_AUTHORIZED",
+  "experimental_validation": "NOT_PERFORMED",
+  "evidence": {
+    "P4A_P4B": "results/p4-final-resolution-20260923/gate_matrix.json",
+    "E13_G1": "results/p4-r13a-20260923/decision.json",
+    "E13_G2_v2": "results/p4-g2-v2-20260929/decision.json",
+    "C3": "results/p4-c3-r5-20260928/c3-closure-receipt.json",
+    "B1_B2_C1_C2": "docs/gasdynamic/p4_sci_04a_foundational_benchmarks.md and p4_sci_04b_intermediate_benchmarks.md",
+    "E14": "results/p4-contract-review-01-20260923/gate_matrix.json",
+    "performance": "openspec/changes/p4-escape-1d/tasks.md",
+    "regressions": "tests/test_p4*.py and tests/test_periodicity_e13_r1.py"
+  },
+  "scientific_changes": {
+    "physics": false,
+    "thresholds": false,
+    "solver": false,
+    "mesh": false,
+    "cfl": false
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "MOTORSIM_P4_P8_REGRESSION_RECEIPT_V1",
+  "head": "53f66c6ed40cdf8eb81b6d9b2ed2f6cbc6ff7db9",
+  "started_at": "2026-10-07T11:04:20+00:00",
+  "finished_at": "2026-10-07T11:07:38+00:00",
+  "command": "The summary JSON command array is authoritative: python -m pytest with 26 explicit absolute module paths, -q. The run was launched through scripts/agents/run_logged.py as p4-p8-regression-b2-complete.",
+  "selection": "26 modules: test_p4_*.py, test_p5*.py, test_p6*.py, test_p7*.py, test_p8*.py, test_two_stroke_ports_p5c.py; PowerShell expanded these globs to the explicit paths recorded in the summary.",
+  "result": {
+    "exit_code": 0,
+    "passed": 304,
+    "failed": 0,
+    "warnings": 4,
+    "warning_class": "pre-existing NumPy 1.25 DeprecationWarning in test_p4_r10a.py",
+    "duration_seconds": 196.83
+  },
+  "artifacts": {
+    "summary_sha256": "91aca886c53d53329c5b8c5fa8e65ba87b8371b0faf6733f9ca17c41d162c0b5",
+    "log_sha256": "c749e3068990042c04b51afd5444e8f02f8f3676c9934a67b93d9b9cac617e20"
+  },
+  "note": "The earlier p4-p8-regression-b2 artifact is preserved and classified as incomplete selection: 301 passed because test_two_stroke_ports_p5c.py was omitted."
+}

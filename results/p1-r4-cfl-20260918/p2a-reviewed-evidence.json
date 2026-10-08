@@ -1,0 +1,224 @@
+{
+  "run_id": "20260918T115319-P2A_R4_VERIFY-7474ef29fc6d",
+  "phase_id": "P2A_R4_VERIFY",
+  "started_at": "2026-09-18T11:53:19.927413+00:00",
+  "finished_at": "2026-09-18T11:54:28.006434+00:00",
+  "git_commit": "4ce68092b91e5ae05af3eee4ae967747a6cfe5d9",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "r4_gate_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p1_r4*.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.8589999992400408,
+      "status": "passed",
+      "stdout_log": "logs/1-r4_gate_tests.stdout.log",
+      "stderr_log": "logs/1-r4_gate_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "t11_then_p2a",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p1_r4_gate",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260918T115319-P2A_R4_VERIFY-7474ef29fc6d"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 57.0,
+      "status": "passed",
+      "stdout_log": "logs/1-t11_then_p2a.stdout.log",
+      "stderr_log": "logs/1-t11_then_p2a.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "r4_gate_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "t11_then_p2a",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "baseline_intact",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "R4 overlay; previous evidence preserved"
+    },
+    {
+      "id": "contract_frozen",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "R4 overlay; previous evidence preserved"
+    },
+    {
+      "id": "dependencies_accepted",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "R4 overlay; previous evidence preserved"
+    },
+    {
+      "id": "implementation_contracts_frozen",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "R4 overlay; previous evidence preserved"
+    },
+    {
+      "id": "r4_scientific_review",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "R4 overlay; previous evidence preserved"
+    },
+    {
+      "id": "previous_campaign_source_identical",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "R4 overlay; previous evidence preserved"
+    },
+    {
+      "id": "six_fresh_t11",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "R4 overlay; previous evidence preserved"
+    },
+    {
+      "id": "T11_R4",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "R4 overlay; previous evidence preserved"
+    },
+    {
+      "id": "offline_52_remeasured",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "R4 overlay; previous evidence preserved"
+    },
+    {
+      "id": "P2A_R4",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "R4 overlay; previous evidence preserved"
+    }
+  ],
+  "tests": [
+    {
+      "id": "r4_gate_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p1_r4*.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.8589999992400408,
+      "status": "passed",
+      "stdout_log": "logs/1-r4_gate_tests.stdout.log",
+      "stderr_log": "logs/1-r4_gate_tests.stderr.log",
+      "error": ""
+    }
+  ],
+  "metrics": {
+    "new_integrations": 6,
+    "reevaluated_records": 52
+  },
+  "review": {
+    "status": "PASS",
+    "findings": [],
+    "blocking_findings": [],
+    "scientific_change_required": false,
+    "kind": "independent",
+    "notes": "Read-only /root/p1_r4_review: P2A_PASS_FIRST_ORDER_VERIFIED under R4. Six new integrations numerically identical to previous records, 46 reused, all52 remeasured without differences. Verified10 current inventory hashes and63 historical hashes; study/contract provenance and frozen source. T01-T12 PASS under revised criterion; old0.08 still FAIL diagnostic. Worst ledger six fresh8.63609e-16. Human acceptance pending; P2B/P3 not started."
+  },
+  "gate": "PASS",
+  "gate_reasons": [
+    "all_required_checks_passed"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "review_not_approved",
+      "state": "BLOCKED"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "artifacts/t11-r4.json",
+      "sha256": "8310a52bd76348858cca2298c7728c23c9c0721aeada0e88983329106d312c2b",
+      "bytes": 2825
+    },
+    {
+      "path": "artifacts/p2a-r4.json",
+      "sha256": "369ca150674f9f872354ee6fb7fbe27778235ce46a9cba71869747da52f63a9b",
+      "bytes": 11847
+    },
+    {
+      "path": "artifacts/inventory.json",
+      "sha256": "11189f3c51bbd6020eb799d52b9396e7380d9b9ce375ee0650bab977ed3f268e",
+      "bytes": 1041
+    },
+    {
+      "path": "artifacts/result.json",
+      "sha256": "a6c2c506fd1c9fb4f28c3845843790c4be8050724e18d9ea524f31146e05d7c3",
+      "bytes": 1748
+    }
+  ],
+  "phase_definition_sha256": "6eafdb0ee100dd90e8b8993582f33e45c5722de56662d04f54343b4bac6d885d",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P0": "docs\\gasdynamic\\p0_accepted_dependency.json",
+      "P1": "docs\\gasdynamic\\p1_accepted_dependency.json",
+      "P1_R4_CFL_REVIEW": "results\\p1-r4-cfl-20260918\\reviewed-evidence.json"
+    },
+    "review_provenance": {
+      "original_evidence": "results/p1-r4-cfl-20260918/verification/evidence.json",
+      "original_sha256": "2e110abba9693850fbffbf7ada2fe42b3063432996cd54498b017843773bf184",
+      "reviewer": "/root/p1_r4_review",
+      "original_preserved": true
+    }
+  },
+  "continue_requested": false
+}

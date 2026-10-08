@@ -1,0 +1,80 @@
+{
+  "schema": "MOTORSIM_AUD15_FIXTURE_D_DECISION_V1",
+  "classification": "AUD15_TIMING_DIAGNOSTIC_PASS",
+  "fixture_id": "D",
+  "preregistration_commit": "57dfa97032037a96ab3869cf46b7180f35bb77a0",
+  "producer_commit": "01172a2d7b2f7f97db9a7a46e12cf328962aef52",
+  "configuration_sha256": "91c2e9a2bf5d3250515f30007274d461d5e1e1f91372be3e0bbe480e61603a59",
+  "preregistration_sha256": "855d3fc37b25e492b636089e7666a7c626ffd4eb805fffb7954a348eebbe4bbd",
+  "run_path": "results/2t-commercial-core-20261002/aud-15-fixture-d-20261005-v1",
+  "fixed_horizon_cycles": 2,
+  "complete_cycles": [
+    {
+      "cycle": 1,
+      "start_deg": 0.0,
+      "end_deg": 360.0,
+      "admissible": true,
+      "max_cfl": 0.39777940993357236,
+      "conservation": {
+        "energy_residual_J": 1.2242984404053914e-13,
+        "mass_residual_kg": -1.1718700825263245e-18,
+        "species_residual_kg": [
+          -3.023907621697852e-19,
+          1.2705494208814505e-21,
+          -1.6238517021878026e-19,
+          0.0
+        ]
+      }
+    },
+    {
+      "cycle": 2,
+      "start_deg": 360.0,
+      "end_deg": 720.0,
+      "admissible": true,
+      "max_cfl": 0.26527950519916543,
+      "conservation": {
+        "energy_residual_J": 1.3211653993039363e-13,
+        "mass_residual_kg": -1.3484764520288461e-18,
+        "species_residual_kg": [
+          4.743384504624082e-19,
+          6.352747104407253e-22,
+          4.231194269331247e-20,
+          3.3881317890172014e-20
+        ]
+      }
+    }
+  ],
+  "restart_replay": {
+    "status": "EXACT_REPLAY_PASS",
+    "snapshot_equal": true,
+    "restart_cycle": 1,
+    "compared_terminal_cycle": 2
+  },
+  "p7_geometry_event": {
+    "interval_deg": [
+      350.0,
+      390.0
+    ],
+    "contiguous_accepted_steps": 160,
+    "first_step_deg": 350.0,
+    "last_step_deg": 390.0,
+    "stage_evaluations": 320,
+    "exhaust_area_max_m2": 0.0,
+    "all_exhaust_areas_exactly_zero": true,
+    "positive_p7_heat_in_cycles": true
+  },
+  "contract": "REFERENCE_PERIODIC_CONVERGENCE_V1",
+  "scope_limitations": [
+    "synthetic timing diagnostic only",
+    "no convergence acceptance or calibration claim",
+    "experimental validation not performed",
+    "P4 remains as previously classified; integrated evidence remains conditional on its dependency"
+  ],
+  "automated_check": "tests/test_aud15_fixture_d_campaign.py and tests/test_integrated_cycle_evidence_producer.py: 6 passed",
+  "artifact_sha256": {
+    "manifest.json": "59947dd8c5cb6e0ead325fb5d2355baa964b26770d56a1778e4b41649eaacfed",
+    "restart-audit.json": "6418f0df3f44ffb382ba19229a7b6e72979588538d5729b60693b6a9a471102f",
+    "cycle-001.json.gz": "3545d8f35a1e48d661d0e52f46f03c8cb311d63040898f4968a77342339a952c",
+    "cycle-002.json.gz": "e652a6833bd79f693d88f29e8a342f122fb3b1132715f697e6326f60a47a5e74"
+  }
+}

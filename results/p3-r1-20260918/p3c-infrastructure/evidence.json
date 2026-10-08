@@ -1,0 +1,85 @@
+{
+  "run_id": "20260918T163608-P3C-ff57eebde291",
+  "phase_id": "P3C",
+  "started_at": "2026-09-18T16:36:08.794067+00:00",
+  "finished_at": "2026-09-18T16:36:38.444562+00:00",
+  "git_commit": "634593e9edaf02ec26e5e78ff1916f3098c4b843",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "acoustic_cases",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p3_acoustic",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260918T163608-P3C-ff57eebde291"
+      ],
+      "kind": "command",
+      "returncode": 1,
+      "duration_seconds": 9.859000000171363,
+      "status": "failed",
+      "stdout_log": "logs/1-acoustic_cases.stdout.log",
+      "stderr_log": "logs/1-acoustic_cases.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "acoustic_cases",
+      "passed": false,
+      "kind": "infrastructure",
+      "reason": "failed"
+    }
+  ],
+  "tests": [],
+  "metrics": {},
+  "review": {
+    "status": "NOT_RUN",
+    "findings": [],
+    "blocking_findings": [],
+    "scientific_change_required": false,
+    "notes": "Revisión no ejecutada.",
+    "kind": "none"
+  },
+  "gate": "FAILED_INFRASTRUCTURE",
+  "gate_reasons": [
+    "command_failed:acoustic_cases"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "command_failed:acoustic_cases",
+      "state": "FAILED_INFRASTRUCTURE"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [
+    "command_failed:acoustic_cases"
+  ],
+  "artifacts": [],
+  "phase_definition_sha256": "a6b6a786420ec8556bdd175a9fd56100a243f08997cf9b74ecc70ecce1a39530",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P2": "docs\\gasdynamic\\p2_accepted_dependency.json"
+    }
+  },
+  "continue_requested": false
+}

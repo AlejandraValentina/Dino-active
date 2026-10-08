@@ -1,0 +1,223 @@
+{
+  "run_id": "20260918T123806-P2B_RESUME-32b552164678",
+  "phase_id": "P2B_RESUME",
+  "started_at": "2026-09-18T12:38:06.666594+00:00",
+  "finished_at": "2026-09-18T13:00:54.297665+00:00",
+  "git_commit": "8ed6079071c5eb521a35d134ab478c6a630a2a60",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "resume_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p2b*.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 2.5319999996572733,
+      "status": "passed",
+      "stdout_log": "logs/1-resume_tests.stdout.log",
+      "stderr_log": "logs/1-resume_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "resume_campaign",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p2b_resume",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260918T123806-P2B_RESUME-32b552164678"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 1328.5460000000894,
+      "status": "passed",
+      "stdout_log": "logs/1-resume_campaign.stdout.log",
+      "stderr_log": "logs/1-resume_campaign.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "resume_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "resume_campaign",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "baseline_intact",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "FAILED_INFRASTRUCTURE"
+    },
+    {
+      "id": "contract_frozen",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "FAILED_INFRASTRUCTURE"
+    },
+    {
+      "id": "dependencies_accepted",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "FAILED_INFRASTRUCTURE"
+    },
+    {
+      "id": "first_order_contracts_frozen",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "FAILED_INFRASTRUCTURE"
+    },
+    {
+      "id": "p1_r4_accepted",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "FAILED_INFRASTRUCTURE"
+    },
+    {
+      "id": "p2a_accepted",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "FAILED_INFRASTRUCTURE"
+    },
+    {
+      "id": "first_order_R4_control",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "FAILED_INFRASTRUCTURE"
+    },
+    {
+      "id": "solver_unchanged",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "FAILED_INFRASTRUCTURE"
+    },
+    {
+      "id": "P2B",
+      "passed": false,
+      "kind": "numerical",
+      "reason": "FAILED_INFRASTRUCTURE"
+    }
+  ],
+  "tests": [
+    {
+      "id": "resume_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p2b*.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 2.5319999996572733,
+      "status": "passed",
+      "stdout_log": "logs/1-resume_tests.stdout.log",
+      "stderr_log": "logs/1-resume_tests.stderr.log",
+      "error": ""
+    }
+  ],
+  "metrics": {
+    "fresh_cases": 32,
+    "reused_cases": 8,
+    "wall_seconds": 1327.328000000678
+  },
+  "review": {
+    "status": "BLOCKED",
+    "findings": [
+      "No hay reviewer independiente conectado."
+    ],
+    "blocking_findings": [
+      "reviewer_unavailable"
+    ],
+    "scientific_change_required": false,
+    "notes": "No se llamó a ningún proveedor externo.",
+    "kind": "none"
+  },
+  "gate": "BLOCKED",
+  "gate_reasons": [
+    "required_check_failed:P2B",
+    "review_not_approved"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "required_check_failed:P2B; review_not_approved",
+      "state": "BLOCKED"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "artifacts/result.json",
+      "sha256": "65e3edbf182d6f90d10220b54983a482ec309aa754b4231af6eb54b19f9afe15",
+      "bytes": 1472
+    },
+    {
+      "path": "artifacts/p2b-summary.json",
+      "sha256": "ec1c1144a61711f61363ff781186b95a972cf2f104daec3c90de25d9dca879b5",
+      "bytes": 191043
+    },
+    {
+      "path": "artifacts/inventory.json",
+      "sha256": "44976294ee97979fe85a31d935a3489b5023fd06b97e92a5908118d8f79bf94a",
+      "bytes": 4926
+    },
+    {
+      "path": "artifacts/first-order-control.json",
+      "sha256": "c7228211b521e4b4d501f90e6333fa8d95559d61761906054d94da19742cc4cb",
+      "bytes": 7693
+    },
+    {
+      "path": "artifacts/resume-checkpoint.json",
+      "sha256": "fbbc454b59eccd1ab2511c7f7d7d1563d4c3373503b46f0c1ca79bc6d2ed2b14",
+      "bytes": 22489
+    }
+  ],
+  "phase_definition_sha256": "f23bb1283a1d210e8f56ac008e38a0332b0e83283dbbae1b14a5f7cafa6e5de6",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P0": "docs\\gasdynamic\\p0_accepted_dependency.json",
+      "P1_R4_CFL_REVIEW": "docs\\gasdynamic\\p1_r4_accepted_dependency.json",
+      "P2A_R4_VERIFY": "docs\\gasdynamic\\p2a_accepted_dependency.json"
+    }
+  },
+  "continue_requested": false
+}

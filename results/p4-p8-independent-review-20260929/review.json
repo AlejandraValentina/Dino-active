@@ -1,0 +1,59 @@
+{
+  "reviewed_head": "d616e2946d84080be44e21867602855d12f7c54a",
+  "origin_main": "d616e2946d84080be44e21867602855d12f7c54a",
+  "range": "211f249..d616e29",
+  "classification": "INDEPENDENT_REVIEW_BLOCKED",
+  "independent_review_pending": true,
+  "personal_independence": "NOT_CLAIMED_SAME_WORK_CONTEXT",
+  "phase_status": {
+    "P4": "P4_PASS_CLAIM_NOT_INDEPENDENTLY_RATIFIED",
+    "P5": "REVALIDATION_NOT_INDEPENDENTLY_RATIFIED",
+    "P6": "REVALIDATION_NOT_INDEPENDENTLY_RATIFIED",
+    "P7": "REVALIDATION_NOT_INDEPENDENTLY_RATIFIED",
+    "P8": "REVALIDATION_NOT_INDEPENDENTLY_RATIFIED",
+    "C3_R5": "LFS_BYTES_VERIFIED_SCIENCE_NOT_FULLY_AUDITED",
+    "G2_original": "FAIL_MAX30_PRESERVED",
+    "G2_v2": "PASS_CLAIM_BLOCKED_BY_INCOMPLETE_PRIMARY_EVIDENCE"
+  },
+  "contracts_reviewed": [
+    "docs/gasdynamic/p4_g2_v2_preregistration_20260929.md",
+    "openspec/changes/p4-escape-1d/specs/p4-escape-1d/spec.md",
+    "motorsim/periodicity.py"
+  ],
+  "artifacts_reviewed": [
+    "results/p4-g2-periodic-completion-20260923/decision.json",
+    "results/p4-g2-periodic-completion-20260923/cycle30.json.gz",
+    "results/p4-g2-v2-20260929/cycle-trace.jsonl",
+    "results/p4-g2-v2-20260929/checkpoint_cycle048.json.gz",
+    "results/p4-g2-v2-20260929/checkpoint_cycle050.json.gz",
+    "results/p4-g2-v2-20260929/decision.json",
+    "results/p4-g2-v2-20260929/p4-final-gate-matrix.json",
+    "results/p4-c3-r5-20260928/acquisition-evaluation.json",
+    "results/p8-wide-rpm-20260927/p8-wide-rpm.json"
+  ],
+  "tests": {
+    "p4_e13": "99 passed",
+    "p5_p8_coupling": "122 passed, 1 deselected",
+    "excluded": "tests/test_p8_performance.py::P8ContractTests::test_campaign_is_nonvacuous_and_writes_consistent_anchor_evidence",
+    "excluded_reason": "Five-anchor physical run_campaign not repeated during the review; historical campaign not independently readjudicated",
+    "openspec_strict": ["p4-escape-1d: PASS", "p5-intake-transfer: PASS", "p7-prescribed-heat-burn: PASS", "p8-wide-rpm-performance: PASS"],
+    "git_diff_check": "PASS",
+    "git_lfs_fsck": "PASS"
+  },
+  "lfs": {
+    "file": "results/p4-c3-r5-20260928/acquisition-evaluation.json",
+    "size_bytes": 366349926,
+    "sha256_pre_and_post_migration": "cf51eafd6a8058afb325278bf0dc5a2db241dff49d82c014f83d90a29b7536cb",
+    "scientific_content_changed": false
+  },
+  "findings": [
+    {"id": "G2V2-001", "severity": "BLOCKER", "summary": "Missing full cycle histories and work/port inputs prevent independent recomputation of lag-2 closing metrics", "reproduction": "compare_cycles(checkpoint_cycle048, checkpoint_cycle050) returns INVALID missing work_indicated_J", "affected": ["E13_G2_v2", "P4", "P5-P8 revalidation"]},
+    {"id": "G2V2-002", "severity": "MAJOR", "summary": "Detector restart streaks are hardcoded rather than restored and identity-validated from persisted detector state", "affected": ["E13_G2_v2 restart provenance"]},
+    {"id": "G2V2-003", "severity": "MAJOR", "summary": "G2-v2 convergence stop does not gate on checks.CFL", "affected": ["E13_G2_v2 decision logic"]}
+  ],
+  "limitations": ["Hard stop before exhaustive C3/P4/P5/P6/P7/P8 audit", "Physical five-anchor campaign not rerun", "Same agent context as prior implementation; personal independence not claimed"],
+  "experimental_validation": "NOT_PERFORMED",
+  "p9": "STOPPED_NOT_AUTHORIZED",
+  "commit": null,
+  "push": false
+}

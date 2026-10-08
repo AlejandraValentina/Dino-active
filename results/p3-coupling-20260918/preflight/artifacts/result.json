@@ -1,0 +1,40 @@
+{
+  "checks": [
+    {
+      "id": "P2_HUMAN_ACCEPTED",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P3_BLOCKED_BACKFLOW"
+    },
+    {
+      "id": "P2_frozen",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P3_BLOCKED_BACKFLOW"
+    },
+    {
+      "id": "P2_regression",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P3_BLOCKED_BACKFLOW"
+    },
+    {
+      "id": "P0_regression",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P3_BLOCKED_BACKFLOW"
+    },
+    {
+      "id": "reservoir_branch_exists_for_admissible_reversal",
+      "passed": false,
+      "kind": "numerical",
+      "reason": "P3_BLOCKED_BACKFLOW"
+    }
+  ],
+  "metrics": {
+    "evaluations": 42,
+    "new_integrations": 0,
+    "wall_seconds": 11.75
+  },
+  "scientific_change_required": true
+}

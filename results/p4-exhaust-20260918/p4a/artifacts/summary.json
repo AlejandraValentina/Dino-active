@@ -1,0 +1,164 @@
+{
+  "state": "P4A_READY_FOR_REVIEW",
+  "passed": true,
+  "cases": [
+    {
+      "name": "closed_N100_CFL0.4",
+      "inputs": {
+        "label": "closed",
+        "N": 100,
+        "CFL": 0.4,
+        "start": 0,
+        "finish": 40,
+        "chamber": {
+          "mass": 0.00011614401858304297,
+          "internal_energy": 28.571428571428566,
+          "fresh_mass": 9.291521486643438e-05,
+          "volume": 0.0001
+        },
+        "port": {
+          "stroke": 56,
+          "rod": 100,
+          "top": 32,
+          "height": 10,
+          "width": 20
+        },
+        "length": 0.6,
+        "area": 0.0003141592653589793
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "no_leak": true,
+        "equilibrium": true
+      },
+      "status": "PASS",
+      "metrics": {
+        "arrival": null,
+        "pressure_integral": 4.972273677732682e-14,
+        "mass_exchange": 0.0
+      },
+      "runtime": 1.8279999997466803,
+      "reason": "final_time",
+      "residual": 1.614440058604459e-16,
+      "counts": {
+        "rhs": 644,
+        "HLLC": 64400,
+        "HLLE": 0,
+        "characteristic": 644,
+        "rejected": 6,
+        "downgrades": 0
+      }
+    },
+    {
+      "name": "blowdown_N100_CFL0.4",
+      "inputs": {
+        "label": "blowdown",
+        "N": 100,
+        "CFL": 0.4,
+        "start": 80.0,
+        "finish": 300,
+        "chamber": {
+          "mass": 0.00017421602787456446,
+          "internal_energy": 85.7142857142857,
+          "fresh_mass": 0.00013937282229965157,
+          "volume": 0.0001
+        },
+        "port": {
+          "stroke": 56,
+          "rod": 100,
+          "top": 32,
+          "height": 10,
+          "width": 20
+        },
+        "length": 0.6,
+        "area": 0.0003141592653589793
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "opening": true,
+        "discharge": true,
+        "wave": true,
+        "closing": true
+      },
+      "status": "PASS",
+      "metrics": {
+        "arrival": 0.0008747724705496624,
+        "pressure_integral": 164.72931965066442,
+        "mass_exchange": -9.700566033221414e-05
+      },
+      "runtime": 17.843999999575317,
+      "reason": "final_time",
+      "residual": 1.98546499761504e-15,
+      "counts": {
+        "rhs": 5921,
+        "HLLC": 597209,
+        "HLLE": 0,
+        "characteristic": 5921,
+        "rejected": 575,
+        "downgrades": 0
+      }
+    },
+    {
+      "name": "backflow_N100_CFL0.4",
+      "inputs": {
+        "label": "backflow",
+        "N": 100,
+        "CFL": 0.4,
+        "start": 80.0,
+        "finish": 145,
+        "chamber": {
+          "mass": 9.291521486643438e-05,
+          "internal_energy": 22.85714285714285,
+          "fresh_mass": 7.433217189314751e-05,
+          "volume": 0.0001
+        },
+        "port": {
+          "stroke": 56,
+          "rod": 100,
+          "top": 32,
+          "height": 10,
+          "width": 20
+        },
+        "length": 0.6,
+        "area": 0.0003141592653589793
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "reverse": true,
+        "local_species": true
+      },
+      "status": "PASS",
+      "metrics": {
+        "arrival": null,
+        "pressure_integral": 9.967155944804524,
+        "mass_exchange": 9.876441627802831e-06
+      },
+      "runtime": 5.406000000424683,
+      "reason": "final_time",
+      "residual": 6.32191783157744e-16,
+      "counts": {
+        "rhs": 1891,
+        "HLLC": 190820,
+        "HLLE": 0,
+        "characteristic": 1891,
+        "rejected": 419,
+        "downgrades": 0
+      }
+    }
+  ]
+}

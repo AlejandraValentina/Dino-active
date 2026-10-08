@@ -1,0 +1,21 @@
+{
+  "reviewer": "/root/p1_r5_review",
+  "mode": "independent read-only",
+  "state": "P1_R5_PASS_CFL_SECOND_ORDER_CONTRACT",
+  "scope": "scientific adoption only, NOT P2 PASS or human acceptance",
+  "checks": {
+    "nine_complete": true,
+    "amplitudes_reference_L1_L2_recomputed": true,
+    "provenance_hashes": true,
+    "all_CFL_profile_and_peak_errors_decrease": true,
+    "fine_sensitivity_below_coarse_each_pair": true,
+    "nonmonotone_phase_within_original_limits_not_systematic_divergence": true,
+    "no_tuned_threshold": true,
+    "FIRST_ORDER_unchanged": true
+  },
+  "candidate_sha256": "ddcf8e9b3e994032b77f124f0e9c2e6c3f15b43f22d34c576037eb978bcfc4ce",
+  "contract_sha256": "f19a592b62edf3ad4b18ce8961f8e4fc1b1dfee29eda9b3a33e0d166e1eba2bb",
+  "rows_sha256": "69638124b5dbfa494b33c148a5874156827953c9300dc074d55fdaedaa8fa757",
+  "evaluator_observation": "Explicitly require all12 T11 subcases and comparative checks. Corrected; does not affect nine-case scientific evidence.",
+  "P2_HUMAN_ACCEPTED": false
+}

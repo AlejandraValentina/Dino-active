@@ -1,0 +1,55 @@
+{
+  "phase": "P4_R3_FULL_PROFILE",
+  "objective": "Full optimized cycle profile, diagnostic timing excluded from benchmark",
+  "enabled": true,
+  "depends_on": [
+    "P2"
+  ],
+  "allowed_paths": [
+    "dev_orchestrator/runs/"
+  ],
+  "forbidden_paths": [
+    "motorsim/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Evidence only; source committed before run."
+  ],
+  "forbidden_changes": [
+    "Toda modificación de producto en esta versión."
+  ],
+  "commands": [
+    {
+      "id": "benchmark_command",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p4_r3_benchmark",
+        "--run-dir",
+        "{run_dir}",
+        "--backend",
+        "NUMPY",
+        "--profile"
+      ],
+      "timeout": 650,
+      "result_file": "artifacts/result.json"
+    }
+  ],
+  "required_tests": [],
+  "required_checks": [
+    "benchmark_command",
+    "benchmark_equivalence"
+  ],
+  "required_evidence": [
+    "artifacts/benchmark.json",
+    "artifacts/full-profile.json",
+    "artifacts/full-cycle.prof"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 0,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": false,
+  "timeout": 750
+}

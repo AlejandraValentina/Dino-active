@@ -1,0 +1,28 @@
+{
+  "name": "r2-contract-integrated-closure",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_integrated_2t.py",
+    "tests/test_v1_closure_periodicity.py",
+    "tests/test_reference_harness.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "started_at": "2026-10-07T11:13:02+00:00",
+  "finished_at": "2026-10-07T11:16:45+00:00",
+  "duration_s": 222.906,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\2t-v1-closure-20261006\\r2-contract-integrated-closure-log\\r2-contract-integrated-closure.log",
+  "log_lines": 3,
+  "log_bytes": 191,
+  "error_lines": [],
+  "tail": [
+    "........................................................................ [ 81%]",
+    "................                                                         [100%]",
+    "88 passed in 222.34s (0:03:42)"
+  ]
+}

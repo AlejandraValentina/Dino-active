@@ -1,0 +1,799 @@
+{
+  "derived_parameters": {
+    "clearance_volume_cm3_if_geometric_ratio": {
+      "notes": "Conditional derivation assuming Yamaha's ratio means VBDC/VTDC; the source does not state its method.",
+      "source": "documented bore_mm, stroke_mm, compression_ratio",
+      "source_location": "Vs/(CR-1)",
+      "status": "DERIVED_FROM_DOCUMENTED",
+      "units": "cm3",
+      "value": 12.211370644503527
+    },
+    "crank_radius_mm": {
+      "notes": "Slider-crank throw radius.",
+      "source": "documented stroke_mm",
+      "source_location": "S/2",
+      "status": "DERIVED_FROM_DOCUMENTED",
+      "units": "mm",
+      "value": 23.0
+    },
+    "displacement_from_bore_stroke_cm3": {
+      "notes": "Independent calculation; compared with rounded 97.6 cm3 declaration.",
+      "source": "documented bore_mm and stroke_mm",
+      "source_location": "pi*D^2*S/4000",
+      "status": "DERIVED_FROM_DOCUMENTED",
+      "units": "cm3",
+      "value": 97.69096515602821
+    },
+    "piston_area_mm2": {
+      "notes": "Geometric circular-bore area.",
+      "source": "documented bore_mm",
+      "source_location": "pi*D^2/4",
+      "status": "DERIVED_FROM_DOCUMENTED",
+      "units": "mm2",
+      "value": 2123.7166338267
+    },
+    "swept_volume_per_cylinder_cm3": {
+      "notes": "One cylinder; equals geometric displacement.",
+      "source": "documented bore_mm and stroke_mm",
+      "source_location": "pi*D^2*S/4000",
+      "status": "DERIVED_FROM_DOCUMENTED",
+      "units": "cm3",
+      "value": 97.69096515602821
+    }
+  },
+  "experimental_validation": "NOT_PERFORMED",
+  "fixture_assumptions": {
+    "atmosphere_species_mass_fractions": {
+      "conceptual_origin": "explicit fixture boundary convention",
+      "expected_sensitivity": "high for fresh-marker bookkeeping",
+      "notes": "The 0D application tracks only a passive fresh marker; these four values document the requested ideal fresh-air boundary convention, not a four-species solver state.",
+      "reason": "The 0D application tracks only a passive fresh marker; these four values document the requested ideal fresh-air boundary convention, not a four-species solver state.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mass fraction [fresh_air,fuel,residual,burned]",
+      "value": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "atmospheric_fresh_marker_fraction": {
+      "conceptual_origin": "pure fresh-air reservoir convention for this synthetic 0D fixture",
+      "expected_sensitivity": "high for fresh-marker boundary accounting",
+      "notes": "The 0D intake reservoir carries only its passive fresh marker; this scalar is not the P6 four-species composition vector.",
+      "reason": "The 0D intake reservoir carries only its passive fresh marker; this scalar is not the P6 four-species composition vector.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "fraction",
+      "value": 1.0
+    },
+    "connecting_rod_length_mm": {
+      "conceptual_origin": "conventional long-rod slider-crank numerical fixture; not a measured KT100 dimension",
+      "expected_sensitivity": "high for near-TDC volume and timing; moderate for swept volume",
+      "notes": "A rod length is required for slider-crank kinematics; KT100SP-specific value was unavailable.",
+      "reason": "A rod length is required for slider-crank kinematics; KT100SP-specific value was unavailable.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mm",
+      "value": 100.0
+    },
+    "crank_offset_mm": {
+      "conceptual_origin": "existing MotorSim zero-offset kinematic convention",
+      "expected_sensitivity": "low for the chosen geometry; can affect piston motion if nonzero",
+      "notes": "The selected project kinematics use a centered slider-crank.",
+      "reason": "The selected project kinematics use a centered slider-crank.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mm",
+      "value": 0.0
+    },
+    "crankcase_volume_bdc_cm3": {
+      "conceptual_origin": "borrowed as a numerical scale from the existing S2T-0D-01 synthetic fixture only; no KT100 specification is implied",
+      "expected_sensitivity": "high for pumping and transfer pressure",
+      "notes": "A finite crankcase volume is required by the existing coupled chamber model; the baseline is a coarse synthetic screening value, not a Yamaha measurement.",
+      "reason": "A finite crankcase volume is required by the existing coupled chamber model; the baseline is a coarse synthetic screening value, not a Yamaha measurement.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "cm3",
+      "value": 250.0
+    },
+    "exhaust_header_diameter_mm": {
+      "conceptual_origin": "constant-area circular duct surrogate",
+      "expected_sensitivity": "high for flow and wave impedance",
+      "notes": "A completed fixture needs an exhaust section area.",
+      "reason": "A completed fixture needs an exhaust section area.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mm",
+      "value": 35.0
+    },
+    "exhaust_header_length_mm": {
+      "conceptual_origin": "straight-header surrogate; not an OEM dimension",
+      "expected_sensitivity": "high for wave travel and backpressure",
+      "notes": "A completed fixture needs an exhaust path.",
+      "reason": "A completed fixture needs an exhaust path.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mm",
+      "value": 120.0
+    },
+    "exhaust_port_height_mm": {
+      "conceptual_origin": "small rectangular port surrogate",
+      "expected_sensitivity": "high for discharge and trapped charge",
+      "notes": "A port height is needed to define area versus crank angle.",
+      "reason": "A port height is needed to define area versus crank angle.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mm",
+      "value": 10.0
+    },
+    "exhaust_port_top_mm": {
+      "conceptual_origin": "small rectangular port surrogate in the existing project geometry model",
+      "expected_sensitivity": "high for blowdown and scavenging",
+      "notes": "A port height/location is needed to calculate exhaust opening.",
+      "reason": "A port height/location is needed to calculate exhaust opening.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mm below TDC",
+      "value": 30.0
+    },
+    "exhaust_port_width_mm": {
+      "conceptual_origin": "small rectangular port surrogate",
+      "expected_sensitivity": "high for mass flow",
+      "notes": "A port width is needed to define geometric area.",
+      "reason": "A port width is needed to define geometric area.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mm developed",
+      "value": 16.0
+    },
+    "exhaust_reservoir_fresh_marker_fraction": {
+      "conceptual_origin": "declared synthetic reservoir initial condition",
+      "expected_sensitivity": "moderate for initial marker state",
+      "notes": "The 0D exhaust reservoir starts without the passive fresh marker.",
+      "reason": "The 0D exhaust reservoir starts without the passive fresh marker.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "fraction",
+      "value": 0.0
+    },
+    "exhaust_tail_diameter_mm": {
+      "conceptual_origin": "constant-area circular duct surrogate",
+      "expected_sensitivity": "high for flow",
+      "notes": "The project geometry requires a connected outlet section.",
+      "reason": "The project geometry requires a connected outlet section.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mm",
+      "value": 35.0
+    },
+    "exhaust_tail_length_mm": {
+      "conceptual_origin": "short straight outlet surrogate",
+      "expected_sensitivity": "high for pressure response",
+      "notes": "The project geometry requires a connected outlet route.",
+      "reason": "The project geometry requires a connected outlet route.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mm",
+      "value": 180.0
+    },
+    "initial_crankcase_pressure_Pa": {
+      "conceptual_origin": "declared synthetic initial condition used unchanged in the completed study",
+      "expected_sensitivity": "high for initial pumping and transfer",
+      "notes": "The existing 0D case needs an explicit initial crankcase state; no KT100SP value is available.",
+      "reason": "The existing 0D case needs an explicit initial crankcase state; no KT100SP value is available.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "Pa absolute",
+      "value": 120000.0
+    },
+    "initial_crankcase_temperature_K": {
+      "conceptual_origin": "existing MotorSim P8 synthetic initialization",
+      "expected_sensitivity": "moderate",
+      "notes": "Initial crankcase state is not variant-specific documented data.",
+      "reason": "Initial crankcase state is not variant-specific documented data.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "K",
+      "value": 330.0
+    },
+    "initial_cylinder_pressure_Pa": {
+      "conceptual_origin": "declared synthetic residual-state initialization used unchanged in the completed study",
+      "expected_sensitivity": "high for initial trapped mass and pressure",
+      "notes": "The existing 0D case needs an explicit initial cylinder state; no KT100SP value is available.",
+      "reason": "The existing 0D case needs an explicit initial cylinder state; no KT100SP value is available.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "Pa absolute",
+      "value": 140000.0
+    },
+    "initial_cylinder_temperature_K": {
+      "conceptual_origin": "existing MotorSim P8 synthetic initialization",
+      "expected_sensitivity": "high for pressure and heat transfer",
+      "notes": "Initial cylinder residual state is not variant-specific documented data.",
+      "reason": "Initial cylinder residual state is not variant-specific documented data.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "K",
+      "value": 700.0
+    },
+    "initial_exhaust_temperature_K": {
+      "conceptual_origin": "existing MotorSim P8 synthetic initialization",
+      "expected_sensitivity": "moderate for pressure waves",
+      "notes": "Initial exhaust state is not variant-specific documented data.",
+      "reason": "Initial exhaust state is not variant-specific documented data.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "K",
+      "value": 500.0
+    },
+    "initial_fresh_fraction_by_cv": {
+      "conceptual_origin": "declared synthetic initial states; not four-species mass fractions",
+      "expected_sensitivity": "high for marker accounting",
+      "notes": "The legacy 0D model tracks a passive fresh fraction and requires explicit initial marker states.",
+      "reason": "The legacy 0D model tracks a passive fresh fraction and requires explicit initial marker states.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "fraction [I,K,C,E]",
+      "value": [
+        1.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    "initial_intake_temperature_K": {
+      "conceptual_origin": "existing MotorSim P8 synthetic initialization",
+      "expected_sensitivity": "moderate",
+      "notes": "Initial intake state is not variant-specific documented data.",
+      "reason": "Initial intake state is not variant-specific documented data.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "K",
+      "value": 300.0
+    },
+    "initial_pressure_Pa": {
+      "conceptual_origin": "standard atmosphere as a numerical boundary value",
+      "expected_sensitivity": "high for mass and flow",
+      "notes": "A finite initial state is required to execute the fixture.",
+      "reason": "A finite initial state is required to execute the fixture.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "Pa absolute",
+      "value": 101325.0
+    },
+    "intake_duct_diameter_mm": {
+      "conceptual_origin": "constant-area circular tract surrogate; carburetor venturi flow map is not modeled",
+      "expected_sensitivity": "moderate to high for flow",
+      "notes": "A completed fixture needs an inlet duct section.",
+      "reason": "A completed fixture needs an inlet duct section.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mm",
+      "value": 14.0
+    },
+    "intake_duct_length_mm": {
+      "conceptual_origin": "minimal straight tract; not copied from KT100S rules",
+      "expected_sensitivity": "moderate for stored gas and pressure response",
+      "notes": "A completed fixture needs an inlet tract length.",
+      "reason": "A completed fixture needs an inlet tract length.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mm",
+      "value": 65.0
+    },
+    "intake_model_mode": {
+      "conceptual_origin": "existing MotorSim project model; not a complete carburetor representation",
+      "expected_sensitivity": "high for intake timing",
+      "notes": "The executable project schema supports the piston-port inlet model.",
+      "reason": "The executable project schema supports the piston-port inlet model.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mode",
+      "value": "piston_port"
+    },
+    "intake_piston_skirt_mm": {
+      "conceptual_origin": "straight-skirt geometry convention",
+      "expected_sensitivity": "high for intake timing",
+      "notes": "The piston-port opening calculation requires skirt reference.",
+      "reason": "The piston-port opening calculation requires skirt reference.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mm",
+      "value": 42.0
+    },
+    "intake_port_height_mm": {
+      "conceptual_origin": "rectangular port surrogate",
+      "expected_sensitivity": "high for intake flow",
+      "notes": "The inlet area model requires height.",
+      "reason": "The inlet area model requires height.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mm",
+      "value": 10.0
+    },
+    "intake_port_top_mm": {
+      "conceptual_origin": "piston-skirt-controlled rectangular port surrogate",
+      "expected_sensitivity": "high for intake timing",
+      "notes": "The piston-port inlet requires geometry in the project convention.",
+      "reason": "The piston-port inlet requires geometry in the project convention.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mm from project datum",
+      "value": 62.0
+    },
+    "intake_port_width_mm": {
+      "conceptual_origin": "small rectangular port surrogate",
+      "expected_sensitivity": "high for intake flow",
+      "notes": "The inlet area model requires width.",
+      "reason": "The inlet area model requires width.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mm developed",
+      "value": 16.0
+    },
+    "p7_duration_deg": {
+      "conceptual_origin": "existing P7 prescribed-source contract",
+      "expected_sensitivity": "dominant for pressure phasing",
+      "notes": "The existing P7 verification source uses a fixed duration.",
+      "reason": "The existing P7 verification source uses a fixed duration.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "deg CA",
+      "value": 40.0
+    },
+    "p7_heat_value_J_kg": {
+      "conceptual_origin": "existing MotorSim P7 constant Q_F",
+      "expected_sensitivity": "dominant for indicated work",
+      "notes": "This is the code's prescribed heat per bookkeeping burned mass, not a fuel LHV.",
+      "reason": "This is the code's prescribed heat per bookkeeping burned mass, not a fuel LHV.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "J/kg",
+      "value": 800000.0
+    },
+    "p7_start_angle_deg": {
+      "conceptual_origin": "existing P7 prescribed-source contract",
+      "expected_sensitivity": "dominant for pressure phasing",
+      "notes": "The existing P7 verification source uses a fixed event start.",
+      "reason": "The existing P7 verification source uses a fixed event start.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "deg CA",
+      "value": 350.0
+    },
+    "prescribed_heat_model": {
+      "conceptual_origin": "existing MotorSim P7 source contract; Q_F=800000 J/kg and 40 deg duration",
+      "expected_sensitivity": "dominant for indicated work",
+      "notes": "The existing P7 law is a fixed bookkeeping heat source, not Yamaha combustion data.",
+      "reason": "The existing P7 law is a fixed bookkeeping heat source, not Yamaha combustion data.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "model label",
+      "value": "P7 prescribed source; no chemistry"
+    },
+    "sensitivity_exhaust_length_scale": {
+      "conceptual_origin": "symmetric local sensitivity; not calibration",
+      "expected_sensitivity": "high for pressure response",
+      "notes": "A preregistered +/-5% perturbation tests an uncertain exhaust length.",
+      "reason": "A preregistered +/-5% perturbation tests an uncertain exhaust length.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "fraction of baseline",
+      "value": [
+        0.95,
+        1.05
+      ]
+    },
+    "sensitivity_rod_scale": {
+      "conceptual_origin": "symmetric local sensitivity; not calibration",
+      "expected_sensitivity": "high for volume/port phasing",
+      "notes": "A preregistered +/-5% perturbation tests an uncertain kinematic input.",
+      "reason": "A preregistered +/-5% perturbation tests an uncertain kinematic input.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "fraction of baseline",
+      "value": [
+        0.95,
+        1.05
+      ]
+    },
+    "solver_profile": {
+      "conceptual_origin": "motorsim.adaptive.PROFILES[1]",
+      "expected_sensitivity": "high for integration cost and accuracy",
+      "notes": "Use existing adaptive profile B unchanged.",
+      "reason": "Use existing adaptive profile B unchanged.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "profile",
+      "value": "B"
+    },
+    "thermo_R_J_kgK": {
+      "conceptual_origin": "existing MotorSim P5-C/P8 synthetic gas fixture",
+      "expected_sensitivity": "moderate for mass flow and pressure",
+      "notes": "The frozen ideal-gas solver requires a specific gas constant; composition is not modeled.",
+      "reason": "The frozen ideal-gas solver requires a specific gas constant; composition is not modeled.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "J/(kg K)",
+      "value": 287.0
+    },
+    "thermo_gamma": {
+      "conceptual_origin": "existing MotorSim P5-C/P8 synthetic gas fixture",
+      "expected_sensitivity": "high for acoustic speed and energy",
+      "notes": "The frozen calorically-perfect solver requires gamma.",
+      "reason": "The frozen calorically-perfect solver requires gamma.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "dimensionless",
+      "value": 1.35
+    },
+    "thermodynamic_model": {
+      "conceptual_origin": "existing MotorSim 0D gas model; not a composition model",
+      "expected_sensitivity": "high for pressure and energy",
+      "notes": "The existing application model requires fixed caloric properties.",
+      "reason": "The existing application model requires fixed caloric properties.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "model",
+      "value": "calorically perfect ideal gas"
+    },
+    "transfer_port_height_mm": {
+      "conceptual_origin": "small rectangular port surrogate",
+      "expected_sensitivity": "high for scavenging",
+      "notes": "A port height is needed to define area versus crank angle.",
+      "reason": "A port height is needed to define area versus crank angle.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mm",
+      "value": 8.0
+    },
+    "transfer_port_top_mm": {
+      "conceptual_origin": "two symmetric small rectangular transfer surrogates",
+      "expected_sensitivity": "high for scavenging timing",
+      "notes": "Two transfer windows are required by the existing topology.",
+      "reason": "Two transfer windows are required by the existing topology.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mm below TDC",
+      "value": 36.0
+    },
+    "transfer_port_width_mm": {
+      "conceptual_origin": "two symmetric small rectangular port surrogates",
+      "expected_sensitivity": "high for delivered and short-circuit mass",
+      "notes": "A port width is needed to define geometric area.",
+      "reason": "A port width is needed to define geometric area.",
+      "source": null,
+      "source_location": null,
+      "status": "SYNTHETIC_ASSUMPTION",
+      "strongly_affects_results": true,
+      "units": "mm developed per port",
+      "value": 12.0
+    }
+  },
+  "fixture_id": "KT100_MODEL_FIXTURE_V1",
+  "parameters": {
+    "architecture": {
+      "notes": "Yamaha wording: air-cooled two-cycle piston-valve single-cylinder.",
+      "source": "https://global.yamaha-motor.com/jp/news/1998/1216/kart.html",
+      "source_location": "product description and specifications",
+      "status": "DOCUMENTED",
+      "units": "text",
+      "value": "single-cylinder piston-valve two-stroke"
+    },
+    "bore_mm": {
+      "notes": "Variant-specific KT100SP.",
+      "source": "https://global.yamaha-motor.com/jp/news/1998/1216/kart.html",
+      "source_location": "specifications: bore x stroke",
+      "status": "DOCUMENTED",
+      "units": "mm",
+      "value": 52.0
+    },
+    "carburetor": {
+      "notes": "No jetting, throat flow map or fuel schedule stated.",
+      "source": "https://global.yamaha-motor.com/jp/news/1998/1216/kart.html",
+      "source_location": "specifications: carburetor",
+      "status": "DOCUMENTED",
+      "units": "text",
+      "value": "WALBRO WB40"
+    },
+    "compression_ratio": {
+      "notes": "Yamaha gives 9.0:1; measurement convention is not described in the release.",
+      "source": "https://global.yamaha-motor.com/jp/news/1998/1216/kart.html",
+      "source_location": "specifications: compression ratio",
+      "status": "DOCUMENTED",
+      "units": "dimensionless",
+      "value": 9.0
+    },
+    "connecting_rod_length_mm": {
+      "notes": "No variant-specific connecting-rod center distance was found in the selected source.",
+      "source": null,
+      "source_location": null,
+      "status": "UNKNOWN",
+      "units": "mm",
+      "value": null
+    },
+    "cooling": {
+      "notes": "Variant-specific release.",
+      "source": "https://global.yamaha-motor.com/jp/news/1998/1216/kart.html",
+      "source_location": "product description; specifications",
+      "status": "DOCUMENTED",
+      "units": "text",
+      "value": "air-cooled"
+    },
+    "crankcase_volume_cm3": {
+      "notes": "No KT100SP crankcase compression volume found.",
+      "source": null,
+      "source_location": null,
+      "status": "UNKNOWN",
+      "units": "cm3",
+      "value": null
+    },
+    "cycle": {
+      "notes": "Two-stroke cycle.",
+      "source": "https://global.yamaha-motor.com/jp/news/1998/1216/kart.html",
+      "source_location": "specifications",
+      "status": "DOCUMENTED",
+      "units": "cycle",
+      "value": "2T"
+    },
+    "cylinder_count": {
+      "notes": "Single cylinder.",
+      "source": "https://global.yamaha-motor.com/jp/news/1998/1216/kart.html",
+      "source_location": "specifications: cylinder count",
+      "status": "DOCUMENTED",
+      "units": "cylinders",
+      "value": 1
+    },
+    "displacement_cm3": {
+      "notes": "Rounded manufacturer-declared displacement.",
+      "source": "https://global.yamaha-motor.com/jp/news/1998/1216/kart.html",
+      "source_location": "specifications: displacement",
+      "status": "DOCUMENTED",
+      "units": "cm3",
+      "value": 97.6
+    },
+    "exhaust_description": {
+      "notes": "No dimensions or tuned operating range stated.",
+      "source": "https://global.yamaha-motor.com/jp/news/1998/1216/kart.html",
+      "source_location": "exhaust-system description",
+      "status": "DOCUMENTED",
+      "units": "text",
+      "value": "oval exhaust pipe; dedicated stepped chamber/muffler optional"
+    },
+    "fuel_specification": {
+      "notes": "The release identifies premix lubrication but not fuel grade, composition, or mixture ratio.",
+      "source": null,
+      "source_location": null,
+      "status": "UNKNOWN",
+      "units": "text",
+      "value": null
+    },
+    "ignition": {
+      "notes": "The release does not provide timing curve or advance.",
+      "source": "https://global.yamaha-motor.com/jp/news/1998/1216/kart.html",
+      "source_location": "specifications: ignition",
+      "status": "DOCUMENTED",
+      "units": "text",
+      "value": "TCI"
+    },
+    "induction": {
+      "notes": "Piston-controlled inlet; port dimensions and timing remain unknown.",
+      "source": "https://global.yamaha-motor.com/jp/news/1998/1216/kart.html",
+      "source_location": "product description; specifications",
+      "status": "DOCUMENTED",
+      "units": "text",
+      "value": "piston-valve"
+    },
+    "lubrication": {
+      "notes": "No premix ratio stated in this release.",
+      "source": "https://global.yamaha-motor.com/jp/news/1998/1216/kart.html",
+      "source_location": "specifications: lubrication",
+      "status": "DOCUMENTED",
+      "units": "text",
+      "value": "premix"
+    },
+    "manufacturer": {
+      "notes": "Manufacturer's official release.",
+      "source": "https://global.yamaha-motor.com/jp/news/1998/1216/kart.html",
+      "source_location": "heading and release text; 16 December 1998",
+      "status": "DOCUMENTED",
+      "units": "text",
+      "value": "Yamaha Motor Co., Ltd."
+    },
+    "operating_rpm_range": {
+      "notes": "The selected-variant primary source gives no operating or rated RPM range.",
+      "source": null,
+      "source_location": null,
+      "status": "UNKNOWN",
+      "units": "rpm",
+      "value": null
+    },
+    "port_geometry": {
+      "notes": "No variant-specific port maps or dimensions found in the selected primary source.",
+      "source": null,
+      "source_location": null,
+      "status": "UNKNOWN",
+      "units": "mm / mm2",
+      "value": null
+    },
+    "port_timing_deg": {
+      "notes": "No port opening/closing angles were found for KT100SP in the selected source.",
+      "source": null,
+      "source_location": null,
+      "status": "UNKNOWN",
+      "units": "deg crank",
+      "value": null
+    },
+    "stroke_mm": {
+      "notes": "Variant-specific KT100SP.",
+      "source": "https://global.yamaha-motor.com/jp/news/1998/1216/kart.html",
+      "source_location": "specifications: bore x stroke",
+      "status": "DOCUMENTED",
+      "units": "mm",
+      "value": 46.0
+    },
+    "variant": {
+      "notes": "Selected explicitly; no KT100S/SD/SEC data are merged.",
+      "source": "https://global.yamaha-motor.com/jp/news/1998/1216/kart.html",
+      "source_location": "heading; product description; specifications",
+      "status": "DOCUMENTED",
+      "units": "model designation",
+      "value": "KT100SP"
+    },
+    "variant_context": {
+      "notes": "Release does not identify an exact production year or serial range.",
+      "source": "https://global.yamaha-motor.com/jp/news/1998/1216/kart.html",
+      "source_location": "release date and FP2 background",
+      "status": "DOCUMENTED",
+      "units": "text",
+      "value": "Japan domestic FP2 karting class; announced 1998-12-16"
+    }
+  },
+  "predictive_validation": "NOT_CLAIMED",
+  "prohibited_claims": [
+    "P9_PASS",
+    "EXPERIMENTALLY_VALIDATED",
+    "PREDICTIVELY_VALIDATED"
+  ],
+  "reference_case_id": "KT100_REFERENCE_CASE_V1",
+  "reference_kind": "REAL_ENGINE_REFERENCE_CASE",
+  "schema": "motorsim-reference-provenance-v1",
+  "selected_variant": "Yamaha KT100SP (Japan FP2 context; 1998 announcement)",
+  "simulation_claim_status": "SYNTHETIC_NON_CONFIRMATORY",
+  "source_reconciliation": {
+    "compression_method": "Yamaha publishes 9.0:1 without a stated measurement convention; clearance volume derivation is conditional on a geometric VBDC/VTDC interpretation.",
+    "not_merged": [
+      "KT100S/SE/SD/SEC Australian 2013 technical rules",
+      "generic KT-100 thesis table"
+    ],
+    "rpm_range": "UNKNOWN for this variant; the numerical sweep is an exploratory MotorSim grid only.",
+    "selected_source": "Yamaha official KT100SP 1998 release"
+  },
+  "sources": {
+    "aka_kt100s_series_2013": {
+      "authority": "competition technical document for S/SE/SD/SEC series",
+      "published": "2013-08-20 update",
+      "publisher": "Australian Karting Association",
+      "title": "Yamaha KT100S Series Engines Technical Specifications, Version 5",
+      "url": "https://www.karting.net.au/wp-content/uploads/2010/09/YAMAHA-KT100S-V-5.pdf",
+      "used_for": [
+        "variant-difference cross-check only; not mixed into KT100SP"
+      ]
+    },
+    "gore_2024_thesis": {
+      "authority": "academic secondary source; variant identity differs/unclear",
+      "published": "2024",
+      "publisher": "North Carolina State University repository",
+      "title": "Experimental Development of a High Power Density Generator Utilizing Renewable Fuel",
+      "url": "https://repository.lib.ncsu.edu/bitstreams/24433484-a6eb-4ad8-80f1-a18fa75c4ef6/download",
+      "used_for": [
+        "context only; not used to populate KT100SP parameters"
+      ]
+    },
+    "yamaha_1998_kt100sp": {
+      "authority": "manufacturer primary source",
+      "published": "1998-12-16",
+      "publisher": "Yamaha Motor Co., Ltd.",
+      "title": "Yamaha KT100SP product release",
+      "url": "https://global.yamaha-motor.com/jp/news/1998/1216/kart.html",
+      "used_for": [
+        "variant",
+        "context",
+        "architecture",
+        "2T",
+        "single cylinder",
+        "air cooling",
+        "97.6 cm3",
+        "52x46 mm",
+        "compression ratio 9.0:1",
+        "TCI",
+        "premix",
+        "Walbro WB40",
+        "oval/optional exhaust description"
+      ]
+    }
+  },
+  "variant_identification_limit": "Production year/serial range not stated by the release."
+}

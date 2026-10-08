@@ -1,0 +1,31 @@
+{
+  "task": "P5B-06",
+  "description": "interface_flux_single_source_audit",
+  "status": "PASS",
+  "scope": "P5 conditional on unresolved P4; isolated P5-B fixture only",
+  "checks": [
+    {
+      "id": "call_count",
+      "passed": true,
+      "detail": "The short fixture resolves exactly three physical interfaces once per step."
+    },
+    {
+      "id": "distinct_duct_stage_states",
+      "passed": true,
+      "detail": "Intake, transfer 1 and transfer 2 use duct_states[0], [1] and [2] respectively."
+    },
+    {
+      "id": "single_source_reuse",
+      "passed": true,
+      "detail": "The returned interface results feed chamber RHS, cylinder RHS, duct updates and the history trace."
+    }
+  ],
+  "tests": {
+    "unittest": "3 tests PASS",
+    "audit_harness": "PASS",
+    "py_compile": "PASS",
+    "pytest": "not run: pytest is not installed in .venv"
+  },
+  "p4_acceptance": "NOT_GRANTED",
+  "p5_status": "CONDITIONAL"
+}

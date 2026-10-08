@@ -1,0 +1,8 @@
+{
+  "formula": "p_i * (A[i+1]-A[i]) in solver delta momentum",
+  "stage": "evaluated from stage states in exhaust solver; hybrid uses SSPRK2 traces",
+  "expansion_contraction": "same signed finite-volume expression",
+  "double_counting": "not observed in code audit",
+  "status": "FORMULATION_CONSISTENT_CODE_REVIEW",
+  "source": "motorsim/gas1d/solver.py"
+}

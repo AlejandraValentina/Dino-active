@@ -1,0 +1,92 @@
+{
+  "state": "P4_R1_METRIC_IMPLEMENTATION_DEFECT",
+  "historical": [
+    {
+      "N": 100,
+      "path": "results\\p4-exhaust-20260918\\p4a\\artifacts\\cases\\blowdown_N100_CFL0.4.json.gz",
+      "sha256": "ef85470907935ad6624116736c017b2d1fc837a01ab4d6c750434c84a8faba93",
+      "sensor": 0.099,
+      "interval": [
+        0,
+        0.012222222222222223
+      ],
+      "samples": 2673,
+      "Q_pressure": 164.72931965066442,
+      "reconstructed_right_rule": 164.72931965066442,
+      "trapezoid_same_displaced_sensor": 164.78535682258942,
+      "Q_mass": -9.700566033221414e-05,
+      "mass_stage": -9.700566033221444e-05,
+      "mass_inventory": -9.700566033221451e-05,
+      "mass_residual": 9.307525319605713e-16,
+      "events": [
+        0.0005555555555555556,
+        0.0017891164500127622,
+        0.0026675263807214075,
+        0.005555555555555556,
+        0.008443584730389704,
+        0.009321994661098348,
+        0.010555555555555556,
+        0.012222222222222223
+      ]
+    },
+    {
+      "N": 200,
+      "path": "results\\p4-exhaust-20260918\\p4b\\artifacts\\cases\\blowdown_N200_CFL0.4.json.gz",
+      "sha256": "03e66758ad2f051da15be3b26288149565af41490ee0b2a9a2e7d5cf73fbd15c",
+      "sensor": 0.1005,
+      "interval": [
+        0,
+        0.012222222222222223
+      ],
+      "samples": 5405,
+      "Q_pressure": 164.80499877841976,
+      "reconstructed_right_rule": 164.80499877841976,
+      "trapezoid_same_displaced_sensor": 164.83330801908,
+      "Q_mass": -9.700772869391448e-05,
+      "mass_stage": -9.700772869391498e-05,
+      "mass_inventory": -9.700772869391582e-05,
+      "mass_residual": 3.4127592838554287e-15,
+      "events": [
+        0.0005555555555555556,
+        0.0017891164500127622,
+        0.0026675263807214075,
+        0.005555555555555556,
+        0.008443584730389704,
+        0.009321994661098348,
+        0.010555555555555556,
+        0.012222222222222223
+      ]
+    },
+    {
+      "N": 400,
+      "path": "results\\p4-exhaust-20260918\\p4b\\artifacts\\cases\\blowdown_N400_CFL0.4.json.gz",
+      "sha256": "a728876db4462909c404ea1e83a0cd17db1c9b9e638d545479bbe461b4c0f40a",
+      "sensor": 0.09975,
+      "interval": [
+        0,
+        0.012222222222222223
+      ],
+      "samples": 10868,
+      "Q_pressure": 164.89973448238882,
+      "reconstructed_right_rule": 164.89973448238882,
+      "trapezoid_same_displaced_sensor": 164.91388799688247,
+      "Q_mass": -9.700999337738677e-05,
+      "mass_stage": -9.700999337738636e-05,
+      "mass_inventory": -9.700999337738635e-05,
+      "mass_residual": 1.0686417959547302e-15,
+      "events": [
+        0.0005555555555555556,
+        0.0017891164500127622,
+        0.0026675263807214075,
+        0.005555555555555556,
+        0.008443584730389704,
+        0.009321994661098348,
+        0.010555555555555556,
+        0.012222222222222223
+      ]
+    }
+  ],
+  "reason": "Nearest-centre sensor changes physical position; right endpoint pressure quadrature also has dt-dependent first-order bias. Mass comes from conservative stage ledger and is correct.",
+  "can_recover_fixed_sensor_offline": false,
+  "missing": "Neighbour-cell time series absent; sparse snapshots cannot reconstruct every accepted endpoint."
+}

@@ -1,0 +1,733 @@
+{
+  "state": "P4_BLOCKED_WAVE_PHYSICS",
+  "passed": false,
+  "aggregate": {
+    "E10_length": true,
+    "E11_RPM": true,
+    "wave_arrival": true,
+    "refinement_diffuser": true,
+    "refinement_blowdown": false,
+    "CFL_diffuser": true,
+    "CFL_blowdown": true
+  },
+  "refinement": {
+    "diffuser": {
+      "arrival": {
+        "values": [
+          0.0007294377566062338,
+          0.0007419262304016533,
+          0.000752397432216339
+        ],
+        "decreasing": true
+      },
+      "pressure_integral": {
+        "values": [
+          0.005919629708938169,
+          0.0060843471169031126,
+          0.006150410108516114
+        ],
+        "decreasing": true
+      },
+      "mass_exchange": {
+        "values": [
+          -1.05379240913192e-09,
+          -1.052713433474094e-09,
+          -1.052302914556643e-09
+        ],
+        "decreasing": true
+      }
+    },
+    "blowdown": {
+      "arrival": {
+        "values": [
+          0.0008747724705496624,
+          0.0008792962154978552,
+          0.0008749014071691907
+        ],
+        "decreasing": true
+      },
+      "pressure_integral": {
+        "values": [
+          164.72931965066442,
+          164.80499877841976,
+          164.89973448238882
+        ],
+        "decreasing": false
+      },
+      "mass_exchange": {
+        "values": [
+          -9.700566033221414e-05,
+          -9.700772869391448e-05,
+          -9.700999337738677e-05
+        ],
+        "decreasing": false
+      }
+    }
+  },
+  "sensitivity": {
+    "diffuser": {
+      "arrival": 0.00042838297976126777,
+      "pressure_integral": 0.003167208725725018,
+      "mass_exchange": 0.0032804879629041504
+    },
+    "blowdown": {
+      "arrival": 0.003707048974592446,
+      "pressure_integral": 0.0003345667082163628,
+      "mass_exchange": 5.785406780955297e-07
+    }
+  },
+  "wave_arrival": {
+    "arrivals": [
+      0.0008738705973766045,
+      0.0014383684591895744
+    ],
+    "local_characteristic_range": [
+      340.9325446477646,
+      544.5545090657026
+    ],
+    "distance": 0.19799999999999998,
+    "lower": 0.0003284023857078295,
+    "upper": 0.0006159576235731971
+  },
+  "cases": [
+    {
+      "name": "straight_N100_CFL0.4_RPM3000",
+      "inputs": {
+        "label": "straight",
+        "N": 100,
+        "actual_cells": 100,
+        "CFL": 0.4,
+        "RPM": 3000,
+        "end": 0.003,
+        "epsilon": 100.0
+      },
+      "metrics": {
+        "arrival": null,
+        "expected_center_return": 0.0007956119304487128,
+        "negative": -0.0001638906580433169,
+        "positive": -3.928989408688616e-05,
+        "pressure_integral": 1.7545424938483187e-06,
+        "mass_exchange": -3.656141244894745e-13,
+        "arrival_angle": null,
+        "closing_angle": 270.0,
+        "volume": 0.00023561944901923448,
+        "signal_peak": 0.0001638906580433169
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "weak_unwanted_reflection": true
+      },
+      "status": "PASS",
+      "runtime": 2.031000000424683,
+      "reason": "final_time",
+      "residual": 4.215297167150248e-16
+    },
+    {
+      "name": "diffuser_N100_CFL0.4_RPM3000",
+      "inputs": {
+        "label": "diffuser",
+        "N": 100,
+        "actual_cells": 101,
+        "CFL": 0.4,
+        "RPM": 3000,
+        "end": 0.003,
+        "epsilon": 100.0
+      },
+      "metrics": {
+        "arrival": 0.0007294377566062338,
+        "expected_center_return": 0.0007973772410982832,
+        "negative": -7.140503511341666,
+        "positive": -0.15499526411354853,
+        "pressure_integral": 0.005919629708938169,
+        "mass_exchange": -1.05379240913192e-09,
+        "arrival_angle": 193.1298796189122,
+        "closing_angle": 270.0,
+        "volume": 0.0006754424205218056,
+        "signal_peak": 7.140503511341666
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "reflection_sign": true,
+        "return_timing": true
+      },
+      "status": "PASS",
+      "runtime": 2.6409999998286366,
+      "reason": "final_time",
+      "residual": 4.390062970955577e-16
+    },
+    {
+      "name": "converger_N100_CFL0.4_RPM3000",
+      "inputs": {
+        "label": "converger",
+        "N": 100,
+        "actual_cells": 101,
+        "CFL": 0.4,
+        "RPM": 3000,
+        "end": 0.003,
+        "epsilon": 100.0
+      },
+      "metrics": {
+        "arrival": 0.0007551741830606448,
+        "expected_center_return": 0.0007973772410982832,
+        "negative": 0.08525822913933749,
+        "positive": 6.506222230827691,
+        "pressure_integral": 0.005813212756817029,
+        "mass_exchange": 1.8986360061684198e-09,
+        "arrival_angle": 193.5931352950916,
+        "closing_angle": 270.0,
+        "volume": 0.0001217367153266045,
+        "signal_peak": 6.506222230827691
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "reflection_sign": true,
+        "return_timing": true
+      },
+      "status": "PASS",
+      "runtime": 3.4220000002533197,
+      "reason": "final_time",
+      "residual": 1.2540673652439207e-15
+    },
+    {
+      "name": "chain_N100_CFL0.4_RPM3000",
+      "inputs": {
+        "label": "chain",
+        "N": 100,
+        "actual_cells": 101,
+        "CFL": 0.4,
+        "RPM": 3000,
+        "end": 0.003,
+        "epsilon": 100.0
+      },
+      "metrics": {
+        "arrival": 0.0007293668726328516,
+        "expected_center_return": 0.0007973772410982832,
+        "negative": -7.149944651157595,
+        "positive": -0.15013065119224533,
+        "pressure_integral": 0.009339956963644895,
+        "mass_exchange": 6.814887252777317e-10,
+        "arrival_angle": 193.12860370739133,
+        "closing_angle": 270.0,
+        "volume": 0.0004084070449666731,
+        "signal_peak": 7.149944651157595
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "reflection_sign": true,
+        "return_timing": true
+      },
+      "status": "PASS",
+      "runtime": 4.0,
+      "reason": "final_time",
+      "residual": 7.307156036773471e-16
+    },
+    {
+      "name": "long_N100_CFL0.4_RPM3000",
+      "inputs": {
+        "label": "long",
+        "N": 100,
+        "actual_cells": 114,
+        "CFL": 0.4,
+        "RPM": 3000,
+        "end": 0.003,
+        "epsilon": 100.0
+      },
+      "metrics": {
+        "arrival": 0.0012975709101858068,
+        "expected_center_return": 0.0013822382386136623,
+        "negative": -6.913032399283285,
+        "positive": -0.39793156054614154,
+        "pressure_integral": 0.006719235118860816,
+        "mass_exchange": -1.1554620913784273e-09,
+        "arrival_angle": 203.35627638334452,
+        "closing_angle": 270.0,
+        "volume": 0.00043982297150257097,
+        "signal_peak": 6.913032399283285
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "reflection_sign": true,
+        "return_timing": true
+      },
+      "status": "PASS",
+      "runtime": 4.4690000005066395,
+      "reason": "final_time",
+      "residual": 5.343921681060991e-16
+    },
+    {
+      "name": "equal_volume_N100_CFL0.4_RPM3000",
+      "inputs": {
+        "label": "equal_volume",
+        "N": 100,
+        "actual_cells": 101,
+        "CFL": 0.4,
+        "RPM": 3000,
+        "end": 0.003,
+        "epsilon": 100.0
+      },
+      "metrics": {
+        "arrival": 0.0012976091966538815,
+        "expected_center_return": 0.0013822382386136623,
+        "negative": -6.914695491867896,
+        "positive": -0.3985495475134,
+        "pressure_integral": 0.006712242506551535,
+        "mass_exchange": -1.1557085017380333e-09,
+        "arrival_angle": 203.35696553976987,
+        "closing_angle": 270.0,
+        "volume": 0.000408407044966673,
+        "signal_peak": 6.914695491867896
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "reflection_sign": true,
+        "return_timing": true
+      },
+      "status": "PASS",
+      "runtime": 4.2809999994933605,
+      "reason": "final_time",
+      "residual": 5.636423429809784e-16
+    },
+    {
+      "name": "chain_N100_CFL0.4_RPM2500",
+      "inputs": {
+        "label": "chain",
+        "N": 100,
+        "actual_cells": 101,
+        "CFL": 0.4,
+        "RPM": 2500,
+        "end": 0.003,
+        "epsilon": 100.0
+      },
+      "metrics": {
+        "arrival": 0.0007293668726328516,
+        "expected_center_return": 0.0007973772410982832,
+        "negative": -7.149944651157595,
+        "positive": -0.15013065119224533,
+        "pressure_integral": 0.009339882020630089,
+        "mass_exchange": 6.814879320902059e-10,
+        "arrival_angle": 190.94050308949278,
+        "closing_angle": 270.0,
+        "volume": 0.0004084070449666731,
+        "signal_peak": 7.149944651157595
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "reflection_sign": true,
+        "return_timing": true
+      },
+      "status": "PASS",
+      "runtime": 3.9380000000819564,
+      "reason": "final_time",
+      "residual": 7.307156036773471e-16
+    },
+    {
+      "name": "chain_N100_CFL0.4_RPM3500",
+      "inputs": {
+        "label": "chain",
+        "N": 100,
+        "actual_cells": 101,
+        "CFL": 0.4,
+        "RPM": 3500,
+        "end": 0.003,
+        "epsilon": 100.0
+      },
+      "metrics": {
+        "arrival": 0.0007293668726328516,
+        "expected_center_return": 0.0007973772410982832,
+        "negative": -7.149944651157595,
+        "positive": -0.15013065119224533,
+        "pressure_integral": 0.009339885652008495,
+        "mass_exchange": 6.814849213241235e-10,
+        "arrival_angle": 195.3167043252899,
+        "closing_angle": 270.0,
+        "volume": 0.0004084070449666731,
+        "signal_peak": 7.149944651157595
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "reflection_sign": true,
+        "return_timing": true
+      },
+      "status": "PASS",
+      "runtime": 3.9680000003427267,
+      "reason": "final_time",
+      "residual": 6.117175627302692e-16
+    },
+    {
+      "name": "diffuser_N200_CFL0.4_RPM3000",
+      "inputs": {
+        "label": "diffuser",
+        "N": 200,
+        "actual_cells": 201,
+        "CFL": 0.4,
+        "RPM": 3000,
+        "end": 0.003,
+        "epsilon": 100.0
+      },
+      "metrics": {
+        "arrival": 0.0007419262304016533,
+        "expected_center_return": 0.0007919455160226819,
+        "negative": -7.5933229975820495,
+        "positive": -0.017477218227874895,
+        "pressure_integral": 0.0060843471169031126,
+        "mass_exchange": -1.052713433474094e-09,
+        "arrival_angle": 193.35467214722976,
+        "closing_angle": 270.0,
+        "volume": 0.0006754424205218056,
+        "signal_peak": 7.5933229975820495
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "reflection_sign": true,
+        "return_timing": true
+      },
+      "status": "PASS",
+      "runtime": 13.234000000171363,
+      "reason": "final_time",
+      "residual": 2.5985145200166523e-16
+    },
+    {
+      "name": "diffuser_N400_CFL0.4_RPM3000",
+      "inputs": {
+        "label": "diffuser",
+        "N": 400,
+        "actual_cells": 401,
+        "CFL": 0.4,
+        "RPM": 3000,
+        "end": 0.003,
+        "epsilon": 100.0
+      },
+      "metrics": {
+        "arrival": 0.000752397432216339,
+        "expected_center_return": 0.0007933161382380206,
+        "negative": -7.858321655291528,
+        "positive": -0.001792760431701432,
+        "pressure_integral": 0.006150410108516114,
+        "mass_exchange": -1.052302914556643e-09,
+        "arrival_angle": 193.5431537798941,
+        "closing_angle": 270.0,
+        "volume": 0.0006754424205218056,
+        "signal_peak": 7.858321655291528
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "reflection_sign": true,
+        "return_timing": true
+      },
+      "status": "PASS",
+      "runtime": 48.53100000042468,
+      "reason": "final_time",
+      "residual": 6.044506460262514e-16
+    },
+    {
+      "name": "diffuser_N100_CFL0.2_RPM3000",
+      "inputs": {
+        "label": "diffuser",
+        "N": 100,
+        "actual_cells": 101,
+        "CFL": 0.2,
+        "RPM": 3000,
+        "end": 0.003,
+        "epsilon": 100.0
+      },
+      "metrics": {
+        "arrival": 0.0007294244425833901,
+        "expected_center_return": 0.0007973772410982832,
+        "negative": -7.158502541921459,
+        "positive": -0.15761531929981198,
+        "pressure_integral": 0.00593135904575395,
+        "mass_exchange": -1.0551087667196904e-09,
+        "arrival_angle": 193.12963996650103,
+        "closing_angle": 270.0,
+        "volume": 0.0006754424205218056,
+        "signal_peak": 7.158502541921459
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "reflection_sign": true,
+        "return_timing": true
+      },
+      "status": "PASS",
+      "runtime": 5.203000000678003,
+      "reason": "final_time",
+      "residual": 6.655346268928392e-16
+    },
+    {
+      "name": "diffuser_N100_CFL0.6_RPM3000",
+      "inputs": {
+        "label": "diffuser",
+        "N": 100,
+        "actual_cells": 101,
+        "CFL": 0.6,
+        "RPM": 3000,
+        "end": 0.003,
+        "epsilon": 100.0
+      },
+      "metrics": {
+        "arrival": 0.0007291252778865085,
+        "expected_center_return": 0.0007973772410982832,
+        "negative": -7.1189402694122546,
+        "positive": -0.14661713013132283,
+        "pressure_integral": 0.00591257319362883,
+        "mass_exchange": -1.0516474951109118e-09,
+        "arrival_angle": 193.12425500195715,
+        "closing_angle": 270.0,
+        "volume": 0.0006754424205218056,
+        "signal_peak": 7.1189402694122546
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "reflection_sign": true,
+        "return_timing": true
+      },
+      "status": "PASS",
+      "runtime": 1.968999999575317,
+      "reason": "final_time",
+      "residual": 3.233331633955962e-16
+    },
+    {
+      "name": "blowdown_N200_CFL0.4",
+      "inputs": {
+        "label": "blowdown",
+        "N": 200,
+        "CFL": 0.4,
+        "start": 80.0,
+        "finish": 300,
+        "chamber": {
+          "mass": 0.00017421602787456446,
+          "internal_energy": 85.7142857142857,
+          "fresh_mass": 0.00013937282229965157,
+          "volume": 0.0001
+        },
+        "port": {
+          "stroke": 56,
+          "rod": 100,
+          "top": 32,
+          "height": 10,
+          "width": 20
+        },
+        "length": 0.6,
+        "area": 0.0003141592653589793
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "opening": true,
+        "discharge": true,
+        "wave": true,
+        "closing": true
+      },
+      "status": "PASS",
+      "metrics": {
+        "arrival": 0.0008792962154978552,
+        "pressure_integral": 164.80499877841976,
+        "mass_exchange": -9.700772869391448e-05
+      },
+      "runtime": 70.36000000033528,
+      "reason": "final_time",
+      "residual": 3.378286967856889e-15
+    },
+    {
+      "name": "blowdown_N400_CFL0.4",
+      "inputs": {
+        "label": "blowdown",
+        "N": 400,
+        "CFL": 0.4,
+        "start": 80.0,
+        "finish": 300,
+        "chamber": {
+          "mass": 0.00017421602787456446,
+          "internal_energy": 85.7142857142857,
+          "fresh_mass": 0.00013937282229965157,
+          "volume": 0.0001
+        },
+        "port": {
+          "stroke": 56,
+          "rod": 100,
+          "top": 32,
+          "height": 10,
+          "width": 20
+        },
+        "length": 0.6,
+        "area": 0.0003141592653589793
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "opening": true,
+        "discharge": true,
+        "wave": true,
+        "closing": true
+      },
+      "status": "PASS",
+      "metrics": {
+        "arrival": 0.0008749014071691907,
+        "pressure_integral": 164.89973448238882,
+        "mass_exchange": -9.700999337738677e-05
+      },
+      "runtime": 271.25,
+      "reason": "final_time",
+      "residual": 2.706076805885365e-15
+    },
+    {
+      "name": "blowdown_N100_CFL0.2",
+      "inputs": {
+        "label": "blowdown",
+        "N": 100,
+        "CFL": 0.2,
+        "start": 80.0,
+        "finish": 300,
+        "chamber": {
+          "mass": 0.00017421602787456446,
+          "internal_energy": 85.7142857142857,
+          "fresh_mass": 0.00013937282229965157,
+          "volume": 0.0001
+        },
+        "port": {
+          "stroke": 56,
+          "rod": 100,
+          "top": 32,
+          "height": 10,
+          "width": 20
+        },
+        "length": 0.6,
+        "area": 0.0003141592653589793
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "opening": true,
+        "discharge": true,
+        "wave": true,
+        "closing": true
+      },
+      "status": "PASS",
+      "metrics": {
+        "arrival": 0.0008744234723674275,
+        "pressure_integral": 164.75699741099015,
+        "mass_exchange": -9.700567964109976e-05
+      },
+      "runtime": 34.51599999982864,
+      "reason": "final_time",
+      "residual": 3.003652175879163e-15
+    },
+    {
+      "name": "blowdown_N100_CFL0.6",
+      "inputs": {
+        "label": "blowdown",
+        "N": 100,
+        "CFL": 0.6,
+        "start": 80.0,
+        "finish": 300,
+        "chamber": {
+          "mass": 0.00017421602787456446,
+          "internal_energy": 85.7142857142857,
+          "fresh_mass": 0.00013937282229965157,
+          "volume": 0.0001
+        },
+        "port": {
+          "stroke": 56,
+          "rod": 100,
+          "top": 32,
+          "height": 10,
+          "width": 20
+        },
+        "length": 0.6,
+        "area": 0.0003141592653589793
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "positive": true,
+        "events": true,
+        "CFL": true,
+        "opening": true,
+        "discharge": true,
+        "wave": true,
+        "closing": true
+      },
+      "status": "PASS",
+      "metrics": {
+        "arrival": 0.0008776770642283987,
+        "pressure_integral": 164.70187520471075,
+        "mass_exchange": -9.700562351936808e-05
+      },
+      "runtime": 12.01600000075996,
+      "reason": "final_time",
+      "residual": 1.55233147980924e-15
+    }
+  ]
+}

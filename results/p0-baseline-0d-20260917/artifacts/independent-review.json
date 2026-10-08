@@ -1,0 +1,21 @@
+{
+  "run_id": "20260917T151222-P0-e7c30e109458",
+  "evidence_sha256": "d2d3f6696a7843d12bbd35c6f0069ff800ec9f8198d23316fe630d39fe42c941",
+  "review": {
+    "status": "PASS",
+    "findings": [],
+    "blocking_findings": [],
+    "scientific_change_required": false,
+    "kind": "independent",
+    "notes": "Independent read-only review by /root/review_rc2_hardening. Verified 34 inventory hashes, unchanged production, all26 main and3 stress points, and7 exact historical regressions offline. Reviewed closure correction and11 passing tests; readable diagnostic plot and limited numerical interpretation. No integrations or file modifications by reviewer. Approves proceeding to reviewed finalizer; finalizer execution not yet attested. Human acceptance pending; public domain unchanged; no P1."
+  },
+  "reviewer_provenance": "/root/review_rc2_hardening; independent agent, read-only",
+  "reviewed_source_sha256": {
+    "dev_orchestrator/p0_campaign.py": "23eba4067c6dc96ac979747e2be6a4bdf9578001ca64a4a730b06ea97d85298c",
+    "dev_orchestrator/p0_finalize.py": "ba09adade91fca87f2be68e20b5da7963594ead54d7829ead62c2911e0e45c04",
+    "dev_orchestrator/p0_plots.py": "d608fa57f55ec4fc53af551dc46da5e10ee4d238d2b140dfe45b6539e5fb87d2",
+    "dev_orchestrator/phases/P0.json": "968fdd59c92d021408adea9281dad940c562a4c5ebd7a7e1afa66164a3fb383c",
+    "dev_orchestrator/roadmap/gasdynamic.json": "c88d9c8d08b87505397603c0745c31bff35f22184b7d4ab98a3185aaae0d22d2",
+    "tests/test_p0_baseline.py": "1deaa33e96dd187e92ee9a7a69b0ab784426a0c2d958c6b554e85839991bd76d"
+  }
+}

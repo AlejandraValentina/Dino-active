@@ -1,0 +1,388 @@
+{
+  "state": "P4_R1_PREASYMPTOTIC_REFINEMENT_CONFIRMED",
+  "phase_state": null,
+  "gates": {
+    "pressure": true,
+    "mass": true,
+    "arrival": true,
+    "conservation": true,
+    "admissibility": true,
+    "CFL": true,
+    "control": true,
+    "temporal": true,
+    "complete": true
+  },
+  "frozen": true,
+  "restart_prefix_exact": {
+    "history": true,
+    "stages": true
+  },
+  "comparison": {
+    "values": {
+      "Q_pressure": [
+        [
+          100,
+          164.74234696169054
+        ],
+        [
+          200,
+          164.85474898233795
+        ],
+        [
+          400,
+          164.90322780389366
+        ],
+        [
+          800,
+          164.92309333847263
+        ]
+      ],
+      "Q_mass": [
+        [
+          100,
+          -9.700566033221414e-05
+        ],
+        [
+          200,
+          -9.700772869391448e-05
+        ],
+        [
+          400,
+          -9.700999337738677e-05
+        ],
+        [
+          800,
+          -9.701165262641078e-05
+        ]
+      ]
+    },
+    "differences": {
+      "Q_pressure": [
+        {
+          "meshes": [
+            100,
+            200
+          ],
+          "signed": 0.11240202064740856,
+          "absolute": 0.11240202064740856
+        },
+        {
+          "meshes": [
+            200,
+            400
+          ],
+          "signed": 0.0484788215557046,
+          "absolute": 0.0484788215557046
+        },
+        {
+          "meshes": [
+            400,
+            800
+          ],
+          "signed": 0.01986553457896889,
+          "absolute": 0.01986553457896889
+        }
+      ],
+      "Q_mass": [
+        {
+          "meshes": [
+            100,
+            200
+          ],
+          "signed": -2.0683617003381186e-09,
+          "absolute": 2.0683617003381186e-09
+        },
+        {
+          "meshes": [
+            200,
+            400
+          ],
+          "signed": -2.2646834722876404e-09,
+          "absolute": 2.2646834722876404e-09
+        },
+        {
+          "meshes": [
+            400,
+            800
+          ],
+          "signed": -1.6592490240119068e-09,
+          "absolute": 1.6592490240119068e-09
+        }
+      ]
+    },
+    "temporal": {
+      "Q_pressure": {
+        "200": {
+          "nominal": 164.85474898233795,
+          "half_CFL": 164.85463129893247,
+          "absolute": 0.00011768340547746448,
+          "spatial_D200_400": 0.0484788215557046,
+          "ratio": 0.002427521992097938,
+          "small": true,
+          "comparable": false,
+          "temporal_class": "small"
+        },
+        "400": {
+          "nominal": 164.90322780389366,
+          "half_CFL": 164.90318343250956,
+          "absolute": 4.4371384092301014e-05,
+          "spatial_D200_400": 0.0484788215557046,
+          "ratio": 0.0009152735703634228,
+          "small": true,
+          "comparable": false,
+          "temporal_class": "small"
+        }
+      },
+      "Q_mass": {
+        "200": {
+          "nominal": -9.700772869391448e-05,
+          "half_CFL": -9.700773604485309e-05,
+          "absolute": 7.350938610530162e-12,
+          "spatial_D200_400": 2.2646834722876404e-09,
+          "ratio": 0.003245901116196476,
+          "small": true,
+          "comparable": false,
+          "temporal_class": "small"
+        },
+        "400": {
+          "nominal": -9.700999337738677e-05,
+          "half_CFL": -9.700999594603901e-05,
+          "absolute": 2.5686522407784157e-12,
+          "spatial_D200_400": 2.2646834722876404e-09,
+          "ratio": 0.0011342213038644756,
+          "small": true,
+          "comparable": false,
+          "temporal_class": "small"
+        }
+      }
+    }
+  },
+  "arrivals": [
+    {
+      "N": 100,
+      "time": 0.0008763254918959405,
+      "angle": 95.77385885412693
+    },
+    {
+      "N": 200,
+      "time": 0.0008774345295838874,
+      "angle": 95.79382153250998
+    },
+    {
+      "N": 400,
+      "time": 0.0008755830727585814,
+      "angle": 95.76049530965446
+    },
+    {
+      "N": 800,
+      "time": 0.0008745722624310988,
+      "angle": 95.74230072375978
+    }
+  ],
+  "arrival_differences": [
+    1.109037687946953e-06,
+    1.8514568253060783e-06,
+    1.0108103274825966e-06
+  ],
+  "metrics": {
+    "interval": [
+      0.0,
+      0.012222222222222223
+    ],
+    "Q_pressure": 164.92309333847263,
+    "Q_pressure_signed": 164.92309333847263,
+    "Q_mass": -9.701165262641078e-05,
+    "mass_from_stages": -9.701165262641111e-05,
+    "mass_from_inventory": -9.701165262641226e-05,
+    "mass_ledger_residual": 3.757482443840826e-15,
+    "arrival": 0.0008745722624310988,
+    "arrival_angle": 95.74230072375978,
+    "peak": 145965.97710125073,
+    "minimum": 100000.0,
+    "steps": 21831,
+    "dt_min": 9.154256934776339e-08,
+    "dt_max": 8.799394622473274e-07,
+    "CFL_max": 0.4000000000000001,
+    "runtime": 1139.359999999404,
+    "counts": {
+      "rhs": 48516,
+      "HLLC": 38854978,
+      "HLLE": 0,
+      "characteristic": 48516,
+      "rejected": 4854,
+      "downgrades": 0
+    },
+    "conservation": 6.608845934951281e-15,
+    "admissibility": true,
+    "opening": {
+      "time": 0.0005555555555555556,
+      "angle": 90.0
+    },
+    "closing": {
+      "time": 0.010555555555555556,
+      "angle": 270.0
+    },
+    "candidate_postclosing_peak": null,
+    "reflection_definition": "First post-closing local maximum with >=2000Pa prominence; candidate only, not causal identification of reflection. Null does not imply absence of waves."
+  },
+  "balances": {
+    "final_raw": {
+      "mass_kg": -6.505213034913027e-19,
+      "energy_J": -8.313350008393172e-13,
+      "species_kg": 1.0842021724855044e-18
+    },
+    "max_normalized": {
+      "mass": 3.860899391836445e-15,
+      "energy": 6.608845934951281e-15,
+      "species": 3.757482443840826e-15
+    },
+    "max_stage": 3.1461635795165707e-16,
+    "extrema": {
+      "rho": 0.7063220581163605,
+      "p": 99999.99999999997,
+      "T": 299.9999999999998,
+      "Y_min": 0.19999999999992873,
+      "Y_max": 0.8000000000000287
+    }
+  },
+  "closing_reached": true,
+  "closing_state": {
+    "time": 0.010555555555555556,
+    "angle": 270.0,
+    "dt": 9.154256934776339e-08,
+    "chamber": [
+      7.72043752481522e-05,
+      30.54887329636657,
+      6.176350019852317e-05
+    ],
+    "cylinder": [
+      106921.056537283,
+      482.54679106474623,
+      7.72043752481522e-05,
+      0.8000000000000183
+    ],
+    "area": 1.4210854715202002e-19,
+    "sensors": [
+      [
+        101248.14571695603,
+        1.4225260222997838,
+        0.003297139254509055,
+        0.8000000000000114
+      ],
+      [
+        101251.03328304691,
+        1.4331429526247828,
+        0.0033217099516685456,
+        0.8000000000000138
+      ]
+    ],
+    "port_pressure": 100865.66091313768,
+    "port_Mach": 2.3550168181456873e-05,
+    "exchange": [
+      -5.657799372178255e-08,
+      -0.02999536707106534,
+      -4.5262394977427064e-08
+    ],
+    "external": [
+      -0.00015184287704738644,
+      -54.015322930121506,
+      -3.036857540947729e-05
+    ],
+    "port_integral": [
+      -9.701165262641078e-05,
+      -55.16541241791827,
+      -7.760932210112964e-05
+    ],
+    "inventory": [
+      0.00024129946815050778,
+      85.55483684570298,
+      0.00015278951035484152
+    ],
+    "residual": [
+      -1.9304496959182224e-15,
+      -3.5127457650112244e-15,
+      2.8698203068784286e-15
+    ]
+  },
+  "postclose_samples": 2489,
+  "postclose_min": 100227.85042879335,
+  "postclose_max": 101249.2443580738,
+  "relative_mass_difference": 1.710360538235164e-05,
+  "P4_accepted": false,
+  "P4_gate_changed": false,
+  "P4C_started": false,
+  "P5_started": false,
+  "new_integrations": 1,
+  "native_state": "FAILED_INFRASTRUCTURE",
+  "audit_correction": "audit-correction.json",
+  "source_commit": "c3ebf1f",
+  "native_evidence_preserved": true,
+  "strict_postclose_port_zero": true,
+  "at_close_traces": [
+    {
+      "time": 0.010555555555555556,
+      "angle": 270.0,
+      "area": 1.4210854715202002e-19,
+      "chamber": [
+        7.720437524297291e-05,
+        30.548873293620716,
+        6.176350019437973e-05
+      ],
+      "volume": 0.0001,
+      "pressure": 106921.05652767252,
+      "pipe_face": [
+        0.735202585851707,
+        0.010135123696991847,
+        100865.66091313768,
+        0.8000000000000195
+      ],
+      "exchange": [
+        -9.98482453811217e-19,
+        -5.29355050311926e-13,
+        -7.987859630489917e-19
+      ],
+      "outlet": [
+        1.1922027695181858,
+        8.933840780237574,
+        103592.25362200422,
+        0.20000000000000037
+      ],
+      "open_reaction": -1.4762660278931635e-14,
+      "closed_reaction": -31.68687448823832
+    },
+    {
+      "time": 0.010555555555555556,
+      "angle": 270.0,
+      "area": 1.4210854715202002e-19,
+      "chamber": [
+        7.72043752481522e-05,
+        30.54887329636657,
+        6.176350019852317e-05
+      ],
+      "volume": 0.0001,
+      "pressure": 106921.056537283,
+      "pipe_face": [
+        0.7352025858864664,
+        0.010135118694432685,
+        100865.66091206759,
+        0.8000000000000195
+      ],
+      "exchange": [
+        -9.984824552722729e-19,
+        -5.29355051092912e-13,
+        -7.987859642178365e-19
+      ],
+      "outlet": [
+        1.1922027695334612,
+        8.933840784944778,
+        103592.25362382982,
+        0.20000000000000037
+      ],
+      "open_reaction": -1.4762660279660694e-14,
+      "closed_reaction": -31.68687448839938
+    }
+  ],
+  "closing_chamber_equals_final": true,
+  "closing_port_ledger_equals_final": true,
+  "closure_note": "At exactly270deg frozen floating geometry gives1.4210854715202002e-19m2; stored verbatim. For t>tclose area/flux exactlyzero. Chamber and ledger at closing equal final values. No clamp/tolerance/change introduced."
+}

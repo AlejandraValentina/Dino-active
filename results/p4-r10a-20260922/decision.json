@@ -1,0 +1,68 @@
+{
+  "phase": "P4-R10A",
+  "classification": "P4_R10_MIXED_SHOCK_AND_GLOBAL_NONCLOSURE",
+  "original_R10_classification": "P4_R10_SHOCK_LOCALIZED_NUMERICAL_NONCLOSURE",
+  "corrected_classification": "P4_R10_MIXED_SHOCK_AND_GLOBAL_NONCLOSURE",
+  "sustained": false,
+  "p4_state": "P4_BLOCKED_PERIODIC_CONVERGENCE",
+  "p4_pass": false,
+  "p5_started": false,
+  "e13_modified": false,
+  "n500_executed": false,
+  "L2_math_corrected": true,
+  "front_tracking_corrected": true,
+  "labels_corrected": true,
+  "width_corrected": true,
+  "plateau_distinguished": true,
+  "key_metrics": {
+    "fraction_inside_1": {
+      "250": 0.22263360499024887,
+      "300": 0.16741047076740725,
+      "350": 0.3017359909767275,
+      "400": 0.5543008249663711
+    },
+    "fraction_inside_3": {
+      "250": 0.3351708896346177,
+      "300": 0.28863455637560004,
+      "350": 0.6588962684620123,
+      "400": 0.661835056750403
+    },
+    "support90_m": {
+      "250": 0.22899999999999998,
+      "300": 0.3141666666666667,
+      "350": 0.18571428571428572,
+      "400": 0.139375
+    },
+    "delta_x_avg": {
+      "250": -0.0010000000000000002,
+      "300": 0.0008333333333333332,
+      "350": 0.0,
+      "400": 0.0
+    },
+    "width_A_m": {
+      "250": 0.027000000000000007,
+      "300": 0.022500000000000003,
+      "350": 0.011428571428571436,
+      "400": 0.010625000000000004
+    },
+    "width_B_m": {
+      "250": 0.247,
+      "300": 0.2333333333333333,
+      "350": 0.11285714285714288,
+      "400": 0.10999999999999999
+    }
+  },
+  "evidence_paths": {
+    "front_tracking_corrected": "results/p4-r10a-20260922/front_tracking_corrected.json",
+    "error_energy_localization": "results/p4-r10a-20260922/error_energy_localization.json",
+    "mesh_trend_corrected": "results/p4-r10a-20260922/mesh_trend_corrected.json",
+    "sensor_front_corrected": "results/p4-r10a-20260922/sensor_front_corrected.json",
+    "audit_diff": "results/p4-r10a-20260922/audit_diff_vs_r10.json",
+    "original_R10": "results/p4-r10-20260922/",
+    "evaluation": "results/p4-r10a-20260922/evaluation.json"
+  },
+  "implementation_agent": "OpenCode / Muse Spark 1.2",
+  "independent_review": "INDEPENDENT_REVIEW_PENDING",
+  "timestamp": "2026-09-22",
+  "commit_base": "beeaee6"
+}

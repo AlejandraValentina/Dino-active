@@ -1,0 +1,17 @@
+{
+  "schema": "ENGINE_PHYSICS_V1_RECOVERY_CAMPAIGN_TIMEOUT_RECEIPT",
+  "campaign": "engine-physics-v1-recovery-v2",
+  "preregistration": "results/engine-physics-v1/recovery-preregistration-v2.json",
+  "run_summary": "results/engine-physics-v1/recovery-runlogs-v2/engine-physics-v1-recovery-v2.summary.json",
+  "status": "INCOMPLETE_GATE_CRITICAL_TIMEOUT",
+  "timeout_seconds": 7200,
+  "no_second_campaign": true,
+  "points": {
+    "ENGINE_A_3000": {"status": "PERIOD_1", "detected_cycle": 73, "horizon": 111},
+    "ENGINE_A_4000": {"status": "PERIOD_1", "detected_cycle": 88, "horizon": 111},
+    "ENGINE_B_3000": {"status": "PERIOD_1", "detected_cycle": 34, "horizon": 47},
+    "ENGINE_B_4000": {"status": "INCOMPLETE_AT_TIMEOUT", "cycles_persisted": 9, "horizon": 47}
+  },
+  "interpretation": "The three completed points were accepted by the real PeriodicDetectorV2. The fourth point has no terminal classification because the single authorized campaign timed out before detector exhaustion or acceptance. No gate PASS is claimed.",
+  "evidence_policy": "all partial and completed recovery artifacts are retained; no historical evidence was overwritten; no R3 or pass-seeking rerun is authorized by this receipt"
+}

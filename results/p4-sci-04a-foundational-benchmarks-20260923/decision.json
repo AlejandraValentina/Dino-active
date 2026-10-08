@@ -1,0 +1,28 @@
+{
+  "classification": "P4_SCI_FOUNDATIONAL_BENCHMARKS_VERIFIED",
+  "b1_classification": "P4_SCI_B1_BOUNDARY_LINEAR_VERIFIED",
+  "c1_classification": "P4_SCI_C1_INTERFACE_RIEMANN_VERIFIED",
+  "p4_pass": false,
+  "p5_started": false,
+  "next_step": "B2 + C2 conceptually authorized; C3 after B2/C2 pass",
+  "b1_summary": {
+    "classification": "P4_SCI_B1_BOUNDARY_LINEAR_VERIFIED",
+    "reasoning": "Reflected/incoming component remains <0.002 Pa (ratio <3e-05) at all resolutions, essentially zero; error to analytic characteristic reference decreases monotonically 74\u219248 Pa with refinement (pulse resolves better), truncated/extended agreement error <0.002 Pa well before extended return, consistent with pure outgoing L_in\u22480.",
+    "trend_checks": {
+      "err_vs_analytic_decreasing": true,
+      "err_vs_ext_small": true,
+      "reflection_tiny": true,
+      "amp_increasing_toward_analytic": true,
+      "conservation_pass": true
+    },
+    "p4_pass": false
+  },
+  "c1_summary": {
+    "classification": "P4_SCI_C1_INTERFACE_RIEMANN_VERIFIED",
+    "reasoning": "All primary fixtures (F1-F8) show correct wave/flow direction, ordered waves, no fallback, mass/energy/species flux errors <5% (worst shock 3-4% p*), species donor consistent; Sod diagnostic shows expected approximate deviation but direction/order correct.",
+    "p4_pass": false,
+    "worst_fixture": "F2_SHOCK_DOMINATED",
+    "fixtures_count": 9
+  },
+  "timestamp": "2026-09-23T14:51:53Z"
+}

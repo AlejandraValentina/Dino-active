@@ -1,0 +1,204 @@
+{
+  "run_id": "20260917T170640-P1_R1_SCIENTIFIC_AMENDMENT-11e76c02c4ca",
+  "phase_id": "P1_R1_SCIENTIFIC_AMENDMENT",
+  "started_at": "2026-09-17T17:06:40.325229+00:00",
+  "finished_at": "2026-09-17T17:08:59.950018+00:00",
+  "git_commit": "f3e4453a781286e885e2f2bd448fd87dd91ad9ba",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "observable_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p1_r1.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 2.078000000678003,
+      "status": "passed",
+      "stdout_log": "logs/1-observable_tests.stdout.log",
+      "stderr_log": "logs/1-observable_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "contact_study",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p1_r1_study",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260917T170640-P1_R1_SCIENTIFIC_AMENDMENT-11e76c02c4ca"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 128.13999999966472,
+      "status": "passed",
+      "stdout_log": "logs/1-contact_study.stdout.log",
+      "stderr_log": "logs/1-contact_study.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "observable_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "contact_study",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "baseline_intact",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R1_CONTACT_ACCURACY_UNRESOLVED"
+    },
+    {
+      "id": "contract_frozen",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R1_CONTACT_ACCURACY_UNRESOLVED"
+    },
+    {
+      "id": "dependencies_accepted",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R1_CONTACT_ACCURACY_UNRESOLVED"
+    },
+    {
+      "id": "gas1d_unchanged",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R1_CONTACT_ACCURACY_UNRESOLVED"
+    },
+    {
+      "id": "complete_study",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R1_CONTACT_ACCURACY_UNRESOLVED"
+    },
+    {
+      "id": "unique_monotone",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R1_CONTACT_ACCURACY_UNRESOLVED"
+    },
+    {
+      "id": "B_converges",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P1_R1_CONTACT_ACCURACY_UNRESOLVED"
+    },
+    {
+      "id": "contact_accuracy",
+      "passed": false,
+      "kind": "numerical",
+      "reason": "P1_R1_CONTACT_ACCURACY_UNRESOLVED"
+    }
+  ],
+  "tests": [
+    {
+      "id": "observable_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p1_r1.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 2.078000000678003,
+      "status": "passed",
+      "stdout_log": "logs/1-observable_tests.stdout.log",
+      "stderr_log": "logs/1-observable_tests.stderr.log",
+      "error": ""
+    }
+  ],
+  "metrics": {
+    "cases": 8
+  },
+  "review": {
+    "status": "BLOCKED",
+    "findings": [
+      "No hay reviewer independiente conectado."
+    ],
+    "blocking_findings": [
+      "reviewer_unavailable"
+    ],
+    "scientific_change_required": false,
+    "notes": "No se llamó a ningún proveedor externo.",
+    "kind": "none"
+  },
+  "gate": "BLOCKED",
+  "gate_reasons": [
+    "required_check_failed:contact_accuracy",
+    "review_not_approved"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "required_check_failed:contact_accuracy; review_not_approved",
+      "state": "BLOCKED"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "artifacts/study.json",
+      "sha256": "2d4e7223cd2b3c55cf3949e3a788c3456473d36cf5776b4a033e259ee253e5b1",
+      "bytes": 14969
+    },
+    {
+      "path": "artifacts/inventory.json",
+      "sha256": "309dc7245adaa33183562f192c5f5041d43235a6024ce4cc6b476a0f6be76fc8",
+      "bytes": 1182
+    },
+    {
+      "path": "artifacts/result.json",
+      "sha256": "a04f382334e635e80ac6c078ad9767a173775eb482f6605393bc7727e366bf0f",
+      "bytes": 1314
+    }
+  ],
+  "phase_definition_sha256": "be13ca0cfdb437d959a221b0995554b0f004185fe9e716d7f025fb7812dabd3a",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P0": "docs\\gasdynamic\\p0_accepted_dependency.json",
+      "P1": "docs\\gasdynamic\\p1_accepted_dependency.json"
+    }
+  },
+  "continue_requested": false
+}

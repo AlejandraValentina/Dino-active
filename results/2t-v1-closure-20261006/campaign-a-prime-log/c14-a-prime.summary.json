@@ -1,0 +1,40 @@
+{
+  "name": "c14-a-prime",
+  "command": [
+    "python",
+    "scripts/v1_closure_campaign.py",
+    "--fixture",
+    "FIXTURE_A_PRIME",
+    "--output",
+    "results/2t-v1-closure-20261006/campaign-a-prime"
+  ],
+  "started_at": "2026-10-06T15:52:52+00:00",
+  "finished_at": "2026-10-06T15:53:35+00:00",
+  "duration_s": 42.594,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "results\\2t-v1-closure-20261006\\campaign-a-prime-log\\c14-a-prime.log",
+  "log_lines": 14,
+  "log_bytes": 839,
+  "error_lines": [
+    "1: Traceback (most recent call last):",
+    "13:     raise ValueError(\"integrated checkpoint fuel-combustion ledger mismatch\")",
+    "14: ValueError: integrated checkpoint fuel-combustion ledger mismatch"
+  ],
+  "tail": [
+    "Traceback (most recent call last):",
+    "  File \"E:\\dino\\Dino\\scripts\\v1_closure_campaign.py\", line 121, in <module>",
+    "    main()",
+    "  File \"E:\\dino\\Dino\\scripts\\v1_closure_campaign.py\", line 114, in main",
+    "    result = run(args.fixture, (ROOT / args.output).resolve())",
+    "             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"E:\\dino\\Dino\\scripts\\v1_closure_campaign.py\", line 68, in run",
+    "    audit = audit_integrated_cycle_primary(primary)",
+    "            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"E:\\dino\\Dino\\motorsim\\integrated_2t.py\", line 3548, in audit_integrated_cycle_primary",
+    "    replay.restore(replay_snapshot)",
+    "  File \"E:\\dino\\Dino\\motorsim\\integrated_2t.py\", line 2683, in restore",
+    "    raise ValueError(\"integrated checkpoint fuel-combustion ledger mismatch\")",
+    "ValueError: integrated checkpoint fuel-combustion ledger mismatch"
+  ]
+}

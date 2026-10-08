@@ -1,0 +1,25 @@
+{
+  "schema": "MOTORSIM_COMMERCIAL_CYCLE_PREREGISTRATION_V1",
+  "fixture_id": "D",
+  "engine_configuration_sha256": "91c2e9a2bf5d3250515f30007274d461d5e1e1f91372be3e0bbe480e61603a59",
+  "horizon_cycles": 2,
+  "restart_cycle": 1,
+  "cycle_convergence_contract_sha256": "32a69536f7d83de0c1fc6a5188ab648aff5bef2608fce6a3546ca6ead683d6e1",
+  "producer_commit": "01172a2d7b2f7f97db9a7a46e12cf328962aef52",
+  "selection_rationale": "AUD-15 diagnostic fixture derived from Fixture A. The only engine-configuration changes are synthetic fixture identity and combustion_start_angle_deg=350.0; the fixed P7 duration is 40 degrees, so the event is 350–390 degrees around the 360-degree PMS. Geometry-only evaluation at 0.5-degree spacing over the complete event confirmed zero exhaust area. This study diagnoses timing plausibility only; it does not change A/B, tune physical parameters, claim experimental validity, or define a mesh/periodicity gate.",
+  "execution_contract": {
+    "fixed_horizon": true,
+    "early_stopping": false,
+    "complete_cycles": 2,
+    "restart_after_cycle": 1,
+    "replay_comparison": "exact full snapshot cycle 1 to cycle 2",
+    "p7_event_deg": [
+      350.0,
+      390.0
+    ],
+    "required_observation": "accepted stage exhaust geometry remains zero throughout the P7 event; P7 prescribed ledger records the configured event",
+    "convergence_acceptance": "NOT_A_GOAL",
+    "experimental_validation": "NOT_PERFORMED",
+    "kt100": "NOT_USED"
+  }
+}

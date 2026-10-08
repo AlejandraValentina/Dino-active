@@ -1,0 +1,75 @@
+{
+  "review_id": "P4-P8-INDEPENDENT-REVIEW-R4-20260930",
+  "baseline_head": "3ae81d0d6197a39198297bb579178c2eaaa04c1a",
+  "branch": "main",
+  "origin_main": "3ae81d0d6197a39198297bb579178c2eaaa04c1a",
+  "classification": "INDEPENDENT_REVIEW_BLOCKED",
+  "findings": [
+    {
+      "id": "R4-001",
+      "severity": "MAJOR",
+      "phase": "P8 durable evidence audit",
+      "summary": "Concordant mutation of fresh delivery, short-circuit, or replay digest in consolidated and individual anchor JSON is accepted by _audit_p8.",
+      "reproduction": {
+        "source_campaign": "results/p8-wide-rpm-replay-r3-20260929-r3/",
+        "isolation": "Temporary copy; original campaign remained unchanged.",
+        "mutations": [
+          "2500 rpm fresh_mass_delivered_kg = 123.0 in p8-wide-rpm.json and anchor-2500.json",
+          "2500 rpm fresh_short_circuit_mass_kg = 456.0 in p8-wide-rpm.json and anchor-2500.json",
+          "2500 rpm replay_terminal_digests.first = 64 zeroes in p8-wide-rpm.json and anchor-2500.json"
+        ],
+        "audit_result_each": {
+          "closure_ok": true,
+          "replay_ok": true,
+          "csv_equal": true,
+          "anchor_files_equal": true
+        }
+      },
+      "impact": "Durable P8 replay/accounting evidence can be altered without the evaluator rejecting it; P4-P8 cannot be independently ratified as a whole.",
+      "closure_condition": "Offline validation must recompute contractual values/digests from persisted primary terminal state and ledgers, or verify a cryptographically bound persisted preimage; add mutation regressions."
+    }
+  ],
+  "historical_findings": {
+    "R1": "Preserved; not reinterpreted.",
+    "R2_MALFORMED_DT": "Remediation rechecked: dt=false with updated hash returns MALFORMED_CFL_DT; 7 focal tests passed.",
+    "R3_001": "Technically remediated: independent primary-ledger recomputation and mutation checks passed; exact parsed-object state/cell parity for cycles 31-50.",
+    "R3_002": "Runtime comparisons expanded and campaign rerun; R4 found durable auditor does not bind/recompute the claimed values, so aggregate review remains blocked."
+  },
+  "phase_status": {
+    "P4": "P4_FINAL_BLOCKED_C3_INCONCLUSIVE; acceptance NOT_GRANTED; technical matrix PASS not independently ratified",
+    "G2": "E13_G2_V2_PASS, cycle 50, period 2, branch A streak 15, branch B streak 3; independently reaudited from persisted history/ledger",
+    "C3": "Existing P4_SCI_C3_PASS evidence and seven runtime hashes checked; acquisition not repeated; no new full-history recalc in R4",
+    "P5": "P5_IMPLEMENTATION_VERIFIED_CONDITIONAL; not independently ratified due unresolved P4 acceptance",
+    "P6": "P6_SPECIES_SCAVENGING_VERIFIED_CONDITIONAL; not independently ratified due unresolved P4 acceptance",
+    "P7": "P7_PRESCRIBED_COMBUSTION_VERIFIED_CONDITIONAL; not independently ratified due unresolved P4 acceptance",
+    "P8": "P8_WIDE_RPM_PERFORMANCE_VERIFIED_CONDITIONAL; BOUNDED_TRANSIENT_INDICATED; R4-001 blocks durable evidence ratification"
+  },
+  "campaign": {
+    "path": "results/p8-wide-rpm-replay-r3-20260929-r3/",
+    "anchors_rpm": [2500, 5000, 8000, 11000, 15000],
+    "gates_recorded_pass": true,
+    "semantics": "BOUNDED_TRANSIENT_INDICATED",
+    "comparison_to_historical": "Four anchors exact in reported values; 2500 rpm differences are roundoff-scale only (work 9.77e-14 J; power 4.06e-12 W)."
+  },
+  "tests": {
+    "P4_E13": "188 passed; two initially deselected tests later run individually and passed.",
+    "P5_P6_P7": "90 passed.",
+    "P8_replay": "12 passed; campaign test excluded and covered by separately recorded five-anchor acquisition.",
+    "P6_snapshot": "16 passed.",
+    "conservation_and_dt_adversarial": "7 passed; separate durable G2 reacquisition audit test passed.",
+    "openspec_strict": {
+      "p4-escape-1d": "PASS",
+      "p5-intake-transfer": "PASS (includes P6)",
+      "p7-prescribed-heat-burn": "PASS",
+      "p8-wide-rpm-performance": "PASS"
+    },
+    "git_diff_check": "PASS",
+    "git_lfs_fsck": "PASS"
+  },
+  "experimental_validation": "NOT_PERFORMED",
+  "p9": "STOPPED_NOT_AUTHORIZED",
+  "product_code_modified": false,
+  "campaign_artifacts_modified": false,
+  "push": false,
+  "report": "docs/gasdynamic/p4_p8_independent_review_r4_20260930.md"
+}

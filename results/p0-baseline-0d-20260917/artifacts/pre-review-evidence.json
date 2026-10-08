@@ -1,0 +1,195 @@
+{
+  "run_id": "20260917T151222-P0-e7c30e109458",
+  "phase_id": "P0",
+  "started_at": "2026-09-17T15:12:22.172385+00:00",
+  "finished_at": "2026-09-17T15:23:07.850982+00:00",
+  "git_commit": "43c23b4d14bc723b5732d132bfab484d1c85a725",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "p0_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p0_campaign",
+        "--checks",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260917T151222-P0-e7c30e109458"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 161.60900000017136,
+      "status": "passed",
+      "stdout_log": "logs/1-p0_tests.stdout.log",
+      "stderr_log": "logs/1-p0_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "p0_campaign",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p0_campaign",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260917T151222-P0-e7c30e109458"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 472.3439999995753,
+      "status": "passed",
+      "stdout_log": "logs/1-p0_campaign.stdout.log",
+      "stderr_log": "logs/1-p0_campaign.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "p0_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "p0_campaign",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "main_complete",
+      "passed": true,
+      "kind": "infrastructure"
+    },
+    {
+      "id": "continuous_domain",
+      "passed": true,
+      "kind": "numerical"
+    },
+    {
+      "id": "historical_regression",
+      "passed": true,
+      "kind": "numerical"
+    },
+    {
+      "id": "production_unchanged",
+      "passed": true,
+      "kind": "infrastructure"
+    },
+    {
+      "id": "no_experimental_imports",
+      "passed": true,
+      "kind": "infrastructure"
+    },
+    {
+      "id": "artifact_inventory",
+      "passed": true,
+      "kind": "infrastructure"
+    }
+  ],
+  "tests": [
+    {
+      "id": "p0_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p0_campaign",
+        "--checks",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260917T151222-P0-e7c30e109458"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 161.60900000017136,
+      "status": "passed",
+      "stdout_log": "logs/1-p0_tests.stdout.log",
+      "stderr_log": "logs/1-p0_tests.stderr.log",
+      "error": ""
+    }
+  ],
+  "metrics": {
+    "main_pass": 26,
+    "main_count": 26,
+    "stress_count": 3,
+    "integration_total": 458.86099999956787,
+    "wall_total": 471.39099999982864
+  },
+  "review": {
+    "status": "BLOCKED",
+    "findings": [
+      "No hay reviewer independiente conectado."
+    ],
+    "blocking_findings": [
+      "reviewer_unavailable"
+    ],
+    "scientific_change_required": false,
+    "notes": "No se llamó a ningún proveedor externo.",
+    "kind": "none"
+  },
+  "gate": "BLOCKED",
+  "gate_reasons": [
+    "review_not_approved"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "review_not_approved",
+      "state": "BLOCKED"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "artifacts/campaign.json",
+      "sha256": "5a26de4cb11bacab7f25c0a09f67e2f6287cbbd7ed4cc2694544f7d9bc8d0168",
+      "bytes": 43492
+    },
+    {
+      "path": "artifacts/regression.json",
+      "sha256": "88f38e840c46ef757371d19e13d0fbed03f9bb0c32188d362e99fe5696c14b47",
+      "bytes": 5697
+    },
+    {
+      "path": "artifacts/table.csv",
+      "sha256": "9c91361e7fba500011dc64d02281f27e877d63c1bcc1b781e5436dd643418d19",
+      "bytes": 11153
+    },
+    {
+      "path": "artifacts/inventory.json",
+      "sha256": "bae0fa17e87d14907d6af14f760ca6430477bd7a73274e699162920deeb4cdda",
+      "bytes": 3445
+    },
+    {
+      "path": "artifacts/git-before.json",
+      "sha256": "da7e93c55d8dc5edf8895b819cf644a5ad565188597507a84ac61d085031c2c5",
+      "bytes": 122687
+    },
+    {
+      "path": "artifacts/result.json",
+      "sha256": "dddf9457342dc7369891281ae96aaf9a27f00de503eb5d90752800bc7e773847",
+      "bytes": 864
+    }
+  ],
+  "phase_definition_sha256": "7a709704c8af2c7f36cd11495458dd882edb71ea4fc8bef895de3d2f9a51a585",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {}
+  },
+  "continue_requested": false
+}

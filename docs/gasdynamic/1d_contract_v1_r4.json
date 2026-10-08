@@ -1,0 +1,334 @@
+{
+  "model_version": "1D_CONTRACT_V1_R4",
+  "status": "CONTRACT_PENDING_REVIEW",
+  "equations": {
+    "conservation": "d_t Q + d_x G = [0,p*d_x A,0,0]",
+    "flux": [
+      "A*rho*u",
+      "A*(rho*u*u+p)",
+      "A*u*(rho*E+p)",
+      "A*rho*u*Y"
+    ],
+    "source": [
+      "0",
+      "p*d_x A",
+      "0",
+      "0"
+    ],
+    "cell_update": "d_t C_i = G_left - G_right + [0,integral(p*d_x A),0,0]"
+  },
+  "state_vector": [
+    "A*rho",
+    "A*rho*u",
+    "A*rho*E",
+    "A*rho*Y"
+  ],
+  "stored_state": "C_i = integral_cell(Q dx)",
+  "eos": {
+    "kind": "calorically_perfect_ideal_gas",
+    "R_J_kgK": 287,
+    "gamma": 1.35,
+    "cv_J_kgK": 820,
+    "cp_J_kgK": 1107,
+    "test_override": "Sod/strong rarefaction gamma=1.4,R=1; isolated verification only"
+  },
+  "numerical_method": {
+    "baseline": [
+      "finite_volume",
+      "first_order",
+      "HLLC",
+      "Forward_Euler"
+    ],
+    "extension": [
+      "MUSCL_primitive",
+      "minmod",
+      "SSP_RK2"
+    ],
+    "fallback": "HLLE complete shared face flux on inadmissible HLLC star states",
+    "species": "conservative rhoY, shared flux, no clipping",
+    "float": "float64",
+    "stage_retries": 12
+  },
+  "CFL": {
+    "initial": 0.4,
+    "test_values": [
+      0.2,
+      0.4,
+      0.6
+    ],
+    "global": true,
+    "dt_formula": "CFL*min(dx/(abs(u)+a),2*V/(A_left*s_left+A_right*s_right))",
+    "dt_min_time_units": 1e-12
+  },
+  "boundaries": [
+    "periodic",
+    "reflective_wall",
+    "ideal_open_pressure_release",
+    "linear_characteristic_nonreflecting",
+    "total_state_reservoir",
+    "supersonic_outflow",
+    "prescribed_complete_supersonic_inflow_or_explicit_failure"
+  ],
+  "verification_cases": [
+    {
+      "id": "T01",
+      "purpose": "Uniform flow preservation",
+      "contract": "docs/gasdynamic/1d_verification_plan_v1.md",
+      "definition": "## T01 — Preservación uniforme\n\nPropósito: comprobar flux y conversión EOS sin geometría. IC ρ0,p0,Y0 uniformes,\nu=0 y u=0.2a0 (dos subcasos); BC periódicas, dominio común, N=100,\nt_final=L/a0. Referencia: misma IC. E∞ de ρ/ρ0,p/p0,T/T0,Y (scale1),\nu/a0 ≤1e−12. Inventarios y ledgers comunes. Área constante explícita.\n",
+      "status": "SPECIFIED_NOT_EXECUTED"
+    },
+    {
+      "id": "T02",
+      "purpose": "Sod shock tube",
+      "contract": "docs/gasdynamic/1d_verification_plan_v1.md",
+      "definition": "## T02 — Sod\n\nAdimensional: γ=1.4,R=1,A=1,x∈[0,1],discontinuidad x=0.5,N=400,t=0.2.\nIC izquierda (ρ,u,p,Y)=(1,0,1,1); derecha=(0.125,0,0.1,0).\nBC estados exteriores iniciales fijos (ondas no llegan antes del final).\nReferencia exacta Euler de Toro/[6], no γ1.35 por accidente.\nPara ρ,p,u escalas1: E1≤0.03, E2≤0.08 para primer orden; MUSCL no peor\nE1 que primer orden +1e−10. Shock: máximo gradiente de p restringido a ±0.05 alrededor de posición exacta.\nContacto: detector hidrodinámico independiente HYDRO_CONTACT_CHARACTERISTIC_V1,\ndefinido en docs/gasdynamic/1d_contact_observable_v1_r2.md; sin Y ni posición exacta\npara detectar. Error de posición de ambos ≤2Δx. A/B/C de Y quedan diagnósticos. Rarefacción: E∞≤0.05 excluyendo 3Δx de sus bordes y\ndel contacto/shock; E∞ global se registra, no se exige orden alto en shocks.\nEl ledger incluye impulso debido a presión desigual de extremos.\n",
+      "status": "SPECIFIED_NOT_EXECUTED"
+    },
+    {
+      "id": "T03",
+      "purpose": "Acoustic pulse propagation",
+      "contract": "docs/gasdynamic/1d_verification_plan_v1.md",
+      "definition": "## T03 — Propagación acústica\n\nPropósito: velocidad/amortiguación lineal. IC gaussiana derecha g=exp(−((x−0.25)/0.04)²),\nδp=1e−4 p0 g, ρ=ρ0+δp/a0², u=δp/(ρ0 a0), p=p0+δp, Y=Y0.\nBC características no reflectivas al estado base. Dominio común N=800,\nt_final=0.45L/a0. Referencia p'=1e−4p0 g(x−a0t), errores O(amplitud²)\nno se confunden con error numérico. Centro de pulso = ∫x|p'|dx/∫|p'|dx en\nventana ±0.15L alrededor del centro esperado; velocidad (centro_final−centro_inicial)/t.\nError velocidad ≤1%; amplitud final/analítica entre0.65 y1.05;\nE1 presión con scale=1e−4p0 ≤0.025, E2≤0.08. Registrar amortiguación.\n",
+      "status": "SPECIFIED_NOT_EXECUTED"
+    },
+    {
+      "id": "T04",
+      "purpose": "Closed-end reflection",
+      "contract": "docs/gasdynamic/1d_verification_plan_v1.md",
+      "definition": "## T04 — Reflexión cerrada\n\nIC acústica T03 con centro0.3L y anchura0.04L, N=800. Izquierda no reflectiva,\nderecha pared. t_final=1.15L/a0. Sensor x_s=0.7L, interpolación lineal de p\nentre centros. Muestrear al menos cada0.001L/a0 (truncar paso a esos eventos).\nIncidente ventana [0.30,0.50]L/a0, reflejada [0.90,1.10]L/a0: no se solapan.\nI=max p' incidente; R=p' reflejada de mayor módulo con signo.\nReferencia acústica R/I=+1, regreso al sensor t=1.0L/a0.\nGate I≥0.5*1e−4p0 (si no, señal inválida); usar denominador max(|I|,1e−8p0),\n|R/I−1|≤0.30 primer orden, ≤0.15 MUSCL; tiempo de pico error ≤0.02L/a0.\nLedger cerrado por derecha, no exigir momentum constante.\n",
+      "status": "SPECIFIED_NOT_EXECUTED"
+    },
+    {
+      "id": "T05",
+      "purpose": "Open-end reflection",
+      "contract": "docs/gasdynamic/1d_verification_plan_v1.md",
+      "definition": "## T05 — Reflexión abierta ideal\n\nMismas IC/dominio/sensor/ventanas/t_final/métricas de T04, sustituyendo derecha\npor ideal_open_pressure_release p_b=p0, continuación K_b=K_i,Y_b=Y_i\nen ambos sentidos y J+ interior; definición en 1d_boundary_semantics_v1_r3.md. Referencia R/I=−1.\n|R/I+1|≤0.30 primer orden, ≤0.15 MUSCL, R<0, tiempo error≤0.02L/a0;\nmisma cota de señal incidente y denominador. Referencia ideal acústica, no una\nboca de escape real ni BC no reflectiva. Ledger incluye flujos del extremo abierto.\n",
+      "status": "SPECIFIED_NOT_EXECUTED"
+    },
+    {
+      "id": "T06",
+      "purpose": "Contact/species transport",
+      "contract": "docs/gasdynamic/1d_verification_plan_v1.md",
+      "definition": "## T06 — Contacto y especie\n\nx∈[0,1],A constante,N=400,p=p0,u=0.2a0; BC periódicas.\nIC: ρ=2ρ0,Y=1 en[0.2,0.4], ρ=ρ0,Y=0 fuera; T=p/(ρR).\nt_final=0.5L/u. Referencia traslación periódica exacta conservativa del contacto.\nE1 ρ (scale2ρ0)≤0.04 y E1 Y (scale1)≤0.06; presión relativa y u/a0 E∞≤1e−10;\n0≤Y≤1 estrictos, ledger fresca≤1e−10. MUSCL E1 no peor que primer orden.\nNo compensar un error fresco con residual negativo.\n",
+      "status": "SPECIFIED_NOT_EXECUTED"
+    },
+    {
+      "id": "T07",
+      "purpose": "Constant-area conservation",
+      "contract": "docs/gasdynamic/1d_verification_plan_v1.md",
+      "definition": "## T07 — Conservación en tubo constante\n\nTres subcasos con dominio común,N=200,t_final=0.5L/a0:\n(a) periódica con IC T06; (b) dos paredes con IC T03;\n(c) abiertos con estado uniforme u=0.2a0 y BC entrada/salida características\nconsistentes con ese estado (p_total=p0*(1+(γ−1)M²/2)^(γ/(γ−1)),\nT_total=T0*(1+(γ−1)M²/2), receptor estático p0).\nReferencia integral: identidades ledger, residual de cada componente≤1e−10.\nEn(b) masa/energía/fresca constantes; momentum incluye impulso de pared.\nEn(c) no exigir inventarios constantes como sustituto del ledger de flujos.\n",
+      "status": "SPECIFIED_NOT_EXECUTED"
+    },
+    {
+      "id": "T08",
+      "purpose": "Area-change/nozzle",
+      "contract": "docs/gasdynamic/1d_verification_plan_v1.md",
+      "definition": "## T08 — Fuente de área / nozzle\n\nGeometrías x∈[0,1],N=100,200,400: A=0.01 constante;\nA=0.01[1+0.2 sin²(πx)] suave (integrales analíticas);\nfrustum d=0.1+0.02x (A=πd²/4, volumen exacto).\nSubcaso reposo: IC p0,T0,Y0,u0=0, paredes,t_final=L/a0.\nReferencia equilibrio: E∞ p/p0,ρ/ρ0,u/a0 ≤1e−12 para todas las geometrías.\nSubcaso flujo isentrópico: p_total=100000,T_total=300,Y=Y0, M(0)=0.2;\ndeterminar A* por relación A/A*=(1/M)[2/(γ+1)(1+(γ−1)M²/2)]^((γ+1)/(2(γ−1))).\nElegir raíz subsónica continua en cada x; p,T,ρ,u de leyes isentrópicas.\nIC promedios exactos; BC p_total/T_total entrada y p_salida exacta,\nt_final=L/a0. Referencia estacionaria analítica sin pérdidas ni shock.\nE1 p/p_total,ρ/ρ_total,u/a0≤0.01 en N400, errores no aumentan al duplicar N\n(tolerancia absoluta1e−12); ledger≤1e−10 incluyendo ∫p A'.\nNo exigir equilibrio exacto en flujo variable ni interpretar difusión como pérdida física.\n",
+      "status": "SPECIFIED_NOT_EXECUTED"
+    },
+    {
+      "id": "T09",
+      "purpose": "Backflow",
+      "contract": "docs/gasdynamic/1d_verification_plan_v1.md",
+      "definition": "## T09 — Backflow\n\nPropósito: donante correcto al invertir flujo. T06 duplicado con u=±0.2a0,\nBC periódicas, N400,t_final=0.5L/|u|. Referencias traslaciones exactas opuestas;\nmismos criterios T06. Subcasos abiertos independientes u=±0.2a0,ρ0,p0,Y=0.2\nen dominio, reservorio entrante Y=0.8 en extremo correspondiente, receptor p0,\nreservorio con totales consistentes con el estado uniforme (T07c).\nt_final=0.25L/|u|; referencia especie escalón advectado desde entrada:\nE1 Y≤0.04, presión y u constantes E∞≤1e−10, flujo de fresca en entrada\nigual al másico*0.8 con error absoluto≤1e−12 max(ρ0 a0 A,|flux_mass|).\nVerificar signos opuestos e intercambio de donante, sin mezclar estado receptor.\n",
+      "status": "SPECIFIED_NOT_EXECUTED"
+    },
+    {
+      "id": "T10",
+      "purpose": "Mesh refinement",
+      "contract": "docs/gasdynamic/1d_verification_plan_v1.md",
+      "definition": "## T10 — Refinamiento\n\nIC suave periódica: ρ=ρ0[1+0.1sin(2πx/L)],p=p0,u=0.2a0,\nY=0.5+0.2sin(2πx/L); dominio común,N=100,200,400,800,\nt_final=L/u, referencia traslación periódica exacta de ρ y ρY.\nCalcular Yref=(ρY)ref/ρref con promedios conservados, no promedio Y inconsistente.\nE1 de ρ/ρ0 y fresca/ρ0: orden observado≥0.7 en cada pareja para FE;\n≥1.5 en parejas200/400 y400/800 para MUSCL. No aplicar a Sod.\nLedger y boundedness obligatorios. Registrar coste, celdas y pasos.\n",
+      "status": "SPECIFIED_NOT_EXECUTED"
+    },
+    {
+      "id": "T11",
+      "purpose": "CFL sensitivity",
+      "contract": "docs/gasdynamic/1d_verification_plan_v1.md",
+      "definition": "## T11 — Sensibilidad CFL (R4 first-order)\n\nT02 N400 con CFL0.2/0.4/0.6: todos los gates padre y diferencias E1 rho/p/u<=0.015\nfrente CFL0.2, intactos. T03 N800: comparación velocidad<=0.005a0 intacta.\nPara FIRST_ORDER+Forward Euler, sustituir exclusivamente el límite comparativo\namplitud<=0.08 por refinamiento N400/800/1600 para CFL0.2/0.4/0.6.\nMismas IC/BC/t_final originales; completar todos los casos, admisibilidad estricta\nsin clipping y cuatro ledgers<=1e-10. A(N,C)=max_i(p_i(t_final)-p0), en Pa;\nS(N;a,b)=abs(A(N,a)-A(N,b))/(1e-4*p0). Exigir S400>S800>S1600 para las\nTRES parejas(.2,.4),(.4,.6),(.2,.6), en ambas transiciones.\nE_A=abs(A-A_ref(N))/(1e-4*p0), con A_ref pico de primitivas de integrales\nconservadas de referencia acústica T03 original. Exigir E_A400>E_A800>E_A1600\npara cada CFL productivo. A N800 y N1600 todos los gates T03 originales:\npico/analítica[0.65,1.05], E1p<=0.025,E2p<=0.08,error velocidad<=0.01a0 y ledger.\nN400 es diagnóstico de exactitud; CFL0.1 diagnóstico temporal, no producción.\nRegistrar diferencia absoluta Pa y normalizada, dt/pasos/CFL real, extrema,\nrechazos/fallbacks, conservación, coste y errores. Registrar0.08 histórico\ncomo diagnóstico: R4 RETIRA su garantía en N800, no afirma equivalencia.\nSolo este caso/método; tres mallas no prueban límite asintótico universal.\nMUSCL/SSP-RK2 no cambia en R4 y conserva T11 original. Ver 1d_cfl_sensitivity_v1_r4.md.\n",
+      "status": "SPECIFIED_NOT_EXECUTED"
+    },
+    {
+      "id": "T12",
+      "purpose": "Positivity/bounded species",
+      "contract": "docs/gasdynamic/1d_verification_plan_v1.md",
+      "definition": "## T12 — Positividad y especie acotada\n\nAdimensional γ1.4,R1,A1,x∈[0,1],N400, discontinuidad0.5;\nIC izquierda(ρ,u,p,Y)=(1,−2,0.4,0), derecha=(1,2,0.4,1),\nBC estados iniciales exteriores,t_final=0.1. Expansión fuerte sin vacío exacto;\nreferencia Riemann exacta con presión mínima positiva. También repetir T06 y\nreposo/frustum T08 con Y=0 y Y=1. Verificar todos los estados aceptados,\nincluidas etapas: finitos,ρ>0,p>0,T>0,0≤Y≤1 sin tolerancia de clipping.\nE1 ρ,p normalizadas por1≤0.05 para expansión; ledgers≤1e−10.\nRegistrar fallback, downgrade, dt y rechazos; ningún agotamiento admite PASS.\nCaso de entrada inválida separado: ρ≤0,p≤0,Y<0/Y>1/NaN debe rechazarse\nantes del primer paso, no corregirse. La combinación de conservación y\nboundedness es obligatoria: no alcanza una sola de las dos.\n",
+      "status": "SPECIFIED_NOT_EXECUTED"
+    }
+  ],
+  "gates": {
+    "P1": "P1_PASS_CONTRACT_READY",
+    "human": "WAITING_HUMAN_APPROVAL",
+    "missing": "P1_BLOCKED_CONTRACT_INCOMPLETE",
+    "scientific": "SCIENTIFIC_CHANGE_REQUIRED",
+    "infrastructure": "FAILED_INFRASTRUCTURE",
+    "P2": "ALL T01-T12 subcases; no execution authorized",
+    "ledger_relative_max": 1e-10
+  },
+  "decision_log": [
+    {
+      "id": "D1",
+      "selected": "Q=Aq; integrales C",
+      "alternatives": "q con fuente dividida",
+      "rationale": "Flujos compartidos y ledger simple",
+      "risks": "Confundir promedio y punto",
+      "deferred_issues": "Ninguno para P2"
+    },
+    {
+      "id": "D2",
+      "selected": "EOS constante R287/γ1.35 encapsulada",
+      "alternatives": "Propiedades variables",
+      "rationale": "Compatibilidad 0D y tests analíticos",
+      "risks": "Gas quemado aproximado",
+      "deferred_issues": "cp(T), química"
+    },
+    {
+      "id": "D3",
+      "selected": "HLLC con guardia HLLE",
+      "alternatives": "HLL, LLF, exacto",
+      "rationale": "Contactos y coste; fallback conservativo",
+      "risks": "Vacío/rarefacción fuerte",
+      "deferred_issues": "Otro flux requiere decisión científica"
+    },
+    {
+      "id": "D4",
+      "selected": "FE luego SSP-RK2",
+      "alternatives": "SSP-RK3, RK4",
+      "rationale": "Baseline auditable y convexidad SSP [4]",
+      "risks": "SSP no garantiza EOS positiva por sí sola",
+      "deferred_issues": "RK3"
+    },
+    {
+      "id": "D5",
+      "selected": "Constante luego MUSCL primitivas",
+      "alternatives": "Características, WENO",
+      "rationale": "Progresión separable",
+      "risks": "Difusión/shocks",
+      "deferred_issues": "WENO"
+    },
+    {
+      "id": "D6",
+      "selected": "minmod",
+      "alternatives": "MC, van Leer",
+      "rationale": "Más disipativo, simple y robusto",
+      "risks": "Amortigua ondas",
+      "deferred_issues": "Cambiar limiter tras comparación"
+    },
+    {
+      "id": "D7",
+      "selected": "CFL0.4; ensayos0.2/0.6",
+      "alternatives": "Paso fijo",
+      "rationale": "Velocidades locales y volumen",
+      "risks": "Source/BC restringen estabilidad",
+      "deferred_issues": "Optimización CFL"
+    },
+    {
+      "id": "D8",
+      "selected": "Frustum exacto y caras en uniones",
+      "alternatives": "Área constante escalonada",
+      "rationale": "Conserva volumen/geometría",
+      "risks": "Pendiente discontinua",
+      "deferred_issues": "Escalones de área"
+    },
+    {
+      "id": "D9",
+      "selected": "ρY y flux completo compartido",
+      "alternatives": "Clipping, limiter 0D",
+      "rationale": "Conservación y donante coherente",
+      "risks": "Positividad no universal",
+      "deferred_issues": "Algoritmo alternativo si falla gate"
+    },
+    {
+      "id": "D10",
+      "selected": "Riemann/características por régimen",
+      "alternatives": "Ghost fijo en todo régimen",
+      "rationale": "No sobreimponer datos",
+      "risks": "Choking/supersónico entrante",
+      "deferred_issues": "Radiación real"
+    },
+    {
+      "id": "D11",
+      "selected": "Flux integrado único 0D↔1D",
+      "alternatives": "Dos fluxes independientes",
+      "rationale": "Cancelación exacta masa/energía/especie",
+      "risks": "Apertura de puerto y subcycling",
+      "deferred_issues": "P3: Cd, área de puerto y sincronización motor"
+    }
+  ],
+  "excluded_scope": [
+    "solver implementation",
+    "mesh runtime",
+    "0D coupling implementation",
+    "UI",
+    "project JSON",
+    "EXE",
+    "P2 execution",
+    "2D/3D CFD",
+    "chemistry",
+    "emissions",
+    "turbo",
+    "multicylinder",
+    "structural dynamics",
+    "powervalve",
+    "complex friction",
+    "advanced heat transfer",
+    "predictive combustion",
+    "automatic optimization"
+  ],
+  "dependencies": {
+    "P0": "P0_HUMAN_ACCEPTED",
+    "receipt": "docs/gasdynamic/p0_human_acceptance.json",
+    "dependency_evidence": "docs/gasdynamic/p0_accepted_dependency.json"
+  },
+  "baseline_reference": {
+    "docs/baselines/0d_2t_baseline_v1.json": "4112c4c5eb44d867128cfcce303996958f0b85ece54b0d0a2f53315677222181",
+    "docs/baselines/0d_2t_baseline_v1.md": "4a5a616d59bf8bd19db130fbc7a44842d9475395e14b8ca58ee838d469f858d5"
+  },
+  "documents": {
+    "docs/gasdynamic/1d_mathematical_contract_v1.md": "14b58f56e95df07af93d3938da558cd05373fcec5805ce1a5d1dc90948043db6",
+    "docs/gasdynamic/1d_numerical_contract_v1.md": "2f944d67f01b3212ebd86791c0ebee815e9e76193b98c53696ad12fd61a24193",
+    "docs/gasdynamic/1d_verification_plan_v1.md": "41c4fc4fd198d1c8675a50a751de2ac606a3b0655633e787bb517b808bf702df"
+  },
+  "production_snapshot": {
+    "motorsim/__init__.py": "dc7ec04e41fc98575e2ec9d1ae64fd3667a8075ebd91c2b480424108fab3b710",
+    "motorsim/__main__.py": "cb8250f5d412b665f4f6843c997627d2df2750aee0f9e2551d557825d4202adf",
+    "motorsim/adaptive.py": "4b86241a01fef624acb8eae8c875d9892b22c1ae10132e1888edc0e7278be8cf",
+    "motorsim/comparison.py": "279448d241bd228f804bdd0fa87d4c0ca7c502b0b3a450b033ee57dd954db654",
+    "motorsim/comparison_view.py": "63777005a041064da3da776c27c2c326ca7ade7f6f3c67a5b8fd9135b7f3ff6e",
+    "motorsim/ducts.py": "2f26ab0cefb97cd49377660a82c514a83715ed8b05918ae90c20b05df6ba1165",
+    "motorsim/ducts_view.py": "18ac37c45b96883beb091ec88c3865de533eba4bd093a4e45a24a98ad6d52fce",
+    "motorsim/examples.py": "f1af57bd6ecda10194f52dfc90ddbc5a42981172a404fe1e88041c49b0bbb6fd",
+    "motorsim/external_data.py": "0ee6921717dfa1f121d72eeae842f0ac23580525d29b6ebc8ef82d413e99b282",
+    "motorsim/external_view.py": "bd81c81d38415e9d575fc7eeb83e23415ac70e4aee2c0cb9a8887c9e3e5bdb7b",
+    "motorsim/four_stroke.py": "f1f29170430e4990e2da88c3f70bad2e789b9f89d7ff70548c724de77e014bf9",
+    "motorsim/four_stroke_acceptance.py": "4882e869e90ec01d837355456dac7ad79a29028c7f0f70f05e3d969621a0108c",
+    "motorsim/geometry_view.py": "29a2128e8dbed5cb2c00be850ce7b09f2a591eacaea91e9539bb470e7712a3c3",
+    "motorsim/intake.py": "319ebdfdf04d39ba4adfba086ccd094ddef79adbd992b406684780aee2f2fd5a",
+    "motorsim/intake_view.py": "fb962ba539423077366392891e0a75cd822deea9fb4349994982dbcacae2c1d1",
+    "motorsim/kinematics.py": "1784f2a8d3cc0e038f0c060e22af02f33db1bfaea9ce0c5988e7775983b4a931",
+    "motorsim/performance.py": "676902cdb83e3e00e07d5e6d3162664b70c0e6fd4f0eb47f3e31cf810de7a0fe",
+    "motorsim/performance_view.py": "ce23aae143f12ad7a1854b0fa42d8cde686d9be2f749e80d5374fb72a6bebd6a",
+    "motorsim/ports.py": "85752de04c82b09d0c4e1646dfd6ed3f35caa1dc3e85a0a27e0e52cbe8935122",
+    "motorsim/ports_view.py": "98df797ff401dd4c0ff2b695615fbd4504bfbdeab77b68c8517da7e730ca9c35",
+    "motorsim/project.py": "93e2307c05f708aea4b060fd623c9dd4b342f5ef9d0a44d0c8041a1561e348d0",
+    "motorsim/project_case.py": "744e5235a4c5db2f2be1dee6db182533f46dddeade4cba44426717e821ad0180",
+    "motorsim/prototype.py": "4bd559427c9c20aed9c8a694cc92516979e9b2ba618a6a8dc17eee728b098671",
+    "motorsim/reference_results.py": "0df5251b6a84ec37d648d23667d4f2112b5cc24035bde6c3e47ecc4a8babbcd4",
+    "motorsim/reference_run.py": "5298de649f739189c35b44f08b80ce4a87533c6951bcc3773c87ade088eccd46",
+    "motorsim/regularized_trial.py": "420afd74415b85737b4e52225318c25ba689864916b3f1611fb43079fb696f04",
+    "motorsim/rpm_domain.py": "28dbd32fbfc2d29747da97b0ed4bec90413c308acf6ceef4ace11dcb53c546f2",
+    "motorsim/runtime.py": "6ecaab6fc9424a447732c3fbd01529631ca59b07ca7a73e2cfd08df4fc0e557c",
+    "motorsim/simulation.py": "f88bd1d4ee09a8a086760d707d328d85ad89f52feb6856e54cc7b9cc6b9ff7eb",
+    "motorsim/simulation_case.py": "cf05f89cba01952f6931bf1416a1294343c0cb559f1c1c61e3977ccf7060676e",
+    "motorsim/simulation_view.py": "3caab8d7d1ae6d289723ecb9c8ca3f2111f3e6555d394d2f9bc608e03ea7544f",
+    "motorsim/storage.py": "655f5f0c5e0b36408e89bab791caac6952020e24bd44eed0a3871cf3e3d136d4",
+    "motorsim/sweep.py": "ef2218f8b6d627835e810fa28d0c082c7b0e32c0d385345d7fb39a65011d4b1f",
+    "motorsim/sweep_view.py": "6eb31190bb23755e1362bbcdddae64f482df43b404665e81b1c93efeefb0d828",
+    "motorsim/ui.py": "14001a7a8cbd3ddc2d428e34e4bc00db22e634aacd21f2ca628d73485087fc66",
+    "motorsim/valves.py": "3ddac3b54f4271a9e0d2ef2e5f17a611415d3195667d21dd6485890b76996871",
+    "motorsim/valves_view.py": "c987d1b51d44c4b2e7a897625bdf71fc2b9b2c7dcba4cfb38113e00d272c1d79",
+    "motorsim/window.py": "7be824b2cc7da9b1fb5d5b551c40626be4d043dac93599d5913c21a36c6b5314",
+    "motorsim/workspaces.py": "eb922914aedd8b5ff89e87f3cf5af1c7f889dc7e8de1069a7d8ae0b468cff46a"
+  },
+  "unresolved_blocking_decisions": [],
+  "verification_note": "P1 checks documents; T01-T12 remain unexecuted. Not PHYSICALLY_VALIDATED."
+}

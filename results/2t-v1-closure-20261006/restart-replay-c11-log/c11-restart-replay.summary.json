@@ -1,0 +1,19 @@
+{
+  "name": "c11-restart-replay",
+  "command": [
+    "python",
+    "scripts/v1_closure_restart_replay.py"
+  ],
+  "started_at": "2026-10-06T15:46:28+00:00",
+  "finished_at": "2026-10-06T15:48:02+00:00",
+  "duration_s": 93.813,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\2t-v1-closure-20261006\\restart-replay-c11-log\\c11-restart-replay.log",
+  "log_lines": 1,
+  "log_bytes": 233,
+  "error_lines": [],
+  "tail": [
+    "{\"fixtures\": {\"FIXTURE_A_PRIME\": {\"accepted_steps\": 1242, \"c12_primary_equivalent\": true, \"rejected_trials\": 518}, \"FIXTURE_B_PRIME\": {\"accepted_steps\": 808, \"c12_primary_equivalent\": true, \"rejected_trials\": 85}}, \"status\": \"PASS\"}"
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "run_id": "20260917T164812-P2-07051b7effd6",
+  "phase_id": "P2",
+  "started_at": "2026-09-17T16:48:12.440620+00:00",
+  "finished_at": "2026-09-17T16:50:42.534647+00:00",
+  "git_commit": "63e2863921a1d7c2434899247876aa6bb03990fb",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "p2_unit",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_gas1d.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.8909999998286366,
+      "status": "passed",
+      "stdout_log": "logs/1-p2_unit.stdout.log",
+      "stderr_log": "logs/1-p2_unit.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "p2a_campaign",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p2_campaign",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260917T164812-P2-07051b7effd6"
+      ],
+      "kind": "command",
+      "returncode": 4294967295,
+      "duration_seconds": 113.76599999982864,
+      "status": "failed",
+      "stdout_log": "logs/1-p2a_campaign.stdout.log",
+      "stderr_log": "logs/1-p2a_campaign.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "p2_unit",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "p2a_campaign",
+      "passed": false,
+      "kind": "infrastructure",
+      "reason": "failed"
+    }
+  ],
+  "tests": [
+    {
+      "id": "p2_unit",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_gas1d.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.8909999998286366,
+      "status": "passed",
+      "stdout_log": "logs/1-p2_unit.stdout.log",
+      "stderr_log": "logs/1-p2_unit.stderr.log",
+      "error": ""
+    }
+  ],
+  "metrics": {},
+  "review": {
+    "status": "NOT_RUN",
+    "findings": [],
+    "blocking_findings": [],
+    "scientific_change_required": false,
+    "notes": "Revisión no ejecutada.",
+    "kind": "none"
+  },
+  "gate": "FAILED_INFRASTRUCTURE",
+  "gate_reasons": [
+    "command_failed:p2a_campaign"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "command_failed:p2a_campaign",
+      "state": "FAILED_INFRASTRUCTURE"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [
+    "command_failed:p2a_campaign"
+  ],
+  "artifacts": [],
+  "phase_definition_sha256": "efd197b4350e684200687c76aa86453c0bbbeb8c22f0e15cfe8b9306e0754526",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P0": "docs\\gasdynamic\\p0_accepted_dependency.json",
+      "P1": "docs\\gasdynamic\\p1_accepted_dependency.json"
+    }
+  },
+  "continue_requested": false
+}

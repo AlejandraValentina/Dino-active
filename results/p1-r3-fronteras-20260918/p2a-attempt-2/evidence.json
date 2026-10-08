@@ -1,0 +1,297 @@
+{
+  "run_id": "20260918T110612-P2_R3-9d1c983a7e65",
+  "phase_id": "P2_R3",
+  "started_at": "2026-09-18T11:06:12.863327+00:00",
+  "finished_at": "2026-09-18T11:17:00.283199+00:00",
+  "git_commit": "b353e90840eac764c98d1a7a76fa9abd2c3b20d2",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "p2_unit",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_gas1d.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.25,
+      "status": "passed",
+      "stdout_log": "logs/1-p2_unit.stdout.log",
+      "stderr_log": "logs/1-p2_unit.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "fix_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p2_fixes.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.3130000000819564,
+      "status": "passed",
+      "stdout_log": "logs/1-fix_tests.stdout.log",
+      "stderr_log": "logs/1-fix_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "boundary_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p1_r3.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.26599999982863665,
+      "status": "passed",
+      "stdout_log": "logs/1-boundary_tests.stdout.log",
+      "stderr_log": "logs/1-boundary_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "p2a_campaign",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p2_campaign",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260918T110612-P2_R3-9d1c983a7e65",
+        "--r3"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 633.938000000082,
+      "status": "passed",
+      "stdout_log": "logs/1-p2a_campaign.stdout.log",
+      "stderr_log": "logs/1-p2a_campaign.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "p2_unit",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "fix_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "boundary_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "p2a_campaign",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "baseline_intact",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "Hash/acceptance check"
+    },
+    {
+      "id": "contract_frozen",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "Hash/acceptance check"
+    },
+    {
+      "id": "dependencies_accepted",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "Hash/acceptance check"
+    },
+    {
+      "id": "r3_reviewed",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "Hash/acceptance check"
+    },
+    {
+      "id": "r3_contract_intact",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "Hash/acceptance check"
+    },
+    {
+      "id": "P2A",
+      "passed": false,
+      "kind": "numerical",
+      "reason": "P2_BLOCKED_FIRST_ORDER"
+    }
+  ],
+  "tests": [
+    {
+      "id": "p2_unit",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_gas1d.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.25,
+      "status": "passed",
+      "stdout_log": "logs/1-p2_unit.stdout.log",
+      "stderr_log": "logs/1-p2_unit.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "fix_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p2_fixes.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.3130000000819564,
+      "status": "passed",
+      "stdout_log": "logs/1-fix_tests.stdout.log",
+      "stderr_log": "logs/1-fix_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "boundary_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p1_r3.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.26599999982863665,
+      "status": "passed",
+      "stdout_log": "logs/1-boundary_tests.stdout.log",
+      "stderr_log": "logs/1-boundary_tests.stderr.log",
+      "error": ""
+    }
+  ],
+  "metrics": {
+    "cases": 52,
+    "passed_cases": 52,
+    "wall_seconds": 633.063000000082
+  },
+  "review": {
+    "status": "BLOCKED",
+    "findings": [
+      "No hay reviewer independiente conectado."
+    ],
+    "blocking_findings": [
+      "reviewer_unavailable"
+    ],
+    "scientific_change_required": false,
+    "notes": "No se llamó a ningún proveedor externo.",
+    "kind": "none"
+  },
+  "gate": "BLOCKED",
+  "gate_reasons": [
+    "required_check_failed:P2A",
+    "review_not_approved"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "required_check_failed:P2A; review_not_approved",
+      "state": "BLOCKED"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "artifacts/result.json",
+      "sha256": "3808f79daaf702563fed81de3e1209dba37163c293a1080dedfd22e172f524c2",
+      "bytes": 1022
+    },
+    {
+      "path": "artifacts/p2a-summary.json",
+      "sha256": "aaa5ae0622b35b729f7e2400d15329aa4c04da5c376de7fc3de7ec3653425c60",
+      "bytes": 134110
+    },
+    {
+      "path": "artifacts/inventory.json",
+      "sha256": "efbc2cb74a37478cbb46ece9f2f2443007172131b34d4401dfad54c016451e81",
+      "bytes": 6982
+    },
+    {
+      "path": "artifacts/git-before.json",
+      "sha256": "db8b45c32a28736966906bcbc4747bcb3d90c5fa9a0beb020cb36ad8c5c5816d",
+      "bytes": 211453
+    }
+  ],
+  "phase_definition_sha256": "7f2efdfe1ad7ca79cea34042d0ba507912d470b5368f3ffdc43146dbe85ea4a3",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P0": "docs\\gasdynamic\\p0_accepted_dependency.json",
+      "P1": "docs\\gasdynamic\\p1_accepted_dependency.json",
+      "P1_R3_BOUNDARY_SEMANTICS_REVIEW": "results\\p1-r3-fronteras-20260918\\reviewed-evidence.json"
+    }
+  },
+  "continue_requested": false
+}

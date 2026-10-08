@@ -1,0 +1,137 @@
+{
+  "run_id": "20260921T130208-P4_R3_STRUCTURAL-5f2c23ef0ec6",
+  "phase_id": "P4_R3_STRUCTURAL",
+  "started_at": "2026-09-21T13:02:08.555633+00:00",
+  "finished_at": "2026-09-21T13:06:46.308901+00:00",
+  "git_commit": "655b9a97f98b0aa8054809f36251661fee218199",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "benchmark_command",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p4_r3_benchmark",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260921T130208-P4_R3_STRUCTURAL-5f2c23ef0ec6"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 234.625,
+      "status": "passed",
+      "stdout_log": "logs/1-benchmark_command.stdout.log",
+      "stderr_log": "logs/1-benchmark_command.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "profile_command",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p4_r3_profile",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260921T130208-P4_R3_STRUCTURAL-5f2c23ef0ec6/profile",
+        "--backend",
+        "STRUCTURAL"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 15.968000000342727,
+      "status": "passed",
+      "stdout_log": "logs/1-profile_command.stdout.log",
+      "stderr_log": "logs/1-profile_command.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "benchmark_command",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "benchmark_equivalence",
+      "kind": "numerical",
+      "passed": true,
+      "reason": "Fixed G1 vs frozen R2"
+    },
+    {
+      "id": "profile_command",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "profile_complete",
+      "kind": "numerical",
+      "passed": true,
+      "reason": "Three representative bounded windows"
+    }
+  ],
+  "tests": [],
+  "metrics": {
+    "measurements": 1
+  },
+  "review": {
+    "status": "BLOCKED",
+    "findings": [
+      "No hay reviewer independiente conectado."
+    ],
+    "blocking_findings": [
+      "reviewer_unavailable"
+    ],
+    "scientific_change_required": false,
+    "notes": "No se llamó a ningún proveedor externo.",
+    "kind": "none"
+  },
+  "gate": "BLOCKED",
+  "gate_reasons": [
+    "review_not_approved"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "review_not_approved",
+      "state": "BLOCKED"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "artifacts/benchmark.json",
+      "sha256": "b60212c8359368c9fedae8899d5888515192a4d7265f5974b4715c83036b40fd",
+      "bytes": 3632
+    },
+    {
+      "path": "profile/artifacts/profile-summary.json",
+      "sha256": "8fdea0ddf755421f1b19a0814a6cc51adb529232ebf6d50eac32d78885e72fad",
+      "bytes": 1928
+    }
+  ],
+  "phase_definition_sha256": "eb1d4542be18a91295befcebe5f022e2d26ead103e18aba524eff2a48318fc2b",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P2": "docs\\gasdynamic\\p2_accepted_dependency.json"
+    }
+  },
+  "continue_requested": false
+}

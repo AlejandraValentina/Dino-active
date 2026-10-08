@@ -1,0 +1,8 @@
+{
+  "cycle_start": "canonical begin + 360*(cycle-1)",
+  "heat_window": "computed modulo relative to begin",
+  "detector_pairing": "n vs n-2",
+  "branch_map": "relative anchor parity",
+  "angle_accumulation": "each cycle begins from canonical phase; no unintended parity branch found in code audit",
+  "status": "NO_PARITY_BUG_IDENTIFIED"
+}

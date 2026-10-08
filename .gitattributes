@@ -1,0 +1,17 @@
+# Preserve byte hashes of independently reviewed source on Windows.
+motorsim/coupling.py -text
+motorsim/coupled.py -text
+motorsim/coupling_adapter.py -text
+tests/test_coupled.py -text
+tests/test_coupling_adapter.py -text
+
+# Preserve reviewed P4 bank byte hashes.
+motorsim/exhaust_port.py -text
+motorsim/exhaust1d.py -text
+motorsim/exhaust_geometry.py -text
+
+# Preserve accepted scalar hybrid reference and periodicity contract.
+motorsim/hybrid_exhaust.py -text
+docs/gasdynamic/p4c_hybrid.md -text
+
+# Active-repo policy: heavy simulation artifacts are external, not Git/LFS payloads.

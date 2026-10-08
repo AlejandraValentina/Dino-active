@@ -1,0 +1,171 @@
+{
+  "run_id": "20260921T123152-P4C_PREFLIGHT-6653711704e2",
+  "phase_id": "P4C_PREFLIGHT",
+  "started_at": "2026-09-21T12:31:52.477201+00:00",
+  "finished_at": "2026-09-21T12:37:14.731962+00:00",
+  "git_commit": "4747eb2707a1d18e85bcaa982777343b62500543",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "hybrid_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_hybrid_exhaust.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 7.82799999974668,
+      "status": "passed",
+      "stdout_log": "logs/1-hybrid_tests.stdout.log",
+      "stderr_log": "logs/1-hybrid_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "hybrid_command",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p4_hybrid",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260921T123152-P4C_PREFLIGHT-6653711704e2"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 268.81199999991804,
+      "status": "passed",
+      "stdout_log": "logs/1-hybrid_command.stdout.log",
+      "stderr_log": "logs/1-hybrid_command.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "hybrid_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "hybrid_command",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "hybrid_evidence",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P4_BLOCKED_PERFORMANCE"
+    },
+    {
+      "id": "frozen_implementation",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "151 historical hashes"
+    }
+  ],
+  "tests": [
+    {
+      "id": "hybrid_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_hybrid_exhaust.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 7.82799999974668,
+      "status": "passed",
+      "stdout_log": "logs/1-hybrid_tests.stdout.log",
+      "stderr_log": "logs/1-hybrid_tests.stderr.log",
+      "error": ""
+    }
+  ],
+  "metrics": {
+    "cycles": 1
+  },
+  "review": {
+    "status": "BLOCKED",
+    "findings": [
+      "No hay reviewer independiente conectado."
+    ],
+    "blocking_findings": [
+      "reviewer_unavailable"
+    ],
+    "scientific_change_required": false,
+    "notes": "No se llamó a ningún proveedor externo.",
+    "kind": "none"
+  },
+  "gate": "BLOCKED",
+  "gate_reasons": [
+    "review_not_approved"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "review_not_approved",
+      "state": "BLOCKED"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "artifacts/summary.json",
+      "sha256": "49421059d8a76c074d589adce1368d7ef518584cf14385d0c506186372d2a5e7",
+      "bytes": 1060
+    },
+    {
+      "path": "artifacts/inputs.json",
+      "sha256": "220d8cd13eace8ea3171cefb2b6a997e51ea5220ca491a350d9114902a84a918",
+      "bytes": 128141
+    },
+    {
+      "path": "artifacts/inventory.json",
+      "sha256": "ffeb38e241b296669a2d20613582d10eeb35cb8463ba0abda042ce9c201c03de",
+      "bytes": 98
+    },
+    {
+      "path": "artifacts/result.json",
+      "sha256": "976e71aabfaec32d3bd050f3b2acdc8f90c194d1d2beca5e946c0e93a17c5c3b",
+      "bytes": 389
+    }
+  ],
+  "phase_definition_sha256": "86d52a3fcb10f0d2293a1ed859c6a1719200697804a677d306484eb57556b010",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P2": "docs\\gasdynamic\\p2_accepted_dependency.json"
+    }
+  },
+  "continue_requested": false
+}

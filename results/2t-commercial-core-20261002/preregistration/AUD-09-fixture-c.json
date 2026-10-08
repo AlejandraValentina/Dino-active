@@ -1,0 +1,24 @@
+{
+  "acceptance_scope": "Synthetic and CONDITIONAL_ON_P4 only. This run cannot promote P4/P5-P8, establish experimental validation, or accept the Commercial Core.",
+  "campaign_id": "AUD-09-fixture-c-piston-port-no-reed-fixed-horizon-20261005",
+  "cycle_convergence_contract": "REFERENCE_PERIODIC_CONVERGENCE_V1",
+  "cycle_convergence_contract_sha256": "32a69536f7d83de0c1fc6a5188ab648aff5bef2608fce6a3546ca6ead683d6e1",
+  "engine_configuration_sha256": "9095a5e65523f969fb0075c07956caaa45310cdb752ed87c6f39588863f65a27",
+  "fixture_id": "C",
+  "fixture_selection": "Fixture C is the previously distinct piston-port, no-reed candidate. It retains the committed Fixture A geometry/topology and removes only the intake reed; this directly tests the earlier candidate that failed before its first complete cycle.",
+  "horizon_cycles": 20,
+  "horizon_policy": "Run and persist all 20 complete 360-degree cycles if admissible; no early stopping on a detector classification. If any cycle fails, persist failure.json with the reached angle, full rejection history, partial state and ledger. This is a fixed prospective horizon.",
+  "outputs": [
+    "cycle-001.json.gz through cycle-020.json.gz when complete",
+    "restart-audit.json when the registered replay is reached",
+    "manifest.json on full completion",
+    "failure.json if integration or restart fails"
+  ],
+  "producer_commit": "495f654a5e8819b2ef4f45ac4daae7d530455016",
+  "rejected_step_policy": "Record every rejected trial with angle, attempted step and reason before halving; preserve all accepted-stage cycle evidence and write failure.json on an unsuccessful cycle.",
+  "restart_cycle": 3,
+  "restart_policy": "At the terminal cycle-3 snapshot, reconstruct from the committed Fixture C config, restore the snapshot, advance one full cycle, and require exact full-snapshot equality with the continuous run.",
+  "schema": "MOTORSIM_COMMERCIAL_CYCLE_PREREGISTRATION_V1",
+  "selection_rationale": "Selection is based on the unresolved B1/A4 finding and prior 107.651626-degree failure, not on new outcomes. The original raw failing trace is unavailable; this campaign records every retry and persists a failure receipt if a full cycle cannot complete.",
+  "threshold_policy": "Use the existing detector thresholds and three consecutive valid comparisons unchanged; report PASS, FAIL and INVALID distinctly."
+}

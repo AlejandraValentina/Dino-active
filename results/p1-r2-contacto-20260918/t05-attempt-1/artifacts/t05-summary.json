@@ -1,0 +1,35 @@
+{
+  "name": "T05",
+  "status": "FAIL",
+  "checks": {
+    "completed": false,
+    "worst_ledger": true
+  },
+  "metrics": {
+    "worst_ledger": 2.0313048356949427e-16
+  },
+  "configuration": {
+    "N": 800,
+    "CFL": 0.4,
+    "R": 287.0,
+    "gamma": 1.35,
+    "final_time": 0.0033731012719484597,
+    "boundaries": [
+      {
+        "kind": "nonreflecting",
+        "state": null,
+        "p0": 100000.0,
+        "T0": 300.0,
+        "Y0": 0.3
+      },
+      {
+        "kind": "open",
+        "state": null,
+        "p0": 100000.0,
+        "T0": 300.0,
+        "Y0": 0.3
+      }
+    ],
+    "method": "FIRST_ORDER"
+  }
+}

@@ -1,0 +1,1103 @@
+{
+  "phases": [
+    {
+      "id": "P0",
+      "title": "Freeze baseline 0D",
+      "objective": "Verificar la malla num\u00c3\u00a9rica 2T 2500\u00e2\u20ac\u201c15000 RPM y congelar baseline 0D; stress condicionado hasta20000. Sin P1.",
+      "depends_on": [],
+      "allowed_paths": [
+        "dev_orchestrator/runs/",
+        "docs/baselines/0d_2t_baseline_v1.md",
+        "docs/baselines/0d_2t_baseline_v1.json",
+        "dev_orchestrator/p0_finalize.py",
+        "dev_orchestrator/p0_plots.py",
+        "tests/test_p0_baseline.py",
+        "dev_orchestrator/phases/P0.json",
+        "dev_orchestrator/roadmap/gasdynamic.json"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "p0_tests",
+        "main_complete",
+        "continuous_domain",
+        "historical_regression",
+        "production_unchanged",
+        "no_experimental_imports",
+        "artifact_inventory"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": "P1"
+    },
+    {
+      "id": "P1",
+      "title": "1D mathematical contract",
+      "objective": "1D mathematical contract: ecuaciones, m\u00c3\u00a9todo, interfaces y T01\u00e2\u20ac\u201cT12; sin solver ni P2.",
+      "depends_on": [
+        "P0"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "p1_tests",
+        "p1_contract",
+        "contract_complete",
+        "p0_accepted",
+        "scope_preserved"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": "P2"
+    },
+    {
+      "id": "P2",
+      "title": "1D isolated solver",
+      "objective": "P2A first-order isolated quasi-1D core, T01\u00e2\u20ac\u201cT12, P2B only after reviewed P2A PASS; no P3.",
+      "depends_on": [
+        "P0",
+        "P1"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "docs/baselines/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "p2_unit",
+        "p2a_campaign",
+        "P2A",
+        "baseline_intact",
+        "contract_frozen",
+        "dependencies_accepted"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 3,
+      "requires_human_approval": true,
+      "next_phase": "P3"
+    },
+    {
+      "id": "P3",
+      "title": "0D\u00e2\u2020\u201d1D coupling",
+      "objective": "P3 preflight of frozen reservoir compatibility before conservative finite-volume coupling.",
+      "depends_on": [
+        "P2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "regression_tests",
+        "preflight",
+        "P2_HUMAN_ACCEPTED",
+        "P2_frozen",
+        "P2_regression",
+        "P0_regression",
+        "reservoir_branch_exists_for_admissible_reversal"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": "P4"
+    },
+    {
+      "id": "P4",
+      "title": "1D exhaust",
+      "objective": "Declaraci\u00c3\u00b3n futura: 1D exhaust. Sin implementaci\u00c3\u00b3n ni autorizaci\u00c3\u00b3n de ejecuci\u00c3\u00b3n.",
+      "depends_on": [
+        "P3"
+      ],
+      "allowed_paths": [],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "phase_not_implemented"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 3,
+      "requires_human_approval": true,
+      "next_phase": "P5"
+    },
+    {
+      "id": "P5",
+      "title": "Intake + transfers",
+      "objective": "Declaraci\u00c3\u00b3n futura: Intake + transfers. Sin implementaci\u00c3\u00b3n ni autorizaci\u00c3\u00b3n de ejecuci\u00c3\u00b3n.",
+      "depends_on": [
+        "P4"
+      ],
+      "allowed_paths": [],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "phase_not_implemented"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 3,
+      "requires_human_approval": true,
+      "next_phase": "P6"
+    },
+    {
+      "id": "P6",
+      "title": "Species/scavenging",
+      "objective": "Declaraci\u00c3\u00b3n futura: Species/scavenging. Sin implementaci\u00c3\u00b3n ni autorizaci\u00c3\u00b3n de ejecuci\u00c3\u00b3n.",
+      "depends_on": [
+        "P5"
+      ],
+      "allowed_paths": [],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "phase_not_implemented"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 3,
+      "requires_human_approval": true,
+      "next_phase": "P7"
+    },
+    {
+      "id": "P7",
+      "title": "Heat/combustion improvements",
+      "objective": "Declaraci\u00c3\u00b3n futura: Heat/combustion improvements. Sin implementaci\u00c3\u00b3n ni autorizaci\u00c3\u00b3n de ejecuci\u00c3\u00b3n.",
+      "depends_on": [
+        "P6"
+      ],
+      "allowed_paths": [],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "phase_not_implemented"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 3,
+      "requires_human_approval": true,
+      "next_phase": "P8"
+    },
+    {
+      "id": "P8",
+      "title": "Wide RPM performance",
+      "objective": "Declaraci\u00c3\u00b3n futura: Wide RPM performance. Sin implementaci\u00c3\u00b3n ni autorizaci\u00c3\u00b3n de ejecuci\u00c3\u00b3n.",
+      "depends_on": [
+        "P7"
+      ],
+      "allowed_paths": [],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "phase_not_implemented"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 3,
+      "requires_human_approval": true,
+      "next_phase": "P9"
+    },
+    {
+      "id": "P9",
+      "title": "Experimental validation",
+      "objective": "Declaraci\u00c3\u00b3n futura: Experimental validation. Sin implementaci\u00c3\u00b3n ni autorizaci\u00c3\u00b3n de ejecuci\u00c3\u00b3n.",
+      "depends_on": [
+        "P8"
+      ],
+      "allowed_paths": [],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "phase_not_implemented"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 3,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "dummy",
+      "title": "Prueba inocua",
+      "objective": "Comprobar infraestructura con test, artefacto temporal y hash.",
+      "depends_on": [],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "dummy_test",
+        "artifact_hash"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 3,
+      "requires_human_approval": false,
+      "next_phase": null
+    },
+    {
+      "id": "P1_R1_SCIENTIFIC_AMENDMENT",
+      "title": "P1_R1_SCIENTIFIC_AMENDMENT",
+      "objective": "Review only T02 contact observable; unchanged solver and P1; conditional P2A gate.",
+      "depends_on": [
+        "P0",
+        "P1"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "docs/gasdynamic/",
+        "docs/baselines/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "observable_tests",
+        "contact_study",
+        "complete_study",
+        "contact_accuracy",
+        "unique_monotone",
+        "B_converges",
+        "gas1d_unchanged",
+        "baseline_intact",
+        "contract_frozen",
+        "dependencies_accepted"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P1_R2",
+      "title": "P1_R2_SCIENTIFIC_AMENDMENT",
+      "objective": "Precommitted independent hydrodynamic contact observable; conditional P2A gate.",
+      "depends_on": [
+        "P0",
+        "P1"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "docs/gasdynamic/",
+        "docs/baselines/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "observable_tests",
+        "contact_study",
+        "unique",
+        "accuracy",
+        "convergence",
+        "input_inventory",
+        "original_gas1d_unchanged",
+        "baseline_intact",
+        "contract_frozen",
+        "dependencies_accepted"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P2_T05",
+      "title": "P2_T05_IMPLEMENTATION_FIX_GATE",
+      "objective": "Exact T05 after R2 PASS and bounded implementation fixes.",
+      "depends_on": [
+        "P0",
+        "P1",
+        "P1_R2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "docs/gasdynamic/",
+        "docs/baselines/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "fix_tests",
+        "t05",
+        "T05",
+        "baseline_intact",
+        "contract_frozen",
+        "dependencies_accepted"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P1_R3_BOUNDARY_SEMANTICS_REVIEW",
+      "title": "P1_R3_BOUNDARY_SEMANTICS_REVIEW",
+      "objective": "Separate ideal pressure-release from nonreflecting and reservoir; T05 and NR01 gates before P2A.",
+      "depends_on": [
+        "P0",
+        "P1",
+        "P1_R2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "docs/gasdynamic/",
+        "docs/baselines/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "boundary_tests",
+        "fix_tests",
+        "boundary_study",
+        "T05",
+        "mesh_sign",
+        "all_ledgers",
+        "NR01_recorded",
+        "counter_identity",
+        "baseline_intact",
+        "contract_frozen",
+        "dependencies_accepted"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P2_R3",
+      "title": "P2A revalidation after R3",
+      "objective": "Revalidate all 52 P2A subcases after reviewed R3/T05 gate; preserve T02/T06, no P3.",
+      "depends_on": [
+        "P0",
+        "P1",
+        "P1_R3_BOUNDARY_SEMANTICS_REVIEW"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "docs/baselines/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "p2_unit",
+        "p2a_campaign",
+        "P2A",
+        "baseline_intact",
+        "contract_frozen",
+        "dependencies_accepted",
+        "r3_reviewed",
+        "r3_contract_intact",
+        "fix_tests",
+        "boundary_tests"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P1_R4_CFL_REVIEW",
+      "title": "P1-R4 CFL scientific study",
+      "objective": "Frozen T11 CFL refinement study; no solver changes or automatic acceptance.",
+      "depends_on": [
+        "P0",
+        "P1",
+        "P1_R3_BOUNDARY_SEMANTICS_REVIEW"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "docs/gasdynamic/",
+        "docs/baselines/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "r4_tests",
+        "cfl_study",
+        "baseline_intact",
+        "contract_frozen",
+        "dependencies_accepted",
+        "implementation_contracts_frozen",
+        "complete_matrix",
+        "deterministic_reproduction",
+        "stability_conservation"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P2A_R4_VERIFY",
+      "title": "T11 R4 then P2A regression",
+      "objective": "Verify T11 under reviewed R4 first, then hash-preserved offline P2A regression; no P2B.",
+      "depends_on": [
+        "P0",
+        "P1",
+        "P1_R4_CFL_REVIEW"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "docs/gasdynamic/",
+        "docs/baselines/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "r4_gate_tests",
+        "t11_then_p2a",
+        "baseline_intact",
+        "contract_frozen",
+        "dependencies_accepted",
+        "implementation_contracts_frozen",
+        "r4_scientific_review",
+        "previous_campaign_source_identical",
+        "six_fresh_t11",
+        "T11_R4",
+        "offline_52_remeasured",
+        "P2A_R4"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P2B",
+      "title": "P2B second-order isolated",
+      "objective": "MUSCL minmod SSP-RK2 against frozen FIRST_ORDER under R4; no P3.",
+      "depends_on": [
+        "P0",
+        "P1_R4_CFL_REVIEW",
+        "P2A_R4_VERIFY"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "docs/gasdynamic/",
+        "docs/baselines/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "p2b_unit",
+        "p2b_campaign",
+        "P2B",
+        "baseline_intact",
+        "contract_frozen",
+        "dependencies_accepted",
+        "first_order_contracts_frozen",
+        "p1_r4_accepted",
+        "p2a_accepted",
+        "first_order_R4_control"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 3,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P2B_RESUME",
+      "title": "P2B runtime resume",
+      "objective": "Resume unchanged P2B with 300s per case, T04 first, validated checkpoints; no P3.",
+      "depends_on": [
+        "P0",
+        "P1_R4_CFL_REVIEW",
+        "P2A_R4_VERIFY"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "docs/gasdynamic/",
+        "docs/baselines/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "resume_tests",
+        "resume_campaign",
+        "P2B",
+        "baseline_intact",
+        "contract_frozen",
+        "dependencies_accepted",
+        "first_order_contracts_frozen",
+        "p1_r4_accepted",
+        "p2a_accepted",
+        "first_order_R4_control",
+        "solver_unchanged"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 3,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P2B_REMAINING",
+      "title": "P2B remaining independent checks",
+      "objective": "Verify remaining T11 and T12 independently, retaining T10 infrastructure timeout without credit or repetition.",
+      "depends_on": [
+        "P0",
+        "P1_R4_CFL_REVIEW",
+        "P2A_R4_VERIFY"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "docs/gasdynamic/",
+        "docs/baselines/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "resume_tests",
+        "resume_campaign",
+        "P2B",
+        "baseline_intact",
+        "contract_frozen",
+        "dependencies_accepted",
+        "first_order_contracts_frozen",
+        "p1_r4_accepted",
+        "p2a_accepted",
+        "first_order_R4_control",
+        "solver_unchanged"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 3,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P1_R5E",
+      "title": "P1-R5E evidence acquisition",
+      "objective": "Acquire only T10 N800 and T11 N1600 CFL0.2; no R5 adoption or P2 acceptance.",
+      "depends_on": [
+        "P0",
+        "P1_R4_CFL_REVIEW",
+        "P2A_R4_VERIFY"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "docs/gasdynamic/",
+        "docs/baselines/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "acquire",
+        "evidence_complete",
+        "solver_unchanged"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P2_R5_VERIFY",
+      "title": "P2 offline verification under adopted R5",
+      "objective": "Offline closure under independently adopted R5, no integrations or human acceptance.",
+      "depends_on": [
+        "P0",
+        "P1_R4_CFL_REVIEW",
+        "P2A_R4_VERIFY"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "docs/gasdynamic/",
+        "docs/baselines/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "focal_tests",
+        "offline_closure",
+        "P2B",
+        "P0_regression",
+        "FIRST_ORDER_R4",
+        "all_final",
+        "T12_ten",
+        "conservation",
+        "admissibility",
+        "solver_unchanged",
+        "baseline_intact",
+        "contract_frozen",
+        "first_order_contracts_frozen"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P3_R1",
+      "title": "P3-R1 Riemann interface",
+      "objective": "Riemann interface scientific gate before finite coupling",
+      "depends_on": [
+        "P2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "regression_tests",
+        "r1",
+        "C00",
+        "C00B",
+        "forward_reverse",
+        "species",
+        "shared_energy",
+        "P2_frozen",
+        "P2_regression",
+        "P0_regression"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P3B",
+      "title": "P3B finite fixed volume",
+      "objective": "Fixed-volume finite coupled gates after R1 independent PASS",
+      "depends_on": [
+        "P2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "stage_tests",
+        "finite_cases",
+        "P3B"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P3C",
+      "title": "P3C variable volume and acoustic response",
+      "objective": "Variable volume and acoustic refinement after independent P3B PASS",
+      "depends_on": [
+        "P2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "acoustic_cases",
+        "P3C"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P3_CLOSE",
+      "title": "P3 final verification",
+      "objective": "Final adapter tests and complete offline P2/P0 regression after P3B/P3C independent PASS",
+      "depends_on": [
+        "P2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "regression_tests",
+        "r1",
+        "C00",
+        "C00B",
+        "forward_reverse",
+        "species",
+        "shared_energy",
+        "P2_frozen",
+        "P2_regression",
+        "P0_regression"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P4A",
+      "title": "P4A ideal exhaust port",
+      "objective": "Ideal variable exhaust port bank E01-E05, frozen P3",
+      "depends_on": [
+        "P2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "port_tests",
+        "bank",
+        "P4A"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P4B",
+      "title": "P4B geometry waves",
+      "objective": "Isolated exhaust geometry waves, length/RPM and refinement",
+      "depends_on": [
+        "P2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "waves",
+        "P4B"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P4_CLOSE",
+      "title": "P4 blocked closure regression",
+      "objective": "Frozen P0/P2/P3 and affected P4 tests after wave-refinement blocker",
+      "depends_on": [
+        "P2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "regression_tests",
+        "historical",
+        "P3_frozen",
+        "P3_evidence",
+        "P3B",
+        "P3C",
+        "baseline_command"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P4_R1",
+      "title": "P4-R1 frozen convergence diagnosis",
+      "objective": "Frozen blowdown observables and focal convergence diagnosis",
+      "depends_on": [
+        "P2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "observable_tests",
+        "diagnostic_command",
+        "diagnostic_evidence",
+        "frozen_implementation"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P4_R1E",
+      "title": "P4-R1E frozen N800 completion",
+      "objective": "One frozen N800 restart with operational 1500s cap",
+      "depends_on": [
+        "P2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "n800_command",
+        "n800_evidence",
+        "frozen_implementation"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P4C_PREFLIGHT",
+      "title": "P4C bounded hybrid measurement",
+      "objective": "One hybrid cycle cost guard before bounded periodic campaign",
+      "depends_on": [
+        "P2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "hybrid_tests",
+        "hybrid_command",
+        "hybrid_evidence",
+        "frozen_implementation"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P4_R3_PROFILE",
+      "title": "P4-R3 profiling",
+      "objective": "Standard-library profile of three frozen hybrid windows",
+      "depends_on": [
+        "P2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "profile_command",
+        "profile_complete"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P4_R3_STRUCTURAL",
+      "title": "P4-R3 structural block",
+      "objective": "Structural block full G1 equivalence and intermediate profile",
+      "depends_on": [
+        "P2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "benchmark_command",
+        "benchmark_equivalence",
+        "profile_command",
+        "profile_complete"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P4_R3_NUMPY",
+      "title": "P4-R3 NumPy batching",
+      "objective": "Float64 batching equivalence, two full G1 measurements and final profile",
+      "depends_on": [
+        "P2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "benchmark_command",
+        "benchmark_equivalence",
+        "profile_command",
+        "profile_complete",
+        "batch_tests"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P4_R3_CLOSE",
+      "title": "P4-R3 closure regressions",
+      "objective": "Optimized kernel offline bank replay and regression tests",
+      "depends_on": [
+        "P2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "regression_tests",
+        "baseline_command",
+        "P4A_replay",
+        "P4B_replay",
+        "original_individual_checks",
+        "historical",
+        "frozen",
+        "R3_reference"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P4_R3_FULL_PROFILE",
+      "title": "P4-R3 full diagnostic profile",
+      "objective": "Full optimized cycle profile, diagnostic timing excluded from benchmark",
+      "depends_on": [
+        "P2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "benchmark_command",
+        "benchmark_equivalence"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P4_R4_MICRO",
+      "title": "First HLLC serial JIT evaluation",
+      "objective": "First HLLC serial JIT evaluation",
+      "depends_on": [
+        "P2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "micro_command",
+        "micro_equivalence"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    },
+    {
+      "id": "P4_R4_FOCAL",
+      "title": "Numba tests and three representative frozen G1 windows",
+      "objective": "Numba tests and three representative frozen G1 windows",
+      "depends_on": [
+        "P2"
+      ],
+      "allowed_paths": [
+        "dev_orchestrator/runs/"
+      ],
+      "forbidden_paths": [
+        "motorsim/",
+        "packaging/"
+      ],
+      "required_checks": [
+        "numba_tests",
+        "focal_command",
+        "focal_gate"
+      ],
+      "gate_policy": "default",
+      "max_repair_attempts": 0,
+      "requires_human_approval": true,
+      "next_phase": null
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "run_id": "20260917T164812-P2-07051b7effd6",
+  "evidence_sha256": "90ac4392b174f19b95029077921ece628eac7da7c7c6691dda21cf3c5c5f21ba",
+  "source_commit": "63e2863921a1d7c2434899247876aa6bb03990fb",
+  "review": {
+    "status": "BLOCKED",
+    "findings": [
+      "T02 contact position error 2.80379 dx exceeds frozen 2 dx; no concrete implementation defect found.",
+      "HLLC counters include direct characteristic fluxes and duplicated periodic face; boundary fallback states not actual ghost.",
+      "Nonreflecting boundary with explicit base uses default incoming entropy/composition.",
+      "T05 near-rest open-boundary branch fails on opposite floating-point signs."
+    ],
+    "blocking_findings": [
+      "T02_contract_requires_scientific_decision",
+      "P2A_incomplete",
+      "implementation_defects_pending"
+    ],
+    "scientific_change_required": true,
+    "notes": "Independent read-only review /root/p2_review. Verified 12 case hashes and source commit63e2863921a1d7c2434899247876aa6bb03990fb. T02 exact/contact gradient verified offline; no integrations. T05 outgoing -2.273737e-13 vs incoming +4.547474e-13 at rest. Preserve raw FAILED_INFRASTRUCTURE from explicit interruption; scientific decision separate. No P2B/P3.",
+    "kind": "independent"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "phase": "P1_R5E",
+  "objective": "Acquire only T10 N800 and T11 N1600 CFL0.2; no R5 adoption or P2 acceptance.",
+  "enabled": true,
+  "depends_on": [
+    "P0",
+    "P1_R4_CFL_REVIEW",
+    "P2A_R4_VERIFY"
+  ],
+  "allowed_paths": [
+    "dev_orchestrator/runs/"
+  ],
+  "forbidden_paths": [
+    "motorsim/",
+    "docs/gasdynamic/",
+    "docs/baselines/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Run evidence only; implementation committed before verification."
+  ],
+  "forbidden_changes": [
+    "Toda modificaci\u00c3\u00b3n de producto en esta versi\u00c3\u00b3n."
+  ],
+  "commands": [
+    {
+      "id": "acquire",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p1_r5_evidence",
+        "--run-dir",
+        "{run_dir}"
+      ],
+      "timeout": 1350,
+      "result_file": "artifacts/result.json"
+    }
+  ],
+  "required_tests": [],
+  "required_checks": [
+    "acquire",
+    "evidence_complete",
+    "solver_unchanged"
+  ],
+  "required_evidence": [
+    "artifacts/result.json",
+    "artifacts/acquisition.json",
+    "artifacts/cases/T10_800.json.gz",
+    "artifacts/cases/T03_0.2_N1600.json.gz"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 0,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": false,
+  "timeout": 1400
+}

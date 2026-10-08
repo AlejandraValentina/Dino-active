@@ -1,0 +1,21 @@
+{
+  "run_id": "20260917T162700-P1-3b9e685fa1f4",
+  "evidence_sha256": "68fdebaf29aebcb5184f0ef94884d1d096d50ced320d5dce4acaed05a8ebe6e5",
+  "contract_sha256": {
+    "docs/gasdynamic/1d_contract_v1.json": "97ce1c0b47d80c10aaa9a2cbc9abb133d60961617b8f5a706fb73128e8451aee",
+    "docs/gasdynamic/1d_mathematical_contract_v1.md": "14b58f56e95df07af93d3938da558cd05373fcec5805ce1a5d1dc90948043db6",
+    "docs/gasdynamic/1d_numerical_contract_v1.md": "2f944d67f01b3212ebd86791c0ebee815e9e76193b98c53696ad12fd61a24193",
+    "docs/gasdynamic/1d_verification_plan_v1.md": "41c4fc4fd198d1c8675a50a751de2ac606a3b0655633e787bb517b808bf702df",
+    "docs/gasdynamic/p0_human_acceptance.json": "fb8bf74626b125966fd2507a2805c3ba9e6115a8f0fbd5237411092fd3271eea",
+    "docs/gasdynamic/p0_accepted_dependency.json": "40b67f54ae5743b5ee39baf4c699fc27ff6e6720385c44e04a9f7808d48053dd"
+  },
+  "reviewer": "/root/p1_review",
+  "review": {
+    "status": "PASS",
+    "findings": [],
+    "blocking_findings": [],
+    "scientific_change_required": false,
+    "notes": "Revisión independiente de solo lectura del contrato P1: ecuaciones, signos, conservados, fuente geométrica, EOS, HLLC/HLLE, integración, CFL, especie, positividad, fronteras, futuro acoplamiento y T01–T12. Las precisiones solicitadas sobre fuente geométrica y referencias conservadas quedaron resueltas. Dictamen vinculado al run 20260917T162700-P1-3b9e685fa1f4; evidencia inicial SHA256 68fdebaf29aebcb5184f0ef94884d1d096d50ced320d5dce4acaed05a8ebe6e5; contract-inventory.json SHA256 85eb1086e904c3e72b5b68252939207c99da7ea29bac368fe74129248f80fe0f; manifest SHA256 97ce1c0b47d80c10aaa9a2cbc9abb133d60961617b8f5a706fb73128e8451aee. Verificados los seis hashes del inventario, tres artefactos de evidencia y hashes de tres documentos, dos archivos baseline y 39 archivos de producción. Evidencia registra cinco checks aprobados y log de once pruebas contractuales aprobadas; sin errores ni violaciones de alcance. No ejecuté simulaciones ni modifiqué archivos. El PASS acredita preparación contractual, no ejecución de T01–T12, implementación del solver, validación experimental ni aceptación humana de P1. El cierre debe conservar la evidencia inicial del stub y detenerse en WAITING_HUMAN_APPROVAL, sin comenzar P2.",
+    "kind": "independent"
+  }
+}

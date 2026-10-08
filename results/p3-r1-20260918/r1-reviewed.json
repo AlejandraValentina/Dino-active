@@ -1,0 +1,22 @@
+{
+  "state": "P3_R1_PASS_RIEMANN_COUPLING",
+  "reviewer": "/root/p3_review",
+  "mode": "independent read-only",
+  "artifact_sha256": "35d0eb110fa64690fcc4646726641b29d03dc95d3cb2bf54eb0824dd90fa65ef",
+  "interface_sha256": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+  "checks": {
+    "C00": true,
+    "C00B": true,
+    "forward_reverse": true,
+    "energy": true,
+    "species": true,
+    "momentum": true,
+    "P2_regression": true
+  },
+  "P3B_authorized_by_gate": true,
+  "P3_PASS": false,
+  "physical_HLLE_cases": 0,
+  "fallback_vector_mock_only": true,
+  "tests": 78,
+  "plot_tool": "system Python matplotlib3.9.3; not application dependency"
+}

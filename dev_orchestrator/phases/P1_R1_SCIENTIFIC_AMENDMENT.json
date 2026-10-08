@@ -1,0 +1,81 @@
+{
+  "phase": "P1_R1_SCIENTIFIC_AMENDMENT",
+  "objective": "Review only T02 contact observable; unchanged solver and P1; conditional P2A gate.",
+  "enabled": true,
+  "depends_on": [
+    "P0",
+    "P1"
+  ],
+  "allowed_paths": [
+    "dev_orchestrator/runs/"
+  ],
+  "forbidden_paths": [
+    "motorsim/",
+    "docs/gasdynamic/",
+    "docs/baselines/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Run evidence only; implementation committed before verification."
+  ],
+  "forbidden_changes": [
+    "Toda modificaci\u00c3\u00b3n de producto en esta versi\u00c3\u00b3n."
+  ],
+  "commands": [
+    {
+      "id": "observable_tests",
+      "kind": "test",
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p1_r1.py",
+        "-v"
+      ],
+      "timeout": 60
+    },
+    {
+      "id": "contact_study",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p1_r1_study",
+        "--run-dir",
+        "{run_dir}"
+      ],
+      "timeout": 1500,
+      "result_file": "artifacts/result.json"
+    }
+  ],
+  "required_tests": [
+    "observable_tests"
+  ],
+  "required_checks": [
+    "observable_tests",
+    "contact_study",
+    "complete_study",
+    "contact_accuracy",
+    "unique_monotone",
+    "B_converges",
+    "gas1d_unchanged",
+    "baseline_intact",
+    "contract_frozen",
+    "dependencies_accepted"
+  ],
+  "required_evidence": [
+    "artifacts/study.json",
+    "artifacts/inventory.json",
+    "artifacts/result.json"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 0,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": true,
+  "timeout": 1700
+}

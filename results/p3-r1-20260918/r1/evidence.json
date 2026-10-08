@@ -1,0 +1,186 @@
+{
+  "run_id": "20260918T161945-P3_R1-f4143d75a639",
+  "phase_id": "P3_R1",
+  "started_at": "2026-09-18T16:19:45.256683+00:00",
+  "finished_at": "2026-09-18T16:20:41.899134+00:00",
+  "git_commit": "5b695b534cad69da1cd1495f55e2d5eb43441e8b",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "regression_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-c",
+        "import unittest; patterns=['test_p2b*.py', 'test_gas1d.py', 'test_p2_fixes.py', 'test_p1_r2.py', 'test_p1_r3.py', 'test_p1_r4.py', 'test_p1_r4_gate.py', 'test_p1_r5*.py', 'test_coupling*.py']; suite=unittest.TestSuite(unittest.defaultTestLoader.discover(\"tests\",pattern=p) for p in patterns); result=unittest.TextTestRunner(verbosity=2).run(suite); raise SystemExit(not result.wasSuccessful())"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 26.625,
+      "status": "passed",
+      "stdout_log": "logs/1-regression_tests.stdout.log",
+      "stderr_log": "logs/1-regression_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "r1",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p3_r1",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260918T161945-P3_R1-f4143d75a639"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 12.156000000424683,
+      "status": "passed",
+      "stdout_log": "logs/1-r1.stdout.log",
+      "stderr_log": "logs/1-r1.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "regression_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "r1",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "C00",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P3_R1_READY_FOR_REVIEW"
+    },
+    {
+      "id": "C00B",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P3_R1_READY_FOR_REVIEW"
+    },
+    {
+      "id": "forward_reverse",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P3_R1_READY_FOR_REVIEW"
+    },
+    {
+      "id": "species",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P3_R1_READY_FOR_REVIEW"
+    },
+    {
+      "id": "shared_energy",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P3_R1_READY_FOR_REVIEW"
+    },
+    {
+      "id": "P2_frozen",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P3_R1_READY_FOR_REVIEW"
+    },
+    {
+      "id": "P2_regression",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P3_R1_READY_FOR_REVIEW"
+    },
+    {
+      "id": "P0_regression",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P3_R1_READY_FOR_REVIEW"
+    }
+  ],
+  "tests": [
+    {
+      "id": "regression_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-c",
+        "import unittest; patterns=['test_p2b*.py', 'test_gas1d.py', 'test_p2_fixes.py', 'test_p1_r2.py', 'test_p1_r3.py', 'test_p1_r4.py', 'test_p1_r4_gate.py', 'test_p1_r5*.py', 'test_coupling*.py']; suite=unittest.TestSuite(unittest.defaultTestLoader.discover(\"tests\",pattern=p) for p in patterns); result=unittest.TextTestRunner(verbosity=2).run(suite); raise SystemExit(not result.wasSuccessful())"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 26.625,
+      "status": "passed",
+      "stdout_log": "logs/1-regression_tests.stdout.log",
+      "stderr_log": "logs/1-regression_tests.stderr.log",
+      "error": ""
+    }
+  ],
+  "metrics": {
+    "wall_seconds": 11.5,
+    "new_integrations": 0
+  },
+  "review": {
+    "status": "BLOCKED",
+    "findings": [
+      "No hay reviewer independiente conectado."
+    ],
+    "blocking_findings": [
+      "reviewer_unavailable"
+    ],
+    "scientific_change_required": false,
+    "notes": "No se llamó a ningún proveedor externo.",
+    "kind": "none"
+  },
+  "gate": "BLOCKED",
+  "gate_reasons": [
+    "review_not_approved"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "review_not_approved",
+      "state": "BLOCKED"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "artifacts/r1.json",
+      "sha256": "35d0eb110fa64690fcc4646726641b29d03dc95d3cb2bf54eb0824dd90fa65ef",
+      "bytes": 49240
+    },
+    {
+      "path": "artifacts/result.json",
+      "sha256": "1142c3070aa42eef4d2f32a30501892b115257fa561a8b29fc402d17c0240b7e",
+      "bytes": 1218
+    }
+  ],
+  "phase_definition_sha256": "6f7b10637d3bac8b6216f9f1fababed0e0545b0225f48d2a1f3f6913a1a91eca",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P2": "docs\\gasdynamic\\p2_accepted_dependency.json"
+    }
+  },
+  "continue_requested": false
+}

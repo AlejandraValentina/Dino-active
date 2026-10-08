@@ -1,0 +1,963 @@
+{
+  "state": "P2_BLOCKED_SECOND_ORDER",
+  "matrix": {
+    "T01": {
+      "status": "PASS",
+      "checks": {
+        "T01_rest": true,
+        "T01_moving": true
+      }
+    },
+    "T02": {
+      "status": "NOT_RUN",
+      "checks": {}
+    },
+    "T03": {
+      "status": "NOT_RUN",
+      "checks": {}
+    },
+    "T04": {
+      "status": "NOT_RUN",
+      "checks": {}
+    },
+    "T05": {
+      "status": "NOT_RUN",
+      "checks": {}
+    },
+    "T06": {
+      "status": "NOT_RUN",
+      "checks": {}
+    },
+    "T07": {
+      "status": "NOT_RUN",
+      "checks": {}
+    },
+    "T08": {
+      "status": "NOT_RUN",
+      "checks": {}
+    },
+    "T09": {
+      "status": "NOT_RUN",
+      "checks": {}
+    },
+    "T10": {
+      "status": "NOT_RUN",
+      "checks": {}
+    },
+    "T11": {
+      "status": "NOT_RUN",
+      "checks": {}
+    },
+    "T12": {
+      "status": "FAIL",
+      "checks": {
+        "T12_expansion": true,
+        "T12_contact": false
+      }
+    }
+  },
+  "checks": {
+    "baseline_intact": true,
+    "contract_frozen": true,
+    "dependencies_accepted": true,
+    "first_order_contracts_frozen": true,
+    "p1_r4_accepted": true,
+    "p2a_accepted": true,
+    "first_order_R4_control": true,
+    "P2B": false
+  },
+  "cases": [
+    {
+      "name": "T01_rest",
+      "status": "PASS",
+      "checks": {
+        "completed": true,
+        "worst_ledger": true,
+        "rho_Linf": true,
+        "u_Linf": true,
+        "p_Linf": true,
+        "Y_Linf": true,
+        "T_Linf": true,
+        "stage_conservation": true,
+        "stage_CFL": true
+      },
+      "metrics": {
+        "worst_ledger": 0.0,
+        "errors": {
+          "rho": {
+            "L1": 3.823608096809039e-18,
+            "L2": 2.7036992138534606e-17,
+            "Linf": 1.9118040484045195e-16
+          },
+          "u": {
+            "L1": 1.2800295802729973e-17,
+            "L2": 2.357949226818678e-17,
+            "Linf": 5.052748343182885e-17
+          },
+          "p": {
+            "L1": 2.619344741106016e-17,
+            "L2": 8.731149137020082e-17,
+            "Linf": 2.9103830456733706e-16
+          },
+          "Y": {
+            "L1": 1.665334536937735e-18,
+            "L2": 9.61481343191782e-18,
+            "Linf": 5.551115123125783e-17
+          }
+        },
+        "rho_Linf": 1.9118040484045195e-16,
+        "u_Linf": 5.052748343182885e-17,
+        "p_Linf": 2.9103830456733706e-16,
+        "Y_Linf": 5.551115123125783e-17,
+        "T_Linf": 1.8947806286936006e-16,
+        "worst_stage_ledger": 0.0
+      },
+      "configuration": {
+        "N": 100,
+        "CFL": 0.4,
+        "R": 287.0,
+        "gamma": 1.35,
+        "final_time": 0.0029331315408247477,
+        "method": "MUSCL_SSPRK2"
+      },
+      "runtime": {
+        "status": "completed",
+        "reason": "final_time",
+        "time": 0.0029331315408247477,
+        "steps": 251,
+        "wall_seconds": 1.1399999996647239,
+        "initial_inventory": [
+          0.011614401858304296,
+          0.0,
+          2857.142857142856,
+          0.0034843205574912883
+        ],
+        "final_inventory": [
+          0.011614401858304296,
+          0.0,
+          2857.142857142856,
+          0.0034843205574912883
+        ],
+        "boundary_flux_integral": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "source_integral": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "minimum_dt": 5.866263081671453e-06,
+        "maximum_dt": 1.1732526163298873e-05,
+        "max_CFL": 0.4,
+        "rejected_steps": 0,
+        "rejection_reasons": {},
+        "extrema": {
+          "min_rho": 1.161440185830429,
+          "min_p": 99999.99999999997,
+          "min_T": 300.0,
+          "min_Y": 0.29999999999999993,
+          "max_Y": 0.3000000000000001,
+          "max_Mach": 6.736997790910515e-17
+        },
+        "hllc_flux_count": 50200,
+        "hlle_fallback_count": 0,
+        "fallback_reason": {},
+        "characteristic_flux_count": 0,
+        "riemann_flux_count": 50200,
+        "fallback_records": [],
+        "fallback_records_truncated": false,
+        "downgrade_count": 0,
+        "downgrade_records": [],
+        "downgrade_records_truncated": false,
+        "rhs_count": 502,
+        "method": "MUSCL_SSPRK2"
+      }
+    },
+    {
+      "name": "T01_moving",
+      "status": "PASS",
+      "checks": {
+        "completed": true,
+        "worst_ledger": true,
+        "rho_Linf": true,
+        "u_Linf": true,
+        "p_Linf": true,
+        "Y_Linf": true,
+        "T_Linf": true,
+        "stage_conservation": true,
+        "stage_CFL": true
+      },
+      "metrics": {
+        "worst_ledger": 0.0,
+        "errors": {
+          "rho": {
+            "L1": 5.73541214521356e-18,
+            "L2": 4.274923811891804e-17,
+            "Linf": 3.823608096809039e-16
+          },
+          "u": {
+            "L1": 1.87570377842567e-17,
+            "L2": 4.2711653931227166e-17,
+            "Linf": 1.6672922474894834e-16
+          },
+          "p": {
+            "L1": 2.0372681319713536e-17,
+            "L2": 7.700149758790465e-17,
+            "Linf": 2.9103830456733706e-16
+          },
+          "Y": {
+            "L1": 1.6653345369377353e-18,
+            "L2": 1.2412670766236366e-17,
+            "Linf": 1.1102230246251565e-16
+          }
+        },
+        "rho_Linf": 3.823608096809039e-16,
+        "u_Linf": 1.6672922474894834e-16,
+        "p_Linf": 2.9103830456733706e-16,
+        "Y_Linf": 1.1102230246251565e-16,
+        "T_Linf": 1.8947806286936006e-16,
+        "worst_stage_ledger": 0.0
+      },
+      "configuration": {
+        "N": 100,
+        "CFL": 0.4,
+        "R": 287.0,
+        "gamma": 1.35,
+        "final_time": 0.0029331315408247477,
+        "method": "MUSCL_SSPRK2"
+      },
+      "runtime": {
+        "status": "completed",
+        "reason": "final_time",
+        "time": 0.0029331315408247477,
+        "steps": 301,
+        "wall_seconds": 1.2970000002533197,
+        "initial_inventory": [
+          0.011614401858304296,
+          0.7919455160226818,
+          2884.142857142856,
+          0.0034843205574912883
+        ],
+        "final_inventory": [
+          0.011614401858304296,
+          0.7919455160226818,
+          2884.142857142856,
+          0.0034843205574912883
+        ],
+        "boundary_flux_integral": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "source_integral": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "minimum_dt": 4.888552568050111e-06,
+        "maximum_dt": 9.777105136082393e-06,
+        "max_CFL": 0.4,
+        "rejected_steps": 0,
+        "rejection_reasons": {},
+        "extrema": {
+          "min_rho": 1.1614401858304293,
+          "min_p": 99999.99999999997,
+          "min_T": 299.99999999999994,
+          "min_Y": 0.2999999999999999,
+          "max_Y": 0.30000000000000004,
+          "max_Mach": 0.20000000000000018
+        },
+        "hllc_flux_count": 60200,
+        "hlle_fallback_count": 0,
+        "fallback_reason": {},
+        "characteristic_flux_count": 0,
+        "riemann_flux_count": 60200,
+        "fallback_records": [],
+        "fallback_records_truncated": false,
+        "downgrade_count": 0,
+        "downgrade_records": [],
+        "downgrade_records_truncated": false,
+        "rhs_count": 602,
+        "method": "MUSCL_SSPRK2"
+      }
+    },
+    {
+      "name": "T12_expansion",
+      "status": "PASS",
+      "checks": {
+        "completed": true,
+        "worst_ledger": true,
+        "rho_L1": true,
+        "p_L1": true,
+        "stage_conservation": true,
+        "stage_CFL": true
+      },
+      "metrics": {
+        "worst_ledger": 1.7763568394002505e-15,
+        "errors": {
+          "rho": {
+            "L1": 0.004259583414220808,
+            "L2": 0.008156870558363533,
+            "Linf": 0.046676331748099154
+          },
+          "u": {
+            "L1": 0.01270114473327692,
+            "L2": 0.023677717792899684,
+            "Linf": 0.10467048938939978
+          },
+          "p": {
+            "L1": 0.0021850226165406714,
+            "L2": 0.004245590725051054,
+            "Linf": 0.025729349433147364
+          },
+          "Y": {
+            "L1": 0.021575990963631424,
+            "L2": 0.06840931684179764,
+            "Linf": 0.41422719728225443
+          }
+        },
+        "rho_L1": 0.004259583414220808,
+        "p_L1": 0.0021850226165406714,
+        "reference_root_residual": 6.035200675234497e-14,
+        "worst_stage_ledger": 1.16804714049105e-16
+      },
+      "configuration": {
+        "N": 400,
+        "CFL": 0.4,
+        "R": 1.0,
+        "gamma": 1.4,
+        "final_time": 0.1,
+        "method": "MUSCL_SSPRK2"
+      },
+      "runtime": {
+        "status": "completed",
+        "reason": "final_time",
+        "time": 0.1,
+        "steps": 283,
+        "wall_seconds": 4.9059999994933605,
+        "initial_inventory": [
+          0.9999999999999998,
+          0.0,
+          3.0,
+          0.4999999999999999
+        ],
+        "final_inventory": [
+          0.6000000000000002,
+          1.1749220481144002e-17,
+          1.6400000000000015,
+          0.3000000000000001
+        ],
+        "boundary_flux_integral": [
+          0.4,
+          0.0,
+          1.3600000000000039,
+          0.2
+        ],
+        "source_integral": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "minimum_dt": 0.00012121817845826832,
+        "maximum_dt": 0.00036385712867592585,
+        "max_CFL": 0.4,
+        "rejected_steps": 15,
+        "rejection_reasons": {
+          "stage_CFL_exceeded": 15
+        },
+        "extrema": {
+          "min_rho": 0.020331910964531314,
+          "min_p": 0.0046469155995997186,
+          "min_T": 0.16711723664165934,
+          "min_Y": 0.0,
+          "max_Y": 1.0,
+          "max_Mach": 2.672612419124246
+        },
+        "hllc_flux_count": 232971,
+        "hlle_fallback_count": 10,
+        "fallback_reason": {
+          "inadmissible_star": 10
+        },
+        "characteristic_flux_count": 0,
+        "riemann_flux_count": 232981,
+        "fallback_records": [
+          {
+            "step": 0,
+            "attempt": 0,
+            "stage": 0,
+            "face": 200,
+            "reason": "inadmissible_star",
+            "left": [
+              0.9999999999999998,
+              -2.0,
+              0.4000000000000001,
+              0.0
+            ],
+            "right": [
+              0.9999999999999998,
+              2.0,
+              0.4000000000000001,
+              1.0
+            ],
+            "speeds": [
+              -2.7483314773547884,
+              -0.0,
+              2.7483314773547884
+            ]
+          },
+          {
+            "step": 0,
+            "attempt": 0,
+            "stage": 1,
+            "face": 200,
+            "reason": "inadmissible_star",
+            "left": [
+              0.7089142970592562,
+              -1.5390939461467312,
+              0.39786841261711087,
+              0.11522651346331714
+            ],
+            "right": [
+              0.708914297059253,
+              1.5390939461467097,
+              0.3978684126171107,
+              0.8847734865366774
+            ],
+            "speeds": [
+              -2.4255085058492645,
+              -1.2720732211999834e-14,
+              2.4255085058492445
+            ]
+          },
+          {
+            "step": 1,
+            "attempt": 0,
+            "stage": 0,
+            "face": 200,
+            "reason": "inadmissible_star",
+            "left": [
+              0.7592055889674567,
+              -1.682456306316516,
+              0.3794980820064038,
+              0.07940634003014407
+            ],
+            "right": [
+              0.7592055889674547,
+              1.6824563063165043,
+              0.3794980820064035,
+              0.9205936599698531
+            ],
+            "speeds": [
+              -2.519000929608273,
+              -7.341943050103862e-15,
+              2.519000929608262
+            ]
+          },
+          {
+            "step": 1,
+            "attempt": 0,
+            "stage": 1,
+            "face": 200,
+            "reason": "inadmissible_star",
+            "left": [
+              0.5510546918249792,
+              -1.2167703305701647,
+              0.3330313280453868,
+              0.19619755352929452
+            ],
+            "right": [
+              0.5510546918249757,
+              1.2167703305701307,
+              0.333031328045386,
+              0.8038024464706968
+            ],
+            "speeds": [
+              -2.1366038048655764,
+              -1.9055728994033557e-14,
+              2.136603804865544
+            ]
+          },
+          {
+            "step": 2,
+            "attempt": 0,
+            "stage": 0,
+            "face": 200,
+            "reason": "inadmissible_star",
+            "left": [
+              0.5865985592246885,
+              -1.3755620165234381,
+              0.33027923824127103,
+              0.15694017518176062
+            ],
+            "right": [
+              0.5865985592246856,
+              1.375562016523415,
+              0.33027923824127037,
+              0.8430598248182337
+            ],
+            "speeds": [
+              -2.2634008952620506,
+              -1.3323400907098125e-14,
+              2.263400895262029
+            ]
+          },
+          {
+            "step": 2,
+            "attempt": 0,
+            "stage": 1,
+            "face": 200,
+            "reason": "inadmissible_star",
+            "left": [
+              0.43683965480747555,
+              -0.9494330689398489,
+              0.2683704119193066,
+              0.26503621241412095
+            ],
+            "right": [
+              0.43683965480747217,
+              0.9494330689398064,
+              0.26837041191930516,
+              0.7349637875858678
+            ],
+            "speeds": [
+              -1.8768399344217612,
+              -2.2608503499460737e-14,
+              1.8768399344217197
+            ]
+          },
+          {
+            "step": 3,
+            "attempt": 0,
+            "stage": 0,
+            "face": 200,
+            "reason": "inadmissible_star",
+            "left": [
+              0.46171096086403896,
+              -1.0998099187601167,
+              0.27397374999234336,
+              0.22793814479204677
+            ],
+            "right": [
+              0.46171096086403574,
+              1.0998099187600838,
+              0.2739737499923423,
+              0.7720618552079446
+            ],
+            "speeds": [
+              -2.011261079956282,
+              -1.820353500645914e-14,
+              2.0112610799562503
+            ]
+          },
+          {
+            "step": 3,
+            "attempt": 0,
+            "stage": 1,
+            "face": 200,
+            "reason": "inadmissible_star",
+            "left": [
+              0.3528747016059705,
+              -0.7375288491308789,
+              0.21354015566976453,
+              0.32179172696161623
+            ],
+            "right": [
+              0.3528747016059672,
+              0.7375288491308308,
+              0.21354015566976295,
+              0.6782082730383707
+            ],
+            "speeds": [
+              -1.6579647155368291,
+              -2.4696421227025588e-14,
+              1.657964715536782
+            ]
+          },
+          {
+            "step": 4,
+            "attempt": 0,
+            "stage": 0,
+            "face": 200,
+            "reason": "inadmissible_star",
+            "left": [
+              0.37032022265602943,
+              -0.8660005199693599,
+              0.22194675832755792,
+              0.28986124899635
+            ],
+            "right": [
+              0.3703202226560262,
+              0.8660005199693209,
+              0.2219467583275565,
+              0.7101387510036388
+            ],
+            "speeds": [
+              -1.7820094478146995,
+              -2.070110957821218e-14,
+              1.7820094478146615
+            ]
+          },
+          {
+            "step": 5,
+            "attempt": 0,
+            "stage": 0,
+            "face": 200,
+            "reason": "inadmissible_star",
+            "left": [
+              0.3025854492032762,
+              -0.6753356256802615,
+              0.17840323360436755,
+              0.3293609094722848
+            ],
+            "right": [
+              0.30258544920327296,
+              0.6753356256802221,
+              0.1784032336043659,
+              0.6706390905277033
+            ],
+            "speeds": [
+              -1.583869990430257,
+              -2.0041090581805035e-14,
+              1.5838699904302183
+            ]
+          }
+        ],
+        "fallback_records_truncated": false,
+        "downgrade_count": 0,
+        "downgrade_records": [],
+        "downgrade_records_truncated": false,
+        "rhs_count": 581,
+        "method": "MUSCL_SSPRK2"
+      }
+    },
+    {
+      "name": "T12_contact",
+      "status": "FAIL",
+      "checks": {
+        "completed": true,
+        "worst_ledger": true,
+        "Y_L1": true,
+        "rho_L1_halfscale": true,
+        "p_Linf": true,
+        "u_Linf": true,
+        "stage_conservation": true,
+        "stage_CFL": false
+      },
+      "metrics": {
+        "worst_ledger": 8.712648658093515e-15,
+        "errors": {
+          "rho": {
+            "L1": 0.020081455109134606,
+            "L2": 0.07435251979989856,
+            "Linf": 0.48903140583528004
+          },
+          "u": {
+            "L1": 2.1247555578944115e-16,
+            "L2": 2.660738683404584e-16,
+            "Linf": 6.669168989957933e-16
+          },
+          "p": {
+            "L1": 2.3646862246096196e-16,
+            "L2": 3.1648324760217797e-16,
+            "Linf": 8.731149137020111e-16
+          },
+          "Y": {
+            "L1": 0.021968597235086817,
+            "L2": 0.08649831900243332,
+            "Linf": 0.6596085213636004
+          }
+        },
+        "Y_L1": 0.021968597235086817,
+        "rho_L1_halfscale": 0.010040727554567303,
+        "p_Linf": 8.731149137020111e-16,
+        "u_Linf": 6.669168989957933e-16,
+        "worst_stage_ledger": 1.573769185538617e-16
+      },
+      "configuration": {
+        "N": 400,
+        "CFL": 0.4,
+        "R": 287.0,
+        "gamma": 1.35,
+        "final_time": 0.007332828852061869,
+        "method": "MUSCL_SSPRK2"
+      },
+      "runtime": {
+        "status": "completed",
+        "reason": "final_time",
+        "time": 0.007332828852061869,
+        "steps": 3125,
+        "wall_seconds": 67.61000000033528,
+        "initial_inventory": [
+          0.013937282229965155,
+          0.9503346192272183,
+          2889.542857142856,
+          0.004645760743321718
+        ],
+        "final_inventory": [
+          0.013937282229965276,
+          0.9503346192272261,
+          2889.542857142856,
+          0.004645760743321713
+        ],
+        "boundary_flux_integral": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "source_integral": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "minimum_dt": 1.2221381420102853e-06,
+        "maximum_dt": 2.4442762840205846e-06,
+        "max_CFL": 0.4000000000000001,
+        "rejected_steps": 250,
+        "rejection_reasons": {
+          "stage_CFL_exceeded": 250
+        },
+        "extrema": {
+          "min_rho": 1.1614401858304282,
+          "min_p": 99999.99999999985,
+          "min_T": 149.99999999999994,
+          "min_Y": 0.0,
+          "max_Y": 1.0,
+          "max_Mach": 0.2828427124746196
+        },
+        "hllc_flux_count": 2600000,
+        "hlle_fallback_count": 0,
+        "fallback_reason": {},
+        "characteristic_flux_count": 0,
+        "riemann_flux_count": 2600000,
+        "fallback_records": [],
+        "fallback_records_truncated": false,
+        "downgrade_count": 0,
+        "downgrade_records": [],
+        "downgrade_records_truncated": false,
+        "rhs_count": 6500,
+        "method": "MUSCL_SSPRK2"
+      }
+    }
+  ],
+  "first_order_comparison": [
+    {
+      "name": "T01_rest",
+      "first_order_metrics": {
+        "worst_ledger": 3.36059305383607e-16,
+        "errors": {
+          "rho": {
+            "L1": 2.6574076272822813e-16,
+            "L2": 3.885244933272303e-16,
+            "Linf": 1.1470824290427118e-15
+          },
+          "u": {
+            "L1": 2.896909050091775e-17,
+            "L2": 4.372565883167054e-17,
+            "Linf": 1.3473995581833773e-16
+          },
+          "p": {
+            "L1": 1.280568540096283e-16,
+            "L2": 1.9414676446651477e-16,
+            "Linf": 4.3655745685100557e-16
+          },
+          "Y": {
+            "L1": 4.890532423473811e-16,
+            "L2": 1.3549838789685183e-15,
+            "Linf": 7.105427357601002e-15
+          }
+        },
+        "rho_Linf": 1.1470824290427118e-15,
+        "u_Linf": 1.3473995581833773e-16,
+        "p_Linf": 4.3655745685100557e-16,
+        "Y_Linf": 7.105427357601002e-15,
+        "T_Linf": 1.1368683772161603e-15
+      },
+      "first_order_runtime": {
+        "steps": 251,
+        "wall_seconds": 0.4380000000819564,
+        "extrema": {
+          "min_rho": 1.1614401858304282,
+          "min_p": 99999.99999999996,
+          "min_T": 299.9999999999996,
+          "min_Y": 0.2999999999999929,
+          "max_Y": 0.30000000000000104,
+          "max_Mach": 1.6842494477276278e-16
+        },
+        "hllc_flux_count": 25100,
+        "hlle_fallback_count": 0,
+        "fallback_reason": {}
+      }
+    },
+    {
+      "name": "T01_moving",
+      "first_order_metrics": {
+        "worst_ledger": 2.80378637712587e-17,
+        "errors": {
+          "rho": {
+            "L1": 1.0132561456543955e-16,
+            "L2": 1.741736379932855e-16,
+            "Linf": 5.735412145213559e-16
+          },
+          "u": {
+            "L1": 7.502815113702676e-17,
+            "L2": 8.99797325220712e-17,
+            "Linf": 2.500938371234225e-16
+          },
+          "p": {
+            "L1": 2.328306436538696e-16,
+            "L2": 2.6031257322754123e-16,
+            "Linf": 2.9103830456733706e-16
+          },
+          "Y": {
+            "L1": 2.83106871279415e-17,
+            "L2": 4.80740671595891e-17,
+            "Linf": 1.6653345369377348e-16
+          }
+        },
+        "rho_Linf": 5.735412145213559e-16,
+        "u_Linf": 2.500938371234225e-16,
+        "p_Linf": 2.9103830456733706e-16,
+        "Y_Linf": 1.6653345369377348e-16,
+        "T_Linf": 9.473903143468002e-16
+      },
+      "first_order_runtime": {
+        "steps": 301,
+        "wall_seconds": 0.4060000004246831,
+        "extrema": {
+          "min_rho": 1.1614401858304289,
+          "min_p": 99999.99999999996,
+          "min_T": 299.9999999999998,
+          "min_Y": 0.2999999999999998,
+          "max_Y": 0.30000000000000016,
+          "max_Mach": 0.2000000000000004
+        },
+        "hllc_flux_count": 30100,
+        "hlle_fallback_count": 0,
+        "fallback_reason": {}
+      }
+    },
+    {
+      "name": "T12_expansion",
+      "first_order_metrics": {
+        "worst_ledger": 1.5543122344752192e-15,
+        "errors": {
+          "rho": {
+            "L1": 0.012567618483724901,
+            "L2": 0.023575345458327304,
+            "Linf": 0.10015710372742204
+          },
+          "u": {
+            "L1": 0.035119362854933306,
+            "L2": 0.04853644119461794,
+            "Linf": 0.08963580787713833
+          },
+          "p": {
+            "L1": 0.007891199743148575,
+            "L2": 0.013135123878210468,
+            "Linf": 0.05450276069173943
+          },
+          "Y": {
+            "L1": 0.024813327064319813,
+            "L2": 0.06609009336071417,
+            "Linf": 0.3373605508998615
+          }
+        },
+        "rho_L1": 0.012567618483724901,
+        "p_L1": 0.007891199743148575,
+        "reference_root_residual": 6.035200675234497e-14
+      },
+      "first_order_runtime": {
+        "steps": 275,
+        "wall_seconds": 1.296000000089407,
+        "extrema": {
+          "min_rho": 0.015280759598754412,
+          "min_p": 0.005170198521473115,
+          "min_T": 0.211199868488587,
+          "min_Y": 0.0,
+          "max_Y": 1.0,
+          "max_Mach": 2.6726124191242477
+        },
+        "hllc_flux_count": 110269,
+        "hlle_fallback_count": 6,
+        "fallback_reason": {
+          "inadmissible_star": 6
+        }
+      }
+    },
+    {
+      "name": "T12_contact",
+      "first_order_metrics": {
+        "worst_ledger": 2.4893281880267186e-15,
+        "errors": {
+          "rho": {
+            "L1": 0.05448307775505923,
+            "L2": 0.1263062511645722,
+            "Linf": 0.4896181496418532
+          },
+          "u": {
+            "L1": 4.916428014784617e-16,
+            "L2": 5.27400605086415e-16,
+            "Linf": 9.170107361192159e-16
+          },
+          "p": {
+            "L1": 9.86256054602565e-16,
+            "L2": 1.0156413299379516e-15,
+            "Linf": 1.7462298274040223e-15
+          },
+          "Y": {
+            "L1": 0.05871481411881242,
+            "L2": 0.14375998159253425,
+            "Linf": 0.6573740234505631
+          }
+        },
+        "Y_L1": 0.05871481411881242,
+        "rho_L1_halfscale": 0.027241538877529614,
+        "p_Linf": 1.7462298274040223e-15,
+        "u_Linf": 9.170107361192159e-16
+      },
+      "first_order_runtime": {
+        "steps": 3000,
+        "wall_seconds": 20.0,
+        "extrema": {
+          "min_rho": 1.1614401858304284,
+          "min_p": 99999.99999999981,
+          "min_T": 149.9999999999999,
+          "min_Y": 0.0,
+          "max_Y": 1.0,
+          "max_Mach": 0.2828427124746196
+        },
+        "hllc_flux_count": 1200000,
+        "hlle_fallback_count": 0,
+        "fallback_reason": {}
+      }
+    }
+  ],
+  "wall_seconds": 77.01599999982864,
+  "source_sha256": {
+    "motorsim/gas1d/boundary.py": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+    "motorsim/gas1d/contact.py": "ad5dc76f4482d7db1438297f5727a655af63fff20b9595770bb8e6a459609b06",
+    "motorsim/gas1d/eos.py": "22bae4c37c3a6edde31940d26d59430cf0c466fbfb706df1dfe4ecad1c4e21bf",
+    "motorsim/gas1d/mesh.py": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+    "motorsim/gas1d/methods.py": "36a92c7ae8e0d7574b897d835e1ab59ddbd7b8c1fee71770302943321869f52f",
+    "motorsim/gas1d/reference.py": "017d25da5a98934cf8fa5b75e1a324dbb40c09a22fa04927118b9c6ce48b83fd",
+    "motorsim/gas1d/riemann.py": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+    "motorsim/gas1d/second_order.py": "633bae51a7d228dcebae18f400237f3fe74c35e74b28df6a549e7a32b8b211dc",
+    "motorsim/gas1d/solver.py": "b4b3f6978d0fc2433a49b11d03fd3f4914ab3890f1b4e0d498f3345f12f7e60c",
+    "motorsim/gas1d/verification.py": "aab8f153af13ff3de92bdd2ea9695887c251d49c823aa0b9b9269bdbece39f25",
+    "motorsim/gas1d/__init__.py": "ca85637c3d6ba44590d24561296ebc0235469199266cc1d5d0f90e2d5de4809f"
+  },
+  "contract": "1D_CONTRACT_V1_R4",
+  "P3": "NOT_STARTED",
+  "human_acceptance": "P2_NOT_ACCEPTED",
+  "repair_attempt": 0,
+  "note": "STOP at first unresolved failure; partial tests do not constitute a complete gate. Review must classify science versus implementation."
+}

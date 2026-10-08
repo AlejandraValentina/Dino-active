@@ -1,0 +1,54 @@
+{
+  "schema": "MOTORSIM_AUDIT_TRIAGE_RECEIPT_V1",
+  "reviewed_head": "3d10f79f90010666cfd90f377210448f6e8ad218",
+  "source_audit": "docs/gasdynamic/audit_8cdf66e.md",
+  "review_scope": "Reconcile external findings against current code, no edits or cycle campaigns.",
+  "reviews": [
+    {
+      "reviewer": "core_integration_review",
+      "role": "independent read-only sub-agent",
+      "findings": [
+        "A1 OPEN: no blocked-area pressure traction at endpoint port faces; full mesh area source remains.",
+        "A2 OPEN: private cycle fixture passes 289500 Pa where primitive constructor interprets p directly; expected atmosphere comment is false.",
+        "A3 OPEN: one atmosphere_species donor is used on intake and exhaust; fuel enters on exhaust backflow.",
+        "A4 OPEN: allowed species sum tolerance conflicts with strict EOS fresh fraction; fixture harness silently halves dt after inadmissibility."
+      ],
+      "tests_run": [],
+      "campaigns_run": false,
+      "files_changed": false
+    },
+    {
+      "reviewer": "harness_contract_review",
+      "role": "independent read-only sub-agent",
+      "findings": [
+        "C1 OPEN: no committed commercial fixture producer; current cycles use private test helpers.",
+        "C2-C4 OPEN: historical preregistration defects cannot be repaired retrospectively; future campaign requires a separate preregistration commit.",
+        "C5 OPEN: historical commercial independent-review prose has no corresponding durable receipt.",
+        "C8-C9 PARTIAL: queue states currently use allowed enum, but blocked dependencies are marked DONE, refs/head and phase scope/count wording require reconciliation.",
+        "C10 OPEN: limited source inspection found temporary paths and unchanged source assertions; complete suite side-effect allegation not discriminated.",
+        "A7/AUD-16 PARTIAL: callback skipped only when both explicit models resolve all fields; mixed sources, actual RPM, trace/rebuild audit and tautology remain."
+      ],
+      "tests_run": [],
+      "campaigns_run": false,
+      "files_changed": false
+    },
+    {
+      "reviewer": "reservoir_forensics",
+      "role": "independent read-only sub-agent",
+      "findings": [
+        "AUD-11 PARTIAL: frozen reservoir V1 failure reproduced; its monotone characteristic root is correctly rejected outside the branch interval (capability limitation B).",
+        "V2 remains a distinct scientific choice (C) among plausible boundary semantics; no KT100 or long campaign was run."
+      ],
+      "tests_run": [
+        ".venv\\Scripts\\python.exe -m pytest -q tests/test_coupling_preflight.py::InterfaceTests::test_frozen_boundary_gap_is_not_hidden (PASS, 0.11 s)",
+        "direct one-off call reproduced InvalidState: No consistent reservoir inflow branch"
+      ],
+      "campaigns_run": false,
+      "files_changed": false
+    }
+  ],
+  "limits": [
+    "This receipt is only for the bounded read-only triage above; it is not independent acceptance of the Commercial Core or experimental validation.",
+    "The external audit artifact itself independently reviews only ab92aee..8cdf66e."
+  ]
+}

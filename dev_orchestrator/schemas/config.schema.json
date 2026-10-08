@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "default_command_timeout": {
+      "type": "number",
+      "minimum": 0.05,
+      "maximum": 3600
+    },
+    "default_phase_timeout": {
+      "type": "number",
+      "minimum": 0.05,
+      "maximum": 7200
+    },
+    "default_max_repair_attempts": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "runs_directory": {
+      "type": "string",
+      "minLength": 1
+    },
+    "python_executable_policy": {
+      "type": "string",
+      "enum": [
+        "current_interpreter"
+      ]
+    },
+    "reviewer_mode": {
+      "type": "string",
+      "enum": [
+        "dummy_local"
+      ]
+    }
+  },
+  "required": [
+    "default_command_timeout",
+    "default_phase_timeout",
+    "default_max_repair_attempts",
+    "runs_directory",
+    "python_executable_policy",
+    "reviewer_mode"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,21 @@
+{
+  "terminal_states": [
+    "PASS",
+    "BLOCKED",
+    "SCIENTIFIC_CHANGE_REQUIRED",
+    "FAILED_INFRASTRUCTURE"
+  ],
+  "precedence": [
+    "FAILED_INFRASTRUCTURE",
+    "SCIENTIFIC_CHANGE_REQUIRED",
+    "BLOCKED",
+    "PASS"
+  ],
+  "default": {
+    "require_all_checks": true,
+    "require_complete_evidence": true,
+    "require_review": true,
+    "allow_dummy_stub_only_for": "dummy",
+    "out_of_scope": "BLOCKED"
+  }
+}

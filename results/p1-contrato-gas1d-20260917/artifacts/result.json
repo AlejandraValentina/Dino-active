@@ -1,0 +1,28 @@
+{
+  "checks": [
+    {
+      "id": "contract_complete",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "Documentos, T01–T12 y D1–D11 íntegros"
+    },
+    {
+      "id": "p0_accepted",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "Aceptación usuaria vinculada al P0 PASS original"
+    },
+    {
+      "id": "scope_preserved",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "Hashes producción/baseline intactos, P2–P9 deshabilitadas"
+    }
+  ],
+  "metrics": {
+    "verification_cases": 12,
+    "decisions": 11,
+    "numerical_tests_executed": 0
+  },
+  "scientific_change_required": false
+}

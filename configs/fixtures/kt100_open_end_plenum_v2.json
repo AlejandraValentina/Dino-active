@@ -1,0 +1,300 @@
+{
+  "schema": "motorsim-reference-engine-v1",
+  "fixture_id": "KT100_HYBRID_MODEL_FIXTURE_V2_OPEN_END_PLENUM_V2",
+  "classification": "EXPLORATORY_SYNTHETIC_OPERATING_POINTS",
+  "reference_case_id": "KT100_REFERENCE_CASE_V1",
+  "base_v1": {
+    "path": "configs/fixtures/kt100_model_fixture_v1.json",
+    "sha256": "daf8bc60d61872a0352df811a588d4594f4b33ffba453e6106f838dd99f4643e",
+    "provenance_sha256": "d2b5e56748efa3f1b633d4432a7548b1f5cf4a3ed2dc1376fb654f9371a57f5b"
+  },
+  "claims": {
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_validation": "NOT_CLAIMED",
+    "p9_status_effect": "NONE",
+    "prohibited": [
+      "KT100_VALIDATED",
+      "YAMAHA_PERFORMANCE_PREDICTED",
+      "EXPERIMENTALLY_VALIDATED",
+      "PREDICTIVELY_VALIDATED",
+      "P9_PASS"
+    ]
+  },
+  "engine": {
+    "project": {
+      "format_version": 6,
+      "name": "KT100_MODEL_FIXTURE_V1 — SINTÉTICO, NO MEDIDO",
+      "cycle": "2T",
+      "manufacturer": "Yamaha (referencia documental KT100SP)",
+      "model": "KT100_MODEL_FIXTURE_V1",
+      "cylinder_count": 1,
+      "bore_mm": 52.0,
+      "stroke_mm": 46.0,
+      "rod_length_mm": 100.0,
+      "compression_ratio": 9.0,
+      "notes": "Fixture numérico sintético basado solo en geometría Yamaha KT100SP documentada; biela, cárter, puertos, conductos, condiciones y fuente P7 son supuestos. No medido, no calibrado, no validado.",
+      "ports": [
+        {
+          "name": "Escape sintético",
+          "function": "escape",
+          "top_mm": 30.0,
+          "height_mm": 10.0,
+          "width_mm": 16.0
+        },
+        {
+          "name": "Transferencia 1 sintética",
+          "function": "transfer",
+          "top_mm": 36.0,
+          "height_mm": 8.0,
+          "width_mm": 12.0
+        },
+        {
+          "name": "Transferencia 2 sintética",
+          "function": "transfer",
+          "top_mm": 36.0,
+          "height_mm": 8.0,
+          "width_mm": 12.0
+        }
+      ],
+      "crankcase_volume_bdc_cm3": 250.0,
+      "intake": {
+        "mode": "piston_port",
+        "top_mm": 62.0,
+        "height_mm": 10.0,
+        "width_mm": 16.0,
+        "skirt_mm": 42.0,
+        "reference": "straight-skirt-peripheral-tdc-developed-v1"
+      },
+      "ducts": {
+        "reference": "ordered-circular-inner-axial-linear-2t-v1",
+        "intake": [
+          {
+            "name": "Admisión sintética",
+            "length_mm": 65.0,
+            "start_diameter_mm": 14.0,
+            "end_diameter_mm": 14.0
+          }
+        ],
+        "exhaust": [
+          {
+            "name": "Header sintético",
+            "length_mm": 120.0,
+            "start_diameter_mm": 35.0,
+            "end_diameter_mm": 35.0
+          },
+          {
+            "name": "Salida sintética",
+            "length_mm": 180.0,
+            "start_diameter_mm": 35.0,
+            "end_diameter_mm": 35.0
+          }
+        ]
+      },
+      "four_stroke": {
+        "intake": {
+          "seat_mm": null,
+          "throat_mm": null,
+          "stem_mm": null,
+          "lift_mm": null,
+          "opening_deg": null,
+          "duration_deg": null
+        },
+        "exhaust": {
+          "seat_mm": null,
+          "throat_mm": null,
+          "stem_mm": null,
+          "lift_mm": null,
+          "opening_deg": null,
+          "duration_deg": null
+        },
+        "ducts": {
+          "reference": "ordered-circular-inner-axial-linear-4t-v1",
+          "intake": [],
+          "exhaust": []
+        },
+        "reference": "sin-squared-cylindrical-curtain-annular-cap-720-v1"
+      },
+      "two_stroke_reference": "rectangular-peripheral-tdc-developed-bdc-v1"
+    }
+  },
+  "transfer_ducts": [
+    {
+      "name": "transfer1 synthetic duct",
+      "length": 100.0,
+      "start_diameter": 12.0,
+      "end_diameter": 12.0,
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": "P5-C requires finite transfer storage; V1 has transfer ports but no duct dimensions.",
+      "sensitivity": "high: length and area affect wave travel and delivered mass"
+    },
+    {
+      "name": "transfer2 synthetic duct",
+      "length": 100.0,
+      "start_diameter": 12.0,
+      "end_diameter": 12.0,
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": "P5-C requires a second finite path; V1 has no transfer-duct dimensions.",
+      "sensitivity": "high: length and area affect wave travel and delivered mass"
+    }
+  ],
+  "port_flow_model": {
+    "name": "existing P4 ideal effective-area baseline",
+    "configurable_discharge_coefficients": false,
+    "v1_0d_coefficients_applied": false,
+    "provenance": "MODEL_FORM_DIFFERENCE",
+    "reason": "The product P4/P5-C port-flux interface has no discharge-coefficient parameter; V1 legacy 0D coefficients are not silently transferred."
+  },
+  "boundaries": {
+    "atmosphere_pressure_Pa": 101325.0,
+    "atmosphere_temperature_K": 300.0,
+    "atmosphere_species_mass_fractions": {
+      "fresh_air": 1.0,
+      "fuel": 0.0,
+      "residual": 0.0,
+      "burned": 0.0
+    },
+    "atmosphere_provenance": "V1 documented fixture default: fresh_air=1; other species=0",
+    "external_boundary_capability": "OPEN_END_PLENUM_V2",
+    "external_boundary_provenance": "SYNTHETIC_ASSUMPTION"
+  },
+  "initial_states": {
+    "intake": {
+      "pressure_Pa": 101325.0,
+      "temperature_K": 300.0,
+      "velocity_m_s": 0.0,
+      "species_mass_fractions": {
+        "fresh_air": 1.0,
+        "fuel": 0.0,
+        "residual": 0.0,
+        "burned": 0.0
+      },
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": "P6 four-species mapping of V1 synthetic 0D initial intake; no fuel chemistry inferred"
+    },
+    "crankcase": {
+      "pressure_Pa": 120000.0,
+      "temperature_K": 330.0,
+      "velocity_m_s": 0.0,
+      "species_mass_fractions": {
+        "fresh_air": 1.0,
+        "fuel": 0.0,
+        "residual": 0.0,
+        "burned": 0.0
+      },
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": "P6 four-species mapping of V1 synthetic 0D initial crankcase; no fuel chemistry inferred"
+    },
+    "cylinder": {
+      "pressure_Pa": 140000.0,
+      "temperature_K": 700.0,
+      "velocity_m_s": 0.0,
+      "species_mass_fractions": {
+        "fresh_air": 0.0,
+        "fuel": 0.0,
+        "residual": 1.0,
+        "burned": 0.0
+      },
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": "P6 four-species mapping of V1 synthetic 0D initial cylinder; no fuel chemistry inferred"
+    },
+    "exhaust": {
+      "pressure_Pa": 101325.0,
+      "temperature_K": 500.0,
+      "velocity_m_s": 0.0,
+      "species_mass_fractions": {
+        "fresh_air": 0.0,
+        "fuel": 0.0,
+        "residual": 1.0,
+        "burned": 0.0
+      },
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": "P6 four-species mapping of V1 synthetic 0D initial exhaust; no fuel chemistry inferred"
+    },
+    "transfer1": {
+      "pressure_Pa": 120000.0,
+      "temperature_K": 330.0,
+      "velocity_m_s": 0.0,
+      "species_mass_fractions": {
+        "fresh_air": 1.0,
+        "fuel": 0.0,
+        "residual": 0.0,
+        "burned": 0.0
+      },
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": "P6 four-species mapping of V1 synthetic 0D initial transfer1 copied from V1 crankcase state; no fuel chemistry inferred"
+    },
+    "transfer2": {
+      "pressure_Pa": 120000.0,
+      "temperature_K": 330.0,
+      "velocity_m_s": 0.0,
+      "species_mass_fractions": {
+        "fresh_air": 1.0,
+        "fuel": 0.0,
+        "residual": 0.0,
+        "burned": 0.0
+      },
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": "P6 four-species mapping of V1 synthetic 0D initial transfer2 copied from V1 crankcase state; no fuel chemistry inferred"
+    }
+  },
+  "initial_state_provenance": "SYNTHETIC_ASSUMPTION: preserve V1 pressure/temperature/fresh-marker values; transfer states copy crankcase values because V1 has no finite transfer states",
+  "numerics": {
+    "cfl": 0.4,
+    "dx_target_m": 0.03,
+    "max_cycles": 400,
+    "gas_R_J_kgK": 287.0,
+    "gamma": 1.35,
+    "float_format": "binary64",
+    "fastmath": false,
+    "parallel": false
+  },
+  "operating_points_rpm": [
+    5000,
+    7000,
+    9000,
+    11000,
+    13000
+  ],
+  "operating_point": {
+    "rpm": 5000
+  },
+  "combustion": {
+    "physical_event_phase_deg": 350.0,
+    "duration_deg": 40.0,
+    "heat_per_burned_mass_J_kg": 800000.0,
+    "provenance": "SYNTHETIC_ASSUMPTION",
+    "fuel_chemistry": "NOT_MODELED"
+  },
+  "convergence_contract": "REFERENCE_PERIODIC_CONVERGENCE_V1",
+  "evidence": {
+    "checkpoint_cadence_cycles": 5,
+    "trajectory_persistence": "all accepted steps",
+    "checkpoint_restart": true,
+    "independent_replay": true
+  },
+  "sensitivity_plan": {
+    "run_after_base_campaign_only": true,
+    "calibration": false,
+    "parameters": [
+      "rod_length_mm",
+      "exhaust_lengths"
+    ],
+    "relative_variants": [
+      0.95,
+      1.0,
+      1.05
+    ]
+  },
+  "base_v2": {
+    "path": "configs/fixtures/kt100_hybrid_model_fixture_v2.json",
+    "sha256": "d63ddc16774bb73352b0c2881040ad07f5d0e14421b459c01354ac3330fd75ad",
+    "changes": [
+      "external boundary capability identity only"
+    ]
+  },
+  "boundary_model": {
+    "id": "OPEN_END_PLENUM_V2",
+    "provenance": "SYNTHETIC_ASSUMPTION",
+    "description": "ideal, isentropic, lossless stationary atmosphere/large plenum; not calibrated WB40"
+  }
+}

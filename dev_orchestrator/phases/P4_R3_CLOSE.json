@@ -1,0 +1,69 @@
+{
+  "phase": "P4_R3_CLOSE",
+  "objective": "Optimized kernel offline bank replay and regression tests",
+  "enabled": true,
+  "depends_on": [
+    "P2"
+  ],
+  "allowed_paths": [
+    "dev_orchestrator/runs/"
+  ],
+  "forbidden_paths": [
+    "motorsim/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Evidence only; source committed before run."
+  ],
+  "forbidden_changes": [
+    "Toda modificación de producto en esta versión."
+  ],
+  "commands": [
+    {
+      "id": "regression_tests",
+      "kind": "test",
+      "argv": [
+        "{python}",
+        "-c",
+        "import unittest; patterns=['test_p2b*.py', 'test_gas1d.py', 'test_p2_fixes.py', 'test_p1_r2.py', 'test_p1_r3.py', 'test_p1_r4.py', 'test_p1_r4_gate.py', 'test_p1_r5*.py', 'test_coupling*.py', 'test_coupled.py', 'test_exhaust*.py', 'test_gas1d_batch.py', 'test_hybrid_exhaust.py']; suite=unittest.TestSuite(unittest.defaultTestLoader.discover(\"tests\",pattern=p) for p in patterns); result=unittest.TextTestRunner(verbosity=2).run(suite); raise SystemExit(not result.wasSuccessful())"
+      ],
+      "timeout": 180
+    },
+    {
+      "id": "baseline_command",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p4_r3_regression",
+        "--run-dir",
+        "{run_dir}"
+      ],
+      "timeout": 300,
+      "result_file": "artifacts/result.json"
+    }
+  ],
+  "required_tests": [
+    "regression_tests"
+  ],
+  "required_checks": [
+    "regression_tests",
+    "baseline_command",
+    "P4A_replay",
+    "P4B_replay",
+    "original_individual_checks",
+    "historical",
+    "frozen",
+    "R3_reference"
+  ],
+  "required_evidence": [
+    "artifacts/regression.json",
+    "artifacts/result.json"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 0,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": false,
+  "timeout": 600
+}

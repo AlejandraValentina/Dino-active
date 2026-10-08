@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "review",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "BLOCKED",
+        "NOT_RUN"
+      ]
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "blocking_findings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "scientific_change_required": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "dummy_stub",
+        "independent",
+        "none"
+      ]
+    }
+  },
+  "required": [
+    "status",
+    "findings",
+    "blocking_findings",
+    "scientific_change_required",
+    "notes",
+    "kind"
+  ],
+  "additionalProperties": false
+}

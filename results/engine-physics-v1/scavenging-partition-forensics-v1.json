@@ -1,0 +1,33 @@
+{
+  "schema": "SCAVENGING_PARTITION_CONSERVATION_V1_FORENSICS",
+  "historical_baseline": "1ceaa86",
+  "historical_gate_unchanged": "ENGINE_PHYSICS_V1_FAIL_TERMINAL",
+  "old_equation": "partition_residual = fresh_delivered_kg - fresh_short_circuit_kg - exhaust_close_cylinder_species[fresh_air]",
+  "old_equation_lhs_rhs_definition": "The adapter treated gross positive crossing ledgers as a unique-mass partition and compared them to an exact exhaust-close inventory snapshot.",
+  "forensic_classification": ["SEMANTIC_DEFINITION_BUG", "ACCOUNTING_BUG"],
+  "root_cause": "IntegratedEngine2T and motorsim.scavenging document fresh delivery and fresh short circuit as gross positive crossings; recrossings are counted and net unique fresh mass is unavailable. The adapter incorrectly imposed a unique-parcel partition identity across different ledger semantics and sampling roles.",
+  "physical_sampling": {
+    "transfer": "exact accepted SSPRK2 terminal stage after the transfer closure event",
+    "exhaust": "exact accepted SSPRK2 terminal stage after the exhaust closure event",
+    "species_order": ["fresh_air", "fuel", "residual", "burned"],
+    "correct_full_cycle_identity": "terminal_inventory_species - initial_inventory_species - external_species_exchange - internal_species_sources = 0",
+    "identity_source": "primary conservation.species_residual_kg and cycle ledgers; not gross crossing partition"
+  },
+  "periodic_points": {
+    "A3000": {"cycle": 73, "fresh_delivered_kg": 2.012358588729906e-05, "fresh_short_circuit_kg": 9.036015660890238e-06, "retained_old_fresh_air_kg": 4.434862128220929e-05, "old_lhs_kg": 2.012358588729906e-05, "old_rhs_kg": 5.338463694309953e-05, "old_residual_kg": -3.326105105580046e-05, "max_species_closure_residual_kg": 4.743384504624082e-20},
+    "A4000": {"cycle": 88, "fresh_delivered_kg": 1.593308036137338e-05, "fresh_short_circuit_kg": 6.938792618387767e-06, "retained_old_fresh_air_kg": 4.3708716747075356e-05, "old_lhs_kg": 1.593308036137338e-05, "old_rhs_kg": 5.064750936546312e-05, "old_residual_kg": -3.4714429004089746e-05, "max_species_closure_residual_kg": 5.717472393966527e-20},
+    "B3000": {"cycle": 34, "fresh_delivered_kg": 5.8706248465603e-05, "fresh_short_circuit_kg": 3.9327527569039715e-05, "retained_old_fresh_air_kg": 6.348151510511703e-05, "old_lhs_kg": 5.8706248465603e-05, "old_rhs_kg": 1.0280904267415675e-04, "old_residual_kg": -4.4102794208553746e-05, "max_species_closure_residual_kg": 3.9132922163148676e-19},
+    "B4000": {"cycle": 38, "fresh_delivered_kg": 4.932686214224688e-05, "fresh_short_circuit_kg": 3.2607426759206134e-05, "retained_old_fresh_air_kg": 6.40700393480437e-05, "old_lhs_kg": 4.932686214224688e-05, "old_rhs_kg": 9.667746610724984e-05, "old_residual_kg": -4.735060396500296e-05, "max_species_closure_residual_kg": 8.809142651444724e-20}
+  },
+  "corrected_identity": {
+    "lhs": "terminal_inventory_species",
+    "rhs": "initial_inventory_species + external_species_exchange + internal_species_sources",
+    "corrected_residual": "conservation.species_residual_kg",
+    "tolerance_kg": 1e-12,
+    "gross_crossing_partition": "NOT_APPLICABLE_AS_UNIQUE_MASS; affected bounded metrics remain UNDEFINED when outside domain; no clipping"
+  },
+  "physics_changed": false,
+  "solver_changed": false,
+  "campaigns_repeated": false,
+  "next_action": "Implement additive post-processing/accounting capability and replay the four existing primaries offline."
+}

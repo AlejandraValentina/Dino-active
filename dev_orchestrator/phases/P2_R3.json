@@ -1,0 +1,116 @@
+{
+  "phase": "P2_R3",
+  "objective": "Revalidate all 52 P2A subcases after reviewed R3/T05 gate; preserve T02/T06, no P3.",
+  "enabled": true,
+  "depends_on": [
+    "P0",
+    "P1",
+    "P1_R3_BOUNDARY_SEMANTICS_REVIEW"
+  ],
+  "allowed_paths": [
+    "dev_orchestrator/runs/"
+  ],
+  "forbidden_paths": [
+    "docs/baselines/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Run evidence only; implementation committed before verification."
+  ],
+  "forbidden_changes": [
+    "Toda modificaci\u00c3\u00b3n de producto en esta versi\u00c3\u00b3n."
+  ],
+  "commands": [
+    {
+      "id": "p2_unit",
+      "kind": "test",
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_gas1d.py",
+        "-v"
+      ],
+      "timeout": 60
+    },
+    {
+      "id": "fix_tests",
+      "kind": "test",
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p2_fixes.py",
+        "-v"
+      ],
+      "timeout": 60
+    },
+    {
+      "id": "boundary_tests",
+      "kind": "test",
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p1_r3.py",
+        "-v"
+      ],
+      "timeout": 60
+    },
+    {
+      "id": "p2a_campaign",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p2_campaign",
+        "--run-dir",
+        "{run_dir}",
+        "--r3"
+      ],
+      "timeout": 3600,
+      "result_file": "artifacts/result.json"
+    }
+  ],
+  "required_tests": [
+    "p2_unit",
+    "fix_tests",
+    "boundary_tests"
+  ],
+  "required_checks": [
+    "p2_unit",
+    "p2a_campaign",
+    "P2A",
+    "baseline_intact",
+    "contract_frozen",
+    "dependencies_accepted",
+    "r3_reviewed",
+    "r3_contract_intact",
+    "fix_tests",
+    "boundary_tests"
+  ],
+  "required_evidence": [
+    "artifacts/result.json",
+    "artifacts/p2a-summary.json",
+    "artifacts/inventory.json",
+    "artifacts/git-before.json"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 0,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": false,
+  "timeout": 3700
+}

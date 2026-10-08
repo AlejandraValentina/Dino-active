@@ -1,0 +1,31 @@
+{
+  "state": "P4_BLOCKED_WAVE_PHYSICS",
+  "scientific_state": "SCIENTIFIC_CHANGE_REQUIRED",
+  "reviewer": "/root/p3_review",
+  "mode": "independent read-only",
+  "checks": {
+    "port": true,
+    "P4A": true,
+    "P4B": false,
+    "refinement_blowdown": false,
+    "regressions": true,
+    "tests_88": true
+  },
+  "findings": [
+    "Pressure-integral mesh increments increase .07567913 to .09473570.",
+    "Port-mass increments increase 2.06836e-9 to 2.26468e-9; independently verified against final chamber masses.",
+    "Sensor locations .099/.1005/.09975m affect pressure interpretation; mass failure independent of sensors.",
+    "No demonstrated causal attribution to outlet BC. No hybrid implementation authorized by current gate."
+  ],
+  "evidence": {
+    "p4a/artifacts/summary.json": "765dd58f306c0853ca9d8e581cb4bf9af34b801b77d9a061308180889e7fb5db",
+    "p4b/artifacts/summary.json": "8b7eec1e18e036858ccaeff1d59a40f45e367659e2d61c5defdf206ede39b592",
+    "closure/artifacts/regression.json": "8968ce6d8a550a06bfe8e9e85a5b66dda8fd2e7e9e8dc8c7181046baefad453c",
+    "closure-config-fix.json": "2e5743b9302b5d115304aa03cf20e6c6507dd222023d4b8f880b00f73688371a"
+  },
+  "code": {
+    "motorsim/exhaust_port.py": "7fa88d28c30193e5511d2df0ee3eae30fe9184276f8da12b99b9d42dfdefe454",
+    "motorsim/exhaust1d.py": "b7e4919cb76b22eb5b9f56d8e34dc87bebac5ae42e5ae502363a2b702e325293",
+    "motorsim/exhaust_geometry.py": "0d892a4dc1f3f1895f0148bc8944a6e11cb395606c21451a618e2304c81c8714"
+  }
+}

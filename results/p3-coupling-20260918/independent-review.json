@@ -1,0 +1,25 @@
+{
+  "reviewer": "/root/p3_review",
+  "mode": "independent read-only",
+  "status": "PASS diagnostic and bounded implementation review; NOT P3 PASS",
+  "scientific_state": "SCIENTIFIC_CHANGE_REQUIRED",
+  "P3_state": "P3_BLOCKED_BACKFLOW",
+  "blocking_finding": {
+    "location": "motorsim/gas1d/boundary.py reservoir, frozen P1 interface contract",
+    "cause": "No consistent incoming branch or finite discontinuity near rest with different entropy",
+    "reproduction": "p_pipe=p0=100000,T0=300,T_pipe=301,w=-1e-9 both normals; 299K finite one-sided limit"
+  },
+  "verified": {
+    "frozen_hashes": 27,
+    "evaluations": 42,
+    "no_branch": 6,
+    "tests_passed": 74,
+    "P0_P2_offline_PASS": true,
+    "flux_signs_energy_species": true,
+    "finite_coupled_integration": false
+  },
+  "artifact_sha256": "640dc872a9bb4902b32b8165dc33539de06c6f48031ffa5dc410d5f5b6c72c03",
+  "native_evidence_sha256": "abefb03a1999c9717645da62391903ca6d480c96802ff3df4f3258d50d02fbc4",
+  "new_implementation_findings": [],
+  "P4": "NOT_STARTED"
+}

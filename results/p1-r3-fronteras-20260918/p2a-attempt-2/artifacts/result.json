@@ -1,0 +1,46 @@
+{
+  "checks": [
+    {
+      "id": "baseline_intact",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "Hash/acceptance check"
+    },
+    {
+      "id": "contract_frozen",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "Hash/acceptance check"
+    },
+    {
+      "id": "dependencies_accepted",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "Hash/acceptance check"
+    },
+    {
+      "id": "r3_reviewed",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "Hash/acceptance check"
+    },
+    {
+      "id": "r3_contract_intact",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "Hash/acceptance check"
+    },
+    {
+      "id": "P2A",
+      "passed": false,
+      "kind": "numerical",
+      "reason": "P2_BLOCKED_FIRST_ORDER"
+    }
+  ],
+  "metrics": {
+    "cases": 52,
+    "passed_cases": 52,
+    "wall_seconds": 633.063000000082
+  },
+  "scientific_change_required": false
+}

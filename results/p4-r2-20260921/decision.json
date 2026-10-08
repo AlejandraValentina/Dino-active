@@ -1,0 +1,45 @@
+{
+  "state": "P4_BLOCKED_PERFORMANCE",
+  "R2": "P4_R2_PASS_REFINEMENT_CONTRACT",
+  "P4B": "P4B_PASS_EXHAUST_WAVE_PHYSICS",
+  "P4C": {
+    "G1_cycles": 1,
+    "G2_cycles": 0,
+    "mesh_G1": 250,
+    "mesh_G2_defined": 251,
+    "runtime_seconds": 263.3279999997467,
+    "projected_30_seconds": 7899.8399999924,
+    "budget_seconds": 600,
+    "E12": "PASS only measured cycle",
+    "E15": "PASS only measured cycle",
+    "E13": "PENDING",
+    "E14": "PENDING",
+    "backflow": "NOT_OBSERVED"
+  },
+  "frozen_151_hashes": true,
+  "tests": {
+    "regression": 88,
+    "adapter": 8,
+    "passed": true
+  },
+  "regressions": {
+    "P0": true,
+    "P2": true,
+    "P3": true,
+    "new_campaign_integrations": 0
+  },
+  "independent_review": "independent-review.json",
+  "evidence": "p4c/artifacts/G1-cycle01.json.gz",
+  "commits": {
+    "R2": "84b36b9",
+    "preflight_source": "4747eb2",
+    "measurement": "a3087ba"
+  },
+  "new_hybrid_cycles": 1,
+  "new_N800_integrations": 0,
+  "P4_PASS": false,
+  "P4_human_accepted": false,
+  "P5_started": false,
+  "stop_reason": "Predeclared operating budget exceeded by measured cost projection; no G2/multicycle launched",
+  "native_gates": "Both BLOCKED solely review_not_approved; raw evidence retained; independent review is separate"
+}

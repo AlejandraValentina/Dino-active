@@ -1,0 +1,21 @@
+{
+  "gate": "REJECT_CANDIDATE",
+  "production_integrated": false,
+  "high_rpm_executed": false,
+  "public_domain_changed": false,
+  "candidate_built": false,
+  "reasons": [
+    "Historical limiter corrections exceed representation-roundoff scale; criterion C not satisfied.",
+    "1000 rpm exhausts 60 seconds, last independent balance 0.200333158%; 1500 rpm minimum step."
+  ],
+  "independent_review": "Read-only code review and evidence follow-up: no reproducible mathematical defect; rejection confirmed.",
+  "tests": {
+    "full_suite": 307,
+    "full_suite_seconds": 89.924,
+    "final_focused": 16,
+    "final_focused_seconds": 1.551,
+    "openspec_strict": "PASS"
+  },
+  "source_baseline_commit": "bd0a1199b9d737cb2b6c4ee2683e80ccf2369fd1",
+  "evidence_notes": "Corrections include rejected attempts and intermediate stages; they are not net fresh mass changed in accepted trajectory. No scientific expected values changed."
+}

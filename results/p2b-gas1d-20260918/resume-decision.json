@@ -1,0 +1,357 @@
+{
+  "state": "P2_BLOCKED_SECOND_ORDER",
+  "gate": "SCIENTIFIC_CHANGE_REQUIRED",
+  "scientific_decision_required": true,
+  "reason": "The authorized strict R4 sensitivity refinement fails for the complete CFL0.4/0.6 triplet, independent of two other timeouts. No solver bug identified; criteria remain unchanged.",
+  "timeout": {
+    "old_timeout": 120,
+    "new_timeout": 300,
+    "previous_T10_800_exception": 240,
+    "reason": "infrastructure/runtime only"
+  },
+  "infrastructure_pending": [
+    {
+      "test": "T10",
+      "case": "T10_800",
+      "solver_status": "failed_infrastructure",
+      "reason": "wall_timeout"
+    },
+    {
+      "test": "T11",
+      "case": "T03_0.2_N1600",
+      "solver_status": "failed_infrastructure",
+      "reason": "wall_timeout"
+    }
+  ],
+  "matrix": {
+    "T01": {
+      "status": "PASS",
+      "checks": {
+        "T01_rest": true,
+        "T01_moving": true
+      },
+      "metrics": {},
+      "recorded_subcases": 2,
+      "completed_subcases": 2,
+      "expected_subcases": 2
+    },
+    "T02": {
+      "status": "PASS",
+      "checks": {
+        "T02_sod": true
+      },
+      "metrics": {},
+      "recorded_subcases": 1,
+      "completed_subcases": 1,
+      "expected_subcases": 1
+    },
+    "T03": {
+      "status": "PASS",
+      "checks": {
+        "T03": true
+      },
+      "metrics": {},
+      "recorded_subcases": 1,
+      "completed_subcases": 1,
+      "expected_subcases": 1
+    },
+    "T04": {
+      "status": "PASS",
+      "checks": {
+        "T04": true
+      },
+      "metrics": {},
+      "recorded_subcases": 1,
+      "completed_subcases": 1,
+      "expected_subcases": 1
+    },
+    "T05": {
+      "status": "PASS",
+      "checks": {
+        "T05": true
+      },
+      "metrics": {},
+      "recorded_subcases": 1,
+      "completed_subcases": 1,
+      "expected_subcases": 1
+    },
+    "T06": {
+      "status": "PASS",
+      "checks": {
+        "T06_contact": true
+      },
+      "metrics": {},
+      "recorded_subcases": 1,
+      "completed_subcases": 1,
+      "expected_subcases": 1
+    },
+    "T07": {
+      "status": "PASS",
+      "checks": {
+        "T07_periodic": true,
+        "T07_closed": true,
+        "T07_open": true
+      },
+      "metrics": {},
+      "recorded_subcases": 3,
+      "completed_subcases": 3,
+      "expected_subcases": 3
+    },
+    "T08": {
+      "status": "PASS",
+      "checks": {
+        "T08_constant_rest_100": true,
+        "T08_constant_rest_200": true,
+        "T08_constant_rest_400": true,
+        "T08_smooth_rest_100": true,
+        "T08_smooth_rest_200": true,
+        "T08_smooth_rest_400": true,
+        "T08_frustum_rest_100": true,
+        "T08_frustum_rest_200": true,
+        "T08_frustum_rest_400": true,
+        "T08_constant_flow_100": true,
+        "T08_constant_flow_200": true,
+        "T08_constant_flow_400": true,
+        "T08_smooth_flow_100": true,
+        "T08_smooth_flow_200": true,
+        "T08_smooth_flow_400": true,
+        "T08_frustum_flow_100": true,
+        "T08_frustum_flow_200": true,
+        "T08_frustum_flow_400": true,
+        "constant_100_200_rho": true,
+        "constant_100_200_u": true,
+        "constant_100_200_p": true,
+        "constant_200_400_rho": true,
+        "constant_200_400_u": true,
+        "constant_200_400_p": true,
+        "smooth_100_200_rho": true,
+        "smooth_100_200_u": true,
+        "smooth_100_200_p": true,
+        "smooth_200_400_rho": true,
+        "smooth_200_400_u": true,
+        "smooth_200_400_p": true,
+        "frustum_100_200_rho": true,
+        "frustum_100_200_u": true,
+        "frustum_100_200_p": true,
+        "frustum_200_400_rho": true,
+        "frustum_200_400_u": true,
+        "frustum_200_400_p": true
+      },
+      "metrics": {
+        "constant_100_200_rho": {
+          "coarse": 3.9383163397133103e-16,
+          "fine": 1.9118040484045195e-18
+        },
+        "constant_100_200_u": {
+          "coarse": 4.593390141833526e-16,
+          "fine": 9.586930423064526e-18
+        },
+        "constant_100_200_p": {
+          "coarse": 2.7939677238464364e-16,
+          "fine": 1.018634065985677e-17
+        },
+        "constant_200_400_rho": {
+          "coarse": 1.9118040484045195e-18,
+          "fine": 2.1029844532449953e-17
+        },
+        "constant_200_400_u": {
+          "coarse": 9.586930423064526e-18,
+          "fine": 3.157434693683206e-17
+        },
+        "constant_200_400_p": {
+          "coarse": 1.018634065985677e-17,
+          "fine": 8.440110832452911e-17
+        },
+        "smooth_100_200_rho": {
+          "coarse": 9.002079561450108e-06,
+          "fine": 2.3004217600313777e-06
+        },
+        "smooth_100_200_u": {
+          "coarse": 6.054473656224155e-06,
+          "fine": 1.5817449428990876e-06
+        },
+        "smooth_100_200_p": {
+          "coarse": 1.2048670969861383e-05,
+          "fine": 3.0813199691337668e-06
+        },
+        "smooth_200_400_rho": {
+          "coarse": 2.3004217600313777e-06,
+          "fine": 5.857153171007369e-07
+        },
+        "smooth_200_400_u": {
+          "coarse": 1.5817449428990876e-06,
+          "fine": 4.0512588568183863e-07
+        },
+        "smooth_200_400_p": {
+          "coarse": 3.0813199691337668e-06,
+          "fine": 7.846599998065478e-07
+        },
+        "frustum_100_200_rho": {
+          "coarse": 7.3377415230561405e-06,
+          "fine": 1.9029825195331533e-06
+        },
+        "frustum_100_200_u": {
+          "coarse": 5.010884603453095e-06,
+          "fine": 1.3009287003760496e-06
+        },
+        "frustum_100_200_p": {
+          "coarse": 9.860312139426814e-06,
+          "fine": 2.555276149315846e-06
+        },
+        "frustum_200_400_rho": {
+          "coarse": 1.9029825195331533e-06,
+          "fine": 4.972348532843372e-07
+        },
+        "frustum_200_400_u": {
+          "coarse": 1.3009287003760496e-06,
+          "fine": 3.399316153596836e-07
+        },
+        "frustum_200_400_p": {
+          "coarse": 2.555276149315846e-06,
+          "fine": 6.662631127542017e-07
+        }
+      },
+      "recorded_subcases": 18,
+      "completed_subcases": 18,
+      "expected_subcases": 18
+    },
+    "T09": {
+      "status": "PASS",
+      "checks": {
+        "T09_contact": true,
+        "T09_reverse": true,
+        "T09_inleft": true,
+        "T09_inright": true
+      },
+      "metrics": {},
+      "recorded_subcases": 4,
+      "completed_subcases": 4,
+      "expected_subcases": 4
+    },
+    "T10": {
+      "status": "FAIL",
+      "checks": {
+        "T10_100": true,
+        "T10_200": true,
+        "T10_400": true,
+        "T10_800": false,
+        "order_200_400_density_L1": true,
+        "order_200_400_fresh_L1": true
+      },
+      "metrics": {
+        "order_100_200_density_L1": 1.8613292719674062,
+        "order_100_200_fresh_L1": 1.860500631891987,
+        "order_200_400_density_L1": 1.894308215943554,
+        "order_200_400_fresh_L1": 1.8941164180721288
+      },
+      "recorded_subcases": 4,
+      "completed_subcases": 3,
+      "expected_subcases": 4
+    },
+    "T11": {
+      "status": "FAIL",
+      "checks": {
+        "T02_sod_0.2": true,
+        "T02_sod_0.4": true,
+        "T02_sod_0.6": true,
+        "T03_0.2": true,
+        "T03_0.4": true,
+        "T03_0.6": true,
+        "T03_0.2_N400": true,
+        "T03_0.4_N400": true,
+        "T03_0.6_N400": true,
+        "T03_0.2_N1600": false,
+        "T03_0.4_N1600": true,
+        "T03_0.6_N1600": true,
+        "Sod_0.4_rho": true,
+        "Sod_0.4_u": true,
+        "Sod_0.4_p": true,
+        "pulse_0.4_speed": true,
+        "Sod_0.6_rho": true,
+        "Sod_0.6_u": true,
+        "Sod_0.6_p": true,
+        "pulse_0.6_speed": true,
+        "sensitivity_0.4_0.6": false,
+        "analytical_error_0.4": true,
+        "analytical_error_0.6": true
+      },
+      "metrics": {
+        "Sod_0.4_rho": 2.372811588856629e-05,
+        "Sod_0.4_u": 8.407734997848409e-05,
+        "Sod_0.4_p": 2.7037363419673223e-05,
+        "pulse_0.4_speed": 8.754288030927575e-07,
+        "Sod_0.6_rho": 4.3143064186219826e-05,
+        "Sod_0.6_u": 0.00013626259781926214,
+        "Sod_0.6_p": 4.936112832012114e-05,
+        "pulse_0.6_speed": 7.81667189583816e-06,
+        "sensitivity_0.4_0.6": [
+          0.00016115449398057535,
+          0.00020350692502688617,
+          9.848226181929931e-05
+        ],
+        "analytical_error_0.4": [
+          0.08386662966368022,
+          0.03659622601990122,
+          0.015381757194700186
+        ],
+        "analytical_error_0.6": [
+          0.08370547516969964,
+          0.036392719094874335,
+          0.015283274932880887
+        ]
+      },
+      "recorded_subcases": 12,
+      "completed_subcases": 11,
+      "expected_subcases": 12
+    },
+    "T12": {
+      "status": "PASS",
+      "checks": {
+        "T12_expansion": true,
+        "T12_contact": true,
+        "T12_pure0": true,
+        "T12_pure1": true,
+        "T12_frustum_0_100": true,
+        "T12_frustum_0_200": true,
+        "T12_frustum_0_400": true,
+        "T12_frustum_1_100": true,
+        "T12_frustum_1_200": true,
+        "T12_frustum_1_400": true
+      },
+      "metrics": {},
+      "recorded_subcases": 10,
+      "completed_subcases": 10,
+      "expected_subcases": 10
+    }
+  },
+  "repair_budget": {
+    "used": 3,
+    "limit": 3
+  },
+  "source_unchanged": true,
+  "solver_revision": "4620200",
+  "optimizations": "None; only infrastructure/checkpoint/reporting changes.",
+  "native_evidence": {
+    "run": "resume-remaining-final",
+    "gate": "BLOCKED",
+    "campaign_state": "FAILED_INFRASTRUCTURE",
+    "preserved": true,
+    "note": "Native summary predates aggregate fix3. This derived decision supersedes its interpretation without rewriting original evidence."
+  },
+  "human_acceptance": {
+    "P1_R4": true,
+    "P2A": true,
+    "P2": false
+  },
+  "P2_PASS_1D_CORE_VERIFIED": false,
+  "P3": "NOT_STARTED",
+  "review": "resume-independent-review.json",
+  "regression": "resume-regression.json",
+  "evidence_sha256": {
+    "resume-remaining-final/evidence.json": "8b53bc1afa069fd0ec44056962fe032d731701382e7d25f029b8186a76ff6d37",
+    "resume-remaining-final/artifacts/p2b-summary.json": "6babb8bcf8be9af79d4c3c4b1a3b1752d3aef3aa2284c6a95ceb29ab32ba4c06",
+    "resume-independent-review.json": "e15e54d46ebd61d90c781d9c74a1a143f4e9caf20ef341846624691a1356f04d",
+    "resume-regression.json": "58c0d66a50b83129a917761a6c4e017bf5be2fdb1cfd69bc3800d9ba5c4321c3",
+    "resume-reevaluated-gates.json": "c0b32950fe3968e17f215b73e38e832be91462826717e5c1cf3d1ec7c3ecd2f3"
+  }
+}

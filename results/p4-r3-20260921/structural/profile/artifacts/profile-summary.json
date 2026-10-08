@@ -1,0 +1,69 @@
+{
+  "backend": "STRUCTURAL",
+  "cases": [
+    {
+      "name": "initial_open",
+      "start_angle": 180.0,
+      "physical_seconds": 0.0001,
+      "status": "completed",
+      "wall_seconds": 4.963715299963951,
+      "cpu_seconds": 4.9375,
+      "peak_process_working_set_bytes": 191746048,
+      "steps": 85,
+      "counts": {
+        "rhs": 254,
+        "HLLC": 63754,
+        "HLLE": 0,
+        "characteristic": 254,
+        "rejected": 84,
+        "downgrades": 0
+      }
+    },
+    {
+      "name": "heat",
+      "start_angle": 350.0,
+      "physical_seconds": 0.0001,
+      "status": "completed",
+      "wall_seconds": 6.460718099959195,
+      "cpu_seconds": 6.453125,
+      "peak_process_working_set_bytes": 191746048,
+      "steps": 84,
+      "counts": {
+        "rhs": 251,
+        "HLLC": 62750,
+        "HLLE": 0,
+        "characteristic": 251,
+        "rejected": 83,
+        "downgrades": 0
+      }
+    },
+    {
+      "name": "reopening",
+      "start_angle": 483.7691928709397,
+      "physical_seconds": 0.0001,
+      "status": "completed",
+      "wall_seconds": 2.2847963999956846,
+      "cpu_seconds": 2.296875,
+      "peak_process_working_set_bytes": 191746048,
+      "steps": 43,
+      "counts": {
+        "rhs": 86,
+        "HLLC": 21586,
+        "HLLE": 0,
+        "characteristic": 86,
+        "rejected": 0,
+        "downgrades": 0
+      }
+    }
+  ],
+  "baseline_full_wall_seconds": 263.3279999997467,
+  "baseline_counts": {
+    "rhs": 35379,
+    "HLLC": 8861357,
+    "HLLE": 0,
+    "rejected": 9051,
+    "characteristic": 35379
+  },
+  "notes": "Profiled times include cProfile overhead, not comparable to unprofiled full-cycle benchmark. Reopening snapshot reconstructs conserved cells solely for profiling; not a restart checkpoint. Allocation counts unavailable; peak process working set includes loaded baseline.",
+  "frozen": true
+}

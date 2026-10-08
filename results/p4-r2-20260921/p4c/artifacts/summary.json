@@ -1,0 +1,43 @@
+{
+  "state": "P4_BLOCKED_PERFORMANCE",
+  "cycles": [
+    {
+      "configuration": "G1",
+      "cycle": 1,
+      "N": 250,
+      "checks": {
+        "complete": true,
+        "conservation": true,
+        "positive": true,
+        "CFL": true,
+        "closed_zero": true,
+        "backflow_local": true
+      },
+      "complete": true,
+      "reason": "final_time",
+      "end_angle": 540.0,
+      "wall_seconds": 263.3279999997467,
+      "solver_seconds": 261.56299999915063,
+      "projected_30_cycles_seconds": 7899.8399999924,
+      "global_balance": [
+        4.451296404627812e-15,
+        4.5246265515109725e-15,
+        1.367105775377092e-15
+      ],
+      "work_J": -0.41816866400067815,
+      "power_W": -20.908433200033908,
+      "torque_Nm": -0.06655360992184184,
+      "periodicity": null,
+      "counts": {
+        "rhs": 35379,
+        "HLLC": 8861357,
+        "HLLE": 0,
+        "rejected": 9051
+      }
+    }
+  ],
+  "frozen": true,
+  "G2_executed": false,
+  "P4_PASS": false,
+  "P5_started": false
+}

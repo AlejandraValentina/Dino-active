@@ -1,0 +1,93 @@
+{
+  "reviewed_head": "ca859e04043e027240815a2acd778784deae400f",
+  "branch": "main",
+  "origin_main": "d616e2946d84080be44e21867602855d12f7c54a",
+  "range": "4214703..ca859e0",
+  "classification": "INDEPENDENT_REVIEW_BLOCKED_MATERIAL_FINDING",
+  "independent_review_pass": false,
+  "personal_independence": "NOT_CLAIMED_SAME_MAIN_AGENT_IMPLEMENTED_R2; READ_ONLY_SUBAGENT_REVIEWS_USED_FOR_C3_AND_P5_P8",
+  "r2_remediation": {
+    "dt_false_reproduction": "E13_G2_V2_INCONCLUSIVE",
+    "reason": "MALFORMED_CFL_DT",
+    "temporary_copy_only": true,
+    "original_evidence_modified": false
+  },
+  "tests": {
+    "command": ".venv\\Scripts\\python.exe -m pytest -q tests/test_p4_g2_v2_recovery.py tests/test_p4_c3_r5_audit.py tests/test_periodicity_e13_r1.py",
+    "result": "82 passed in 41.33s",
+    "additional_read_only_agent_suite": "99 P5-P8 focal offline tests passed; physical P8 campaign excluded"
+  },
+  "g2": {
+    "auditor_classification": "E13_G2_V2_PASS",
+    "period": 2,
+    "last_cycle": 50,
+    "branch_A_streak": 15,
+    "branch_B_streak": 3,
+    "independently_recomputed_metrics": {
+      "cycle44_vs42": {"sensor_max": 0.00618179998843072, "passed": false},
+      "cycle48_vs46": {"sensor_max": 0.0005056779434901066, "passed": true},
+      "cycle50_vs48": {"sensor_max": 0.000508629756519752, "passed": true}
+    },
+    "conservation": "BLOCKED_RAW_INITIAL_FINAL_INVENTORY_AND_EXTERNAL_TERMS_MISSING_FOR_CYCLES_31_50"
+  },
+  "c3": {
+    "historical_status": "P4_SCI_C3_PASS",
+    "r3_review": "PARTIAL_NOT_RATIFIED",
+    "lfs_fsck": "PASS",
+    "artifact_sha256": "cf51eafd6a8058afb325278bf0dc5a2db241dff49d82c014f83d90a29b7536cb",
+    "verified_read_only_subagent_observations": {
+      "steps": 777,
+      "cells": 100,
+      "duration_s": [0.0, 0.003],
+      "max_global_residual": 6.964551734577821e-16,
+      "runtime_binding_seven_components": "NOT_COMPLETED_IN_R3"
+    }
+  },
+  "restart": "NOT_RATIFIED",
+  "determinism": "P8_REPLAY_GATE_MAJOR_R3_002",
+  "p4": "NOT_RATIFIED_TECHNICAL_MATRIX_PASS_UNDER_REVIEW",
+  "p5": "NOT_RATIFIED_DEPENDS_ON_P4",
+  "p6": "NOT_RATIFIED_DEPENDS_ON_P4",
+  "p7": "NOT_RATIFIED_DEPENDS_ON_P4",
+  "p8": {
+    "historical_anchors": "PROVENANCE_REVIEWED_BY_READ_ONLY_SUBAGENT",
+    "campaign_repeated": false,
+    "code_unchanged_since_campaign_commit": "437a66f",
+    "semantics": "BOUNDED_TRANSIENT_INDICATED",
+    "deterministic_replay_gate": "MAJOR_R3_002"
+  },
+  "provenance": {
+    "motorsim_changed_since_p8_campaign": false,
+    "p8_receipt_hashes": "SIX_HASHES_MATCH_HEAD_REPORTED_BY_READ_ONLY_SUBAGENT"
+  },
+  "open_spec_strict": {
+    "p4-escape-1d": "PASS",
+    "p5-intake-transfer": "PASS",
+    "p7-prescribed-heat-burn": "PASS",
+    "p8-wide-rpm-performance": "PASS",
+    "p6_is_separate_change": false
+  },
+  "git_lfs_fsck": "PASS",
+  "findings": [
+    {
+      "id": "R3-001",
+      "severity": "BLOCKER",
+      "phase": "P4_G2_V2_CONSERVATION",
+      "summary": "The 31-50 durable checkpoints omit raw initial/final inventories and external exchange terms, so global conservation cannot be independently recomputed from primary evidence.",
+      "physical_failure_claimed": false,
+      "reproduction": "Inspect inputs and gate_inputs in results/p4-g2-v2-reaudit-20260929-r2/checkpoint_cycle050.json.gz; neither row nor history contains initial_inventory, final_inventory, or external. Offline auditor validates precomputed balance arrays but cannot reconstruct their physical ledger identity."
+    },
+    {
+      "id": "R3-002",
+      "severity": "MAJOR",
+      "phase": "P8_DETERMINISTIC_REPLAY",
+      "summary": "run_anchor deterministic_replay can return true when separate runs disagree in fresh mass delivered and short circuit.",
+      "physical_divergence_observed": false,
+      "reproduction": "Mock _run_once with historical anchor-2500 output and a second copy with fresh_mass_delivered_kg and fresh_short_circuit_mass_kg doubled; run_anchor(2500) returns all deterministic_replay fields true and gates.deterministic_replay=true."
+    }
+  ],
+  "classification": "INDEPENDENT_REVIEW_BLOCKED_MATERIAL_FINDING",
+  "p9_readiness": "STOPPED_NOT_AUTHORIZED",
+  "experimental_validation": "NOT_PERFORMED",
+  "push": false
+}

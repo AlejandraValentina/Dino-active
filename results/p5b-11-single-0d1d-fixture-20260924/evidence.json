@@ -1,0 +1,58 @@
+{
+  "task": "P5B-11",
+  "fixture": "single_0d1d_fixture",
+  "status": "PASS",
+  "implementation": {
+    "factory": "motorsim.p5b.make_single_0d1d_fixture",
+    "class": "motorsim.p5b.Single0D1DFixture",
+    "chamber_volume": "fixed",
+    "duct": "finite-volume gas1d mesh",
+    "interface": "motorsim.coupling.interface_flux",
+    "time_integrator": "SSPRK2 two-stage"
+  },
+  "gates": {
+    "external_boundary": "closed",
+    "far_wall_contract": "Boundary('wall').flux: [0, p_wall*A, 0, 0]",
+    "chamber_validation_contract": "ChamberState(m, U, mY, volume).thermodynamics(eos)",
+    "mass": "conserved",
+    "total_energy": "conserved",
+    "passive_species": "conserved",
+    "shared_flux_opposite_signs": "verified",
+    "admissibility": "verified"
+  },
+  "focused_tests": [
+    "tests/test_p5b_integrated_coupling.py::test_single_0d1d_fixture_is_finite_and_externally_closed",
+    "tests/test_p5b_integrated_coupling.py::test_single_0d1d_fixture_reuses_one_shared_flux_with_opposite_signs",
+    "tests/test_p5b_integrated_coupling.py::test_single_0d1d_fixture_keeps_chamber_volume_fixed_and_admissible",
+    "tests/test_p5b_integrated_coupling.py::test_single_0d1d_fixture_uses_contractual_rigid_wall_momentum_flux",
+    "tests/test_p5b_integrated_coupling.py::test_single_0d1d_fixture_validates_chamber_as_extensive_inventory"
+  ],
+  "verification": {
+    "py_compile": "PASS: motorsim/p5b.py and tests/test_p5b_integrated_coupling.py",
+    "p5_foundation_regression": "PASS: combined relevant P5/P5B/coupling suite 40 tests",
+    "p5b_regression": "PASS: 27 P5B tests",
+    "diff_check": "PASS: git diff --check (line-ending warnings only)",
+    "focal_commands_attempted": [
+      ".venv\\Scripts\\python.exe -m pytest -q tests/test_p5b_integrated_coupling.py",
+      "py -3.10 -m pytest -q tests/test_p5b_integrated_coupling.py"
+    ],
+    "focal_blocker": null,
+    "external_rerun": "PASS: 27 P5B; 40 relevant P5/P5B/coupling; py_compile PASS"
+  },
+  "review": {
+    "boundary_contract": "FIXED: reused motorsim.gas1d.boundary.Boundary('wall').flux at normal +1 and terminal mesh area; retains pressure momentum reaction while zeroing mass/energy/species",
+    "state_dimensions": "FIXED: chamber extensive tuple is validated through ChamberState with actual fixed volume; admissible() follows the same path",
+    "regressions_added": "focused wall momentum and extensive-chamber validation tests",
+    "p4": "BLOCKED / NOT_GRANTED",
+    "scope": "P5B-11 only; no P5B-12"
+  },
+  "checkpoint": {
+    "status": "COMMITTED",
+    "commit": "487ca48",
+    "last_commit": "a824547"
+  },
+  "scope_notes": [
+    "No exhaust, heat release, alternate physics, or P6 species semantics added.",
+    "P4 remains BLOCKED / NOT_GRANTED."
+  ]
+}

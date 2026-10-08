@@ -1,0 +1,281 @@
+{
+  "state": "P1_R3_BOUNDARY_CONTRACT_UNRESOLVED",
+  "checks": {
+    "baseline_intact": true,
+    "contract_frozen": true,
+    "dependencies_accepted": true,
+    "T05": true,
+    "mesh_sign": true,
+    "all_ledgers": true,
+    "NR01_recorded": false,
+    "counter_identity": true
+  },
+  "rows": [
+    {
+      "name": "T05",
+      "N": 200,
+      "checks": {
+        "completed": true,
+        "worst_ledger": true,
+        "incident_signal": true,
+        "reflection_error": true,
+        "peak_time_error": true,
+        "negative_reflection": true
+      },
+      "metrics": {
+        "worst_ledger": 1.8900059910767824e-16,
+        "errors": {
+          "rho": {
+            "L1": 5.251451873654429e-06,
+            "L2": 1.0288264039698797e-05,
+            "Linf": 2.8498427139998617e-05
+          },
+          "u": {
+            "L1": 5.251482567193895e-06,
+            "L2": 1.0288319736192362e-05,
+            "Linf": 2.8498681285166063e-05
+          },
+          "p": {
+            "L1": 7.089420052428614e-06,
+            "L2": 1.388904341899549e-05,
+            "Linf": 3.84725787647767e-05
+          },
+          "Y": {
+            "L1": 5.090372567906343e-16,
+            "L2": 6.276934317825567e-16,
+            "Linf": 1.7208456881689926e-15
+          }
+        },
+        "incident_amplitude": 5.763065607607132,
+        "reflected_amplitude": -4.078010003606323,
+        "reflection_coefficient": -0.7076112404869088,
+        "peak_time_scaled": 0.9990000000000001,
+        "reflection_error": 0.2923887595130912,
+        "peak_time_error": 0.0009999999999998899,
+        "residual_final": [
+          -5.475009212814984e-19,
+          4.319123568445634e-21,
+          -8.965050923848139e-15,
+          -4.244561508030104e-19
+        ],
+        "worst_normalized_by_component": [
+          1.4715573665475167e-16,
+          1.3830304665072356e-21,
+          1.8900059910767824e-16,
+          7.19485984928536e-17
+        ]
+      },
+      "role": "DIAGNOSTIC",
+      "runtime": {
+        "status": "completed",
+        "reason": "final_time",
+        "wall_seconds": 4.04700000025332,
+        "steps": 1150,
+        "extrema": {
+          "min_rho": 1.1614019539433478,
+          "min_p": 99995.55614783205,
+          "min_T": 299.99654362615365,
+          "min_Y": 0.29999999999999793,
+          "max_Y": 0.3000000000000017,
+          "max_Mach": 7.368912326271265e-05
+        },
+        "hllc_flux_count": 228850,
+        "hlle_fallback_count": 0,
+        "characteristic_flux_count": 2300,
+        "riemann_flux_count": 228850
+      }
+    },
+    {
+      "name": "T05",
+      "N": 400,
+      "checks": {
+        "completed": true,
+        "worst_ledger": true,
+        "incident_signal": true,
+        "reflection_error": true,
+        "peak_time_error": true,
+        "negative_reflection": true
+      },
+      "metrics": {
+        "worst_ledger": 4.0720748947718063e-16,
+        "errors": {
+          "rho": {
+            "L1": 5.251317689876111e-06,
+            "L2": 1.244123979149008e-05,
+            "Linf": 4.167326352198319e-05
+          },
+          "u": {
+            "L1": 5.251334400177513e-06,
+            "L2": 1.2441388086544002e-05,
+            "Linf": 4.167391815463678e-05
+          },
+          "p": {
+            "L1": 7.089179498213707e-06,
+            "L2": 1.6795539684973097e-05,
+            "Linf": 5.625841582033899e-05
+          },
+          "Y": {
+            "L1": 5.928590951498332e-16,
+            "L2": 7.414947609549697e-16,
+            "Linf": 2.275957200481571e-15
+          }
+        },
+        "incident_amplitude": 7.553690705186455,
+        "reflected_amplitude": -5.894143756682752,
+        "reflection_coefficient": -0.780299854299801,
+        "peak_time_scaled": 0.9990000000000001,
+        "reflection_error": 0.21970014570019902,
+        "peak_time_error": 0.0009999999999998899,
+        "residual_final": [
+          -2.692505981084607e-19,
+          -4.3009255949694674e-21,
+          -1.073315047950274e-12,
+          9.28096647284497e-20
+        ],
+        "worst_normalized_by_component": [
+          1.485546622582459e-16,
+          1.8469553790338247e-21,
+          4.0720748947718063e-16,
+          5.772684375152592e-17
+        ]
+      },
+      "role": "DIAGNOSTIC",
+      "runtime": {
+        "status": "completed",
+        "reason": "final_time",
+        "wall_seconds": 15.984000000171363,
+        "steps": 2300,
+        "extrema": {
+          "min_rho": 1.1613854413040487,
+          "min_p": 99993.63682792307,
+          "min_T": 299.9950507616509,
+          "min_Y": 0.2999999999999978,
+          "max_Y": 0.30000000000000226,
+          "max_Mach": 9.735960786452234e-05
+        },
+        "hllc_flux_count": 917700,
+        "hlle_fallback_count": 0,
+        "characteristic_flux_count": 4600,
+        "riemann_flux_count": 917700
+      }
+    },
+    {
+      "name": "T05",
+      "N": 800,
+      "checks": {
+        "completed": true,
+        "worst_ledger": true,
+        "incident_signal": true,
+        "reflection_error": true,
+        "peak_time_error": true,
+        "negative_reflection": true
+      },
+      "metrics": {
+        "worst_ledger": 2.1258135605365101e-16,
+        "errors": {
+          "rho": {
+            "L1": 5.251233432976659e-06,
+            "L2": 1.3811884761112556e-05,
+            "Linf": 5.137148187436602e-05
+          },
+          "u": {
+            "L1": 5.25124269985126e-06,
+            "L2": 1.3812107276955928e-05,
+            "Linf": 5.1372527340745976e-05
+          },
+          "p": {
+            "L1": 7.0890263613107895e-06,
+            "L2": 1.864588662460337e-05,
+            "Linf": 6.93508222559467e-05
+          },
+          "Y": {
+            "L1": 9.397344014061558e-16,
+            "L2": 1.3056144293770165e-15,
+            "Linf": 8.826273045769994e-15
+          }
+        },
+        "incident_amplitude": 8.52584833309811,
+        "reflected_amplitude": -7.182159033793141,
+        "reflection_coefficient": -0.8423981700344532,
+        "peak_time_scaled": 1.0000000000000002,
+        "reflection_error": 0.15760182996554684,
+        "peak_time_error": 2.220446049250313e-16,
+        "residual_final": [
+          9.419535769059854e-19,
+          8.893845946170154e-21,
+          -2.74349987172684e-13,
+          5.426966562837904e-19
+        ],
+        "worst_normalized_by_component": [
+          2.1182956419088727e-16,
+          2.5144321592618528e-21,
+          2.1258135605365101e-16,
+          5.941276067310713e-17
+        ]
+      },
+      "role": "CONTRACTUAL",
+      "runtime": {
+        "status": "completed",
+        "reason": "final_time",
+        "wall_seconds": 46.5,
+        "steps": 3450,
+        "extrema": {
+          "min_rho": 1.1613746726899812,
+          "min_p": 99992.38515970123,
+          "min_T": 299.9940771891947,
+          "min_Y": 0.29999999999999083,
+          "max_Y": 0.30000000000001004,
+          "max_Mach": 0.00011509045516611533
+        },
+        "hllc_flux_count": 2756550,
+        "hlle_fallback_count": 0,
+        "characteristic_flux_count": 6900,
+        "riemann_flux_count": 2756550
+      }
+    },
+    {
+      "name": "NR01",
+      "N": 800,
+      "checks": {
+        "completed": false,
+        "worst_ledger": true
+      },
+      "metrics": {
+        "worst_ledger": 1.5485306720852677e-16,
+        "residual_final": [
+          1.5062628082345613e-19,
+          -3.3881317890172014e-21,
+          3.017863736687332e-13,
+          3.9217294585629084e-19
+        ],
+        "worst_normalized_by_component": [
+          1.5485306720852677e-16,
+          3.711822697322056e-21,
+          1.335508845048985e-16,
+          6.072042513023285e-17
+        ]
+      },
+      "role": "DIAGNOSTIC",
+      "runtime": {
+        "status": "failed_numerical",
+        "reason": "dt_below_min",
+        "wall_seconds": 33.28099999949336,
+        "steps": 2468,
+        "extrema": {
+          "min_rho": 1.16144018409228,
+          "min_p": 99999.99979795355,
+          "min_T": 299.99999971802436,
+          "min_Y": 0.2999999999999949,
+          "max_Y": 0.3000000000000049,
+          "max_Mach": 7.404900897791133e-05
+        },
+        "hllc_flux_count": 1972731,
+        "hlle_fallback_count": 0,
+        "characteristic_flux_count": 4938,
+        "riemann_flux_count": 1972731
+      }
+    }
+  ],
+  "contract_sha256": "03a2a7961712f96379835de417c84c422a5988aced0421dc77707a8b891cfa88",
+  "note": "NR01 has no new reflection threshold; N800 T05 gate unchanged. Independent review required."
+}

@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "kind": "independent",
+  "reviewer": "/root/p1_r1_review",
+  "scope": "Read-only P1-R1 observable, study and preservation",
+  "scientific_decision": "P1_R1_CONTACT_ACCURACY_UNRESOLVED",
+  "findings": [],
+  "blocking_findings": [],
+  "notes": "PASS applies to bounded study implementation and execution, not contact accuracy or P2 approval. Final substantive verdict received in agent message before its turn ended with a usage-limit error; no additional review claimed.",
+  "checks": [
+    "Eight completed cases; 11/11 study inventory hashes verified",
+    "A/B/C/D independently recomputed for 8/8 cases",
+    "B has unique crossing and local monotonicity; absolute error decreases in both mesh studies",
+    "B uses no exact position, clipping or opportunistic selection",
+    "Sod N400 matches historical solution and ledgers exactly",
+    "P1/P0/gas1d intact; no scope violations or preexisting changes touched",
+    "Sod N400 B error 2.168049140585371dx exceeds unchanged 2dx",
+    "Pure contact p/u preserved within 3.11e-15; absolute convergence is not uniform 2dx accuracy",
+    "D is density diagnostic on B support, not fully independent localization"
+  ],
+  "source_commit": "f3e4453a781286e885e2f2bd448fd87dd91ad9ba",
+  "original_evidence_sha256": "29c0d8b8f80026287d13bf3a67f453ad82cc219e393433f837233ba432a6fb62",
+  "study_sha256": "2d4e7223cd2b3c55cf3949e3a788c3456473d36cf5776b4a033e259ee253e5b1"
+}

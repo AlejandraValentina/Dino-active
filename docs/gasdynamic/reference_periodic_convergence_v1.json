@@ -1,0 +1,97 @@
+{
+  "schema": "REFERENCE_PERIODIC_CONVERGENCE_V1",
+  "status": "PREREGISTERED_BEFORE_KT100_CAMPAIGN",
+  "contract_freeze": "source-control history records this exact contract before any KT100 V2 campaign",
+  "not_historical_e13": true,
+  "max_cycles": 400,
+  "period1": {
+    "lag": 1,
+    "streak_required": 3,
+    "thresholds": {
+      "cylinder_pressure_relative": 0.005,
+      "crankcase_pressure_relative": 0.005,
+      "chamber_mass_relative": 0.002,
+      "chamber_total_energy_relative": 0.002,
+      "chamber_temperature_relative": 0.005,
+      "duct_cell_mass_relative": 0.002,
+      "duct_cell_total_energy_relative": 0.002,
+      "duct_cell_pressure_relative": 0.005,
+      "duct_cell_temperature_relative": 0.005,
+      "duct_cell_species_mass_fraction_absolute": 0.002,
+      "duct_cell_velocity_over_sound_speed_absolute": 0.005,
+      "global_species_inventory_over_total_mass": 0.002,
+      "work_relative_floor_1J": 0.005,
+      "fresh_delivery_fraction_of_cycle_start_mass": 0.002,
+      "fresh_short_circuit_fraction_of_cycle_start_mass": 0.002,
+      "p7_burned_species_fraction_of_cycle_start_mass": 0.002,
+      "p7_heat_fraction_of_cycle_start_energy": 0.002
+    }
+  },
+  "period2": {
+    "lag": 2,
+    "streak_required_per_branch": 3,
+    "branch_identity": "anchor-relative A/B; first complete cycle is A",
+    "thresholds_same_as_period1": true,
+    "precedence": "period-1"
+  },
+  "normalization": {
+    "positive_scalar": "abs(a-b)/max(abs(a),abs(b))",
+    "work": "abs(a-b)/max(1 J,abs(a),abs(b))",
+    "global_species_inventory": "abs(delta of each global species inventory) / total system gas mass at start of the later-indexed compared cycle",
+    "cycle_mass_increment": "absolute difference of cycle increments / total gas mass at start of the later-indexed compared cycle",
+    "p7_burned_species_increment": "absolute difference of burned_produced mass / total gas mass at start of the later-indexed compared cycle",
+    "heat_increment": "absolute difference of cycle P7 heat / total gas energy at start of the later-indexed compared cycle",
+    "chamber_mass_and_energy": "relative difference; energy threshold 0.002",
+    "duct_cell_mass_and_energy": "relative difference; threshold 0.002",
+    "pressure_and_temperature": "relative difference; threshold 0.005",
+    "duct_species": "absolute difference of each species mass fraction, each normalized by that cell total mass",
+    "duct_velocity": "absolute difference of velocity divided by each compared local sound speed",
+    "raw_conservative_vectors": "persist and compare exactly for restart/replay; not a convergence observable",
+    "zero_zero": 0.0,
+    "invalid_inputs": "INVALID; no epsilon or stale PASS substitution"
+  },
+  "observable_vector": [
+    "cylinder and crankcase terminal mass, total energy, pressure, temperature",
+    "each intake, transfer and exhaust duct cell mass, total energy, pressure, temperature, velocity/sound-speed, and four species mass fractions",
+    "global four-species inventories normalized by total system mass",
+    "cycle indicated work",
+    "cycle fresh delivery by transfer and total",
+    "cycle fresh short circuit",
+    "cycle P7 burned_produced mass increment and heat increment; all other P7 ledger fields are audit-only"
+  ],
+  "threshold_rationale": "Numeric tolerances reuse the existing accepted E13-R1 limits: 0.005 for work/pressure-type observables and 0.002 for inventory/transport observables. The harness applies them to explicitly listed physical terminal observables and does not claim E13 conformance.",
+  "combustion": {
+    "phase_reference": "configured cycle-relative degrees",
+    "duration_deg": 40.0,
+    "heat_per_burned_mass_J_kg": 800000.0,
+    "kt100_base_phase_deg": 350.0,
+    "all_are_synthetic_fixture_assumptions": true
+  },
+  "cycle_relative_event_adapter": {
+    "product_scheduler_window_deg": [350.0, 390.0],
+    "configured_physical_event_phase_range_deg": [30.0, 350.0],
+    "physical_cycle_window_deg": [30.0, 390.0],
+    "scheduler_angle_offset_deg": "350 - configured_physical_event_phase_deg",
+    "geometry_callback_angle_offset_deg": "inverse scheduler offset; preserve configured physical crank geometry",
+    "cycle_boundary_and_checkpoint_angles": "apply the same scheduler offset; rebase each completed physical revolution to scheduler [30+offset,390+offset] while preserving conservative and species state exactly and carrying global elapsed time separately",
+    "product_duration_deg": 40.0,
+    "product_heat_per_burned_mass_J_kg": 800000.0,
+    "reject_other_duration_or_heat": true
+  },
+  "execution": {
+    "cfl": 0.4,
+    "float_format": "binary64",
+    "cycle_start_deg": 30.0,
+    "cycle_end_deg": 390.0,
+    "checkpoint_cadence_cycles": 5,
+    "checkpoint_before_campaign_resume": true,
+    "independent_replay_from_initial_state": true
+  },
+  "decision_rules": {
+    "period1_precedence": true,
+    "period2_branch_streaks_independent": true,
+    "invalid_distinct_from_fail": true,
+    "max_cycles_includes_initial_complete_cycles": true,
+    "cannot_change_after_campaign_start": true
+  }
+}

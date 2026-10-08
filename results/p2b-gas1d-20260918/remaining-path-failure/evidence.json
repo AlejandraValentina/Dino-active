@@ -1,0 +1,140 @@
+{
+  "run_id": "20260918T130408-P2B_REMAINING-47b1fe2aed74",
+  "phase_id": "P2B_REMAINING",
+  "started_at": "2026-09-18T13:04:08.904174+00:00",
+  "finished_at": "2026-09-18T13:04:28.081629+00:00",
+  "git_commit": "e92c1e3106af4b9fe6239d5a5ff65815b7191ac3",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "resume_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p2b*.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 11.57799999974668,
+      "status": "passed",
+      "stdout_log": "logs/1-resume_tests.stdout.log",
+      "stderr_log": "logs/1-resume_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "resume_campaign",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p2b_resume",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260918T130408-P2B_REMAINING-47b1fe2aed74",
+        "--resume",
+        "results/p2b-gas1d-20260918/resume-300-attempt-1",
+        "--start-at",
+        "11"
+      ],
+      "kind": "command",
+      "returncode": 1,
+      "duration_seconds": 1.3430000003427267,
+      "status": "failed",
+      "stdout_log": "logs/1-resume_campaign.stdout.log",
+      "stderr_log": "logs/1-resume_campaign.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "resume_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "resume_campaign",
+      "passed": false,
+      "kind": "infrastructure",
+      "reason": "failed"
+    }
+  ],
+  "tests": [
+    {
+      "id": "resume_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p2b*.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 11.57799999974668,
+      "status": "passed",
+      "stdout_log": "logs/1-resume_tests.stdout.log",
+      "stderr_log": "logs/1-resume_tests.stderr.log",
+      "error": ""
+    }
+  ],
+  "metrics": {},
+  "review": {
+    "status": "NOT_RUN",
+    "findings": [],
+    "blocking_findings": [],
+    "scientific_change_required": false,
+    "notes": "Revisión no ejecutada.",
+    "kind": "none"
+  },
+  "gate": "FAILED_INFRASTRUCTURE",
+  "gate_reasons": [
+    "command_failed:resume_campaign"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "command_failed:resume_campaign",
+      "state": "FAILED_INFRASTRUCTURE"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [
+    "command_failed:resume_campaign"
+  ],
+  "artifacts": [],
+  "phase_definition_sha256": "07a9251889d513dcaf98d46f98734d615fdfc3dea05732bd23d94b5a6abd17f9",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P0": "docs\\gasdynamic\\p0_accepted_dependency.json",
+      "P1_R4_CFL_REVIEW": "docs\\gasdynamic\\p1_r4_accepted_dependency.json",
+      "P2A_R4_VERIFY": "docs\\gasdynamic\\p2a_accepted_dependency.json"
+    }
+  },
+  "continue_requested": false
+}

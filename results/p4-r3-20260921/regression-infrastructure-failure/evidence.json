@@ -1,0 +1,122 @@
+{
+  "run_id": "20260921T131755-P4_R3_CLOSE-ce7e17df7bc8",
+  "phase_id": "P4_R3_CLOSE",
+  "started_at": "2026-09-21T13:17:55.033380+00:00",
+  "finished_at": "2026-09-21T13:18:08.814022+00:00",
+  "git_commit": "267576326c7f47599cf01c091bd66609ab40a3b2",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "regression_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-c",
+        "import unittest; patterns=['test_p2b*.py', 'test_gas1d.py', 'test_p2_fixes.py', 'test_p1_r2.py', 'test_p1_r3.py', 'test_p1_r4.py', 'test_p1_r4_gate.py', 'test_p1_r5*.py', 'test_coupling*.py', 'test_coupled.py', 'test_exhaust*.py', 'test_gas1d_batch.py', 'test_hybrid_exhaust.py']; suite=unittest.TestSuite(unittest.defaultTestLoader.discover(\"tests\",pattern=p) for p in patterns); result=unittest.TextTestRunner(verbosity=2).run(suite); raise SystemExit(not result.wasSuccessful())"
+      ],
+      "kind": "test",
+      "returncode": 1,
+      "duration_seconds": 2.7340000001713634,
+      "status": "failed",
+      "stdout_log": "logs/1-regression_tests.stdout.log",
+      "stderr_log": "logs/1-regression_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "baseline_command",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p4_r3_regression",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260921T131755-P4_R3_CLOSE-ce7e17df7bc8"
+      ],
+      "kind": "command",
+      "returncode": 1,
+      "duration_seconds": 1.4220000002533197,
+      "status": "failed",
+      "stdout_log": "logs/1-baseline_command.stdout.log",
+      "stderr_log": "logs/1-baseline_command.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "regression_tests",
+      "passed": false,
+      "kind": "test",
+      "reason": "failed"
+    },
+    {
+      "id": "baseline_command",
+      "passed": false,
+      "kind": "infrastructure",
+      "reason": "failed"
+    }
+  ],
+  "tests": [
+    {
+      "id": "regression_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-c",
+        "import unittest; patterns=['test_p2b*.py', 'test_gas1d.py', 'test_p2_fixes.py', 'test_p1_r2.py', 'test_p1_r3.py', 'test_p1_r4.py', 'test_p1_r4_gate.py', 'test_p1_r5*.py', 'test_coupling*.py', 'test_coupled.py', 'test_exhaust*.py', 'test_gas1d_batch.py', 'test_hybrid_exhaust.py']; suite=unittest.TestSuite(unittest.defaultTestLoader.discover(\"tests\",pattern=p) for p in patterns); result=unittest.TextTestRunner(verbosity=2).run(suite); raise SystemExit(not result.wasSuccessful())"
+      ],
+      "kind": "test",
+      "returncode": 1,
+      "duration_seconds": 2.7340000001713634,
+      "status": "failed",
+      "stdout_log": "logs/1-regression_tests.stdout.log",
+      "stderr_log": "logs/1-regression_tests.stderr.log",
+      "error": ""
+    }
+  ],
+  "metrics": {},
+  "review": {
+    "status": "NOT_RUN",
+    "findings": [],
+    "blocking_findings": [],
+    "scientific_change_required": false,
+    "notes": "Revisión no ejecutada.",
+    "kind": "none"
+  },
+  "gate": "FAILED_INFRASTRUCTURE",
+  "gate_reasons": [
+    "command_failed:baseline_command"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "command_failed:baseline_command",
+      "state": "FAILED_INFRASTRUCTURE"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [
+    "command_failed:baseline_command"
+  ],
+  "artifacts": [],
+  "phase_definition_sha256": "d02b21bff6d8ee3b0daf43826fc1dc250c2cd7f17d7a1dc712c5c3703b51e423",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P2": "docs\\gasdynamic\\p2_accepted_dependency.json"
+    }
+  },
+  "continue_requested": false
+}

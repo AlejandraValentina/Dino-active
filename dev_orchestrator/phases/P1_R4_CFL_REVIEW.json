@@ -1,0 +1,81 @@
+{
+  "phase": "P1_R4_CFL_REVIEW",
+  "objective": "Frozen T11 CFL refinement study; no solver changes or automatic acceptance.",
+  "enabled": true,
+  "depends_on": [
+    "P0",
+    "P1",
+    "P1_R3_BOUNDARY_SEMANTICS_REVIEW"
+  ],
+  "allowed_paths": [
+    "dev_orchestrator/runs/"
+  ],
+  "forbidden_paths": [
+    "motorsim/",
+    "docs/gasdynamic/",
+    "docs/baselines/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Run evidence only; implementation committed before verification."
+  ],
+  "forbidden_changes": [
+    "No solver, previous contracts, UI, 0D, P2B or P3 changes."
+  ],
+  "commands": [
+    {
+      "id": "r4_tests",
+      "kind": "test",
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p1_r4.py",
+        "-v"
+      ],
+      "timeout": 60
+    },
+    {
+      "id": "cfl_study",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p1_r4_cfl",
+        "--run-dir",
+        "{run_dir}"
+      ],
+      "timeout": 960,
+      "result_file": "artifacts/result.json"
+    }
+  ],
+  "required_tests": [
+    "r4_tests"
+  ],
+  "required_checks": [
+    "r4_tests",
+    "cfl_study",
+    "baseline_intact",
+    "contract_frozen",
+    "dependencies_accepted",
+    "implementation_contracts_frozen",
+    "complete_matrix",
+    "deterministic_reproduction",
+    "stability_conservation"
+  ],
+  "required_evidence": [
+    "artifacts/study.json",
+    "artifacts/inventory.json",
+    "artifacts/result.json"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 0,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": true,
+  "timeout": 1020
+}

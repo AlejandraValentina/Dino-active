@@ -1,0 +1,71 @@
+{
+  "phase": "P4A",
+  "objective": "Ideal variable exhaust port bank E01-E05, frozen P3",
+  "enabled": true,
+  "depends_on": [
+    "P2"
+  ],
+  "allowed_paths": [
+    "dev_orchestrator/runs/"
+  ],
+  "forbidden_paths": [
+    "motorsim/",
+    "packaging/"
+  ],
+  "allowed_changes": [
+    "Evidence only; source committed before run."
+  ],
+  "forbidden_changes": [
+    "Toda modificaci\u00f3n de producto en esta versi\u00f3n."
+  ],
+  "commands": [
+    {
+      "id": "port_tests",
+      "kind": "test",
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_exhaust_port.py",
+        "-v"
+      ],
+      "timeout": 120
+    },
+    {
+      "id": "bank",
+      "kind": "command",
+      "argv": [
+        "{python}",
+        "-m",
+        "dev_orchestrator.p4_bench",
+        "--run-dir",
+        "{run_dir}"
+      ],
+      "timeout": 1900,
+      "result_file": "artifacts/result.json"
+    }
+  ],
+  "required_tests": [
+    "port_tests"
+  ],
+  "required_checks": [
+    "port_tests",
+    "bank",
+    "P4A"
+  ],
+  "required_evidence": [
+    "artifacts/summary.json",
+    "artifacts/inventory.json",
+    "artifacts/result.json"
+  ],
+  "gate": "default",
+  "max_repair_attempts": 0,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": false,
+  "timeout": 2050
+}

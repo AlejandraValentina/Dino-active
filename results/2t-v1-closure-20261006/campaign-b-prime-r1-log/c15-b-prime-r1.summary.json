@@ -1,0 +1,23 @@
+{
+  "name": "c15-b-prime-r1",
+  "command": [
+    "python",
+    "scripts/v1_closure_campaign.py",
+    "--fixture",
+    "FIXTURE_B_PRIME",
+    "--output",
+    "results/2t-v1-closure-20261006/campaign-b-prime-r1"
+  ],
+  "started_at": "2026-10-06T16:12:48+00:00",
+  "finished_at": "2026-10-06T16:22:37+00:00",
+  "duration_s": 588.829,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\2t-v1-closure-20261006\\campaign-b-prime-r1-log\\c15-b-prime-r1.log",
+  "log_lines": 1,
+  "log_bytes": 130,
+  "error_lines": [],
+  "tail": [
+    "{\"fixture_id\": \"FIXTURE_B_PRIME\", \"horizon_cycles\": 20, \"periodicity_status\": \"NOT_CONVERGENCE_WITHIN_HORIZON\", \"status\": \"PASS\"}"
+  ]
+}

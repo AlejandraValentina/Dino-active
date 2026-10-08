@@ -1,0 +1,1085 @@
+{
+  "acceptance_claim": false,
+  "classification": "PERIOD_1",
+  "configuration_hash": "96e16a68b08d1ec000257e42e0cb357cfb74f1fc1c2287bf713f07f26e55d675",
+  "converged_cycle": 20,
+  "cycle_artifacts": [
+    {
+      "cycle": 1,
+      "file": "cycle-001.json.gz",
+      "sha256": "c57c34b1fa41f48f64fb19d8d5eda45d91617d517073a00025a509879ace544d"
+    },
+    {
+      "cycle": 2,
+      "file": "cycle-002.json.gz",
+      "sha256": "728d4b51429201f63aa3c3619c5473ff86948b29535f0a042eb9bedb55169fc6"
+    },
+    {
+      "cycle": 3,
+      "file": "cycle-003.json.gz",
+      "sha256": "64843e596066e7041b5da869ae64c386298bc1c0ff4995c6c308c54c9b54f563"
+    },
+    {
+      "cycle": 4,
+      "file": "cycle-004.json.gz",
+      "sha256": "641a1ccc5148d2b7c9bd3547a80c5f0a36366bf005da69ba7ac7cde0ec325935"
+    },
+    {
+      "cycle": 5,
+      "file": "cycle-005.json.gz",
+      "sha256": "a85315369a056b63be9cb33dacc9c2ff5b7037a3fbc0c7427acfc17389365d99"
+    },
+    {
+      "cycle": 6,
+      "file": "cycle-006.json.gz",
+      "sha256": "b99695f72d686b901a7df6b629178cfa8d3de73bee7d2e9d6de8e6774bc5960b"
+    },
+    {
+      "cycle": 7,
+      "file": "cycle-007.json.gz",
+      "sha256": "70111631844d76b817fd149f75a202aa1ab65f88fbf03f1f3cb6955015c479ef"
+    },
+    {
+      "cycle": 8,
+      "file": "cycle-008.json.gz",
+      "sha256": "1411e19fb2fd65d06bfba70ec52e9b2727b82fc3db92afa34648890e9da43b92"
+    },
+    {
+      "cycle": 9,
+      "file": "cycle-009.json.gz",
+      "sha256": "5cdd9440202c6c2e53a57955487b5903e6f5769a3805b97453b346bd6e550ce3"
+    },
+    {
+      "cycle": 10,
+      "file": "cycle-010.json.gz",
+      "sha256": "c8ea9894711ef6e48e7a0e73da29d43247f90130f58ab1244c6a4c9c9d7ac3b4"
+    },
+    {
+      "cycle": 11,
+      "file": "cycle-011.json.gz",
+      "sha256": "b1e0c1c7e77eca356f428fd6d0153129d52948e4afffe77c8c608d1116b38641"
+    },
+    {
+      "cycle": 12,
+      "file": "cycle-012.json.gz",
+      "sha256": "d94396b361979d87acac0775bb5d19a1a55f6363da1b3943e31c799c9b366ee7"
+    },
+    {
+      "cycle": 13,
+      "file": "cycle-013.json.gz",
+      "sha256": "c772931638c5b350052a1bc07dd91d784720cac653d5b6acd7be028308efc94d"
+    },
+    {
+      "cycle": 14,
+      "file": "cycle-014.json.gz",
+      "sha256": "a248b8bc084d2057444551dcc16608319fc26263de61de1a8af4c7d1223e1df2"
+    },
+    {
+      "cycle": 15,
+      "file": "cycle-015.json.gz",
+      "sha256": "31a4601f472fa677ef0e5a3a9f0c0fc1a8f52925fd9661b9dad4e10736f7f331"
+    },
+    {
+      "cycle": 16,
+      "file": "cycle-016.json.gz",
+      "sha256": "31da67df9ba843d196669c803a5335126cc4555b75d4da68291f3bcbb9c6514f"
+    },
+    {
+      "cycle": 17,
+      "file": "cycle-017.json.gz",
+      "sha256": "a208da82c2651116f014ea1b420b58e308a68499440615f588090229ed8a8f83"
+    },
+    {
+      "cycle": 18,
+      "file": "cycle-018.json.gz",
+      "sha256": "ebf86bac20b887d6a7ec99116d051c21a4ea3dc4aa4efad1d557cd02dc6144ec"
+    },
+    {
+      "cycle": 19,
+      "file": "cycle-019.json.gz",
+      "sha256": "b0873c63732684d9ab82c7803589dcf7601ff51843fc17d1de9573bb83f0afc8"
+    },
+    {
+      "cycle": 20,
+      "file": "cycle-020.json.gz",
+      "sha256": "94bd5413850b5a63275748f267e6b123e97c2e3b1de8901bf46deb28baea9c08"
+    }
+  ],
+  "cycle_contract": "REFERENCE_PERIODIC_CONVERGENCE_V1",
+  "detected_period": 1,
+  "detector_updates": [
+    {
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 1,
+      "lag1": null,
+      "lag1_streak": 0,
+      "lag2": null,
+      "lag2_branch": null
+    },
+    {
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 2,
+      "lag1": {
+        "reason": "INVALID numeric observable",
+        "status": "INVALID"
+      },
+      "lag1_streak": 0,
+      "lag2": null,
+      "lag2_branch": null
+    },
+    {
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 3,
+      "lag1": {
+        "failed_metric_count": 99,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "work_J",
+          "threshold": 0.005,
+          "value": 0.9474422202665219
+        }
+      },
+      "lag1_streak": 0,
+      "lag2": {
+        "reason": "INVALID numeric observable",
+        "status": "INVALID"
+      },
+      "lag2_branch": "A"
+    },
+    {
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 4,
+      "lag1": {
+        "failed_metric_count": 92,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "work_J",
+          "threshold": 0.005,
+          "value": 0.6455981256386468
+        }
+      },
+      "lag1_streak": 0,
+      "lag2": {
+        "failed_metric_count": 104,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "work_J",
+          "threshold": 0.005,
+          "value": 0.8517000514509425
+        }
+      },
+      "lag2_branch": "B"
+    },
+    {
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 5,
+      "lag1": {
+        "failed_metric_count": 100,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "work_J",
+          "threshold": 0.005,
+          "value": 0.46330113839485915
+        }
+      },
+      "lag1_streak": 0,
+      "lag2": {
+        "failed_metric_count": 105,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "work_J",
+          "threshold": 0.005,
+          "value": 0.8097929174795337
+        }
+      },
+      "lag2_branch": "A"
+    },
+    {
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 6,
+      "lag1": {
+        "failed_metric_count": 110,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.3260728540835583
+        }
+      },
+      "lag1_streak": 0,
+      "lag2": {
+        "failed_metric_count": 112,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.4501324257692287
+        }
+      },
+      "lag2_branch": "B"
+    },
+    {
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 7,
+      "lag1": {
+        "failed_metric_count": 110,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.4552176668283597
+        }
+      },
+      "lag1_streak": 0,
+      "lag2": {
+        "failed_metric_count": 114,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.6328563970599365
+        }
+      },
+      "lag2_branch": "A"
+    },
+    {
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 8,
+      "lag1": {
+        "failed_metric_count": 110,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.46526256977973657
+        }
+      },
+      "lag1_streak": 0,
+      "lag2": {
+        "failed_metric_count": 117,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.7086844951303977
+        }
+      },
+      "lag2_branch": "B"
+    },
+    {
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 9,
+      "lag1": {
+        "failed_metric_count": 105,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.3629271860159072
+        }
+      },
+      "lag1_streak": 0,
+      "lag2": {
+        "failed_metric_count": 115,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.6593333205869543
+        }
+      },
+      "lag2_branch": "A"
+    },
+    {
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 10,
+      "lag1": {
+        "failed_metric_count": 100,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.23456315851960433
+        }
+      },
+      "lag1_streak": 0,
+      "lag2": {
+        "failed_metric_count": 109,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.5123609974709883
+        }
+      },
+      "lag2_branch": "B"
+    },
+    {
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 11,
+      "lag1": {
+        "failed_metric_count": 91,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.13257286771733687
+        }
+      },
+      "lag1_streak": 0,
+      "lag2": {
+        "failed_metric_count": 108,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.33603931565116096
+        }
+      },
+      "lag2_branch": "A"
+    },
+    {
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 12,
+      "lag1": {
+        "failed_metric_count": 83,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.06950521672290798
+        }
+      },
+      "lag1_streak": 0,
+      "lag2": {
+        "failed_metric_count": 98,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.19286357853797392
+        }
+      },
+      "lag2_branch": "B"
+    },
+    {
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 13,
+      "lag1": {
+        "failed_metric_count": 76,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.03548591509980869
+        }
+      },
+      "lag1_streak": 0,
+      "lag2": {
+        "failed_metric_count": 91,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.10252467560309375
+        }
+      },
+      "lag2_branch": "A"
+    },
+    {
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 14,
+      "lag1": {
+        "failed_metric_count": 58,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.018059515701191093
+        }
+      },
+      "lag1_streak": 0,
+      "lag2": {
+        "failed_metric_count": 81,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.052904572360083654
+        }
+      },
+      "lag2_branch": "B"
+    },
+    {
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 15,
+      "lag1": {
+        "failed_metric_count": 43,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.009228332723412436
+        }
+      },
+      "lag1_streak": 0,
+      "lag2": {
+        "failed_metric_count": 72,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.02712118920488925
+        }
+      },
+      "lag2_branch": "A"
+    },
+    {
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 16,
+      "lag1": {
+        "failed_metric_count": 27,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.004740729236974762
+        }
+      },
+      "lag1_streak": 0,
+      "lag2": {
+        "failed_metric_count": 54,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.013925312933636786
+        }
+      },
+      "lag2_branch": "B"
+    },
+    {
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 17,
+      "lag1": {
+        "failed_metric_count": 4,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.0024470404690243373
+        }
+      },
+      "lag1_streak": 0,
+      "lag2": {
+        "failed_metric_count": 34,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.007176168949703535
+        }
+      },
+      "lag2_branch": "A"
+    },
+    {
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 18,
+      "lag1": {
+        "failed_metric_count": 0,
+        "metric_count": 134,
+        "status": "PASS"
+      },
+      "lag1_streak": 1,
+      "lag2": {
+        "failed_metric_count": 17,
+        "metric_count": 134,
+        "status": "FAIL",
+        "worst_failed_metric": {
+          "name": "ducts.exhaust[4].mass_kg",
+          "threshold": 0.002,
+          "value": 0.0037121253105332416
+        }
+      },
+      "lag2_branch": "B"
+    },
+    {
+      "branch_streaks": {
+        "A": 1,
+        "B": 0
+      },
+      "classification": null,
+      "cycle": 19,
+      "lag1": {
+        "failed_metric_count": 0,
+        "metric_count": 134,
+        "status": "PASS"
+      },
+      "lag1_streak": 2,
+      "lag2": {
+        "failed_metric_count": 0,
+        "metric_count": 134,
+        "status": "PASS"
+      },
+      "lag2_branch": "A"
+    },
+    {
+      "branch_streaks": {
+        "A": 1,
+        "B": 1
+      },
+      "classification": "PERIOD_1",
+      "cycle": 20,
+      "lag1": {
+        "failed_metric_count": 0,
+        "metric_count": 134,
+        "status": "PASS"
+      },
+      "lag1_streak": 3,
+      "lag2": {
+        "failed_metric_count": 0,
+        "metric_count": 134,
+        "status": "PASS"
+      },
+      "lag2_branch": "B"
+    }
+  ],
+  "evidence_class": "SYNTHETIC_CONDITIONAL_ON_P4",
+  "fixture_id": "C",
+  "horizon_cycles": 20,
+  "period_1_comparison_counts": {
+    "FAIL": 15,
+    "INVALID": 1,
+    "PASS": 3
+  },
+  "period_1_comparisons": [
+    {
+      "later_cycle": 2,
+      "older_cycle": 1,
+      "reason": "INVALID numeric observable",
+      "status": "INVALID"
+    },
+    {
+      "failed_metric_count": 99,
+      "later_cycle": 3,
+      "metric_count": 134,
+      "older_cycle": 2,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "work_J",
+        "threshold": 0.005,
+        "value": 0.9474422202665219
+      }
+    },
+    {
+      "failed_metric_count": 92,
+      "later_cycle": 4,
+      "metric_count": 134,
+      "older_cycle": 3,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "work_J",
+        "threshold": 0.005,
+        "value": 0.6455981256386468
+      }
+    },
+    {
+      "failed_metric_count": 100,
+      "later_cycle": 5,
+      "metric_count": 134,
+      "older_cycle": 4,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "work_J",
+        "threshold": 0.005,
+        "value": 0.46330113839485915
+      }
+    },
+    {
+      "failed_metric_count": 110,
+      "later_cycle": 6,
+      "metric_count": 134,
+      "older_cycle": 5,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.3260728540835583
+      }
+    },
+    {
+      "failed_metric_count": 110,
+      "later_cycle": 7,
+      "metric_count": 134,
+      "older_cycle": 6,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.4552176668283597
+      }
+    },
+    {
+      "failed_metric_count": 110,
+      "later_cycle": 8,
+      "metric_count": 134,
+      "older_cycle": 7,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.46526256977973657
+      }
+    },
+    {
+      "failed_metric_count": 105,
+      "later_cycle": 9,
+      "metric_count": 134,
+      "older_cycle": 8,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.3629271860159072
+      }
+    },
+    {
+      "failed_metric_count": 100,
+      "later_cycle": 10,
+      "metric_count": 134,
+      "older_cycle": 9,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.23456315851960433
+      }
+    },
+    {
+      "failed_metric_count": 91,
+      "later_cycle": 11,
+      "metric_count": 134,
+      "older_cycle": 10,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.13257286771733687
+      }
+    },
+    {
+      "failed_metric_count": 83,
+      "later_cycle": 12,
+      "metric_count": 134,
+      "older_cycle": 11,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.06950521672290798
+      }
+    },
+    {
+      "failed_metric_count": 76,
+      "later_cycle": 13,
+      "metric_count": 134,
+      "older_cycle": 12,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.03548591509980869
+      }
+    },
+    {
+      "failed_metric_count": 58,
+      "later_cycle": 14,
+      "metric_count": 134,
+      "older_cycle": 13,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.018059515701191093
+      }
+    },
+    {
+      "failed_metric_count": 43,
+      "later_cycle": 15,
+      "metric_count": 134,
+      "older_cycle": 14,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.009228332723412436
+      }
+    },
+    {
+      "failed_metric_count": 27,
+      "later_cycle": 16,
+      "metric_count": 134,
+      "older_cycle": 15,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.004740729236974762
+      }
+    },
+    {
+      "failed_metric_count": 4,
+      "later_cycle": 17,
+      "metric_count": 134,
+      "older_cycle": 16,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.0024470404690243373
+      }
+    },
+    {
+      "failed_metric_count": 0,
+      "later_cycle": 18,
+      "metric_count": 134,
+      "older_cycle": 17,
+      "status": "PASS"
+    },
+    {
+      "failed_metric_count": 0,
+      "later_cycle": 19,
+      "metric_count": 134,
+      "older_cycle": 18,
+      "status": "PASS"
+    },
+    {
+      "failed_metric_count": 0,
+      "later_cycle": 20,
+      "metric_count": 134,
+      "older_cycle": 19,
+      "status": "PASS"
+    }
+  ],
+  "period_2_comparison_counts": {
+    "FAIL": 15,
+    "INVALID": 1,
+    "PASS": 2
+  },
+  "period_2_comparisons": [
+    {
+      "later_cycle": 3,
+      "older_cycle": 1,
+      "reason": "INVALID numeric observable",
+      "status": "INVALID"
+    },
+    {
+      "failed_metric_count": 104,
+      "later_cycle": 4,
+      "metric_count": 134,
+      "older_cycle": 2,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "work_J",
+        "threshold": 0.005,
+        "value": 0.8517000514509425
+      }
+    },
+    {
+      "failed_metric_count": 105,
+      "later_cycle": 5,
+      "metric_count": 134,
+      "older_cycle": 3,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "work_J",
+        "threshold": 0.005,
+        "value": 0.8097929174795337
+      }
+    },
+    {
+      "failed_metric_count": 112,
+      "later_cycle": 6,
+      "metric_count": 134,
+      "older_cycle": 4,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.4501324257692287
+      }
+    },
+    {
+      "failed_metric_count": 114,
+      "later_cycle": 7,
+      "metric_count": 134,
+      "older_cycle": 5,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.6328563970599365
+      }
+    },
+    {
+      "failed_metric_count": 117,
+      "later_cycle": 8,
+      "metric_count": 134,
+      "older_cycle": 6,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.7086844951303977
+      }
+    },
+    {
+      "failed_metric_count": 115,
+      "later_cycle": 9,
+      "metric_count": 134,
+      "older_cycle": 7,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.6593333205869543
+      }
+    },
+    {
+      "failed_metric_count": 109,
+      "later_cycle": 10,
+      "metric_count": 134,
+      "older_cycle": 8,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.5123609974709883
+      }
+    },
+    {
+      "failed_metric_count": 108,
+      "later_cycle": 11,
+      "metric_count": 134,
+      "older_cycle": 9,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.33603931565116096
+      }
+    },
+    {
+      "failed_metric_count": 98,
+      "later_cycle": 12,
+      "metric_count": 134,
+      "older_cycle": 10,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.19286357853797392
+      }
+    },
+    {
+      "failed_metric_count": 91,
+      "later_cycle": 13,
+      "metric_count": 134,
+      "older_cycle": 11,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.10252467560309375
+      }
+    },
+    {
+      "failed_metric_count": 81,
+      "later_cycle": 14,
+      "metric_count": 134,
+      "older_cycle": 12,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.052904572360083654
+      }
+    },
+    {
+      "failed_metric_count": 72,
+      "later_cycle": 15,
+      "metric_count": 134,
+      "older_cycle": 13,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.02712118920488925
+      }
+    },
+    {
+      "failed_metric_count": 54,
+      "later_cycle": 16,
+      "metric_count": 134,
+      "older_cycle": 14,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.013925312933636786
+      }
+    },
+    {
+      "failed_metric_count": 34,
+      "later_cycle": 17,
+      "metric_count": 134,
+      "older_cycle": 15,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.007176168949703535
+      }
+    },
+    {
+      "failed_metric_count": 17,
+      "later_cycle": 18,
+      "metric_count": 134,
+      "older_cycle": 16,
+      "status": "FAIL",
+      "worst_failed_metric": {
+        "name": "ducts.exhaust[4].mass_kg",
+        "threshold": 0.002,
+        "value": 0.0037121253105332416
+      }
+    },
+    {
+      "failed_metric_count": 0,
+      "later_cycle": 19,
+      "metric_count": 134,
+      "older_cycle": 17,
+      "status": "PASS"
+    },
+    {
+      "failed_metric_count": 0,
+      "later_cycle": 20,
+      "metric_count": 134,
+      "older_cycle": 18,
+      "status": "PASS"
+    }
+  ],
+  "preregistration": {
+    "commit": "5a093bbf4df5f3d8d2fd53b807967f302037ee00",
+    "producer_commit": "495f654a5e8819b2ef4f45ac4daae7d530455016",
+    "producer_source_sha256": "c9703f9aa9f30f1d43efc6f337ea04a7bafc2a198fa50411e7c9638fda135a1f",
+    "sha256": "1570a5705829d003a99f187fd53433e0c7c8e7926f76e80adc7fcdfcd59a1511"
+  },
+  "restart_gate": {
+    "compared_terminal_cycle": 4,
+    "restart_cycle": 3,
+    "snapshot_equal": true,
+    "status": "EXACT_REPLAY_PASS"
+  },
+  "schema": "MOTORSIM_COMMERCIAL_CYCLE_EVALUATION_V1"
+}

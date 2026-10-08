@@ -1,0 +1,160 @@
+{
+  "run_id": "20260918T145340-P1_R5E-14d8b8948263",
+  "phase_id": "P1_R5E",
+  "started_at": "2026-09-18T14:53:40.639273+00:00",
+  "finished_at": "2026-09-18T15:07:55.336879+00:00",
+  "git_commit": "a503b8779968457e59bead18df710399cffd97f9",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "acquire",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p1_r5_evidence",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260918T145340-P1_R5E-14d8b8948263"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 836.8439999995753,
+      "status": "passed",
+      "stdout_log": "logs/1-acquire.stdout.log",
+      "stderr_log": "logs/1-acquire.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "acquire",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "baseline_intact",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "Evidence acquisition only, not contract adoption"
+    },
+    {
+      "id": "contract_frozen",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "Evidence acquisition only, not contract adoption"
+    },
+    {
+      "id": "dependencies_accepted",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "Evidence acquisition only, not contract adoption"
+    },
+    {
+      "id": "first_order_contracts_frozen",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "Evidence acquisition only, not contract adoption"
+    },
+    {
+      "id": "p1_r4_accepted",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "Evidence acquisition only, not contract adoption"
+    },
+    {
+      "id": "p2a_accepted",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "Evidence acquisition only, not contract adoption"
+    },
+    {
+      "id": "solver_unchanged",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "Evidence acquisition only, not contract adoption"
+    },
+    {
+      "id": "evidence_complete",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "Evidence acquisition only, not contract adoption"
+    }
+  ],
+  "tests": [],
+  "metrics": {
+    "new_integrations": 2
+  },
+  "review": {
+    "status": "BLOCKED",
+    "findings": [
+      "No hay reviewer independiente conectado."
+    ],
+    "blocking_findings": [
+      "reviewer_unavailable"
+    ],
+    "scientific_change_required": false,
+    "notes": "No se llamó a ningún proveedor externo.",
+    "kind": "none"
+  },
+  "gate": "BLOCKED",
+  "gate_reasons": [
+    "review_not_approved"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "review_not_approved",
+      "state": "BLOCKED"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "artifacts/result.json",
+      "sha256": "768c0242c34537f786433cf4fb7568ecc0e67e7241dd9a2fedd35852e0646e5e",
+      "bytes": 1460
+    },
+    {
+      "path": "artifacts/acquisition.json",
+      "sha256": "aa67fe1ef0beeda501c5b504b8d842c8c0bf153c404d0569f358c7f9e49400f4",
+      "bytes": 2052
+    },
+    {
+      "path": "artifacts/cases/T10_800.json.gz",
+      "sha256": "9a37e405d6f4ca7a88d1cb3c5ae8eafb60052a0d3f955aecc36e8f3f387923f9",
+      "bytes": 1823382
+    },
+    {
+      "path": "artifacts/cases/T03_0.2_N1600.json.gz",
+      "sha256": "ee574dc596fa07b313f48f71e58ca38616807fd5fb4f6646be0fc3ac2e89f999",
+      "bytes": 1097079
+    }
+  ],
+  "phase_definition_sha256": "34270849a840b3f46cb385d96e741fe443c5e232fc3ac48245841f4f0af2a88e",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P0": "docs\\gasdynamic\\p0_accepted_dependency.json",
+      "P1_R4_CFL_REVIEW": "docs\\gasdynamic\\p1_r4_accepted_dependency.json",
+      "P2A_R4_VERIFY": "docs\\gasdynamic\\p2a_accepted_dependency.json"
+    }
+  },
+  "continue_requested": false
+}

@@ -1,0 +1,727 @@
+{
+  "state": "P3C_READY_FOR_REVIEW",
+  "checks": {
+    "C08": true,
+    "C09": true,
+    "C10": true,
+    "C11": true,
+    "C12": true
+  },
+  "passed": true,
+  "refinement": {
+    "0.2": {
+      "pressure": {
+        "values": [
+          0.0016361558333301217,
+          0.0004972615681253956,
+          0.00012239377547302867
+        ],
+        "decreasing": true
+      },
+      "velocity": {
+        "values": [
+          0.0016409362529931496,
+          0.000498040850304337,
+          0.00012243088076297897
+        ],
+        "decreasing": true
+      },
+      "mass": {
+        "values": [
+          0.00026474782008402447,
+          7.503805218790802e-05,
+          1.7474180720564347e-05
+        ],
+        "decreasing": true
+      },
+      "energy": {
+        "values": [
+          0.0002649755561634493,
+          7.530515944154105e-05,
+          1.775648783564066e-05
+        ],
+        "decreasing": true
+      },
+      "species": {
+        "values": [
+          0.0002647479671099706,
+          7.50378684054754e-05,
+          1.7474952606781403e-05
+        ],
+        "decreasing": true
+      },
+      "chamber_pressure": {
+        "values": [
+          0.00026497555968091335,
+          7.530515444670316e-05,
+          1.7756491566267574e-05
+        ],
+        "decreasing": true
+      }
+    },
+    "0.4": {
+      "pressure": {
+        "values": [
+          0.001643127132410882,
+          0.0005040967180320877,
+          0.00012492370642576135
+        ],
+        "decreasing": true
+      },
+      "velocity": {
+        "values": [
+          0.0016477850199990204,
+          0.0005049844564767731,
+          0.00012496193819655943
+        ],
+        "decreasing": true
+      },
+      "mass": {
+        "values": [
+          0.00026277763564972655,
+          7.490546103915424e-05,
+          1.7304318494472873e-05
+        ],
+        "decreasing": true
+      },
+      "energy": {
+        "values": [
+          0.0002630053721475179,
+          7.517230926623598e-05,
+          1.7586657463652958e-05
+        ],
+        "decreasing": true
+      },
+      "species": {
+        "values": [
+          0.0002627776619043598,
+          7.490570258178e-05,
+          1.7304770074164486e-05
+        ],
+        "decreasing": true
+      },
+      "chamber_pressure": {
+        "values": [
+          0.00026300537587814476,
+          7.517232456449863e-05,
+          1.7586670715552533e-05
+        ],
+        "decreasing": true
+      }
+    },
+    "0.6": {
+      "pressure": {
+        "values": [
+          0.001653090053878259,
+          0.0005175336556931143,
+          0.00014527442763210275
+        ],
+        "decreasing": true
+      },
+      "velocity": {
+        "values": [
+          0.0016572812572801098,
+          0.0005183647919271543,
+          0.00014541033278125351
+        ],
+        "decreasing": true
+      },
+      "mass": {
+        "values": [
+          0.00025946583420629086,
+          7.506024785484327e-05,
+          2.2320822771880083e-05
+        ],
+        "decreasing": true
+      },
+      "energy": {
+        "values": [
+          0.0002596932944243236,
+          7.53268203368407e-05,
+          2.260251008578962e-05
+        ],
+        "decreasing": true
+      },
+      "species": {
+        "values": [
+          0.00025946579744980433,
+          7.506013233445706e-05,
+          2.232079651724685e-05
+        ],
+        "decreasing": true
+      },
+      "chamber_pressure": {
+        "values": [
+          0.00025969330176450756,
+          7.53268222484782e-05,
+          2.260251216795739e-05
+        ],
+        "decreasing": true
+      }
+    }
+  },
+  "sensitivity": {
+    "0.2/0.4": {
+      "values": [
+        7.055672358546872e-05,
+        3.167867944284808e-05,
+        1.0049787033494794e-05
+      ],
+      "refined_not_worse": true
+    },
+    "0.2/0.6": {
+      "values": [
+        0.00017659468248893974,
+        8.007713404367678e-05,
+        5.174316584088956e-05
+      ],
+      "refined_not_worse": true
+    },
+    "0.4/0.6": {
+      "values": [
+        0.00010629142052493989,
+        4.840964174945839e-05,
+        4.237535176798701e-05
+      ],
+      "refined_not_worse": true
+    }
+  },
+  "gaussian_tails": {
+    "initial_pressure": 1.3887943864964021e-11,
+    "right_wall_reflection": 5.31964358256576e-13
+  },
+  "cases": [
+    {
+      "name": "variable_FIRST_ORDER",
+      "inputs": {
+        "N": 80,
+        "CFL": 0.4,
+        "method": "FIRST_ORDER",
+        "final_time": 0.003
+      },
+      "independent_work": 0.029703873724658308,
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "independent_work": true,
+        "energy_with_work": true,
+        "excited": true
+      },
+      "status": "PASS",
+      "reused_from": "results\\p3-r1-20260918\\p3c-infrastructure\\artifacts\\cases\\variable_FIRST_ORDER.json.gz",
+      "reused_sha256": "bab38eded6c5e1f749bd6fd3b445f39d08667e757eda88995693a80757018536",
+      "runtime": 1.3440000005066395,
+      "counts": {
+        "rhs": 697,
+        "HLLC": 56457,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 0
+      },
+      "max_residual": 5.307158221662099e-16
+    },
+    {
+      "name": "variable_MUSCL_SSPRK2",
+      "inputs": {
+        "N": 80,
+        "CFL": 0.4,
+        "method": "MUSCL_SSPRK2",
+        "final_time": 0.003
+      },
+      "independent_work": 0.030112189011457582,
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "independent_work": true,
+        "energy_with_work": true,
+        "excited": true
+      },
+      "status": "PASS",
+      "reused_from": "results\\p3-r1-20260918\\p3c-infrastructure\\artifacts\\cases\\variable_MUSCL_SSPRK2.json.gz",
+      "reused_sha256": "228bbc0e392507019cfa3a27aa784b0b8dabd072a1f5e793bfdf17fda288b1a5",
+      "runtime": 6.796999999321997,
+      "counts": {
+        "rhs": 2963,
+        "HLLC": 240003,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 785
+      },
+      "max_residual": 8.313525306765484e-16
+    },
+    {
+      "name": "acoustic_N40_CFL0.2",
+      "inputs": {
+        "N": 40,
+        "CFL": 0.2,
+        "final_time": 0.0009,
+        "epsilon": 1.0,
+        "tau": 0.0019554210272164987
+      },
+      "quadrature": {
+        "final_difference_8_16": 1.7270135938613554e-16,
+        "scales": [
+          1.1614401858304297,
+          0.0029331315408247477,
+          285714.2857142856,
+          0.3484320557491289
+        ]
+      },
+      "errors": {
+        "pressure": 0.0016361558333301217,
+        "velocity": 0.0016409362529931496,
+        "mass": 0.00026474782008402447,
+        "energy": 0.0002649755561634493,
+        "species": 0.0002647479671099706,
+        "chamber_pressure": 0.00026497555968091335,
+        "reflected_wave": 0.0011674517245257577
+      },
+      "reflection_peak": {
+        "numerical": 0.07136069414342634,
+        "reference": 0.07330341802088526
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "accuracy": true,
+        "species": true,
+        "response": true
+      },
+      "status": "PASS",
+      "runtime": 0.6720000002533197,
+      "counts": {
+        "rhs": 562,
+        "HLLC": 23042,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 76
+      },
+      "max_residual": 6.544467071580479e-16
+    },
+    {
+      "name": "acoustic_N80_CFL0.2",
+      "inputs": {
+        "N": 80,
+        "CFL": 0.2,
+        "final_time": 0.0009,
+        "epsilon": 1.0,
+        "tau": 0.0019554210272164987
+      },
+      "quadrature": {
+        "final_difference_8_16": 1.7270135938613665e-16,
+        "scales": [
+          1.1614401858304297,
+          0.0029331315408247477,
+          285714.2857142856,
+          0.3484320557491289
+        ]
+      },
+      "errors": {
+        "pressure": 0.0004972615681253956,
+        "velocity": 0.000498040850304337,
+        "mass": 7.503805218790802e-05,
+        "energy": 7.530515944154105e-05,
+        "species": 7.50378684054754e-05,
+        "chamber_pressure": 7.530515444670316e-05,
+        "reflected_wave": 0.00035743269061367294
+      },
+      "reflection_peak": {
+        "numerical": 0.07259650228897567,
+        "reference": 0.07330481365014936
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "accuracy": true,
+        "species": true,
+        "response": true
+      },
+      "status": "PASS",
+      "runtime": 2.5779999997466803,
+      "counts": {
+        "rhs": 1089,
+        "HLLC": 88209,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 135
+      },
+      "max_residual": 1.5706720971793152e-15
+    },
+    {
+      "name": "acoustic_N160_CFL0.2",
+      "inputs": {
+        "N": 160,
+        "CFL": 0.2,
+        "final_time": 0.0009,
+        "epsilon": 1.0,
+        "tau": 0.0019554210272164987
+      },
+      "quadrature": {
+        "final_difference_8_16": 1.727013593861392e-16,
+        "scales": [
+          1.1614401858304297,
+          0.0029331315408247477,
+          285714.2857142856,
+          0.3484320557491289
+        ]
+      },
+      "errors": {
+        "pressure": 0.00012239377547302867,
+        "velocity": 0.00012243088076297897,
+        "mass": 1.7474180720564347e-05,
+        "energy": 1.775648783564066e-05,
+        "species": 1.7474952606781403e-05,
+        "chamber_pressure": 1.7756491566267574e-05,
+        "reflected_wave": 8.946924411729037e-05
+      },
+      "reflection_peak": {
+        "numerical": 0.07308325152952894,
+        "reference": 0.07330487667715406
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "accuracy": true,
+        "species": true,
+        "response": true
+      },
+      "status": "PASS",
+      "runtime": 10.25,
+      "counts": {
+        "rhs": 2167,
+        "HLLC": 348887,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 265
+      },
+      "max_residual": 1.35111478809306e-15
+    },
+    {
+      "name": "acoustic_N40_CFL0.4",
+      "inputs": {
+        "N": 40,
+        "CFL": 0.4,
+        "final_time": 0.0009,
+        "epsilon": 1.0,
+        "tau": 0.0019554210272164987
+      },
+      "quadrature": {
+        "final_difference_8_16": 1.7270135938613554e-16,
+        "scales": [
+          1.1614401858304297,
+          0.0029331315408247477,
+          285714.2857142856,
+          0.3484320557491289
+        ]
+      },
+      "errors": {
+        "pressure": 0.001643127132410882,
+        "velocity": 0.0016477850199990204,
+        "mass": 0.00026277763564972655,
+        "energy": 0.0002630053721475179,
+        "species": 0.0002627776619043598,
+        "chamber_pressure": 0.00026300537587814476,
+        "reflected_wave": 0.0011701745740130328
+      },
+      "reflection_peak": {
+        "numerical": 0.07127256550973964,
+        "reference": 0.0733034180063715
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "accuracy": true,
+        "species": true,
+        "response": true
+      },
+      "status": "PASS",
+      "runtime": 0.32800000067800283,
+      "counts": {
+        "rhs": 286,
+        "HLLC": 11726,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 40
+      },
+      "max_residual": 3.684858512981073e-16
+    },
+    {
+      "name": "acoustic_N80_CFL0.4",
+      "inputs": {
+        "N": 80,
+        "CFL": 0.4,
+        "final_time": 0.0009,
+        "epsilon": 1.0,
+        "tau": 0.0019554210272164987
+      },
+      "quadrature": {
+        "final_difference_8_16": 1.7270135938613665e-16,
+        "scales": [
+          1.1614401858304297,
+          0.0029331315408247477,
+          285714.2857142856,
+          0.3484320557491289
+        ]
+      },
+      "errors": {
+        "pressure": 0.0005040967180320877,
+        "velocity": 0.0005049844564767731,
+        "mass": 7.490546103915424e-05,
+        "energy": 7.517230926623598e-05,
+        "species": 7.490570258178e-05,
+        "chamber_pressure": 7.517232456449863e-05,
+        "reflected_wave": 0.00035822121956660186
+      },
+      "reflection_peak": {
+        "numerical": 0.07255914105141392,
+        "reference": 0.07330452544088059
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "accuracy": true,
+        "species": true,
+        "response": true
+      },
+      "status": "PASS",
+      "runtime": 1.3279999997466803,
+      "counts": {
+        "rhs": 566,
+        "HLLC": 45846,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 78
+      },
+      "max_residual": 1.0471147314528768e-15
+    },
+    {
+      "name": "acoustic_N160_CFL0.4",
+      "inputs": {
+        "N": 160,
+        "CFL": 0.4,
+        "final_time": 0.0009,
+        "epsilon": 1.0,
+        "tau": 0.0019554210272164987
+      },
+      "quadrature": {
+        "final_difference_8_16": 1.727013593861392e-16,
+        "scales": [
+          1.1614401858304297,
+          0.0029331315408247477,
+          285714.2857142856,
+          0.3484320557491289
+        ]
+      },
+      "errors": {
+        "pressure": 0.00012492370642576135,
+        "velocity": 0.00012496193819655943,
+        "mass": 1.7304318494472873e-05,
+        "energy": 1.7586657463652958e-05,
+        "species": 1.7304770074164486e-05,
+        "chamber_pressure": 1.7586670715552533e-05,
+        "reflected_wave": 8.924396189905425e-05
+      },
+      "reflection_peak": {
+        "numerical": 0.07307094666727276,
+        "reference": 0.07330481356894278
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "accuracy": true,
+        "species": true,
+        "response": true
+      },
+      "status": "PASS",
+      "runtime": 5.360000000335276,
+      "counts": {
+        "rhs": 1136,
+        "HLLC": 182896,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 158
+      },
+      "max_residual": 7.369717025962146e-16
+    },
+    {
+      "name": "acoustic_N40_CFL0.6",
+      "inputs": {
+        "N": 40,
+        "CFL": 0.6,
+        "final_time": 0.0009,
+        "epsilon": 1.0,
+        "tau": 0.0019554210272164987
+      },
+      "quadrature": {
+        "final_difference_8_16": 1.7270135938613554e-16,
+        "scales": [
+          1.1614401858304297,
+          0.0029331315408247477,
+          285714.2857142856,
+          0.3484320557491289
+        ]
+      },
+      "errors": {
+        "pressure": 0.001653090053878259,
+        "velocity": 0.0016572812572801098,
+        "mass": 0.00025946583420629086,
+        "energy": 0.0002596932944243236,
+        "species": 0.00025946579744980433,
+        "chamber_pressure": 0.00025969330176450756,
+        "reflected_wave": 0.0011819924882355542
+      },
+      "reflection_peak": {
+        "numerical": 0.07112637936918856,
+        "reference": 0.07330341800145602
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "accuracy": true,
+        "species": true,
+        "response": true
+      },
+      "status": "PASS",
+      "runtime": 0.25,
+      "counts": {
+        "rhs": 203,
+        "HLLC": 8323,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 33
+      },
+      "max_residual": 3.926680242948288e-16
+    },
+    {
+      "name": "acoustic_N80_CFL0.6",
+      "inputs": {
+        "N": 80,
+        "CFL": 0.6,
+        "final_time": 0.0009,
+        "epsilon": 1.0,
+        "tau": 0.0019554210272164987
+      },
+      "quadrature": {
+        "final_difference_8_16": 1.7270135938613665e-16,
+        "scales": [
+          1.1614401858304297,
+          0.0029331315408247477,
+          285714.2857142856,
+          0.3484320557491289
+        ]
+      },
+      "errors": {
+        "pressure": 0.0005175336556931143,
+        "velocity": 0.0005183647919271543,
+        "mass": 7.506024785484327e-05,
+        "energy": 7.53268203368407e-05,
+        "species": 7.506013233445706e-05,
+        "chamber_pressure": 7.53268222484782e-05,
+        "reflected_wave": 0.0003601589579763552
+      },
+      "reflection_peak": {
+        "numerical": 0.07249705921762424,
+        "reference": 0.07330341728202998
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "accuracy": true,
+        "species": true,
+        "response": true
+      },
+      "status": "PASS",
+      "runtime": 0.9380000000819564,
+      "counts": {
+        "rhs": 394,
+        "HLLC": 31914,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 60
+      },
+      "max_residual": 4.913144683974764e-16
+    },
+    {
+      "name": "acoustic_N160_CFL0.6",
+      "inputs": {
+        "N": 160,
+        "CFL": 0.6,
+        "final_time": 0.0009,
+        "epsilon": 1.0,
+        "tau": 0.0019554210272164987
+      },
+      "quadrature": {
+        "final_difference_8_16": 1.727013593861392e-16,
+        "scales": [
+          1.1614401858304297,
+          0.0029331315408247477,
+          285714.2857142856,
+          0.3484320557491289
+        ]
+      },
+      "errors": {
+        "pressure": 0.00014527442763210275,
+        "velocity": 0.00014541033278125351,
+        "mass": 2.2320822771880083e-05,
+        "energy": 2.260251008578962e-05,
+        "species": 2.232079651724685e-05,
+        "chamber_pressure": 2.260251216795739e-05,
+        "reflected_wave": 9.69392650637745e-05
+      },
+      "reflection_peak": {
+        "numerical": 0.07302273749753721,
+        "reference": 0.07330487667927471
+      },
+      "checks": {
+        "completed": true,
+        "conservation": true,
+        "stages": true,
+        "CFL": true,
+        "positivity": true,
+        "accuracy": true,
+        "species": true,
+        "response": true
+      },
+      "status": "PASS",
+      "runtime": 3.7970000002533197,
+      "counts": {
+        "rhs": 785,
+        "HLLC": 126385,
+        "HLLE": 0,
+        "downgrades": 0,
+        "rejected": 119
+      },
+      "max_residual": 5.235573657264384e-16
+    }
+  ]
+}

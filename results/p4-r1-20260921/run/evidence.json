@@ -1,0 +1,150 @@
+{
+  "run_id": "20260921T104747-P4_R1-73d6fd86f5ae",
+  "phase_id": "P4_R1",
+  "started_at": "2026-09-21T10:47:47.740892+00:00",
+  "finished_at": "2026-09-21T11:22:14.493658+00:00",
+  "git_commit": "87851ece9271c8b4e2f9eccd5615202580422f57",
+  "git_dirty": true,
+  "preexisting_changes": [
+    {
+      "status": " D",
+      "path": "redme.txt"
+    }
+  ],
+  "preexisting_untracked": [],
+  "commands": [
+    {
+      "id": "observable_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p4_r1.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.5159999998286366,
+      "status": "passed",
+      "stdout_log": "logs/1-observable_tests.stdout.log",
+      "stderr_log": "logs/1-observable_tests.stderr.log",
+      "error": ""
+    },
+    {
+      "id": "diagnostic_command",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "dev_orchestrator.p4_r1",
+        "--run-dir",
+        "E:\\dino\\Dino\\dev_orchestrator\\runs\\20260921T104747-P4_R1-73d6fd86f5ae"
+      ],
+      "kind": "command",
+      "returncode": 0,
+      "duration_seconds": 2035.438000000082,
+      "status": "passed",
+      "stdout_log": "logs/1-diagnostic_command.stdout.log",
+      "stderr_log": "logs/1-diagnostic_command.stderr.log",
+      "error": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "observable_tests",
+      "passed": true,
+      "kind": "test",
+      "reason": "passed"
+    },
+    {
+      "id": "diagnostic_command",
+      "passed": true,
+      "kind": "infrastructure",
+      "reason": "passed"
+    },
+    {
+      "id": "diagnostic_evidence",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "P4_R1_PERFORMANCE_DIAGNOSTIC_REQUIRED"
+    },
+    {
+      "id": "frozen_implementation",
+      "passed": true,
+      "kind": "numerical",
+      "reason": "Source and historical evidence hashes"
+    }
+  ],
+  "tests": [
+    {
+      "id": "observable_tests",
+      "argv": [
+        "E:\\dino\\Dino\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p4_r1.py",
+        "-v"
+      ],
+      "kind": "test",
+      "returncode": 0,
+      "duration_seconds": 0.5159999998286366,
+      "status": "passed",
+      "stdout_log": "logs/1-observable_tests.stdout.log",
+      "stderr_log": "logs/1-observable_tests.stderr.log",
+      "error": ""
+    }
+  ],
+  "metrics": {
+    "new_integrations": 9
+  },
+  "review": {
+    "status": "BLOCKED",
+    "findings": [
+      "No hay reviewer independiente conectado."
+    ],
+    "blocking_findings": [
+      "reviewer_unavailable"
+    ],
+    "scientific_change_required": false,
+    "notes": "No se llamó a ningún proveedor externo.",
+    "kind": "none"
+  },
+  "gate": "SCIENTIFIC_CHANGE_REQUIRED",
+  "gate_reasons": [
+    "unauthorized_scientific_change_required"
+  ],
+  "execution_status": "COMPLETED",
+  "attempts": [
+    {
+      "number": 1,
+      "kind": "initial",
+      "cause": "unauthorized_scientific_change_required",
+      "state": "SCIENTIFIC_CHANGE_REQUIRED"
+    }
+  ],
+  "files_changed": [],
+  "scope_violations": [],
+  "preexisting_touched": [],
+  "errors": [],
+  "artifacts": [],
+  "phase_definition_sha256": "ceeaeab78b254d81ec32323520ba756a8e38e5abcb78025fb448ba6d1c63cc34",
+  "config": {
+    "default_command_timeout": 30,
+    "default_phase_timeout": 120,
+    "default_max_repair_attempts": 3,
+    "runs_directory": "dev_orchestrator/runs",
+    "python_executable_policy": "current_interpreter",
+    "reviewer_mode": "dummy_local",
+    "dependency_evidence": {
+      "P2": "docs\\gasdynamic\\p2_accepted_dependency.json"
+    }
+  },
+  "continue_requested": false
+}

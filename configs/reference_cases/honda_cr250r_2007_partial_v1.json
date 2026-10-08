@@ -1,0 +1,45 @@
+{
+  "schema": "MOTORSIM_DOCUMENTED_REFERENCE_CASE_PARTIAL_V1",
+  "case_id": "HONDA_CR250R_2007_REFERENCE_CASE_PARTIAL_V1",
+  "case_status": "DOCUMENTED_PARTIAL_NOT_SIMULATION_READY",
+  "source": {
+    "title": "2007 Honda CR250R- Specifications",
+    "publisher": "American Honda Motor Co., Inc.",
+    "published": "2006-06-02",
+    "url": "https://hondanews.com/en-US/releases/release-707d4f21703e9943a7cb22004c34bfff-2007-honda-cr250r-specifications"
+  },
+  "classification": "REAL_ENGINE_REFERENCE_PARTIAL",
+  "claims": {
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_validation": "NOT_CLAIMED",
+    "simulation_executed": false
+  },
+  "documented_parameters": {
+    "manufacturer": {"value": "Honda", "provenance": "DOCUMENTED", "source_location": "title and model heading"},
+    "model": {"value": "CR250R", "provenance": "DOCUMENTED", "source_location": "model heading"},
+    "model_year": {"value": 2007, "unit": "year", "provenance": "DOCUMENTED", "source_location": "title"},
+    "cycle": {"value": "2T", "provenance": "DOCUMENTED", "source_location": "engine type"},
+    "cylinder_count": {"value": 1, "unit": "cylinders", "provenance": "DOCUMENTED", "source_location": "engine type"},
+    "displacement": {"value": 249, "unit": "cm3", "provenance": "DOCUMENTED", "source_location": "engine type"},
+    "bore": {"value": 66.4, "unit": "mm", "provenance": "DOCUMENTED", "source_location": "bore and stroke"},
+    "stroke": {"value": 72.0, "unit": "mm", "provenance": "DOCUMENTED", "source_location": "bore and stroke"},
+    "compression_ratio": {"value": 8.5, "unit": "ratio", "provenance": "DOCUMENTED", "source_location": "compression ratio", "measurement_convention": "NOT_SPECIFIED_BY_SOURCE"},
+    "cooling": {"value": "liquid-cooled", "provenance": "DOCUMENTED", "source_location": "engine type"},
+    "exhaust_valve": {"value": "electronically controlled RC valve", "provenance": "DOCUMENTED", "source_location": "engine type"},
+    "induction": {"value": "six-petal crankcase reed-valve", "provenance": "DOCUMENTED", "source_location": "induction"},
+    "carburetor": {"value": "38mm Mikuni TMX flat-slide with TPS", "provenance": "DOCUMENTED", "source_location": "carburetion"}
+  },
+  "unknown_parameters": {
+    "connecting_rod_center_length_mm": {"value": null, "unit": "mm", "provenance": "UNKNOWN"},
+    "crankcase_bdc_volume_cm3": {"value": null, "unit": "cm3", "provenance": "UNKNOWN"},
+    "port_dimensions_and_timing": {"value": null, "unit": "mm, mm2, degCA", "provenance": "UNKNOWN"},
+    "transfer_duct_geometry": {"value": null, "unit": "mm, mm2", "provenance": "UNKNOWN"},
+    "exhaust_chamber_geometry": {"value": null, "unit": "mm, mm2", "provenance": "UNKNOWN"},
+    "fuel_and_heat_release_parameters": {"value": null, "unit": "various", "provenance": "UNKNOWN"},
+    "operating_points": {"value": null, "unit": "rpm", "provenance": "UNKNOWN"}
+  },
+  "simulation_readiness": {
+    "ready": false,
+    "reason": "The public specification does not provide the geometry, boundary states, event timing, or per-cycle state needed to instantiate an auditable hybrid engine run. No missing values are filled with synthetic assumptions in this reference manifest."
+  }
+}

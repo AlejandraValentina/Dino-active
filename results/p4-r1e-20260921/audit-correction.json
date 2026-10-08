@@ -1,0 +1,21 @@
+{
+  "native_state": "FAILED_INFRASTRUCTURE",
+  "native_prefix": {
+    "history": false,
+    "stages": false
+  },
+  "verified_prefix": {
+    "history": true,
+    "stages": true
+  },
+  "steps_compared": 16963,
+  "reason": "In-memory solver tuples versus JSON lists. Canonical JSON normalization only; no rounding, tolerance, solver or observable changes.",
+  "numerical_integrations_after_fix": 0,
+  "unit_tests": {
+    "passed": 3,
+    "scope": "tuple/list identity, one-ULP difference, missing stage"
+  },
+  "new_artifact_sha256": "58073d434a24e3b44b97768ac69ed70a4a14d8010307b5bb63aeeaa40d71f012",
+  "frozen": true,
+  "metrics_recomputed_exactly": true
+}

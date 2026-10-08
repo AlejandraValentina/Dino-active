@@ -1,0 +1,59 @@
+{
+  "schema": "KT100_HYBRID_MODEL_FIXTURE_V2_DECISION_V1",
+  "classification": "KT100_HYBRID_V2_STACK_CONTRACT_BLOCKER",
+  "baseline": {
+    "head": "290502abbcaaa1f844f2fe40b7d8bb5b634c5496",
+    "branch": "main",
+    "origin_main": "290502abbcaaa1f844f2fe40b7d8bb5b634c5496",
+    "working_tree_before": "clean"
+  },
+  "scope": {
+    "v1_preserved": true,
+    "p4_p9_contracts_modified": false,
+    "p9_modified": false,
+    "campaign_executed": false,
+    "fixture_v2_created": false,
+    "fixture_v2_verified": false,
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_validation": "NOT_CLAIMED"
+  },
+  "prior_invalid_species_state": {
+    "historical_artifact": "results/kt100-reference-v1-20261001-smoke/anchor-5000.json",
+    "historical_error": "ValueError: invalid species state",
+    "reproduced_with_current_kt100_initialization": false,
+    "reason_limit": "The historical artifact has no traceback or input snapshot; it cannot establish its original failing component.",
+    "current_bounded_preflight": "results/kt100-hybrid-model-fixture-v2-20261001/bounded-preflight.json"
+  },
+  "contract_blockers": [
+    {
+      "component": "P8 producer",
+      "evidence": "motorsim/p8_performance.py:_new_system constructs replace(SyntheticCase(), rpm=rpm), make_p5c_full_fixture(cells=2), and fixed P8 mechanics; _run_once uses fixed 180–900 preparation and 180–540 measurement windows. P8 anchors are 2500/5000/8000/11000/15000 rpm, unlike requested V2 anchors 5000/7000/9000/11000/13000 rpm.",
+      "required_v2_capability": "Parameterize the primary producer with the KT100 finite-duct geometry and emit cycle records for the five requested exploratory RPM points."
+    },
+    {
+      "component": "P8 primary audit",
+      "evidence": "dev_orchestrator/p8_durable_audit.py validates configuration.mechanics == S2T-0D-01 and the fixed P7 interval [350,390].",
+      "required_v2_capability": "Bind KT100 configuration, raw cycle history, restart/replay and derived ledgers under an audit schema that remains compatible with the frozen P8 contract."
+    },
+    {
+      "component": "P6/P7 event semantics",
+      "evidence": "motorsim/p6_species.py captures only when p7_event is None and theta_start <= 350 < theta_end; active-source checks use absolute 350–390 degree bounds.",
+      "required_v2_capability": "A P7 source/event for each completed 2T cycle that can be included in E13 convergence without changing frozen P6/P7 semantics."
+    },
+    {
+      "component": "E13 periodicity",
+      "evidence": "motorsim/periodicity.py:compare_cycles consumes completed-cycle state/cells, p_cyl and sensors, work, and port-integral records; current P8 measured output is a bounded one-cycle transient, not an E13 cycle campaign.",
+      "required_v2_capability": "Contract-valid complete cycle records from the KT100 P5-C/P6/P7 topology, retaining required identity and angular history."
+    }
+  ],
+  "decision": "Do not create a partial V2 fixture or campaign. Bridging these interfaces would change or extend P4–P8 contracts/semantics, explicitly prohibited by this order. Resume only after an authorization resolving that contract incompatibility.",
+  "claims": {
+    "allowed": ["KT100_REFERENCE_CASE_V1", "REAL_ENGINE_REFERENCE_WITH_SYNTHETIC_MODEL_COMPLETION"],
+    "not_granted": ["KT100_HYBRID_MODEL_FIXTURE_V2_VERIFIED", "KT100_VALIDATED", "EXPERIMENTALLY_VALIDATED", "PREDICTIVELY_VALIDATED", "YAMAHA_POWER_CURVE"]
+  },
+  "p9": {
+    "status": "P9_PREREGISTERED_AWAITING_EXPERIMENTAL_DATA",
+    "experimental_validation": "NOT_PERFORMED",
+    "frozen_spec_sha256": "79fbe9b88d26fc4af5083d65d468f59c9208535f0ab389d2f3cb9a7654b88a4d"
+  }
+}

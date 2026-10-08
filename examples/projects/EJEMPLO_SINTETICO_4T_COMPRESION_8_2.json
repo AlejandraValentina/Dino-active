@@ -1,0 +1,73 @@
+{
+  "format_version": 6,
+  "name": "EJEMPLO SINTÉTICO 4T — REFERENCIA",
+  "cycle": "4T",
+  "manufacturer": "",
+  "model": "",
+  "cylinder_count": 1,
+  "bore_mm": 54,
+  "stroke_mm": 56,
+  "rod_length_mm": 100,
+  "compression_ratio": 8.2,
+  "notes": "EJEMPLO SINTÉTICO — NO MEDIDO.\nCaso de demostración de MotorSim. No representa validación experimental.",
+  "ports": [],
+  "crankcase_volume_bdc_cm3": null,
+  "intake": {
+    "mode": null,
+    "top_mm": null,
+    "height_mm": null,
+    "width_mm": null,
+    "skirt_mm": null,
+    "reference": "straight-skirt-peripheral-tdc-developed-v1"
+  },
+  "ducts": {
+    "reference": "ordered-circular-inner-axial-linear-2t-v1",
+    "intake": [],
+    "exhaust": []
+  },
+  "four_stroke": {
+    "intake": {
+      "seat_mm": 24,
+      "throat_mm": 20,
+      "stem_mm": 5,
+      "lift_mm": 5,
+      "opening_deg": 0,
+      "duration_deg": 220
+    },
+    "exhaust": {
+      "seat_mm": 20,
+      "throat_mm": 18,
+      "stem_mm": 5,
+      "lift_mm": 5,
+      "opening_deg": 500,
+      "duration_deg": 220
+    },
+    "ducts": {
+      "reference": "ordered-circular-inner-axial-linear-4t-v1",
+      "intake": [
+        {
+          "name": "Tubo I",
+          "length_mm": 100,
+          "start_diameter_mm": 20,
+          "end_diameter_mm": 20
+        }
+      ],
+      "exhaust": [
+        {
+          "name": "Tubo E",
+          "length_mm": 100,
+          "start_diameter_mm": 20,
+          "end_diameter_mm": 20
+        },
+        {
+          "name": "Cono E",
+          "length_mm": 100,
+          "start_diameter_mm": 20,
+          "end_diameter_mm": 40
+        }
+      ]
+    },
+    "reference": "sin-squared-cylindrical-curtain-annular-cap-720-v1"
+  },
+  "two_stroke_reference": "rectangular-peripheral-tdc-developed-bdc-v1"
+}

@@ -1,0 +1,29 @@
+{
+  "phase": "P5",
+  "objective": "Declaración futura: Intake + transfers. Sin implementación ni autorización de ejecución.",
+  "enabled": false,
+  "depends_on": [
+    "P4"
+  ],
+  "allowed_paths": [],
+  "forbidden_paths": [
+    "motorsim/",
+    "packaging/"
+  ],
+  "allowed_changes": [],
+  "forbidden_changes": [
+    "Toda modificación de producto en esta versión."
+  ],
+  "commands": [],
+  "required_tests": [],
+  "required_checks": [
+    "phase_not_implemented"
+  ],
+  "required_evidence": [],
+  "gate": "default",
+  "max_repair_attempts": 3,
+  "review": "required",
+  "human_gate": true,
+  "scientific_changes_authorized": false,
+  "timeout": 120
+}

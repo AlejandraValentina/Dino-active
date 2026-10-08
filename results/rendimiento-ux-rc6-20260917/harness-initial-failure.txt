@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "E:\dino\Dino\tests\verify_performance_session_windows.py", line 33, in tick
+    cycle=phase[:2];w._activate(example_project(cycle.lower()+'-reference'),None);w.navigation.go('performance')
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\dino\Dino\motorsim\examples.py", line 17, in example_project
+    title, _ = EXAMPLES[key]
+               ~~~~~~~~^^^^^
+KeyError: 'ca-reference'

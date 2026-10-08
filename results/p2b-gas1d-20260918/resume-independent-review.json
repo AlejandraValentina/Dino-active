@@ -1,0 +1,23 @@
+{
+  "reviewer": "/root/p2b_review",
+  "kind": "independent_read_only",
+  "date": "2026-09-18",
+  "state": "P2_BLOCKED_SECOND_ORDER",
+  "global_P2_approved": false,
+  "review_correction": "Initial review reported only infrastructure, overlooking an available independent R4 comparison. Superseded after independent recalculation from six final pressure arrays: CFL0.4/0.6 sensitivity increases N400->800.",
+  "findings": [
+    "T01-T09 and T12 10/10 PASS; two retained incomplete integrations, no full T10 or T11 PASS.",
+    "R4 sensitivity CFL0.4/0.6 = [0.00016115449398057535,0.00020350692502688617,0.00009848226181929931]; strict monotonicity fails.",
+    "Six contributing solutions complete at identical physical final time; stored amplitude exactly reproduced from max(p-P0). No evidence of a solver defect invalidating this comparison.",
+    "Fix3 evaluates each comparison with its own completed inputs; other missing cases cannot hide the failure or permit continuation.",
+    "Fix2 normalizes relative checkpoint paths and prioritizes scientific failures over historical infrastructure timeouts.",
+    "Source hashes unchanged; 62 final inventory hashes match. No changes to method, CFL, thresholds or EOS.",
+    "Maximum step ledger 8.94291151549e-15 and stage ledger 1.97476173377e-16; 95669790 HLLC plus10HLLE, zero downgrade.",
+    "T12 was executed before discovery of the aggregation omission; its evidence remains real. No new integrations after scientific failure discovery."
+  ],
+  "repair_budget": {
+    "used": 3,
+    "limit": 3
+  },
+  "P3": "NOT_STARTED"
+}

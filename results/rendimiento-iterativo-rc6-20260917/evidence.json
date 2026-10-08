@@ -1,0 +1,115 @@
+{
+  "base_commit": "d15ec98f263a6e15846d13a707deadf38fcffc40",
+  "manual_acceptance": false,
+  "packaged": false,
+  "review": "Una revisión independiente: cancelación tardía corregida y test específico aprobado",
+  "affected_tests": {
+    "initial": 21,
+    "initial_seconds": 38.278,
+    "after_review": 6,
+    "after_review_seconds": 10.724
+  },
+  "runs": {
+    "2T": [
+      {
+        "name": "run-1",
+        "state": "converged",
+        "rpms": [
+          2500,
+          3000,
+          3500
+        ],
+        "integration_seconds": 39.71900000050664,
+        "path": "E:\\MotorSim distribucion\\Rendimiento iterativo rc6\\2T-20260917\\run-1\\series.json"
+      },
+      {
+        "name": "run-2",
+        "state": "converged",
+        "rpms": [
+          2500,
+          3000
+        ],
+        "integration_seconds": 28.125,
+        "path": "E:\\MotorSim distribucion\\Rendimiento iterativo rc6\\2T-20260917\\run-2\\series.json"
+      },
+      {
+        "name": "cancel-3",
+        "state": "cancelled",
+        "rpms": [
+          2500,
+          3000,
+          3500
+        ],
+        "integration_seconds": 1.6719999993219972,
+        "path": "E:\\MotorSim distribucion\\Rendimiento iterativo rc6\\2T-20260917\\cancel-3\\series.json"
+      },
+      {
+        "name": "run-3",
+        "state": "converged",
+        "rpms": [
+          2500,
+          3000,
+          3500
+        ],
+        "integration_seconds": 41.90500000026077,
+        "path": "E:\\MotorSim distribucion\\Rendimiento iterativo rc6\\2T-20260917\\run-3\\series.json"
+      }
+    ],
+    "4T": [
+      {
+        "name": "run-1",
+        "state": "converged",
+        "rpms": [
+          2500,
+          3000,
+          3500
+        ],
+        "integration_seconds": 43.39099999982864,
+        "path": "E:\\MotorSim distribucion\\Rendimiento iterativo rc6\\4T-20260917\\run-1\\series.json"
+      },
+      {
+        "name": "run-2",
+        "state": "converged",
+        "rpms": [
+          2500,
+          3000
+        ],
+        "integration_seconds": 29.34400000050664,
+        "path": "E:\\MotorSim distribucion\\Rendimiento iterativo rc6\\4T-20260917\\run-2\\series.json"
+      },
+      {
+        "name": "cancel-3",
+        "state": "cancelled",
+        "rpms": [
+          2500,
+          3000,
+          3500
+        ],
+        "integration_seconds": 2.5779999997466803,
+        "path": "E:\\MotorSim distribucion\\Rendimiento iterativo rc6\\4T-20260917\\cancel-3\\series.json"
+      },
+      {
+        "name": "run-3",
+        "state": "converged",
+        "rpms": [
+          2500,
+          3000,
+          3500
+        ],
+        "integration_seconds": 43.235000000335276,
+        "path": "E:\\MotorSim distribucion\\Rendimiento iterativo rc6\\4T-20260917\\run-3\\series.json"
+      }
+    ]
+  },
+  "new_complete_sweeps": 6,
+  "new_cancelled_sweeps": 2,
+  "total_integration_seconds": 229.96900000050664,
+  "capture_note": "Recorrido automatizado Windows. Algunas capturas de escritorio quedaron ocluidas por otras aplicaciones y no se versionan. Finales recapturados con QWidget.grab de ventana real Windows al reabrir run-3; cero cálculos adicionales. Inspección visual del agente separada de aceptación manual.",
+  "full_suite": {
+    "count": 281,
+    "seconds": 66.522,
+    "passed": true
+  },
+  "test_harness_fixes": "Despachar DeferredDelete y gc.collect en teardown UI; sin alterar límite512MiB del simulador. Primer intento error de limpieza temporal Windows; segundo alcanzó límite de memoria; suite final aprobada.",
+  "openspec_strict": "approved; 1.3.1"
+}

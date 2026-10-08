@@ -1,0 +1,44 @@
+{
+  "schema": "ENGINE_PHYSICS_V1_AUDIT_MANIFEST",
+  "objective": "ENGINE_PHYSICS_V1",
+  "baseline_commit": "1a58b2a5c23447f81308609acc37ab74a8bd5de5",
+  "campaign": {
+    "status": "COMPLETE",
+    "result": "results/engine-physics-v1/campaign-evidence-r3/result.json",
+    "result_sha256": "90d71e20f9c174a4ab105644d384176c38337e459a1885ad59ff16372ea802b4",
+    "run_summary": "results/engine-physics-v1/campaign-run/engine-physics-v1-four-point-r3.summary.json",
+    "run_summary_sha256": "36f954963c05bc4028029e8908acc51b740ab536b8cee25a5c5d193649a2ff1e",
+    "exit_code": 0,
+    "duration_s": 1469.171,
+    "points": 4,
+    "cycles_per_point": 12,
+    "all_hard_gates_pass": true,
+    "periodicity": "NO_CONVERGENCE_WITHIN_HORIZON for all four points"
+  },
+  "preregistration": {
+    "path": "results/engine-physics-v1/preregistration.json",
+    "sha256": "9f613ae3de44913611beb3266de0905bf4eccbc5f9ac2bac44fda1e72f067310"
+  },
+  "regressions": {
+    "focused_integrated": {"path": "results/engine-physics-v1/regression/focused-tests.summary.json", "sha256": "c2a46348ae968e8b8ba0f5b30b8cf9cf202756ccfb205950b26ae27a1cbbeb1c", "result": "87 passed"},
+    "p4_p8": {"path": "results/engine-physics-v1/regression/p4-p8-regression.summary.json", "sha256": "d85b84195bc934d44f2c2f3d291411129108b21be36b4048dbd9bf2561481835", "result": "304 passed, 4 warnings"}
+  },
+  "review": {
+    "path": "docs/gasdynamic/engine_physics_v1_review.md",
+    "sha256": "3c5adaacd5c80bd5e3730daadf1bf3d2084d6e96dd13d670cc39e24a81bfb87f",
+    "kind": "SELF_REVIEW",
+    "external_independent_review": false
+  },
+  "model_hashes": {
+    "engine_physics_module_sha256": "3fbed2fe1e04b008405e68c6ec7db0aa2ea595e86c96ede451a91f915e86ec81",
+    "fuel_sha256": "b8c385ce4d6ae0cf6078969f22698a4cb4881974d95097085b609c487a691792",
+    "producer_sha256": "67fe013b9bd6d5ae82edfc2e57c3caa96faae8be3dc7b5f3ddc4b8888249942d"
+  },
+  "classification": {
+    "synthetic_engineering_only": true,
+    "experimental_validation": "NOT_PERFORMED",
+    "commercial_claim": false,
+    "kt100": "NOT_IN_SCOPE",
+    "historical_r2_unchanged": true
+  }
+}
