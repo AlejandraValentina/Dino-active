@@ -11,6 +11,10 @@ from .mechanical import MechanicalLossModel
 
 SPECIES = ("fresh_air", "fuel", "residual", "burned")
 CONSERVATION_TOLERANCE_KG = 1e-12
+OUTPUT_RELATIVE_TOLERANCE = 1e-10
+OUTPUT_ABSOLUTE_TOLERANCE = 1e-12
+OUTPUT_PRESSURE_ABSOLUTE_TOLERANCE_PA = 1e-9
+OUTPUT_SPECIFIC_FUEL_CONSUMPTION_ABSOLUTE_TOLERANCE = 1e-8
 
 
 def _sha(path: Path) -> str:
@@ -182,6 +186,239 @@ def scavenging_identity_check(dr: Mapping[str, Any], te: Mapping[str, Any],
     return {"status": "DEFINED", "passed": passed,
             "equation": "CE = DR * TE", "residual": c - d * t,
             "tolerance": tolerance}
+
+
+def _matches_defined(outputs: Mapping[str, Any], name: str, expected: float | None,
+                     *, rel_tol: float = OUTPUT_RELATIVE_TOLERANCE,
+                     abs_tol: float = OUTPUT_ABSOLUTE_TOLERANCE) -> bool:
+    item = outputs.get(name, {})
+    value = item.get("value") if isinstance(item, Mapping) else None
+    return (expected is not None and item.get("status") == "DEFINED" and
+            type(value) in (int, float) and math.isfinite(value) and
+            math.isclose(float(value), float(expected), rel_tol=rel_tol, abs_tol=abs_tol))
+
+
+def engineering_output_consistency(primary: Mapping[str, Any],
+                                   outputs: Mapping[str, Any], *, rpm: float,
+                                   displacement_m3: float,
+                                   fmep_expected_pa: float | None,
+                                   expected_source_prefix: str) -> dict[str, bool]:
+    """Check published values against primary ledgers and closure snapshots.
+
+    Expected values are deliberately reconstructed here from primary primitives,
+    not read from the engineering output adapter result.
+    """
+    observables = primary.get("observables", {})
+    ledgers = primary.get("cycle_ledgers", {})
+    combustion = observables.get("fuel_coupled_combustion", {})
+    # Cycle work ledgers are gas-energy changes (negative for piston work
+    # delivered by the cylinder, positive for crankcase gas work here). The
+    # engineering contract reports piston work positive out of the gas.
+    cylinder_ledger_work = ledgers.get("cylinder_work_J")
+    crankcase_ledger_work = ledgers.get("crankcase_work_J")
+    cylinder_work = (-float(cylinder_ledger_work)
+                     if finite_number(cylinder_ledger_work) else None)
+    crankcase_work = (-float(crankcase_ledger_work)
+                      if finite_number(crankcase_ledger_work) else None)
+    metered_fuel = observables.get("fuel_delivered_kg")
+    available = combustion.get("fuel_available_from_ignition_snapshot_kg")
+    burned = combustion.get("fuel_burned_kg")
+    trapped = (primary.get("port_closure_snapshots", {}).get("snapshots", {})
+               .get("exhaust", {}).get("cylinder_species_kg"))
+    valid_geometry = (finite_number(rpm) and rpm > 0 and
+                      finite_number(displacement_m3) and displacement_m3 > 0)
+    valid_work = finite_number(cylinder_work) and finite_number(crankcase_work)
+    indicated_power = (float(cylinder_work) * float(rpm) / 60.0
+                       if valid_geometry and finite_number(cylinder_work) else None)
+    indicated_torque = (float(cylinder_work) / (2.0 * math.pi)
+                        if finite_number(cylinder_work) else None)
+    imep = (float(cylinder_work) / float(displacement_m3)
+            if valid_geometry and finite_number(cylinder_work) else None)
+    net_work = (math.fsum((float(cylinder_work), float(crankcase_work)))
+                if valid_work else None)
+    bmep = (net_work / float(displacement_m3) - float(fmep_expected_pa)
+            if valid_geometry and net_work is not None and finite_number(fmep_expected_pa)
+            else None)
+    brake_power = (bmep * float(displacement_m3) * float(rpm) / 60.0
+                   if bmep is not None else None)
+    brake_torque = (bmep * float(displacement_m3) / (2.0 * math.pi)
+                    if bmep is not None else None)
+    delivery_frequency = float(rpm) / 60.0 if valid_geometry else None
+    isfc = (float(metered_fuel) * delivery_frequency * 3.6e9 / indicated_power
+            if finite_number(metered_fuel) and delivery_frequency is not None and
+            indicated_power is not None and indicated_power > 0 else None)
+    bsfc = (float(metered_fuel) * delivery_frequency * 3.6e9 / brake_power
+            if finite_number(metered_fuel) and delivery_frequency is not None and
+            brake_power is not None and brake_power > 0 else None)
+    checks = {
+        "cylinder_indicated_work_consistency": _matches_defined(
+            outputs, "cylinder_indicated_work", cylinder_work),
+        "indicated_work_imep_consistency": _matches_defined(outputs, "IMEP", imep),
+        "indicated_power_2t_work_rpm_consistency": _matches_defined(
+            outputs, "indicated_power", indicated_power),
+        "indicated_torque_work_consistency": _matches_defined(
+            outputs, "indicated_torque", indicated_torque),
+        "indicated_power_torque_rpm_consistency": (
+            indicated_power is not None and indicated_torque is not None and
+            math.isclose(indicated_power, indicated_torque * 2.0 * math.pi * rpm / 60.0,
+                         rel_tol=1e-10, abs_tol=1e-12)),
+        "bmep_brake_work_fmep_consistency": _matches_defined(outputs, "BMEP", bmep,
+                                      abs_tol=OUTPUT_PRESSURE_ABSOLUTE_TOLERANCE_PA),
+        "brake_power_bmep_2t_consistency": _matches_defined(
+            outputs, "brake_power", brake_power,
+            abs_tol=OUTPUT_ABSOLUTE_TOLERANCE),
+        "brake_torque_bmep_consistency": _matches_defined(
+            outputs, "brake_torque", brake_torque),
+        "brake_power_torque_rpm_consistency": (
+            brake_power is not None and brake_torque is not None and
+            math.isclose(brake_power, brake_torque * 2.0 * math.pi * rpm / 60.0,
+                         rel_tol=1e-10, abs_tol=1e-12)),
+        "ISFC_fuel_flow_indicated_power_consistency": (
+            _matches_defined(outputs, "ISFC", isfc,
+                             abs_tol=OUTPUT_SPECIFIC_FUEL_CONSUMPTION_ABSOLUTE_TOLERANCE)
+            if isfc is not None else outputs.get("ISFC", {}).get("status") == "UNDEFINED"),
+        "BSFC_fuel_flow_brake_power_consistency": (
+            _matches_defined(outputs, "BSFC", bsfc,
+                             abs_tol=OUTPUT_SPECIFIC_FUEL_CONSUMPTION_ABSOLUTE_TOLERANCE)
+            if bsfc is not None else
+            outputs.get("BSFC", {}).get("status") == "UNDEFINED" and
+            (brake_power is None or brake_power <= 0) and
+            outputs.get("BSFC", {}).get("reason") == "NONPOSITIVE_BRAKE_POWER"),
+        "trapped_air_snapshot_consistency": (
+            isinstance(trapped, (list, tuple)) and len(trapped) == 4 and
+            _matches_defined(outputs, "trapped_air", trapped[0])),
+        "trapped_fuel_snapshot_consistency": (
+            isinstance(trapped, (list, tuple)) and len(trapped) == 4 and
+            _matches_defined(outputs, "trapped_fuel", trapped[1])),
+        "FMEP_fixture_value_consistency": _matches_defined(
+            outputs, "FMEP", fmep_expected_pa, abs_tol=1e-9),
+        "output_source_provenance_consistency": all(
+            isinstance(item, Mapping) and
+            isinstance(item.get("source"), str) and
+            item["source"].startswith(expected_source_prefix) and
+            item.get("definition_version") not in (None, "", "UNKNOWN") and
+            item.get("provenance") in {"DERIVED_FROM_DOCUMENTED", "SYNTHETIC_ASSUMPTION"} and
+            (item.get("status") != "DEFINED" or finite_number(item.get("value"))) and
+            not (item.get("status") != "DEFINED" and item.get("value") is not None)
+            for item in outputs.values()),
+    }
+    # Tie published fuel values to the primary ledgers independently of their
+    # metadata, then verify the same-base availability closure.
+    checks["fuel_available_primary_ledger_consistency"] = _matches_defined(
+        outputs, "fuel_available", available)
+    checks["fuel_burned_primary_ledger_consistency"] = _matches_defined(
+        outputs, "fuel_burned", burned)
+    expected_unburned = (float(available) - float(burned)
+                         if finite_number(available) and finite_number(burned) else None)
+    checks["fuel_unburned_primary_closure_consistency"] = _matches_defined(
+        outputs, "fuel_unburned", expected_unburned)
+    air = observables.get("fresh_air_intake_delivery_kg")
+    afr = (float(air) / float(metered_fuel)
+           if finite_number(air) and finite_number(metered_fuel) and metered_fuel > 0
+           else None)
+    checks["AFR_primary_metering_consistency"] = _matches_defined(outputs, "AFR", afr)
+    stoich = outputs.get("stoichiometric_AFR", {}).get("value")
+    lam = afr / float(stoich) if afr is not None and finite_number(stoich) and stoich > 0 else None
+    phi = 1.0 / lam if lam is not None and lam > 0 else None
+    checks["lambda_primary_metering_consistency"] = _matches_defined(outputs, "lambda", lam)
+    checks["phi_primary_metering_consistency"] = _matches_defined(outputs, "phi", phi)
+    checks["delivered_air_primary_ledger_consistency"] = _matches_defined(
+        outputs, "delivered_air", air)
+    checks["delivered_fuel_primary_ledger_consistency"] = _matches_defined(
+        outputs, "delivered_fuel", metered_fuel)
+    if isinstance(trapped, (list, tuple)) and len(trapped) == 4:
+        total = math.fsum(float(value) for value in trapped)
+        checks["residual_purity_snapshot_consistency"] = _matches_defined(
+            outputs, "residual_purity", float(trapped[2]) / total if total > 0 else None)
+        checks["burned_purity_snapshot_consistency"] = _matches_defined(
+            outputs, "burned_purity", float(trapped[3]) / total if total > 0 else None)
+    else:
+        checks["residual_purity_snapshot_consistency"] = False
+        checks["burned_purity_snapshot_consistency"] = False
+    return checks
+
+
+def finite_number(value: Any) -> bool:
+    return type(value) in (int, float) and math.isfinite(float(value))
+
+
+def output_mutation_audit(primary: Mapping[str, Any], outputs: Mapping[str, Any], *,
+                          rpm: float, displacement_m3: float,
+                          fmep_expected_pa: float | None,
+                          expected_source_prefix: str) -> dict[str, Any]:
+    """Exercise numeric and metadata gates with isolated, metadata-preserving edits."""
+    import copy
+
+    cases: list[tuple[str, str, tuple[str, ...], Any]] = [
+        ("IMEP_x3", "indicated_work_imep_consistency", ("IMEP",),
+         lambda o: o["IMEP"].__setitem__("value", o["IMEP"]["value"] * 3)),
+        ("indicated_work_x2", "cylinder_indicated_work_consistency",
+         ("cylinder_indicated_work",),
+         lambda o: o["cylinder_indicated_work"].__setitem__(
+             "value", o["cylinder_indicated_work"]["value"] * 2)),
+        ("indicated_power_and_torque_x3", "indicated_power_2t_work_rpm_consistency",
+         ("indicated_power", "indicated_torque"),
+         lambda o: [o[name].__setitem__("value", o[name]["value"] * 3)
+                    for name in ("indicated_power", "indicated_torque")]),
+        ("ISFC_x0_5", "ISFC_fuel_flow_indicated_power_consistency",
+         ("ISFC",),
+         lambda o: o["ISFC"].__setitem__("value", o["ISFC"]["value"] * 0.5)),
+        ("brake_power_and_torque_x5", "brake_power_bmep_2t_consistency",
+         ("brake_power", "brake_torque"),
+         lambda o: [o[name].__setitem__("value", o[name]["value"] * 5)
+                    for name in ("brake_power", "brake_torque")]),
+        ("trapped_air_x2", "trapped_air_snapshot_consistency", ("trapped_air",),
+         lambda o: o["trapped_air"].__setitem__("value", o["trapped_air"]["value"] * 2)),
+        ("incorrect_FMEP", "FMEP_fixture_value_consistency", ("FMEP",),
+         lambda o: o["FMEP"].__setitem__("value", 85000.0)),
+        ("incorrect_AFR", "AFR_primary_metering_consistency", ("AFR",),
+         lambda o: o["AFR"].__setitem__("value", o["AFR"]["value"] * 1.1)),
+        ("fuel_accounting_corrupt", "fuel_unburned_primary_closure_consistency",
+         ("fuel_unburned",),
+         lambda o: o["fuel_unburned"].__setitem__(
+             "value", o["fuel_unburned"]["value"] + 1e-6)),
+        ("false_fallback_metadata", "output_source_provenance_consistency", ("IMEP",),
+         lambda o: o["IMEP"].__setitem__("source", "fallback: injected")),
+    ]
+    rows = []
+    for name, gate, requires_defined, mutate in cases:
+        mutated = copy.deepcopy(outputs)
+        if any(mutated.get(key, {}).get("status") != "DEFINED" or
+               not finite_number(mutated.get(key, {}).get("value"))
+               for key in requires_defined):
+            rows.append({"mutation": name, "gate": gate,
+                         "metadata_preserved": name != "false_fallback_metadata",
+                         "applicable": False, "detected": None})
+            continue
+        mutate(mutated)
+        checks = engineering_output_consistency(
+            primary, mutated, rpm=rpm, displacement_m3=displacement_m3,
+            fmep_expected_pa=fmep_expected_pa,
+            expected_source_prefix=expected_source_prefix)
+        rows.append({"mutation": name, "gate": gate,
+                     "metadata_preserved": name != "false_fallback_metadata",
+                     "applicable": True, "detected": checks.get(gate) is False})
+    if outputs.get("BSFC", {}).get("status") == "DEFINED":
+        mutated = copy.deepcopy(outputs)
+        mutated["BSFC"]["value"] *= 0.5
+        checks = engineering_output_consistency(
+            primary, mutated, rpm=rpm, displacement_m3=displacement_m3,
+            fmep_expected_pa=fmep_expected_pa,
+            expected_source_prefix=expected_source_prefix)
+        rows.append({"mutation": "BSFC_x0_5", "gate": "BSFC_fuel_flow_brake_power_consistency",
+                     "metadata_preserved": True,
+                     "applicable": True,
+                     "detected": checks["BSFC_fuel_flow_brake_power_consistency"] is False})
+    corrupted_primary = copy.deepcopy(primary)
+    corrupted_primary["cycle_ledgers"]["external_species_kg"][0] += 1e-6
+    rows.append({"mutation": "partition_ledger_corrupt",
+                 "gate": "partition_conservation_independent",
+                 "metadata_preserved": True,
+                 "applicable": True,
+                 "detected": not recompute_partition_conservation(corrupted_primary)["passed"]})
+    return {"schema": "ENGINE_PHYSICS_V1_R2_OUTPUT_MUTATION_AUDIT_V1",
+            "cases": rows, "passed": all(row["detected"] is True
+                                            for row in rows if row["applicable"])}
 
 
 def output_hard_checks(*, fmep_used_pa: float | None,

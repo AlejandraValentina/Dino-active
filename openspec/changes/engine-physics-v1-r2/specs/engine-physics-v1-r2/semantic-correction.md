@@ -4,7 +4,8 @@ This is an additive correction to the offline R2 output adapter. It does not
 change the solver, the four accepted primary cycles, any physical threshold,
 the terminal `ENGINE_PHYSICS_V1 = FAIL_TERMINAL` result, or the administrative
 `ENGINE_PHYSICS_V1_R2 = REVIEW` state. The corrected evidence supersedes only
-the defective R2 outputs. The primaries and first external review are retained.
+the defective R2 outputs. The primaries and both external review FAIL receipts
+are retained.
 
 ## Contract sources
 
@@ -39,9 +40,27 @@ the defective R2 outputs. The primaries and first external review are retained.
 
 The corrected hard checks include fixture loss consistency, metering AFR,
 fuel closure and burned availability, scavenging dependency/identity,
-independent partition conservation, output provenance, BMEP work consistency,
-and brake torque/power consistency. An unresolved fixture produces undefined
-mechanical outputs and a hard failure; no generic FMEP fallback is permitted.
+independent partition conservation, output provenance, and independent numeric
+consistency checks from the primary work ledgers, RPM, displacement, fixture
+loss model, fuel ledger, and exact exhaust-close species snapshot. These bind
+cylinder work, IMEP, indicated/brake power and torque, BMEP, ISFC, BSFC, and
+trapped species quantities to their physical inputs. Changing a published
+number while keeping valid metadata must fail its numeric consistency gate.
+The versioned output checks use relative tolerance `1e-10`, default absolute
+tolerance `1e-12`, BMEP absolute tolerance `1e-9 Pa`, and ISFC/BSFC absolute
+tolerance `1e-8 g/kWh`; each point manifest records these values.
+An unresolved fixture produces undefined mechanical outputs and a hard
+failure; no generic FMEP fallback is permitted.
+
+The offline partition's trapping, charging, and scavenging efficiencies are
+`NOT_IDENTIFIABLE` in current R2 outputs because its gross crossing inputs do
+not identify current-cycle fresh retention. Superseded numeric values are
+retained only in an explicitly historical section. The evidence verifier is
+read-only by default; `--write` is required to regenerate the audit receipt.
+Before any future `FULL_RPM_SWEEP_V1`, readiness requires
+`EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED`: all sweep points must bind an
+explicit loss model and fail closed instead of silently using the 85 kPa
+standard fallback.
 
 The offline replay uses only the four accepted primaries and starts no
 campaign. The evidence manifest records `campaigns_started = 0` and retains

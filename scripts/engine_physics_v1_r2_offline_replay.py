@@ -23,7 +23,10 @@ from motorsim.artifact_store import ArtifactStoreError, resolve_external_artifac
 from motorsim.scavenging_partition_v1 import evaluate_scavenging_partition_v1
 from motorsim.engine_physics_v1_r2_semantics import (
     load_fixture_model, recompute_partition_conservation, scavenging_identity_check,
-    output_hard_checks, metering_ratios,
+    output_hard_checks, metering_ratios, engineering_output_consistency,
+    output_mutation_audit, OUTPUT_RELATIVE_TOLERANCE,
+    OUTPUT_ABSOLUTE_TOLERANCE, OUTPUT_PRESSURE_ABSOLUTE_TOLERANCE_PA,
+    OUTPUT_SPECIFIC_FUEL_CONSUMPTION_ABSOLUTE_TOLERANCE,
 )
 
 TOL = 1e-12
@@ -129,6 +132,27 @@ def build_point(point: tuple[str, str, str, int, int, str, str, str]) -> dict[st
                                         periodicity_status="PERIOD_1",
                                         mechanical_losses=loss_model)
     partition = evaluate_scavenging_partition_v1(primary)
+    old_ambiguous_partition_metrics = {
+        name: partition["metrics"]["ratios"].get(name)
+        for name in ("trapping_efficiency", "charging_efficiency", "scavenging_efficiency")
+    }
+    old_ambiguous_partition_masses = {
+        name: partition["metrics"].get("masses_kg", {}).get(name)
+        for name in ("fresh_retained", "fresh_lost")
+    }
+    for name in old_ambiguous_partition_metrics:
+        partition["metrics"]["ratios"][name] = {
+            "value": None, "status": "NOT_IDENTIFIABLE",
+            "reason": "CURRENT_CYCLE_FRESH_RETENTION_NOT_IDENTIFIABLE",
+            "definition_version": "R2_CURRENT_CYCLE_FRESH_RETENTION_V1",
+        }
+    for name in ("fresh_retained", "fresh_lost"):
+        if name in partition["metrics"].get("masses_kg", {}):
+            partition["metrics"]["masses_kg"][name] = {
+                "value": None, "status": "NOT_IDENTIFIABLE",
+                "reason": "CURRENT_CYCLE_FRESH_RETENTION_NOT_IDENTIFIABLE",
+                "definition_version": "R2_CURRENT_CYCLE_FRESH_RETENTION_V1",
+            }
     ratios = partition["metrics"]["ratios"]
     snap = primary["port_closure_snapshots"]["snapshots"]["exhaust"]["cylinder_species_kg"]
     cylinder = primary["observables"]["chambers"]["cylinder"]
@@ -287,6 +311,29 @@ def build_point(point: tuple[str, str, str, int, int, str, str, str]) -> dict[st
         brake_power is not None and brake_torque is not None and
         math.isclose(float(brake_power), float(brake_torque) * 2 * math.pi * rpm / 60,
                      rel_tol=1e-12, abs_tol=1e-12))
+    numeric_consistency = engineering_output_consistency(
+        primary, outputs, rpm=rpm, displacement_m3=displacement,
+        fmep_expected_pa=(math.fsum(term.value(rpm, 1.0) for term in loss_model.terms)
+                          if loss_model is not None else None),
+        expected_source_prefix=f"primary:{artifact_id};sha256:{sha(primary_path)};")
+    hard_checks.update(numeric_consistency)
+    hard_checks["scavenging_partition_current_metrics_consistency"] = all(
+        partition["metrics"]["ratios"][name].get("status") == "NOT_IDENTIFIABLE" and
+        partition["metrics"]["ratios"][name].get("value") is None and
+        partition["metrics"]["ratios"][name].get("reason") == ambiguous
+        for name in ("trapping_efficiency", "charging_efficiency", "scavenging_efficiency"))
+    hard_checks["scavenging_partition_current_metrics_consistency"] = (
+        hard_checks["scavenging_partition_current_metrics_consistency"] and all(
+            partition["metrics"]["masses_kg"][name].get("status") == "NOT_IDENTIFIABLE" and
+            partition["metrics"]["masses_kg"][name].get("value") is None and
+            partition["metrics"]["masses_kg"][name].get("reason") == ambiguous
+            for name in ("fresh_retained", "fresh_lost")))
+    mutation_audit = output_mutation_audit(
+        primary, outputs, rpm=rpm, displacement_m3=displacement,
+        fmep_expected_pa=(math.fsum(term.value(rpm, 1.0) for term in loss_model.terms)
+                          if loss_model is not None else None),
+        expected_source_prefix=f"primary:{artifact_id};sha256:{sha(primary_path)};")
+    hard_checks["output_mutation_audit_passes"] = mutation_audit["passed"]
     hard_checks.update(output_hard_checks(
         fmep_used_pa=outputs["FMEP"].get("value"), fixture_model=loss_model, rpm=rpm,
         afr=outputs["AFR"], air_kg=air_metered, metered_fuel_kg=fuel_metered,
@@ -326,11 +373,23 @@ def build_point(point: tuple[str, str, str, int, int, str, str, str]) -> dict[st
             "fuel": "FUEL_COUPLED_COMBUSTION_V2",
             "scavenging": "SCAVENGING_PARTITION_CONSERVATION_V1",
             "mechanical_losses": "MECHANICAL_LOSS_MODEL_V1",
-            "output_adapter": "ENGINE_PHYSICS_V1_R2_SEMANTIC_CORRECTION_V1",
+            "output_adapter": "ENGINE_PHYSICS_V1_R2_FINAL_EVIDENCE_HARDENING_V1",
+        },
+        "output_consistency_tolerances": {
+            "relative": OUTPUT_RELATIVE_TOLERANCE,
+            "absolute_default": OUTPUT_ABSOLUTE_TOLERANCE,
+            "pressure_pa_absolute": OUTPUT_PRESSURE_ABSOLUTE_TOLERANCE_PA,
+            "specific_fuel_consumption_absolute_g_per_kwh": OUTPUT_SPECIFIC_FUEL_CONSUMPTION_ABSOLUTE_TOLERANCE,
         },
         "fixture_mechanical_loss_provenance": fixture_provenance,
         "outputs": outputs,
         "scavenging_partition": partition,
+        "superseded_outputs": {
+            "scavenging_partition_metrics_ratios": old_ambiguous_partition_metrics,
+            "scavenging_partition_metrics_masses_kg": old_ambiguous_partition_masses,
+            "source": "superseded gross-crossing algorithm; retained for provenance only",
+        },
+        "output_mutation_audit": mutation_audit,
         "scavenging_identity": identity,
         "independent_partition_conservation": independent_partition,
         "hard_physical_gate": {"classification": "PASS" if not hard_failures else "HARD_PHYSICAL_INVALID",
@@ -341,7 +400,7 @@ def build_point(point: tuple[str, str, str, int, int, str, str, str]) -> dict[st
         "historical_engineering_reference": {"path": old_rel, "sha256": sha(old_path)},
         "provenance": {"trajectory_unchanged": True, "replay": "OFFLINE_DERIVED_OUTPUT_ONLY",
                         "physics_changed": False, "scope": "accounting/semantics/output serialization",
-                        "supersedes": "R2 outputs only; accepted primaries and EP_R2_EXTERNAL_REVIEW_FAIL remain unchanged"},
+                        "supersedes": "R2 outputs only; accepted primaries and first/second external review FAIL receipts remain unchanged"},
     }
 
 
@@ -350,7 +409,7 @@ def comparison(point_result: dict[str, Any], old: dict[str, Any]) -> dict[str, A
              "DR": "DR", "SE": "SE", "CE": "CE", "TE": "TE",
              "fuel_available": "fuel_available", "fuel_burned": "fuel_burned",
              "fuel_unburned": "fuel_unburned", "residual_purity": "residual_purity",
-             "burned_purity": "burned_purity", "IMEP": "cylinder_IMEP", "BMEP": "BMEP",
+             "burned_purity": "burned_purity", "IMEP": "IMEP", "BMEP": "BMEP",
              "indicated_power": "indicated_power", "brake_power": "brake_power",
              "indicated_torque": "indicated_torque", "brake_torque": "brake_torque",
              "ISFC": "ISFC", "BSFC": "BSFC"}
@@ -397,12 +456,19 @@ def run(out: Path) -> dict[str, Any]:
     all_hard_gates_pass = all(x["hard_physical_gate"]["classification"] == "PASS"
                               for x in results)
     all_periodic = all(x["periodicity"]["status"] == "PERIOD_1" for x in results)
-    semantic_result = ("ENGINE_PHYSICS_V1_R2_SEMANTIC_CORRECTION_READY_FOR_REVIEW"
+    mutation_audit = {
+        "schema": "ENGINE_PHYSICS_V1_R2_OUTPUT_MUTATION_AUDIT_V1",
+        "all_mutations_detected": all(x["output_mutation_audit"]["passed"] for x in results),
+        "points": {x["point_id"]: x["output_mutation_audit"] for x in results},
+    }
+    semantic_result = ("ENGINE_PHYSICS_V1_R2_FINAL_EVIDENCE_HARDENING_READY_FOR_REVIEW"
                        if len(results) == 4 and all_hard_gates_pass and all_periodic else
-                       "ENGINE_PHYSICS_V1_R2_SEMANTIC_CORRECTION_BLOCKED")
+                       "ENGINE_PHYSICS_V1_R2_FINAL_EVIDENCE_HARDENING_BLOCKED")
     manifest = {"schema": "ENGINE_PHYSICS_V1_R2_CORRECTED_OFFLINE_MANIFEST", "status": "REVIEW",
                 "semantic_correction_result": semantic_result,
                 "first_review_result": "EP_R2_EXTERNAL_REVIEW_FAIL",
+                "second_review_result": "EP_R2_SECOND_EXTERNAL_REVIEW_FAIL",
+                "mutation_audit": mutation_audit,
                 "supersedes": "defective R2 outputs only; accepted primaries and first external review are preserved",
                 "campaigns_started": 0, "points": results, "comparison": comparisons,
                 "replay_script_sha256": sha(Path(__file__)),
@@ -413,6 +479,8 @@ def run(out: Path) -> dict[str, Any]:
                          "all_hard_gates_pass": all_hard_gates_pass,
                          "result": "REVIEW", "external_review_task": "EP-R2-EXTERNAL-REVIEW"}}
     (out / "comparison.json").write_text(json.dumps(comparisons, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    (out / "mutation-audit.json").write_text(
+        json.dumps(mutation_audit, sort_keys=True, indent=2) + "\n", encoding="utf-8")
     (out / "manifest.json").write_text(json.dumps(manifest, sort_keys=True, indent=2) + "\n", encoding="utf-8")
     return {"status": "REVIEW", "points": len(results),
             "all_hard_gates_pass": manifest["gate"]["all_hard_gates_pass"],

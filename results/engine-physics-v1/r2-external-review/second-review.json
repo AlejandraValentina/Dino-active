@@ -1,0 +1,27 @@
+{
+  "review_id": "EP_R2_SECOND_EXTERNAL_REVIEW_FAIL",
+  "result": "FAIL",
+  "review_scope": "R2 corrected outputs, hard-gate numeric consistency, and scavenging output serialization",
+  "target_head": "57ca4b847dcf705c9e85802a7b93dba341a1ba8c",
+  "campaigns_started": 0,
+  "blockers": [
+    {
+      "id": "NUMERIC_OUTPUTS_NOT_BOUND_TO_PRIMARY_PRIMITIVES",
+      "summary": "Hard gates accept fabricated numeric output values when source and definition metadata remain valid."
+    },
+    {
+      "id": "AMBIGUOUS_SCAVENGING_RATIOS_STILL_PUBLISHED",
+      "summary": "Superseded numeric CE/SE/TE values remain under scavenging_partition.metrics.ratios despite official outputs being UNDEFINED."
+    }
+  ],
+  "closed_findings": [
+    "FMEP fixture provenance and value",
+    "AFR/lambda/phi metering basis",
+    "fuel accounting closure",
+    "independent partition conservation"
+  ],
+  "nonblocking_observations": [
+    "Persist EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED as a prerequisite for FULL_RPM_SWEEP_V1."
+  ],
+  "source": "Owner-supplied second external review findings in the final evidence hardening request."
+}

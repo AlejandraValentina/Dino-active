@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import argparse
 from pathlib import Path
 import subprocess
 import sys
@@ -22,11 +23,14 @@ def canonical_sha(value) -> str:
     return hashlib.sha256(raw).hexdigest()
 
 
-def verify() -> dict:
+def verify(*, write: bool = False) -> dict:
     artifact_manifest = json.loads((ROOT / "artifacts/engine-physics-v1-r2.json").read_text(encoding="utf-8"))
     manifest = json.loads((ROOT / "results/engine-physics-v1/r2-semantic-correction/manifest.json").read_text(encoding="utf-8"))
     old_r2 = json.loads((ROOT / "results/engine-physics-v1/r2-offline/manifest.json").read_text(encoding="utf-8"))
+    mutation_audit = json.loads((ROOT / "results/engine-physics-v1/r2-semantic-correction/mutation-audit.json").read_text(encoding="utf-8"))
     first_review = json.loads((ROOT / "results/engine-physics-v1/r2-external-review/first-review.json").read_text(encoding="utf-8"))
+    second_review_path = ROOT / "results/engine-physics-v1/r2-external-review/second-review.json"
+    second_review = json.loads(second_review_path.read_text(encoding="utf-8"))
     artifacts = {item["artifact_id"]: item for item in artifact_manifest["artifacts"]}
     old_points = {item["point_id"]: item for item in old_r2["points"]}
     records = []
@@ -40,6 +44,7 @@ def verify() -> dict:
         fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
         model = fixture["mechanical_loss_model"]
         outputs = point["outputs"]
+        ratios = point["scavenging_partition"]["metrics"]["ratios"]
         expected_fmep = sum(term["mep_pa"] for term in model["terms"])
         obs = primary["observables"]
         combustion = obs["fuel_coupled_combustion"]
@@ -53,6 +58,15 @@ def verify() -> dict:
             "afr_from_same_boundary_ledgers": abs(outputs["AFR"]["value"] - obs["fresh_air_intake_delivery_kg"] / obs["fuel_delivered_kg"]) < 1e-12,
             "fuel_closure": abs(outputs["fuel_burned"]["value"] + outputs["fuel_unburned"]["value"] - outputs["fuel_available"]["value"]) <= 1e-12,
             "undefined_scavenging_semantics": all(outputs[name]["status"] == "UNDEFINED" and outputs[name]["reason"] == "CURRENT_CYCLE_FRESH_RETENTION_NOT_IDENTIFIABLE" for name in ("TE", "CE", "SE")),
+            "undefined_nested_scavenging_semantics": all(
+                ratios[name]["status"] == "NOT_IDENTIFIABLE" and
+                ratios[name]["value"] is None and
+                ratios[name]["reason"] == "CURRENT_CYCLE_FRESH_RETENTION_NOT_IDENTIFIABLE"
+                for name in ("trapping_efficiency", "charging_efficiency", "scavenging_efficiency")) and
+                all(point["scavenging_partition"]["metrics"]["masses_kg"][name]["value"] is None
+                    for name in ("fresh_retained", "fresh_lost")),
+            "numeric_mutation_matrix": point["output_mutation_audit"]["passed"] and all(
+                row["detected"] for row in point["output_mutation_audit"]["cases"]),
             "independent_partition": point["independent_partition_conservation"]["passed"],
             "hard_gate": point["hard_physical_gate"]["classification"] == "PASS",
             "old_new_comparison_uses_persisted_r2": (
@@ -61,7 +75,9 @@ def verify() -> dict:
                 manifest["comparison"][point["point_id"]]["FMEP"]["new"] ==
                 outputs["FMEP"]["value"] and
                 manifest["comparison"][point["point_id"]]["AFR"]["old"] ==
-                old_points[point["point_id"]]["outputs"]["AFR"]["value"]),
+                old_points[point["point_id"]]["outputs"]["AFR"]["value"] and
+                manifest["comparison"][point["point_id"]]["IMEP"]["old"] ==
+                old_points[point["point_id"]]["outputs"]["IMEP"]["value"]),
         }
         records.append({"point_id": point["point_id"], "artifact_id": artifact["artifact_id"],
                         "checks": checks, "all_pass": all(checks.values())})
@@ -78,6 +94,8 @@ def verify() -> dict:
         "administrative_gate": manifest["status"],
         "campaigns_started": manifest["campaigns_started"],
         "first_review_preserved": first_review["review_id"] == "EP_R2_EXTERNAL_REVIEW_FAIL" and first_review["result"] == "FAIL",
+        "second_review_preserved": second_review["review_id"] == "EP_R2_SECOND_EXTERNAL_REVIEW_FAIL" and second_review["result"] == "FAIL",
+        "mutation_audit_file_matches_manifest": mutation_audit == manifest["mutation_audit"] and mutation_audit["all_mutations_detected"],
         "b4000_historical_git_status": b4000.get("historical_git_status"),
         "b4000_false_commit_attribution_removed": "relevant_historical_commit" not in b4000,
         "primary_paths_tracked": primary_paths_tracked,
@@ -85,21 +103,28 @@ def verify() -> dict:
         "comparison_baseline": "persisted pre-correction R2 offline manifest",
     }
     overall["all_pass"] = (overall["semantic_correction_result"] ==
-                            "ENGINE_PHYSICS_V1_R2_SEMANTIC_CORRECTION_READY_FOR_REVIEW" and
+                            "ENGINE_PHYSICS_V1_R2_FINAL_EVIDENCE_HARDENING_READY_FOR_REVIEW" and
+                            manifest.get("second_review_result") == "EP_R2_SECOND_EXTERNAL_REVIEW_FAIL" and
                             overall["administrative_gate"] == "REVIEW" and
                             overall["campaigns_started"] == 0 and
                             overall["first_review_preserved"] and
+                            overall["second_review_preserved"] and
                             overall["b4000_historical_git_status"] == "UNTRACKED_AT_CAPTURE" and
                             overall["b4000_false_commit_attribution_removed"] and
                             not primary_paths_tracked and overall["all_points_pass"])
     result = {**overall, "points": records}
     target = ROOT / "results/engine-physics-v1/r2-semantic-correction/provenance-audit.json"
-    target.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    if write:
+        target.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return result
 
 
 if __name__ == "__main__":
-    result = verify()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--write", action="store_true",
+                        help="persist provenance-audit.json; default is read-only")
+    args = parser.parse_args()
+    result = verify(write=args.write)
     print(json.dumps({"all_pass": result["all_pass"], "points": len(result["points"]),
                       "semantic_correction_result": result["semantic_correction_result"]},
                      sort_keys=True))

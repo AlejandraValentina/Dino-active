@@ -1,13 +1,15 @@
 import gzip
 import json
 from pathlib import Path
+import subprocess
 
 import pytest
 
 from motorsim.artifact_store import resolve_external_artifact
 from motorsim.engine_physics_v1_r2_semantics import (
     load_fixture_model, output_hard_checks, recompute_partition_conservation,
-    scavenging_identity_check, metering_ratios,
+    scavenging_identity_check, metering_ratios, engineering_output_consistency,
+    output_mutation_audit,
 )
 import scripts.engine_physics_v1_r2_offline_replay as replay
 from scripts.verify_engine_physics_v1_r2_semantic_evidence import verify as verify_evidence
@@ -41,8 +43,16 @@ def test_four_accepted_primaries_use_fixture_loss_and_metering_contract(correcte
         for name in ("TE", "CE", "SE"):
             assert out[name]["status"] == "UNDEFINED"
             assert out[name]["reason"] == "CURRENT_CYCLE_FRESH_RETENTION_NOT_IDENTIFIABLE"
+        ratios = point["scavenging_partition"]["metrics"]["ratios"]
+        for name in ("trapping_efficiency", "charging_efficiency", "scavenging_efficiency"):
+            assert ratios[name]["status"] == "NOT_IDENTIFIABLE"
+            assert ratios[name]["value"] is None
+            assert ratios[name]["reason"] == "CURRENT_CYCLE_FRESH_RETENTION_NOT_IDENTIFIABLE"
         assert point["hard_physical_gate"]["classification"] == "PASS"
         assert point["hard_physical_gate"]["checks"]["partition_conservation_independent"]
+        assert point["hard_physical_gate"]["checks"]["indicated_work_imep_consistency"]
+        assert point["hard_physical_gate"]["checks"]["brake_power_bmep_2t_consistency"]
+        assert point["hard_physical_gate"]["checks"]["trapped_air_snapshot_consistency"]
         assert out["BMEP"]["value"] == pytest.approx(
             (out["net_piston_gas_work"]["value"] - out["FMEP"]["value"] *
              point["swept_displacement_m3"]) / point["swept_displacement_m3"])
@@ -174,9 +184,47 @@ def test_nonpositive_brake_power_has_causal_bsfc_reason(corrected_points):
 
 
 def test_persisted_semantic_evidence_audit_passes():
+    audit_path = ROOT / "results/engine-physics-v1/r2-semantic-correction/provenance-audit.json"
+    before_bytes = audit_path.read_bytes()
+    before_status = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT,
+                                   check=True, capture_output=True).stdout
     result = verify_evidence()
+    after_status = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT,
+                                  check=True, capture_output=True).stdout
     assert result["all_pass"]
     assert result["comparison_baseline"] == "persisted pre-correction R2 offline manifest"
+    assert audit_path.read_bytes() == before_bytes
+    assert after_status == before_status
+
+
+def test_output_numeric_mutation_matrix_rejects_values_with_valid_metadata(corrected_points):
+    primary = json.load(gzip.open(resolve_external_artifact("R2_A3000"), "rt", encoding="utf-8"))
+    point = corrected_points[0]
+    result = output_mutation_audit(
+        primary, point["outputs"], rpm=point["rpm"],
+        displacement_m3=point["swept_displacement_m3"], fmep_expected_pa=1500.0,
+        expected_source_prefix=(f"primary:R2_A3000;sha256:{point['primary']['sha256']};"))
+    assert result["passed"]
+    numeric_rows = [row for row in result["cases"] if row["mutation"] != "false_fallback_metadata"]
+    assert all(row["metadata_preserved"] and row["detected"] for row in numeric_rows)
+    assert all(row["detected"] for row in result["cases"])
+
+
+def test_no_numeric_current_te_ce_se_anywhere_in_four_official_outputs(corrected_points):
+    official_ratio_names = ("trapping_efficiency", "charging_efficiency", "scavenging_efficiency")
+    for point in corrected_points:
+        for name in ("TE", "CE", "SE"):
+            assert point["outputs"][name]["status"] == "UNDEFINED"
+            assert point["outputs"][name]["value"] is None
+        current = point["scavenging_partition"]["metrics"]["ratios"]
+        assert all(current[name]["status"] == "NOT_IDENTIFIABLE" and
+                   current[name]["value"] is None for name in official_ratio_names)
+        masses = point["scavenging_partition"]["metrics"]["masses_kg"]
+        for name in ("fresh_retained", "fresh_lost"):
+            assert masses[name]["status"] == "NOT_IDENTIFIABLE"
+            assert masses[name]["value"] is None
+        superseded = point["superseded_outputs"]["scavenging_partition_metrics_ratios"]
+        assert all("value" in superseded[name] for name in official_ratio_names)
 
 
 def test_old_new_comparison_uses_defective_r2_manifest():
@@ -186,3 +234,7 @@ def test_old_new_comparison_uses_defective_r2_manifest():
     assert comparison["A3000"]["FMEP"]["new"] == pytest.approx(1500.0)
     assert comparison["A3000"]["AFR"]["old"] == pytest.approx(67.76299433555442)
     assert comparison["A3000"]["AFR"]["new"] == pytest.approx(49.0)
+    old = json.loads((ROOT / "results/engine-physics-v1/r2-offline/manifest.json").read_text())
+    old_a3000 = next(point for point in old["points"] if point["point_id"] == "A3000")
+    assert comparison["A3000"]["IMEP"]["old"] == pytest.approx(
+        old_a3000["outputs"]["IMEP"]["value"])
