@@ -2603,13 +2603,14 @@
         "scripts/engine_physics_v1_r2_offline_replay.py",
         "results/engine-physics-v1/r2-semantic-correction"
       ],
-      "resolution": "Corrected offline replay generated stable outputs twice; four fixed accepted cycles, all hard gates PASS, campaigns_started=0 and administrative result REVIEW.",
+      "resolution": "Corrected offline replay generated stable outputs twice; comparison baseline uses the persisted defective R2 manifest while legacy engineering-v2 is separately identified. Four fixed accepted cycles, all hard gates PASS, campaigns_started=0 and administrative result REVIEW.",
       "evidence": [
         "results/engine-physics-v1/r2-semantic-correction/manifest.json",
         "tests/test_engine_physics_v1_r2_semantics.py"
       ],
       "commits": [
-        "febda003580af635abd643879f3ebcdeee887df5"
+        "febda003580af635abd643879f3ebcdeee887df5",
+        "85a2f97877d83d55b98b54b8246ca4a15a96483d"
       ]
     },
     {
@@ -2625,13 +2626,14 @@
       "write_scope": [
         "tests/test_engine_physics_v1_r2_semantics.py"
       ],
-      "resolution": "40 focused R2 semantic mutation, existing R2, engine physics, scavenging partition and artifact-store tests PASS.",
+      "resolution": "41 focused R2 semantic mutation, existing R2, engine physics, scavenging partition and artifact-store tests PASS.",
       "evidence": [
         "results/engine-physics-v1/r2-semantic-correction/manifest.json",
         "tests/test_engine_physics_v1_r2_semantics.py"
       ],
       "commits": [
-        "febda003580af635abd643879f3ebcdeee887df5"
+        "febda003580af635abd643879f3ebcdeee887df5",
+        "85a2f97877d83d55b98b54b8246ca4a15a96483d"
       ]
     },
     {
@@ -3384,6 +3386,12 @@
       "task": "EP-R2-SEMANTIC-TEST-VERIFY",
       "kind": "task",
       "summary": "Final focused verification passed 40 tests after adding persisted-evidence audit coverage."
+    },
+    {
+      "at": "2026-10-08T15:42:21+00:00",
+      "task": "EP-R2-SEMANTIC-OUTPUT-REPLAY",
+      "kind": "task",
+      "summary": "Corrected old/new comparison to use the persisted defective R2 manifest (FMEP 85000 Pa etc.); legacy engineering-v2 remains separately identified. Focused verification now covers 41 tests."
     }
   ],
   "legacy_gate_status": {

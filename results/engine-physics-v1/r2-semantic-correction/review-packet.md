@@ -1,7 +1,9 @@
 # R2 semantic correction review packet
 
 The corrected point outputs and full provenance are in manifest.json. The
-field-by-field old/new values are in comparison.json. The first external
+field-by-field old/new values in comparison.json use the persisted pre-correction
+R2 offline manifest as the old side. Its producer species residual is shown
+separately from the historical gross-partition residual. The first external
 review result remains preserved in
 ../r2-external-review/first-review.json.
 

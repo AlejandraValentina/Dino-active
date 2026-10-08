@@ -9,19 +9,19 @@
     "BMEP": {
       "new": 1289.0451791050255,
       "new_status": "DEFINED",
-      "old": 1289.0451791050255,
+      "old": -82210.95482089497,
       "old_status": "DEFINED"
     },
     "BSFC": {
       "new": 6734.590683030571,
       "new_status": "DEFINED",
-      "old": 6734.590683030571,
-      "old_status": "DEFINED"
+      "old": null,
+      "old_status": "UNDEFINED"
     },
     "CE": {
       "new": null,
       "new_status": "UNDEFINED",
-      "old": 0.7257357540307776,
+      "old": 0.7295964505352519,
       "old_status": "DEFINED"
     },
     "DR": {
@@ -33,14 +33,14 @@
     "FMEP": {
       "new": 1500.0,
       "new_status": "DEFINED",
-      "old": 1500.0,
+      "old": 85000.0,
       "old_status": "DEFINED"
     },
     "IMEP": {
       "new": 16761.534599174083,
       "new_status": "DEFINED",
-      "old": 16761.534599174083,
-      "old_status": "DEFINED"
+      "old": null,
+      "old_status": null
     },
     "ISFC": {
       "new": 517.9234396374385,
@@ -51,7 +51,7 @@
     "SE": {
       "new": null,
       "new_status": "UNDEFINED",
-      "old": 0.7446646203170671,
+      "old": 0.7486260127118833,
       "old_status": "DEFINED"
     },
     "TE": {
@@ -64,20 +64,20 @@
     "brake_power": {
       "new": 7.937323535050505,
       "new_status": "DEFINED",
-      "old": 7.937323535050505,
+      "old": -506.21573015145503,
       "old_status": "DEFINED"
     },
     "brake_torque": {
       "new": 0.025265285510458497,
       "new_status": "DEFINED",
-      "old": 0.025265285510458497,
+      "old": -1.6113347144895416,
       "old_status": "DEFINED"
     },
     "burned_purity": {
       "new": 0.25116495624457996,
       "new_status": "DEFINED",
-      "old": null,
-      "old_status": null
+      "old": 0.25116495624457996,
+      "old_status": "DEFINED"
     },
     "fuel_available": {
       "new": 2.50033740985853e-07,
@@ -115,10 +115,16 @@
       "old": 4.620930931475179,
       "old_status": "DEFINED"
     },
+    "legacy_gross_partition_residual": {
+      "source": "historical engineering-v2 reference only; distinct from R2 independent species closure",
+      "value": -3.326105105580046e-05
+    },
     "partition_residual": {
       "new": 8.809142651444724e-20,
       "new_status": "PASS",
-      "old": -3.326105105580046e-05
+      "old": 4.743384504624082e-20,
+      "old_basis": "persisted R2 producer species residual; not an independent proof",
+      "old_status": "PASS"
     },
     "phi": {
       "new": 0.299272651388565,
@@ -129,8 +135,8 @@
     "residual_purity": {
       "new": 0.00020903104353664473,
       "new_status": "DEFINED",
-      "old": null,
-      "old_status": null
+      "old": 0.00020903104353664473,
+      "old_status": "DEFINED"
     }
   },
   "A4000": {
@@ -143,7 +149,7 @@
     "BMEP": {
       "new": -478.9935444792454,
       "new_status": "DEFINED",
-      "old": -478.9935444792454,
+      "old": -83978.99354447924,
       "old_status": "DEFINED"
     },
     "BSFC": {
@@ -155,7 +161,7 @@
     "CE": {
       "new": null,
       "new_status": "UNDEFINED",
-      "old": 0.7179964014456056,
+      "old": 0.7211278734992526,
       "old_status": "DEFINED"
     },
     "DR": {
@@ -167,14 +173,14 @@
     "FMEP": {
       "new": 1500.0,
       "new_status": "DEFINED",
-      "old": 1500.0,
+      "old": 85000.0,
       "old_status": "DEFINED"
     },
     "IMEP": {
       "new": 12845.456177971924,
       "new_status": "DEFINED",
-      "old": 12845.456177971924,
-      "old_status": "DEFINED"
+      "old": null,
+      "old_status": null
     },
     "ISFC": {
       "new": 528.5772815841498,
@@ -185,7 +191,7 @@
     "SE": {
       "new": null,
       "new_status": "UNDEFINED",
-      "old": 0.73341947452631,
+      "old": 0.7366182128256321,
       "old_status": "DEFINED"
     },
     "TE": {
@@ -198,20 +204,20 @@
     "brake_power": {
       "new": -3.932550795850332,
       "new_status": "DEFINED",
-      "old": -3.932550795850332,
+      "old": -689.469955711191,
       "old_status": "DEFINED"
     },
     "brake_torque": {
       "new": -0.009388273471793208,
       "new_status": "DEFINED",
-      "old": -0.009388273471793208,
+      "old": -1.645988273471793,
       "old_status": "DEFINED"
     },
     "burned_purity": {
       "new": 0.2630812739923921,
       "new_status": "DEFINED",
-      "old": null,
-      "old_status": null
+      "old": 0.2630812739923922,
+      "old_status": "DEFINED"
     },
     "fuel_available": {
       "new": 2.0191783676304623e-07,
@@ -249,10 +255,16 @@
       "old": 4.677837933923945,
       "old_status": "DEFINED"
     },
+    "legacy_gross_partition_residual": {
+      "source": "historical engineering-v2 reference only; distinct from R2 independent species closure",
+      "value": -3.4714429004089746e-05
+    },
     "partition_residual": {
       "new": 3.8116482626443515e-20,
       "new_status": "PASS",
-      "old": -3.4714429004089746e-05
+      "old": 5.717472393966527e-20,
+      "old_basis": "persisted R2 producer species residual; not an independent proof",
+      "old_status": "PASS"
     },
     "phi": {
       "new": 0.29927265138856457,
@@ -263,8 +275,8 @@
     "residual_purity": {
       "new": 0.00030051318197572033,
       "new_status": "DEFINED",
-      "old": null,
-      "old_status": null
+      "old": 0.00030051318197572033,
+      "old_status": "DEFINED"
     }
   },
   "B3000": {
@@ -277,19 +289,19 @@
     "BMEP": {
       "new": 18819.56577827992,
       "new_status": "DEFINED",
-      "old": 18819.56577827992,
+      "old": -64680.434221720076,
       "old_status": "DEFINED"
     },
     "BSFC": {
       "new": 1987.9593146226491,
       "new_status": "DEFINED",
-      "old": 1987.9593146226491,
-      "old_status": "DEFINED"
+      "old": null,
+      "old_status": "UNDEFINED"
     },
     "CE": {
       "new": null,
       "new_status": "UNDEFINED",
-      "old": 0.7989955459532123,
+      "old": 0.8078973486834677,
       "old_status": "DEFINED"
     },
     "DR": {
@@ -301,14 +313,14 @@
     "FMEP": {
       "new": 1500.0,
       "new_status": "DEFINED",
-      "old": 1500.0,
+      "old": 85000.0,
       "old_status": "DEFINED"
     },
     "IMEP": {
       "new": 67388.66627960117,
       "new_status": "DEFINED",
-      "old": 67388.66627960117,
-      "old_status": "DEFINED"
+      "old": null,
+      "old_status": null
     },
     "ISFC": {
       "new": 555.1754197190595,
@@ -319,7 +331,7 @@
     "SE": {
       "new": null,
       "new_status": "UNDEFINED",
-      "old": 0.8208126321644719,
+      "old": 0.8299575043318289,
       "old_status": "DEFINED"
     },
     "TE": {
@@ -332,20 +344,20 @@
     "brake_power": {
       "new": 115.88188280187639,
       "new_status": "DEFINED",
-      "old": 115.88188280187639,
+      "old": -398.2711708846291,
       "old_status": "DEFINED"
     },
     "brake_torque": {
       "new": 0.36886348925428647,
       "new_status": "DEFINED",
-      "old": 0.36886348925428647,
+      "old": -1.2677365107457135,
       "old_status": "DEFINED"
     },
     "burned_purity": {
       "new": 0.17003684788095463,
       "new_status": "DEFINED",
-      "old": null,
-      "old_status": null
+      "old": 0.17003684788095463,
+      "old_status": "DEFINED"
     },
     "fuel_available": {
       "new": 7.495348727388375e-07,
@@ -383,10 +395,16 @@
       "old": 3.128028399536487,
       "old_status": "DEFINED"
     },
+    "legacy_gross_partition_residual": {
+      "source": "historical engineering-v2 reference only; distinct from R2 independent species closure",
+      "value": -4.4102794208553746e-05
+    },
     "partition_residual": {
       "new": 1.7448878713438587e-19,
       "new_status": "PASS",
-      "old": -4.4102794208553746e-05
+      "old": 3.9132922163148676e-19,
+      "old_basis": "persisted R2 producer species residual; not an independent proof",
+      "old_status": "PASS"
     },
     "phi": {
       "new": 0.2992726513885651,
@@ -397,8 +415,8 @@
     "residual_purity": {
       "new": 5.647787216394207e-06,
       "new_status": "DEFINED",
-      "old": null,
-      "old_status": null
+      "old": 5.647787216394207e-06,
+      "old_status": "DEFINED"
     }
   },
   "B4000": {
@@ -411,19 +429,19 @@
     "BMEP": {
       "new": 18730.717218195045,
       "new_status": "DEFINED",
-      "old": 18730.717218195045,
+      "old": -64769.282781804955,
       "old_status": "DEFINED"
     },
     "BSFC": {
       "new": 1618.9741204136503,
       "new_status": "DEFINED",
-      "old": 1618.9741204136503,
-      "old_status": "DEFINED"
+      "old": null,
+      "old_status": "UNDEFINED"
     },
     "CE": {
       "new": null,
       "new_status": "UNDEFINED",
-      "old": 0.7861084918447762,
+      "old": 0.7939530613687148,
       "old_status": "DEFINED"
     },
     "DR": {
@@ -435,14 +453,14 @@
     "FMEP": {
       "new": 1500.0,
       "new_status": "DEFINED",
-      "old": 1500.0,
+      "old": 85000.0,
       "old_status": "DEFINED"
     },
     "IMEP": {
       "new": 61479.10500340151,
       "new_status": "DEFINED",
-      "old": 61479.10500340151,
-      "old_status": "DEFINED"
+      "old": null,
+      "old_status": null
     },
     "ISFC": {
       "new": 493.2496403675092,
@@ -453,7 +471,7 @@
     "SE": {
       "new": null,
       "new_status": "UNDEFINED",
-      "old": 0.8044159035135992,
+      "old": 0.8124431625328548,
       "old_status": "DEFINED"
     },
     "TE": {
@@ -466,20 +484,20 @@
     "brake_power": {
       "new": 153.7797278319104,
       "new_status": "DEFINED",
-      "old": 153.7797278319104,
+      "old": -531.7576770834303,
       "old_status": "DEFINED"
     },
     "brake_torque": {
       "new": 0.3671220574766228,
       "new_status": "DEFINED",
-      "old": 0.3671220574766228,
+      "old": -1.269477942523377,
       "old_status": "DEFINED"
     },
     "burned_purity": {
       "new": 0.18754004213133407,
       "new_status": "DEFINED",
-      "old": null,
-      "old_status": null
+      "old": 0.18754004213133407,
+      "old_status": "DEFINED"
     },
     "fuel_available": {
       "new": 6.772414858712398e-07,
@@ -517,10 +535,16 @@
       "old": 3.2425943771638863,
       "old_status": "DEFINED"
     },
+    "legacy_gross_partition_residual": {
+      "source": "historical engineering-v2 reference only; distinct from R2 independent species closure",
+      "value": -4.735060396500296e-05
+    },
     "partition_residual": {
       "new": 5.64123942871364e-19,
       "new_status": "PASS",
-      "old": -4.735060396500296e-05
+      "old": 4.557037256228136e-19,
+      "old_basis": "persisted R2 producer species residual; not an independent proof",
+      "old_status": "PASS"
     },
     "phi": {
       "new": 0.29927265138856524,
@@ -531,8 +555,8 @@
     "residual_purity": {
       "new": 1.6795335811223878e-05,
       "new_status": "DEFINED",
-      "old": null,
-      "old_status": null
+      "old": 1.6795335811223878e-05,
+      "old_status": "DEFINED"
     }
   }
 }
