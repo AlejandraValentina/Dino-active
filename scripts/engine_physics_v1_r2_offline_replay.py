@@ -18,11 +18,13 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from motorsim.engine_physics_v1 import (evaluate_integrated_cycle_v2,
-                                        standard_fmep_model_v1,
-                                        synthetic_gasoline_v1)
+from motorsim.engine_physics_v1 import evaluate_integrated_cycle_v2, synthetic_gasoline_v1
 from motorsim.artifact_store import ArtifactStoreError, resolve_external_artifact
 from motorsim.scavenging_partition_v1 import evaluate_scavenging_partition_v1
+from motorsim.engine_physics_v1_r2_semantics import (
+    load_fixture_model, recompute_partition_conservation, scavenging_identity_check,
+    output_hard_checks, metering_ratios,
+)
 
 TOL = 1e-12
 POINTS = (
@@ -63,17 +65,18 @@ def finite(value: Any) -> bool:
 
 
 def record(value: Any, units: str, definition: str, source: str,
-           *, reason: str | None = None, dependency: str = "REQUIRED") -> dict[str, Any]:
+           *, reason: str | None = None, dependency: str = "REQUIRED",
+           provenance: str = "DERIVED_FROM_DOCUMENTED") -> dict[str, Any]:
     if value is None:
         return {"value": None, "status": "UNDEFINED", "units": units,
                 "reason": reason or "MISSING_DEPENDENCY", "definition_version": definition,
-                "source": source, "provenance": "DERIVED_FROM_DOCUMENTED",
+                "source": source, "provenance": provenance,
                 "periodicity_dependency": dependency}
     if not finite(value):
         raise ValueError(f"non-finite derived output: {source}")
     return {"value": float(value), "status": "DEFINED", "units": units,
             "reason": None, "definition_version": definition, "source": source,
-            "provenance": "DERIVED_FROM_DOCUMENTED", "periodicity_dependency": dependency}
+            "provenance": provenance, "periodicity_dependency": dependency}
 
 
 def ratio_record(ratio: dict[str, Any], units: str, name: str) -> dict[str, Any]:
@@ -88,19 +91,38 @@ def output_metric(name: str, base: dict[str, Any], units: str, source: str,
     item = base.get("outputs", {}).get(name)
     if not isinstance(item, dict) or item.get("status") != "DEFINED":
         reason = item.get("reason") if isinstance(item, dict) else "MISSING_DEPENDENCY"
+        if name == "BSFC":
+            brake = base.get("outputs", {}).get("brake_power", {}).get("value")
+            if brake is not None and brake <= 0:
+                reason = "NONPOSITIVE_BRAKE_POWER"
         return record(None, units, definition, source, reason=reason)
-    return record(item.get("value"), units, definition, source)
+    return record(item.get("value"), units, definition, source,
+                  provenance="SYNTHETIC_ASSUMPTION")
 
 
 def build_point(point: tuple[str, str, str, int, int, str, str, str]) -> dict[str, Any]:
     point_id, artifact_id, fixture, rpm, cycle_no, primary_rel, old_rel, runtime_rel = point
     primary_path = resolve_external_artifact(artifact_id)
+    artifact_entry = next(item for item in load_json(ROOT / "artifacts/engine-physics-v1-r2.json")["artifacts"]
+                          if item["artifact_id"] == artifact_id)
     old_path, runtime_path = ROOT / old_rel, ROOT / runtime_rel
     primary = load_primary(primary_path)
     old = load_json(old_path)
     fuel = synthetic_gasoline_v1()
-    loss_model = standard_fmep_model_v1()
-    base = evaluate_integrated_cycle_v2(primary, rpm=rpm, fuel=fuel,
+    fixture_path = ROOT / "results/2t-commercial-core-20261002/fixtures/v1-prime-mesh" / (
+        "fixture_a_prime-mesh-0.json" if point_id.startswith("A") else
+        "fixture_b_prime-mesh-0.json")
+    expected_fixture_id = "FIXTURE_A_PRIME" if point_id.startswith("A") else "FIXTURE_B_PRIME"
+    fixture_resolution_error = None
+    try:
+        loss_model, fixture_provenance = load_fixture_model(primary, fixture_path, expected_fixture_id)
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        loss_model = None
+        fixture_resolution_error = "FIXTURE_MECHANICAL_LOSS_UNRESOLVED"
+        fixture_provenance = {"status": "UNRESOLVED", "reason": fixture_resolution_error,
+                              "detail": type(exc).__name__}
+    evaluation_primary = primary if loss_model is not None else {**primary, "swept_displacement_m3": None}
+    base = evaluate_integrated_cycle_v2(evaluation_primary, rpm=rpm, fuel=fuel,
                                         periodicity_status="PERIOD_1",
                                         mechanical_losses=loss_model)
     partition = evaluate_scavenging_partition_v1(primary)
@@ -111,30 +133,76 @@ def build_point(point: tuple[str, str, str, int, int, str, str, str]) -> dict[st
     exhaust_temp = exhaust_rows[-1].get("temperature_K") if exhaust_rows else None
     obs = primary["observables"]
     combustion = obs["fuel_coupled_combustion"]
-    src = f"primary:{primary_rel};cycle:{cycle_no};offline:R2"
+    src = f"primary:{artifact_id};sha256:{sha(primary_path)};cycle:{cycle_no};offline:R2_CORRECTED"
+    provenance = "SYNTHETIC_ASSUMPTION"
+    air_metered = obs.get("fresh_air_intake_delivery_kg")
+    fuel_metered = obs.get("fuel_delivered_kg")
+    fuel_sha = fuel.validate().sha256
+    fuel_snapshot_bound = (primary.get("evidence_binding", {}).get("fuel_sha256") == fuel_sha and
+                           combustion.get("fuel_sha256") == fuel_sha)
+    stoich = fuel.validate().effective_stoichiometric_afr if fuel_snapshot_bound else None
+    metering = metering_ratios(air_metered, fuel_metered, stoich)
+    afr_value = metering["AFR"]["value"]
+    lambda_value = metering["lambda"]["value"]
+    phi_value = metering["phi"]["value"]
+    available = combustion.get("fuel_available_from_ignition_snapshot_kg")
+    burned = combustion.get("fuel_burned_kg")
+    unburned = float(available) - float(burned) if finite(available) and finite(burned) else None
+    ratios = partition["metrics"]["ratios"]
+    delivery = ratios["delivery_ratio"]
+    dr = record(delivery.get("value") if delivery.get("status") == "AVAILABLE" else None,
+                "1", "R2_DELIVERY_RATIO_V1", src,
+                reason=delivery.get("reason") or "MISSING_VALID_DELIVERY_LEDGER",
+                provenance=provenance)
+    ambiguous = "CURRENT_CYCLE_FRESH_RETENTION_NOT_IDENTIFIABLE"
+    def undefined_scav(name):
+        return record(None, "1", f"R2_{name}_V1", src, reason=ambiguous,
+                      provenance=provenance)
+    snapshot_mass = math.fsum(float(x) for x in snap)
+    residual_purity = record(float(snap[2]) / snapshot_mass if snapshot_mass > 0 else None,
+                             "1", "P6_EXHAUST_CLOSE_COMPOSITION_V1", src,
+                             reason="ZERO_EXHAUST_CLOSE_SNAPSHOT_MASS", provenance=provenance)
+    burned_purity = record(float(snap[3]) / snapshot_mass if snapshot_mass > 0 else None,
+                           "1", "P6_EXHAUST_CLOSE_COMPOSITION_V1", src,
+                           reason="ZERO_EXHAUST_CLOSE_SNAPSHOT_MASS", provenance=provenance)
+    independent_partition = recompute_partition_conservation(primary)
+    identity = scavenging_identity_check(dr, undefined_scav("TE"), undefined_scav("CE"))
     outputs = {
         "trapped_air": record(snap[0], "kg", "P6_EXHAUST_CLOSE_SPECIES_V1", src),
         "trapped_fuel": record(snap[1], "kg", "P6_EXHAUST_CLOSE_SPECIES_V1", src),
         "delivered_air": record(obs.get("fresh_air_intake_delivery_kg"), "kg", "P6_GROSS_AIR_DELIVERY_V1", src),
         "delivered_fuel": record(obs.get("fuel_delivered_kg"), "kg", "P6_GROSS_FUEL_DELIVERY_V1", src),
-        "AFR": output_metric("AFR", base, "1", src),
-        "lambda": output_metric("lambda", base, "1", src),
-        "phi": output_metric("phi", base, "1", src),
-        "fuel_burned": record(combustion.get("fuel_burned_kg"), "kg", "FUEL_COUPLED_COMBUSTION_V2", src),
-        "fuel_unburned": record(combustion.get("unburned_fuel_at_exhaust_close_kg"), "kg", "FUEL_COUPLED_COMBUSTION_V2", src),
+        "AFR": record(afr_value, "1", "P6_METERED_AIR_FUEL_RATIO_V1", src,
+                      reason=metering["AFR"]["reason"],
+                      provenance=provenance),
+        "stoichiometric_AFR": record(stoich, "1", "FUEL_ELEMENTAL_STOICHIOMETRY_V1", src,
+                                      reason="MISSING_STOICHIOMETRIC_AFR", provenance=provenance),
+        "lambda": record(lambda_value, "1", "AFR_OVER_STOICHIOMETRIC_AFR_V1", src,
+                         reason=metering["lambda"]["reason"],
+                         provenance=provenance),
+        "phi": record(phi_value, "1", "RECIPROCAL_LAMBDA_V1", src,
+                      reason=metering["phi"]["reason"], provenance=provenance),
+        "fuel_available": record(available, "kg", "FUEL_AVAILABLE_AT_IGNITION_V1", src,
+                                 reason="MISSING_FUEL_AVAILABILITY_LEDGER", provenance=provenance),
+        "fuel_burned": record(burned, "kg", "PRIMARY_FUEL_BURNED_LEDGER_V1", src,
+                               reason="MISSING_FUEL_BURNED_LEDGER", provenance=provenance),
+        "fuel_unburned": record(unburned, "kg", "AVAILABLE_MINUS_BURNED_FUEL_V1", src,
+                                 reason="MISSING_FUEL_ACCOUNTING_LEDGER", provenance=provenance),
         "chemical_heat": record(combustion.get("chemical_heat_added_J"), "J", "FUEL_COUPLED_COMBUSTION_V2", src),
         "exhaust_temperature": record(exhaust_temp, "K", "P6_EXHAUST_TERMINAL_DUCT_V1", src),
-        "DR": ratio_record(ratios["delivery_ratio"], "1", src),
-        "TE": ratio_record(ratios["trapping_efficiency"], "1", src),
-        "SE": ratio_record(ratios["scavenging_efficiency"], "1", src),
-        "CE": ratio_record(ratios["charging_efficiency"], "1", src),
-        "residual_purity": ratio_record(ratios["residual_fraction"], "1", src),
-        "burned_purity": record(snap[3] / sum(snap), "1", "P6_EXHAUST_CLOSE_SPECIES_V1", src),
+        "DR": dr,
+        "TE": undefined_scav("TE"),
+        "SE": undefined_scav("SE"),
+        "CE": undefined_scav("CE"),
+        "residual_purity": residual_purity,
+        "burned_purity": burned_purity,
         "cylinder_indicated_work": output_metric("cylinder_indicated_work", base, "J", src),
         "IMEP": output_metric("cylinder_IMEP", base, "Pa", src),
         "crankcase_gas_work": output_metric("crankcase_gas_work", base, "J", src),
         "net_piston_gas_work": output_metric("net_piston_gas_work", base, "J", src),
-        "FMEP": output_metric("FMEP", base, "Pa", src),
+        "FMEP": (output_metric("FMEP", base, "Pa", src) if loss_model is not None else
+                 record(None, "Pa", "MECHANICAL_LOSS_MODEL_V1", src,
+                        reason=fixture_resolution_error, provenance=provenance)),
         "BMEP": output_metric("BMEP", base, "Pa", src),
         "indicated_power": output_metric("indicated_power", base, "W", src),
         "indicated_torque": output_metric("indicated_torque", base, "N*m", src),
@@ -143,6 +211,23 @@ def build_point(point: tuple[str, str, str, int, int, str, str, str]) -> dict[st
         "ISFC": output_metric("ISFC", base, "g/kWh", src),
         "BSFC": output_metric("BSFC", base, "g/kWh", src),
     }
+    outputs["AFR"]["source"] = (src + ";air_ledger:observables.fresh_air_intake_delivery_kg"
+                                 ";fuel_ledger:observables.fuel_delivered_kg")
+    outputs["stoichiometric_AFR"]["source"] = (
+        src + f";fuel_snapshot_sha256:{fuel_sha};method:ELEMENTAL_MASS_BALANCE_DRY_AIR_V1")
+    outputs["lambda"]["source"] = src + ";afr:AFR;stoichiometry:fuel_snapshot.elemental_mass_fractions"
+    outputs["phi"]["source"] = src + ";lambda:lambda"
+    outputs["fuel_available"]["source"] = src + ";ledger:observables.fuel_coupled_combustion.fuel_available_from_ignition_snapshot_kg"
+    outputs["fuel_burned"]["source"] = src + ";ledger:observables.fuel_coupled_combustion.fuel_burned_kg"
+    outputs["fuel_unburned"]["source"] = src + ";derived:fuel_available-fuel_burned"
+    outputs["FMEP"]["source"] = (src + f";fixture:{fixture_path.name if loss_model else 'UNRESOLVED'};fixture_sha256:{fixture_provenance.get('fixture_file_sha256', 'UNAVAILABLE')}"
+                                  ";model:MECHANICAL_LOSS_MODEL_V1;fields:terms[].mep_pa")
+    if loss_model is None:
+        for name in ("BMEP", "brake_power", "brake_torque", "BSFC"):
+            if outputs[name]["status"] == "UNDEFINED":
+                outputs[name]["reason"] = fixture_resolution_error
+    for output in outputs.values():
+        output["provenance"] = "SYNTHETIC_ASSUMPTION"
     residuals = primary["conservation"]
     burned = float(combustion["fuel_burned_kg"])
     available = float(combustion["fuel_available_from_ignition_snapshot_kg"])
@@ -154,17 +239,60 @@ def build_point(point: tuple[str, str, str, int, int, str, str, str]) -> dict[st
         "mass_conservation": abs(residuals["mass_residual_kg"]) <= 1e-8,
         "energy_conservation": abs(residuals["energy_residual_J"]) <= 1e-8,
         "species_conservation": max(abs(v) for v in residuals["species_residual_kg"]) <= TOL,
-        "partition_conservation": partition["species_closure"]["passed"],
+        "partition_conservation_independent": independent_partition["passed"],
         "no_fuel_creation": burned <= available + TOL,
-        "fuel_burned_le_fuel_available": burned <= float(obs["fuel_delivered_kg"]) + TOL,
+        "fuel_burned_le_fuel_available": burned <= available + TOL,
+        "fuel_accounting_closure": (unburned is not None and
+                                     math.isclose(burned + unburned, available,
+                                                  rel_tol=0.0, abs_tol=TOL)),
+        "metering_afr_consistency": (afr_value is not None and
+                                     math.isclose(afr_value, air_metered / fuel_metered,
+                                                  rel_tol=1e-12, abs_tol=1e-12)),
+        "fixture_mechanical_loss_consistency": (loss_model is not None and
+            outputs["FMEP"]["value"] is not None and math.isclose(
+                float(outputs["FMEP"]["value"]),
+                math.fsum(term.value(rpm, 1.0) for term in loss_model.terms),
+                rel_tol=0.0, abs_tol=1e-9)),
+        "scavenging_metric_dependency_validity": all(
+            outputs[name]["status"] == "UNDEFINED" and outputs[name]["reason"] == ambiguous
+            for name in ("TE", "CE", "SE")),
+        "scavenging_metric_identity": identity["status"] == "NOT_APPLICABLE" or identity["passed"],
         "chemical_heat_consistent": abs(float(combustion["chemical_heat_added_J"]) - expected_heat) <= 1e-10,
         "defined_efficiencies_in_domain": all(
             item["status"] == "UNDEFINED" or 0 <= item["value"] <= 1
             for item in (outputs[name] for name in ("DR", "TE", "SE", "CE", "residual_purity", "burned_purity"))),
         "no_invalid_defined_outputs": all(
             item["status"] != "DEFINED" or finite(item["value"]) for item in outputs.values()),
-        "no_placeholders": all(item.get("source") and item.get("definition_version") for item in outputs.values()),
+        "no_placeholders": all(
+            item.get("source", "").startswith(f"primary:{artifact_id};sha256:{sha(primary_path)};") and
+            item.get("definition_version") not in (None, "", "UNKNOWN") and
+            not (item.get("status") == "UNDEFINED" and item.get("value") is not None) and
+            item.get("provenance") in {"DERIVED_FROM_DOCUMENTED", "SYNTHETIC_ASSUMPTION"}
+            for item in outputs.values()),
     }
+    displacement = float(primary["swept_displacement_m3"])
+    net_piston_work = float(obs["net_piston_gas_work_J"])
+    expected_brake_work = (None if outputs["FMEP"]["value"] is None else
+                           net_piston_work - float(outputs["FMEP"]["value"]) * displacement)
+    hard_checks["bmep_brake_work_consistency"] = (expected_brake_work is not None and
+        outputs["BMEP"]["value"] is not None and math.isclose(
+            float(outputs["BMEP"]["value"]), expected_brake_work / displacement,
+            rel_tol=1e-12, abs_tol=1e-9))
+    brake_power = outputs["brake_power"].get("value")
+    brake_torque = outputs["brake_torque"].get("value")
+    hard_checks["brake_torque_power_consistency"] = (
+        brake_power is not None and brake_torque is not None and
+        math.isclose(float(brake_power), float(brake_torque) * 2 * math.pi * rpm / 60,
+                     rel_tol=1e-12, abs_tol=1e-12))
+    hard_checks.update(output_hard_checks(
+        fmep_used_pa=outputs["FMEP"].get("value"), fixture_model=loss_model, rpm=rpm,
+        afr=outputs["AFR"], air_kg=air_metered, metered_fuel_kg=fuel_metered,
+        available_fuel_kg=available, burned_fuel_kg=burned,
+        unburned_fuel_kg=unburned, outputs=outputs,
+        fuel_snapshot_bound=fuel_snapshot_bound,
+        partition=independent_partition, scavenging_identity=identity,
+        expected_source_prefix=f"primary:{artifact_id};sha256:{sha(primary_path)};"))
+    outputs["FMEP"]["provenance_details"] = fixture_provenance
     hard_failures = [name for name, passed in hard_checks.items() if not passed]
     warnings = list(base["hard_gate"].get("warnings", []))
     if float(obs["net_piston_gas_work_J"]) <= 0:
@@ -175,11 +303,17 @@ def build_point(point: tuple[str, str, str, int, int, str, str, str]) -> dict[st
     runtime = load_json(runtime_path)
     binding = primary.get("evidence_binding", {})
     return {
-        "schema": "ENGINE_PHYSICS_V1_R2_POINT_RESULT",
+        "schema": "ENGINE_PHYSICS_V1_R2_CORRECTED_POINT_RESULT",
         "point_id": point_id, "fixture": fixture, "rpm": rpm, "cycle": cycle_no,
+        "swept_displacement_m3": displacement,
         "periodicity": {"status": "PERIOD_1", "detector": "PeriodicDetectorV2", "source": "existing campaign receipt"},
         "operating_point_status": "PERIODIC_ENGINEERING_RESULT",
-        "primary": {"path": primary_rel, "sha256": sha(primary_path), "configuration_sha256": primary["configuration_hash"]},
+        "primary": {"artifact_id": artifact_id,
+                    "path": primary_rel,
+                    "external_relative_path": artifact_entry["expected_external_relative_path"],
+                    "sha256": sha(primary_path),
+                    "byte_size": primary_path.stat().st_size,
+                    "configuration_sha256": primary["configuration_hash"]},
         "historical_runtime": {"summary_path": runtime_rel, "summary_sha256": sha(runtime_path),
                                "campaign_duration_s": runtime.get("duration_s"),
                                "point_runtime_not_separately_recorded": True},
@@ -188,23 +322,30 @@ def build_point(point: tuple[str, str, str, int, int, str, str, str]) -> dict[st
             "solver_primary": primary.get("schema", "REFERENCE_ENGINE_HYBRID_CYCLE_PRIMARY_V1"),
             "fuel": "FUEL_COUPLED_COMBUSTION_V2",
             "scavenging": "SCAVENGING_PARTITION_CONSERVATION_V1",
-            "mechanical_losses": "MECHANICAL_LOSSES_STANDARD_V1",
-            "output_adapter": "ENGINE_PHYSICS_V1_R2_OFFLINE",
+            "mechanical_losses": "MECHANICAL_LOSS_MODEL_V1",
+            "output_adapter": "ENGINE_PHYSICS_V1_R2_SEMANTIC_CORRECTION_V1",
         },
+        "fixture_mechanical_loss_provenance": fixture_provenance,
         "outputs": outputs,
         "scavenging_partition": partition,
+        "scavenging_identity": identity,
+        "independent_partition_conservation": independent_partition,
         "hard_physical_gate": {"classification": "PASS" if not hard_failures else "HARD_PHYSICAL_INVALID",
                                 "checks": hard_checks, "hard_failures": hard_failures},
         "warnings": sorted(set(warnings)),
         "old_output": {"path": old_rel, "sha256": sha(old_path)},
         "provenance": {"trajectory_unchanged": True, "replay": "OFFLINE_DERIVED_OUTPUT_ONLY",
-                        "physics_changed": False, "scope": "accounting/semantics/output serialization"},
+                        "physics_changed": False, "scope": "accounting/semantics/output serialization",
+                        "supersedes": "R2 outputs only; accepted primaries and EP_R2_EXTERNAL_REVIEW_FAIL remain unchanged"},
     }
 
 
 def comparison(point_result: dict[str, Any], old: dict[str, Any]) -> dict[str, Any]:
-    names = {"AFR": "AFR", "DR": "DR", "SE": "SE", "CE": "CE", "TE": "TE",
-             "fuel_burned": "fuel_burned", "IMEP": "cylinder_IMEP", "BMEP": "BMEP",
+    names = {"FMEP": "FMEP", "AFR": "AFR", "lambda": "lambda", "phi": "phi",
+             "DR": "DR", "SE": "SE", "CE": "CE", "TE": "TE",
+             "fuel_available": "fuel_available", "fuel_burned": "fuel_burned",
+             "fuel_unburned": "fuel_unburned", "residual_purity": "residual_purity",
+             "burned_purity": "burned_purity", "IMEP": "cylinder_IMEP", "BMEP": "BMEP",
              "indicated_power": "indicated_power", "brake_power": "brake_power",
              "indicated_torque": "indicated_torque", "brake_torque": "brake_torque",
              "ISFC": "ISFC", "BSFC": "BSFC"}
@@ -218,8 +359,8 @@ def comparison(point_result: dict[str, Any], old: dict[str, Any]) -> dict[str, A
     rows["TE"]["new_reason"] = point_result["outputs"]["TE"].get("reason")
     rows["partition_residual"] = {
         "old": old.get("scavenging", {}).get("conservation", {}).get("partition_residual_kg"),
-        "new": point_result["scavenging_partition"]["species_closure"]["max_abs_residual_kg"],
-        "new_status": "PASS",
+        "new": point_result["independent_partition_conservation"]["max_abs_species_residual_kg"],
+        "new_status": "PASS" if point_result["independent_partition_conservation"]["passed"] else "FAIL",
     }
     return rows
 
@@ -237,14 +378,23 @@ def run(out: Path) -> dict[str, Any]:
         old = load_json(ROOT / point[6])
         comparisons[point[0]] = comparison(result, old)
         results.append(result)
-    manifest = {"schema": "ENGINE_PHYSICS_V1_R2_OFFLINE_MANIFEST", "status": "REVIEW",
+    all_hard_gates_pass = all(x["hard_physical_gate"]["classification"] == "PASS"
+                              for x in results)
+    all_periodic = all(x["periodicity"]["status"] == "PERIOD_1" for x in results)
+    semantic_result = ("ENGINE_PHYSICS_V1_R2_SEMANTIC_CORRECTION_READY_FOR_REVIEW"
+                       if len(results) == 4 and all_hard_gates_pass and all_periodic else
+                       "ENGINE_PHYSICS_V1_R2_SEMANTIC_CORRECTION_BLOCKED")
+    manifest = {"schema": "ENGINE_PHYSICS_V1_R2_CORRECTED_OFFLINE_MANIFEST", "status": "REVIEW",
+                "semantic_correction_result": semantic_result,
+                "first_review_result": "EP_R2_EXTERNAL_REVIEW_FAIL",
+                "supersedes": "defective R2 outputs only; accepted primaries and first external review are preserved",
                 "campaigns_started": 0, "points": results, "comparison": comparisons,
                 "replay_script_sha256": sha(Path(__file__)),
                 "partition_module_sha256": sha(ROOT / "motorsim/scavenging_partition_v1.py"),
                 "producer_module_sha256": sha(ROOT / "motorsim/engine_physics_v1.py"),
                 "source_policy": "four existing accepted periodic primaries only",
-                "gate": {"all_periodic": all(x["periodicity"]["status"] == "PERIOD_1" for x in results),
-                         "all_hard_gates_pass": all(x["hard_physical_gate"]["classification"] == "PASS" for x in results),
+                "gate": {"all_periodic": all_periodic,
+                         "all_hard_gates_pass": all_hard_gates_pass,
                          "result": "REVIEW", "external_review_task": "EP-R2-EXTERNAL-REVIEW"}}
     (out / "comparison.json").write_text(json.dumps(comparisons, sort_keys=True, indent=2) + "\n", encoding="utf-8")
     (out / "manifest.json").write_text(json.dumps(manifest, sort_keys=True, indent=2) + "\n", encoding="utf-8")
@@ -255,7 +405,7 @@ def run(out: Path) -> dict[str, Any]:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--out", type=Path, default=Path("results/engine-physics-v1/r2-offline"))
+    parser.add_argument("--out", type=Path, default=Path("results/engine-physics-v1/r2-semantic-correction"))
     args = parser.parse_args()
     try:
         print(json.dumps(run((ROOT / args.out).resolve()), sort_keys=True))
