@@ -10,11 +10,17 @@ from dev_orchestrator import p0_campaign as p
 from dev_orchestrator.contracts import read_json,load_phase
 from dev_orchestrator.p0_finalize import validate_review,final_label,preflight_destinations,preserve,rollback_close
 from dev_orchestrator import p0_finalize as close
+from motorsim.artifact_store import resolve_external_artifact
+
+ROOT=Path(__file__).resolve().parents[1]
+LOW_RPM_ARTIFACT_MANIFEST=ROOT/'artifacts/low-rpm-test-evidence.json'
 
 
 class P0Tests(unittest.TestCase):
     @classmethod
-    def setUpClass(cls): cls.historical=read_json(p.ROOT/'results/frontera-baja-2t-20260917/3000.json')
+    def setUpClass(cls):
+        path=resolve_external_artifact('LOWRPM_EVIDENCE_3000',manifest_path=LOW_RPM_ARTIFACT_MANIFEST)
+        cls.historical=read_json(path)
 
     def test_only_p0_enabled_without_repair_or_chaining(self):
         config=read_json(p.ROOT/'dev_orchestrator/config.json')

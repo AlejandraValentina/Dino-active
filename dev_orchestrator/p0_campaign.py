@@ -22,8 +22,10 @@ from motorsim.prototype import Monitor, environment, write_json
 from motorsim.reference_results import BAND_PA, PROFILE, MODEL_VERSION
 from motorsim.rpm_domain import PUBLIC_DOMAINS
 from motorsim.simulation import Model, balances_ok
+from motorsim.artifact_store import resolve_external_artifact
 
 ROOT=Path(__file__).resolve().parents[1]
+ARTIFACT_MANIFEST=ROOT/'artifacts/low-rpm-test-evidence.json'
 MAIN_RPMS=tuple(range(2500,15001,500))
 STRESS_RPMS=(16000,18000,20000)
 HISTORICAL_RPMS=(2500,3000,5000,8000,10000,12000,15000)
@@ -63,12 +65,17 @@ def terminal(result):
 
 
 def compare_historical(rpm,document):
-    folder='frontera-baja-2t-20260917' if rpm in (2500,3000) else 'rendimiento-dominio-2t-20260917'
-    path=ROOT/'results'/folder/f'{rpm}.json'
+    if rpm in (2500,3000):
+        artifact_id=f'LOWRPM_EVIDENCE_{rpm}'
+        reference=f'results/frontera-baja-2t-20260917/{rpm}.json'
+    else:
+        artifact_id=f'P0_REFERENCE_{rpm}'
+        reference=f'results/rendimiento-dominio-2t-20260917/{rpm}.json'
+    path=resolve_external_artifact(artifact_id,manifest_path=ARTIFACT_MANIFEST)
     old=read_json(path)
     new=json.loads(json.dumps(document,allow_nan=False))
     fields={k:new['result'].get(k)==v for k,v in old['result'].items() if k!='seconds'}
-    return dict(rpm=rpm,reference=path.relative_to(ROOT).as_posix(),reference_sha256=sha(path),
+    return dict(rpm=rpm,reference=reference,reference_sha256=sha(path),
         manifest_equal=new['case']==old['case'],fields=fields,
         passed=new['case']==old['case'] and all(fields.values()),ignored_fields=['seconds'])
 

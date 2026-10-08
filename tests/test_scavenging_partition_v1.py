@@ -1,9 +1,11 @@
 import gzip
 import json
+from pathlib import Path
 
 import pytest
 
 from motorsim.scavenging_partition_v1 import evaluate_scavenging_partition_v1
+from motorsim.artifact_store import resolve_external_artifact
 
 
 def _primary(*, fresh_delivery=1.0, fresh_short=0.2, species=None, residual=None):
@@ -68,8 +70,11 @@ def test_species_closure_and_sampling_contract_are_hard_checked():
 
 
 def test_existing_periodic_primary_binds_integrated_flux_closure_and_burned_species():
-    primary = json.load(gzip.open(
-        "results/engine-physics-v1/recovery-campaign-data-v2/engine_a_3000/cycle-073.json.gz"))
+    artifact = resolve_external_artifact(
+        "R2_A3000",
+        manifest_path=Path(__file__).resolve().parents[1]/"artifacts/engine-physics-v1-r2.json",
+    )
+    primary = json.load(gzip.open(artifact))
     record = evaluate_scavenging_partition_v1(primary)
     assert record["species_closure"]["max_abs_residual_kg"] <= 1e-12
     assert set(record["species_closure"]["residual_kg_by_species"]) == {

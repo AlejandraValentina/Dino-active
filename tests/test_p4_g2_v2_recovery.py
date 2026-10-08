@@ -7,9 +7,11 @@ import json
 import math
 import shutil
 from pathlib import Path
+from functools import lru_cache
 
 import pytest
 import numpy as np
+from motorsim.artifact_store import resolve_external_artifact
 
 from dev_orchestrator.p4_g2_v2_recovery import (
     EXPECTED, ROOT, SCHEMA, advance_detector, audit_inputs, metric_row,
@@ -21,6 +23,15 @@ from dev_orchestrator.p4_g2_v2_offline_audit import (
     validate_detector_snapshot, validate_metric_inputs,
 )
 from motorsim.periodicity import PeriodicityDetector, compare_cycles
+
+_G2_MANIFEST = Path(__file__).resolve().parents[1] / "artifacts/p4-g2-v2-recovery.json"
+
+@lru_cache(maxsize=1)
+def _evidence_root():
+    entries = json.loads(_G2_MANIFEST.read_text(encoding="utf-8"))["artifacts"]
+    for entry in entries:
+        resolve_external_artifact(entry["artifact_id"], manifest_path=_G2_MANIFEST)
+    return resolve_external_artifact("P4_G2_V2_MANIFEST", manifest_path=_G2_MANIFEST).parent
 
 
 def _inputs(cycle: int, sensor_pressure: float = 1.) -> dict:
@@ -443,8 +454,9 @@ def test_offline_auditor_rejects_tampered_closing_evidence(tmp_path, damage, exp
 
 
 def test_new_durable_acquisition_reaudits_without_producer_pass():
-    assert ROOT.exists(), "Committed G2-v2 recovery evidence is required"
-    result = audit(ROOT)
+    root = _evidence_root()
+    assert root.exists(), "Committed G2-v2 recovery evidence is required"
+    result = audit(root)
     assert result["classification"] == "E13_G2_V2_PASS", result
     assert result["detected_period"] == 2
     assert result["trace"][-1]["lag2_passed"] is True
@@ -453,12 +465,13 @@ def test_new_durable_acquisition_reaudits_without_producer_pass():
 
 def test_reacquired_terminal_states_match_historical_run_exactly():
     historical = Path("results/p4-g2-v2-20260929")
-    assert ROOT.exists() and historical.exists()
+    root = _evidence_root()
+    assert root.exists() and historical.exists()
     for cycle in range(31, 51):
         old = json.loads(gzip.decompress(
             (historical/f"checkpoint_cycle{cycle:03}.json.gz").read_bytes()))
         new = json.loads(gzip.decompress(
-            (ROOT/f"checkpoint_cycle{cycle:03}.json.gz").read_bytes()))["inputs"]
+                (root/f"checkpoint_cycle{cycle:03}.json.gz").read_bytes()))["inputs"]
         assert (old["begin"], old["end"], old["state"], old["cells"]) == (
             new["begin"], new["end"], new["state"], new["cells"])
 
@@ -467,10 +480,11 @@ def test_r2_real_closing_checkpoint_false_dt_cannot_pass_after_hash_update(tmp_p
     """Replay the R2 finding without relying on the R2 report as an oracle."""
     target = tmp_path/"mutated-real-evidence"
     target.mkdir()
-    for checkpoint in ROOT.glob("checkpoint_cycle*.json.gz"):
+    root = _evidence_root()
+    for checkpoint in root.glob("checkpoint_cycle*.json.gz"):
         shutil.copyfile(checkpoint, target/checkpoint.name)
     for name in ("manifest.json", "seed-detector-cycle030.json", "decision.json"):
-        shutil.copyfile(ROOT/name, target/name)
+        shutil.copyfile(root/name, target/name)
     path = target/"checkpoint_cycle050.json.gz"
     payload = json.loads(gzip.decompress(path.read_bytes()))
     payload["inputs"]["gate_inputs"]["segments"][0]["stages"][0]["dt"] = False

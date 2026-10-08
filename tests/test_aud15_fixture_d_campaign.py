@@ -4,6 +4,7 @@ from __future__ import annotations
 import gzip
 import json
 from pathlib import Path
+from motorsim.artifact_store import resolve_external_artifact
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -33,7 +34,13 @@ def test_fixture_d_preregistered_two_cycle_run_and_p7_geometry():
     assert replay["restart_cycle"] == 1
     assert replay["compared_terminal_cycle"] == 2
 
-    cycles = [_json_gz(RUN / f"cycle-{index:03}.json.gz") for index in (1, 2)]
+    artifact_manifest = ROOT / "artifacts/test-fixtures.json"
+    cycles = [
+        _json_gz(resolve_external_artifact(
+            f"AUD15_FIXTURE_D_CYCLE_{index:03}", manifest_path=artifact_manifest
+        ))
+        for index in (1, 2)
+    ]
     assert [(cycle["cycle_start_deg"], cycle["cycle_end_deg"]) for cycle in cycles] == [
         (0.0, 360.0), (360.0, 720.0)
     ]

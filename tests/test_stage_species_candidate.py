@@ -3,11 +3,13 @@ import json
 import math
 from pathlib import Path
 import unittest
+from motorsim.artifact_store import resolve_external_artifact
 from motorsim.simulation import TWO_LAYOUT as L, InvalidStage, rk4
 from tools.stage_species_candidate import (LimiterDiagnostics, fresh_derivatives,
     limit_stage_species_fluxes, candidate_rk4)
 
 ROOT = Path(__file__).resolve().parents[1]
+LOW_RPM_ARTIFACT_MANIFEST=ROOT/'artifacts/low-rpm-test-evidence.json'
 
 
 def state(fresh):
@@ -132,7 +134,8 @@ class SpeciesLimiterTests(unittest.TestCase):
         for i in range(4): self.assertEqual(raw[3*i:3*i+2],fixed[3*i:3*i+2])
 
     def replay_micro(self,rpm):
-        p=ROOT/f'results/frontera-baja-2t-20260917/{rpm}-observation.json'
+        p=resolve_external_artifact(f'LOWRPM_OBSERVATION_{rpm}',
+                                    manifest_path=LOW_RPM_ARTIFACT_MANIFEST)
         rows=json.loads(p.read_text(encoding='utf-8'))['physical_failures']
         rows=[r for r in rows if (r['state'][8]<0 if rpm==2000 else r['state'][2]>r['state'][0])]
         c=rows[-1]['context']['rk4']; y,k,dt=c['y'],c['k3'],c['dt']

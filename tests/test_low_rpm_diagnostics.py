@@ -9,13 +9,25 @@ from motorsim.examples import example_project
 from motorsim.project_case import build_project_case
 from motorsim.reference_results import BAND_PA
 from motorsim.simulation import Model
+from motorsim.artifact_store import resolve_external_artifact
 from tools.analyze_low_rpm import replay_attempt, negative_analysis
 
 ROOT=Path(__file__).resolve().parents[1]
 EVIDENCE=ROOT/'results/frontera-baja-2t-20260917'
+ARTIFACT_MANIFEST=ROOT/'artifacts/low-rpm-test-evidence.json'
+EXTERNAL_EVIDENCE={
+    '1000-observation.json':'LOWRPM_OBSERVATION_1000',
+    **{f'{rpm}-observation.json':f'LOWRPM_OBSERVATION_{rpm}'
+       for rpm in (1500,1750,2000,2250,2500,2750,3000)},
+    **{f'{rpm}.json':f'LOWRPM_EVIDENCE_{rpm}' for rpm in (1000,2000,2500,3000)},
+}
 
 
-def read(name): return json.loads((EVIDENCE/name).read_text(encoding='utf-8'))
+def read(name):
+    artifact_id=EXTERNAL_EVIDENCE.get(name)
+    path=(resolve_external_artifact(artifact_id,manifest_path=ARTIFACT_MANIFEST)
+          if artifact_id else EVIDENCE/name)
+    return json.loads(path.read_text(encoding='utf-8'))
 
 
 def source_sha256(raw):
@@ -40,7 +52,8 @@ class LowRpmDiagnosticsTests(unittest.TestCase):
 
     def test_observation_does_not_change_original_scientific_trajectory(self):
         for rpm in (1000,2000,3000):
-            previous=json.loads((ROOT/f'results/rendimiento-dominio-2t-20260917/{rpm}.json').read_text(encoding='utf-8'))
+            previous=json.loads(resolve_external_artifact(
+                f'LOWRPM_REFERENCE_{rpm}',manifest_path=ARTIFACT_MANIFEST).read_text(encoding='utf-8'))
             current=read(f'{rpm}.json')
             self.assertEqual(current['case'],previous['case'])
             for key,value in previous['result'].items():

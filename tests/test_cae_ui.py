@@ -1,6 +1,7 @@
 """Contratos de presentación CAE, sin integración física adicional."""
 import os
 os.environ.setdefault('QT_QPA_PLATFORM','offscreen')
+import shutil
 import tempfile
 from pathlib import Path
 import unittest
@@ -9,6 +10,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication
 from motorsim.window import MainWindow
+from motorsim.artifact_store import resolve_external_artifact
 from motorsim.examples import PROJECT_FILES
 from motorsim.storage import load_project
 from motorsim.project import ProjectError
@@ -18,6 +20,8 @@ from motorsim.project_case import validate_rpm
 from motorsim.sweep import plan_rpms
 
 ROOT=Path(__file__).resolve().parents[1]
+GUI_RESULT_FIXTURE=ROOT/'tests/fixtures/four_stroke_point02'
+GUI_ARTIFACT_MANIFEST=ROOT/'artifacts/test-fixtures.json'
 
 class CAETests(unittest.TestCase):
     @classmethod
@@ -76,14 +80,21 @@ class CAETests(unittest.TestCase):
         self.assertEqual(v.preview_angle.layout.period,720);self.assertIsNotNone(v.preview_pv.volume_range)
     def test_result_context_stays_with_evidence_and_stale_is_visible(self):
         w=self.w;v=w.simulation_view
-        v.open_result(path=ROOT/'results/simulacion-2t/cuatro-tiempos-20260916/R2/gui-sweep/point-02/manifest.json')
-        previous=v.context_table.values['Geometría'].text();points=list(v.angle_plot.points)
-        with patch.object(w,'_ask_changes',return_value='discard'):w.load_example_file('2t-compression')
-        self.assertEqual(v.context_table.values['Geometría'].text(),previous)
-        self.assertEqual(v.angle_plot.points,points);self.assertEqual(v.preview_angle.points,points)
-        self.assertEqual(v.state_badge.text(),'CONVERGIDO');self.assertTrue(v.context_stale.text())
-        w.resize(900,650);w.navigation.go('simulation');self.app.processEvents()
-        self.assertFalse(v.context_panel.toggle.isChecked());self.assertTrue(v.context_stale.isVisible())
+        with tempfile.TemporaryDirectory() as folder:
+            result_dir=Path(folder)
+            for name in ('manifest.json','case.json','summary.json'):
+                shutil.copyfile(GUI_RESULT_FIXTURE/name,result_dir/name)
+            samples=resolve_external_artifact(
+                'FOUR_STROKE_GUI_POINT02_SAMPLES',manifest_path=GUI_ARTIFACT_MANIFEST)
+            shutil.copyfile(samples,result_dir/'samples.json')
+            v.open_result(path=result_dir/'manifest.json')
+            previous=v.context_table.values['Geometría'].text();points=list(v.angle_plot.points)
+            with patch.object(w,'_ask_changes',return_value='discard'):w.load_example_file('2t-compression')
+            self.assertEqual(v.context_table.values['Geometría'].text(),previous)
+            self.assertEqual(v.angle_plot.points,points);self.assertEqual(v.preview_angle.points,points)
+            self.assertEqual(v.state_badge.text(),'CONVERGIDO');self.assertTrue(v.context_stale.text())
+            w.resize(900,650);w.navigation.go('simulation');self.app.processEvents()
+            self.assertFalse(v.context_panel.toggle.isChecked());self.assertTrue(v.context_stale.isVisible())
     def test_details_opens_actual_parameters_without_worker(self):
         w=self.w;w.load_example_file('4t-reference');v=w.simulation_view
         w.navigation.go('simulation')

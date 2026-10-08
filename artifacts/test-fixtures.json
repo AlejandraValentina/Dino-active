@@ -1,0 +1,40 @@
+{
+  "schema": "DINO_EXTERNAL_ARTIFACT_MANIFEST_V1",
+  "historical_repository": "https://github.com/AlejandraValentina/Dino.git",
+  "historical_anchor": "a3d518e2d736de84d82595f674789d4547baac4e",
+  "artifacts": [
+    {
+      "artifact_id": "FOUR_STROKE_GUI_POINT02_SAMPLES",
+      "historical_relative_path": "results/simulacion-2t/cuatro-tiempos-20260916/R2/gui-sweep/point-02/samples.json",
+      "historical_anchor": "a3d518e2d736de84d82595f674789d4547baac4e",
+      "source_state": "Present in the read-only historical working tree at audit time; ignored and not tracked at the anchor, so no producing commit is asserted.",
+      "filename": "samples.json",
+      "byte_size": 4215611,
+      "sha256": "c414d9ef491ee517375fa406529e663f453b968d1261987390d16cd47c85077b",
+      "purpose": "Existing CAE result-context UI test fixture; verified before loading by the artifact resolver.",
+      "expected_external_relative_path": "test-fixtures/four-stroke-point02/samples.json"
+    },
+    {
+      "artifact_id": "AUD15_FIXTURE_D_CYCLE_001",
+      "historical_relative_path": "results/2t-commercial-core-20261002/aud-15-fixture-d-20261005-v1/cycle-001.json.gz",
+      "historical_anchor": "a3d518e2d736de84d82595f674789d4547baac4e",
+      "relevant_historical_commit": "01172a2d7b2f7f97db9a7a46e12cf328962aef52",
+      "filename": "cycle-001.json.gz",
+      "byte_size": 3848432,
+      "sha256": "3545d8f35a1e48d661d0e52f46f03c8cb311d63040898f4968a77342339a952c",
+      "purpose": "Existing preregistered AUD-15 Fixture D cycle dump consumed by an offline regression test.",
+      "expected_external_relative_path": "test-fixtures/aud15-fixture-d/cycle-001.json.gz"
+    },
+    {
+      "artifact_id": "AUD15_FIXTURE_D_CYCLE_002",
+      "historical_relative_path": "results/2t-commercial-core-20261002/aud-15-fixture-d-20261005-v1/cycle-002.json.gz",
+      "historical_anchor": "a3d518e2d736de84d82595f674789d4547baac4e",
+      "relevant_historical_commit": "01172a2d7b2f7f97db9a7a46e12cf328962aef52",
+      "filename": "cycle-002.json.gz",
+      "byte_size": 5938283,
+      "sha256": "e652a6833bd79f693d88f29e8a342f122fb3b1132715f697e6326f60a47a5e74",
+      "purpose": "Existing preregistered AUD-15 Fixture D cycle dump consumed by an offline regression test.",
+      "expected_external_relative_path": "test-fixtures/aud15-fixture-d/cycle-002.json.gz"
+    }
+  ]
+}

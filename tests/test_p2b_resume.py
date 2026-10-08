@@ -10,6 +10,10 @@ from dev_orchestrator.p2b_campaign import run_case
 
 
 class ResumeTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        (p.ROOT/'dev_orchestrator/runs').mkdir(parents=True, exist_ok=True)
+
     def test_relative_checkpoint_path_from_cli(self):
         records,_=p.load_reusable('results/p2b-gas1d-20260918/attempt-2',p.source_hashes())
         self.assertEqual(len(records),8)

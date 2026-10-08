@@ -21,23 +21,24 @@ sys.path.insert(0, str(ROOT))
 from motorsim.engine_physics_v1 import (evaluate_integrated_cycle_v2,
                                         standard_fmep_model_v1,
                                         synthetic_gasoline_v1)
+from motorsim.artifact_store import ArtifactStoreError, resolve_external_artifact
 from motorsim.scavenging_partition_v1 import evaluate_scavenging_partition_v1
 
 TOL = 1e-12
 POINTS = (
-    ("A3000", "FIXTURE_A_PRIME", 3000, 73,
+    ("A3000", "R2_A3000", "FIXTURE_A_PRIME", 3000, 73,
      "results/engine-physics-v1/recovery-campaign-data-v2/engine_a_3000/cycle-073.json.gz",
      "results/engine-physics-v1/recovery-campaign-data-v2/engine_a_3000/engineering-v2-073.json",
      "results/engine-physics-v1/recovery-runlogs-v2/engine-physics-v1-recovery-v2.summary.json"),
-    ("A4000", "FIXTURE_A_PRIME", 4000, 88,
+    ("A4000", "R2_A4000", "FIXTURE_A_PRIME", 4000, 88,
      "results/engine-physics-v1/recovery-campaign-data-v2/engine_a_4000/cycle-088.json.gz",
      "results/engine-physics-v1/recovery-campaign-data-v2/engine_a_4000/engineering-v2-088.json",
      "results/engine-physics-v1/recovery-runlogs-v2/engine-physics-v1-recovery-v2.summary.json"),
-    ("B3000", "FIXTURE_B_PRIME", 3000, 34,
+    ("B3000", "R2_B3000", "FIXTURE_B_PRIME", 3000, 34,
      "results/engine-physics-v1/recovery-campaign-data-v2/engine_b_3000/cycle-034.json.gz",
      "results/engine-physics-v1/recovery-campaign-data-v2/engine_b_3000/engineering-v2-034.json",
      "results/engine-physics-v1/recovery-runlogs-v2/engine-physics-v1-recovery-v2.summary.json"),
-    ("B4000", "FIXTURE_B_PRIME", 4000, 38,
+    ("B4000", "R2_B4000", "FIXTURE_B_PRIME", 4000, 38,
      "results/engine-physics-v1/b4000-continuation-data-v2/cycle-038.json.gz",
      "results/engine-physics-v1/b4000-continuation-data-v2/engineering-v2-038.json",
      "results/engine-physics-v1/b4000-continuation-runlog-v2/engine-physics-v1-b4000-continuation-v2.summary.json"),
@@ -91,9 +92,10 @@ def output_metric(name: str, base: dict[str, Any], units: str, source: str,
     return record(item.get("value"), units, definition, source)
 
 
-def build_point(point: tuple[str, str, int, int, str, str, str]) -> dict[str, Any]:
-    point_id, fixture, rpm, cycle_no, primary_rel, old_rel, runtime_rel = point
-    primary_path, old_path, runtime_path = ROOT / primary_rel, ROOT / old_rel, ROOT / runtime_rel
+def build_point(point: tuple[str, str, str, int, int, str, str, str]) -> dict[str, Any]:
+    point_id, artifact_id, fixture, rpm, cycle_no, primary_rel, old_rel, runtime_rel = point
+    primary_path = resolve_external_artifact(artifact_id)
+    old_path, runtime_path = ROOT / old_rel, ROOT / runtime_rel
     primary = load_primary(primary_path)
     old = load_json(old_path)
     fuel = synthetic_gasoline_v1()
@@ -230,9 +232,9 @@ def run(out: Path) -> dict[str, Any]:
         result = build_point(point)
         target = out / point[0]
         target.mkdir(exist_ok=True)
-        (target / f"engineering-r2-{point[3]:03d}.json").write_text(
+        (target / f"engineering-r2-{point[4]:03d}.json").write_text(
             json.dumps(result, sort_keys=True, indent=2, allow_nan=False) + "\n", encoding="utf-8")
-        old = load_json(ROOT / point[5])
+        old = load_json(ROOT / point[6])
         comparisons[point[0]] = comparison(result, old)
         results.append(result)
     manifest = {"schema": "ENGINE_PHYSICS_V1_R2_OFFLINE_MANIFEST", "status": "REVIEW",
@@ -255,4 +257,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", type=Path, default=Path("results/engine-physics-v1/r2-offline"))
     args = parser.parse_args()
-    print(json.dumps(run((ROOT / args.out).resolve()), sort_keys=True))
+    try:
+        print(json.dumps(run((ROOT / args.out).resolve()), sort_keys=True))
+    except ArtifactStoreError as exc:
+        parser.exit(2, f"{exc}\n")

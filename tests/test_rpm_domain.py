@@ -9,6 +9,7 @@ from motorsim.project import ProjectError
 from motorsim.reference_results import project_inputs, validated_model
 from motorsim.rpm_domain import validate_rpm, validate_candidate_2t_rpm
 from motorsim.sweep import plan_rpms, load_sweep
+from motorsim.artifact_store import resolve_external_artifact
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -52,7 +53,11 @@ class DomainTests(unittest.TestCase):
             self.assertEqual(len(sweep_metrics(sweep)),3)
 
     def test_campaign_3000_exact_scientific_regression(self):
-        candidate=json.loads((ROOT/'results/rendimiento-dominio-2t-20260917/3000.json').read_text(encoding='utf-8'))['result']
+        baseline=resolve_external_artifact(
+            'LOWRPM_REFERENCE_3000',
+            manifest_path=ROOT/'artifacts/low-rpm-test-evidence.json',
+        )
+        candidate=json.loads(baseline.read_text(encoding='utf-8'))['result']
         historical=json.loads((ROOT/'results/simulacion-2t/barrido-20260915/gui-sweep/point-02/summary.json').read_text(encoding='utf-8'))['result']
         samples=json.loads((ROOT/'results/simulacion-2t/barrido-20260915/gui-sweep/point-02/samples.json').read_text(encoding='utf-8'))
         self.assertEqual(candidate['last_two_cycles'],samples['cycles'])

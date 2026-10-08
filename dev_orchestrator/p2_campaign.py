@@ -6,10 +6,12 @@ import json
 import time
 from pathlib import Path
 from motorsim.gas1d.verification import case_names,run_case,aggregate
+from motorsim.artifact_store import resolve_external_artifact
 from .contracts import read_json,inside
 from .git_state import snapshot
 
 ROOT=Path(__file__).resolve().parents[1]
+P0_ARTIFACT_MANIFEST=ROOT/'artifacts/p0-baseline-evidence.json'
 
 
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -32,7 +34,9 @@ def invariants():
     accepted &= p0['status']=='P0_HUMAN_ACCEPTED' and sha(inside(ROOT,p0['original_evidence']))==p0['original_evidence_sha256']
     # Historical P0 output hashes, no re-integration.
     folder=ROOT/'results/p0-baseline-0d-20260917'
-    for p,h in read_json(folder/'artifacts/inventory.json').items():baseline &= sha(inside(folder,p))==h
+    for rel,h in read_json(folder/'artifacts/inventory.json').items():
+        artifact_id='P0_BASELINE_'+f'results/p0-baseline-0d-20260917/{rel}'.replace('/','_').replace('.','_').replace('-','_').upper()
+        baseline &= sha(resolve_external_artifact(artifact_id,manifest_path=P0_ARTIFACT_MANIFEST))==h
     return dict(baseline_intact=production and baseline,contract_frozen=frozen,dependencies_accepted=accepted)
 
 
