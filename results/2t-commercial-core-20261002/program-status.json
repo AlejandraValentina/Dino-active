@@ -2516,6 +2516,49 @@
       "write_scope": [
         "results/engine-physics-v1/r2-offline/review"
       ]
+    },
+    {
+      "id": "EP-R2-SEMANTIC-FORENSICS",
+      "description": "Trace fixture hash bindings, primary metering/fuel ledgers, and independent conservation primitives for the authorized four R2 points.",
+      "dependencies": [
+        "EP-R2-VERIFY"
+      ],
+      "state": "READY",
+      "objective": "ENGINE_PHYSICS_V1_R2",
+      "owner_role": "verification",
+      "evidence_level": "L2",
+      "write_scope": [
+        "artifacts/engine-physics-v1-r2.json",
+        "results/engine-physics-v1-r2-semantic-correction/forensics"
+      ]
+    },
+    {
+      "id": "EP-R2-SEMANTIC-ADVERSARIAL",
+      "description": "Build a focal adversarial matrix for R2 output semantics and each required hard-gate mutation from compact primary-derived records.",
+      "dependencies": [
+        "EP-R2-VERIFY"
+      ],
+      "state": "READY",
+      "objective": "ENGINE_PHYSICS_V1_R2",
+      "owner_role": "skeptic/adversarial review",
+      "evidence_level": "L1",
+      "write_scope": [
+        "tests/test_engine_physics_v1_r2_semantics.py"
+      ]
+    },
+    {
+      "id": "EP-R2-SEMANTIC-CONTRACT",
+      "description": "Define versioned corrected R2 output contracts and dependency-specific undefined reasons while preserving historical V1 and first external review.",
+      "dependencies": [
+        "EP-R2-VERIFY"
+      ],
+      "state": "READY",
+      "objective": "ENGINE_PHYSICS_V1_R2",
+      "owner_role": "architecture",
+      "evidence_level": "L1",
+      "write_scope": [
+        "openspec/changes/engine-physics-v1-r2/specs/engine-physics-v1-r2/semantic-correction.md"
+      ]
     }
   ],
   "audit_remediation_mode": false,
@@ -3068,6 +3111,11 @@
       "task": "EP-R2-REPLAY",
       "kind": "task",
       "summary": "ENGINE_PHYSICS_V1_R2 offline replay persisted from A-prime/B-prime periodic primaries at cycles 73/88/34/38; all four hard gates PASS, corrected species residuals <= 4.56e-19 kg, TE explicitly UNDEFINED under gross-crossing semantics, no campaign or solver step."
+    },
+    {
+      "timestamp": "2026-10-08T12:00:00+00:00",
+      "task": "EP-R2-SEMANTIC-FORENSICS",
+      "summary": "Replanned R2 after external fail: added three READY local semantic-correction work items; corrected B4000 attribution to UNTRACKED_AT_CAPTURE based on historical git status/path-specific log audit."
     }
   ],
   "legacy_gate_status": {
