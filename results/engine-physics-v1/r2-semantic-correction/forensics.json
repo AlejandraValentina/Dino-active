@@ -1,0 +1,194 @@
+{
+  "campaigns_started": 0,
+  "points": [
+    {
+      "artifact_id": "R2_A3000",
+      "cycle": 73,
+      "fixture_configuration_match_method": "fixture_id plus exact engine_configuration match except declared schema, fuel-coupling, and reference RPM fields",
+      "fixture_configuration_matches_primary_except_declared_schema_fuel_and_rpm_differences": true,
+      "fixture_engine_configuration_sha256": "d3f000f72dda247e11a561ad63fb93daab1145cca689105a17cd8e6ae7c71ab7",
+      "fixture_file_sha256": "1f1298c0fd38e925eeac0be3049d7fa7d260ac8d5a07ba97042e02e2d7c7a9cf",
+      "fixture_id": "FIXTURE_A_PRIME",
+      "fixture_path": "results/2t-commercial-core-20261002/fixtures/v1-prime-mesh/fixture_a_prime-mesh-0.json",
+      "fuel": {
+        "available_kg": 2.50033740985853e-07,
+        "burned_kg": 2.4935929463958133e-07,
+        "corrected_unburned_kg": 6.744463462716744e-10,
+        "old_exhaust_close_unburned_kg": 2.3592136147561765e-07
+      },
+      "mechanical_loss_model": {
+        "cycle_convention": "2T_360_DEG_ONE_CYCLE_PER_REV",
+        "schema": "MECHANICAL_LOSS_MODEL_V1",
+        "terms": [
+          {
+            "id": "synthetic-piston-ring",
+            "mep_pa": 1000.0,
+            "operating_map": null,
+            "provenance": "SYNTHETIC_ASSUMPTION",
+            "source": "piston_ring"
+          },
+          {
+            "id": "synthetic-bearing-accessory",
+            "mep_pa": 500.0,
+            "operating_map": null,
+            "provenance": "SYNTHETIC_ASSUMPTION",
+            "source": "bearing_accessory"
+          }
+        ]
+      },
+      "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+      "metering": {
+        "air_kg": 1.4551536840223171e-05,
+        "air_ledger": "observables.fresh_air_intake_delivery_kg",
+        "fuel_kg": 2.9697013959639115e-07,
+        "fuel_ledger": "observables.fuel_delivered_kg",
+        "ratio": 49.000000000000014
+      },
+      "point_id": "A3000",
+      "primary_configuration_binding_sha256": "fbe4a10dde05f00c4bf5d992a8c311e3a7236b9376858ab250a14c243bd8b959",
+      "primary_sha256": "6c9ddcf1da4d767de4c0cf6b92ddda9f94e8232843739aed0fd9817aba7f6e46"
+    },
+    {
+      "artifact_id": "R2_A4000",
+      "cycle": 88,
+      "fixture_configuration_match_method": "fixture_id plus exact engine_configuration match except declared schema, fuel-coupling, and reference RPM fields",
+      "fixture_configuration_matches_primary_except_declared_schema_fuel_and_rpm_differences": true,
+      "fixture_engine_configuration_sha256": "d3f000f72dda247e11a561ad63fb93daab1145cca689105a17cd8e6ae7c71ab7",
+      "fixture_file_sha256": "1f1298c0fd38e925eeac0be3049d7fa7d260ac8d5a07ba97042e02e2d7c7a9cf",
+      "fixture_id": "FIXTURE_A_PRIME",
+      "fixture_path": "results/2t-commercial-core-20261002/fixtures/v1-prime-mesh/fixture_a_prime-mesh-0.json",
+      "fuel": {
+        "available_kg": 2.0191783676304623e-07,
+        "burned_kg": 2.0148022193715803e-07,
+        "corrected_unburned_kg": 4.376148258881955e-10,
+        "old_exhaust_close_unburned_kg": 1.9063135235588546e-07
+      },
+      "mechanical_loss_model": {
+        "cycle_convention": "2T_360_DEG_ONE_CYCLE_PER_REV",
+        "schema": "MECHANICAL_LOSS_MODEL_V1",
+        "terms": [
+          {
+            "id": "synthetic-piston-ring",
+            "mep_pa": 1000.0,
+            "operating_map": null,
+            "provenance": "SYNTHETIC_ASSUMPTION",
+            "source": "piston_ring"
+          },
+          {
+            "id": "synthetic-bearing-accessory",
+            "mep_pa": 500.0,
+            "operating_map": null,
+            "provenance": "SYNTHETIC_ASSUMPTION",
+            "source": "bearing_accessory"
+          }
+        ]
+      },
+      "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+      "metering": {
+        "air_kg": 1.1381186602067758e-05,
+        "air_ledger": "observables.fresh_air_intake_delivery_kg",
+        "fuel_kg": 2.3226911432791302e-07,
+        "fuel_ledger": "observables.fuel_delivered_kg",
+        "ratio": 49.000000000000085
+      },
+      "point_id": "A4000",
+      "primary_configuration_binding_sha256": "a7be34f1eb7f420f7f74bd8e27bde323bb63e6d61ee82a4559d7d3d0a1c3abc5",
+      "primary_sha256": "82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0"
+    },
+    {
+      "artifact_id": "R2_B3000",
+      "cycle": 34,
+      "fixture_configuration_match_method": "fixture_id plus exact engine_configuration match except declared schema, fuel-coupling, and reference RPM fields",
+      "fixture_configuration_matches_primary_except_declared_schema_fuel_and_rpm_differences": true,
+      "fixture_engine_configuration_sha256": "b21dd08a23679954c1ac39aae383fc2a78c702c5a358c8e2387fcecd00f2af82",
+      "fixture_file_sha256": "5b487b01044beee19cc537db158264e52aa9e34a567004bcbe883e1166bfe173",
+      "fixture_id": "FIXTURE_B_PRIME",
+      "fixture_path": "results/2t-commercial-core-20261002/fixtures/v1-prime-mesh/fixture_b_prime-mesh-0.json",
+      "fuel": {
+        "available_kg": 7.495348727388375e-07,
+        "burned_kg": 7.475457641868216e-07,
+        "corrected_unburned_kg": 1.9891085520158453e-09,
+        "old_exhaust_close_unburned_kg": 7.072629219845075e-07
+      },
+      "mechanical_loss_model": {
+        "cycle_convention": "2T_360_DEG_ONE_CYCLE_PER_REV",
+        "schema": "MECHANICAL_LOSS_MODEL_V1",
+        "terms": [
+          {
+            "id": "synthetic-piston-ring",
+            "mep_pa": 1000.0,
+            "operating_map": null,
+            "provenance": "SYNTHETIC_ASSUMPTION",
+            "source": "piston_ring"
+          },
+          {
+            "id": "synthetic-bearing-accessory",
+            "mep_pa": 500.0,
+            "operating_map": null,
+            "provenance": "SYNTHETIC_ASSUMPTION",
+            "source": "bearing_accessory"
+          }
+        ]
+      },
+      "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+      "metering": {
+        "air_kg": 6.271141637382232e-05,
+        "air_ledger": "observables.fresh_air_intake_delivery_kg",
+        "fuel_kg": 1.2798248239555575e-06,
+        "fuel_ledger": "observables.fuel_delivered_kg",
+        "ratio": 49.0
+      },
+      "point_id": "B3000",
+      "primary_configuration_binding_sha256": "fcf19e52ceafd15501c945d9a03018a57dfeaeafe097deca81a0f69463a2f49d",
+      "primary_sha256": "d56c0d1f353844bff39e8a906fd464cea638c9f7af2debac32f75d4bff3d5274"
+    },
+    {
+      "artifact_id": "R2_B4000",
+      "cycle": 38,
+      "fixture_configuration_match_method": "fixture_id plus exact engine_configuration match except declared schema, fuel-coupling, and reference RPM fields",
+      "fixture_configuration_matches_primary_except_declared_schema_fuel_and_rpm_differences": true,
+      "fixture_engine_configuration_sha256": "b21dd08a23679954c1ac39aae383fc2a78c702c5a358c8e2387fcecd00f2af82",
+      "fixture_file_sha256": "5b487b01044beee19cc537db158264e52aa9e34a567004bcbe883e1166bfe173",
+      "fixture_id": "FIXTURE_B_PRIME",
+      "fixture_path": "results/2t-commercial-core-20261002/fixtures/v1-prime-mesh/fixture_b_prime-mesh-0.json",
+      "fuel": {
+        "available_kg": 6.772414858712398e-07,
+        "burned_kg": 6.75620816412461e-07,
+        "corrected_unburned_kg": 1.6206694587788014e-09,
+        "old_exhaust_close_unburned_kg": 6.393543426655382e-07
+      },
+      "mechanical_loss_model": {
+        "cycle_convention": "2T_360_DEG_ONE_CYCLE_PER_REV",
+        "schema": "MECHANICAL_LOSS_MODEL_V1",
+        "terms": [
+          {
+            "id": "synthetic-piston-ring",
+            "mep_pa": 1000.0,
+            "operating_map": null,
+            "provenance": "SYNTHETIC_ASSUMPTION",
+            "source": "piston_ring"
+          },
+          {
+            "id": "synthetic-bearing-accessory",
+            "mep_pa": 500.0,
+            "operating_map": null,
+            "provenance": "SYNTHETIC_ASSUMPTION",
+            "source": "bearing_accessory"
+          }
+        ]
+      },
+      "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+      "metering": {
+        "air_kg": 5.083043575250734e-05,
+        "air_ledger": "observables.fresh_air_intake_delivery_kg",
+        "fuel_kg": 1.0373558316838237e-06,
+        "fuel_ledger": "observables.fuel_delivered_kg",
+        "ratio": 48.99999999999998
+      },
+      "point_id": "B4000",
+      "primary_configuration_binding_sha256": "e2cef6a441bc1cf030437d90d6ae79b6b997f74691c21f1d572e8fee99bbea10",
+      "primary_sha256": "10b9f66027255902b3464dd631449143e83fc2c56a6dee98fa939044c224a049"
+    }
+  ],
+  "schema": "ENGINE_PHYSICS_V1_R2_SEMANTIC_FORENSICS_V1"
+}

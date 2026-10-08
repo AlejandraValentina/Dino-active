@@ -1,0 +1,746 @@
+{
+  "binding_hashes": {
+    "accepted_step_count": 1443,
+    "detector_sha256": null,
+    "detector_status": "NOT_APPLICABLE_SINGLE_CYCLE_PRIMARY",
+    "fixture_sha256": "a7be34f1eb7f420f7f74bd8e27bde323bb63e6d61ee82a4559d7d3d0a1c3abc5",
+    "fuel_sha256": "b8c385ce4d6ae0cf6078969f22698a4cb4881974d95097085b609c487a691792",
+    "producer_sha256": "2eb2c442e16bb0d262bef272fd72899a7306e9e1fefdca8a3b0e9613a47bc67e",
+    "rejected_cfl_count": 719,
+    "rejected_trial_count": 719,
+    "rejection_records_sha256": "3138ddf1c2e7954e0728db058342f1d8b99dfee909deb6c624d148052f24ccd6",
+    "rejection_status": "COMPLETE_CALLER_RETRY_LOG_BOUND_TO_CYCLE",
+    "residual_bounds": {
+      "energy_abs_j": 3.0914109867386397e-09,
+      "gamma_n": 5.1265658385354044e-12,
+      "mass_abs_kg": 4.665189215192452e-15,
+      "operations": 23088,
+      "rhs_abs": 1e-14,
+      "rhs_rel": 1e-12,
+      "roundoff_model": "FLOAT64_GAMMA_N_16_ACCUMULATIONS_PER_ACCEPTED_STEP_V1",
+      "species_abs_kg": 3.585663187254461e-15
+    },
+    "restart_start_sha256": "5ec9665612c27c748c0477abcfd74923d82aee1a5ecfdd7fafb071a2d8aa1b32",
+    "restart_terminal_sha256": "0b23a66e8818d96d8087e6470765059c59b91f0f9dcafc8d03d2e80eed980de4",
+    "runner_sha256": "2fe1cc2c1afa3ab54e5915bccbd5abf389d391d8b28f61d5416eaf7e876fdc92",
+    "solver_dependency_sha256": {
+      "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+      "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+      "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+      "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+      "motorsim.gas1d.eos": "72ec337f941b1259ab23c04f70ec75593870bdcc4b065d481b38834430221186",
+      "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+      "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+      "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+      "motorsim.integrated_2t": "b9f61c7890123c73e955b961ffe0272fcbbe7bc6c013d538c5bc9f0fcebb3963",
+      "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+      "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+      "motorsim.p6_species": "7ed60395642eecb6b5b9f15bbe095489468da7b562f72d0b53b13527a97e2dab",
+      "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+      "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+      "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+      "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+      "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+      "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095"
+    },
+    "terminal_state_sha256": "e51c0187cfc744335c8f27c0bbd3979ce01a68acff4c873e8c287a7f2b8edd5f",
+    "trajectory_sha256": "1746eb0cc7d61ff856705dd41044893c6ab0a2aaa2bb8ce065469cfbd0a2ee19"
+  },
+  "cycle": 88,
+  "fixture": "FIXTURE_A_PRIME",
+  "fixture_mechanical_loss_provenance": {
+    "association_method": "fixture_id plus exact engine_configuration match apart from allowed schema/fuel/RPM fields",
+    "configuration_differences_allowed": [
+      "fuel_coupled_combustion",
+      "reference_rpm",
+      "schema"
+    ],
+    "fields_used": [
+      "terms[].id",
+      "terms[].source",
+      "terms[].mep_pa",
+      "terms[].operating_map",
+      "terms[].provenance"
+    ],
+    "fixture_engine_configuration_sha256": "d3f000f72dda247e11a561ad63fb93daab1145cca689105a17cd8e6ae7c71ab7",
+    "fixture_file_sha256": "1f1298c0fd38e925eeac0be3049d7fa7d260ac8d5a07ba97042e02e2d7c7a9cf",
+    "fixture_id": "FIXTURE_A_PRIME",
+    "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+    "mechanical_loss_model_version": "MECHANICAL_LOSS_MODEL_V1",
+    "model": {
+      "cycle_convention": "2T_360_DEG_ONE_CYCLE_PER_REV",
+      "schema": "MECHANICAL_LOSS_MODEL_V1",
+      "terms": [
+        {
+          "id": "synthetic-piston-ring",
+          "mep_pa": 1000.0,
+          "operating_map": null,
+          "provenance": "SYNTHETIC_ASSUMPTION",
+          "source": "piston_ring"
+        },
+        {
+          "id": "synthetic-bearing-accessory",
+          "mep_pa": 500.0,
+          "operating_map": null,
+          "provenance": "SYNTHETIC_ASSUMPTION",
+          "source": "bearing_accessory"
+        }
+      ]
+    },
+    "primary_configuration_binding_sha256": "a7be34f1eb7f420f7f74bd8e27bde323bb63e6d61ee82a4559d7d3d0a1c3abc5",
+    "provenance": [
+      "SYNTHETIC_ASSUMPTION"
+    ]
+  },
+  "hard_physical_gate": {
+    "checks": {
+      "bmep_brake_work_consistency": true,
+      "brake_torque_power_consistency": true,
+      "chemical_heat_consistent": true,
+      "defined_efficiencies_in_domain": true,
+      "energy_conservation": true,
+      "finite_thermodynamic_state": true,
+      "fixture_mechanical_loss_consistency": true,
+      "fuel_accounting_closure": true,
+      "fuel_burned_le_available": true,
+      "fuel_burned_le_fuel_available": true,
+      "fuel_property_source_consistency": true,
+      "mass_conservation": true,
+      "metering_afr_consistency": true,
+      "no_fuel_creation": true,
+      "no_invalid_defined_outputs": true,
+      "no_placeholders": true,
+      "partition_conservation_independent": true,
+      "pressure_positive": true,
+      "scavenging_metric_dependency_validity": true,
+      "scavenging_metric_identity": true,
+      "species_conservation": true,
+      "temperature_positive": true
+    },
+    "classification": "PASS",
+    "hard_failures": []
+  },
+  "historical_runtime": {
+    "campaign_duration_s": 7200.156,
+    "point_runtime_not_separately_recorded": true,
+    "summary_path": "results/engine-physics-v1/recovery-runlogs-v2/engine-physics-v1-recovery-v2.summary.json",
+    "summary_sha256": "0d2a30ab2ccb10ff694894da52b2ee8bd6d303ebc9933626024e749864f7d08a"
+  },
+  "independent_partition_conservation": {
+    "equation": "terminal_inventory - initial_inventory - external_exchange - fuel_combustion_sources - p7_sources",
+    "external_exchange_kg": {
+      "burned": -3.1132252187126384e-06,
+      "fresh_air": 2.995230733019401e-06,
+      "fuel": 2.017143959564716e-07,
+      "residual": -2.3789556824995823e-07
+    },
+    "fuel_combustion_sources_kg": {
+      "burned": 3.15605871279016e-06,
+      "fresh_air": -2.9545784908530005e-06,
+      "fuel": -2.0148022193715803e-07,
+      "residual": 0.0
+    },
+    "initial_inventory_kg": {
+      "burned": 0.00010292080561166758,
+      "fresh_air": 0.00034671872010534936,
+      "fuel": 2.4576420017741366e-06,
+      "residual": 2.9042271843243247e-06
+    },
+    "max_abs_species_residual_kg": 3.8116482626443515e-20,
+    "p7_sources_kg": {
+      "burned": 0.0,
+      "fresh_air": 0.0,
+      "fuel": 0.0,
+      "residual": 0.0
+    },
+    "passed": true,
+    "residual_kg_by_species": {
+      "burned": 3.8116482626443515e-20,
+      "fresh_air": -2.964615315390051e-21,
+      "fuel": 5.823351512373315e-22,
+      "residual": -5.743942173568224e-21
+    },
+    "terminal_inventory_kg": {
+      "burned": 0.00010296363910574514,
+      "fresh_air": 0.00034675937234751575,
+      "fuel": 2.4578761757934508e-06,
+      "residual": 2.6663316160743607e-06
+    },
+    "tolerance_kg": 1e-12,
+    "total_mass_residual_kg": 2.999026028872257e-20
+  },
+  "model_versions": {
+    "fuel": "FUEL_COUPLED_COMBUSTION_V2",
+    "mechanical_losses": "MECHANICAL_LOSS_MODEL_V1",
+    "output_adapter": "ENGINE_PHYSICS_V1_R2_SEMANTIC_CORRECTION_V1",
+    "scavenging": "SCAVENGING_PARTITION_CONSERVATION_V1",
+    "solver_primary": "MOTORSIM_INTEGRATED_2T_CYCLE_PRIMARY_V3"
+  },
+  "old_output": {
+    "path": "results/engine-physics-v1/recovery-campaign-data-v2/engine_a_4000/engineering-v2-088.json",
+    "sha256": "088d18c615402d03afd2201a318afa62cee0e889e3f322d2adbb4fabb6bdf3d6"
+  },
+  "operating_point_status": "PERIODIC_ENGINEERING_RESULT",
+  "outputs": {
+    "AFR": {
+      "definition_version": "P6_METERED_AIR_FUEL_RATIO_V1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED;air_ledger:observables.fresh_air_intake_delivery_kg;fuel_ledger:observables.fuel_delivered_kg",
+      "status": "DEFINED",
+      "units": "1",
+      "value": 49.000000000000085
+    },
+    "BMEP": {
+      "definition_version": "ENGINE_PHYSICS_V1_R2_OUTPUTS",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "Pa",
+      "value": -478.9935444792454
+    },
+    "BSFC": {
+      "definition_version": "ENGINE_PHYSICS_V1_R2_OUTPUTS",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": "NONPOSITIVE_BRAKE_POWER",
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "UNDEFINED",
+      "units": "g/kWh",
+      "value": null
+    },
+    "CE": {
+      "definition_version": "R2_CE_V1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": "CURRENT_CYCLE_FRESH_RETENTION_NOT_IDENTIFIABLE",
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "UNDEFINED",
+      "units": "1",
+      "value": null
+    },
+    "DR": {
+      "definition_version": "R2_DELIVERY_RATIO_V1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "1",
+      "value": 0.26173027292491274
+    },
+    "FMEP": {
+      "definition_version": "ENGINE_PHYSICS_V1_R2_OUTPUTS",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "provenance_details": {
+        "association_method": "fixture_id plus exact engine_configuration match apart from allowed schema/fuel/RPM fields",
+        "configuration_differences_allowed": [
+          "fuel_coupled_combustion",
+          "reference_rpm",
+          "schema"
+        ],
+        "fields_used": [
+          "terms[].id",
+          "terms[].source",
+          "terms[].mep_pa",
+          "terms[].operating_map",
+          "terms[].provenance"
+        ],
+        "fixture_engine_configuration_sha256": "d3f000f72dda247e11a561ad63fb93daab1145cca689105a17cd8e6ae7c71ab7",
+        "fixture_file_sha256": "1f1298c0fd38e925eeac0be3049d7fa7d260ac8d5a07ba97042e02e2d7c7a9cf",
+        "fixture_id": "FIXTURE_A_PRIME",
+        "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+        "mechanical_loss_model_version": "MECHANICAL_LOSS_MODEL_V1",
+        "model": {
+          "cycle_convention": "2T_360_DEG_ONE_CYCLE_PER_REV",
+          "schema": "MECHANICAL_LOSS_MODEL_V1",
+          "terms": [
+            {
+              "id": "synthetic-piston-ring",
+              "mep_pa": 1000.0,
+              "operating_map": null,
+              "provenance": "SYNTHETIC_ASSUMPTION",
+              "source": "piston_ring"
+            },
+            {
+              "id": "synthetic-bearing-accessory",
+              "mep_pa": 500.0,
+              "operating_map": null,
+              "provenance": "SYNTHETIC_ASSUMPTION",
+              "source": "bearing_accessory"
+            }
+          ]
+        },
+        "primary_configuration_binding_sha256": "a7be34f1eb7f420f7f74bd8e27bde323bb63e6d61ee82a4559d7d3d0a1c3abc5",
+        "provenance": [
+          "SYNTHETIC_ASSUMPTION"
+        ]
+      },
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED;fixture:fixture_a_prime-mesh-0.json;fixture_sha256:1f1298c0fd38e925eeac0be3049d7fa7d260ac8d5a07ba97042e02e2d7c7a9cf;model:MECHANICAL_LOSS_MODEL_V1;fields:terms[].mep_pa",
+      "status": "DEFINED",
+      "units": "Pa",
+      "value": 1500.0
+    },
+    "IMEP": {
+      "definition_version": "ENGINE_PHYSICS_V1_R2_OUTPUTS",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "Pa",
+      "value": 12845.456177971924
+    },
+    "ISFC": {
+      "definition_version": "ENGINE_PHYSICS_V1_R2_OUTPUTS",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "g/kWh",
+      "value": 528.5772815841498
+    },
+    "SE": {
+      "definition_version": "R2_SE_V1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": "CURRENT_CYCLE_FRESH_RETENTION_NOT_IDENTIFIABLE",
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "UNDEFINED",
+      "units": "1",
+      "value": null
+    },
+    "TE": {
+      "definition_version": "R2_TE_V1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": "CURRENT_CYCLE_FRESH_RETENTION_NOT_IDENTIFIABLE",
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "UNDEFINED",
+      "units": "1",
+      "value": null
+    },
+    "brake_power": {
+      "definition_version": "ENGINE_PHYSICS_V1_R2_OUTPUTS",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "W",
+      "value": -3.932550795850332
+    },
+    "brake_torque": {
+      "definition_version": "ENGINE_PHYSICS_V1_R2_OUTPUTS",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "N*m",
+      "value": -0.009388273471793208
+    },
+    "burned_purity": {
+      "definition_version": "P6_EXHAUST_CLOSE_COMPOSITION_V1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "1",
+      "value": 0.2630812739923921
+    },
+    "chemical_heat": {
+      "definition_version": "FUEL_COUPLED_COMBUSTION_V2",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "J",
+      "value": 7.104192625504188
+    },
+    "crankcase_gas_work": {
+      "definition_version": "ENGINE_PHYSICS_V1_R2_OUTPUTS",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "J",
+      "value": -1.4561860917271428
+    },
+    "cylinder_indicated_work": {
+      "definition_version": "ENGINE_PHYSICS_V1_R2_OUTPUTS",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "J",
+      "value": 1.5819234778204676
+    },
+    "delivered_air": {
+      "definition_version": "P6_GROSS_AIR_DELIVERY_V1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "kg",
+      "value": 1.1381186602067758e-05
+    },
+    "delivered_fuel": {
+      "definition_version": "P6_GROSS_FUEL_DELIVERY_V1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "kg",
+      "value": 2.3226911432791302e-07
+    },
+    "exhaust_temperature": {
+      "definition_version": "P6_EXHAUST_TERMINAL_DUCT_V1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "K",
+      "value": 755.6676454205186
+    },
+    "fuel_available": {
+      "definition_version": "FUEL_AVAILABLE_AT_IGNITION_V1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED;ledger:observables.fuel_coupled_combustion.fuel_available_from_ignition_snapshot_kg",
+      "status": "DEFINED",
+      "units": "kg",
+      "value": 2.0191783676304623e-07
+    },
+    "fuel_burned": {
+      "definition_version": "PRIMARY_FUEL_BURNED_LEDGER_V1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED;ledger:observables.fuel_coupled_combustion.fuel_burned_kg",
+      "status": "DEFINED",
+      "units": "kg",
+      "value": 2.0148022193715803e-07
+    },
+    "fuel_unburned": {
+      "definition_version": "AVAILABLE_MINUS_BURNED_FUEL_V1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED;derived:fuel_available-fuel_burned",
+      "status": "DEFINED",
+      "units": "kg",
+      "value": 4.376148258881955e-10
+    },
+    "indicated_power": {
+      "definition_version": "ENGINE_PHYSICS_V1_R2_OUTPUTS",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "W",
+      "value": 105.46156518803119
+    },
+    "indicated_torque": {
+      "definition_version": "ENGINE_PHYSICS_V1_R2_OUTPUTS",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "N*m",
+      "value": 0.2517709410882497
+    },
+    "lambda": {
+      "definition_version": "AFR_OVER_STOICHIOMETRIC_AFR_V1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED;afr:AFR;stoichiometry:fuel_snapshot.elemental_mass_fractions",
+      "status": "DEFINED",
+      "units": "1",
+      "value": 3.3414346261183647
+    },
+    "net_piston_gas_work": {
+      "definition_version": "ENGINE_PHYSICS_V1_R2_OUTPUTS",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "J",
+      "value": 0.12573738609332485
+    },
+    "phi": {
+      "definition_version": "RECIPROCAL_LAMBDA_V1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED;lambda:lambda",
+      "status": "DEFINED",
+      "units": "1",
+      "value": 0.29927265138856457
+    },
+    "residual_purity": {
+      "definition_version": "P6_EXHAUST_CLOSE_COMPOSITION_V1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "1",
+      "value": 0.00030051318197572033
+    },
+    "stoichiometric_AFR": {
+      "definition_version": "FUEL_ELEMENTAL_STOICHIOMETRY_V1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED;fuel_snapshot_sha256:b8c385ce4d6ae0cf6078969f22698a4cb4881974d95097085b609c487a691792;method:ELEMENTAL_MASS_BALANCE_DRY_AIR_V1",
+      "status": "DEFINED",
+      "units": "1",
+      "value": 14.66435991803969
+    },
+    "trapped_air": {
+      "definition_version": "P6_EXHAUST_CLOSE_SPECIES_V1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "kg",
+      "value": 4.3708716747075356e-05
+    },
+    "trapped_fuel": {
+      "definition_version": "P6_EXHAUST_CLOSE_SPECIES_V1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "SYNTHETIC_ASSUMPTION",
+      "reason": null,
+      "source": "primary:R2_A4000;sha256:82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0;cycle:88;offline:R2_CORRECTED",
+      "status": "DEFINED",
+      "units": "kg",
+      "value": 1.9063135235588546e-07
+    }
+  },
+  "periodicity": {
+    "detector": "PeriodicDetectorV2",
+    "source": "existing campaign receipt",
+    "status": "PERIOD_1"
+  },
+  "point_id": "A4000",
+  "primary": {
+    "artifact_id": "R2_A4000",
+    "byte_size": 6103569,
+    "configuration_sha256": "89431f0d4351f3af0ac7447300b70d4c77d18b8fd80efc23a8d6e1bca2dc6ec8",
+    "external_relative_path": "engine-physics-v1/r2/A4000/cycle-088.json.gz",
+    "path": "results/engine-physics-v1/recovery-campaign-data-v2/engine_a_4000/cycle-088.json.gz",
+    "sha256": "82fb7e79a23a47999358282289cb44c18e64b1c420e297969c24f391a80515d0"
+  },
+  "provenance": {
+    "physics_changed": false,
+    "replay": "OFFLINE_DERIVED_OUTPUT_ONLY",
+    "scope": "accounting/semantics/output serialization",
+    "supersedes": "R2 outputs only; accepted primaries and EP_R2_EXTERNAL_REVIEW_FAIL remain unchanged",
+    "trajectory_unchanged": true
+  },
+  "rpm": 4000,
+  "scavenging_identity": {
+    "passed": null,
+    "reason": "REQUIRED_SCAVENGING_METRIC_UNDEFINED",
+    "status": "NOT_APPLICABLE"
+  },
+  "scavenging_partition": {
+    "cause_classification": [
+      "SEMANTIC_DEFINITION_BUG",
+      "ACCOUNTING_BUG"
+    ],
+    "classification": "PASS",
+    "configuration_hash": "89431f0d4351f3af0ac7447300b70d4c77d18b8fd80efc23a8d6e1bca2dc6ec8",
+    "cycle_index": 88,
+    "event_snapshots": {
+      "exhaust": {
+        "angle_deg": 31630.0,
+        "species_kg": {
+          "burned": 1.567853770697861e-05,
+          "fresh_air": 4.3708716747075356e-05,
+          "fuel": 1.9063135235588546e-07,
+          "residual": 1.7909322026419515e-08
+        },
+        "species_order": [
+          "fresh_air",
+          "fuel",
+          "residual",
+          "burned"
+        ],
+        "state_source": "accepted SSPRK2 terminal stage at exact geometry event"
+      },
+      "transfer": {
+        "angle_deg": 31581.017717715557,
+        "species_kg": {
+          "burned": 1.5841647534806594e-05,
+          "fresh_air": 4.481020000529927e-05,
+          "fuel": 2.0581360352861292e-07,
+          "residual": 1.8294026994136934e-08
+        },
+        "species_order": [
+          "fresh_air",
+          "fuel",
+          "residual",
+          "burned"
+        ],
+        "state_source": "accepted SSPRK2 terminal stage at exact geometry event"
+      }
+    },
+    "gross_crossing_ledgers_kg": {
+      "fresh_delivered": 1.593308036137338e-05,
+      "fresh_short_circuit": 6.938792618387767e-06,
+      "fuel_delivered": 2.3226911432791302e-07,
+      "fuel_short_circuit": 2.5111180478419515e-08
+    },
+    "gross_partition": {
+      "equation": "gross fresh crossing != unique retained + unique short-circuit parcel",
+      "passed": null,
+      "reason": "GROSS_CROSSING_LEDGERS_ARE_NOT_UNIQUE_MASS_PARTITIONS",
+      "status": "NOT_APPLICABLE"
+    },
+    "hard_gate": {
+      "classification": "PASS",
+      "hard_failures": [],
+      "policy": "gross partition not applicable; species closure required; no clipping"
+    },
+    "metrics": {
+      "assumption": "SINGLE_ZONE_PERFECT_MIXING_SCAVENGING_ASSUMPTION",
+      "basis": "P6 four-species inventories and gross crossing ledgers",
+      "domain_policy": "MARK_UNDEFINED_OUT_OF_DOMAIN; NEVER_CLIP",
+      "flow_semantics": {
+        "fresh_delivered": "gross positive fresh_air + fuel across transfer outlets; recrossings counted",
+        "fresh_short_circuit": "gross outward fresh_air + fuel across exhaust while transfer and exhaust are open; reverse flow excluded",
+        "net_unique_fresh_mass": "NOT_AVAILABLE"
+      },
+      "formulae": {
+        "charging_efficiency": "fresh_retained / reference_mass",
+        "delivery_ratio": "gross_fresh_delivered / reference_mass",
+        "purity_at_exhaust_close": "exhaust_close_fresh / exhaust_close_total",
+        "purity_at_transfer_close": "transfer_close_fresh / transfer_close_total",
+        "residual_fraction": "exhaust_close_residual / exhaust_close_total",
+        "scavenging_efficiency": "fresh_retained / exhaust_close_total",
+        "short_circuit_fraction": "gross_fresh_short_circuit / gross_fresh_delivered",
+        "trapping_efficiency": "fresh_retained / fresh_delivered",
+        "trapping_ratio": "fresh_delivered / fresh_retained"
+      },
+      "masses_kg": {
+        "exhaust_close_fresh": 4.389934809943124e-05,
+        "exhaust_close_residual": 1.7909322026419515e-08,
+        "exhaust_close_total": 5.959579512843627e-05,
+        "fresh_delivered": 1.593308036137338e-05,
+        "fresh_lost": 6.938792618387767e-06,
+        "fresh_retained": 4.389934809943124e-05,
+        "reference": 6.0875955170628616e-05,
+        "transfer_close_fresh": 4.501601360882788e-05,
+        "transfer_close_total": 6.0875955170628616e-05
+      },
+      "ratios": {
+        "charging_efficiency": {
+          "reason": null,
+          "status": "AVAILABLE",
+          "value": 0.7211278734992526
+        },
+        "delivery_ratio": {
+          "reason": null,
+          "status": "AVAILABLE",
+          "value": 0.26173027292491274
+        },
+        "purity_at_exhaust_close": {
+          "reason": null,
+          "status": "AVAILABLE",
+          "value": 0.7366182128256321
+        },
+        "purity_at_transfer_close": {
+          "reason": null,
+          "status": "AVAILABLE",
+          "value": 0.7394711669435484
+        },
+        "residual_fraction": {
+          "reason": null,
+          "status": "AVAILABLE",
+          "value": 0.00030051318197572033
+        },
+        "scavenging_efficiency": {
+          "reason": null,
+          "status": "AVAILABLE",
+          "value": 0.7366182128256321
+        },
+        "short_circuit_fraction": {
+          "reason": null,
+          "status": "AVAILABLE",
+          "value": 0.4354959907946931
+        },
+        "trapping_efficiency": {
+          "reason": "OUTSIDE_PHYSICAL_DOMAIN_WITH_GROSS_CROSSING_BASIS",
+          "status": "UNDEFINED",
+          "value": null
+        },
+        "trapping_ratio": {
+          "reason": null,
+          "status": "AVAILABLE",
+          "value": 0.36294571676292864
+        }
+      },
+      "schema": "MOTORSIM_2T_SCAVENGING_METRICS_V2",
+      "species_order": [
+        "fresh_air",
+        "fuel",
+        "residual",
+        "burned"
+      ]
+    },
+    "physics_changed": false,
+    "provenance": "DERIVED_FROM_DOCUMENTED",
+    "schema": "SCAVENGING_PARTITION_CONSERVATION_V1",
+    "species_closure": {
+      "equation": "terminal_inventory = initial_inventory + external_species_exchange + internal_species_sources + residual",
+      "external_species_kg": {
+        "burned": -3.1132252187126384e-06,
+        "fresh_air": 2.995230733019401e-06,
+        "fuel": 2.017143959564716e-07,
+        "residual": -2.3789556824995823e-07
+      },
+      "internal_species_sources_kg": {
+        "burned": 3.15605871279016e-06,
+        "fresh_air": -2.9545784908530005e-06,
+        "fuel": -2.0148022193715803e-07,
+        "residual": 0.0
+      },
+      "max_abs_residual_kg": 5.717472393966527e-20,
+      "passed": true,
+      "residual_kg_by_species": {
+        "burned": 3.8116482626443515e-20,
+        "fresh_air": -5.717472393966527e-20,
+        "fuel": 1.5881867761018131e-22,
+        "residual": -5.320425699941074e-21
+      },
+      "status": "DEFINED",
+      "tolerance_kg": 1e-12
+    }
+  },
+  "schema": "ENGINE_PHYSICS_V1_R2_CORRECTED_POINT_RESULT",
+  "swept_displacement_m3": 0.00012315043202071988,
+  "warnings": [
+    "PLAUSIBILITY_WARNING:nonpositive_brake_power indicates a motoring/low-load synthetic point"
+  ]
+}

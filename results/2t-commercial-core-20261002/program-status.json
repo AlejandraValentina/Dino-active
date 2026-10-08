@@ -2523,13 +2523,22 @@
       "dependencies": [
         "EP-R2-VERIFY"
       ],
-      "state": "READY",
+      "state": "DONE",
       "objective": "ENGINE_PHYSICS_V1_R2",
       "owner_role": "verification",
       "evidence_level": "L2",
       "write_scope": [
         "artifacts/engine-physics-v1-r2.json",
         "results/engine-physics-v1-r2-semantic-correction/forensics"
+      ],
+      "resolution": "Fixture/config matching, four exact primary hashes, metering bases and fuel ledgers persisted in r2-semantic-correction/forensics.json; B4000 corrected to UNTRACKED_AT_CAPTURE.",
+      "evidence": [
+        "results/engine-physics-v1/r2-semantic-correction/forensics.json",
+        "tests/test_engine_physics_v1_r2_semantics.py",
+        "openspec/changes/engine-physics-v1-r2/specs/engine-physics-v1-r2/semantic-correction.md"
+      ],
+      "commits": [
+        "1ea5ef22380e9da268f98c9b38414e21c75c271c"
       ]
     },
     {
@@ -2538,12 +2547,21 @@
       "dependencies": [
         "EP-R2-VERIFY"
       ],
-      "state": "READY",
+      "state": "DONE",
       "objective": "ENGINE_PHYSICS_V1_R2",
       "owner_role": "skeptic/adversarial review",
       "evidence_level": "L1",
       "write_scope": [
         "tests/test_engine_physics_v1_r2_semantics.py"
+      ],
+      "resolution": "Focal mutation suite covers each corrected hard gate, independent ledger corruption, valid CE=DR*TE, zero fuel, missing stoichiometry, nonpositive brake power and unresolved fixture fallback.",
+      "evidence": [
+        "results/engine-physics-v1/r2-semantic-correction/forensics.json",
+        "tests/test_engine_physics_v1_r2_semantics.py",
+        "openspec/changes/engine-physics-v1-r2/specs/engine-physics-v1-r2/semantic-correction.md"
+      ],
+      "commits": [
+        "febda003580af635abd643879f3ebcdeee887df5"
       ]
     },
     {
@@ -2552,12 +2570,201 @@
       "dependencies": [
         "EP-R2-VERIFY"
       ],
-      "state": "READY",
+      "state": "DONE",
       "objective": "ENGINE_PHYSICS_V1_R2",
       "owner_role": "architecture",
       "evidence_level": "L1",
       "write_scope": [
         "openspec/changes/engine-physics-v1-r2/specs/engine-physics-v1-r2/semantic-correction.md"
+      ],
+      "resolution": "Versioned R2 semantic correction contract documents fixture provenance, metering/fuel bases, undefined scavenging metrics, independent conservation and unchanged REVIEW state.",
+      "evidence": [
+        "results/engine-physics-v1/r2-semantic-correction/forensics.json",
+        "tests/test_engine_physics_v1_r2_semantics.py",
+        "openspec/changes/engine-physics-v1-r2/specs/engine-physics-v1-r2/semantic-correction.md"
+      ],
+      "commits": [
+        "febda003580af635abd643879f3ebcdeee887df5"
+      ]
+    },
+    {
+      "id": "EP-R2-SEMANTIC-OUTPUT-REPLAY",
+      "description": "Regenerate and audit corrected R2 outputs twice from the same four hash-verified periodic primaries; preserve REVIEW and campaigns_started=0.",
+      "dependencies": [
+        "EP-R2-SEMANTIC-FORENSICS",
+        "EP-R2-SEMANTIC-ADVERSARIAL",
+        "EP-R2-SEMANTIC-CONTRACT"
+      ],
+      "state": "DONE",
+      "objective": "ENGINE_PHYSICS_V1_R2",
+      "owner_role": "implementation",
+      "evidence_level": "L2",
+      "write_scope": [
+        "scripts/engine_physics_v1_r2_offline_replay.py",
+        "results/engine-physics-v1/r2-semantic-correction"
+      ],
+      "resolution": "Corrected offline replay generated stable outputs twice; four fixed accepted cycles, all hard gates PASS, campaigns_started=0 and administrative result REVIEW.",
+      "evidence": [
+        "results/engine-physics-v1/r2-semantic-correction/manifest.json",
+        "tests/test_engine_physics_v1_r2_semantics.py"
+      ],
+      "commits": [
+        "febda003580af635abd643879f3ebcdeee887df5"
+      ]
+    },
+    {
+      "id": "EP-R2-SEMANTIC-TEST-VERIFY",
+      "description": "Run corrected R2 mutation tests and focused existing engine/scavenging/artifact regressions.",
+      "dependencies": [
+        "EP-R2-SEMANTIC-OUTPUT-REPLAY"
+      ],
+      "state": "DONE",
+      "objective": "ENGINE_PHYSICS_V1_R2",
+      "owner_role": "verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "tests/test_engine_physics_v1_r2_semantics.py"
+      ],
+      "resolution": "40 focused R2 semantic mutation, existing R2, engine physics, scavenging partition and artifact-store tests PASS.",
+      "evidence": [
+        "results/engine-physics-v1/r2-semantic-correction/manifest.json",
+        "tests/test_engine_physics_v1_r2_semantics.py"
+      ],
+      "commits": [
+        "febda003580af635abd643879f3ebcdeee887df5"
+      ]
+    },
+    {
+      "id": "EP-R2-SEMANTIC-ARTIFACT-VERIFY",
+      "description": "Verify all four external primary hashes/sizes and confirm no primary blobs are tracked in Git.",
+      "dependencies": [
+        "EP-R2-SEMANTIC-OUTPUT-REPLAY"
+      ],
+      "state": "DONE",
+      "objective": "ENGINE_PHYSICS_V1_R2",
+      "owner_role": "evidence/release reviewer",
+      "evidence_level": "L2",
+      "write_scope": [
+        "artifacts/engine-physics-v1-r2.json",
+        "results/engine-physics-v1/r2-semantic-correction"
+      ],
+      "resolution": "All four primary sizes/hashes match the external artifact manifest; no R2 primary cycle dumps are tracked in active Git.",
+      "evidence": [
+        "results/engine-physics-v1/r2-semantic-correction/provenance-audit.json",
+        "scripts/verify_engine_physics_v1_r2_semantic_evidence.py"
+      ],
+      "commits": [
+        "febda003580af635abd643879f3ebcdeee887df5"
+      ]
+    },
+    {
+      "id": "EP-R2-SEMANTIC-REPO-VERIFY",
+      "description": "Run strict OpenSpec, program-status, diff, fsck/LFS and origin/main checks before committing and pushing the correction.",
+      "dependencies": [
+        "EP-R2-SEMANTIC-OUTPUT-REPLAY"
+      ],
+      "state": "DONE",
+      "objective": "ENGINE_PHYSICS_V1_R2",
+      "owner_role": "contract/regression guardian",
+      "evidence_level": "L2",
+      "write_scope": [
+        "results/2t-commercial-core-20261002/program-status.json"
+      ],
+      "resolution": "Strict OpenSpec, program-status, diff check, git fsck, git lfs fsck and origin/main baseline checks completed.",
+      "evidence": [
+        "openspec/changes/engine-physics-v1-r2/specs/engine-physics-v1-r2/semantic-correction.md",
+        "results/2t-commercial-core-20261002/program-status.json"
+      ],
+      "commits": [
+        "febda003580af635abd643879f3ebcdeee887df5"
+      ]
+    },
+    {
+      "id": "EP-R2-SEMANTIC-REVIEW-PACKET",
+      "description": "Prepare a compact second-review packet with old/new comparison, corrected provenance, gate outcomes and the preserved first-review fail.",
+      "dependencies": [
+        "EP-R2-SEMANTIC-OUTPUT-REPLAY",
+        "EP-R2-SEMANTIC-TEST-VERIFY"
+      ],
+      "state": "DONE",
+      "objective": "ENGINE_PHYSICS_V1_R2",
+      "owner_role": "evidence/release reviewer",
+      "evidence_level": "L2",
+      "write_scope": [
+        "results/engine-physics-v1/r2-semantic-correction/review-packet.md"
+      ],
+      "resolution": "Second-review packet summarizes scope, unchanged gate state, old/new comparison and corrected output values.",
+      "evidence": [
+        "results/engine-physics-v1/r2-semantic-correction/review-packet.md",
+        "results/engine-physics-v1/r2-semantic-correction/comparison.json"
+      ]
+    },
+    {
+      "id": "EP-R2-SEMANTIC-PROVENANCE-AUDIT",
+      "description": "Verify source-to-output provenance for metering, fuel properties, fixture mechanical losses, undefined reasons and B4000 historical identity.",
+      "dependencies": [
+        "EP-R2-SEMANTIC-OUTPUT-REPLAY",
+        "EP-R2-SEMANTIC-TEST-VERIFY"
+      ],
+      "state": "DONE",
+      "objective": "ENGINE_PHYSICS_V1_R2",
+      "owner_role": "contract/regression guardian",
+      "evidence_level": "L2",
+      "write_scope": [
+        "results/engine-physics-v1/r2-semantic-correction/provenance-audit.json"
+      ],
+      "resolution": "Executable evidence audit passes fixture/model hashes, primary hashes/sizes, metering and fuel semantics, conservation, B4000 provenance and all point gates.",
+      "evidence": [
+        "results/engine-physics-v1/r2-semantic-correction/provenance-audit.json",
+        "tests/test_engine_physics_v1_r2_semantics.py"
+      ],
+      "commits": [
+        "febda003580af635abd643879f3ebcdeee887df5"
+      ]
+    },
+    {
+      "id": "EP-R2-EXT-REVIEW-GATES",
+      "description": "Independent adversarial review of corrected output hard gates, dependency semantics and mutation-test evidence.",
+      "dependencies": [
+        "EP-R2-SEMANTIC-OUTPUT-REPLAY",
+        "EP-R2-SEMANTIC-TEST-VERIFY"
+      ],
+      "state": "READY",
+      "objective": "ENGINE_PHYSICS_V1_R2",
+      "owner_role": "skeptic/adversarial review",
+      "evidence_level": "L3",
+      "write_scope": [
+        "results/engine-physics-v1/r2-semantic-correction/review/gates.json"
+      ]
+    },
+    {
+      "id": "EP-R2-EXT-REVIEW-METRICS",
+      "description": "Independently recompute corrected engineering metrics and old/new deltas from the four accepted primary ledgers.",
+      "dependencies": [
+        "EP-R2-SEMANTIC-OUTPUT-REPLAY",
+        "EP-R2-SEMANTIC-TEST-VERIFY"
+      ],
+      "state": "READY",
+      "objective": "ENGINE_PHYSICS_V1_R2",
+      "owner_role": "verification",
+      "evidence_level": "L3",
+      "write_scope": [
+        "results/engine-physics-v1/r2-semantic-correction/review/metrics.json"
+      ]
+    },
+    {
+      "id": "EP-R2-EXT-REVIEW-PROVENANCE",
+      "description": "Independently review fixture linkage, primary hashes, B4000 historical status and full-cycle species closure recomputation.",
+      "dependencies": [
+        "EP-R2-SEMANTIC-OUTPUT-REPLAY",
+        "EP-R2-SEMANTIC-TEST-VERIFY"
+      ],
+      "state": "READY",
+      "objective": "ENGINE_PHYSICS_V1_R2",
+      "owner_role": "evidence/release reviewer",
+      "evidence_level": "L3",
+      "write_scope": [
+        "results/engine-physics-v1/r2-semantic-correction/review/provenance.json"
       ]
     }
   ],
@@ -3113,9 +3320,70 @@
       "summary": "ENGINE_PHYSICS_V1_R2 offline replay persisted from A-prime/B-prime periodic primaries at cycles 73/88/34/38; all four hard gates PASS, corrected species residuals <= 4.56e-19 kg, TE explicitly UNDEFINED under gross-crossing semantics, no campaign or solver step."
     },
     {
-      "timestamp": "2026-10-08T12:00:00+00:00",
+      "at": "2026-10-08T15:26:27+00:00",
       "task": "EP-R2-SEMANTIC-FORENSICS",
-      "summary": "Replanned R2 after external fail: added three READY local semantic-correction work items; corrected B4000 attribution to UNTRACKED_AT_CAPTURE based on historical git status/path-specific log audit."
+      "kind": "task",
+      "summary": "Replanned after first review fail; corrected B4000 provenance and created local semantic correction tasks."
+    },
+    {
+      "at": "2026-10-08T15:32:09+00:00",
+      "task": "EP-R2-SEMANTIC-FORENSICS",
+      "kind": "task",
+      "summary": "Verified fixture-to-primary configuration joins and all four input ledgers; corrected B4000 provenance."
+    },
+    {
+      "at": "2026-10-08T15:32:09+00:00",
+      "task": "EP-R2-SEMANTIC-ADVERSARIAL",
+      "kind": "task",
+      "summary": "Added mutation coverage for every required output hard gate and dependency edge."
+    },
+    {
+      "at": "2026-10-08T15:32:09+00:00",
+      "task": "EP-R2-SEMANTIC-CONTRACT",
+      "kind": "task",
+      "summary": "Documented versioned semantics while preserving the historical review fail and R2 REVIEW."
+    },
+    {
+      "at": "2026-10-08T15:33:47+00:00",
+      "task": "EP-R2-SEMANTIC-OUTPUT-REPLAY",
+      "kind": "task",
+      "summary": "Corrected R2 replay reproduced deterministically from the four fixed external primary hashes; all point gates PASS and gate remains REVIEW."
+    },
+    {
+      "at": "2026-10-08T15:33:47+00:00",
+      "task": "EP-R2-SEMANTIC-TEST-VERIFY",
+      "kind": "task",
+      "summary": "39 focused R2, engine, scavenging and artifact-store tests passed, including mutations and missing-fixture fallback rejection."
+    },
+    {
+      "at": "2026-10-08T15:37:01+00:00",
+      "task": "EP-R2-SEMANTIC-ARTIFACT-VERIFY",
+      "kind": "task",
+      "summary": "Artifact audit confirms all four exact hashes/sizes and no primary blobs in Git."
+    },
+    {
+      "at": "2026-10-08T15:37:01+00:00",
+      "task": "EP-R2-SEMANTIC-REPO-VERIFY",
+      "kind": "task",
+      "summary": "OpenSpec strict, status check, diff check, git fsck, LFS fsck and origin baseline all passed."
+    },
+    {
+      "at": "2026-10-08T15:37:01+00:00",
+      "task": "EP-R2-SEMANTIC-REVIEW-PACKET",
+      "kind": "task",
+      "summary": "Persisted corrected output summary and complete comparison for the second external review."
+    },
+    {
+      "at": "2026-10-08T15:37:01+00:00",
+      "task": "EP-R2-SEMANTIC-PROVENANCE-AUDIT",
+      "kind": "task",
+      "summary": "Executable source/hash/conservation audit passes for all four points, including honest B4000 provenance."
+    },
+    {
+      "at": "2026-10-08T15:37:07+00:00",
+      "task": "EP-R2-SEMANTIC-TEST-VERIFY",
+      "kind": "task",
+      "summary": "Final focused verification passed 40 tests after adding persisted-evidence audit coverage."
     }
   ],
   "legacy_gate_status": {
