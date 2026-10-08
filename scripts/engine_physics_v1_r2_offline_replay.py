@@ -106,8 +106,11 @@ def build_point(point: tuple[str, str, str, int, int, str, str, str]) -> dict[st
     artifact_entry = next(item for item in load_json(ROOT / "artifacts/engine-physics-v1-r2.json")["artifacts"]
                           if item["artifact_id"] == artifact_id)
     old_path, runtime_path = ROOT / old_rel, ROOT / runtime_rel
+    old_r2_path = ROOT / "results/engine-physics-v1/r2-offline/manifest.json"
     primary = load_primary(primary_path)
-    old = load_json(old_path)
+    legacy_output = load_json(old_path)
+    old_r2_manifest = load_json(old_r2_path)
+    old_r2 = next(item for item in old_r2_manifest["points"] if item["point_id"] == point_id)
     fuel = synthetic_gasoline_v1()
     fixture_path = ROOT / "results/2t-commercial-core-20261002/fixtures/v1-prime-mesh" / (
         "fixture_a_prime-mesh-0.json" if point_id.startswith("A") else
@@ -333,7 +336,9 @@ def build_point(point: tuple[str, str, str, int, int, str, str, str]) -> dict[st
         "hard_physical_gate": {"classification": "PASS" if not hard_failures else "HARD_PHYSICAL_INVALID",
                                 "checks": hard_checks, "hard_failures": hard_failures},
         "warnings": sorted(set(warnings)),
-        "old_output": {"path": old_rel, "sha256": sha(old_path)},
+        "old_output": {"path": "results/engine-physics-v1/r2-offline/manifest.json",
+                       "sha256": sha(old_r2_path), "point_id": point_id},
+        "historical_engineering_reference": {"path": old_rel, "sha256": sha(old_path)},
         "provenance": {"trajectory_unchanged": True, "replay": "OFFLINE_DERIVED_OUTPUT_ONLY",
                         "physics_changed": False, "scope": "accounting/semantics/output serialization",
                         "supersedes": "R2 outputs only; accepted primaries and EP_R2_EXTERNAL_REVIEW_FAIL remain unchanged"},
@@ -357,10 +362,17 @@ def comparison(point_result: dict[str, Any], old: dict[str, Any]) -> dict[str, A
                           "old_status": old_item.get("status"), "new_status": new_item.get("status")}
     rows["TE"]["old_status"] = old.get("outputs", {}).get("TE", {}).get("status")
     rows["TE"]["new_reason"] = point_result["outputs"]["TE"].get("reason")
+    old_species_closure = old.get("scavenging_partition", {}).get("species_closure", {})
     rows["partition_residual"] = {
-        "old": old.get("scavenging", {}).get("conservation", {}).get("partition_residual_kg"),
+        "old": old_species_closure.get("max_abs_residual_kg"),
         "new": point_result["independent_partition_conservation"]["max_abs_species_residual_kg"],
+        "old_status": "PASS" if old_species_closure.get("passed") else "FAIL",
+        "old_basis": "persisted R2 producer species residual; not an independent proof",
         "new_status": "PASS" if point_result["independent_partition_conservation"]["passed"] else "FAIL",
+    }
+    rows["legacy_gross_partition_residual"] = {
+        "value": point_result.get("historical_engineering_reference", {}).get("partition_residual_kg"),
+        "source": "historical engineering-v2 reference only; distinct from R2 independent species closure",
     }
     return rows
 
@@ -369,14 +381,18 @@ def run(out: Path) -> dict[str, Any]:
     out.mkdir(parents=True, exist_ok=True)
     results = []
     comparisons = {}
+    old_r2_manifest = load_json(ROOT / "results/engine-physics-v1/r2-offline/manifest.json")
+    old_r2_by_point = {item["point_id"]: item for item in old_r2_manifest["points"]}
     for point in POINTS:
         result = build_point(point)
+        legacy_old = load_json(ROOT / point[6])
+        result["historical_engineering_reference"]["partition_residual_kg"] = (
+            legacy_old.get("scavenging", {}).get("conservation", {}).get("partition_residual_kg"))
         target = out / point[0]
         target.mkdir(exist_ok=True)
         (target / f"engineering-r2-{point[4]:03d}.json").write_text(
             json.dumps(result, sort_keys=True, indent=2, allow_nan=False) + "\n", encoding="utf-8")
-        old = load_json(ROOT / point[6])
-        comparisons[point[0]] = comparison(result, old)
+        comparisons[point[0]] = comparison(result, old_r2_by_point[point[0]])
         results.append(result)
     all_hard_gates_pass = all(x["hard_physical_gate"]["classification"] == "PASS"
                               for x in results)

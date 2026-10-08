@@ -25,8 +25,10 @@ def canonical_sha(value) -> str:
 def verify() -> dict:
     artifact_manifest = json.loads((ROOT / "artifacts/engine-physics-v1-r2.json").read_text(encoding="utf-8"))
     manifest = json.loads((ROOT / "results/engine-physics-v1/r2-semantic-correction/manifest.json").read_text(encoding="utf-8"))
+    old_r2 = json.loads((ROOT / "results/engine-physics-v1/r2-offline/manifest.json").read_text(encoding="utf-8"))
     first_review = json.loads((ROOT / "results/engine-physics-v1/r2-external-review/first-review.json").read_text(encoding="utf-8"))
     artifacts = {item["artifact_id"]: item for item in artifact_manifest["artifacts"]}
+    old_points = {item["point_id"]: item for item in old_r2["points"]}
     records = []
     for point in manifest["points"]:
         artifact = artifacts[point["primary"]["artifact_id"]]
@@ -53,6 +55,13 @@ def verify() -> dict:
             "undefined_scavenging_semantics": all(outputs[name]["status"] == "UNDEFINED" and outputs[name]["reason"] == "CURRENT_CYCLE_FRESH_RETENTION_NOT_IDENTIFIABLE" for name in ("TE", "CE", "SE")),
             "independent_partition": point["independent_partition_conservation"]["passed"],
             "hard_gate": point["hard_physical_gate"]["classification"] == "PASS",
+            "old_new_comparison_uses_persisted_r2": (
+                manifest["comparison"][point["point_id"]]["FMEP"]["old"] ==
+                old_points[point["point_id"]]["outputs"]["FMEP"]["value"] and
+                manifest["comparison"][point["point_id"]]["FMEP"]["new"] ==
+                outputs["FMEP"]["value"] and
+                manifest["comparison"][point["point_id"]]["AFR"]["old"] ==
+                old_points[point["point_id"]]["outputs"]["AFR"]["value"]),
         }
         records.append({"point_id": point["point_id"], "artifact_id": artifact["artifact_id"],
                         "checks": checks, "all_pass": all(checks.values())})
@@ -73,6 +82,7 @@ def verify() -> dict:
         "b4000_false_commit_attribution_removed": "relevant_historical_commit" not in b4000,
         "primary_paths_tracked": primary_paths_tracked,
         "all_points_pass": all(item["all_pass"] for item in records),
+        "comparison_baseline": "persisted pre-correction R2 offline manifest",
     }
     overall["all_pass"] = (overall["semantic_correction_result"] ==
                             "ENGINE_PHYSICS_V1_R2_SEMANTIC_CORRECTION_READY_FOR_REVIEW" and

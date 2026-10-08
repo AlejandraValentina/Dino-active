@@ -174,4 +174,15 @@ def test_nonpositive_brake_power_has_causal_bsfc_reason(corrected_points):
 
 
 def test_persisted_semantic_evidence_audit_passes():
-    assert verify_evidence()["all_pass"]
+    result = verify_evidence()
+    assert result["all_pass"]
+    assert result["comparison_baseline"] == "persisted pre-correction R2 offline manifest"
+
+
+def test_old_new_comparison_uses_defective_r2_manifest():
+    path = ROOT / "results/engine-physics-v1/r2-semantic-correction/comparison.json"
+    comparison = json.loads(path.read_text(encoding="utf-8"))
+    assert comparison["A3000"]["FMEP"]["old"] == pytest.approx(85000.0)
+    assert comparison["A3000"]["FMEP"]["new"] == pytest.approx(1500.0)
+    assert comparison["A3000"]["AFR"]["old"] == pytest.approx(67.76299433555442)
+    assert comparison["A3000"]["AFR"]["new"] == pytest.approx(49.0)
