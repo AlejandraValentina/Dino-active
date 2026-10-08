@@ -1,0 +1,28 @@
+{
+  "definition": {
+    "variables": "L_out = du + dp/Z0 , L_in = du - dp/Z0, with dp=p-p0, du=u-u0, Z0=rho0*c0",
+    "outgoing": "L_out (right-going at right outlet)",
+    "incoming": "L_in (left-going at right outlet, spurious reflection)",
+    "impedance": 395.972758011341,
+    "base_state": {
+      "p0": 100000.0,
+      "T0": 300.0,
+      "rho0": 1.1614401858304297,
+      "c0": 340.9325446477646,
+      "gamma": 1.35,
+      "R": 287.0,
+      "Y0": 0.2
+    },
+    "ideal_pure_outgoing": "L_in \u2248 0, L_out = 2*dp/Z0 for pure right-going wave"
+  },
+  "ideal_pure_outgoing": {
+    "L_in_ideal": 0.0,
+    "L_out_ideal_formula": "2*dp/Z0",
+    "dp_formula": "EPS*exp(-((sensor - (X0+c0*t))/sigma)^2)",
+    "pressure_component": "Z0*L/2"
+  },
+  "analytic_signal": {
+    "function": "p(t)=p0+EPS*exp(-((sensor - X0 -c0*t)/sigma)^2), u(t)=(p(t)-p0)/Z0, L_out=2*(p-p0)/Z0, L_in=0"
+  },
+  "no_threshold_invented": true
+}

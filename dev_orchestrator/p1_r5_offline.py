@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 from motorsim.gas1d.eos import IdealGas
-from .p2b_resume import source_hashes, signature, expected_signature
+from .p2b_resume import source_hashes, signature, expected_signature, evidence_path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'results/p2b-gas1d-20260918/resume-remaining-final/artifacts'
@@ -18,7 +18,7 @@ def reproduce():
     for n in (400, 800, 1600):
         for c in (.2, .4, .6):
             name = f'T03_{c}' + (f'_N{n}' if n != 800 else '')
-            path = SOURCE / 'cases' / (name + '.json.gz')
+            path = evidence_path(SOURCE / 'cases' / (name + '.json.gz'))
             evidence_hash = hashlib.sha256(path.read_bytes()).hexdigest()
             assert evidence_hash == manifest['cases'][name]['sha256']
             record = json.loads(gzip.decompress(path.read_bytes()))

@@ -83,3 +83,22 @@ def resolve_external_artifact(
             f"expected_sha256={expected_hash} actual_sha256={actual_hash}"
         )
     return path
+
+
+def resolve_historical_artifact(
+    historical_relative_path: str,
+    *,
+    manifest_path: Path,
+    root: str | os.PathLike[str] | None = None,
+) -> Path:
+    """Resolve a registered artifact by its archival source-relative identity."""
+    try:
+        manifest = json.loads(Path(manifest_path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ArtifactStoreError(f"ARTIFACT_MANIFEST_UNAVAILABLE: {manifest_path}: {exc}") from exc
+    for item in manifest.get("artifacts", []):
+        if item.get("historical_relative_path") == historical_relative_path:
+            return resolve_external_artifact(item.get("artifact_id"), manifest_path=Path(manifest_path), root=root)
+    raise ArtifactStoreError(
+        f"ARTIFACT_SOURCE_NOT_REGISTERED: historical_relative_path={historical_relative_path}"
+    )

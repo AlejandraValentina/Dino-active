@@ -1,0 +1,87 @@
+{
+  "geometry": {
+    "type": "uniform duct",
+    "length_truncated": 1.0,
+    "length_extended": 2.0,
+    "diameter_mm": 20,
+    "area": 0.0003141592653589793
+  },
+  "base_state": {
+    "p0": 100000.0,
+    "T0": 300,
+    "rho0": 1.1614401858304297,
+    "c0": 340.9325446477646,
+    "gamma": 1.35,
+    "R": 287.0,
+    "Y0": 0.2
+  },
+  "pulse": {
+    "type": "moderate finite-amplitude compressible Gaussian",
+    "amplitude_Pa": 8000.0,
+    "sigma_m": 0.025,
+    "center_m": 0.3,
+    "rho_formula": "rho0*(p/p0)^(1/gamma) isentropic",
+    "u_formula": "2*c0/(gamma-1)*((p/p0)^((gamma-1)/(2*gamma))-1) pure right-going",
+    "Mach_peak": 0.05925925925925926
+  },
+  "boundaries": {
+    "left": "wall",
+    "right_truncated": "nonreflecting p0=100kPa",
+    "right_extended": "wall far"
+  },
+  "sensor": {
+    "position_m": 0.8
+  },
+  "numerics": {
+    "method": "MUSCL_SSPRK2",
+    "CFL": 0.4,
+    "T_final": 0.004,
+    "N_levels": [
+      50,
+      100,
+      200
+    ]
+  },
+  "characteristic_note": "L_out/in still computed as du+dp/Z for diagnostic, but finite amplitude nonlinear; main reference is extended domain",
+  "per_resolution": [
+    {
+      "N": 50,
+      "N_ext": 100,
+      "dx_trunc": 0.02,
+      "dx_ext": 0.02,
+      "CFL": 0.4,
+      "steps_trunc": 189,
+      "steps_ext": 174,
+      "dt_min_trunc": 1.1731291233791166e-05,
+      "dt_max_trunc": 2.3462810488896124e-05,
+      "wall_seconds": 1.4638609001412988,
+      "status": "completed"
+    },
+    {
+      "N": 100,
+      "N_ext": 200,
+      "dx_trunc": 0.01,
+      "dx_ext": 0.01,
+      "CFL": 0.4,
+      "steps_trunc": 382,
+      "steps_ext": 352,
+      "dt_min_trunc": 5.687713263343268e-06,
+      "dt_max_trunc": 1.1731878322868153e-05,
+      "wall_seconds": 5.629927799105644,
+      "status": "completed"
+    },
+    {
+      "N": 200,
+      "N_ext": 400,
+      "dx_trunc": 0.005,
+      "dx_ext": 0.005,
+      "CFL": 0.4,
+      "steps_trunc": 701,
+      "steps_ext": 713,
+      "dt_min_trunc": 2.7988317635680994e-06,
+      "dt_max_trunc": 5.865825012531493e-06,
+      "wall_seconds": 21.079981200397015,
+      "status": "completed"
+    }
+  ]
+}

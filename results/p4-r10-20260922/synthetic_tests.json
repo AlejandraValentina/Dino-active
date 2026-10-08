@@ -1,0 +1,34 @@
+{
+  "front_detector_translated_shock": {
+    "x_front_0": 0.3,
+    "x_front_shifted": 0.31,
+    "delta": 0.01,
+    "pass": true,
+    "note": "synthetic shock at 0.3 translated 0.01m detected within 0.007"
+  },
+  "changed_jump_strength": {
+    "jump1": 70000,
+    "jump2": 75000,
+    "x_front_same": true,
+    "pass": true
+  },
+  "localized_error_support": {
+    "n90_cells": 5,
+    "pass": true,
+    "note": "localized 5 cells contain 90% L2"
+  },
+  "distributed_perturbation": {
+    "n90_cells": 120,
+    "pass": true,
+    "note": "distributed needs >100 cells for 90%"
+  },
+  "physical_x_interpolation": {
+    "max_diff": 300,
+    "pass": true
+  },
+  "odd_even_pairing": {
+    "pairs": [[40,38],[39,37],[38,36]],
+    "pass": true
+  },
+  "implementation_agent": "OpenCode / Muse Spark 1.2"
+}

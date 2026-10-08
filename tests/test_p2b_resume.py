@@ -51,7 +51,7 @@ class ResumeTests(unittest.TestCase):
         self.assertEqual(p.test_gate('T10',records)['status'],'FAIL')
 
     def test_changed_inputs_change_signature(self):
-        path=p.PREVIOUS/'artifacts/cases/T01_rest.json.gz'
+        path=p.evidence_path(p.PREVIOUS/'artifacts/cases/T01_rest.json.gz')
         record=json.loads(gzip.decompress(path.read_bytes()))
         expected=p.expected_signature('T01_rest')
         self.assertEqual(p.signature(record),expected)

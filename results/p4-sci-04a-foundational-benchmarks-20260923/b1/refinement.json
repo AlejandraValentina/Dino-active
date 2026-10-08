@@ -1,0 +1,80 @@
+{
+  "levels": [
+    {
+      "N": 50,
+      "amp_out": 0.11275336003956418,
+      "amp_in_refl": 1.9626199674250794e-06,
+      "reflection_ratio": 1.7406310257507296e-05,
+      "p_reflected": 0.00038857202071471847,
+      "arrival": 0.0010797258525909116,
+      "err_vs_analytic_p": 74.03175629377074,
+      "err_vs_analytic_Lout": 0.37392889359960246,
+      "err_vs_analytic_Lin": 5.411259172319327e-06,
+      "err_vs_ext_p": 0.0006604907393921167,
+      "err_vs_ext_Lin": 3.362123529572943e-06,
+      "max_normalized_conservation": 1.2285768370314308e-16,
+      "admissibility": {
+        "min_rho": 1.1614400926134505,
+        "min_p": 99999.98916492464,
+        "min_T": 299.9999861133966,
+        "min_Y": 0.19999999999999946,
+        "max_Y": 0.20000000000000034,
+        "max_Mach": 0.0005768312710730875
+      },
+      "wall_seconds": 1.389016100205481
+    },
+    {
+      "N": 100,
+      "amp_out": 0.17392498827504976,
+      "amp_in_refl": 3.1213165068502123e-06,
+      "reflection_ratio": 1.7946337313612904e-05,
+      "p_reflected": 0.0006179781529219016,
+      "arrival": 0.001191829526221777,
+      "err_vs_analytic_p": 65.5517155839043,
+      "err_vs_analytic_Lout": 0.3311050476965641,
+      "err_vs_analytic_Lin": 1.300028848506829e-05,
+      "err_vs_ext_p": 0.0009162577916868031,
+      "err_vs_ext_Lin": 4.5636500416381465e-06,
+      "max_normalized_conservation": 1.4721760455446102e-16,
+      "admissibility": {
+        "min_rho": 1.161440042403414,
+        "min_p": 99999.98332843439,
+        "min_T": 299.99997564210577,
+        "min_Y": 0.19999999999999934,
+        "max_Y": 0.20000000000000098,
+        "max_Mach": 0.0006957768633181531
+      },
+      "wall_seconds": 5.33016650006175
+    },
+    {
+      "N": 200,
+      "amp_out": 0.26004537167752023,
+      "amp_in_refl": 7.111407902530161e-06,
+      "reflection_ratio": 2.734679666342591e-05,
+      "p_reflected": 0.0014079619002542567,
+      "arrival": 0.0012694260237891251,
+      "err_vs_analytic_p": 48.48854188610858,
+      "err_vs_analytic_Lout": 0.2449374858841354,
+      "err_vs_analytic_Lin": 2.901223241136286e-05,
+      "err_vs_ext_p": 0.001447097718482837,
+      "err_vs_ext_Lin": 7.2660610756061394e-06,
+      "max_normalized_conservation": 1.72687294707395e-16,
+      "admissibility": {
+        "min_rho": 1.161440004270489,
+        "min_p": 99999.97889638077,
+        "min_T": 299.99996753690124,
+        "min_Y": 0.19999999999999898,
+        "max_Y": 0.2000000000000013,
+        "max_Mach": 0.0007291636379478315
+      },
+      "wall_seconds": 20.479026000015438
+    }
+  ],
+  "trend_checks": {
+    "err_vs_analytic_decreasing": true,
+    "err_vs_ext_small": true,
+    "reflection_tiny": true,
+    "amp_increasing_toward_analytic": true,
+    "conservation_pass": true
+  }
+}

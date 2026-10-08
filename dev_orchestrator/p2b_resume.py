@@ -7,6 +7,7 @@ import math
 import subprocess
 import time
 from pathlib import Path
+from motorsim.artifact_store import ArtifactStoreError, resolve_historical_artifact
 
 from motorsim.gas1d import verification as v
 from motorsim.gas1d.reference import cell_integrals
@@ -16,6 +17,7 @@ from .p2b_campaign import run_case,frozen_checks,partial_matrix,full_matrix
 from .p1_r4_gate import OLD,EVIDENCE,verify_inventory,revised_t11
 
 PREVIOUS=ROOT/'results/p2b-gas1d-20260918/attempt-2'
+EVIDENCE_MANIFEST=ROOT/'artifacts/p2b-resume-evidence.json'
 WALL_LIMIT=300.
 
 
@@ -32,6 +34,18 @@ def digest(value):return hashlib.sha256(json.dumps(value,sort_keys=True,separato
 
 
 def source_hashes():return {p.relative_to(ROOT).as_posix():sha(p) for p in (ROOT/'motorsim/gas1d').glob('*.py')}
+
+
+def evidence_path(path):
+    path=Path(path).resolve()
+    try:relative=path.relative_to(ROOT.resolve()).as_posix()
+    except ValueError:relative=None
+    if relative is not None:
+        try:return resolve_historical_artifact(relative,manifest_path=EVIDENCE_MANIFEST)
+        except ArtifactStoreError as exc:
+            if not str(exc).startswith('ARTIFACT_SOURCE_NOT_REGISTERED:'):raise
+    if path.is_file():return path
+    raise FileNotFoundError(path)
 
 
 def signature(record):
@@ -60,7 +74,7 @@ def load_reusable(folder,expected_source,*,retain_timeouts=False):
     if sources!=expected_source:raise ValueError('Resume solver/source hashes differ; reuse refused')
     records={};origins={}
     for name,item in entries.items():
-        path=folder/item['path']
+        path=evidence_path(folder/item['path'])
         if sha(path)!=item['sha256']:raise ValueError('Resume artifact hash mismatch: '+name)
         record=json.loads(gzip.decompress(path.read_bytes()))
         if record['name']!=name:raise ValueError('Resume case identity mismatch')

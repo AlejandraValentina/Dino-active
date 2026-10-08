@@ -1,0 +1,81 @@
+{
+  "discharge": [
+    {
+      "CFL": 0.4,
+      "steps": 777,
+      "wall_seconds": 4.95299999974668,
+      "p_chamber_final": 132830.0619134132,
+      "m_chamber_final": 0.00012591682365140734,
+      "sensor_p_final": 140904.42163473406,
+      "mass_flux_max": 0.0393155947424617,
+      "max_global_resid": 6.964551734577821e-16,
+      "p_diff_vs_finest": 0.1387011261540465,
+      "m_diff_vs_finest": 2.1991176929600162e-10
+    },
+    {
+      "CFL": 0.2,
+      "steps": 1540,
+      "wall_seconds": 9.860000000335276,
+      "p_chamber_final": 132830.15544572854,
+      "m_chamber_final": 0.00012591662047140237,
+      "sensor_p_final": 140903.57427802263,
+      "mass_flux_max": 0.03932331754751647,
+      "max_global_resid": 1.3929103469155642e-15,
+      "p_diff_vs_finest": 0.045168810815084726,
+      "m_diff_vs_finest": 1.6731764330155455e-11
+    },
+    {
+      "CFL": 0.1,
+      "steps": 3050,
+      "wall_seconds": 19.139999999664724,
+      "p_chamber_final": 132830.20061453935,
+      "m_chamber_final": 0.00012591660373963804,
+      "sensor_p_final": 140903.53281962578,
+      "mass_flux_max": 0.039324774956512674,
+      "max_global_resid": 2.3679475897564595e-15,
+      "p_diff_vs_finest": 0.0,
+      "m_diff_vs_finest": 0.0
+    }
+  ],
+  "backflow": [
+    {
+      "CFL": 0.4,
+      "steps": 749,
+      "wall_seconds": 5.281999999657273,
+      "p_chamber_final": 95588.83051369074,
+      "m_chamber_final": 0.00010655307377180307,
+      "sensor_p_final": 89910.6364712637,
+      "mass_flux_max": 0.009459962795362112,
+      "max_global_resid": 4.1958890302861503e-16,
+      "p_diff_vs_finest": 0.5924098147370387,
+      "m_diff_vs_finest": 4.0709998986774264e-10
+    },
+    {
+      "CFL": 0.2,
+      "steps": 1468,
+      "wall_seconds": 10.203000000678003,
+      "p_chamber_final": 95589.32044647416,
+      "m_chamber_final": 0.0001065534135316402,
+      "sensor_p_final": 89910.65278996414,
+      "mass_flux_max": 0.009459962795362112,
+      "max_global_resid": 1.0489722575715376e-15,
+      "p_diff_vs_finest": 0.10247703132336028,
+      "m_diff_vs_finest": 6.734015274112264e-11
+    },
+    {
+      "CFL": 0.1,
+      "steps": 2920,
+      "wall_seconds": 19.78099999949336,
+      "p_chamber_final": 95589.42292350548,
+      "m_chamber_final": 0.00010655348087179294,
+      "sensor_p_final": 89910.66898618358,
+      "mass_flux_max": 0.009459962795362112,
+      "max_global_resid": 8.391778060572301e-16,
+      "p_diff_vs_finest": 0.0,
+      "m_diff_vs_finest": 0.0
+    }
+  ],
+  "convergence_discharge": true,
+  "convergence_backflow": true,
+  "note": "Fixed mesh N=100, varying CFL refines dt, chamber p/m and sensor p converge toward finest"
+}

@@ -1,0 +1,52 @@
+{
+  "status": "PASS",
+  "source_cycle": 30,
+  "prior_cycle": 29,
+  "source": "results\\p4-g2-periodic-completion-20260923\\cycle30.json.gz",
+  "angular_continuity": "29.end == 30.begin",
+  "identity": {
+    "configuration_hash": "p4-r6-g2-chain",
+    "scientific_contract_id": "E13-R1",
+    "solver": "NUMBA_FUSED",
+    "backend": "NUMBA_FUSED",
+    "mesh": 251,
+    "geometry": "chain",
+    "rpm": 3000,
+    "operating_point": "G2",
+    "cycle_convention": "360",
+    "anchor_cycle": 1,
+    "branch_map": {
+      "A": "odd_relative_to_anchor",
+      "B": "even_relative_to_anchor"
+    }
+  },
+  "state_reused": true,
+  "physical_checks": {
+    "cycle29": {
+      "complete": true,
+      "conservation": true,
+      "positive": true,
+      "CFL": true,
+      "closed_zero": true,
+      "backflow_local": true
+    },
+    "cycle30": {
+      "complete": true,
+      "conservation": true,
+      "positive": true,
+      "CFL": true,
+      "closed_zero": true,
+      "backflow_local": true
+    }
+  },
+  "detector_state_reused": {
+    "anchor_cycle": 1,
+    "branch_map": {
+      "A": "odd_relative_to_anchor",
+      "B": "even_relative_to_anchor"
+    },
+    "lag1_streak": 0,
+    "branch_A_streak": 5,
+    "branch_B_streak": 0
+  }
+}

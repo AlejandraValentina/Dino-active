@@ -1,0 +1,200 @@
+{
+  "eos": {
+    "gamma": 1.35,
+    "R": 287.0
+  },
+  "area": 0.000314,
+  "fixtures": [
+    {
+      "id": "F1_NEAR_EQUAL",
+      "description": "near-equal states small dp",
+      "normal": -1,
+      "chamber": {
+        "p": 100000,
+        "T": 300,
+        "Y": 0.3,
+        "V": 0.0001,
+        "m": 0.00011614401858304297,
+        "U": 28.571428571428562,
+        "fresh": 3.484320557491289e-05
+      },
+      "pipe": {
+        "rho": 1.1620209059233448,
+        "u": 2.0,
+        "p": 100050,
+        "Y": 0.3
+      }
+    },
+    {
+      "id": "F2_SHOCK_DOMINATED",
+      "description": "shock-dominated high chamber pressure",
+      "normal": -1,
+      "chamber": {
+        "p": 300000,
+        "T": 600,
+        "Y": 0.8,
+        "V": 0.0001,
+        "m": 0.00017421602787456446,
+        "U": 85.7142857142857,
+        "fresh": 0.00013937282229965157
+      },
+      "pipe": {
+        "rho": 1.1614401858304297,
+        "u": 0.0,
+        "p": 100000.0,
+        "Y": 0.2
+      }
+    },
+    {
+      "id": "F3_RAREFACTION_DOMINATED",
+      "description": "rarefaction-dominated low chamber",
+      "normal": -1,
+      "chamber": {
+        "p": 80000,
+        "T": 300,
+        "Y": 0.2,
+        "V": 0.0001,
+        "m": 9.291521486643438e-05,
+        "U": 22.85714285714285,
+        "fresh": 1.8583042973286877e-05
+      },
+      "pipe": {
+        "rho": 1.1614401858304297,
+        "u": 0.0,
+        "p": 100000.0,
+        "Y": 0.3
+      }
+    },
+    {
+      "id": "F4_LEFT_TO_RIGHT",
+      "description": "left-to-right flow outward",
+      "normal": -1,
+      "chamber": {
+        "p": 120000,
+        "T": 350,
+        "Y": 0.5,
+        "V": 0.0001,
+        "m": 0.00011946241911398706,
+        "U": 34.28571428571428,
+        "fresh": 5.973120955699353e-05
+      },
+      "pipe": {
+        "rho": 1.1614401858304297,
+        "u": 30.0,
+        "p": 100000.0,
+        "Y": 0.2
+      }
+    },
+    {
+      "id": "F5_BACKFLOW",
+      "description": "right-to-left backflow into chamber",
+      "normal": -1,
+      "chamber": {
+        "p": 80000,
+        "T": 300,
+        "Y": 0.3,
+        "V": 0.0001,
+        "m": 9.291521486643438e-05,
+        "U": 22.85714285714285,
+        "fresh": 2.7874564459930312e-05
+      },
+      "pipe": {
+        "rho": 1.1614401858304297,
+        "u": -40.0,
+        "p": 100000,
+        "Y": 0.2
+      }
+    },
+    {
+      "id": "F6_SUBSONIC_INOUT",
+      "description": "subsonic inflow/outflow low Mach",
+      "normal": -1,
+      "chamber": {
+        "p": 110000,
+        "T": 320,
+        "Y": 0.4,
+        "V": 0.0001,
+        "m": 0.00011977351916376307,
+        "U": 31.42857142857142,
+        "fresh": 4.7909407665505226e-05
+      },
+      "pipe": {
+        "rho": 1.1033681765389083,
+        "u": -15.0,
+        "p": 95000,
+        "Y": 0.25
+      }
+    },
+    {
+      "id": "F7_TYPICAL_P4",
+      "description": "typical cylinder->pipe P4 blowdown early",
+      "normal": -1,
+      "chamber": {
+        "p": 250000,
+        "T": 800,
+        "Y": 0.6,
+        "V": 0.0001,
+        "m": 0.00010888501742160279,
+        "U": 71.4285714285714,
+        "fresh": 6.533101045296167e-05
+      },
+      "pipe": {
+        "rho": 0.6968641114982579,
+        "u": 10.0,
+        "p": 100000,
+        "Y": 0.2
+      }
+    },
+    {
+      "id": "F8_NORMAL_PLUS1",
+      "description": "normal +1 orientation cylinder on right",
+      "normal": 1,
+      "chamber": {
+        "p": 130000,
+        "T": 400,
+        "Y": 0.7,
+        "V": 0.0001,
+        "m": 0.0001132404181184669,
+        "U": 37.14285714285713,
+        "fresh": 7.926829268292682e-05
+      },
+      "pipe": {
+        "rho": 1.1614401858304297,
+        "u": -20.0,
+        "p": 100000.0,
+        "Y": 0.2
+      }
+    },
+    {
+      "id": "F9_SOD",
+      "description": "Sod shock tube normalized direct left/right",
+      "normal": -1,
+      "is_direct": true,
+      "left": {
+        "rho": 1.0,
+        "u": 0.0,
+        "p": 100000,
+        "Y": 1.0
+      },
+      "right": {
+        "rho": 0.125,
+        "u": 0.0,
+        "p": 10000,
+        "Y": 0.0
+      },
+      "direct_left": [
+        1.0,
+        0.0,
+        100000,
+        1.0
+      ],
+      "direct_right": [
+        0.125,
+        0.0,
+        10000,
+        0.0
+      ]
+    }
+  ],
+  "notes": "Seven primary fixtures F1-F8 for decision plus diagnostic F9 Sod; chamber stagnant vs pipe interior via normal orientation; gamma 1.35 contractual."
+}

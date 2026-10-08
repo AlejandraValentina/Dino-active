@@ -1,0 +1,103 @@
+{
+  "levels": [
+    {
+      "N": 50,
+      "dx": 0.02,
+      "CFL": 0.4,
+      "dt_range": [
+        1.1732525904248022e-05,
+        2.3465051929416462e-05
+      ],
+      "wall_seconds": 1.389016100205481,
+      "outgoing_amplitude_Lout": 0.11275336003956418,
+      "incoming_amplitude_Lin_refl": 1.9626199674250794e-06,
+      "reflection_ratio": 1.7406310257507296e-05,
+      "pressure_reflected": 0.00038857202071471847,
+      "arrival_time": 0.0010797258525909116,
+      "error_vs_analytic_p": 74.03175629377074,
+      "error_vs_analytic_Lout": 0.37392889359960246,
+      "error_vs_analytic_Lin": 5.411259172319327e-06,
+      "error_vs_extended_p": 0.0006604907393921167,
+      "error_vs_extended_Lout": 6.310363251140876e-08,
+      "error_vs_extended_Lin": 3.362123529572943e-06,
+      "mass_conservation": 1.2285768370314308e-16,
+      "admissibility": {
+        "min_rho": 1.1614400926134505,
+        "min_p": 99999.98916492464,
+        "min_T": 299.9999861133966,
+        "min_Y": 0.19999999999999946,
+        "max_Y": 0.20000000000000034,
+        "max_Mach": 0.0005768312710730875
+      },
+      "t_out": 0.001466565770412374,
+      "t_ref_trunc": 0.002639818386742273,
+      "valid_end": 0.00827143094512579
+    },
+    {
+      "N": 100,
+      "dx": 0.01,
+      "CFL": 0.4,
+      "dt_range": [
+        5.8662628852453355e-06,
+        1.1732525925262481e-05
+      ],
+      "wall_seconds": 5.33016650006175,
+      "outgoing_amplitude_Lout": 0.17392498827504976,
+      "incoming_amplitude_Lin_refl": 3.1213165068502123e-06,
+      "reflection_ratio": 1.7946337313612904e-05,
+      "pressure_reflected": 0.0006179781529219016,
+      "arrival_time": 0.001191829526221777,
+      "error_vs_analytic_p": 65.5517155839043,
+      "error_vs_analytic_Lout": 0.3311050476965641,
+      "error_vs_analytic_Lin": 1.300028848506829e-05,
+      "error_vs_extended_p": 0.0009162577916868031,
+      "error_vs_extended_Lout": 7.728404446949365e-08,
+      "error_vs_extended_Lin": 4.5636500416381465e-06,
+      "mass_conservation": 1.4721760455446102e-16,
+      "admissibility": {
+        "min_rho": 1.161440042403414,
+        "min_p": 99999.98332843439,
+        "min_T": 299.99997564210577,
+        "min_Y": 0.19999999999999934,
+        "max_Y": 0.20000000000000098,
+        "max_Mach": 0.0006957768633181531
+      },
+      "t_out": 0.001466565770412374,
+      "t_ref_trunc": 0.002639818386742273,
+      "valid_end": 0.00827143094512579
+    },
+    {
+      "N": 200,
+      "dx": 0.005,
+      "CFL": 0.4,
+      "dt_range": [
+        2.933131391442789e-06,
+        5.86626295492837e-06
+      ],
+      "wall_seconds": 20.479026000015438,
+      "outgoing_amplitude_Lout": 0.26004537167752023,
+      "incoming_amplitude_Lin_refl": 7.111407902530161e-06,
+      "reflection_ratio": 2.734679666342591e-05,
+      "pressure_reflected": 0.0014079619002542567,
+      "arrival_time": 0.0012694260237891251,
+      "error_vs_analytic_p": 48.48854188610858,
+      "error_vs_analytic_Lout": 0.2449374858841354,
+      "error_vs_analytic_Lin": 2.901223241136286e-05,
+      "error_vs_extended_p": 0.001447097718482837,
+      "error_vs_extended_Lout": 6.441543093783746e-08,
+      "error_vs_extended_Lin": 7.2660610756061394e-06,
+      "mass_conservation": 1.72687294707395e-16,
+      "admissibility": {
+        "min_rho": 1.161440004270489,
+        "min_p": 99999.97889638077,
+        "min_T": 299.99996753690124,
+        "min_Y": 0.19999999999999898,
+        "max_Y": 0.2000000000000013,
+        "max_Mach": 0.0007291636379478315
+      },
+      "t_out": 0.001466565770412374,
+      "t_ref_trunc": 0.002639818386742273,
+      "valid_end": 0.00827143094512579
+    }
+  ]
+}

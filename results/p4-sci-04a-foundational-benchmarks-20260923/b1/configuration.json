@@ -1,0 +1,126 @@
+{
+  "geometry": {
+    "type": "uniform duct",
+    "length_truncated": 1.0,
+    "length_extended": 2.0,
+    "diameter_mm": 20.0,
+    "area": 0.0003141592653589793
+  },
+  "base_state": {
+    "p0": 100000.0,
+    "T0": 300.0,
+    "rho0": 1.1614401858304297,
+    "c0": 340.9325446477646,
+    "gamma": 1.35,
+    "R": 287.0,
+    "Y0": 0.2
+  },
+  "pulse": {
+    "type": "small outgoing acoustic Gaussian",
+    "amplitude_Pa": 100.0,
+    "sigma_m": 0.02,
+    "center_m": 0.3,
+    "rho_prime": "dp/c0^2",
+    "u_prime": "dp/Z0",
+    "pure_outgoing": true
+  },
+  "boundaries": {
+    "left": "wall",
+    "right_truncated": "nonreflecting (p0=100kPa,T0=300K,Y0=0.2)",
+    "right_extended": "wall far"
+  },
+  "sensor": {
+    "position_m": 0.8,
+    "interpolation": "linear between cell centers"
+  },
+  "numerics": {
+    "method": "MUSCL_SSPRK2 second_order",
+    "CFL": 0.4,
+    "T_final": 0.004,
+    "N_levels": [
+      50,
+      100,
+      200
+    ]
+  },
+  "characteristic_doc": {
+    "variables": "L_out = du + dp/Z0 , L_in = du - dp/Z0, with dp=p-p0, du=u-u0, Z0=rho0*c0",
+    "outgoing": "L_out (right-going at right outlet)",
+    "incoming": "L_in (left-going at right outlet, spurious reflection)",
+    "impedance": 395.972758011341,
+    "base_state": {
+      "p0": 100000.0,
+      "T0": 300.0,
+      "rho0": 1.1614401858304297,
+      "c0": 340.9325446477646,
+      "gamma": 1.35,
+      "R": 287.0,
+      "Y0": 0.2
+    },
+    "ideal_pure_outgoing": "L_in \u2248 0, L_out = 2*dp/Z0 for pure right-going wave"
+  },
+  "window_definitions": {
+    "t_out": "(sensor - X0)/c0",
+    "t_ref_trunc": "((L_trunc - X0)+(L_trunc - sensor))/c0",
+    "t_ref_ext": "((L_ext - X0)+(L_ext - sensor))/c0",
+    "window_out": "t_out \u00b13*sigma/c0",
+    "window_refl": "t_ref_trunc \u00b13*sigma/c0",
+    "valid_end": "t_ref_ext -3*sigma/c0 -2*dx/c0"
+  },
+  "per_resolution": [
+    {
+      "N": 50,
+      "N_ext": 100,
+      "dx_trunc": 0.02,
+      "dx_ext": 0.02,
+      "CFL": 0.4,
+      "dt_min_trunc": 1.1732525904248022e-05,
+      "dt_max_trunc": 2.3465051929416462e-05,
+      "dt_min_ext": 1.17701182656485e-05,
+      "dt_max_ext": 2.3461822629409444e-05,
+      "wall_seconds_trunc": 0.5319999996572733,
+      "wall_seconds_ext": 0.8590000001713634,
+      "wall_seconds_total": 1.389016100205481,
+      "steps_trunc": 186,
+      "steps_ext": 171,
+      "status_trunc": "completed",
+      "status_ext": "completed"
+    },
+    {
+      "N": 100,
+      "N_ext": 200,
+      "dx_trunc": 0.01,
+      "dx_ext": 0.01,
+      "CFL": 0.4,
+      "dt_min_trunc": 5.8662628852453355e-06,
+      "dt_max_trunc": 1.1732525925262481e-05,
+      "dt_min_ext": 4.5004606713961587e-07,
+      "dt_max_ext": 1.1730015945372147e-05,
+      "wall_seconds_trunc": 2.0940000005066395,
+      "wall_seconds_ext": 3.233999999240041,
+      "wall_seconds_total": 5.33016650006175,
+      "steps_trunc": 367,
+      "steps_ext": 342,
+      "status_trunc": "completed",
+      "status_ext": "completed"
+    },
+    {
+      "N": 200,
+      "N_ext": 400,
+      "dx_trunc": 0.005,
+      "dx_ext": 0.005,
+      "CFL": 0.4,
+      "dt_min_trunc": 2.933131391442789e-06,
+      "dt_max_trunc": 5.86626295492837e-06,
+      "dt_min_ext": 9.998208363847655e-07,
+      "dt_max_ext": 5.8643305995270735e-06,
+      "wall_seconds_trunc": 7.608999999240041,
+      "wall_seconds_ext": 12.860000000335276,
+      "wall_seconds_total": 20.479026000015438,
+      "steps_trunc": 707,
+      "steps_ext": 683,
+      "status_trunc": "completed",
+      "status_ext": "completed"
+    }
+  ]
+}

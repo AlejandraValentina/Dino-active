@@ -1,5 +1,5 @@
 """Analítica independiente y consulta de históricos; sin integrar el solver."""
-import csv,gc,json,math,os,tempfile,unittest
+import csv,gc,json,math,os,shutil,tempfile,unittest
 from copy import deepcopy
 from pathlib import Path
 from unittest.mock import patch
@@ -13,11 +13,39 @@ from motorsim.sweep import load_sweep
 from motorsim.sweep_view import export_sweep_csv
 from motorsim.comparison import compare_results,export_csv,ComparisonError
 from motorsim.window import MainWindow
+from motorsim.artifact_store import resolve_external_artifact
 
 ROOT=Path(__file__).resolve().parents[1]
-TWO=ROOT/'results/simulacion-2t/barrido-20260915/gui-sweep/series.json'
-FOUR=ROOT/'results/simulacion-2t/cuatro-tiempos-20260916/R2/gui-sweep/series.json'
-COMP=FOUR.parent.parent/'gui-compression/manifest.json'
+_ARTIFACT_MANIFEST=ROOT/'artifacts/test-fixtures.json'
+_TEMP_FIXTURES=None
+TWO=FOUR=COMP=None
+
+def setUpModule():
+    global _TEMP_FIXTURES,TWO,FOUR,COMP
+    _TEMP_FIXTURES=tempfile.TemporaryDirectory(prefix='pf-',dir=ROOT)
+    root=Path(_TEMP_FIXTURES.name)
+    fixture_root=ROOT/'tests/fixtures/performance_sweeps'
+    datasets={
+        'two/gui-sweep':('TWO_STROKE_GUI_SWEEP', 'two/gui-sweep', ('point-01','point-02','point-03')),
+        'four/gui-sweep':('FOUR_STROKE_GUI_SWEEP', 'four/gui-sweep', ('point-01','point-02','point-03')),
+        'four/gui-compression':('FOUR_STROKE_GUI_COMPRESSION', 'four/gui-compression', (None,)),
+    }
+    for fixture_rel,(artifact_prefix,destination_rel,points) in datasets.items():
+        source=fixture_root/fixture_rel
+        destination=root/destination_rel
+        shutil.copytree(source,destination)
+        for point in points:
+            artifact_id=(f'{artifact_prefix}_{point.replace("-", "_").upper()}_SAMPLES'
+                         if point else f'{artifact_prefix}_GUI_COMPRESSION_SAMPLES')
+            samples=resolve_external_artifact(artifact_id,manifest_path=_ARTIFACT_MANIFEST)
+            shutil.copyfile(samples,(destination/point/'samples.json') if point else destination/'samples.json')
+    TWO=root/'two/gui-sweep/series.json'
+    FOUR=root/'four/gui-sweep/series.json'
+    COMP=root/'four/gui-compression/manifest.json'
+
+def tearDownModule():
+    if _TEMP_FIXTURES is not None:
+        _TEMP_FIXTURES.cleanup()
 
 class DerivedTests(unittest.TestCase):
     def test_independent_analytic_two_and_four(self):

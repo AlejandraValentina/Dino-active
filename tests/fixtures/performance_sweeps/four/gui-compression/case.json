@@ -1,0 +1,285 @@
+{
+  "run_id": "a099ddf0be99447aa80e110e7adfa892",
+  "inputs": {
+    "case": {
+      "identifier": "PROJECT-4T-365f230a4e93855e",
+      "model": "three-cv-0d-prescribed-heat-720-v1",
+      "project_geometry": {
+        "name": "EJEMPLO SINTÉTICO S4T — protocolo R2",
+        "cycle": "4T",
+        "manufacturer": "",
+        "model": "",
+        "cylinder_count": 1,
+        "bore_mm": 54,
+        "stroke_mm": 56,
+        "rod_length_mm": 100,
+        "compression_ratio": 8.2,
+        "notes": "",
+        "ports": [],
+        "crankcase_volume_bdc_cm3": null,
+        "intake": {
+          "mode": null,
+          "top_mm": null,
+          "height_mm": null,
+          "width_mm": null,
+          "skirt_mm": null,
+          "reference": "straight-skirt-peripheral-tdc-developed-v1"
+        },
+        "ducts": {
+          "intake": [],
+          "exhaust": [],
+          "reference": "ordered-circular-inner-axial-linear-2t-v1"
+        },
+        "four_stroke": {
+          "intake": {
+            "seat_mm": 24,
+            "throat_mm": 20,
+            "stem_mm": 5,
+            "lift_mm": 5,
+            "opening_deg": 0,
+            "duration_deg": 220
+          },
+          "exhaust": {
+            "seat_mm": 20,
+            "throat_mm": 18,
+            "stem_mm": 5,
+            "lift_mm": 5,
+            "opening_deg": 500,
+            "duration_deg": 220
+          },
+          "ducts": {
+            "intake": [
+              {
+                "name": "Tubo I",
+                "length_mm": 100,
+                "start_diameter_mm": 20,
+                "end_diameter_mm": 20
+              }
+            ],
+            "exhaust": [
+              {
+                "name": "Tubo E",
+                "length_mm": 100,
+                "start_diameter_mm": 20,
+                "end_diameter_mm": 20
+              },
+              {
+                "name": "Cono E",
+                "length_mm": 100,
+                "start_diameter_mm": 20,
+                "end_diameter_mm": 40
+              }
+            ],
+            "reference": "ordered-circular-inner-axial-linear-4t-v1"
+          },
+          "reference": "sin-squared-cylindrical-curtain-annular-cap-720-v1"
+        }
+      },
+      "rpm": 3000,
+      "gas_r": 287,
+      "gamma": 1.35,
+      "initial_pty": [
+        [
+          100000,
+          300,
+          1
+        ],
+        [
+          100000,
+          500,
+          0
+        ],
+        [
+          100000,
+          500,
+          0
+        ]
+      ],
+      "reservoirs_pty": [
+        [
+          100000,
+          300,
+          1
+        ],
+        [
+          100000,
+          500,
+          0
+        ]
+      ],
+      "discharge_coefficients": [
+        0.8,
+        0.7,
+        0.7,
+        0.8
+      ],
+      "initial_angle_deg": 0,
+      "heat_start_deg": 350,
+      "heat_duration_deg": 40,
+      "fresh_energy_j_kg": 800000,
+      "cycle": "4T",
+      "period_deg": 720,
+      "cv_order": [
+        "I",
+        "C",
+        "E"
+      ],
+      "link_order": [
+        "exterior-I",
+        "I-C",
+        "C-E",
+        "E-exterior"
+      ],
+      "units": "SI en estados; geometría mm y cm3 según nombres",
+      "assumptions": [
+        "mezcla homogénea",
+        "gas caloríficamente perfecto",
+        "paredes adiabáticas",
+        "sin pérdidas mecánicas",
+        "sin inercia, ondas ni sintonía",
+        "alzada seno cuadrado idealizada",
+        "cortina cilíndrica limitada por garganta anular, no medida",
+        "energía y conversión de marcador prescritas, no química"
+      ],
+      "reference_conditions": true,
+      "scenario_identifier": "S4T-0D-reference-recipe-variable-rpm-v1",
+      "geometry_provenance": "not specified"
+    },
+    "profile": {
+      "name": "B",
+      "max_step_deg": 0.25,
+      "rtol": 3e-07,
+      "atol_mass": 3e-13,
+      "atol_energy": 3e-07
+    },
+    "origin": {
+      "kind": "project",
+      "project_name": "EJEMPLO SINTÉTICO S4T — protocolo R2",
+      "source_path": null,
+      "dirty": true
+    },
+    "project_snapshot": {
+      "format_version": 6,
+      "name": "EJEMPLO SINTÉTICO S4T — protocolo R2",
+      "cycle": "4T",
+      "manufacturer": "",
+      "model": "",
+      "cylinder_count": 1,
+      "bore_mm": 54,
+      "stroke_mm": 56,
+      "rod_length_mm": 100,
+      "compression_ratio": 8.2,
+      "notes": "",
+      "ports": [],
+      "crankcase_volume_bdc_cm3": null,
+      "intake": {
+        "mode": null,
+        "top_mm": null,
+        "height_mm": null,
+        "width_mm": null,
+        "skirt_mm": null,
+        "reference": "straight-skirt-peripheral-tdc-developed-v1"
+      },
+      "ducts": {
+        "reference": "ordered-circular-inner-axial-linear-2t-v1",
+        "intake": [],
+        "exhaust": []
+      },
+      "four_stroke": {
+        "intake": {
+          "seat_mm": 24,
+          "throat_mm": 20,
+          "stem_mm": 5,
+          "lift_mm": 5,
+          "opening_deg": 0,
+          "duration_deg": 220
+        },
+        "exhaust": {
+          "seat_mm": 20,
+          "throat_mm": 18,
+          "stem_mm": 5,
+          "lift_mm": 5,
+          "opening_deg": 500,
+          "duration_deg": 220
+        },
+        "ducts": {
+          "reference": "ordered-circular-inner-axial-linear-4t-v1",
+          "intake": [
+            {
+              "name": "Tubo I",
+              "length_mm": 100,
+              "start_diameter_mm": 20,
+              "end_diameter_mm": 20
+            }
+          ],
+          "exhaust": [
+            {
+              "name": "Tubo E",
+              "length_mm": 100,
+              "start_diameter_mm": 20,
+              "end_diameter_mm": 20
+            },
+            {
+              "name": "Cono E",
+              "length_mm": 100,
+              "start_diameter_mm": 20,
+              "end_diameter_mm": 40
+            }
+          ]
+        },
+        "reference": "sin-squared-cylindrical-curtain-annular-cap-720-v1"
+      },
+      "two_stroke_reference": "rectangular-peripheral-tdc-developed-bdc-v1"
+    },
+    "valve_mapping": [
+      {
+        "link_index": 1,
+        "role": "intake",
+        "dimensions": {
+          "seat_mm": 24,
+          "throat_mm": 20,
+          "stem_mm": 5,
+          "lift_mm": 5,
+          "opening_deg": 0,
+          "duration_deg": 220
+        }
+      },
+      {
+        "link_index": 2,
+        "role": "exhaust",
+        "dimensions": {
+          "seat_mm": 20,
+          "throat_mm": 18,
+          "stem_mm": 5,
+          "lift_mm": 5,
+          "opening_deg": 500,
+          "duration_deg": 220
+        }
+      }
+    ],
+    "scenario_identifier": "S4T-0D-reference-recipe-variable-rpm-v1",
+    "variant": {
+      "external_links": [
+        0,
+        3
+      ],
+      "delta_p_Pa": 100,
+      "calibrated": false
+    },
+    "model_version": "three-cv-0d-prescribed-heat-720-v1-external-regularized-rk4-v1",
+    "initial_state": [
+      3.6487719553888415e-05,
+      8.975979010256548,
+      3.6487719553888415e-05,
+      1.2413122192232843e-05,
+      5.0893800988154645,
+      0.0,
+      7.297543910777683e-05,
+      29.919930034188493,
+      0.0
+    ],
+    "operating_point": {
+      "rpm": 3000
+    }
+  }
+}

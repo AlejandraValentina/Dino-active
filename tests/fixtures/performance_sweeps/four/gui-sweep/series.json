@@ -1,0 +1,341 @@
+{
+  "format": "motorsim-rpm-sweep",
+  "version": 1,
+  "series_id": "69925b19682f40989f770ec4452960d2",
+  "common_inputs": {
+    "case": {
+      "identifier": "PROJECT-4T-3c58a49ec2af1d4f",
+      "model": "three-cv-0d-prescribed-heat-720-v1",
+      "project_geometry": {
+        "name": "EJEMPLO SINTÉTICO S4T — protocolo R2",
+        "cycle": "4T",
+        "manufacturer": "",
+        "model": "",
+        "cylinder_count": 1,
+        "bore_mm": 54,
+        "stroke_mm": 56,
+        "rod_length_mm": 100,
+        "compression_ratio": 8,
+        "notes": "",
+        "ports": [],
+        "crankcase_volume_bdc_cm3": null,
+        "intake": {
+          "mode": null,
+          "top_mm": null,
+          "height_mm": null,
+          "width_mm": null,
+          "skirt_mm": null,
+          "reference": "straight-skirt-peripheral-tdc-developed-v1"
+        },
+        "ducts": {
+          "intake": [],
+          "exhaust": [],
+          "reference": "ordered-circular-inner-axial-linear-2t-v1"
+        },
+        "four_stroke": {
+          "intake": {
+            "seat_mm": 24,
+            "throat_mm": 20,
+            "stem_mm": 5,
+            "lift_mm": 5,
+            "opening_deg": 0,
+            "duration_deg": 220
+          },
+          "exhaust": {
+            "seat_mm": 20,
+            "throat_mm": 18,
+            "stem_mm": 5,
+            "lift_mm": 5,
+            "opening_deg": 500,
+            "duration_deg": 220
+          },
+          "ducts": {
+            "intake": [
+              {
+                "name": "Tubo I",
+                "length_mm": 100,
+                "start_diameter_mm": 20,
+                "end_diameter_mm": 20
+              }
+            ],
+            "exhaust": [
+              {
+                "name": "Tubo E",
+                "length_mm": 100,
+                "start_diameter_mm": 20,
+                "end_diameter_mm": 20
+              },
+              {
+                "name": "Cono E",
+                "length_mm": 100,
+                "start_diameter_mm": 20,
+                "end_diameter_mm": 40
+              }
+            ],
+            "reference": "ordered-circular-inner-axial-linear-4t-v1"
+          },
+          "reference": "sin-squared-cylindrical-curtain-annular-cap-720-v1"
+        }
+      },
+      "rpm": 2500,
+      "gas_r": 287,
+      "gamma": 1.35,
+      "initial_pty": [
+        [
+          100000,
+          300,
+          1
+        ],
+        [
+          100000,
+          500,
+          0
+        ],
+        [
+          100000,
+          500,
+          0
+        ]
+      ],
+      "reservoirs_pty": [
+        [
+          100000,
+          300,
+          1
+        ],
+        [
+          100000,
+          500,
+          0
+        ]
+      ],
+      "discharge_coefficients": [
+        0.8,
+        0.7,
+        0.7,
+        0.8
+      ],
+      "initial_angle_deg": 0,
+      "heat_start_deg": 350,
+      "heat_duration_deg": 40,
+      "fresh_energy_j_kg": 800000,
+      "cycle": "4T",
+      "period_deg": 720,
+      "cv_order": [
+        "I",
+        "C",
+        "E"
+      ],
+      "link_order": [
+        "exterior-I",
+        "I-C",
+        "C-E",
+        "E-exterior"
+      ],
+      "units": "SI en estados; geometría mm y cm3 según nombres",
+      "assumptions": [
+        "mezcla homogénea",
+        "gas caloríficamente perfecto",
+        "paredes adiabáticas",
+        "sin pérdidas mecánicas",
+        "sin inercia, ondas ni sintonía",
+        "alzada seno cuadrado idealizada",
+        "cortina cilíndrica limitada por garganta anular, no medida",
+        "energía y conversión de marcador prescritas, no química"
+      ],
+      "reference_conditions": true,
+      "scenario_identifier": "S4T-0D-reference-recipe-variable-rpm-v1",
+      "geometry_provenance": "not specified"
+    },
+    "profile": {
+      "name": "B",
+      "max_step_deg": 0.25,
+      "rtol": 3e-07,
+      "atol_mass": 3e-13,
+      "atol_energy": 3e-07
+    },
+    "origin": {
+      "kind": "project",
+      "project_name": "EJEMPLO SINTÉTICO S4T — protocolo R2",
+      "source_path": null,
+      "dirty": false
+    },
+    "project_snapshot": {
+      "format_version": 6,
+      "name": "EJEMPLO SINTÉTICO S4T — protocolo R2",
+      "cycle": "4T",
+      "manufacturer": "",
+      "model": "",
+      "cylinder_count": 1,
+      "bore_mm": 54,
+      "stroke_mm": 56,
+      "rod_length_mm": 100,
+      "compression_ratio": 8,
+      "notes": "",
+      "ports": [],
+      "crankcase_volume_bdc_cm3": null,
+      "intake": {
+        "mode": null,
+        "top_mm": null,
+        "height_mm": null,
+        "width_mm": null,
+        "skirt_mm": null,
+        "reference": "straight-skirt-peripheral-tdc-developed-v1"
+      },
+      "ducts": {
+        "reference": "ordered-circular-inner-axial-linear-2t-v1",
+        "intake": [],
+        "exhaust": []
+      },
+      "four_stroke": {
+        "intake": {
+          "seat_mm": 24,
+          "throat_mm": 20,
+          "stem_mm": 5,
+          "lift_mm": 5,
+          "opening_deg": 0,
+          "duration_deg": 220
+        },
+        "exhaust": {
+          "seat_mm": 20,
+          "throat_mm": 18,
+          "stem_mm": 5,
+          "lift_mm": 5,
+          "opening_deg": 500,
+          "duration_deg": 220
+        },
+        "ducts": {
+          "reference": "ordered-circular-inner-axial-linear-4t-v1",
+          "intake": [
+            {
+              "name": "Tubo I",
+              "length_mm": 100,
+              "start_diameter_mm": 20,
+              "end_diameter_mm": 20
+            }
+          ],
+          "exhaust": [
+            {
+              "name": "Tubo E",
+              "length_mm": 100,
+              "start_diameter_mm": 20,
+              "end_diameter_mm": 20
+            },
+            {
+              "name": "Cono E",
+              "length_mm": 100,
+              "start_diameter_mm": 20,
+              "end_diameter_mm": 40
+            }
+          ]
+        },
+        "reference": "sin-squared-cylindrical-curtain-annular-cap-720-v1"
+      },
+      "two_stroke_reference": "rectangular-peripheral-tdc-developed-bdc-v1"
+    },
+    "valve_mapping": [
+      {
+        "link_index": 1,
+        "role": "intake",
+        "dimensions": {
+          "seat_mm": 24,
+          "throat_mm": 20,
+          "stem_mm": 5,
+          "lift_mm": 5,
+          "opening_deg": 0,
+          "duration_deg": 220
+        }
+      },
+      {
+        "link_index": 2,
+        "role": "exhaust",
+        "dimensions": {
+          "seat_mm": 20,
+          "throat_mm": 18,
+          "stem_mm": 5,
+          "lift_mm": 5,
+          "opening_deg": 500,
+          "duration_deg": 220
+        }
+      }
+    ],
+    "scenario_identifier": "S4T-0D-reference-recipe-variable-rpm-v1",
+    "variant": {
+      "external_links": [
+        0,
+        3
+      ],
+      "delta_p_Pa": 100,
+      "calibrated": false
+    },
+    "model_version": "three-cv-0d-prescribed-heat-720-v1-external-regularized-rk4-v1",
+    "initial_state": [
+      3.6487719553888415e-05,
+      8.975979010256548,
+      3.6487719553888415e-05,
+      1.2767782826296634e-05,
+      5.234790958781619,
+      0.0,
+      7.297543910777683e-05,
+      29.919930034188493,
+      0.0
+    ],
+    "operating_point": {
+      "rpm": 2500
+    }
+  },
+  "rpms": [
+    2500,
+    3000,
+    3500
+  ],
+  "state": "converged",
+  "reason": "Todos los puntos convergieron",
+  "integration_seconds": 45.21899999957532,
+  "wall_seconds": 47.23400000017136,
+  "points": [
+    {
+      "rpm": 2500,
+      "state": "converged",
+      "reason": "convergencia: tres ciclos consecutivos",
+      "result": "point-01/manifest.json",
+      "run_id": "0a5ea2096de845e89985b2ffcf3d15f6",
+      "manifest_sha256": "0e8ac2016dcae148124b030be96ba8e97a6bb703eae25aa3c1135163ddda7f44",
+      "timings": {
+        "setup_seconds": 0.0,
+        "writing_seconds": 0.32799999974668026,
+        "integration_seconds": 15.281000000424683,
+        "wall_seconds": 15.734000000171363
+      }
+    },
+    {
+      "rpm": 3000,
+      "state": "converged",
+      "reason": "convergencia: tres ciclos consecutivos",
+      "result": "point-02/manifest.json",
+      "run_id": "498eef399faa4ebdb8158ea0e140e694",
+      "manifest_sha256": "3bf8136982a21a93b8553b34f4a643e73617c644641f8a8149245f8738326bc9",
+      "timings": {
+        "setup_seconds": 0.0,
+        "writing_seconds": 0.2809999994933605,
+        "integration_seconds": 15.20299999974668,
+        "wall_seconds": 15.48399999924004
+      }
+    },
+    {
+      "rpm": 3500,
+      "state": "converged",
+      "reason": "convergencia: tres ciclos consecutivos",
+      "result": "point-03/manifest.json",
+      "run_id": "ea06fef70db840ea808de94d3f9cbb24",
+      "manifest_sha256": "d7945682c78c213edb4bc6e5ab3d3422cd730d9f2fb9411c1c7855ab3c27d7b4",
+      "timings": {
+        "setup_seconds": 0.0,
+        "writing_seconds": 0.26599999982863665,
+        "integration_seconds": 14.734999999403954,
+        "wall_seconds": 15.015999999828637
+      }
+    }
+  ],
+  "interface_wall_seconds": 48.57799999974668
+}

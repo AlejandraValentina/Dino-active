@@ -1,0 +1,41 @@
+{
+  "system": "finite well-mixed 0D chamber \u2194 uniform 1D duct, fixed aperture",
+  "duct": {
+    "length": 0.5,
+    "area": 0.0003141592653589793,
+    "N": 100,
+    "dx": 0.005,
+    "sensor": 0.25
+  },
+  "chamber": {
+    "volume": 0.0001,
+    "gamma": 1.35,
+    "R": 287.0
+  },
+  "cases": {
+    "discharge": {
+      "p_chamber": 200000,
+      "T_chamber": 400,
+      "Y_chamber": 0.5,
+      "p_duct": 100000,
+      "T_duct": 300,
+      "Y_duct": 0.2
+    },
+    "backflow": {
+      "p_chamber": 80000,
+      "T_chamber": 300,
+      "Y_chamber": 0.2,
+      "p_duct": 100000,
+      "T_duct": 300,
+      "Y_duct": 0.3
+    }
+  },
+  "area_interface": 0.0003141592653589793,
+  "t_final": 0.003,
+  "CFL_levels": [
+    0.4,
+    0.2,
+    0.1
+  ],
+  "method": "MUSCL_SSPRK2 joint chamber+duct, cfl_step per stage, fixed mesh N, varying dt"
+}

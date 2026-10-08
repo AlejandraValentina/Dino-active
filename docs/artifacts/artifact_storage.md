@@ -27,10 +27,11 @@ The resolver rejects missing files with `REQUIRED_EXTERNAL_ARTIFACT_NOT_AVAILABL
 and rejects size or SHA-256 mismatches with `ARTIFACT_INTEGRITY_FAILURE`.
 Verification happens before each primary is opened by the replay.
 
-The GUI result-history fixture, the two AUD-15 Fixture D cycle dumps, and
-low-RPM regression inputs use the same
+The GUI result-history fixture and performance sweeps, the two AUD-15 Fixture D
+cycle dumps, P2B resume cases, and low-RPM regression inputs use the same
 resolver through [`artifacts/test-fixtures.json`](../../artifacts/test-fixtures.json)
-and [`artifacts/low-rpm-test-evidence.json`](../../artifacts/low-rpm-test-evidence.json).
+and [`artifacts/low-rpm-test-evidence.json`](../../artifacts/low-rpm-test-evidence.json),
+with P2B cycle records in [`artifacts/p2b-resume-evidence.json`](../../artifacts/p2b-resume-evidence.json).
 They keep larger time histories outside the Git repository while preserving
 their byte identity and historical relative source paths.
 
