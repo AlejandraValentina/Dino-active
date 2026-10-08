@@ -94,28 +94,55 @@
   },
   "hard_physical_gate": {
     "checks": {
+      "AFR_primary_metering_consistency": true,
+      "BSFC_fuel_flow_brake_power_consistency": true,
+      "FMEP_fixture_value_consistency": true,
+      "ISFC_fuel_flow_indicated_power_consistency": true,
       "bmep_brake_work_consistency": true,
+      "bmep_brake_work_fmep_consistency": true,
+      "brake_power_bmep_2t_consistency": true,
+      "brake_power_torque_rpm_consistency": true,
+      "brake_torque_bmep_consistency": true,
       "brake_torque_power_consistency": true,
+      "burned_purity_snapshot_consistency": true,
       "chemical_heat_consistent": true,
+      "cylinder_indicated_work_consistency": true,
       "defined_efficiencies_in_domain": true,
+      "delivered_air_primary_ledger_consistency": true,
+      "delivered_fuel_primary_ledger_consistency": true,
       "energy_conservation": true,
       "finite_thermodynamic_state": true,
       "fixture_mechanical_loss_consistency": true,
       "fuel_accounting_closure": true,
+      "fuel_available_primary_ledger_consistency": true,
       "fuel_burned_le_available": true,
       "fuel_burned_le_fuel_available": true,
+      "fuel_burned_primary_ledger_consistency": true,
       "fuel_property_source_consistency": true,
+      "fuel_unburned_primary_closure_consistency": true,
+      "indicated_power_2t_work_rpm_consistency": true,
+      "indicated_power_torque_rpm_consistency": true,
+      "indicated_torque_work_consistency": true,
+      "indicated_work_imep_consistency": true,
+      "lambda_primary_metering_consistency": true,
       "mass_conservation": true,
       "metering_afr_consistency": true,
       "no_fuel_creation": true,
       "no_invalid_defined_outputs": true,
       "no_placeholders": true,
+      "output_mutation_audit_passes": true,
+      "output_source_provenance_consistency": true,
       "partition_conservation_independent": true,
+      "phi_primary_metering_consistency": true,
       "pressure_positive": true,
+      "residual_purity_snapshot_consistency": true,
       "scavenging_metric_dependency_validity": true,
       "scavenging_metric_identity": true,
+      "scavenging_partition_current_metrics_consistency": true,
       "species_conservation": true,
-      "temperature_positive": true
+      "temperature_positive": true,
+      "trapped_air_snapshot_consistency": true,
+      "trapped_fuel_snapshot_consistency": true
     },
     "classification": "PASS",
     "hard_failures": []
@@ -177,7 +204,7 @@
   "model_versions": {
     "fuel": "FUEL_COUPLED_COMBUSTION_V2",
     "mechanical_losses": "MECHANICAL_LOSS_MODEL_V1",
-    "output_adapter": "ENGINE_PHYSICS_V1_R2_SEMANTIC_CORRECTION_V1",
+    "output_adapter": "ENGINE_PHYSICS_V1_R2_FINAL_EVIDENCE_HARDENING_V1",
     "scavenging": "SCAVENGING_PARTITION_CONSERVATION_V1",
     "solver_primary": "MOTORSIM_INTEGRATED_2T_CYCLE_PRIMARY_V3"
   },
@@ -187,6 +214,102 @@
     "sha256": "b1f810c125105438f4964b671349d5d2ef14944a9a0eda20f9a59ae467ddb397"
   },
   "operating_point_status": "PERIODIC_ENGINEERING_RESULT",
+  "output_consistency_tolerances": {
+    "absolute_default": 1e-12,
+    "pressure_pa_absolute": 1e-09,
+    "relative": 1e-10,
+    "specific_fuel_consumption_absolute_g_per_kwh": 1e-08
+  },
+  "output_mutation_audit": {
+    "cases": [
+      {
+        "applicable": true,
+        "detected": true,
+        "gate": "indicated_work_imep_consistency",
+        "metadata_preserved": true,
+        "mutation": "IMEP_x3"
+      },
+      {
+        "applicable": true,
+        "detected": true,
+        "gate": "cylinder_indicated_work_consistency",
+        "metadata_preserved": true,
+        "mutation": "indicated_work_x2"
+      },
+      {
+        "applicable": true,
+        "detected": true,
+        "gate": "indicated_power_2t_work_rpm_consistency",
+        "metadata_preserved": true,
+        "mutation": "indicated_power_and_torque_x3"
+      },
+      {
+        "applicable": true,
+        "detected": true,
+        "gate": "ISFC_fuel_flow_indicated_power_consistency",
+        "metadata_preserved": true,
+        "mutation": "ISFC_x0_5"
+      },
+      {
+        "applicable": true,
+        "detected": true,
+        "gate": "brake_power_bmep_2t_consistency",
+        "metadata_preserved": true,
+        "mutation": "brake_power_and_torque_x5"
+      },
+      {
+        "applicable": true,
+        "detected": true,
+        "gate": "trapped_air_snapshot_consistency",
+        "metadata_preserved": true,
+        "mutation": "trapped_air_x2"
+      },
+      {
+        "applicable": true,
+        "detected": true,
+        "gate": "FMEP_fixture_value_consistency",
+        "metadata_preserved": true,
+        "mutation": "incorrect_FMEP"
+      },
+      {
+        "applicable": true,
+        "detected": true,
+        "gate": "AFR_primary_metering_consistency",
+        "metadata_preserved": true,
+        "mutation": "incorrect_AFR"
+      },
+      {
+        "applicable": true,
+        "detected": true,
+        "gate": "fuel_unburned_primary_closure_consistency",
+        "metadata_preserved": true,
+        "mutation": "fuel_accounting_corrupt"
+      },
+      {
+        "applicable": true,
+        "detected": true,
+        "gate": "output_source_provenance_consistency",
+        "metadata_preserved": false,
+        "mutation": "false_fallback_metadata"
+      },
+      {
+        "applicable": true,
+        "detected": true,
+        "gate": "BSFC_fuel_flow_brake_power_consistency",
+        "metadata_preserved": true,
+        "mutation": "BSFC_x0_5"
+      },
+      {
+        "applicable": true,
+        "detected": true,
+        "gate": "partition_conservation_independent",
+        "metadata_preserved": true,
+        "mutation": "partition_ledger_corrupt"
+      }
+    ],
+    "passed": true,
+    "schema": "ENGINE_PHYSICS_V1_R2_OUTPUT_MUTATION_AUDIT_V1"
+  },
   "outputs": {
     "AFR": {
       "definition_version": "P6_METERED_AIR_FUEL_RATIO_V1",
@@ -561,7 +684,7 @@
     "physics_changed": false,
     "replay": "OFFLINE_DERIVED_OUTPUT_ONLY",
     "scope": "accounting/semantics/output serialization",
-    "supersedes": "R2 outputs only; accepted primaries and EP_R2_EXTERNAL_REVIEW_FAIL remain unchanged",
+    "supersedes": "R2 outputs only; accepted primaries and first/second external review FAIL receipts remain unchanged",
     "trajectory_unchanged": true
   },
   "rpm": 3000,
@@ -654,17 +777,28 @@
         "exhaust_close_residual": 4.367989422172716e-10,
         "exhaust_close_total": 7.733983690981598e-05,
         "fresh_delivered": 5.8706248465603e-05,
-        "fresh_lost": 3.9327527569039715e-05,
-        "fresh_retained": 6.418877802710154e-05,
+        "fresh_lost": {
+          "definition_version": "R2_CURRENT_CYCLE_FRESH_RETENTION_V1",
+          "reason": "CURRENT_CYCLE_FRESH_RETENTION_NOT_IDENTIFIABLE",
+          "status": "NOT_IDENTIFIABLE",
+          "value": null
+        },
+        "fresh_retained": {
+          "definition_version": "R2_CURRENT_CYCLE_FRESH_RETENTION_V1",
+          "reason": "CURRENT_CYCLE_FRESH_RETENTION_NOT_IDENTIFIABLE",
+          "status": "NOT_IDENTIFIABLE",
+          "value": null
+        },
         "reference": 7.945165079660455e-05,
         "transfer_close_fresh": 6.65898325744164e-05,
         "transfer_close_total": 7.945165079660456e-05
       },
       "ratios": {
         "charging_efficiency": {
-          "reason": null,
-          "status": "AVAILABLE",
-          "value": 0.8078973486834677
+          "definition_version": "R2_CURRENT_CYCLE_FRESH_RETENTION_V1",
+          "reason": "CURRENT_CYCLE_FRESH_RETENTION_NOT_IDENTIFIABLE",
+          "status": "NOT_IDENTIFIABLE",
+          "value": null
         },
         "delivery_ratio": {
           "reason": null,
@@ -687,9 +821,10 @@
           "value": 5.647787216394207e-06
         },
         "scavenging_efficiency": {
-          "reason": null,
-          "status": "AVAILABLE",
-          "value": 0.8299575043318289
+          "definition_version": "R2_CURRENT_CYCLE_FRESH_RETENTION_V1",
+          "reason": "CURRENT_CYCLE_FRESH_RETENTION_NOT_IDENTIFIABLE",
+          "status": "NOT_IDENTIFIABLE",
+          "value": null
         },
         "short_circuit_fraction": {
           "reason": null,
@@ -697,8 +832,9 @@
           "value": 0.6699036064633288
         },
         "trapping_efficiency": {
-          "reason": "OUTSIDE_PHYSICAL_DOMAIN_WITH_GROSS_CROSSING_BASIS",
-          "status": "UNDEFINED",
+          "definition_version": "R2_CURRENT_CYCLE_FRESH_RETENTION_V1",
+          "reason": "CURRENT_CYCLE_FRESH_RETENTION_NOT_IDENTIFIABLE",
+          "status": "NOT_IDENTIFIABLE",
           "value": null
         },
         "trapping_ratio": {
@@ -745,6 +881,30 @@
     }
   },
   "schema": "ENGINE_PHYSICS_V1_R2_CORRECTED_POINT_RESULT",
+  "superseded_outputs": {
+    "scavenging_partition_metrics_masses_kg": {
+      "fresh_lost": 3.9327527569039715e-05,
+      "fresh_retained": 6.418877802710154e-05
+    },
+    "scavenging_partition_metrics_ratios": {
+      "charging_efficiency": {
+        "reason": null,
+        "status": "AVAILABLE",
+        "value": 0.8078973486834677
+      },
+      "scavenging_efficiency": {
+        "reason": null,
+        "status": "AVAILABLE",
+        "value": 0.8299575043318289
+      },
+      "trapping_efficiency": {
+        "reason": "OUTSIDE_PHYSICAL_DOMAIN_WITH_GROSS_CROSSING_BASIS",
+        "status": "UNDEFINED",
+        "value": null
+      }
+    },
+    "source": "superseded gross-crossing algorithm; retained for provenance only"
+  },
   "swept_displacement_m3": 0.00012315043202071988,
   "warnings": []
 }

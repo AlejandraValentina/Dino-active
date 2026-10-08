@@ -3,9 +3,10 @@
 The corrected point outputs and full provenance are in manifest.json. The
 field-by-field old/new values in comparison.json use the persisted pre-correction
 R2 offline manifest as the old side. Its producer species residual is shown
-separately from the historical gross-partition residual. The first external
-review result remains preserved in
-../r2-external-review/first-review.json.
+separately from the historical gross-partition residual. The first and second
+external review FAIL receipts remain preserved in
+../r2-external-review/first-review.json and
+../r2-external-review/second-review.json. This evidence supersedes outputs only.
 
 The replay used the same accepted cycles: A3000@73, A4000@88, B3000@34,
 B4000@38. No campaign or solver execution occurred. The four primary hashes
@@ -22,10 +23,25 @@ clipping.
 
 DR remains defined from the accepted delivery ledger. TE, CE and SE are
 undefined because current-cycle fresh retention cannot be identified from the
-primary state. Purity is reported as an exhaust-close composition fraction.
+primary state. The same ratios under `scavenging_partition.metrics.ratios`
+are `NOT_IDENTIFIABLE` with null values; previous numerics are isolated under
+`superseded_outputs` and in the old/new comparison. Purity is reported as an
+exhaust-close composition fraction.
 Species conservation is independently summed from all chamber, duct-cell and
 network inventories plus exchange/source ledgers; the maximum residual is
 below 6e-19 kg for these points.
+
+`mutation-audit.json` records per-point mutations: numeric changes retain valid
+metadata for IMEP ×3, cylinder work ×2, indicated power/torque ×3, ISFC ×0.5,
+BSFC ×0.5 when defined, brake power/torque ×5, trapped air ×2, incorrect FMEP,
+incorrect AFR, and corrupt fuel closure. It also corrupts the partition ledger
+and injects false fallback metadata. Every applicable case is detected.
+Published metrics are checked against primary work ledgers, RPM,
+displacement, fixture losses, fuel ledgers, and the exhaust-close species
+snapshot. The old/new IMEP mapping reads the old manifest's `IMEP` field.
+
+The evidence verifier is read-only by default. Regenerating
+`provenance-audit.json` requires an explicit `--write` flag.
 
 | Point | FMEP Pa | AFR | lambda | phi | Fuel available kg | Burned kg | Unburned kg | DR | TE/CE/SE | IMEP Pa | BMEP Pa | Torque N m | Power W | ISFC g/kWh | BSFC g/kWh |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---|---:|---:|---:|---:|---:|---:|
@@ -34,5 +50,8 @@ below 6e-19 kg for these points.
 | B3000 | 1500 | 49.000 | 3.34143 | 0.299273 | 7.49535e-7 | 7.47546e-7 | 1.98911e-9 | 0.738893 | UNDEFINED | 67388.7 | 18819.6 | 0.368863 | 115.882 | 555.175 | 1987.96 |
 | B4000 | 1500 | 49.000 | 3.34143 | 0.299273 | 6.77241e-7 | 6.75621e-7 | 1.62067e-9 | 0.605217 | UNDEFINED | 61479.1 | 18730.7 | 0.367122 | 153.780 | 493.250 | 1618.97 |
 
-All corrected point hard gates pass. The administrative R2 state remains
-REVIEW for the second external review. ENGINE_PHYSICS_V1 remains FAIL_TERMINAL.
+All corrected point hard gates and numeric mutation checks pass. The
+administrative R2 state remains REVIEW for another external review.
+ENGINE_PHYSICS_V1 remains FAIL_TERMINAL. Future sweep readiness requires
+`EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED`; R2 does not change the generic
+fallback implementation.

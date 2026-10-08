@@ -2515,6 +2515,12 @@
       "evidence_level": "L3",
       "write_scope": [
         "results/engine-physics-v1/r2-offline/review"
+      ],
+      "resolution": "Second external review FAIL is durably preserved. Its numeric-output and nested scavenging findings have a versioned offline hardening correction; administrative gate remains REVIEW for the next independent review.",
+      "evidence": [
+        "results/engine-physics-v1/r2-external-review/first-review.json",
+        "results/engine-physics-v1/r2-external-review/second-review.json",
+        "results/engine-physics-v1/r2-semantic-correction/review-packet.md"
       ]
     },
     {
@@ -2725,8 +2731,52 @@
       ]
     },
     {
+      "id": "EP-R2-FINAL-OUTPUT-HARDENING",
+      "description": "Bind every published numeric R2 engineering output to independent primary ledgers, bound fixture losses, RPM, displacement and exact trapped-species snapshots; quarantine unidentifiable current-cycle scavenging outputs.",
+      "dependencies": [
+        "EP-R2-SEMANTIC-OUTPUT-REPLAY",
+        "EP-R2-SEMANTIC-TEST-VERIFY"
+      ],
+      "state": "DONE",
+      "objective": "ENGINE_PHYSICS_V1_R2",
+      "owner_role": "implementation",
+      "evidence_level": "L2",
+      "write_scope": [
+        "motorsim/engine_physics_v1_r2_semantics.py",
+        "scripts/engine_physics_v1_r2_offline_replay.py",
+        "results/engine-physics-v1/r2-semantic-correction"
+      ],
+      "resolution": "Independent numeric consistency gates reject metadata-preserving mutations; CE/SE/TE and current-cycle fresh mass values are NOT_IDENTIFIABLE in current outputs. The first and second external FAIL receipts remain immutable.",
+      "evidence": [
+        "results/engine-physics-v1/r2-semantic-correction/mutation-audit.json",
+        "results/engine-physics-v1/r2-semantic-correction/manifest.json",
+        "results/engine-physics-v1/r2-external-review/second-review.json"
+      ]
+    },
+    {
+      "id": "EP-R2-FINAL-HARDENING-VERIFY",
+      "description": "Verify final R2 output mutations, read-only evidence audit, OpenSpec and repository integrity without launching campaigns.",
+      "dependencies": [
+        "EP-R2-FINAL-OUTPUT-HARDENING"
+      ],
+      "state": "DONE",
+      "objective": "ENGINE_PHYSICS_V1_R2",
+      "owner_role": "verification",
+      "evidence_level": "L2",
+      "write_scope": [
+        "tests/test_engine_physics_v1_r2_semantics.py",
+        "scripts/verify_engine_physics_v1_r2_semantic_evidence.py",
+        "results/engine-physics-v1/r2-semantic-correction/provenance-audit.json"
+      ],
+      "resolution": "43 focused tests pass; offline replay and evidence audit pass with campaigns_started=0, while R2 remains REVIEW.",
+      "evidence": [
+        "tests/test_engine_physics_v1_r2_semantics.py",
+        "results/engine-physics-v1/r2-semantic-correction/provenance-audit.json"
+      ]
+    },
+    {
       "id": "EP-R2-EXT-REVIEW-GATES",
-      "description": "Independent adversarial review of corrected output hard gates, dependency semantics and mutation-test evidence.",
+      "description": "Third independent adversarial review of final numeric output consistency gates, dependency semantics and mutation evidence after the second review FAIL.",
       "dependencies": [
         "EP-R2-SEMANTIC-OUTPUT-REPLAY",
         "EP-R2-SEMANTIC-TEST-VERIFY"
@@ -2741,7 +2791,7 @@
     },
     {
       "id": "EP-R2-EXT-REVIEW-METRICS",
-      "description": "Independently recompute corrected engineering metrics and old/new deltas from the four accepted primary ledgers.",
+      "description": "Third independent recomputation of hardened engineering metrics and old/new deltas from the same four accepted primary ledgers.",
       "dependencies": [
         "EP-R2-SEMANTIC-OUTPUT-REPLAY",
         "EP-R2-SEMANTIC-TEST-VERIFY"
@@ -2756,7 +2806,7 @@
     },
     {
       "id": "EP-R2-EXT-REVIEW-PROVENANCE",
-      "description": "Independently review fixture linkage, primary hashes, B4000 historical status and full-cycle species closure recomputation.",
+      "description": "Third independent review of fixture linkage, primary hashes, B4000 history, nested scavenging status and species closure recomputation.",
       "dependencies": [
         "EP-R2-SEMANTIC-OUTPUT-REPLAY",
         "EP-R2-SEMANTIC-TEST-VERIFY"
@@ -2971,7 +3021,7 @@
     "id": "ENGINE_PHYSICS_V1_R2",
     "change": "openspec/changes/engine-physics-v1-r2",
     "spec": "openspec/changes/engine-physics-v1-r2/specs/engine-physics-v1-r2/spec.md",
-    "completion_criterion": "Superseding offline gate: four existing periodic primaries pass corrected hard physical/output contracts; remain REVIEW until EP-R2-EXTERNAL-REVIEW. ENGINE_PHYSICS_V1 remains immutable FAIL_TERMINAL; no campaign, R3, KT100 or FULL_RPM_SWEEP_V1.",
+    "completion_criterion": "Superseding offline gate: the same four periodic primaries pass semantic and independent numeric-output contracts; remain REVIEW until an independent review authorizes closure. ENGINE_PHYSICS_V1 remains immutable FAIL_TERMINAL; no campaign, R3, KT100 or FULL_RPM_SWEEP_V1.",
     "gate_tasks": [
       "EP-R2-OFFLINE",
       "EP-R2-REPLAY",
@@ -3017,13 +3067,13 @@
       "owner_approved": true,
       "change": "openspec/changes/engine-physics-v1-r2",
       "classification": "ENGINE_PHYSICS_V1_R2_REVIEW",
-      "summary": "Superseding offline re-evaluation from the four existing periodic primaries; technical hard gates pass, administrative closure awaits EP-R2-EXTERNAL-REVIEW."
+      "summary": "Superseding offline evaluation from the four existing periodic primaries; final numeric and scavenging hardening passes, while R2 remains REVIEW after preserving both external FAIL receipts."
     },
     {
       "id": "FULL_RPM_SWEEP_V1",
       "state": "PROPOSED",
       "owner_approved": false,
-      "summary": "ENGINEERING FAST mode, compiled kernels, parallel RPM points with warm start; 12-15 point WOT sweep in minutes with configuration comparison."
+      "summary": "ENGINEERING FAST mode, compiled kernels, parallel RPM points with warm start; 12-15 point WOT sweep in minutes with configuration comparison. Readiness prerequisite: EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED; every operating point must bind a declared loss model and fail closed rather than silently using standard_fmep_model_v1() = 85000 Pa."
     },
     {
       "id": "TUNING_WORKFLOW_AND_REFERENCE_CORRELATION_V1",
@@ -3392,6 +3442,24 @@
       "task": "EP-R2-SEMANTIC-OUTPUT-REPLAY",
       "kind": "task",
       "summary": "Corrected old/new comparison to use the persisted defective R2 manifest (FMEP 85000 Pa etc.); legacy engineering-v2 remains separately identified. Focused verification now covers 41 tests."
+    },
+    {
+      "at": "2026-10-08T16:29:35+00:00",
+      "task": "EP-R2-FINAL-OUTPUT-HARDENING",
+      "kind": "task",
+      "summary": "Second-review blockers addressed offline: independent numeric output consistency and scavenging quarantine; same four primaries, all point gates PASS, R2 REVIEW, campaigns_started=0."
+    },
+    {
+      "at": "2026-10-08T16:29:36+00:00",
+      "task": "EP-R2-FINAL-HARDENING-VERIFY",
+      "kind": "task",
+      "summary": "Final hardening replay, mutation audit (47 applicable cases detected), read-only evidence audit and 43 focused tests pass; OpenSpec and repository checks pending."
+    },
+    {
+      "at": "2026-10-08T16:31:45+00:00",
+      "task": "EP-R2-FINAL-HARDENING-VERIFY",
+      "kind": "task",
+      "summary": "Final validation passes: 43 focused tests, offline replay and read-only evidence audit; OpenSpec 36/36, status check, diff check, git fsck/LFS fsck and all four primary hashes pass. R2 remains REVIEW; no campaigns."
     }
   ],
   "legacy_gate_status": {
@@ -3413,8 +3481,10 @@
       "Historical ENGINE_PHYSICS_V1 remains immutable FAIL_TERMINAL.",
       "R2 reuses only A′3000@73, A′4000@88, B′3000@34 and B′4000@38; no new campaign or solver step.",
       "All four R2 hard physical gates PASS with corrected species closure and gross-crossing NOT_APPLICABLE semantics.",
+      "Second external review FAIL is preserved; its numeric-output consistency and nested scavenging blockers are corrected in the final evidence hardening replay.",
+      "Final hardening mutation matrix and evidence audit pass; campaigns_started=0; R2 remains REVIEW.",
       "results/engine-physics-v1/r2-offline/manifest.json",
-      "Administrative result remains REVIEW pending EP-R2-EXTERNAL-REVIEW."
+      "Administrative result remains REVIEW pending a further independent review; no closure is declared."
     ],
     "gate_tasks_total": 4,
     "gate_tasks_done": 3,

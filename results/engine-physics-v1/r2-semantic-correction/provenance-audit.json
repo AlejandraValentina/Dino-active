@@ -7,6 +7,7 @@
   "campaigns_started": 0,
   "comparison_baseline": "persisted pre-correction R2 offline manifest",
   "first_review_preserved": true,
+  "mutation_audit_file_matches_manifest": true,
   "points": [
     {
       "all_pass": true,
@@ -20,9 +21,11 @@
         "fuel_closure": true,
         "hard_gate": true,
         "independent_partition": true,
+        "numeric_mutation_matrix": true,
         "old_new_comparison_uses_persisted_r2": true,
         "primary_hash": true,
         "primary_size": true,
+        "undefined_nested_scavenging_semantics": true,
         "undefined_scavenging_semantics": true
       },
       "point_id": "A3000"
@@ -39,9 +42,11 @@
         "fuel_closure": true,
         "hard_gate": true,
         "independent_partition": true,
+        "numeric_mutation_matrix": true,
         "old_new_comparison_uses_persisted_r2": true,
         "primary_hash": true,
         "primary_size": true,
+        "undefined_nested_scavenging_semantics": true,
         "undefined_scavenging_semantics": true
       },
       "point_id": "A4000"
@@ -58,9 +63,11 @@
         "fuel_closure": true,
         "hard_gate": true,
         "independent_partition": true,
+        "numeric_mutation_matrix": true,
         "old_new_comparison_uses_persisted_r2": true,
         "primary_hash": true,
         "primary_size": true,
+        "undefined_nested_scavenging_semantics": true,
         "undefined_scavenging_semantics": true
       },
       "point_id": "B3000"
@@ -77,9 +84,11 @@
         "fuel_closure": true,
         "hard_gate": true,
         "independent_partition": true,
+        "numeric_mutation_matrix": true,
         "old_new_comparison_uses_persisted_r2": true,
         "primary_hash": true,
         "primary_size": true,
+        "undefined_nested_scavenging_semantics": true,
         "undefined_scavenging_semantics": true
       },
       "point_id": "B4000"
@@ -87,5 +96,6 @@
   ],
   "primary_paths_tracked": [],
   "schema": "ENGINE_PHYSICS_V1_R2_SEMANTIC_EVIDENCE_AUDIT_V1",
-  "semantic_correction_result": "ENGINE_PHYSICS_V1_R2_SEMANTIC_CORRECTION_READY_FOR_REVIEW"
+  "second_review_preserved": true,
+  "semantic_correction_result": "ENGINE_PHYSICS_V1_R2_FINAL_EVIDENCE_HARDENING_READY_FOR_REVIEW"
 }
