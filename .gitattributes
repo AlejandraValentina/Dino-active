@@ -14,4 +14,30 @@ motorsim/exhaust_geometry.py -text
 motorsim/hybrid_exhaust.py -text
 docs/gasdynamic/p4c_hybrid.md -text
 
+# Preserve the exact byte snapshots frozen by the historical P0/P1 contract.
+motorsim/__main__.py -text
+motorsim/ducts.py -text
+motorsim/examples.py -text
+motorsim/four_stroke.py -text
+motorsim/four_stroke_acceptance.py -text
+motorsim/geometry_view.py -text
+motorsim/intake.py -text
+motorsim/kinematics.py -text
+motorsim/performance.py -text
+motorsim/performance_view.py -text
+motorsim/ports.py -text
+motorsim/project_case.py -text
+motorsim/prototype.py -text
+motorsim/reference_results.py -text
+motorsim/regularized_trial.py -text
+motorsim/rpm_domain.py -text
+motorsim/runtime.py -text
+motorsim/simulation_view.py -text
+motorsim/storage.py -text
+motorsim/sweep.py -text
+motorsim/valves.py -text
+
 # Active-repo policy: heavy simulation artifacts are external, not Git/LFS payloads.
+
+# Preserve the frozen source bytes used by historical P0/P1 dependency hashes.
+motorsim/__init__.py -text
