@@ -2839,6 +2839,90 @@
       "evidence": [
         "results/engine-physics-v1/r2-external-review/third-review.json"
       ]
+    },
+    {
+      "id": "FRPM-CONTRACT",
+      "description": "Preregister the immutable FULL_RPM_SWEEP_V1 configuration set, WOT/fuel/loss inputs, RPM domain, convergence contract, budget, checkpoints and result provenance.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "architecture",
+      "evidence_level": "L1",
+      "write_scope": [
+        "openspec/changes/full-rpm-sweep-v1"
+      ],
+      "resolution": "OpenSpec FULL_RPM_SWEEP_V1 contract and preregistration persisted with two source fixture/config/model hash bindings, 15 RPM points per variant, existing periodicity thresholds, horizon, budget and provenance; campaigns_started=0.",
+      "evidence": [
+        "openspec/changes/full-rpm-sweep-v1/specs/full-rpm-sweep-v1/spec.md",
+        "results/full-rpm-sweep-v1/preregistration.json"
+      ]
+    },
+    {
+      "id": "FRPM-MECHANICAL-BINDING",
+      "description": "Resolve explicit per-configuration MechanicalLossModelV1 only from hash-bound engine fixture/configuration data and fail closed on missing, invalid or incompatible data.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/mechanical_loss_binding_v1.py"
+      ]
+    },
+    {
+      "id": "FRPM-PREFLIGHT-API",
+      "description": "Implement no-solver full sweep preflight over existing integrated engine configuration validators and explicit mechanical/fuel/operating contracts.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/full_rpm_sweep_v1.py"
+      ]
+    },
+    {
+      "id": "FRPM-FOCAL-TESTS",
+      "description": "Test fail-closed model resolution, preflight, provenance, brake output relations and R2 output compatibility.",
+      "dependencies": [
+        "FRPM-MECHANICAL-BINDING",
+        "FRPM-PREFLIGHT-API",
+        "FRPM-CONTRACT"
+      ],
+      "state": "WAITING",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "tests/test_full_rpm_sweep_v1.py"
+      ]
+    },
+    {
+      "id": "FRPM-READINESS-VERIFY",
+      "description": "Run focused and relevant regressions, strict OpenSpec, status checks and hash/provenance audits; persist readiness without running a sweep campaign.",
+      "dependencies": [
+        "FRPM-FOCAL-TESTS"
+      ],
+      "state": "WAITING",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "evidence/release reviewer",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/full-rpm-sweep-v1/readiness.json",
+        "results/2t-commercial-core-20261002/program-status.json"
+      ]
+    },
+    {
+      "id": "FRPM-OUTPUT-ADAPTER",
+      "description": "Implement explicit-model brake outputs with BMEP, power and torque identities and provenance, without altering legacy output behavior.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/full_rpm_outputs_v1.py"
+      ]
     }
   ],
   "audit_remediation_mode": false,
@@ -3039,18 +3123,20 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "ENGINE_PHYSICS_V1_R2",
-    "change": "openspec/changes/engine-physics-v1-r2",
-    "spec": "openspec/changes/engine-physics-v1-r2/specs/engine-physics-v1-r2/spec.md",
-    "completion_criterion": "Superseding offline gate from the same four accepted periodic primaries; third independent external review authorized R2 PASS. ENGINE_PHYSICS_V1 remains immutable FAIL_TERMINAL. FULL_RPM_SWEEP_V1 is next but NOT_STARTED pending EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED.",
+    "id": "FULL_RPM_SWEEP_V1",
+    "change": "openspec/changes/full-rpm-sweep-v1",
+    "spec": "openspec/changes/full-rpm-sweep-v1/specs/full-rpm-sweep-v1/spec.md",
+    "completion_criterion": "A preregistered, hash-bound WOT RPM sweep over the existing integrated 2T configuration passes mechanical-loss resolution, configuration preflight and focused tests; all historical criteria remain unchanged; no campaign has started.",
     "gate_tasks": [
-      "EP-R2-OFFLINE",
-      "EP-R2-REPLAY",
-      "EP-R2-VERIFY",
-      "EP-R2-EXTERNAL-REVIEW"
+      "FRPM-CONTRACT",
+      "FRPM-MECHANICAL-BINDING",
+      "FRPM-PREFLIGHT-API",
+      "FRPM-FOCAL-TESTS",
+      "FRPM-READINESS-VERIFY",
+      "FRPM-OUTPUT-ADAPTER"
     ],
     "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
-    "set_by": "owner order after immutable ENGINE_PHYSICS_V1 baseline a480a0a"
+    "set_by": "owner request FULL_RPM_SWEEP_V1_READINESS"
   },
   "objectives": [
     {
@@ -3092,13 +3178,23 @@
     },
     {
       "id": "FULL_RPM_SWEEP_V1",
-      "state": "PROPOSED",
-      "owner_approved": false,
-      "summary": "ENGINEERING FAST mode, compiled kernels, parallel RPM points with warm start; 12-15 point WOT sweep in minutes with configuration comparison. Readiness prerequisite: EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED; every operating point must bind a declared loss model and fail closed rather than silently using standard_fmep_model_v1() = 85000 Pa. Administrative next objective after R2 PASS; NOT_STARTED and not executable until EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED is resolved.",
-      "readiness_state": "BLOCKED_PRECONDITION",
+      "state": "ACTIVE",
+      "owner_approved": true,
+      "summary": "Owner-authorized readiness preparation only. Proposed sweep remains NOT_STARTED until readiness PASS and a separately scheduled campaign; explicit per-configuration mechanical-loss model required.",
+      "readiness_state": "IN_PROGRESS",
       "precondition": "EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED",
       "precondition_status": "UNRESOLVED",
-      "execution_authorized": false
+      "execution_authorized": false,
+      "change": "openspec/changes/full-rpm-sweep-v1",
+      "spec": "openspec/changes/full-rpm-sweep-v1/specs/full-rpm-sweep-v1/spec.md",
+      "gate_tasks": [
+        "FRPM-CONTRACT",
+        "FRPM-MECHANICAL-BINDING",
+        "FRPM-PREFLIGHT-API",
+        "FRPM-FOCAL-TESTS",
+        "FRPM-READINESS-VERIFY",
+        "FRPM-OUTPUT-ADAPTER"
+      ]
     },
     {
       "id": "TUNING_WORKFLOW_AND_REFERENCE_CORRELATION_V1",
@@ -3491,6 +3587,12 @@
       "task": "EP-R2-EXTERNAL-REVIEW",
       "kind": "task",
       "summary": "Third external review PASS received from requester; receipt records source attribution; R2 administrative gate promoted PASS, V1 remains FAIL_TERMINAL, sweep remains NOT_STARTED pending explicit loss model."
+    },
+    {
+      "at": "2026-10-09T13:36:18+00:00",
+      "task": "FRPM-CONTRACT",
+      "kind": "task",
+      "summary": "Preregistered the no-campaign FULL_RPM_SWEEP_V1 contract for A/B fixtures with per-configuration source/model hashes, 15 points from 1000 to 5000 rpm, preserved PeriodicDetectorV2 criteria, 111-cycle horizon and checkpoint budget."
     }
   ],
   "legacy_gate_status": {
@@ -3505,20 +3607,25 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "ENGINE_PHYSICS_V1_R2",
-    "state": "PASS",
-    "classification": "ENGINE_PHYSICS_V1_R2_PASS",
-    "evidence": [
-      "results/engine-physics-v1/r2-external-review/third-review.json",
-      "results/engine-physics-v1/r2-semantic-correction/provenance-audit.json"
-    ],
-    "gate_tasks_total": 4,
-    "gate_tasks_done": 4,
+    "objective": "FULL_RPM_SWEEP_V1",
+    "state": "OPEN",
+    "classification": null,
+    "evidence": [],
+    "gate_tasks_total": 6,
+    "gate_tasks_done": 1,
     "gate_task_states": {
-      "DONE": 4
+      "DONE": 1,
+      "READY": 3,
+      "WAITING": 2
     },
-    "remaining": [],
-    "updated_at": "2026-10-09T13:04:28+00:00"
+    "remaining": [
+      "FRPM-MECHANICAL-BINDING",
+      "FRPM-PREFLIGHT-API",
+      "FRPM-FOCAL-TESTS",
+      "FRPM-READINESS-VERIFY",
+      "FRPM-OUTPUT-ADAPTER"
+    ],
+    "updated_at": "2026-10-09T13:36:18+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -3527,7 +3634,7 @@
     "baseline_commit": "1a58b2a5c23447f81308609acc37ab74a8bd5de5",
     "note": "Historical superseding R2 gate remains PASS, synthetic CONDITIONAL_ON_P4, experimental validation not performed, P9 not claimed; it is not reopened by ENGINE_PHYSICS_V1."
   },
-  "next_objective": "FULL_RPM_SWEEP_V1",
+  "next_objective": null,
   "full_rpm_sweep_precondition": "EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED",
   "full_rpm_sweep_status": "NOT_STARTED",
   "full_rpm_sweep_executable": false
