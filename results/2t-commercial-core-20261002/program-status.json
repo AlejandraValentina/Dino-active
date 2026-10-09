@@ -2983,9 +2983,10 @@
       "write_scope": [
         "scripts/full_rpm_sweep_v1_campaign.py"
       ],
-      "resolution": "Opt-in hash-bound runner implemented with preflight gate, external artifact destination, cycle and point checkpoints, resume binding checks, unchanged periodicity, causal failure classifications and 3600-second invocation cap; only help/refusal path inspected, campaign not executed.",
+      "resolution": "Opt-in hash-bound runner uses the preregistered solver schedule, enforces a 3600-second deadline between accepted steps, rolls back partial cycles to complete-cycle checkpoints, binds resume hashes, requires external artifacts and explicit execution authorization; it was not executed.",
       "evidence": [
-        "scripts/full_rpm_sweep_v1_campaign.py"
+        "scripts/full_rpm_sweep_v1_campaign.py",
+        "tests/test_full_rpm_sweep_v1.py"
       ]
     }
   ],
@@ -3709,6 +3710,18 @@
       "task": "FRPM-READINESS-VERIFY",
       "kind": "task",
       "summary": "Readiness evidence persisted after strict OpenSpec, focused tests, no-solver preflight and contract integrity audit."
+    },
+    {
+      "at": "2026-10-09T13:51:50+00:00",
+      "task": "FRPM-CAMPAIGN-RUNNER",
+      "kind": "task",
+      "summary": "Bounded stepping now checks the wall-clock deadline between accepted steps and rolls back incomplete cycles to durable complete-cycle checkpoints; runner remains execution-unauthorized."
+    },
+    {
+      "at": "2026-10-09T13:51:50+00:00",
+      "task": "FRPM-READINESS-VERIFY",
+      "kind": "task",
+      "summary": "Final focused suite 12/12, strict OpenSpec 37/37, preregistration audit and zero-step preflight pass; no campaign started."
     }
   ],
   "legacy_gate_status": {

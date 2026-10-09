@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -11,6 +12,7 @@ from motorsim.mechanical_loss_binding_v1 import (
     MechanicalLossBindingError,
     resolve_mechanical_loss_v1,
 )
+from scripts import full_rpm_sweep_v1_campaign as campaign
 from scripts.full_rpm_sweep_v1_campaign import execute_campaign
 
 
@@ -206,3 +208,14 @@ def test_campaign_runner_refuses_execution_without_explicit_authorization(tmp_pa
     with pytest.raises(RuntimeError, match="campaign execution is not authorized"):
         execute_campaign(output_root=target)
     assert not target.exists()
+
+
+def test_campaign_cycle_stepper_honors_expired_deadline_before_advancing(monkeypatch):
+    engine = SimpleNamespace(crank_angle_unwrapped_deg=0.0,
+                             reference_rpm=3000.0,
+                             step=lambda *_: pytest.fail("solver step must not start"))
+    monkeypatch.setattr(campaign, "_integrated_scheduled_angles",
+                        lambda *_: set())
+    with pytest.raises(campaign._CampaignDeadlineReached):
+        campaign._advance_to_bounded(engine, 360.0, [], deadline=0.0)
+    assert engine.crank_angle_unwrapped_deg == 0.0

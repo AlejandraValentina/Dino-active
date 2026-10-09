@@ -94,7 +94,9 @@ detector, preregistration and result hashes MUST be persisted.
 
 Every future campaign invocation MUST stop within 60 minutes, persist a
 restartable checkpoint after each complete cycle and RPM point, and resume
-only when all bound hashes match. The sweep MUST NOT reduce CFL, periodicity
+only when all bound hashes match. The runner MUST check the deadline between
+accepted solver steps; if it expires mid-cycle, it MUST roll back that partial
+cycle and retain the previous complete-cycle checkpoint. The sweep MUST NOT reduce CFL, periodicity
 thresholds or physical criteria to satisfy the budget.
 
 #### Scenario: bounded interruption

@@ -28,6 +28,8 @@ from motorsim.full_rpm_sweep_v1 import (  # noqa: E402
 )
 from motorsim.integrated_2t import (  # noqa: E402
     IntegratedEngine2T,
+    _integrated_nominal_step_end,
+    _integrated_scheduled_angles,
     audit_integrated_cycle_primary,
     make_integrated_cycle_primary,
     _solver_dependency_hashes,
@@ -41,7 +43,6 @@ from motorsim.reference_harness.convergence import (  # noqa: E402
     CONTRACT_V2,
     PeriodicDetectorV2,
 )
-from scripts.produce_integrated_cycle_evidence import advance_to  # noqa: E402
 
 
 PROGRAM_STATUS = ROOT / "results/2t-commercial-core-20261002/program-status.json"
@@ -87,6 +88,39 @@ def _projection(primary: dict) -> dict:
     return {"cycle_index": primary["cycle_index"],
             "configuration_hash": primary["configuration_hash"],
             "contract": CONTRACT, "observables": primary["observables"]}
+
+
+class _CampaignDeadlineReached(Exception):
+    pass
+
+
+def _advance_to_bounded(engine: IntegratedEngine2T, target_angle: float,
+                        rejected_trials: list[dict], deadline: float) -> None:
+    """Advance using the registered stepping schedule with deadline checks."""
+    scheduled = _integrated_scheduled_angles(engine, target_angle)
+    while engine.crank_angle_unwrapped_deg < target_angle - 1e-10:
+        if time.monotonic() >= deadline:
+            raise _CampaignDeadlineReached
+        angle = engine.crank_angle_unwrapped_deg
+        target = _integrated_nominal_step_end(engine, angle, target_angle, scheduled)
+        step = target - angle
+        for attempt in range(25):
+            if time.monotonic() >= deadline:
+                raise _CampaignDeadlineReached
+            try:
+                engine.step(step / (6.0 * engine.reference_rpm), step)
+                break
+            except ValueError as exc:
+                allowed = ("inadmissible species mass", "CFL limit exceeded",
+                           "rho/p/Y inadmissible")
+                if not any(reason in str(exc) for reason in allowed):
+                    raise
+                rejected_trials.append({"angle_deg": angle,
+                                        "attempted_step_deg": step,
+                                        "reason": str(exc)})
+                step *= .5
+        else:
+            raise RuntimeError(f"no accepted step at {angle:.12g} degrees")
 
 
 def _require_readiness_pass() -> None:
@@ -209,13 +243,42 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
 
     for cycle in range(first_cycle, prereg["horizon"]["max_complete_cycles_per_point"] + 1):
         rejected: list[dict] = []
+        cycle_start_snapshot = engine.snapshot()
+        detector_start_snapshot = detector.snapshot()
         try:
-            advance_to(engine, float(cycle * 360), rejected)
+            _advance_to_bounded(engine, float(cycle * 360), rejected,
+                                started + budget_seconds)
             end_snapshot = engine.snapshot()
             primary = make_integrated_cycle_primary(
                 engine, start_snapshot, end_snapshot, cycle,
                 rejected_trials=rejected,
                 runner_sha256=_sha256(Path(__file__).read_bytes().replace(b"\r\n", b"\n")))
+        except _CampaignDeadlineReached:
+            # Roll back any partial cycle so resume starts from its last
+            # complete, hash-bound state and detector history.
+            engine.restore(cycle_start_snapshot)
+            detector.restore(detector_start_snapshot)
+            checkpoint = {
+                "schema": "FULL_RPM_SWEEP_V1_POINT_CHECKPOINT",
+                "bindings": bindings,
+                "next_cycle": cycle,
+                "engine_snapshot": cycle_start_snapshot,
+                "periodicity_snapshot": detector_start_snapshot,
+            }
+            _write_json_atomic(checkpoint_path, checkpoint)
+            interrupted = {
+                "schema": "FULL_RPM_SWEEP_V1_POINT_RESULT",
+                "point_id": point_id,
+                "variant_id": variant["variant_id"],
+                "rpm": rpm,
+                "classification": "INTERRUPTED_CHECKPOINTED",
+                "cycles_completed": cycle - 1,
+                "next_cycle": cycle,
+                "engineering_outputs": None,
+                "bindings": bindings,
+            }
+            _write_json_atomic(point_dir / "checkpoint-status.json", interrupted)
+            return interrupted
         except Exception as exc:  # Persist causal numerical failure and no engineering values.
             failure = {
                 "schema": "FULL_RPM_SWEEP_V1_POINT_RESULT",
@@ -335,6 +398,7 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
 def execute_campaign(*, output_root: str | Path, resume: bool = False,
                      budget_seconds: int = MAX_INVOCATION_SECONDS) -> dict:
     """Run only after a durable readiness PASS; not used by readiness checks."""
+    started = time.monotonic()
     _require_readiness_pass()
     if type(budget_seconds) is not int or not 1 <= budget_seconds <= MAX_INVOCATION_SECONDS:
         raise ValueError("budget_seconds must be an integer in [1, 3600]")
@@ -351,7 +415,6 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
     output_manifest = out / "campaign.json"
     if output_manifest.exists() and not resume:
         raise FileExistsError("campaign output exists; pass --resume or choose a fresh external directory")
-    started = time.monotonic()
     point_results = []
     for variant in prereg["variants"]:
         for rpm in rpm_points(prereg):
