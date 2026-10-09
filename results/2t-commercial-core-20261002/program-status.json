@@ -2995,14 +2995,19 @@
       "dependencies": [
         "FRPM-CAMPAIGN-RUNNER"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "implementation",
       "evidence_level": "L1",
       "write_scope": [
         "results/full-rpm-sweep-v1 campaign artifacts at external DINO_ARTIFACT_ROOT"
       ],
-      "execution_authorization": "owner request, bounded to preregistered variants and RPM grid"
+      "execution_authorization": "owner request, bounded to preregistered variants and RPM grid",
+      "resolution": "Bounded same-campaign A4000/B4000 pilot completed with PERIOD_1 classifications; no other point was started.",
+      "evidence": [
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/campaign.json",
+        "results/full-rpm-sweep-v1/campaign-receipt.json"
+      ]
     },
     {
       "id": "FRPM-CAMPAIGN-REPORTING",
@@ -3046,12 +3051,17 @@
       "dependencies": [
         "FRPM-CAMPAIGN-EXECUTION"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "verification",
       "evidence_level": "L1",
       "write_scope": [
         "results/full-rpm-sweep-v1/pilot-analysis.json"
+      ],
+      "resolution": "Measured projection is 47,368.8 s (~13.2 h) for the 30-point campaign. Solver cycle time dominates (serialization 106.878 s and checkpoints 3.731 s over 3,157.92 s measured cycle time); no safe infrastructure optimization can recover the required order of magnitude without a separate implementation and revalidation. Stop after pilot per cost policy.",
+      "evidence": [
+        "results/full-rpm-sweep-v1/pilot-analysis.json",
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/campaign.json"
       ]
     },
     {
@@ -3060,12 +3070,19 @@
       "dependencies": [
         "FRPM-PILOT-PROJECTION"
       ],
-      "state": "WAITING",
+      "state": "BLOCKED_LOCAL",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "implementation",
       "evidence_level": "L1",
       "write_scope": [
         "results/full-rpm-sweep-v1 campaign artifacts at external DINO_ARTIFACT_ROOT"
+      ],
+      "blocker": "Measured full-campaign projection 47,368.8 s (~13.2 h) is disproportionate under the authorized resource policy; 28 preregistered points remain NOT_STARTED.",
+      "no_local_unblock_reason": "No local infrastructure overhead reduction can materially change the projection: measured serialization plus checkpoint cost is ~3.5% of measured cycle time. A meaningful reduction would require changing solver execution or resource scope; solver/scientific contracts are frozen. Reconsider only after an explicit budget/resource-scope change.",
+      "evidence": [
+        "results/full-rpm-sweep-v1/pilot-analysis.json",
+        "results/full-rpm-sweep-v1/campaign-receipt.json",
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/campaign.json"
       ]
     },
     {
@@ -3869,6 +3886,18 @@
       "task": "FRPM-CHECKPOINT-RESUME-VERIFY",
       "kind": "task",
       "summary": "Pilot scope, checkpoint hash-binding, and deadline-before-step checks pass."
+    },
+    {
+      "at": "2026-10-09T14:29:44+00:00",
+      "task": "FRPM-CAMPAIGN-EXECUTION",
+      "kind": "task",
+      "summary": "Campaign started in the external store; A4000 completed 2 cycles with durable checkpoints, measured 15.7 s/cycle, 1532 accepted and 84 rejected steps, RSS 201 MB. Pilot continues."
+    },
+    {
+      "at": "2026-10-09T15:30:38+00:00",
+      "task": "FRPM-CAMPAIGN-EXECUTION",
+      "kind": "task",
+      "summary": "Same-campaign A4000/B4000 pilot completed as PERIOD_1; verified 126 primary and cycle-metric records. Full 30-point projection is 47,368.8 s, so remaining 28 points stay NOT_STARTED and objective is PARTIAL_RESOURCE_BUDGET."
     }
   ],
   "legacy_gate_status": {
@@ -3884,22 +3913,22 @@
   },
   "gate_status": {
     "objective": "FULL_RPM_SWEEP_V1",
-    "state": "OPEN",
-    "classification": null,
-    "evidence": [],
+    "state": "REVIEW",
+    "classification": "FULL_RPM_SWEEP_V1_PARTIAL",
+    "evidence": [
+      "results/full-rpm-sweep-v1/campaign-receipt.json",
+      "results/full-rpm-sweep-v1/pilot-analysis.json"
+    ],
     "gate_tasks_total": 14,
-    "gate_tasks_done": 11,
+    "gate_tasks_done": 13,
     "gate_task_states": {
-      "DONE": 11,
-      "IN_PROGRESS": 1,
-      "WAITING": 2
+      "DONE": 13,
+      "BLOCKED_LOCAL": 1
     },
     "remaining": [
-      "FRPM-CAMPAIGN-EXECUTION",
-      "FRPM-PILOT-PROJECTION",
       "FRPM-FULL-CAMPAIGN-EXECUTION"
     ],
-    "updated_at": "2026-10-09T14:22:56+00:00"
+    "updated_at": "2026-10-09T15:30:38+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -3910,10 +3939,10 @@
   },
   "next_objective": null,
   "full_rpm_sweep_precondition": "EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED",
-  "full_rpm_sweep_status": "IN_PROGRESS",
+  "full_rpm_sweep_status": "PARTIAL",
   "full_rpm_sweep_executable": true,
   "full_rpm_sweep_precondition_status": "RESOLVED",
-  "full_rpm_sweep_execution_authorized": true,
+  "full_rpm_sweep_execution_authorized": false,
   "readiness_gate_status": {
     "objective": "FULL_RPM_SWEEP_V1",
     "state": "PASS",
@@ -3943,6 +3972,8 @@
       "scientific contract changes"
     ],
     "source": "explicit owner authorization in DINO-ACTIVE — FULL_RPM_SWEEP_V1 EXECUTION request",
-    "campaigns_started": 0
-  }
+    "campaigns_started": 1
+  },
+  "campaigns_started": 1,
+  "campaign_runtime_status": "PARTIAL_RESOURCE_BUDGET"
 }

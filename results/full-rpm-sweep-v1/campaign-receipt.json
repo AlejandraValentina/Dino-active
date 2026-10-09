@@ -1,0 +1,88 @@
+{
+  "schema": "FULL_RPM_SWEEP_V1_CAMPAIGN_RECEIPT",
+  "campaign_id": "FULL_RPM_SWEEP_V1_6bb85077504103bd",
+  "campaign_status": "PARTIAL_RESOURCE_BUDGET",
+  "classification": "FULL_RPM_SWEEP_V1_PARTIAL",
+  "completed_points": 2,
+  "total_points": 30,
+  "not_started_points": 28,
+  "completed_point_ids": [
+    "A_PRIME_MESH_0@4000RPM",
+    "B_PRIME_MESH_0@4000RPM"
+  ],
+  "external_artifact_root": "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1",
+  "campaign_manifest_sha256": "fde8625677d0bd03cd9c3a98cd477545d80a7375f5d4ddd4375a500546624433",
+  "pilot_analysis": "results/full-rpm-sweep-v1/pilot-analysis.json",
+  "reason": "Measured full-campaign projection 47,368.8 seconds (~13.2 h) exceeds the cost threshold for continuing; stop after authorized A4000/B4000 pilots.",
+  "hard_gate_summary": {
+    "A4000": "PASS",
+    "B4000": "PASS",
+    "artifact_integrity": "PASS"
+  },
+  "scientific_scope": "Synthetic assumption conditional on P4; no experimental validation; no definitive RPM curve.",
+  "reports": {
+    "reports/full-rpm-sweep-v1.json": "fb03376c43ac17f9fc9ea8ece1a014445f889eb4c5c2f6f76c1d459de8e45ce6",
+    "reports/full-rpm-sweep-v1.csv": "ec3ce4737d75446c3e8065f29295e0ebea808b4f4dd9e0348e6d8d7609c92442",
+    "reports/power-vs-rpm.png": "98a093cab5a771ed1a50c8527bf92f51218b5d6a6271359916664340cb3be348",
+    "reports/torque-vs-rpm.png": "22137dbf680d3291463de04026a8b80293bd3ed1b76d328c7eecf779802a04a4",
+    "reports/bmep-vs-rpm.png": "81a31989161bb167c9a9df0e2e8382fdf491fbd4fe341cedba1a51176a095be3",
+    "reports/bsfc-vs-rpm.png": "f4ce9f6ad9ccaaf310d7739a9b00701534f35726180dc1480d11b1634729e247",
+    "reports/artifact-integrity.json": "66b44ced4abbfd907c5293ae1dc14c379c375ccee803227d10f26b9ad5bfa8cb"
+  },
+  "artifact_integrity_report_sha256": "66b44ced4abbfd907c5293ae1dc14c379c375ccee803227d10f26b9ad5bfa8cb",
+  "verification": {
+    "focused_tests": "PASS 18/18",
+    "openspec_strict": "PASS",
+    "preregistration_contract_audit": "PASS (2 variants x 15 RPM)",
+    "external_artifact_integrity": "PASS (2 results, 2 checkpoints, 126 primaries, 126 cycle metrics, 0 errors)",
+    "program_status_check": "PASS with 0 READY queue warning; full sweep remains PARTIAL"
+  },
+  "performance_comparison": "No before/after optimization baseline was measured; therefore no performance improvement is claimed.",
+  "pilot_analysis_sha256": "a27d2a0e0fc241fee79bbaba5cae998eb32e3994fa5db0c9126ab0434de18e75",
+  "output_units": {
+    "IMEP": "kPa",
+    "FMEP": "kPa",
+    "BMEP": "kPa",
+    "indicated_power": "W",
+    "indicated_torque": "N*m",
+    "brake_power": "W",
+    "brake_torque": "N*m",
+    "ISFC": "g/kWh",
+    "BSFC": "g/kWh"
+  },
+  "pilot_interpretation": "A4000 is PERIOD_1 but has negative brake power/torque (-0.00393 W, -0.00939 N*m), so BSFC is UNDEFINED. B4000 is PERIOD_1 with 0.15378 W and 0.36712 N*m; its BSFC is 1618.97 g/kWh. These are pilot-point outputs only and do not form a definitive curve.",
+  "pilot_point_outputs": [
+    {
+      "variant_id": "A_PRIME_MESH_0",
+      "classification": "PERIOD_1",
+      "cycles_completed": 88,
+      "IMEP": 12.845456177972071,
+      "FMEP": 1.5,
+      "BMEP": -0.4789935444790903,
+      "indicated_power": 0.10546156518803239,
+      "indicated_torque": 0.2517709410882526,
+      "brake_power": -0.0039325507958490585,
+      "brake_torque": -0.009388273471790168,
+      "ISFC": 528.577281584145,
+      "BSFC": null,
+      "numerically_valid": true,
+      "result_sha256": "5a24c1b0f8ceb35140cdc9b42135fd9fb52a6db0f40cc94c6edef740de34e411"
+    },
+    {
+      "variant_id": "B_PRIME_MESH_0",
+      "classification": "PERIOD_1",
+      "cycles_completed": 38,
+      "IMEP": 61.479105003401365,
+      "FMEP": 1.5,
+      "BMEP": 18.730717218194922,
+      "indicated_power": 0.504745222761072,
+      "indicated_torque": 1.2049904580666668,
+      "brake_power": 0.1537797278319094,
+      "brake_torque": 0.3671220574766204,
+      "ISFC": 493.2496403675102,
+      "BSFC": 1618.9741204136603,
+      "numerically_valid": true,
+      "result_sha256": "0a955f70d2b1ba7640c458df01f139133abf877fe8e61d62a22e9ffcbda88e3d"
+    }
+  ]
+}
