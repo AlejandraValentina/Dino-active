@@ -2509,18 +2509,19 @@
       "dependencies": [
         "EP-R2-VERIFY"
       ],
-      "state": "REVIEW",
+      "state": "DONE",
       "objective": "ENGINE_PHYSICS_V1_R2",
       "owner_role": "skeptic/adversarial review",
       "evidence_level": "L3",
       "write_scope": [
         "results/engine-physics-v1/r2-offline/review"
       ],
-      "resolution": "Second external review FAIL is durably preserved. Its numeric-output and nested scavenging findings have a versioned offline hardening correction; administrative gate remains REVIEW for the next independent review.",
+      "resolution": "Third independent external review PASS recorded from requester-provided summary; see third-review.json for attribution boundary. First and second FAIL receipts preserved.",
       "evidence": [
         "results/engine-physics-v1/r2-external-review/first-review.json",
         "results/engine-physics-v1/r2-external-review/second-review.json",
-        "results/engine-physics-v1/r2-semantic-correction/review-packet.md"
+        "results/engine-physics-v1/r2-semantic-correction/review-packet.md",
+        "results/engine-physics-v1/r2-external-review/third-review.json"
       ]
     },
     {
@@ -2789,12 +2790,16 @@
         "EP-R2-SEMANTIC-OUTPUT-REPLAY",
         "EP-R2-SEMANTIC-TEST-VERIFY"
       ],
-      "state": "READY",
+      "state": "DONE",
       "objective": "ENGINE_PHYSICS_V1_R2",
       "owner_role": "skeptic/adversarial review",
       "evidence_level": "L3",
       "write_scope": [
         "results/engine-physics-v1/r2-semantic-correction/review/gates.json"
+      ],
+      "resolution": "Third independent external review PASS recorded from requester-provided summary; see third-review.json for attribution boundary. First and second FAIL receipts preserved.",
+      "evidence": [
+        "results/engine-physics-v1/r2-external-review/third-review.json"
       ]
     },
     {
@@ -2804,12 +2809,16 @@
         "EP-R2-SEMANTIC-OUTPUT-REPLAY",
         "EP-R2-SEMANTIC-TEST-VERIFY"
       ],
-      "state": "READY",
+      "state": "DONE",
       "objective": "ENGINE_PHYSICS_V1_R2",
       "owner_role": "verification",
       "evidence_level": "L3",
       "write_scope": [
         "results/engine-physics-v1/r2-semantic-correction/review/metrics.json"
+      ],
+      "resolution": "Third independent external review PASS recorded from requester-provided summary; see third-review.json for attribution boundary. First and second FAIL receipts preserved.",
+      "evidence": [
+        "results/engine-physics-v1/r2-external-review/third-review.json"
       ]
     },
     {
@@ -2819,12 +2828,16 @@
         "EP-R2-SEMANTIC-OUTPUT-REPLAY",
         "EP-R2-SEMANTIC-TEST-VERIFY"
       ],
-      "state": "READY",
+      "state": "DONE",
       "objective": "ENGINE_PHYSICS_V1_R2",
       "owner_role": "evidence/release reviewer",
       "evidence_level": "L3",
       "write_scope": [
         "results/engine-physics-v1/r2-semantic-correction/review/provenance.json"
+      ],
+      "resolution": "Third independent external review PASS recorded from requester-provided summary; see third-review.json for attribution boundary. First and second FAIL receipts preserved.",
+      "evidence": [
+        "results/engine-physics-v1/r2-external-review/third-review.json"
       ]
     }
   ],
@@ -3029,7 +3042,7 @@
     "id": "ENGINE_PHYSICS_V1_R2",
     "change": "openspec/changes/engine-physics-v1-r2",
     "spec": "openspec/changes/engine-physics-v1-r2/specs/engine-physics-v1-r2/spec.md",
-    "completion_criterion": "Superseding offline gate: the same four periodic primaries pass semantic and independent numeric-output contracts; remain REVIEW until an independent review authorizes closure. ENGINE_PHYSICS_V1 remains immutable FAIL_TERMINAL; no campaign, R3, KT100 or FULL_RPM_SWEEP_V1.",
+    "completion_criterion": "Superseding offline gate from the same four accepted periodic primaries; third independent external review authorized R2 PASS. ENGINE_PHYSICS_V1 remains immutable FAIL_TERMINAL. FULL_RPM_SWEEP_V1 is next but NOT_STARTED pending EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED.",
     "gate_tasks": [
       "EP-R2-OFFLINE",
       "EP-R2-REPLAY",
@@ -3071,17 +3084,21 @@
     },
     {
       "id": "ENGINE_PHYSICS_V1_R2",
-      "state": "ACTIVE",
+      "state": "PASS",
       "owner_approved": true,
       "change": "openspec/changes/engine-physics-v1-r2",
-      "classification": "ENGINE_PHYSICS_V1_R2_REVIEW",
-      "summary": "Superseding offline evaluation from the four existing periodic primaries; final numeric and scavenging hardening passes, while R2 remains REVIEW after preserving both external FAIL receipts."
+      "classification": "ENGINE_PHYSICS_V1_R2_PASS",
+      "summary": "Superseding offline R2 gate PASS after third independent external review; four fixed primaries and campaigns_started=0. Historical ENGINE_PHYSICS_V1 remains immutable FAIL_TERMINAL."
     },
     {
       "id": "FULL_RPM_SWEEP_V1",
       "state": "PROPOSED",
       "owner_approved": false,
-      "summary": "ENGINEERING FAST mode, compiled kernels, parallel RPM points with warm start; 12-15 point WOT sweep in minutes with configuration comparison. Readiness prerequisite: EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED; every operating point must bind a declared loss model and fail closed rather than silently using standard_fmep_model_v1() = 85000 Pa."
+      "summary": "ENGINEERING FAST mode, compiled kernels, parallel RPM points with warm start; 12-15 point WOT sweep in minutes with configuration comparison. Readiness prerequisite: EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED; every operating point must bind a declared loss model and fail closed rather than silently using standard_fmep_model_v1() = 85000 Pa. Administrative next objective after R2 PASS; NOT_STARTED and not executable until EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED is resolved.",
+      "readiness_state": "BLOCKED_PRECONDITION",
+      "precondition": "EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED",
+      "precondition_status": "UNRESOLVED",
+      "execution_authorized": false
     },
     {
       "id": "TUNING_WORKFLOW_AND_REFERENCE_CORRELATION_V1",
@@ -3468,6 +3485,12 @@
       "task": "EP-R2-FINAL-HARDENING-VERIFY",
       "kind": "task",
       "summary": "Final validation passes: 43 focused tests, offline replay and read-only evidence audit; OpenSpec 36/36, status check, diff check, git fsck/LFS fsck and all four primary hashes pass. R2 remains REVIEW; no campaigns."
+    },
+    {
+      "at": "2026-10-09T13:04:28+00:00",
+      "task": "EP-R2-EXTERNAL-REVIEW",
+      "kind": "task",
+      "summary": "Third external review PASS received from requester; receipt records source attribution; R2 administrative gate promoted PASS, V1 remains FAIL_TERMINAL, sweep remains NOT_STARTED pending explicit loss model."
     }
   ],
   "legacy_gate_status": {
@@ -3483,27 +3506,19 @@
   },
   "gate_status": {
     "objective": "ENGINE_PHYSICS_V1_R2",
-    "state": "REVIEW",
-    "classification": "ENGINE_PHYSICS_V1_R2_REVIEW",
+    "state": "PASS",
+    "classification": "ENGINE_PHYSICS_V1_R2_PASS",
     "evidence": [
-      "Historical ENGINE_PHYSICS_V1 remains immutable FAIL_TERMINAL.",
-      "R2 reuses only A′3000@73, A′4000@88, B′3000@34 and B′4000@38; no new campaign or solver step.",
-      "All four R2 hard physical gates PASS with corrected species closure and gross-crossing NOT_APPLICABLE semantics.",
-      "Second external review FAIL is preserved; its numeric-output consistency and nested scavenging blockers are corrected in the final evidence hardening replay.",
-      "Final hardening mutation matrix and evidence audit pass; campaigns_started=0; R2 remains REVIEW.",
-      "results/engine-physics-v1/r2-offline/manifest.json",
-      "Administrative result remains REVIEW pending a further independent review; no closure is declared."
+      "results/engine-physics-v1/r2-external-review/third-review.json",
+      "results/engine-physics-v1/r2-semantic-correction/provenance-audit.json"
     ],
     "gate_tasks_total": 4,
-    "gate_tasks_done": 3,
+    "gate_tasks_done": 4,
     "gate_task_states": {
-      "DONE": 3,
-      "REVIEW": 1
+      "DONE": 4
     },
-    "remaining": [
-      "EP-R2-EXTERNAL-REVIEW"
-    ],
-    "updated_at": "2026-10-07T17:00:00+00:00"
+    "remaining": [],
+    "updated_at": "2026-10-09T13:04:28+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -3511,5 +3526,9 @@
     "classification": "GENERAL_PURPOSE_2T_SIMULATION_CORE_VERIFIED",
     "baseline_commit": "1a58b2a5c23447f81308609acc37ab74a8bd5de5",
     "note": "Historical superseding R2 gate remains PASS, synthetic CONDITIONAL_ON_P4, experimental validation not performed, P9 not claimed; it is not reopened by ENGINE_PHYSICS_V1."
-  }
+  },
+  "next_objective": "FULL_RPM_SWEEP_V1",
+  "full_rpm_sweep_precondition": "EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED",
+  "full_rpm_sweep_status": "NOT_STARTED",
+  "full_rpm_sweep_executable": false
 }

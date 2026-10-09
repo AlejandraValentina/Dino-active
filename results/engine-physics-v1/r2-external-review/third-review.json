@@ -1,0 +1,43 @@
+{
+  "review_id": "EP_R2_THIRD_EXTERNAL_REVIEW_PASS",
+  "result": "PASS",
+  "target_head": "2ef2fdf146a45b5aba932169ce9f9b0d4899bc7e",
+  "reviewer": {
+    "tool": "OpenCode",
+    "model": "Muse Spark 1.3",
+    "reasoning_effort": "xhigh",
+    "mode": "read-only"
+  },
+  "review_report_artifact": "NOT_PROVIDED",
+  "receipt_source": "User-provided review result and summary in the administrative closure request.",
+  "attribution_boundary": "The findings below are recorded as communicated by the requester. This receipt does not claim that this session observed the reviewer run, inspected a reviewer artifact, or independently repeated the reviewer's checks.",
+  "reviewer_reported_conclusions": {
+    "all_first_review_blockers_closed": true,
+    "all_second_review_blockers_closed": true,
+    "engine_physics_v1_r2_can_close": true,
+    "campaigns_started": 0
+  },
+  "reviewer_reported_scope": [
+    "Applicable mutations of IMEP, indicated work, power, torque, ISFC, BSFC, FMEP, AFR, fuel, trapped quantities and partition were detected.",
+    "A fabricated numeric value with valid metadata was rejected by a hard failure.",
+    "Current TE, CE and SE are UNDEFINED/NOT_IDENTIFIABLE; old values occur only in superseded evidence.",
+    "Independent conservation was verified.",
+    "Read-only evidence verification was confirmed.",
+    "The IMEP comparison was corrected.",
+    "Primaries and historical states were unchanged."
+  ],
+  "preserved_prior_reviews": [
+    "results/engine-physics-v1/r2-external-review/first-review.json",
+    "results/engine-physics-v1/r2-external-review/second-review.json"
+  ],
+  "administrative_disposition": {
+    "objective": "ENGINE_PHYSICS_V1_R2",
+    "state": "PASS",
+    "classification": "ENGINE_PHYSICS_V1_R2_PASS",
+    "historical_ENGINE_PHYSICS_V1": "FAIL_TERMINAL",
+    "next_objective": "FULL_RPM_SWEEP_V1",
+    "full_rpm_sweep_state": "NOT_STARTED",
+    "full_rpm_sweep_precondition": "EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED",
+    "full_rpm_sweep_executable": false
+  }
+}
