@@ -2878,12 +2878,17 @@
       "id": "FRPM-PREFLIGHT-API",
       "description": "Implement no-solver full sweep preflight over existing integrated engine configuration validators and explicit mechanical/fuel/operating contracts.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
       "write_scope": [
         "motorsim/full_rpm_sweep_v1.py"
+      ],
+      "resolution": "No-solver preflight validates the 30 hash-bound point configurations and integrated geometry, distribution, ports, chambers, thermal, combustion, fuel, losses and WOT boundaries. Evidence persisted in preflight.json; solver steps=0.",
+      "evidence": [
+        "motorsim/full_rpm_sweep_v1.py",
+        "results/full-rpm-sweep-v1/preflight.json"
       ]
     },
     {
@@ -2894,11 +2899,15 @@
         "FRPM-PREFLIGHT-API",
         "FRPM-CONTRACT"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "verification",
       "evidence_level": "L0",
       "write_scope": [
+        "tests/test_full_rpm_sweep_v1.py"
+      ],
+      "resolution": "Focused tests pass 11/11, covering absent/implicit/invalid loss, provenance, BMEP/power/torque, R2 output compatibility, preflight validity and invalidity, and runner execution gate.",
+      "evidence": [
         "tests/test_full_rpm_sweep_v1.py"
       ]
     },
@@ -2908,25 +2917,35 @@
       "dependencies": [
         "FRPM-FOCAL-TESTS"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "evidence/release reviewer",
       "evidence_level": "L1",
       "write_scope": [
         "results/full-rpm-sweep-v1/readiness.json",
         "results/2t-commercial-core-20261002/program-status.json"
+      ],
+      "resolution": "Readiness receipt persisted after preflight, tests, contract audit, strict OpenSpec and program-status check; no campaign started.",
+      "evidence": [
+        "results/full-rpm-sweep-v1/readiness.json",
+        "results/full-rpm-sweep-v1/preflight.json"
       ]
     },
     {
       "id": "FRPM-OUTPUT-ADAPTER",
       "description": "Implement explicit-model brake outputs with BMEP, power and torque identities and provenance, without altering legacy output behavior.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
       "write_scope": [
         "motorsim/full_rpm_outputs_v1.py"
+      ],
+      "resolution": "Sweep-only outputs derive BMEP, power, torque, AFR/lambda/phi and fuel consumption from accepted primary values plus explicit mechanical/fuel bindings; legacy engine physics API unchanged.",
+      "evidence": [
+        "motorsim/full_rpm_outputs_v1.py",
+        "tests/test_full_rpm_sweep_v1.py"
       ]
     },
     {
@@ -2935,12 +2954,38 @@
       "dependencies": [
         "FRPM-CONTRACT"
       ],
-      "state": "READY",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "contract/regression guardian",
       "evidence_level": "L1",
       "write_scope": [
         "scripts/verify_full_rpm_sweep_v1_contract.py"
+      ],
+      "resolution": "Independent contract audit reports all_pass for both variants and all 15 RPM points per variant.",
+      "evidence": [
+        "scripts/verify_full_rpm_sweep_v1_contract.py",
+        "results/full-rpm-sweep-v1/preregistration.json"
+      ]
+    },
+    {
+      "id": "FRPM-CAMPAIGN-RUNNER",
+      "description": "Implement an opt-in hash-bound resumable sweep runner with preflight gate, external artifact output, strict runtime budget and causal nonconvergence results; do not execute it.",
+      "dependencies": [
+        "FRPM-CONTRACT",
+        "FRPM-MECHANICAL-BINDING",
+        "FRPM-PREFLIGHT-API",
+        "FRPM-OUTPUT-ADAPTER"
+      ],
+      "state": "DONE",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/full_rpm_sweep_v1_campaign.py"
+      ],
+      "resolution": "Opt-in hash-bound runner implemented with preflight gate, external artifact destination, cycle and point checkpoints, resume binding checks, unchanged periodicity, causal failure classifications and 3600-second invocation cap; only help/refusal path inspected, campaign not executed.",
+      "evidence": [
+        "scripts/full_rpm_sweep_v1_campaign.py"
       ]
     }
   ],
@@ -3153,7 +3198,8 @@
       "FRPM-FOCAL-TESTS",
       "FRPM-READINESS-VERIFY",
       "FRPM-OUTPUT-ADAPTER",
-      "FRPM-PREREG-INTEGRITY-AUDIT"
+      "FRPM-PREREG-INTEGRITY-AUDIT",
+      "FRPM-CAMPAIGN-RUNNER"
     ],
     "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
     "set_by": "owner request FULL_RPM_SWEEP_V1_READINESS"
@@ -3198,12 +3244,12 @@
     },
     {
       "id": "FULL_RPM_SWEEP_V1",
-      "state": "ACTIVE",
+      "state": "PASS",
       "owner_approved": true,
-      "summary": "Owner-authorized readiness preparation only. Proposed sweep remains NOT_STARTED until readiness PASS and a separately scheduled campaign; explicit per-configuration mechanical-loss model required.",
-      "readiness_state": "IN_PROGRESS",
+      "summary": "Readiness PASS: explicit hash-bound losses are resolved and sweep preparation passed; campaign remains NOT_STARTED and execution is not authorized.",
+      "readiness_state": "PASS",
       "precondition": "EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED",
-      "precondition_status": "UNRESOLVED",
+      "precondition_status": "RESOLVED",
       "execution_authorized": false,
       "change": "openspec/changes/full-rpm-sweep-v1",
       "spec": "openspec/changes/full-rpm-sweep-v1/specs/full-rpm-sweep-v1/spec.md",
@@ -3214,7 +3260,8 @@
         "FRPM-FOCAL-TESTS",
         "FRPM-READINESS-VERIFY",
         "FRPM-OUTPUT-ADAPTER",
-        "FRPM-PREREG-INTEGRITY-AUDIT"
+        "FRPM-PREREG-INTEGRITY-AUDIT",
+        "FRPM-CAMPAIGN-RUNNER"
       ]
     },
     {
@@ -3626,6 +3673,42 @@
       "task": "FRPM-MECHANICAL-BINDING",
       "kind": "task",
       "summary": "Added fail-closed hash-bound mechanical-loss resolution from each registered fixture; no sweep fallback path exists and all model terms are evaluated over the preregistered RPM/load domain."
+    },
+    {
+      "at": "2026-10-09T13:47:26+00:00",
+      "task": "FRPM-PREFLIGHT-API",
+      "kind": "task",
+      "summary": "No-solver preflight passed for all 30 registered RPM points; geometry and boundary validation ran with zero solver steps."
+    },
+    {
+      "at": "2026-10-09T13:47:27+00:00",
+      "task": "FRPM-FOCAL-TESTS",
+      "kind": "task",
+      "summary": "Focused FULL_RPM_SWEEP_V1 tests pass 11/11 including fail-closed losses, provenance, output identities, R2 compatibility and preflight cases."
+    },
+    {
+      "at": "2026-10-09T13:47:27+00:00",
+      "task": "FRPM-PREREG-INTEGRITY-AUDIT",
+      "kind": "task",
+      "summary": "Independent preregistration integrity audit passed for both variants and all 15 RPM points each."
+    },
+    {
+      "at": "2026-10-09T13:47:27+00:00",
+      "task": "FRPM-OUTPUT-ADAPTER",
+      "kind": "task",
+      "summary": "Sweep-specific output adapter completed with explicit AFR/lambda/phi basis and R2-compatible calculations."
+    },
+    {
+      "at": "2026-10-09T13:47:27+00:00",
+      "task": "FRPM-CAMPAIGN-RUNNER",
+      "kind": "task",
+      "summary": "Opt-in resumable campaign runner implemented and execution gate inspected; no campaign was started."
+    },
+    {
+      "at": "2026-10-09T13:47:27+00:00",
+      "task": "FRPM-READINESS-VERIFY",
+      "kind": "task",
+      "summary": "Readiness evidence persisted after strict OpenSpec, focused tests, no-solver preflight and contract integrity audit."
     }
   ],
   "legacy_gate_status": {
@@ -3641,24 +3724,18 @@
   },
   "gate_status": {
     "objective": "FULL_RPM_SWEEP_V1",
-    "state": "OPEN",
-    "classification": null,
-    "evidence": [],
-    "gate_tasks_total": 7,
-    "gate_tasks_done": 2,
-    "gate_task_states": {
-      "DONE": 2,
-      "READY": 3,
-      "WAITING": 2
-    },
-    "remaining": [
-      "FRPM-PREFLIGHT-API",
-      "FRPM-FOCAL-TESTS",
-      "FRPM-READINESS-VERIFY",
-      "FRPM-OUTPUT-ADAPTER",
-      "FRPM-PREREG-INTEGRITY-AUDIT"
+    "state": "PASS",
+    "classification": "FULL_RPM_SWEEP_V1_READINESS_PASS",
+    "evidence": [
+      "results/full-rpm-sweep-v1/readiness.json"
     ],
-    "updated_at": "2026-10-09T13:39:50+00:00"
+    "gate_tasks_total": 8,
+    "gate_tasks_done": 8,
+    "gate_task_states": {
+      "DONE": 8
+    },
+    "remaining": [],
+    "updated_at": "2026-10-09T13:47:27+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -3670,5 +3747,7 @@
   "next_objective": null,
   "full_rpm_sweep_precondition": "EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED",
   "full_rpm_sweep_status": "NOT_STARTED",
-  "full_rpm_sweep_executable": false
+  "full_rpm_sweep_executable": true,
+  "full_rpm_sweep_precondition_status": "RESOLVED",
+  "full_rpm_sweep_execution_authorized": false
 }

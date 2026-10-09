@@ -73,7 +73,13 @@ advancement.
 ### Requirement: outputs and provenance
 
 Each converged result MUST record RPM, IMEP, FMEP, BMEP, brake torque, brake
-power, ISFC and BSFC with units, dependency status and source provenance.
+power, brake torque, delivered AFR, lambda, phi, ISFC and BSFC with units,
+dependency status and source provenance. AFR MUST be calculated from the same
+accepted primary's delivered fresh-air and fuel ledgers; lambda MUST use the
+bound fuel snapshot's stoichiometric AFR, and phi MUST be its reciprocal.
+Missing ledgers or stoichiometry MUST produce causal `UNDEFINED` values. The
+preregistered mixture pseudo-species ratio MUST NOT be substituted for a
+delivered chemical AFR.
 Mechanical outputs MUST be derived from the accepted integrated primary and
 the explicitly bound mechanical model. Configuration, fixture, fuel, solver,
 detector, preregistration and result hashes MUST be persisted.

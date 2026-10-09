@@ -1,0 +1,422 @@
+{
+  "campaigns_started": 0,
+  "errors": [],
+  "points_preflighted": 30,
+  "preflight_status": "PASS",
+  "readiness_claim": "PRECONDITION_RESOLVED",
+  "rpm_points_per_variant": 15,
+  "schema": "FULL_RPM_SWEEP_V1_PREFLIGHT_REPORT",
+  "solver_steps_started": 0,
+  "variants": [
+    {
+      "checks": {
+        "explicit_mechanical_loss_model": true,
+        "fixture_and_configuration_hashes": true,
+        "fuel_snapshot_and_mixture_explicit": true,
+        "geometry_ports_chambers_thermal_combustion_valid": true,
+        "mechanical_model_compatible_all_rpms": true,
+        "no_solver_steps": true,
+        "periodicity_and_solver_hashes_match": true,
+        "wot_boundaries_explicit": true
+      },
+      "engine_configuration_sha256": "d3f000f72dda247e11a561ad63fb93daab1145cca689105a17cd8e6ae7c71ab7",
+      "errors": [],
+      "fixture_sha256": "1f1298c0fd38e925eeac0be3049d7fa7d260ac8d5a07ba97042e02e2d7c7a9cf",
+      "fuel_sha256": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+      "mechanical_loss_provenance": {
+        "engine_configuration_sha256": "d3f000f72dda247e11a561ad63fb93daab1145cca689105a17cd8e6ae7c71ab7",
+        "evaluated_mep_pa_by_term_and_rpm": {
+          "synthetic-bearing-accessory@1000": 500.0,
+          "synthetic-bearing-accessory@1300": 500.0,
+          "synthetic-bearing-accessory@1600": 500.0,
+          "synthetic-bearing-accessory@1900": 500.0,
+          "synthetic-bearing-accessory@2200": 500.0,
+          "synthetic-bearing-accessory@2500": 500.0,
+          "synthetic-bearing-accessory@2800": 500.0,
+          "synthetic-bearing-accessory@3100": 500.0,
+          "synthetic-bearing-accessory@3400": 500.0,
+          "synthetic-bearing-accessory@3700": 500.0,
+          "synthetic-bearing-accessory@4000": 500.0,
+          "synthetic-bearing-accessory@4300": 500.0,
+          "synthetic-bearing-accessory@4600": 500.0,
+          "synthetic-bearing-accessory@4900": 500.0,
+          "synthetic-bearing-accessory@5000": 500.0,
+          "synthetic-piston-ring@1000": 1000.0,
+          "synthetic-piston-ring@1300": 1000.0,
+          "synthetic-piston-ring@1600": 1000.0,
+          "synthetic-piston-ring@1900": 1000.0,
+          "synthetic-piston-ring@2200": 1000.0,
+          "synthetic-piston-ring@2500": 1000.0,
+          "synthetic-piston-ring@2800": 1000.0,
+          "synthetic-piston-ring@3100": 1000.0,
+          "synthetic-piston-ring@3400": 1000.0,
+          "synthetic-piston-ring@3700": 1000.0,
+          "synthetic-piston-ring@4000": 1000.0,
+          "synthetic-piston-ring@4300": 1000.0,
+          "synthetic-piston-ring@4600": 1000.0,
+          "synthetic-piston-ring@4900": 1000.0,
+          "synthetic-piston-ring@5000": 1000.0
+        },
+        "fallback_used": false,
+        "fields_used": [
+          "terms[].id",
+          "terms[].source",
+          "terms[].provenance",
+          "terms[].mep_pa",
+          "terms[].operating_map"
+        ],
+        "fixture_id": "FIXTURE_A_PRIME",
+        "fixture_path": "results/2t-commercial-core-20261002/fixtures/v1-prime-mesh/fixture_a_prime-mesh-0.json",
+        "fixture_sha256": "1f1298c0fd38e925eeac0be3049d7fa7d260ac8d5a07ba97042e02e2d7c7a9cf",
+        "model_schema": "MECHANICAL_LOSS_MODEL_V1",
+        "model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+        "schema": "FULL_RPM_SWEEP_MECHANICAL_LOSS_PROVENANCE_V1",
+        "terms": [
+          {
+            "id": "synthetic-piston-ring",
+            "mep_pa": 1000.0,
+            "operating_map": null,
+            "provenance": "SYNTHETIC_ASSUMPTION",
+            "source": "piston_ring"
+          },
+          {
+            "id": "synthetic-bearing-accessory",
+            "mep_pa": 500.0,
+            "operating_map": null,
+            "provenance": "SYNTHETIC_ASSUMPTION",
+            "source": "bearing_accessory"
+          }
+        ]
+      },
+      "mixture_ratio_basis": "synthetic pseudo-species ratio; not measured chemical AFR",
+      "rpm_points": [
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "48183d171dc159969fd4d7dab7a30d2de916fb22dada64ca23da046c0a824b15",
+          "rejected_solver_steps": 0,
+          "rpm": 1000,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "74d40cd5d301b3541abd2be20f06eeed7ca10c7de4568db76ccc71cd49b77c7c",
+          "rejected_solver_steps": 0,
+          "rpm": 1300,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "fc252f29791513e2a288efcfba6c6a94b8114dc32cb5c27b8dec7a01ec6561e2",
+          "rejected_solver_steps": 0,
+          "rpm": 1600,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "5ff5bc6dae7927cc67a66dcf59a4b7fd6b429437cc96f5606e251e41d2f8f228",
+          "rejected_solver_steps": 0,
+          "rpm": 1900,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "872f5391462d565105ee29f8a9e413c28774a2feb229d39db257d134a2be1b90",
+          "rejected_solver_steps": 0,
+          "rpm": 2200,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "fe99395ee266dda93df4e3cca47d0a726ee280144b78a1be1843720d32a2274b",
+          "rejected_solver_steps": 0,
+          "rpm": 2500,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "2294e4ea0df72e174179922975a760b322972cf10c8e1ee85c5f340478f44d6d",
+          "rejected_solver_steps": 0,
+          "rpm": 2800,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "2ddbf0fdde0ebb71280df40d7399c369b13688cf2e5f844aeb60a8a532de191d",
+          "rejected_solver_steps": 0,
+          "rpm": 3100,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "748459fb63f1c726b2b4643543b2d7fcd9bfdcb1ff6a2fa8c90dfa418a5ec4b1",
+          "rejected_solver_steps": 0,
+          "rpm": 3400,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "74af1c4dc12f8d62c73f74cfd09729eef7d2322fc10385e5bd5d0f2ad0ccf4d7",
+          "rejected_solver_steps": 0,
+          "rpm": 3700,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "8d37c0991aff9c9b7540e71277aa60d80fc49c193b73ee9806ff275557a316ca",
+          "rejected_solver_steps": 0,
+          "rpm": 4000,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "f9f111549158397c408731349fd9f296467628075c50d7ed5623b09be3f7523c",
+          "rejected_solver_steps": 0,
+          "rpm": 4300,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "5bb5b9014dff512bdd9f00f2a9044253e26126056e6e5857e7051f5fa810f2c5",
+          "rejected_solver_steps": 0,
+          "rpm": 4600,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "c09d49791345e8a0f9b22d51913a181c99fb9f592e7a1688695b400a02ade0d4",
+          "rejected_solver_steps": 0,
+          "rpm": 4900,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "e4e9efe9b061d67b012ce0b5f25be0b71afd11b2df3986332139a11f5086b352",
+          "rejected_solver_steps": 0,
+          "rpm": 5000,
+          "solver_cycles_started": 0
+        }
+      ],
+      "variant_id": "A_PRIME_MESH_0"
+    },
+    {
+      "checks": {
+        "explicit_mechanical_loss_model": true,
+        "fixture_and_configuration_hashes": true,
+        "fuel_snapshot_and_mixture_explicit": true,
+        "geometry_ports_chambers_thermal_combustion_valid": true,
+        "mechanical_model_compatible_all_rpms": true,
+        "no_solver_steps": true,
+        "periodicity_and_solver_hashes_match": true,
+        "wot_boundaries_explicit": true
+      },
+      "engine_configuration_sha256": "b21dd08a23679954c1ac39aae383fc2a78c702c5a358c8e2387fcecd00f2af82",
+      "errors": [],
+      "fixture_sha256": "5b487b01044beee19cc537db158264e52aa9e34a567004bcbe883e1166bfe173",
+      "fuel_sha256": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+      "mechanical_loss_provenance": {
+        "engine_configuration_sha256": "b21dd08a23679954c1ac39aae383fc2a78c702c5a358c8e2387fcecd00f2af82",
+        "evaluated_mep_pa_by_term_and_rpm": {
+          "synthetic-bearing-accessory@1000": 500.0,
+          "synthetic-bearing-accessory@1300": 500.0,
+          "synthetic-bearing-accessory@1600": 500.0,
+          "synthetic-bearing-accessory@1900": 500.0,
+          "synthetic-bearing-accessory@2200": 500.0,
+          "synthetic-bearing-accessory@2500": 500.0,
+          "synthetic-bearing-accessory@2800": 500.0,
+          "synthetic-bearing-accessory@3100": 500.0,
+          "synthetic-bearing-accessory@3400": 500.0,
+          "synthetic-bearing-accessory@3700": 500.0,
+          "synthetic-bearing-accessory@4000": 500.0,
+          "synthetic-bearing-accessory@4300": 500.0,
+          "synthetic-bearing-accessory@4600": 500.0,
+          "synthetic-bearing-accessory@4900": 500.0,
+          "synthetic-bearing-accessory@5000": 500.0,
+          "synthetic-piston-ring@1000": 1000.0,
+          "synthetic-piston-ring@1300": 1000.0,
+          "synthetic-piston-ring@1600": 1000.0,
+          "synthetic-piston-ring@1900": 1000.0,
+          "synthetic-piston-ring@2200": 1000.0,
+          "synthetic-piston-ring@2500": 1000.0,
+          "synthetic-piston-ring@2800": 1000.0,
+          "synthetic-piston-ring@3100": 1000.0,
+          "synthetic-piston-ring@3400": 1000.0,
+          "synthetic-piston-ring@3700": 1000.0,
+          "synthetic-piston-ring@4000": 1000.0,
+          "synthetic-piston-ring@4300": 1000.0,
+          "synthetic-piston-ring@4600": 1000.0,
+          "synthetic-piston-ring@4900": 1000.0,
+          "synthetic-piston-ring@5000": 1000.0
+        },
+        "fallback_used": false,
+        "fields_used": [
+          "terms[].id",
+          "terms[].source",
+          "terms[].provenance",
+          "terms[].mep_pa",
+          "terms[].operating_map"
+        ],
+        "fixture_id": "FIXTURE_B_PRIME",
+        "fixture_path": "results/2t-commercial-core-20261002/fixtures/v1-prime-mesh/fixture_b_prime-mesh-0.json",
+        "fixture_sha256": "5b487b01044beee19cc537db158264e52aa9e34a567004bcbe883e1166bfe173",
+        "model_schema": "MECHANICAL_LOSS_MODEL_V1",
+        "model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+        "schema": "FULL_RPM_SWEEP_MECHANICAL_LOSS_PROVENANCE_V1",
+        "terms": [
+          {
+            "id": "synthetic-piston-ring",
+            "mep_pa": 1000.0,
+            "operating_map": null,
+            "provenance": "SYNTHETIC_ASSUMPTION",
+            "source": "piston_ring"
+          },
+          {
+            "id": "synthetic-bearing-accessory",
+            "mep_pa": 500.0,
+            "operating_map": null,
+            "provenance": "SYNTHETIC_ASSUMPTION",
+            "source": "bearing_accessory"
+          }
+        ]
+      },
+      "mixture_ratio_basis": "synthetic pseudo-species ratio; not measured chemical AFR",
+      "rpm_points": [
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "45b7c398e24ebca5c9c1884f7d253c8c58dbb28659a9c691e63ece86b520382a",
+          "rejected_solver_steps": 0,
+          "rpm": 1000,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "1a8d21cf90d4f4fd94fa26e5c78c5bb5c5039e4258eac1a2ad295e2d3eb1c199",
+          "rejected_solver_steps": 0,
+          "rpm": 1300,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "63bd098fbfb65a89e300f3999046c3be0ce47d38b8f107c6753680f3e94e94c3",
+          "rejected_solver_steps": 0,
+          "rpm": 1600,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "57dd2e5691bfff3043d70bbcfdd0f3e809f866c99cb571536ace7a2a0134c2a6",
+          "rejected_solver_steps": 0,
+          "rpm": 1900,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "2df08c46fd0caa52dc960e0b081cad628e1e6109548d20723ee6f55d6d47be2f",
+          "rejected_solver_steps": 0,
+          "rpm": 2200,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "25f0060994d4a03f3bc10dfe9711238defb09747af8e959d377616908f6c6fc3",
+          "rejected_solver_steps": 0,
+          "rpm": 2500,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "fbc00b20abbaece8794a515ecff164482d6ee2be0f945441489326e55cd6b981",
+          "rejected_solver_steps": 0,
+          "rpm": 2800,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "2147b494f182f2084ca68623e0fc921cff05a3f48148bceb30830aa16082faae",
+          "rejected_solver_steps": 0,
+          "rpm": 3100,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "005db8cb7ea1ade7b1285c73792e504e1af40962693d02645d1e30ece06c5145",
+          "rejected_solver_steps": 0,
+          "rpm": 3400,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "0374c89faead0c615cbeaae9914ef8346ad434b609670bc7f2724d23ab489274",
+          "rejected_solver_steps": 0,
+          "rpm": 3700,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "b21dd08a23679954c1ac39aae383fc2a78c702c5a358c8e2387fcecd00f2af82",
+          "rejected_solver_steps": 0,
+          "rpm": 4000,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "b428eb772fb9c473aafd7557cb7950e78a65418a97bd1db73fd964a7a7be824f",
+          "rejected_solver_steps": 0,
+          "rpm": 4300,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "f0946d2d58627bab2bc0da6d942a426d9b1b3c54d43f4d8097ebda29fc0378fd",
+          "rejected_solver_steps": 0,
+          "rpm": 4600,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "89ba2a3149e33c389d4d5db9dd30892b5ab6cf4f85d8e20546d60d718a62fe02",
+          "rejected_solver_steps": 0,
+          "rpm": 4900,
+          "solver_cycles_started": 0
+        },
+        {
+          "accepted_solver_steps": 0,
+          "loss_mep_pa": 1500.0,
+          "point_configuration_sha256": "a8ad982a92a4d5a287a139180461a783fb464e0a22844219df9d9fb9094898c0",
+          "rejected_solver_steps": 0,
+          "rpm": 5000,
+          "solver_cycles_started": 0
+        }
+      ],
+      "variant_id": "B_PRIME_MESH_0"
+    }
+  ]
+}
