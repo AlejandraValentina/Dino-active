@@ -2861,12 +2861,17 @@
       "id": "FRPM-MECHANICAL-BINDING",
       "description": "Resolve explicit per-configuration MechanicalLossModelV1 only from hash-bound engine fixture/configuration data and fail closed on missing, invalid or incompatible data.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
       "write_scope": [
         "motorsim/mechanical_loss_binding_v1.py"
+      ],
+      "resolution": "Sweep-only resolver verifies preregistration, source fixture/config/model hashes, supported model schema/provenance and every RPM/load domain; missing or invalid bindings raise causal fail-closed errors. No standard_fmep_model_v1 fallback is reachable.",
+      "evidence": [
+        "motorsim/mechanical_loss_binding_v1.py",
+        "results/full-rpm-sweep-v1/preregistration.json"
       ]
     },
     {
@@ -2922,6 +2927,20 @@
       "evidence_level": "L0",
       "write_scope": [
         "motorsim/full_rpm_outputs_v1.py"
+      ]
+    },
+    {
+      "id": "FRPM-PREREG-INTEGRITY-AUDIT",
+      "description": "Independently verify preregistered fixture/configuration/loss/fuel/solver/detector hashes and RPM domain before readiness closure.",
+      "dependencies": [
+        "FRPM-CONTRACT"
+      ],
+      "state": "READY",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "contract/regression guardian",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/verify_full_rpm_sweep_v1_contract.py"
       ]
     }
   ],
@@ -3133,7 +3152,8 @@
       "FRPM-PREFLIGHT-API",
       "FRPM-FOCAL-TESTS",
       "FRPM-READINESS-VERIFY",
-      "FRPM-OUTPUT-ADAPTER"
+      "FRPM-OUTPUT-ADAPTER",
+      "FRPM-PREREG-INTEGRITY-AUDIT"
     ],
     "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
     "set_by": "owner request FULL_RPM_SWEEP_V1_READINESS"
@@ -3193,7 +3213,8 @@
         "FRPM-PREFLIGHT-API",
         "FRPM-FOCAL-TESTS",
         "FRPM-READINESS-VERIFY",
-        "FRPM-OUTPUT-ADAPTER"
+        "FRPM-OUTPUT-ADAPTER",
+        "FRPM-PREREG-INTEGRITY-AUDIT"
       ]
     },
     {
@@ -3593,6 +3614,18 @@
       "task": "FRPM-CONTRACT",
       "kind": "task",
       "summary": "Preregistered the no-campaign FULL_RPM_SWEEP_V1 contract for A/B fixtures with per-configuration source/model hashes, 15 points from 1000 to 5000 rpm, preserved PeriodicDetectorV2 criteria, 111-cycle horizon and checkpoint budget."
+    },
+    {
+      "at": "2026-10-09T13:37:39+00:00",
+      "task": "FRPM-MECHANICAL-BINDING",
+      "kind": "task",
+      "summary": "Implementing the sweep-only hash-bound explicit mechanical-loss resolver; legacy APIs are preserved."
+    },
+    {
+      "at": "2026-10-09T13:39:50+00:00",
+      "task": "FRPM-MECHANICAL-BINDING",
+      "kind": "task",
+      "summary": "Added fail-closed hash-bound mechanical-loss resolution from each registered fixture; no sweep fallback path exists and all model terms are evaluated over the preregistered RPM/load domain."
     }
   ],
   "legacy_gate_status": {
@@ -3611,21 +3644,21 @@
     "state": "OPEN",
     "classification": null,
     "evidence": [],
-    "gate_tasks_total": 6,
-    "gate_tasks_done": 1,
+    "gate_tasks_total": 7,
+    "gate_tasks_done": 2,
     "gate_task_states": {
-      "DONE": 1,
+      "DONE": 2,
       "READY": 3,
       "WAITING": 2
     },
     "remaining": [
-      "FRPM-MECHANICAL-BINDING",
       "FRPM-PREFLIGHT-API",
       "FRPM-FOCAL-TESTS",
       "FRPM-READINESS-VERIFY",
-      "FRPM-OUTPUT-ADAPTER"
+      "FRPM-OUTPUT-ADAPTER",
+      "FRPM-PREREG-INTEGRITY-AUDIT"
     ],
-    "updated_at": "2026-10-09T13:36:18+00:00"
+    "updated_at": "2026-10-09T13:39:50+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
