@@ -8,11 +8,13 @@ from __future__ import annotations
 
 import argparse
 import copy
+import concurrent.futures
 import gzip
 import hashlib
 import json
 import platform
 import os
+import multiprocessing
 import shutil
 from pathlib import Path
 import sys
@@ -431,7 +433,9 @@ def _load_checkpoint(path: Path, expected: dict,
 
 def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
                output_root: Path, *, resume: bool,
-               started: float, budget_seconds: int) -> dict:
+               started: float, budget_seconds: int,
+               update_campaign_manifest: bool = True,
+               cancel_event=None) -> dict:
     resolved_loss = resolve_mechanical_loss_v1(
         preregistration_path=ROOT / PREREGISTRATION,
         variant_id=variant["variant_id"], repository_root=ROOT,
@@ -445,6 +449,12 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
         prior = _read_json(result_path)
         if prior.get("bindings") != bindings:
             raise ValueError(f"persisted result binding mismatch: {point_dir}")
+        manifest = _read_json(output_root / "campaign.json")
+        row = next((item for item in manifest.get("completed_or_checkpointed_points", [])
+                    if item.get("point_id") == f"{variant['variant_id']}@{rpm}RPM"), None)
+        if (not isinstance(row, dict) or
+                row.get("result_sha256") != _sha256(result_path.read_bytes())):
+            raise ValueError("completed point artifact hash is missing or mismatched in coordinator manifest")
         return prior
 
     config = _configuration_for(variant, rpm)
@@ -501,9 +511,10 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
             cycle_rows.append({"cycle": cycle, "primary_sha256": prior_sha,
                                "audit": "PASS", "metrics": measurement})
 
-    _record_point_started(output_root, variant, rpm,
-                          cycles_completed=first_cycle - 1,
-                          next_cycle=first_cycle)
+    if update_campaign_manifest:
+        _record_point_started(output_root, variant, rpm,
+                              cycles_completed=first_cycle - 1,
+                              next_cycle=first_cycle)
     for cycle in range(first_cycle, prereg["horizon"]["max_complete_cycles_per_point"] + 1):
         rejected: list[dict] = []
         cycle_started = time.monotonic()
@@ -545,6 +556,9 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
                 "bindings": bindings,
             }
             _write_json_atomic(point_dir / "checkpoint-status.json", interrupted)
+            if update_campaign_manifest:
+                _record_checkpoint_progress(output_root, variant, rpm,
+                                            checkpoint_path, interrupted)
             return interrupted
         except Exception as exc:  # Persist causal numerical failure and no engineering values.
             failure = {
@@ -690,9 +704,11 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
             "performance_metrics": _point_performance_metrics(cycle_metrics),
         }
         _write_json_atomic(point_dir / "checkpoint-status.json", in_progress)
-        _record_checkpoint_progress(output_root, variant, rpm, checkpoint_path,
-                                    in_progress)
-        if time.monotonic() - started >= budget_seconds:
+        if update_campaign_manifest:
+            _record_checkpoint_progress(output_root, variant, rpm, checkpoint_path,
+                                        in_progress)
+        if ((cancel_event is not None and cancel_event.is_set()) or
+                time.monotonic() - started >= budget_seconds):
             interrupted = {
                 "schema": "FULL_RPM_SWEEP_V1_POINT_RESULT",
                 "point_id": point_id,
@@ -707,8 +723,9 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
             }
             # Do not create result.json: a later --resume must continue this point.
             _write_json_atomic(point_dir / "checkpoint-status.json", interrupted)
-            _record_checkpoint_progress(output_root, variant, rpm, checkpoint_path,
-                                        interrupted)
+            if update_campaign_manifest:
+                _record_checkpoint_progress(output_root, variant, rpm, checkpoint_path,
+                                            interrupted)
             return interrupted
 
     terminal = {
@@ -728,14 +745,52 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
     return terminal
 
 
+def _parallel_worker_plan(requested: int, memory_budget_bytes: int, *,
+                          available_memory_bytes: int,
+                          cpu_count: int | None = None,
+                          reserve_per_worker_bytes: int = 512 * 1024 * 1024) -> dict:
+    if (type(requested) is not int or requested < 1 or
+            type(memory_budget_bytes) is not int or
+            memory_budget_bytes < reserve_per_worker_bytes or
+            type(available_memory_bytes) is not int or available_memory_bytes < 0):
+        raise ValueError("parallel worker or memory budget is invalid")
+    cpu_count = max(1, int(cpu_count or os.cpu_count() or 1))
+    effective = max(1, min(requested,
+                           memory_budget_bytes // reserve_per_worker_bytes,
+                           max(1, available_memory_bytes // reserve_per_worker_bytes),
+                           cpu_count))
+    return {"requested_workers": requested, "effective_workers": effective,
+            "memory_budget_bytes": memory_budget_bytes,
+            "available_memory_bytes": available_memory_bytes,
+            "reserve_per_worker_bytes": reserve_per_worker_bytes,
+            "cpu_count": cpu_count}
+
+
+def _run_point_process(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
+                       output_root: str, resume: bool, started: float,
+                       budget_seconds: int, cancel_event) -> dict:
+    """Spawn-process entrypoint; writes only its point-owned files."""
+    return _run_point(prereg, prereg_sha, variant, rpm, Path(output_root),
+                      resume=resume, started=started,
+                      budget_seconds=budget_seconds,
+                      update_campaign_manifest=False,
+                      cancel_event=cancel_event)
+
+
 def execute_campaign(*, output_root: str | Path, resume: bool = False,
                      pilot: bool = False,
-                     budget_seconds: int = MAX_INVOCATION_SECONDS) -> dict:
+                     budget_seconds: int = MAX_INVOCATION_SECONDS,
+                     workers: int = 1,
+                     memory_budget_mib: int = 4096) -> dict:
     """Run the preregistered campaign, optionally in two-point pilot mode."""
     started = time.monotonic()
     _require_readiness_pass()
     if type(budget_seconds) is not int or not 1 <= budget_seconds <= MAX_INVOCATION_SECONDS:
         raise ValueError("budget_seconds must be an integer in [1, 3600]")
+    if type(memory_budget_mib) is not int or memory_budget_mib < 512:
+        raise ValueError("memory_budget_mib must be an integer of at least 512")
+    if type(workers) is not int or not 1 <= workers <= 8:
+        raise ValueError("workers must be an integer in [1, 8]")
     out = Path(output_root).resolve()
     if out == ROOT or out.is_relative_to(ROOT):
         raise ValueError("sweep outputs must be outside the Git repository")
@@ -764,6 +819,8 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
         "requested_points": [f"{variant['variant_id']}@{rpm}RPM"
                              for variant, rpm in selected_points],
         "results": [],
+        "parallelism": {"requested_workers": workers,
+                        "mode": "SEQUENTIAL" if workers == 1 else "SPAWN_PROCESS_POOL"},
     }
 
     def save_summary(campaign_status: str) -> dict:
@@ -807,6 +864,7 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
             "duration_seconds": time.monotonic() - started,
             "requested_points": invocation["requested_points"],
             "results": invocation["results"],
+            "parallelism": invocation["parallelism"],
         }
         invocations = [row for row in invocations if row.get("id") != invocation["id"]]
         if invocation["results"] or not invocations:
@@ -867,25 +925,145 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
         return summary
 
     save_summary("PREPARED")
-    for variant, rpm in selected_points:
-        point_result = _run_point(
-            prereg, prereg_sha, variant, rpm, out,
-            resume=resume, started=started, budget_seconds=budget_seconds)
-        point_dir = out / variant["variant_id"] / f"rpm-{rpm:05d}"
-        invocation["results"].append({
-            "point_id": point_result["point_id"],
-            "classification": point_result["classification"],
-            "result_path": str((point_dir / "result.json").relative_to(out))
-            if (point_dir / "result.json").is_file() else None,
-            "checkpoint_path": str((point_dir / "checkpoint.json").relative_to(out))
-            if (point_dir / "checkpoint.json").is_file() else None,
-        })
-        summary = save_summary(
-            "INTERRUPTED_CHECKPOINTED"
-            if point_result["classification"] == "INTERRUPTED_CHECKPOINTED"
-            else "IN_PROGRESS")
-        if point_result["classification"] == "INTERRUPTED_CHECKPOINTED":
-            return summary
+    if workers == 1:
+        for variant, rpm in selected_points:
+            point_result = _run_point(
+                prereg, prereg_sha, variant, rpm, out,
+                resume=resume, started=started, budget_seconds=budget_seconds)
+            point_dir = out / variant["variant_id"] / f"rpm-{rpm:05d}"
+            invocation["results"].append({
+                "point_id": point_result["point_id"],
+                "classification": point_result["classification"],
+                "result_path": str((point_dir / "result.json").relative_to(out))
+                if (point_dir / "result.json").is_file() else None,
+                "checkpoint_path": str((point_dir / "checkpoint.json").relative_to(out))
+                if (point_dir / "checkpoint.json").is_file() else None,
+            })
+            summary = save_summary(
+                "INTERRUPTED_CHECKPOINTED"
+                if point_result["classification"] == "INTERRUPTED_CHECKPOINTED"
+                else "IN_PROGRESS")
+            if point_result["classification"] == "INTERRUPTED_CHECKPOINTED":
+                return summary
+    else:
+        try:
+            import psutil
+            available_memory = int(psutil.virtual_memory().available)
+        except ImportError:
+            available_memory = memory_budget_mib * 1024 * 1024
+        plan = _parallel_worker_plan(
+            workers, memory_budget_mib * 1024 * 1024,
+            available_memory_bytes=available_memory)
+        invocation["parallelism"].update(plan)
+        invocation["parallelism"]["executor"] = "ProcessPoolExecutor"
+        invocation["parallelism"]["start_method"] = "spawn"
+        save_summary("PREPARED")
+
+        context = multiprocessing.get_context("spawn")
+        manager = context.Manager()
+        cancel_event = manager.Event()
+        executor = concurrent.futures.ProcessPoolExecutor(
+            max_workers=plan["effective_workers"], mp_context=context)
+        point_iter = iter(selected_points)
+        futures: dict[concurrent.futures.Future, tuple[dict, int]] = {}
+
+        def submit_next() -> bool:
+            if time.monotonic() - started >= budget_seconds:
+                return False
+            try:
+                variant, rpm = next(point_iter)
+            except StopIteration:
+                return False
+            future = executor.submit(
+                _run_point_process, prereg, prereg_sha, variant, rpm, str(out),
+                resume, started, budget_seconds, cancel_event)
+            futures[future] = (variant, rpm)
+            return True
+
+        try:
+            for _ in range(plan["effective_workers"]):
+                if not submit_next():
+                    break
+            while futures:
+                done, _ = concurrent.futures.wait(
+                    futures, timeout=max(0.1, min(1.0,
+                        budget_seconds - (time.monotonic() - started))),
+                    return_when=concurrent.futures.FIRST_COMPLETED)
+                if not done:
+                    cancel_event.set()
+                    for future in futures:
+                        future.cancel()
+                    done, _ = concurrent.futures.wait(futures)
+                should_stop = False
+                for future in done:
+                    variant, rpm = futures.pop(future)
+                    point_result = future.result()
+                    point_dir = out / variant["variant_id"] / f"rpm-{rpm:05d}"
+                    result_row = {
+                        "point_id": point_result["point_id"],
+                        "classification": point_result["classification"],
+                        "result_path": str((point_dir / "result.json").relative_to(out))
+                        if (point_dir / "result.json").is_file() else None,
+                        "checkpoint_path": str((point_dir / "checkpoint.json").relative_to(out))
+                        if (point_dir / "checkpoint.json").is_file() else None,
+                    }
+                    invocation["results"] = [row for row in invocation["results"]
+                                              if row["point_id"] != result_row["point_id"]]
+                    invocation["results"].append(result_row)
+                    if point_result["classification"] == "INTERRUPTED_CHECKPOINTED":
+                        should_stop = True
+                save_summary("INTERRUPTED_CHECKPOINTED" if should_stop else "IN_PROGRESS")
+                if should_stop or time.monotonic() - started >= budget_seconds:
+                    cancel_event.set()
+                    for future in futures:
+                        future.cancel()
+                    if futures:
+                        done_remaining, _ = concurrent.futures.wait(futures)
+                        for future in done_remaining:
+                            variant, rpm = futures.pop(future)
+                            point_result = future.result()
+                            point_dir = out / variant["variant_id"] / f"rpm-{rpm:05d}"
+                            invocation["results"].append({
+                                "point_id": point_result["point_id"],
+                                "classification": point_result["classification"],
+                                "result_path": str((point_dir / "result.json").relative_to(out))
+                                if (point_dir / "result.json").is_file() else None,
+                                "checkpoint_path": str((point_dir / "checkpoint.json").relative_to(out))
+                                if (point_dir / "checkpoint.json").is_file() else None,
+                            })
+                    summary = save_summary("INTERRUPTED_CHECKPOINTED")
+                    return summary
+                for _ in done:
+                    submit_next()
+        except KeyboardInterrupt:
+            cancel_event.set()
+            for future in futures:
+                future.cancel()
+            concurrent.futures.wait(futures)
+            for future, (variant, rpm) in list(futures.items()):
+                if future.cancelled():
+                    continue
+                point_result = future.result()
+                point_dir = out / variant["variant_id"] / f"rpm-{rpm:05d}"
+                invocation["results"].append({
+                    "point_id": point_result["point_id"],
+                    "classification": point_result["classification"],
+                    "result_path": str((point_dir / "result.json").relative_to(out))
+                    if (point_dir / "result.json").is_file() else None,
+                    "checkpoint_path": str((point_dir / "checkpoint.json").relative_to(out))
+                    if (point_dir / "checkpoint.json").is_file() else None,
+                })
+            return save_summary("INTERRUPTED_CHECKPOINTED")
+        except BaseException:
+            cancel_event.set()
+            for future in futures:
+                future.cancel()
+            concurrent.futures.wait(futures)
+            save_summary("INTERRUPTED_CHECKPOINTED")
+            raise
+        finally:
+            executor.shutdown(wait=True, cancel_futures=True)
+            manager.shutdown()
     return save_summary("COMPLETE_WITH_POINT_CLASSIFICATIONS")
 
 
@@ -899,6 +1077,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--pilot", action="store_true",
                         help="run only preregistered A4000 and B4000 as the first phase of this campaign")
     parser.add_argument("--budget-seconds", type=int, default=MAX_INVOCATION_SECONDS)
+    parser.add_argument("--workers", type=int, default=1,
+                        help="IMPL2 point workers; uses Windows spawn when greater than one")
+    parser.add_argument("--memory-budget-mib", type=int, default=4096,
+                        help="upper bound for aggregate worker memory reservation")
     args = parser.parse_args(argv)
     if not args.execute:
         report = preflight_full_rpm_sweep_v1(repository_root=ROOT)
@@ -916,7 +1098,9 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("campaign artifact output must remain outside the repository")
     result = execute_campaign(output_root=output_root, resume=args.resume,
                               pilot=args.pilot,
-                              budget_seconds=args.budget_seconds)
+                              budget_seconds=args.budget_seconds,
+                              workers=args.workers,
+                              memory_budget_mib=args.memory_budget_mib)
     print(json.dumps({"campaign_status": result["campaign_status"],
                       "points": len(result["completed_or_checkpointed_points"]),
                       "campaigns_started": result["campaigns_started"]}, sort_keys=True))

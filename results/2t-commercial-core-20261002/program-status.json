@@ -3077,12 +3077,17 @@
       "write_scope": [
         "results/full-rpm-sweep-v1 campaign artifacts at external DINO_ARTIFACT_ROOT"
       ],
-      "blocker": "Measured 4000-RPM first-cycle geometry-cache extrapolation leaves approximately 12.50 h for the 30-point sweep, with substantial uncertainty and no v2 writer measurement; 28 v1 points remain NOT_STARTED.",
-      "no_local_unblock_reason": "Local recovery found no speedup path near the required 3x without a versioned evidence/audit architecture change. The remaining sweep is still outside the measured resource budget; execution requires later explicit budget and campaign authorization.",
+      "blocker": "No campaign execution is authorized. The 4-worker one-cycle diagnostic is 3.738x faster on its paired diagnostic workload, but does not measure full periodic-convergence points or concurrent checkpoint/restart. Twenty-eight historical v1 points remain NOT_STARTED.",
+      "no_local_unblock_reason": null,
       "evidence": [
         "results/full-rpm-sweep-v1/pilot-analysis.json",
         "results/full-rpm-sweep-v1/campaign-receipt.json",
         "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/campaign.json"
+      ],
+      "unblock_tasks": [
+        "FRPM-V2-PARALLEL-EXECUTOR-REVIEW",
+        "FRPM-V2-CHECKPOINT-RESTART-INTEGRATION",
+        "FRPM-V2-IMPL2-PREFLIGHT-AUDIT"
       ]
     },
     {
@@ -3195,9 +3200,9 @@
         "tests/test_full_rpm_sweep_v1_performance.py",
         "openspec/changes/full-rpm-sweep-v1-performance-v2"
       ],
-      "blocker": "Uninstrumented paired measurements show replay audit plus primary construction consume about 77% of first-cycle end-to-end runtime. Geometry memoization is only 1.052x combined; even eliminating all numeric advancement is capped near 1.16x. Further micro-optimization cannot meet the stated practical target without redesigning evidence representation and audit execution.",
+      "blocker": "The persisted-primary segmented prototype is 1.4% smaller but 10.9% slower end-to-end because encode/write/read/reconstruction overhead does not reduce the independent audit. The existing auditor remains the largest measured stage.",
       "unblock_tasks": [
-        "FRPM-V2-COLUMNAR-PROTOTYPE"
+        "FRPM-V2-FAST-EVIDENCE-ACCEPTANCE"
       ],
       "no_local_unblock_reason": null,
       "evidence": [
@@ -3325,14 +3330,24 @@
       "dependencies": [
         "FRPM-V2-EVIDENCE-ARCHITECTURE"
       ],
-      "state": "READY",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "implementation",
       "evidence_level": "L1",
       "write_scope": [
-        "motorsim/full_rpm_evidence_columnar_v2.py",
-        "tests/test_full_rpm_evidence_columnar_v2.py",
-        "scripts/benchmark_full_rpm_evidence_columnar_v2.py"
+        "motorsim/full_rpm_evidence_impl2.py",
+        "tests/test_full_rpm_evidence_impl2.py",
+        "scripts/benchmark_full_rpm_sweep_v2_architecture.py",
+        "openspec/changes/full-rpm-sweep-v1-impl2-performance",
+        "results/full-rpm-sweep-v1/performance-architecture-v2-diagnostic-receipt.json"
+      ],
+      "resolution": "Lossless columnar trajectory roundtrip and independent persisted-primary audit passed. It saved 1.4% compressed bytes but cost 10.9% end-to-end time; retain as prototype, do not adopt as campaign writer.",
+      "evidence": [
+        "motorsim/full_rpm_evidence_impl2.py",
+        "tests/test_full_rpm_evidence_impl2.py",
+        "docs/gasdynamic/full_rpm_sweep_v2_architecture.md",
+        "results/full-rpm-sweep-v1/performance-architecture-v2-diagnostic-receipt.json",
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1-impl2/diagnostics/fast-evidence-multiprocess/run-20261009-v5/artifacts/benchmark-report.json"
       ]
     },
     {
@@ -3348,6 +3363,90 @@
       "write_scope": [
         "motorsim/full_rpm_sweep_v1_impl2.py",
         "tests/test_full_rpm_sweep_v1_impl2.py"
+      ]
+    },
+    {
+      "id": "FRPM-V2-PARALLEL-EXECUTOR",
+      "description": "Implement a versioned Windows spawn-process point executor with point-owned checkpoints/artifacts, a sole manifest coordinator, memory cap and cooperative cycle-boundary interruption; benchmark only diagnostics.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/full_rpm_sweep_v1_campaign.py",
+        "scripts/benchmark_full_rpm_sweep_v2_architecture.py",
+        "tests/test_full_rpm_sweep_v1_parallel_impl2.py",
+        "openspec/changes/full-rpm-sweep-v1-impl2-performance",
+        "results/full-rpm-sweep-v1/implementation-v2-identity.json",
+        "results/full-rpm-sweep-v1/implementation-v2-preregistration-proposal.json"
+      ],
+      "resolution": "Added opt-in ProcessPoolExecutor spawn workers with 512 MiB per-worker reservation and a parent-only campaign manifest writer. Four diagnostic jobs ran at 1/2/4 workers and showed 1.0x/2.073x/3.738x paired-workload speedup; campaign execution was not started.",
+      "evidence": [
+        "scripts/full_rpm_sweep_v1_campaign.py",
+        "tests/test_full_rpm_sweep_v1_parallel_impl2.py",
+        "results/full-rpm-sweep-v1/performance-architecture-v2-diagnostic-receipt.json",
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1-impl2/diagnostics/fast-evidence-multiprocess/run-20261009-v5/artifacts/benchmark-report.json"
+      ]
+    },
+    {
+      "id": "FRPM-V2-FAST-EVIDENCE-ACCEPTANCE",
+      "description": "Read-only independent review of columnar canonical reconstruction, persisted artifact hashes, audit independence and measured end-to-end cost; decide whether the prototype is rejected or needs redesign.",
+      "dependencies": [
+        "FRPM-V2-COLUMNAR-PROTOTYPE"
+      ],
+      "state": "READY",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "skeptic/adversarial review",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/full-rpm-sweep-v1/fast-evidence-review.json"
+      ]
+    },
+    {
+      "id": "FRPM-V2-PARALLEL-EXECUTOR-REVIEW",
+      "description": "Read-only independent review of spawn worker isolation, parent-only manifest writes, memory cap, timeout/cancellation and atomic checkpoint handoff.",
+      "dependencies": [
+        "FRPM-V2-PARALLEL-EXECUTOR"
+      ],
+      "state": "READY",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "skeptic/adversarial review",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/full-rpm-sweep-v1/parallel-executor-review.json"
+      ]
+    },
+    {
+      "id": "FRPM-V2-CHECKPOINT-RESTART-INTEGRATION",
+      "description": "Exercise cooperative cancellation, atomic completed-cycle checkpoints and restart hash validation with a bounded synthetic executor fixture; do not start a campaign point.",
+      "dependencies": [
+        "FRPM-V2-PARALLEL-EXECUTOR"
+      ],
+      "state": "READY",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "tests/test_full_rpm_sweep_v1_parallel_impl2.py",
+        "results/full-rpm-sweep-v1/parallel-checkpoint-diagnostic.json"
+      ]
+    },
+    {
+      "id": "FRPM-V2-V1-COMPATIBILITY-VERIFY",
+      "description": "Verify the published historical v1 campaign from its immutable external source bundle without using current IMPL2 solver code or changing any primary/checkpoint.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/full-rpm-sweep-v1/performance-architecture-v2-diagnostic-receipt.json"
+      ],
+      "resolution": "Read-only artifact verification passed on the existing v1 source bundle and artifacts: 30 catalog rows, 2 results, 2 checkpoints, 126 primaries and 126 cycle receipts, zero errors. Current workspace v1 preflight remains fail-closed on its frozen solver hash.",
+      "evidence": [
+        "results/full-rpm-sweep-v1/performance-architecture-v2-diagnostic-receipt.json",
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/logs/verify-v1-20261009/verify-full-rpm-sweep-v1-artifacts.log"
       ]
     }
   ],
@@ -4213,6 +4312,30 @@
       "task": "FRPM-V2-CHECKPOINT-ROUNDTRIP",
       "kind": "task",
       "summary": "Final restore regression: 74 integrated tests pass, with compact boundary/mid-cycle continuation, ledger conservation, atomic invalid-origin rejection and checkpoint file hash tests."
+    },
+    {
+      "at": "2026-10-09T17:35:48+00:00",
+      "task": "FRPM-V2-COLUMNAR-PROTOTYPE",
+      "kind": "task",
+      "summary": "Lossless segmented gzip roundtrip and independent audit passed; 1.4% smaller artifacts cost 10.9% more end-to-end, so the writer remains prototype-only."
+    },
+    {
+      "at": "2026-10-09T17:35:49+00:00",
+      "task": "FRPM-V2-PARALLEL-EXECUTOR",
+      "kind": "task",
+      "summary": "Added opt-in spawn executor with parent-only manifest coordination, point-owned artifacts/checkpoints, 512 MiB worker reservation and cycle-boundary cancellation; no campaign started."
+    },
+    {
+      "at": "2026-10-09T17:35:49+00:00",
+      "task": "FRPM-V2-PARALLEL-EXECUTOR",
+      "kind": "task",
+      "summary": "Bounded A4000/B4000 one-cycle diagnostics at 1/2/4 workers completed with exact cross-worker primary hashes and 1.0x/2.073x/3.738x paired-workload speedups."
+    },
+    {
+      "at": "2026-10-09T17:37:33+00:00",
+      "task": "FRPM-V2-V1-COMPATIBILITY-VERIFY",
+      "kind": "task",
+      "summary": "Read-only published v1 bundle verification passed: 30 catalog rows, 2 results, 2 checkpoints, 126 primaries and 126 cycle receipts, zero errors; no historical artifacts modified."
     }
   ],
   "legacy_gate_status": {

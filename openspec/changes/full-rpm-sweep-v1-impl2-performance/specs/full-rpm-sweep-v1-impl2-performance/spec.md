@@ -56,3 +56,52 @@ or a later IMPL2 preregistration and explicit authorization are provided.
 - **WHEN** the performance recovery work completes
 - **THEN** it reports measured speedup, projection uncertainty, compatibility
   identities, and `campaign_started = false`
+
+### Requirement: segmented evidence must preserve independent replay audit MUST
+
+Any IMPL2 segmented or columnar primary representation MUST have a versioned
+field layout, explicit row and field-presence semantics, atomic persistence,
+and a canonical primary hash. A reader MUST reconstruct the complete canonical
+V3 primary and pass it to the existing independent replay auditor. It MUST NOT
+replace that auditor with producer-side checks. Comparisons MUST include every
+canonical field and all conservation and inventory magnitudes; v1 evidence is
+read-only.
+
+#### Scenario: lossless segmented round trip
+
+- **WHEN** a segmented primary is read for scientific audit
+- **THEN** the reconstructed canonical hash equals the source primary hash and
+  the existing independent auditor passes on the reconstructed object
+
+### Requirement: parallel point execution has isolated workers and one coordinator MUST
+
+The versioned IMPL2 point executor MUST use Windows `spawn` processes with
+independent engine/configuration state and point-owned artifacts/checkpoints.
+Only the coordinator may write the global campaign manifest. Worker count MUST
+be limited by both the requested count and an explicit memory budget. Completed
+points may be reused only after configuration, solver, producer and artifact
+hashes validate. Checkpoint writes MUST be atomic and point scoped. Timeout or
+interruption MUST stop scheduling pending work and allow active workers to
+return at a completed-cycle checkpoint; worker failures MUST reach the
+coordinator. The diagnostic benchmark MUST NOT start campaign points.
+
+#### Scenario: interruption during parallel work
+
+- **WHEN** the coordinator receives a timeout or interruption
+- **THEN** it cancels unscheduled work, records worker-owned completed-cycle
+  checkpoints, and atomically persists the global manifest after workers stop
+
+### Requirement: evidence and multiprocessing performance claims are end to end MUST
+
+Benchmarks MUST report evidence construction, canonical reconstruction,
+independent audit, compression and write time, and compare sequential and
+spawn-process execution at each feasible worker count. They MUST record actual
+per-process CPU time, aggregate per-core utilization, wall time, memory,
+artifact bytes, and exact numerical/evidence hashes. A serialization-only or
+microbenchmark speedup MUST NOT be presented as a campaign projection.
+
+#### Scenario: insufficient end-to-end improvement
+
+- **WHEN** the combined diagnostic does not materially reduce total runtime
+- **THEN** the report identifies the measured limiting stages and does not
+  promote IMPL2 or authorize campaign execution

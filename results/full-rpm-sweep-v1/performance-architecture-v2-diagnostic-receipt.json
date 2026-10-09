@@ -1,0 +1,104 @@
+{
+  "schema": "FULL_RPM_SWEEP_V1_IMPL2_FAST_EVIDENCE_PARALLEL_DIAGNOSTIC_V1",
+  "status": "DIAGNOSTIC_ONLY_NOT_CAMPAIGN_AUTHORIZATION",
+  "baseline_head": "3eaac09bfd69ae23b5dbab85a338a54d6cee3ee8",
+  "campaign_started": false,
+  "rpm_points_started": 0,
+  "historical_v1_campaign_artifacts_modified": false,
+  "diagnostic_scope": {
+    "configurations": ["A_PRIME_MESH_0@4000RPM", "B_PRIME_MESH_0@4000RPM"],
+    "repeats_per_configuration_and_worker_scale": 2,
+    "worker_scales": [1, 2, 4],
+    "full_cycle_diagnostics": 12,
+    "campaign_points": 0,
+    "notes": "Each diagnostic task ran one complete cycle. Both legacy and segmented evidence paths were written, read back, canonically reconstructed, and independently audited."
+  },
+  "external_artifact_root": "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\diagnostics\\fast-evidence-multiprocess\\run-20261009-v5\\artifacts",
+  "external_benchmark_report": "benchmark-report.json",
+  "external_benchmark_report_sha256": "64c8672f76890bf8f667cf4695ad4e880a8633b851a65f22a9263d25696cf737",
+  "preregistration_sha256": "6bb85077504103bd57fe40313599cb03c812a91acbb859c9b0ce4a30d74053bb",
+  "implementation_source_hashes": {
+    "campaign_runner_sha256": "11f4ed18dc4ae597c5f7f3c19317ec9e529c9a7cd532e24761a1ad485b46802f",
+    "segmented_evidence_codec_sha256": "0279b1160760af12ad3f00e5442c9c55eaf100b6f50566f32b5065be18c11f95",
+    "fast_evidence_parallel_benchmark_sha256": "45dcdfc62c4b9589d6a63e312fc61cbfe23c65afde0c107afd5ff8e81d1c2b65"
+  },
+  "benchmarks": {
+    "evidence_per_task_one_worker": {
+      "legacy_end_to_end_seconds_mean": 15.22,
+      "segmented_end_to_end_seconds_mean": 16.88,
+      "segmented_relative_change": 0.109,
+      "legacy_compressed_bytes_mean": 2624076,
+      "segmented_compressed_bytes_mean": 2587570,
+      "segmented_size_reduction_fraction": 0.014,
+      "primary_construction_seconds_mean": 3.533,
+      "legacy_audit_seconds_mean": 8.467,
+      "segmented_independent_audit_seconds_mean": 8.599,
+      "segmented_encode_seconds_mean": 0.497,
+      "segmented_read_parse_seconds_mean": 0.492,
+      "segmented_canonical_reconstruction_seconds_mean": 0.477
+    },
+    "paired_legacy_and_segmented_diagnostic_workload": {
+      "wall_seconds_by_workers": {"1": 114.22, "2": 55.10, "4": 30.56},
+      "speedup_vs_one_worker": {"1": 1.0, "2": 2.073, "4": 3.738},
+      "worker_cpu_seconds_sum": {"1": 112.44, "2": 107.33, "4": 116.20},
+      "effective_workers": {"1": 1, "2": 2, "4": 4},
+      "peak_worker_rss_mib": {"1": 282.3, "2": 283.2, "4": 280.4},
+      "cpu_core_count": 12,
+      "system_per_core_average_utilization_percent": {
+        "1": [11.05, 12.62, 40.48, 28.70, 32.01, 30.23, 40.57, 50.21, 23.13, 21.54, 29.60, 36.25],
+        "2": [7.76, 5.45, 26.93, 15.57, 14.93, 16.23, 30.51, 33.12, 10.09, 10.46, 20.09, 25.06],
+        "4": [11.75, 12.54, 49.03, 30.28, 43.20, 36.97, 47.03, 51.63, 28.48, 23.98, 31.46, 45.16]
+      },
+      "memory_budget_mib": 4096,
+      "worker_memory_reserve_mib": 512,
+      "interpretation": "Measured speedup applies to this paired diagnostic workload, not a 30-point campaign. Process startup, solver advancement, primary construction, both audit/write paths, and coordinator IPC are in wall time."
+    }
+  },
+  "equivalence": {
+    "canonical_primary_reconstruction_exact": true,
+    "independent_audits_passed": 24,
+    "cross_worker_hashes_identical_per_configuration": true,
+    "accepted_steps_each_configuration": 808,
+    "rejected_trials": {"A_PRIME_MESH_0@4000RPM": 84, "B_PRIME_MESH_0@4000RPM": 85},
+    "primary_sha256": {
+      "A_PRIME_MESH_0@4000RPM": "7ccd2ceb50f889f5a20dcf1ba5c5375a40b78af528b38ac070b4550f751bde5a",
+      "B_PRIME_MESH_0@4000RPM": "8a154bfac05ac9e8739ef49ef4c3c78b86cfb3c646c4a31a7ba4895d97223981"
+    }
+  },
+  "checkpoint_status": {
+    "campaign_checkpoint_resume_under_concurrent_workers_exercised": false,
+    "campaign_executor_returns_workers_at_cycle_boundary": true,
+    "independent_review_required_before_campaign_use": true
+  },
+  "30_point_sweep_sensitivity_only": {
+    "prior_rough_serial_hours": 12.50,
+    "arithmetic_if_four_worker_diagnostic_speedup_scaled_uniformly_hours": 3.34,
+    "validated_campaign_projection": false,
+    "limitations": "The diagnostic has one cycle per point and does not represent periodic convergence lengths, checkpoint resume, per-invocation budgets, failure classifications, or campaign I/O patterns. This is not a campaign estimate or authorization."
+  },
+  "recommendation": {
+    "segmented_evidence_writer": "DO_NOT_ADOPT; 1.4% smaller artifacts cost 10.9% more end-to-end time",
+    "multiprocess_point_executor": "RETAIN_FOR_INDEPENDENT_REVIEW; diagnostic speedup is substantial but campaign checkpoint/restart remains untested",
+    "campaign_v1": "PRESERVED_READ_ONLY",
+    "impl2_campaign": "NOT_STARTED_NOT_AUTHORIZED"
+  },
+  "v1_historical_artifact_integrity": {
+    "status": "PASS",
+    "campaign_status": "PARTIAL_RESOURCE_BUDGET",
+    "manifest_points_checked": 30,
+    "results_checked": 2,
+    "checkpoints_checked": 2,
+    "primaries_checked": 126,
+    "cycle_metrics_checked": 126,
+    "errors": [],
+    "verification_log": "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1\\logs\\verify-v1-20261009\\verify-full-rpm-sweep-v1-artifacts.log",
+    "verification_log_sha256": "73c54730d726f702a8ce41e33c0227dbe58e7ff027aac1b0f1af65a2d262ade0"
+  },
+  "verification": {
+    "focused_impl2_codec_and_worker_plan_tests": "6 PASSED",
+    "full_rpm_sweep_v1_legacy_suite": "17 PASSED, 5 FAIL_CLOSED due solver source hash mismatch against frozen v1 preregistration",
+    "openspec_full_rpm_sweep_v1_strict": "PASS",
+    "openspec_impl2_performance_strict": "PASS",
+    "program_status_check_before_receipt": "PASS"
+  }
+}

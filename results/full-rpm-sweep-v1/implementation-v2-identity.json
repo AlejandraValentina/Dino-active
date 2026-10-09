@@ -26,9 +26,11 @@
       "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
       "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095"
     },
-    "campaign_runner_sha256": "85038bda2ea79f3e8fc9bb2f1390c649c841c394a9e1203fbe3e816dec44c4db",
+    "campaign_runner_sha256": "11f4ed18dc4ae597c5f7f3c19317ec9e529c9a7cd532e24761a1ad485b46802f",
     "geometry_benchmark_script_sha256": "6177b93b1fc9092f9851d289622748937e6df82c50c68e0a792f8296222a090b",
-    "sampling_profiler_sha256": "fd24516ff8d3347f40ebddcbe6e78012a110972c93b80f461e9cd26328c1bf04"
+    "sampling_profiler_sha256": "fd24516ff8d3347f40ebddcbe6e78012a110972c93b80f461e9cd26328c1bf04",
+    "segmented_evidence_codec_sha256": "0279b1160760af12ad3f00e5442c9c55eaf100b6f50566f32b5065be18c11f95",
+    "fast_evidence_parallel_benchmark_sha256": "45dcdfc62c4b9589d6a63e312fc61cbfe23c65afde0c107afd5ff8e81d1c2b65"
   },
   "based_on_preregistration_sha256": "300970997b126bf0f327adce2ad4af16ee986417696d2ecce7dec0fdf9d218ad",
   "compatibility": {
@@ -36,9 +38,12 @@
     "impl2_integrated_solver_hash": "4794e0d382a49c51d64ea0ac906aaec6649a8745cd6733fae8cff10e2c090d8f",
     "v1_dependency_hash_set_matches": false,
     "v1_checkpoints_reusable": false,
+    "v1_historical_artifact_bundle_integrity": "PASS",
+    "v1_workspace_preflight": "FAIL_CLOSED_SOURCE_HASH_MISMATCH",
     "v1_primaries_and_manifest": "PRESERVED_READ_ONLY",
     "rpm_grid_and_scientific_criteria": "UNCHANGED",
-    "distinct_campaign_id_and_output_root": true
+    "distinct_campaign_id_and_output_root": true,
+    "parallel_point_executor": "SPAWN; POINT_OWNED_CHECKPOINTS; COORDINATOR_ONLY_GLOBAL_MANIFEST; 512_MIB_WORKER_RESERVATION; PROPOSED_NOT_CAMPAIGN_TESTED"
   },
   "checkpoint_schema": "FULL_RPM_SWEEP_V1_IMPL2_POINT_CHECKPOINT",
   "trace_metadata": [
