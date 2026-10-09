@@ -1,0 +1,26 @@
+{
+  "schema": "FULL_RPM_SWEEP_IMPLEMENTATION_V2_PROPOSAL",
+  "status": "PROPOSED_NOT_AUTHORIZED_NOT_EXECUTED",
+  "based_on": "results/full-rpm-sweep-v1/performance-recovery-v1.json",
+  "purpose": "Continue performance recovery under a separately hash-bound implementation identity if broader evidence/audit optimizations demonstrate material speedup.",
+  "scientific_contract": "Preserve the existing FULL_RPM_SWEEP_V1 RPM grid, fixtures, losses, WOT, solver equations, CFL, discretization, periodicity thresholds, gates and output definitions unchanged. Any changed solver dependency requires a new preregistration hash set.",
+  "implementation_version": "FULL_RPM_SWEEP_V1_IMPL2",
+  "current_measured_geometry_cache_speedup": 1.064920362950549,
+  "acceptance_target": "Benchmark end-to-end speedup on multiple cycle phases and both mesh variants; exact primary/snapshot equality for purely memoized geometry or contract tolerance plus conservation/species/energy/periodicity equivalence for arithmetic optimizations.",
+  "required_work": [
+    "Profile/optimize primary serialization and audit replay without weakening independent recomputation.",
+    "Fix and test checkpoint restore where cleared trace conflicts with cumulative fuel-combustion ledger.",
+    "Record dependency hashes, producer hash and exact benchmark provenance.",
+    "Use a distinct artifact root and implementation campaign ID; do not mix v1 pilot points with impl2 outputs."
+  ],
+  "authorization": "A new preregistration and explicit campaign execution authorization are required before any points run.",
+  "campaign_started": false,
+  "measured_geometry_cache_speedup": {
+    "A4000": 1.064920362950549,
+    "B4000": 1.0470590077604958,
+    "equal_mesh_weighted": 1.0560282890805808,
+    "end_to_end_wall_time_reduction": 0.05305567062920369
+  },
+  "screening_projection_hours_after_measured_speedup": 12.45989348586983,
+  "decision": "Candidate is numerically safe in the bounded benchmark but the measured 5.3% wall-time reduction leaves the estimated campaign at ~12.46 h; no v2 campaign is authorized. Prioritize evidence/audit and checkpoint-restore hot spots before reconsidering."
+}

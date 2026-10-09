@@ -1,0 +1,273 @@
+{
+  "schema": "FULL_RPM_SWEEP_V1_PERFORMANCE_RECOVERY_REPORT_V1",
+  "repository_head_before_changes": "2d3e825fe8ea387e19b765b199cfcf9be3322120",
+  "campaign_status": "PARTIAL",
+  "campaign_execution_authorized": false,
+  "campaign_points_started": 2,
+  "remaining_points_started": 0,
+  "units": {
+    "historical_v1_preserved": true,
+    "historical_receipt_sha256": "7b7ca0bdd1b47c1f3ba78f2a4f8597ffbcd8ad821d3af3a126fe50bca311c9b2",
+    "historical_analysis_sha256": "b072e89a01b706fa39f89ac4cb52be3fae75481b357d4dd609358b0d5add65c9",
+    "historical_report_sha256": "fb03376c43ac17f9fc9ea8ece1a014445f889eb4c5c2f6f76c1d459de8e45ce6",
+    "correction_schema": "FULL_RPM_SWEEP_V1_UNIT_CORRECTION_V2",
+    "correction_report_sha256": "d7b4485461a2f6d801e2d0b67b59c617c411fa48d05450674b02fd231abf96f4",
+    "correction_csv_sha256": "43415f4719e8141f30fc8cf7f82f4da3d5e60c93e48cc23bcec09bbfe2ee23d6",
+    "all_dimensional_checks_pass": true,
+    "point_values": [
+      {
+        "variant_id": "A_PRIME_MESH_0",
+        "rpm": 4000,
+        "power_kW": -0.0039325507958490585,
+        "power_W": -3.9325507958490586,
+        "torque_Nm": -0.009388273471790168,
+        "BMEP_kPa": -0.4789935444790903,
+        "BSFC_g_per_kWh": null
+      },
+      {
+        "variant_id": "B_PRIME_MESH_0",
+        "rpm": 4000,
+        "power_kW": 0.1537797278319094,
+        "power_W": 153.7797278319094,
+        "torque_Nm": 0.3671220574766204,
+        "BMEP_kPa": 18.730717218194922,
+        "BSFC_g_per_kWh": 1618.9741204136603
+      }
+    ]
+  },
+  "rejection_forensics": {
+    "artifact_sha256": "349e805630140029e4499a690e9dd582f46fda2c8fe4ddce84d355bcedde64d8",
+    "all_pass": true,
+    "cycles_hash_checked": 126,
+    "historical_rejected_attempts": 55071,
+    "cause_counts": {
+      "CFL_LIMIT": 55071
+    },
+    "interpretation": "All 55,071 persisted rejected trials are CFL_LIMIT; no species, density, pressure, or other causes were observed. Counts were cross-checked against cycle metrics."
+  },
+  "profile": {
+    "artifact_sha256": "440acce35ced13abdc40296500bbbf77ae72764e3fa4f93a6a7c4f754ac338ea",
+    "scope": "one in-memory A4000 cycle plus primary construction, replay audit, compression and detector update; cProfile overhead included",
+    "elapsed_seconds_with_cprofile": 51.67205790011212,
+    "accepted_steps": 808,
+    "rejected_attempts": 84,
+    "diagnostic_rejection_counts": {
+      "CFL_LIMIT": 84
+    },
+    "top_cumulative_functions": [
+      {
+        "function": "audit_integrated_cycle_primary",
+        "file": "integrated_2t.py",
+        "calls": 1,
+        "cumulative_seconds": 28.8796433
+      },
+      {
+        "function": "make_integrated_cycle_primary",
+        "file": "integrated_2t.py",
+        "calls": 2,
+        "cumulative_seconds": 25.4163666
+      },
+      {
+        "function": "_assemble",
+        "file": "integrated_2t.py",
+        "calls": 6636,
+        "cumulative_seconds": 15.8380925
+      },
+      {
+        "function": "step",
+        "file": "integrated_2t.py",
+        "calls": 1784,
+        "cumulative_seconds": 15.547027600000002
+      },
+      {
+        "function": "_jsonify",
+        "file": "integrated_2t.py",
+        "calls": 10585992,
+        "cumulative_seconds": 13.3371691
+      },
+      {
+        "function": "<dictcomp>",
+        "file": "integrated_2t.py",
+        "calls": 462017,
+        "cumulative_seconds": 13.217362600000001
+      },
+      {
+        "function": "<listcomp>",
+        "file": "integrated_2t.py",
+        "calls": 2329357,
+        "cumulative_seconds": 12.491302800000001
+      },
+      {
+        "function": "deepcopy",
+        "file": "copy.py",
+        "calls": 3549594,
+        "cumulative_seconds": 9.7311596
+      },
+      {
+        "function": "_deepcopy_dict",
+        "file": "copy.py",
+        "calls": 131836,
+        "cumulative_seconds": 9.7045382
+      },
+      {
+        "function": "_deepcopy_list",
+        "file": "copy.py",
+        "calls": 512086,
+        "cumulative_seconds": 8.903581200000001
+      },
+      {
+        "function": "<listcomp>",
+        "file": "integrated_2t.py",
+        "calls": 1616,
+        "cumulative_seconds": 8.4893473
+      },
+      {
+        "function": "_recompute_trace_stage",
+        "file": "integrated_2t.py",
+        "calls": 3232,
+        "cumulative_seconds": 8.481811800000001
+      },
+      {
+        "function": "_advance_to_bounded",
+        "file": "full_rpm_sweep_v1_campaign.py",
+        "calls": 1,
+        "cumulative_seconds": 7.857247900000001
+      },
+      {
+        "function": "_evidence_sha256",
+        "file": "integrated_2t.py",
+        "calls": 16,
+        "cumulative_seconds": 5.3558658
+      },
+      {
+        "function": "_geometry",
+        "file": "integrated_2t.py",
+        "calls": 9873,
+        "cumulative_seconds": 4.3220488
+      },
+      {
+        "function": "validate_species",
+        "file": "p6_species.py",
+        "calls": 439539,
+        "cumulative_seconds": 3.7276559000000002
+      },
+      {
+        "function": "<built-in method builtins.all>",
+        "file": "~",
+        "calls": 1240143,
+        "cumulative_seconds": 3.4392589
+      },
+      {
+        "function": "_face_species_flux",
+        "file": "integrated_2t.py",
+        "calls": 92512,
+        "cumulative_seconds": 3.3175702
+      },
+      {
+        "function": "hllc_flux",
+        "file": "riemann.py",
+        "calls": 79240,
+        "cumulative_seconds": 3.2458072000000002
+      },
+      {
+        "function": "_validate",
+        "file": "integrated_2t.py",
+        "calls": 9869,
+        "cumulative_seconds": 3.1327752
+      }
+    ],
+    "cumulative_times_overlap": true,
+    "preregistration_file_sha256": "300970997b126bf0f327adce2ad4af16ee986417696d2ecce7dec0fdf9d218ad",
+    "solver_dependency_hashes_before_after_equal": true,
+    "checkpoint_profile_attempt": "Existing terminal checkpoint restore rejected with integrated checkpoint fuel-combustion ledger mismatch; it stores trace=[] while retaining cumulative fuel combustion ledgers. No checkpoint/result file was modified."
+  },
+  "optimization_benchmark": {
+    "artifact_sha256": "24447171bbfe3f0ac755e819f6338620eb65b49e2a1c59fd55a2c13ca351e9f3",
+    "candidate": "optional, instance-local cache of frozen EngineGeometry2T by wrapped angle and RPM",
+    "repeats": 3,
+    "baseline_median_seconds": 15.578246100107208,
+    "candidate_median_seconds": 14.62855500006117,
+    "measured_speedup": 1.0560282890805808,
+    "wall_time_reduction_fraction": 0.05305567062920369,
+    "numerically_equivalent": true,
+    "rejection_counts_unchanged": true,
+    "primary_audits_pass": true,
+    "conservation_species_energy_periodicity_equal": true,
+    "candidate_geometry_cache": {
+      "A": {
+        "entries": 815,
+        "estimated_container_bytes": 128232,
+        "hits": 4120,
+        "misses": 815
+      },
+      "B": {
+        "entries": 813,
+        "estimated_container_bytes": 128008,
+        "hits": 4123,
+        "misses": 813
+      }
+    },
+    "memory_note": "Cache container estimate is recorded; same-process RSS is contaminated by Python allocator retention and is not treated as a reliable baseline/candidate peak comparison.",
+    "integration_status": "Opt-in utility implemented and benchmarked on both meshes, not integrated into current campaign runner.",
+    "by_variant": {
+      "A_PRIME_MESH_0": {
+        "artifact_sha256": "24447171bbfe3f0ac755e819f6338620eb65b49e2a1c59fd55a2c13ca351e9f3",
+        "baseline_median_seconds": 15.578246100107208,
+        "candidate_median_seconds": 14.62855500006117,
+        "speedup": 1.064920362950549,
+        "wall_time_reduction_fraction": 0.0609626458552035,
+        "rejected_steps_unchanged": true,
+        "numerically_equivalent": true
+      },
+      "B_PRIME_MESH_0": {
+        "artifact_sha256": "bfa805d266da2fc46689885796eb1103168382416194040d50fd07002dc7fc86",
+        "baseline_median_seconds": 15.185112100094557,
+        "candidate_median_seconds": 14.50263260002248,
+        "speedup": 1.0470590077604958,
+        "wall_time_reduction_fraction": 0.044943988267813095,
+        "rejected_steps_unchanged": true,
+        "numerically_equivalent": true
+      }
+    },
+    "combined_weighting": "equal per-variant weight from the two 4000-RPM diagnostic medians; 3 repeats per mode and mesh",
+    "secondary_artifact_sha256": "bfa805d266da2fc46689885796eb1103168382416194040d50fd07002dc7fc86"
+  },
+  "campaign_cost": {
+    "prior_estimate_seconds": 47368.80000003381,
+    "prior_estimate_hours": 13.158000000009391,
+    "screening_projection_after_measured_speedup_seconds": 44855.61654913139,
+    "screening_projection_after_measured_speedup_hours": 12.45989348586983,
+    "projection_status": "Equal-mesh-weighted extrapolation of first-cycle 4000-RPM diagnostic medians; not validated across the RPM grid. It remains about 12.46 hours."
+  },
+  "hash_impact": {
+    "preregistration_modified": false,
+    "primary_results_modified": false,
+    "protected_solver_dependency_hashes_changed": false,
+    "new_opt_in_module_sha256": "8ae4e0b2efee08283280c4a2691e39c3439d6495a5e2b46fe6b9be90904b0834",
+    "current_runner_modified": false,
+    "current_campaign_compatibility": "Pilot hashes remain valid. Integrating the decorator changes the campaign producer hash; future outputs must use a separately versioned campaign/artifact root and must not be mixed with v1 pilots."
+  },
+  "test_summary": {
+    "focused_tests": "29 passed in 10.47s",
+    "test_command": "python -m pytest tests/test_full_rpm_sweep_v1_units.py tests/test_full_rpm_sweep_v1_performance.py tests/test_full_rpm_sweep_v1.py tests/test_full_rpm_sweep_v1_reporting.py tests/test_full_rpm_sweep_v1_artifact_verify.py -q",
+    "openspec_strict": "PASS: openspec validate full-rpm-sweep-v1 --strict --no-interactive",
+    "contract_audit": "PASS: 15 RPM points, 2 variants",
+    "artifact_integrity": {
+      "all_pass": true,
+      "campaign_points": 30,
+      "cycle_metrics_checked": 126,
+      "primaries_checked": 126,
+      "checkpoints_checked": 2,
+      "results_checked": 2,
+      "campaign_status": "PARTIAL_RESOURCE_BUDGET",
+      "errors": []
+    },
+    "git_diff_check": "PASS; only line-ending normalization warnings for local working tree files"
+  },
+  "proposal": "FULL_RPM_SWEEP_V1_IMPL2_PROPOSAL; not authorized and not executed",
+  "recommended_next_focus": [
+    "Optimize primary construction and replay audit overhead while preserving independent recomputation.",
+    "Add a round-trip test and versioned fix for checkpoint fuel-combustion ledger/trace mismatch.",
+    "Then re-benchmark before deciding whether a versioned implementation campaign is worth authorizing."
+  ]
+}

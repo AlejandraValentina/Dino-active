@@ -711,10 +711,10 @@
         "tests/test_integrated_2t.py:15; multi-section ExpansionChamber mesh is accepted and advanced as exhaust",
         "IntegratedPortBinding2T maps role-matched ducts, resolves powervalve roof by stage RPM, and binds identity; stage resolver test passes",
         "SELF_REVIEW (historical claim retained; no durable review receipt identified in AUD-06): read-only adversarial review found a mutable mapping/config identity mismatch; fixed using copied MappingProxyType and reviewer confirmed closure",
-        "tests/test_integrated_2t.py:15; accepted 0–90 degree synthetic path at 3000 rpm",
+        "tests/test_integrated_2t.py:15; accepted 0â€“90 degree synthetic path at 3000 rpm",
         "negative internal species flux follows geometric right-cell composition in both SSPRK2 stages; regression corrected donor double-selection",
         "SELF_REVIEW (historical claim retained; no durable review receipt identified in AUD-06): independent read-only review confirmed both signed internal donor directions, matching SSPRK2 stage pairing, and stage-angle/RPM binding; no focal defect found",
-        "fixture A completed 0–720 degrees through three transfers and multi-section expansion-chamber exhaust; synthetic ledgers close",
+        "fixture A completed 0â€“720 degrees through three transfers and multi-section expansion-chamber exhaust; synthetic ledgers close",
         "Integrated V2 output now includes port areas and signed interface flows from accepted stages; exact closure snapshots remain pending.",
         "MOTORSIM_INTEGRATED_2T_CYCLE_PRIMARY_V2 captures six unique exact closure states; six-cycle artifact includes same-cycle scavenging outputs and P6 ledgers.",
         "MOTORSIM_INTEGRATED_2T_CYCLE_PRIMARY_V2 captures six unique exact closure states; the six-cycle artifact includes same-cycle scavenging outputs and P6 ledgers.",
@@ -773,10 +773,10 @@
         "33 focal output/foundation tests and 85 integrated/P5-C/P6/P7/reed/ports/output regressions PASS; OpenSpec strict PASS.",
         "HISTORICAL_SUPERSEDED_BY_POSTHOC_AUDIT: Updated synthetic exhaust geometry has actual closed intervals; six full V2 primary cycles capture exact transfer/exhaust snapshots and same-cycle scavenging; 33/33 focal and 85/85 integrated regression tests pass.",
         "HISTORICAL_SUPERSEDED_BY_POSTHOC_AUDIT: Terminal angular output point is evaluated read-only from the accepted terminal state; P7 requested endpoint rate is pre-limiter and excluded from cycle integrals.",
-        "HISTORICAL_SUPERSEDED_BY_POSTHOC_AUDIT: Updated synthetic exhaust geometry has actual closed intervals; six full V2 primary cycles capture exact transfer/exhaust snapshots and same-cycle scavenging; 33/33 focal, 85/85 integrated regression, and 300 P4–P8 tests pass.",
+        "HISTORICAL_SUPERSEDED_BY_POSTHOC_AUDIT: Updated synthetic exhaust geometry has actual closed intervals; six full V2 primary cycles capture exact transfer/exhaust snapshots and same-cycle scavenging; 33/33 focal, 85/85 integrated regression, and 300 P4â€“P8 tests pass.",
         "SELF_REVIEW (historical claim retained; no durable review receipt identified in AUD-06): Independent read-only review of V2 closure/output delta PASS; no material findings; full-engine acceptance remains open.",
         "HISTORICAL_SUPERSEDED_BY_POSTHOC_AUDIT: Two independent six-cycle Fixture A runs (one continuous, one checkpoint/restart after cycle 3) had exact full snapshot, primary-cycle and validated V2-output equality; 11,176 accepted steps; P1/P2 still fail.",
-        "HISTORICAL_SUPERSEDED_BY_POSTHOC_AUDIT: Fixture A primary campaign reached PERIOD_1 at cycle 16 after 3 consecutive PASS comparisons (13→14→15→16); full P1 artifact preserved; no solver/threshold changes.",
+        "HISTORICAL_SUPERSEDED_BY_POSTHOC_AUDIT: Fixture A primary campaign reached PERIOD_1 at cycle 16 after 3 consecutive PASS comparisons (13â†’14â†’15â†’16); full P1 artifact preserved; no solver/threshold changes.",
         "HISTORICAL_SUPERSEDED_BY_POSTHOC_AUDIT: Fixture A P1 at cycle 16 and Fixture B P1 at cycle 19; full outputs validated per cycle; six-cycle checkpoint/replay is exact; synthetic and CONDITIONAL_ON_P4.",
         "results/2t-commercial-core-20261002/aud-08-fixture-a-20261005-v1/decision.json: 20 fixed-horizon admissible cycles, exact restart replay, no convergence",
         "results/2t-commercial-core-20261002/aud-09-fixture-c-20261005-v1/decision.json: 20 fixed-horizon admissible cycles, exact restart replay, period-1 at cycle 20",
@@ -1114,8 +1114,8 @@
         "program-status.json has 29 queue entries and only allowed state enums",
         "all resolvable commit refs normalized to full object ids",
         "phase 1 now identifies AUD-08 as the remaining cycle gate; A/B marked superseded",
-        "P4–P8 count identified as historical external audit 300, not a fresh run",
-        "P4 remains PASS; no P4–P9 state was changed"
+        "P4â€“P8 count identified as historical external audit 300, not a fresh run",
+        "P4 remains PASS; no P4â€“P9 state was changed"
       ],
       "next_action": "Status normalized at the recorded capture head; keep audit queue current with each task change."
     },
@@ -1150,7 +1150,7 @@
         "results/2t-commercial-core-20261002/aud-08-fixture-a-20261005-v1/manifest.json",
         "results/2t-commercial-core-20261002/aud-08-fixture-a-20261005-v1/restart-audit.json",
         "results/2t-commercial-core-20261002/aud-08-fixture-a-20261005-v1/evaluation.json",
-        "20/20 cycles complete and admissible; exact restart cycle 3→4; period-1 comparisons 0 PASS, 18 FAIL, 1 INVALID; period-2 comparisons 0 PASS, 17 FAIL, 1 INVALID; no convergence within fixed horizon."
+        "20/20 cycles complete and admissible; exact restart cycle 3â†’4; period-1 comparisons 0 PASS, 18 FAIL, 1 INVALID; period-2 comparisons 0 PASS, 17 FAIL, 1 INVALID; no convergence within fixed horizon."
       ],
       "next_action": "Proceed with remaining priority-2 audit tasks. Preserve this campaign unchanged; do not claim periodic convergence or acceptance."
     },
@@ -1185,8 +1185,8 @@
         "results/2t-commercial-core-20261002/aud-09-fixture-c-20261005-v1/manifest.json",
         "results/2t-commercial-core-20261002/aud-09-fixture-c-20261005-v1/restart-audit.json",
         "results/2t-commercial-core-20261002/aud-09-fixture-c-20261005-v1/evaluation.json",
-        "Fixture C completed 20/20 admissible cycles; exact restart cycle 3→4; PERIOD_1 at cycle 20 after the registered three consecutive lag-1 PASS comparisons.",
-        "14,283 rejected CFL trials were recorded and visible; at the nearest matching point to historical 107.651626° (107.5°), the 0.5° proposal exceeded CFL 0.4 and was accepted after halving. No species-inadmissible trial occurred.",
+        "Fixture C completed 20/20 admissible cycles; exact restart cycle 3â†’4; PERIOD_1 at cycle 20 after the registered three consecutive lag-1 PASS comparisons.",
+        "14,283 rejected CFL trials were recorded and visible; at the nearest matching point to historical 107.651626Â° (107.5Â°), the 0.5Â° proposal exceeded CFL 0.4 and was accepted after halving. No species-inadmissible trial occurred.",
         "The historical raw trace is unavailable, so the original failure is not causally attributed to one change; the corrected no-reed candidate no longer reproduces it."
       ],
       "next_action": "Continue independent priority-2/3 audit queue. Do not reinterpret this synthetic result as product acceptance or rerun KT100."
@@ -1239,7 +1239,7 @@
         "docs/gasdynamic/aud11_reservoir_forensic.md: sequential forensics/domain/skeptic/discriminating-test/synthesis; explicit self-review, not independent review",
         "tests/test_reservoir_forensic_diagnostic.py: bounded monotone branch, orientation mirror, V1 reject versus finite full-state Riemann flux",
         "NASA Cart3D and NASA Glenn references recorded in the forensic decision package",
-        "Human/scientific decision 2026-10-05: CASE B — CAPABILITY LIMITATION; OPEN_END_PLENUM_V2 authorized as ideal stationary-plenum SYNTHETIC_ASSUMPTION, not calibrated WB40",
+        "Human/scientific decision 2026-10-05: CASE B â€” CAPABILITY LIMITATION; OPEN_END_PLENUM_V2 authorized as ideal stationary-plenum SYNTHETIC_ASSUMPTION, not calibrated WB40",
         "docs/gasdynamic/open_end_plenum_v2_preregistration.md and results/2t-commercial-core-20261002/preregistration/open-end-plenum-v2.json",
         "results/2t-commercial-core-20261002/aud-11-kt100-v2-campaign-audit.json"
       ],
@@ -1343,10 +1343,10 @@
       "evidence": [
         "docs/gasdynamic/audit_8cdf66e.md",
         "results/2t-commercial-core-20261002/fixtures/fixture-d-engine-config-v2.json: config differs from A only in fixture identity and combustion_start_angle_deg=350; V2 validate-only PASS",
-        "Geometry-only preflight samples the complete P7 350–390 degree interval every 0.5 degrees and reports exhaust area exactly zero; no integration run.",
+        "Geometry-only preflight samples the complete P7 350â€“390 degree interval every 0.5 degrees and reports exhaust area exactly zero; no integration run.",
         "results/2t-commercial-core-20261002/preregistration/AUD-15-fixture-d.json: committed in 57dfa97032037a96ab3869cf46b7180f35bb77a0; preregistration blob, fixture SHA-256, periodicity contract SHA-256 and exact producer source/commit gate PASS before integration.",
         "Producer/configuration commit 01172a2d7b2f7f97db9a7a46e12cf328962aef52; Fixture D differs from A only in synthetic identity and combustion start angle=350 degrees.",
-        "results/2t-commercial-core-20261002/aud-15-fixture-d-20261005-v1/: exactly two preregistered complete admissible cycles; exact restart replay cycle 1→2; 160 contiguous accepted steps/320 SSPRK2 stage geometries over P7 350–390°, all exhaust area exactly zero; conservation residuals and hashes in decision.json.",
+        "results/2t-commercial-core-20261002/aud-15-fixture-d-20261005-v1/: exactly two preregistered complete admissible cycles; exact restart replay cycle 1â†’2; 160 contiguous accepted steps/320 SSPRK2 stage geometries over P7 350â€“390Â°, all exhaust area exactly zero; conservation residuals and hashes in decision.json.",
         "tests/test_aud15_fixture_d_campaign.py and tests/test_integrated_cycle_evidence_producer.py: 6 passed."
       ],
       "next_action": "AUD-15 diagnostic is complete; retain the result as synthetic timing evidence only, with no convergence or calibration claim."
@@ -1920,7 +1920,7 @@
       "commits": [],
       "evidence": [
         "External artifact docs/gasdynamic/v1_closure_r2_independent_review_53f66c6.md is tracked unchanged; SHA-256 4185c01cbfd3df4cbce3ac22d78a2edcca0d42ee29836308e74295d8131cddc9.",
-        "It covers R2 and HEAD 53f66c6 only, records B1-B3 and N1-N7, reproduces A′/B′, and does not review this subsequent repair.",
+        "It covers R2 and HEAD 53f66c6 only, records B1-B3 and N1-N7, reproduces Aâ€²/Bâ€², and does not review this subsequent repair.",
         "Local repair receipt docs/gasdynamic/v1_closure_r2_contractual_fix_self_review_0c1008b.md is explicitly SELF_REVIEW; SHA-256 cc07111437724ff0a7629f987ad405775862f65825d29aabe306a7a0bbaab99f."
       ],
       "next_action": "Await a new external review of this repair",
@@ -1973,7 +1973,7 @@
       ],
       "evidence": [
         "Built-in pure C8H18 is explicitly MODELED_SURROGATE with source-bearing density/LHV and elemental-derived stoichiometry; ANCAP Super 95/Premium 97 values remain unknown where source gives only maxima.",
-        "FUEL_COUPLED_COMBUSTION_V2 binds the full FuelSimulationSnapshot and hash; incomplete profiles fail, accepted fuel/oxygen limit SSPRK2 source, and total heat is burned fuel × frozen LHV × explicit synthetic efficiency.",
+        "FUEL_COUPLED_COMBUSTION_V2 binds the full FuelSimulationSnapshot and hash; incomplete profiles fail, accepted fuel/oxygen limit SSPRK2 source, and total heat is burned fuel Ã— frozen LHV Ã— explicit synthetic efficiency.",
         "V2 uses the common IntegratedEngine2T SSPRK2 stages; config/state V6/V11 restore, cycle primary offline audit, and engineering AFR/equivalence-ratio output are covered.",
         "91 tests passed for fuel library, fuel combustion and IntegratedEngine2T; 16 producer/evaluator/fuel-combustion tests passed; 15 additional cycle-primary/output checks passed; OpenSpec strict and compileall passed.",
         "No campaign was run; synthetic rate parameters do not claim ANCAP properties or engine validation."
@@ -2481,7 +2481,7 @@
       "objective": "ENGINE_PHYSICS_V1_R2",
       "owner_role": "implementation",
       "evidence_level": "L2",
-      "resolution": "A′3000@73, A′4000@88, B′3000@34 and B′4000@38 replayed offline; all hard physical gates PASS; no solver step or new campaign.",
+      "resolution": "Aâ€²3000@73, Aâ€²4000@88, Bâ€²3000@34 and Bâ€²4000@38 replayed offline; all hard physical gates PASS; no solver step or new campaign.",
       "write_scope": [
         "scripts/engine_physics_v1_r2_offline_replay.py",
         "results/engine-physics-v1/r2-offline"
@@ -3100,6 +3100,146 @@
       "evidence": [
         "tests/test_full_rpm_sweep_v1.py"
       ]
+    },
+    {
+      "id": "FRPM-UNIT-REPORT-V2",
+      "description": "Create a unit-corrected, versioned report/receipt that preserves the historical v1 artifacts by hash; test power/torque and W/kW identities.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "scripts/correct_full_rpm_sweep_v1_units_v2.py",
+        "tests/test_full_rpm_sweep_v1_units.py",
+        "results/full-rpm-sweep-v1/*v2.json"
+      ],
+      "resolution": "Created report and receipts v2 with explicit unit suffixes and raw-result dimensional checks; v1 receipts/report remain unchanged and hash-referenced.",
+      "evidence": [
+        "scripts/correct_full_rpm_sweep_v1_units_v2.py",
+        "tests/test_full_rpm_sweep_v1_units.py",
+        "results/full-rpm-sweep-v1/campaign-receipt-v2.json",
+        "results/full-rpm-sweep-v1/pilot-analysis-v2.json",
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/reports/full-rpm-sweep-v1-units-v2.json"
+      ]
+    },
+    {
+      "id": "FRPM-SOLVER-PROFILE",
+      "description": "Profile a bounded in-memory diagnostic and rank IntegratedEngine2T hotspots without changing protected solver code or starting a campaign.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "numerics",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/profile_full_rpm_sweep_v1.py",
+        "results/full-rpm-sweep-v1/performance/*"
+      ],
+      "resolution": "Profiled one in-memory A4000 cycle including primary build, replay audit, compression and detector. Ranking and unchanged dependency hashes persisted; no solver source changed.",
+      "evidence": [
+        "scripts/profile_full_rpm_sweep_v1.py",
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/reports/performance-profile-a4000-cycle1-v2.json"
+      ]
+    },
+    {
+      "id": "FRPM-SAFE-OPT-BENCH",
+      "description": "Benchmark a measured, semantics-preserving optimization against identical baseline cycle work; preserve/hash-bind implementation versions and do not run campaign points.",
+      "dependencies": [
+        "FRPM-SOLVER-PROFILE"
+      ],
+      "state": "DONE",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/benchmark_full_rpm_sweep_v1.py",
+        "tests/test_full_rpm_sweep_v1_performance.py",
+        "results/full-rpm-sweep-v1/performance/*"
+      ],
+      "resolution": "Three paired in-memory A4000 cycle benchmarks measured 1.06492x end-to-end speedup (6.1% wall-time reduction) from an opt-in immutable geometry cache. Primary/result snapshots were exactly equal; replay audits, conservation/species/energy/periodicity and rejected counts matched. The estimated campaign remains ~12.36 h, so the cache is not integrated into the current runner.",
+      "evidence": [
+        "motorsim/performance_geometry_cache_v1.py",
+        "scripts/benchmark_full_rpm_sweep_v1_geometry_cache.py",
+        "tests/test_full_rpm_sweep_v1_performance.py",
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/reports/geometry-cache-benchmark-v3.json"
+      ]
+    },
+    {
+      "id": "FRPM-REJECTION-FORENSICS",
+      "description": "Classify historical rejected-step causes where persisted evidence permits; measure causal rejection breakdown on a bounded diagnostic without relaxing thresholds.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "diagnostics",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/profile_full_rpm_sweep_v1.py",
+        "results/full-rpm-sweep-v1/performance/*"
+      ],
+      "resolution": "Verified all 126 primary hashes and matching cycle receipts; all 55,071 rejected trials are CFL_LIMIT. No species, pressure, density or other rejection cause was found.",
+      "evidence": [
+        "scripts/analyze_full_rpm_sweep_v1_rejections.py",
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/reports/rejection-forensics-v1.json"
+      ]
+    },
+    {
+      "id": "FRPM-V2-EVIDENCE-HOTSPOT-OPT",
+      "description": "Design and benchmark a versioned optimization for primary construction, JSON conversion, replay audit and evidence hashing; retain independent audit semantics and all hard gates.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "architecture",
+      "evidence_level": "L1",
+      "write_scope": [
+        "motorsim/integrated_2t.py",
+        "tests/test_full_rpm_sweep_v1_performance.py",
+        "openspec/changes/full-rpm-sweep-v1-performance-v2"
+      ]
+    },
+    {
+      "id": "FRPM-V2-CHECKPOINT-ROUNDTRIP",
+      "description": "Reproduce and fix, under a separately hashed implementation version, checkpoint restore mismatch between cleared trace and cumulative fuel-combustion ledgers.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L1",
+      "write_scope": [
+        "motorsim/integrated_2t.py",
+        "tests/test_integrated_2t.py",
+        "openspec/changes/full-rpm-sweep-v1-performance-v2"
+      ]
+    },
+    {
+      "id": "FRPM-V2-CAMPAIGN-PROVENANCE",
+      "description": "Prepare a separate preregistration/artifact-root proposal for any runner integrating measured geometry cache or solver evidence optimizations; preserve science criteria and require explicit execution authorization.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "contract/regression guardian",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/full-rpm-sweep-v1/implementation-v2-proposal.json",
+        "openspec/changes/full-rpm-sweep-v1-performance-v2"
+      ],
+      "resolution": "Prepared a separate implementation campaign proposal with new producer/artifact identity and no execution authorization. It forbids mixing v1 pilot outputs with implementation-v2 outputs.",
+      "evidence": [
+        "results/full-rpm-sweep-v1/implementation-v2-proposal.json"
+      ]
+    },
+    {
+      "id": "FRPM-V2-MULTIMESH-PHASE-BENCH",
+      "description": "Extend the bounded geometry-cache benchmark to additional cycle phases/RPMs and verify speedup transfer before integrating it into any campaign runner.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/benchmark_full_rpm_sweep_v1_geometry_cache.py",
+        "tests/test_full_rpm_sweep_v1_performance.py",
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/reports/*"
+      ]
     }
   ],
   "audit_remediation_mode": false,
@@ -3144,7 +3284,7 @@
       "blob_gate": "PASS (semantic JSON and line-ending-independent canonical hash)"
     },
     "human_decision": {
-      "AUD-11": "CASE B — CAPABILITY LIMITATION; not SCIENTIFIC_DECISION_REQUIRED"
+      "AUD-11": "CASE B â€” CAPABILITY LIMITATION; not SCIENTIFIC_DECISION_REQUIRED"
     }
   },
   "audit_reconciliation": {
@@ -3184,7 +3324,7 @@
       "AUD-12": "RESOLVED_BY_LATER_COMMIT; see durable queue evidence and task record.",
       "AUD-13": "Bounded chamber/transfer mesh sensitivity and conservation recorded; lack of an acceptance threshold prevents a mesh-adequacy claim.",
       "AUD-14": "V3 now explicitly names gross crossing metrics and intake species ratio, leaves trapped/burned AFR undefined, and derives specific consumption only from positive prescribed P7 fuel sink and power. V1/V2 remain unchanged.",
-      "AUD-15": "Two fixed preregistered cycles are admissible; exact restart replay passes; all accepted SSPRK2 evaluations during P7 event 350–390 degrees have exhaust area exactly zero. Synthetic diagnostic only.",
+      "AUD-15": "Two fixed preregistered cycles are admissible; exact restart replay passes; all accepted SSPRK2 evaluations during P7 event 350â€“390 degrees have exhaust area exactly zero. Synthetic diagnostic only.",
       "AUD-16": "Cycle rebuild independently recomputes both stage RHS from the stored states through _assemble; restore validates the full trace shape/clock/state/geometry and terminal binding. Callback volume-rate derivative relation has a synthetic independent check.",
       "AUD-17": "Additive signed-work detector V2 preserves the V1 implementation and thresholds; V2 snapshots are distinct and history-replay validated. No campaign was run.",
       "AUD-18": "Generator tests no longer write checked-in project JSON; source hashes preserve raw provenance and add normalized LF fingerprints for OS-independent text comparison."
@@ -3401,7 +3541,7 @@
           "R3",
           "scientific contract changes"
         ],
-        "source": "explicit owner authorization in DINO-ACTIVE — FULL_RPM_SWEEP_V1 EXECUTION request",
+        "source": "explicit owner authorization in DINO-ACTIVE â€” FULL_RPM_SWEEP_V1 EXECUTION request",
         "campaigns_started": 0
       }
     },
@@ -3898,6 +4038,36 @@
       "task": "FRPM-CAMPAIGN-EXECUTION",
       "kind": "task",
       "summary": "Same-campaign A4000/B4000 pilot completed as PERIOD_1; verified 126 primary and cycle-metric records. Full 30-point projection is 47,368.8 s, so remaining 28 points stay NOT_STARTED and objective is PARTIAL_RESOURCE_BUDGET."
+    },
+    {
+      "at": "2026-10-09T15:57:57+00:00",
+      "task": "FRPM-UNIT-REPORT-V2",
+      "kind": "task",
+      "summary": "Versioned unit correction v2 emitted with old receipt/report hashes preserved; all pilot output dimensional checks pass."
+    },
+    {
+      "at": "2026-10-09T15:57:58+00:00",
+      "task": "FRPM-SOLVER-PROFILE",
+      "kind": "task",
+      "summary": "Bounded A4000 diagnostic profile ranked solver, evidence, replay audit and serialization hotspots; protected solver hashes unchanged."
+    },
+    {
+      "at": "2026-10-09T15:57:58+00:00",
+      "task": "FRPM-REJECTION-FORENSICS",
+      "kind": "task",
+      "summary": "All 55,071 rejected trials across 126 cycles classified as CFL_LIMIT after per-primary hash and per-cycle count verification."
+    },
+    {
+      "at": "2026-10-09T15:57:58+00:00",
+      "task": "FRPM-SAFE-OPT-BENCH",
+      "kind": "task",
+      "summary": "Geometry cache benchmark measured 1.06492x end-to-end speedup with exact output/replay equivalence; projected campaign remains ~12.36 h, so no current campaign points were started."
+    },
+    {
+      "at": "2026-10-09T16:00:16+00:00",
+      "task": "FRPM-V2-CAMPAIGN-PROVENANCE",
+      "kind": "task",
+      "summary": "Prepared FULL_RPM_SWEEP_V1_IMPL2 proposal only; it requires separate hashes, artifact root and explicit execution authorization. No campaign was authorized or started."
     }
   ],
   "legacy_gate_status": {
@@ -3917,7 +4087,10 @@
     "classification": "FULL_RPM_SWEEP_V1_PARTIAL",
     "evidence": [
       "results/full-rpm-sweep-v1/campaign-receipt.json",
-      "results/full-rpm-sweep-v1/pilot-analysis.json"
+      "results/full-rpm-sweep-v1/pilot-analysis.json",
+      "results/full-rpm-sweep-v1/campaign-receipt-v2.json",
+      "results/full-rpm-sweep-v1/performance-recovery-v1.json",
+      "results/full-rpm-sweep-v1/implementation-v2-proposal.json"
     ],
     "gate_tasks_total": 14,
     "gate_tasks_done": 13,
@@ -3971,7 +4144,7 @@
       "R3",
       "scientific contract changes"
     ],
-    "source": "explicit owner authorization in DINO-ACTIVE — FULL_RPM_SWEEP_V1 EXECUTION request",
+    "source": "explicit owner authorization in DINO-ACTIVE â€” FULL_RPM_SWEEP_V1 EXECUTION request",
     "campaigns_started": 1
   },
   "campaigns_started": 1,
