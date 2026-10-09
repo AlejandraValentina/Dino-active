@@ -1,0 +1,25 @@
+{
+  "schema": "FULL_RPM_SWEEP_V1_EXECUTION_AUTHORIZATION_V1",
+  "authorized": true,
+  "scope": {
+    "variants": [
+      "A_PRIME_MESH_0",
+      "B_PRIME_MESH_0"
+    ],
+    "rpm_points_per_variant": 15,
+    "rpm_grid_source": "results/full-rpm-sweep-v1/preregistration.json",
+    "maximum_points": 30,
+    "pilot_points": [
+      "A_PRIME_MESH_0@4000RPM",
+      "B_PRIME_MESH_0@4000RPM"
+    ]
+  },
+  "explicitly_excluded": [
+    "new configurations",
+    "other campaigns",
+    "KT100",
+    "R3",
+    "scientific contract changes"
+  ],
+  "source": "Owner request: DINO-ACTIVE — FULL_RPM_SWEEP_V1 EXECUTION"
+}

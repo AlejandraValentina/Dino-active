@@ -11,10 +11,14 @@ import copy
 import gzip
 import hashlib
 import json
+import platform
 import os
+import shutil
 from pathlib import Path
 import sys
 import time
+import importlib.metadata
+import importlib.util
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -38,6 +42,7 @@ from motorsim.mechanical_loss_binding_v1 import (  # noqa: E402
     canonical_sha256,
     resolve_mechanical_loss_v1,
 )
+from motorsim.scavenging_partition_v1 import evaluate_scavenging_partition_v1  # noqa: E402
 from motorsim.reference_harness.convergence import (  # noqa: E402
     CONTRACT,
     CONTRACT_V2,
@@ -74,14 +79,233 @@ def _write_json_atomic(path: Path, value: Any) -> None:
     temp.replace(path)
 
 
-def _write_primary_gzip(path: Path, value: Any) -> None:
-    payload = _canonical_bytes(value)
+def _write_primary_gzip(path: Path, value: Any | None = None,
+                        *, payload: bytes | None = None) -> None:
+    if payload is None:
+        payload = _canonical_bytes(value)
     path.parent.mkdir(parents=True, exist_ok=True)
     temp = path.with_name(path.name + ".tmp")
     with temp.open("wb") as raw:
         with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as stream:
             stream.write(payload)
     temp.replace(path)
+
+
+def _process_rss_bytes() -> int | None:
+    try:
+        import psutil
+        return int(psutil.Process(os.getpid()).memory_info().rss)
+    except (ImportError, OSError):
+        return None
+
+
+def _write_cycle_metrics(point_dir: Path, cycle: int, metrics: dict) -> None:
+    _write_json_atomic(point_dir / "cycle-metrics" / f"cycle-{cycle:03d}.json", metrics)
+
+
+def _record_checkpoint_progress(output_root: Path, variant: dict, rpm: int,
+                                checkpoint_path: Path,
+                                checkpoint_status: dict) -> None:
+    manifest_path = output_root / "campaign.json"
+    if not manifest_path.is_file():
+        raise RuntimeError("campaign manifest must be persisted before solver work")
+    manifest = _read_json(manifest_path)
+    point_id = f"{variant['variant_id']}@{rpm}RPM"
+    for row in manifest.get("completed_or_checkpointed_points", []):
+        if row.get("point_id") == point_id:
+            row.update({
+                "classification": checkpoint_status["classification"],
+                "cycles_completed": checkpoint_status["cycles_completed"],
+                "next_cycle": checkpoint_status["next_cycle"],
+                "checkpoint_path": str(checkpoint_path.relative_to(output_root)),
+                "checkpoint_sha256": _sha256(checkpoint_path.read_bytes()),
+                "performance_metrics": checkpoint_status.get("performance_metrics"),
+            })
+            break
+    else:
+        raise ValueError(f"campaign manifest lacks the registered point: {point_id}")
+    manifest["campaigns_started"] = 1
+    if checkpoint_status["classification"] != "INTERRUPTED_CHECKPOINTED":
+        manifest["campaign_status"] = "IN_PROGRESS"
+    _write_json_atomic(manifest_path, manifest)
+
+
+def _record_point_started(output_root: Path, variant: dict, rpm: int,
+                          *, cycles_completed: int, next_cycle: int) -> None:
+    manifest_path = output_root / "campaign.json"
+    manifest = _read_json(manifest_path)
+    point_id = f"{variant['variant_id']}@{rpm}RPM"
+    for row in manifest.get("completed_or_checkpointed_points", []):
+        if row.get("point_id") == point_id:
+            row.update({"classification": "IN_PROGRESS",
+                        "cycles_completed": cycles_completed,
+                        "next_cycle": next_cycle})
+            break
+    else:
+        raise ValueError(f"campaign manifest lacks the registered point: {point_id}")
+    manifest["campaigns_started"] = 1
+    manifest["campaign_status"] = "IN_PROGRESS"
+    _write_json_atomic(manifest_path, manifest)
+
+
+def _point_performance_metrics(cycle_metrics: list[dict]) -> dict:
+    elapsed = [float(row["cycle_elapsed_s"]) for row in cycle_metrics
+               if isinstance(row.get("cycle_elapsed_s"), (int, float))]
+    return {
+        "measured_cycles": len(elapsed),
+        "mean_cycle_seconds": (sum(elapsed) / len(elapsed) if elapsed else None),
+        "total_measured_cycle_seconds": sum(elapsed),
+        "accepted_steps": sum(int(row.get("accepted_solver_steps", 0))
+                               for row in cycle_metrics),
+        "rejected_steps": sum(int(row.get("rejected_solver_steps", 0))
+                               for row in cycle_metrics),
+        "primary_compressed_bytes": sum(int(row.get("primary_compressed_bytes", 0))
+                                         for row in cycle_metrics),
+        "max_observed_process_rss_bytes": max(
+            (int(row["process_rss_bytes"]) for row in cycle_metrics
+             if row.get("process_rss_bytes") is not None), default=None),
+        "serialization_seconds": sum(float(row.get("primary_serialization_seconds", 0))
+                                      for row in cycle_metrics),
+        "checkpoint_seconds": sum(float(row.get("checkpoint_write_seconds", 0))
+                                   for row in cycle_metrics),
+    }
+
+
+def _r2_compatible_scavenging(primary: dict) -> dict:
+    """Retain gross ledgers/conservation; mask non-identifiable retention claims."""
+    partition = evaluate_scavenging_partition_v1(primary)
+    reason = "CURRENT_CYCLE_FRESH_RETENTION_NOT_IDENTIFIABLE"
+    for name in ("trapping_efficiency", "charging_efficiency", "scavenging_efficiency"):
+        prior = partition["metrics"]["ratios"].get(name, {})
+        partition["metrics"]["ratios"][name] = {
+            "value": None, "status": "UNDEFINED", "reason": reason,
+            "definition_version": "R2_CURRENT_CYCLE_FRESH_RETENTION_V1",
+            "superseded_definition": prior.get("status"),
+        }
+    for name in ("fresh_retained", "fresh_lost"):
+        if name in partition["metrics"].get("masses_kg", {}):
+            partition["metrics"]["masses_kg"][name] = {
+                "value": None, "status": "NOT_IDENTIFIABLE", "reason": reason,
+                "definition_version": "R2_CURRENT_CYCLE_FRESH_RETENTION_V1",
+            }
+    partition["metrics"]["r2_current_semantics"] = {
+        "TE_CE_SE": "UNDEFINED",
+        "reason": reason,
+        "gross_crossing_and_species_conservation_preserved": True,
+    }
+    return partition
+
+
+def _ensure_campaign_provenance(out: Path, prereg: dict,
+                                prereg_sha: str) -> dict:
+    """Bundle the exact inputs and implementation needed to inspect results."""
+    provenance_dir = out / "provenance"
+    provenance_dir.mkdir(parents=True, exist_ok=True)
+    prereg_path = provenance_dir / "preregistration.json"
+    if prereg_path.exists():
+        if canonical_sha256(_read_json(prereg_path)) != prereg_sha:
+            raise ValueError("external artifact bundle preregistration hash mismatch")
+    else:
+        _write_json_atomic(prereg_path, prereg)
+
+    source_paths = {
+        "motorsim/mechanical_loss_binding_v1.py",
+        "motorsim/full_rpm_outputs_v1.py",
+        "motorsim/full_rpm_sweep_v1.py",
+        "motorsim/reference_harness/convergence.py",
+        "motorsim/scavenging_partition_v1.py",
+        "motorsim/scavenging.py",
+        "scripts/full_rpm_sweep_v1_campaign.py",
+        "scripts/summarize_full_rpm_sweep_v1.py",
+        "scripts/verify_full_rpm_sweep_v1_contract.py",
+        "scripts/verify_full_rpm_sweep_v1_artifacts.py",
+        "openspec/changes/full-rpm-sweep-v1/specs/full-rpm-sweep-v1/spec.md",
+        "results/full-rpm-sweep-v1/readiness.json",
+        "results/full-rpm-sweep-v1/preflight.json",
+        "results/full-rpm-sweep-v1/campaign-authorization.json",
+    }
+    for module_name in prereg["solver_dependency_hashes"]:
+        source_paths.add(module_name.replace(".", "/") + ".py")
+    for variant in prereg["variants"]:
+        source_paths.add(variant["source_fixture_path"])
+    files = {}
+    expected_fixture_hashes = {
+        variant["source_fixture_path"]: variant["fixture_sha256"]
+        for variant in prereg["variants"]
+    }
+    for relative in sorted(source_paths):
+        source = ROOT / relative
+        payload = source.read_bytes()
+        digest = _sha256(payload.replace(b"\r\n", b"\n"))
+        raw_digest = _sha256(payload)
+        expected_fixture = expected_fixture_hashes.get(relative)
+        if expected_fixture is not None and raw_digest != expected_fixture:
+            raise ValueError(f"fixture source hash differs from preregistration: {relative}")
+        expected = prereg["solver_dependency_hashes"].get(
+            relative[:-3].replace("/", "."))
+        if expected is not None and digest != expected:
+            raise ValueError(f"solver source hash differs from preregistration: {relative}")
+        target = provenance_dir / "source" / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if target.exists():
+            target_digest = _sha256(target.read_bytes().replace(b"\r\n", b"\n"))
+            if target_digest != digest:
+                raise ValueError(f"external source bundle hash mismatch: {relative}")
+        else:
+            shutil.copy2(source, target)
+        files[relative] = {"sha256": digest,
+                           "artifact_path": str(target.relative_to(out))}
+
+    configurations = {}
+    for variant in prereg["variants"]:
+        fixture = _read_json(ROOT / variant["source_fixture_path"])
+        config = fixture["engine_configuration"]
+        config_path = provenance_dir / "configurations" / f"{variant['variant_id']}.json"
+        config_path.parent.mkdir(parents=True, exist_ok=True)
+        _write_json_atomic(config_path, config)
+        configurations[variant["variant_id"]] = {
+            "fixture_sha256": variant["fixture_sha256"],
+            "engine_configuration_sha256": canonical_sha256(config),
+            "artifact_path": str(config_path.relative_to(out)),
+        }
+    receipt = {
+        "schema": "FULL_RPM_SWEEP_V1_ARTIFACT_PROVENANCE_V1",
+        "campaign_id": f"FULL_RPM_SWEEP_V1_{prereg_sha[:16]}",
+        "preregistration_sha256": prereg_sha,
+        "authorization_sha256": _sha256(
+            (ROOT / "results/full-rpm-sweep-v1/campaign-authorization.json").read_bytes()),
+        "campaign_runner_sha256": _sha256(
+            Path(__file__).read_bytes().replace(b"\r\n", b"\n")),
+        "python_version": sys.version,
+        "platform": platform.platform(),
+        "psutil_version": importlib.metadata.version("psutil")
+        if importlib.util.find_spec("psutil") else None,
+        "solver_dependencies": prereg["solver_dependency_hashes"],
+        "source_files": files,
+        "variant_configurations": configurations,
+        "provenance": "SYNTHETIC_ASSUMPTION_CONDITIONAL_ON_P4; no experimental validation",
+    }
+    receipt_path = provenance_dir / "manifest.json"
+    if receipt_path.exists():
+        prior = _read_json(receipt_path)
+        if prior != receipt:
+            raise ValueError("external artifact provenance manifest mismatch")
+    else:
+        _write_json_atomic(receipt_path, receipt)
+    return receipt
+
+
+def _selected_points(prereg: dict, *, pilot: bool) -> list[tuple[dict, int]]:
+    if not pilot:
+        return [(variant, rpm) for variant in prereg["variants"]
+                for rpm in rpm_points(prereg)]
+    variants = {variant["variant_id"]: variant for variant in prereg["variants"]}
+    required = ("A_PRIME_MESH_0", "B_PRIME_MESH_0")
+    if not all(name in variants for name in required):
+        raise ValueError("registered pilot variants are missing")
+    if 4000 not in rpm_points(prereg):
+        raise ValueError("registered pilot RPM 4000 is missing")
+    return [(variants[name], 4000) for name in required]
 
 
 def _projection(primary: dict) -> dict:
@@ -126,16 +350,25 @@ def _advance_to_bounded(engine: IntegratedEngine2T, target_angle: float,
 def _require_readiness_pass() -> None:
     status = _read_json(PROGRAM_STATUS)
     gate = status.get("gate_status", {})
-    if (gate.get("objective") != "FULL_RPM_SWEEP_V1" or
-            gate.get("state") != "PASS" or
-            gate.get("classification") != "FULL_RPM_SWEEP_V1_READINESS_PASS" or
+    readiness = status.get("readiness_gate_status", gate)
+    if (readiness.get("objective") != "FULL_RPM_SWEEP_V1" or
+            readiness.get("state") != "PASS" or
+            readiness.get("classification") != "FULL_RPM_SWEEP_V1_READINESS_PASS" or
             status.get("full_rpm_sweep_precondition") != "EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED" or
             status.get("full_rpm_sweep_precondition_status") != "RESOLVED" or
             status.get("full_rpm_sweep_executable") is not True or
-            status.get("full_rpm_sweep_status") != "NOT_STARTED"):
+            status.get("full_rpm_sweep_status") not in {"NOT_STARTED", "IN_PROGRESS", "PARTIAL"}):
         raise RuntimeError("FULL_RPM_SWEEP_V1 readiness PASS is not durably registered")
     if status.get("full_rpm_sweep_execution_authorized") is not True:
         raise RuntimeError("FULL_RPM_SWEEP_V1 campaign execution is not authorized")
+    authorization = _read_json(ROOT / "results/full-rpm-sweep-v1/campaign-authorization.json")
+    prereg = _read_json(ROOT / PREREGISTRATION)
+    expected_variants = [item["variant_id"] for item in prereg["variants"]]
+    if (authorization.get("authorized") is not True or
+            authorization.get("scope", {}).get("variants") != expected_variants or
+            authorization.get("scope", {}).get("maximum_points") != 30 or
+            authorization.get("scope", {}).get("rpm_points_per_variant") != 15):
+        raise RuntimeError("FULL_RPM_SWEEP_V1 authorization receipt does not match preregistration")
 
 
 def _point_contract_hashes(prereg: dict, prereg_sha: str, variant: dict,
@@ -226,6 +459,7 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
 
     point_id = f"{variant['variant_id']}@{rpm}RPM"
     cycle_rows = []
+    cycle_metrics = []
     if first_cycle > 1:
         prior_cycle_path = point_dir / f"cycle-{first_cycle - 1:03d}.json.gz"
         if not prior_cycle_path.is_file():
@@ -238,11 +472,24 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
             audit = audit_integrated_cycle_primary(primary)
             if audit.get("recomputed") is not True:
                 raise ValueError("persisted primary failed replay audit")
-            cycle_rows.append({"cycle": cycle, "primary_sha256": _sha256(_canonical_bytes(primary)),
-                               "audit": "PASS"})
+            prior_sha = _sha256(_canonical_bytes(primary))
+            measurement_path = point_dir / "cycle-metrics" / f"cycle-{cycle:03d}.json"
+            if not measurement_path.is_file():
+                raise ValueError("checkpointed primary lacks its performance measurement receipt")
+            measurement = _read_json(measurement_path)
+            if (measurement.get("cycle") != cycle or
+                    measurement.get("primary_sha256") != prior_sha):
+                raise ValueError("cycle measurement receipt does not match its primary")
+            cycle_metrics.append(measurement)
+            cycle_rows.append({"cycle": cycle, "primary_sha256": prior_sha,
+                               "audit": "PASS", "metrics": measurement})
 
+    _record_point_started(output_root, variant, rpm,
+                          cycles_completed=first_cycle - 1,
+                          next_cycle=first_cycle)
     for cycle in range(first_cycle, prereg["horizon"]["max_complete_cycles_per_point"] + 1):
         rejected: list[dict] = []
+        cycle_started = time.monotonic()
         cycle_start_snapshot = engine.snapshot()
         detector_start_snapshot = detector.snapshot()
         try:
@@ -275,6 +522,8 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
                 "cycles_completed": cycle - 1,
                 "next_cycle": cycle,
                 "engineering_outputs": None,
+                "cycle_primaries": [row["primary_sha256"] for row in cycle_rows],
+                "performance_metrics": _point_performance_metrics(cycle_metrics),
                 "bindings": bindings,
             }
             _write_json_atomic(point_dir / "checkpoint-status.json", interrupted)
@@ -289,12 +538,16 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
                 "failure_reason": str(exc),
                 "cycles_completed": cycle - 1,
                 "engineering_outputs": None,
+                "cycle_primaries": [row["primary_sha256"] for row in cycle_rows],
+                "performance_metrics": _point_performance_metrics(cycle_metrics),
                 "bindings": bindings,
             }
             _write_json_atomic(result_path, failure)
             return failure
         audit = audit_integrated_cycle_primary(primary)
-        if audit.get("recomputed") is not True or primary.get("admissible") is not True:
+        scavenging_assessment = _r2_compatible_scavenging(primary)
+        if (audit.get("recomputed") is not True or primary.get("admissible") is not True or
+                scavenging_assessment["hard_gate"]["classification"] != "PASS"):
             failure = {
                 "schema": "FULL_RPM_SWEEP_V1_POINT_RESULT",
                 "point_id": point_id,
@@ -302,23 +555,60 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
                 "classification": "PRIMARY_AUDIT_FAIL" if audit.get("recomputed") is not True
                                   else "PHYSICAL_INVALID",
                 "audit": audit,
+                "scavenging": scavenging_assessment,
+                "conservation": primary.get("conservation"),
+                "hard_gates": {
+                    "primary_admissible": primary.get("admissible") is True,
+                    "primary_replay_audit": audit.get("recomputed") is True,
+                    "scavenging_partition": scavenging_assessment["hard_gate"],
+                    "conservation": scavenging_assessment["species_closure"],
+                },
                 "cycles_completed": cycle,
                 "engineering_outputs": None,
+                "primary_sha256": _sha256(_canonical_bytes(primary)),
+                "cycle_primaries": [row["primary_sha256"] for row in cycle_rows],
+                "performance_metrics": _point_performance_metrics(cycle_metrics),
                 "bindings": bindings,
             }
             _write_primary_gzip(point_dir / f"cycle-{cycle:03d}.json.gz", primary)
             _write_json_atomic(result_path, failure)
             return failure
 
+        serialization_started = time.monotonic()
         primary_payload = _canonical_bytes(primary)
         primary_sha = _sha256(primary_payload)
-        _write_primary_gzip(point_dir / f"cycle-{cycle:03d}.json.gz", primary)
+        serialization_seconds = time.monotonic() - serialization_started
+        primary_write_started = time.monotonic()
+        primary_path = point_dir / f"cycle-{cycle:03d}.json.gz"
+        _write_primary_gzip(primary_path, payload=primary_payload)
+        primary_write_seconds = time.monotonic() - primary_write_started
+        detector_started = time.monotonic()
         update = detector.update(_projection(primary))
+        detector_seconds = time.monotonic() - detector_started
+        measurement = {
+            "cycle": cycle,
+            "primary_sha256": primary_sha,
+            "cycle_elapsed_s": time.monotonic() - cycle_started,
+            "primary_serialization_seconds": serialization_seconds,
+            "primary_write_seconds": primary_write_seconds,
+            "primary_compressed_bytes": primary_path.stat().st_size,
+            "detector_update_seconds": detector_seconds,
+            "checkpoint_write_seconds": 0.0,
+            "accepted_solver_steps": int(engine.accepted_steps),
+            "rejected_solver_steps": len(rejected),
+            "process_rss_bytes": _process_rss_bytes(),
+            "detector_classification": detector.classification,
+            "detector_update": update,
+        }
+        _write_cycle_metrics(point_dir, cycle, measurement)
+        cycle_metrics.append(measurement)
         cycle_rows.append({"cycle": cycle, "primary_sha256": primary_sha,
-                           "audit": "PASS", "detector": update})
+                           "audit": "PASS", "detector": update,
+                           "metrics": measurement})
         classification = detector.classification
         if classification in ("PERIOD_1", "PERIOD_2"):
             observables = primary["observables"]
+            scavenging = scavenging_assessment
             outputs = compute_full_rpm_outputs_v1(
                 cylinder_indicated_work_j=observables["cylinder_indicated_work_J"],
                 net_piston_gas_work_j=observables["net_piston_gas_work_J"],
@@ -343,6 +633,16 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
                 "periodicity_contract": CONTRACT_V2,
                 "cycles_completed": cycle,
                 "engineering_outputs": outputs,
+                "scavenging": scavenging,
+                "conservation": primary["conservation"],
+                "hard_gates": {
+                    "primary_admissible": primary.get("admissible") is True,
+                    "primary_replay_audit": audit.get("recomputed") is True,
+                    "scavenging_partition": scavenging["hard_gate"],
+                    "conservation": scavenging["species_closure"],
+                },
+                "warnings": primary.get("warnings", []),
+                "performance_metrics": _point_performance_metrics(cycle_metrics),
                 "bindings": bindings,
                 "cycle_primaries": [row["primary_sha256"] for row in cycle_rows],
             }
@@ -362,7 +662,19 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
             "engine_snapshot": start_snapshot,
             "periodicity_snapshot": detector.snapshot(),
         }
+        checkpoint_started = time.monotonic()
         _write_json_atomic(checkpoint_path, checkpoint)
+        measurement["checkpoint_write_seconds"] = time.monotonic() - checkpoint_started
+        _write_cycle_metrics(point_dir, cycle, measurement)
+        in_progress = {
+            "classification": "IN_PROGRESS_CHECKPOINTED",
+            "cycles_completed": cycle,
+            "next_cycle": cycle + 1,
+            "performance_metrics": _point_performance_metrics(cycle_metrics),
+        }
+        _write_json_atomic(point_dir / "checkpoint-status.json", in_progress)
+        _record_checkpoint_progress(output_root, variant, rpm, checkpoint_path,
+                                    in_progress)
         if time.monotonic() - started >= budget_seconds:
             interrupted = {
                 "schema": "FULL_RPM_SWEEP_V1_POINT_RESULT",
@@ -373,10 +685,13 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
                 "cycles_completed": cycle,
                 "next_cycle": cycle + 1,
                 "engineering_outputs": None,
+                "performance_metrics": _point_performance_metrics(cycle_metrics),
                 "bindings": bindings,
             }
             # Do not create result.json: a later --resume must continue this point.
             _write_json_atomic(point_dir / "checkpoint-status.json", interrupted)
+            _record_checkpoint_progress(output_root, variant, rpm, checkpoint_path,
+                                        interrupted)
             return interrupted
 
     terminal = {
@@ -388,6 +703,7 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
         "periodicity_contract": CONTRACT_V2,
         "cycles_completed": prereg["horizon"]["max_complete_cycles_per_point"],
         "engineering_outputs": None,
+        "performance_metrics": _point_performance_metrics(cycle_metrics),
         "bindings": bindings,
         "cycle_primaries": [row["primary_sha256"] for row in cycle_rows],
     }
@@ -396,8 +712,9 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
 
 
 def execute_campaign(*, output_root: str | Path, resume: bool = False,
+                     pilot: bool = False,
                      budget_seconds: int = MAX_INVOCATION_SECONDS) -> dict:
-    """Run only after a durable readiness PASS; not used by readiness checks."""
+    """Run the preregistered campaign, optionally in two-point pilot mode."""
     started = time.monotonic()
     _require_readiness_pass()
     if type(budget_seconds) is not int or not 1 <= budget_seconds <= MAX_INVOCATION_SECONDS:
@@ -409,57 +726,150 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
     preflight = preflight_full_rpm_sweep_v1(prereg_path, repository_root=ROOT)
     if preflight.get("preflight_status") != "PASS":
         raise RuntimeError("FULL_RPM_SWEEP_V1 preflight failed closed")
-    prereg_bytes = prereg_path.read_bytes()
-    prereg = json.loads(prereg_bytes)
+    prereg = _read_json(prereg_path)
     prereg_sha = canonical_sha256(prereg)
     output_manifest = out / "campaign.json"
     if output_manifest.exists() and not resume:
         raise FileExistsError("campaign output exists; pass --resume or choose a fresh external directory")
-    point_results = []
-    for variant in prereg["variants"]:
-        for rpm in rpm_points(prereg):
-            point_result = _run_point(
-                prereg, prereg_sha, variant, rpm, out,
-                resume=resume, started=started, budget_seconds=budget_seconds)
-            point_results.append({"point_id": point_result["point_id"],
-                                  "classification": point_result["classification"],
-                                  "result_path": str((out / variant["variant_id"] /
-                                                       f"rpm-{rpm:05d}" / "result.json"))
-                                  if (out / variant["variant_id"] /
-                                      f"rpm-{rpm:05d}" / "result.json").is_file() else None})
-            summary = {
-                "schema": "FULL_RPM_SWEEP_V1_CAMPAIGN_SUMMARY",
-                "pre-registration_sha256": prereg_sha,
-                "preflight_status": "PASS",
-                "campaigns_started": 1,
-                "campaign_status": "IN_PROGRESS",
-                "completed_or_checkpointed_points": point_results,
-                "updated_solver_dependency_hashes": _solver_dependency_hashes(),
-            }
-            point_dir = out / variant["variant_id"] / f"rpm-{rpm:05d}"
-            result_file = point_dir / "result.json"
-            checkpoint_status = point_dir / "checkpoint-status.json"
-            checkpoint_file = point_dir / "checkpoint.json"
-            if result_file.is_file():
-                point_results[-1]["result_sha256"] = _sha256(result_file.read_bytes())
-            elif checkpoint_status.is_file() and checkpoint_file.is_file():
-                point_results[-1]["checkpoint_sha256"] = _sha256(checkpoint_file.read_bytes())
-            _write_json_atomic(output_manifest, summary)
-            if point_result["classification"] == "INTERRUPTED_CHECKPOINTED":
-                summary["campaign_status"] = "INTERRUPTED_CHECKPOINTED"
-                _write_json_atomic(output_manifest, summary)
-                return summary
-    summary = {
-        "schema": "FULL_RPM_SWEEP_V1_CAMPAIGN_SUMMARY",
-        "pre-registration_sha256": prereg_sha,
-        "preflight_status": "PASS",
-        "campaigns_started": 1,
-        "campaign_status": "COMPLETE_WITH_POINT_CLASSIFICATIONS",
-        "completed_or_checkpointed_points": point_results,
-        "updated_solver_dependency_hashes": _solver_dependency_hashes(),
+    campaign_id = f"FULL_RPM_SWEEP_V1_{prereg_sha[:16]}"
+    if output_manifest.exists():
+        prior_manifest = _read_json(output_manifest)
+        if (prior_manifest.get("campaign_id") != campaign_id or
+                prior_manifest.get("pre-registration_sha256") != prereg_sha):
+            raise ValueError("campaign resume manifest does not match preregistration")
+    _ensure_campaign_provenance(out, prereg, prereg_sha)
+    selected_points = _selected_points(prereg, pilot=pilot)
+
+    invocation = {
+        "id": f"{time.time_ns()}-{('PILOT' if pilot else 'FULL')}" ,
+        "started_at_unix": time.time(),
+        "phase": "PILOT" if pilot else "FULL_CAMPAIGN",
+        "requested_points": [f"{variant['variant_id']}@{rpm}RPM"
+                             for variant, rpm in selected_points],
+        "results": [],
     }
-    _write_json_atomic(output_manifest, summary)
-    return summary
+
+    def save_summary(campaign_status: str) -> dict:
+        catalog = []
+        terminal = {"NO_CONVERGENCE_WITHIN_HORIZON", "NUMERICAL_INVALID",
+                    "PRIMARY_AUDIT_FAIL", "PHYSICAL_INVALID", "PERIOD_1", "PERIOD_2"}
+        for variant in prereg["variants"]:
+            for rpm in rpm_points(prereg):
+                point_dir = out / variant["variant_id"] / f"rpm-{rpm:05d}"
+                result_file = point_dir / "result.json"
+                checkpoint_file = point_dir / "checkpoint.json"
+                checkpoint_status = point_dir / "checkpoint-status.json"
+                result = _read_json(result_file) if result_file.is_file() else None
+                checkpoint = _read_json(checkpoint_status) if checkpoint_status.is_file() else None
+                classification = (result or checkpoint or {}).get("classification", "NOT_STARTED")
+                row = {"point_id": f"{variant['variant_id']}@{rpm}RPM",
+                       "variant_id": variant["variant_id"], "rpm": rpm,
+                       "classification": classification,
+                       "cycles_completed": (result or checkpoint or {}).get("cycles_completed"),
+                       "next_cycle": (result or checkpoint or {}).get("next_cycle"),
+                       "result_path": str(result_file.relative_to(out)) if result else None,
+                       "checkpoint_path": str(checkpoint_file.relative_to(out))
+                       if checkpoint_file.is_file() else None}
+                if result or checkpoint:
+                    point_record = result or checkpoint
+                    row["performance_metrics"] = point_record.get("performance_metrics")
+                if result:
+                    row["result_sha256"] = _sha256(result_file.read_bytes())
+                    row["failure_reason"] = result.get("failure_reason")
+                    row["hard_gates"] = result.get("hard_gates")
+                if checkpoint_file.is_file():
+                    row["checkpoint_sha256"] = _sha256(checkpoint_file.read_bytes())
+                catalog.append(row)
+        unfinished = any(row["classification"] not in terminal for row in catalog)
+        previous = _read_json(output_manifest) if output_manifest.is_file() else {}
+        invocations = list(previous.get("invocations", []))
+        invocation_row = {
+            "id": invocation["id"],
+            "phase": invocation["phase"],
+            "started_at_unix": invocation["started_at_unix"],
+            "duration_seconds": time.monotonic() - started,
+            "requested_points": invocation["requested_points"],
+            "results": invocation["results"],
+        }
+        invocations = [row for row in invocations if row.get("id") != invocation["id"]]
+        if invocation["results"] or not invocations:
+            invocations.append(invocation_row)
+        pilot_done = (pilot and len(invocation["results"]) == 2 and
+                      all(row["classification"] in terminal
+                          for row in invocation["results"]))
+        campaign_started = bool(previous.get("campaigns_started", 0) or
+                                invocation["results"])
+        if pilot_done:
+            campaign_status = "PILOT_COMPLETE_PENDING_FULL_CAMPAIGN"
+        elif unfinished and campaign_status != "INTERRUPTED_CHECKPOINTED":
+            campaign_status = "PARTIAL_IN_PROGRESS"
+        provenance_path = out / "provenance" / "manifest.json"
+        summary = {
+            "schema": "FULL_RPM_SWEEP_V1_CAMPAIGN_SUMMARY",
+            "campaign_id": campaign_id,
+            "pre-registration_sha256": prereg_sha,
+            "preflight_status": "PASS",
+            "campaigns_started": 1 if campaign_started else 0,
+            "campaign_status": campaign_status,
+            "campaign_scope": [f"{variant['variant_id']}@{rpm}RPM"
+                               for variant in prereg["variants"] for rpm in rpm_points(prereg)],
+            "completed_or_checkpointed_points": catalog,
+            "invocations": invocations,
+            "provenance_manifest": str(provenance_path.relative_to(out)),
+            "provenance_manifest_sha256": _sha256(provenance_path.read_bytes()),
+            "updated_solver_dependency_hashes": _solver_dependency_hashes(),
+        }
+        if pilot_done:
+            pilot_metrics = [row.get("performance_metrics") or {}
+                             for row in catalog
+                             if row["rpm"] == 4000 and row["classification"] in terminal]
+            measured_cycles = sum(int(row.get("measured_cycles", 0)) for row in pilot_metrics)
+            total_cycle_time = sum(float(row.get("total_measured_cycle_seconds", 0))
+                                   for row in pilot_metrics)
+            total_bytes = sum(int(row.get("primary_compressed_bytes", 0))
+                              for row in pilot_metrics)
+            mean_cycles_per_point = (measured_cycles / 2) if measured_cycles else None
+            mean_bytes_per_cycle = (total_bytes / measured_cycles) if measured_cycles else None
+            mean_seconds_per_cycle = (total_cycle_time / measured_cycles) if measured_cycles else None
+            summary["pilot_projection"] = {
+                "basis": "A4000 and B4000 pilot measurements; rough linear estimate, not a guarantee",
+                "pilot_cycles": measured_cycles,
+                "mean_seconds_per_cycle": mean_seconds_per_cycle,
+                "mean_primary_bytes_per_cycle": mean_bytes_per_cycle,
+                "mean_cycles_per_pilot_point": mean_cycles_per_point,
+                "estimated_total_campaign_seconds": (
+                    mean_seconds_per_cycle * mean_cycles_per_point * 30
+                    if None not in (mean_seconds_per_cycle, mean_cycles_per_point) else None),
+                "estimated_primary_storage_bytes": (
+                    mean_bytes_per_cycle * mean_cycles_per_point * 30
+                    if None not in (mean_bytes_per_cycle, mean_cycles_per_point) else None),
+                "artifact_root_free_bytes": shutil.disk_usage(out).free,
+                "psutil_observations_available": importlib.util.find_spec("psutil") is not None,
+            }
+        _write_json_atomic(output_manifest, summary)
+        return summary
+
+    save_summary("PREPARED")
+    for variant, rpm in selected_points:
+        point_result = _run_point(
+            prereg, prereg_sha, variant, rpm, out,
+            resume=resume, started=started, budget_seconds=budget_seconds)
+        point_dir = out / variant["variant_id"] / f"rpm-{rpm:05d}"
+        invocation["results"].append({
+            "point_id": point_result["point_id"],
+            "classification": point_result["classification"],
+            "result_path": str((point_dir / "result.json").relative_to(out))
+            if (point_dir / "result.json").is_file() else None,
+            "checkpoint_path": str((point_dir / "checkpoint.json").relative_to(out))
+            if (point_dir / "checkpoint.json").is_file() else None,
+        })
+        summary = save_summary(
+            "INTERRUPTED_CHECKPOINTED"
+            if point_result["classification"] == "INTERRUPTED_CHECKPOINTED"
+            else "IN_PROGRESS")
+        if point_result["classification"] == "INTERRUPTED_CHECKPOINTED":
+            return summary
+    return save_summary("COMPLETE_WITH_POINT_CLASSIFICATIONS")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -469,6 +879,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output-root", type=Path,
                         help="durable external artifact directory; must be outside the repo")
     parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--pilot", action="store_true",
+                        help="run only preregistered A4000 and B4000 as the first phase of this campaign")
     parser.add_argument("--budget-seconds", type=int, default=MAX_INVOCATION_SECONDS)
     args = parser.parse_args(argv)
     if not args.execute:
@@ -482,6 +894,7 @@ def main(argv: list[str] | None = None) -> int:
             parser.error("--execute requires --output-root or DINO_ARTIFACT_ROOT")
         output_root = Path(artifact_root) / "engine-physics-v1/full-rpm-sweep-v1"
     result = execute_campaign(output_root=output_root, resume=args.resume,
+                              pilot=args.pilot,
                               budget_seconds=args.budget_seconds)
     print(json.dumps({"campaign_status": result["campaign_status"],
                       "points": len(result["completed_or_checkpointed_points"]),

@@ -116,3 +116,50 @@ loss bindings, no-solver preflight and focused tests pass. It MUST record
 - **WHEN** all readiness gates pass
 - **THEN** explicit mechanical-loss precondition is resolved while the sweep
   remains not started
+
+### Requirement: authorized campaign and pilot reuse
+
+An execution MUST require a durable owner authorization scoped to the two
+preregistered variants and their 30 RPM points. The initial performance pilot
+MUST use `A_PRIME_MESH_0@4000RPM` and `B_PRIME_MESH_0@4000RPM` inside the same
+campaign artifact root. Resumption MUST reuse completed point results and
+hash-valid checkpoints from that root. No configuration or RPM may be added.
+
+#### Scenario: pilot then full campaign
+
+- **WHEN** the pilot is completed and measured cost is viable
+- **THEN** the remaining preregistered points resume from the same manifest,
+  without repeating completed cycles or points
+
+### Requirement: execution outputs and classifications
+
+Each point MUST retain its classification, accepted primary hashes, cycle
+count, performance measurements, configuration/solver/detector provenance,
+conservation residuals and hard-gate outcomes. Converged outputs MUST include
+indicated and brake power/torque, IMEP/FMEP/BMEP, defined ISFC/BSFC, and
+status-bearing AFR/lambda/phi and scavenging metrics. The current R2 semantics
+for non-identifiable TE/CE/SE MUST remain `UNDEFINED` with their causal reason.
+Nonconverged, interrupted or failed points MUST have no valid numerical output.
+
+#### Scenario: invalid or interrupted point
+
+- **WHEN** a point fails a hard gate, reaches the periodicity horizon or is
+  checkpointed by the invocation budget
+- **THEN** the manifest records the exact classification and retains no
+  fabricated zero-valued engineering result
+
+### Requirement: campaign report and recoverable artifacts
+
+The external artifact root MUST contain the preregistration, exact source
+fixtures/configurations, source implementation hashes, point primaries,
+checkpoints and a global manifest covering all 30 classifications. Reporting
+MUST export CSV and JSON plus power, torque, BMEP and BSFC RPM charts for both
+variants. Invalid points MUST be visibly distinguished and excluded from
+numeric curves. An incomplete campaign MUST be labeled partial and MUST NOT
+be published as a definitive curve.
+
+#### Scenario: partial campaign report
+
+- **WHEN** one or more points remain unstarted, interrupted or nonconverged
+- **THEN** reports include their statuses, omit their values from curves, and
+  mark the curve set as partial

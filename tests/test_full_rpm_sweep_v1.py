@@ -203,8 +203,13 @@ def test_nonpositive_brake_power_has_causal_bsfc_reason():
     assert result["BSFC"]["reason"] == "NONPOSITIVE_BRAKE_POWER"
 
 
-def test_campaign_runner_refuses_execution_without_explicit_authorization(tmp_path):
+def test_campaign_runner_refuses_execution_without_explicit_authorization(tmp_path, monkeypatch):
     target = tmp_path / "external-output"
+    status = json.loads(campaign.PROGRAM_STATUS.read_text(encoding="utf-8"))
+    status["full_rpm_sweep_execution_authorized"] = False
+    status_path = tmp_path / "program-status.json"
+    status_path.write_text(json.dumps(status), encoding="utf-8")
+    monkeypatch.setattr(campaign, "PROGRAM_STATUS", status_path)
     with pytest.raises(RuntimeError, match="campaign execution is not authorized"):
         execute_campaign(output_root=target)
     assert not target.exists()
@@ -219,3 +224,66 @@ def test_campaign_cycle_stepper_honors_expired_deadline_before_advancing(monkeyp
     with pytest.raises(campaign._CampaignDeadlineReached):
         campaign._advance_to_bounded(engine, 360.0, [], deadline=0.0)
     assert engine.crank_angle_unwrapped_deg == 0.0
+
+
+def test_pilot_is_exactly_the_two_preregistered_4000_rpm_points():
+    prereg = json.loads(PREREG.read_text(encoding="utf-8"))
+    selected = campaign._selected_points(prereg, pilot=True)
+    assert [(variant["variant_id"], rpm) for variant, rpm in selected] == [
+        ("A_PRIME_MESH_0", 4000), ("B_PRIME_MESH_0", 4000)]
+    assert len(campaign._selected_points(prereg, pilot=False)) == 30
+
+
+def test_checkpoint_resume_requires_matching_bindings(tmp_path):
+    path = tmp_path / "checkpoint.json"
+    expected = {"preregistration_sha256": "a" * 64,
+                "point_configuration_sha256": "b" * 64}
+    checkpoint = {
+        "schema": "FULL_RPM_SWEEP_V1_POINT_CHECKPOINT",
+        "bindings": expected,
+        "next_cycle": 8,
+        "engine_snapshot": {"angle": 2520.0},
+        "periodicity_snapshot": {"streak": 2},
+    }
+    path.write_text(json.dumps(checkpoint), encoding="utf-8")
+    assert campaign._load_checkpoint(path, expected)["next_cycle"] == 8
+    with pytest.raises(ValueError, match="binding hash mismatch"):
+        campaign._load_checkpoint(path, {**expected, "point_configuration_sha256": "c" * 64})
+
+
+def test_campaign_manifest_records_point_start_and_cycle_checkpoint(tmp_path):
+    prereg = json.loads(PREREG.read_text(encoding="utf-8"))
+    variant = prereg["variants"][0]
+    root = tmp_path / "campaign"
+    root.mkdir()
+    points = [{"point_id": f"{item['variant_id']}@{rpm}RPM",
+               "variant_id": item["variant_id"], "rpm": rpm,
+               "classification": "NOT_STARTED"}
+              for item in prereg["variants"] for rpm in prereg["rpm_grid"]["points_rpm"]]
+    (root / "campaign.json").write_text(json.dumps({
+        "campaigns_started": 0, "campaign_status": "PREPARED",
+        "completed_or_checkpointed_points": points,
+    }), encoding="utf-8")
+    campaign._record_point_started(root, variant, 4000, cycles_completed=0, next_cycle=1)
+    checkpoint = root / variant["variant_id"] / "rpm-04000" / "checkpoint.json"
+    checkpoint.parent.mkdir(parents=True)
+    checkpoint.write_text("{}", encoding="utf-8")
+    campaign._record_checkpoint_progress(
+        root, variant, 4000, checkpoint,
+        {"classification": "IN_PROGRESS_CHECKPOINTED", "cycles_completed": 1,
+         "next_cycle": 2, "performance_metrics": {"measured_cycles": 1}})
+    manifest = json.loads((root / "campaign.json").read_text(encoding="utf-8"))
+    row = next(item for item in manifest["completed_or_checkpointed_points"]
+               if item["point_id"] == "A_PRIME_MESH_0@4000RPM")
+    assert manifest["campaigns_started"] == 1
+    assert row["classification"] == "IN_PROGRESS_CHECKPOINTED"
+    assert row["checkpoint_sha256"] == campaign._sha256(checkpoint.read_bytes())
+
+
+def test_campaign_provenance_bundle_is_self_contained_and_hash_bound(tmp_path):
+    prereg = json.loads(PREREG.read_text(encoding="utf-8"))
+    receipt = campaign._ensure_campaign_provenance(
+        tmp_path / "campaign", prereg, campaign.canonical_sha256(prereg))
+    assert receipt["campaign_id"].startswith("FULL_RPM_SWEEP_V1_")
+    assert receipt["source_files"][prereg["variants"][0]["source_fixture_path"]]
+    assert receipt["variant_configurations"]["A_PRIME_MESH_0"]["engine_configuration_sha256"] == prereg["variants"][0]["engine_configuration_sha256"]

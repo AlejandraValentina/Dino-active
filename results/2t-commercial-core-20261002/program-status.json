@@ -2988,6 +2988,101 @@
         "scripts/full_rpm_sweep_v1_campaign.py",
         "tests/test_full_rpm_sweep_v1.py"
       ]
+    },
+    {
+      "id": "FRPM-CAMPAIGN-EXECUTION",
+      "description": "Execute A4000 and B4000 in the authorized campaign root; stop at the pilot phase for measured viability review.",
+      "dependencies": [
+        "FRPM-CAMPAIGN-RUNNER"
+      ],
+      "state": "IN_PROGRESS",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/full-rpm-sweep-v1 campaign artifacts at external DINO_ARTIFACT_ROOT"
+      ],
+      "execution_authorization": "owner request, bounded to preregistered variants and RPM grid"
+    },
+    {
+      "id": "FRPM-CAMPAIGN-REPORTING",
+      "description": "Export partial-safe CSV/JSON and four RPM charts with classifications, provenance, hard gates and scavenging status.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/summarize_full_rpm_sweep_v1.py",
+        "tests/test_full_rpm_sweep_v1_reporting.py"
+      ],
+      "resolution": "Partial-safe reporting exports 30 status rows as CSV and JSON, four PNG RPM charts, costs, hashes, hard gates and R2-compatible scavenging statuses; nonconverged values remain blank.",
+      "evidence": [
+        "scripts/summarize_full_rpm_sweep_v1.py",
+        "tests/test_full_rpm_sweep_v1_reporting.py"
+      ]
+    },
+    {
+      "id": "FRPM-ARTIFACT-INTEGRITY-VERIFY",
+      "description": "Verify the external bundle, all 30 point classifications, result and checkpoint hashes, primary hashes and cycle performance receipts.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "evidence/release reviewer",
+      "evidence_level": "L2",
+      "write_scope": [
+        "scripts/verify_full_rpm_sweep_v1_artifacts.py",
+        "tests/test_full_rpm_sweep_v1_artifact_verify.py"
+      ],
+      "resolution": "External-only verifier validates the self-contained provenance bundle, all 30 point identities, configuration/solver/detector/result/checkpoint/primary/cycle-metric hashes and output classification consistency.",
+      "evidence": [
+        "scripts/verify_full_rpm_sweep_v1_artifacts.py",
+        "tests/test_full_rpm_sweep_v1_artifact_verify.py"
+      ]
+    },
+    {
+      "id": "FRPM-PILOT-PROJECTION",
+      "description": "Assess pilot time/cycle, memory, serialization, checkpoint and storage measurements before starting remaining points.",
+      "dependencies": [
+        "FRPM-CAMPAIGN-EXECUTION"
+      ],
+      "state": "WAITING",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/full-rpm-sweep-v1/pilot-analysis.json"
+      ]
+    },
+    {
+      "id": "FRPM-FULL-CAMPAIGN-EXECUTION",
+      "description": "After measured viability review, resume the same campaign root for only the remaining preregistered points.",
+      "dependencies": [
+        "FRPM-PILOT-PROJECTION"
+      ],
+      "state": "WAITING",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/full-rpm-sweep-v1 campaign artifacts at external DINO_ARTIFACT_ROOT"
+      ]
+    },
+    {
+      "id": "FRPM-CHECKPOINT-RESUME-VERIFY",
+      "description": "Validate checkpoint binding and resume behavior without duplicating any completed campaign cycle.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "evidence/release reviewer",
+      "evidence_level": "L1",
+      "write_scope": [
+        "tests/test_full_rpm_sweep_v1_resume.py"
+      ],
+      "resolution": "Runner tests prove expired deadlines stop before a solver step, checkpoint bindings reject mismatches, and only the two preregistered 4000-rpm pilot points are selected.",
+      "evidence": [
+        "tests/test_full_rpm_sweep_v1.py"
+      ]
     }
   ],
   "audit_remediation_mode": false,
@@ -3191,7 +3286,7 @@
     "id": "FULL_RPM_SWEEP_V1",
     "change": "openspec/changes/full-rpm-sweep-v1",
     "spec": "openspec/changes/full-rpm-sweep-v1/specs/full-rpm-sweep-v1/spec.md",
-    "completion_criterion": "A preregistered, hash-bound WOT RPM sweep over the existing integrated 2T configuration passes mechanical-loss resolution, configuration preflight and focused tests; all historical criteria remain unchanged; no campaign has started.",
+    "completion_criterion": "Evaluate the complete 30-point preregistered sweep without changing physics or criteria; preserve classifications/checkpoints, export recoverable evidence and reports, and close only against actual gates.",
     "gate_tasks": [
       "FRPM-CONTRACT",
       "FRPM-MECHANICAL-BINDING",
@@ -3200,7 +3295,13 @@
       "FRPM-READINESS-VERIFY",
       "FRPM-OUTPUT-ADAPTER",
       "FRPM-PREREG-INTEGRITY-AUDIT",
-      "FRPM-CAMPAIGN-RUNNER"
+      "FRPM-CAMPAIGN-RUNNER",
+      "FRPM-CAMPAIGN-EXECUTION",
+      "FRPM-CAMPAIGN-REPORTING",
+      "FRPM-ARTIFACT-INTEGRITY-VERIFY",
+      "FRPM-PILOT-PROJECTION",
+      "FRPM-FULL-CAMPAIGN-EXECUTION",
+      "FRPM-CHECKPOINT-RESUME-VERIFY"
     ],
     "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
     "set_by": "owner request FULL_RPM_SWEEP_V1_READINESS"
@@ -3245,13 +3346,13 @@
     },
     {
       "id": "FULL_RPM_SWEEP_V1",
-      "state": "PASS",
+      "state": "ACTIVE",
       "owner_approved": true,
-      "summary": "Readiness PASS: explicit hash-bound losses are resolved and sweep preparation passed; campaign remains NOT_STARTED and execution is not authorized.",
+      "summary": "Readiness PASS; owner explicitly authorized only the two preregistered variants and 30 points. Campaign in progress; no other campaign or science changes authorized.",
       "readiness_state": "PASS",
       "precondition": "EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED",
       "precondition_status": "RESOLVED",
-      "execution_authorized": false,
+      "execution_authorized": true,
       "change": "openspec/changes/full-rpm-sweep-v1",
       "spec": "openspec/changes/full-rpm-sweep-v1/specs/full-rpm-sweep-v1/spec.md",
       "gate_tasks": [
@@ -3262,8 +3363,30 @@
         "FRPM-READINESS-VERIFY",
         "FRPM-OUTPUT-ADAPTER",
         "FRPM-PREREG-INTEGRITY-AUDIT",
-        "FRPM-CAMPAIGN-RUNNER"
-      ]
+        "FRPM-CAMPAIGN-RUNNER",
+        "FRPM-CAMPAIGN-EXECUTION",
+        "FRPM-CAMPAIGN-REPORTING",
+        "FRPM-ARTIFACT-INTEGRITY-VERIFY",
+        "FRPM-PILOT-PROJECTION",
+        "FRPM-FULL-CAMPAIGN-EXECUTION",
+        "FRPM-CHECKPOINT-RESUME-VERIFY"
+      ],
+      "campaign_authorization": {
+        "scope": "FULL_RPM_SWEEP_V1 only; variants A_PRIME_MESH_0 and B_PRIME_MESH_0; exactly the 30 preregistered RPM points",
+        "pilot_points": [
+          "A_PRIME_MESH_0@4000RPM",
+          "B_PRIME_MESH_0@4000RPM"
+        ],
+        "not_authorized": [
+          "new configurations",
+          "other campaigns",
+          "KT100",
+          "R3",
+          "scientific contract changes"
+        ],
+        "source": "explicit owner authorization in DINO-ACTIVE — FULL_RPM_SWEEP_V1 EXECUTION request",
+        "campaigns_started": 0
+      }
     },
     {
       "id": "TUNING_WORKFLOW_AND_REFERENCE_CORRELATION_V1",
@@ -3722,6 +3845,30 @@
       "task": "FRPM-READINESS-VERIFY",
       "kind": "task",
       "summary": "Final focused suite 12/12, strict OpenSpec 37/37, preregistration audit and zero-step preflight pass; no campaign started."
+    },
+    {
+      "at": "2026-10-09T14:19:59+00:00",
+      "task": "FRPM-CAMPAIGN-EXECUTION",
+      "kind": "task",
+      "summary": "Owner authorized the bounded 30-point campaign. Preparing same-root A4000/B4000 pilot, source provenance, monitoring and resume-safe execution."
+    },
+    {
+      "at": "2026-10-09T14:22:56+00:00",
+      "task": "FRPM-CAMPAIGN-REPORTING",
+      "kind": "task",
+      "summary": "Partial-safe campaign summary, CSV/JSON and four PNG charts implemented and tested without fabricating nonconverged values."
+    },
+    {
+      "at": "2026-10-09T14:22:56+00:00",
+      "task": "FRPM-ARTIFACT-INTEGRITY-VERIFY",
+      "kind": "task",
+      "summary": "External-only artifact verification implemented; test confirms 30-point catalog and provenance bundle verification without historical checkout paths."
+    },
+    {
+      "at": "2026-10-09T14:22:56+00:00",
+      "task": "FRPM-CHECKPOINT-RESUME-VERIFY",
+      "kind": "task",
+      "summary": "Pilot scope, checkpoint hash-binding, and deadline-before-step checks pass."
     }
   ],
   "legacy_gate_status": {
@@ -3737,6 +3884,38 @@
   },
   "gate_status": {
     "objective": "FULL_RPM_SWEEP_V1",
+    "state": "OPEN",
+    "classification": null,
+    "evidence": [],
+    "gate_tasks_total": 14,
+    "gate_tasks_done": 11,
+    "gate_task_states": {
+      "DONE": 11,
+      "IN_PROGRESS": 1,
+      "WAITING": 2
+    },
+    "remaining": [
+      "FRPM-CAMPAIGN-EXECUTION",
+      "FRPM-PILOT-PROJECTION",
+      "FRPM-FULL-CAMPAIGN-EXECUTION"
+    ],
+    "updated_at": "2026-10-09T14:22:56+00:00"
+  },
+  "r2_gate_status": {
+    "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
+    "state": "PASS",
+    "classification": "GENERAL_PURPOSE_2T_SIMULATION_CORE_VERIFIED",
+    "baseline_commit": "1a58b2a5c23447f81308609acc37ab74a8bd5de5",
+    "note": "Historical superseding R2 gate remains PASS, synthetic CONDITIONAL_ON_P4, experimental validation not performed, P9 not claimed; it is not reopened by ENGINE_PHYSICS_V1."
+  },
+  "next_objective": null,
+  "full_rpm_sweep_precondition": "EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED",
+  "full_rpm_sweep_status": "IN_PROGRESS",
+  "full_rpm_sweep_executable": true,
+  "full_rpm_sweep_precondition_status": "RESOLVED",
+  "full_rpm_sweep_execution_authorized": true,
+  "readiness_gate_status": {
+    "objective": "FULL_RPM_SWEEP_V1",
     "state": "PASS",
     "classification": "FULL_RPM_SWEEP_V1_READINESS_PASS",
     "evidence": [
@@ -3750,17 +3929,20 @@
     "remaining": [],
     "updated_at": "2026-10-09T13:47:27+00:00"
   },
-  "r2_gate_status": {
-    "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
-    "state": "PASS",
-    "classification": "GENERAL_PURPOSE_2T_SIMULATION_CORE_VERIFIED",
-    "baseline_commit": "1a58b2a5c23447f81308609acc37ab74a8bd5de5",
-    "note": "Historical superseding R2 gate remains PASS, synthetic CONDITIONAL_ON_P4, experimental validation not performed, P9 not claimed; it is not reopened by ENGINE_PHYSICS_V1."
-  },
-  "next_objective": null,
-  "full_rpm_sweep_precondition": "EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED",
-  "full_rpm_sweep_status": "NOT_STARTED",
-  "full_rpm_sweep_executable": true,
-  "full_rpm_sweep_precondition_status": "RESOLVED",
-  "full_rpm_sweep_execution_authorized": false
+  "campaign_authorization": {
+    "scope": "FULL_RPM_SWEEP_V1 only; variants A_PRIME_MESH_0 and B_PRIME_MESH_0; exactly the 30 preregistered RPM points",
+    "pilot_points": [
+      "A_PRIME_MESH_0@4000RPM",
+      "B_PRIME_MESH_0@4000RPM"
+    ],
+    "not_authorized": [
+      "new configurations",
+      "other campaigns",
+      "KT100",
+      "R3",
+      "scientific contract changes"
+    ],
+    "source": "explicit owner authorization in DINO-ACTIVE — FULL_RPM_SWEEP_V1 EXECUTION request",
+    "campaigns_started": 0
+  }
 }
