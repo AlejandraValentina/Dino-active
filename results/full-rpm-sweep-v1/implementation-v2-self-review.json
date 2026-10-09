@@ -1,0 +1,31 @@
+{
+  "schema": "FULL_RPM_SWEEP_V1_IMPL2_CHECKPOINT_SELF_REVIEW_V1",
+  "review_classification": "SELF_REVIEW",
+  "independent_review": false,
+  "implementation_version": "FULL_RPM_SWEEP_V1_IMPL2",
+  "findings": [
+    {
+      "id": "RESTORE-ATOMICITY",
+      "result": "PASS",
+      "evidence": "Invalid trace-origin checkpoint is rejected before restore commits values; unit test confirms the receiving engine snapshot is unchanged."
+    },
+    {
+      "id": "TRACE-LEDGER-CONTINUITY",
+      "result": "PASS",
+      "evidence": "Full trace uses zero baseline; cycle-local trace validates state origin and cumulative combustion-ledger delta; empty compact boundary requires origin state equal to checkpoint state. JSON restart at a boundary and mid-cycle matches uninterrupted state, ledger and conservation."
+    },
+    {
+      "id": "LEGACY-CHECKPOINT-ISOLATION",
+      "result": "PASS",
+      "evidence": "Markerless compact fuel-ledger snapshots and the v1 campaign checkpoint schema are rejected. IMPL2 requires its own checkpoint schema, implementation version, producer/dependency bindings, and artifact root."
+    },
+    {
+      "id": "CHECKPOINT-FILE-INTEGRITY",
+      "result": "PASS_WITH_BOUNDARY",
+      "evidence": "Resume checks the checkpoint bytes against the checkpoint SHA recorded in campaign.json before JSON deserialization. The external artifact verifier independently checks exported manifest integrity."
+    }
+  ],
+  "limitation": "The local campaign manifest is not a signed authenticity source. This check detects checkpoint byte corruption relative to its recorded manifest digest; external artifact provenance verification remains required for a durable tamper-evident release record.",
+  "campaign_started": false,
+  "historical_v1_artifacts_modified": false
+}

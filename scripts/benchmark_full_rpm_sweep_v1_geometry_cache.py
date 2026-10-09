@@ -56,38 +56,71 @@ def _run_one(variant: dict, rpm: int, *, cached: bool, runner_sha256: str) -> di
         _configuration_for(variant, rpm))
     geometry_cache = install_immutable_geometry_cache_v1(engine) if cached else None
     started = time.perf_counter()
+    stage_timings = {}
+    stage = time.perf_counter()
     start_snapshot = engine.snapshot()
+    stage_timings["start_snapshot_seconds"] = time.perf_counter() - stage
     rejected = []
+    step_times = {"accepted_seconds": 0.0, "rejected_seconds": 0.0,
+                  "accepted_calls": 0, "rejected_calls": 0}
+    original_step = engine.step
+
+    def timed_step(*args, **kwargs):
+        call_started = time.perf_counter()
+        try:
+            value = original_step(*args, **kwargs)
+        except ValueError:
+            step_times["rejected_seconds"] += time.perf_counter() - call_started
+            step_times["rejected_calls"] += 1
+            raise
+        step_times["accepted_seconds"] += time.perf_counter() - call_started
+        step_times["accepted_calls"] += 1
+        return value
+
+    engine.step = timed_step
     rss_before = _rss_bytes()
     solver_started = time.perf_counter()
     _advance_to_bounded(engine, 360.0, rejected, time.monotonic() + 540.0)
     solver_elapsed = time.perf_counter() - solver_started
+    stage = time.perf_counter()
     end_snapshot = engine.snapshot()
+    stage_timings["end_snapshot_seconds"] = time.perf_counter() - stage
+    stage = time.perf_counter()
     primary = make_integrated_cycle_primary(
         engine, start_snapshot, end_snapshot, 1,
         rejected_trials=rejected, runner_sha256=runner_sha256)
+    stage_timings["primary_construction_seconds"] = time.perf_counter() - stage
+    stage = time.perf_counter()
     audit = audit_integrated_cycle_primary(primary)
+    stage_timings["primary_audit_seconds"] = time.perf_counter() - stage
+    stage = time.perf_counter()
     detector = PeriodicDetectorV2()
     periodicity_observation = detector.update(_projection(primary))
+    stage_timings["periodicity_seconds"] = time.perf_counter() - stage
+    stage = time.perf_counter()
     primary_payload = _canonical(primary)
     with io.BytesIO() as compressed:
         with gzip.GzipFile(filename="", mode="wb", fileobj=compressed, mtime=0) as stream:
             stream.write(primary_payload)
         primary_compressed_bytes = len(compressed.getvalue())
-    engine.trace = []
-    engine.accepted_steps = 0
-    engine.rejected_steps = 0
+    stage_timings["primary_serialization_compression_seconds"] = time.perf_counter() - stage
+    stage = time.perf_counter()
+    engine.compact_cycle_trace()
     checkpoint_snapshot = engine.snapshot()
     checkpoint_payload = json.dumps(
         {"engine_snapshot": checkpoint_snapshot,
          "periodicity_snapshot": detector.snapshot()},
         sort_keys=True, separators=(",", ":"), ensure_ascii=False,
         allow_nan=False).encode("utf-8")
+    stage_timings["checkpoint_serialization_seconds"] = time.perf_counter() - stage
     elapsed = time.perf_counter() - started
     rss_after = _rss_bytes()
     return {
         "elapsed_seconds": elapsed,
         "solver_interval_seconds": solver_elapsed,
+        "attempt_timing": step_times,
+        "stage_timings_seconds": stage_timings,
+        "evidence_construction_seconds": sum(stage_timings.values()),
         "primary_uncompressed_bytes": len(primary_payload),
         "primary_compressed_bytes": primary_compressed_bytes,
         "checkpoint_serialized_bytes": len(checkpoint_payload),
@@ -180,6 +213,14 @@ def benchmark(variant_id: str = "A_PRIME_MESH_0", rpm: int = 4000,
         "candidate_rejection_categories": candidate[0]["rejection_categories"],
         "candidate_geometry_cache_counts": [row["geometry_cache"]
                                             for row in candidate],
+        "baseline_stage_timing_medians_seconds": {
+            key: statistics.median(row["stage_timings_seconds"][key]
+                                   for row in baseline)
+            for key in baseline[0]["stage_timings_seconds"]},
+        "candidate_stage_timing_medians_seconds": {
+            key: statistics.median(row["stage_timings_seconds"][key]
+                                   for row in candidate)
+            for key in candidate[0]["stage_timings_seconds"]},
         "equivalence_basis": "exact primary and terminal snapshot hashes plus replay, conservation, species, energy, periodicity observation, and rejected-step counts",
         "baseline_runs": [{k: v for k, v in row.items() if k != "primary"}
                           for row in baseline],

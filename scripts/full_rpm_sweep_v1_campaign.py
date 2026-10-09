@@ -1,4 +1,4 @@
-"""Opt-in resumable FULL_RPM_SWEEP_V1 campaign runner.
+"""Opt-in resumable FULL_RPM_SWEEP_V1_IMPL2 campaign runner.
 
 Default invocation is preflight-only. A campaign requires ``--execute``, a
 durable readiness PASS, and an output directory outside the Git repository.
@@ -52,6 +52,7 @@ from motorsim.reference_harness.convergence import (  # noqa: E402
 
 PROGRAM_STATUS = ROOT / "results/2t-commercial-core-20261002/program-status.json"
 MAX_INVOCATION_SECONDS = 3600
+IMPLEMENTATION_VERSION = "FULL_RPM_SWEEP_V1_IMPL2"
 
 
 def _canonical_bytes(value: Any) -> bytes:
@@ -270,7 +271,7 @@ def _ensure_campaign_provenance(out: Path, prereg: dict,
         }
     receipt = {
         "schema": "FULL_RPM_SWEEP_V1_ARTIFACT_PROVENANCE_V1",
-        "campaign_id": f"FULL_RPM_SWEEP_V1_{prereg_sha[:16]}",
+        "campaign_id": f"{IMPLEMENTATION_VERSION}_{prereg_sha[:16]}",
         "preregistration_sha256": prereg_sha,
         "authorization_sha256": _sha256(
             (ROOT / "results/full-rpm-sweep-v1/campaign-authorization.json").read_bytes()),
@@ -386,6 +387,7 @@ def _point_contract_hashes(prereg: dict, prereg_sha: str, variant: dict,
         "periodicity_source_sha256": prereg["periodicity_source_sha256"],
         "campaign_producer_sha256": _sha256(
             Path(__file__).read_bytes().replace(b"\r\n", b"\n")),
+        "implementation_version": IMPLEMENTATION_VERSION,
         "output_adapter_sha256": _sha256(
             (ROOT / "motorsim/full_rpm_outputs_v1.py").read_bytes().replace(b"\r\n", b"\n")),
     }
@@ -406,9 +408,15 @@ def _configuration_for(variant: dict, rpm: int) -> dict:
     return config
 
 
-def _load_checkpoint(path: Path, expected: dict) -> dict:
-    value = _read_json(path)
-    if value.get("schema") != "FULL_RPM_SWEEP_V1_POINT_CHECKPOINT":
+def _load_checkpoint(path: Path, expected: dict,
+                     expected_file_sha256: str | None = None) -> dict:
+    payload = path.read_bytes()
+    if (expected_file_sha256 is not None and
+            _sha256(payload) != expected_file_sha256):
+        raise ValueError("checkpoint artifact hash mismatch")
+    value = json.loads(payload)
+    if (value.get("schema") != "FULL_RPM_SWEEP_V1_IMPL2_POINT_CHECKPOINT" or
+            value.get("implementation_version") != IMPLEMENTATION_VERSION):
         raise ValueError("checkpoint schema mismatch")
     if value.get("bindings") != expected:
         raise ValueError("checkpoint binding hash mismatch")
@@ -445,7 +453,16 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
     if checkpoint_path.is_file():
         if not resume:
             raise FileExistsError(f"incomplete point exists; pass --resume: {point_dir}")
-        checkpoint = _load_checkpoint(checkpoint_path, bindings)
+        campaign_manifest = _read_json(output_root / "campaign.json")
+        point_row = next((row for row in campaign_manifest.get(
+            "completed_or_checkpointed_points", [])
+                          if row.get("point_id") == point_id), None)
+        if not isinstance(point_row, dict) or not isinstance(
+                point_row.get("checkpoint_sha256"), str):
+            raise ValueError("checkpoint artifact hash is missing from campaign manifest")
+        checkpoint = _load_checkpoint(
+            checkpoint_path, bindings,
+            expected_file_sha256=point_row["checkpoint_sha256"])
         engine.restore(checkpoint["engine_snapshot"])
         detector.restore(checkpoint["periodicity_snapshot"])
         start_snapshot = engine.snapshot()
@@ -506,7 +523,8 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
             engine.restore(cycle_start_snapshot)
             detector.restore(detector_start_snapshot)
             checkpoint = {
-                "schema": "FULL_RPM_SWEEP_V1_POINT_CHECKPOINT",
+                "schema": "FULL_RPM_SWEEP_V1_IMPL2_POINT_CHECKPOINT",
+                "implementation_version": IMPLEMENTATION_VERSION,
                 "bindings": bindings,
                 "next_cycle": cycle,
                 "engine_snapshot": cycle_start_snapshot,
@@ -651,12 +669,11 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
 
         # Keep the complete-cycle state but discard trajectory memory before
         # the next cycle. The exact physical state and ledgers are retained.
-        engine.trace = []
-        engine.accepted_steps = 0
-        engine.rejected_steps = 0
+        engine.compact_cycle_trace()
         start_snapshot = engine.snapshot()
         checkpoint = {
-            "schema": "FULL_RPM_SWEEP_V1_POINT_CHECKPOINT",
+            "schema": "FULL_RPM_SWEEP_V1_IMPL2_POINT_CHECKPOINT",
+            "implementation_version": IMPLEMENTATION_VERSION,
             "bindings": bindings,
             "next_cycle": cycle + 1,
             "engine_snapshot": start_snapshot,
@@ -731,7 +748,7 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
     output_manifest = out / "campaign.json"
     if output_manifest.exists() and not resume:
         raise FileExistsError("campaign output exists; pass --resume or choose a fresh external directory")
-    campaign_id = f"FULL_RPM_SWEEP_V1_{prereg_sha[:16]}"
+    campaign_id = f"{IMPLEMENTATION_VERSION}_{prereg_sha[:16]}"
     if output_manifest.exists():
         prior_manifest = _read_json(output_manifest)
         if (prior_manifest.get("campaign_id") != campaign_id or
@@ -892,7 +909,11 @@ def main(argv: list[str] | None = None) -> int:
         artifact_root = os.environ.get("DINO_ARTIFACT_ROOT")
         if not artifact_root:
             parser.error("--execute requires --output-root or DINO_ARTIFACT_ROOT")
-        output_root = Path(artifact_root) / "engine-physics-v1/full-rpm-sweep-v1"
+        output_root = Path(artifact_root) / "engine-physics-v1/full-rpm-sweep-v1-impl2"
+    if output_root.name != "full-rpm-sweep-v1-impl2":
+        parser.error("IMPL2 requires a separate output root named full-rpm-sweep-v1-impl2")
+    if output_root.resolve().is_relative_to(ROOT.resolve()):
+        parser.error("campaign artifact output must remain outside the repository")
     result = execute_campaign(output_root=output_root, resume=args.resume,
                               pilot=args.pilot,
                               budget_seconds=args.budget_seconds)

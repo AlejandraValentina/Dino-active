@@ -5,7 +5,7 @@
   "purpose": "Continue performance recovery under a separately hash-bound implementation identity if broader evidence/audit optimizations demonstrate material speedup.",
   "scientific_contract": "Preserve the existing FULL_RPM_SWEEP_V1 RPM grid, fixtures, losses, WOT, solver equations, CFL, discretization, periodicity thresholds, gates and output definitions unchanged. Any changed solver dependency requires a new preregistration hash set.",
   "implementation_version": "FULL_RPM_SWEEP_V1_IMPL2",
-  "current_measured_geometry_cache_speedup": 1.064920362950549,
+  "current_measured_geometry_cache_speedup": 1.051525017965905,
   "acceptance_target": "Benchmark end-to-end speedup on multiple cycle phases and both mesh variants; exact primary/snapshot equality for purely memoized geometry or contract tolerance plus conservation/species/energy/periodicity equivalence for arithmetic optimizations.",
   "required_work": [
     "Profile/optimize primary serialization and audit replay without weakening independent recomputation.",
@@ -22,5 +22,16 @@
     "end_to_end_wall_time_reduction": 0.05305567062920369
   },
   "screening_projection_hours_after_measured_speedup": 12.45989348586983,
-  "decision": "Candidate is numerically safe in the bounded benchmark but the measured 5.3% wall-time reduction leaves the estimated campaign at ~12.46 h; no v2 campaign is authorized. Prioritize evidence/audit and checkpoint-restore hot spots before reconsidering."
+  "decision": "PERFORMANCE_PARTIAL. Measured primary audit and construction dominate; geometry caching gives about 1.05x combined. Stop micro-optimization below 3x and prepare a versioned evidence/audit architecture before any later campaign authorization.",
+  "compatibility_manifest": "results/full-rpm-sweep-v1/implementation-v2-identity.json",
+  "checkpoint_format": "FULL_RPM_SWEEP_V1_IMPL2_POINT_CHECKPOINT with explicit CYCLE_LOCAL trace baseline",
+  "measured_end_to_end": {
+    "A4000": 1.0651811165742444,
+    "B4000": 1.040321170103736,
+    "equal_mesh_weighted": 1.0528654671145892,
+    "screening_projection_hours": 12.497323172788553
+  },
+  "preregistration_proposal": "results/full-rpm-sweep-v1/implementation-v2-preregistration-proposal.json",
+  "checkpoint_schema": "FULL_RPM_SWEEP_V1_IMPL2_POINT_CHECKPOINT",
+  "self_review": "results/full-rpm-sweep-v1/implementation-v2-self-review.json"
 }

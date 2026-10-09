@@ -1,0 +1,237 @@
+{
+  "schema": "FULL_RPM_SWEEP_V1_PERFORMANCE_RECOVERY_V2",
+  "baseline_head": "c96791231aa477a90a9f34ef9872c658dd667b83",
+  "campaign_status": "PARTIAL",
+  "campaign_started": false,
+  "new_points_started": 0,
+  "remaining_points": "28 NOT_STARTED",
+  "checkpoint_restore": {
+    "root_cause": "The sweep runner cleared the accepted trace and reset per-trace counters after a full cycle; combustion totals stayed cumulative. Restore treated those cumulative totals as if the trace still held the full history.",
+    "implementation": "Explicit FULL versus CYCLE_LOCAL trace scope, cumulative combustion-ledger baseline, cycle-local origin state and compact_cycle_trace(). IMPL2 runner binds a distinct checkpoint schema/version and output root.",
+    "compatibility": "Markerless compact legacy checkpoints are rejected. V1 checkpoints and their hashes remain unchanged and are not used by IMPL2.",
+    "continuity_test": "PASS: boundary and mid-cycle JSON round-trip resumes produce equal state, ledger and conservation report versus uninterrupted continuation.",
+    "integrity_tests": "PASS: trace origin and baseline are validated; ambiguous legacy compact checkpoint rejected.",
+    "historical_artifacts_modified": false,
+    "self_review": "results/full-rpm-sweep-v1/implementation-v2-self-review.json"
+  },
+  "profiling": {
+    "method": "Direct phase wall clocks, per-step timers, plus 10-ms low-rate Python stack sampling. No cProfile in elapsed-time runs.",
+    "scope": "Three paired one-cycle A4000 runs and three paired B4000 runs, plus one sampled baseline cycle per mesh; build primary, recompute audit, compress, detector, checkpoint serialization; no campaign writes.",
+    "repeats_per_mode_and_mesh": 3,
+    "sampled_profile_sha256": "1216617b017be3d77af5da3358b9f75b65c046a523901de46edc8d8f866a058b",
+    "sample_count": {
+      "A_PRIME_MESH_0": 418,
+      "B_PRIME_MESH_0": 405
+    },
+    "per_variant": {
+      "A4000": {
+        "speedup": 1.0651811165742444,
+        "equivalent": true,
+        "baseline_seconds": 15.477275699842721,
+        "candidate_seconds": 14.530182200018317,
+        "timing": {
+          "baseline": {
+            "total_seconds": 15.477275699842721,
+            "numerical_advance_seconds": 2.0577187000308186,
+            "primary_construction_seconds": 3.4698664001189172,
+            "primary_audit_seconds": 8.34368190006353,
+            "primary_serialization_compression_seconds": 0.8487907000817358,
+            "accepted_step_seconds": 1.9557862973306328,
+            "rejected_step_seconds": 0.09427999914623797,
+            "accepted_step_calls": 808,
+            "rejected_step_calls": 84,
+            "primary_uncompressed_bytes": 13678581,
+            "checkpoint_serialized_bytes": 80129
+          },
+          "geometry_cache_candidate": {
+            "total_seconds": 14.530182200018317,
+            "numerical_advance_seconds": 1.7359927999787033,
+            "primary_construction_seconds": 3.251757699996233,
+            "primary_audit_seconds": 8.265495899831876,
+            "primary_serialization_compression_seconds": 0.8593011000193655,
+            "accepted_step_seconds": 1.6454585988540202,
+            "rejected_step_seconds": 0.08450970193371177,
+            "accepted_step_calls": 808,
+            "rejected_step_calls": 84,
+            "primary_uncompressed_bytes": 13678581,
+            "checkpoint_serialized_bytes": 80129
+          }
+        }
+      },
+      "B4000": {
+        "speedup": 1.040321170103736,
+        "equivalent": true,
+        "baseline_seconds": 14.840532599948347,
+        "candidate_seconds": 14.265337500022724,
+        "timing": {
+          "baseline": {
+            "total_seconds": 14.840532599948347,
+            "numerical_advance_seconds": 2.0605892001185566,
+            "primary_construction_seconds": 3.361138599924743,
+            "primary_audit_seconds": 8.08506859978661,
+            "primary_serialization_compression_seconds": 0.9025067000184208,
+            "accepted_step_seconds": 1.9588935999199748,
+            "rejected_step_seconds": 0.09562080027535558,
+            "accepted_step_calls": 808,
+            "rejected_step_calls": 85,
+            "primary_uncompressed_bytes": 13726277,
+            "checkpoint_serialized_bytes": 68147
+          },
+          "geometry_cache_candidate": {
+            "total_seconds": 14.265337500022724,
+            "numerical_advance_seconds": 1.755723400041461,
+            "primary_construction_seconds": 3.336360299959779,
+            "primary_audit_seconds": 7.896441200049594,
+            "primary_serialization_compression_seconds": 0.9049563999287784,
+            "accepted_step_seconds": 1.6651236969046295,
+            "rejected_step_seconds": 0.08471200056374073,
+            "accepted_step_calls": 808,
+            "rejected_step_calls": 85,
+            "primary_uncompressed_bytes": 13726277,
+            "checkpoint_serialized_bytes": 68147
+          }
+        }
+      }
+    },
+    "dominant_baseline_shares_approx": {
+      "primary_audit": 0.5418845035695854,
+      "primary_construction": 0.2253132855942867,
+      "numerical_advance": 0.1358379160995538
+    },
+    "sampled_self_time_approx": {
+      "A4000": {
+        "_jsonify": 0.065,
+        "deepcopy": 0.074,
+        "_assemble": 0.043,
+        "EOS.validate": 0.034,
+        "validate_species": 0.024,
+        "IntegratedEngine2T.step": 0.017,
+        "hllc_flux": 0.012
+      },
+      "B4000": {
+        "_jsonify": 0.069,
+        "deepcopy": 0.064,
+        "_assemble": 0.015,
+        "EOS.validate": 0.027,
+        "validate_species": 0.02,
+        "IntegratedEngine2T.step": 0.005,
+        "hllc_flux": 0.015
+      }
+    },
+    "historical_v1_disk_costs": {
+      "A_PRIME_MESH_0": {
+        "cycles": 88,
+        "median_cycle_elapsed_seconds": 31.617499999934807,
+        "median_primary_serialization_seconds": 1.0469999997876585,
+        "median_primary_write_seconds": 1.1559999999590218,
+        "median_checkpoint_write_seconds": 0.03100000019185245,
+        "primary_compressed_bytes_total": 476841208
+      },
+      "B_PRIME_MESH_0": {
+        "cycles": 38,
+        "median_cycle_elapsed_seconds": 18.976499999989755,
+        "median_primary_serialization_seconds": 0.6560000001918525,
+        "median_primary_write_seconds": 0.7815000000409782,
+        "median_checkpoint_write_seconds": 0.01600000006146729,
+        "primary_compressed_bytes_total": 160741200
+      }
+    },
+    "top_three_baseline_mean_seconds": {
+      "primary_audit": 8.21437524992507,
+      "primary_construction": 3.41550250002183,
+      "numerical_advance": 2.0591539500746876
+    }
+  },
+  "numba_assessment": {
+    "installed_version": "0.62.1",
+    "prototype_compiled": false,
+    "adopted": false,
+    "reason": "Whole numerical advance is ~13.7% of this one-cycle in-memory runtime; the absolute Amdahl ceiling from eliminating it entirely is about 1.16x. EOS/HLLC/species are smaller sampled self-time fragments. Numba cannot speed the dominant object-heavy evidence build/audit.",
+    "architectural_constraint": "The solver/auditor exchange nested Python dict/list traces and deepcopy/JSON-shaped trees. Efficient compiled array kernels need a versioned numeric/columnar trace interface; converting per face or per step at current boundaries would retain Python dispatch and object conversion.",
+    "next_architecture": "Evaluate streaming or columnar primary evidence with independent replay over that representation, preserving persisted scientific fields and hash semantics."
+  },
+  "optimization": {
+    "candidate": "instance-local memoization for immutable EngineGeometry2T values",
+    "A4000_speedup": 1.0651811165742444,
+    "B4000_speedup": 1.040321170103736,
+    "equal_mesh_combined_speedup": 1.0528654671145892,
+    "combined_baseline_seconds": 15.158904149895534,
+    "combined_candidate_seconds": 14.39775985002052,
+    "total_time_reduction": 0.0502110371797726,
+    "equivalence": "BITWISE equality of primary and terminal snapshot across paired runs; primary replay audit, conservation, species/energy inventory, periodicity observation, and rejected-step counts match.",
+    "rejections_and_cost": {
+      "A4000": {
+        "count": 84,
+        "seconds": 0.09427999914623797
+      },
+      "B4000": {
+        "count": 85,
+        "seconds": 0.09562080027535558
+      }
+    },
+    "cache_container_bytes": {
+      "A4000": 128232,
+      "B4000": 128008
+    },
+    "sampled_peak_process_rss_bytes": {
+      "A_PRIME_MESH_0": 265961472,
+      "B_PRIME_MESH_0": 254754816
+    },
+    "memory_delta": "Not claimed: RSS is whole-process sampled high water, not candidate-minus-baseline allocation."
+  },
+  "projection": {
+    "previous_linear_campaign_estimate_hours": 13.158,
+    "screening_projection_hours": 12.497323172788553,
+    "uncertainty": "Applies first-cycle 4000-RPM in-memory speedup to the historical 30-point campaign estimate. It omits v2 filesystem writes and cannot establish transfer to later cycle phases/RPM."
+  },
+  "compatibility": {
+    "v1_preregistration_sha256": "300970997b126bf0f327adce2ad4af16ee986417696d2ecce7dec0fdf9d218ad",
+    "v1_preregistration_unchanged": true,
+    "v1_solver_hash_expected": "b9f61c7890123c73e955b961ffe0272fcbbe7bc6c013d538c5bc9f0fcebb3963",
+    "current_integrated_2t_hash": "4794e0d382a49c51d64ea0ac906aaec6649a8745cd6733fae8cff10e2c090d8f",
+    "v1_contract_check": "FAIL_CLOSED only at solver_hashes, as intended after restore implementation source changed; remaining fixture, loss, fuel, mixture, grid and periodicity checks pass.",
+    "solver_dependency_hashes": {
+      "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+      "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+      "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+      "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+      "motorsim.gas1d.eos": "72ec337f941b1259ab23c04f70ec75593870bdcc4b065d481b38834430221186",
+      "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+      "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+      "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+      "motorsim.integrated_2t": "4794e0d382a49c51d64ea0ac906aaec6649a8745cd6733fae8cff10e2c090d8f",
+      "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+      "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+      "motorsim.p6_species": "7ed60395642eecb6b5b9f15bbe095489468da7b562f72d0b53b13527a97e2dab",
+      "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+      "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+      "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+      "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+      "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+      "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095"
+    },
+    "campaign_runner_sha256": "85038bda2ea79f3e8fc9bb2f1390c649c841c394a9e1203fbe3e816dec44c4db",
+    "geometry_benchmark_script_sha256": "6177b93b1fc9092f9851d289622748937e6df82c50c68e0a792f8296222a090b",
+    "sampling_profiler_sha256": "fd24516ff8d3347f40ebddcbe6e78012a110972c93b80f461e9cd26328c1bf04",
+    "benchmark_artifacts_sha256": {
+      "frpm-v2-final-benchmark-a4000": "9e7ea59b51ef68b03f4e26d00a0f405ffc09247fb16cfb504cac2fc038c9a011",
+      "frpm-v2-final-benchmark-b4000": "a846a4665a4bc905f167a675bde1978445695e7dc2bfacfb239d5fc8dff6f653",
+      "frpm-v2-final-sampling-profile": "1216617b017be3d77af5da3358b9f75b65c046a523901de46edc8d8f866a058b"
+    },
+    "proposed_artifact_root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2",
+    "implementation_version": "FULL_RPM_SWEEP_V1_IMPL2",
+    "R2_reopened": false,
+    "old_primaries_checkpoints_manifest_modified": false
+  },
+  "decision": "PERFORMANCE_PARTIAL",
+  "micro_optimization_stop": "End-to-end gain is below 3x; stop micro-optimizations and proceed to the evidence-architecture proposal. No RPM points started.",
+  "verification": {
+    "integrated_engine_tests": "74 passed in 192.05s; subsequent atomic-origin rejection test passed (1 passed).",
+    "campaign_binding_test": "passed for IMPL2 checkpoint schema; markerless v1 schema rejected.",
+    "openspec_strict": "PASS for full-rpm-sweep-v1-impl2-performance.",
+    "program_status_check": "PASS.",
+    "v1_contract_tests": "23 passed, 6 fail-closed due to the frozen v1 solver hash mismatch; the v1 contract audit reports solver_hashes=false only. No v1 specs/tests/preregistration were altered.",
+    "campaign_artifact_integrity": "Prior historical bundle verification passed before this change; stored v1 evidence was not modified.",
+    "checkpoint_runner_test": "1 passed; checks IMPL2 schema, digest match/mismatch, binding mismatch and legacy schema rejection."
+  }
+}

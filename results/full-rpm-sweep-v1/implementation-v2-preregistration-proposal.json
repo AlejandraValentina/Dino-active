@@ -1,0 +1,260 @@
+{
+  "schema": "FULL_RPM_SWEEP_V1_IMPL2_PREREGISTRATION_PROPOSAL",
+  "status": "PROPOSAL_NOT_ACTIVE_NOT_AUTHORIZED",
+  "implementation_version": "FULL_RPM_SWEEP_V1_IMPL2",
+  "source_preregistration_file_sha256": "300970997b126bf0f327adce2ad4af16ee986417696d2ecce7dec0fdf9d218ad",
+  "source_scientific_contract_canonical_sha256": "e7ec353ffebc83151050f572ac8f7ca6fe3ac1dd8f6fd5f6855629f522cd0c19",
+  "unchanged_scientific_contract": {
+    "schema": "FULL_RPM_SWEEP_V1_PREREGISTRATION",
+    "engine_configuration_mutable": false,
+    "variants": [
+      {
+        "variant_id": "A_PRIME_MESH_0",
+        "fixture_id": "FIXTURE_A_PRIME",
+        "source_fixture_path": "results/2t-commercial-core-20261002/fixtures/v1-prime-mesh/fixture_a_prime-mesh-0.json",
+        "fixture_sha256": "1f1298c0fd38e925eeac0be3049d7fa7d260ac8d5a07ba97042e02e2d7c7a9cf",
+        "engine_configuration_sha256": "d3f000f72dda247e11a561ad63fb93daab1145cca689105a17cd8e6ae7c71ab7",
+        "declared_configuration_sha256": "d3f000f72dda247e11a561ad63fb93daab1145cca689105a17cd8e6ae7c71ab7",
+        "base_reference_rpm": 3000.0,
+        "mechanical_loss_model": {
+          "cycle_convention": "2T_360_DEG_ONE_CYCLE_PER_REV",
+          "schema": "MECHANICAL_LOSS_MODEL_V1",
+          "terms": [
+            {
+              "id": "synthetic-piston-ring",
+              "mep_pa": 1000.0,
+              "operating_map": null,
+              "provenance": "SYNTHETIC_ASSUMPTION",
+              "source": "piston_ring"
+            },
+            {
+              "id": "synthetic-bearing-accessory",
+              "mep_pa": 500.0,
+              "operating_map": null,
+              "provenance": "SYNTHETIC_ASSUMPTION",
+              "source": "bearing_accessory"
+            }
+          ]
+        },
+        "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+        "mechanical_loss_mep_pa_at_reference": 1500.0,
+        "fuel": {
+          "schema": "SYNTHETIC_FUEL_SURROGATE_V1",
+          "sha256": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+          "provenance": "SYNTHETIC_ASSUMPTION",
+          "stoichiometric_afr": 14.712643678160918
+        },
+        "mixture_input": {
+          "source": "engine_configuration.atmosphere_species",
+          "species_mass_fractions": [
+            0.98,
+            0.02,
+            0.0,
+            0.0
+          ],
+          "air_to_fuel_pseudo_species_mass_ratio": 49.0,
+          "basis": "synthetic pseudo-species ratio; not measured chemical AFR"
+        },
+        "boundaries": {
+          "inlet": {
+            "kind": "open_end_plenum_v2",
+            "p0": 101325.0,
+            "T0": 300.0
+          },
+          "outlet": {
+            "kind": "open_end_plenum_v2",
+            "p0": 101325.0,
+            "T0": 300.0
+          }
+        },
+        "powervalve_rpm_domain": [
+          1000.0,
+          5000.0
+        ],
+        "configuration_provenance": "SYNTHETIC_ASSUMPTION_CONDITIONAL_ON_P4"
+      },
+      {
+        "variant_id": "B_PRIME_MESH_0",
+        "fixture_id": "FIXTURE_B_PRIME",
+        "source_fixture_path": "results/2t-commercial-core-20261002/fixtures/v1-prime-mesh/fixture_b_prime-mesh-0.json",
+        "fixture_sha256": "5b487b01044beee19cc537db158264e52aa9e34a567004bcbe883e1166bfe173",
+        "engine_configuration_sha256": "b21dd08a23679954c1ac39aae383fc2a78c702c5a358c8e2387fcecd00f2af82",
+        "declared_configuration_sha256": "b21dd08a23679954c1ac39aae383fc2a78c702c5a358c8e2387fcecd00f2af82",
+        "base_reference_rpm": 4000.0,
+        "mechanical_loss_model": {
+          "cycle_convention": "2T_360_DEG_ONE_CYCLE_PER_REV",
+          "schema": "MECHANICAL_LOSS_MODEL_V1",
+          "terms": [
+            {
+              "id": "synthetic-piston-ring",
+              "mep_pa": 1000.0,
+              "operating_map": null,
+              "provenance": "SYNTHETIC_ASSUMPTION",
+              "source": "piston_ring"
+            },
+            {
+              "id": "synthetic-bearing-accessory",
+              "mep_pa": 500.0,
+              "operating_map": null,
+              "provenance": "SYNTHETIC_ASSUMPTION",
+              "source": "bearing_accessory"
+            }
+          ]
+        },
+        "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+        "mechanical_loss_mep_pa_at_reference": 1500.0,
+        "fuel": {
+          "schema": "SYNTHETIC_FUEL_SURROGATE_V1",
+          "sha256": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+          "provenance": "SYNTHETIC_ASSUMPTION",
+          "stoichiometric_afr": 14.712643678160918
+        },
+        "mixture_input": {
+          "source": "engine_configuration.atmosphere_species",
+          "species_mass_fractions": [
+            0.98,
+            0.02,
+            0.0,
+            0.0
+          ],
+          "air_to_fuel_pseudo_species_mass_ratio": 49.0,
+          "basis": "synthetic pseudo-species ratio; not measured chemical AFR"
+        },
+        "boundaries": {
+          "inlet": {
+            "kind": "open_end_plenum_v2",
+            "p0": 101325.0,
+            "T0": 300.0
+          },
+          "outlet": {
+            "kind": "open_end_plenum_v2",
+            "p0": 101325.0,
+            "T0": 300.0
+          }
+        },
+        "powervalve_rpm_domain": [
+          1000.0,
+          5000.0
+        ],
+        "configuration_provenance": "SYNTHETIC_ASSUMPTION_CONDITIONAL_ON_P4"
+      }
+    ],
+    "rpm_grid": {
+      "start_rpm": 1000,
+      "stop_rpm": 5000,
+      "increment_rpm": 300,
+      "include_stop_endpoint": true,
+      "endpoint_rule": "append stop_rpm if increment does not land exactly",
+      "points_rpm": [
+        1000,
+        1300,
+        1600,
+        1900,
+        2200,
+        2500,
+        2800,
+        3100,
+        3400,
+        3700,
+        4000,
+        4300,
+        4600,
+        4900,
+        5000
+      ]
+    },
+    "operation": {
+      "mode": "WOT",
+      "throttle_fraction": 1.0,
+      "boundary_semantics": "existing unthrottled OPEN_END_PLENUM_V2 inlet and outlet; no throttle component exists in the bound integrated configuration",
+      "powervalve": "existing RPM map retained unchanged"
+    },
+    "fuel_basis": "per-variant explicit fuel snapshot and existing synthetic premixed atmosphere species; ratio is pseudo-species basis, not measured chemical AFR",
+    "periodicity": {
+      "contract": "REFERENCE_PERIODIC_CONVERGENCE_V2",
+      "streak": 3,
+      "thresholds": {
+        "chamber_mass_relative": 0.002,
+        "chamber_total_energy_relative": 0.002,
+        "chamber_pressure_relative": 0.005,
+        "chamber_temperature_relative": 0.005,
+        "duct_cell_mass_relative": 0.002,
+        "duct_cell_total_energy_relative": 0.002,
+        "duct_cell_pressure_relative": 0.005,
+        "duct_cell_temperature_relative": 0.005,
+        "duct_cell_species_mass_fraction_absolute": 0.002,
+        "duct_cell_velocity_over_sound_speed_absolute": 0.005,
+        "global_species_inventory_over_total_mass": 0.002,
+        "work_relative_floor_1J": 0.005,
+        "fresh_delivery_fraction_of_cycle_start_mass": 0.002,
+        "fresh_short_circuit_fraction_of_cycle_start_mass": 0.002,
+        "p7_burned_species_fraction_of_cycle_start_mass": 0.002,
+        "p7_heat_fraction_of_cycle_start_energy": 0.002
+      },
+      "thresholds_sha256": "43419bccbbcefaf04200448148e74d576d6fa1ecb0d9adf9c26a614e67828eff"
+    },
+    "horizon": {
+      "max_complete_cycles_per_point": 111,
+      "nonconvergence_classification": "NO_CONVERGENCE_WITHIN_HORIZON"
+    },
+    "budget": {
+      "wall_clock_seconds_per_invocation": 3600,
+      "checkpoint_after_each_accepted_cycle": true,
+      "checkpoint_after_each_completed_rpm_point": true,
+      "resume_requires_exact_configuration_solver_detector_hashes": true
+    },
+    "outputs": {
+      "IMEP": "Pa",
+      "FMEP": "Pa",
+      "BMEP": "Pa",
+      "brake_torque": "N m",
+      "brake_power": "W",
+      "ISFC": "g/kWh",
+      "BSFC": "g/kWh"
+    },
+    "periodicity_source_sha256": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+    "mechanical_model_implementation_sha256": "de71d3bacb18e7661de0ff15cbac50f1a252fc01970c7ef9aa04c8a3424d0fff",
+    "compatibility_policy": "legacy APIs retain historical default behavior; FULL_RPM_SWEEP_V1 resolves and passes an explicit model and fails closed otherwise",
+    "claim_scope": "synthetic engineering inputs conditional on P4; no experimental or predictive validation claim"
+  },
+  "implementation_identity": {
+    "solver_dependency_hashes": {
+      "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+      "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+      "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+      "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+      "motorsim.gas1d.eos": "72ec337f941b1259ab23c04f70ec75593870bdcc4b065d481b38834430221186",
+      "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+      "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+      "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+      "motorsim.integrated_2t": "4794e0d382a49c51d64ea0ac906aaec6649a8745cd6733fae8cff10e2c090d8f",
+      "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+      "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+      "motorsim.p6_species": "7ed60395642eecb6b5b9f15bbe095489468da7b562f72d0b53b13527a97e2dab",
+      "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+      "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+      "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+      "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+      "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+      "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095"
+    },
+    "campaign_runner_sha256": "3d9e85ec50f2885145d252faa952a31c3554ed1a2955eccccad1c8ebcbb613b3",
+    "geometry_benchmark_script_sha256": "6177b93b1fc9092f9851d289622748937e6df82c50c68e0a792f8296222a090b",
+    "sampling_profiler_sha256": "fd24516ff8d3347f40ebddcbe6e78012a110972c93b80f461e9cd26328c1bf04"
+  },
+  "compatibility": {
+    "v1_integrated_solver_hash": "b9f61c7890123c73e955b961ffe0272fcbbe7bc6c013d538c5bc9f0fcebb3963",
+    "impl2_integrated_solver_hash": "4794e0d382a49c51d64ea0ac906aaec6649a8745cd6733fae8cff10e2c090d8f",
+    "v1_dependency_hash_set_matches": false,
+    "v1_checkpoints_reusable": false,
+    "v1_primaries_and_manifest": "PRESERVED_READ_ONLY",
+    "rpm_grid_and_scientific_criteria": "UNCHANGED",
+    "distinct_campaign_id_and_output_root": true
+  },
+  "campaign_started": false,
+  "campaign_execution_authorized": false,
+  "required_artifact_root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2",
+  "required_campaign_id_prefix": "FULL_RPM_SWEEP_V1_IMPL2",
+  "required_checkpoint_schema": "FULL_RPM_SWEEP_V1_IMPL2_POINT_CHECKPOINT",
+  "authorization_requirement": "Separate owner approval and execution authorization are required; this file itself grants neither."
+}

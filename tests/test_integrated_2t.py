@@ -1826,6 +1826,57 @@ def test_fuel_coupled_chemistry_uses_both_ssprk_stages_and_restores_independentl
     assert restored.snapshot() == rebuilt.snapshot()
 
 
+def test_compacted_cycle_checkpoint_restores_cumulative_fuel_ledger_and_continues():
+    combustion = FuelCoupledCombustionV1(
+        (WiebeComponent(1.0, 40.0, 5.0, 2.0),),
+        ignition_timing_deg=0.0, combustion_efficiency=.8)
+    engine = _internal_cycle_fixture(fuel_coupled_combustion=combustion,
+                                     open_end_plenum_v2=True)
+    engine.step(.1 / (6.0 * engine.reference_rpm), .1)
+    assert engine.ledger["fuel_combustion_heat_added_J"] > 0.0
+    engine.compact_cycle_trace()
+    checkpoint = json.loads(json.dumps(engine.snapshot()))
+    assert checkpoint["trace"] == []
+    assert checkpoint["trace_scope"] == "CYCLE_LOCAL"
+    restored = IntegratedEngine2T.from_configuration_dict(engine.configuration_dict())
+    restored.restore(checkpoint)
+    engine.step(.1 / (6.0 * engine.reference_rpm), .1)
+    restored.step(.1 / (6.0 * restored.reference_rpm), .1)
+    assert restored.state == engine.state
+    assert restored.ledger == engine.ledger
+    assert restored.conservation_report() == engine.conservation_report()
+    mid_cycle = json.loads(json.dumps(engine.snapshot()))
+    restarted = IntegratedEngine2T.from_configuration_dict(engine.configuration_dict())
+    restarted.restore(mid_cycle)
+    engine.step(.1 / (6.0 * engine.reference_rpm), .1)
+    restarted.step(.1 / (6.0 * restarted.reference_rpm), .1)
+    assert restarted.state == engine.state
+    assert restarted.ledger == engine.ledger
+    assert restarted.conservation_report() == engine.conservation_report()
+
+    bad_origin = deepcopy(checkpoint)
+    bad_origin["trace_origin_state"]["chambers"]["cylinder"][2] += 1e-6
+    untouched = IntegratedEngine2T.from_configuration_dict(engine.configuration_dict())
+    before_rejection = deepcopy(untouched.snapshot())
+    with pytest.raises(ValueError, match="compact boundary state mismatch"):
+        untouched.restore(bad_origin)
+    assert untouched.snapshot() == before_rejection
+
+    legacy_compacted = deepcopy(checkpoint)
+    legacy_compacted.pop("trace_scope")
+    legacy_compacted.pop("trace_fuel_combustion_baseline")
+    legacy_compacted.pop("trace_origin_state")
+    incompatible = IntegratedEngine2T.from_configuration_dict(engine.configuration_dict())
+    with pytest.raises(ValueError, match="fuel-combustion ledger mismatch"):
+        incompatible.restore(legacy_compacted)
+
+
+def test_compact_cycle_trace_requires_complete_nonempty_trace_boundary():
+    engine = _internal_cycle_fixture()
+    with pytest.raises(ValueError, match="complete trace boundary"):
+        engine.compact_cycle_trace()
+
+
 def test_fuel_library_v2_snapshot_drives_integrated_combustion_and_roundtrips():
     library = FuelLibrary()
     snapshot = library.freeze("MOTORSIM_ISOOCTANE_SURROGATE_V1")

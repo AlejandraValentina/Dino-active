@@ -239,16 +239,25 @@ def test_checkpoint_resume_requires_matching_bindings(tmp_path):
     expected = {"preregistration_sha256": "a" * 64,
                 "point_configuration_sha256": "b" * 64}
     checkpoint = {
-        "schema": "FULL_RPM_SWEEP_V1_POINT_CHECKPOINT",
+        "schema": "FULL_RPM_SWEEP_V1_IMPL2_POINT_CHECKPOINT",
+        "implementation_version": campaign.IMPLEMENTATION_VERSION,
         "bindings": expected,
         "next_cycle": 8,
         "engine_snapshot": {"angle": 2520.0},
         "periodicity_snapshot": {"streak": 2},
     }
     path.write_text(json.dumps(checkpoint), encoding="utf-8")
-    assert campaign._load_checkpoint(path, expected)["next_cycle"] == 8
+    payload_sha = campaign._sha256(path.read_bytes())
+    assert campaign._load_checkpoint(
+        path, expected, expected_file_sha256=payload_sha)["next_cycle"] == 8
+    with pytest.raises(ValueError, match="artifact hash mismatch"):
+        campaign._load_checkpoint(path, expected, expected_file_sha256="0" * 64)
     with pytest.raises(ValueError, match="binding hash mismatch"):
         campaign._load_checkpoint(path, {**expected, "point_configuration_sha256": "c" * 64})
+    legacy = dict(checkpoint, schema="FULL_RPM_SWEEP_V1_POINT_CHECKPOINT")
+    path.write_text(json.dumps(legacy), encoding="utf-8")
+    with pytest.raises(ValueError, match="schema mismatch"):
+        campaign._load_checkpoint(path, expected)
 
 
 def test_campaign_manifest_records_point_start_and_cycle_checkpoint(tmp_path):

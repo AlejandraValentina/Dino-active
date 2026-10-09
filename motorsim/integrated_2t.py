@@ -792,6 +792,13 @@ class IntegratedEngine2T:
             self.ledger["fuel_combustion_heat_added_J"] = 0.0
             self.ledger["fuel_combustion_source_species_kg"] = [0.0] * 4
         self.trace = []
+        # The accepted trace can be compacted at a completed-cycle boundary.
+        # Keep the cumulative combustion ledger at that boundary so a later
+        # cycle-local trace can be checked against its own increments.
+        self._trace_fuel_combustion_baseline = {
+            "heat_added_J": 0.0, "source_species_kg": [0.0] * 4}
+        self._trace_scope = "FULL"
+        self._trace_origin_state = None
         geometry0 = self._geometry(self.angle_deg, self.reference_rpm)
         if self.dynamic_reed_binding is not None:
             self.dynamic_reed_binding.validate(
@@ -2346,6 +2353,10 @@ class IntegratedEngine2T:
                 "rejected_steps": self.rejected_steps,
                 "max_cfl": self.max_cfl,
                 "ledger": _jsonify(self.ledger),
+                "trace_scope": self._trace_scope,
+                "trace_fuel_combustion_baseline": _jsonify(
+                    self._trace_fuel_combustion_baseline),
+                "trace_origin_state": deepcopy(self._trace_origin_state),
                 "p7": {"active_event": (None if self.p7_event is None else
                                          snapshot_event(self.p7_event)),
                        "completed_events": deepcopy(self.p7_events)},
@@ -2357,6 +2368,25 @@ class IntegratedEngine2T:
                                  self.fuel_combustion_event.to_dict()),
                 "completed_events": deepcopy(self.fuel_combustion_events)}
         return result
+
+    def compact_cycle_trace(self):
+        """Discard completed-cycle trace while retaining a ledger replay baseline.
+
+        This is a versioned checkpoint operation.  A compact checkpoint cannot
+        independently replay history already discarded; its outer artifact
+        hash remains the integrity binding for that history.
+        """
+        if not self.trace or self.accepted_steps != len(self.trace):
+            raise ValueError("cycle trace can only be compacted at a complete trace boundary")
+        self._trace_fuel_combustion_baseline = {
+            "heat_added_J": float(self.ledger.get("fuel_combustion_heat_added_J", 0.0)),
+            "source_species_kg": list(self.ledger.get(
+                "fuel_combustion_source_species_kg", [0.0] * 4))}
+        self._trace_origin_state = _jsonify(self.state)
+        self.trace = []
+        self.accepted_steps = 0
+        self.rejected_steps = 0
+        self._trace_scope = "CYCLE_LOCAL"
 
     def restore(self, snapshot):
         self._assert_configuration_unchanged(check_identity=True)
@@ -2434,9 +2464,42 @@ class IntegratedEngine2T:
         initial = json.loads(json.dumps(snapshot.get("initial_inventory"), sort_keys=True))
         if initial != baseline:
             raise ValueError("integrated engine checkpoint initial inventory mismatch")
+        trace_scope = snapshot.get("trace_scope", "FULL")
+        trace_baseline = snapshot.get("trace_fuel_combustion_baseline", {
+            "heat_added_J": 0.0, "source_species_kg": [0.0] * 4})
+        if (trace_scope not in {"FULL", "CYCLE_LOCAL"} or
+                not isinstance(trace_baseline, dict) or
+                set(trace_baseline) != {"heat_added_J", "source_species_kg"} or
+                not isinstance(trace_baseline["source_species_kg"], (list, tuple)) or
+                len(trace_baseline["source_species_kg"]) != 4 or
+                any(type(value) not in (int, float) or not isfinite(value)
+                    for value in [trace_baseline["heat_added_J"],
+                                  *trace_baseline["source_species_kg"]])):
+            raise ValueError("integrated engine checkpoint trace baseline is invalid")
+        if trace_scope == "FULL" and trace_baseline != {
+                "heat_added_J": 0.0, "source_species_kg": [0.0] * 4}:
+            raise ValueError("full integrated trace cannot declare a compact ledger baseline")
         trace = snapshot.get("trace")
         if not isinstance(trace, list) or len(trace) != counters[1]:
             raise ValueError("integrated engine checkpoint primary trace is incomplete")
+        trace_origin_state = snapshot.get("trace_origin_state")
+        if trace_scope == "CYCLE_LOCAL":
+            if trace_origin_state is None:
+                raise ValueError("integrated engine checkpoint cycle-local origin is missing")
+            trace_origin_state = _tuplify(deepcopy(trace_origin_state))
+            self._validate(trace_origin_state)
+            if trace:
+                first = trace[0]
+                stages = first.get("stage_states") if isinstance(first, dict) else None
+                if (not isinstance(stages, (list, tuple)) or not stages or
+                        _jsonify(stages[0]) != _jsonify(trace_origin_state)):
+                    raise ValueError(
+                        "integrated engine checkpoint cycle-local trace origin mismatch")
+            elif _jsonify(state) != _jsonify(trace_origin_state):
+                raise ValueError(
+                    "integrated engine checkpoint compact boundary state mismatch")
+        elif trace_origin_state is not None:
+            raise ValueError("full integrated trace cannot declare a cycle-local origin")
         prior_angle = None
         prior_time = None
         prior_terminal_state = None
@@ -2548,7 +2611,7 @@ class IntegratedEngine2T:
             prior_angle = angle1
             prior_time = time0 + dt
             prior_terminal_state = _jsonify(stage_states[2])
-        if trace:
+        if trace and trace_scope == "FULL":
             initial_payload = {"state": _tuplify(trace[0]["stage_states"][0]),
                                "atmosphere": self.atmosphere_state,
                                "atmosphere_species": self.atmosphere_species,
@@ -2675,10 +2738,12 @@ class IntegratedEngine2T:
                 for index in range(4):
                     source_sum[index] += expected_species_increment[index]
                 heat_sum += expected_heat_increment
-            if (any(not isclose(ledger["fuel_combustion_source_species_kg"][i],
+            if (any(not isclose(ledger["fuel_combustion_source_species_kg"][i] -
+                                trace_baseline["source_species_kg"][i],
                                 source_sum[i], rel_tol=1e-12, abs_tol=1e-15)
                     for i in range(4)) or
-                    not isclose(ledger["fuel_combustion_heat_added_J"], heat_sum,
+                    not isclose(ledger["fuel_combustion_heat_added_J"] -
+                                trace_baseline["heat_added_J"], heat_sum,
                                 rel_tol=1e-12, abs_tol=1e-15)):
                 raise ValueError("integrated checkpoint fuel-combustion ledger mismatch")
         # Commit restored values only after the entire checkpoint passes validation.
@@ -2701,6 +2766,13 @@ class IntegratedEngine2T:
                 ledger["fuel_combustion_source_species_kg"])
         self.initial_inventory = deepcopy(snapshot["initial_inventory"])
         self.trace = deepcopy(trace)
+        self._trace_scope = trace_scope
+        self._trace_fuel_combustion_baseline = {
+            "heat_added_J": float(trace_baseline["heat_added_J"]),
+            "source_species_kg": [float(value) for value in
+                                  trace_baseline["source_species_kg"]]}
+        self._trace_origin_state = (None if trace_origin_state is None else
+                                    _jsonify(trace_origin_state))
 
 
 def _fresh_air_intake_rate(intake_duct_id: str, row: dict,

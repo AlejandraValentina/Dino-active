@@ -3077,8 +3077,8 @@
       "write_scope": [
         "results/full-rpm-sweep-v1 campaign artifacts at external DINO_ARTIFACT_ROOT"
       ],
-      "blocker": "Measured full-campaign projection 47,368.8 s (~13.2 h) is disproportionate under the authorized resource policy; 28 preregistered points remain NOT_STARTED.",
-      "no_local_unblock_reason": "No local infrastructure overhead reduction can materially change the projection: measured serialization plus checkpoint cost is ~3.5% of measured cycle time. A meaningful reduction would require changing solver execution or resource scope; solver/scientific contracts are frozen. Reconsider only after an explicit budget/resource-scope change.",
+      "blocker": "Measured 4000-RPM first-cycle geometry-cache extrapolation leaves approximately 12.50 h for the 30-point sweep, with substantial uncertainty and no v2 writer measurement; 28 v1 points remain NOT_STARTED.",
+      "no_local_unblock_reason": "Local recovery found no speedup path near the required 3x without a versioned evidence/audit architecture change. The remaining sweep is still outside the measured resource budget; execution requires later explicit budget and campaign authorization.",
       "evidence": [
         "results/full-rpm-sweep-v1/pilot-analysis.json",
         "results/full-rpm-sweep-v1/campaign-receipt.json",
@@ -3186,7 +3186,7 @@
       "id": "FRPM-V2-EVIDENCE-HOTSPOT-OPT",
       "description": "Design and benchmark a versioned optimization for primary construction, JSON conversion, replay audit and evidence hashing; retain independent audit semantics and all hard gates.",
       "dependencies": [],
-      "state": "READY",
+      "state": "BLOCKED_LOCAL",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "architecture",
       "evidence_level": "L1",
@@ -3194,13 +3194,24 @@
         "motorsim/integrated_2t.py",
         "tests/test_full_rpm_sweep_v1_performance.py",
         "openspec/changes/full-rpm-sweep-v1-performance-v2"
+      ],
+      "blocker": "Uninstrumented paired measurements show replay audit plus primary construction consume about 77% of first-cycle end-to-end runtime. Geometry memoization is only 1.052x combined; even eliminating all numeric advancement is capped near 1.16x. Further micro-optimization cannot meet the stated practical target without redesigning evidence representation and audit execution.",
+      "unblock_tasks": [
+        "FRPM-V2-COLUMNAR-PROTOTYPE"
+      ],
+      "no_local_unblock_reason": null,
+      "evidence": [
+        "results/full-rpm-sweep-v1/performance-recovery-v2.json",
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/reports/frpm-v2-stepcost-a4000.json",
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/reports/frpm-v2-stepcost-b4000.json",
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/reports/frpm-v2-sampling-profile.json"
       ]
     },
     {
       "id": "FRPM-V2-CHECKPOINT-ROUNDTRIP",
       "description": "Reproduce and fix, under a separately hashed implementation version, checkpoint restore mismatch between cleared trace and cumulative fuel-combustion ledgers.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "implementation",
       "evidence_level": "L1",
@@ -3208,6 +3219,15 @@
         "motorsim/integrated_2t.py",
         "tests/test_integrated_2t.py",
         "openspec/changes/full-rpm-sweep-v1-performance-v2"
+      ],
+      "resolution": "Introduced explicit CYCLE_LOCAL trace metadata and cumulative combustion-ledger baseline. Round-trip continuation, conservation, equality and markerless-v1 rejection pass; no historical checkpoint was modified.",
+      "evidence": [
+        "motorsim/integrated_2t.py",
+        "scripts/full_rpm_sweep_v1_campaign.py",
+        "tests/test_integrated_2t.py",
+        "tests/test_full_rpm_sweep_v1.py",
+        "openspec/changes/full-rpm-sweep-v1-impl2-performance/specs/full-rpm-sweep-v1-impl2-performance/spec.md",
+        "results/full-rpm-sweep-v1/implementation-v2-self-review.json"
       ]
     },
     {
@@ -3222,16 +3242,19 @@
         "results/full-rpm-sweep-v1/implementation-v2-proposal.json",
         "openspec/changes/full-rpm-sweep-v1-performance-v2"
       ],
-      "resolution": "Prepared a separate implementation campaign proposal with new producer/artifact identity and no execution authorization. It forbids mixing v1 pilot outputs with implementation-v2 outputs.",
+      "resolution": "Added IMPL2 identity manifest with current solver/runner hashes, isolated artifact root, explicit checkpoint schema, and preserved v1 preregistration hash. Proposal remains unauthorized.",
       "evidence": [
-        "results/full-rpm-sweep-v1/implementation-v2-proposal.json"
+        "results/full-rpm-sweep-v1/implementation-v2-proposal.json",
+        "results/full-rpm-sweep-v1/implementation-v2-identity.json",
+        "results/full-rpm-sweep-v1/performance-recovery-v2.json",
+        "results/full-rpm-sweep-v1/implementation-v2-preregistration-proposal.json"
       ]
     },
     {
       "id": "FRPM-V2-MULTIMESH-PHASE-BENCH",
       "description": "Extend the bounded geometry-cache benchmark to additional cycle phases/RPMs and verify speedup transfer before integrating it into any campaign runner.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "verification",
       "evidence_level": "L1",
@@ -3239,6 +3262,92 @@
         "scripts/benchmark_full_rpm_sweep_v1_geometry_cache.py",
         "tests/test_full_rpm_sweep_v1_performance.py",
         "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/reports/*"
+      ],
+      "resolution": "Three paired first-cycle benchmarks on both 4000-RPM mesh variants give exact scientific equivalence but only 1.04x–1.06x total speedup. Further phase microbenchmarks are superseded by the measured Amdahl limit and the instruction to stop below 3x.",
+      "evidence": [
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/reports/frpm-v2-stepcost-a4000.json",
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/reports/frpm-v2-stepcost-b4000.json",
+        "results/full-rpm-sweep-v1/performance-recovery-v2.json"
+      ]
+    },
+    {
+      "id": "FRPM-V2-EVIDENCE-ARCHITECTURE",
+      "description": "Design a versioned streaming/columnar primary and replay-audit architecture that preserves all persisted evidence and independent recomputation while reducing Python object materialization. No solver criteria or campaign execution.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "architecture",
+      "evidence_level": "L1",
+      "write_scope": [
+        "openspec/changes/full-rpm-sweep-v1-impl2-performance",
+        "docs/gasdynamic/full_rpm_sweep_v2_architecture.md"
+      ],
+      "resolution": "Documented the measured Amdahl limit and a versioned columnar/streaming evidence and independent-audit architecture. No micro-optimization or campaign run is proposed.",
+      "evidence": [
+        "docs/gasdynamic/full_rpm_sweep_v2_architecture.md",
+        "results/full-rpm-sweep-v1/performance-recovery-v2.json"
+      ]
+    },
+    {
+      "id": "FRPM-V2-IMPL2-PREREG",
+      "description": "Prepare a reviewable IMPL2 preregistration proposal from the measured source hashes, compatibility contract, distinct producer and artifact root; do not authorize or start points.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "contract/regression guardian",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/full-rpm-sweep-v1/implementation-v2-identity.json",
+        "results/full-rpm-sweep-v1/implementation-v2-proposal.json"
+      ],
+      "resolution": "Prepared a non-active IMPL2 preregistration proposal carrying unchanged v1 scientific-contract fields and a separate solver/producer/artifact identity. It grants no authorization.",
+      "evidence": [
+        "results/full-rpm-sweep-v1/implementation-v2-preregistration-proposal.json",
+        "results/full-rpm-sweep-v1/implementation-v2-identity.json",
+        "openspec/changes/full-rpm-sweep-v1-impl2-performance/spec.md"
+      ]
+    },
+    {
+      "id": "FRPM-V2-RESTORE-INDEPENDENT-REVIEW",
+      "description": "Perform a read-only skeptical review of compacted checkpoint validation, ledger-baseline handling, atomic rejection, and IMPL2/v1 isolation; persist findings.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "skeptic/adversarial review",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/full-rpm-sweep-v1/implementation-v2-review.json"
+      ]
+    },
+    {
+      "id": "FRPM-V2-COLUMNAR-PROTOTYPE",
+      "description": "Prototype a small versioned columnar primary-evidence segment and independent audit reader; measure conversion and audit costs without campaign points or changing v1 schema.",
+      "dependencies": [
+        "FRPM-V2-EVIDENCE-ARCHITECTURE"
+      ],
+      "state": "READY",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L1",
+      "write_scope": [
+        "motorsim/full_rpm_evidence_columnar_v2.py",
+        "tests/test_full_rpm_evidence_columnar_v2.py",
+        "scripts/benchmark_full_rpm_evidence_columnar_v2.py"
+      ]
+    },
+    {
+      "id": "FRPM-V2-IMPL2-PREFLIGHT-AUDIT",
+      "description": "Implement a non-executing IMPL2 preflight against the proposal identity, proving distinct hashes/root and zero point starts while retaining the v1 preflight fail-closed behavior.",
+      "dependencies": [
+        "FRPM-V2-IMPL2-PREREG"
+      ],
+      "state": "READY",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "motorsim/full_rpm_sweep_v1_impl2.py",
+        "tests/test_full_rpm_sweep_v1_impl2.py"
       ]
     }
   ],
@@ -4068,6 +4177,42 @@
       "task": "FRPM-V2-CAMPAIGN-PROVENANCE",
       "kind": "task",
       "summary": "Prepared FULL_RPM_SWEEP_V1_IMPL2 proposal only; it requires separate hashes, artifact root and explicit execution authorization. No campaign was authorized or started."
+    },
+    {
+      "at": "2026-10-09T16:34:45+00:00",
+      "task": "FRPM-V2-CHECKPOINT-ROUNDTRIP",
+      "kind": "task",
+      "summary": "Fixed trace compaction restore with explicit cumulative fuel-ledger baseline; continuation/conservation and ambiguous legacy checkpoint rejection pass. Historical artifacts untouched."
+    },
+    {
+      "at": "2026-10-09T16:34:46+00:00",
+      "task": "FRPM-V2-EVIDENCE-HOTSPOT-OPT",
+      "kind": "task",
+      "summary": "Uninstrumented A/B timings show primary audit + construction ~77% runtime, geometry cache 1.052x end-to-end, and numeric advancement Amdahl ceiling ~1.16x. Stop micro-optimization and unblock with evidence architecture design."
+    },
+    {
+      "at": "2026-10-09T16:34:46+00:00",
+      "task": "FRPM-V2-CAMPAIGN-PROVENANCE",
+      "kind": "task",
+      "summary": "Recorded IMPL2 source/producer hashes, separate output root and checkpoint schema. v1 preregistration remains byte-identical; no campaign authorization or points."
+    },
+    {
+      "at": "2026-10-09T16:46:03+00:00",
+      "task": "FRPM-V2-EVIDENCE-ARCHITECTURE",
+      "kind": "task",
+      "summary": "Documented architecture-level diagnosis: audit plus primary materialization dominate; a columnar/streamed evidence and independent-audit design is needed for multi-x gains."
+    },
+    {
+      "at": "2026-10-09T16:46:04+00:00",
+      "task": "FRPM-V2-IMPL2-PREREG",
+      "kind": "task",
+      "summary": "Prepared a proposal-only IMPL2 preregistration with unchanged scientific fields and new solver/producer hashes, checkpoint schema, campaign ID and separate artifact root. No points authorized."
+    },
+    {
+      "at": "2026-10-09T16:46:04+00:00",
+      "task": "FRPM-V2-CHECKPOINT-ROUNDTRIP",
+      "kind": "task",
+      "summary": "Final restore regression: 74 integrated tests pass, with compact boundary/mid-cycle continuation, ledger conservation, atomic invalid-origin rejection and checkpoint file hash tests."
     }
   ],
   "legacy_gate_status": {
@@ -4148,5 +4293,6 @@
     "campaigns_started": 1
   },
   "campaigns_started": 1,
-  "campaign_runtime_status": "PARTIAL_RESOURCE_BUDGET"
+  "campaign_runtime_status": "PARTIAL_RESOURCE_BUDGET",
+  "updated_at": "2026-10-09"
 }
