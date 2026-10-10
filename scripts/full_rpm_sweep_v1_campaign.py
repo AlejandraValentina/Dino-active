@@ -445,6 +445,7 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
     point_dir = output_root / variant["variant_id"] / f"rpm-{rpm:05d}"
     result_path = point_dir / "result.json"
     checkpoint_path = point_dir / "checkpoint.json"
+    point_id = f"{variant['variant_id']}@{rpm}RPM"
     if result_path.is_file():
         prior = _read_json(result_path)
         if prior.get("bindings") != bindings:
@@ -484,7 +485,6 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
         start_snapshot = engine.snapshot()
         first_cycle = 1
 
-    point_id = f"{variant['variant_id']}@{rpm}RPM"
     cycle_rows = []
     cycle_metrics = []
     if first_cycle > 1:

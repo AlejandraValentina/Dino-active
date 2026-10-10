@@ -3423,7 +3423,7 @@
       "dependencies": [
         "FRPM-V2-PARALLEL-EXECUTOR"
       ],
-      "state": "READY",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "verification",
       "evidence_level": "L1",
@@ -4336,6 +4336,12 @@
       "task": "FRPM-V2-V1-COMPATIBILITY-VERIFY",
       "kind": "task",
       "summary": "Read-only published v1 bundle verification passed: 30 catalog rows, 2 results, 2 checkpoints, 126 primaries and 126 cycle receipts, zero errors; no historical artifacts modified."
+    },
+    {
+      "at": "2026-10-10T01:01:45+00:00",
+      "task": "FRPM-V2-CHECKPOINT-RESTART-INTEGRATION",
+      "kind": "task",
+      "summary": "Windows spawn diagnostic fixture passed checkpoint isolation, coordinator manifest writes, atomic persistence, interruption/timeout resume, abrupt worker recovery, binding rejection and canonical sequential equivalence; 74 integrated restore/conservation tests passed. Campaign points started: 0."
     }
   ],
   "legacy_gate_status": {
