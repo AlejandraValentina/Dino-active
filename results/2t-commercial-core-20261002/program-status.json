@@ -3077,7 +3077,7 @@
       "write_scope": [
         "results/full-rpm-sweep-v1 campaign artifacts at external DINO_ARTIFACT_ROOT"
       ],
-      "blocker": "No campaign execution is authorized. The 4-worker one-cycle diagnostic is 3.738x faster on its paired diagnostic workload, but does not measure full periodic-convergence points or concurrent checkpoint/restart. Twenty-eight historical v1 points remain NOT_STARTED.",
+      "blocker": "No campaign execution is authorized. The 4-worker one-cycle benchmark does not represent full periodic-convergence campaign cost. Real _run_point spawn checkpoint/restart and abrupt-worker recovery now pass in an isolated diagnostic fixture; independent executor recheck and IMPL2 preflight review remain pending. Twenty-eight historical v1 points remain NOT_STARTED.",
       "no_local_unblock_reason": null,
       "evidence": [
         "results/full-rpm-sweep-v1/pilot-analysis.json",
@@ -3086,7 +3086,6 @@
       ],
       "unblock_tasks": [
         "FRPM-V2-PARALLEL-EXECUTOR-REVIEW",
-        "FRPM-V2-CHECKPOINT-RESTART-INTEGRATION",
         "FRPM-V2-IMPL2-PREFLIGHT-AUDIT"
       ]
     },
@@ -3419,7 +3418,7 @@
     },
     {
       "id": "FRPM-V2-CHECKPOINT-RESTART-INTEGRATION",
-      "description": "Exercise cooperative cancellation, atomic completed-cycle checkpoints and restart hash validation with a bounded synthetic executor fixture; do not start a campaign point.",
+      "description": "Close external D1/D2 findings with atomic-writer recovery and a real Windows spawn _run_point diagnostic over two RPMs; no campaign points.",
       "dependencies": [
         "FRPM-V2-PARALLEL-EXECUTOR"
       ],
@@ -3428,8 +3427,16 @@
       "owner_role": "verification",
       "evidence_level": "L1",
       "write_scope": [
+        "scripts/full_rpm_sweep_v1_campaign.py",
         "tests/test_full_rpm_sweep_v1_parallel_impl2.py",
-        "results/full-rpm-sweep-v1/parallel-checkpoint-diagnostic.json"
+        "tests/test_full_rpm_sweep_v1_impl2_checkpoint_d1d2.py",
+        "results/full-rpm-sweep-v1/parallel-restart-validation-receipt.json"
+      ],
+      "resolution": "D1 unique fsynced atomic writes, safe orphan quarantine and validated checkpoint recovery passed. D2 real _run_point Windows spawn with two RPM workers interrupted, resumed, matched sequential primary hashes, passed replay/conservation/ledger checks, rejected cross-RPM restore and recovered from abrupt worker exit. No campaign points started.",
+      "evidence": [
+        "tests/test_full_rpm_sweep_v1_impl2_checkpoint_d1d2.py",
+        "tests/test_full_rpm_sweep_v1_parallel_impl2.py",
+        "results/full-rpm-sweep-v1/parallel-restart-validation-receipt.json"
       ]
     },
     {
@@ -4341,7 +4348,7 @@
       "at": "2026-10-10T01:01:45+00:00",
       "task": "FRPM-V2-CHECKPOINT-RESTART-INTEGRATION",
       "kind": "task",
-      "summary": "Windows spawn diagnostic fixture passed checkpoint isolation, coordinator manifest writes, atomic persistence, interruption/timeout resume, abrupt worker recovery, binding rejection and canonical sequential equivalence; 74 integrated restore/conservation tests passed. Campaign points started: 0."
+      "summary": "External D1/D2 findings closed: durable atomic writes and orphan recovery passed; real Windows spawn _run_point test used 2 workers, 4000/4100 RPM and 3 cycles, with interruption/resume, abrupt worker recovery, exact sequential primary hashes, 12 independent re-audits, conservation/ledger continuity and coordinator-only manifest writes. Campaign points started: 0."
     }
   ],
   "legacy_gate_status": {

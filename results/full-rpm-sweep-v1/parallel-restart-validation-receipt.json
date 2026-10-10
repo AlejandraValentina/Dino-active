@@ -1,12 +1,48 @@
 {
-  "schema": "FULL_RPM_SWEEP_V1_IMPL2_CHECKPOINT_DIAGNOSTIC_RECEIPT",
-  "status": "FULL_RPM_SWEEP_V1_IMPL2_READY_FOR_EXTERNAL_REVIEW",
-  "created_at": "2026-10-09",
+  "schema": "FULL_RPM_SWEEP_V1_IMPL2_D1_D2_REVIEW_FINDINGS_RECEIPT",
+  "status": "IMPL2_EXTERNAL_REVIEW_FINDINGS_CLOSED_READY_FOR_RECHECK",
+  "created_at": "2026-10-10",
   "implementation_version": "FULL_RPM_SWEEP_V1_IMPL2",
   "baseline_head": "c2f6f919c537645dc641f4bd3109d66994365d8e",
   "campaign_started": false,
   "rpm_points_started": 0,
   "evidence": {
+    "d1_atomic_persistence": {
+      "status": "PASS",
+      "writers": ["_write_json_atomic", "_write_primary_gzip"],
+      "guarantees": [
+        "unique same-directory temporary per process and write",
+        "file flush and fsync before atomic replace",
+        "directory fsync where supported; Windows uses flushed file and atomic replace",
+        "finally cleanup after ordinary exceptions",
+        "dead-writer temporaries are preserved in _orphaned_atomic_writes",
+        "unknown or live-writer temporaries are not treated as recoverable"
+      ],
+      "recovery": "A structurally and hash-bound orphan checkpoint is promoted only after engine/detector restore validation and replay audit of all preceding primaries and matching metrics. An orphaned first primary temp with no published point data is quarantined and the point restarts cleanly. Unknown partial point contents fail closed.",
+      "tests": "atomic writers, exception cleanup, abrupt exit before replace, orphan primary restart and unknown partial-state rejection passed"
+    },
+    "d2_real_run_point_spawn": {
+      "status": "PASS",
+      "test_command": "pytest tests/test_full_rpm_sweep_v1_impl2_checkpoint_d1d2.py -q",
+      "result": "5 passed in the final consolidated Windows run in 365.80s",
+      "execution": {
+        "platform": "Windows",
+        "start_method": "spawn",
+        "concurrent_workers": 2,
+        "diagnostic_points_rpm": [4000, 4100],
+        "cycles_per_point": 3,
+        "production_entrypoint": "scripts.full_rpm_sweep_v1_campaign._run_point",
+        "campaign_points": 0,
+        "preregistration": "isolated temporary diagnostic preregistration; original preregistration unchanged",
+        "artifact_root": "pytest temporary sandbox"
+      },
+      "interruption_and_resume": "Both points checkpointed after completed cycles, coordinator recorded checkpoint hashes, and resume completed both with NO_CONVERGENCE_WITHIN_HORIZON at the unchanged three-cycle diagnostic horizon.",
+      "sequential_equivalence": "All six canonical cycle-primary hashes across both points (three per point) matched the sequential _run_point reference exactly; result science fields matched with timing-only performance metrics excluded.",
+      "integrity_and_audit": "Coordinator result_sha256 and checkpoint_sha256 matched persisted bytes; all 12 primaries were replay-audited with recomputed=true; no missing or duplicate cycle/metric files.",
+      "conservation_and_ledgers": "All mass (<1e-12 kg), species (<1e-12 kg each) and energy (<1e-9 J) residual assertions passed; cumulative engine ledger and fuel-combustion ledger end/start snapshots matched exactly across adjacent cycles.",
+      "negative_cases": "A checkpoint copied from the other RPM was rejected by binding hash before restore. A worker terminated immediately before publishing its first checkpoint; the orphan was preserved, validated against cycle-1 primary/metrics, registered by the coordinator and resumed to a complete three-cycle point.",
+      "manifest_ownership": "Global manifest bytes remained unchanged while both workers ran; only the test coordinator updated it after returned results."
+    },
     "spawn_checkpoint_tests": {
       "test_file": "tests/test_full_rpm_sweep_v1_parallel_impl2.py",
       "result": "11 passed",
@@ -21,11 +57,11 @@
         "timeout leaves a completed checkpoint resumable",
         "1, 2, and 4 worker plans honor the 512 MiB per-worker reservation"
       ],
-      "scope_limit": "Synthetic scheduler/checkpoint fixture; no campaign point or engine solver cycle was started."
+      "scope_limit": "Earlier synthetic scheduler fixture retained as supplemental evidence; D2 now also covers the real _run_point path."
     },
     "engine_restore_and_conservation": {
       "command": "pytest tests/test_integrated_2t.py -q",
-      "result": "74 passed in 197.34s",
+      "result": "74 passed in 191.34s",
       "scope_limit": "Existing engine checkpoint/replay/conservation suite; not a concurrent full-point campaign run."
     },
     "historical_v1_integrity": {
@@ -44,21 +80,22 @@
       "classification": "KNOWN_FAIL_CLOSED_HASH_MISMATCH; v1 preregistration and historical artifacts were not changed."
     }
   },
-  "implementation_fix": "Moved point_id construction ahead of checkpoint-manifest lookup so the IMPL2 restore branch can resolve its point row.",
+  "implementation_fix": "Moved point_id construction ahead of checkpoint-manifest lookup; added durable unique atomic writes and fail-closed orphan handling/recovery for the real IMPL2 point runner.",
   "compatibility": {
     "v1_evidence_writer": "UNCHANGED_CANONICAL",
     "segmented_writer": "RETAINED_AS_NON-ADOPTED_PROTOTYPE",
     "historical_solver_hash_mismatch": "FAIL_CLOSED",
     "engine_physics_v1_r2": "PASS_UNCHANGED",
     "full_rpm_sweep_v1": "PARTIAL_UNCHANGED",
-    "impl2_acceptance": "PENDING_INDEPENDENT_EXTERNAL_REVIEW"
+    "impl2_acceptance": "REVIEW; EXTERNAL_FINDINGS_CLOSED_PENDING_EXTERNAL_RECHECK"
   },
   "artifact_hashes": {
-    "scripts/full_rpm_sweep_v1_campaign.py": "5091fd75091b43bf33809b9c071fc9fc6cead093103668da86e91934f59fdd65",
+    "scripts/full_rpm_sweep_v1_campaign.py": "9ca05197330f311dfc82df4b364dbca2e8189aef4fffe325cfd880ae3366d558",
     "tests/test_full_rpm_sweep_v1_parallel_impl2.py": "1fa0a8f02d0f1c129d843d4d982bd8b4b01dfeb3a0f310d2f4dbeacdd60828c4",
-    "results/2t-commercial-core-20261002/program-status.json": "d23bb81241a8a5a929701ff4f3061bf35c7e57fd88e5f93818cd21454edb1a44",
+    "tests/test_full_rpm_sweep_v1_impl2_checkpoint_d1d2.py": "df208d1bd15212b0c4e1753e88b411c4b5fc599d3108dade9e7de4c6d03c33f9",
+    "results/2t-commercial-core-20261002/program-status.json": "0bf071afed5389fd9122fb36678963d02f44195eac620829f43672dbd06b9632",
     "published_v1_external_verification_log": "73c54730d726f702a8ce41e33c0227dbe58e7ff027aac1b0f1af65a2d262ade0",
     "prior_impl2_diagnostic_benchmark_report": "64c8672f76890bf8f667cf4695ad4e880a8633b851a65f22a9263d25696cf737"
   },
-  "decision": "Ready for independent external review of IMPL2 checkpoint/restart and executor behavior; no IMPL2 PASS is claimed."
+  "decision": "IMPL2_EXTERNAL_REVIEW_FINDINGS_CLOSED_READY_FOR_RECHECK; IMPL2 remains REVIEW and no PASS is claimed."
 }

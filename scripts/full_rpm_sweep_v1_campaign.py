@@ -9,13 +9,16 @@ from __future__ import annotations
 import argparse
 import copy
 import concurrent.futures
+import errno
 import gzip
 import hashlib
 import json
 import platform
 import os
 import multiprocessing
+import re
 import shutil
+import uuid
 from pathlib import Path
 import sys
 import time
@@ -74,12 +77,9 @@ def _read_json(path: Path) -> dict:
 
 
 def _write_json_atomic(path: Path, value: Any) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temp = path.with_name(path.name + ".tmp")
-    temp.write_text(json.dumps(value, sort_keys=True, indent=2,
-                               ensure_ascii=False, allow_nan=False) + "\n",
-                    encoding="utf-8", newline="\n")
-    temp.replace(path)
+    payload = (json.dumps(value, sort_keys=True, indent=2,
+                          ensure_ascii=False, allow_nan=False) + "\n").encode("utf-8")
+    _write_bytes_atomic(path, payload)
 
 
 def _write_primary_gzip(path: Path, value: Any | None = None,
@@ -87,11 +87,124 @@ def _write_primary_gzip(path: Path, value: Any | None = None,
     if payload is None:
         payload = _canonical_bytes(value)
     path.parent.mkdir(parents=True, exist_ok=True)
-    temp = path.with_name(path.name + ".tmp")
-    with temp.open("wb") as raw:
-        with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as stream:
+    temp = _atomic_temp_path(path)
+    try:
+        with temp.open("xb") as raw:
+            with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as stream:
+                stream.write(payload)
+            raw.flush()
+            os.fsync(raw.fileno())
+        os.replace(temp, path)
+        _fsync_directory(path.parent)
+    finally:
+        temp.unlink(missing_ok=True)
+
+
+def _atomic_temp_path(path: Path) -> Path:
+    return path.with_name(f".{path.name}.{os.getpid()}.{uuid.uuid4().hex}.tmp")
+
+
+def _write_bytes_atomic(path: Path, payload: bytes) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp = _atomic_temp_path(path)
+    try:
+        with temp.open("xb") as stream:
             stream.write(payload)
-    temp.replace(path)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temp, path)
+        _fsync_directory(path.parent)
+    finally:
+        temp.unlink(missing_ok=True)
+
+
+def _fsync_directory(directory: Path) -> None:
+    """Persist directory-entry replacement where the platform supports it."""
+    if os.name == "nt":
+        return
+    descriptor = None
+    try:
+        descriptor = os.open(directory, os.O_RDONLY)
+        os.fsync(descriptor)
+    except OSError as exc:
+        unsupported = {errno.EBADF, errno.EINVAL}
+        for name in ("ENOTSUP", "EOPNOTSUPP"):
+            value = getattr(errno, name, None)
+            if value is not None:
+                unsupported.add(value)
+        if exc.errno not in unsupported:
+            raise
+    finally:
+        if descriptor is not None:
+            os.close(descriptor)
+
+
+_ATOMIC_TEMP_RE = re.compile(r"^\.(?P<target>.+)\.(?P<pid>[0-9]+)\.(?P<nonce>[0-9a-f]{32})\.tmp$")
+
+
+def _quarantine_orphan_atomic_temps(directory: Path) -> list[tuple[Path, str]]:
+    """Preserve dead-writer temporaries outside active artifact names.
+
+    Only names emitted by this module are handled. Unknown files remain in
+    place and cause normal fail-closed partial-state checks to reject recovery.
+    """
+    if not directory.is_dir():
+        return []
+    moved: list[tuple[Path, str]] = []
+    quarantine_name = "_orphaned_atomic_writes"
+    for temp in directory.rglob(".*.*.tmp"):
+        if quarantine_name in temp.relative_to(directory).parts:
+            continue
+        match = _ATOMIC_TEMP_RE.fullmatch(temp.name)
+        if match is None or not temp.is_file():
+            continue
+        owner_pid = int(match.group("pid"))
+        try:
+            import psutil
+            owner_alive = psutil.pid_exists(owner_pid)
+        except ImportError:
+            try:
+                os.kill(owner_pid, 0)
+            except ProcessLookupError:
+                owner_alive = False
+            except PermissionError:
+                owner_alive = True
+            except OSError as exc:
+                if getattr(exc, "winerror", None) == 87 or exc.errno == 3:
+                    owner_alive = False
+                else:
+                    raise RuntimeError(
+                        f"cannot verify owner of atomic temporary {temp}") from exc
+            else:
+                owner_alive = True
+        if owner_alive:
+            raise RuntimeError(f"atomic temporary belongs to live process {owner_pid}: {temp}")
+        quarantine = temp.parent / quarantine_name
+        quarantine.mkdir(exist_ok=True)
+        preserved = quarantine / temp.name
+        if preserved.exists():
+            raise FileExistsError(f"orphan quarantine path already exists: {preserved}")
+        os.replace(temp, preserved)
+        _fsync_directory(temp.parent)
+        _fsync_directory(quarantine)
+        moved.append((preserved, match.group("target")))
+    return moved
+
+
+def _point_has_only_quarantined_atomic_temps(point_dir: Path) -> bool:
+    entries = list(point_dir.iterdir())
+    if not entries:
+        return True
+    if len(entries) != 1 or entries[0].name != "_orphaned_atomic_writes":
+        return False
+    quarantine = entries[0]
+    if not quarantine.is_dir() or quarantine.is_symlink():
+        return False
+    contents = list(quarantine.iterdir())
+    return bool(contents) and all(
+        item.is_file() and not item.is_symlink() and
+        _ATOMIC_TEMP_RE.fullmatch(item.name) is not None
+        for item in contents)
 
 
 def _process_rss_bytes() -> int | None:
@@ -431,6 +544,31 @@ def _load_checkpoint(path: Path, expected: dict,
     return value
 
 
+def _checkpoint_cycle_history(point_dir: Path, next_cycle: int) -> tuple[list[dict], list[dict]]:
+    cycle_rows: list[dict] = []
+    cycle_metrics: list[dict] = []
+    for cycle in range(1, next_cycle):
+        primary_path = point_dir / f"cycle-{cycle:03d}.json.gz"
+        measurement_path = point_dir / "cycle-metrics" / f"cycle-{cycle:03d}.json"
+        if not primary_path.is_file() or not measurement_path.is_file():
+            raise ValueError("checkpoint primary history is incomplete")
+        primary = json.loads(gzip.decompress(primary_path.read_bytes()))
+        if primary.get("cycle_index") != cycle:
+            raise ValueError("checkpoint primary cycle sequence is inconsistent")
+        audit = audit_integrated_cycle_primary(primary)
+        if audit.get("recomputed") is not True:
+            raise ValueError("persisted primary failed replay audit")
+        primary_sha = _sha256(_canonical_bytes(primary))
+        measurement = _read_json(measurement_path)
+        if (measurement.get("cycle") != cycle or
+                measurement.get("primary_sha256") != primary_sha):
+            raise ValueError("cycle measurement receipt does not match its primary")
+        cycle_metrics.append(measurement)
+        cycle_rows.append({"cycle": cycle, "primary_sha256": primary_sha,
+                           "audit": "PASS", "metrics": measurement})
+    return cycle_rows, cycle_metrics
+
+
 def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
                output_root: Path, *, resume: bool,
                started: float, budget_seconds: int,
@@ -446,6 +584,7 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
     result_path = point_dir / "result.json"
     checkpoint_path = point_dir / "checkpoint.json"
     point_id = f"{variant['variant_id']}@{rpm}RPM"
+    orphaned_temps = _quarantine_orphan_atomic_temps(point_dir)
     if result_path.is_file():
         prior = _read_json(result_path)
         if prior.get("bindings") != bindings:
@@ -461,6 +600,54 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
     config = _configuration_for(variant, rpm)
     engine = IntegratedEngine2T.from_configuration_dict(config)
     detector = PeriodicDetectorV2()
+    if not checkpoint_path.is_file():
+        checkpoint_candidates = []
+        for temp_path, target_name in orphaned_temps:
+            if target_name != checkpoint_path.name:
+                continue
+            try:
+                candidate = _load_checkpoint(temp_path, bindings)
+                candidate_rows, candidate_metrics = _checkpoint_cycle_history(
+                    point_dir, candidate["next_cycle"])
+                engine_candidate = IntegratedEngine2T.from_configuration_dict(config)
+                engine_candidate.restore(candidate["engine_snapshot"])
+                detector_candidate = PeriodicDetectorV2()
+                detector_candidate.restore(candidate["periodicity_snapshot"])
+                checkpoint_candidates.append((candidate, candidate_rows, candidate_metrics))
+            except (ValueError, KeyError, TypeError, OSError, json.JSONDecodeError):
+                continue
+        if checkpoint_candidates:
+            if not resume:
+                raise FileExistsError(f"orphan checkpoint exists; pass --resume: {point_dir}")
+            by_cycle: dict[int, list[tuple[dict, list[dict], list[dict]]]] = {}
+            for candidate in checkpoint_candidates:
+                by_cycle.setdefault(candidate[0]["next_cycle"], []).append(candidate)
+            latest_cycle = max(by_cycle)
+            latest = by_cycle[latest_cycle]
+            candidate_hashes = {_sha256(_canonical_bytes(item[0])) for item in latest}
+            if len(candidate_hashes) != 1:
+                raise ValueError("multiple valid orphan checkpoints conflict")
+            recovered, recovered_rows, recovered_metrics = latest[0]
+            _write_json_atomic(checkpoint_path, recovered)
+            interrupted = {
+                "schema": "FULL_RPM_SWEEP_V1_POINT_RESULT",
+                "point_id": point_id,
+                "variant_id": variant["variant_id"],
+                "rpm": rpm,
+                "classification": "INTERRUPTED_CHECKPOINTED",
+                "cycles_completed": recovered["next_cycle"] - 1,
+                "next_cycle": recovered["next_cycle"],
+                "engineering_outputs": None,
+                "cycle_primaries": [row["primary_sha256"] for row in recovered_rows],
+                "performance_metrics": _point_performance_metrics(recovered_metrics),
+                "bindings": bindings,
+                "recovered_from_orphaned_atomic_checkpoint": True,
+            }
+            _write_json_atomic(point_dir / "checkpoint-status.json", interrupted)
+            if update_campaign_manifest:
+                _record_checkpoint_progress(output_root, variant, rpm,
+                                            checkpoint_path, interrupted)
+            return interrupted
     if checkpoint_path.is_file():
         if not resume:
             raise FileExistsError(f"incomplete point exists; pass --resume: {point_dir}")
@@ -479,37 +666,13 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
         start_snapshot = engine.snapshot()
         first_cycle = checkpoint["next_cycle"]
     else:
-        if point_dir.exists() and any(point_dir.iterdir()):
+        if point_dir.exists() and not _point_has_only_quarantined_atomic_temps(point_dir):
             raise FileExistsError(f"unrecognized partial point state: {point_dir}")
         point_dir.mkdir(parents=True, exist_ok=True)
         start_snapshot = engine.snapshot()
         first_cycle = 1
 
-    cycle_rows = []
-    cycle_metrics = []
-    if first_cycle > 1:
-        prior_cycle_path = point_dir / f"cycle-{first_cycle - 1:03d}.json.gz"
-        if not prior_cycle_path.is_file():
-            raise ValueError("checkpoint exists without its prior primary")
-        for cycle in range(1, first_cycle):
-            primary_path = point_dir / f"cycle-{cycle:03d}.json.gz"
-            if not primary_path.is_file():
-                raise ValueError("checkpoint primary history is incomplete")
-            primary = json.loads(gzip.decompress(primary_path.read_bytes()))
-            audit = audit_integrated_cycle_primary(primary)
-            if audit.get("recomputed") is not True:
-                raise ValueError("persisted primary failed replay audit")
-            prior_sha = _sha256(_canonical_bytes(primary))
-            measurement_path = point_dir / "cycle-metrics" / f"cycle-{cycle:03d}.json"
-            if not measurement_path.is_file():
-                raise ValueError("checkpointed primary lacks its performance measurement receipt")
-            measurement = _read_json(measurement_path)
-            if (measurement.get("cycle") != cycle or
-                    measurement.get("primary_sha256") != prior_sha):
-                raise ValueError("cycle measurement receipt does not match its primary")
-            cycle_metrics.append(measurement)
-            cycle_rows.append({"cycle": cycle, "primary_sha256": prior_sha,
-                               "audit": "PASS", "metrics": measurement})
+    cycle_rows, cycle_metrics = _checkpoint_cycle_history(point_dir, first_cycle)
 
     if update_campaign_manifest:
         _record_point_started(output_root, variant, rpm,
