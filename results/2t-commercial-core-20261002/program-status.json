@@ -3494,6 +3494,69 @@
         "results/full-rpm-sweep-v1/impl2-external-review-receipt.json",
         "results/full-rpm-sweep-v1/impl2-administrative-acceptance-receipt.json"
       ]
+    },
+    {
+      "id": "FRPM-V2-FAST-RECIPE-CORE",
+      "description": "Implement opt-in FAST_RECIPE_V1 cycle capture, canonical primary reconstruction, existing independent audit, and fail-closed cycle checkpoint/restart without changing solver numerics.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/integrated_2t.py",
+        "motorsim/fast_recipe_v1.py",
+        "tests/test_fast_recipe_v1.py",
+        "openspec/changes/fast-recipe-v1"
+      ],
+      "resolution": "FAST capture/reconstruction is implemented and focused tests pass; default solver trace behavior is unchanged.",
+      "evidence": [
+        "tests/test_fast_recipe_v1.py",
+        "openspec/changes/fast-recipe-v1/tasks.md"
+      ]
+    },
+    {
+      "id": "FRPM-V2-FAST-RECIPE-BENCHMARK",
+      "description": "Benchmark conventional evidence, provisional FAST capture, and fully reconstructed/audited FAST on bounded A4000/B4000 cycles; separate physical, capture, reconstruction, audit, I/O, CPU, memory and artifact costs.",
+      "dependencies": [
+        "FRPM-V2-FAST-RECIPE-CORE"
+      ],
+      "state": "DONE",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/benchmark_full_rpm_sweep_v1_fast_recipe.py",
+        "results/full-rpm-sweep-v1/fast-recipe-v1-identity.json",
+        "results/full-rpm-sweep-v1/fast-recipe-v1-benchmark-receipt.json"
+      ],
+      "resolution": "A/B/C diagnostic benchmark completed on A4000/B4000 at 1/2/4 workers. Scientific primary hashes match exactly; complete audited FAST is slower, so classification is FAST_RECIPE_V1_PARTIAL and recommendation is exploratory only.",
+      "evidence": [
+        "results/full-rpm-sweep-v1/fast-recipe-v1-benchmark-receipt.json",
+        "results/full-rpm-sweep-v1/fast-recipe-v1-identity.json",
+        "scripts/verify_fast_recipe_v1_benchmark.py"
+      ]
+    },
+    {
+      "id": "FRPM-V2-FAST-RECIPE-MULTIPROCESS",
+      "description": "Measure FAST diagnostic jobs using Windows spawn ProcessPoolExecutor and the accepted IMPL2 memory worker planner at 1/2/4 workers; no campaign runner or campaign points.",
+      "dependencies": [
+        "FRPM-V2-FAST-RECIPE-BENCHMARK"
+      ],
+      "state": "DONE",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/benchmark_full_rpm_sweep_v1_fast_recipe.py",
+        "results/full-rpm-sweep-v1/fast-recipe-v1-benchmark-receipt.json"
+      ],
+      "resolution": "Windows spawn diagnostic matrix completed with the accepted IMPL2 resource planner and one coordinator; each worker has isolated artifacts, bound identity/checkpoint hashes, and matching cycle-boundary restore continuation. No campaign runner or abrupt-death recovery test was run for FAST.",
+      "evidence": [
+        "results/full-rpm-sweep-v1/fast-recipe-v1-benchmark-receipt.json",
+        "results/full-rpm-sweep-v1/fast-recipe-v1-identity.json",
+        "scripts/verify_fast_recipe_v1_benchmark.py"
+      ]
     }
   ],
   "audit_remediation_mode": false,
@@ -4400,6 +4463,30 @@
       "task": "FRPM-V2-IMPL2-PREFLIGHT-AUDIT",
       "kind": "task",
       "summary": "Non-executing IMPL2 identity/configuration/resource/artifact/checkpoint compatibility preflight PASS; campaign remains unauthorized and v1 fail-closed behavior retained."
+    },
+    {
+      "at": "2026-10-13T10:56:26+00:00",
+      "task": "FRPM-V2-FAST-RECIPE-CORE",
+      "kind": "task",
+      "summary": "Started versioned FAST_RECIPE_V1 capture/reconstruction work; default solver behavior and historical evidence remain protected, no campaign points."
+    },
+    {
+      "at": "2026-10-13T11:24:15+00:00",
+      "task": "FRPM-V2-FAST-RECIPE-CORE",
+      "kind": "task",
+      "summary": "FAST capture/reconstruction implemented; 7 focused tests pass with exact audited primary hashes and fail-closed checkpoint tests."
+    },
+    {
+      "at": "2026-10-13T11:24:15+00:00",
+      "task": "FRPM-V2-FAST-RECIPE-BENCHMARK",
+      "kind": "task",
+      "summary": "A/B/C A4000/B4000 benchmark at 1/2/4 workers completed; provisional 5.14x, fully audited 0.78x, classification FAST_RECIPE_V1_PARTIAL."
+    },
+    {
+      "at": "2026-10-13T11:24:15+00:00",
+      "task": "FRPM-V2-FAST-RECIPE-MULTIPROCESS",
+      "kind": "task",
+      "summary": "Spawn diagnostic matrix achieved 2.88x total matrix throughput at four workers; 18/18 artifact integrity checks pass; no campaign points started."
     }
   ],
   "legacy_gate_status": {

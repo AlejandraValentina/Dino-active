@@ -14,6 +14,7 @@ import hashlib
 import inspect
 import json
 import sys
+import time
 from math import fsum, isclose, isfinite, pi, ulp
 from types import MappingProxyType
 from collections.abc import Mapping
@@ -775,6 +776,7 @@ class IntegratedEngine2T:
         self.cycle = 0
         self.accepted_steps = 0
         self.rejected_steps = 0
+        self.trace_capture_seconds = 0.0
         self.ledger = {"external_mass_kg": 0.0, "external_energy_J": 0.0,
                        "external_species_kg": [0.0] * 4,
                        "fresh_delivered_kg": 0.0,
@@ -1485,7 +1487,8 @@ class IntegratedEngine2T:
                 blocked_pressure_traction, external_wall_reaction)
 
     def _assemble(self, state, angle, rpm, p7_event=_USE_ACTIVE_P7_EVENT,
-                  fuel_event=_USE_ACTIVE_FUEL_EVENT, dt_s=None):
+                  fuel_event=_USE_ACTIVE_FUEL_EVENT, dt_s=None,
+                  capture_trace=True):
         """Build every RHS from one immutable stage state."""
         g = self._geometry(angle, rpm)
         chambers = state["chambers"]
@@ -1535,17 +1538,18 @@ class IntegratedEngine2T:
                         exchange.species_into_volume_kg_s)
                     network_outflow[node_id] = max(
                         0.0, -exchange.mass_into_volume_kg_s)
-                    network_exchanges[node_id] = {
-                        "connection_id": binding.connection.id,
-                        "mass_into_volume_kg_s": exchange.mass_into_volume_kg_s,
-                        "energy_into_volume_w": exchange.energy_into_volume_w,
-                        "species_into_volume_kg_s": exchange.species_into_volume_kg_s,
-                        "axial_impulse_into_volume_n": exchange.axial_impulse_into_volume_n,
-                        "blocked_area_m2": blocked_area,
-                        "blocked_area_pressure_traction_n": blocked_traction,
-                        "external_wall_reaction_n": wall_reaction,
-                        "wave_speeds": exchange.wave_speeds,
-                        "fallback_reason": exchange.fallback_reason}
+                    if capture_trace:
+                        network_exchanges[node_id] = {
+                            "connection_id": binding.connection.id,
+                            "mass_into_volume_kg_s": exchange.mass_into_volume_kg_s,
+                            "energy_into_volume_w": exchange.energy_into_volume_w,
+                            "species_into_volume_kg_s": exchange.species_into_volume_kg_s,
+                            "axial_impulse_into_volume_n": exchange.axial_impulse_into_volume_n,
+                            "blocked_area_m2": blocked_area,
+                            "blocked_area_pressure_traction_n": blocked_traction,
+                            "external_wall_reaction_n": wall_reaction,
+                            "wave_speeds": exchange.wave_speeds,
+                            "fallback_reason": exchange.fallback_reason}
                     pressure_reaction_l = None
                 intake_reed_area = g.intake_area_m2
                 if self.reed_petals:
@@ -1587,12 +1591,13 @@ class IntegratedEngine2T:
                     for j, value in enumerate(right_species): rhs_s["chambers"]["crankcase"][j] += value
                 left_face, left_species = external_l, species_l
                 right_face_species = right_species
-                faces_trace[path.id] = {"left": external_l, "right": right_face,
-                                        "left_species": species_l,
-                                        "right_species": right_species,
-                                        "left_speed": speed_l, "right_speed": speed_r}
-                faces_trace[path.id]["left_external_pressure_reaction_n"] = pressure_reaction_l
-                faces_trace[path.id]["effective_reed_area_m2"] = intake_area
+                if capture_trace:
+                    faces_trace[path.id] = {"left": external_l, "right": right_face,
+                                            "left_species": species_l,
+                                            "right_species": right_species,
+                                            "left_speed": speed_l, "right_speed": speed_r}
+                    faces_trace[path.id]["left_external_pressure_reaction_n"] = pressure_reaction_l
+                    faces_trace[path.id]["effective_reed_area_m2"] = intake_area
             elif path.role == "transfer":
                 index = next(i for i, item in enumerate(self.transfers) if item.id == path.id)
                 port_area = g.transfer_areas_m2[index]
@@ -1632,10 +1637,11 @@ class IntegratedEngine2T:
                     rhs_q["chambers"][endpoint][1] += exchange.outward[2]
                     for j, value in enumerate(sflux): rhs_s["chambers"][endpoint][j] += value
                 right_face_species = right_species
-                faces_trace[path.id] = {"left": left_face, "right": right_face,
-                                        "left_species": left_species,
-                                        "right_species": right_species,
-                                        "left_speed": speed_l, "right_speed": speed_r}
+                if capture_trace:
+                    faces_trace[path.id] = {"left": left_face, "right": right_face,
+                                            "left_species": left_species,
+                                            "right_species": right_species,
+                                            "left_speed": speed_l, "right_speed": speed_r}
             else:
                 exhaust_area = min(g.exhaust_area_m2, path.mesh.areas[0])
                 left_exchange = interface_flux(cy, primitives[0], exhaust_area, -1,
@@ -1657,17 +1663,18 @@ class IntegratedEngine2T:
                         exchange.species_into_volume_kg_s)
                     network_outflow[node_id] = max(
                         0.0, -exchange.mass_into_volume_kg_s)
-                    network_exchanges[node_id] = {
-                        "connection_id": binding.connection.id,
-                        "mass_into_volume_kg_s": exchange.mass_into_volume_kg_s,
-                        "energy_into_volume_w": exchange.energy_into_volume_w,
-                        "species_into_volume_kg_s": exchange.species_into_volume_kg_s,
-                        "axial_impulse_into_volume_n": exchange.axial_impulse_into_volume_n,
-                        "blocked_area_m2": blocked_area,
-                        "blocked_area_pressure_traction_n": blocked_traction,
-                        "external_wall_reaction_n": wall_reaction,
-                        "wave_speeds": exchange.wave_speeds,
-                        "fallback_reason": exchange.fallback_reason}
+                    if capture_trace:
+                        network_exchanges[node_id] = {
+                            "connection_id": binding.connection.id,
+                            "mass_into_volume_kg_s": exchange.mass_into_volume_kg_s,
+                            "energy_into_volume_w": exchange.energy_into_volume_w,
+                            "species_into_volume_kg_s": exchange.species_into_volume_kg_s,
+                            "axial_impulse_into_volume_n": exchange.axial_impulse_into_volume_n,
+                            "blocked_area_m2": blocked_area,
+                            "blocked_area_pressure_traction_n": blocked_traction,
+                            "external_wall_reaction_n": wall_reaction,
+                            "wave_speeds": exchange.wave_speeds,
+                            "fallback_reason": exchange.fallback_reason}
                     pressure_reaction_r = None
                 left_face = _port_face_flux(
                     left_exchange, primitives[0], path.mesh.areas[0], exhaust_area)
@@ -1695,11 +1702,12 @@ class IntegratedEngine2T:
                     external["energy"] -= external_r[2]
                     for j, value in enumerate(species_r): external["species"][j] -= value
                 right_face, right_face_species = external_r, species_r
-                faces_trace[path.id] = {"left": left_face, "right": external_r,
-                                        "left_species": left_species,
-                                        "right_species": species_r,
-                                        "left_speed": speed_l, "right_speed": speed_r}
-                faces_trace[path.id]["right_external_pressure_reaction_n"] = pressure_reaction_r
+                if capture_trace:
+                    faces_trace[path.id] = {"left": left_face, "right": external_r,
+                                            "left_species": left_species,
+                                            "right_species": species_r,
+                                            "left_speed": speed_l, "right_speed": speed_r}
+                    faces_trace[path.id]["right_external_pressure_reaction_n"] = pressure_reaction_r
             faces = [left_face]
             species_faces = [left_species]
             face_speeds = [speed_l]
@@ -1739,9 +1747,14 @@ class IntegratedEngine2T:
                 ds.append(tuple(-(species_faces[i+1][j]-species_faces[i][j]) for j in range(4)))
             rhs_q["ducts"][path.id] = dq
             rhs_s["ducts"][path.id] = ds
-            faces_trace[path.id]["all_faces"] = faces
-            faces_trace[path.id]["all_species_faces"] = species_faces
-            faces_trace[path.id]["face_speeds"] = face_speeds
+            if capture_trace:
+                faces_trace[path.id]["all_faces"] = faces
+                faces_trace[path.id]["all_species_faces"] = species_faces
+                faces_trace[path.id]["face_speeds"] = face_speeds
+            else:
+                # CFL requires only characteristic speeds; preserve them while
+                # omitting the large replay-only per-face dictionaries.
+                faces_trace[path.id] = {"face_speeds": face_speeds}
         for name in ("crankcase", "cylinder"):
             rhs_q["chambers"][name][1] += work[name]
         dynamic_reed_rhs = None
@@ -2043,8 +2056,13 @@ class IntegratedEngine2T:
                 species[j] += value
         return {"mass_kg": mass, "energy_J": energy, "species_kg": tuple(species)}
 
-    def step(self, dt_s: float, delta_angle_deg: float):
+    def step(self, dt_s: float, delta_angle_deg: float, *, capture_trace: bool = True,
+             profile_capture: bool = False):
         self._assert_configuration_unchanged()
+        if type(capture_trace) is not bool:
+            raise ValueError("capture_trace must be a bool")
+        if type(profile_capture) is not bool or (profile_capture and not capture_trace):
+            raise ValueError("profile_capture requires capture_trace=True")
         if (type(dt_s) not in (int, float) or not isfinite(dt_s) or dt_s <= 0 or
                 type(delta_angle_deg) not in (int, float) or not isfinite(delta_angle_deg)
                 or delta_angle_deg <= 0):
@@ -2118,7 +2136,7 @@ class IntegratedEngine2T:
         self._validate(q0)
         rpm = float(delta_angle_deg) / (6.0 * float(dt_s))
         r0 = self._assemble(q0, start_angle, rpm, step_p7_event,
-                            step_fuel_event, float(dt_s))
+                            step_fuel_event, float(dt_s), capture_trace=capture_trace)
         limiter0 = self._limit_p7_stage_source(q0, r0, float(dt_s))
         cfl0 = self._cfl(q0, r0, float(dt_s))
         q1 = deepcopy(q0)
@@ -2179,7 +2197,7 @@ class IntegratedEngine2T:
                 q1["ducts"][path.id][i] = (q[0], q[1], q[2], rho)
         self._validate(q1)
         r1 = self._assemble(q1, end_angle, rpm, step_p7_event,
-                            step_fuel_event, float(dt_s))
+                            step_fuel_event, float(dt_s), capture_trace=capture_trace)
         limiter1 = self._limit_p7_stage_source(q1, r1, float(dt_s))
         cfl1 = self._cfl(q1, r1, float(dt_s))
         qn = self._combine(q0, r0, r1, float(dt_s), end_angle)
@@ -2247,7 +2265,10 @@ class IntegratedEngine2T:
                 self.fuel_combustion_source_species_kg)
             self.ledger["fuel_combustion_heat_added_J"] = (
                 self.fuel_combustion_heat_added_j)
-        trace = {"angle_start_deg": start_angle, "angle_end_deg": end_angle,
+        trace = None
+        capture_started = time.perf_counter() if profile_capture else None
+        if capture_trace:
+            trace = {"angle_start_deg": start_angle, "angle_end_deg": end_angle,
                  "time_start_s": self.time_s, "dt_s": float(dt_s),
                  "rpm": float(delta_angle_deg) / (6.0 * float(dt_s)),
                  "stage_states": (q0, q1, qn),
@@ -2278,11 +2299,11 @@ class IntegratedEngine2T:
                  "heat_to_wall_J": heat_to_wall,
                  "stage_cfl": (cfl0, cfl1),
                  "inventory": self.inventory(qn), "dependency": self.dependency_status}
-        if self.dynamic_reed_binding is not None:
+        if capture_trace and self.dynamic_reed_binding is not None:
             trace["stage_dynamic_reed_rhs"] = (r0["dynamic_reed_rhs"],
                                                r1["dynamic_reed_rhs"])
             trace["reed_dissipation_increment_J"] = reed_dissipation_increment
-        if self.fuel_coupled_combustion is not None:
+        if capture_trace and self.fuel_coupled_combustion is not None:
             trace["fuel_combustion_event"] = (
                 None if step_fuel_event is None else step_fuel_event.to_dict())
             trace["stage_fuel_combustion_source_rates"] = (
@@ -2290,14 +2311,19 @@ class IntegratedEngine2T:
             trace["fuel_combustion_source_species_increment_kg"] = (
                 fuel_combustion_species_increment)
             trace["fuel_combustion_heat_increment_j"] = fuel_combustion_heat_increment
+        if capture_started is not None:
+            self.trace_capture_seconds += time.perf_counter() - capture_started
         self.state = qn
         self.crank_angle_unwrapped_deg = end_angle
         self.angle_deg = end_angle % 360.0
         self.time_s += float(dt_s)
         self.cycle = int(end_angle // 360.0)
         self.accepted_steps += 1
-        self.trace.append(trace)
-        return trace
+        if capture_trace:
+            self.trace.append(trace)
+            return trace
+        return {"angle_start_deg": start_angle, "angle_end_deg": end_angle,
+                "dt_s": float(dt_s), "rpm": rpm}
 
     def conservation_report(self):
         final = self.inventory()
@@ -2345,6 +2371,10 @@ class IntegratedEngine2T:
 
     def snapshot(self):
         self._assert_configuration_unchanged(check_identity=True)
+        if self.accepted_steps != len(self.trace):
+            raise ValueError(
+                "trace-free FAST capture is not a restorable checkpoint; "
+                "use fast_recipe_terminal_state")
         result = {"schema": self.schema, "configuration_identity": deepcopy(self.configuration_identity),
                 "state": _jsonify(self.state), "angle_deg": self.angle_deg,
                 "crank_angle_unwrapped_deg": self.crank_angle_unwrapped_deg,
@@ -2369,6 +2399,36 @@ class IntegratedEngine2T:
                 "completed_events": deepcopy(self.fuel_combustion_events)}
         return result
 
+    def fast_recipe_terminal_state(self):
+        """Return cycle-terminal state for a recipe, never as an engine checkpoint."""
+        self._assert_configuration_unchanged(check_identity=True)
+        if self.trace or self.accepted_steps < 1:
+            raise ValueError("FAST recipe terminal state requires trace-free accepted steps")
+        result = {"schema": "FAST_RECIPE_V1_TERMINAL_STATE",
+                  "engine_schema": self.schema,
+                  "configuration_identity": deepcopy(self.configuration_identity),
+                  "state": _jsonify(self.state),
+                  "angle_deg": self.angle_deg,
+                  "crank_angle_unwrapped_deg": self.crank_angle_unwrapped_deg,
+                  "time_s": self.time_s, "cycle": self.cycle,
+                  "accepted_steps": self.accepted_steps,
+                  "rejected_steps": self.rejected_steps,
+                  "max_cfl": self.max_cfl,
+                  "ledger": _jsonify(self.ledger),
+                  "p7": {"active_event": (None if self.p7_event is None else
+                                           snapshot_event(self.p7_event)),
+                         "completed_events": deepcopy(self.p7_events)},
+                  "initial_inventory": _jsonify(self.initial_inventory)}
+        if self.fuel_coupled_combustion is not None:
+            result["fuel_combustion"] = {
+                "active_event": (None if self.fuel_combustion_event is None else
+                                 self.fuel_combustion_event.to_dict()),
+                "completed_events": deepcopy(self.fuel_combustion_events)}
+        if self.dynamic_reed_binding is not None:
+            result["dynamic_reed_state"] = _jsonify(
+                self.state["dynamic_reed"])
+        return result
+
     def compact_cycle_trace(self):
         """Discard completed-cycle trace while retaining a ledger replay baseline.
 
@@ -2384,6 +2444,19 @@ class IntegratedEngine2T:
                 "fuel_combustion_source_species_kg", [0.0] * 4))}
         self._trace_origin_state = _jsonify(self.state)
         self.trace = []
+        self.accepted_steps = 0
+        self.rejected_steps = 0
+        self._trace_scope = "CYCLE_LOCAL"
+
+    def compact_fast_recipe_cycle(self):
+        """Reset cycle counters after a recipe-only cycle with no full trace."""
+        if self.trace or self.accepted_steps < 1:
+            raise ValueError("FAST recipe compaction requires an accepted trace-free cycle")
+        self._trace_fuel_combustion_baseline = {
+            "heat_added_J": float(self.ledger.get("fuel_combustion_heat_added_J", 0.0)),
+            "source_species_kg": list(self.ledger.get(
+                "fuel_combustion_source_species_kg", [0.0] * 4))}
+        self._trace_origin_state = _jsonify(self.state)
         self.accepted_steps = 0
         self.rejected_steps = 0
         self._trace_scope = "CYCLE_LOCAL"
