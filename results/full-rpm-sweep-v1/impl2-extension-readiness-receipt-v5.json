@@ -1,0 +1,107 @@
+{
+  "authorization_path": "results/full-rpm-sweep-v1/implementation-v2-extension-authorization-20261013-v5.json",
+  "authorization_sha256": "4dd4c3fdc4b37cd6fb26793e6411e8201a5a4e194625f55d5e3b2d52ee9e2926",
+  "authorized_by": "Explicit user instruction in DINO-ACTIVE — BLOCK 2: COMPLETE IMPL2 RPM CURVES",
+  "campaign_producer_sha256": "d8d2a2c00e3ff45741e9ceadc4b4672db8f2de6d412bb96b9dd07a1b7c7118a6",
+  "campaign_started": true,
+  "classification": "AUTHORIZED_EXTENSION_RESUME_READY_NOT_COMPLETE",
+  "created_at_utc": "2026-10-13T17:01:50.869272+00:00",
+  "execution_policy": {
+    "evidence_pipeline": "CONVENTIONAL_FULL_AUDIT",
+    "fast_recipe_enabled": false,
+    "runner_and_preregistration_unchanged": true
+  },
+  "execution_supervisor_path": "scripts/full_rpm_sweep_v1_impl2_extension_supervisor_v3.py",
+  "execution_supervisor_sha256": "018c9cee0efd64f3ba091dede6b67a8a2211f764d608d0f3aad85632c39f859f",
+  "implementation_identity_sha256": "ac78d48abb23697804d9db28ee28d6f0eeaab712dc9d711cdb3572bc6ebaa63a",
+  "invocation_ledger": [
+    {
+      "duration_seconds": 897.844,
+      "invocation_id": "20261013T153704Z-e24d4250",
+      "status": "COMPLETED"
+    },
+    {
+      "duration_seconds": 120.0,
+      "invocation_id": "20261013T155700Z-RECOVERY-RECONCILE",
+      "status": "COMPLETED"
+    },
+    {
+      "duration_seconds": 0.422,
+      "invocation_id": "20261013T160123Z-735e1d32-PROCESS-OVERHEAD",
+      "status": "COMPLETED"
+    },
+    {
+      "duration_seconds": 3497.0,
+      "invocation_id": "20261013T160123Z-735e1d32",
+      "status": "COMPLETED"
+    }
+  ],
+  "manifest_status": "INTERRUPTED_CHECKPOINTED",
+  "pilot_validation": {
+    "artifact_root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2/controlled-pilot-attempt-2",
+    "classification": "PERIOD_1_ALL_FOUR",
+    "primary_cycles_recorded": 235,
+    "result_and_checkpoint_hashes": "PASS"
+  },
+  "preregistration_sha256": "e26c0599325a9e6296291178ffd2e36457838052f1d9b59de7b6dc0f282d59e3",
+  "prior_campaign_states": [
+    {
+      "classification": "NUMERICAL_INVALID",
+      "cycles_completed": 0,
+      "point_id": "A_PRIME_MESH_0@1000RPM"
+    },
+    {
+      "classification": "PERIOD_1",
+      "cycles_completed": 46,
+      "point_id": "A_PRIME_MESH_0@1300RPM"
+    },
+    {
+      "classification": "PERIOD_1",
+      "cycles_completed": 52,
+      "point_id": "A_PRIME_MESH_0@1600RPM"
+    },
+    {
+      "classification": "PERIOD_1",
+      "cycles_completed": 56,
+      "point_id": "A_PRIME_MESH_0@1900RPM"
+    },
+    {
+      "classification": "PERIOD_1",
+      "cycles_completed": 61,
+      "point_id": "A_PRIME_MESH_0@2200RPM"
+    },
+    {
+      "classification": "INTERRUPTED_CHECKPOINTED",
+      "cycles_completed": 45,
+      "point_id": "A_PRIME_MESH_0@2500RPM"
+    },
+    {
+      "classification": "INTERRUPTED_CHECKPOINTED",
+      "cycles_completed": 28,
+      "point_id": "A_PRIME_MESH_0@2800RPM"
+    },
+    {
+      "classification": "INTERRUPTED_CHECKPOINTED",
+      "cycles_completed": 27,
+      "point_id": "A_PRIME_MESH_0@3400RPM"
+    },
+    {
+      "classification": "INTERRUPTED_CHECKPOINTED",
+      "cycles_completed": 20,
+      "point_id": "A_PRIME_MESH_0@3700RPM"
+    }
+  ],
+  "producer_canonical_preregistration_sha256": "4e0f6aaf9d7dbe105450c5a83016b7065c99c1f878da1025beaf8d64ec199ea3",
+  "schema": "FULL_RPM_SWEEP_V1_IMPL2_EXTENSION_READINESS_RECEIPT_V5",
+  "scope": {
+    "consumed_before_resume_seconds": 4515.266,
+    "global_budget_seconds": 21600,
+    "maximum_invocation_seconds": 3600,
+    "maximum_workers": 4,
+    "memory_budget_mib": 4096,
+    "point_count": 26,
+    "remaining_seconds": 17084.734,
+    "worker_reservation_mib": 512
+  },
+  "supersedes_authorization_sha256": "4e754615cb1dd5a09db847c7adc24f3b4c1a7689f5a41b12e2a50c47e0da35b9"
+}
