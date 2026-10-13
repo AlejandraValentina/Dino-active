@@ -1,0 +1,44 @@
+{
+  "artifact_root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2/authorized-extension-26-v1",
+  "authorization_path": "results/full-rpm-sweep-v1/implementation-v2-extension-authorization-20261013-v6.json",
+  "authorization_sha256": "8ed03c5f09b69c96a65fbb17d2d82f3e557e9df9f6985ae8d11f0c6063a3fade",
+  "authorized_by": "Initial explicit user authorization for remaining 26 points; this append-only receipt only binds the V4 coordinator continuation within that same scope.",
+  "campaign_producer_sha256": "d8d2a2c00e3ff45741e9ceadc4b4672db8f2de6d412bb96b9dd07a1b7c7118a6",
+  "campaign_started": true,
+  "classification": "AUTHORIZED_EXTENSION_RESUME_READY_NOT_COMPLETE",
+  "created_at_utc": "2026-10-13T18:03:38.488958+00:00",
+  "execution_policy": {
+    "coordinator_live_checkpoint_reads": "DISABLED",
+    "evidence_pipeline": "CONVENTIONAL_FULL_AUDIT",
+    "fast_recipe_enabled": false,
+    "runner_and_preregistration_unchanged": true
+  },
+  "execution_supervisor_path": "scripts/full_rpm_sweep_v1_impl2_extension_supervisor_v4.py",
+  "execution_supervisor_sha256": "4591c4f2d73796ee1416c461dcf9a1368a6383f7b93c73dfa1ff5e868a16d2d1",
+  "implementation_identity_sha256": "ac78d48abb23697804d9db28ee28d6f0eeaab712dc9d711cdb3572bc6ebaa63a",
+  "manifest_reconciliation": "Required before new workers start; V4 --resume reconciles exact hashes from durable point artifacts.",
+  "preregistration_sha256": "e26c0599325a9e6296291178ffd2e36457838052f1d9b59de7b6dc0f282d59e3",
+  "prior_failure": "Worker checkpoint atomic replace PermissionError (WinError 5); V4 addresses coordinator read/write collision by reconciling only completed workers and cancels siblings on errors.",
+  "prior_invocation_accounting": {
+    "implementation-v1-invocation": 897.844,
+    "recovery-reconcile": 120.0,
+    "v4-01": 3497.0,
+    "v4-01-process-overhead": 0.422,
+    "v5-02-postfail-shutdown-overhead": 1270.328,
+    "v5-02-supervisor": 2206.141
+  },
+  "prior_invocation_summary_path": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2/authorized-extension-26-v1/logs/impl2-extension-v5-02.summary.json",
+  "prior_invocation_summary_sha256": "473cf37fc7f8903951c07378c9e3515150e40d11ed4db7792ba0ee115b5a811e",
+  "schema": "FULL_RPM_SWEEP_V1_IMPL2_EXTENSION_READINESS_RECEIPT_V6",
+  "scope": {
+    "consumed_before_resume_seconds": 7991.735,
+    "global_budget_seconds": 21600,
+    "maximum_invocation_seconds": 3600,
+    "maximum_workers": 4,
+    "memory_budget_mib": 4096,
+    "point_count": 26,
+    "remaining_seconds": 13608.265,
+    "worker_reservation_mib": 512
+  },
+  "supersedes_authorization_sha256": "4dd4c3fdc4b37cd6fb26793e6411e8201a5a4e194625f55d5e3b2d52ee9e2926"
+}

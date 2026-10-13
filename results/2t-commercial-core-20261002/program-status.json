@@ -3090,7 +3090,11 @@
         "scripts/full_rpm_sweep_v1_impl2_extension_supervisor_v2.py",
         "results/full-rpm-sweep-v1/implementation-v2-extension-authorization-20261013-v5.json",
         "results/full-rpm-sweep-v1/impl2-extension-readiness-receipt-v5.json",
-        "scripts/full_rpm_sweep_v1_impl2_extension_supervisor_v3.py"
+        "scripts/full_rpm_sweep_v1_impl2_extension_supervisor_v3.py",
+        "scripts/full_rpm_sweep_v1_impl2_extension_supervisor_v4.py",
+        "results/full-rpm-sweep-v1/implementation-v2-extension-authorization-20261013-v6.json",
+        "results/full-rpm-sweep-v1/impl2-extension-readiness-receipt-v6.json",
+        "results/full-rpm-sweep-v1/impl2-extension-v6-01-progress-receipt.json"
       ],
       "unblock_tasks": [
         "FRPM-V2-RESTORE-INDEPENDENT-REVIEW",
@@ -4600,6 +4604,18 @@
       "task": "FRPM-FULL-CAMPAIGN-EXECUTION",
       "kind": "task",
       "summary": "IMPL2 extension invocation V4-01 completed at its 3600 s cap: 4 PERIOD_1, 1 NUMERICAL_INVALID, 3 INTERRUPTED_CHECKPOINTED, 18 NOT_STARTED. Manifest and checkpoints persisted; V4 budget cumulative update."
+    },
+    {
+      "at": "2026-10-13T18:04:03+00:00",
+      "task": "FRPM-FULL-CAMPAIGN-EXECUTION",
+      "kind": "task",
+      "summary": "V5-02 stopped after WinError 5 while replacing A@3400 checkpoint; all post-failure worker wall time charged to global budget (total 7,991.735s). Created V4 supervisor to avoid live checkpoint reads and cancel siblings on worker errors; V4 preflight passed, campaign remains in progress."
+    },
+    {
+      "at": "2026-10-13T19:11:13+00:00",
+      "task": "FRPM-FULL-CAMPAIGN-EXECUTION",
+      "kind": "task",
+      "summary": "V6-01 completed 3,557.329s under its 3,600s cap. A3400/3700/4300/4600 and B1300/1600/1900/2200 PERIOD_1; A5000, A1000, B1000 NUMERICAL_INVALID; B2500/2800/3400/3700 checkpointed at 13/11/9/8 cycles. Budget charged at 11,549.064s; 10,050.936s remain."
     }
   ],
   "legacy_gate_status": {
@@ -4681,7 +4697,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_IN_PROGRESS_RECOVERING_CHECKPOINTS",
-  "updated_at": "2026-10-13T17:01:50.874275+00:00",
+  "updated_at": "2026-10-13T18:00:00+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -4731,7 +4747,7 @@
   "full_rpm_sweep_impl2_extension_authorization": {
     "authorization": "EXPLICIT_REMAINING_26_POINT_EXTENSION",
     "authorized": true,
-    "authorization_sha256": "4dd4c3fdc4b37cd6fb26793e6411e8201a5a4e194625f55d5e3b2d52ee9e2926",
+    "authorization_sha256": "8ed03c5f09b69c96a65fbb17d2d82f3e557e9df9f6985ae8d11f0c6063a3fade",
     "preregistration_sha256": "e26c0599325a9e6296291178ffd2e36457838052f1d9b59de7b6dc0f282d59e3",
     "point_ids": [
       "A_PRIME_MESH_0@1000RPM",
@@ -4762,15 +4778,18 @@
       "B_PRIME_MESH_0@5000RPM"
     ],
     "global_budget_seconds": 21600,
-    "budget_consumed_seconds": 4515.266,
+    "budget_consumed_seconds": 11549.064,
     "maximum_invocation_seconds": 3600,
     "workers_max": 4,
     "memory_budget_mib": 4096,
     "worker_reservation_mib": 512,
     "campaign_started": true,
-    "receipt": "results/full-rpm-sweep-v1/implementation-v2-extension-authorization-20261013-v5.json",
-    "readiness_receipt": "results/full-rpm-sweep-v1/impl2-extension-readiness-receipt-v5.json",
+    "receipt": "results/full-rpm-sweep-v1/implementation-v2-extension-authorization-20261013-v6.json",
+    "readiness_receipt": "results/full-rpm-sweep-v1/impl2-extension-readiness-receipt-v6.json",
     "artifact_root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2/authorized-extension-26-v1",
-    "remaining_seconds": 17084.734
+    "remaining_seconds": 10050.936,
+    "execution_supervisor": "scripts/full_rpm_sweep_v1_impl2_extension_supervisor_v4.py",
+    "campaign_status": "INTERRUPTED_CHECKPOINTED",
+    "progress_receipt": "results/full-rpm-sweep-v1/impl2-extension-v6-01-progress-receipt.json"
   }
 }

@@ -1,0 +1,222 @@
+{
+  "authorization_sha256": "8ed03c5f09b69c96a65fbb17d2d82f3e557e9df9f6985ae8d11f0c6063a3fade",
+  "budget": {
+    "consumed_seconds": 11549.063999999998,
+    "global_seconds": 21600,
+    "invocation_limit_seconds": 3600,
+    "remaining_seconds": 10050.936000000002,
+    "this_invocation_seconds": 3557.329
+  },
+  "campaign_manifest_sha256": "2e66c943d0666aac26d1c95060050dd2cf0b78382f9b2ceacff756f5e936070f",
+  "campaign_producer_sha256": "d8d2a2c00e3ff45741e9ceadc4b4672db8f2de6d412bb96b9dd07a1b7c7118a6",
+  "campaign_status": "INTERRUPTED_CHECKPOINTED",
+  "checks": {
+    "openspec_strict": "39 passed",
+    "program_status_check": "OK",
+    "v1_v2_v3_v4_spawn_checkpoint_d1d2_regression": "32 passed in 371.06 seconds",
+    "v4_preflight": "PASS",
+    "v4_targeted_tests": "3 passed"
+  },
+  "execution_supervisor_path": "scripts/full_rpm_sweep_v1_impl2_extension_supervisor_v4.py",
+  "execution_supervisor_sha256": "4591c4f2d73796ee1416c461dcf9a1368a6383f7b93c73dfa1ff5e868a16d2d1",
+  "failed_prior_invocation": {
+    "budget_fully_accounted": true,
+    "coordinator_correction": "V4 avoids live checkpoint reads and cooperatively cancels siblings on error",
+    "error": "PermissionError WinError 5 replacing A@3400 checkpoint",
+    "id": "20261013T170217Z-2bda4b51"
+  },
+  "fast_recipe_enabled": false,
+  "implementation_identity_sha256": "ac78d48abb23697804d9db28ee28d6f0eeaab712dc9d711cdb3572bc6ebaa63a",
+  "invocation_duration_seconds": 3557.329,
+  "memory_budget_mib": 4096,
+  "point_statuses": [
+    {
+      "checkpoint_sha256": null,
+      "classification": "NUMERICAL_INVALID",
+      "cycles_completed": 0,
+      "point_id": "A_PRIME_MESH_0@1000RPM",
+      "result_sha256": "f138a1c8f654afdc9fb187fbc35423c20f7eb0b8646d67097dd0b0e18e95dbe7"
+    },
+    {
+      "checkpoint_sha256": "e8ac2a284a63bd2cd6f71421cb7da2a61d500b073c7d5eae1db73557df9bf1da",
+      "classification": "PERIOD_1",
+      "cycles_completed": 46,
+      "point_id": "A_PRIME_MESH_0@1300RPM",
+      "result_sha256": "3843ce073b3d3830e435a9b6328d10894b805c3fb7aa2800a48dd1a0b9593821"
+    },
+    {
+      "checkpoint_sha256": "c5ed6eabbb0d0c10c38b82cd15f371ab513cdd7149ef1e0873a1f48a0853d667",
+      "classification": "PERIOD_1",
+      "cycles_completed": 52,
+      "point_id": "A_PRIME_MESH_0@1600RPM",
+      "result_sha256": "4502bdbe0ce3f69ce64d2fd5f2e7596d32cf69c94dc1f0931ac7de1b8e96b19d"
+    },
+    {
+      "checkpoint_sha256": "2485c1e10f9adcc243e5b137a56f32ed999891397635314f8974734d6e99cc49",
+      "classification": "PERIOD_1",
+      "cycles_completed": 56,
+      "point_id": "A_PRIME_MESH_0@1900RPM",
+      "result_sha256": "a5f6695342111ea8c3840c1c39738f0c8050a31cc4e63566c52e41474ac9e9d0"
+    },
+    {
+      "checkpoint_sha256": "28d1923b0e812369919ef4e34f82836aacbec0df9968cf34c2742c026e8147fe",
+      "classification": "PERIOD_1",
+      "cycles_completed": 61,
+      "point_id": "A_PRIME_MESH_0@2200RPM",
+      "result_sha256": "2afd381eedaf7ea0dd10de27ede5a32f51a2e8dbb694dcaa84cce5a4b54c8d1f"
+    },
+    {
+      "checkpoint_sha256": "8c78532fefc4b9df35514807e9bdce5ea71d19833713bbf921995c462f8b5289",
+      "classification": "PERIOD_1",
+      "cycles_completed": 66,
+      "point_id": "A_PRIME_MESH_0@2500RPM",
+      "result_sha256": "0c76f9ec62957ebb8d6fa502cf3cc53f4ddcafc2780ab07ca01aa41db69c42d2"
+    },
+    {
+      "checkpoint_sha256": "139126a52b0a8589e4ae994ac30b5e457747402857961f480987453aa3d678df",
+      "classification": "PERIOD_1",
+      "cycles_completed": 70,
+      "point_id": "A_PRIME_MESH_0@2800RPM",
+      "result_sha256": "bb3f2a15301c811996a18693f39274c0969b12c02c13e18fd34cacc63cd5fa12"
+    },
+    {
+      "checkpoint_sha256": "7f0015d49768c642217cd0d811ec7b5e78f5d10ad2edc25bd9d7ada5db4be756",
+      "classification": "PERIOD_1",
+      "cycles_completed": 78,
+      "point_id": "A_PRIME_MESH_0@3400RPM",
+      "result_sha256": "e4fc5aa8c6f44cad4bae209135a46718747582dc64eb05039ebb4fdd14d9a8a9"
+    },
+    {
+      "checkpoint_sha256": "98c0b5b9612f97450bb5ca6a99cc207f1d634b91bc296760de35a1f9e0e4ba3d",
+      "classification": "PERIOD_1",
+      "cycles_completed": 83,
+      "point_id": "A_PRIME_MESH_0@3700RPM",
+      "result_sha256": "fee2a893c5ce1cd2e377044dcfae879eafbf545a0a04836206022d916a20959c"
+    },
+    {
+      "checkpoint_sha256": "28c146f16ae2c05581ddf9aeca30e5f4cd9cf5b1ccdb75b0ddcbc511e2f61b8f",
+      "classification": "PERIOD_1",
+      "cycles_completed": 91,
+      "point_id": "A_PRIME_MESH_0@4300RPM",
+      "result_sha256": "a5d175fcdab794ecf648b31d5e765686d09283ec1d8432d62b4f2d0c4eebf7ec"
+    },
+    {
+      "checkpoint_sha256": "e2cc7c48b4bd83fc351ee52475e9c3fad14078ce87081ea94968b1dfb7e66ae8",
+      "classification": "PERIOD_1",
+      "cycles_completed": 95,
+      "point_id": "A_PRIME_MESH_0@4600RPM",
+      "result_sha256": "407f3290d32ba79da84f55cd43f0ed7f12950ef1e2751d34795d6e9fe4662625"
+    },
+    {
+      "checkpoint_sha256": "50bc53f62c5fd887c02cb5d238b4b9e486f7b0cde3c8aee66d08193af7b8d5f0",
+      "classification": "PERIOD_1",
+      "cycles_completed": 100,
+      "point_id": "A_PRIME_MESH_0@4900RPM",
+      "result_sha256": "f50e30883e6d4cdcd35311509258c52302df838c718b9bded761ec2233d5734c"
+    },
+    {
+      "checkpoint_sha256": "32cc5c94018a7516891c1d9753a8a18c245d6a6c04dc5ef1c57447c4562b4b36",
+      "classification": "NUMERICAL_INVALID",
+      "cycles_completed": 1,
+      "point_id": "A_PRIME_MESH_0@5000RPM",
+      "result_sha256": "155671de5c29a2871f89a706366a00d317ca35638ec005b26b82103c2d73cec0"
+    },
+    {
+      "checkpoint_sha256": null,
+      "classification": "NUMERICAL_INVALID",
+      "cycles_completed": 0,
+      "point_id": "B_PRIME_MESH_0@1000RPM",
+      "result_sha256": "ec4c035276d511bae6ace5533e7cf86cce68210fc539e98f1b4ff95adaf09276"
+    },
+    {
+      "checkpoint_sha256": "94a6feaa40a3a7d8ec410b87e6638c73dcdb819ab4e6e5c7ff29e721ab3b447f",
+      "classification": "PERIOD_1",
+      "cycles_completed": 28,
+      "point_id": "B_PRIME_MESH_0@1300RPM",
+      "result_sha256": "b9dde70329570dc12ee3273f1e43895faa898660012a86dcc68034182d9fb161"
+    },
+    {
+      "checkpoint_sha256": "6825beff7f3f80ce843c7a1301bef77cc2f9c56bcd0319931d0e1046e0215182",
+      "classification": "PERIOD_1",
+      "cycles_completed": 28,
+      "point_id": "B_PRIME_MESH_0@1600RPM",
+      "result_sha256": "b102d4c5f7d2a19767b38a0272b45a2d4f8d77a9058605b6d9c7ac1208d160e4"
+    },
+    {
+      "checkpoint_sha256": "51affca9df45b9d6c8244d564c779c01b35e9dd849956ed0dc238549242cac81",
+      "classification": "PERIOD_1",
+      "cycles_completed": 29,
+      "point_id": "B_PRIME_MESH_0@1900RPM",
+      "result_sha256": "2f7354121bdfa35e861d5cf3b5421ee14e3f34ed0b02c778df0230c9586b5675"
+    },
+    {
+      "checkpoint_sha256": "1fc2c3c913c161cbc7f20af3140340d5d2d15562aa8586303f3609f0d1387a18",
+      "classification": "PERIOD_1",
+      "cycles_completed": 30,
+      "point_id": "B_PRIME_MESH_0@2200RPM",
+      "result_sha256": "c3e980018c31225de242b6a94763aff0e2238f116e3bedee522cfb331f880d33"
+    },
+    {
+      "checkpoint_sha256": "befdb7b1cee2705c646a0ed7f16d48e175da25ed3645b250561f7669db0cec9b",
+      "classification": "INTERRUPTED_CHECKPOINTED",
+      "cycles_completed": 13,
+      "point_id": "B_PRIME_MESH_0@2500RPM",
+      "result_sha256": null
+    },
+    {
+      "checkpoint_sha256": "05685c824984c929ceab6a681997d0481b86ecba9c5378bb59855ccb410bc7c2",
+      "classification": "INTERRUPTED_CHECKPOINTED",
+      "cycles_completed": 11,
+      "point_id": "B_PRIME_MESH_0@2800RPM",
+      "result_sha256": null
+    },
+    {
+      "checkpoint_sha256": "20ca01beff50c2df7c40d0468c8eb051515989665b9a14ef524dfce616420325",
+      "classification": "INTERRUPTED_CHECKPOINTED",
+      "cycles_completed": 9,
+      "point_id": "B_PRIME_MESH_0@3400RPM",
+      "result_sha256": null
+    },
+    {
+      "checkpoint_sha256": "cf5a0fae90d6bae63fedddad7c73ef397ba2c506912a4bbb7e93920cd74988a3",
+      "classification": "INTERRUPTED_CHECKPOINTED",
+      "cycles_completed": 8,
+      "point_id": "B_PRIME_MESH_0@3700RPM",
+      "result_sha256": null
+    },
+    {
+      "checkpoint_sha256": null,
+      "classification": "NOT_STARTED",
+      "cycles_completed": null,
+      "point_id": "B_PRIME_MESH_0@4300RPM",
+      "result_sha256": null
+    },
+    {
+      "checkpoint_sha256": null,
+      "classification": "NOT_STARTED",
+      "cycles_completed": null,
+      "point_id": "B_PRIME_MESH_0@4600RPM",
+      "result_sha256": null
+    },
+    {
+      "checkpoint_sha256": null,
+      "classification": "NOT_STARTED",
+      "cycles_completed": null,
+      "point_id": "B_PRIME_MESH_0@4900RPM",
+      "result_sha256": null
+    },
+    {
+      "checkpoint_sha256": null,
+      "classification": "NOT_STARTED",
+      "cycles_completed": null,
+      "point_id": "B_PRIME_MESH_0@5000RPM",
+      "result_sha256": null
+    }
+  ],
+  "preregistration_sha256": "e26c0599325a9e6296291178ffd2e36457838052f1d9b59de7b6dc0f282d59e3",
+  "run_logged_summary_path": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2/authorized-extension-26-v1/logs/impl2-extension-v6-01.summary.json",
+  "run_logged_summary_sha256": "f426c9b09e7971d86ea7931c0137b5c15bb34a7e6e18a1f60f272d3be23fe97e",
+  "schema": "FULL_RPM_SWEEP_V1_IMPL2_EXTENSION_PROGRESS_RECEIPT_V6_01",
+  "worker_reserve_mib": 512,
+  "workers": 4
+}
