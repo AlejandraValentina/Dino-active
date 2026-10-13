@@ -4557,6 +4557,12 @@
       "task": "FRPM-IMPL2-FIRST-CONTROLLED-PILOT",
       "kind": "task",
       "summary": "Two authorized invocations used 73.125/3600 campaign-accounted seconds; all four selected points have valid cycle-1 checkpoints, 26 remain NOT_STARTED. Coordinator cancels workers after any one-second empty poll; current checkpoints bind the registered runner, so safe resume requires a reviewed/rebound implementation identity. No engineering outputs or valid power/torque claims."
+    },
+    {
+      "at": "2026-10-13T14:10:23+00:00",
+      "task": "FRPM-IMPL2-FIRST-CONTROLLED-PILOT",
+      "kind": "task",
+      "summary": "Added bounded versioned supervisor; frozen runner/checkpoint hash unchanged, supervisor hash recorded separately. Real spawn _run_point tests, checkpoint audits, and preflight pass; authorized four-point resume is running."
     }
   ],
   "legacy_gate_status": {
