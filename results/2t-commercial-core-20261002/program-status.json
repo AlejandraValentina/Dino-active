@@ -4593,6 +4593,12 @@
       "task": "FRPM-FULL-CAMPAIGN-EXECUTION",
       "kind": "task",
       "summary": "IMPL2 append-only extension started in isolated artifact root; invocation 1 uses four spawn workers under 3600 s and 4096 MiB limits. Pilot artifacts remain read-only."
+    },
+    {
+      "at": "2026-10-13T17:00:09+00:00",
+      "task": "FRPM-FULL-CAMPAIGN-EXECUTION",
+      "kind": "task",
+      "summary": "IMPL2 extension invocation V4-01 completed at its 3600 s cap: 4 PERIOD_1, 1 NUMERICAL_INVALID, 3 INTERRUPTED_CHECKPOINTED, 18 NOT_STARTED. Manifest and checkpoints persisted; V4 budget cumulative update."
     }
   ],
   "legacy_gate_status": {
@@ -4674,7 +4680,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_IN_PROGRESS_RECOVERING_CHECKPOINTS",
-  "updated_at": "2026-10-13T16:00:29.912820+00:00",
+  "updated_at": "2026-10-13T17:00:17.837482+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -4755,7 +4761,7 @@
       "B_PRIME_MESH_0@5000RPM"
     ],
     "global_budget_seconds": 21600,
-    "budget_consumed_seconds": 1017.844,
+    "budget_consumed_seconds": 4515.266,
     "maximum_invocation_seconds": 3600,
     "workers_max": 4,
     "memory_budget_mib": 4096,
@@ -4763,6 +4769,7 @@
     "campaign_started": true,
     "receipt": "results/full-rpm-sweep-v1/implementation-v2-extension-authorization-20261013-v4.json",
     "readiness_receipt": "results/full-rpm-sweep-v1/impl2-extension-readiness-receipt-v4.json",
-    "artifact_root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2/authorized-extension-26-v1"
+    "artifact_root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2/authorized-extension-26-v1",
+    "remaining_seconds": 17084.734
   }
 }
