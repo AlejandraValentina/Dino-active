@@ -26,7 +26,7 @@ from motorsim.full_rpm_sweep_v1_impl2 import audit_impl2_campaign_preflight
 
 ROOT = campaign.ROOT
 AUTHORIZATION_RELATIVE = Path(
-    "results/full-rpm-sweep-v1/implementation-v2-extension-authorization-20261013-v2.json"
+    "results/full-rpm-sweep-v1/implementation-v2-extension-authorization-20261013-v3.json"
 )
 PILOT_POINT_IDS = {
     "A_PRIME_MESH_0@3100RPM", "A_PRIME_MESH_0@4000RPM",
@@ -104,7 +104,7 @@ def _validate_authorization(path: Path, prereg_sha: str, identity: dict,
                             point_ids: list[str]) -> dict:
     authorization = _read(path)
     exact = {
-        "schema": "FULL_RPM_SWEEP_V1_IMPL2_APPEND_ONLY_EXTENSION_AUTHORIZATION_V2",
+        "schema": "FULL_RPM_SWEEP_V1_IMPL2_APPEND_ONLY_EXTENSION_AUTHORIZATION_V3",
         "authorization_type": "EXPLICIT_REMAINING_26_POINT_EXTENSION",
         "authorized": True,
         "implementation_version": campaign.IMPLEMENTATION_VERSION,
@@ -423,7 +423,9 @@ def _run_invocation(*, resume: bool, workers: int, memory_budget_mib: int,
         identity_sha = _file_sha(ROOT / "results/full-rpm-sweep-v1/implementation-v2-campaign-identity.json")
         budget = max(1, int(invocation_limit))
         execution_budget = max(1, budget - min(SHUTDOWN_HEADROOM_SECONDS,
-                                                 max(1, budget // 20)))
+                                                 max(1, budget // 20)) -
+                           min(15, max(0, budget - min(SHUTDOWN_HEADROOM_SECONDS,
+                                                       max(1, budget // 20)) - 1)))
         execution_deadline = started_mono + execution_budget
         manifest = _validate_extension_manifest(
             root, point_ids, prereg_sha, auth_sha, identity_sha)
@@ -531,7 +533,8 @@ def _run_invocation(*, resume: bool, workers: int, memory_budget_mib: int,
                 # producer checks cancellation at a complete-cycle boundary.
                 done_remaining, not_done = concurrent.futures.wait(
                     futures, timeout=min(SHUTDOWN_HEADROOM_SECONDS,
-                                        max(1, budget - execution_budget)),
+                                        max(1, budget - execution_budget -
+                                            min(15, max(0, budget - execution_budget - 1)))),
                     return_when=concurrent.futures.ALL_COMPLETED)
                 if not_done:
                     raise TimeoutError("workers did not reach checkpoint shutdown within headroom")

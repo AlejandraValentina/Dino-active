@@ -21,7 +21,7 @@ def test_user_authorization_scope_is_exact_and_hash_bound(tmp_path):
     prereg, prereg_sha, identity = extension._expected_identity()
     ids = sorted(extension._point_id(v, rpm) for v, rpm in extension._extension_points(prereg))
     auth = {
-        "schema": "FULL_RPM_SWEEP_V1_IMPL2_APPEND_ONLY_EXTENSION_AUTHORIZATION_V2",
+        "schema": "FULL_RPM_SWEEP_V1_IMPL2_APPEND_ONLY_EXTENSION_AUTHORIZATION_V3",
         "authorization_type": "EXPLICIT_REMAINING_26_POINT_EXTENSION",
         "authorized": True,
         "implementation_version": extension.campaign.IMPLEMENTATION_VERSION,
