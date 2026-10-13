@@ -1,0 +1,99 @@
+{
+  "authorization_path": "results/full-rpm-sweep-v1/implementation-v2-extension-authorization-20261013-v4.json",
+  "authorization_sha256": "4e754615cb1dd5a09db847c7adc24f3b4c1a7689f5a41b12e2a50c47e0da35b9",
+  "authorized_by": "Explicit user instruction in DINO-ACTIVE — BLOCK 2: COMPLETE IMPL2 RPM CURVES",
+  "campaign_producer_sha256": "d8d2a2c00e3ff45741e9ceadc4b4672db8f2de6d412bb96b9dd07a1b7c7118a6",
+  "campaign_started": true,
+  "classification": "AUTHORIZED_EXTENSION_RESUME_READY_NOT_COMPLETE",
+  "created_at_utc": "2026-10-13T16:00:29.909823+00:00",
+  "evidence_pipeline": "CONVENTIONAL_FULL_AUDIT",
+  "execution_supervisor_path": "scripts/full_rpm_sweep_v1_impl2_extension_supervisor_v2.py",
+  "execution_supervisor_sha256": "e3e0eddc7aa1b42278a43099b07924d2484f982c18d17629904ce51a6cc3b427",
+  "fast_recipe_enabled": false,
+  "impl2_preflight": "PASS",
+  "implementation_identity_sha256": "ac78d48abb23697804d9db28ee28d6f0eeaab712dc9d711cdb3572bc6ebaa63a",
+  "interrupted_invocation": {
+    "checkpointed_cycles": 74,
+    "classification": "INTERRUPTED_CHECKPOINTED_SUPERVISOR_V1_TERMINATED_FOR_SAFE_RECOVERY",
+    "duration_seconds": 897.844,
+    "invocation_id": "20261013T153704Z-e24d4250",
+    "manifest_was_stale_and_will_be_reconciled_before_resume": true,
+    "point_states": [
+      {
+        "checkpoint_sha256": "43e42d2ed9a8dc87861a7de1a077d21640bd1d9091fca42ee74299f203e08fa1",
+        "classification": "IN_PROGRESS_CHECKPOINTED",
+        "cycles_completed": 13,
+        "point_id": "A_PRIME_MESH_0@01300RPM"
+      },
+      {
+        "checkpoint_sha256": "fa9158bc0b418cc5bc4e1a8187cd620f204cc021ca9a78768b9f47f6cbb35087",
+        "classification": "IN_PROGRESS_CHECKPOINTED",
+        "cycles_completed": 16,
+        "point_id": "A_PRIME_MESH_0@01600RPM"
+      },
+      {
+        "checkpoint_sha256": "a7355112114a66693d97152dcf3588da3af31dda4f8d423b594a8995a2986fd9",
+        "classification": "IN_PROGRESS_CHECKPOINTED",
+        "cycles_completed": 20,
+        "point_id": "A_PRIME_MESH_0@01900RPM"
+      },
+      {
+        "checkpoint_sha256": "fa89b96100966264309ef0b0a1745c672688d1957e03de51581002ddc7c31e43",
+        "classification": "IN_PROGRESS_CHECKPOINTED",
+        "cycles_completed": 25,
+        "point_id": "A_PRIME_MESH_0@02200RPM"
+      }
+    ]
+  },
+  "pilot_validation": {
+    "classification": "PERIOD_1_ALL_FOUR",
+    "manifest_sha256": "74a112b0c94031caa358ba8d2fa521fb8d68e569f93073f35e3c7fcddb0aee63",
+    "primary_cycles_recorded": 235,
+    "result_and_checkpoint_hashes": "PASS",
+    "root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2/controlled-pilot-attempt-2"
+  },
+  "preregistration_sha256": "e26c0599325a9e6296291178ffd2e36457838052f1d9b59de7b6dc0f282d59e3",
+  "producer_canonical_preregistration_sha256": "4e0f6aaf9d7dbe105450c5a83016b7065c99c1f878da1025beaf8d64ec199ea3",
+  "recovery_reconciliation": "PASS_CHECKPOINT_BINDINGS_AND_PRIMARY_METRIC_LINKS",
+  "recovery_reconciliation_seconds": 120,
+  "schema": "FULL_RPM_SWEEP_V1_IMPL2_EXTENSION_READINESS_RECEIPT_V4",
+  "scope": {
+    "consumed_before_resume_seconds": 1017.844,
+    "global_budget_seconds": 21600,
+    "max_invocation_seconds": 3600,
+    "memory_mib": 4096,
+    "point_count": 26,
+    "point_ids": [
+      "A_PRIME_MESH_0@1000RPM",
+      "A_PRIME_MESH_0@1300RPM",
+      "A_PRIME_MESH_0@1600RPM",
+      "A_PRIME_MESH_0@1900RPM",
+      "A_PRIME_MESH_0@2200RPM",
+      "A_PRIME_MESH_0@2500RPM",
+      "A_PRIME_MESH_0@2800RPM",
+      "A_PRIME_MESH_0@3400RPM",
+      "A_PRIME_MESH_0@3700RPM",
+      "A_PRIME_MESH_0@4300RPM",
+      "A_PRIME_MESH_0@4600RPM",
+      "A_PRIME_MESH_0@4900RPM",
+      "A_PRIME_MESH_0@5000RPM",
+      "B_PRIME_MESH_0@1000RPM",
+      "B_PRIME_MESH_0@1300RPM",
+      "B_PRIME_MESH_0@1600RPM",
+      "B_PRIME_MESH_0@1900RPM",
+      "B_PRIME_MESH_0@2200RPM",
+      "B_PRIME_MESH_0@2500RPM",
+      "B_PRIME_MESH_0@2800RPM",
+      "B_PRIME_MESH_0@3400RPM",
+      "B_PRIME_MESH_0@3700RPM",
+      "B_PRIME_MESH_0@4300RPM",
+      "B_PRIME_MESH_0@4600RPM",
+      "B_PRIME_MESH_0@4900RPM",
+      "B_PRIME_MESH_0@5000RPM"
+    ],
+    "remaining_seconds": 20582.156,
+    "worker_reservation_mib": 512,
+    "workers_max": 4
+  },
+  "supersedes_authorization_sha256": "257e4c95b1183f50d4c472d309b8d34dc2a7ae602d4f3fd1e61e26905a31a670"
+}

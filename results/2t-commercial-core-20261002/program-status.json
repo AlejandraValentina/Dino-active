@@ -3087,8 +3087,9 @@
         "scripts/full_rpm_sweep_v1_impl2_extension_supervisor_v1.py",
         "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\controlled-pilot-attempt-2\\campaign.json",
         "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1-impl2/controlled-pilot-attempt-2/campaign.json",
-        "results/full-rpm-sweep-v1/implementation-v2-extension-authorization-20261013-v3.json",
-        "results/full-rpm-sweep-v1/impl2-extension-readiness-receipt-v3.json"
+        "results/full-rpm-sweep-v1/implementation-v2-extension-authorization-20261013-v4.json",
+        "results/full-rpm-sweep-v1/impl2-extension-readiness-receipt-v4.json",
+        "scripts/full_rpm_sweep_v1_impl2_extension_supervisor_v2.py"
       ],
       "unblock_tasks": [
         "FRPM-V2-RESTORE-INDEPENDENT-REVIEW",
@@ -4586,6 +4587,12 @@
       "task": "FRPM-FULL-CAMPAIGN-EXECUTION",
       "kind": "task",
       "summary": "Explicit append-only authorization for the remaining 26 IMPL2 points persisted with 21,600 s global budget. Frozen preregistration, runner and pilot artifacts verified; extension preflight PASS, campaign not yet started."
+    },
+    {
+      "at": "2026-10-13T15:37:55+00:00",
+      "task": "FRPM-FULL-CAMPAIGN-EXECUTION",
+      "kind": "task",
+      "summary": "IMPL2 append-only extension started in isolated artifact root; invocation 1 uses four spawn workers under 3600 s and 4096 MiB limits. Pilot artifacts remain read-only."
     }
   ],
   "legacy_gate_status": {
@@ -4666,8 +4673,8 @@
     "campaigns_started": 1
   },
   "campaigns_started": 1,
-  "campaign_runtime_status": "AUTHORIZED_IMPL2_EXTENSION_READY_TO_START",
-  "updated_at": "2026-10-13T15:36:39.857786+00:00",
+  "campaign_runtime_status": "IMPL2_EXTENSION_IN_PROGRESS_RECOVERING_CHECKPOINTS",
+  "updated_at": "2026-10-13T16:00:29.912820+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -4717,7 +4724,7 @@
   "full_rpm_sweep_impl2_extension_authorization": {
     "authorization": "EXPLICIT_REMAINING_26_POINT_EXTENSION",
     "authorized": true,
-    "authorization_sha256": "257e4c95b1183f50d4c472d309b8d34dc2a7ae602d4f3fd1e61e26905a31a670",
+    "authorization_sha256": "4e754615cb1dd5a09db847c7adc24f3b4c1a7689f5a41b12e2a50c47e0da35b9",
     "preregistration_sha256": "e26c0599325a9e6296291178ffd2e36457838052f1d9b59de7b6dc0f282d59e3",
     "point_ids": [
       "A_PRIME_MESH_0@1000RPM",
@@ -4748,14 +4755,14 @@
       "B_PRIME_MESH_0@5000RPM"
     ],
     "global_budget_seconds": 21600,
-    "budget_consumed_seconds": 0,
+    "budget_consumed_seconds": 1017.844,
     "maximum_invocation_seconds": 3600,
     "workers_max": 4,
     "memory_budget_mib": 4096,
     "worker_reservation_mib": 512,
-    "campaign_started": false,
-    "receipt": "results/full-rpm-sweep-v1/implementation-v2-extension-authorization-20261013-v3.json",
-    "readiness_receipt": "results/full-rpm-sweep-v1/impl2-extension-readiness-receipt-v3.json",
+    "campaign_started": true,
+    "receipt": "results/full-rpm-sweep-v1/implementation-v2-extension-authorization-20261013-v4.json",
+    "readiness_receipt": "results/full-rpm-sweep-v1/impl2-extension-readiness-receipt-v4.json",
     "artifact_root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2/authorized-extension-26-v1"
   }
 }
