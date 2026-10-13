@@ -1,0 +1,301 @@
+{
+  "campaign_classifications": [
+    "PERIOD_1",
+    "PERIOD_2",
+    "NO_CONVERGENCE_WITHIN_HORIZON",
+    "NUMERICAL_INVALID",
+    "PRIMARY_AUDIT_FAIL",
+    "PHYSICAL_INVALID",
+    "INTERRUPTED_CHECKPOINTED"
+  ],
+  "campaign_execution_authorized_for_current_impl2_identity": false,
+  "campaign_started_in_this_task": false,
+  "compute_plan": {
+    "checkpoint_policy": "persist at every complete accepted cycle and RPM point; stop at latest durable checkpoint; resume same external campaign root only on exact configuration, solver and periodicity hash match.",
+    "formal_global_campaign_wall_clock_cap": "NONE_FOUND_IN_CURRENT_OPENSPEC; contract sets 3600 seconds per invocation and 111 cycles per point, with no global campaign duration. Prior v1 execution stopped at a 47,368.8-second cost threshold; this is prior execution context, not a global limit in the present OpenSpec contract.",
+    "justification": "prior conventional IMPL2 diagnostic measured 3.738x with four spawn workers; current host has 12 logical CPUs, and the accepted planner allows 4 under 4096 MiB with 512 MiB reservation per worker; a full campaign speedup remains unvalidated.",
+    "logical_cpu_count": 12,
+    "memory_budget_mib": 4096,
+    "observed_available_memory_bytes": 9043935232,
+    "parallel_campaign_projection": "NOT_MEASURED; the 3.738x diagnostic ratio does not validate a campaign-duration projection.",
+    "per_invocation_wall_clock_seconds": 3600,
+    "planner_workers_1_2_4_all_feasible": true,
+    "previous_linear_serial_estimate_hours": 13.158,
+    "prior_diagnostic_four_worker_speedup": 3.738,
+    "recommended_phase_plan": [
+      "After campaign-specific preregistration and owner authorization, start A4000 and B4000 as the two-point IMPL2 pilot in the same IMPL2 artifact root.",
+      "Inspect measured cycle wall time, memory, storage, audit, classifications and checkpoint validity before continuing.",
+      "If the owner authorizes continuation, resume the same root for only the remaining 28 points; do not import v1 result/checkpoint files."
+    ],
+    "recommended_workers": 4,
+    "serial_screening_hours": 12.497323172788553,
+    "worker_reservation_mib": 512
+  },
+  "contract_candidate": {
+    "artifact_root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2",
+    "current_code_source_hashes": {
+      "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+      "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+      "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+      "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+      "motorsim.gas1d.eos": "72ec337f941b1259ab23c04f70ec75593870bdcc4b065d481b38834430221186",
+      "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+      "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+      "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+      "motorsim.integrated_2t": "e3d1e449240478bd6ca955c032ec835fce65479965a5d305d48288a3ef3e29b3",
+      "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+      "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+      "motorsim.p6_species": "7ed60395642eecb6b5b9f15bbe095489468da7b562f72d0b53b13527a97e2dab",
+      "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+      "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+      "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+      "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+      "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+      "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095"
+    },
+    "max_complete_cycles_per_point": 111,
+    "nonconvergence_classification": "NO_CONVERGENCE_WITHIN_HORIZON",
+    "operation": {
+      "boundary_semantics": "existing unthrottled OPEN_END_PLENUM_V2 inlet and outlet; no throttle component exists in the bound integrated configuration",
+      "mode": "WOT",
+      "powervalve": "existing RPM map retained unchanged",
+      "throttle_fraction": 1.0
+    },
+    "output_units": {
+      "BMEP": "Pa",
+      "BSFC": "g/kWh",
+      "FMEP": "Pa",
+      "IMEP": "Pa",
+      "ISFC": "g/kWh",
+      "brake_power": "W",
+      "brake_torque": "N m"
+    },
+    "periodicity": {
+      "contract": "REFERENCE_PERIODIC_CONVERGENCE_V2",
+      "streak": 3,
+      "thresholds": {
+        "chamber_mass_relative": 0.002,
+        "chamber_pressure_relative": 0.005,
+        "chamber_temperature_relative": 0.005,
+        "chamber_total_energy_relative": 0.002,
+        "duct_cell_mass_relative": 0.002,
+        "duct_cell_pressure_relative": 0.005,
+        "duct_cell_species_mass_fraction_absolute": 0.002,
+        "duct_cell_temperature_relative": 0.005,
+        "duct_cell_total_energy_relative": 0.002,
+        "duct_cell_velocity_over_sound_speed_absolute": 0.005,
+        "fresh_delivery_fraction_of_cycle_start_mass": 0.002,
+        "fresh_short_circuit_fraction_of_cycle_start_mass": 0.002,
+        "global_species_inventory_over_total_mass": 0.002,
+        "p7_burned_species_fraction_of_cycle_start_mass": 0.002,
+        "p7_heat_fraction_of_cycle_start_energy": 0.002,
+        "work_relative_floor_1J": 0.005
+      },
+      "thresholds_sha256": "43419bccbbcefaf04200448148e74d576d6fa1ecb0d9adf9c26a614e67828eff"
+    },
+    "proposal_preregistration_sha256": "300970997b126bf0f327adce2ad4af16ee986417696d2ecce7dec0fdf9d218ad",
+    "rpm_grid": {
+      "endpoint_rule": "append stop_rpm if increment does not land exactly",
+      "include_stop_endpoint": true,
+      "increment_rpm": 300,
+      "points_rpm": [
+        1000,
+        1300,
+        1600,
+        1900,
+        2200,
+        2500,
+        2800,
+        3100,
+        3400,
+        3700,
+        4000,
+        4300,
+        4600,
+        4900,
+        5000
+      ],
+      "start_rpm": 1000,
+      "stop_rpm": 5000
+    },
+    "solver_hashes": {
+      "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+      "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+      "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+      "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+      "motorsim.gas1d.eos": "72ec337f941b1259ab23c04f70ec75593870bdcc4b065d481b38834430221186",
+      "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+      "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+      "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+      "motorsim.integrated_2t": "4794e0d382a49c51d64ea0ac906aaec6649a8745cd6733fae8cff10e2c090d8f",
+      "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+      "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+      "motorsim.p6_species": "7ed60395642eecb6b5b9f15bbe095489468da7b562f72d0b53b13527a97e2dab",
+      "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+      "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+      "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+      "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+      "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+      "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095"
+    },
+    "v1_isolation": "distinct root and campaign identity; no v1 checkpoints or results reusable because solver hash sets differ.",
+    "variants": [
+      {
+        "engine_configuration_sha256": "d3f000f72dda247e11a561ad63fb93daab1145cca689105a17cd8e6ae7c71ab7",
+        "fixture_sha256": "1f1298c0fd38e925eeac0be3049d7fa7d260ac8d5a07ba97042e02e2d7c7a9cf",
+        "fuel_basis": "synthetic premixed pseudo-species; ratio is not measured chemical AFR",
+        "fuel_sha256": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+        "mechanical_loss_mep_pa_at_reference": 1500.0,
+        "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+        "mechanical_loss_provenance": "SYNTHETIC_ASSUMPTION, explicit per fixture; not a universal loss constant",
+        "variant_id": "A_PRIME_MESH_0"
+      },
+      {
+        "engine_configuration_sha256": "b21dd08a23679954c1ac39aae383fc2a78c702c5a358c8e2387fcecd00f2af82",
+        "fixture_sha256": "5b487b01044beee19cc537db158264e52aa9e34a567004bcbe883e1166bfe173",
+        "fuel_basis": "synthetic premixed pseudo-species; ratio is not measured chemical AFR",
+        "fuel_sha256": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+        "mechanical_loss_mep_pa_at_reference": 1500.0,
+        "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+        "mechanical_loss_provenance": "SYNTHETIC_ASSUMPTION, explicit per fixture; not a universal loss constant",
+        "variant_id": "B_PRIME_MESH_0"
+      }
+    ]
+  },
+  "created_from_head": "15fa4004b7d616fcf82af3eba852d7cca121834a",
+  "current_campaign_state": {
+    "FULL_RPM_SWEEP_V1": "PARTIAL",
+    "historical_v1_points_completed": 2,
+    "historical_v1_points_not_started": 28,
+    "new_impl2_campaign_points_started": 0,
+    "v1_outputs_reusable_under_current_impl2_hashes": false
+  },
+  "existing_v1_authorization": {
+    "authorized": true,
+    "maximum_points": 30,
+    "rpm_grid_source": "results/full-rpm-sweep-v1/preregistration.json",
+    "usable_for_current_impl2_preregistration": false
+  },
+  "fast_decision": {
+    "campaign_policy": "Use the conventional evidence writer and independent auditor; do not adopt FAST_RECIPE_V1 for campaign points.",
+    "classification": "FAST_RECIPE_V1_PARTIAL",
+    "fully_audited_speedup": 0.78,
+    "provisional_speedup": 5.14
+  },
+  "next_operational_task": "FRPM-IMPL2-CAMPAIGN-PREREG-HASH-BINDING",
+  "outstanding_conditions": [
+    "Create a versioned current-code IMPL2 identity and active preregistration bound to current solver, detector, producer and runner hashes, without modifying the v1 preregistration or historical IMPL2 acceptance receipt.",
+    "Add a campaign runner/preflight path that consumes that IMPL2 preregistration rather than the fixed v1 preregistration.",
+    "Rerun no-solver preflight and relevant tests against the new IMPL2 preregistration; require exact solver hash match.",
+    "Obtain explicit owner execution authorization for the new IMPL2 campaign identity; the existing authorization is scoped to the v1 preregistration.",
+    "Owner decision needed on whether to impose a global campaign wall-clock ceiling or proceed under only the 60-minute per-invocation contract, given the prior cost stop and unvalidated parallel campaign runtime."
+  ],
+  "paths_preserved": [
+    "ENGINE_PHYSICS_V1_R2",
+    "v1 preregistration",
+    "historical primaries/checkpoints/receipts"
+  ],
+  "preflight": {
+    "campaign_execution_authorized": false,
+    "campaign_runner_preregistration_source": "scripts/full_rpm_sweep_v1_campaign.py imports fixed motorsim.full_rpm_sweep_v1.PREREGISTRATION; execute_campaign reads repository v1 preregistration and has no IMPL2 preregistration argument.",
+    "campaign_started": false,
+    "checks": {
+      "artifact_paths_isolated": true,
+      "checkpoint_restart_evidence_present": true,
+      "distinct_artifact_root": true,
+      "explicit_configuration_and_loss_models": true,
+      "implementation_identity": true,
+      "mechanical_model_provenance": true,
+      "no_campaign_execution": true,
+      "no_v1_campaign_artifacts_or_campaign_started": true,
+      "preregistration_binding": true,
+      "producer_and_benchmark_hashes": true,
+      "proposal_identity": true,
+      "proposal_not_authorized": true,
+      "solver_dependency_hashes": false,
+      "v1_isolation_and_fail_closed": true,
+      "worker_memory_bounds": true
+    },
+    "current_integrated_2t_sha256": "e3d1e449240478bd6ca955c032ec835fce65479965a5d305d48288a3ef3e29b3",
+    "current_v1_preregistration_status": "PREREGISTERED_READINESS_ONLY",
+    "failed_checks": [
+      "solver_dependency_hashes"
+    ],
+    "impl2_proposal_status": "PROPOSAL_NOT_ACTIVE_NOT_AUTHORIZED",
+    "old_impl2_integrated_2t_sha256": "4794e0d382a49c51d64ea0ac906aaec6649a8745cd6733fae8cff10e2c090d8f",
+    "resolved_configurations": [
+      {
+        "engine_configuration_sha256": "d3f000f72dda247e11a561ad63fb93daab1145cca689105a17cd8e6ae7c71ab7",
+        "fallback_used": false,
+        "fixture_sha256": "1f1298c0fd38e925eeac0be3049d7fa7d260ac8d5a07ba97042e02e2d7c7a9cf",
+        "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+        "variant_id": "A_PRIME_MESH_0"
+      },
+      {
+        "engine_configuration_sha256": "b21dd08a23679954c1ac39aae383fc2a78c702c5a358c8e2387fcecd00f2af82",
+        "fallback_used": false,
+        "fixture_sha256": "5b487b01044beee19cc537db158264e52aa9e34a567004bcbe883e1166bfe173",
+        "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+        "variant_id": "B_PRIME_MESH_0"
+      }
+    ],
+    "schema": "FULL_RPM_SWEEP_V1_IMPL2_NON_EXECUTING_PREFLIGHT_V1",
+    "solver_hash_differences": {
+      "motorsim.integrated_2t": {
+        "current": "e3d1e449240478bd6ca955c032ec835fce65479965a5d305d48288a3ef3e29b3",
+        "identity": "4794e0d382a49c51d64ea0ac906aaec6649a8745cd6733fae8cff10e2c090d8f"
+      }
+    },
+    "status": "FAIL_CLOSED",
+    "worker_plans_4gib_budget": {
+      "1": {
+        "available_memory_bytes": 9530085376,
+        "cpu_count": 12,
+        "effective_workers": 1,
+        "memory_budget_bytes": 4294967296,
+        "requested_workers": 1,
+        "reserve_per_worker_bytes": 536870912
+      },
+      "2": {
+        "available_memory_bytes": 9530085376,
+        "cpu_count": 12,
+        "effective_workers": 2,
+        "memory_budget_bytes": 4294967296,
+        "requested_workers": 2,
+        "reserve_per_worker_bytes": 536870912
+      },
+      "4": {
+        "available_memory_bytes": 9530085376,
+        "cpu_count": 12,
+        "effective_workers": 4,
+        "memory_budget_bytes": 4294967296,
+        "requested_workers": 4,
+        "reserve_per_worker_bytes": 536870912
+      }
+    }
+  },
+  "result": "FULL_RPM_SWEEP_IMPL2_BLOCKED_STALE_IDENTITY_AND_INACTIVE_PREREGISTRATION",
+  "run_results": {
+    "impl2_tests": {
+      "exit_code": 1,
+      "fail_count": 1,
+      "failed_test": "test_impl2_preflight_is_read_only_and_passes_proposal",
+      "pass_count": 20,
+      "reason": "FAIL_CLOSED on solver_dependency_hashes only",
+      "summary_path": "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\diagnostics\\block2-preflight\\BLOCK2-IMPL2-PREFLIGHT-TESTS.summary.json",
+      "summary_sha256": "808acbe9025c39d020dcdc50a994d8a83922f25aac9de94957ad6e79c91d26d4"
+    },
+    "openspec_strict": "PASS (39/39)",
+    "program_status_check": "PASS",
+    "program_status_promote": "PASS; no waiting tasks promoted",
+    "v1_contract_tests": {
+      "exit_code": 1,
+      "fail_count": 6,
+      "pass_count": 11,
+      "reason": "all six failures cascade from the frozen v1 solver hash mismatch; v1 preregistration and artifacts remain unchanged",
+      "summary_path": "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\diagnostics\\block2-preflight\\BLOCK2-CONTRACT-TESTS.summary.json",
+      "summary_sha256": "753faf727d64bbf2933c2f664849a4809890aab09386ba37c5cce5e88e09da3e"
+    }
+  },
+  "schema": "FULL_RPM_SWEEP_V1_IMPL2_CAMPAIGN_READINESS_PLAN_V1"
+}

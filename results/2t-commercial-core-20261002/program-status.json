@@ -3077,7 +3077,7 @@
       "write_scope": [
         "results/full-rpm-sweep-v1 campaign artifacts at external DINO_ARTIFACT_ROOT"
       ],
-      "blocker": "No campaign execution is authorized. The implementation has administrative acceptance, but the contract still requires any later IMPL2 preregistration and explicit campaign authorization; the v1 implementation preflight remains FAIL_CLOSED_SOURCE_HASH_MISMATCH. Twenty-eight historical v1 points remain NOT_STARTED.",
+      "blocker": "Campaign execution is not authorized. The existing IMPL2 identity is diagnostic-only and bound to motorsim.integrated_2t.py SHA-256 4794e0d382a49c51d64ea0ac906aaec6649a8745cd6733fae8cff10e2c090d8f, while current source is e3d1e449240478bd6ca955c032ec835fce65479965a5d305d48288a3ef3e29b3 after the additive FAST implementation. IMPL2 preflight fails solver_dependency_hashes; its preregistration remains PROPOSAL_NOT_ACTIVE_NOT_AUTHORIZED, and the campaign runner selects fixed v1 preregistration. A current-hash IMPL2 preregistration and runner path plus a new explicit owner authorization are required. Preserve 28 historical v1 points as NOT_STARTED.",
       "no_local_unblock_reason": null,
       "evidence": [
         "results/full-rpm-sweep-v1/pilot-analysis.json",
@@ -3087,7 +3087,8 @@
       ],
       "unblock_tasks": [
         "FRPM-V2-RESTORE-INDEPENDENT-REVIEW",
-        "FRPM-V2-FAST-EVIDENCE-ACCEPTANCE"
+        "FRPM-V2-FAST-EVIDENCE-ACCEPTANCE",
+        "FRPM-IMPL2-CAMPAIGN-PREREG-HASH-BINDING"
       ]
     },
     {
@@ -3556,6 +3557,22 @@
         "results/full-rpm-sweep-v1/fast-recipe-v1-benchmark-receipt.json",
         "results/full-rpm-sweep-v1/fast-recipe-v1-identity.json",
         "scripts/verify_fast_recipe_v1_benchmark.py"
+      ]
+    },
+    {
+      "id": "FRPM-IMPL2-CAMPAIGN-PREREG-HASH-BINDING",
+      "description": "Prepare a separately versioned current-source IMPL2 campaign preregistration and runner/preflight selection path; bind current solver, detector, producer and campaign runner hashes without modifying the v1 preregistration, historical IMPL2 acceptance receipt or campaign artifacts; keep authorization false and run no points.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "architecture",
+      "evidence_level": "L1",
+      "write_scope": [
+        "motorsim/full_rpm_sweep_v1_impl2.py",
+        "scripts/full_rpm_sweep_v1_campaign.py",
+        "tests/test_full_rpm_sweep_v1_impl2.py",
+        "results/full-rpm-sweep-v1/implementation-v2-campaign-identity.json",
+        "results/full-rpm-sweep-v1/implementation-v2-campaign-preregistration.json"
       ]
     }
   ],
@@ -4487,6 +4504,12 @@
       "task": "FRPM-V2-FAST-RECIPE-MULTIPROCESS",
       "kind": "task",
       "summary": "Spawn diagnostic matrix achieved 2.88x total matrix throughput at four workers; 18/18 artifact integrity checks pass; no campaign points started."
+    },
+    {
+      "at": "2026-10-13T12:43:44+00:00",
+      "task": "FRPM-FULL-CAMPAIGN-EXECUTION",
+      "kind": "task",
+      "summary": "BLOCK 2 preflight: IMPL2 source hash is stale (identity 4794e0d3 vs current e3d1e449); proposal is not active and runner only loads v1 prereg. No campaign points started. See impl2-campaign-readiness-plan.json; unblock task FRPM-IMPL2-CAMPAIGN-PREREG-HASH-BINDING."
     }
   ],
   "legacy_gate_status": {
