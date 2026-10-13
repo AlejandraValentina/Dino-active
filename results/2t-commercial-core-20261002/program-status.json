@@ -3066,24 +3066,29 @@
     },
     {
       "id": "FRPM-FULL-CAMPAIGN-EXECUTION",
-      "description": "After measured viability review, resume the same campaign root for only the remaining preregistered points.",
+      "description": "Execute the explicitly authorized append-only IMPL2 extension for the 26 remaining preregistered points; preserve the four completed pilot points.",
       "dependencies": [
         "FRPM-PILOT-PROJECTION"
       ],
-      "state": "BLOCKED_LOCAL",
+      "state": "IN_PROGRESS",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "implementation",
       "evidence_level": "L1",
       "write_scope": [
         "results/full-rpm-sweep-v1 campaign artifacts at external DINO_ARTIFACT_ROOT"
       ],
-      "blocker": "IMPL2 technical readiness preflight passed, but campaign execution remains unauthorized. A separate explicit campaign authorization and global compute budget decision are required. The v1 campaign remains PARTIAL with its 28 NOT_STARTED historical points preserved; IMPL2 has no campaign artifacts or started points.",
+      "blocker": null,
       "no_local_unblock_reason": null,
       "evidence": [
         "results/full-rpm-sweep-v1/pilot-analysis.json",
         "results/full-rpm-sweep-v1/campaign-receipt.json",
         "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/campaign.json",
-        "results/full-rpm-sweep-v1/impl2-administrative-acceptance-receipt.json"
+        "results/full-rpm-sweep-v1/impl2-administrative-acceptance-receipt.json",
+        "scripts/full_rpm_sweep_v1_impl2_extension_supervisor_v1.py",
+        "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\controlled-pilot-attempt-2\\campaign.json",
+        "results/full-rpm-sweep-v1/implementation-v2-extension-authorization-20261013-v2.json",
+        "results/full-rpm-sweep-v1/impl2-extension-readiness-receipt-v2.json",
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1-impl2/controlled-pilot-attempt-2/campaign.json"
       ],
       "unblock_tasks": [
         "FRPM-V2-RESTORE-INDEPENDENT-REVIEW",
@@ -4575,6 +4580,12 @@
       "task": "FRPM-IMPL2-FIRST-CONTROLLED-PILOT",
       "kind": "task",
       "summary": "Fixed the coordinator polling defect in a separate provenance-bound supervisor without changing the checkpoint producer hash. Resumed only the four authorized points; all reached PERIOD_1 with passing gates. Consumed 2660.953/3600 s; 26 points remain NOT_STARTED. See pilot receipt."
+    },
+    {
+      "at": "2026-10-13T15:31:54+00:00",
+      "task": "FRPM-FULL-CAMPAIGN-EXECUTION",
+      "kind": "task",
+      "summary": "Explicit append-only authorization for the remaining 26 IMPL2 points persisted with 21,600 s global budget. Frozen preregistration, runner and pilot artifacts verified; extension preflight PASS, campaign not yet started."
     }
   ],
   "legacy_gate_status": {
@@ -4655,8 +4666,8 @@
     "campaigns_started": 1
   },
   "campaigns_started": 1,
-  "campaign_runtime_status": "AUTHORIZED_IMPL2_PILOT_COMPLETE_4_OF_4_FULL_SWEEP_PARTIAL",
-  "updated_at": "2026-10-13T15:00:07+00:00",
+  "campaign_runtime_status": "AUTHORIZED_IMPL2_EXTENSION_READY_TO_START",
+  "updated_at": "2026-10-13T15:35:14.258701+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -4702,5 +4713,49 @@
     "attempt_3_receipt": "results/full-rpm-sweep-v1/implementation-v2-campaign-pilot-receipt.json",
     "points_terminal": 4,
     "supervisor_sha256": "e10e440eb2e0b8b6ad04ac75d2c77cb4a94b15af59be0580ae45faf734d05e8c"
+  },
+  "full_rpm_sweep_impl2_extension_authorization": {
+    "authorization": "EXPLICIT_REMAINING_26_POINT_EXTENSION",
+    "authorized": true,
+    "authorization_sha256": "4fdbdc90a9333297e8e5c4a53c8dba342112a6fa4574b8cf83cc613e6a9fb7b1",
+    "preregistration_sha256": "e26c0599325a9e6296291178ffd2e36457838052f1d9b59de7b6dc0f282d59e3",
+    "point_ids": [
+      "A_PRIME_MESH_0@1000RPM",
+      "A_PRIME_MESH_0@1300RPM",
+      "A_PRIME_MESH_0@1600RPM",
+      "A_PRIME_MESH_0@1900RPM",
+      "A_PRIME_MESH_0@2200RPM",
+      "A_PRIME_MESH_0@2500RPM",
+      "A_PRIME_MESH_0@2800RPM",
+      "A_PRIME_MESH_0@3400RPM",
+      "A_PRIME_MESH_0@3700RPM",
+      "A_PRIME_MESH_0@4300RPM",
+      "A_PRIME_MESH_0@4600RPM",
+      "A_PRIME_MESH_0@4900RPM",
+      "A_PRIME_MESH_0@5000RPM",
+      "B_PRIME_MESH_0@1000RPM",
+      "B_PRIME_MESH_0@1300RPM",
+      "B_PRIME_MESH_0@1600RPM",
+      "B_PRIME_MESH_0@1900RPM",
+      "B_PRIME_MESH_0@2200RPM",
+      "B_PRIME_MESH_0@2500RPM",
+      "B_PRIME_MESH_0@2800RPM",
+      "B_PRIME_MESH_0@3400RPM",
+      "B_PRIME_MESH_0@3700RPM",
+      "B_PRIME_MESH_0@4300RPM",
+      "B_PRIME_MESH_0@4600RPM",
+      "B_PRIME_MESH_0@4900RPM",
+      "B_PRIME_MESH_0@5000RPM"
+    ],
+    "global_budget_seconds": 21600,
+    "budget_consumed_seconds": 0,
+    "maximum_invocation_seconds": 3600,
+    "workers_max": 4,
+    "memory_budget_mib": 4096,
+    "worker_reservation_mib": 512,
+    "campaign_started": false,
+    "receipt": "results/full-rpm-sweep-v1/implementation-v2-extension-authorization-20261013-v2.json",
+    "readiness_receipt": "results/full-rpm-sweep-v1/impl2-extension-readiness-receipt-v2.json",
+    "artifact_root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2/authorized-extension-26-v1"
   }
 }
