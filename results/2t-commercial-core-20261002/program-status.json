@@ -4542,6 +4542,12 @@
       "task": "FRPM-IMPL2-CAMPAIGN-PREREG-HASH-BINDING",
       "kind": "task",
       "summary": "IMPL2 campaign identity/preregistration bound to current hashes; explicit runner selection and 30-point no-solver preflight PASS. No execution authorization or global budget; see implementation-v2-campaign-readiness-receipt.json."
+    },
+    {
+      "at": "2026-10-13T13:36:51+00:00",
+      "task": "FRPM-IMPL2-FIRST-CONTROLLED-PILOT",
+      "kind": "progress",
+      "summary": "Attempt 1 failed in runner metrics assembly after writing four independently audited cycle-1 primaries; no valid checkpoints. Spent 36.579 s from the 3600 s authorization. Preserved all primaries and provenance; retry runs only the same four IDs in a separate attempt directory. See implementation-v2-campaign-attempt-1-failure-receipt.json."
     }
   ],
   "legacy_gate_status": {
@@ -4623,7 +4629,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "PARTIAL_RESOURCE_BUDGET",
-  "updated_at": "2026-10-13T13:28:11+00:00",
+  "updated_at": "2026-10-13T13:36:51+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -4650,11 +4656,13 @@
       "B_PRIME_MESH_0@4000RPM"
     ],
     "global_budget_seconds": 3600,
-    "budget_consumed_seconds": 0,
+    "budget_consumed_seconds": 36.579,
     "workers_max": 4,
     "memory_budget_mib": 4096,
     "worker_reservation_mib": 512,
-    "campaign_started": false,
-    "receipt": "results/full-rpm-sweep-v1/implementation-v2-campaign-authorization.json"
+    "campaign_started": true,
+    "receipt": "results/full-rpm-sweep-v1/implementation-v2-campaign-authorization.json",
+    "attempt_1_status": "FAILED_INFRASTRUCTURE_NO_VALID_CHECKPOINT",
+    "attempt_1_failure_receipt": "results/full-rpm-sweep-v1/implementation-v2-campaign-attempt-1-failure-receipt.json"
   }
 }

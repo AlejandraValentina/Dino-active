@@ -27,7 +27,9 @@ def test_legacy_diagnostic_proposal_stays_fail_closed_on_stale_hash(tmp_path: Pa
 def test_impl2_campaign_preflight_passes_all_30_without_solver() -> None:
     report = preflight.audit_impl2_campaign_preflight(ROOT)
     assert report["preflight_status"] == "PASS"
-    assert report["campaigns_started"] == report["solver_steps_started"] == 0
+    assert report["campaigns_started"] == 1
+    assert report["campaign_started"] is True
+    assert report["solver_steps_started"] == 0
     assert report["points_preflighted"] == 30
     assert report["checks"]["source_hashes_exact"] is True
     assert report["checks"]["fast_disabled"] is True

@@ -85,11 +85,11 @@ def audit_impl2_campaign_preflight(repository_root: str | Path, *,
             authorization.get("scope", {}).get("global_budget_seconds") == 3600)
     else:
         checks["authorization_exact_subset_scope"] = authorization.get("authorized") is False
-    campaign_manifest = Path(selected_root) / "campaign.json"
+    campaign_manifests = list(Path(selected_root).rglob("campaign.json"))
     campaign_started = False
-    if campaign_manifest.is_file():
+    for campaign_manifest in campaign_manifests:
         observed_campaign = _json(campaign_manifest)
-        campaign_started = int(observed_campaign.get("campaigns_started", 0)) > 0
+        campaign_started = campaign_started or int(observed_campaign.get("campaigns_started", 0)) > 0
     checks["underlying_scientific_preflight"] = report.get("preflight_status") == "PASS"
     report.update({"schema": "FULL_RPM_SWEEP_V1_IMPL2_CAMPAIGN_PREFLIGHT_V1",
                    "implementation_version": "FULL_RPM_SWEEP_V1_IMPL2",

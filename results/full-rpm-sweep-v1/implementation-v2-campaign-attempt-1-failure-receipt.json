@@ -1,0 +1,47 @@
+{
+  "schema": "FULL_RPM_SWEEP_V1_IMPL2_PILOT_ATTEMPT_FAILURE_RECEIPT_V1",
+  "classification": "FAILED_INFRASTRUCTURE_NO_VALID_CHECKPOINT",
+  "duration_seconds": 36.579,
+  "cause": "Runner NameError after writing each cycle-001 primary and before cycle metrics/checkpoint persistence.",
+  "campaign_started": true,
+  "points": [
+    {
+      "point_id": "A_PRIME_MESH_0@3100RPM",
+      "classification": "FAILED_INFRASTRUCTURE_NO_VALID_CHECKPOINT",
+      "cycles_completed": 1,
+      "primary_path": "A_PRIME_MESH_0\\rpm-03100\\cycle-001.json.gz",
+      "primary_sha256": "2b03823d13dfe333adfe74bead4f03cfcf3c30f730bfb6840ad9f860e3ec64a1",
+      "checkpoint_path": null
+    },
+    {
+      "point_id": "A_PRIME_MESH_0@4000RPM",
+      "classification": "FAILED_INFRASTRUCTURE_NO_VALID_CHECKPOINT",
+      "cycles_completed": 1,
+      "primary_path": "A_PRIME_MESH_0\\rpm-04000\\cycle-001.json.gz",
+      "primary_sha256": "63b0b3751074c9b80c8ce86ea814c6878f7ec700737320b5aca179e8d11cdfcb",
+      "checkpoint_path": null
+    },
+    {
+      "point_id": "B_PRIME_MESH_0@3100RPM",
+      "classification": "FAILED_INFRASTRUCTURE_NO_VALID_CHECKPOINT",
+      "cycles_completed": 1,
+      "primary_path": "B_PRIME_MESH_0\\rpm-03100\\cycle-001.json.gz",
+      "primary_sha256": "9c1ae65e7bd1009f6b3a0437e106a47e59763da5ad2b531d55bc1f5f24cf6cba",
+      "checkpoint_path": null
+    },
+    {
+      "point_id": "B_PRIME_MESH_0@4000RPM",
+      "classification": "FAILED_INFRASTRUCTURE_NO_VALID_CHECKPOINT",
+      "cycles_completed": 1,
+      "primary_path": "B_PRIME_MESH_0\\rpm-04000\\cycle-001.json.gz",
+      "primary_sha256": "37df353bdbd63812dd26ecea10d971a494c30212cc80d49dec9fec2a98d34c61",
+      "checkpoint_path": null
+    }
+  ],
+  "independent_primary_reaudit": "PASS for all 4 cycle-001 artifacts, recomputed=True",
+  "solver_checkpoint_count": 0,
+  "recovery_policy": "Preserve all four orphan primaries and original provenance; execute authorized IDs in a new attempt subdirectory after runner fix. No valid checkpoint existed; no checkpointed state is reset.",
+  "authorization_sha256": "61aa8beb2dfb40055d3e465f737b7d300b563f2d7c90bf0c6af9c7d11b457e8f",
+  "preregistration_sha256": "4e0f6aaf9d7dbe105450c5a83016b7065c99c1f878da1025beaf8d64ec199ea3",
+  "created_at_utc": "2026-10-13T13:34:30+00:00"
+}

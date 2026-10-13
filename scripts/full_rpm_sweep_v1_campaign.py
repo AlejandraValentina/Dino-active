@@ -590,9 +590,7 @@ def _checkpoint_cycle_history(point_dir: Path, next_cycle: int) -> tuple[list[di
         primary = json.loads(gzip.decompress(primary_path.read_bytes()))
         if primary.get("cycle_index") != cycle:
             raise ValueError("checkpoint primary cycle sequence is inconsistent")
-        audit_started = time.monotonic()
         audit = audit_integrated_cycle_primary(primary)
-        audit_seconds = time.monotonic() - audit_started
         if audit.get("recomputed") is not True:
             raise ValueError("persisted primary failed replay audit")
         primary_sha = _sha256(_canonical_bytes(primary))
@@ -778,7 +776,9 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
             }
             _write_json_atomic(result_path, failure)
             return failure
+        audit_started = time.monotonic()
         audit = audit_integrated_cycle_primary(primary)
+        audit_seconds = time.monotonic() - audit_started
         scavenging_assessment = _r2_compatible_scavenging(primary)
         if (audit.get("recomputed") is not True or primary.get("admissible") is not True or
                 scavenging_assessment["hard_gate"]["classification"] != "PASS"):
@@ -1032,8 +1032,11 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
     out = Path(output_root).resolve()
     if out == ROOT or out.is_relative_to(ROOT):
         raise ValueError("sweep outputs must be outside the Git repository")
-    if implementation == "impl2" and out.name != "full-rpm-sweep-v1-impl2":
-        raise ValueError("IMPL2 output root must be isolated as full-rpm-sweep-v1-impl2")
+    if implementation == "impl2":
+        artifact_base = Path(os.environ.get("DINO_ARTIFACT_ROOT", "E:/Dino-artifacts")).resolve() / \
+            "engine-physics-v1/full-rpm-sweep-v1-impl2"
+        if not out.is_relative_to(artifact_base):
+            raise ValueError("IMPL2 output root must remain inside its isolated artifact root")
     prereg_path = selected_prereg_path
     preflight = preflight_full_rpm_sweep_v1(prereg_path, repository_root=ROOT)
     if preflight.get("preflight_status") != "PASS":
@@ -1054,9 +1057,14 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
         prior_manifest = _read_json(output_manifest) if output_manifest.exists() else {}
         if output_manifest.exists() and prior_manifest.get("authorization_sha256") != auth_sha:
             raise ValueError("campaign manifest authorization does not match active subset authorization")
-        prior_elapsed = sum(float(row.get("duration_seconds", 0.0))
-                            for row in prior_manifest.get("invocations", [])
-                            if row.get("authorization_sha256") == auth_sha)
+        prior_elapsed = 0.0
+        for prior_path in artifact_base.rglob("campaign.json"):
+            prior = _read_json(prior_path)
+            if prior.get("campaign_id") != campaign_id:
+                continue
+            prior_elapsed += sum(float(row.get("duration_seconds", 0.0))
+                                 for row in prior.get("invocations", [])
+                                 if row.get("authorization_sha256") == auth_sha)
         global_budget = int(authorization["scope"]["global_budget_seconds"])
         remaining_global = global_budget - prior_elapsed
         if remaining_global <= 0:
@@ -1386,8 +1394,10 @@ def main(argv: list[str] | None = None) -> int:
         if not artifact_root:
             parser.error("--execute requires --output-root or DINO_ARTIFACT_ROOT")
         output_root = Path(artifact_root) / "engine-physics-v1/full-rpm-sweep-v1-impl2"
-    if output_root.name != "full-rpm-sweep-v1-impl2":
-        parser.error("IMPL2 requires a separate output root named full-rpm-sweep-v1-impl2")
+    impl2_root = Path(os.environ.get("DINO_ARTIFACT_ROOT", "E:/Dino-artifacts")).resolve() / \
+        "engine-physics-v1/full-rpm-sweep-v1-impl2"
+    if args.implementation == "impl2" and not output_root.resolve().is_relative_to(impl2_root):
+        parser.error("IMPL2 requires an output directory inside its isolated artifact root")
     if output_root.resolve().is_relative_to(ROOT.resolve()):
         parser.error("campaign artifact output must remain outside the repository")
     result = execute_campaign(output_root=output_root, resume=args.resume,
