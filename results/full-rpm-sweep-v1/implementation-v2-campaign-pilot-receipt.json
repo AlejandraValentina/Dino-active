@@ -1,172 +1,540 @@
 {
-  "schema": "FULL_RPM_SWEEP_V1_IMPL2_CONTROLLED_PILOT_RECEIPT_V1",
-  "status": "PARTIAL_INTERRUPTED_CHECKPOINTED_COORDINATOR_POLL_BUG",
+  "schema": "FULL_RPM_SWEEP_V1_IMPL2_CONTROLLED_PILOT_RECEIPT_V2",
+  "status": "AUTHORIZED_SUBSET_COMPLETE_FULL_CAMPAIGN_PARTIAL",
   "authorization": {
-    "authorized_by": "USER_INSTRUCTION",
+    "authority": "EXPLICIT USER INSTRUCTION",
     "preregistration_sha256_file_bytes": "e26c0599325a9e6296291178ffd2e36457838052f1d9b59de7b6dc0f282d59e3",
-    "authorization_receipt_sha256_file_bytes": "61aa8beb2dfb40055d3e465f737b7d300b563f2d7c90bf0c6af9c7d11b457e8f",
-    "authorized_points": [
+    "authorization_sha256": "61aa8beb2dfb40055d3e465f737b7d300b563f2d7c90bf0c6af9c7d11b457e8f",
+    "authorized_point_ids": [
       "A_PRIME_MESH_0@3100RPM",
       "A_PRIME_MESH_0@4000RPM",
       "B_PRIME_MESH_0@3100RPM",
       "B_PRIME_MESH_0@4000RPM"
     ],
-    "authorized_global_wall_seconds": 3600
-  },
-  "execution": {
-    "implementation": "FULL_RPM_SWEEP_V1_IMPL2",
-    "implementation_flag": "--implementation impl2",
-    "evidence_pipeline": "CONVENTIONAL_FULL_AUDIT",
-    "fast_recipe_enabled": false,
-    "workers_effective": 4,
+    "global_wall_budget_seconds": 3600,
+    "workers_max": 4,
     "memory_budget_mib": 4096,
     "reserve_per_worker_mib": 512,
-    "invocations": 2,
-    "campaign_invocation_wall_seconds": 73.125,
-    "wrapper_observed_wall_seconds": 73.782,
-    "budget_remaining_by_campaign_accounting_seconds": 3526.875,
-    "artifact_root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2",
-    "attempts": [
-      {
-        "root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2",
-        "status": "FAILED_INFRASTRUCTURE_NO_VALID_CHECKPOINT",
-        "duration_seconds": 36.579,
-        "failure": "NameError assembling audit_seconds after four cycle-1 primary files were persisted; no valid checkpoint existed."
-      },
-      {
-        "root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2/controlled-pilot-attempt-2",
-        "status": "INTERRUPTED_CHECKPOINTED",
-        "duration_seconds": 36.546,
-        "failure": "Coordinator set cancel_event after a 1-second poll returned no completed future, without checking whether the invocation deadline expired."
-      }
-    ]
+    "FAST_RECIPE_V1_enabled": false
   },
-  "points": [
+  "implementation_identity": {
+    "implementation_version": "FULL_RPM_SWEEP_V1_IMPL2",
+    "preregistration_sha256": "e26c0599325a9e6296291178ffd2e36457838052f1d9b59de7b6dc0f282d59e3",
+    "campaign_worker_runner_path": "scripts/full_rpm_sweep_v1_campaign.py",
+    "campaign_worker_runner_sha256": "d8d2a2c00e3ff45741e9ceadc4b4672db8f2de6d412bb96b9dd07a1b7c7118a6",
+    "worker_runner_unchanged_from_checkpoint_binding": true,
+    "supervisor_version": "FULL_RPM_SWEEP_V1_IMPL2_SUPERVISOR_V1",
+    "supervisor_path": "scripts/full_rpm_sweep_v1_impl2_supervisor_v1.py",
+    "supervisor_sha256": "e10e440eb2e0b8b6ad04ac75d2c77cb4a94b15af59be0580ae45faf734d05e8c",
+    "supervisor_provenance_in_manifest": {
+      "campaign_worker_runner_sha256": "d8d2a2c00e3ff45741e9ceadc4b4672db8f2de6d412bb96b9dd07a1b7c7118a6",
+      "role": "COORDINATOR_WAIT_AND_RESUME_ORCHESTRATION_ONLY",
+      "schema": "FULL_RPM_SWEEP_V1_EXECUTION_SUPERVISOR_PROVENANCE",
+      "source_path": "scripts/full_rpm_sweep_v1_impl2_supervisor_v1.py",
+      "source_sha256": "e10e440eb2e0b8b6ad04ac75d2c77cb4a94b15af59be0580ae45faf734d05e8c",
+      "version": "FULL_RPM_SWEEP_V1_IMPL2_SUPERVISOR_V1"
+    }
+  },
+  "root_campaign_manifest": {
+    "path": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2/controlled-pilot-attempt-2/campaign.json",
+    "campaign_status": "PARTIAL_IN_PROGRESS",
+    "campaigns_started": 1,
+    "global_budget_consumed_seconds": 2660.9530000000013,
+    "global_budget_remaining_seconds": 939.0469999999987,
+    "classification_counts": {
+      "NOT_STARTED": 26,
+      "PERIOD_1": 4
+    },
+    "unstarted_point_count": 26,
+    "fast_recipe_enabled": false,
+    "evidence_pipeline": "CONVENTIONAL_FULL_AUDIT"
+  },
+  "attempts": [
+    {
+      "id": "attempt-1",
+      "status": "FAILED_INFRASTRUCTURE_NO_VALID_CHECKPOINT",
+      "campaign_wall_seconds": 36.579,
+      "run_logged_wall_seconds": 36.907,
+      "note": "Metrics assembly NameError after four cycle-1 primary writes; retained historical receipt and evidence."
+    },
+    {
+      "id": "attempt-2",
+      "status": "INTERRUPTED_CHECKPOINTED",
+      "campaign_wall_seconds": 36.546,
+      "run_logged_wall_seconds": 36.875,
+      "note": "Coordinator poll bug stopped workers after first cycle; four valid checkpoints retained."
+    },
+    {
+      "id": "safe-resume",
+      "status": "FOUR_POINTS_TERMINAL",
+      "campaign_wall_seconds": 2587.8280000000013,
+      "run_logged_wall_seconds": 2588.125,
+      "effective_workers": 4,
+      "prior_budget_consumed_seconds": 73.12500000000028
+    }
+  ],
+  "cause_and_fix": {
+    "root_cause": "Coordinator treated any one-second FIRST_COMPLETED timeout as cancellation even when the global invocation deadline had not expired.",
+    "fix": "Versioned separate supervisor waits through empty polls at a one-second bounded interval and returns empty only at the conservative invocation deadline. Original runner file is byte-for-byte unchanged.",
+    "checkpoint_compatibility": "All four existing checkpoint hashes, original runner producer bindings and preregistration bindings validated before continuation; supervisor hash is recorded separately in the coordinator manifest. No hash was edited or bypassed."
+  },
+  "integrity": {
+    "pre_resume_checkpoints_validated": 4,
+    "pre_resume_cycle_1_primaries_recomputed_audit_pass": 4,
+    "post_run_results_hash_checked": 4,
+    "post_run_checkpoints_hash_and_bindings_checked": 4,
+    "post_run_canonical_primary_hashes_checked": 235,
+    "post_run_cycle_metric_primary_links_checked": 235,
+    "auditor_execution_evidence": "Conventional pipeline audited each primary during production; final hard gate primary_replay_audit is true for each point, and each cycle has positive primary_audit_seconds. Post-run verification checked canonical hashes and metric links; it did not rerun every replay audit.",
+    "post_run_errors": 0,
+    "four_selected_point_ids_verified": true,
+    "other_26_points_NOT_STARTED": true
+  },
+  "tests_and_checks": {
+    "supervisor_wait_tests": "PASS",
+    "spawn_real_run_point_interrupt_resume_and_sequential_equivalence": "PASS",
+    "checkpoint_rejection_and_worker_crash_tests": "PASS",
+    "targeted_tests_total_passed": 30,
+    "openspec_strict": "39/39 PASS",
+    "impl2_preflight": "PASS; 30 configurations; 0 solver steps in preflight",
+    "program_status_check": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "performance": {
+    "campaign_accounted_wall_seconds": 2660.9530000000013,
+    "run_logged_wall_seconds_all_three_invocations": 2661.907,
+    "resumed_invocation_wall_seconds": 2588.125,
+    "effective_workers": 4,
+    "sum_worker_process_cpu_seconds_for_four_terminal_points": 6835.46875,
+    "cpu_core_equivalents_worker_cycle_accounting": 2.64139222158505,
+    "max_single_worker_rss_bytes": 412319744,
+    "sum_of_per_point_peak_rss_bytes_not_simultaneous": 1465593856,
+    "primary_audit_seconds_worker_sum": 3689.516999999996,
+    "serialization_seconds_worker_sum": 236.82600000001003,
+    "checkpoint_seconds_worker_sum": 19.747999999979584,
+    "cycle_elapsed_seconds_worker_sum": 6867.393999999997,
+    "compressed_primary_bytes": 1306605788,
+    "accepted_steps": 303295,
+    "rejected_cfl_steps": 133227,
+    "v1_speedup_comparison": "NOT_CLAIMED: implementation identity and campaign scope differ; no like-for-like end-to-end benchmark was run."
+  },
+  "scientific_results": [
     {
       "point_id": "A_PRIME_MESH_0@3100RPM",
-      "classification": "INTERRUPTED_CHECKPOINTED",
-      "cycles_completed": 1,
-      "next_cycle": 2,
-      "checkpoint_sha256": "7666dc23b8138676ca339a6b44f7ddad868bec53c27fb6839dd69a4f7464e4f1",
-      "primary_sha256": "945e2b7d698d1bb0163dea38c3c1fe522764316dc6295da4a0ec5a57485f88e9",
-      "primary_audit": "PASS_RECOMPUTED_DURING_PRODUCER_RUN",
-      "cycle_metrics_primary_sha256_matches": true,
+      "classification": "PERIOD_1",
+      "cycles_completed": 75,
+      "converged_cycle": 75,
+      "result_sha256": "ab63491c5e472f1547d3a762e3b250cf9a39db580bcd4bcc8829783e1a72fc0d",
+      "checkpoint_sha256": "5c949633267969498d449e321a61138c813dc635b47ef289bfcda5fc60c4bca4",
+      "engineering_outputs": {
+        "indicated_power": {
+          "status": "DEFINED",
+          "value": 103.57743038834394,
+          "units": "W",
+          "reason": null
+        },
+        "indicated_torque": {
+          "status": "DEFINED",
+          "value": 0.3190618072076445,
+          "units": "N*m",
+          "reason": null
+        },
+        "brake_power": {
+          "status": "DEFINED",
+          "value": 6.759925576021732,
+          "units": "W",
+          "reason": null
+        },
+        "brake_torque": {
+          "status": "DEFINED",
+          "value": 0.020823398135945546,
+          "units": "N*m",
+          "reason": null
+        },
+        "IMEP": {
+          "status": "DEFINED",
+          "value": 16278.663633043087,
+          "units": "Pa",
+          "reason": null
+        },
+        "FMEP": {
+          "status": "DEFINED",
+          "value": 1500.0,
+          "units": "Pa",
+          "reason": null
+        },
+        "BMEP": {
+          "status": "DEFINED",
+          "value": 1062.4182722421197,
+          "units": "Pa",
+          "reason": null
+        },
+        "brake_power_positive": true,
+        "friction_mep_pa_by_term": {
+          "synthetic-bearing-accessory": 500.0,
+          "synthetic-piston-ring": 1000.0
+        }
+      },
+      "hard_gates": {
+        "conservation": {
+          "equation": "terminal_inventory = initial_inventory + external_species_exchange + internal_species_sources + residual",
+          "external_species_kg": {
+            "burned": -3.785492814355469e-06,
+            "fresh_air": 3.626717302992885e-06,
+            "fuel": 2.4383078152076926e-07,
+            "residual": -2.273875419410661e-07
+          },
+          "internal_species_sources_kg": {
+            "burned": 3.826933975493198e-06,
+            "fresh_air": -3.583376363300141e-06,
+            "fuel": -2.435576121930564e-07,
+            "residual": 0.0
+          },
+          "max_abs_residual_kg": 3.324604317973129e-19,
+          "passed": true,
+          "residual_kg_by_species": {
+            "burned": 6.479802046495398e-20,
+            "fresh_air": -3.324604317973129e-19,
+            "fuel": 1.852884572118782e-21,
+            "residual": 2.5940384009662948e-21
+          },
+          "status": "DEFINED",
+          "tolerance_kg": 1e-12
+        },
+        "primary_admissible": true,
+        "primary_replay_audit": true,
+        "scavenging_partition": {
+          "classification": "PASS",
+          "hard_failures": [],
+          "policy": "gross partition not applicable; species closure required; no clipping"
+        }
+      },
       "performance_metrics": {
-        "accepted_steps": 1238,
-        "checkpoint_seconds": 0.04700000000048021,
-        "max_observed_process_rss_bytes": 243363840,
-        "mean_cycle_seconds": 25.32799999999952,
-        "measured_cycles": 1,
-        "primary_audit_seconds": 13.57799999999952,
-        "primary_compressed_bytes": 3984451,
-        "process_cpu_seconds": 25.28125,
-        "rejected_steps": 514,
-        "serialization_seconds": 0.7650000000012369,
-        "total_measured_cycle_seconds": 25.32799999999952
+        "accepted_steps": 108086,
+        "checkpoint_seconds": 6.624999999992724,
+        "max_observed_process_rss_bytes": 408846336,
+        "mean_cycle_seconds": 32.86868000000002,
+        "measured_cycles": 75,
+        "primary_audit_seconds": 1324.3309999999965,
+        "primary_compressed_bytes": 449262416,
+        "process_cpu_seconds": 2455.59375,
+        "rejected_steps": 53786,
+        "serialization_seconds": 85.71899999999732,
+        "total_measured_cycle_seconds": 2465.1510000000017
       }
     },
     {
       "point_id": "A_PRIME_MESH_0@4000RPM",
-      "classification": "INTERRUPTED_CHECKPOINTED",
-      "cycles_completed": 1,
-      "next_cycle": 2,
-      "checkpoint_sha256": "5b377849e2cf6f351b2ce814ddfba83f4699fa5efdff992540296c6242379550",
-      "primary_sha256": "7b40da42d78788c9718acf546f265c848051336e7149787e57aecc85cb55d7f5",
-      "primary_audit": "PASS_RECOMPUTED_DURING_PRODUCER_RUN",
-      "cycle_metrics_primary_sha256_matches": true,
+      "classification": "PERIOD_1",
+      "cycles_completed": 88,
+      "converged_cycle": 88,
+      "result_sha256": "87b5004f809fdde9ba4b084bbf9031a7f5e42eb5b0861481ea6b37e330e7f780",
+      "checkpoint_sha256": "db360ce491e52324acd0c42997996d4d739970f8ccec34900dfda2190f433a59",
+      "engineering_outputs": {
+        "indicated_power": {
+          "status": "DEFINED",
+          "value": 105.4615651880324,
+          "units": "W",
+          "reason": null
+        },
+        "indicated_torque": {
+          "status": "DEFINED",
+          "value": 0.2517709410882526,
+          "units": "N*m",
+          "reason": null
+        },
+        "brake_power": {
+          "status": "DEFINED",
+          "value": -3.9325507958490586,
+          "units": "W",
+          "reason": null
+        },
+        "brake_torque": {
+          "status": "DEFINED",
+          "value": -0.009388273471790168,
+          "units": "N*m",
+          "reason": null
+        },
+        "IMEP": {
+          "status": "DEFINED",
+          "value": 12845.456177972072,
+          "units": "Pa",
+          "reason": null
+        },
+        "FMEP": {
+          "status": "DEFINED",
+          "value": 1500.0,
+          "units": "Pa",
+          "reason": null
+        },
+        "BMEP": {
+          "status": "DEFINED",
+          "value": -478.9935444790903,
+          "units": "Pa",
+          "reason": null
+        },
+        "brake_power_positive": false,
+        "friction_mep_pa_by_term": {
+          "synthetic-bearing-accessory": 500.0,
+          "synthetic-piston-ring": 1000.0
+        }
+      },
+      "hard_gates": {
+        "conservation": {
+          "equation": "terminal_inventory = initial_inventory + external_species_exchange + internal_species_sources + residual",
+          "external_species_kg": {
+            "burned": -3.1228214116275864e-06,
+            "fresh_air": 3.0048269259344084e-06,
+            "fuel": 2.0171439595647133e-07,
+            "residual": -2.3789556824995015e-07
+          },
+          "internal_species_sources_kg": {
+            "burned": 3.165786935495355e-06,
+            "fresh_air": -2.9643067135581975e-06,
+            "fuel": -2.0148022193715877e-07,
+            "residual": 0.0
+          },
+          "max_abs_residual_kg": 4.705268021997638e-19,
+          "passed": true,
+          "residual_kg_by_species": {
+            "burned": 8.893845946170154e-21,
+            "fresh_air": 4.705268021997638e-19,
+            "fuel": -5.293955920339377e-22,
+            "residual": -1.9587636905255695e-21
+          },
+          "status": "DEFINED",
+          "tolerance_kg": 1e-12
+        },
+        "primary_admissible": true,
+        "primary_replay_audit": true,
+        "scavenging_partition": {
+          "classification": "PASS",
+          "hard_failures": [],
+          "policy": "gross partition not applicable; species closure required; no clipping"
+        }
+      },
       "performance_metrics": {
-        "accepted_steps": 808,
-        "checkpoint_seconds": 0.07799999999951979,
-        "max_observed_process_rss_bytes": 176119808,
-        "mean_cycle_seconds": 16.156999999999243,
-        "measured_cycles": 1,
-        "primary_audit_seconds": 8.875,
-        "primary_compressed_bytes": 2428908,
-        "process_cpu_seconds": 16.078125,
-        "rejected_steps": 84,
-        "serialization_seconds": 0.5149999999994179,
-        "total_measured_cycle_seconds": 16.156999999999243
+        "accepted_steps": 112342,
+        "checkpoint_seconds": 8.26199999999153,
+        "max_observed_process_rss_bytes": 412319744,
+        "mean_cycle_seconds": 29.085295454545406,
+        "measured_cycles": 88,
+        "primary_audit_seconds": 1376.8129999999965,
+        "primary_compressed_bytes": 476841311,
+        "process_cpu_seconds": 2547.921875,
+        "rejected_steps": 48630,
+        "serialization_seconds": 86.85800000000563,
+        "total_measured_cycle_seconds": 2559.5059999999958
       }
     },
     {
       "point_id": "B_PRIME_MESH_0@3100RPM",
-      "classification": "INTERRUPTED_CHECKPOINTED",
-      "cycles_completed": 1,
-      "next_cycle": 2,
-      "checkpoint_sha256": "0883c51240bdac7ab16589b11edffb4dfb6c9fbc48d6022a449ee2098ede49cf",
-      "primary_sha256": "ed2bc3121aee9d8f732c71925ec1cfa3409db85f313394cdafeeac6a221f580c",
-      "primary_audit": "PASS_RECOMPUTED_DURING_PRODUCER_RUN",
-      "cycle_metrics_primary_sha256_matches": true,
+      "classification": "PERIOD_1",
+      "cycles_completed": 34,
+      "converged_cycle": 34,
+      "result_sha256": "74d7e884ad2f70883d693001488a71ff6cd644a292fc326e9019873b65ac427a",
+      "checkpoint_sha256": "138c7270d855c62e3fad11f5f971f2f9cb8cd954766176aff8d7139b4637d324",
+      "engineering_outputs": {
+        "indicated_power": {
+          "status": "DEFINED",
+          "value": 425.26271398539143,
+          "units": "W",
+          "reason": null
+        },
+        "indicated_torque": {
+          "status": "DEFINED",
+          "value": 1.3099870266474183,
+          "units": "N*m",
+          "reason": null
+        },
+        "brake_power": {
+          "status": "DEFINED",
+          "value": 119.7749411667365,
+          "units": "W",
+          "reason": null
+        },
+        "brake_torque": {
+          "status": "DEFINED",
+          "value": 0.3689569150689109,
+          "units": "N*m",
+          "reason": null
+        },
+        "IMEP": {
+          "status": "DEFINED",
+          "value": 66836.07278813359,
+          "units": "Pa",
+          "reason": null
+        },
+        "FMEP": {
+          "status": "DEFINED",
+          "value": 1500.0,
+          "units": "Pa",
+          "reason": null
+        },
+        "BMEP": {
+          "status": "DEFINED",
+          "value": 18824.332401475043,
+          "units": "Pa",
+          "reason": null
+        },
+        "brake_power_positive": true,
+        "friction_mep_pa_by_term": {
+          "synthetic-bearing-accessory": 500.0,
+          "synthetic-piston-ring": 1000.0
+        }
+      },
+      "hard_gates": {
+        "conservation": {
+          "equation": "terminal_inventory = initial_inventory + external_species_exchange + internal_species_sources + residual",
+          "external_species_kg": {
+            "burned": -1.1612908971762954e-05,
+            "fresh_air": 1.0922364181652794e-05,
+            "fuel": 7.418232672178057e-07,
+            "residual": -2.0080110157178932e-07
+          },
+          "internal_species_sources_kg": {
+            "burned": 1.1637058939705434e-05,
+            "fresh_air": -1.0896441435861706e-05,
+            "fuel": -7.406175038437256e-07,
+            "residual": 0.0
+          },
+          "max_abs_residual_kg": 2.1514636860259229e-19,
+          "passed": true,
+          "residual_kg_by_species": {
+            "burned": -9.317362419797304e-20,
+            "fresh_air": 2.1514636860259229e-19,
+            "fuel": -3.282252670610414e-21,
+            "residual": 7.676236084492097e-22
+          },
+          "status": "DEFINED",
+          "tolerance_kg": 1e-12
+        },
+        "primary_admissible": true,
+        "primary_replay_audit": true,
+        "scavenging_partition": {
+          "classification": "PASS",
+          "hard_failures": [],
+          "policy": "gross partition not applicable; species closure required; no clipping"
+        }
+      },
       "performance_metrics": {
-        "accepted_steps": 1337,
-        "checkpoint_seconds": 0.09400000000096043,
-        "max_observed_process_rss_bytes": 244011008,
-        "mean_cycle_seconds": 26.514999999999418,
-        "measured_cycles": 1,
-        "primary_audit_seconds": 14.061999999999898,
-        "primary_compressed_bytes": 4735350,
-        "process_cpu_seconds": 26.390625,
-        "rejected_steps": 614,
-        "serialization_seconds": 0.75,
-        "total_measured_cycle_seconds": 26.514999999999418
+        "accepted_steps": 48952,
+        "checkpoint_seconds": 2.2520000000022264,
+        "max_observed_process_rss_bytes": 379723776,
+        "mean_cycle_seconds": 32.09697058823531,
+        "measured_cycles": 34,
+        "primary_audit_seconds": 584.0620000000054,
+        "primary_compressed_bytes": 219760756,
+        "process_cpu_seconds": 1085.484375,
+        "rejected_steps": 24370,
+        "serialization_seconds": 37.59200000000237,
+        "total_measured_cycle_seconds": 1091.2970000000005
       }
     },
     {
       "point_id": "B_PRIME_MESH_0@4000RPM",
-      "classification": "INTERRUPTED_CHECKPOINTED",
-      "cycles_completed": 1,
-      "next_cycle": 2,
-      "checkpoint_sha256": "d50cdc7a5d82aaa5a504449fe0af73590e586dfc0667289a54fcc7226ee75a65",
-      "primary_sha256": "f8af5e13594b8d9c35cbfc1f108128091ef4fe3d4ec5efb00c797956e0f4a1cd",
-      "primary_audit": "PASS_RECOMPUTED_DURING_PRODUCER_RUN",
-      "cycle_metrics_primary_sha256_matches": true,
+      "classification": "PERIOD_1",
+      "cycles_completed": 38,
+      "converged_cycle": 38,
+      "result_sha256": "088169a4044d84065db055336a510486b4555f5c5749a38c2adbea2da441ccbd",
+      "checkpoint_sha256": "74368ed4e8cde519eb0385cf58f2f7a60a3628c3040f5deaf1871e7b16c12c20",
+      "engineering_outputs": {
+        "indicated_power": {
+          "status": "DEFINED",
+          "value": 504.74522276107206,
+          "units": "W",
+          "reason": null
+        },
+        "indicated_torque": {
+          "status": "DEFINED",
+          "value": 1.2049904580666668,
+          "units": "N*m",
+          "reason": null
+        },
+        "brake_power": {
+          "status": "DEFINED",
+          "value": 153.7797278319094,
+          "units": "W",
+          "reason": null
+        },
+        "brake_torque": {
+          "status": "DEFINED",
+          "value": 0.3671220574766204,
+          "units": "N*m",
+          "reason": null
+        },
+        "IMEP": {
+          "status": "DEFINED",
+          "value": 61479.10500340137,
+          "units": "Pa",
+          "reason": null
+        },
+        "FMEP": {
+          "status": "DEFINED",
+          "value": 1500.0,
+          "units": "Pa",
+          "reason": null
+        },
+        "BMEP": {
+          "status": "DEFINED",
+          "value": 18730.71721819492,
+          "units": "Pa",
+          "reason": null
+        },
+        "brake_power_positive": true,
+        "friction_mep_pa_by_term": {
+          "synthetic-bearing-accessory": 500.0,
+          "synthetic-piston-ring": 1000.0
+        }
+      },
+      "hard_gates": {
+        "conservation": {
+          "equation": "terminal_inventory = initial_inventory + external_species_exchange + internal_species_sources + residual",
+          "external_species_kg": {
+            "burned": -1.0587700496872593e-05,
+            "fresh_air": 9.967202554020938e-06,
+            "fuel": 6.766985586280422e-07,
+            "residual": -2.3179389670289013e-07
+          },
+          "internal_species_sources_kg": {
+            "burned": 1.0615789149837165e-05,
+            "fresh_air": -9.940168333424704e-06,
+            "fuel": -6.756208164124601e-07,
+            "residual": 0.0
+          },
+          "max_abs_residual_kg": 1.5924219408380846e-19,
+          "passed": true,
+          "residual_kg_by_species": {
+            "burned": -9.147955830346444e-20,
+            "fresh_air": -1.5924219408380846e-19,
+            "fuel": 3.705769144237564e-21,
+            "residual": 2.6469779601696886e-23
+          },
+          "status": "DEFINED",
+          "tolerance_kg": 1e-12
+        },
+        "primary_admissible": true,
+        "primary_replay_audit": true,
+        "scavenging_partition": {
+          "classification": "PASS",
+          "hard_failures": [],
+          "policy": "gross partition not applicable; species closure required; no clipping"
+        }
+      },
       "performance_metrics": {
-        "accepted_steps": 808,
-        "checkpoint_seconds": 0.06300000000010186,
-        "max_observed_process_rss_bytes": 166121472,
-        "mean_cycle_seconds": 15.67200000000048,
-        "measured_cycles": 1,
-        "primary_audit_seconds": 8.546999999998661,
-        "primary_compressed_bytes": 2819244,
-        "process_cpu_seconds": 15.609375,
-        "rejected_steps": 85,
-        "serialization_seconds": 0.4690000000009604,
-        "total_measured_cycle_seconds": 15.67200000000048
+        "accepted_steps": 33915,
+        "checkpoint_seconds": 2.6089999999931024,
+        "max_observed_process_rss_bytes": 264704000,
+        "mean_cycle_seconds": 19.774736842105227,
+        "measured_cycles": 38,
+        "primary_audit_seconds": 404.3109999999979,
+        "primary_compressed_bytes": 160741305,
+        "process_cpu_seconds": 746.46875,
+        "rejected_steps": 6441,
+        "serialization_seconds": 26.6570000000047,
+        "total_measured_cycle_seconds": 751.4399999999987
       }
     }
   ],
-  "not_started_points": 26,
-  "integrity": {
-    "attempt2_campaign_status": "INTERRUPTED_CHECKPOINTED",
-    "checkpoint_hashes_verified": 4,
-    "primary_hashes_reconstructed": 4,
-    "cycle_metric_links_verified": 4,
-    "manifest_provenance_hash_verified": true,
-    "contradictions": [],
-    "recomputed_independent_audit_performed_now": false,
-    "note": "Primary auditing was reported by the runner as recomputed during point execution. This receipt records now-performed file/hash/link integrity checks only."
-  },
-  "scientific_outputs": {
-    "valid_power_or_torque_claims": 0,
-    "reason": "No point converged; result.json/engineering outputs are absent. No numeric performance outputs are reported."
-  },
-  "limitation": "Safe resume with current checkpoints is blocked because the coordinator poll/cancel defect is in the registered runner source; changing that source would invalidate checkpoint producer bindings and the current implementation identity. Do not resume/restart unless an appropriately reviewed and rebound implementation identity is established.",
-  "next_action": "WAIT_FOR_NEW_EXPLICIT_EXECUTION_AUTHORIZATION_AFTER_COORDINATOR_FIX_AND_IDENTITY_REBIND",
-  "recorded_by": "Codex; receipt distinguishes execution-time audit claims from verification performed during administrative closeout.",
-  "performance": {
-    "worker_plan": "4 spawn processes; coordinator-only manifest writes",
-    "worker_completion_observed": "All four workers ran one full cycle before coordinator cancellation was persisted.",
-    "sum_process_cpu_seconds": 83.359375,
-    "process_cpu_seconds_divided_by_campaign_wall": "2.281 core-equivalents (diagnostic only; includes startup and not a sustained CPU utilization measurement)",
-    "sum_max_observed_worker_rss_bytes": 829616128,
-    "max_observed_single_worker_rss_bytes": 244011008,
-    "primary_audit_seconds": 45.06199999999808,
-    "serialization_seconds": 2.4990000000016153,
-    "checkpoint_seconds": 0.2820000000010623,
-    "cycle_seconds_sum_across_workers": 83.67199999999866,
-    "compressed_primary_bytes": 13967953,
-    "accepted_solver_steps": 4191,
-    "rejected_cfl_steps": 1297,
-    "v1_speedup_comparison": "NOT_VALID: no completed engineering point; one-cycle checkpointed work only, and historical v1 pilots use different implementation/artifact identity."
-  }
+  "decision": "Controlled authorized subset complete. FULL_RPM_SWEEP remains PARTIAL because 26 preregistered points remain NOT_STARTED. No additional RPM point was launched."
 }

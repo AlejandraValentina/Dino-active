@@ -3588,7 +3588,7 @@
       "id": "FRPM-IMPL2-FIRST-CONTROLLED-PILOT",
       "description": "Execute exactly the four user-authorized IMPL2 pilot points under the subset-bound 3600-second wall budget; record results, checkpoints, integrity, resources and stop without scheduling any remaining RPM.",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "implementation",
       "evidence_level": "L1",
@@ -3602,6 +3602,12 @@
         "scripts/full_rpm_sweep_v1_impl2_supervisor_v1.py",
         "tests/test_full_rpm_sweep_v1_impl2_supervisor.py",
         "tests/test_full_rpm_sweep_v1_impl2_checkpoint_d1d2.py"
+      ],
+      "evidence": [
+        "results/full-rpm-sweep-v1/implementation-v2-campaign-authorization.json",
+        "results/full-rpm-sweep-v1/implementation-v2-campaign-attempt-1-failure-receipt.json",
+        "results/full-rpm-sweep-v1/implementation-v2-campaign-pilot-receipt.json",
+        "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2/controlled-pilot-attempt-2/campaign.json"
       ]
     }
   ],
@@ -4563,6 +4569,12 @@
       "task": "FRPM-IMPL2-FIRST-CONTROLLED-PILOT",
       "kind": "task",
       "summary": "Added bounded versioned supervisor; frozen runner/checkpoint hash unchanged, supervisor hash recorded separately. Real spawn _run_point tests, checkpoint audits, and preflight pass; authorized four-point resume is running."
+    },
+    {
+      "at": "2026-10-13T15:00:07+00:00",
+      "task": "FRPM-IMPL2-FIRST-CONTROLLED-PILOT",
+      "kind": "task",
+      "summary": "Fixed the coordinator polling defect in a separate provenance-bound supervisor without changing the checkpoint producer hash. Resumed only the four authorized points; all reached PERIOD_1 with passing gates. Consumed 2660.953/3600 s; 26 points remain NOT_STARTED. See pilot receipt."
     }
   ],
   "legacy_gate_status": {
@@ -4643,8 +4655,8 @@
     "campaigns_started": 1
   },
   "campaigns_started": 1,
-  "campaign_runtime_status": "INTERRUPTED_CHECKPOINTED_COORDINATOR_POLL_BUG",
-  "updated_at": "2026-10-13T13:41:38+00:00",
+  "campaign_runtime_status": "AUTHORIZED_IMPL2_PILOT_COMPLETE_4_OF_4_FULL_SWEEP_PARTIAL",
+  "updated_at": "2026-10-13T15:00:07+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -4671,7 +4683,7 @@
       "B_PRIME_MESH_0@4000RPM"
     ],
     "global_budget_seconds": 3600,
-    "budget_consumed_seconds": 73.125,
+    "budget_consumed_seconds": 2660.9530000000013,
     "workers_max": 4,
     "memory_budget_mib": 4096,
     "worker_reservation_mib": 512,
@@ -4681,8 +4693,14 @@
     "attempt_1_failure_receipt": "results/full-rpm-sweep-v1/implementation-v2-campaign-attempt-1-failure-receipt.json",
     "attempt_2_status": "INTERRUPTED_CHECKPOINTED",
     "attempt_2_receipt": "results/full-rpm-sweep-v1/implementation-v2-campaign-pilot-receipt.json",
-    "points_checkpointed": 4,
+    "points_checkpointed": 0,
     "points_not_started": 26,
-    "resume_blocker": "Coordinator cancels on an empty one-second poll; a runner change would invalidate registered producer bindings on the current checkpoints."
+    "resume_blocker": null,
+    "pilot_status": "COMPLETE_4_OF_4_PERIOD_1",
+    "attempt_3_status": "FOUR_POINTS_TERMINAL",
+    "attempt_3_campaign_wall_seconds": 2587.8280000000013,
+    "attempt_3_receipt": "results/full-rpm-sweep-v1/implementation-v2-campaign-pilot-receipt.json",
+    "points_terminal": 4,
+    "supervisor_sha256": "e10e440eb2e0b8b6ad04ac75d2c77cb4a94b15af59be0580ae45faf734d05e8c"
   }
 }
