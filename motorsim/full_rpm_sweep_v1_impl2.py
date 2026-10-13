@@ -17,6 +17,70 @@ from .mechanical_loss_binding_v1 import resolve_mechanical_loss_v1
 IDENTITY = Path("results/full-rpm-sweep-v1/implementation-v2-identity.json")
 PROPOSAL = Path("results/full-rpm-sweep-v1/implementation-v2-preregistration-proposal.json")
 PREREGISTRATION = Path("results/full-rpm-sweep-v1/preregistration.json")
+CAMPAIGN_IDENTITY = Path("results/full-rpm-sweep-v1/implementation-v2-campaign-identity.json")
+CAMPAIGN_PREREGISTRATION = Path("results/full-rpm-sweep-v1/implementation-v2-campaign-preregistration.json")
+
+
+def audit_impl2_campaign_preflight(repository_root: str | Path, *,
+                                   artifact_root: str | Path | None = None) -> dict[str, Any]:
+    """Audit the frozen campaign identity and all 30 configurations without solver work."""
+    from .full_rpm_sweep_v1 import preflight_full_rpm_sweep_v1, rpm_points
+
+    root = Path(repository_root).resolve()
+    identity_path = root / CAMPAIGN_IDENTITY
+    prereg_path = root / CAMPAIGN_PREREGISTRATION
+    identity = _json(identity_path)
+    prereg = _json(prereg_path)
+    if identity.get("implementation_version") != "FULL_RPM_SWEEP_V1_IMPL2":
+        raise ValueError("IMPLEMENTATION_IDENTITY_MISMATCH")
+    if prereg.get("implementation_version") != identity.get("implementation_version"):
+        raise ValueError("PREREGISTRATION_IMPLEMENTATION_MISMATCH")
+    prereg_hash = _sha256(prereg_path)
+    actual_source = {name: _sha256(root / rel) for name, rel in
+                     identity["source_paths"].items()}
+    report = preflight_full_rpm_sweep_v1(prereg_path, repository_root=root)
+    variants = prereg.get("variants", [])
+    expected_root = str(identity.get("artifact_root", ""))
+    selected_root = str(Path(artifact_root or os.environ.get(
+        "DINO_ARTIFACT_ROOT", "E:/Dino-artifacts")).resolve() /
+        "engine-physics-v1" / "full-rpm-sweep-v1-impl2")
+    checks = {
+        "explicit_impl2_identity": identity.get("implementation_version") == "FULL_RPM_SWEEP_V1_IMPL2",
+        "campaign_not_authorized_or_started": identity.get("campaign_authorized") is False and
+            identity.get("campaign_started") is False and prereg.get("campaigns_started") == 0,
+        "preregistration_sha256": identity.get("preregistration_sha256") == prereg_hash,
+        "source_hashes_exact": actual_source == identity.get("source_hashes"),
+        "v1_isolation": identity.get("v1_artifacts_reusable") is False and
+            identity.get("artifact_root") != "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1",
+        "artifact_root_identity_match": expected_root == "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2",
+        "artifact_root_selected": selected_root.endswith("engine-physics-v1\\full-rpm-sweep-v1-impl2") or
+            selected_root.endswith("engine-physics-v1/full-rpm-sweep-v1-impl2"),
+        "fast_disabled": prereg.get("evidence_pipeline") == "CONVENTIONAL_FULL_AUDIT" and
+            prereg.get("fast_recipe_enabled") is False,
+        "30_points_two_variants": len(variants) == 2 and len(rpm_points(prereg)) == 15,
+        "runner_and_output_adapter_bound": all(actual_source.get(k) for k in
+            ("runner", "output_adapter", "campaign_preflight")),
+        "two_to_four_workers_within_preregistration":
+            1 <= int(prereg.get("parallel_execution", {}).get("recommended_workers", 0)) <=
+            int(prereg.get("parallel_execution", {}).get("maximum_workers", 0)) <= 4,
+        "checkpoint_restart_contract": identity.get("checkpoint_schema") ==
+            "FULL_RPM_SWEEP_V1_IMPL2_POINT_CHECKPOINT" and
+            prereg.get("budget", {}).get("checkpoint_after_each_accepted_cycle") is True and
+            prereg.get("budget", {}).get("resume_requires_exact_configuration_solver_detector_hashes") is True,
+    }
+    checks["underlying_scientific_preflight"] = report.get("preflight_status") == "PASS"
+    report.update({"schema": "FULL_RPM_SWEEP_V1_IMPL2_CAMPAIGN_PREFLIGHT_V1",
+                   "implementation_version": "FULL_RPM_SWEEP_V1_IMPL2",
+                   "implementation_identity_sha256": _sha256(identity_path),
+                   "preregistration_sha256": prereg_hash,
+                   "artifact_root": selected_root,
+                   "campaign_started": False,
+                   "campaign_authorized": False,
+                   "checks": checks,
+                   "preflight_status": "PASS" if all(checks.values()) else "FAIL_CLOSED",
+                   "campaigns_started": 0,
+                   "solver_steps_started": 0})
+    return report
 
 
 def _sha256(path: Path) -> str:

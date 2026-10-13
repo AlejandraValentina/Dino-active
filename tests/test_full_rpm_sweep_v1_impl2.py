@@ -11,16 +11,44 @@ from motorsim import full_rpm_sweep_v1_impl2 as preflight
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_impl2_preflight_is_read_only_and_passes_proposal(tmp_path: Path) -> None:
+def test_legacy_diagnostic_proposal_stays_fail_closed_on_stale_hash(tmp_path: Path) -> None:
     before = (ROOT / preflight.IDENTITY).read_bytes()
     report = preflight.audit_impl2_preflight(ROOT, artifact_root=tmp_path)
     after = (ROOT / preflight.IDENTITY).read_bytes()
 
-    assert report["status"] == "PASS"
+    assert report["status"] == "FAIL_CLOSED"
+    assert report["checks"]["solver_dependency_hashes"] is False
     assert report["campaign_started"] is False
     assert report["campaign_execution_authorized"] is False
     assert report["checks"]["no_v1_campaign_artifacts_or_campaign_started"] is True
     assert before == after
+
+
+def test_impl2_campaign_preflight_passes_all_30_without_solver() -> None:
+    report = preflight.audit_impl2_campaign_preflight(ROOT)
+    assert report["preflight_status"] == "PASS"
+    assert report["campaigns_started"] == report["solver_steps_started"] == 0
+    assert report["points_preflighted"] == 30
+    assert report["checks"]["source_hashes_exact"] is True
+    assert report["checks"]["fast_disabled"] is True
+    assert all(v["checks"]["no_solver_steps"] for v in report["variants"])
+
+
+def test_campaign_preflight_fails_closed_on_altered_source_hash(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    original = preflight._sha256
+
+    def altered(path: Path) -> str:
+        result = original(path)
+        if path.name == "full_rpm_sweep_v1_campaign.py":
+            return "0" * 64
+        return result
+
+    monkeypatch.setattr(preflight, "_sha256", altered)
+    report = preflight.audit_impl2_campaign_preflight(ROOT)
+    assert report["preflight_status"] == "FAIL_CLOSED"
+    assert report["checks"]["source_hashes_exact"] is False
 
 
 def test_impl2_preflight_fails_closed_on_runner_hash_mismatch(

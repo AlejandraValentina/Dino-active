@@ -3077,7 +3077,7 @@
       "write_scope": [
         "results/full-rpm-sweep-v1 campaign artifacts at external DINO_ARTIFACT_ROOT"
       ],
-      "blocker": "Campaign execution is not authorized. The existing IMPL2 identity is diagnostic-only and bound to motorsim.integrated_2t.py SHA-256 4794e0d382a49c51d64ea0ac906aaec6649a8745cd6733fae8cff10e2c090d8f, while current source is e3d1e449240478bd6ca955c032ec835fce65479965a5d305d48288a3ef3e29b3 after the additive FAST implementation. IMPL2 preflight fails solver_dependency_hashes; its preregistration remains PROPOSAL_NOT_ACTIVE_NOT_AUTHORIZED, and the campaign runner selects fixed v1 preregistration. A current-hash IMPL2 preregistration and runner path plus a new explicit owner authorization are required. Preserve 28 historical v1 points as NOT_STARTED.",
+      "blocker": "IMPL2 technical readiness preflight passed, but campaign execution remains unauthorized. A separate explicit campaign authorization and global compute budget decision are required. The v1 campaign remains PARTIAL with its 28 NOT_STARTED historical points preserved; IMPL2 has no campaign artifacts or started points.",
       "no_local_unblock_reason": null,
       "evidence": [
         "results/full-rpm-sweep-v1/pilot-analysis.json",
@@ -3087,8 +3087,7 @@
       ],
       "unblock_tasks": [
         "FRPM-V2-RESTORE-INDEPENDENT-REVIEW",
-        "FRPM-V2-FAST-EVIDENCE-ACCEPTANCE",
-        "FRPM-IMPL2-CAMPAIGN-PREREG-HASH-BINDING"
+        "FRPM-V2-FAST-EVIDENCE-ACCEPTANCE"
       ]
     },
     {
@@ -3563,7 +3562,7 @@
       "id": "FRPM-IMPL2-CAMPAIGN-PREREG-HASH-BINDING",
       "description": "Prepare a separately versioned current-source IMPL2 campaign preregistration and runner/preflight selection path; bind current solver, detector, producer and campaign runner hashes without modifying the v1 preregistration, historical IMPL2 acceptance receipt or campaign artifacts; keep authorization false and run no points.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "architecture",
       "evidence_level": "L1",
@@ -3573,7 +3572,17 @@
         "tests/test_full_rpm_sweep_v1_impl2.py",
         "results/full-rpm-sweep-v1/implementation-v2-campaign-identity.json",
         "results/full-rpm-sweep-v1/implementation-v2-campaign-preregistration.json"
-      ]
+      ],
+      "blocker": null,
+      "evidence": [
+        "results/full-rpm-sweep-v1/implementation-v2-campaign-readiness-receipt.json",
+        "results/full-rpm-sweep-v1/implementation-v2-campaign-identity.json",
+        "results/full-rpm-sweep-v1/implementation-v2-campaign-preregistration.json",
+        "tests/test_full_rpm_sweep_v1_impl2.py",
+        "tests/test_full_rpm_sweep_v1_parallel_impl2.py",
+        "tests/test_full_rpm_sweep_v1_impl2_checkpoint_d1d2.py"
+      ],
+      "next_action": "Await a separate campaign decision defining explicit authorization and global compute budget; no points started."
     }
   ],
   "audit_remediation_mode": false,
@@ -4510,6 +4519,12 @@
       "task": "FRPM-FULL-CAMPAIGN-EXECUTION",
       "kind": "task",
       "summary": "BLOCK 2 preflight: IMPL2 source hash is stale (identity 4794e0d3 vs current e3d1e449); proposal is not active and runner only loads v1 prereg. No campaign points started. See impl2-campaign-readiness-plan.json; unblock task FRPM-IMPL2-CAMPAIGN-PREREG-HASH-BINDING."
+    },
+    {
+      "at": "2026-10-13T13:14:24+00:00",
+      "task": "FRPM-IMPL2-CAMPAIGN-PREREG-HASH-BINDING",
+      "kind": "task",
+      "summary": "IMPL2 campaign identity/preregistration bound to current hashes; explicit runner selection and 30-point no-solver preflight PASS. No execution authorization or global budget; see implementation-v2-campaign-readiness-receipt.json."
     }
   ],
   "legacy_gate_status": {
@@ -4591,5 +4606,20 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "PARTIAL_RESOURCE_BUDGET",
-  "updated_at": "2026-10-09"
+  "updated_at": "2026-10-13T13:14:24+00:00",
+  "full_rpm_sweep_impl2_campaign_readiness": {
+    "state": "READY_FOR_CAMPAIGN_DECISION",
+    "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
+    "receipt": "results/full-rpm-sweep-v1/implementation-v2-campaign-readiness-receipt.json",
+    "campaign_authorized": false,
+    "campaign_started": false,
+    "preregistration": "results/full-rpm-sweep-v1/implementation-v2-campaign-preregistration.json",
+    "identity": "results/full-rpm-sweep-v1/implementation-v2-campaign-identity.json",
+    "artifact_root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2",
+    "global_campaign_budget_seconds": null,
+    "v1_artifacts_reusable": false,
+    "note": "Technical readiness only; explicit authorization and global budget remain required. Historical v1 remains PARTIAL.",
+    "historical_v1_unstarted_points": 28,
+    "historical_v1_campaign_status": "PARTIAL_RESOURCE_BUDGET"
+  }
 }

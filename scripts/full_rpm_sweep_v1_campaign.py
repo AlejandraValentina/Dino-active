@@ -35,6 +35,10 @@ from motorsim.full_rpm_sweep_v1 import (  # noqa: E402
     preflight_full_rpm_sweep_v1,
     rpm_points,
 )
+from motorsim.full_rpm_sweep_v1_impl2 import (  # noqa: E402
+    CAMPAIGN_IDENTITY, CAMPAIGN_PREREGISTRATION,
+    audit_impl2_campaign_preflight,
+)
 from motorsim.integrated_2t import (  # noqa: E402
     IntegratedEngine2T,
     _integrated_nominal_step_end,
@@ -313,7 +317,8 @@ def _r2_compatible_scavenging(primary: dict) -> dict:
 
 
 def _ensure_campaign_provenance(out: Path, prereg: dict,
-                                prereg_sha: str) -> dict:
+                                prereg_sha: str,
+                                authorization_path: Path | None = None) -> dict:
     """Bundle the exact inputs and implementation needed to inspect results."""
     provenance_dir = out / "provenance"
     provenance_dir.mkdir(parents=True, exist_ok=True)
@@ -336,10 +341,19 @@ def _ensure_campaign_provenance(out: Path, prereg: dict,
         "scripts/verify_full_rpm_sweep_v1_contract.py",
         "scripts/verify_full_rpm_sweep_v1_artifacts.py",
         "openspec/changes/full-rpm-sweep-v1/specs/full-rpm-sweep-v1/spec.md",
-        "results/full-rpm-sweep-v1/readiness.json",
-        "results/full-rpm-sweep-v1/preflight.json",
-        "results/full-rpm-sweep-v1/campaign-authorization.json",
     }
+    if prereg.get("implementation_version") == IMPLEMENTATION_VERSION:
+        source_paths.update({
+            "results/full-rpm-sweep-v1/implementation-v2-campaign-identity.json",
+            "results/full-rpm-sweep-v1/implementation-v2-campaign-authorization.json",
+            "results/full-rpm-sweep-v1/implementation-v2-campaign-readiness-receipt.json",
+        })
+    else:
+        source_paths.update({
+            "results/full-rpm-sweep-v1/readiness.json",
+            "results/full-rpm-sweep-v1/preflight.json",
+            "results/full-rpm-sweep-v1/campaign-authorization.json",
+        })
     for module_name in prereg["solver_dependency_hashes"]:
         source_paths.add(module_name.replace(".", "/") + ".py")
     for variant in prereg["variants"]:
@@ -388,8 +402,8 @@ def _ensure_campaign_provenance(out: Path, prereg: dict,
         "schema": "FULL_RPM_SWEEP_V1_ARTIFACT_PROVENANCE_V1",
         "campaign_id": f"{IMPLEMENTATION_VERSION}_{prereg_sha[:16]}",
         "preregistration_sha256": prereg_sha,
-        "authorization_sha256": _sha256(
-            (ROOT / "results/full-rpm-sweep-v1/campaign-authorization.json").read_bytes()),
+        "authorization_sha256": _sha256((authorization_path or
+            (ROOT / "results/full-rpm-sweep-v1/campaign-authorization.json")).read_bytes()),
         "campaign_runner_sha256": _sha256(
             Path(__file__).read_bytes().replace(b"\r\n", b"\n")),
         "python_version": sys.version,
@@ -489,6 +503,10 @@ def _require_readiness_pass() -> None:
 
 def _point_contract_hashes(prereg: dict, prereg_sha: str, variant: dict,
                            resolved_loss, rpm: int) -> dict:
+    identity_path = ROOT / CAMPAIGN_IDENTITY
+    identity_sha = (_sha256(identity_path.read_bytes().replace(b"\r\n", b"\n"))
+                    if prereg.get("implementation_version") == IMPLEMENTATION_VERSION
+                    and identity_path.is_file() else None)
     return {
         "preregistration_sha256": prereg_sha,
         "fixture_sha256": variant["fixture_sha256"],
@@ -503,6 +521,7 @@ def _point_contract_hashes(prereg: dict, prereg_sha: str, variant: dict,
         "campaign_producer_sha256": _sha256(
             Path(__file__).read_bytes().replace(b"\r\n", b"\n")),
         "implementation_version": IMPLEMENTATION_VERSION,
+        "implementation_identity_sha256": identity_sha,
         "output_adapter_sha256": _sha256(
             (ROOT / "motorsim/full_rpm_outputs_v1.py").read_bytes().replace(b"\r\n", b"\n")),
     }
@@ -572,10 +591,11 @@ def _checkpoint_cycle_history(point_dir: Path, next_cycle: int) -> tuple[list[di
 def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
                output_root: Path, *, resume: bool,
                started: float, budget_seconds: int,
+               preregistration_path: Path | None = None,
                update_campaign_manifest: bool = True,
                cancel_event=None) -> dict:
     resolved_loss = resolve_mechanical_loss_v1(
-        preregistration_path=ROOT / PREREGISTRATION,
+        preregistration_path=preregistration_path or (ROOT / PREREGISTRATION),
         variant_id=variant["variant_id"], repository_root=ROOT,
         rpm_points=prereg["rpm_grid"]["points_rpm"], load=1.0)
     bindings = _point_contract_hashes(prereg, prereg_sha, variant,
@@ -931,11 +951,13 @@ def _parallel_worker_plan(requested: int, memory_budget_bytes: int, *,
 
 def _run_point_process(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
                        output_root: str, resume: bool, started: float,
-                       budget_seconds: int, cancel_event) -> dict:
+                       budget_seconds: int, cancel_event,
+                       preregistration_path: str = str(PREREGISTRATION)) -> dict:
     """Spawn-process entrypoint; writes only its point-owned files."""
     return _run_point(prereg, prereg_sha, variant, rpm, Path(output_root),
                       resume=resume, started=started,
                       budget_seconds=budget_seconds,
+                      preregistration_path=Path(preregistration_path),
                       update_campaign_manifest=False,
                       cancel_event=cancel_event)
 
@@ -944,20 +966,49 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
                      pilot: bool = False,
                      budget_seconds: int = MAX_INVOCATION_SECONDS,
                      workers: int = 1,
-                     memory_budget_mib: int = 4096) -> dict:
+                     memory_budget_mib: int = 4096,
+                     implementation: str = "v1") -> dict:
     """Run the preregistered campaign, optionally in two-point pilot mode."""
     started = time.monotonic()
-    _require_readiness_pass()
+    if implementation not in {"v1", "impl2"}:
+        raise ValueError("implementation must be explicitly v1 or impl2")
+    if implementation == "impl2":
+        selected_prereg_path = ROOT / CAMPAIGN_PREREGISTRATION
+        preflight = audit_impl2_campaign_preflight(ROOT)
+        if preflight.get("preflight_status") != "PASS":
+            raise RuntimeError("FULL_RPM_SWEEP_V1_IMPL2 preflight failed closed")
+        auth_path = ROOT / "results/full-rpm-sweep-v1/implementation-v2-campaign-authorization.json"
+        if not auth_path.is_file() or _read_json(auth_path).get("authorized") is not True:
+            raise RuntimeError("FULL_RPM_SWEEP_V1_IMPL2 campaign requires explicit authorization")
+        authorization = _read_json(auth_path)
+        if authorization.get("preregistration_sha256") != preflight.get("preregistration_sha256") or authorization.get("implementation_version") != IMPLEMENTATION_VERSION:
+            raise RuntimeError("FULL_RPM_SWEEP_V1_IMPL2 authorization binding mismatch")
+        expected_variants = [item["variant_id"] for item in _read_json(selected_prereg_path)["variants"]]
+        if (authorization.get("scope", {}).get("variants") != expected_variants or
+                authorization.get("scope", {}).get("maximum_points") != 30 or
+                authorization.get("scope", {}).get("rpm_points_per_variant") != 15):
+            raise RuntimeError("FULL_RPM_SWEEP_V1_IMPL2 authorization scope mismatch")
+        status = _read_json(PROGRAM_STATUS)
+        readiness = status.get("full_rpm_sweep_impl2_campaign_readiness", {})
+        if readiness.get("classification") != "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION":
+            raise RuntimeError("FULL_RPM_SWEEP_V1_IMPL2 durable readiness receipt is missing")
+    else:
+        _require_readiness_pass()
+        selected_prereg_path = ROOT / PREREGISTRATION
     if type(budget_seconds) is not int or not 1 <= budget_seconds <= MAX_INVOCATION_SECONDS:
         raise ValueError("budget_seconds must be an integer in [1, 3600]")
     if type(memory_budget_mib) is not int or memory_budget_mib < 512:
         raise ValueError("memory_budget_mib must be an integer of at least 512")
     if type(workers) is not int or not 1 <= workers <= 8:
         raise ValueError("workers must be an integer in [1, 8]")
+    if implementation == "impl2" and (workers > 4 or memory_budget_mib > 4096):
+        raise ValueError("IMPL2 worker request exceeds preregistered worker or memory limits")
     out = Path(output_root).resolve()
     if out == ROOT or out.is_relative_to(ROOT):
         raise ValueError("sweep outputs must be outside the Git repository")
-    prereg_path = ROOT / PREREGISTRATION
+    if implementation == "impl2" and out.name != "full-rpm-sweep-v1-impl2":
+        raise ValueError("IMPL2 output root must be isolated as full-rpm-sweep-v1-impl2")
+    prereg_path = selected_prereg_path
     preflight = preflight_full_rpm_sweep_v1(prereg_path, repository_root=ROOT)
     if preflight.get("preflight_status") != "PASS":
         raise RuntimeError("FULL_RPM_SWEEP_V1 preflight failed closed")
@@ -972,7 +1023,10 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
         if (prior_manifest.get("campaign_id") != campaign_id or
                 prior_manifest.get("pre-registration_sha256") != prereg_sha):
             raise ValueError("campaign resume manifest does not match preregistration")
-    _ensure_campaign_provenance(out, prereg, prereg_sha)
+    selected_authorization_path = (ROOT / "results/full-rpm-sweep-v1/implementation-v2-campaign-authorization.json"
+                                   if implementation == "impl2" else
+                                   ROOT / "results/full-rpm-sweep-v1/campaign-authorization.json")
+    _ensure_campaign_provenance(out, prereg, prereg_sha, selected_authorization_path)
     selected_points = _selected_points(prereg, pilot=pilot)
 
     invocation = {
@@ -1092,7 +1146,8 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
         for variant, rpm in selected_points:
             point_result = _run_point(
                 prereg, prereg_sha, variant, rpm, out,
-                resume=resume, started=started, budget_seconds=budget_seconds)
+                resume=resume, started=started, budget_seconds=budget_seconds,
+                preregistration_path=prereg_path)
             point_dir = out / variant["variant_id"] / f"rpm-{rpm:05d}"
             invocation["results"].append({
                 "point_id": point_result["point_id"],
@@ -1139,7 +1194,8 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
                 return False
             future = executor.submit(
                 _run_point_process, prereg, prereg_sha, variant, rpm, str(out),
-                resume, started, budget_seconds, cancel_event)
+                resume, started, budget_seconds, cancel_event, str(prereg_path))
+            # Keep the exact selected preregistration path in each spawned point.
             futures[future] = (variant, rpm)
             return True
 
@@ -1234,6 +1290,8 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--execute", action="store_true",
                         help="start the campaign (requires durable readiness PASS)")
+    parser.add_argument("--implementation", choices=("v1", "impl2"),
+                        help="select the fixed v1 or IMPL2 preregistration; execution requires an explicit selection")
     parser.add_argument("--output-root", type=Path,
                         help="durable external artifact directory; must be outside the repo")
     parser.add_argument("--resume", action="store_true")
@@ -1246,9 +1304,13 @@ def main(argv: list[str] | None = None) -> int:
                         help="upper bound for aggregate worker memory reservation")
     args = parser.parse_args(argv)
     if not args.execute:
-        report = preflight_full_rpm_sweep_v1(repository_root=ROOT)
+        implementation = args.implementation or "v1"
+        report = (audit_impl2_campaign_preflight(ROOT) if implementation == "impl2"
+                  else preflight_full_rpm_sweep_v1(repository_root=ROOT))
         print(json.dumps(report, sort_keys=True))
         return 0 if report["preflight_status"] == "PASS" else 1
+    if args.implementation is None:
+        parser.error("--execute requires explicit --implementation v1 or --implementation impl2")
     output_root = args.output_root
     if output_root is None:
         artifact_root = os.environ.get("DINO_ARTIFACT_ROOT")
@@ -1263,7 +1325,8 @@ def main(argv: list[str] | None = None) -> int:
                               pilot=args.pilot,
                               budget_seconds=args.budget_seconds,
                               workers=args.workers,
-                              memory_budget_mib=args.memory_budget_mib)
+                              memory_budget_mib=args.memory_budget_mib,
+                              implementation=args.implementation)
     print(json.dumps({"campaign_status": result["campaign_status"],
                       "points": len(result["completed_or_checkpointed_points"]),
                       "campaigns_started": result["campaigns_started"]}, sort_keys=True))

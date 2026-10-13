@@ -50,6 +50,43 @@ def _diagnostic_checkpoint_worker(root, point_id, steps, stop_after=None,
     return result
 
 
+def test_impl2_execution_selection_requires_own_authorization(tmp_path: Path) -> None:
+    with pytest.raises(RuntimeError, match="requires explicit authorization"):
+        campaign.execute_campaign(output_root=tmp_path / "full-rpm-sweep-v1-impl2",
+                                  implementation="impl2")
+    assert not (tmp_path / "full-rpm-sweep-v1-impl2").exists()
+
+
+def test_impl2_checkpoint_identity_binding_is_not_v1_reusable(tmp_path: Path) -> None:
+    from motorsim import full_rpm_sweep_v1_impl2 as impl2
+    from motorsim.mechanical_loss_binding_v1 import resolve_mechanical_loss_v1
+
+    report = impl2.audit_impl2_campaign_preflight(campaign.ROOT)
+    identity = json.loads((campaign.ROOT / impl2.CAMPAIGN_IDENTITY).read_text())
+    identity_sha = report["implementation_identity_sha256"]
+    prereg_path = campaign.ROOT / impl2.CAMPAIGN_PREREGISTRATION
+    prereg = json.loads(prereg_path.read_text(encoding="utf-8"))
+    variant = prereg["variants"][0]
+    loss = resolve_mechanical_loss_v1(
+        preregistration_path=prereg_path, variant_id=variant["variant_id"],
+        repository_root=campaign.ROOT,
+        rpm_points=prereg["rpm_grid"]["points_rpm"], load=1.0)
+    bindings = campaign._point_contract_hashes(
+        prereg, campaign.canonical_sha256(prereg), variant, loss,
+        prereg["rpm_grid"]["points_rpm"][0])
+    assert bindings["implementation_identity_sha256"] == identity_sha
+    assert identity["v1_artifacts_reusable"] is False
+    assert identity["checkpoint_schema"] == "FULL_RPM_SWEEP_V1_IMPL2_POINT_CHECKPOINT"
+    checkpoint = {"schema": "FULL_RPM_SWEEP_V1_IMPL2_POINT_CHECKPOINT",
+                  "implementation_version": campaign.IMPLEMENTATION_VERSION,
+                  "bindings": {**bindings, "implementation_identity_sha256": "0" * 64},
+                  "next_cycle": 1, "engine_snapshot": {}, "periodicity_snapshot": {}}
+    path = tmp_path / "checkpoint.json"
+    path.write_text(json.dumps(checkpoint), encoding="utf-8")
+    with pytest.raises(ValueError, match="checkpoint binding hash mismatch"):
+        campaign._load_checkpoint(path, bindings)
+
+
 def test_parallel_worker_plan_caps_by_memory_and_cpu():
     plan = _parallel_worker_plan(
         8, 4096 * 1024 * 1024, available_memory_bytes=1500 * 1024 * 1024,

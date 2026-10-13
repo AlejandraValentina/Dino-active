@@ -1,0 +1,119 @@
+{
+  "schema": "FULL_RPM_SWEEP_V1_IMPL2_CAMPAIGN_READINESS_RECEIPT_V1",
+  "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
+  "implementation_version": "FULL_RPM_SWEEP_V1_IMPL2",
+  "implementation_identity_sha256": "90e6fa2856f772c10994d1849801cd95cf7a11cd5bcf097abfd64841a8fbd84d",
+  "preregistration_sha256": "e26c0599325a9e6296291178ffd2e36457838052f1d9b59de7b6dc0f282d59e3",
+  "preflight": {
+    "preflight_status": "PASS",
+    "campaigns_started": 0,
+    "solver_steps_started": 0,
+    "points_preflighted": 30,
+    "rpm_points_per_variant": 15,
+    "checks": {
+      "explicit_impl2_identity": true,
+      "campaign_not_authorized_or_started": true,
+      "preregistration_sha256": true,
+      "source_hashes_exact": true,
+      "v1_isolation": true,
+      "artifact_root_identity_match": true,
+      "artifact_root_selected": true,
+      "fast_disabled": true,
+      "30_points_two_variants": true,
+      "runner_and_output_adapter_bound": true,
+      "two_to_four_workers_within_preregistration": true,
+      "checkpoint_restart_contract": true,
+      "underlying_scientific_preflight": true
+    }
+  },
+  "campaign_authorized": false,
+  "campaign_started": false,
+  "FULL_RPM_SWEEP_V1": "PARTIAL",
+  "FULL_RPM_SWEEP_V1_IMPL2_CAMPAIGN": "NOT_STARTED",
+  "ENGINE_PHYSICS_V1_R2": "PASS",
+  "ENGINE_PHYSICS_V1": "FAIL_TERMINAL",
+  "FAST_RECIPE_V1": "PARTIAL_NO_ADOPTION_FOR_AUDITED_CAMPAIGNS",
+  "historical_v1_artifact_integrity": {
+    "all_pass": true,
+    "campaign_status": "PARTIAL_RESOURCE_BUDGET",
+    "campaign_points": 30,
+    "results_checked": 2,
+    "checkpoints_checked": 2,
+    "primaries_checked": 126,
+    "cycle_metrics_checked": 126,
+    "errors": [],
+    "source": "python scripts/verify_full_rpm_sweep_v1_artifacts.py external v1 bundle"
+  },
+  "tests": {
+    "runs": [
+      {
+        "command": "python -m pytest tests/test_full_rpm_sweep_v1_impl2.py tests/test_full_rpm_sweep_v1_parallel_impl2.py tests/test_full_rpm_sweep_v1_impl2_checkpoint_d1d2.py -q",
+        "passed": 22,
+        "failed": 3,
+        "classification": "INITIAL_RUN_WITH_FIXABLE_TEST_HARNESS_PATH_CAPTURE"
+      },
+      {
+        "command": "python -m pytest tests/test_full_rpm_sweep_v1_impl2_checkpoint_d1d2.py::test_real_run_point_restarts_only_from_orphan_temp_and_rejects_unknown_partial tests/test_full_rpm_sweep_v1_impl2_checkpoint_d1d2.py::test_real_run_point_spawn_interrupt_resume_matches_sequential_and_coordinator_hashes tests/test_full_rpm_sweep_v1_impl2_checkpoint_d1d2.py::test_real_run_point_abrupt_worker_exit_recovers_first_checkpoint_write -q",
+        "passed": 3,
+        "failed": 0,
+        "classification": "TARGETED_REVALIDATION_AFTER_FIX"
+      },
+      {
+        "command": "python -m pytest tests/test_full_rpm_sweep_v1_impl2.py tests/test_full_rpm_sweep_v1_parallel_impl2.py -q",
+        "passed": 20,
+        "failed": 0,
+        "classification": "FINAL_FOCUSED_RUN"
+      }
+    ],
+    "final_test_case_classification": "25_DISTINCT_TESTS_PASS; the three initial failures were rerun successfully after correcting the captured preregistration path.",
+    "final_focused_run": {
+      "command": "python -m pytest tests/test_full_rpm_sweep_v1_impl2.py tests/test_full_rpm_sweep_v1_parallel_impl2.py -q",
+      "passed": 20,
+      "failed": 0
+    },
+    "identity_checkpoint_binding": {
+      "command": "python -m pytest tests/test_full_rpm_sweep_v1_parallel_impl2.py::test_impl2_checkpoint_identity_binding_is_not_v1_reusable -q",
+      "passed": 1,
+      "failed": 0
+    }
+  },
+  "openspec_strict": {
+    "command": "openspec validate --all --strict --no-interactive",
+    "passed": 39,
+    "failed": 0
+  },
+  "program_status_check": "PASS",
+  "execution_policy": {
+    "explicit_implementation_selection_required": true,
+    "explicit_campaign_authorization_required": true,
+    "global_campaign_budget_decision_required": true,
+    "v1_artifacts_reusable": false,
+    "fast_recipe_enabled": false
+  },
+  "artifact_root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2",
+  "recommended_workers": 4,
+  "worker_memory_reservation_mib": 512,
+  "aggregate_memory_budget_mib": 4096,
+  "global_campaign_budget_seconds": null,
+  "created_at_utc": "2026-10-13T13:15:28+00:00",
+  "historical_v1_unstarted_points": 28,
+  "historical_v1_manifest_sha256": "fde8625677d0bd03cd9c3a98cd477545d80a7375f5d4ddd4375a500546624433",
+  "resource_budget": {
+    "per_invocation_max_seconds": 3600,
+    "recommended_workers": 4,
+    "worker_reservation_mib": 512,
+    "aggregate_memory_budget_mib": 4096,
+    "basis": "Prior 4-process diagnostic speedup 3.738x; paired diagnostic workload only, not a full-campaign measurement. Twelve logical CPUs observed in the prior preflight.",
+    "prior_serial_projection_hours": 12.5,
+    "prior_serial_projection_classification": "ESTIMATE_NOT_MEASURED_CAMPAIGN_RUNTIME",
+    "parallel_campaign_duration_projection": "NOT_VALIDATED",
+    "global_campaign_budget_seconds": null,
+    "authorization_prerequisite": "Owner must make an explicit global compute budget decision before authorizing execution."
+  },
+  "fast_measurements": {
+    "classification": "FAST_RECIPE_V1_PARTIAL",
+    "provisional_capture_speedup": 5.14,
+    "fully_audited_end_to_end_speedup": 0.78,
+    "adoption": "NO_ADOPTION_FOR_AUDITED_CAMPAIGNS"
+  }
+}
