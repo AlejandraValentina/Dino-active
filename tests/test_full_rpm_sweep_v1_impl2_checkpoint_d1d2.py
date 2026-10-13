@@ -8,12 +8,14 @@ import json
 import multiprocessing
 import os
 import shutil
+import threading
 import time
 from pathlib import Path
 
 import pytest
 
 from scripts import full_rpm_sweep_v1_campaign as campaign
+from scripts import full_rpm_sweep_v1_impl2_supervisor_v1 as supervisor
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -313,29 +315,40 @@ def test_real_run_point_spawn_interrupt_resume_matches_sequential_and_coordinato
 
     with context.Manager() as manager:
         cancel_event = manager.Event()
+        cancellation = threading.Timer(0.05, cancel_event.set)
         with concurrent.futures.ProcessPoolExecutor(
                 max_workers=2, mp_context=context) as executor:
             futures = {rpm: executor.submit(
                 _real_run_point_spawn, str(sandbox), prereg, variant, rpm,
                 str(parallel_output), False, cancel_event)
                        for rpm in point_rpms}
-            deadline = time.monotonic() + 600
-            while time.monotonic() < deadline:
-                statuses = []
-                for rpm in point_rpms:
-                    status_path = (parallel_output / variant["variant_id"] /
-                                   f"rpm-{rpm:05d}" / "checkpoint-status.json")
-                    if status_path.is_file():
-                        statuses.append(campaign._read_json(status_path))
-                if len(statuses) == len(point_rpms) and all(
-                        status.get("cycles_completed", 0) >= 1 for status in statuses):
-                    cancel_event.set()
-                    break
-                time.sleep(0.05)
-            else:
-                pytest.fail("real _run_point workers did not reach their first checkpoints")
-            interrupted = {rpm: future.result(timeout=600)
-                           for rpm, future in futures.items()}
+            cancellation.start()
+            wait_started = time.monotonic()
+            empty_polls = 0
+            original_wait = concurrent.futures.wait
+
+            def count_empty_polls(items, timeout=None,
+                                  return_when=concurrent.futures.ALL_COMPLETED):
+                nonlocal empty_polls
+                done, pending = original_wait(items, timeout=timeout,
+                                              return_when=return_when)
+                if not done:
+                    empty_polls += 1
+                return done, pending
+
+            pending = set(futures.values())
+            interrupted = {}
+            while pending:
+                done, pending = supervisor.wait_until_completion_or_deadline(
+                    pending, time.monotonic() + 600,
+                    wait_impl=count_empty_polls)
+                assert done, "supervisor must wait through empty polls before deadline"
+                for future in done:
+                    rpm = next(key for key, value in futures.items() if value is future)
+                    interrupted[rpm] = future.result(timeout=600)
+            cancellation.cancel()
+            assert time.monotonic() - wait_started > 1.0
+            assert empty_polls >= 1
 
     # Workers were configured update_campaign_manifest=False. The bytes must
     # remain untouched until this single coordinator records both checkpoints.
