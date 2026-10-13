@@ -3077,16 +3077,17 @@
       "write_scope": [
         "results/full-rpm-sweep-v1 campaign artifacts at external DINO_ARTIFACT_ROOT"
       ],
-      "blocker": "No campaign execution is authorized. The 4-worker one-cycle benchmark does not represent full periodic-convergence campaign cost. Real _run_point spawn checkpoint/restart and abrupt-worker recovery now pass in an isolated diagnostic fixture; independent executor recheck and IMPL2 preflight review remain pending. Twenty-eight historical v1 points remain NOT_STARTED.",
+      "blocker": "No campaign execution is authorized. The implementation has administrative acceptance, but the contract still requires any later IMPL2 preregistration and explicit campaign authorization; the v1 implementation preflight remains FAIL_CLOSED_SOURCE_HASH_MISMATCH. Twenty-eight historical v1 points remain NOT_STARTED.",
       "no_local_unblock_reason": null,
       "evidence": [
         "results/full-rpm-sweep-v1/pilot-analysis.json",
         "results/full-rpm-sweep-v1/campaign-receipt.json",
-        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/campaign.json"
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/campaign.json",
+        "results/full-rpm-sweep-v1/impl2-administrative-acceptance-receipt.json"
       ],
       "unblock_tasks": [
-        "FRPM-V2-PARALLEL-EXECUTOR-REVIEW",
-        "FRPM-V2-IMPL2-PREFLIGHT-AUDIT"
+        "FRPM-V2-RESTORE-INDEPENDENT-REVIEW",
+        "FRPM-V2-FAST-EVIDENCE-ACCEPTANCE"
       ]
     },
     {
@@ -3355,13 +3356,25 @@
       "dependencies": [
         "FRPM-V2-IMPL2-PREREG"
       ],
-      "state": "READY",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "verification",
       "evidence_level": "L1",
       "write_scope": [
         "motorsim/full_rpm_sweep_v1_impl2.py",
-        "tests/test_full_rpm_sweep_v1_impl2.py"
+        "tests/test_full_rpm_sweep_v1_impl2.py",
+        "results/full-rpm-sweep-v1/implementation-v2-identity.json",
+        "results/full-rpm-sweep-v1/implementation-v2-preregistration-proposal.json",
+        "results/full-rpm-sweep-v1/impl2-administrative-acceptance-receipt.json"
+      ],
+      "resolution": "Read-only IMPL2 preflight PASS: implementation and producer/dependency hashes match after updating the runner identity binding to the reviewed D1/D2 runner; both fixture/configuration/mechanical-model bindings resolve explicitly with no fallback; worker plans 1/2/4 fit the 4 GiB cap and 512 MiB reservation; artifact roots are separate; diagnostic legacy reference artifacts remain under diagnostics only; no campaign artifacts or points exist under the IMPL2 campaign root; v1 mismatch remains fail-closed. External review attribution is separate in its receipt.",
+      "evidence": [
+        "results/full-rpm-sweep-v1/impl2-administrative-acceptance-receipt.json",
+        "results/full-rpm-sweep-v1/impl2-external-review-receipt.json",
+        "tests/test_full_rpm_sweep_v1_impl2.py",
+        "tests/test_full_rpm_sweep_v1_parallel_impl2.py",
+        "tests/test_full_rpm_sweep_v1_impl2_checkpoint_d1d2.py",
+        "results/full-rpm-sweep-v1/performance-architecture-v2-diagnostic-receipt.json"
       ]
     },
     {
@@ -3408,12 +3421,17 @@
       "dependencies": [
         "FRPM-V2-PARALLEL-EXECUTOR"
       ],
-      "state": "READY",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "skeptic/adversarial review",
       "evidence_level": "L1",
       "write_scope": [
         "results/full-rpm-sweep-v1/parallel-executor-review.json"
+      ],
+      "resolution": "Closed administratively on the user-communicated Muse Spark 1.3 xhigh read-only verdict IMPL2_EXTERNAL_REVIEW_PASS. D1/D2, concurrent checkpoint/restart and scientific equivalence within tested scope are recorded as reviewer-reported; Codex did not execute that external review.",
+      "evidence": [
+        "results/full-rpm-sweep-v1/impl2-external-review-receipt.json",
+        "results/full-rpm-sweep-v1/parallel-restart-validation-receipt.json"
       ]
     },
     {
@@ -3454,6 +3472,27 @@
       "evidence": [
         "results/full-rpm-sweep-v1/performance-architecture-v2-diagnostic-receipt.json",
         "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/logs/verify-v1-20261009/verify-full-rpm-sweep-v1-artifacts.log"
+      ]
+    },
+    {
+      "id": "FRPM-V2-ADMIN-ACCEPTANCE-DURABLE-VERIFY",
+      "description": "After the IMPL2 administrative acceptance commit, independently verify committed receipt hashes, program-status consistency, PARTIAL campaign classification, and zero new point starts; do not launch a campaign.",
+      "dependencies": [
+        "FRPM-V2-PARALLEL-EXECUTOR-REVIEW",
+        "FRPM-V2-IMPL2-PREFLIGHT-AUDIT"
+      ],
+      "state": "READY",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/full-rpm-sweep-v1/impl2-external-review-receipt.json",
+        "results/full-rpm-sweep-v1/impl2-administrative-acceptance-receipt.json",
+        "results/2t-commercial-core-20261002/program-status.json"
+      ],
+      "evidence": [
+        "results/full-rpm-sweep-v1/impl2-external-review-receipt.json",
+        "results/full-rpm-sweep-v1/impl2-administrative-acceptance-receipt.json"
       ]
     }
   ],
@@ -4349,6 +4388,18 @@
       "task": "FRPM-V2-CHECKPOINT-RESTART-INTEGRATION",
       "kind": "task",
       "summary": "External D1/D2 findings closed: durable atomic writes and orphan recovery passed; real Windows spawn _run_point test used 2 workers, 4000/4100 RPM and 3 cycles, with interruption/resume, abrupt worker recovery, exact sequential primary hashes, 12 independent re-audits, conservation/ledger continuity and coordinator-only manifest writes. Campaign points started: 0."
+    },
+    {
+      "at": "2026-10-13T10:50:01+00:00",
+      "task": "FRPM-V2-PARALLEL-EXECUTOR-REVIEW",
+      "kind": "task",
+      "summary": "Closed from the user-communicated IMPL2_EXTERNAL_REVIEW_PASS; external review attribution is persisted separately, not claimed as Codex execution."
+    },
+    {
+      "at": "2026-10-13T10:50:01+00:00",
+      "task": "FRPM-V2-IMPL2-PREFLIGHT-AUDIT",
+      "kind": "task",
+      "summary": "Non-executing IMPL2 identity/configuration/resource/artifact/checkpoint compatibility preflight PASS; campaign remains unauthorized and v1 fail-closed behavior retained."
     }
   ],
   "legacy_gate_status": {

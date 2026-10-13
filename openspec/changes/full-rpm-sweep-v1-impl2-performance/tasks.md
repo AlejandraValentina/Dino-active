@@ -14,5 +14,5 @@
 ## 3. Compatibility and release gate
 
 - [x] 3.1 Record dependency, producer, artifact-root, and benchmark identities for IMPL2.
-- [ ] 3.2 Run relevant regressions, strict OpenSpec, artifact integrity, and program-status checks.
+- [x] 3.2 Run relevant regressions, strict OpenSpec, artifact integrity, and program-status checks.
 - [x] 3.3 Preserve FULL_RPM_SWEEP_V1 = PARTIAL; do not run campaign points.
