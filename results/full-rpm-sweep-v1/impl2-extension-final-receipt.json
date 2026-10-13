@@ -1,0 +1,72 @@
+{
+  "budget": {
+    "accounted_consumed_seconds": 13436.111,
+    "aggregate_memory_mib": 4096,
+    "global_authorized_seconds": 21600,
+    "per_invocation_cap_seconds": 3600,
+    "remaining_seconds": 8163.889,
+    "reserve_per_worker_mib": 512,
+    "workers_max": 4
+  },
+  "campaign_status": "COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
+  "findings": {
+    "FAST_RECIPE_V1": "DISABLED",
+    "V5_02_root_cause": "WinError 5 occurred when supervisor read a checkpoint while the worker atomically replaced it; V3 refresh read live worker files.",
+    "corrective_version": "V4 stopped polling live checkpoints and refreshes only after worker completion; worker exception path cooperatively cancels siblings and waits before bounded termination fallback.",
+    "experimental_validation": "NOT_PERFORMED",
+    "full_rpm_sweep_v1": "PARTIAL; three points NUMERICAL_INVALID; no PASS claim",
+    "no_solver_or_physics_changes": true
+  },
+  "identity": {
+    "authorization_sha256": "8ed03c5f09b69c96a65fbb17d2d82f3e557e9df9f6985ae8d11f0c6063a3fade",
+    "implementation_identity_sha256": "ac78d48abb23697804d9db28ee28d6f0eeaab712dc9d711cdb3572bc6ebaa63a",
+    "preregistration_sha256": "e26c0599325a9e6296291178ffd2e36457838052f1d9b59de7b6dc0f282d59e3",
+    "producer_canonical_preregistration_sha256": "4e0f6aaf9d7dbe105450c5a83016b7065c99c1f878da1025beaf8d64ec199ea3",
+    "runner_sha256": "d8d2a2c00e3ff45741e9ceadc4b4672db8f2de6d412bb96b9dd07a1b7c7118a6",
+    "supervisor": "scripts/full_rpm_sweep_v1_impl2_extension_supervisor_v4.py",
+    "supervisor_sha256": "4591c4f2d73796ee1416c461dcf9a1368a6383f7b93c73dfa1ff5e868a16d2d1"
+  },
+  "integrity": {
+    "cycle_primary_hashes_checked": 1465,
+    "elapsed_seconds": 273.778,
+    "errors": 0,
+    "method": "decompressed canonical primary SHA-256 compared with per-point cycle ledger and per-cycle metric receipts; result/checkpoint bytes and stored replay/conservation gates checked",
+    "points_checked": 30,
+    "receipt_path": "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\logs\\aggregate-primary-integrity.json",
+    "receipt_sha256": "ee145b795babde144e27a745602d52a6358f7c390f1dd63ea6f71f67852a9fac",
+    "status": "PASS"
+  },
+  "invalid_point_ids": [
+    "A_PRIME_MESH_0@1000RPM",
+    "A_PRIME_MESH_0@5000RPM",
+    "B_PRIME_MESH_0@1000RPM"
+  ],
+  "points": {
+    "authorized_extension": 26,
+    "not_started": 0,
+    "numerical_invalid": 3,
+    "period_1": 27,
+    "pilot_preserved": 4,
+    "registered": 30,
+    "terminal": 30
+  },
+  "reports": {
+    "csv_path": "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-full-rpm-sweep-30-points.csv",
+    "csv_sha256": "05350700ab3d77ca80eed1db228eabbd44b4dcd9f30abc04acc084a35e5641c1",
+    "json_path": "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-full-rpm-sweep-30-points.json",
+    "json_sha256": "65f8c0bee1e98096c127ed2d05b9d9b499ada00afb3a544761e950bcebcee9a7",
+    "plots": {
+      "impl2-bmep-vs-rpm.png": "9b1a90a89bc57d7b90fba6c3ff64cebdaa0233c693fbb67bf2913fcc484dedff",
+      "impl2-bsfc-vs-rpm.png": "7235c992dac07bb43e5f8617f615f553a011deadae1d327d14b396abc7d1237d",
+      "impl2-power-vs-rpm.png": "964d53b829ee688105c105737bc0fcebbb2b9ca76745aa7c0c113ab1ff98124a",
+      "impl2-torque-vs-rpm.png": "98eec9802517a16d1ae3c06e5480646f710260cbc2d679461cb136ad2ae84ebe"
+    }
+  },
+  "run_summaries": {
+    "V6_01_summary_sha256": "f426c9b09e7971d86ea7931c0137b5c15bb34a7e6e18a1f60f272d3be23fe97e",
+    "V6_02_summary_path": "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\logs\\impl2-aggregate-primary-integrity-final-v6.summary.json",
+    "V6_02_summary_sha256": "a1f61ec42369ebdfa2d3d5661abc00d270998fb56affcc341d8ac3f08c4f9ae3"
+  },
+  "schema": "FULL_RPM_SWEEP_V1_IMPL2_COMPLETION_RECEIPT_V1",
+  "scientific_status": "PARTIAL_REVIEW"
+}

@@ -3070,14 +3070,14 @@
       "dependencies": [
         "FRPM-PILOT-PROJECTION"
       ],
-      "state": "IN_PROGRESS",
+      "state": "REVIEW",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "implementation",
       "evidence_level": "L1",
       "write_scope": [
         "results/full-rpm-sweep-v1 campaign artifacts at external DINO_ARTIFACT_ROOT"
       ],
-      "blocker": null,
+      "blocker": "Three preregistered points are NUMERICAL_INVALID; preserve those classifications and keep the campaign scientific gate PARTIAL/REVIEW.",
       "no_local_unblock_reason": null,
       "evidence": [
         "results/full-rpm-sweep-v1/pilot-analysis.json",
@@ -3094,7 +3094,15 @@
         "scripts/full_rpm_sweep_v1_impl2_extension_supervisor_v4.py",
         "results/full-rpm-sweep-v1/implementation-v2-extension-authorization-20261013-v6.json",
         "results/full-rpm-sweep-v1/impl2-extension-readiness-receipt-v6.json",
-        "results/full-rpm-sweep-v1/impl2-extension-v6-01-progress-receipt.json"
+        "results/full-rpm-sweep-v1/impl2-extension-v6-01-progress-receipt.json",
+        "results/full-rpm-sweep-v1/impl2-extension-final-receipt.json",
+        "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-full-rpm-sweep-30-points.json",
+        "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-full-rpm-sweep-30-points.csv",
+        "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\logs\\aggregate-primary-integrity.json",
+        "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-bmep-vs-rpm.png",
+        "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-bsfc-vs-rpm.png",
+        "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-power-vs-rpm.png",
+        "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-torque-vs-rpm.png"
       ],
       "unblock_tasks": [
         "FRPM-V2-RESTORE-INDEPENDENT-REVIEW",
@@ -4616,6 +4624,12 @@
       "task": "FRPM-FULL-CAMPAIGN-EXECUTION",
       "kind": "task",
       "summary": "V6-01 completed 3,557.329s under its 3,600s cap. A3400/3700/4300/4600 and B1300/1600/1900/2200 PERIOD_1; A5000, A1000, B1000 NUMERICAL_INVALID; B2500/2800/3400/3700 checkpointed at 13/11/9/8 cycles. Budget charged at 11,549.064s; 10,050.936s remain."
+    },
+    {
+      "at": "2026-10-13T20:29:06+00:00",
+      "task": "FRPM-FULL-CAMPAIGN-EXECUTION",
+      "kind": "task",
+      "summary": "IMPL2 extension completed all 26 authorized points; combined 30-point matrix is 27 PERIOD_1 and 3 NUMERICAL_INVALID. Aggregate canonical primary/result/checkpoint integrity passed for all 30; CSV/JSON/scatter reports and compact receipt persisted. Accounted budget 13,436.111/21,600 s; remaining unused 8,163.889 s. Scientific gate remains PARTIAL/REVIEW; no further points launched."
     }
   ],
   "legacy_gate_status": {
@@ -4649,7 +4663,7 @@
     "remaining": [
       "FRPM-FULL-CAMPAIGN-EXECUTION"
     ],
-    "updated_at": "2026-10-09T15:30:38+00:00"
+    "updated_at": "2026-10-13T20:00:00+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -4696,8 +4710,8 @@
     "campaigns_started": 1
   },
   "campaigns_started": 1,
-  "campaign_runtime_status": "IMPL2_EXTENSION_IN_PROGRESS_RECOVERING_CHECKPOINTS",
-  "updated_at": "2026-10-13T18:00:00+00:00",
+  "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
+  "updated_at": "2026-10-13T20:00:00+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -4778,7 +4792,7 @@
       "B_PRIME_MESH_0@5000RPM"
     ],
     "global_budget_seconds": 21600,
-    "budget_consumed_seconds": 11549.064,
+    "budget_consumed_seconds": 13436.111,
     "maximum_invocation_seconds": 3600,
     "workers_max": 4,
     "memory_budget_mib": 4096,
@@ -4787,9 +4801,11 @@
     "receipt": "results/full-rpm-sweep-v1/implementation-v2-extension-authorization-20261013-v6.json",
     "readiness_receipt": "results/full-rpm-sweep-v1/impl2-extension-readiness-receipt-v6.json",
     "artifact_root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2/authorized-extension-26-v1",
-    "remaining_seconds": 10050.936,
+    "remaining_seconds": 8163.889,
     "execution_supervisor": "scripts/full_rpm_sweep_v1_impl2_extension_supervisor_v4.py",
-    "campaign_status": "INTERRUPTED_CHECKPOINTED",
-    "progress_receipt": "results/full-rpm-sweep-v1/impl2-extension-v6-01-progress-receipt.json"
+    "campaign_status": "COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
+    "progress_receipt": "results/full-rpm-sweep-v1/impl2-extension-v6-01-progress-receipt.json",
+    "final_receipt": "results/full-rpm-sweep-v1/impl2-extension-final-receipt.json",
+    "aggregate_report": "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-full-rpm-sweep-30-points.json"
   }
 }
