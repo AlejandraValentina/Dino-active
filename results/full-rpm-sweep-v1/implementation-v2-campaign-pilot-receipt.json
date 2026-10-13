@@ -1,0 +1,172 @@
+{
+  "schema": "FULL_RPM_SWEEP_V1_IMPL2_CONTROLLED_PILOT_RECEIPT_V1",
+  "status": "PARTIAL_INTERRUPTED_CHECKPOINTED_COORDINATOR_POLL_BUG",
+  "authorization": {
+    "authorized_by": "USER_INSTRUCTION",
+    "preregistration_sha256_file_bytes": "e26c0599325a9e6296291178ffd2e36457838052f1d9b59de7b6dc0f282d59e3",
+    "authorization_receipt_sha256_file_bytes": "61aa8beb2dfb40055d3e465f737b7d300b563f2d7c90bf0c6af9c7d11b457e8f",
+    "authorized_points": [
+      "A_PRIME_MESH_0@3100RPM",
+      "A_PRIME_MESH_0@4000RPM",
+      "B_PRIME_MESH_0@3100RPM",
+      "B_PRIME_MESH_0@4000RPM"
+    ],
+    "authorized_global_wall_seconds": 3600
+  },
+  "execution": {
+    "implementation": "FULL_RPM_SWEEP_V1_IMPL2",
+    "implementation_flag": "--implementation impl2",
+    "evidence_pipeline": "CONVENTIONAL_FULL_AUDIT",
+    "fast_recipe_enabled": false,
+    "workers_effective": 4,
+    "memory_budget_mib": 4096,
+    "reserve_per_worker_mib": 512,
+    "invocations": 2,
+    "campaign_invocation_wall_seconds": 73.125,
+    "wrapper_observed_wall_seconds": 73.782,
+    "budget_remaining_by_campaign_accounting_seconds": 3526.875,
+    "artifact_root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2",
+    "attempts": [
+      {
+        "root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2",
+        "status": "FAILED_INFRASTRUCTURE_NO_VALID_CHECKPOINT",
+        "duration_seconds": 36.579,
+        "failure": "NameError assembling audit_seconds after four cycle-1 primary files were persisted; no valid checkpoint existed."
+      },
+      {
+        "root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2/controlled-pilot-attempt-2",
+        "status": "INTERRUPTED_CHECKPOINTED",
+        "duration_seconds": 36.546,
+        "failure": "Coordinator set cancel_event after a 1-second poll returned no completed future, without checking whether the invocation deadline expired."
+      }
+    ]
+  },
+  "points": [
+    {
+      "point_id": "A_PRIME_MESH_0@3100RPM",
+      "classification": "INTERRUPTED_CHECKPOINTED",
+      "cycles_completed": 1,
+      "next_cycle": 2,
+      "checkpoint_sha256": "7666dc23b8138676ca339a6b44f7ddad868bec53c27fb6839dd69a4f7464e4f1",
+      "primary_sha256": "945e2b7d698d1bb0163dea38c3c1fe522764316dc6295da4a0ec5a57485f88e9",
+      "primary_audit": "PASS_RECOMPUTED_DURING_PRODUCER_RUN",
+      "cycle_metrics_primary_sha256_matches": true,
+      "performance_metrics": {
+        "accepted_steps": 1238,
+        "checkpoint_seconds": 0.04700000000048021,
+        "max_observed_process_rss_bytes": 243363840,
+        "mean_cycle_seconds": 25.32799999999952,
+        "measured_cycles": 1,
+        "primary_audit_seconds": 13.57799999999952,
+        "primary_compressed_bytes": 3984451,
+        "process_cpu_seconds": 25.28125,
+        "rejected_steps": 514,
+        "serialization_seconds": 0.7650000000012369,
+        "total_measured_cycle_seconds": 25.32799999999952
+      }
+    },
+    {
+      "point_id": "A_PRIME_MESH_0@4000RPM",
+      "classification": "INTERRUPTED_CHECKPOINTED",
+      "cycles_completed": 1,
+      "next_cycle": 2,
+      "checkpoint_sha256": "5b377849e2cf6f351b2ce814ddfba83f4699fa5efdff992540296c6242379550",
+      "primary_sha256": "7b40da42d78788c9718acf546f265c848051336e7149787e57aecc85cb55d7f5",
+      "primary_audit": "PASS_RECOMPUTED_DURING_PRODUCER_RUN",
+      "cycle_metrics_primary_sha256_matches": true,
+      "performance_metrics": {
+        "accepted_steps": 808,
+        "checkpoint_seconds": 0.07799999999951979,
+        "max_observed_process_rss_bytes": 176119808,
+        "mean_cycle_seconds": 16.156999999999243,
+        "measured_cycles": 1,
+        "primary_audit_seconds": 8.875,
+        "primary_compressed_bytes": 2428908,
+        "process_cpu_seconds": 16.078125,
+        "rejected_steps": 84,
+        "serialization_seconds": 0.5149999999994179,
+        "total_measured_cycle_seconds": 16.156999999999243
+      }
+    },
+    {
+      "point_id": "B_PRIME_MESH_0@3100RPM",
+      "classification": "INTERRUPTED_CHECKPOINTED",
+      "cycles_completed": 1,
+      "next_cycle": 2,
+      "checkpoint_sha256": "0883c51240bdac7ab16589b11edffb4dfb6c9fbc48d6022a449ee2098ede49cf",
+      "primary_sha256": "ed2bc3121aee9d8f732c71925ec1cfa3409db85f313394cdafeeac6a221f580c",
+      "primary_audit": "PASS_RECOMPUTED_DURING_PRODUCER_RUN",
+      "cycle_metrics_primary_sha256_matches": true,
+      "performance_metrics": {
+        "accepted_steps": 1337,
+        "checkpoint_seconds": 0.09400000000096043,
+        "max_observed_process_rss_bytes": 244011008,
+        "mean_cycle_seconds": 26.514999999999418,
+        "measured_cycles": 1,
+        "primary_audit_seconds": 14.061999999999898,
+        "primary_compressed_bytes": 4735350,
+        "process_cpu_seconds": 26.390625,
+        "rejected_steps": 614,
+        "serialization_seconds": 0.75,
+        "total_measured_cycle_seconds": 26.514999999999418
+      }
+    },
+    {
+      "point_id": "B_PRIME_MESH_0@4000RPM",
+      "classification": "INTERRUPTED_CHECKPOINTED",
+      "cycles_completed": 1,
+      "next_cycle": 2,
+      "checkpoint_sha256": "d50cdc7a5d82aaa5a504449fe0af73590e586dfc0667289a54fcc7226ee75a65",
+      "primary_sha256": "f8af5e13594b8d9c35cbfc1f108128091ef4fe3d4ec5efb00c797956e0f4a1cd",
+      "primary_audit": "PASS_RECOMPUTED_DURING_PRODUCER_RUN",
+      "cycle_metrics_primary_sha256_matches": true,
+      "performance_metrics": {
+        "accepted_steps": 808,
+        "checkpoint_seconds": 0.06300000000010186,
+        "max_observed_process_rss_bytes": 166121472,
+        "mean_cycle_seconds": 15.67200000000048,
+        "measured_cycles": 1,
+        "primary_audit_seconds": 8.546999999998661,
+        "primary_compressed_bytes": 2819244,
+        "process_cpu_seconds": 15.609375,
+        "rejected_steps": 85,
+        "serialization_seconds": 0.4690000000009604,
+        "total_measured_cycle_seconds": 15.67200000000048
+      }
+    }
+  ],
+  "not_started_points": 26,
+  "integrity": {
+    "attempt2_campaign_status": "INTERRUPTED_CHECKPOINTED",
+    "checkpoint_hashes_verified": 4,
+    "primary_hashes_reconstructed": 4,
+    "cycle_metric_links_verified": 4,
+    "manifest_provenance_hash_verified": true,
+    "contradictions": [],
+    "recomputed_independent_audit_performed_now": false,
+    "note": "Primary auditing was reported by the runner as recomputed during point execution. This receipt records now-performed file/hash/link integrity checks only."
+  },
+  "scientific_outputs": {
+    "valid_power_or_torque_claims": 0,
+    "reason": "No point converged; result.json/engineering outputs are absent. No numeric performance outputs are reported."
+  },
+  "limitation": "Safe resume with current checkpoints is blocked because the coordinator poll/cancel defect is in the registered runner source; changing that source would invalidate checkpoint producer bindings and the current implementation identity. Do not resume/restart unless an appropriately reviewed and rebound implementation identity is established.",
+  "next_action": "WAIT_FOR_NEW_EXPLICIT_EXECUTION_AUTHORIZATION_AFTER_COORDINATOR_FIX_AND_IDENTITY_REBIND",
+  "recorded_by": "Codex; receipt distinguishes execution-time audit claims from verification performed during administrative closeout.",
+  "performance": {
+    "worker_plan": "4 spawn processes; coordinator-only manifest writes",
+    "worker_completion_observed": "All four workers ran one full cycle before coordinator cancellation was persisted.",
+    "sum_process_cpu_seconds": 83.359375,
+    "process_cpu_seconds_divided_by_campaign_wall": "2.281 core-equivalents (diagnostic only; includes startup and not a sustained CPU utilization measurement)",
+    "sum_max_observed_worker_rss_bytes": 829616128,
+    "max_observed_single_worker_rss_bytes": 244011008,
+    "primary_audit_seconds": 45.06199999999808,
+    "serialization_seconds": 2.4990000000016153,
+    "checkpoint_seconds": 0.2820000000010623,
+    "cycle_seconds_sum_across_workers": 83.67199999999866,
+    "compressed_primary_bytes": 13967953,
+    "accepted_solver_steps": 4191,
+    "rejected_cfl_steps": 1297,
+    "v1_speedup_comparison": "NOT_VALID: no completed engineering point; one-cycle checkpointed work only, and historical v1 pilots use different implementation/artifact identity."
+  }
+}
