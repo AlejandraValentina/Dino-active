@@ -1,17 +1,40 @@
 {
-  "schema": "FULL_RPM_SWEEP_V1_IMPL2_CAMPAIGN_AUTHORIZATION_V1",
+  "schema": "FULL_RPM_SWEEP_V1_IMPL2_SUBSET_PILOT_AUTHORIZATION_V1",
   "implementation_version": "FULL_RPM_SWEEP_V1_IMPL2",
-  "authorized": false,
+  "authorization_type": "EXPLICIT_SUBSET_PILOT",
+  "authorized": true,
   "campaign_started": false,
+  "authorized_at_utc": "2026-10-13T13:28:11+00:00",
+  "authorized_by": "Explicit user instruction in DINO-ACTIVE — IMPL2 FIRST CONTROLLED CAMPAIGN",
+  "preregistration_path": "results/full-rpm-sweep-v1/implementation-v2-campaign-preregistration.json",
   "preregistration_sha256": "e26c0599325a9e6296291178ffd2e36457838052f1d9b59de7b6dc0f282d59e3",
-  "identity_path": "results/full-rpm-sweep-v1/implementation-v2-campaign-identity.json",
   "scope": {
+    "point_ids": [
+      "A_PRIME_MESH_0@3100RPM",
+      "A_PRIME_MESH_0@4000RPM",
+      "B_PRIME_MESH_0@3100RPM",
+      "B_PRIME_MESH_0@4000RPM"
+    ],
     "variants": [
       "A_PRIME_MESH_0",
       "B_PRIME_MESH_0"
     ],
-    "maximum_points": 30,
-    "rpm_points_per_variant": 15
+    "rpm_points_per_variant": [
+      3100,
+      4000
+    ],
+    "maximum_points": 4,
+    "global_budget_seconds": 3600,
+    "maximum_invocation_seconds": 3600,
+    "maximum_workers": 4,
+    "memory_budget_mib": 4096,
+    "worker_reservation_mib": 512
   },
-  "authorization_status": "OWNER_DECISION_REQUIRED"
+  "exclusions": [
+    "all other 26 IMPL2 points",
+    "all v1 campaign points",
+    "new configurations",
+    "any subsequent campaign or invocation beyond remaining pilot budget"
+  ],
+  "authorization_status": "AUTHORIZED_SUBSET_ONLY"
 }

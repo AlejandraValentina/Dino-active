@@ -277,6 +277,8 @@ def _point_performance_metrics(cycle_metrics: list[dict]) -> dict:
         "total_measured_cycle_seconds": sum(elapsed),
         "accepted_steps": sum(int(row.get("accepted_solver_steps", 0))
                                for row in cycle_metrics),
+        "process_cpu_seconds": sum(float(row.get("process_cpu_seconds", 0.0))
+                                   for row in cycle_metrics),
         "rejected_steps": sum(int(row.get("rejected_solver_steps", 0))
                                for row in cycle_metrics),
         "primary_compressed_bytes": sum(int(row.get("primary_compressed_bytes", 0))
@@ -286,6 +288,8 @@ def _point_performance_metrics(cycle_metrics: list[dict]) -> dict:
              if row.get("process_rss_bytes") is not None), default=None),
         "serialization_seconds": sum(float(row.get("primary_serialization_seconds", 0))
                                       for row in cycle_metrics),
+        "primary_audit_seconds": sum(float(row.get("primary_audit_seconds", 0))
+                                     for row in cycle_metrics),
         "checkpoint_seconds": sum(float(row.get("checkpoint_write_seconds", 0))
                                    for row in cycle_metrics),
     }
@@ -425,10 +429,22 @@ def _ensure_campaign_provenance(out: Path, prereg: dict,
     return receipt
 
 
-def _selected_points(prereg: dict, *, pilot: bool) -> list[tuple[dict, int]]:
+def _selected_points(prereg: dict, *, pilot: bool,
+                     point_ids: list[str] | None = None) -> list[tuple[dict, int]]:
+    all_points = [(variant, rpm) for variant in prereg["variants"]
+                  for rpm in rpm_points(prereg)]
+    if point_ids is not None:
+        if not point_ids or len(point_ids) != len(set(point_ids)):
+            raise ValueError("explicit point selection must be non-empty and unique")
+        by_id = {f"{variant['variant_id']}@{rpm}RPM": (variant, rpm)
+                 for variant, rpm in all_points}
+        if any(point_id not in by_id for point_id in point_ids):
+            raise ValueError("selected point is outside the preregistered grid")
+        requested = set(point_ids)
+        return [(variant, rpm) for variant, rpm in all_points
+                if f"{variant['variant_id']}@{rpm}RPM" in requested]
     if not pilot:
-        return [(variant, rpm) for variant in prereg["variants"]
-                for rpm in rpm_points(prereg)]
+        return all_points
     variants = {variant["variant_id"]: variant for variant in prereg["variants"]}
     required = ("A_PRIME_MESH_0", "B_PRIME_MESH_0")
     if not all(name in variants for name in required):
@@ -574,7 +590,9 @@ def _checkpoint_cycle_history(point_dir: Path, next_cycle: int) -> tuple[list[di
         primary = json.loads(gzip.decompress(primary_path.read_bytes()))
         if primary.get("cycle_index") != cycle:
             raise ValueError("checkpoint primary cycle sequence is inconsistent")
+        audit_started = time.monotonic()
         audit = audit_integrated_cycle_primary(primary)
+        audit_seconds = time.monotonic() - audit_started
         if audit.get("recomputed") is not True:
             raise ValueError("persisted primary failed replay audit")
         primary_sha = _sha256(_canonical_bytes(primary))
@@ -701,6 +719,7 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
     for cycle in range(first_cycle, prereg["horizon"]["max_complete_cycles_per_point"] + 1):
         rejected: list[dict] = []
         cycle_started = time.monotonic()
+        cycle_cpu_started = time.process_time()
         cycle_start_snapshot = engine.snapshot()
         detector_start_snapshot = detector.snapshot()
         try:
@@ -807,11 +826,13 @@ def _run_point(prereg: dict, prereg_sha: str, variant: dict, rpm: int,
             "primary_serialization_seconds": serialization_seconds,
             "primary_write_seconds": primary_write_seconds,
             "primary_compressed_bytes": primary_path.stat().st_size,
+            "primary_audit_seconds": audit_seconds,
             "detector_update_seconds": detector_seconds,
             "checkpoint_write_seconds": 0.0,
             "accepted_solver_steps": int(engine.accepted_steps),
             "rejected_solver_steps": len(rejected),
             "process_rss_bytes": _process_rss_bytes(),
+            "process_cpu_seconds": time.process_time() - cycle_cpu_started,
             "detector_classification": detector.classification,
             "detector_update": update,
         }
@@ -967,27 +988,31 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
                      budget_seconds: int = MAX_INVOCATION_SECONDS,
                      workers: int = 1,
                      memory_budget_mib: int = 4096,
-                     implementation: str = "v1") -> dict:
+                     implementation: str = "v1",
+                     selected_point_ids: list[str] | None = None) -> dict:
     """Run the preregistered campaign, optionally in two-point pilot mode."""
     started = time.monotonic()
     if implementation not in {"v1", "impl2"}:
         raise ValueError("implementation must be explicitly v1 or impl2")
     if implementation == "impl2":
         selected_prereg_path = ROOT / CAMPAIGN_PREREGISTRATION
+        authorization_path = ROOT / "results/full-rpm-sweep-v1/implementation-v2-campaign-authorization.json"
         preflight = audit_impl2_campaign_preflight(ROOT)
         if preflight.get("preflight_status") != "PASS":
             raise RuntimeError("FULL_RPM_SWEEP_V1_IMPL2 preflight failed closed")
-        auth_path = ROOT / "results/full-rpm-sweep-v1/implementation-v2-campaign-authorization.json"
-        if not auth_path.is_file() or _read_json(auth_path).get("authorized") is not True:
+        if not authorization_path.is_file() or _read_json(authorization_path).get("authorized") is not True:
             raise RuntimeError("FULL_RPM_SWEEP_V1_IMPL2 campaign requires explicit authorization")
-        authorization = _read_json(auth_path)
+        authorization = _read_json(authorization_path)
         if authorization.get("preregistration_sha256") != preflight.get("preregistration_sha256") or authorization.get("implementation_version") != IMPLEMENTATION_VERSION:
             raise RuntimeError("FULL_RPM_SWEEP_V1_IMPL2 authorization binding mismatch")
-        expected_variants = [item["variant_id"] for item in _read_json(selected_prereg_path)["variants"]]
-        if (authorization.get("scope", {}).get("variants") != expected_variants or
-                authorization.get("scope", {}).get("maximum_points") != 30 or
-                authorization.get("scope", {}).get("rpm_points_per_variant") != 15):
-            raise RuntimeError("FULL_RPM_SWEEP_V1_IMPL2 authorization scope mismatch")
+        authorized_ids = authorization.get("scope", {}).get("point_ids")
+        if (authorization.get("authorization_type") != "EXPLICIT_SUBSET_PILOT" or
+                not isinstance(authorized_ids, list) or selected_point_ids is None or
+                set(selected_point_ids) != set(authorized_ids) or
+                len(selected_point_ids) != authorization.get("scope", {}).get("maximum_points") or
+                len(selected_point_ids) > 4 or
+                authorization.get("scope", {}).get("global_budget_seconds") != 3600):
+            raise RuntimeError("FULL_RPM_SWEEP_V1_IMPL2 authorized subset scope mismatch")
         status = _read_json(PROGRAM_STATUS)
         readiness = status.get("full_rpm_sweep_impl2_campaign_readiness", {})
         if readiness.get("classification") != "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION":
@@ -995,6 +1020,7 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
     else:
         _require_readiness_pass()
         selected_prereg_path = ROOT / PREREGISTRATION
+        authorization_path = ROOT / "results/full-rpm-sweep-v1/campaign-authorization.json"
     if type(budget_seconds) is not int or not 1 <= budget_seconds <= MAX_INVOCATION_SECONDS:
         raise ValueError("budget_seconds must be an integer in [1, 3600]")
     if type(memory_budget_mib) is not int or memory_budget_mib < 512:
@@ -1023,19 +1049,45 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
         if (prior_manifest.get("campaign_id") != campaign_id or
                 prior_manifest.get("pre-registration_sha256") != prereg_sha):
             raise ValueError("campaign resume manifest does not match preregistration")
-    selected_authorization_path = (ROOT / "results/full-rpm-sweep-v1/implementation-v2-campaign-authorization.json"
-                                   if implementation == "impl2" else
-                                   ROOT / "results/full-rpm-sweep-v1/campaign-authorization.json")
-    _ensure_campaign_provenance(out, prereg, prereg_sha, selected_authorization_path)
-    selected_points = _selected_points(prereg, pilot=pilot)
+    if implementation == "impl2":
+        auth_sha = _sha256(authorization_path.read_bytes().replace(b"\r\n", b"\n"))
+        prior_manifest = _read_json(output_manifest) if output_manifest.exists() else {}
+        if output_manifest.exists() and prior_manifest.get("authorization_sha256") != auth_sha:
+            raise ValueError("campaign manifest authorization does not match active subset authorization")
+        prior_elapsed = sum(float(row.get("duration_seconds", 0.0))
+                            for row in prior_manifest.get("invocations", [])
+                            if row.get("authorization_sha256") == auth_sha)
+        global_budget = int(authorization["scope"]["global_budget_seconds"])
+        remaining_global = global_budget - prior_elapsed
+        if remaining_global <= 0:
+            raise RuntimeError("authorized pilot global wall-clock budget is exhausted")
+        # Keep explicit headroom for worker checkpoint flush, process shutdown
+        # and coordinator manifest persistence inside the accumulated wall cap.
+        execution_headroom_seconds = min(120, max(1, int(remaining_global) // 20))
+        bounded_execution_seconds = int(remaining_global) - execution_headroom_seconds
+        if bounded_execution_seconds <= 0:
+            raise RuntimeError("authorized pilot global wall-clock budget has no safe execution headroom")
+        budget_seconds = min(budget_seconds, bounded_execution_seconds)
+    else:
+        auth_sha = None
+        prior_elapsed = 0.0
+        global_budget = None
+    _ensure_campaign_provenance(out, prereg, prereg_sha, authorization_path)
+    selected_points = _selected_points(prereg, pilot=pilot,
+                                      point_ids=selected_point_ids)
 
     invocation = {
         "id": f"{time.time_ns()}-{('PILOT' if pilot else 'FULL')}" ,
         "started_at_unix": time.time(),
-        "phase": "PILOT" if pilot else "FULL_CAMPAIGN",
+        "phase": ("CONTROLLED_SUBSET_PILOT" if implementation == "impl2" else
+                  "PILOT" if pilot else "FULL_CAMPAIGN"),
         "requested_points": [f"{variant['variant_id']}@{rpm}RPM"
                              for variant, rpm in selected_points],
         "results": [],
+        "authorization_sha256": auth_sha,
+        "authorized_global_budget_seconds": global_budget,
+        "prior_budget_consumed_seconds": prior_elapsed,
+        "execution_headroom_seconds": execution_headroom_seconds if implementation == "impl2" else 0,
         "parallelism": {"requested_workers": workers,
                         "mode": "SEQUENTIAL" if workers == 1 else "SPAWN_PROCESS_POOL"},
     }
@@ -1080,6 +1132,10 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
             "started_at_unix": invocation["started_at_unix"],
             "duration_seconds": time.monotonic() - started,
             "requested_points": invocation["requested_points"],
+            "authorization_sha256": invocation["authorization_sha256"],
+            "authorized_global_budget_seconds": invocation["authorized_global_budget_seconds"],
+            "prior_budget_consumed_seconds": invocation["prior_budget_consumed_seconds"],
+            "execution_headroom_seconds": invocation["execution_headroom_seconds"],
             "results": invocation["results"],
             "parallelism": invocation["parallelism"],
         }
@@ -1100,6 +1156,13 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
             "schema": "FULL_RPM_SWEEP_V1_CAMPAIGN_SUMMARY",
             "campaign_id": campaign_id,
             "pre-registration_sha256": prereg_sha,
+            "authorization_sha256": auth_sha,
+            "authorized_global_budget_seconds": global_budget,
+            "global_budget_consumed_seconds": prior_elapsed + time.monotonic() - started,
+            "implementation_version": IMPLEMENTATION_VERSION,
+            "evidence_pipeline": "CONVENTIONAL_FULL_AUDIT",
+            "fast_recipe_enabled": False,
+            "campaign_execution_scope": invocation["requested_points"],
             "preflight_status": "PASS",
             "campaigns_started": 1 if campaign_started else 0,
             "campaign_status": campaign_status,
@@ -1297,6 +1360,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--pilot", action="store_true",
                         help="run only preregistered A4000 and B4000 as the first phase of this campaign")
+    parser.add_argument("--point", action="append", dest="point_ids",
+                        help="run one authorized preregistered point ID; repeat for an explicitly authorized subset")
     parser.add_argument("--budget-seconds", type=int, default=MAX_INVOCATION_SECONDS)
     parser.add_argument("--workers", type=int, default=1,
                         help="IMPL2 point workers; uses Windows spawn when greater than one")
@@ -1311,6 +1376,10 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if report["preflight_status"] == "PASS" else 1
     if args.implementation is None:
         parser.error("--execute requires explicit --implementation v1 or --implementation impl2")
+    if args.implementation == "impl2" and (not args.point_ids or args.pilot):
+        parser.error("IMPL2 execution requires exact --point selections and cannot use the legacy --pilot shortcut")
+    if args.implementation == "v1" and args.point_ids:
+        parser.error("--point subset selection is available only for an explicitly authorized IMPL2 campaign")
     output_root = args.output_root
     if output_root is None:
         artifact_root = os.environ.get("DINO_ARTIFACT_ROOT")
@@ -1326,7 +1395,8 @@ def main(argv: list[str] | None = None) -> int:
                               budget_seconds=args.budget_seconds,
                               workers=args.workers,
                               memory_budget_mib=args.memory_budget_mib,
-                              implementation=args.implementation)
+                              implementation=args.implementation,
+                              selected_point_ids=args.point_ids)
     print(json.dumps({"campaign_status": result["campaign_status"],
                       "points": len(result["completed_or_checkpointed_points"]),
                       "campaigns_started": result["campaigns_started"]}, sort_keys=True))

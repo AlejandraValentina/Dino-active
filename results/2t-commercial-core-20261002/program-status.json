@@ -3583,6 +3583,23 @@
         "tests/test_full_rpm_sweep_v1_impl2_checkpoint_d1d2.py"
       ],
       "next_action": "Await a separate campaign decision defining explicit authorization and global compute budget; no points started."
+    },
+    {
+      "id": "FRPM-IMPL2-FIRST-CONTROLLED-PILOT",
+      "description": "Execute exactly the four user-authorized IMPL2 pilot points under the subset-bound 3600-second wall budget; record results, checkpoints, integrity, resources and stop without scheduling any remaining RPM.",
+      "dependencies": [],
+      "state": "IN_PROGRESS",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/full_rpm_sweep_v1_campaign.py",
+        "motorsim/full_rpm_sweep_v1_impl2.py",
+        "results/full-rpm-sweep-v1/implementation-v2-campaign-authorization.json",
+        "results/full-rpm-sweep-v1/implementation-v2-campaign-readiness-receipt.json",
+        "results/full-rpm-sweep-v1/implementation-v2-campaign-pilot-receipt.json",
+        "external DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1-impl2 four authorized points"
+      ]
     }
   ],
   "audit_remediation_mode": false,
@@ -4606,7 +4623,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "PARTIAL_RESOURCE_BUDGET",
-  "updated_at": "2026-10-13T13:14:24+00:00",
+  "updated_at": "2026-10-13T13:28:11+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -4621,5 +4638,23 @@
     "note": "Technical readiness only; explicit authorization and global budget remain required. Historical v1 remains PARTIAL.",
     "historical_v1_unstarted_points": 28,
     "historical_v1_campaign_status": "PARTIAL_RESOURCE_BUDGET"
+  },
+  "full_rpm_sweep_impl2_campaign_authorization": {
+    "authorization": "EXPLICIT_SUBSET_PILOT",
+    "authorized": true,
+    "preregistration_sha256": "e26c0599325a9e6296291178ffd2e36457838052f1d9b59de7b6dc0f282d59e3",
+    "point_ids": [
+      "A_PRIME_MESH_0@3100RPM",
+      "A_PRIME_MESH_0@4000RPM",
+      "B_PRIME_MESH_0@3100RPM",
+      "B_PRIME_MESH_0@4000RPM"
+    ],
+    "global_budget_seconds": 3600,
+    "budget_consumed_seconds": 0,
+    "workers_max": 4,
+    "memory_budget_mib": 4096,
+    "worker_reservation_mib": 512,
+    "campaign_started": false,
+    "receipt": "results/full-rpm-sweep-v1/implementation-v2-campaign-authorization.json"
   }
 }

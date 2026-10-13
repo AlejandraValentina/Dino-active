@@ -50,11 +50,26 @@ def _diagnostic_checkpoint_worker(root, point_id, steps, stop_after=None,
     return result
 
 
-def test_impl2_execution_selection_requires_own_authorization(tmp_path: Path) -> None:
-    with pytest.raises(RuntimeError, match="requires explicit authorization"):
+def test_impl2_execution_requires_exact_authorized_subset(tmp_path: Path) -> None:
+    with pytest.raises(RuntimeError, match="authorized subset scope mismatch"):
         campaign.execute_campaign(output_root=tmp_path / "full-rpm-sweep-v1-impl2",
-                                  implementation="impl2")
+                                  implementation="impl2", selected_point_ids=["A_PRIME_MESH_0@4000RPM"])
     assert not (tmp_path / "full-rpm-sweep-v1-impl2").exists()
+
+
+def test_explicit_point_selection_is_subset_only() -> None:
+    from motorsim.full_rpm_sweep_v1_impl2 import CAMPAIGN_PREREGISTRATION
+
+    prereg = campaign._read_json(campaign.ROOT / CAMPAIGN_PREREGISTRATION)
+    selected = ["A_PRIME_MESH_0@3100RPM", "A_PRIME_MESH_0@4000RPM",
+                "B_PRIME_MESH_0@3100RPM", "B_PRIME_MESH_0@4000RPM"]
+    actual = campaign._selected_points(prereg, pilot=False, point_ids=selected)
+    assert [(variant["variant_id"], rpm) for variant, rpm in actual] == [
+        ("A_PRIME_MESH_0", 3100), ("A_PRIME_MESH_0", 4000),
+        ("B_PRIME_MESH_0", 3100), ("B_PRIME_MESH_0", 4000)]
+    with pytest.raises(ValueError, match="outside the preregistered grid"):
+        campaign._selected_points(prereg, pilot=False,
+                                  point_ids=selected + ["A_PRIME_MESH_0@3200RPM"])
 
 
 def test_impl2_checkpoint_identity_binding_is_not_v1_reusable(tmp_path: Path) -> None:

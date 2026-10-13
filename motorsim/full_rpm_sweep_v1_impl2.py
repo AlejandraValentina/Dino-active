@@ -46,8 +46,8 @@ def audit_impl2_campaign_preflight(repository_root: str | Path, *,
         "engine-physics-v1" / "full-rpm-sweep-v1-impl2")
     checks = {
         "explicit_impl2_identity": identity.get("implementation_version") == "FULL_RPM_SWEEP_V1_IMPL2",
-        "campaign_not_authorized_or_started": identity.get("campaign_authorized") is False and
-            identity.get("campaign_started") is False and prereg.get("campaigns_started") == 0,
+        "preregistration_not_rewritten_for_authorization": prereg.get("campaign_authorized") is False and
+            prereg.get("campaigns_started") == 0,
         "preregistration_sha256": identity.get("preregistration_sha256") == prereg_hash,
         "source_hashes_exact": actual_source == identity.get("source_hashes"),
         "v1_isolation": identity.get("v1_artifacts_reusable") is False and
@@ -68,17 +68,39 @@ def audit_impl2_campaign_preflight(repository_root: str | Path, *,
             prereg.get("budget", {}).get("checkpoint_after_each_accepted_cycle") is True and
             prereg.get("budget", {}).get("resume_requires_exact_configuration_solver_detector_hashes") is True,
     }
+    auth_path = root / "results/full-rpm-sweep-v1/implementation-v2-campaign-authorization.json"
+    authorization = _json(auth_path) if auth_path.is_file() else {}
+    authorized_ids = authorization.get("scope", {}).get("point_ids", [])
+    registered_ids = {f"{variant['variant_id']}@{rpm}RPM"
+                      for variant in variants for rpm in rpm_points(prereg)}
+    checks["authorization_bound_to_preregistration"] = (
+        authorization.get("implementation_version") == identity.get("implementation_version") and
+        authorization.get("preregistration_sha256") == prereg_hash and
+        type(authorization.get("authorized")) is bool)
+    if authorization.get("authorization_type") == "EXPLICIT_SUBSET_PILOT":
+        checks["authorization_exact_subset_scope"] = (
+            isinstance(authorized_ids, list) and len(authorized_ids) == 4 and
+            len(set(authorized_ids)) == 4 and set(authorized_ids) <= registered_ids and
+            authorization.get("scope", {}).get("maximum_points") == 4 and
+            authorization.get("scope", {}).get("global_budget_seconds") == 3600)
+    else:
+        checks["authorization_exact_subset_scope"] = authorization.get("authorized") is False
+    campaign_manifest = Path(selected_root) / "campaign.json"
+    campaign_started = False
+    if campaign_manifest.is_file():
+        observed_campaign = _json(campaign_manifest)
+        campaign_started = int(observed_campaign.get("campaigns_started", 0)) > 0
     checks["underlying_scientific_preflight"] = report.get("preflight_status") == "PASS"
     report.update({"schema": "FULL_RPM_SWEEP_V1_IMPL2_CAMPAIGN_PREFLIGHT_V1",
                    "implementation_version": "FULL_RPM_SWEEP_V1_IMPL2",
                    "implementation_identity_sha256": _sha256(identity_path),
                    "preregistration_sha256": prereg_hash,
                    "artifact_root": selected_root,
-                   "campaign_started": False,
-                   "campaign_authorized": False,
+                   "campaign_started": campaign_started,
+                   "campaign_authorized": authorization.get("authorized") is True,
                    "checks": checks,
                    "preflight_status": "PASS" if all(checks.values()) else "FAIL_CLOSED",
-                   "campaigns_started": 0,
+                   "campaigns_started": int(campaign_started),
                    "solver_steps_started": 0})
     return report
 
