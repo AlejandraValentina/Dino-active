@@ -22,12 +22,12 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: ENGINE_CONFIGURATION_V1
-change/spec:       openspec/changes/engine-configuration-v1/
-                   (specs/engine-configuration-v1/spec.md es la autoridad de requisitos)
-completion:        backend versionado para configuraciones 2T soportadas por IntegratedEngine2T,
-                   variantes de escape, proyectos y comparación sintética; sin frontend Windows
-                   ni campañas RPM. FULL_RPM_SWEEP_V1 permanece PARTIAL/REVIEW.
+CURRENT_OBJECTIVE: DINO_DESKTOP_V1
+change/spec:       openspec/changes/dino-desktop-v1/
+                   (specs/dino-desktop-v1/spec.md es la autoridad de requisitos)
+completion:        aplicación Windows Qt integrada con ENGINE_CONFIGURATION_V1,
+                   visualización de resultados y panel de ejecución fail-closed;
+                   no iniciar campañas, modificar solver ni reabrir resultados históricos.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

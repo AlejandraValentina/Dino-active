@@ -3773,6 +3773,147 @@
         "python scripts/agents/program_status.py check: CHECK OK",
         "python -m pytest -q tests/test_engine_configuration_v1.py tests/test_integrated_2t.py: 80 passed"
       ]
+    },
+    {
+      "id": "DESKTOP-SHELL",
+      "description": "Implement native Qt desktop shell, navigation, preferences and async/error service boundary.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "DINO_DESKTOP_V1",
+      "owner_role": "architecture",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/app.py",
+        "motorsim/dino_desktop.py",
+        "tests/test_dino_desktop.py"
+      ]
+    },
+    {
+      "id": "DESKTOP-ENGINE-EDITOR",
+      "description": "Visual supported-engine editor integrated with ENGINE_CONFIGURATION_V1 validation.",
+      "dependencies": [
+        "DESKTOP-SHELL"
+      ],
+      "state": "WAITING",
+      "objective": "DINO_DESKTOP_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/engine_page.py",
+        "tests/test_dino_desktop.py"
+      ]
+    },
+    {
+      "id": "DESKTOP-EXHAUST-EDITOR",
+      "description": "Visual exhaust section editor/profile and variant diff using backend geometry.",
+      "dependencies": [
+        "DESKTOP-ENGINE-EDITOR"
+      ],
+      "state": "WAITING",
+      "objective": "DINO_DESKTOP_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/exhaust_page.py",
+        "tests/test_dino_desktop.py"
+      ]
+    },
+    {
+      "id": "DESKTOP-PROJECT-LIFECYCLE",
+      "description": "New/open/save/save-as/import/export, variant lifecycle and dirty state.",
+      "dependencies": [
+        "DESKTOP-SHELL"
+      ],
+      "state": "WAITING",
+      "objective": "DINO_DESKTOP_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/project_controller.py",
+        "tests/test_dino_desktop.py"
+      ]
+    },
+    {
+      "id": "DESKTOP-RESULTS-VIEW",
+      "description": "Actual IMPL2 import, interactive plots, point detail and export.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "DINO_DESKTOP_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/results_page.py",
+        "tests/test_dino_desktop.py"
+      ]
+    },
+    {
+      "id": "DESKTOP-EXECUTION-GUARD",
+      "description": "Fail-closed authorization and preregistration status/request panel; no campaign execution.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "DINO_DESKTOP_V1",
+      "owner_role": "contract",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/execution_page.py",
+        "tests/test_dino_desktop.py"
+      ]
+    },
+    {
+      "id": "DESKTOP-WINDOWS-DISTRIBUTION",
+      "description": "Reproducible app launch and Windows package entry.",
+      "dependencies": [
+        "DESKTOP-SHELL"
+      ],
+      "state": "WAITING",
+      "objective": "DINO_DESKTOP_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "packaging/dino_desktop_entry.py",
+        "packaging/build_windows.py",
+        "packaging/MotorSim.spec"
+      ]
+    },
+    {
+      "id": "DESKTOP-UI-INTEGRATION-TESTS",
+      "description": "End-to-end Qt widget/service tests, documentation, OpenSpec and status verification.",
+      "dependencies": [
+        "DESKTOP-ENGINE-EDITOR",
+        "DESKTOP-EXHAUST-EDITOR",
+        "DESKTOP-PROJECT-LIFECYCLE",
+        "DESKTOP-RESULTS-VIEW",
+        "DESKTOP-EXECUTION-GUARD",
+        "DESKTOP-WINDOWS-DISTRIBUTION"
+      ],
+      "state": "WAITING",
+      "objective": "DINO_DESKTOP_V1",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "tests/test_dino_desktop.py",
+        "docs/dino_desktop_v1.md"
+      ]
+    },
+    {
+      "id": "DINO-DESKTOP-OWNER-TRANSITION",
+      "description": "Register the explicit owner authorization and transition objectives while preserving ENGINE_CONFIGURATION_V1 PASS and FULL_RPM_SWEEP_V1 PARTIAL/REVIEW.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_DESKTOP_V1",
+      "owner_role": "orchestrator",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/dino-desktop-v1/owner-authorization.json",
+        "results/2t-commercial-core-20261002/program-status.json",
+        "AGENTS.md",
+        "openspec/changes/dino-desktop-v1/"
+      ],
+      "evidence": [
+        "results/dino-desktop-v1/owner-authorization.json",
+        "openspec/changes/dino-desktop-v1/specs/dino-desktop-v1/spec.md"
+      ],
+      "classification": "OWNER_AUTHORIZED_OBJECTIVE_TRANSITION"
     }
   ],
   "audit_remediation_mode": false,
@@ -3973,21 +4114,22 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "ENGINE_CONFIGURATION_V1",
-    "change": "openspec/changes/engine-configuration-v1",
-    "spec": "openspec/changes/engine-configuration-v1/specs/engine-configuration-v1/spec.md",
-    "completion_criterion": "Deliver a validated versioned IntegratedEngine2T configuration backend, supported exhaust variants, project persistence, synthetic IMPL2 result comparison, and documented limits; run required tests and OpenSpec strict. No GUI or RPM campaign.",
+    "id": "DINO_DESKTOP_V1",
+    "change": "openspec/changes/dino-desktop-v1",
+    "spec": "openspec/changes/dino-desktop-v1/specs/dino-desktop-v1/spec.md",
+    "completion_criterion": "Deliver tested Windows Qt application integrating engine editor, exhaust variants, project lifecycle, IMPL2 result visualization and fail-closed execution panel; package/launch path documented. No campaigns.",
     "gate_tasks": [
-      "ECFG-INVALID-POINT-FORENSICS",
-      "ECFG-CONFIG-MODEL",
-      "ECFG-ESCAPE-VARIANTS",
-      "ECFG-PROJECT-STORE",
-      "ECFG-RESULT-COMPARISON",
-      "ECFG-POWERVALE-PROPOSAL",
-      "ECFG-TESTS-DOCS"
+      "DESKTOP-SHELL",
+      "DESKTOP-ENGINE-EDITOR",
+      "DESKTOP-EXHAUST-EDITOR",
+      "DESKTOP-PROJECT-LIFECYCLE",
+      "DESKTOP-RESULTS-VIEW",
+      "DESKTOP-EXECUTION-GUARD",
+      "DESKTOP-WINDOWS-DISTRIBUTION",
+      "DESKTOP-UI-INTEGRATION-TESTS"
     ],
     "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
-    "set_by": "owner authorization 2026-10-14T10:29:30+00:00; prior FULL_RPM_SWEEP_V1 retained PARTIAL/REVIEW"
+    "set_by": "explicit owner authorization communicated 2026-10-14; receipt results/dino-desktop-v1/owner-authorization.json"
   },
   "objectives": [
     {
@@ -4104,10 +4246,10 @@
     },
     {
       "id": "ENGINE_CONFIGURATION_V1",
-      "state": "ACTIVE",
+      "state": "PASS",
       "owner_approved": true,
-      "classification": "ENGINE_CONFIGURATION_V1_IN_PROGRESS",
-      "summary": "Owner-authorized backend for editable IntegratedEngine2T-supported 2T configurations, exhaust variants, project persistence and synthetic curve comparison; no GUI or campaign execution. The previous FULL_RPM_SWEEP_V1 gate remains PARTIAL/REVIEW.",
+      "classification": "ENGINE_CONFIGURATION_V1_READY",
+      "summary": "Owner-authorized backend objective completed and gate PASS; retained as immutable completed objective while DINO_DESKTOP_V1 proceeds.",
       "change": "openspec/changes/engine-configuration-v1",
       "spec": "openspec/changes/engine-configuration-v1/specs/engine-configuration-v1/spec.md",
       "set_by": "explicit owner authorization in results/engine-configuration-v1/owner-authorization.json",
@@ -4120,6 +4262,44 @@
         "ECFG-RESULT-COMPARISON",
         "ECFG-POWERVALE-PROPOSAL",
         "ECFG-TESTS-DOCS"
+      ],
+      "gate_status_archive": {
+        "objective": "ENGINE_CONFIGURATION_V1",
+        "state": "PASS",
+        "classification": "ENGINE_CONFIGURATION_V1_READY",
+        "evidence": [
+          "ENGINE_CONFIGURATION_V1 backend, tests, docs, proposal; OpenSpec strict and program-status check passed"
+        ],
+        "gate_tasks_total": 7,
+        "gate_tasks_done": 7,
+        "gate_task_states": {
+          "DONE": 7
+        },
+        "remaining": [],
+        "updated_at": "2026-10-14T10:45:05+00:00"
+      }
+    },
+    {
+      "id": "DINO_DESKTOP_V1",
+      "state": "ACTIVE",
+      "owner_approved": true,
+      "classification": "DINO_DESKTOP_V1_IN_PROGRESS",
+      "summary": "Owner-authorized Windows Qt desktop app over ENGINE_CONFIGURATION_V1; no new campaigns or scientific changes.",
+      "change": "openspec/changes/dino-desktop-v1",
+      "spec": "openspec/changes/dino-desktop-v1/specs/dino-desktop-v1/spec.md",
+      "set_by": "explicit owner authorization communicated 2026-10-14; receipt results/dino-desktop-v1/owner-authorization.json",
+      "authorization": "results/dino-desktop-v1/owner-authorization.json",
+      "completion_criterion": "Deliver tested Windows Qt application integrating engine editor, exhaust variants, project lifecycle, IMPL2 result visualization and fail-closed execution panel; package/launch path documented. No campaigns.",
+      "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
+      "gate_tasks": [
+        "DESKTOP-SHELL",
+        "DESKTOP-ENGINE-EDITOR",
+        "DESKTOP-EXHAUST-EDITOR",
+        "DESKTOP-PROJECT-LIFECYCLE",
+        "DESKTOP-RESULTS-VIEW",
+        "DESKTOP-EXECUTION-GUARD",
+        "DESKTOP-WINDOWS-DISTRIBUTION",
+        "DESKTOP-UI-INTEGRATION-TESTS"
       ]
     }
   ],
@@ -4861,6 +5041,12 @@
       "task": "ECFG-TESTS-DOCS",
       "kind": "task",
       "summary": "Documented supported capabilities/physical limits and future Windows service API; strict OpenSpec passed, status check clean, and 80 focused plus integrated regression tests passed."
+    },
+    {
+      "at": "2026-10-14T10:49:56+00:00",
+      "task": "DINO_DESKTOP_V1",
+      "kind": "authorization",
+      "summary": "Owner authorized DINO_DESKTOP_V1. Transitioned current objective with prior ENGINE_CONFIGURATION_V1 PASS archived; FULL_RPM_SWEEP_V1 remains PARTIAL/REVIEW with 27 PERIOD_1 and 3 NUMERICAL_INVALID. No campaign authorized."
     }
   ],
   "legacy_gate_status": {
@@ -4875,19 +5061,30 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "ENGINE_CONFIGURATION_V1",
-    "state": "PASS",
-    "classification": "ENGINE_CONFIGURATION_V1_READY",
+    "objective": "DINO_DESKTOP_V1",
+    "state": "OPEN",
+    "classification": "DINO_DESKTOP_V1_IN_PROGRESS",
     "evidence": [
-      "ENGINE_CONFIGURATION_V1 backend, tests, docs, proposal; OpenSpec strict and program-status check passed"
+      "results/dino-desktop-v1/owner-authorization.json",
+      "openspec/changes/dino-desktop-v1/specs/dino-desktop-v1/spec.md"
     ],
-    "gate_tasks_total": 7,
-    "gate_tasks_done": 7,
+    "gate_tasks_total": 8,
+    "gate_tasks_done": 0,
     "gate_task_states": {
-      "DONE": 7
+      "READY": 3,
+      "WAITING": 5
     },
-    "remaining": [],
-    "updated_at": "2026-10-14T10:45:05+00:00"
+    "remaining": [
+      "DESKTOP-SHELL",
+      "DESKTOP-ENGINE-EDITOR",
+      "DESKTOP-EXHAUST-EDITOR",
+      "DESKTOP-PROJECT-LIFECYCLE",
+      "DESKTOP-RESULTS-VIEW",
+      "DESKTOP-EXECUTION-GUARD",
+      "DESKTOP-WINDOWS-DISTRIBUTION",
+      "DESKTOP-UI-INTEGRATION-TESTS"
+    ],
+    "updated_at": "2026-10-14T10:49:56+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -5031,5 +5228,20 @@
     "progress_receipt": "results/full-rpm-sweep-v1/impl2-extension-v6-01-progress-receipt.json",
     "final_receipt": "results/full-rpm-sweep-v1/impl2-extension-final-receipt.json",
     "aggregate_report": "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-full-rpm-sweep-30-points.json"
+  },
+  "gate_status_archive_before_dino_desktop": {
+    "objective": "ENGINE_CONFIGURATION_V1",
+    "state": "PASS",
+    "classification": "ENGINE_CONFIGURATION_V1_READY",
+    "evidence": [
+      "ENGINE_CONFIGURATION_V1 backend, tests, docs, proposal; OpenSpec strict and program-status check passed"
+    ],
+    "gate_tasks_total": 7,
+    "gate_tasks_done": 7,
+    "gate_task_states": {
+      "DONE": 7
+    },
+    "remaining": [],
+    "updated_at": "2026-10-14T10:45:05+00:00"
   }
 }

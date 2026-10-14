@@ -1,0 +1,26 @@
+{
+  "schema": "DINO_DESKTOP_V1_OWNER_AUTHORIZATION_RECEIPT",
+  "objective": "DINO_DESKTOP_V1",
+  "authorized_by": "owner instruction communicated in current conversation",
+  "source_attachment_sha256": "e3d641ec05b2a4b73afd1d526b2efec6a2c79a7514f6da887045868d5e917970",
+  "reference_head": "8f3255614adfc6408ef7eda7f4b00e08171898d8",
+  "scope": [
+    "Windows desktop interface",
+    "ENGINE_CONFIGURATION_V1 integration",
+    "result visualization",
+    "controlled presentation of existing execution supervisor"
+  ],
+  "explicit_exclusions": [
+    "new scientific campaigns",
+    "solver or hard-gate changes",
+    "historical R2 or result modifications",
+    "experimental calibration"
+  ],
+  "preserved_states": {
+    "ENGINE_CONFIGURATION_V1": "PASS",
+    "ENGINE_PHYSICS_V1_R2": "PASS",
+    "FULL_RPM_SWEEP_V1": "PARTIAL_REVIEW; 27 PERIOD_1; 3 NUMERICAL_INVALID",
+    "FAST_RECIPE_V1": "PARTIAL_EXPERIMENTAL"
+  },
+  "campaigns_started_by_this_authorization": 0
+}
