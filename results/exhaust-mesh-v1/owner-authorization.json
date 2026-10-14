@@ -1,0 +1,24 @@
+{
+  "schema": "DINO_OWNER_AUTHORIZATION_V1",
+  "objective": "EXHAUST_MESH_V1",
+  "authorized": true,
+  "source": "user-provided explicit authorization in pasted attachment",
+  "source_sha256": "6f53d22430be5f8d89d13e77bf5161e26d71d22307588b070b5c00a87f9a3bc5",
+  "reference_head": "74aaa9a019a171008f9870745523a427eedfe078",
+  "recorded_at": "2026-10-14",
+  "scope": [
+    "versioned axial multi-cell exhaust mesh adapter (1/2/4 cells per geometric section)",
+    "engine/configuration/Desktop/exploratory-project integration",
+    "scientific tests and conservation/replay/checkpoint verification",
+    "bounded A/B \u00d7 1/2/4 one-cycle diagnostics, aggregate wall budget <=1800 seconds"
+  ],
+  "prohibitions": [
+    "no complete RPM campaign",
+    "no KT100",
+    "no experimental validation claim",
+    "do not alter historical DINO_DESIGN_VALIDATION_V1, R2, IMPL2, or campaign artifacts",
+    "preserve local Ostacky changes",
+    "no push"
+  ],
+  "budget_seconds_aggregate": 1800
+}

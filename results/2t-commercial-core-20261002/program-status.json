@@ -4354,6 +4354,144 @@
       ],
       "next_action": null,
       "classification": "DINO_DESIGN_VALIDATION_V1_DOCUMENTED_PARTIAL_LIMITATION"
+    },
+    {
+      "id": "EXM-FORENSICS",
+      "description": "Inspect current finite-volume geometry, fluxes, area source, boundary coupling, CFL and state mapping; record governing equations and extension risks.",
+      "dependencies": [],
+      "state": "IN_PROGRESS",
+      "objective": "EXHAUST_MESH_V1",
+      "owner_role": "orchestrator",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/gas1d/mesh.py",
+        "motorsim/integrated_2t.py",
+        "motorsim/engine_variants.py",
+        "results/exhaust-mesh-v1/forensics.json"
+      ],
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": null
+    },
+    {
+      "id": "EXM-ADAPTER",
+      "description": "Implement explicit versioned per-section 1/2/4 discretization with conservative state remapping and geometry identity.",
+      "dependencies": [
+        "EXM-FORENSICS"
+      ],
+      "state": "WAITING",
+      "objective": "EXHAUST_MESH_V1",
+      "owner_role": "orchestrator",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/exhaust_mesh_v1.py",
+        "tests/test_exhaust_mesh_v1.py"
+      ],
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": null
+    },
+    {
+      "id": "EXM-SOLVER-VERIFICATION",
+      "description": "Verify variable-area source consistency, geometric conservation, wave/CFL behavior and numerical conservation with targeted tests.",
+      "dependencies": [
+        "EXM-ADAPTER"
+      ],
+      "state": "WAITING",
+      "objective": "EXHAUST_MESH_V1",
+      "owner_role": "orchestrator",
+      "evidence_level": "L2",
+      "write_scope": [
+        "tests/test_exhaust_mesh_v1_solver.py",
+        "motorsim/integrated_2t.py"
+      ],
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": null
+    },
+    {
+      "id": "EXM-DESKTOP-INTEGRATION",
+      "description": "Integrate per-section resolution into engine configuration, Desktop designer, project persistence and mesh visualization.",
+      "dependencies": [
+        "EXM-ADAPTER"
+      ],
+      "state": "WAITING",
+      "objective": "EXHAUST_MESH_V1",
+      "owner_role": "orchestrator",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/engine_configuration.py",
+        "motorsim/desktop/",
+        "tests/test_dino_desktop.py"
+      ],
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": null
+    },
+    {
+      "id": "EXM-IDENTITY-CHECKPOINT",
+      "description": "Bind adapter/discrete geometry/configuration into new identity and test repeatability, checkpoint/restart isolation and fail-closed mismatch handling.",
+      "dependencies": [
+        "EXM-ADAPTER",
+        "EXM-DESKTOP-INTEGRATION"
+      ],
+      "state": "WAITING",
+      "objective": "EXHAUST_MESH_V1",
+      "owner_role": "orchestrator",
+      "evidence_level": "L2",
+      "write_scope": [
+        "motorsim/",
+        "tests/"
+      ],
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": null
+    },
+    {
+      "id": "EXM-BOUNDED-DIAGNOSTICS",
+      "description": "Run isolated A/B × 1/2/4 one-cycle diagnostics under 1800 aggregate seconds; persist primary audits, conservation, mesh, runtime and physical-location comparisons.",
+      "dependencies": [
+        "EXM-SOLVER-VERIFICATION",
+        "EXM-IDENTITY-CHECKPOINT"
+      ],
+      "state": "WAITING",
+      "objective": "EXHAUST_MESH_V1",
+      "owner_role": "orchestrator",
+      "evidence_level": "L2",
+      "write_scope": [
+        "scripts/",
+        "results/exhaust-mesh-v1/diagnostics/"
+      ],
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": null
+    },
+    {
+      "id": "EXM-REGRESSION-ADMIN",
+      "description": "Run focused regressions, OpenSpec strict and program-status check; document findings and classify objective readiness/partial.",
+      "dependencies": [
+        "EXM-BOUNDED-DIAGNOSTICS"
+      ],
+      "state": "WAITING",
+      "objective": "EXHAUST_MESH_V1",
+      "owner_role": "orchestrator",
+      "evidence_level": "L0",
+      "write_scope": [
+        "tests/",
+        "docs/",
+        "results/exhaust-mesh-v1/",
+        "openspec/changes/exhaust-mesh-v1/"
+      ],
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": null
     }
   ],
   "audit_remediation_mode": false,
@@ -4554,26 +4692,25 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_DESIGN_VALIDATION_V1",
-    "state": "FAIL_TERMINAL",
+    "id": "EXHAUST_MESH_V1",
+    "state": "ACTIVE",
     "owner_approved": true,
-    "classification": "DINO_DESIGN_VALIDATION_V1_PARTIAL",
-    "summary": "Objective complete with reproducible solver-backed design sensitivity, independent audits and preserved result semantics. Scientific performance conclusion remains partial: no periodic state and no mesh refinement to separate response from spatial error.",
-    "change": "openspec/changes/dino-design-validation-v1",
-    "spec": "openspec/changes/dino-design-validation-v1/specs/dino-design-validation-v1/spec.md",
-    "set_by": "explicit owner authorization communicated 2026-10-14; receipt results/dino-design-validation-v1/owner-authorization.json",
-    "authorization": "results/dino-design-validation-v1/owner-authorization.json",
-    "completion_criterion": "Terminal result DINO_DESIGN_VALIDATION_V1_PARTIAL: supported editor controls reach IntegratedEngine2T; bounded exhaust diagnostics show audited, repeatable pressure/flow response; power-valve history, result semantics and measurement import contract are verified. No steady-performance claim: periodicity was not identified and the one-cell-per-section mesh has unquantified spatial error. Missing next capability is a versioned multi-cell section-to-mesh adapter with 1/2/4 refinement. No full RPM campaign, KT100 or historical mutation.",
+    "classification": "IN_PROGRESS",
+    "summary": "Implement a versioned 1/2/4 axial exhaust mesh, preserve exact section geometry and conservation, integrate configuration/Desktop/workflow, and run bounded refinement diagnostics without claiming spatial independence.",
+    "change": "openspec/changes/exhaust-mesh-v1",
+    "spec": "openspec/changes/exhaust-mesh-v1/specs/exhaust-mesh-v1/spec.md",
+    "set_by": "explicit owner authorization communicated 2026-10-14; receipt results/exhaust-mesh-v1/owner-authorization.json",
+    "authorization": "results/exhaust-mesh-v1/owner-authorization.json",
+    "completion_criterion": "EXHAUST_MESH_V1_READY only if geometry, conservation, numerical area-source consistency, integration, tests and the complete bounded 1/2/4 diagnostic support it; otherwise EXHAUST_MESH_V1_PARTIAL with unresolved convergence/physical limits stated. No complete RPM campaign, KT100 or experimental claim.",
     "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
     "gate_tasks": [
-      "DINO-DESIGN-PROPAGATION",
-      "DINO-EXHAUST-SENSITIVITY-FIXTURE",
-      "DINO-EXHAUST-DIAGNOSTICS",
-      "DINO-POWERVALVE-VERIFICATION",
-      "DINO-RESULT-SEMANTICS",
-      "DINO-EXPERIMENT-IMPORT-CONTRACT",
-      "DINO-DESIGN-INTEGRATION-TESTS",
-      "DINO-DESIGN-DOCS"
+      "EXM-FORENSICS",
+      "EXM-ADAPTER",
+      "EXM-SOLVER-VERIFICATION",
+      "EXM-DESKTOP-INTEGRATION",
+      "EXM-IDENTITY-CHECKPOINT",
+      "EXM-BOUNDED-DIAGNOSTICS",
+      "EXM-REGRESSION-ADMIN"
     ]
   },
   "objectives": [
@@ -4808,6 +4945,28 @@
         "DINO-EXPERIMENT-IMPORT-CONTRACT",
         "DINO-DESIGN-INTEGRATION-TESTS",
         "DINO-DESIGN-DOCS"
+      ]
+    },
+    {
+      "id": "EXHAUST_MESH_V1",
+      "state": "APPROVED",
+      "owner_approved": true,
+      "classification": "IN_PROGRESS",
+      "summary": "Implement a versioned 1/2/4 axial exhaust mesh, preserve exact section geometry and conservation, integrate configuration/Desktop/workflow, and run bounded refinement diagnostics without claiming spatial independence.",
+      "change": "openspec/changes/exhaust-mesh-v1",
+      "spec": "openspec/changes/exhaust-mesh-v1/specs/exhaust-mesh-v1/spec.md",
+      "set_by": "explicit owner authorization communicated 2026-10-14; receipt results/exhaust-mesh-v1/owner-authorization.json",
+      "authorization": "results/exhaust-mesh-v1/owner-authorization.json",
+      "completion_criterion": "EXHAUST_MESH_V1_READY only if geometry, conservation, numerical area-source consistency, integration, tests and the complete bounded 1/2/4 diagnostic support it; otherwise EXHAUST_MESH_V1_PARTIAL with unresolved convergence/physical limits stated. No complete RPM campaign, KT100 or experimental claim.",
+      "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
+      "gate_tasks": [
+        "EXM-FORENSICS",
+        "EXM-ADAPTER",
+        "EXM-SOLVER-VERIFICATION",
+        "EXM-DESKTOP-INTEGRATION",
+        "EXM-IDENTITY-CHECKPOINT",
+        "EXM-BOUNDED-DIAGNOSTICS",
+        "EXM-REGRESSION-ADMIN"
       ]
     }
   ],
@@ -5759,6 +5918,12 @@
       "task": "DINO-DESIGN-DOCS",
       "kind": "task",
       "summary": "Documented coarse one-cell-per-section quasi-1D exhaust limits and exact missing versioned multi-cell section-to-mesh adapter plus 1/2/4 refinement comparison; objective will remain PARTIAL without periodicity or discretization error closure."
+    },
+    {
+      "at": "2026-10-14T12:49:10+00:00",
+      "task": "EXHAUST_MESH_V1",
+      "kind": "objective_transition",
+      "summary": "Owner authorized EXHAUST_MESH_V1 at HEAD 74aaa9a019a171008f9870745523a427eedfe078; scope, 1800-second aggregate diagnostic budget, exclusions and no-push constraint recorded in durable receipt (attachment SHA-256 6f53d22430be5f8d89d13e77bf5161e26d71d22307588b070b5c00a87f9a3bc5). Prior DINO_DESIGN_VALIDATION_V1 terminal gate archived unchanged."
     }
   ],
   "legacy_gate_status": {
@@ -5773,19 +5938,29 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_DESIGN_VALIDATION_V1",
-    "state": "FAIL_TERMINAL",
-    "classification": "DINO_DESIGN_VALIDATION_V1_PARTIAL",
+    "objective": "EXHAUST_MESH_V1",
+    "state": "OPEN",
+    "classification": null,
     "evidence": [
-      "results/dino-design-validation-v1/final-receipt.json"
+      "results/exhaust-mesh-v1/owner-authorization.json",
+      "openspec/changes/exhaust-mesh-v1/specs/exhaust-mesh-v1/spec.md"
     ],
-    "gate_tasks_total": 8,
-    "gate_tasks_done": 8,
+    "gate_tasks_total": 7,
+    "gate_tasks_done": 0,
     "gate_task_states": {
-      "DONE": 8
+      "IN_PROGRESS": 1,
+      "WAITING": 6
     },
-    "remaining": [],
-    "updated_at": "2026-10-14T12:37:31+00:00"
+    "remaining": [
+      "EXM-FORENSICS",
+      "EXM-ADAPTER",
+      "EXM-SOLVER-VERIFICATION",
+      "EXM-DESKTOP-INTEGRATION",
+      "EXM-IDENTITY-CHECKPOINT",
+      "EXM-BOUNDED-DIAGNOSTICS",
+      "EXM-REGRESSION-ADMIN"
+    ],
+    "updated_at": "2026-10-14"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -5833,7 +6008,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-14T13:00:00-03:00",
+  "updated_at": "2026-10-14T00:00:00-03:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -5982,5 +6157,20 @@
       "EXPLORATORY results are provisional; VERIFIED remains unavailable."
     ],
     "updated_at": "2026-10-14T12:45:00-03:00"
+  },
+  "gate_status_archive_before_exhaust_mesh_v1": {
+    "objective": "DINO_DESIGN_VALIDATION_V1",
+    "state": "FAIL_TERMINAL",
+    "classification": "DINO_DESIGN_VALIDATION_V1_PARTIAL",
+    "evidence": [
+      "results/dino-design-validation-v1/final-receipt.json"
+    ],
+    "gate_tasks_total": 8,
+    "gate_tasks_done": 8,
+    "gate_task_states": {
+      "DONE": 8
+    },
+    "remaining": [],
+    "updated_at": "2026-10-14T12:37:31+00:00"
   }
 }
