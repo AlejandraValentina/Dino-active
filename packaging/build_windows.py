@@ -20,6 +20,7 @@ from motorsim.runtime import APP_VERSION
 from motorsim.examples import PROJECT_FILES, example_file_project
 from motorsim.storage import load_project
 from motorsim.engine_project import load_project as load_engine_project
+from motorsim.engine_configuration import implementation_source_hashes
 from motorsim.project_case import execution_errors
 from motorsim.reference_results import MODEL_VERSION,FOUR_MODEL_VERSION
 
@@ -51,7 +52,8 @@ def main():
     info=dict(app_version=APP_VERSION,source_commit=commit,source_dirty=dirty,trial=args.trial,
         built_utc=stamp,python=sys.version,platform=platform.platform(),architecture=platform.machine(),
         project_format=6,result_formats=dict(two_stroke=[1,2,3],four_stroke=4),
-        models=dict(two_stroke=MODEL_VERSION,four_stroke=FOUR_MODEL_VERSION),dependencies=versions)
+        models=dict(two_stroke=MODEL_VERSION,four_stroke=FOUR_MODEL_VERSION),dependencies=versions,
+        workflow_source_hashes=implementation_source_hashes())
     (generated/'build.json').write_text(json.dumps(info,ensure_ascii=False,indent=2),encoding='utf-8')
     env=os.environ.copy();env['MOTORSIM_BUILD_INPUTS']=str(generated)
     subprocess.run([sys.executable,'-m','PyInstaller','--noconfirm','--distpath',str(destination),
@@ -70,6 +72,9 @@ def main():
     desktop_example=ROOT/'examples/projects/dino-2t-starter.dino2t.json'
     load_engine_project(desktop_example)
     shutil.copy2(desktop_example,examples/'desktop-dino-2t-starter.dino2t.json')
+    exhaust_example=ROOT/'examples/projects/dino-2t-exhaust-comparison.dino2t.json'
+    load_engine_project(exhaust_example)
+    shutil.copy2(exhaust_example,examples/'desktop-dino-2t-exhaust-comparison.dino2t.json')
     licenses=bundle/'Licencias';shutil.copytree(ROOT/'packaging/licenses',licenses/'Qt')
     shutil.copy2(Path(sys.base_prefix)/'LICENSE.txt',licenses/'Python-LICENSE.txt')
     for name in ('PySide6','PySide6_Essentials','PySide6_Addons','shiboken6','pyinstaller'):

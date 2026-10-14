@@ -122,6 +122,11 @@ class DinoDesktopWindow(QMainWindow):
                 except OSError:pass
     def closeEvent(self,event):
         if not self._confirm_discard():event.ignore();return
+        execution=self.pages[3]
+        if getattr(execution,"task",None) is not None:
+            # Closing the application is an explicit stop request; the engine
+            # persists only its last complete-cycle checkpoint before exit.
+            execution.cancel_run()
         # Results imports are read-only, but allow their worker callbacks to finish
         # before Qt destroys the widgets they target.
         if not QThreadPool.globalInstance().waitForDone(10000):

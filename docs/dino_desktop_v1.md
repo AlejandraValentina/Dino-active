@@ -20,7 +20,8 @@ desde **Archivo → Abrir**.
 ## Paquete Windows reproducible
 
 La receta fijada genera una distribución `onedir` que contiene `MotorSim.exe` y
-`Dino2T.exe`, más sus dependencias, avisos y ejemplos. Requiere Windows x64,
+`Dino2T.exe`, más sus dependencias, avisos y proyectos de ejemplo (incluida la
+comparación de geometría de escape). Requiere Windows x64,
 Python **3.11.0**, un checkout Git limpio y las versiones exactas de
 `packaging/requirements-build.txt`:
 
@@ -55,9 +56,12 @@ bajo `dist`; la receta no sobrescribe un destino existente. Abrir
   `NUMERICAL_INVALID` siguen como huecos, sin interpolación; potencia negativa,
   provenance y clasificación se conservan. `PERIOD_1` no equivale a PASS
   científico.
-- **Simulación** presenta el estado fail-closed. Se puede guardar una solicitud
-  sin autorizar ni ejecutar. El botón de supervisor permanece deshabilitado:
-  este objetivo no crea autorizaciones ni lanza campañas.
+- **Simulación** ejecuta sólo EXPLORATORY local después de mostrar preflight,
+  RPM, horizonte, límites y artifact root y recibir confirmación explícita.
+  Verified/campañas permanecen bloqueadas sin contrato, preregistro y
+  autorización exactos. Cancelar conserva el último checkpoint completo.
+- Para límites del modelo, identidad, artifact root, recuperación y
+  clasificación provisional, ver [DINO_SIMULATION_WORKFLOW_V1](dino_simulation_workflow_v1.md).
 
 El aggregate predeterminado se busca en el artifact store IMPL2 externo. Para
 otro root, establecer `DINO_ARTIFACT_ROOT` antes de iniciar; los resultados

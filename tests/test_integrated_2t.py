@@ -894,6 +894,8 @@ def test_generic_ports_and_powervalve_resolve_into_integrated_stage_geometry():
     assert any(stage["exhaust_area_m2"] > 0.0
                for trace in system.trace for stage in trace["stage_geometry"])
     assert all(len(trace["stage_face_fluxes"]) == 2 for trace in system.trace)
+
+
     reverse_donor_checked = False
     forward_donor_checked = False
     powervalve_effect_checked = False
@@ -944,6 +946,27 @@ def test_generic_ports_and_powervalve_resolve_into_integrated_stage_geometry():
     assert reverse_donor_checked
     assert forward_donor_checked
     assert powervalve_effect_checked
+
+
+def test_integrated_powervalve_uses_configured_rpm_at_reconstructed_step_endpoints():
+    lower = _internal_cycle_fixture(rpm=1000.0)
+    exact_lower = lower._geometry(180.0, 1000.0).exhaust_area_m2
+    rounded_below = lower._geometry(180.0, 999.9999999999999).exhaust_area_m2
+    assert rounded_below == exact_lower
+
+    upper = _internal_cycle_fixture(rpm=5000.0)
+    exact_upper = upper._geometry(180.0, 5000.0).exhaust_area_m2
+    rounded_above = upper._geometry(180.0, 5000.000000000001).exhaust_area_m2
+    assert rounded_above == exact_upper
+
+    valve = lower.port_binding.powervalve
+    assert valve.at(1000.0) == 0.0
+    assert valve.at(5000.0) == 1.0
+    assert 0.0 < valve.at(3000.0) < 1.0
+    with pytest.raises(ValueError, match="outside the configured powervalve map"):
+        valve.at(999.999)
+    with pytest.raises(ValueError, match="outside the configured powervalve map"):
+        valve.at(5000.001)
 
 
 def test_fresh_exhaust_flow_is_counted_as_short_circuit_only_with_open_transfers():

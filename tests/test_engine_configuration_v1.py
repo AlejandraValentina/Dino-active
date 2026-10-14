@@ -4,7 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from motorsim.engine_configuration import create, identity, validate, sha256
+from motorsim.engine_configuration import (create, identity, validate, sha256,
+                                            resolve_for_operating_point)
 from motorsim.engine_variants import escape_sections, replace_escape_sections, variant
 from motorsim.engine_project import (create_project, duplicate_project, load_project,
                                      save_project, compare_project_engines)
@@ -31,6 +32,32 @@ def test_fixture_adapter_hash_and_display_name():
     assert validate(a).configuration_identity == validate(b).configuration_identity
     assert identity(a) == identity(b)
     assert a["native_configuration_sha256"] == sha256(a["native_configuration"])
+
+
+def test_operating_point_adapter_binds_effective_rpm_and_solver_sources_without_mutating_project(tmp_path,monkeypatch):
+    import sys
+    from motorsim.engine_configuration import implementation_source_hashes
+    doc=configured()
+    effective=resolve_for_operating_point(doc,rpm=1000.0)
+    assert effective["native_configuration"]["reference_rpm"]==1000.0
+    assert effective["operating_conditions"]["reference_rpm"]==1000.0
+    assert effective["native_configuration_sha256"]==sha256(effective["native_configuration"])
+    assert effective["identity_sha256"]==sha256({k:v for k,v in effective.items() if k!="identity_sha256"})
+    assert {"motorsim.integrated_2t","motorsim.mechanical","motorsim.powervalve",
+            "motorsim.engine_configuration","motorsim.engineering_outputs",
+            "motorsim.exploratory_workflow"}.issubset(effective["source_hashes"])
+    assert len(effective["source_hashes"]) >= 24
+    assert doc["native_configuration"]["reference_rpm"]==3000.0
+    with pytest.raises(ValueError,match="positive finite"):
+        resolve_for_operating_point(doc,rpm=float("inf"))
+    source_hashes=implementation_source_hashes()
+    package_root=tmp_path/"motorsim";package_root.mkdir()
+    (package_root/"build.json").write_text(json.dumps({"workflow_source_hashes":source_hashes}),encoding="utf-8")
+    monkeypatch.setattr(sys,"frozen",True,raising=False)
+    monkeypatch.setattr(sys,"_MEIPASS",str(tmp_path),raising=False)
+    packaged=implementation_source_hashes()
+    assert packaged["dino.package_build_manifest"]
+    assert {k:v for k,v in packaged.items() if k!="dino.package_build_manifest"}==source_hashes
 
 
 def test_invalid_implicit_loss_and_mutated_native_rejected():

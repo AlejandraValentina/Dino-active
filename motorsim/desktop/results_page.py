@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (QWidget,QVBoxLayout,QHBoxLayout,QLabel,QComboBox,
     QFileDialog,QCheckBox,QListWidget,QListWidgetItem,QTableWidget,QTableWidgetItem,QHeaderView,QMessageBox)
 from .plot import CurvePlot
 from .services import DEFAULT_REPORT,load_results,run_background
+from ..exploratory_workflow import import_exploratory_runs
 
 METRICS={"Potencia de freno (kW)":"brake_power","Torque (N·m)":"brake_torque","IMEP (kPa)":"IMEP","FMEP (kPa)":"FMEP","BMEP (kPa)":"BMEP","BSFC (g/kWh)":"BSFC"}
 
@@ -14,11 +15,12 @@ class ResultsPage(QWidget):
     def __init__(self,context):
         super().__init__();self.context=context;self.dataset=None;self.source=None;self.loading=False
         root=QVBoxLayout(self);root.setContentsMargins(24,20,24,20)
-        title=QLabel("Resultados IMPL2");title.setObjectName('title');root.addWidget(title)
-        root.addWidget(QLabel("PERIOD_1 describe periodicidad observada; no representa aprobación científica PASS."))
+        title=QLabel("Resultados y comparación");title.setObjectName('title');root.addWidget(title)
+        root.addWidget(QLabel("Los reportes IMPL2 históricos se muestran separados de ejecuciones EXPLORATORY provisionales. PERIOD_1 describe periodicidad observada; no representa aprobación científica PASS. Los valores no definidos quedan como huecos."))
         bar=QHBoxLayout();root.addLayout(bar);self.metric=QComboBox();self.metric.addItems(METRICS);bar.addWidget(self.metric)
         self.path_label=QLabel(str(DEFAULT_REPORT));self.path_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse);bar.addWidget(self.path_label,1)
         browse=QPushButton("Abrir reporte…");browse.clicked.connect(self.choose);bar.addWidget(browse)
+        browse_runs=QPushButton("Comparar ejecuciones EXPLORATORY…");browse_runs.clicked.connect(self.choose_exploratory);bar.addWidget(browse_runs)
         self.variants=QListWidget();self.variants.setMaximumHeight(80);self.variants.setFlow(QListWidget.Flow.LeftToRight);self.variants.setWrapping(True);root.addWidget(self.variants)
         self.plot=CurvePlot();root.addWidget(self.plot,2)
         controls=QHBoxLayout();root.addLayout(controls)
@@ -33,6 +35,19 @@ class ResultsPage(QWidget):
     def choose(self):
         path,_=QFileDialog.getOpenFileName(self,"Abrir reporte de resultados",str(DEFAULT_REPORT.parent),"IMPL2 report (*.json *.csv)")
         if path:self.load(Path(path))
+    def choose_exploratory(self):
+        paths,_=QFileDialog.getOpenFileNames(self,"Comparar resultados EXPLORATORY",str(Path.home()),"Ejecución Dino (result.json)")
+        if paths:
+            self.path_label.setText("Verificando artifacts EXPLORATORY…")
+            run_background(import_exploratory_runs,paths,on_done=self._loaded_exploratory,on_error=self._exploratory_failed)
+    def _loaded_exploratory(self,data):
+        self.dataset=data;self.source=None;self.path_label.setText(f"{len(data['points'])} ciclos EXPLORATORY · provisional · no interpolación · no validación experimental")
+        variants=sorted({r['variant_id'] for r in data['points']});self.variants.blockSignals(True);self.variants.clear()
+        for name in variants:
+            item=QListWidgetItem(name);item.setFlags(item.flags()|Qt.ItemFlag.ItemIsUserCheckable);item.setCheckState(Qt.CheckState.Checked);self.variants.addItem(item)
+        self.variants.blockSignals(False);self.redraw()
+    def _exploratory_failed(self,message):
+        self.path_label.setText("Ejecución EXPLORATORY inválida");QMessageBox.warning(self,"Artifact exploratorio inválido",message)
     def load(self,path):
         self.loading=True;self.path_label.setText(f"Cargando {path}…")
         def done(data):

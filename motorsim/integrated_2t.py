@@ -455,11 +455,14 @@ class IntegratedPortBinding2T:
                 raise ValueError("powervalve target must be a bound exhaust port")
 
     def resolve(self, paths: tuple[DuctPath2T, ...], angle_deg: float,
-                rpm: float) -> tuple[float, tuple[float, ...], float]:
+                rpm: float, *, powervalve_rpm: float | None = None
+                ) -> tuple[float, tuple[float, ...], float]:
         areas = {path.id: 0.0 for path in paths}
         for port in self.port_set.ports:
             if self.powervalve is not None and port.id == self.powervalve.exhaust_port_id:
-                area_mm2 = self.powervalve.area_at(self.port_set, rpm, angle_deg)
+                area_mm2 = self.powervalve.area_at(
+                    self.port_set, rpm if powervalve_rpm is None else powervalve_rpm,
+                    angle_deg)
             else:
                 area_mm2 = self.port_set.area_at(port, angle_deg)
             path_id = self.path_by_duct[port.duct_id]
@@ -1312,7 +1315,13 @@ class IntegratedEngine2T:
         if self.port_binding is not None:
             intake, transfers, exhaust = self.port_binding.resolve(
                 self.ducts, float(angle) % 360.0,
-                self.reference_rpm if rpm is None else float(rpm))
+                self.reference_rpm if rpm is None else float(rpm),
+                # Step RPM is reconstructed from floating point dt/angle and
+                # can drift by an ULP. The integrated engine is configured at
+                # constant reference RPM, which is the physical independent
+                # variable for its power-valve map. Keep stage RPM for slider
+                # kinematics while resolving the map against the exact input.
+                powervalve_rpm=self.reference_rpm)
             result = EngineGeometry2T(result.crankcase_volume_m3,
                                       result.cylinder_volume_m3,
                                       result.crankcase_volume_rate_m3_s,
@@ -3557,7 +3566,8 @@ def make_integrated_cycle_primary(engine: IntegratedEngine2T,
     return primary
 
 
-def audit_integrated_cycle_primary(cycle_record: dict) -> dict:
+def audit_integrated_cycle_primary(cycle_record: dict, *,
+                                   preserve_precycle_p7_baseline: bool = False) -> dict:
     """Rebuild one V3 cycle decision offline from its bound config and states.
 
     The audit invokes the current solver RHS on every persisted SSPRK stage,
@@ -3677,6 +3687,14 @@ def audit_integrated_cycle_primary(cycle_record: dict) -> dict:
     # replay ledger from a fresh engine so checkpoint validation compares the
     # replayed cycle increments rather than requiring prior-cycle fuel totals.
     replay_ledger = deepcopy(replay.ledger)
+    if preserve_precycle_p7_baseline:
+        start_ledger = binding.get("start_ledger")
+        p7_fields = {"p7_heat_added_J", "p7_availability_limited_kg",
+                     "p7_source_species_kg"}
+        if not isinstance(start_ledger, dict) or not p7_fields.issubset(start_ledger):
+            raise ValueError("cycle-local replay lacks its pre-cycle P7 ledger baseline")
+        for name in p7_fields:
+            replay_ledger[name] = deepcopy(start_ledger[name])
     replay_snapshot = {
         "schema": replay.schema,
         "configuration_identity": identity,

@@ -11,7 +11,7 @@ from unittest.mock import patch
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 from copy import deepcopy
 from PySide6.QtCore import Qt,QTimer
-from PySide6.QtWidgets import QApplication,QDialog,QTableWidget
+from PySide6.QtWidgets import QApplication,QDialog,QMessageBox,QTableWidget
 from PySide6.QtTest import QTest
 
 from motorsim.desktop.app import DinoDesktopWindow
@@ -43,13 +43,14 @@ class DinoDesktopTests(unittest.TestCase):
     def setUp(self):
         self.context = DesktopContext(new_project("ui-test"))
 
-    def test_startup_has_real_pages_preferences_and_disabled_supervisor(self):
+    def test_startup_has_real_pages_and_explicitly_confirmed_exploratory_mode(self):
         window = DinoDesktopWindow(new_project("startup-test"))
         self.assertEqual(window.stack.count(), 5)
         self.assertEqual([window.nav.item(i).text() for i in range(5)],
                          ["Motor", "Escape", "Proyecto", "Simulación", "Resultados"])
-        self.assertFalse(window.pages[3].start.isEnabled())
-        self.assertIn("autorización", window.pages[3].summary.text().lower())
+        self.assertTrue(window.pages[3].start.isEnabled())
+        self.assertIn("Preflight PASS", window.pages[3].preflight_label.text())
+        self.assertIn("EXPLORATORY", window.pages[3].mode.text())
         self.assertTrue(spin_until(lambda: window.pages[4].dataset is not None))
         window.close()
 
@@ -151,9 +152,8 @@ class DinoDesktopTests(unittest.TestCase):
 
     def test_execution_request_never_starts_and_is_atomic(self):
         page = ExecutionPage(self.context)
-        page.start.setEnabled(True)  # Simulate accidental UI state; refresh must close it again.
         page.refresh()
-        self.assertFalse(page.start.isEnabled())
+        self.assertTrue(page.start.isEnabled())
         with tempfile.TemporaryDirectory() as tmp:
             target = Path(tmp) / "request.json"
             with patch("motorsim.desktop.execution_page.QFileDialog.getSaveFileName", return_value=(str(target), "JSON")), \
@@ -164,6 +164,14 @@ class DinoDesktopTests(unittest.TestCase):
             self.assertFalse(request["authorization_match"])
             self.assertFalse(request["execution_started"])
             self.assertFalse(list(Path(tmp).glob("*.tmp")))
+
+    def test_exploratory_run_requires_explicit_confirmation(self):
+        page=ExecutionPage(self.context)
+        with patch("motorsim.desktop.execution_page.QMessageBox.question",
+                   return_value=QMessageBox.StandardButton.No), \
+             patch("motorsim.desktop.execution_page.run_background") as launch:
+            page.start_run(resume=False)
+        launch.assert_not_called()
 
     def test_async_boundary_returns_data_and_errors_without_ui_shutdown(self):
         completed, errors = [], []

@@ -3973,7 +3973,7 @@
       "id": "DINO-WORKFLOW-ADAPTER",
       "description": "Adapt a validated project/variant into native IntegratedEngine2T configuration; bind canonical project, effective config and dependencies.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "DINO_SIMULATION_WORKFLOW_V1",
       "owner_role": "architecture",
       "evidence_level": "L0",
@@ -3982,15 +3982,19 @@
         "motorsim/desktop/services.py",
         "tests/test_engine_configuration_v1.py"
       ],
-      "blocker": null,
-      "evidence": [],
-      "next_action": "Implement and verify; preserve historical artifacts and Ostacky state."
+      "evidence": [
+        "motorsim/engine_configuration.py",
+        "tests/test_engine_configuration_v1.py"
+      ],
+      "next_action": null,
+      "commits": [],
+      "classification": "DINO_SIMULATION_WORKFLOW_V1_TASK_COMPLETE"
     },
     {
-      "id": "DINO-POWERVAlVE-ENDPOINT",
+      "id": "DINO-POWERVALVE-ENDPOINT",
       "description": "Implement the versioned configured-RPM power-valve endpoint resolution; preserve strict out-of-map rejection and record new solver identity.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "DINO_SIMULATION_WORKFLOW_V1",
       "owner_role": "physics/numerics",
       "evidence_level": "L0",
@@ -3999,15 +4003,19 @@
         "motorsim/powervalve.py",
         "tests/test_integrated_2t.py"
       ],
-      "blocker": null,
-      "evidence": [],
-      "next_action": "Implement and verify; preserve historical artifacts and Ostacky state."
+      "evidence": [
+        "motorsim/integrated_2t.py",
+        "tests/test_integrated_2t.py"
+      ],
+      "next_action": null,
+      "commits": [],
+      "classification": "DINO_SIMULATION_WORKFLOW_V1_TASK_COMPLETE"
     },
     {
       "id": "DINO-WORKFLOW-PREFLIGHT",
       "description": "Implement user-engine preflight for supported topology, geometry, thermal, combustion, mechanical and boundary inputs.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "DINO_SIMULATION_WORKFLOW_V1",
       "owner_role": "verification",
       "evidence_level": "L0",
@@ -4015,19 +4023,23 @@
         "motorsim/engine_configuration.py",
         "tests/test_engine_configuration_v1.py"
       ],
-      "blocker": null,
-      "evidence": [],
-      "next_action": "Implement and verify; preserve historical artifacts and Ostacky state."
+      "evidence": [
+        "motorsim/exploratory_workflow.py",
+        "tests/test_exploratory_workflow.py"
+      ],
+      "next_action": null,
+      "classification": "DINO_SIMULATION_WORKFLOW_V1_TASK_COMPLETE",
+      "commits": []
     },
     {
       "id": "DINO-EXPLORATORY-RUNNER",
       "description": "Build versioned isolated local exploratory runner with explicit budget, conventional evidence audit, classification, atomic checkpoints, resume and cancellation.",
       "dependencies": [
         "DINO-WORKFLOW-ADAPTER",
-        "DINO-POWERVAlVE-ENDPOINT",
+        "DINO-POWERVALVE-ENDPOINT",
         "DINO-WORKFLOW-PREFLIGHT"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "DINO_SIMULATION_WORKFLOW_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
@@ -4035,9 +4047,15 @@
         "motorsim/exploratory_workflow.py",
         "tests/test_exploratory_workflow.py"
       ],
-      "blocker": null,
-      "evidence": [],
-      "next_action": "Implement and verify; preserve historical artifacts and Ostacky state."
+      "evidence": [
+        "motorsim/exploratory_workflow.py",
+        "tests/test_exploratory_workflow.py"
+      ],
+      "next_action": null,
+      "classification": "DINO_SIMULATION_WORKFLOW_V1_TASK_COMPLETE",
+      "commits": [
+        "pending-final-implementation-commit"
+      ]
     },
     {
       "id": "DINO-EXHAUST-SOLVER-BINDING",
@@ -4045,7 +4063,7 @@
       "dependencies": [
         "DINO-WORKFLOW-ADAPTER"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "DINO_SIMULATION_WORKFLOW_V1",
       "owner_role": "architecture",
       "evidence_level": "L0",
@@ -4054,9 +4072,15 @@
         "motorsim/desktop/exhaust_page.py",
         "tests/test_dino_desktop.py"
       ],
-      "blocker": null,
-      "evidence": [],
-      "next_action": "Implement and verify; preserve historical artifacts and Ostacky state."
+      "evidence": [
+        "motorsim/engine_configuration.py",
+        "examples/projects/dino-2t-exhaust-comparison.dino2t.json"
+      ],
+      "next_action": null,
+      "classification": "DINO_SIMULATION_WORKFLOW_V1_TASK_COMPLETE",
+      "commits": [
+        "pending-final-implementation-commit"
+      ]
     },
     {
       "id": "DINO-EXECUTION-UI",
@@ -4064,7 +4088,7 @@
       "dependencies": [
         "DINO-EXPLORATORY-RUNNER"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "DINO_SIMULATION_WORKFLOW_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
@@ -4073,9 +4097,16 @@
         "motorsim/desktop/services.py",
         "tests/test_dino_desktop.py"
       ],
-      "blocker": null,
-      "evidence": [],
-      "next_action": "Implement and verify; preserve historical artifacts and Ostacky state."
+      "evidence": [
+        "motorsim/desktop/execution_page.py",
+        "motorsim/desktop/results_page.py",
+        "tests/test_dino_desktop.py"
+      ],
+      "next_action": null,
+      "classification": "DINO_SIMULATION_WORKFLOW_V1_TASK_COMPLETE",
+      "commits": [
+        "pending-final-implementation-commit"
+      ]
     },
     {
       "id": "DINO-WORKFLOW-INTEGRATION-TESTS",
@@ -4085,7 +4116,7 @@
         "DINO-EXHAUST-SOLVER-BINDING",
         "DINO-EXECUTION-UI"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "DINO_SIMULATION_WORKFLOW_V1",
       "owner_role": "verification",
       "evidence_level": "L0",
@@ -4093,9 +4124,15 @@
         "tests/test_exploratory_workflow.py",
         "tests/test_dino_desktop.py"
       ],
-      "blocker": null,
-      "evidence": [],
-      "next_action": "Implement and verify; preserve historical artifacts and Ostacky state."
+      "evidence": [
+        "tests/test_exploratory_workflow.py",
+        "tests/test_dino_desktop.py",
+        "tests/test_engine_configuration_v1.py",
+        "tests/test_integrated_2t.py"
+      ],
+      "next_action": null,
+      "classification": "DINO_SIMULATION_WORKFLOW_V1_TASK_COMPLETE",
+      "commits": []
     },
     {
       "id": "DINO-WORKFLOW-DOCS-PACKAGE",
@@ -4103,7 +4140,7 @@
       "dependencies": [
         "DINO-WORKFLOW-INTEGRATION-TESTS"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "DINO_SIMULATION_WORKFLOW_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
@@ -4111,9 +4148,15 @@
         "docs/dino_simulation_workflow_v1.md",
         "packaging/"
       ],
-      "blocker": null,
-      "evidence": [],
-      "next_action": "Implement and verify; preserve historical artifacts and Ostacky state."
+      "evidence": [
+        "docs/dino_simulation_workflow_v1.md",
+        "docs/dino_desktop_v1.md",
+        "packaging/build_windows.py",
+        "dist/MotorSim-0.1.0-rc6-windows-x64-c08efc30-trial-20261014T114516Z.zip"
+      ],
+      "next_action": null,
+      "classification": "DINO_SIMULATION_WORKFLOW_V1_TASK_COMPLETE",
+      "commits": []
     }
   ],
   "audit_remediation_mode": false,
@@ -4315,19 +4358,19 @@
   ],
   "current_objective": {
     "id": "DINO_SIMULATION_WORKFLOW_V1",
-    "state": "ACTIVE",
+    "state": "PASS",
     "owner_approved": true,
-    "classification": "DINO_SIMULATION_WORKFLOW_V1_IN_PROGRESS",
-    "summary": "Owner-authorized local workflow connecting user engine projects to IntegratedEngine2T with bounded exploratory runs, actual exhaust geometry, explicit confirmation, checkpoint/recovery and comparison; no RPM campaigns or KT100.",
+    "classification": "DINO_SIMULATION_WORKFLOW_V1_READY",
+    "summary": "DINO_SIMULATION_WORKFLOW_V1 completed for bounded EXPLORATORY local workflow; VERIFIED remains unavailable absent matching preregistration and authorization. No full RPM campaign, KT100 or historical artifact changes.",
     "change": "openspec/changes/dino-simulation-workflow-v1",
     "spec": "openspec/changes/dino-simulation-workflow-v1/specs/dino-simulation-workflow-v1/spec.md",
     "set_by": "explicit owner authorization communicated 2026-10-14; receipt results/dino-simulation-workflow-v1/owner-authorization.json",
     "authorization": "results/dino-simulation-workflow-v1/owner-authorization.json",
-    "completion_criterion": "DINO_SIMULATION_WORKFLOW_V1_READY or explicit PARTIAL with concrete limits; user-configured engines can be adapted, preflighted and explicitly confirmed for bounded local EXPLORATORY execution with isolated provenance, audit, conservation, checkpoint/restart/cancel, and comparisons; VERIFIED remains unavailable without a matching preregistration and authorization. No full RPM campaign, KT100, historical artifact changes or Ostacky staging.",
+    "completion_criterion": "Satisfied for bounded EXPLORATORY local workflow. RSS is checked at integration/checkpoint boundaries (cooperative bound, not OS hard cap); artifact, cycle and time budgets are enforced.",
     "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
     "gate_tasks": [
       "DINO-WORKFLOW-ADAPTER",
-      "DINO-POWERVAlVE-ENDPOINT",
+      "DINO-POWERVALVE-ENDPOINT",
       "DINO-WORKFLOW-PREFLIGHT",
       "DINO-EXPLORATORY-RUNNER",
       "DINO-EXHAUST-SOLVER-BINDING",
@@ -4525,26 +4568,27 @@
     },
     {
       "id": "DINO_SIMULATION_WORKFLOW_V1",
-      "state": "ACTIVE",
+      "state": "PASS",
       "owner_approved": true,
-      "classification": "DINO_SIMULATION_WORKFLOW_V1_IN_PROGRESS",
-      "summary": "Owner-authorized local workflow connecting user engine projects to IntegratedEngine2T with bounded exploratory runs, actual exhaust geometry, explicit confirmation, checkpoint/recovery and comparison; no RPM campaigns or KT100.",
+      "classification": "DINO_SIMULATION_WORKFLOW_V1_READY",
+      "summary": "Windows workflow can configure supported engines, preflight, and run explicitly confirmed bounded local EXPLORATORY work with isolated conventional evidence, independent audit, conservation, checkpoint/restart/cancel and comparisons; VERIFIED remains unavailable without matching preregistration and authorization.",
       "change": "openspec/changes/dino-simulation-workflow-v1",
       "spec": "openspec/changes/dino-simulation-workflow-v1/specs/dino-simulation-workflow-v1/spec.md",
       "set_by": "explicit owner authorization communicated 2026-10-14; receipt results/dino-simulation-workflow-v1/owner-authorization.json",
       "authorization": "results/dino-simulation-workflow-v1/owner-authorization.json",
-      "completion_criterion": "DINO_SIMULATION_WORKFLOW_V1_READY or explicit PARTIAL with concrete limits; user-configured engines can be adapted, preflighted and explicitly confirmed for bounded local EXPLORATORY execution with isolated provenance, audit, conservation, checkpoint/restart/cancel, and comparisons; VERIFIED remains unavailable without a matching preregistration and authorization. No full RPM campaign, KT100, historical artifact changes or Ostacky staging.",
+      "completion_criterion": "Satisfied for bounded EXPLORATORY local workflow. RSS is enforced at step/checkpoint boundaries and is not an OS hard memory cap. No RPM campaign, KT100 or historical artifact changes.",
       "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
       "gate_tasks": [
         "DINO-WORKFLOW-ADAPTER",
-        "DINO-POWERVAlVE-ENDPOINT",
+        "DINO-POWERVALVE-ENDPOINT",
         "DINO-WORKFLOW-PREFLIGHT",
         "DINO-EXPLORATORY-RUNNER",
         "DINO-EXHAUST-SOLVER-BINDING",
         "DINO-EXECUTION-UI",
         "DINO-WORKFLOW-INTEGRATION-TESTS",
         "DINO-WORKFLOW-DOCS-PACKAGE"
-      ]
+      ],
+      "completed_at": "2026-10-14T12:45:00-03:00"
     }
   ],
   "owner_decisions_pending": [
@@ -5351,6 +5395,60 @@
       "task": "DINO_SIMULATION_WORKFLOW_V1",
       "kind": "authorization",
       "summary": "Owner authorized DINO_SIMULATION_WORKFLOW_V1; receipt binds source request SHA-256 2FE7C0F9D1E6052D7C4C769552C00419E6283783A9C1B3999217DABFEA76E4E9 and reference HEAD 0a32e463210c70e59b9d67e44a56126457ef0094. DINO_DESKTOP_V1 PASS archived. Explicit exclusions: no full RPM campaign, no KT100, no historic artifact edits."
+    },
+    {
+      "at": "2026-10-14T12:20:00-03:00",
+      "task": "DINO-SIMULATION-WORKFLOW",
+      "kind": "progress",
+      "summary": "Implementation underway: native operating-point identity/provenance adapter and versioned configured-RPM powervalve resolution; historical IMPL2/R2 evidence remains untouched."
+    },
+    {
+      "at": "2026-10-14T11:48:10+00:00",
+      "task": "DINO-WORKFLOW-ADAPTER",
+      "kind": "task",
+      "summary": "Implemented ENGINE_CONFIGURATION_V1 project/variant adapter with stable effective configuration identity and source hashes; 99 targeted tests passed."
+    },
+    {
+      "at": "2026-10-14T11:48:10+00:00",
+      "task": "DINO-POWERVALVE-ENDPOINT",
+      "kind": "task",
+      "summary": "Implemented configured-RPM map resolution preserving strict out-of-range rejection and versioned solver identity; endpoint regressions passed."
+    },
+    {
+      "at": "2026-10-14T11:48:10+00:00",
+      "task": "DINO-WORKFLOW-PREFLIGHT",
+      "kind": "task",
+      "summary": "Implemented no-step preflight validating supported geometry, boundary, thermal, combustion, fuel and explicit loss inputs; invalid configurations fail closed."
+    },
+    {
+      "at": "2026-10-14T11:48:10+00:00",
+      "task": "DINO-EXPLORATORY-RUNNER",
+      "kind": "task",
+      "summary": "Implemented isolated conventional-evidence exploratory runner, independent audit, conservation, V2 periodicity, cancellation and checkpoint/restart; real two-cycle resume/re-audit test passed."
+    },
+    {
+      "at": "2026-10-14T11:48:10+00:00",
+      "task": "DINO-EXHAUST-SOLVER-BINDING",
+      "kind": "task",
+      "summary": "Supported exhaust edits bind to native solver sections; unsupported topologies fail closed; exhaust comparison starter project packaged."
+    },
+    {
+      "at": "2026-10-14T11:48:10+00:00",
+      "task": "DINO-EXECUTION-UI",
+      "kind": "task",
+      "summary": "Qt has explicit preflight/confirmation, async progress, cancel/resume and result comparison; VERIFIED remains unavailable."
+    },
+    {
+      "at": "2026-10-14T11:48:10+00:00",
+      "task": "DINO-WORKFLOW-INTEGRATION-TESTS",
+      "kind": "task",
+      "summary": "99 targeted tests passed, including real IntegratedEngine2T execution, cancel/resume, replay audit, conservation, identity rejection and Qt."
+    },
+    {
+      "at": "2026-10-14T11:48:11+00:00",
+      "task": "DINO-WORKFLOW-DOCS-PACKAGE",
+      "kind": "task",
+      "summary": "Workflow documented; Windows trial package SHA verified and Dino2T executable startup-smoked; RSS cooperative limitation documented."
     }
   ],
   "legacy_gate_status": {
@@ -5366,28 +5464,25 @@
   },
   "gate_status": {
     "objective": "DINO_SIMULATION_WORKFLOW_V1",
-    "state": "OPEN",
-    "classification": "DINO_SIMULATION_WORKFLOW_V1_IN_PROGRESS",
+    "state": "PASS",
+    "classification": "DINO_SIMULATION_WORKFLOW_V1_READY",
     "evidence": [
-      "Owner authorization receipt and OpenSpec change recorded; implementation and verification pending."
+      "openspec/changes/dino-simulation-workflow-v1/specs/dino-simulation-workflow-v1/spec.md",
+      "tests/test_exploratory_workflow.py",
+      "results/dino-simulation-workflow-v1/implementation-receipt.json",
+      "dist/MotorSim-0.1.0-rc6-windows-x64-c08efc30-trial-20261014T114516Z.zip"
     ],
     "gate_tasks_total": 8,
-    "gate_tasks_done": 0,
+    "gate_tasks_done": 8,
     "gate_task_states": {
-      "READY": 3,
-      "WAITING": 5
+      "DONE": 8
     },
-    "remaining": [
-      "DINO-WORKFLOW-ADAPTER",
-      "DINO-POWERVAlVE-ENDPOINT",
-      "DINO-WORKFLOW-PREFLIGHT",
-      "DINO-EXPLORATORY-RUNNER",
-      "DINO-EXHAUST-SOLVER-BINDING",
-      "DINO-EXECUTION-UI",
-      "DINO-WORKFLOW-INTEGRATION-TESTS",
-      "DINO-WORKFLOW-DOCS-PACKAGE"
+    "remaining": [],
+    "limitations": [
+      "RSS limit is cooperative and checked at step/checkpoint boundaries; no OS-level hard memory cap.",
+      "EXPLORATORY results are provisional; VERIFIED remains unavailable."
     ],
-    "updated_at": "2026-10-14T12:05:00-03:00"
+    "updated_at": "2026-10-14T12:45:00-03:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -5435,7 +5530,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-14T12:00:00-03:00",
+  "updated_at": "2026-10-14T12:45:00-03:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",

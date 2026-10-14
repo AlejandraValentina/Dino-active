@@ -1,0 +1,55 @@
+{
+  "schema": "DINO_SIMULATION_WORKFLOW_V1_IMPLEMENTATION_RECEIPT",
+  "objective": "DINO_SIMULATION_WORKFLOW_V1",
+  "classification": "DINO_SIMULATION_WORKFLOW_V1_READY",
+  "scope": "Bounded local EXPLORATORY workflow only; no RPM campaign, KT100, or historical evidence modifications.",
+  "authorization": {
+    "source": "results/dino-simulation-workflow-v1/owner-authorization.json",
+    "request_sha256": "2FE7C0F9D1E6052D7C4C769552C00419E6283783A9C1B3999217DABFEA76E4E9",
+    "reference_head": "0a32e463210c70e59b9d67e44a56126457ef0094"
+  },
+  "implementation": {
+    "engine_adapter": "ENGINE_CONFIGURATION_V1 project/variant adapter with effective operating-point identity and dependency hashes",
+    "powervalve": "Configured constant RPM is resolved for map lookup; strict out-of-domain behavior remains; solver identity changes",
+    "preflight": "No-step validation for supported topology, geometry, boundary, thermal, combustion, fuel and explicit mechanical losses; fail closed",
+    "execution": "Isolated single-point EXPLORATORY execution, conventional gzip primaries, independent recomputation/audit, conservation, V2 periodicity, atomic checkpoints, resume and cancellation",
+    "ui": "Explicit preflight and confirmation, bounded execution controls, progress, resume/cancel, comparison without interpolation; VERIFIED unavailable",
+    "example": "examples/projects/dino-2t-exhaust-comparison.dino2t.json"
+  },
+  "verification_executed_here": {
+    "targeted_tests": "99 passed: tests/test_engine_configuration_v1.py, tests/test_integrated_2t.py, tests/test_exploratory_workflow.py, tests/test_dino_desktop.py",
+    "real_execution": "Two-cycle IntegratedEngine2T cancel/resume test passed; resumed from complete-cycle checkpoint and re-audited both primaries; conservation, identity, hashes and no-interpolation behavior verified.",
+    "additional_tests": "10 focused endpoint, adapter, lock, checkpoint corruption and UI tests passed.",
+    "compileall": "PASS",
+    "openspec_strict": "PASS",
+    "program_status_check": "PASS before final task closure; final check pending",
+    "git_diff_check": "PASS before final task closure; final check pending",
+    "git_lfs_fsck": "PASS",
+    "windows_trial_package": {
+      "archive": "dist/MotorSim-0.1.0-rc6-windows-x64-c08efc30-trial-20261014T114516Z.zip",
+      "sha256": "a6924981fb18861ba7ac03f6df8d7513ebb01f26f270ab546de3f5e468f8a87a",
+      "bytes": 45682671,
+      "source_commit": "c08efc300afa22ad040254cafa454b6afbd6549b",
+      "trial": true,
+      "packaged_source_hash_entries": 24,
+      "packaged_starter_example": "MotorSim/Ejemplos/desktop-dino-2t-exhaust-comparison.dino2t.json",
+      "startup_smoke": "Dino2T.exe remained alive for 12 seconds; process was then stopped by the smoke test. No project execution was started."
+    }
+  },
+  "limitations": [
+    "RSS is checked cooperatively at integration/checkpoint boundaries; this is not an OS-level hard memory cap and transient overshoot is possible.",
+    "Exploratory results are provisional and do not constitute VERIFIED or scientific campaign results.",
+    "No full RPM campaign or KT100 was started."
+  ],
+  "historical_isolation": {
+    "R2": "unchanged",
+    "IMPL2_and_RPM_campaign_history": "unchanged",
+    "historical_artifacts": "not modified",
+    "FAST_RECIPE_V1": "not enabled for audited execution"
+  },
+  "administrative": {
+    "openspec": "openspec/changes/dino-simulation-workflow-v1/",
+    "program_status": "results/2t-commercial-core-20261002/program-status.json",
+    "push": "not performed; AGENTS.md forbids push"
+  }
+}

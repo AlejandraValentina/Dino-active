@@ -7,8 +7,12 @@ from __future__ import annotations
 
 from copy import deepcopy
 import hashlib
+import importlib
+import inspect
 import json
 import math
+import sys
+from pathlib import Path
 from typing import Any
 
 from .integrated_2t import IntegratedEngine2T
@@ -23,6 +27,17 @@ UNITS = {"length": "SI; native geometry fields ending _mm are millimetres",
          "mass": "kg", "time": "s", "angle": "degree unless field is explicitly radians",
          "speed": "rpm", "energy": "J", "power": "W", "torque": "N*m",
          "species_mass": "kg", "afr": "kg_air/kg_fuel", "load": "dimensionless"}
+_IMPLEMENTATION_MODULES = (
+    "motorsim.crankcase", "motorsim.coupling", "motorsim.fuel_combustion",
+    "motorsim.gas1d.boundary", "motorsim.gas1d.eos", "motorsim.gas1d.mesh",
+    "motorsim.gas1d.open_end_plenum_v2", "motorsim.gas1d.riemann",
+    "motorsim.integrated_2t", "motorsim.kinematics",
+    "motorsim.network_components", "motorsim.p6_species",
+    "motorsim.p7_prescribed", "motorsim.powervalve", "motorsim.reed",
+    "motorsim.reed_coupling", "motorsim.thermal", "motorsim.two_stroke_ports",
+    "motorsim.mechanical", "motorsim.engine_configuration",
+    "motorsim.engine_variants", "motorsim.engineering_outputs",
+    "motorsim.reference_harness.convergence", "motorsim.exploratory_workflow")
 
 
 def canonical_json(value: Any) -> str:
@@ -32,6 +47,29 @@ def canonical_json(value: Any) -> str:
 
 def sha256(value: Any) -> str:
     return hashlib.sha256(canonical_json(value).encode("utf-8")).hexdigest()
+
+
+def implementation_source_hashes() -> dict[str, str]:
+    """Hash the full workflow implementation, using a build manifest when frozen."""
+    if getattr(sys, "frozen", False):
+        root=Path(getattr(sys, "_MEIPASS", Path(sys.executable).resolve().parent))
+        manifest_path=root/"motorsim"/"build.json"
+        if not manifest_path.is_file():
+            raise ValueError("packaged workflow source manifest is missing")
+        payload=manifest_path.read_bytes(); manifest=json.loads(payload)
+        hashes=manifest.get("workflow_source_hashes")
+        if (not isinstance(hashes,dict) or set(hashes)!=set(_IMPLEMENTATION_MODULES) or
+                any(not isinstance(value,str) or len(value)!=64 or
+                    any(c not in "0123456789abcdef" for c in value)
+                    for value in hashes.values())):
+            raise ValueError("packaged workflow source manifest is invalid")
+        return {**hashes,"dino.package_build_manifest":hashlib.sha256(payload).hexdigest()}
+    hashes={}
+    for module_name in _IMPLEMENTATION_MODULES:
+        module=importlib.import_module(module_name)
+        path=Path(inspect.getsourcefile(module))
+        hashes[module.__name__]=hashlib.sha256(path.read_bytes().replace(b"\r\n",b"\n")).hexdigest()
+    return hashes
 
 
 def _finite_tree(value: Any, path: str = "configuration") -> None:
@@ -131,3 +169,40 @@ def identity(document: dict[str, Any]) -> str:
 def to_solver_configuration(document: dict[str, Any]) -> dict[str, Any]:
     validate(document)
     return deepcopy(document["native_configuration"])
+
+
+def resolve_for_operating_point(document: dict[str, Any], *, rpm: float | None = None
+                               ) -> dict[str, Any]:
+    """Resolve a saved project engine into one immutable native operating point.
+
+    The returned envelope binds the selected project identity, effective native
+    solver configuration, explicit loss model, fuel provenance and source
+    modules. A requested RPM is an explicit override; it never mutates the
+    saved project document.
+    """
+    validate(document)
+    selected_rpm = document["operating_conditions"]["reference_rpm"] if rpm is None else rpm
+    if type(selected_rpm) not in (int, float) or not math.isfinite(selected_rpm) or selected_rpm <= 0:
+        raise ValueError("selected RPM must be positive finite numeric data")
+    native = deepcopy(document["native_configuration"])
+    native["reference_rpm"] = float(selected_rpm)
+    engine = IntegratedEngine2T.from_configuration_dict(native)
+    loss_model = MechanicalLossModel.from_dict(deepcopy(document["mechanical_loss_model"]))
+    source_hashes = implementation_source_hashes()
+    effective = {
+        "schema": "DINO_EXECUTABLE_ENGINE_IDENTITY_V1",
+        "project_engine_identity_sha256": identity(document),
+        "native_configuration": native,
+        "native_configuration_sha256": sha256(native),
+        "solver_configuration_sha256": engine.configuration_identity["configuration_sha256"],
+        "selected_rpm": float(selected_rpm),
+        "operating_conditions": {**deepcopy(document["operating_conditions"]),
+                                 "reference_rpm": float(selected_rpm)},
+        "mechanical_loss_model": loss_model.to_dict(),
+        "mechanical_loss_model_sha256": sha256(loss_model.to_dict()),
+        "fuel_provenance": deepcopy(document["provenance"]["fuel"]),
+        "configuration_provenance": deepcopy(document["provenance"]),
+        "source_hashes": source_hashes,
+    }
+    effective["identity_sha256"] = sha256(effective)
+    return effective
