@@ -3102,7 +3102,8 @@
         "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-bmep-vs-rpm.png",
         "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-bsfc-vs-rpm.png",
         "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-power-vs-rpm.png",
-        "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-torque-vs-rpm.png"
+        "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-torque-vs-rpm.png",
+        "results/full-rpm-sweep-v1/impl2-invalid-point-forensics.json"
       ],
       "unblock_tasks": [
         "FRPM-V2-RESTORE-INDEPENDENT-REVIEW",
@@ -4630,6 +4631,12 @@
       "task": "FRPM-FULL-CAMPAIGN-EXECUTION",
       "kind": "task",
       "summary": "IMPL2 extension completed all 26 authorized points; combined 30-point matrix is 27 PERIOD_1 and 3 NUMERICAL_INVALID. Aggregate canonical primary/result/checkpoint integrity passed for all 30; CSV/JSON/scatter reports and compact receipt persisted. Accounted budget 13,436.111/21,600 s; remaining unused 8,163.889 s. Scientific gate remains PARTIAL/REVIEW; no further points launched."
+    },
+    {
+      "at": "2026-10-14T10:23:08+00:00",
+      "task": "FRPM-FULL-CAMPAIGN-EXECUTION",
+      "kind": "task",
+      "summary": "Read-only forensic reproduction identified all three NUMERICAL_INVALID points as strict powervalve endpoint rejection of floating-point reconstructed stage RPM (1000 -> 999.9999999999999; 5000 -> 5000.000000000001). Captured angles and a versioned ULP-bounded fix candidate in results/full-rpm-sweep-v1/impl2-invalid-point-forensics.json; no solver/artifact/campaign changes."
     }
   ],
   "legacy_gate_status": {

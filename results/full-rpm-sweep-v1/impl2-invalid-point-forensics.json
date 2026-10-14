@@ -1,0 +1,60 @@
+{
+  "campaigns_started": 0,
+  "classification": {
+    "category": "numerical kinematic-parameter roundoff at configured domain boundary; not CFL, geometry inconsistency, or evidence corruption",
+    "cause": "strict powervalve-map domain check rejects stage RPM reconstructed from delta-angle and timestep when floating-point roundoff puts the endpoint a fraction outside the inclusive map bounds",
+    "failure_reason": "RPM is outside the configured powervalve map",
+    "failure_type": "ValueError"
+  },
+  "historical_artifacts_modified": false,
+  "map_domain_rpm": [
+    1000.0,
+    5000.0
+  ],
+  "points": [
+    {
+      "cycles_completed": 0,
+      "failure_angle_start_deg": 0.21875,
+      "map_domain_rpm": [
+        1000.0,
+        5000.0
+      ],
+      "point_id": "A_PRIME_MESH_0@1000RPM",
+      "rpm_passed_to_powervalve": 999.9999999999999
+    },
+    {
+      "cycles_completed": 0,
+      "failure_angle_start_deg": 0.21875,
+      "map_domain_rpm": [
+        1000.0,
+        5000.0
+      ],
+      "point_id": "B_PRIME_MESH_0@1000RPM",
+      "rpm_passed_to_powervalve": 999.9999999999999
+    },
+    {
+      "cycles_completed": 1,
+      "failure_angle_start_deg": 610.9288789009381,
+      "map_domain_rpm": [
+        1000.0,
+        5000.0
+      ],
+      "point_id": "A_PRIME_MESH_0@5000RPM",
+      "rpm_passed_to_powervalve": 5000.000000000001
+    }
+  ],
+  "preregistration_sha256": "e26c0599325a9e6296291178ffd2e36457838052f1d9b59de7b6dc0f282d59e3",
+  "producer_sha256": "d8d2a2c00e3ff45741e9ceadc4b4672db8f2de6d412bb96b9dd07a1b7c7118a6",
+  "reproduction": "Read-only diagnostic instantiated IntegratedEngine2T from each preregistered fixture configuration and advanced only the affected short trajectory with the existing registered stepper; wrapped PowerValve.at to capture the rejected stage RPM and angle. No campaign runner, result writer, checkpoint writer, or artifact mutation was used.",
+  "schema": "IMPL2_INVALID_POINT_DIAGNOSTIC_RECEIPT_V1",
+  "scope_assessment": {
+    "current_fixture_configuration": "Map endpoints are explicitly [1000.0, 5000.0] in both A and B fixtures and preregistration; requested RPMs are exactly those endpoints.",
+    "generalizability": "Any engine/configuration whose powervalve map boundary equals the requested operating RPM can encounter the same floating-point endpoint excursion; risk depends on step arithmetic and mapped component use.",
+    "identity_impact": "Any implementation change alters solver/producer identity. It must be versioned and preregistered before a future campaign; historical IMPL2 results remain unchanged. No campaign rerun is authorized by this diagnostic.",
+    "localized_fix_candidate": "Preserve the exact configured operating RPM when resolving geometry, or snap to a map endpoint only when the excursion is within a rigorously bounded floating-point ULP tolerance; continue rejecting values materially outside the domain. Add boundary and just-outside tests.",
+    "physical_model_error": "Not indicated by this evidence; the map values and RPM requests are in-domain in the real-number contract."
+  },
+  "solver_modified": false,
+  "source_artifacts_root": "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2/authorized-extension-26-v1",
+  "status": "CAUSE_REPRODUCED_READ_ONLY"
+}
