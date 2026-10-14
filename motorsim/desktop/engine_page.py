@@ -22,10 +22,21 @@ class EnginePage(QWidget):
         definitions=[("bore_mm","Diámetro del cilindro","mm",1,250),("stroke_mm","Carrera","mm",1,250),
           ("rod_length_mm","Longitud de biela","mm",1,500),("volume_bdc_cm3","Volumen de cárter en PMI","cm³",0.1,5000),
           ("cylinder_compression_ratio","Compresión geométrica",":1",1.01,40),("reference_rpm","Régimen de referencia","rpm",100,30000),
-          ("load","Carga declarada","relativa",0,10),("afr","Relación aire/combustible","kg/kg",0.01,1000)]
+          ("load","Coordenada de carga del mapa MEP","relativa",0,10),
+          ("afr","AFR declarada · metadato no aplicado","kg aire/kg combustible",0.01,1000)]
         for key,label,unit,low,high in definitions:
             spin=QDoubleSpinBox();spin.setObjectName("engine_"+key);spin.setRange(low,high);spin.setDecimals(5);spin.setSingleStep(0.1)
             self.controls[key]=spin;form.addRow(f"{label} ({unit})",spin)
+        self.controls["load"].setToolTip(
+            "Sólo selecciona pérdidas si el modelo mecánico declara un mapa dependiente de carga; "
+            "no controla mariposa, admisión ni la carga del flujo de gas.")
+        self.controls["afr"].setEnabled(False)
+        self.controls["afr"].setToolTip(
+            "El AFR de operación se conserva como metadata. La entrega de aire/combustible "
+            "la determina el estado de especies del modelo; este campo no modifica el solver.")
+        form.addRow(QLabel(
+            "El AFR editable aún no está acoplado a una ley de alimentación; "
+            "no usarlo como consigna simulada."))
         side=QVBoxLayout();row.addLayout(side,2)
         group=QGroupBox("Lumbreras y distribución");v=QVBoxLayout(group)
         v.addWidget(QLabel("Dimensiones geométricas editables; los perfiles efectivos derivados se regeneran con el modelo existente."))
@@ -42,6 +53,7 @@ class EnginePage(QWidget):
         self.comb={}
         for key,label,unit,lo,hi in [("combustion_efficiency","Eficiencia declarada","1",0,1),("ignition_timing_deg","Inicio/encendido","°",0,720),("duration_deg","Duración","°",0,720),("shape_a","Forma A","—",0.01,100),("shape_m","Forma M","—",0.01,100)]:
             spin=QDoubleSpinBox();spin.setRange(lo,hi);spin.setDecimals(5);self.comb[key]=spin;f.addRow(f"{label} ({unit})",spin)
+        self.combustion_notice=QLabel();self.combustion_notice.setWordWrap(True);f.addRow(self.combustion_notice)
         self.fuel=QLabel();self.fuel.setWordWrap(True);self.fuel.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         f.addRow("Fuel snapshot",self.fuel);side.addWidget(group)
         self.validation=QLabel();self.validation.setWordWrap(True);self.validation.setObjectName("notice");root.addWidget(self.validation)
@@ -58,6 +70,13 @@ class EnginePage(QWidget):
             for key,value in values.items():self.controls[key].setValue(float(value))
             combustion=n.get("fuel_coupled_combustion") or {};component=(combustion.get("components") or [{}])[0]
             for key,value in (("combustion_efficiency",combustion.get("combustion_efficiency",0.0)),("ignition_timing_deg",combustion.get("ignition_timing_deg",0.0)),("duration_deg",component.get("duration_deg",0.0)),("shape_a",component.get("shape_a",1.0)),("shape_m",component.get("shape_m",1.0))):self.comb[key].setValue(float(value))
+            combustion_editable=bool(n.get("fuel_coupled_combustion")) and bool(n["fuel_coupled_combustion"].get("components"))
+            for control in self.comb.values():control.setEnabled(combustion_editable)
+            self.combustion_notice.setText(
+                "Estos parámetros son supuestos sintéticos acoplados al solver."
+                if combustion_editable else
+                "La configuración no tiene un modelo de combustión fuel-coupled; "
+                "estos campos no tendrían efecto físico y quedan deshabilitados.")
             snapshot=combustion.get("fuel_snapshot") or {}
             self.fuel.setText(f"{snapshot.get('schema','Sin snapshot')} · {snapshot.get('sha256','sin hash')} · {snapshot.get('provenance','provenance no declarada')}\nLos datos de combustible son de solo lectura; importá un snapshot validado para cambiarlo.")
             ports=n["port_binding"]["port_set"]["ports"];self.ports.blockSignals(True);self.ports.setRowCount(len(ports))
@@ -69,6 +88,7 @@ class EnginePage(QWidget):
                     self.ports.setItem(i,j,item)
             self.ports.blockSignals(False)
             terms=doc["mechanical_loss_model"]["terms"];self.loss_model_draft=deepcopy(doc["mechanical_loss_model"])
+            self.controls["load"].setEnabled(any(term["operating_map"] is not None for term in terms))
             self.losses.blockSignals(True);self.losses.setRowCount(len(terms))
             for i,term in enumerate(terms):
                 model="Fixed MEP" if term["mep_pa"] is not None else f"Mapa {len(term['operating_map']['rpm'])}×{len(term['operating_map']['load'])} (doble clic)"
@@ -138,7 +158,9 @@ class EnginePage(QWidget):
                 if not math.isfinite(value) or value<0:raise ValueError(f"Pérdida mecánica {term['id']}: MEP debe ser finita y no negativa")
                 term["mep_pa"]=value
             conditions=doc["operating_conditions"]
-            for key in ("reference_rpm","load","afr"):conditions[key]=self.controls[key].value()
+            conditions["reference_rpm"]=self.controls["reference_rpm"].value()
+            if self.controls["load"].isEnabled():
+                conditions["load"]=self.controls["load"].value()
             combustion=native.get("fuel_coupled_combustion")
             if combustion:
                 combustion["combustion_efficiency"]=self.comb["combustion_efficiency"].value();combustion["ignition_timing_deg"]=self.comb["ignition_timing_deg"].value()

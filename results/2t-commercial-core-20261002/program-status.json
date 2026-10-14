@@ -4162,7 +4162,7 @@
       "id": "DINO-DESIGN-PROPAGATION",
       "description": "Audit editable engine and variant properties from project through effective configuration into actual IntegratedEngine2T state; test physical influence and unsupported controls.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "DINO_DESIGN_VALIDATION_V1",
       "owner_role": "orchestrator",
       "evidence_level": "L0",
@@ -4174,8 +4174,14 @@
       ],
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Take against the DINO_DESIGN_VALIDATION_V1 spec; preserve historical evidence and obey diagnostic budgets."
+      "evidence": [
+        "motorsim/desktop/engine_page.py",
+        "tests/test_dino_desktop.py",
+        "tests/test_engine_configuration_v1.py"
+      ],
+      "next_action": null,
+      "classification": "DINO_DESIGN_PROPAGATION_VERIFIED",
+      "qualification": "Editor controls now expose only solver-backed geometry, combustion and loss-map inputs; AFR stays metadata-only and disabled, fixed-loss load is disabled; RPM acts through operating-point resolution."
     },
     {
       "id": "DINO-EXHAUST-SENSITIVITY-FIXTURE",
@@ -5622,6 +5628,18 @@
       "task": "DINO_DESIGN_VALIDATION_V1",
       "kind": "task",
       "summary": "Owner authorization registered (request SHA-256 C16750A154FBFC6FFA6DC52D24E675250BDB2BAD87BFFF77943EA351D3566D5A); DINO_SIMULATION_WORKFLOW_V1 PASS archived; design-validation OpenSpec and 8-task queue created. No campaigns/KT100 authorized."
+    },
+    {
+      "at": "2026-10-14T11:54:17+00:00",
+      "task": "DINO-DESIGN-PROPAGATION",
+      "kind": "task",
+      "summary": "Starting field-by-field trace of Desktop edits through native configuration to solver and output; verify metadata-only AFR/load controls."
+    },
+    {
+      "at": "2026-10-14T11:57:38+00:00",
+      "task": "DINO-DESIGN-PROPAGATION",
+      "kind": "task",
+      "summary": "Traced project edits into actual IntegratedEngine2T geometry/combustion and fixed-loss/map accounting. Disabled metadata-only AFR, disabled load when losses are fixed, and added explicit solver-scope notes. 19 UI/configuration tests pass."
     }
   ],
   "legacy_gate_status": {
@@ -5644,12 +5662,12 @@
       "openspec/changes/dino-design-validation-v1/specs/dino-design-validation-v1/spec.md"
     ],
     "gate_tasks_total": 8,
-    "gate_tasks_done": 0,
+    "gate_tasks_done": 1,
     "gate_task_states": {
-      "READY": 8
+      "DONE": 1,
+      "READY": 7
     },
     "remaining": [
-      "DINO-DESIGN-PROPAGATION",
       "DINO-EXHAUST-SENSITIVITY-FIXTURE",
       "DINO-EXHAUST-DIAGNOSTICS",
       "DINO-POWERVALVE-VERIFICATION",
@@ -5658,7 +5676,7 @@
       "DINO-DESIGN-INTEGRATION-TESTS",
       "DINO-DESIGN-DOCS"
     ],
-    "updated_at": "2026-10-14T13:00:00-03:00"
+    "updated_at": "2026-10-14T11:57:38+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

@@ -11,7 +11,7 @@ from unittest.mock import patch
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 from copy import deepcopy
 from PySide6.QtCore import Qt,QTimer
-from PySide6.QtWidgets import QApplication,QDialog,QMessageBox,QTableWidget
+from PySide6.QtWidgets import QApplication,QDialog,QLabel,QMessageBox,QTableWidget
 from PySide6.QtTest import QTest
 
 from motorsim.desktop.app import DinoDesktopWindow
@@ -22,7 +22,7 @@ from motorsim.desktop.execution_page import ExecutionPage
 from motorsim.desktop.project_page import ProjectPage
 from motorsim.desktop.results_page import ResultsPage
 from motorsim.desktop.services import DEFAULT_REPORT, load_results, new_project, run_background
-from motorsim.engine_configuration import identity,create
+from motorsim.engine_configuration import identity,create,resolve_for_operating_point
 from motorsim.engine_project import create_project,load_project,save_project
 
 
@@ -58,10 +58,27 @@ class DinoDesktopTests(unittest.TestCase):
         page = EnginePage(self.context)
         original = identity(self.context.engine())
         page.controls["reference_rpm"].setValue(3200)
+        page.controls["bore_mm"].setValue(58)
+        page.comb["combustion_efficiency"].setValue(.71)
+        page.comb["ignition_timing_deg"].setValue(112)
+        page.comb["duration_deg"].setValue(38)
+        page.comb["shape_a"].setValue(5.5)
+        page.comb["shape_m"].setValue(1.4)
         page.apply()
         self.assertNotEqual(identity(self.context.engine()), original)
         self.assertTrue(self.context.dirty)
         self.assertIn("Validación correcta", page.validation.text())
+        effective=resolve_for_operating_point(self.context.engine())
+        self.assertEqual(effective["native_configuration"]["reference_rpm"],3200)
+        self.assertEqual(effective["native_configuration"]["slider_crank"]["crankcase"]["bore_mm"],58)
+        self.assertEqual(effective["native_configuration"]["fuel_coupled_combustion"]["combustion_efficiency"],.71)
+        from motorsim.engine_configuration import validate
+        native=validate(self.context.engine())
+        self.assertEqual(native.slider_crank.crankcase.bore_mm,58)
+        self.assertEqual(native.fuel_coupled_combustion.ignition_timing_deg,112)
+        self.assertEqual(native.fuel_coupled_combustion.components[0].duration_deg,38)
+        self.assertEqual(native.fuel_coupled_combustion.components[0].shape_a,5.5)
+        self.assertEqual(native.fuel_coupled_combustion.components[0].shape_m,1.4)
         before = identity(self.context.engine())
         editable_row = next(i for i in range(page.ports.rowCount())
                             if page.ports.item(i, 3).flags() & Qt.ItemFlag.ItemIsEditable)
@@ -95,6 +112,9 @@ class DinoDesktopTests(unittest.TestCase):
         self.context.replace_project(create_project("map-ui-test",mapped))
         page=EnginePage(self.context)
         self.assertIn("Mapa 2×2",page.losses.item(0,2).text())
+        self.assertTrue(page.controls["load"].isEnabled())
+        self.assertFalse(page.controls["afr"].isEnabled())
+        page.controls["load"].setValue(.5)
         def edit_dialog():
             dialog=APP.activeModalWidget();grid=dialog.findChild(QTableWidget)
             grid.item(0,1).setText("850");dialog.accept()
@@ -102,6 +122,17 @@ class DinoDesktopTests(unittest.TestCase):
         page._edit_loss_map(0,2)
         page.apply()
         self.assertEqual(self.context.engine()["mechanical_loss_model"]["terms"][0]["operating_map"]["values_pa"][0][0],850)
+        self.assertEqual(self.context.engine()["operating_conditions"]["load"],.5)
+
+    def test_fixed_loss_load_and_declared_afr_are_not_presented_as_solver_controls(self):
+        page=EnginePage(self.context)
+        self.assertFalse(page.controls["load"].isEnabled())
+        self.assertIn("no controla mariposa",page.controls["load"].toolTip())
+        self.assertFalse(page.controls["afr"].isEnabled())
+        self.assertIn("no modifica el solver",page.controls["afr"].toolTip())
+        self.assertTrue(any("AFR editable aún" in label.text() for label in page.findChildren(QLabel)))
+        self.assertTrue(all(control.isEnabled() for control in page.comb.values()))
+        self.assertIn("supuestos sintéticos",page.combustion_notice.text())
 
     def test_project_save_open_and_variant_edit_preserve_base(self):
         page = ProjectPage(self.context)

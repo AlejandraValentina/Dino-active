@@ -78,7 +78,12 @@ def test_exhaust_variant_builds_exact_frustum_mesh_without_solver_step():
     sections = escape_sections(base)
     sections[1]["length_mm"] += 10
     changed = replace_escape_sections(base, sections, display_name="longer diffuser")
-    assert len(changed["native_configuration"]["ducts"][4]["mesh"]["volumes"]) == 5
+    base_solver=validate(base);changed_solver=validate(changed)
+    base_exhaust=next(duct for duct in base_solver.ducts if duct.id=="exhaust")
+    changed_exhaust=next(duct for duct in changed_solver.ducts if duct.id=="exhaust")
+    assert len(changed_exhaust.mesh.volumes) == 5
+    assert changed_exhaust.mesh.volumes != base_exhaust.mesh.volumes
+    assert changed_solver.configuration_identity["configuration_sha256"] != base_solver.configuration_identity["configuration_sha256"]
     assert identity(changed) != identity(base)
     deltas = compare_project_engines(create_project("p", base, variants={"longer": changed}), "longer")
     assert any("geometry_identity/chamber/sections/1/length_mm" in item["path"] for item in deltas)
