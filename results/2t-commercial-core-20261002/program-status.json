@@ -4891,6 +4891,153 @@
         "docs/dino_desktop_ux_v2/captures/after"
       ],
       "evidence_level": "L0"
+    },
+    {
+      "id": "DWT-REFERENCE-PRESERVATION",
+      "description": "Preserve owner authorization, Opus report, original captures and commercial reference URLs with matching hashes; record the 15-vs-16 count discrepancy.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/dino-tuning-workbench-v1/owner-authorization.md",
+        "results/dino-tuning-workbench-v1/owner-authorization.json",
+        "docs/dino_tuning_workbench_v1/reference/README.md",
+        "docs/dino_tuning_workbench_v1/reference/archive-manifest.json",
+        "docs/dino_tuning_workbench_v1/reference/DINO_COMMERCIAL_UX_BENCHMARK_PROPOSAL.md",
+        "docs/dino_tuning_workbench_v1/reference/captures"
+      ],
+      "next_action": "Reference archive complete; copied bytes verified against all transient source hashes.",
+      "objective": "DINO_TUNING_WORKBENCH_V1",
+      "owner_role": "evidence / provenance",
+      "write_scope": [
+        "docs/dino_tuning_workbench_v1/reference",
+        "results/dino-tuning-workbench-v1/owner-authorization.md",
+        "results/dino-tuning-workbench-v1/owner-authorization.json"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "DWT-F0-DESKTOP-DEFECTS",
+      "description": "Fix D1-D8: project overlay refresh, changed-section mapping, transparent bounded budget estimate, pressure autoscale, safe artifact-root preference handling, isolated test QSettings, unified variant name, and QWidget.metric override; add focused regressions.",
+      "dependencies": [
+        "DWT-REFERENCE-PRESERVATION"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Implement and verify F0; do not start simulations or alter scientific APIs.",
+      "objective": "DINO_TUNING_WORKBENCH_V1",
+      "owner_role": "desktop implementation / verification",
+      "write_scope": [
+        "motorsim/desktop",
+        "tests/test_dino_tuning_workbench_v1.py"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "DWT-F1-COMPONENT-BUILD",
+      "description": "Organize supported motor, ports, exhaust and combustion editing; expose existing-backend derived displacement, port timing, section geometry and per-section differences.",
+      "dependencies": [
+        "DWT-F0-DESKTOP-DEFECTS"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "After F0, build component tabs without inverse port conversion or unvalidated tuning claims.",
+      "objective": "DINO_TUNING_WORKBENCH_V1",
+      "owner_role": "desktop implementation",
+      "write_scope": [
+        "motorsim/desktop/engine_page.py",
+        "motorsim/desktop/exhaust_page.py",
+        "tests/test_dino_tuning_workbench_v1.py"
+      ],
+      "evidence_level": "L1"
+    },
+    {
+      "id": "DWT-F2-WORKBENCH-SHELL",
+      "description": "Implement B+ coordinated shell: persistent project/variant/baseline, component Build region, right results, bottom single-run controls, evidence drawer and responsive 980x680 mode.",
+      "dependencies": [
+        "DWT-F1-COMPONENT-BUILD"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "After component screens, replace separate navigation with a coordinated workspace while preserving semantic tests.",
+      "objective": "DINO_TUNING_WORKBENCH_V1",
+      "owner_role": "desktop architecture / implementation",
+      "write_scope": [
+        "motorsim/desktop/app.py",
+        "motorsim/desktop/context.py",
+        "motorsim/desktop/widgets",
+        "tests/test_dino_tuning_workbench_v1.py"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "DWT-F3-INTEGRATED-RUN-RESULTS",
+      "description": "Unify guarded single-run setup with active-variant history and selected results; show comparable-run estimates, progress, statuses, undefined reasons and explicit comparison warnings.",
+      "dependencies": [
+        "DWT-F2-WORKBENCH-SHELL"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Preserve single-run confirmation, existing preflight and conventional independent audit; no run execution in this task.",
+      "objective": "DINO_TUNING_WORKBENCH_V1",
+      "owner_role": "desktop implementation / contract guardian",
+      "write_scope": [
+        "motorsim/desktop/execution_page.py",
+        "motorsim/desktop/results_page.py",
+        "motorsim/desktop/widgets/run_history.py",
+        "tests/test_dino_tuning_workbench_v1.py"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "DWT-F4-ENGINEERING-VIEWS",
+      "description": "Add named exact discrete cell-by-angle pressure/flow maps, events from existing profiles, pressure scaling and same-coordinate differences; preserve empty power/torque states.",
+      "dependencies": [
+        "DWT-F3-INTEGRATED-RUN-RESULTS"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Use only audited existing traces and exact cell/angle coordinates; no interpolation or synthetic samples.",
+      "objective": "DINO_TUNING_WORKBENCH_V1",
+      "owner_role": "desktop visualization / contract guardian",
+      "write_scope": [
+        "motorsim/desktop/plot.py",
+        "motorsim/desktop/results_page.py",
+        "tests/test_dino_tuning_workbench_v1.py"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "DWT-PACKAGED-ACCEPTANCE",
+      "description": "Run component/integration tests and scenario; capture real source and packaged UI at 1360x900 and 980x680; build TRIAL, preserve existing exe hashes, validate OpenSpec/program-status and receipt.",
+      "dependencies": [
+        "DWT-F4-ENGINEERING-VIEWS"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Close only after the end-to-end engineering workflow has been exercised without starting a solver.",
+      "objective": "DINO_TUNING_WORKBENCH_V1",
+      "owner_role": "verification / release",
+      "write_scope": [
+        "docs/dino_tuning_workbench_v1",
+        "results/dino-tuning-workbench-v1",
+        "packaging",
+        "tests/test_dino_tuning_workbench_v1.py"
+      ],
+      "evidence_level": "L0"
     }
   ],
   "audit_remediation_mode": false,
@@ -5091,28 +5238,24 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_DESKTOP_UX_V2",
+    "id": "DINO_TUNING_WORKBENCH_V1",
     "state": "ACTIVE",
     "owner_approved": true,
-    "classification": null,
-    "summary": "Redesign the Windows Qt desktop into a project/variant-centered engineering workspace. Deliver P0/P1/P2 UI behavior, audited run browsing/comparison, responsive pages and trial package without changes to solver, physics, contracts, or scientific campaigns. Preserve EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL as immutable history.",
-    "change": "openspec/changes/dino-desktop-ux-v2",
-    "spec": "openspec/changes/dino-desktop-ux-v2/specs/dino-desktop-ux-v2/spec.md",
-    "set_by": "explicit owner authorization communicated 2026-10-14; full prompt SHA-256 f4eb610d0cad49eb0c9ce3c74daf900eabbb785c25e37ea0bddfe679d825f911",
-    "authorization": "results/dino-desktop-ux-v2/owner-authorization.json",
-    "completion_criterion": "DINO_DESKTOP_UX_V2_READY only when P0/P1/P2 behavior, automated tests, visual checks at supported sizes, real application workflow and Windows trial package are verified; otherwise DINO_DESKTOP_UX_V2_PARTIAL with blockers. No scientific changes/campaigns/push.",
+    "summary": "Implement owner-authorized B+ engineering tuning workbench. Preserve solver, physics, mesh, periodicity, hard gates and historical results; no campaigns, batch runs, or push.",
+    "change": "openspec/changes/dino-tuning-workbench-v1",
+    "spec": "openspec/changes/dino-tuning-workbench-v1/specs/dino-tuning-workbench-v1/spec.md",
+    "set_by": "explicit owner authorization communicated 2026-10-14; request hash in results/dino-tuning-workbench-v1/owner-authorization.json",
+    "authorization": "results/dino-tuning-workbench-v1/owner-authorization.json",
+    "completion_criterion": "DINO_TUNING_WORKBENCH_V1_READY only after F0-F4 behavior, isolated tests, supported-size visual workflow, end-to-end scenario and packaged TRIAL smoke pass; otherwise PARTIAL with concrete blockers. No scientific changes, campaign, or push.",
     "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
     "gate_tasks": [
-      "DSUX2-PRESERVATION",
-      "DSUX2-P0-SHELL-CONTEXT",
-      "DSUX2-P0-RESULTS-ISOLATION",
-      "DSUX2-P0-EXHAUST-CREATION",
-      "DSUX2-P1-RUN-HISTORY",
-      "DSUX2-P1-RESULTS-COMPARE",
-      "DSUX2-P1-SIMULATION-PREP",
-      "DSUX2-P2-RESPONSIVE-ENGINE",
-      "DSUX2-P2-NAVIGATION",
-      "DSUX2-VISUAL-PACKAGE"
+      "DWT-REFERENCE-PRESERVATION",
+      "DWT-F0-DESKTOP-DEFECTS",
+      "DWT-F1-COMPONENT-BUILD",
+      "DWT-F2-WORKBENCH-SHELL",
+      "DWT-F3-INTEGRATED-RUN-RESULTS",
+      "DWT-F4-ENGINEERING-VIEWS",
+      "DWT-PACKAGED-ACCEPTANCE"
     ]
   },
   "objectives": [
@@ -5389,10 +5532,10 @@
     },
     {
       "id": "DINO_DESKTOP_UX_V2",
-      "state": "APPROVED",
+      "state": "PASS",
       "owner_approved": true,
-      "classification": null,
-      "summary": "Redesign the Windows Qt desktop into a project/variant-centered engineering workspace. Deliver P0/P1/P2 UI behavior, audited run browsing/comparison, responsive pages and trial package without changes to solver, physics, contracts, or scientific campaigns. Preserve EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL as immutable history.",
+      "classification": "DINO_DESKTOP_UX_V2_READY",
+      "summary": "Owner-authorized B+ desktop work completed; packaged Windows result selection and comparison PASS. Scientific evidence remains unchanged.",
       "change": "openspec/changes/dino-desktop-ux-v2",
       "spec": "openspec/changes/dino-desktop-ux-v2/specs/dino-desktop-ux-v2/spec.md",
       "authorization": "results/dino-desktop-ux-v2/owner-authorization.json",
@@ -5407,6 +5550,24 @@
         "DSUX2-P2-RESPONSIVE-ENGINE",
         "DSUX2-P2-NAVIGATION",
         "DSUX2-VISUAL-PACKAGE"
+      ]
+    },
+    {
+      "id": "DINO_TUNING_WORKBENCH_V1",
+      "state": "APPROVED",
+      "owner_approved": true,
+      "summary": "Owner-authorized unified 2T engineering tuning workbench. Correct UX defects and implement B+ component editor, coordinated single-run/results flow, discrete exact data views, and packaged acceptance without changing physics or historical evidence.",
+      "change": "openspec/changes/dino-tuning-workbench-v1",
+      "spec": "openspec/changes/dino-tuning-workbench-v1/specs/dino-tuning-workbench-v1/spec.md",
+      "authorization": "results/dino-tuning-workbench-v1/owner-authorization.json",
+      "gate_tasks": [
+        "DWT-REFERENCE-PRESERVATION",
+        "DWT-F0-DESKTOP-DEFECTS",
+        "DWT-F1-COMPONENT-BUILD",
+        "DWT-F2-WORKBENCH-SHELL",
+        "DWT-F3-INTEGRATED-RUN-RESULTS",
+        "DWT-F4-ENGINEERING-VIEWS",
+        "DWT-PACKAGED-ACCEPTANCE"
       ]
     }
   ],
@@ -6502,6 +6663,18 @@
       "task": "DSUX2-VISUAL-PACKAGE",
       "kind": "verification",
       "summary": "Final Windows TRIAL smoke PASS: project opened outside repo cwd; existing result opened from history; two runs compared across artifact roots, reaudited, with pressure/flow, honest undefined metrics and 1360x900/980x680 captures. No solver started."
+    },
+    {
+      "at": "2026-10-14T17:00:02+00:00",
+      "task": "DWT-REFERENCE-PRESERVATION",
+      "kind": "process",
+      "summary": "Owner authorization and complete Opus reference archive persisted. All 16 distinct transient PNGs match source hashes; the request expected 15, discrepancy recorded. 26 commercial reference URLs retained with source/evidence labels."
+    },
+    {
+      "at": "2026-10-14T17:00:02+00:00",
+      "task": "DWT-F0-DESKTOP-DEFECTS",
+      "kind": "process",
+      "summary": "Started F0 after rechecking unrelated FRPM blocker; its unblock task remains READY. Current build HEAD 3f5ce5b. Untracked exploratory-workflow-v1/ preserved untouched."
     }
   ],
   "legacy_gate_status": {
@@ -6516,19 +6689,28 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_DESKTOP_UX_V2",
-    "state": "PASS",
-    "classification": "DINO_DESKTOP_UX_V2_READY",
+    "objective": "DINO_TUNING_WORKBENCH_V1",
+    "state": "OPEN",
+    "classification": "DINO_TUNING_WORKBENCH_V1_PARTIAL",
     "evidence": [
-      "Final packaged acceptance receipt and real Dino2T.exe captures: result selection, audit/reconstruction, cross-root comparison, pressure/flow, geometry binding, undefined metrics, package integrity and clean close verified."
+      "Owner authorization active; Opus proposal and 16 source captures hash-preserved. F0 implementation in progress; no solver or campaign execution."
     ],
-    "gate_tasks_total": 10,
-    "gate_tasks_done": 10,
+    "gate_tasks_total": 7,
+    "gate_tasks_done": 1,
     "gate_task_states": {
-      "DONE": 10
+      "DONE": 1,
+      "IN_PROGRESS": 1,
+      "WAITING": 5
     },
-    "remaining": [],
-    "updated_at": "2026-10-14T15:53:21+00:00"
+    "remaining": [
+      "DWT-F0-DESKTOP-DEFECTS",
+      "DWT-F1-COMPONENT-BUILD",
+      "DWT-F2-WORKBENCH-SHELL",
+      "DWT-F3-INTEGRATED-RUN-RESULTS",
+      "DWT-F4-ENGINEERING-VIEWS",
+      "DWT-PACKAGED-ACCEPTANCE"
+    ],
+    "updated_at": "2026-10-14T17:00:18+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -6770,5 +6952,24 @@
     },
     "remaining": [],
     "updated_at": "2026-10-14T14:12:48+00:00"
-  }
+  },
+  "gate_status_history": [
+    {
+      "objective": "DINO_DESKTOP_UX_V2",
+      "state": "PASS",
+      "classification": "DINO_DESKTOP_UX_V2_READY",
+      "gate_tasks_total": 10,
+      "gate_tasks_done": 10,
+      "gate_task_states": {
+        "DONE": 10
+      },
+      "remaining": [],
+      "updated_at": "2026-10-14T15:53:20+00:00",
+      "evidence": [
+        "results/dino-desktop-ux-v2/packaged-acceptance-receipt.json",
+        "docs/dino_desktop_ux_v2/captures/after/packaged",
+        "openspec/changes/dino-desktop-ux-v2/tasks.md"
+      ]
+    }
+  ]
 }
