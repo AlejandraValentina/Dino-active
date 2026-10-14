@@ -4847,11 +4847,16 @@
         "DSUX2-P2-NAVIGATION",
         "DSUX2-P0-EXHAUST-CREATION"
       ],
-      "state": "IN_PROGRESS",
-      "blocker": null,
+      "state": "BLOCKED_LOCAL",
+      "blocker": "Windows trial package build, launch, project open, and navigation to Resultados are verified. Loading an existing results artifact in the packaged UI was not confirmed; completion criterion requires it.",
       "commits": [],
-      "evidence": [],
-      "next_action": "Complete after feature tasks; package must be TRIAL because the worktree contains unrelated Ostacky changes. Preserve MotorSim.exe.",
+      "evidence": [
+        "results/dino-desktop-ux-v2/windows-trial-build-receipt.json",
+        "docs/dino_desktop_ux_v2/captures/after/windows-trial-results-unselected.png",
+        "results/dino-desktop-ux-v2/visual-check-receipt.json",
+        "tests/test_dino_desktop_ux_v2.py"
+      ],
+      "next_action": "Use interactive Windows UI automation against Dino2T.exe to load an existing referenced result, verify it renders and close; then rerun package integrity and status checks.",
       "objective": "DINO_DESKTOP_UX_V2",
       "owner_role": "verification / release",
       "write_scope": [
@@ -4861,6 +4866,29 @@
         "scripts/agents/dino_desktop_ux_v2_smoke.py",
         "packaging",
         "dist"
+      ],
+      "evidence_level": "L0",
+      "unblock_tasks": [
+        "DSUX2-PACKAGE-RESULTS-INTERACTIVE"
+      ],
+      "no_local_unblock_reason": null
+    },
+    {
+      "id": "DSUX2-PACKAGE-RESULTS-INTERACTIVE",
+      "description": "Complete interactive smoke of the built Windows trial package: open an existing referenced result through the packaged UI, verify the artifact loads, and close cleanly without starting a solver.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/dino-desktop-ux-v2/windows-trial-build-receipt.json"
+      ],
+      "next_action": "Use the package build identified by its receipt; do not rebuild or alter scientific configuration unless the package source changes.",
+      "objective": "DINO_DESKTOP_UX_V2",
+      "owner_role": "verification / release",
+      "write_scope": [
+        "results/dino-desktop-ux-v2",
+        "docs/dino_desktop_ux_v2/captures/after"
       ],
       "evidence_level": "L0"
     }
@@ -6456,6 +6484,18 @@
       "task": "DSUX2-VISUAL-PACKAGE",
       "kind": "task",
       "summary": "Live Windows app opened and captured; functional project/variant/escape/result workflow and Qt layouts at 1360x900/980x680 under 100/125/150 percent completed. Windows display scale left unchanged; trial build pending."
+    },
+    {
+      "at": "2026-10-14T15:13:22+00:00",
+      "task": "DSUX2-VISUAL-PACKAGE",
+      "kind": "verification",
+      "summary": "Trial package built, integrity checked, launched, opened a project, and reached Results. Artifact loading in the packaged UI remains unconfirmed; created an interactive unblock task."
+    },
+    {
+      "at": "2026-10-14T15:14:48+00:00",
+      "task": "DSUX2-VISUAL-PACKAGE",
+      "kind": "verification",
+      "summary": "Final verification: 15 UX tests PASS; OpenSpec strict PASS; program-status check PASS; TRIAL zip and preserved executable hashes PASS. Packaged results artifact load remains NOT_CONFIRMED."
     }
   ],
   "legacy_gate_status": {
@@ -6472,18 +6512,20 @@
   "gate_status": {
     "objective": "DINO_DESKTOP_UX_V2",
     "state": "OPEN",
-    "classification": null,
-    "evidence": [],
+    "classification": "DINO_DESKTOP_UX_V2_PARTIAL",
+    "evidence": [
+      "UX source tests and layouts pass; Windows TRIAL launched, opened a project, and navigated to Results; loading a referenced artifact in the package remains unconfirmed."
+    ],
     "gate_tasks_total": 10,
     "gate_tasks_done": 9,
     "gate_task_states": {
       "DONE": 9,
-      "READY": 1
+      "BLOCKED_LOCAL": 1
     },
     "remaining": [
       "DSUX2-VISUAL-PACKAGE"
     ],
-    "updated_at": "2026-10-14T15:00:06+00:00"
+    "updated_at": "2026-10-14T15:14:48+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

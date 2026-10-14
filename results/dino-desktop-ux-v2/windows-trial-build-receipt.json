@@ -1,0 +1,90 @@
+{
+  "schema": "DINO_DESKTOP_UX_V2_WINDOWS_TRIAL_BUILD_RECEIPT_V1",
+  "folder": "dist\\MotorSim-0.1.0-rc6-windows-x64-7477d714-trial-20261014T150329Z\\MotorSim",
+  "zip": "dist\\MotorSim-0.1.0-rc6-windows-x64-7477d714-trial-20261014T150329Z.zip",
+  "zip_sha256": "3d8e93e7cc41c19e65277652bfa6e05ef2a7d6eff39e82386c4d17a03a916ea5",
+  "zip_bytes": 45737710,
+  "folder_bytes": 109756675,
+  "source_commit": "7477d714f37bae4461982fa9e392397adbd497d7",
+  "source_dirty": true,
+  "trial": true,
+  "python": "3.11.0 (main, Oct 24 2022, 18:26:48) [MSC v.1933 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "architecture": "AMD64",
+  "dependencies": {
+    "altgraph": "0.17.5",
+    "packaging": "26.3",
+    "pefile": "2024.8.26",
+    "pip": "22.3",
+    "pyinstaller": "6.22.3",
+    "pyinstaller-hooks-contrib": "2026.7",
+    "PySide6": "6.11.2",
+    "PySide6_Addons": "6.11.2",
+    "PySide6_Essentials": "6.11.2",
+    "pywin32-ctypes": "0.2.3",
+    "setuptools": "65.5.0",
+    "shiboken6": "6.11.2",
+    "pywinauto": "0.6.9",
+    "comtypes": "1.4.16",
+    "pywin32": "312",
+    "six": "1.17.0"
+  },
+  "executables": [
+    {
+      "path": "dist\\MotorSim-0.1.0-rc6-windows-x64-7477d714-trial-20261014T150329Z\\MotorSim\\Dino2T.exe",
+      "bytes": 2331659,
+      "sha256": "f18d93bb1e285165abd618061ebc0765d151fd2f73b0d534c381163727adb35d"
+    },
+    {
+      "path": "dist\\MotorSim-0.1.0-rc6-windows-x64-7477d714-trial-20261014T150329Z\\MotorSim\\MotorSim.exe",
+      "bytes": 2099881,
+      "sha256": "667e04e1068a19ddaf8c6ee7e04343f3ad87e5966bbc9acfb138365002228cc4"
+    },
+    {
+      "path": "dist\\MotorSim-0.1.0-rc6-windows-x64-7477d714-trial-20261014T150329Z\\MotorSim\\MotorSimWorker.exe",
+      "bytes": 1865976,
+      "sha256": "131f2aa3177b0bec2786edf81e38961b232180cb7b7562c1802112f2bd379454"
+    }
+  ],
+  "existing_MotorSim_exe_preserved": true,
+  "preexisting_MotorSim_exes": [
+    {
+      "path": "dist\\MotorSim-0.1.0-rc6-windows-x64-39e0bcf8-trial-20261014T105853Z\\MotorSim\\MotorSim.exe",
+      "bytes": 2099881,
+      "sha256": "0a4cfe1de236738fad73a832dd3efa8ccc86412e95537b8f93b109a644932b22"
+    },
+    {
+      "path": "dist\\MotorSim-0.1.0-rc6-windows-x64-39e0bcf8-trial-20261014T110005Z\\MotorSim\\MotorSim.exe",
+      "bytes": 2099881,
+      "sha256": "104f545fc67472f3082501e52bc631cd50237b74cf5c29fbb066c7e2c5485b85"
+    },
+    {
+      "path": "dist\\MotorSim-0.1.0-rc6-windows-x64-39e0bcf8-trial-20261014T110422Z\\MotorSim\\MotorSim.exe",
+      "bytes": 2099881,
+      "sha256": "474ef1c5a279082616afc67f349d0b18272ce10637633780fd66f51115ec2549"
+    },
+    {
+      "path": "dist\\MotorSim-0.1.0-rc6-windows-x64-c08efc30-trial-20261014T114516Z\\MotorSim\\MotorSim.exe",
+      "bytes": 2099881,
+      "sha256": "02177593255a3038719144326a49c738764053c7f0a5dabd2d6c85c6d0cd7f1e"
+    }
+  ],
+  "zip_test": "PASS",
+  "package_smoke": {
+    "launch": "PASS",
+    "window_title": "Dino 2T — dino-project",
+    "project_open": "PASS (native Open Project dialog; title changed to the opened project)",
+    "navigation": "PASS (packaged app navigated to Resultados; captured exact HWND using PrintWindow)",
+    "results_artifact_load": "NOT_CONFIRMED",
+    "solver_started": false,
+    "close": "PASS (window closed after smoke)",
+    "screenshot": {
+      "path": "docs/dino_desktop_ux_v2/captures/after/windows-trial-results-unselected.png",
+      "sha256": "39c58bc3e56b702f9b452c6dd6c1f7c713f5ccafe665679cbd83f8541b835895",
+      "width": 1456,
+      "height": 876,
+      "capture": "PrintWindow on the exact Dino2T.exe window handle; shows the Resultados page with no selected run"
+    },
+    "limitation": "The packaged UI did not confirm opening/loading an existing results artifact. Source application workflow and full importer audit are separately verified by the UX smoke and tests."
+  }
+}
