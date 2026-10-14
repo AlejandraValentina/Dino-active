@@ -22,17 +22,16 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: EXHAUST_MESH_V1
-change/spec:       openspec/changes/exhaust-mesh-v1/
-                   (specs/exhaust-mesh-v1/spec.md es la autoridad de requisitos)
-completion:        adaptador axial versionado de 1/2/4 celdas por sección,
-                   conservación y binding de identidad verificados, integración
-                   Desktop/proyectos y diagnósticos A/B 1/2/4 con presupuesto
-                   agregado máximo 1800 s. Sin campañas RPM completas, KT100
-                   ni claim de validación experimental o independencia espacial.
+CURRENT_OBJECTIVE: EXHAUST_NUMERICAL_CONVERGENCE_V2
+change/spec:       openspec/changes/exhaust-numerical-convergence-v2/
+                   (specs/exhaust-numerical-convergence-v2/spec.md is the authority of requirements)
+completion:        controlled duct wave/reflection/area-transition and separated
+                   temporal/spatial diagnostics; bounded A/B 1/2/4/8 at 3000 RPM
+                   only if interpretable and within the aggregate 1800 s budget.
+                   No full RPM campaign, KT100, periodicity fiction, spatial
+                   independence claim without evidence, or experimental claim.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
-
 ```
 
 El valor machine-readable vive en `program-status.json → current_objective`; si

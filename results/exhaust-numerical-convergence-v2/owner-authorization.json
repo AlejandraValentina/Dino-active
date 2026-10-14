@@ -1,0 +1,34 @@
+{
+  "schema": "EXHAUST_NUMERICAL_CONVERGENCE_V2_OWNER_AUTHORIZATION_V1",
+  "objective": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
+  "authorized": true,
+  "communicated_at": "2026-10-14",
+  "authorized_at_head": "7fb3b7aedb5641f1749e3e51cbb71b1fdc559f4e",
+  "source_attachment": "C:\\Users\\ageribon.MIDES\\.codex\\attachments\\863414d0-6c5f-4a7e-828c-f77865ffcb0e\\Pasted text.txt",
+  "source_attachment_sha256": "facf16260be493926c23b356a38ec09b140c59ad610ba1b068103a1585fdf433",
+  "scope": [
+    "verify final EXHAUST_MESH_V1 adapter versus 9b49 diagnostic identity under current hash",
+    "controlled 1D duct wave/reflection/area-transition and time/space sensitivity tests",
+    "bounded A/B 1/2/4/8 at 3000 RPM only if diagnostics interpretable and budget allows",
+    "tests, OpenSpec strict, program-status check, receipts and classified findings"
+  ],
+  "budget": {
+    "aggregate_new_solver_diagnostic_wall_seconds": 1800,
+    "stop_at_limit": true,
+    "prioritize_controlled_duct_tests": true
+  },
+  "exclusions": [
+    "full RPM campaigns",
+    "KT100",
+    "alteration of historical EXHAUST_MESH_V1/R2/IMPL2 evidence",
+    "spatial-independence claim without evidence",
+    "experimental-validation claim",
+    "push"
+  ],
+  "prior_context": {
+    "EXHAUST_MESH_V1": "PARTIAL",
+    "diagnostic_adapter_sha256_prefix": "9b49",
+    "final_adapter_sha256_prefix": "f059",
+    "old_diagnostics_must_not_be_attributed_to_current_hash": true
+  }
+}
