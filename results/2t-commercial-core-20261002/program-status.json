@@ -4529,6 +4529,80 @@
       ],
       "next_action": null,
       "classification": "113_RELEVANT_TESTS_OPENSPEC_STRICT_AND_PROGRAM_STATUS_PASS_OBJECTIVE_PARTIAL_ON_SPATIAL_NONCONVERGENCE"
+    },
+    {
+      "id": "ENCV2-IDENTITY-FORENSICS",
+      "description": "Verify final f059 exhaust adapter implementation against the 9b49 diagnostic adapter, focal geometry/remap/area-source/boundary/checkpoint tests, and current identity.",
+      "dependencies": [],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Inspect source history and run focal tests under current adapter identity.",
+      "objective": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
+      "owner_role": "orchestrator / verification",
+      "write_scope": [
+        "motorsim/exhaust_mesh_v1.py",
+        "tests/test_exhaust_mesh_v1.py",
+        "tests/test_exhaust_mesh_v1_solver.py"
+      ],
+      "evidence_level": "L1"
+    },
+    {
+      "id": "ENCV2-CONTROLLED-DUCT",
+      "description": "Build and run controlled constant-area wave, known reflection, area-transition and temporal/spatial sensitivity cases before motor diagnostics.",
+      "dependencies": [
+        "ENCV2-IDENTITY-FORENSICS"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Start after final-identity review.",
+      "objective": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
+      "owner_role": "orchestrator / verification",
+      "write_scope": [
+        "motorsim/gas1d/verification.py",
+        "tests/test_exhaust_numerical_convergence_v2.py"
+      ],
+      "evidence_level": "L1"
+    },
+    {
+      "id": "ENCV2-AB-MATRIX",
+      "description": "Repeat A/B 3000 RPM diagnostics at 1/2/4/8 only if controlled duct tests are interpretable and aggregate budget remains.",
+      "dependencies": [
+        "ENCV2-CONTROLLED-DUCT"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Do not execute until controlled cases pass and budget check confirms capacity.",
+      "objective": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
+      "owner_role": "orchestrator / verification",
+      "write_scope": [
+        "results/exhaust-numerical-convergence-v2/diagnostic-receipt.json"
+      ],
+      "evidence_level": "L1"
+    },
+    {
+      "id": "ENCV2-REGRESSION-ADMIN",
+      "description": "Run relevant regressions, OpenSpec strict, program-status check and record budget, hashes, limitations and final classification.",
+      "dependencies": [
+        "ENCV2-CONTROLLED-DUCT"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Close after diagnostics or blocker classification.",
+      "objective": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
+      "owner_role": "orchestrator / verification",
+      "write_scope": [
+        "results/exhaust-numerical-convergence-v2/diagnostic-receipt.json",
+        "results/2t-commercial-core-20261002/program-status.json"
+      ],
+      "evidence_level": "L0"
     }
   ],
   "audit_remediation_mode": false,
@@ -4729,25 +4803,22 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "EXHAUST_MESH_V1",
-    "state": "FAIL_TERMINAL",
+    "id": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
+    "state": "ACTIVE",
     "owner_approved": true,
-    "classification": "EXHAUST_MESH_V1_PARTIAL",
-    "summary": "Versioned exact 1/2/4 exhaust mesh, conservative mapping, area-aware solver balance, Desktop integration, checkpoint identity and six audited one-cycle diagnostics completed. Spatial response did not stabilize and no periodicity was evaluated; terminal classification will be PARTIAL.",
-    "change": "openspec/changes/exhaust-mesh-v1",
-    "spec": "openspec/changes/exhaust-mesh-v1/specs/exhaust-mesh-v1/spec.md",
-    "set_by": "explicit owner authorization communicated 2026-10-14; receipt results/exhaust-mesh-v1/owner-authorization.json",
-    "authorization": "results/exhaust-mesh-v1/owner-authorization.json",
-    "completion_criterion": "EXHAUST_MESH_V1_READY only if geometry, conservation, numerical area-source consistency, integration, tests and the complete bounded 1/2/4 diagnostic support it; otherwise EXHAUST_MESH_V1_PARTIAL with unresolved convergence/physical limits stated. No complete RPM campaign, KT100 or experimental claim.",
+    "classification": null,
+    "summary": "Determine whether the 1D exhaust solution converges spatially and whether A/B design differences are separable from discretization error. Controlled duct verification precedes a bounded 3000 RPM A/B 1/2/4/8 diagnostic matrix. No full RPM campaign, KT100, periodicity fiction, or experimental claim.",
+    "change": "openspec/changes/exhaust-numerical-convergence-v2",
+    "spec": "openspec/changes/exhaust-numerical-convergence-v2/specs/exhaust-numerical-convergence-v2/spec.md",
+    "set_by": "explicit owner authorization communicated 2026-10-14; attachment SHA-256 facf16260be493926c23b356a38ec09b140c59ad610ba1b068103a1585fdf433",
+    "authorization": "results/exhaust-numerical-convergence-v2/owner-authorization.json",
+    "completion_criterion": "Classify EXHAUST_NUMERICAL_CONVERGENCE_V2_READY only if controlled waves and bounded A/B refinements support a defensible spatial error/convergence conclusion; otherwise PARTIAL or BLOCKED with concrete limits. Never claim spatial independence or experimental validation without evidence.",
     "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
     "gate_tasks": [
-      "EXM-FORENSICS",
-      "EXM-ADAPTER",
-      "EXM-SOLVER-VERIFICATION",
-      "EXM-DESKTOP-INTEGRATION",
-      "EXM-IDENTITY-CHECKPOINT",
-      "EXM-BOUNDED-DIAGNOSTICS",
-      "EXM-REGRESSION-ADMIN"
+      "ENCV2-IDENTITY-FORENSICS",
+      "ENCV2-CONTROLLED-DUCT",
+      "ENCV2-AB-MATRIX",
+      "ENCV2-REGRESSION-ADMIN"
     ]
   },
   "objectives": [
@@ -5004,6 +5075,21 @@
         "EXM-IDENTITY-CHECKPOINT",
         "EXM-BOUNDED-DIAGNOSTICS",
         "EXM-REGRESSION-ADMIN"
+      ]
+    },
+    {
+      "id": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
+      "state": "APPROVED",
+      "owner_approved": true,
+      "summary": "Determine whether the 1D exhaust solution converges spatially and whether A/B design differences are separable from discretization error. Controlled duct verification precedes a bounded 3000 RPM A/B 1/2/4/8 diagnostic matrix. No full RPM campaign, KT100, periodicity fiction, or experimental claim.",
+      "change": "openspec/changes/exhaust-numerical-convergence-v2",
+      "spec": "openspec/changes/exhaust-numerical-convergence-v2/specs/exhaust-numerical-convergence-v2/spec.md",
+      "authorization": "results/exhaust-numerical-convergence-v2/owner-authorization.json",
+      "gate_tasks": [
+        "ENCV2-IDENTITY-FORENSICS",
+        "ENCV2-CONTROLLED-DUCT",
+        "ENCV2-AB-MATRIX",
+        "ENCV2-REGRESSION-ADMIN"
       ]
     }
   ],
@@ -5979,6 +6065,12 @@
       "task": "EXM-REGRESSION-ADMIN",
       "kind": "task",
       "summary": "113 focused/new, configuration, Desktop, workflow, and IntegratedEngine2T tests pass; six diagnostic artifacts independently imported and re-audited; OpenSpec strict passes. Spatial sensitivity fails to stabilize, so classify EXHAUST_MESH_V1_PARTIAL; preserve historical evidence and Ostacky."
+    },
+    {
+      "at": "2026-10-14T13:50:00+00:00",
+      "task": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
+      "kind": "objective_transition",
+      "summary": "Owner-authorized transition to EXHAUST_NUMERICAL_CONVERGENCE_V2; authorization attachment SHA-256 facf16260be493926c23b356a38ec09b140c59ad610ba1b068103a1585fdf433. Prior EXHAUST_MESH_V1 gate archived unchanged; 1800 s new diagnostic budget; no campaign or push."
     }
   ],
   "legacy_gate_status": {
@@ -5993,19 +6085,23 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "EXHAUST_MESH_V1",
-    "state": "FAIL_TERMINAL",
-    "classification": "EXHAUST_MESH_V1_PARTIAL",
-    "evidence": [
-      "results/exhaust-mesh-v1/final-receipt.json"
-    ],
-    "gate_tasks_total": 7,
-    "gate_tasks_done": 7,
+    "objective": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
+    "state": "OPEN",
+    "classification": null,
+    "evidence": [],
+    "gate_tasks_total": 4,
+    "gate_tasks_done": 0,
     "gate_task_states": {
-      "DONE": 7
+      "IN_PROGRESS": 1,
+      "WAITING": 3
     },
-    "remaining": [],
-    "updated_at": "2026-10-14T13:23:47+00:00"
+    "remaining": [
+      "ENCV2-IDENTITY-FORENSICS",
+      "ENCV2-CONTROLLED-DUCT",
+      "ENCV2-AB-MATRIX",
+      "ENCV2-REGRESSION-ADMIN"
+    ],
+    "updated_at": "2026-10-14T13:50:00+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -6217,5 +6313,20 @@
     },
     "remaining": [],
     "updated_at": "2026-10-14T12:37:31+00:00"
+  },
+  "gate_status_archive_before_exhaust_numerical_convergence_v2": {
+    "objective": "EXHAUST_MESH_V1",
+    "state": "FAIL_TERMINAL",
+    "classification": "EXHAUST_MESH_V1_PARTIAL",
+    "evidence": [
+      "results/exhaust-mesh-v1/final-receipt.json"
+    ],
+    "gate_tasks_total": 7,
+    "gate_tasks_done": 7,
+    "gate_task_states": {
+      "DONE": 7
+    },
+    "remaining": [],
+    "updated_at": "2026-10-14T13:23:47+00:00"
   }
 }
