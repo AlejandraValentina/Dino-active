@@ -4698,16 +4698,23 @@
       "dependencies": [
         "DSUX2-PRESERVATION"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Keep mesh selector advanced, visibly marked spatial independence not demonstrated; no solver or adapter edits.",
+      "evidence": [
+        "Escape editor now uses N+1 editable shared station diameters and N segment lengths; backend sections are composed from the shared stations and validated before save. Profile is axially/radially dimensionally scaled and overlays a selected variant.",
+        "Mesh selectors are isolated in a collapsed advanced group with explicit “spatial independence not demonstrated” warning; refresh removes prior cell widgets before creating new controls.",
+        "Save-current and save-as-new are separate; new variants require a user-supplied name in the UI. Base geometry is preserved and unsupported segment topology/types remain unavailable.",
+        "Seven focused tests pass, including repeated refresh/no duplicate controls, shared diameter continuity, explicit naming and in-place update. No solver or mesh adapter changes."
+      ],
+      "next_action": "P0 escape controls complete; continue with read-only run history and responsive result navigation.",
       "objective": "DINO_DESKTOP_UX_V2",
       "owner_role": "implementation / UI",
       "write_scope": [
         "motorsim/desktop/exhaust_page.py",
-        "motorsim/desktop/widgets/exhaust_editor.py"
+        "motorsim/desktop/widgets/exhaust_editor.py",
+        "tests/test_dino_desktop.py",
+        "tests/test_dino_desktop_ux_v2.py"
       ],
       "evidence_level": "L0"
     },
@@ -6377,6 +6384,12 @@
       "task": "DSUX2-P0-RESULTS-ISOLATION",
       "kind": "completion",
       "summary": "Historical IMPL2 no longer auto-loads; explicit historical label and shared configurable artifact root implemented; 17 desktop tests pass."
+    },
+    {
+      "at": "2026-10-14T14:31:12+00:00",
+      "task": "DSUX2-P0-EXHAUST-CREATION",
+      "kind": "completion",
+      "summary": "Shared-station escape geometry, dimensionally scaled profile, advanced mesh warning and explicit variant save actions implemented; focused tests pass."
     }
   ],
   "legacy_gate_status": {
@@ -6459,7 +6472,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-14T11:29:12-03:00",
+  "updated_at": "2026-10-14T11:31:12-03:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",

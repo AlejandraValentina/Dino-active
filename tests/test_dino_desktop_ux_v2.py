@@ -15,6 +15,7 @@ from motorsim.desktop.services import new_project
 from motorsim.desktop.execution_page import ExecutionPage
 from motorsim.desktop.results_page import ResultsPage
 from motorsim.desktop.preferences import artifact_root,set_artifact_root
+from motorsim.desktop.exhaust_page import ExhaustPage
 from motorsim.engine_configuration import identity
 
 
@@ -73,6 +74,30 @@ class DesktopContextV2Tests(unittest.TestCase):
         finally:
             if old is None:prefs.remove("artifact_root")
             else:set_artifact_root(old)
+
+    def test_escape_editor_uses_each_shared_station_once_and_rebuilds_widgets_safely(self):
+        page=ExhaustPage(DesktopContext(new_project("ux-v2-stations")))
+        count=page.table.rowCount()
+        self.assertEqual(page.stations.rowCount(),count+1)
+        page.refresh();page.refresh()
+        combos=[page.mesh_table.cellWidget(i,1) for i in range(count)]
+        self.assertEqual(sum(widget is not None for widget in combos),count)
+        # One station diameter feeds both adjoining segments without duplicate fields.
+        page.stations.item(1,2).setText("21,5")
+        rows=page._rows()
+        self.assertEqual(rows[0]["outlet_diameter_mm"],21.5)
+        self.assertEqual(rows[1]["inlet_diameter_mm"],21.5)
+        self.assertEqual(sum(1 for i in range(count) if page.mesh_table.cellWidget(i,1) is not None),count)
+
+    def test_escape_variant_save_is_named_and_current_variant_is_updated_in_place(self):
+        context=DesktopContext(new_project("ux-v2-escape-save"));page=ExhaustPage(context)
+        self.assertTrue(page.save_as_new(name="Resonador B"))
+        self.assertEqual(context.selected_variant,"Resonador B")
+        variant_count=len(context.project["variants"])
+        page.table.item(1,2).setText("185,5")
+        self.assertTrue(page.save_current())
+        self.assertEqual(len(context.project["variants"]),variant_count)
+        self.assertEqual(context.engine()["native_configuration"]["geometry_identity"]["chamber"]["sections"][1]["length_mm"],185.5)
 
 
 if __name__=="__main__":
