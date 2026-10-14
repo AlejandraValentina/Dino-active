@@ -23,10 +23,10 @@ The DWT-F0 through DWT-F4 source implementation is complete. No simulation or ca
 
 Built from dirty-tree HEAD `7366284674abd9cdf5fa59f10354f823cec1ea3c` using `packaging/build_windows.py --trial`:
 
-- Folder: `dist/MotorSim-0.1.0-rc6-windows-x64-73662846-trial-20261014T175142Z/MotorSim`
-- ZIP SHA-256: `5282306dde23983a64603acc134b1e0cff971508a3af8e32946b95ca49200acf` (ZIP integrity check PASS, 299 entries)
-- New bundle executable SHA-256: `Dino2T.exe A717D0EF14E4F355D97AA371383896E3D893D298C85BAF3F4DAE8B2E3247CE78`; `MotorSim.exe 9337D35857C7B2CE4E503BE220EA138699F1C51917194CAD2BF49B1C58EF29A8`; `MotorSimWorker.exe 8914302FC647E306A5C56C388ACAD7DD3B9483F654EDE8736BEBABCD5A0E5112`.
-- Startup outside the repository working directory was observed: the process created a responsive window titled `Dino 2T — dino-project`, and it was closed. This is a startup smoke check only.
+- Folder: `dist/MotorSim-0.1.0-rc6-windows-x64-24a559d1-trial-20261014T175750Z/MotorSim`
+- ZIP SHA-256: `30cb8796093529fcec42acbbd0055d932f04e5297fed2b462ffe4136449c65d6` (ZIP integrity check PASS, 299 entries)
+- New bundle executable SHA-256: `Dino2T.exe D8C3EBD1D3E4F90C4B8B22E8B97374A4E64FF14B75739AE45FCA076CAE2DEF48`; `MotorSim.exe 7FFA449AF876661618AFC0A447CB17D9079E641A661993E09028543B680B3C18`; `MotorSimWorker.exe A163592FAEE54C9E6D6BABFF741DA62724C5ADD0E46ACD9708F85DA6612DDC50`.
+- Startup outside the repository working directory was observed on the final bundle: PID 1788 created a responsive window titled `Dino 2T — dino-project`; a normal close returned exit code 0. This is a startup smoke check only.
 - The earlier distribution remains unchanged: `MotorSim.exe 9A78CFB85ADC1DFC4DFD03841C9F36E529708164ADD892B13B38F9F65A080A8E`, `MotorSimWorker.exe BB15FA861D1DED09F96BA1DEA662406EF944F13CA5E6455CAD1730F63D761C44`, and `Dino2T.exe 5A05133ECCF07248476A9BCEC114A056AA898191389444F75B58C5D408F5A063`.
 - The new bundle is correctly marked TRIAL and `source_dirty=true`. The packaged workflow to open the example, select actual runs, inspect results, compare, and capture valid screenshots has **not** been completed. Desktop automation was inaccessible in the locked Windows session, and attempted captures contained placeholder glyphs; those unusable images were discarded. No such image is accepted as visual evidence.
 
