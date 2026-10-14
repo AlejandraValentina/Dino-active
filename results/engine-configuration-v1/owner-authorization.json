@@ -1,0 +1,33 @@
+{
+  "authorized_at_utc": "2026-10-14T10:29:30+00:00",
+  "authorized_scope": [
+    "2T engine configurations",
+    "variants",
+    "solver-compatible exhaust geometry",
+    "projects",
+    "result comparisons",
+    "tests",
+    "documentation",
+    "versioned powervalve remediation proposal only"
+  ],
+  "excluded_scope": [
+    "Windows GUI frontend",
+    "new RPM campaigns",
+    "solver physics modification during this objective",
+    "R2 reopening",
+    "FAST campaign adoption"
+  ],
+  "explicit_no_campaign_authorization": true,
+  "head_at_authorization": "be643afc30e9c983d404631561fe402ab23f262f",
+  "objective_id": "ENGINE_CONFIGURATION_V1",
+  "preserved_prior_status": {
+    "ENGINE_PHYSICS_V1_R2": "PASS",
+    "FAST_RECIPE_V1": "PARTIAL / EXPERIMENTAL",
+    "FULL_RPM_SWEEP_V1": "PARTIAL / REVIEW",
+    "IMPL2": "27 PERIOD_1; 3 NUMERICAL_INVALID"
+  },
+  "schema": "ENGINE_CONFIGURATION_V1_OWNER_AUTHORIZATION_V1",
+  "source": "explicit owner authorization in attached request",
+  "source_attachment_name": "Pasted text.txt",
+  "source_attachment_sha256": "921b72ae4472e8dfa850fffa086a3ad6c9904eebcbed1946c92296160c4cf247"
+}

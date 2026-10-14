@@ -22,15 +22,12 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: ENGINE_PHYSICS_V1_R2
-change/spec:       openspec/changes/engine-physics-v1-r2/
-                   (specs/engine-physics-v1-r2/spec.md es la autoridad de requisitos)
-completion:        offline superseding gate de outputs, plausibility gates y
-                   operating-point contract; technical result REVIEW hasta
-                   R2-EXTERNAL-REVIEW. ENGINE_PHYSICS_V1 permanece
-                   FAIL_TERMINAL y no se reabre. El baseline
-                   MOTORSIM_2T_V1_CLOSURE_R2 permanece PASS y el gate histórico
-                   MOTORSIM_2T_V1_CLOSURE_V1_0 permanece FAIL_TERMINAL.
+CURRENT_OBJECTIVE: ENGINE_CONFIGURATION_V1
+change/spec:       openspec/changes/engine-configuration-v1/
+                   (specs/engine-configuration-v1/spec.md es la autoridad de requisitos)
+completion:        backend versionado para configuraciones 2T soportadas por IntegratedEngine2T,
+                   variantes de escape, proyectos y comparación sintética; sin frontend Windows
+                   ni campañas RPM. FULL_RPM_SWEEP_V1 permanece PARTIAL/REVIEW.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

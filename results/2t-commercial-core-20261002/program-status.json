@@ -3629,6 +3629,110 @@
         "results/full-rpm-sweep-v1/implementation-v2-campaign-pilot-receipt.json",
         "${DINO_ARTIFACT_ROOT}/engine-physics-v1/full-rpm-sweep-v1-impl2/controlled-pilot-attempt-2/campaign.json"
       ]
+    },
+    {
+      "id": "ECFG-INVALID-POINT-FORENSICS",
+      "description": "Persist exact reproduced cause and bounded versioned correction proposal context for the three IMPL2 powervalve endpoint failures.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "ENGINE_CONFIGURATION_V1",
+      "owner_role": "verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/full-rpm-sweep-v1/impl2-invalid-point-forensics.json"
+      ],
+      "evidence": [
+        "results/full-rpm-sweep-v1/impl2-invalid-point-forensics.json"
+      ],
+      "classification": "READ_ONLY_FORENSICS_COMPLETE"
+    },
+    {
+      "id": "ECFG-CONFIG-MODEL",
+      "description": "Implement versioned editable configuration schema, dimensions/consistency validation, deterministic identity, and no-step IntegratedEngine2T adapter.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "ENGINE_CONFIGURATION_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/engine_config.py",
+        "tests/test_engine_config.py"
+      ]
+    },
+    {
+      "id": "ECFG-ESCAPE-VARIANTS",
+      "description": "Model solver-supported ordered exhaust sections and generate the existing variable-area finite-volume mesh; implement explicit variant patches and configuration diffs.",
+      "dependencies": [
+        "ECFG-CONFIG-MODEL"
+      ],
+      "state": "WAITING",
+      "objective": "ENGINE_CONFIGURATION_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/engine_config.py",
+        "motorsim/engine_variants.py",
+        "tests/test_engine_variants.py"
+      ]
+    },
+    {
+      "id": "ECFG-PROJECT-STORE",
+      "description": "Persist base config, variants, simulation recipes, provenance and external result references in an atomic versioned project file.",
+      "dependencies": [
+        "ECFG-CONFIG-MODEL"
+      ],
+      "state": "WAITING",
+      "objective": "ENGINE_CONFIGURATION_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/engine_project.py",
+        "tests/test_engine_project.py"
+      ]
+    },
+    {
+      "id": "ECFG-RESULT-COMPARISON",
+      "description": "Import versioned IMPL2 curves and compare series while preserving invalid gaps, units, periodicity, hard gates and synthetic provenance.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "ENGINE_CONFIGURATION_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/engine_results.py",
+        "tests/test_engine_results.py"
+      ]
+    },
+    {
+      "id": "ECFG-POWERVALE-PROPOSAL",
+      "description": "Persist a scientific change proposal with bounded ULP tolerance, exact/out-of-range tests, identity impact and three-point revalidation plan; do not modify solver.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "ENGINE_CONFIGURATION_V1",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/engine-configuration-v1/powervalve-endpoint-remediation-proposal.json",
+        "tests/test_engine_configuration_powervalve_proposal.py"
+      ]
+    },
+    {
+      "id": "ECFG-TESTS-DOCS",
+      "description": "Complete integrated focused tests, API/physical-limit documentation, OpenSpec strict and program-status checks.",
+      "dependencies": [
+        "ECFG-ESCAPE-VARIANTS",
+        "ECFG-PROJECT-STORE",
+        "ECFG-RESULT-COMPARISON",
+        "ECFG-POWERVALE-PROPOSAL"
+      ],
+      "state": "WAITING",
+      "objective": "ENGINE_CONFIGURATION_V1",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "docs/engine-configuration-v1.md",
+        "tests/test_engine_configuration_integration.py"
+      ]
     }
   ],
   "audit_remediation_mode": false,
@@ -3829,28 +3933,21 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "FULL_RPM_SWEEP_V1",
-    "change": "openspec/changes/full-rpm-sweep-v1",
-    "spec": "openspec/changes/full-rpm-sweep-v1/specs/full-rpm-sweep-v1/spec.md",
-    "completion_criterion": "Evaluate the complete 30-point preregistered sweep without changing physics or criteria; preserve classifications/checkpoints, export recoverable evidence and reports, and close only against actual gates.",
+    "id": "ENGINE_CONFIGURATION_V1",
+    "change": "openspec/changes/engine-configuration-v1",
+    "spec": "openspec/changes/engine-configuration-v1/specs/engine-configuration-v1/spec.md",
+    "completion_criterion": "Deliver a validated versioned IntegratedEngine2T configuration backend, supported exhaust variants, project persistence, synthetic IMPL2 result comparison, and documented limits; run required tests and OpenSpec strict. No GUI or RPM campaign.",
     "gate_tasks": [
-      "FRPM-CONTRACT",
-      "FRPM-MECHANICAL-BINDING",
-      "FRPM-PREFLIGHT-API",
-      "FRPM-FOCAL-TESTS",
-      "FRPM-READINESS-VERIFY",
-      "FRPM-OUTPUT-ADAPTER",
-      "FRPM-PREREG-INTEGRITY-AUDIT",
-      "FRPM-CAMPAIGN-RUNNER",
-      "FRPM-CAMPAIGN-EXECUTION",
-      "FRPM-CAMPAIGN-REPORTING",
-      "FRPM-ARTIFACT-INTEGRITY-VERIFY",
-      "FRPM-PILOT-PROJECTION",
-      "FRPM-FULL-CAMPAIGN-EXECUTION",
-      "FRPM-CHECKPOINT-RESUME-VERIFY"
+      "ECFG-INVALID-POINT-FORENSICS",
+      "ECFG-CONFIG-MODEL",
+      "ECFG-ESCAPE-VARIANTS",
+      "ECFG-PROJECT-STORE",
+      "ECFG-RESULT-COMPARISON",
+      "ECFG-POWERVALE-PROPOSAL",
+      "ECFG-TESTS-DOCS"
     ],
     "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
-    "set_by": "owner request FULL_RPM_SWEEP_V1_READINESS"
+    "set_by": "owner authorization 2026-10-14T10:29:30+00:00; prior FULL_RPM_SWEEP_V1 retained PARTIAL/REVIEW"
   },
   "objectives": [
     {
@@ -3892,9 +3989,9 @@
     },
     {
       "id": "FULL_RPM_SWEEP_V1",
-      "state": "ACTIVE",
+      "state": "REVIEW",
       "owner_approved": true,
-      "summary": "Readiness PASS; owner explicitly authorized only the two preregistered variants and 30 points. Campaign in progress; no other campaign or science changes authorized.",
+      "summary": "Campaign operationally complete: 27 PERIOD_1, 3 NUMERICAL_INVALID. Scientific gate remains PARTIAL/REVIEW; no new campaign authorization.",
       "readiness_state": "PASS",
       "precondition": "EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED",
       "precondition_status": "RESOLVED",
@@ -3932,13 +4029,58 @@
         ],
         "source": "explicit owner authorization in DINO-ACTIVE â€” FULL_RPM_SWEEP_V1 EXECUTION request",
         "campaigns_started": 0
-      }
+      },
+      "classification": "FULL_RPM_SWEEP_V1_PARTIAL",
+      "gate_status_archive": {
+        "objective": "FULL_RPM_SWEEP_V1",
+        "state": "REVIEW",
+        "classification": "FULL_RPM_SWEEP_V1_PARTIAL",
+        "evidence": [
+          "results/full-rpm-sweep-v1/campaign-receipt.json",
+          "results/full-rpm-sweep-v1/pilot-analysis.json",
+          "results/full-rpm-sweep-v1/campaign-receipt-v2.json",
+          "results/full-rpm-sweep-v1/performance-recovery-v1.json",
+          "results/full-rpm-sweep-v1/implementation-v2-proposal.json"
+        ],
+        "gate_tasks_total": 14,
+        "gate_tasks_done": 13,
+        "gate_task_states": {
+          "DONE": 13,
+          "BLOCKED_LOCAL": 1
+        },
+        "remaining": [
+          "FRPM-FULL-CAMPAIGN-EXECUTION"
+        ],
+        "updated_at": "2026-10-13T20:00:00+00:00"
+      },
+      "transition_authorization": "results/engine-configuration-v1/owner-authorization.json",
+      "transitioned_at": "2026-10-14T10:29:30+00:00"
     },
     {
       "id": "TUNING_WORKFLOW_AND_REFERENCE_CORRELATION_V1",
       "state": "PROPOSED",
       "owner_approved": false,
       "summary": "KT100 sanity/calibration tiers, dynamic reed V1, exhaust builder, port time-area, exhaust-port wave plots."
+    },
+    {
+      "id": "ENGINE_CONFIGURATION_V1",
+      "state": "ACTIVE",
+      "owner_approved": true,
+      "classification": "ENGINE_CONFIGURATION_V1_IN_PROGRESS",
+      "summary": "Owner-authorized backend for editable IntegratedEngine2T-supported 2T configurations, exhaust variants, project persistence and synthetic curve comparison; no GUI or campaign execution. The previous FULL_RPM_SWEEP_V1 gate remains PARTIAL/REVIEW.",
+      "change": "openspec/changes/engine-configuration-v1",
+      "spec": "openspec/changes/engine-configuration-v1/specs/engine-configuration-v1/spec.md",
+      "set_by": "explicit owner authorization in results/engine-configuration-v1/owner-authorization.json",
+      "authorization": "results/engine-configuration-v1/owner-authorization.json",
+      "gate_tasks": [
+        "ECFG-INVALID-POINT-FORENSICS",
+        "ECFG-CONFIG-MODEL",
+        "ECFG-ESCAPE-VARIANTS",
+        "ECFG-PROJECT-STORE",
+        "ECFG-RESULT-COMPARISON",
+        "ECFG-POWERVALE-PROPOSAL",
+        "ECFG-TESTS-DOCS"
+      ]
     }
   ],
   "owner_decisions_pending": [
@@ -4637,6 +4779,12 @@
       "task": "FRPM-FULL-CAMPAIGN-EXECUTION",
       "kind": "task",
       "summary": "Read-only forensic reproduction identified all three NUMERICAL_INVALID points as strict powervalve endpoint rejection of floating-point reconstructed stage RPM (1000 -> 999.9999999999999; 5000 -> 5000.000000000001). Captured angles and a versioned ULP-bounded fix candidate in results/full-rpm-sweep-v1/impl2-invalid-point-forensics.json; no solver/artifact/campaign changes."
+    },
+    {
+      "at": "2026-10-14T10:29:30+00:00",
+      "task": "ENGINE_CONFIGURATION_V1",
+      "kind": "authorization",
+      "summary": "Owner explicitly authorized ENGINE_CONFIGURATION_V1. Recorded a manual, traceable current-objective transition; FULL_RPM_SWEEP_V1 remains archived PARTIAL/REVIEW with 27 PERIOD_1 and 3 NUMERICAL_INVALID. No campaign authorization."
     }
   ],
   "legacy_gate_status": {
@@ -4651,26 +4799,29 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "FULL_RPM_SWEEP_V1",
-    "state": "REVIEW",
-    "classification": "FULL_RPM_SWEEP_V1_PARTIAL",
+    "objective": "ENGINE_CONFIGURATION_V1",
+    "state": "OPEN",
+    "classification": "ENGINE_CONFIGURATION_V1_IN_PROGRESS",
     "evidence": [
-      "results/full-rpm-sweep-v1/campaign-receipt.json",
-      "results/full-rpm-sweep-v1/pilot-analysis.json",
-      "results/full-rpm-sweep-v1/campaign-receipt-v2.json",
-      "results/full-rpm-sweep-v1/performance-recovery-v1.json",
-      "results/full-rpm-sweep-v1/implementation-v2-proposal.json"
+      "results/engine-configuration-v1/owner-authorization.json",
+      "openspec/changes/engine-configuration-v1/specs/engine-configuration-v1/spec.md"
     ],
-    "gate_tasks_total": 14,
-    "gate_tasks_done": 13,
+    "gate_tasks_total": 7,
+    "gate_tasks_done": 1,
     "gate_task_states": {
-      "DONE": 13,
-      "BLOCKED_LOCAL": 1
+      "DONE": 1,
+      "READY": 3,
+      "WAITING": 3
     },
     "remaining": [
-      "FRPM-FULL-CAMPAIGN-EXECUTION"
+      "ECFG-CONFIG-MODEL",
+      "ECFG-ESCAPE-VARIANTS",
+      "ECFG-PROJECT-STORE",
+      "ECFG-RESULT-COMPARISON",
+      "ECFG-POWERVAlVE-PROPOSAL",
+      "ECFG-TESTS-DOCS"
     ],
-    "updated_at": "2026-10-13T20:00:00+00:00"
+    "updated_at": "2026-10-14T10:29:30+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -4718,7 +4869,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-13T20:00:00+00:00",
+  "updated_at": "2026-10-14T10:29:30+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
