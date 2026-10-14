@@ -17,9 +17,11 @@ import re
 import shutil
 import tempfile
 import time
+import zlib
 from typing import Any
 
-from .engine_configuration import canonical_json, resolve_for_operating_point, sha256
+from .engine_configuration import (canonical_json, implementation_source_hashes,
+                                   resolve_for_operating_point, sha256)
 from .integrated_2t import (IntegratedEngine2T, audit_integrated_cycle_primary,
                             make_integrated_cycle_primary,
                             make_integrated_engineering_output)
@@ -48,6 +50,24 @@ class RunDeadline(Exception):
 
 def _sha(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def _replay_equivalent(left: Any, right: Any, path: str = "") -> bool:
+    """Compare replay summaries exactly except for floating summation roundoff."""
+    if isinstance(left, dict) and isinstance(right, dict):
+        return (left.keys() == right.keys() and
+                all(_replay_equivalent(left[key], right[key], f"{path}/{key}") for key in left))
+    if isinstance(left, list) and isinstance(right, list):
+        return len(left) == len(right) and all(
+            _replay_equivalent(a, b, f"{path}/{index}")
+            for index, (a, b) in enumerate(zip(left, right)))
+    if (type(left) in (int, float) and not isinstance(left, bool) and
+            type(right) in (int, float) and not isinstance(right, bool)):
+        absolute_tolerance = (5e-12 if path.endswith("/energy_balance_residual_j/value")
+                             else 2e-21)
+        return (math.isfinite(left) and math.isfinite(right) and
+                math.isclose(left, right, rel_tol=2e-15, abs_tol=absolute_tolerance))
+    return left == right
 
 
 def _json_bytes(value: Any) -> bytes:
@@ -452,18 +472,25 @@ def run_exploratory(document: dict, *, project_id: str, run_id: str,
 
 
 def import_exploratory_runs(paths: list[str | Path]) -> dict:
-    """Load one or more run directories/results without filling missing metrics."""
+    """Reverify exploratory primaries and load metrics plus angle traces.
+
+    This import deliberately fails closed on stale audit code, altered primary
+    evidence, a bad checkpoint binding, or a summary that differs from replay.
+    Missing cycles remain classified gaps and are never interpolated.
+    """
     if not paths:
         raise ValueError("at least one exploratory run is required")
-    points=[]; identities=[]
+    points=[]; traces=[]; identities=[]
     names={"brake_power_w":"brake_power", "brake_torque_nm":"brake_torque",
            "imep_pa":"IMEP", "fmep_pa":"FMEP", "bmep_pa":"BMEP",
            "bsfc_g_kwh":"BSFC"}
     scale={"brake_power_w":1e-3,"imep_pa":1e-3,"fmep_pa":1e-3,"bmep_pa":1e-3}
     for requested in paths:
         location=Path(requested)
-        result_path=location/"result.json" if location.is_dir() else location
-        root=result_path.parent
+        result_path=(location/"result.json" if location.is_dir() else location).resolve()
+        root=result_path.parent.resolve()
+        if result_path.name!="result.json":
+            raise ValueError("exploratory import requires a result.json artifact")
         manifest=_read_json(root/"run.json"); payload=result_path.read_bytes()
         if manifest.get("result_sha256") != _sha(payload):
             raise ValueError(f"exploratory result artifact hash mismatch: {result_path}")
@@ -479,19 +506,137 @@ def import_exploratory_runs(paths: list[str | Path]) -> dict:
         manifest_binding=manifest.get("bindings")
         if manifest_binding != binding:
             raise ValueError("exploratory result/run manifest binding mismatch")
-        for cycle in result.get("cycles",[]):
-            metrics=cycle.get("engineering_output",{}).get("cycle_metrics",{})
+        if (not isinstance(binding,dict) or binding.get("workflow_schema")!=SCHEMA or
+                result.get("preflight",{}).get("identity_sha256")!=binding.get("identity_sha256") or
+                result.get("preflight",{}).get("configuration_sha256")!=binding.get("configuration_sha256")):
+            raise ValueError("exploratory preflight/result identity binding is invalid")
+
+        def child(name: Any, label: str) -> Path:
+            if not isinstance(name,str) or not name or Path(name).name!=name:
+                raise ValueError(f"exploratory {label} artifact path is invalid")
+            path=(root/name).resolve()
+            if path.parent!=root:
+                raise ValueError(f"exploratory {label} artifact escaped its run directory")
+            return path
+
+        config_path=child(manifest.get("configuration_artifact"),"configuration")
+        config_payload=config_path.read_bytes()
+        if _sha(config_payload)!=manifest.get("configuration_sha256"):
+            raise ValueError("exploratory configuration artifact hash mismatch")
+        effective=json.loads(config_payload)
+        if (effective.get("identity_sha256")!=binding.get("identity_sha256") or
+                effective.get("native_configuration_sha256")!=binding.get("configuration_sha256") or
+                effective.get("source_hashes")!=binding.get("source_hashes")):
+            raise ValueError("exploratory configuration artifact binding mismatch")
+        current_sources=implementation_source_hashes()
+        for module in ("motorsim.integrated_2t","motorsim.mechanical",
+                       "motorsim.engineering_outputs"):
+            if binding.get("source_hashes",{}).get(module)!=current_sources.get(module):
+                raise ValueError(f"exploratory replay source identity mismatch: {module}")
+
+        checkpoint_path=child(manifest.get("checkpoint_artifact"),"checkpoint")
+        checkpoint_payload=checkpoint_path.read_bytes()
+        if (_sha(checkpoint_payload)!=result.get("checkpoint_sha256") or
+                result.get("checkpoint_sha256")!=manifest.get("checkpoint_sha256")):
+            raise ValueError("exploratory checkpoint artifact hash mismatch")
+        checkpoint=json.loads(checkpoint_payload)
+        cycles=result.get("cycles")
+        manifest_cycles=manifest.get("cycles")
+        count=result.get("cycles_completed")
+        if (type(count) is not int or count<0 or not isinstance(cycles,list) or
+                len(cycles)!=count or not isinstance(manifest_cycles,list) or
+                len(manifest_cycles)!=count or
+                [row.get("cycle") for row in cycles]!=list(range(1,count+1)) or
+                checkpoint.get("bindings")!=binding or checkpoint.get("next_cycle")!=count+1):
+            raise ValueError("exploratory completed-cycle/checkpoint history is inconsistent")
+        if (checkpoint.get("schema")!="DINO_EXPLORATORY_CHECKPOINT_V1" or
+                not isinstance(checkpoint.get("engine_snapshot"),dict) or
+                not isinstance(checkpoint.get("periodicity_snapshot"),dict)):
+            raise ValueError("exploratory checkpoint state is malformed")
+        loss=MechanicalLossModel.from_dict(effective["mechanical_loss_model"])
+        variant_id=f"{binding.get('project_id')} / {binding.get('variant_label')}"
+        rpm=result.get("preflight",{}).get("rpm")
+        verified_cycles=[]
+        for index,(cycle,manifest_cycle) in enumerate(zip(cycles,manifest_cycles),1):
+            if any(cycle.get(key)!=manifest_cycle.get(key)
+                   for key in ("cycle","artifact","primary_sha256")):
+                raise ValueError("exploratory cycle manifest and result disagree")
+            if cycle.get("cycle")!=index:
+                raise ValueError("exploratory cycle sequence is duplicated or missing")
+            primary_path=child(cycle.get("artifact"),"primary")
+            packed=primary_path.read_bytes()
+            try:
+                primary_payload=gzip.decompress(packed)
+                primary=json.loads(primary_payload)
+            except (OSError,EOFError,zlib.error,json.JSONDecodeError) as exc:
+                raise ValueError("exploratory cycle primary is corrupt") from exc
+            if (_sha(primary_payload)!=cycle.get("primary_sha256") or
+                    primary_payload!=_json_bytes(primary)):
+                raise ValueError("exploratory cycle primary canonical hash mismatch")
+            if (primary.get("cycle_index")!=index or
+                    primary.get("configuration_hash")!=effective.get("solver_configuration_sha256")):
+                raise ValueError("exploratory cycle primary identity mismatch")
+            # The independent auditor may materialize replay baselines in its
+            # input structure. Keep the persisted primary pristine for output
+            # reconstruction so replay is deterministic and byte-bound.
+            audit_primary=json.loads(_json_bytes(primary))
+            audit=audit_integrated_cycle_primary(
+                audit_primary,preserve_precycle_p7_baseline=True)
+            recorded_audit=cycle.get("audit")
+            if (audit.get("status")!="PASS" or audit.get("recomputed") is not True or
+                    not isinstance(recorded_audit,dict) or
+                    recorded_audit.get("status")!="PASS" or
+                    recorded_audit.get("recomputed") is not True):
+                raise ValueError("exploratory cycle independent audit failed")
+            analysis_primary=json.loads(_json_bytes(primary))
+            periodicity=cycle.get("periodicity") or "NOT_EVALUATED"
+            if cycle.get("periodicity_evidence") is not None:
+                analysis_primary={**primary,"periodicity_evidence":cycle["periodicity_evidence"]}
+            output=make_integrated_engineering_output(
+                analysis_primary,
+                displacement_m3=primary.get("swept_displacement_m3"),
+                mechanical_loss_model=loss,
+                load=effective["operating_conditions"]["load"],
+                periodicity_status=periodicity)
+            summary={"schema":"DINO_EXPLORATORY_METRICS_V1",
+                "outputs_schema":output["schema"],
+                "configuration_sha256":output["configuration_sha256"],
+                "claims":output["claims"],"operating_point":output["operating_point"],
+                "cycle_metrics":output["cycle_metrics"]}
+            if not _replay_equivalent(summary,cycle.get("engineering_output")):
+                raise ValueError("exploratory engineering summary differs from audited primary replay")
+            verified_cycles.append((cycle,audit,primary,output))
+
+        if count==0:
+            gap={"point_id":binding.get("run_id"),"variant_id":variant_id,"rpm":rpm,
+                 "classification":result.get("classification"),"cycles_completed":0,
+                 "result_sha256":result.get("result_sha256"),
+                 "point_configuration_sha256":binding.get("configuration_sha256"),
+                 "hard_gates":{"status":"NOT_EVALUATED_EXPLORATORY"},
+                 "periodicity":result.get("periodicity"),"audit_status":"NO_COMPLETE_CYCLE",
+                 "audit_recomputed":False,"run_id":binding.get("run_id"),"cycle":None,
+                 "mode":"EXPLORATORY","experimental_validation":"NOT_CLAIMED",
+                 "conservation":None}
+            for field in names.values():
+                gap[field]=None;gap[field+"_status"]="NOT_REPORTED"
+                gap[field+"_reason"]="No complete audited cycle was produced."
+            points.append(gap)
+
+        for cycle,audit,primary,output in verified_cycles:
+            metrics=output.get("cycle_metrics",{})
             row={"point_id":f"{binding.get('run_id')}@cycle-{cycle.get('cycle')}",
-                 "variant_id":f"{binding.get('project_id')} / {binding.get('variant_label')}",
-                 "rpm":result.get("preflight",{}).get("rpm"),
+                 "variant_id":variant_id,"rpm":rpm,
                  "classification":result.get("classification"),
                  "cycles_completed":result.get("cycles_completed"),
                  "result_sha256":result.get("result_sha256"),
                  "point_configuration_sha256":binding.get("configuration_sha256"),
                  "hard_gates":{"status":"NOT_EVALUATED_EXPLORATORY"},
-                 "periodicity":result.get("periodicity"),
+                 "periodicity":cycle.get("periodicity") or "NOT_EVALUATED",
+                 "audit_status":audit.get("status"),"audit_recomputed":audit.get("recomputed"),
+                 "primary_sha256":cycle.get("primary_sha256"),
+                 "conservation":primary.get("conservation"),
                  "run_id":binding.get("run_id"),"cycle":cycle.get("cycle"),
-                 "mode":"EXPLORATORY"}
+                 "mode":"EXPLORATORY","experimental_validation":"NOT_CLAIMED"}
             for metric,field in names.items():
                 record=metrics.get(metric,{})
                 value=record.get("value") if record.get("status")=="DEFINED" else None
@@ -499,7 +644,15 @@ def import_exploratory_runs(paths: list[str | Path]) -> dict:
                 row[field+"_status"]=record.get("status","NOT_REPORTED")
                 row[field+"_reason"]=record.get("reason")
             points.append(row)
+            trace=output["crank_angle_trace"]
+            traces.append({"point_id":row["point_id"],"variant_id":variant_id,
+                "rpm":rpm,"run_id":binding.get("run_id"),"cycle":cycle.get("cycle"),
+                "classification":result.get("classification"),"periodicity":row["periodicity"],
+                "audit_status":audit.get("status"),"audit_recomputed":audit.get("recomputed"),
+                "hard_gates":row["hard_gates"],"angles_deg":trace["angle_deg"],
+                "channels":trace["channels"]})
     return {"schema":"DINO_EXPLORATORY_COMPARISON_V1","points":points,
+            "traces":traces,
             "provenance":"EXPLORATORY · provisional · no scientific validation claim",
             "experimental_validation":"NOT_CLAIMED",
             "units":{"brake_power":"kW","brake_torque":"N*m","IMEP":"kPa",

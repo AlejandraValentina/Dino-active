@@ -14,7 +14,10 @@ class CurvePlot(QWidget):
     def set_series(self,series): self.series=series; self.selected=None; self.update()
     def _points(self):
         return [(s, i, p) for s in self.series for i,p in enumerate(s.get("points",[]))
-                if p.get("value") is not None and math.isfinite(float(p["value"]))]
+                if p.get("value") is not None and
+                math.isfinite(float(p["value"])) and
+                p.get(s.get("x_key","rpm")) is not None and
+                math.isfinite(float(p[s.get("x_key","rpm")]))]
     def paintEvent(self,event):
         painter=QPainter(self); painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.fillRect(self.rect(),QColor("#101a28")); rect=self.rect().adjusted(58,18,-18,-40)
@@ -26,36 +29,37 @@ class CurvePlot(QWidget):
         if not allp:
             painter.drawText(rect,Qt.AlignmentFlag.AlignCenter,"Sin valores válidos para graficar")
             painter.end(); return
-        xs=[float(p["rpm"]) for _,_,p in allp]; ys=[float(p["value"]) for _,_,p in allp]
+        xlabel=self.series[0].get("x_label","RPM") if self.series else "RPM"
+        xs=[float(p[s.get("x_key","rpm")]) for s,_,p in allp]; ys=[float(p["value"]) for _,_,p in allp]
         xmin,xmax=min(xs),max(xs); ymin,ymax=min(0.0,min(ys)),max(ys)
         if xmax==xmin:xmax=xmin+1
         if ymax==ymin:ymax=ymin+1
-        def pos(point): return QPointF(rect.left()+(float(point["rpm"])-xmin)/(xmax-xmin)*rect.width(),rect.bottom()-(float(point["value"])-ymin)/(ymax-ymin)*rect.height())
+        def pos(series,point): return QPointF(rect.left()+(float(point[series.get("x_key","rpm")])-xmin)/(xmax-xmin)*rect.width(),rect.bottom()-(float(point["value"])-ymin)/(ymax-ymin)*rect.height())
         for si,series in enumerate(self.series):
             pen=QPen(QColor(self.COLORS[si%len(self.COLORS)]),2); painter.setPen(pen)
             previous=None
             for index,point in enumerate(series.get("points",[])):
                 if point.get("value") is None: previous=None; continue
-                current=pos(point)
+                current=pos(series,point)
                 if previous is not None:painter.drawLine(previous,current)
                 painter.setBrush(QColor(self.COLORS[si%len(self.COLORS)]));painter.drawEllipse(current,3.5,3.5)
                 if self.selected==(series.get("name"),index):painter.drawEllipse(current,7,7)
                 previous=current
         painter.setFont(QFont("Segoe UI",9));painter.setPen(QColor("#cad8e7"))
-        painter.drawText(rect.left(),rect.bottom()+26,f"RPM  {xmin:g} — {xmax:g}")
+        painter.drawText(rect.left(),rect.bottom()+26,f"{xlabel}  {xmin:g} — {xmax:g}")
         painter.drawText(6,rect.top()+12,self.series[0].get("unit","") if self.series else "")
         painter.end()
     def mousePressEvent(self,event):
         if event.button()!=Qt.MouseButton.LeftButton:return
         rect=self.rect().adjusted(58,18,-18,-40); allp=self._points()
         if not allp:return
-        xs=[float(p["rpm"]) for _,_,p in allp]; ys=[float(p["value"]) for _,_,p in allp]
+        xs=[float(p[s.get("x_key","rpm")]) for s,_,p in allp]; ys=[float(p["value"]) for _,_,p in allp]
         xmin,xmax=min(xs),max(xs);ymin,ymax=min(0.0,min(ys)),max(ys)
         if xmax==xmin:xmax+=1
         if ymax==ymin:ymax+=1
         near=None;distance=1e9
         for s,i,p in allp:
-            x=rect.left()+(float(p["rpm"])-xmin)/(xmax-xmin)*rect.width();y=rect.bottom()-(float(p["value"])-ymin)/(ymax-ymin)*rect.height()
+            x=rect.left()+(float(p[s.get("x_key","rpm")])-xmin)/(xmax-xmin)*rect.width();y=rect.bottom()-(float(p["value"])-ymin)/(ymax-ymin)*rect.height()
             d=(event.position().x()-x)**2+(event.position().y()-y)**2
             if d<distance:near=(s,i,p);distance=d
         if near and distance<400:

@@ -4,7 +4,7 @@ from pathlib import Path
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (QWidget,QVBoxLayout,QHBoxLayout,QLabel,QComboBox,QPushButton,
-    QFileDialog,QCheckBox,QListWidget,QListWidgetItem,QTableWidget,QTableWidgetItem,QHeaderView,QMessageBox)
+    QFileDialog,QCheckBox,QGroupBox,QListWidget,QListWidgetItem,QTableWidget,QTableWidgetItem,QHeaderView,QMessageBox)
 from .plot import CurvePlot
 from .services import DEFAULT_REPORT,load_results,run_background
 from ..exploratory_workflow import import_exploratory_runs
@@ -27,7 +27,15 @@ class ResultsPage(QWidget):
         self.unit=QLabel();controls.addWidget(self.unit);controls.addStretch()
         export_table=QPushButton("Exportar tabla CSV");export_table.clicked.connect(self.export_csv);controls.addWidget(export_table)
         export_plot=QPushButton("Exportar gráfico PNG");export_plot.clicked.connect(self.export_png);controls.addWidget(export_plot)
-        self.point_table=QTableWidget(0,5);self.point_table.setHorizontalHeaderLabels(["Variante","RPM","Clasificación","Ciclos","BMEP"]);self.point_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.point_table.setMaximumHeight(170);self.point_table.currentCellChanged.connect(self._point_row_selected);root.addWidget(self.point_table)
+        self.point_table=QTableWidget(0,7);self.point_table.setHorizontalHeaderLabels(["Variante","RPM","Clasificación","Periodicidad","Auditoría","Ciclos","BMEP"]);self.point_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.point_table.setMaximumHeight(170);self.point_table.currentCellChanged.connect(self._point_row_selected);root.addWidget(self.point_table)
+        self.trace_group=QGroupBox("Señales de presión, ondas y flujo EXPLORATORY")
+        trace_layout=QVBoxLayout(self.trace_group)
+        trace_bar=QHBoxLayout();trace_layout.addLayout(trace_bar)
+        self.trace_metric=QComboBox();self.trace_metric.currentIndexChanged.connect(self.redraw_trace);trace_bar.addWidget(self.trace_metric)
+        self.trace_status=QLabel("Las trazas sólo se muestran después de re-auditar cada primario.");trace_bar.addWidget(self.trace_status,1)
+        self.trace_legend=QLabel();self.trace_legend.setWordWrap(True);trace_layout.addWidget(self.trace_legend)
+        self.trace_plot=CurvePlot();self.trace_plot.setMinimumHeight(220);trace_layout.addWidget(self.trace_plot)
+        self.trace_group.hide();root.addWidget(self.trace_group)
         self.details=QTableWidget(0,2);self.details.setHorizontalHeaderLabels(["Detalle del punto","Valor"]);self.details.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.details.setMaximumHeight(190);root.addWidget(self.details)
         self.metric.currentIndexChanged.connect(self.redraw);self.variants.itemChanged.connect(self.redraw);self.plot.pointSelected.connect(self.show_point)
         if DEFAULT_REPORT.is_file():self.load(DEFAULT_REPORT)
@@ -45,11 +53,28 @@ class ResultsPage(QWidget):
         variants=sorted({r['variant_id'] for r in data['points']});self.variants.blockSignals(True);self.variants.clear()
         for name in variants:
             item=QListWidgetItem(name);item.setFlags(item.flags()|Qt.ItemFlag.ItemIsUserCheckable);item.setCheckState(Qt.CheckState.Checked);self.variants.addItem(item)
-        self.variants.blockSignals(False);self.redraw()
+        self.variants.blockSignals(False)
+        self.trace_metric.blockSignals(True);self.trace_metric.clear()
+        traces=data.get("traces",[])
+        common=(set.intersection(*(set(row.get("channels",{})) for row in traces)
+                                 if traces else [set()]))
+        options=[]
+        if "cylinder_pressure_pa" in common:
+            options.append(("Presión del cilindro (Pa)","cylinder_pressure_pa"))
+        for key in sorted(common):
+            if key.startswith("duct:exhaust:cell:") and key.endswith(":pressure_pa"):
+                options.append((f"Presión escape · celda {key.split(':')[3]} (Pa)",key))
+            elif key.startswith("duct:exhaust:face:") and key.endswith(":mass_flow_kg_s"):
+                options.append((f"Flujo escape · cara {key.split(':')[3]} (kg/s)",key))
+        for label,key in options:self.trace_metric.addItem(label,key)
+        self.trace_metric.blockSignals(False)
+        self.trace_group.setVisible(bool(traces and options))
+        self.trace_status.setText("Primarios re-auditados · ángulos comunes exactos · sin interpolación")
+        self.redraw();self.redraw_trace()
     def _exploratory_failed(self,message):
-        self.path_label.setText("Ejecución EXPLORATORY inválida");QMessageBox.warning(self,"Artifact exploratorio inválido",message)
+        self.path_label.setText("Ejecución EXPLORATORY inválida");self.trace_group.hide();QMessageBox.warning(self,"Artifact exploratorio inválido",message)
     def load(self,path):
-        self.loading=True;self.path_label.setText(f"Cargando {path}…")
+        self.loading=True;self.trace_group.hide();self.path_label.setText(f"Cargando {path}…")
         def done(data):
             self.dataset=data;self.source=Path(path);self.path_label.setText(f"{path} · {len(data['points'])} puntos · {data['provenance']} · validación experimental {data['experimental_validation']}")
             variants=sorted({r['variant_id'] for r in data['points']});self.variants.blockSignals(True);self.variants.clear()
@@ -74,16 +99,64 @@ class ResultsPage(QWidget):
         rows=sorted((r for r in self.dataset['points'] if r['variant_id'] in selected),key=lambda r:(r['variant_id'],r['rpm']))
         self.point_table.blockSignals(True);self.point_table.setRowCount(len(rows))
         for i,row in enumerate(rows):
-            values=[row['variant_id'],row['rpm'],row['classification'],row.get('cycles_completed'),row.get('BMEP') if row.get('BMEP_status')=='DEFINED' else None]
+            periodicity=row.get('periodicity')
+            if periodicity is None:
+                periodicity=row.get('classification') if row.get('classification') in {"PERIOD_1","PERIOD_2"} else "NOT_REPORTED"
+            values=[row['variant_id'],row['rpm'],row['classification'],periodicity,
+                    row.get('audit_status','NOT_REPORTED'),row.get('cycles_completed'),
+                    row.get('BMEP') if row.get('BMEP_status')=='DEFINED' else None]
             for j,value in enumerate(values):
                 item=QTableWidgetItem('—' if value is None else str(value));item.setData(Qt.ItemDataRole.UserRole,row);self.point_table.setItem(i,j,item)
         self.point_table.blockSignals(False)
+    def redraw_trace(self,*_):
+        if not self.dataset or self.dataset.get("schema")!="DINO_EXPLORATORY_COMPARISON_V1":
+            self.trace_plot.set_series([]);self.trace_legend.setText("");return
+        key=self.trace_metric.currentData()
+        if not key:
+            self.trace_plot.set_series([]);self.trace_legend.setText("");return
+        selected={self.variants.item(i).text() for i in range(self.variants.count())
+                  if self.variants.item(i).checkState()==Qt.CheckState.Checked}
+        series=[];labels=[]
+        for trace in self.dataset.get("traces",[]):
+            if trace.get("variant_id") not in selected:continue
+            channel=trace.get("channels",{}).get(key)
+            if not isinstance(channel,dict):continue
+            name=f"{trace['variant_id']} · {trace['rpm']:g} RPM · ciclo {trace['cycle']}"
+            labels.append(name)
+            series.append({"name":name,"unit":channel.get("unit",""),
+                "x_key":"angle_deg","x_label":"Ángulo de cigüeñal (°)",
+                "points":[{"angle_deg":angle,"value":value}
+                           for angle,value in zip(trace["angles_deg"],channel["values"])]})
+        self.trace_plot.set_series(series)
+        self.trace_legend.setText("Series: " + " | ".join(labels) if labels else "Sin trazas disponibles")
     def _point_row_selected(self,row,*_):
         if row<0 or self.point_table.item(row,0) is None:return
         data=self.point_table.item(row,0).data(Qt.ItemDataRole.UserRole)
         if data:self.show_point({"point":data,"rpm":data['rpm'],"value":None})
     def show_point(self,point):
-        row=point.get('point',point);items=[("RPM",row.get('rpm')), ("Variante",row.get('variant_id')),("Clasificación",row.get('classification')),("Resultado SHA-256",row.get('result_sha256')),("Configuración SHA-256",row.get('point_configuration_sha256')),("Ciclos completados",row.get('cycles_completed')),("Periodicidad",row.get('classification')),("Métrica",row.get(METRICS[self.metric.currentText()])),("Estado métrica",row.get(METRICS[self.metric.currentText()]+'_status')),("Motivo",row.get(METRICS[self.metric.currentText()]+'_reason')),("Hard gates",json.dumps(row.get('hard_gates'),ensure_ascii=False,sort_keys=True)),("Provenance",self.dataset['provenance'])]
+        row=point.get('point',point)
+        periodicity=row.get('periodicity')
+        if periodicity is None:
+            periodicity=row.get('classification') if row.get('classification') in {"PERIOD_1","PERIOD_2"} else "NOT_REPORTED"
+        items=[("RPM",row.get('rpm')), ("Variante",row.get('variant_id')),
+            ("Modo",row.get('mode','NOT_REPORTED · historical aggregate')),
+            ("Clasificación",row.get('classification')), ("Periodicidad",periodicity),
+            ("Auditoría primaria",row.get('audit_status','NOT_REPORTED')),
+            ("Auditoría recomputada",row.get('audit_recomputed','NOT_REPORTED')),
+            ("Resultado SHA-256",row.get('result_sha256')), ("Primario SHA-256",row.get('primary_sha256')),
+            ("Configuración SHA-256",row.get('point_configuration_sha256')),
+            ("Ciclos completados",row.get('cycles_completed')),
+            ("Métrica",row.get(METRICS[self.metric.currentText()])),
+            ("Estado métrica",row.get(METRICS[self.metric.currentText()]+'_status')),
+            ("Motivo",row.get(METRICS[self.metric.currentText()]+'_reason')),
+            ("Conservación",json.dumps(row.get('conservation'),ensure_ascii=False,sort_keys=True)),
+            ("Hard gates",json.dumps(row.get('hard_gates'),ensure_ascii=False,sort_keys=True)),
+            ("Validación experimental",row.get('experimental_validation',self.dataset.get('experimental_validation','NOT_REPORTED'))),
+            ("Provenance",self.dataset['provenance'])]
+        gates=row.get('hard_gates')
+        if isinstance(gates,dict) and "status" not in gates:
+            items.extend((f"Hard gate · {name}",json.dumps(value,ensure_ascii=False,sort_keys=True))
+                         for name,value in sorted(gates.items()))
         self.details.setRowCount(len(items))
         for i,(a,b) in enumerate(items):self.details.setItem(i,0,QTableWidgetItem(str(a)));self.details.setItem(i,1,QTableWidgetItem("—" if b is None else str(b)))
     def export_csv(self):

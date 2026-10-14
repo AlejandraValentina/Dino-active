@@ -85,6 +85,14 @@ def test_exploratory_run_cancels_at_step_boundary_and_resumes_audited_checkpoint
     assert len(imported["points"])==2
     assert imported["points"][0]["mode"]=="EXPLORATORY"
     assert imported["points"][0]["hard_gates"]["status"]=="NOT_EVALUATED_EXPLORATORY"
+    assert imported["points"][0]["audit_status"]=="PASS"
+    assert imported["points"][0]["audit_recomputed"] is True
+    assert imported["points"][0]["periodicity"]=="NOT_EVALUATED"
+    assert imported["points"][0]["conservation"]["mass_residual_kg"]==pytest.approx(0.0,abs=1e-11)
+    assert len(imported["traces"])==2
+    assert imported["traces"][0]["audit_recomputed"] is True
+    assert imported["traces"][0]["angles_deg"]
+    assert "cylinder_pressure_pa" in imported["traces"][0]["channels"]
     assert imported["interpolation"]=="NONE"
     result_path=tmp_path/"exploratory-workflow-v1"/"test-project"/"cancel-resume"/"result.json"
     result_bytes=result_path.read_bytes(); result_path.write_bytes(result_bytes+b" ")
@@ -111,6 +119,21 @@ def test_exploratory_runner_rejects_existing_partial_directory_without_resume(tm
     with pytest.raises(FileExistsError, match="explicit resume"):
         run_exploratory(document, project_id="p", run_id="run", artifact_root=tmp_path,
             max_cycles=1, budget_seconds=10)
+
+
+def test_exploratory_import_reports_zero_cycle_gap_without_metrics(tmp_path):
+    document=engine_document(); cancel=threading.Event(); cancel.set()
+    result=run_exploratory(document,project_id="p",run_id="zero-cycle",artifact_root=tmp_path,
+        rpm=3000,max_cycles=1,budget_seconds=10,cancel_event=cancel)
+    assert result["cycles_completed"]==0
+    imported=import_exploratory_runs([tmp_path/"exploratory-workflow-v1"/"p"/"zero-cycle"])
+    assert imported["traces"]==[]
+    point=imported["points"][0]
+    assert point["classification"]=="EXPLORATORY_CANCELLED_CHECKPOINTED"
+    assert point["audit_status"]=="NO_COMPLETE_CYCLE"
+    assert point["audit_recomputed"] is False
+    assert point["brake_power"] is None
+    assert point["brake_power_status"]=="NOT_REPORTED"
 
 
 def test_resume_rejects_corrupt_checkpoint_without_overwriting_it(tmp_path):

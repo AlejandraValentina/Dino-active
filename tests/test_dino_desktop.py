@@ -181,6 +181,35 @@ class DinoDesktopTests(unittest.TestCase):
             self.assertTrue(target_csv.is_file())
             self.assertEqual(sum(1 for line in target_csv.open(encoding="utf-8-sig")) - 1, 30)
 
+    def test_exploratory_results_keep_classification_periodicity_and_audit_separate(self):
+        page=ResultsPage(self.context)
+        point={"variant_id":"test / base","rpm":3000,
+            "classification":"EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+            "periodicity":"NOT_EVALUATED","audit_status":"PASS",
+            "audit_recomputed":True,"cycles_completed":1,"BMEP":None,
+            "BMEP_status":"UNDEFINED","hard_gates":{"status":"NOT_EVALUATED_EXPLORATORY"},
+            "mode":"EXPLORATORY","experimental_validation":"NOT_CLAIMED",
+            "conservation":{"mass_residual_kg":0.0}}
+        page._loaded_exploratory({"schema":"DINO_EXPLORATORY_COMPARISON_V1",
+            "points":[point],"traces":[{"variant_id":"test / base","rpm":3000,
+                "cycle":1,"angles_deg":[0,360],"channels":{
+                    "duct:exhaust:cell:1:pressure_pa":{"unit":"Pa","values":[1e5,1.1e5]}}}],
+            "experimental_validation":"NOT_CLAIMED","provenance":"EXPLORATORY"})
+        row=page.point_table.item(0,0).data(Qt.ItemDataRole.UserRole)
+        self.assertEqual(row["classification"],"EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED")
+        self.assertEqual(row["periodicity"],"NOT_EVALUATED")
+        self.assertEqual(row["audit_status"],"PASS")
+        self.assertFalse(page.trace_group.isHidden())
+        series=page.trace_plot.series[0]
+        self.assertEqual(series["x_key"],"angle_deg")
+        self.assertEqual(series["points"][1]["angle_deg"],360)
+        page.show_point({"point":row})
+        details={page.details.item(i,0).text():page.details.item(i,1).text()
+                 for i in range(page.details.rowCount())}
+        self.assertEqual(details["Periodicidad"],"NOT_EVALUATED")
+        self.assertEqual(details["Auditoría primaria"],"PASS")
+        self.assertEqual(details["Validación experimental"],"NOT_CLAIMED")
+
     def test_execution_request_never_starts_and_is_atomic(self):
         page = ExecutionPage(self.context)
         page.refresh()

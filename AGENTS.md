@@ -25,11 +25,13 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 CURRENT_OBJECTIVE: DINO_DESIGN_VALIDATION_V1
 change/spec:       openspec/changes/dino-design-validation-v1/
                    (specs/dino-design-validation-v1/spec.md es la autoridad de requisitos)
-completion:        verificar el enlace diseño editable → IntegratedEngine2T → solver
-                   y medir sensibilidad diagnóstica reproducible entre dos escapes;
-                   revisar powervalve versionado, semántica de resultados y contrato
-                   de importación experimental sin declarar validación. Sin campañas
-                   RPM completas, KT100 ni alteración histórica.
+completion:        DINO_DESIGN_VALIDATION_V1_PARTIAL terminal. Se verificó el enlace
+                   de controles soportados, la respuesta de presión/flujo entre
+                   escapes con auditoría y repetición, powervalve, semántica y
+                   contrato de importación. Sin periodicidad ni refinamiento de
+                   malla no hay claim de desempeño: falta malla axial multicelda
+                   versionada y estudio 1/2/4. Sin campañas RPM completas, KT100
+                   ni alteración histórica.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

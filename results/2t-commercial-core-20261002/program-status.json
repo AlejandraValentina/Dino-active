@@ -4260,25 +4260,36 @@
       "id": "DINO-RESULT-SEMANTICS",
       "description": "Audit and correct UI distinction among exploratory/verified, periodicity, audit, hard gates, experimental/synthetic and invalid/missing outputs.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "DINO_DESIGN_VALIDATION_V1",
       "owner_role": "orchestrator",
       "evidence_level": "L0",
       "write_scope": [
+        "motorsim/exploratory_workflow.py",
         "motorsim/desktop/results_page.py",
-        "motorsim/desktop/execution_page.py",
-        "tests/test_dino_desktop.py"
+        "motorsim/desktop/plot.py",
+        "tests/test_exploratory_workflow.py",
+        "tests/test_dino_desktop.py",
+        "results/dino-design-validation-v1/"
       ],
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Take against the DINO_DESIGN_VALIDATION_V1 spec; preserve historical evidence and obey diagnostic budgets."
+      "evidence": [
+        "motorsim/exploratory_workflow.py",
+        "motorsim/desktop/results_page.py",
+        "motorsim/desktop/plot.py",
+        "tests/test_exploratory_workflow.py",
+        "tests/test_dino_desktop.py",
+        "results/dino-design-validation-v1/result-semantics-receipt.json"
+      ],
+      "next_action": null,
+      "classification": "EXPLORATORY_RESULTS_REAUDITED_AND_SEMANTICS_SEPARATED"
     },
     {
       "id": "DINO-EXPERIMENT-IMPORT-CONTRACT",
       "description": "Specify and implement/test experimental table schema for RPM, torque, power, test conditions, units, uncertainty and provenance; keep measured data separate, no validation claim.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "DINO_DESIGN_VALIDATION_V1",
       "owner_role": "orchestrator",
       "evidence_level": "L0",
@@ -4289,14 +4300,20 @@
       ],
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Take against the DINO_DESIGN_VALIDATION_V1 spec; preserve historical evidence and obey diagnostic budgets."
+      "evidence": [
+        "motorsim/measurement_data.py",
+        "tests/test_measurement_data.py",
+        "docs/dino_design_validation_v1.md",
+        "openspec/changes/dino-design-validation-v1/specs/dino-design-validation-v1/spec.md"
+      ],
+      "next_action": null,
+      "classification": "MEASUREMENT_IMPORT_SCHEMA_VERIFIED_WITH_NO_VALIDATION_CLAIM"
     },
     {
       "id": "DINO-DESIGN-INTEGRATION-TESTS",
       "description": "Run focused Qt, mapping, solver sensitivity, replay audit, conservation, reproducibility, powervalve and experimental import regressions.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "DINO_DESIGN_VALIDATION_V1",
       "owner_role": "orchestrator",
       "evidence_level": "L0",
@@ -4305,14 +4322,21 @@
       ],
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Take against the DINO_DESIGN_VALIDATION_V1 spec; preserve historical evidence and obey diagnostic budgets."
+      "evidence": [
+        "tests/test_dino_desktop.py",
+        "tests/test_engine_configuration_v1.py",
+        "tests/test_powervalve.py",
+        "tests/test_measurement_data.py",
+        "tests/test_exploratory_workflow.py"
+      ],
+      "next_action": null,
+      "classification": "DINO_DESIGN_FOCUSED_REGRESSIONS_PASS"
     },
     {
       "id": "DINO-DESIGN-DOCS",
       "description": "Document physical scope, supported/approximate exhaust model and remaining limitations; finalize receipts and admin checks.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "DINO_DESIGN_VALIDATION_V1",
       "owner_role": "orchestrator",
       "evidence_level": "L0",
@@ -4323,8 +4347,13 @@
       ],
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Take against the DINO_DESIGN_VALIDATION_V1 spec; preserve historical evidence and obey diagnostic budgets."
+      "evidence": [
+        "docs/dino_design_validation_v1.md",
+        "results/dino-design-validation-v1/final-receipt.json",
+        "results/dino-design-validation-v1/exhaust-diagnostic-receipt.json"
+      ],
+      "next_action": null,
+      "classification": "DINO_DESIGN_VALIDATION_V1_DOCUMENTED_PARTIAL_LIMITATION"
     }
   ],
   "audit_remediation_mode": false,
@@ -4526,15 +4555,15 @@
   ],
   "current_objective": {
     "id": "DINO_DESIGN_VALIDATION_V1",
-    "state": "ACTIVE",
+    "state": "FAIL_TERMINAL",
     "owner_approved": true,
-    "classification": "DINO_DESIGN_VALIDATION_V1_IN_PROGRESS",
-    "summary": "Owner-authorized validation that editable engine/exhaust changes reach IntegratedEngine2T and produce reproducible, audited physical sensitivity; prepare experimental import contract without claim. No full RPM campaign or KT100.",
+    "classification": "DINO_DESIGN_VALIDATION_V1_PARTIAL",
+    "summary": "Objective complete with reproducible solver-backed design sensitivity, independent audits and preserved result semantics. Scientific performance conclusion remains partial: no periodic state and no mesh refinement to separate response from spatial error.",
     "change": "openspec/changes/dino-design-validation-v1",
     "spec": "openspec/changes/dino-design-validation-v1/specs/dino-design-validation-v1/spec.md",
     "set_by": "explicit owner authorization communicated 2026-10-14; receipt results/dino-design-validation-v1/owner-authorization.json",
     "authorization": "results/dino-design-validation-v1/owner-authorization.json",
-    "completion_criterion": "Demonstrate traceable supported design-to-solver bindings and bounded reproducible exhaust sensitivity diagnostics with audited evidence and conservation; verify powervalve boundaries/history; preserve result semantics; prepare experimental import schema without validation claim. No full RPM campaign, KT100 or historical artifact changes.",
+    "completion_criterion": "Terminal result DINO_DESIGN_VALIDATION_V1_PARTIAL: supported editor controls reach IntegratedEngine2T; bounded exhaust diagnostics show audited, repeatable pressure/flow response; power-valve history, result semantics and measurement import contract are verified. No steady-performance claim: periodicity was not identified and the one-cell-per-section mesh has unquantified spatial error. Missing next capability is a versioned multi-cell section-to-mesh adapter with 1/2/4 refinement. No full RPM campaign, KT100 or historical mutation.",
     "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
     "gate_tasks": [
       "DINO-DESIGN-PROPAGATION",
@@ -4760,15 +4789,15 @@
     },
     {
       "id": "DINO_DESIGN_VALIDATION_V1",
-      "state": "ACTIVE",
+      "state": "FAIL_TERMINAL",
       "owner_approved": true,
-      "classification": "DINO_DESIGN_VALIDATION_V1_IN_PROGRESS",
-      "summary": "Owner-authorized validation that editable engine/exhaust changes reach IntegratedEngine2T and produce reproducible, audited physical sensitivity; prepare experimental import contract without claim. No full RPM campaign or KT100.",
+      "classification": "DINO_DESIGN_VALIDATION_V1_PARTIAL",
+      "summary": "Objective complete with reproducible solver-backed design sensitivity, independent audits and preserved result semantics. Scientific performance conclusion remains partial: no periodic state and no mesh refinement to separate response from spatial error.",
       "change": "openspec/changes/dino-design-validation-v1",
       "spec": "openspec/changes/dino-design-validation-v1/specs/dino-design-validation-v1/spec.md",
       "set_by": "explicit owner authorization communicated 2026-10-14; receipt results/dino-design-validation-v1/owner-authorization.json",
       "authorization": "results/dino-design-validation-v1/owner-authorization.json",
-      "completion_criterion": "Demonstrate traceable supported design-to-solver bindings and bounded reproducible exhaust sensitivity diagnostics with audited evidence and conservation; verify powervalve boundaries/history; preserve result semantics; prepare experimental import schema without validation claim. No full RPM campaign, KT100 or historical artifact changes.",
+      "completion_criterion": "Terminal result DINO_DESIGN_VALIDATION_V1_PARTIAL: supported editor controls reach IntegratedEngine2T; bounded exhaust diagnostics show audited, repeatable pressure/flow response; power-valve history, result semantics and measurement import contract are verified. No steady-performance claim: periodicity was not identified and the one-cell-per-section mesh has unquantified spatial error. Missing next capability is a versioned multi-cell section-to-mesh adapter with 1/2/4 refinement. No full RPM campaign, KT100 or historical mutation.",
       "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
       "gate_tasks": [
         "DINO-DESIGN-PROPAGATION",
@@ -5700,6 +5729,36 @@
       "task": "DINO-EXHAUST-DIAGNOSTICS",
       "kind": "task",
       "summary": "Five real one-cycle points completed at 3000/4000 RPM plus repeat in 189.3 s. Independent replay audit and conservation pass; pressure/flow differ at exact angles; repeat primary SHA identical. 3000-RPM runs had 518 rejected CFL trials each, 4000-RPM runs 84 each. No periodicity/performance claim; coarse one-cell/section mesh limits resolution."
+    },
+    {
+      "at": "2026-10-14T12:17:41+00:00",
+      "task": "DINO-RESULT-SEMANTICS",
+      "kind": "task",
+      "summary": "Auditing result display and artifact importer; identified classification duplicated as periodicity and no offline primary replay on import. Implementing fail-closed re-audit and angle-domain channel comparison."
+    },
+    {
+      "at": "2026-10-14T12:35:53+00:00",
+      "task": "DINO-RESULT-SEMANTICS",
+      "kind": "task",
+      "summary": "Implemented fail-closed EXPLORATORY import with source/result/checkpoint binding, canonical primary verification, independently recomputed primary audits, summary replay, angle traces and explicit audit/periodicity/gap meanings. Five persisted exhaust runs re-imported: 5/5 audits pass; 18 focused tests and 43 integration tests pass."
+    },
+    {
+      "at": "2026-10-14T12:35:53+00:00",
+      "task": "DINO-EXPERIMENT-IMPORT-CONTRACT",
+      "kind": "task",
+      "summary": "Verified existing hash-bound measurement dataset contract for pressure/RPM torque/RPM power, conditions, provenance, source units and uncertainty. Exact-coordinate comparison metrics remain exploratory and validation/P9-ineligible; 15 contract tests pass."
+    },
+    {
+      "at": "2026-10-14T12:35:53+00:00",
+      "task": "DINO-DESIGN-INTEGRATION-TESTS",
+      "kind": "task",
+      "summary": "Focused Qt, engine configuration, powervalve, measurement import, checkpoint/resume/re-audit and missing-cycle tests pass; integration set 43 passed."
+    },
+    {
+      "at": "2026-10-14T12:35:53+00:00",
+      "task": "DINO-DESIGN-DOCS",
+      "kind": "task",
+      "summary": "Documented coarse one-cell-per-section quasi-1D exhaust limits and exact missing versioned multi-cell section-to-mesh adapter plus 1/2/4 refinement comparison; objective will remain PARTIAL without periodicity or discretization error closure."
     }
   ],
   "legacy_gate_status": {
@@ -5715,25 +5774,18 @@
   },
   "gate_status": {
     "objective": "DINO_DESIGN_VALIDATION_V1",
-    "state": "OPEN",
-    "classification": "DINO_DESIGN_VALIDATION_V1_IN_PROGRESS",
+    "state": "FAIL_TERMINAL",
+    "classification": "DINO_DESIGN_VALIDATION_V1_PARTIAL",
     "evidence": [
-      "results/dino-design-validation-v1/owner-authorization.json",
-      "openspec/changes/dino-design-validation-v1/specs/dino-design-validation-v1/spec.md"
+      "results/dino-design-validation-v1/final-receipt.json"
     ],
     "gate_tasks_total": 8,
-    "gate_tasks_done": 4,
+    "gate_tasks_done": 8,
     "gate_task_states": {
-      "DONE": 4,
-      "READY": 4
+      "DONE": 8
     },
-    "remaining": [
-      "DINO-RESULT-SEMANTICS",
-      "DINO-EXPERIMENT-IMPORT-CONTRACT",
-      "DINO-DESIGN-INTEGRATION-TESTS",
-      "DINO-DESIGN-DOCS"
-    ],
-    "updated_at": "2026-10-14T12:10:46+00:00"
+    "remaining": [],
+    "updated_at": "2026-10-14T12:37:31+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

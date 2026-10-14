@@ -1,0 +1,44 @@
+{
+  "schema": "DINO_DESIGN_VALIDATION_V1_FINAL_RECEIPT_V1",
+  "objective": "DINO_DESIGN_VALIDATION_V1",
+  "classification": "DINO_DESIGN_VALIDATION_V1_PARTIAL",
+  "reason": "Design edits reach IntegratedEngine2T and bounded repeated exhaust variants produce distinct audited pressure/flow traces, but the coarse one-cell-per-section exhaust mesh has no quantified discretization error and no periodic performance result exists.",
+  "results": {
+    "design_propagation": "SUPPORTED_SOLVER_BACKED_CONTROLS_TRACED; AFR metadata-only and fixed-loss load control disabled; details in committed UI/configuration tests.",
+    "exhaust_fixture": "Same motor, fuel, combustion, port/distribution, loss and boundary configuration; diffuser length alone changed 180 mm to 200 mm and derived mesh changed.",
+    "diagnostics": "Five real one-cycle points at 3000/4000 RPM plus exact 3000 RPM repeat; 189.313 s wall time; 2048 MiB configured process limit; 475.742 MiB max observed RSS at finish; independent primary audits and conservation pass.",
+    "observed_sensitivity": "Exact shared-angle pressure/flow differences; identical repeat primary SHA and zero channel difference. Does not establish mesh-independent physical response.",
+    "periodicity_and_performance": "NOT_EVALUATED; NOT_IDENTIFIED; transient power and torque not compared as steady performance.",
+    "powervalve": "Existing versioned configured-RPM endpoint fix verified; exact/near-boundary and out-of-range tests pass; historical aggregate remains 27 PERIOD_1 / 3 NUMERICAL_INVALID with unchanged hash.",
+    "result_semantics": "Five persisted diagnostic results independently re-imported and re-audited; result classification, periodicity, audit, conservation, hard-gate and experimental status kept separate; exact traces shown without interpolation.",
+    "experimental_import": "Existing hash-bound measurement-data contract supports pressure trace, RPM torque and power with declared units, uncertainty, conditions and provenance; exact-coordinate exploratory metrics only; validation/P9 eligibility false; no real measured dataset supplied."
+  },
+  "limitation": {
+    "current_exhaust_representation": "One axial finite-volume cell per named circular-frustum section; a baffle-named section supplies no independent baffle-flow model.",
+    "missing_component": "Versioned section-to-mesh adapter with multiple axial cells within cone/chamber sections, preserving internal section interfaces, plus a controlled 1/2/4-cell-per-section refinement comparison.",
+    "consequence": "Observed pressure/flow response cannot yet be separated from spatial discretization error; no performance claim is justified."
+  },
+  "checks": {
+    "integration_tests": "43 passed across Dino Desktop, configuration, powervalve and measurement import suites.",
+    "focused_resume_gap_and_ui_tests": "18 passed, including two-cycle cancel/resume and independent primary audit.",
+    "persisted_diagnostic_import": "5/5 result artifacts imported; 5/5 primary audits recomputed PASS; NOT_EVALUATED periodicity and no interpolation retained.",
+    "openspec_strict": "PASS",
+    "program_status_check": "PASS; final terminal status recorded in program-status.json"
+  },
+  "claims": {
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_validation": "NOT_CLAIMED",
+    "full_rpm_campaign": "NOT_STARTED_BY_THIS_OBJECTIVE",
+    "kt100": "NOT_STARTED",
+    "historical_artifacts_modified": false
+  },
+  "evidence": [
+    "results/dino-design-validation-v1/owner-authorization.json",
+    "results/dino-design-validation-v1/exhaust-fixture.json",
+    "results/dino-design-validation-v1/exhaust-diagnostic-receipt.json",
+    "results/dino-design-validation-v1/powervalve-verification.json",
+    "results/dino-design-validation-v1/result-semantics-receipt.json",
+    "openspec/changes/dino-design-validation-v1/specs/dino-design-validation-v1/spec.md",
+    "docs/dino_design_validation_v1.md"
+  ]
+}
