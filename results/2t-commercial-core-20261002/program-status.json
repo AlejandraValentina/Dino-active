@@ -4583,11 +4583,13 @@
       "dependencies": [
         "ENCV2-CONTROLLED-DUCT"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Finish only the eight preregistered one-cycle diagnostics within the current 540 s invocation; do not launch any other points.",
+      "evidence": [
+        "Eight authorized 3000 RPM 1/2/4/8 one-cycle diagnostics complete under EXHAUST_MESH_V2; all eight primary audits PASS with recomputed=true; result/primary/checkpoint/configuration bindings and conservation persisted in diagnostic-receipt.json; periodicity NOT_EVALUATED."
+      ],
+      "next_action": "No further matrix points under this authorization; retain PARTIAL because 4-to-8 differences remain material and no asymptotic regime is shown.",
       "objective": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
       "owner_role": "orchestrator / verification",
       "write_scope": [
@@ -4601,11 +4603,14 @@
       "dependencies": [
         "ENCV2-CONTROLLED-DUCT"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Close after diagnostics or blocker classification.",
+      "evidence": [
+        "106 focused V1/V2 adapter, Desktop and IntegratedEngine2T tests PASS (run_logged summary E:\\Dino-artifacts\\exhaust-numerical-convergence-v2\\logs\\encv2-regression.summary.json); OpenSpec strict PASS; program-status check PASS after closure; conservative aggregate wall accounting 1499.216/1800 s.",
+        "Diagnostic and final receipts persist current solver/adapter/producer hashes, all point hashes, recomputed audit status, conservation, benchmark wall accounting and limitations."
+      ],
+      "next_action": "Objective classified EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL; no full RPM campaign, KT100, or further solver run initiated.",
       "objective": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
       "owner_role": "orchestrator / verification",
       "write_scope": [
@@ -4814,10 +4819,10 @@
   ],
   "current_objective": {
     "id": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
-    "state": "ACTIVE",
+    "state": "FAIL_TERMINAL",
     "owner_approved": true,
-    "classification": null,
-    "summary": "Determine whether the 1D exhaust solution converges spatially and whether A/B design differences are separable from discretization error. Controlled duct verification precedes a bounded 3000 RPM A/B 1/2/4/8 diagnostic matrix. No full RPM campaign, KT100, periodicity fiction, or experimental claim.",
+    "classification": "EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL",
+    "summary": "Controlled duct checks passed and the bounded A/B 1/2/4/8 matrix completed; material 4-to-8 mesh sensitivity and one-cycle transient scope do not support asymptotic convergence or spatial independence. No campaign or experimental claim.",
     "change": "openspec/changes/exhaust-numerical-convergence-v2",
     "spec": "openspec/changes/exhaust-numerical-convergence-v2/specs/exhaust-numerical-convergence-v2/spec.md",
     "set_by": "explicit owner authorization communicated 2026-10-14; attachment SHA-256 facf16260be493926c23b356a38ec09b140c59ad610ba1b068103a1585fdf433",
@@ -5089,7 +5094,7 @@
     },
     {
       "id": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
-      "state": "APPROVED",
+      "state": "FAIL_TERMINAL",
       "owner_approved": true,
       "summary": "Determine whether the 1D exhaust solution converges spatially and whether A/B design differences are separable from discretization error. Controlled duct verification precedes a bounded 3000 RPM A/B 1/2/4/8 diagnostic matrix. No full RPM campaign, KT100, periodicity fiction, or experimental claim.",
       "change": "openspec/changes/exhaust-numerical-convergence-v2",
@@ -5100,7 +5105,8 @@
         "ENCV2-CONTROLLED-DUCT",
         "ENCV2-AB-MATRIX",
         "ENCV2-REGRESSION-ADMIN"
-      ]
+      ],
+      "classification": "EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL"
     }
   ],
   "owner_decisions_pending": [
@@ -6093,6 +6099,24 @@
       "task": "ENCV2-CONTROLLED-DUCT",
       "kind": "task",
       "summary": "Five integrated SSPRK2 controlled duct checks pass: analytic constant-area pulse, positive rigid-wall pressure reflection, static smooth-frustum balance, smooth-area transient convergence against refined reference, CFL sensitivity and exact replay. Diffusion is strong at coarse resolution; no sharp discontinuity model exists."
+    },
+    {
+      "at": "2026-10-14T14:12:36+00:00",
+      "task": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
+      "kind": "decision",
+      "summary": "Bounded A/B 1/2/4/8 diagnostics and 106 focal regressions complete; material 4-to-8 mesh sensitivity leaves spatial convergence unresolved, classified EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL."
+    },
+    {
+      "at": "2026-10-14T14:13:14+00:00",
+      "task": "ENCV2-AB-MATRIX",
+      "kind": "completion",
+      "summary": "Eight 3000 RPM A/B points at 1/2/4/8 completed one diagnostic cycle each; all independent primary audits PASS/recomputed; hashes and conservation persisted; periodicity not evaluated."
+    },
+    {
+      "at": "2026-10-14T14:13:14+00:00",
+      "task": "ENCV2-REGRESSION-ADMIN",
+      "kind": "completion",
+      "summary": "106 focal regressions PASS; OpenSpec strict and program-status check PASS; receipts persisted; terminal classification PARTIAL under 1800 s aggregate budget."
     }
   ],
   "legacy_gate_status": {
@@ -6108,21 +6132,18 @@
   },
   "gate_status": {
     "objective": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
-    "state": "OPEN",
-    "classification": null,
-    "evidence": [],
-    "gate_tasks_total": 4,
-    "gate_tasks_done": 2,
-    "gate_task_states": {
-      "DONE": 2,
-      "IN_PROGRESS": 1,
-      "READY": 1
-    },
-    "remaining": [
-      "ENCV2-AB-MATRIX",
-      "ENCV2-REGRESSION-ADMIN"
+    "state": "FAIL_TERMINAL",
+    "classification": "EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL",
+    "evidence": [
+      "results/exhaust-numerical-convergence-v2/final-receipt.json"
     ],
-    "updated_at": "2026-10-14T13:47:31+00:00"
+    "gate_tasks_total": 4,
+    "gate_tasks_done": 4,
+    "gate_task_states": {
+      "DONE": 4
+    },
+    "remaining": [],
+    "updated_at": "2026-10-14T14:12:48+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -6170,7 +6191,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-14T00:00:00-03:00",
+  "updated_at": "2026-10-14T11:12:48-03:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",

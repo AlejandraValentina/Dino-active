@@ -28,6 +28,9 @@ change/spec:       openspec/changes/exhaust-numerical-convergence-v2/
 completion:        controlled duct wave/reflection/area-transition and separated
                    temporal/spatial diagnostics; bounded A/B 1/2/4/8 at 3000 RPM
                    only if interpretable and within the aggregate 1800 s budget.
+                   Final classification: EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL;
+                   material 4-to-8 sensitivity and one-cycle transients do not
+                   establish asymptotic convergence or spatial independence.
                    No full RPM campaign, KT100, periodicity fiction, spatial
                    independence claim without evidence, or experimental claim.
 durable queue:     results/2t-commercial-core-20261002/program-status.json

@@ -1,0 +1,20 @@
+{
+  "schema": "EXHAUST_NUMERICAL_CONVERGENCE_V2_FINAL_RECEIPT_V1",
+  "objective": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
+  "classification": "EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL",
+  "gate_state": "FAIL_TERMINAL",
+  "decision": "The controlled checks are useful and the bounded 1/2/4/8 matrix completed, but 4-to-8 changes remain material and one-cycle transients do not establish an asymptotic spatial error estimate or separate design signal from discretization.",
+  "evidence": "results/exhaust-numerical-convergence-v2/diagnostic-receipt.json",
+  "matrix_report_sha256": "13b9b9b75a44398f9a4a2302a34b71207262069361277ed6bde2b57fbac12e14",
+  "tests_passed": 106,
+  "budget_seconds_accounted_conservatively": 1499.216,
+  "budget_seconds_authorized": 1800,
+  "periodicity": "NOT_EVALUATED",
+  "spatial_independence": "NOT_ESTABLISHED",
+  "experimental_validation": "NOT_PERFORMED",
+  "sharp_area_step": "NOT_REPRESENTED; smooth taper only",
+  "historical_v1_source_equivalence": "UNVERIFIED_EXACT_DIFF_SOURCE_UNAVAILABLE",
+  "campaigns_started": 0,
+  "no_full_rpm_or_kt100": true,
+  "diagnostic_receipt_sha256": "5d1b980ca37a9301237bdf4a12c40045ddc800fb239c8a8f76d0c42c40d40a48"
+}
