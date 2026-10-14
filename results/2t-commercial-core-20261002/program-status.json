@@ -4359,7 +4359,7 @@
       "id": "EXM-FORENSICS",
       "description": "Inspect current finite-volume geometry, fluxes, area source, boundary coupling, CFL and state mapping; record governing equations and extension risks.",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "objective": "EXHAUST_MESH_V1",
       "owner_role": "orchestrator",
       "evidence_level": "L0",
@@ -4371,8 +4371,14 @@
       ],
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": null
+      "evidence": [
+        "results/exhaust-mesh-v1/forensics.json",
+        "motorsim/gas1d/mesh.py",
+        "motorsim/integrated_2t.py:1725-1754",
+        "motorsim/engine_variants.py:73-123"
+      ],
+      "next_action": null,
+      "classification": "EXISTING_AREA_AWARE_QUASI_1D_FLUX_AND_GEOMETRIC_SOURCE_CONFIRMED"
     },
     {
       "id": "EXM-ADAPTER",
@@ -4380,7 +4386,7 @@
       "dependencies": [
         "EXM-FORENSICS"
       ],
-      "state": "WAITING",
+      "state": "IN_PROGRESS",
       "objective": "EXHAUST_MESH_V1",
       "owner_role": "orchestrator",
       "evidence_level": "L0",
@@ -5924,6 +5930,12 @@
       "task": "EXHAUST_MESH_V1",
       "kind": "objective_transition",
       "summary": "Owner authorized EXHAUST_MESH_V1 at HEAD 74aaa9a019a171008f9870745523a427eedfe078; scope, 1800-second aggregate diagnostic budget, exclusions and no-push constraint recorded in durable receipt (attachment SHA-256 6f53d22430be5f8d89d13e77bf5161e26d71d22307588b070b5c00a87f9a3bc5). Prior DINO_DESIGN_VALIDATION_V1 terminal gate archived unchanged."
+    },
+    {
+      "at": "2026-10-14T13:10:00+00:00",
+      "task": "EXM-FORENSICS",
+      "kind": "task",
+      "summary": "Confirmed exact frustum geometry, area-weighted HLLC fluxes, quasi-1D p*dA/V momentum source, physical face-area boundaries and shared SSPRK2/CFL path. Solver already supports varying area; implement a new adapter without altering legacy behavior."
     }
   ],
   "legacy_gate_status": {
@@ -5949,7 +5961,8 @@
     "gate_tasks_done": 0,
     "gate_task_states": {
       "IN_PROGRESS": 1,
-      "WAITING": 6
+      "WAITING": 5,
+      "DONE": 1
     },
     "remaining": [
       "EXM-FORENSICS",

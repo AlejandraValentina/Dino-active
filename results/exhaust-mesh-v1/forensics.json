@@ -1,0 +1,10 @@
+{
+  "schema": "EXHAUST_MESH_V1_FORENSICS_V1",
+  "recorded_at": "2026-10-14",
+  "geometry": "motorsim.gas1d.mesh.Mesh stores n+1 axial face positions and areas, n exact circular-frustum control volumes and volume centroids. segments_mesh splits each linearly varying diameter segment; the legacy replace_escape_sections uses one cell per named section by choosing dx_target=max(section lengths).",
+  "flux": "IntegratedEngine2T computes HLLC fluxes across internal faces multiplied by the actual face area; duct states are extensive conservative quantities divided by the dynamic cell volume.",
+  "area_source": "Axial momentum RHS adds p_i*(A_right-A_left)/V_i. This is the standard quasi-1D pressure geometric source paired with area-weighted conservative fluxes. No additional equation change is currently justified; tests must verify constant-area reduction, geometry conservation, static pressure balance and dynamic conservation.",
+  "boundaries": "Cylinder-exhaust exchange uses the duct inlet face area limited by port area; open-end uses actual outlet face area. Adjacent sections share a single face; interfaces have no duplicated boundary flux.",
+  "integrator": "The integrated engine advances the duct within the shared SSPRK2 stage graph. Existing CFL derives face characteristic speeds and actual cell widths; refinement changes cell widths and therefore step count/cost, without changing the integrator.",
+  "classification": "Geometric representation is coarse (one FV cell per named section); solver already supports varying face areas and the quasi-1D geometric pressure source. Implement a separate explicit adapter, conservative state remapping, configuration identity and checkpoint binding. Do not change historical replace_escape_sections behavior."
+}
