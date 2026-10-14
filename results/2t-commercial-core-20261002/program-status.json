@@ -4157,6 +4157,150 @@
       "next_action": null,
       "classification": "DINO_SIMULATION_WORKFLOW_V1_TASK_COMPLETE",
       "commits": []
+    },
+    {
+      "id": "DINO-DESIGN-PROPAGATION",
+      "description": "Audit editable engine and variant properties from project through effective configuration into actual IntegratedEngine2T state; test physical influence and unsupported controls.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "DINO_DESIGN_VALIDATION_V1",
+      "owner_role": "orchestrator",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/engine_configuration.py",
+        "motorsim/desktop/engine_page.py",
+        "tests/test_engine_configuration_v1.py",
+        "tests/test_dino_desktop.py"
+      ],
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Take against the DINO_DESIGN_VALIDATION_V1 spec; preserve historical evidence and obey diagnostic budgets."
+    },
+    {
+      "id": "DINO-EXHAUST-SENSITIVITY-FIXTURE",
+      "description": "Prepare same-engine base/modified exhaust fixture, confirm distinct section geometry and solver meshes, preserve identical non-exhaust configuration.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "DINO_DESIGN_VALIDATION_V1",
+      "owner_role": "orchestrator",
+      "evidence_level": "L1",
+      "write_scope": [
+        "examples/projects/",
+        "tests/test_engine_configuration_v1.py",
+        "results/dino-design-validation-v1/"
+      ],
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Take against the DINO_DESIGN_VALIDATION_V1 spec; preserve historical evidence and obey diagnostic budgets."
+    },
+    {
+      "id": "DINO-EXHAUST-DIAGNOSTICS",
+      "description": "Run short real IntegratedEngine2T diagnostics and compare pressure/waves/flow with audit, conservation, repeatability, runtime and convergence; no transient performance claims.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "DINO_DESIGN_VALIDATION_V1",
+      "owner_role": "orchestrator",
+      "evidence_level": "L1",
+      "write_scope": [
+        "motorsim/exploratory_workflow.py",
+        "scripts/",
+        "results/dino-design-validation-v1/"
+      ],
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Take against the DINO_DESIGN_VALIDATION_V1 spec; preserve historical evidence and obey diagnostic budgets."
+    },
+    {
+      "id": "DINO-POWERVALVE-VERIFICATION",
+      "description": "Verify existing versioned endpoint fix, endpoint/near-boundary/outside/interior tests and confirm historical point classifications/artifacts remain unchanged.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "DINO_DESIGN_VALIDATION_V1",
+      "owner_role": "orchestrator",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/integrated_2t.py",
+        "motorsim/powervalve.py",
+        "tests/test_integrated_2t.py",
+        "results/dino-design-validation-v1/"
+      ],
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Take against the DINO_DESIGN_VALIDATION_V1 spec; preserve historical evidence and obey diagnostic budgets."
+    },
+    {
+      "id": "DINO-RESULT-SEMANTICS",
+      "description": "Audit and correct UI distinction among exploratory/verified, periodicity, audit, hard gates, experimental/synthetic and invalid/missing outputs.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "DINO_DESIGN_VALIDATION_V1",
+      "owner_role": "orchestrator",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/results_page.py",
+        "motorsim/desktop/execution_page.py",
+        "tests/test_dino_desktop.py"
+      ],
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Take against the DINO_DESIGN_VALIDATION_V1 spec; preserve historical evidence and obey diagnostic budgets."
+    },
+    {
+      "id": "DINO-EXPERIMENT-IMPORT-CONTRACT",
+      "description": "Specify and implement/test experimental table schema for RPM, torque, power, test conditions, units, uncertainty and provenance; keep measured data separate, no validation claim.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "DINO_DESIGN_VALIDATION_V1",
+      "owner_role": "orchestrator",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/",
+        "tests/",
+        "openspec/changes/dino-design-validation-v1/"
+      ],
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Take against the DINO_DESIGN_VALIDATION_V1 spec; preserve historical evidence and obey diagnostic budgets."
+    },
+    {
+      "id": "DINO-DESIGN-INTEGRATION-TESTS",
+      "description": "Run focused Qt, mapping, solver sensitivity, replay audit, conservation, reproducibility, powervalve and experimental import regressions.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "DINO_DESIGN_VALIDATION_V1",
+      "owner_role": "orchestrator",
+      "evidence_level": "L0",
+      "write_scope": [
+        "tests/"
+      ],
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Take against the DINO_DESIGN_VALIDATION_V1 spec; preserve historical evidence and obey diagnostic budgets."
+    },
+    {
+      "id": "DINO-DESIGN-DOCS",
+      "description": "Document physical scope, supported/approximate exhaust model and remaining limitations; finalize receipts and admin checks.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "DINO_DESIGN_VALIDATION_V1",
+      "owner_role": "orchestrator",
+      "evidence_level": "L0",
+      "write_scope": [
+        "docs/",
+        "results/dino-design-validation-v1/",
+        "openspec/changes/dino-design-validation-v1/"
+      ],
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Take against the DINO_DESIGN_VALIDATION_V1 spec; preserve historical evidence and obey diagnostic budgets."
     }
   ],
   "audit_remediation_mode": false,
@@ -4357,26 +4501,26 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_SIMULATION_WORKFLOW_V1",
-    "state": "PASS",
+    "id": "DINO_DESIGN_VALIDATION_V1",
+    "state": "ACTIVE",
     "owner_approved": true,
-    "classification": "DINO_SIMULATION_WORKFLOW_V1_READY",
-    "summary": "DINO_SIMULATION_WORKFLOW_V1 completed for bounded EXPLORATORY local workflow; VERIFIED remains unavailable absent matching preregistration and authorization. No full RPM campaign, KT100 or historical artifact changes.",
-    "change": "openspec/changes/dino-simulation-workflow-v1",
-    "spec": "openspec/changes/dino-simulation-workflow-v1/specs/dino-simulation-workflow-v1/spec.md",
-    "set_by": "explicit owner authorization communicated 2026-10-14; receipt results/dino-simulation-workflow-v1/owner-authorization.json",
-    "authorization": "results/dino-simulation-workflow-v1/owner-authorization.json",
-    "completion_criterion": "Satisfied for bounded EXPLORATORY local workflow. RSS is checked at integration/checkpoint boundaries (cooperative bound, not OS hard cap); artifact, cycle and time budgets are enforced.",
+    "classification": "DINO_DESIGN_VALIDATION_V1_IN_PROGRESS",
+    "summary": "Owner-authorized validation that editable engine/exhaust changes reach IntegratedEngine2T and produce reproducible, audited physical sensitivity; prepare experimental import contract without claim. No full RPM campaign or KT100.",
+    "change": "openspec/changes/dino-design-validation-v1",
+    "spec": "openspec/changes/dino-design-validation-v1/specs/dino-design-validation-v1/spec.md",
+    "set_by": "explicit owner authorization communicated 2026-10-14; receipt results/dino-design-validation-v1/owner-authorization.json",
+    "authorization": "results/dino-design-validation-v1/owner-authorization.json",
+    "completion_criterion": "Demonstrate traceable supported design-to-solver bindings and bounded reproducible exhaust sensitivity diagnostics with audited evidence and conservation; verify powervalve boundaries/history; preserve result semantics; prepare experimental import schema without validation claim. No full RPM campaign, KT100 or historical artifact changes.",
     "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
     "gate_tasks": [
-      "DINO-WORKFLOW-ADAPTER",
-      "DINO-POWERVALVE-ENDPOINT",
-      "DINO-WORKFLOW-PREFLIGHT",
-      "DINO-EXPLORATORY-RUNNER",
-      "DINO-EXHAUST-SOLVER-BINDING",
-      "DINO-EXECUTION-UI",
-      "DINO-WORKFLOW-INTEGRATION-TESTS",
-      "DINO-WORKFLOW-DOCS-PACKAGE"
+      "DINO-DESIGN-PROPAGATION",
+      "DINO-EXHAUST-SENSITIVITY-FIXTURE",
+      "DINO-EXHAUST-DIAGNOSTICS",
+      "DINO-POWERVALVE-VERIFICATION",
+      "DINO-RESULT-SEMANTICS",
+      "DINO-EXPERIMENT-IMPORT-CONTRACT",
+      "DINO-DESIGN-INTEGRATION-TESTS",
+      "DINO-DESIGN-DOCS"
     ]
   },
   "objectives": [
@@ -4589,6 +4733,29 @@
         "DINO-WORKFLOW-DOCS-PACKAGE"
       ],
       "completed_at": "2026-10-14T12:45:00-03:00"
+    },
+    {
+      "id": "DINO_DESIGN_VALIDATION_V1",
+      "state": "ACTIVE",
+      "owner_approved": true,
+      "classification": "DINO_DESIGN_VALIDATION_V1_IN_PROGRESS",
+      "summary": "Owner-authorized validation that editable engine/exhaust changes reach IntegratedEngine2T and produce reproducible, audited physical sensitivity; prepare experimental import contract without claim. No full RPM campaign or KT100.",
+      "change": "openspec/changes/dino-design-validation-v1",
+      "spec": "openspec/changes/dino-design-validation-v1/specs/dino-design-validation-v1/spec.md",
+      "set_by": "explicit owner authorization communicated 2026-10-14; receipt results/dino-design-validation-v1/owner-authorization.json",
+      "authorization": "results/dino-design-validation-v1/owner-authorization.json",
+      "completion_criterion": "Demonstrate traceable supported design-to-solver bindings and bounded reproducible exhaust sensitivity diagnostics with audited evidence and conservation; verify powervalve boundaries/history; preserve result semantics; prepare experimental import schema without validation claim. No full RPM campaign, KT100 or historical artifact changes.",
+      "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
+      "gate_tasks": [
+        "DINO-DESIGN-PROPAGATION",
+        "DINO-EXHAUST-SENSITIVITY-FIXTURE",
+        "DINO-EXHAUST-DIAGNOSTICS",
+        "DINO-POWERVALVE-VERIFICATION",
+        "DINO-RESULT-SEMANTICS",
+        "DINO-EXPERIMENT-IMPORT-CONTRACT",
+        "DINO-DESIGN-INTEGRATION-TESTS",
+        "DINO-DESIGN-DOCS"
+      ]
     }
   ],
   "owner_decisions_pending": [
@@ -5449,6 +5616,12 @@
       "task": "DINO-WORKFLOW-DOCS-PACKAGE",
       "kind": "task",
       "summary": "Workflow documented; Windows trial package SHA verified and Dino2T executable startup-smoked; RSS cooperative limitation documented."
+    },
+    {
+      "at": "2026-10-14T11:53:02+00:00",
+      "task": "DINO_DESIGN_VALIDATION_V1",
+      "kind": "task",
+      "summary": "Owner authorization registered (request SHA-256 C16750A154FBFC6FFA6DC52D24E675250BDB2BAD87BFFF77943EA351D3566D5A); DINO_SIMULATION_WORKFLOW_V1 PASS archived; design-validation OpenSpec and 8-task queue created. No campaigns/KT100 authorized."
     }
   ],
   "legacy_gate_status": {
@@ -5463,26 +5636,29 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_SIMULATION_WORKFLOW_V1",
-    "state": "PASS",
-    "classification": "DINO_SIMULATION_WORKFLOW_V1_READY",
+    "objective": "DINO_DESIGN_VALIDATION_V1",
+    "state": "OPEN",
+    "classification": "DINO_DESIGN_VALIDATION_V1_IN_PROGRESS",
     "evidence": [
-      "openspec/changes/dino-simulation-workflow-v1/specs/dino-simulation-workflow-v1/spec.md",
-      "tests/test_exploratory_workflow.py",
-      "results/dino-simulation-workflow-v1/implementation-receipt.json",
-      "dist/MotorSim-0.1.0-rc6-windows-x64-c08efc30-trial-20261014T114516Z.zip"
+      "results/dino-design-validation-v1/owner-authorization.json",
+      "openspec/changes/dino-design-validation-v1/specs/dino-design-validation-v1/spec.md"
     ],
     "gate_tasks_total": 8,
-    "gate_tasks_done": 8,
+    "gate_tasks_done": 0,
     "gate_task_states": {
-      "DONE": 8
+      "READY": 8
     },
-    "remaining": [],
-    "limitations": [
-      "RSS limit is cooperative and checked at step/checkpoint boundaries; no OS-level hard memory cap.",
-      "EXPLORATORY results are provisional; VERIFIED remains unavailable."
+    "remaining": [
+      "DINO-DESIGN-PROPAGATION",
+      "DINO-EXHAUST-SENSITIVITY-FIXTURE",
+      "DINO-EXHAUST-DIAGNOSTICS",
+      "DINO-POWERVALVE-VERIFICATION",
+      "DINO-RESULT-SEMANTICS",
+      "DINO-EXPERIMENT-IMPORT-CONTRACT",
+      "DINO-DESIGN-INTEGRATION-TESTS",
+      "DINO-DESIGN-DOCS"
     ],
-    "updated_at": "2026-10-14T12:45:00-03:00"
+    "updated_at": "2026-10-14T13:00:00-03:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -5530,7 +5706,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-14T12:45:00-03:00",
+  "updated_at": "2026-10-14T13:00:00-03:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -5657,5 +5833,27 @@
     },
     "remaining": [],
     "updated_at": "2026-10-14T11:07:22+00:00"
+  },
+  "gate_status_archive_before_dino_design_validation": {
+    "objective": "DINO_SIMULATION_WORKFLOW_V1",
+    "state": "PASS",
+    "classification": "DINO_SIMULATION_WORKFLOW_V1_READY",
+    "evidence": [
+      "openspec/changes/dino-simulation-workflow-v1/specs/dino-simulation-workflow-v1/spec.md",
+      "tests/test_exploratory_workflow.py",
+      "results/dino-simulation-workflow-v1/implementation-receipt.json",
+      "dist/MotorSim-0.1.0-rc6-windows-x64-c08efc30-trial-20261014T114516Z.zip"
+    ],
+    "gate_tasks_total": 8,
+    "gate_tasks_done": 8,
+    "gate_task_states": {
+      "DONE": 8
+    },
+    "remaining": [],
+    "limitations": [
+      "RSS limit is cooperative and checked at step/checkpoint boundaries; no OS-level hard memory cap.",
+      "EXPLORATORY results are provisional; VERIFIED remains unavailable."
+    ],
+    "updated_at": "2026-10-14T12:45:00-03:00"
   }
 }

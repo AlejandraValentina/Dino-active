@@ -22,14 +22,14 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_SIMULATION_WORKFLOW_V1
-change/spec:       openspec/changes/dino-simulation-workflow-v1/
-                   (specs/dino-simulation-workflow-v1/spec.md es la autoridad de requisitos)
-completion:        workflow Windows para configurar, preflightear y ejecutar sólo
-                   EXPLORATORY local con confirmación explícita, presupuesto,
-                   auditoría, conservación, checkpoint/restart/cancel y comparación;
-                   VERIFIED bloqueado sin contrato/preregistro/autorización exactos.
-                   No campañas RPM completas, KT100 ni alteración histórica.
+CURRENT_OBJECTIVE: DINO_DESIGN_VALIDATION_V1
+change/spec:       openspec/changes/dino-design-validation-v1/
+                   (specs/dino-design-validation-v1/spec.md es la autoridad de requisitos)
+completion:        verificar el enlace diseño editable → IntegratedEngine2T → solver
+                   y medir sensibilidad diagnóstica reproducible entre dos escapes;
+                   revisar powervalve versionado, semántica de resultados y contrato
+                   de importación experimental sin declarar validación. Sin campañas
+                   RPM completas, KT100 ni alteración histórica.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```
