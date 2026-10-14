@@ -16,7 +16,7 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushB
 from ..engine_configuration import identity
 from ..exploratory_workflow import preflight, run_exploratory
 from .services import run_background
-from .preferences import artifact_root, set_artifact_root
+from .preferences import artifact_root, set_artifact_root, repository_root_containing, default_artifact_root
 
 
 class ExecutionPage(QWidget):
@@ -24,6 +24,7 @@ class ExecutionPage(QWidget):
     progress_signal=Signal(object)
     open_runs_requested=Signal(object)
     resume_run_requested=Signal(object)
+    state_changed=Signal()
     def __init__(self, context):
         super().__init__(); self.context=context; self.task=None; self.cancel_event=None
         self.artifact_root=artifact_root()
@@ -44,6 +45,9 @@ class ExecutionPage(QWidget):
         self.expected=QLabel();self.expected.setWordWrap(True);form.addRow("Resultados esperables",self.expected)
         self.budget=QDoubleSpinBox(); self.budget.setRange(1,600); self.budget.setDecimals(0); self.budget.setValue(60); self.budget.setSuffix(" s")
         form.addRow("Presupuesto de tiempo",self.budget)
+        self.budget_estimate=QLabel();self.budget_estimate.setWordWrap(True);form.addRow("Estimación orientativa",self.budget_estimate)
+        self.apply_budget_estimate=QPushButton("Aplicar presupuesto sugerido (máx. 600 s)");self.apply_budget_estimate.clicked.connect(self._apply_budget_estimate)
+        form.addRow("",self.apply_budget_estimate)
         self.memory=QSpinBox(); self.memory.setRange(256,4096); self.memory.setValue(1024); self.memory.setSuffix(" MiB · RSS máximo supervisado")
         form.addRow("Memoria",self.memory)
         self.mode=QLabel("EXPLORATORY · 1 worker · pipeline convencional + auditoría independiente")
@@ -51,6 +55,7 @@ class ExecutionPage(QWidget):
         root_row=QHBoxLayout(); root.addLayout(root_row)
         self.root_label=QLabel(str(self.artifact_root)); self.root_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         self.root_label.setWordWrap(True); root_row.addWidget(self.root_label,1)
+        self.root_warning=QLabel();self.root_warning.setWordWrap(True);self.root_warning.setObjectName("notice");root.addWidget(self.root_warning)
         choose=QPushButton("Elegir artifact root…"); choose.clicked.connect(self.choose_root); root_row.addWidget(choose)
         runrow=QHBoxLayout(); root.addLayout(runrow)
         self.run_id=QLineEdit(); self.run_id.setPlaceholderText("Se genera un identificador para una ejecución nueva; para resume, pegar el existente")
@@ -81,6 +86,28 @@ class ExecutionPage(QWidget):
             self.cycles.blockSignals(True);self.cycles.setValue(value);self.cycles.blockSignals(False)
         self.refresh()
 
+    def _cycle_seconds(self,cell_count):
+        """Estimate from matching history when possible; otherwise use a labeled fallback."""
+        rates=[]
+        try:
+            self.history.refresh()
+            for entry in self.history.entries:
+                details=entry.get("details",{})
+                if entry.get("identity_sha256")!=identity(self._engine()):continue
+                if details.get("total_finite_volume_cells")==cell_count and details.get("cycles_completed",0)>0 and details.get("elapsed_seconds",0)>0:
+                    rates.append(float(details["elapsed_seconds"])/int(details["cycles_completed"]))
+        except (AttributeError,TypeError,ValueError):pass
+        return (sum(rates)/len(rates),"estimación basada en corridas de la misma configuración") if rates else (30.0,"fallback conservador de 30 s/ciclo; aún sin historial comparable")
+
+    def _apply_budget_estimate(self):
+        try:
+            check=self._preflight();seconds,source=self._cycle_seconds(check["total_finite_volume_cells"])
+            suggested=min(600,max(1,int(__import__("math").ceil(self.cycles.value()*seconds*1.2))))
+            self.budget.setValue(suggested)
+            self.output.appendPlainText(f"Presupuesto sugerido aplicado explícitamente: {suggested} s ({source}).")
+        except Exception as exc:
+            QMessageBox.warning(self,"No se pudo estimar el presupuesto",str(exc))
+
     def _engine(self): return self.context.engine()
 
     def _preflight(self):
@@ -89,21 +116,37 @@ class ExecutionPage(QWidget):
 
     def refresh(self,*_):
         try:
-            engine=self._engine(); self.engine_label.setText(f"{engine['display_name']} · identity {identity(engine)[:16]}…")
+            engine=self._engine();visible_variant=self.context.selected_variant or "Motor base"
+            self.engine_label.setText(f"{visible_variant} · identity {identity(engine)[:16]}…")
             check=self._preflight()
+            repository=repository_root_containing(self.artifact_root)
+            unsafe=repository is not None
+            self.root_warning.setText((f"Esta raíz está dentro del repositorio ({repository}). Los artifacts existentes se conservan. Elegí una ubicación externa antes de iniciar una corrida nueva." if unsafe else "La raíz de artifacts está fuera del repositorio."))
+            self.root_warning.setProperty("unsafeRoot",unsafe)
             self.preflight_label.setText(f"Preflight PASS · {check['rpm']:g} RPM · 0 pasos · {check['total_finite_volume_cells']} celdas · pérdidas explícitas · fuel {check['fuel_id']} · AFR {check['afr_kg_air_per_kg_fuel']:g}")
             self.expected.setText("Se guardarán primarias por ciclo para auditar presión y flujos. Un solo ciclo no permite potencia o torque periódicos admisibles. Un horizonte mayor sólo permite observar el detector; no garantiza periodicidad ni convergencia. Las magnitudes no identificables permanecerán sin valor.")
-            self.start.setEnabled(self.task is None)
+            seconds,source=self._cycle_seconds(check["total_finite_volume_cells"])
+            import math
+            raw_estimate=max(1,int(math.ceil(self.cycles.value()*seconds*1.2)));estimate=min(600,raw_estimate)
+            if self.budget.value()<estimate:
+                status=f"Presupuesto actual {self.budget.value():g} s posiblemente insuficiente; sugerencia {estimate} s con tope de 600 s."
+            else:status=f"Presupuesto actual {self.budget.value():g} s alcanza la estimación orientativa de hasta {estimate} s; no garantiza terminar."
+            if raw_estimate>600:status+=f" El tope no alcanza la estimación sin margen ({raw_estimate} s); no se alteró el horizonte ni el presupuesto."
+            self.budget_estimate.setText(f"{self.cycles.value()} ciclos · {status} {source}. Cambiar el preset nunca cambia el presupuesto.")
+            self.start.setEnabled(self.task is None and not unsafe)
             candidate=self.artifact_root/'exploratory-workflow-v1'/self.context.project['project_id']/self.run_id.text().strip()
             resumable=(bool(self.run_id.text().strip()) and (candidate/'run.json').is_file() and (candidate/'checkpoint.json').is_file())
             self.resume.setEnabled(self.task is None and resumable)
         except Exception as exc:
             self.preflight_label.setText(f"Preflight FAIL-CLOSED: {type(exc).__name__}: {exc}")
             self.start.setEnabled(False); self.resume.setEnabled(False)
+        self.state_changed.emit()
 
     def choose_root(self):
         path=QFileDialog.getExistingDirectory(self,"Artifact root de ejecuciones locales",str(self.artifact_root))
         if path:
+            if repository_root_containing(path) is not None:
+                QMessageBox.warning(self,"Raíz dentro del repositorio","Elegí una ubicación externa para una corrida nueva. No se modificó la raíz guardada ni se movieron artifacts.");return
             self.artifact_root=set_artifact_root(path);self.root_label.setText(path)
             self.history.artifact_root=self.artifact_root;self.history.refresh();self.refresh()
 
@@ -119,7 +162,7 @@ class ExecutionPage(QWidget):
             self.context.select_variant(matches[0])
             from pathlib import Path
             self.artifact_root=Path(entry["artifact_root"])
-            self.root_label.setText(str(self.artifact_root));set_artifact_root(self.artifact_root)
+            self.root_label.setText(str(self.artifact_root));set_artifact_root(self.artifact_root,allow_repository=True)
             self.run_id.setText(str(entry["run_id"]))
             if entry.get("rpm") is not None:self.rpm.setValue(float(entry["rpm"]))
             cycles=entry.get("details",{}).get("cycles_requested")
@@ -164,7 +207,7 @@ class ExecutionPage(QWidget):
     def _confirmation_text(self, run_id, resume):
         check=self._preflight()
         return (f"{'Reanudar' if resume else 'Iniciar'} una simulación EXPLORATORY local?\n\n"
-            f"Proyecto: {self.context.project['project_id']}\nMotor: {self._engine()['display_name']}\n"
+            f"Proyecto: {self.context.project['project_id']}\nMotor: {self.context.selected_variant or 'Motor base'}\n"
             f"RPM: {check['rpm']:g}\nHorizonte máximo: {check['max_cycles']} ciclos\n"
             f"Presupuesto: {check['budget_seconds']:g} s · memoria RSS supervisada: {check['memory_limit_mib']} MiB · workers: 1\n"
             f"Artifact máximo: {check['artifact_limit_bytes']//1048576} MiB · celdas finitas: {check['total_finite_volume_cells']}\n"

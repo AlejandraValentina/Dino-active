@@ -14,7 +14,7 @@ The application MUST organize supported cylinder, distribution/ports, exhaust an
 - **THEN** the diffuser is highlighted, its before/after dimensions are named, shared stations remain continuous, and no physical-validation claim is added.
 
 ### Requirement: Explicit baseline and consistent variant identity
-The project, active variant, selected baseline, scientific mode, and saved/dirty state MUST remain visible. One user-facing variant name MUST be used in all workspace regions; technical display metadata may appear in Evidence. Baseline selection MUST be explicit, project-persistent, and MUST NOT propagate edits.
+The project, active variant, selected baseline, scientific mode, and saved/dirty state MUST remain visible. One user-facing variant name MUST be used in all workspace regions; technical display metadata may appear in Evidence. Baseline selection MUST be explicit and persisted as a per-project user preference across sessions; it MUST NOT modify the project file or propagate edits.
 
 #### Scenario: Select another variant
 - **WHEN** a variant is selected
@@ -49,7 +49,7 @@ The default artifact root MUST be outside a Git repository. An existing preferen
 - **THEN** existing data remains available read-only, new execution is guarded until the user explicitly corrects the root, and no artifact is moved or removed.
 
 ### Requirement: Responsive and testable packaged workspace
-The workbench MUST remain operable at 1360x900 and 980x680. Result and evidence panels MUST remain accessible without hiding safety confirmations. The Windows TRIAL executable MUST be smoke-tested without starting a solver; package provenance and hashes MUST be persisted. A dirty-tree package MUST remain TRIAL.
+The workbench MUST remain operable at 1360x900 and 980x680. Results and evidence MUST remain accessible beside or below the build area without hiding safety confirmations. The Windows TRIAL executable MUST be smoke-tested without starting a solver; package provenance and hashes MUST be persisted. A dirty-tree package MUST remain TRIAL.
 
 #### Scenario: Open the trial package
 - **WHEN** the packaged application opens the example and a referenced existing run

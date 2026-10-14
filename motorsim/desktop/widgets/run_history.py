@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (QWidget,QVBoxLayout,QHBoxLayout,QLabel,QPushButton,
-    QTableWidget,QTableWidgetItem,QHeaderView,QMessageBox)
+    QTableWidget,QTableWidgetItem,QHeaderView,QMessageBox,QComboBox)
 
 from ..run_history import list_project_runs
 
@@ -15,7 +15,7 @@ class RunHistoryWidget(QWidget):
         layout=QVBoxLayout(self);layout.setContentsMargins(0,8,0,0)
         header=QHBoxLayout();layout.addLayout(header)
         title=QLabel("Historial local de corridas");title.setStyleSheet("font-size:13pt;font-weight:600")
-        header.addWidget(title);header.addStretch()
+        header.addWidget(title);self.variant_filter=QComboBox();self.variant_filter.setObjectName("historyVariantFilter");header.addWidget(self.variant_filter);header.addStretch()
         refresh=QPushButton("Actualizar");refresh.clicked.connect(self.refresh);header.addWidget(refresh)
         self.table=QTableWidget(0,7);self.table.setHorizontalHeaderLabels(
             ["Variante","RPM","Actualizada","Clasificación","Periodicidad","Auditoría","Conservación"])
@@ -30,10 +30,22 @@ class RunHistoryWidget(QWidget):
         self.resume_button=QPushButton("Reanudar checkpoint…");self.resume_button.clicked.connect(self.resume_selected);actions.addWidget(self.resume_button)
         self.status=QLabel("El índice lee manifests; ‘Ver’ vuelve a auditar primarias.");self.status.setWordWrap(True);actions.addWidget(self.status,1)
         self.table.itemSelectionChanged.connect(self._selection_changed)
+        self.variant_filter.currentIndexChanged.connect(self.refresh)
         self.context.changed.connect(self.refresh);self.refresh()
 
     def refresh(self,*_):
-        try:self.entries=list_project_runs(self.context.project,self.artifact_root)
+        try:
+            all_entries=list_project_runs(self.context.project,self.artifact_root)
+            previous=self.variant_filter.currentData()
+            self.variant_filter.blockSignals(True);self.variant_filter.clear()
+            self.variant_filter.addItem("Variante activa","__active__");self.variant_filter.addItem("Todas las variantes","__all__")
+            for name in sorted({entry.get("variant") for entry in all_entries if entry.get("variant")}):
+                if name not in {"base","No informado"}:self.variant_filter.addItem(name,name)
+            index=self.variant_filter.findData(previous)
+            self.variant_filter.setCurrentIndex(index if index>=0 else 0);self.variant_filter.blockSignals(False)
+            selected=self.variant_filter.currentData();active=self.context.selected_variant or "base"
+            self.entries=[entry for entry in all_entries if selected=="__all__" or entry.get("variant")==(
+                active if selected=="__active__" else selected)]
         except Exception as exc:
             self.entries=[];self.status.setText(f"No se pudo leer el historial: {type(exc).__name__}: {exc}")
         self.table.setRowCount(len(self.entries))
@@ -52,7 +64,9 @@ class RunHistoryWidget(QWidget):
                     f"Checkpoint SHA-256: {entry.get('checkpoint_sha256')}",
                     f"Estado: {entry.get('status')}")))
                 self.table.setItem(row,col,item)
-        self.status.setText(f"{len(self.entries)} registros · índice de sólo lectura; ‘Ver’ vuelve a auditar primarias.")
+        active=self.context.selected_variant or "base"
+        label=f"variante activa {active}" if self.variant_filter.currentData()=="__active__" else "filtro seleccionado"
+        self.status.setText(f"{len(self.entries)} registros · {label} · índice de sólo lectura; ‘Ver’ vuelve a auditar primarias.")
         self._selection_changed()
 
     def _selected(self):

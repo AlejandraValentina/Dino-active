@@ -7,7 +7,7 @@ from PySide6.QtCore import QSettings,Qt,QThreadPool,QTimer
 from PySide6.QtGui import QAction,QKeySequence,QGuiApplication
 from PySide6.QtWidgets import (QMainWindow,QWidget,QHBoxLayout,QVBoxLayout,QListWidget,QListWidgetItem,
     QStackedWidget,QLabel,QToolBar,QFileDialog,QMessageBox,QApplication,QSplitter,QScrollArea,
-    QGroupBox,QFormLayout,QTreeWidget,QTreeWidgetItem)
+    QGroupBox,QFormLayout,QTreeWidget,QTreeWidgetItem,QDockWidget,QDoubleSpinBox,QSpinBox,QPushButton,QPlainTextEdit)
 from ..engine_configuration import validate
 from ..engine_project import load_project,save_project
 from .services import new_project
@@ -18,12 +18,13 @@ from .project_page import ProjectPage
 from .results_page import ResultsPage
 from .execution_page import ExecutionPage
 from .widgets.context_bar import ContextBar
+from .preferences import settings
 
 PAGES=(('Motor',EnginePage),('Escape',ExhaustPage),('Proyecto',ProjectPage),('Simulación',ExecutionPage),('Resultados',ResultsPage))
 
 class DinoDesktopWindow(QMainWindow):
     def __init__(self,project=None):
-        super().__init__();self.settings=QSettings('Dino2T','DinoDesktop');self.context=DesktopContext(project or new_project())
+        super().__init__();self.settings=settings();self.context=DesktopContext(project or new_project())
         self.setWindowTitle('Dino 2T')
         screen=QApplication.primaryScreen();available=screen.availableGeometry() if screen else None
         width=min(1360,available.width()) if available else 1360
@@ -57,6 +58,7 @@ class DinoDesktopWindow(QMainWindow):
         self.context_bar=ContextBar();self.context_bar.setObjectName("contextBar")
         self.context_bar.variant_selected.connect(self.context.select_variant);layout.addWidget(self.context_bar)
         self.body_splitter=QSplitter(Qt.Orientation.Horizontal);self.body_splitter.setChildrenCollapsible(False)
+        self.left_work_area=QSplitter(Qt.Orientation.Horizontal);self.left_work_area.setChildrenCollapsible(False)
         self.nav_panel=QWidget();nav_layout=QVBoxLayout(self.nav_panel);nav_layout.setContentsMargins(0,4,4,4);nav_layout.setSpacing(5)
         nav_layout.addWidget(QLabel("Proyecto"))
         self.project_tree=QTreeWidget();self.project_tree.setHeaderHidden(True);self.project_tree.setMaximumHeight(180)
@@ -66,12 +68,17 @@ class DinoDesktopWindow(QMainWindow):
         for title,_ in PAGES:self.nav.addItem(QListWidgetItem(title))
         nav_layout.addWidget(self.nav,1)
         self.stack=QStackedWidget();self.pages=[]
-        for _,page_type in PAGES:
+        for index,(_,page_type) in enumerate(PAGES):
             page=page_type(self.context);self.pages.append(page)
-            scroll=QScrollArea();scroll.setWidgetResizable(True);scroll.setFrameShape(QScrollArea.Shape.NoFrame);scroll.setWidget(page)
-            self.stack.addWidget(scroll)
+            if index==4:
+                self.results=page
+                self.stack.addWidget(QLabel("Resultados y comparación permanecen visibles en el panel derecho."))
+            else:
+                scroll=QScrollArea();scroll.setWidgetResizable(True);scroll.setFrameShape(QScrollArea.Shape.NoFrame);scroll.setWidget(page)
+                self.stack.addWidget(scroll)
         execution=self.pages[3];results=self.pages[4]
         execution.open_runs_requested.connect(self._open_indexed_runs)
+        results.evidence_updated.connect(self._update_evidence)
         self.inspector=QGroupBox("Preparación y estado");self.inspector.setObjectName("inspector");self.inspector.setMinimumWidth(145);self.inspector.setMaximumWidth(320)
         inspector_layout=QVBoxLayout(self.inspector);inspector_layout.setContentsMargins(12,12,10,12)
         self.inspector_variant=QLabel();self.inspector_variant.setWordWrap(True);self.inspector_variant.setStyleSheet("font-size:12pt;font-weight:600;color:#d8edff")
@@ -80,13 +87,51 @@ class DinoDesktopWindow(QMainWindow):
         self.inspector_science=QLabel("Modo EXPLORATORIO. Los diagnósticos de escape no demostraron independencia espacial.");self.inspector_science.setWordWrap(True)
         inspector_layout.addWidget(QLabel("Variante activa"));inspector_layout.addWidget(self.inspector_variant)
         inspector_layout.addWidget(self.inspector_diff);inspector_layout.addWidget(self.inspector_validity);inspector_layout.addStretch(1);inspector_layout.addWidget(self.inspector_science)
-        self.body_splitter.addWidget(self.nav_panel);self.body_splitter.addWidget(self.stack);self.body_splitter.addWidget(self.inspector)
-        self.body_splitter.setStretchFactor(0,0);self.body_splitter.setStretchFactor(1,1);self.body_splitter.setStretchFactor(2,0)
-        self.body_splitter.setSizes([175,930,230]);layout.addWidget(self.body_splitter,1);self.setCentralWidget(shell)
+        self.evidence_dock=QDockWidget("Evidencia y provenance",self);self.evidence_dock.setObjectName("evidenceDrawer")
+        self.evidence_content=QWidget();evidence_layout=QVBoxLayout(self.evidence_content);evidence_layout.addWidget(self.inspector)
+        self.evidence_text=QPlainTextEdit();self.evidence_text.setReadOnly(True);self.evidence_text.setPlaceholderText("Elegí una corrida para ver hashes, provenance, auditoría y conservación.");evidence_layout.addWidget(self.evidence_text,1)
+        self.evidence_dock.setWidget(self.evidence_content)
+        self.addDockWidget(Qt.DockWidgetArea.BottomDockWidgetArea,self.evidence_dock);self.evidence_dock.hide()
+        self.results_panel=QScrollArea();self.results_panel.setWidgetResizable(True);self.results_panel.setFrameShape(QScrollArea.Shape.NoFrame);self.results_panel.setWidget(results);self.results_panel.setMinimumWidth(350)
+        self.left_work_area.addWidget(self.nav_panel);self.left_work_area.addWidget(self.stack)
+        self.left_work_area.setStretchFactor(0,0);self.left_work_area.setStretchFactor(1,1);self.left_work_area.setSizes([150,610])
+        self.body_splitter.addWidget(self.left_work_area);self.body_splitter.addWidget(self.results_panel)
+        self.body_splitter.setStretchFactor(0,3);self.body_splitter.setStretchFactor(1,2)
+        self.body_splitter.setSizes([760,600]);layout.addWidget(self.body_splitter,1)
+        self.simulation_strip=QGroupBox("Simulación individual · requiere confirmación")
+        strip=QHBoxLayout(self.simulation_strip);strip.setContentsMargins(8,5,8,5)
+        self.strip_rpm=QDoubleSpinBox();self.strip_rpm.setRange(100,10000);self.strip_rpm.setDecimals(0);self.strip_rpm.setSuffix(" RPM");self.strip_rpm.setValue(execution.rpm.value())
+        self.strip_cycles=QSpinBox();self.strip_cycles.setRange(1,111);self.strip_cycles.setSuffix(" ciclos");self.strip_cycles.setValue(execution.cycles.value())
+        self.strip_budget=QDoubleSpinBox();self.strip_budget.setRange(1,600);self.strip_budget.setDecimals(0);self.strip_budget.setSuffix(" s");self.strip_budget.setValue(execution.budget.value())
+        for label,widget in (("Régimen",self.strip_rpm),("Horizonte",self.strip_cycles),("Presupuesto",self.strip_budget)):
+            strip.addWidget(QLabel(label));strip.addWidget(widget)
+        self.strip_preflight=QLabel(execution.preflight_label.text());self.strip_preflight.setWordWrap(True);strip.addWidget(self.strip_preflight,1)
+        self.strip_run=QPushButton("Simular…");self.strip_run.setObjectName("primaryAction");self.strip_run.clicked.connect(lambda:self._start_from_strip(execution));strip.addWidget(self.strip_run)
+        history_button=QPushButton("Historial");history_button.clicked.connect(lambda:self.nav.setCurrentRow(3));strip.addWidget(history_button)
+        self.strip_rpm.valueChanged.connect(execution.rpm.setValue);self.strip_cycles.valueChanged.connect(execution.cycles.setValue);self.strip_budget.valueChanged.connect(execution.budget.setValue)
+        execution.rpm.valueChanged.connect(self.strip_rpm.setValue);execution.cycles.valueChanged.connect(self.strip_cycles.setValue);execution.budget.valueChanged.connect(self.strip_budget.setValue)
+        execution.state_changed.connect(self._update_strip)
+        self._update_strip()
+        layout.addWidget(self.simulation_strip);self.setCentralWidget(shell)
         self.nav.currentRowChanged.connect(self.stack.setCurrentIndex)
         last=int(self.settings.value('last_page',0));self.nav.setCurrentRow(max(0,min(last,len(PAGES)-1)))
         self.statusBar().showMessage('Listo')
         self.toolbar=QToolBar('Proyecto',self);self.toolbar.setMovable(False);self.addToolBar(self.toolbar)
+    def _update_strip(self,*_):
+        if not hasattr(self,"pages"):return
+        execution=self.pages[3]
+        self.strip_preflight.setText(execution.preflight_label.text())
+        self.strip_run.setEnabled(execution.start.isEnabled())
+    def _update_evidence(self,*_):
+        if not hasattr(self,"evidence_text"):return
+        lines=["Proyecto: "+self.context.project["project_id"],"Fuente: "+self.results.path_label.text(),
+               "Artifact source: "+str(self.results.source or "importación auditada / historial")]
+        for row in range(self.results.details.rowCount()):
+            key=self.results.details.item(row,0);value=self.results.details.item(row,1)
+            if key and value:lines.append(f"{key.text()}: {value.text()}")
+        self.evidence_text.setPlainText("\n".join(lines))
+    def _start_from_strip(self,execution):
+        execution.start_run(resume=False);self._update_strip()
     def _open_indexed_runs(self,paths):
         self.nav.setCurrentRow(4);self.pages[4].open_runs(paths)
     def _action(self,label,callback,shortcut=None):
@@ -101,6 +146,8 @@ class DinoDesktopWindow(QMainWindow):
         menu.addSeparator();imp=menu.addAction('Importar configuración…',self.import_configuration);exp=menu.addAction('Exportar configuración…',self.export_configuration)
         self._action('Nuevo',self.new_file);self._action('Abrir',self.open_file);self._action('Guardar',self.save_file,QKeySequence.StandardKey.Save)
         self._action('Guardar como',self.save_as)
+        view=self.menuBar().addMenu('Vista');toggle=view.addAction('Evidencia y provenance');toggle.setCheckable(True);toggle.toggled.connect(self.evidence_dock.setVisible)
+        self.evidence_dock.visibilityChanged.connect(toggle.setChecked)
     def _state_changed(self):
         mark=' • Cambios sin guardar' if self.context.dirty else ''
         self.setWindowTitle(f"Dino 2T — {self.context.project['project_id']}{mark}")
@@ -108,8 +155,8 @@ class DinoDesktopWindow(QMainWindow):
             self._refresh_project_tree()
             self.context_bar.set_context(self.context.project,self.context.selected_variant,self.context.dirty)
             engine=self.context.engine()
-            self.inspector_variant.setText(engine.get("display_name","Motor base"))
             selected=self.context.selected_variant
+            self.inspector_variant.setText(selected if selected is not None else engine.get("display_name","Motor base"))
             if selected is None:
                 self.inspector_diff.setText("Motor base del proyecto")
             else:
@@ -143,7 +190,14 @@ class DinoDesktopWindow(QMainWindow):
         if hasattr(self,"inspector"):
             # Keep the inspector available at desktop widths and reclaim its
             # space below the supported 980 px breakpoint.
-            self.inspector.setVisible(event.size().width()>=1120)
+            compact=event.size().width()<1120
+            self.body_splitter.setOrientation(Qt.Orientation.Vertical if compact else Qt.Orientation.Horizontal)
+            if compact:
+                self.body_splitter.setSizes([max(300,int(event.size().height()*.54)),max(250,int(event.size().height()*.46))])
+                self.left_work_area.setSizes([140,max(320,event.size().width()-140)])
+            else:
+                self.body_splitter.setSizes([int(event.size().width()*.56),int(event.size().width()*.44)])
+                self.left_work_area.setSizes([150,max(500,int(event.size().width()*.56)-150)])
     def _restore_settings(self):
         geometry=self.settings.value('window_geometry')
         if geometry:self.restoreGeometry(geometry)

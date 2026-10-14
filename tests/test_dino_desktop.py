@@ -13,6 +13,7 @@ from copy import deepcopy
 from PySide6.QtCore import Qt,QTimer
 from PySide6.QtWidgets import QApplication,QDialog,QLabel,QMessageBox,QTableWidget
 from PySide6.QtTest import QTest
+import desktop_qsettings_isolation  # noqa: F401
 
 from motorsim.desktop.app import DinoDesktopWindow
 from motorsim.desktop.context import DesktopContext
@@ -153,8 +154,8 @@ class DinoDesktopTests(unittest.TestCase):
     def test_exhaust_edit_changes_variant_using_backend_and_keeps_base(self):
         page = ExhaustPage(self.context)
         base_hash = identity(self.context.engine())
-        first = float(page.table.item(0, 2).text())
-        page.table.item(0, 2).setText(str(first + 1.0))
+        first = float(page.table.item(1, 1).text())
+        page.table.item(1, 1).setText(str(first + 1.0))
         page.mesh_table.cellWidget(0, 1).setCurrentText("2")
         page.apply(name="Escape 1")
         self.assertEqual(identity(self.context.project["base_engine"]), base_hash)

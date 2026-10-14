@@ -38,7 +38,9 @@ def _entry(folder: Path, *, artifact_root: Path, project_id: str, referenced=Fal
     result_path=run_dir/"result.json"
     result_doc={}
     needs_result_metadata=(preflight.get("rpm") is None or manifest.get("periodicity") is None
-                           or manifest.get("status") is None or manifest.get("classification") is None)
+                           or manifest.get("status") is None or manifest.get("classification") is None
+                           or manifest.get("elapsed_seconds") is None
+                           or preflight.get("total_finite_volume_cells") is None)
     if needs_result_metadata and result_path.is_file():
         try:
             candidate=json.loads(result_path.read_text(encoding="utf-8"))
@@ -76,7 +78,8 @@ def _entry(folder: Path, *, artifact_root: Path, project_id: str, referenced=Fal
       "result_path":str(result) if result.is_file() else None,
       "checkpoint_path":str(checkpoint) if checkpoint.is_file() else None,
       "artifact_root":str(artifact_root),"details":{"cycles_completed":manifest.get("cycles_completed"),
-        "cycles_requested":preflight.get("max_cycles"),"conservation":conservation,
+        "cycles_requested":preflight.get("max_cycles"),"elapsed_seconds":manifest.get("elapsed_seconds") or result_doc.get("elapsed_seconds"),
+        "total_finite_volume_cells":preflight.get("total_finite_volume_cells") or result_preflight.get("total_finite_volume_cells"),"conservation":conservation,
         "source_hashes":bindings.get("source_hashes",{})}})
     return base
 

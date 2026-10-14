@@ -86,14 +86,11 @@ class ExhaustPage(QWidget):
         self.stations.setHorizontalHeaderLabels(["Estación","Posición (mm)","Diámetro compartido (mm)"])
         self.stations.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.stations.setMaximumHeight(185);self.stations.cellChanged.connect(self._cell_changed)
-        station_group=QGroupBox("Estaciones · cada diámetro se edita una sola vez")
-        station_layout=QVBoxLayout(station_group);station_layout.addWidget(self.stations);root.addWidget(station_group)
-
-        self.table=QTableWidget(0,4);self.table.setObjectName("exhaustSegments");self.segments=self.table
-        self.table.setHorizontalHeaderLabels(["Tramo","Tipo admitido","Longitud (mm)","Provenance"])
+        self.table=QTableWidget(0,8);self.table.setObjectName("exhaustSegments");self.segments=self.table
+        self.table.setHorizontalHeaderLabels(["Estación / tramo","Posición o largo (mm)","Diámetro estación (mm)","Ø entrada (mm)","Ø salida (mm)","Semiángulo (°)","Volumen (cm³)","Provenance"])
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        self.table.setMaximumHeight(220);self.table.cellChanged.connect(self._cell_changed)
-        segment_group=QGroupBox("Tramos · la cantidad no se puede cambiar")
+        self.table.setMaximumHeight(390);self.table.cellChanged.connect(self._cell_changed)
+        segment_group=QGroupBox("Tramos y estaciones · cada diámetro compartido se edita una sola vez")
         segment_layout=QVBoxLayout(segment_group);segment_layout.addWidget(self.table);root.addWidget(segment_group)
 
         self.mesh_group=QGroupBox("Opciones avanzadas · malla numérica");self.mesh_group.setCheckable(True);self.mesh_group.setChecked(False)
@@ -110,6 +107,19 @@ class ExhaustPage(QWidget):
         self.apply_button=QPushButton("Guardar como nueva variante…");self.apply_button.setObjectName("primaryAction");self.apply_button.clicked.connect(self.save_as_new);actions.addWidget(self.apply_button)
         self.context.changed.connect(self.refresh);self.context.variant_changed.connect(self.refresh);self.refresh()
 
+    def _refresh_overlay_options(self):
+        """Keep the selector bound to the currently open project's variants."""
+        selected=self.overlay_selector.currentData()
+        names=sorted(self.context.project["variants"])
+        if names==[self.overlay_selector.itemData(i) for i in range(1,self.overlay_selector.count())]:
+            return
+        self.overlay_selector.blockSignals(True);self.overlay_selector.clear()
+        self.overlay_selector.addItem("Sin superposición",None)
+        for name in names:self.overlay_selector.addItem(f"Superponer: {name}",name)
+        index=self.overlay_selector.findData(selected)
+        self.overlay_selector.setCurrentIndex(index if index>=0 else 0)
+        self.overlay_selector.blockSignals(False)
+
     def _counts(self,engine):
         meta=engine["native_configuration"]["geometry_identity"].get("exhaust_mesh_discretization")
         return list(meta["cells_per_section"]) if meta else [1]*len(escape_sections(engine))
@@ -121,25 +131,37 @@ class ExhaustPage(QWidget):
 
     def refresh(self):
         try:
+            self._refresh_overlay_options()
             engine=self.context.engine();sections=escape_sections(engine);counts=self._counts(engine)
-            self.loading=True;self._clear_widgets();self.stations.blockSignals(True);self.table.blockSignals(True);self.mesh_table.blockSignals(True)
-            self.stations.setRowCount(len(sections)+1);position=0.0
+            self.loading=True;self._clear_widgets();self.table.blockSignals(True);self.mesh_table.blockSignals(True)
+            self.table.setRowCount(len(sections)*2+1);position=0.0
             diameters=[sections[0]["inlet_diameter_mm"]]+[s["outlet_diameter_mm"] for s in sections]
             for i,diameter in enumerate(diameters):
                 label="Entrada" if i==0 else ("Salida" if i==len(sections) else f"Unión {i}")
-                self.stations.setItem(i,0,QTableWidgetItem(label));pos=QTableWidgetItem(f"{position:.2f}");pos.setFlags(pos.flags() & ~Qt.ItemFlag.ItemIsEditable);self.stations.setItem(i,1,pos)
-                self.stations.setItem(i,2,QTableWidgetItem(f"{diameter:.3f}"))
+                station_row=2*i
+                for col in range(self.table.columnCount()):
+                    item=QTableWidgetItem("");item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable);self.table.setItem(station_row,col,item)
+                self.table.item(station_row,0).setText(label);self.table.item(station_row,1).setText(f"{position:.2f}")
+                self.table.item(station_row,2).setText(f"{diameter:.3f}");self.table.item(station_row,2).setFlags(self.table.item(station_row,2).flags()|Qt.ItemFlag.ItemIsEditable)
                 if i<len(sections):position+=sections[i]["length_mm"]
-            self.table.setRowCount(len(sections));self.mesh_table.setRowCount(len(sections))
+            self.mesh_table.setRowCount(len(sections))
             for i,s in enumerate(sections):
-                for col,value in enumerate((s["name"],s["kind"],f"{s['length_mm']:.3f}",s["provenance"])):
+                angle=math.degrees(math.atan2((s["outlet_diameter_mm"]-s["inlet_diameter_mm"])/2,s["length_mm"]))
+                r0=s["inlet_diameter_mm"]/2;r1=s["outlet_diameter_mm"]/2
+                volume=math.pi*s["length_mm"]*(r0*r0+r0*r1+r1*r1)/3/1000
+                segment_row=2*i+1
+                for col in range(self.table.columnCount()):
+                    item=QTableWidgetItem("");item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable);self.table.setItem(segment_row,col,item)
+                values=((0,s["name"]),(1,f"{s['length_mm']:.3f}"),(3,f"{s['inlet_diameter_mm']:.3f}"),
+                        (4,f"{s['outlet_diameter_mm']:.3f}"),(5,f"{angle:.3f}"),(6,f"{volume:.3f}"),(7,s["provenance"]))
+                for col,value in values:
                     item=QTableWidgetItem(str(value))
-                    if col in (0,1,3):item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
-                    self.table.setItem(i,col,item)
+                    if col!=1:item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+                    self.table.setItem(segment_row,col,item)
                 item=QTableWidgetItem(s["name"]);item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable);self.mesh_table.setItem(i,0,item)
                 combo=QComboBox();combo.setObjectName(f"meshResolution_{i}");combo.addItems(["1","2","4"]);combo.setCurrentText(str(counts[i]));combo.currentIndexChanged.connect(self._cell_changed)
                 self.mesh_table.setCellWidget(i,1,combo)
-            self.stations.blockSignals(False);self.table.blockSignals(False);self.mesh_table.blockSignals(False)
+            self.table.blockSignals(False);self.mesh_table.blockSignals(False)
             self.profile.set_sections(self._rows(),self._resolutions(),self._overlay_sections(),self._changed_sections())
             self.diff.setText(self._mesh_summary(engine));self.save_current_button.setEnabled(self.context.selected_variant is not None)
             self._update_station_positions()
@@ -147,25 +169,26 @@ class ExhaustPage(QWidget):
         finally:self.loading=False
 
     def _update_station_positions(self):
-        self.stations.blockSignals(True)
+        self.table.blockSignals(True)
         position=0.0
-        for i in range(self.stations.rowCount()):
-            if i:
-                position+=_number(self.table.item(i-1,2).text(),f"Longitud del tramo {i}")
-                self.stations.item(i,1).setText(f"{position:.2f}")
-        self.stations.blockSignals(False)
+        sections=len(escape_sections(self.context.engine()))
+        for i in range(sections+1):
+            station_row=2*i;self.table.item(station_row,1).setText(f"{position:.2f}")
+            if i<sections:position+=_number(self.table.item(2*i+1,1).text(),f"Longitud del tramo {i+1}")
+        self.table.blockSignals(False)
 
     def _rows(self):
-        rows=[]
-        for i in range(self.table.rowCount()):
+        rows=[];source_sections=escape_sections(self.context.engine())
+        for i in range(len(source_sections)):
             try:
-                length=_number(self.table.item(i,2).text(),f"Longitud del tramo {i+1}")
-                d0=_number(self.stations.item(i,2).text(),f"Diámetro de estación {i}")
-                d1=_number(self.stations.item(i+1,2).text(),f"Diámetro de estación {i+1}")
+                segment_row=2*i+1
+                length=_number(self.table.item(segment_row,1).text(),f"Longitud del tramo {i+1}")
+                d0=_number(self.table.item(2*i,2).text(),f"Diámetro de estación {i}")
+                d1=_number(self.table.item(2*i+2,2).text(),f"Diámetro de estación {i+1}")
             except AttributeError as exc:raise ValueError(f"Tramo {i+1}: falta un dato geométrico") from exc
-            rows.append({"name":self.table.item(i,0).text(),"kind":self.table.item(i,1).text(),
+            rows.append({"name":self.table.item(2*i+1,0).text(),"kind":source_sections[i]["kind"],
                 "length_mm":length,"inlet_diameter_mm":d0,"outlet_diameter_mm":d1,
-                "provenance":self.table.item(i,3).text()})
+                "provenance":self.table.item(2*i+1,7).text()})
         return rows
 
     def _resolutions(self):
@@ -183,10 +206,11 @@ class ExhaustPage(QWidget):
         changed=set()
         for item in changes:
             path=item.get("path","")
-            if "sections" in path:
-                for section in escape_sections(self.context.engine()):
-                    if section["name"] in path:changed.add(section["name"])
-        return {i for i,row in enumerate(self._rows()) if row["name"] in changed}
+            marker="/chamber/sections/"
+            if marker in path:
+                remainder=path.split(marker,1)[1].split("/",1)[0]
+                if remainder.isdigit():changed.add(int(remainder))
+        return {index for index in changed if 0<=index<len(escape_sections(self.context.engine()))}
 
     def _draft(self):
         base=self.context.engine();sections=self._rows();counts=self._resolutions()

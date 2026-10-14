@@ -4923,16 +4923,24 @@
       "dependencies": [
         "DWT-REFERENCE-PRESERVATION"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Implement and verify F0; do not start simulations or alter scientific APIs.",
+      "evidence": [
+        "tests/test_dino_workbench_f0.py",
+        "tests/test_dino_desktop_ux_v2.py",
+        "docs/dino_tuning_workbench_v1/implementation-receipt.md"
+      ],
+      "next_action": "D1-D8 reproduced/fixed; 26 focused F0/workbench tests PASS.",
       "objective": "DINO_TUNING_WORKBENCH_V1",
       "owner_role": "desktop implementation / verification",
       "write_scope": [
-        "motorsim/desktop",
-        "tests/test_dino_tuning_workbench_v1.py"
+        "motorsim/desktop/preferences.py",
+        "motorsim/desktop/exhaust_page.py",
+        "motorsim/desktop/plot.py",
+        "motorsim/desktop/results_page.py",
+        "tests/desktop_qsettings_isolation.py",
+        "tests/test_dino_workbench_f0.py"
       ],
       "evidence_level": "L0"
     },
@@ -4942,17 +4950,20 @@
       "dependencies": [
         "DWT-F0-DESKTOP-DEFECTS"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "After F0, build component tabs without inverse port conversion or unvalidated tuning claims.",
+      "evidence": [
+        "tests/test_dino_workbench_f0.py",
+        "docs/dino_tuning_workbench_v1/implementation-receipt.md"
+      ],
+      "next_action": "Component editor and backend-derived port/escape data implemented; regressions PASS.",
       "objective": "DINO_TUNING_WORKBENCH_V1",
       "owner_role": "desktop implementation",
       "write_scope": [
         "motorsim/desktop/engine_page.py",
         "motorsim/desktop/exhaust_page.py",
-        "tests/test_dino_tuning_workbench_v1.py"
+        "tests/test_dino_workbench_f0.py"
       ],
       "evidence_level": "L1"
     },
@@ -4962,18 +4973,22 @@
       "dependencies": [
         "DWT-F1-COMPONENT-BUILD"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "After component screens, replace separate navigation with a coordinated workspace while preserving semantic tests.",
+      "evidence": [
+        "tests/test_dino_workbench_f0.py",
+        "tests/test_dino_desktop_ux_v2.py",
+        "docs/dino_tuning_workbench_v1/implementation-receipt.md"
+      ],
+      "next_action": "Integrated B+ shell, per-project baseline preference, evidence drawer and narrow layout regression PASS.",
       "objective": "DINO_TUNING_WORKBENCH_V1",
       "owner_role": "desktop architecture / implementation",
       "write_scope": [
         "motorsim/desktop/app.py",
         "motorsim/desktop/context.py",
-        "motorsim/desktop/widgets",
-        "tests/test_dino_tuning_workbench_v1.py"
+        "motorsim/desktop/results_page.py",
+        "tests/test_dino_workbench_f0.py"
       ],
       "evidence_level": "L0"
     },
@@ -4983,18 +4998,22 @@
       "dependencies": [
         "DWT-F2-WORKBENCH-SHELL"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Preserve single-run confirmation, existing preflight and conventional independent audit; no run execution in this task.",
+      "evidence": [
+        "tests/test_dino_desktop_ux_v2.py",
+        "docs/dino_tuning_workbench_v1/implementation-receipt.md"
+      ],
+      "next_action": "Read-only history selection/comparison, guarded run preparation and actual existing artifacts reaudited without solver execution.",
       "objective": "DINO_TUNING_WORKBENCH_V1",
       "owner_role": "desktop implementation / contract guardian",
       "write_scope": [
         "motorsim/desktop/execution_page.py",
         "motorsim/desktop/results_page.py",
+        "motorsim/desktop/run_history.py",
         "motorsim/desktop/widgets/run_history.py",
-        "tests/test_dino_tuning_workbench_v1.py"
+        "tests/test_dino_desktop_ux_v2.py"
       ],
       "evidence_level": "L0"
     },
@@ -5004,17 +5023,20 @@
       "dependencies": [
         "DWT-F3-INTEGRATED-RUN-RESULTS"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Use only audited existing traces and exact cell/angle coordinates; no interpolation or synthetic samples.",
+      "evidence": [
+        "tests/test_dino_workbench_f0.py",
+        "docs/dino_tuning_workbench_v1/implementation-receipt.md"
+      ],
+      "next_action": "Discrete exact-coordinate engineering views retain gaps, provenance and undefined metrics.",
       "objective": "DINO_TUNING_WORKBENCH_V1",
       "owner_role": "desktop visualization / contract guardian",
       "write_scope": [
         "motorsim/desktop/plot.py",
         "motorsim/desktop/results_page.py",
-        "tests/test_dino_tuning_workbench_v1.py"
+        "tests/test_dino_workbench_f0.py"
       ],
       "evidence_level": "L0"
     },
@@ -5024,11 +5046,14 @@
       "dependencies": [
         "DWT-F4-ENGINEERING-VIEWS"
       ],
-      "state": "WAITING",
-      "blocker": null,
+      "state": "BLOCKED_LOCAL",
+      "blocker": "The Windows session is locked/non-interactive for real packaged UI automation; source captures render placeholder glyphs. App startup is confirmed, but selection/loading/comparison of real runs and valid visual evidence from the current TRIAL package cannot be verified in this environment.",
       "commits": [],
-      "evidence": [],
-      "next_action": "Close only after the end-to-end engineering workflow has been exercised without starting a solver.",
+      "evidence": [
+        "docs/dino_tuning_workbench_v1/implementation-receipt.md",
+        "dist/MotorSim-0.1.0-rc6-windows-x64-73662846-trial-20261014T175142Z.zip"
+      ],
+      "next_action": "Wait for an interactive unlocked Windows desktop, then exercise example/history/results/comparison from this package and capture real data-visible screens; do not start a solver.",
       "objective": "DINO_TUNING_WORKBENCH_V1",
       "owner_role": "verification / release",
       "write_scope": [
@@ -5036,6 +5061,29 @@
         "results/dino-tuning-workbench-v1",
         "packaging",
         "tests/test_dino_tuning_workbench_v1.py"
+      ],
+      "evidence_level": "L0",
+      "unblock_tasks": [
+        "DWT-PACKAGED-INTERACTION-UNLOCKED"
+      ],
+      "no_local_unblock_reason": null
+    },
+    {
+      "id": "DWT-PACKAGED-INTERACTION-UNLOCKED",
+      "description": "When the Windows desktop session is interactive and unlocked, use the current dirty-tree TRIAL Dino2T.exe to open the example, select and compare existing artifacts from history, verify result/evidence data, and capture usable 1360x900 and 980x680 screenshots; do not run a solver.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "docs/dino_tuning_workbench_v1/implementation-receipt.md"
+      ],
+      "next_action": "Run the real packaged workflow when an unlocked interactive Windows desktop is available.",
+      "objective": "DINO_TUNING_WORKBENCH_V1",
+      "owner_role": "verification / release",
+      "write_scope": [
+        "docs/dino_tuning_workbench_v1",
+        "results/dino-tuning-workbench-v1"
       ],
       "evidence_level": "L0"
     }
@@ -6675,6 +6723,12 @@
       "task": "DWT-F0-DESKTOP-DEFECTS",
       "kind": "process",
       "summary": "Started F0 after rechecking unrelated FRPM blocker; its unblock task remains READY. Current build HEAD 3f5ce5b. Untracked exploratory-workflow-v1/ preserved untouched."
+    },
+    {
+      "at": "2026-10-14T17:57:13+00:00",
+      "task": "DWT-F0-DESKTOP-DEFECTS",
+      "kind": "task",
+      "summary": "D1-D8 fixed; F0-F4 implemented, 26 focused tests PASS, actual external EXPLORATORY artifacts re-audited; packaged TRIAL startup and ZIP verified. Interactive packaged workflow remains BLOCKED_LOCAL on unlocked Windows desktop; no simulation run."
     }
   ],
   "legacy_gate_status": {
@@ -6693,24 +6747,18 @@
     "state": "OPEN",
     "classification": "DINO_TUNING_WORKBENCH_V1_PARTIAL",
     "evidence": [
-      "Owner authorization active; Opus proposal and 16 source captures hash-preserved. F0 implementation in progress; no solver or campaign execution."
+      "DWT-F0-F4 implemented and tested; package TRIAL built, ZIP integrity and startup smoke PASS, but locked Windows session prevented actual packaged result loading/comparison and valid visual evidence. DWT-PACKAGED-ACCEPTANCE BLOCKED_LOCAL with READY unblock task."
     ],
     "gate_tasks_total": 7,
-    "gate_tasks_done": 1,
+    "gate_tasks_done": 6,
     "gate_task_states": {
-      "DONE": 1,
-      "IN_PROGRESS": 1,
-      "WAITING": 5
+      "DONE": 6,
+      "BLOCKED_LOCAL": 1
     },
     "remaining": [
-      "DWT-F0-DESKTOP-DEFECTS",
-      "DWT-F1-COMPONENT-BUILD",
-      "DWT-F2-WORKBENCH-SHELL",
-      "DWT-F3-INTEGRATED-RUN-RESULTS",
-      "DWT-F4-ENGINEERING-VIEWS",
       "DWT-PACKAGED-ACCEPTANCE"
     ],
-    "updated_at": "2026-10-14T17:00:18+00:00"
+    "updated_at": "2026-10-14T17:57:12+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
