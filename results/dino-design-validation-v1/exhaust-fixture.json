@@ -1,0 +1,64 @@
+{
+  "schema": "DINO_DESIGN_VALIDATION_V1_EXHAUST_FIXTURE_V1",
+  "classification": "CONTROLLED_SYNTHETIC_DIAGNOSTIC_FIXTURE_READY",
+  "project_path": "examples/projects/dino-2t-exhaust-comparison.dino2t.json",
+  "project_sha256": "42535dfb53c95407e75e109151ff1893db6338510de4f832e7ec48dd46ef8d34",
+  "project_id": "dino-exhaust-comparison-starter",
+  "engine_identity_sha256": {
+    "base": "73998318725f06a31959738f518697d40ae686d8eb6084a6ba09304541387302",
+    "modified": "1aa0d651fdc695feb6e9f7eb421cdbbc9205147cda6fe98a5ae53808fffcf6f7"
+  },
+  "variants": {
+    "base": "Escape original",
+    "modified": "Escape modified +20 mm"
+  },
+  "only_intended_edit": {
+    "path": "/native_configuration/geometry_identity/chamber/sections/1/length_mm",
+    "base_mm": 180.0,
+    "modified_mm": 200.0,
+    "delta_mm": 20.0
+  },
+  "same_conditions": true,
+  "same_mechanical_loss": true,
+  "same_fuel_combustion": true,
+  "same_ports_and_distribution": true,
+  "same_thermal_and_boundary": true,
+  "solver_mesh": {
+    "cells_each": {
+      "base": 5,
+      "modified": 5
+    },
+    "base_volume_m3": [
+      2.513274122871835e-05,
+      0.0001952813993471416,
+      0.00021237166338267002,
+      0.00016876635735084376,
+      2.4127431579569613e-05
+    ],
+    "modified_volume_m3": [
+      2.513274122871835e-05,
+      0.0002169793326079351,
+      0.00021237166338267002,
+      0.00016876635735084376,
+      2.4127431579569613e-05
+    ],
+    "base_faces_m": [
+      0.0,
+      0.08,
+      0.26,
+      0.36,
+      0.53,
+      0.65
+    ],
+    "modified_faces_m": [
+      0.0,
+      0.08,
+      0.28,
+      0.38,
+      0.55,
+      0.67
+    ]
+  },
+  "derived_difference_count": 11,
+  "note": "Only the configured diffuser length and dependent exhaust mesh/state scale differ; names, section geometry, cell mesh and identity all bind to actual solver configuration. One finite-volume cell per named section."
+}

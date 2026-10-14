@@ -4187,7 +4187,7 @@
       "id": "DINO-EXHAUST-SENSITIVITY-FIXTURE",
       "description": "Prepare same-engine base/modified exhaust fixture, confirm distinct section geometry and solver meshes, preserve identical non-exhaust configuration.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "DINO_DESIGN_VALIDATION_V1",
       "owner_role": "orchestrator",
       "evidence_level": "L1",
@@ -4198,8 +4198,14 @@
       ],
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Take against the DINO_DESIGN_VALIDATION_V1 spec; preserve historical evidence and obey diagnostic budgets."
+      "evidence": [
+        "results/dino-design-validation-v1/exhaust-fixture.json",
+        "examples/projects/dino-2t-exhaust-comparison.dino2t.json",
+        "tests/test_engine_configuration_v1.py"
+      ],
+      "next_action": null,
+      "classification": "SAME_ENGINE_VARIANT_AND_DISTINCT_SOLVER_MESH_VERIFIED",
+      "qualification": "+20 mm diffuser length; same operating conditions, loss model, combustion, ports, thermal and boundaries; mesh has 5 cells, with geometry and initialization differences only as derived exhaust consequences."
     },
     {
       "id": "DINO-EXHAUST-DIAGNOSTICS",
@@ -5658,6 +5664,18 @@
       "task": "DINO-POWERVALVE-VERIFICATION",
       "kind": "task",
       "summary": "Existing versioned configured-RPM correction passes 9 focused real-stage/map boundary tests; read-only IMPL2 aggregate hash unchanged and still 27 PERIOD_1 / 3 NUMERICAL_INVALID."
+    },
+    {
+      "at": "2026-10-14T12:00:13+00:00",
+      "task": "DINO-EXHAUST-SENSITIVITY-FIXTURE",
+      "kind": "task",
+      "summary": "Checking the packaged base/modified exhaust project for exact equality of non-exhaust motor, fuel, operating, loss and boundary configuration; assert differences are actual 1D mesh geometry derivatives."
+    },
+    {
+      "at": "2026-10-14T12:00:41+00:00",
+      "task": "DINO-EXHAUST-SENSITIVITY-FIXTURE",
+      "kind": "task",
+      "summary": "Verified committed exhaust fixture changes only diffuser length (+20 mm) and derived exhaust mesh/state initialization; all other engine/fuel/operating/loss/port/thermal/boundary inputs match. Two exhaust solver meshes differ; 2 focused tests pass."
     }
   ],
   "legacy_gate_status": {
@@ -5680,20 +5698,19 @@
       "openspec/changes/dino-design-validation-v1/specs/dino-design-validation-v1/spec.md"
     ],
     "gate_tasks_total": 8,
-    "gate_tasks_done": 2,
+    "gate_tasks_done": 3,
     "gate_task_states": {
-      "DONE": 2,
-      "READY": 6
+      "DONE": 3,
+      "READY": 5
     },
     "remaining": [
-      "DINO-EXHAUST-SENSITIVITY-FIXTURE",
       "DINO-EXHAUST-DIAGNOSTICS",
       "DINO-RESULT-SEMANTICS",
       "DINO-EXPERIMENT-IMPORT-CONTRACT",
       "DINO-DESIGN-INTEGRATION-TESTS",
       "DINO-DESIGN-DOCS"
     ],
-    "updated_at": "2026-10-14T11:58:30+00:00"
+    "updated_at": "2026-10-14T12:00:42+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

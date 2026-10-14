@@ -6,7 +6,8 @@ import pytest
 
 from motorsim.engine_configuration import (create, identity, validate, sha256,
                                             resolve_for_operating_point)
-from motorsim.engine_variants import escape_sections, replace_escape_sections, variant
+from motorsim.engine_variants import (compare_configurations, escape_sections,
+                                      replace_escape_sections, variant)
 from motorsim.engine_project import (create_project, duplicate_project, load_project,
                                      save_project, compare_project_engines)
 from motorsim.engine_results import import_report, compare
@@ -94,6 +95,31 @@ def test_exhaust_variant_builds_exact_frustum_mesh_without_solver_step():
                     operating_conditions_patch={"reference_rpm": 3200})
     assert tuned["operating_conditions"]["reference_rpm"] == 3200
     assert tuned["native_configuration"] == base["native_configuration"]
+
+
+def test_packaged_exhaust_sensitivity_fixture_changes_only_diffuser_geometry_and_derived_mesh():
+    path=ROOT/"examples/projects/dino-2t-exhaust-comparison.dino2t.json"
+    project=load_project(path)
+    base=project["variants"]["Escape original"]
+    changed=project["variants"]["Escape modified +20 mm"]
+    assert base["operating_conditions"]==changed["operating_conditions"]
+    assert base["mechanical_loss_model"]==changed["mechanical_loss_model"]
+    for key in ("fuel_coupled_combustion","fuel_combustion_events","fuel_combustion_event",
+                "thermal_system","thermal_load","port_binding","slider_crank",
+                "external_boundary_model","initial_chambers"):
+        assert base["native_configuration"].get(key)==changed["native_configuration"].get(key),key
+    differences=compare_configurations(base,changed)
+    paths={item["path"] for item in differences}
+    assert "/native_configuration/geometry_identity/chamber/sections/1/length_mm" in paths
+    assert len(paths)==11
+    assert all(path.startswith(("/native_configuration/geometry_identity/chamber/sections/1/length_mm",
+                               "/native_configuration/ducts/",
+                               "/native_configuration/duct_species/exhaust/")) for path in paths)
+    assert (escape_sections(base)[1]["length_mm"],escape_sections(changed)[1]["length_mm"])==(180.0,200.0)
+    a,b=validate(base),validate(changed)
+    assert a.exhaust.mesh.n==b.exhaust.mesh.n==5
+    assert a.exhaust.mesh.volumes!=b.exhaust.mesh.volumes
+    assert a.exhaust.mesh.faces!=b.exhaust.mesh.faces
 
 
 def test_project_roundtrip_duplicate_and_external_reference(tmp_path):
