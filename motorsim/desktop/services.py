@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import json
-import os
 import sys
 from pathlib import Path
 from PySide6.QtCore import QObject, QRunnable, QThreadPool, Signal, Slot
@@ -10,10 +9,10 @@ from PySide6.QtCore import QObject, QRunnable, QThreadPool, Signal, Slot
 from ..engine_configuration import create, identity, validate
 from ..engine_project import create_project, load_project, save_project, validate_project
 from ..engine_results import import_report
+from .preferences import impl2_historical_report_candidate
 
 ROOT = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parents[2]))
 FIXTURE = ROOT / "results/2t-commercial-core-20261002/fixtures/v1-prime-mesh/fixture_a_prime-mesh-0.json"
-DEFAULT_REPORT = Path(os.environ.get("DINO_ARTIFACT_ROOT", r"E:\Dino-artifacts")) / "engine-physics-v1/full-rpm-sweep-v1-impl2/authorized-extension-26-v1/reports/impl2-full-rpm-sweep-30-points.json"
 
 
 def fixture_engine():

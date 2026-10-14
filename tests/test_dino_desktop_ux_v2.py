@@ -3,12 +3,18 @@ from __future__ import annotations
 import os
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
+import tempfile
 import unittest
 from PySide6.QtWidgets import QApplication
+from unittest.mock import patch
+from PySide6.QtCore import QSettings
 
 from motorsim.desktop.app import DinoDesktopWindow
 from motorsim.desktop.context import DesktopContext
 from motorsim.desktop.services import new_project
+from motorsim.desktop.execution_page import ExecutionPage
+from motorsim.desktop.results_page import ResultsPage
+from motorsim.desktop.preferences import artifact_root,set_artifact_root
 from motorsim.engine_configuration import identity
 
 
@@ -51,6 +57,22 @@ class DesktopContextV2Tests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"referencias externas"):
             context.delete_variant("Con corrida")
         self.assertIn("Con corrida",context.project["variants"])
+
+    def test_artifact_root_preference_is_shared_by_simulation_and_results(self):
+        prefs=QSettings("Dino2T","DinoDesktop");old=prefs.value("artifact_root")
+        try:
+            with tempfile.TemporaryDirectory() as temp:
+                root=set_artifact_root(temp)
+                self.assertEqual(artifact_root(),root)
+                execution=ExecutionPage(DesktopContext(new_project("ux-v2-root")))
+                results=ResultsPage(DesktopContext(new_project("ux-v2-root")))
+                self.assertEqual(execution.artifact_root,root)
+                with patch("motorsim.desktop.results_page.QFileDialog.getOpenFileName",return_value=("","")) as dialog:
+                    results.choose()
+                self.assertEqual(dialog.call_args.args[2],str(root))
+        finally:
+            if old is None:prefs.remove("artifact_root")
+            else:set_artifact_root(old)
 
 
 if __name__=="__main__":

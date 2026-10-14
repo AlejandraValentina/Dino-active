@@ -6,7 +6,8 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (QWidget,QVBoxLayout,QHBoxLayout,QLabel,QComboBox,QPushButton,
     QFileDialog,QCheckBox,QGroupBox,QListWidget,QListWidgetItem,QTableWidget,QTableWidgetItem,QHeaderView,QMessageBox)
 from .plot import CurvePlot
-from .services import DEFAULT_REPORT,load_results,run_background
+from .services import load_results,run_background
+from .preferences import artifact_root,impl2_historical_report_candidate
 from ..exploratory_workflow import import_exploratory_runs
 
 METRICS={"Potencia de freno (kW)":"brake_power","Torque (N·m)":"brake_torque","IMEP (kPa)":"IMEP","FMEP (kPa)":"FMEP","BMEP (kPa)":"BMEP","BSFC (g/kWh)":"BSFC"}
@@ -16,11 +17,14 @@ class ResultsPage(QWidget):
         super().__init__();self.context=context;self.dataset=None;self.source=None;self.loading=False
         root=QVBoxLayout(self);root.setContentsMargins(24,20,24,20)
         title=QLabel("Resultados y comparación");title.setObjectName('title');root.addWidget(title)
-        root.addWidget(QLabel("Los reportes IMPL2 históricos se muestran separados de ejecuciones EXPLORATORY provisionales. PERIOD_1 describe periodicidad observada; no representa aprobación científica PASS. Los valores no definidos quedan como huecos."))
+        self.source_notice=QLabel("No hay una corrida seleccionada. Elegila desde el historial o abrí datos importados; todavía no se cargó evidencia histórica.")
+        self.source_notice.setWordWrap(True);self.source_notice.setObjectName("notice");root.addWidget(self.source_notice)
+        root.addWidget(QLabel("PERIOD_1 describe periodicidad observada; no representa aprobación científica PASS. Los valores no definidos quedan como huecos y no se interpolan."))
         bar=QHBoxLayout();root.addLayout(bar);self.metric=QComboBox();self.metric.addItems(METRICS);bar.addWidget(self.metric)
-        self.path_label=QLabel(str(DEFAULT_REPORT));self.path_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse);bar.addWidget(self.path_label,1)
-        browse=QPushButton("Abrir reporte…");browse.clicked.connect(self.choose);bar.addWidget(browse)
-        browse_runs=QPushButton("Comparar ejecuciones EXPLORATORY…");browse_runs.clicked.connect(self.choose_exploratory);bar.addWidget(browse_runs)
+        self.path_label=QLabel("Sin fuente seleccionada");self.path_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse);self.path_label.setWordWrap(True);bar.addWidget(self.path_label,1)
+        browse=QPushButton("Abrir datos…");browse.clicked.connect(self.choose);bar.addWidget(browse)
+        historical=QPushButton("Evidencia IMPL2 histórica…");historical.clicked.connect(self.choose_historical);bar.addWidget(historical)
+        browse_runs=QPushButton("Abrir corridas EXPLORATORY…");browse_runs.clicked.connect(self.choose_exploratory);bar.addWidget(browse_runs)
         self.variants=QListWidget();self.variants.setMaximumHeight(80);self.variants.setFlow(QListWidget.Flow.LeftToRight);self.variants.setWrapping(True);root.addWidget(self.variants)
         self.plot=CurvePlot();root.addWidget(self.plot,2)
         controls=QHBoxLayout();root.addLayout(controls)
@@ -38,18 +42,22 @@ class ResultsPage(QWidget):
         self.trace_group.hide();root.addWidget(self.trace_group)
         self.details=QTableWidget(0,2);self.details.setHorizontalHeaderLabels(["Detalle del punto","Valor"]);self.details.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.details.setMaximumHeight(190);root.addWidget(self.details)
         self.metric.currentIndexChanged.connect(self.redraw);self.variants.itemChanged.connect(self.redraw);self.plot.pointSelected.connect(self.show_point)
-        if DEFAULT_REPORT.is_file():self.load(DEFAULT_REPORT)
-        else:self.path_label.setText("No se encontró el reporte externo. Elegí el aggregate JSON de IMPL2.")
     def choose(self):
-        path,_=QFileDialog.getOpenFileName(self,"Abrir reporte de resultados",str(DEFAULT_REPORT.parent),"IMPL2 report (*.json *.csv)")
+        path,_=QFileDialog.getOpenFileName(self,"Abrir datos de resultados",str(artifact_root()),"Reportes y datos (*.json *.csv)")
         if path:self.load(Path(path))
+    def choose_historical(self):
+        candidate=impl2_historical_report_candidate()
+        if candidate.is_file():self.load(candidate,historical=True);return
+        path,_=QFileDialog.getOpenFileName(self,"Abrir evidencia IMPL2 histórica",str(artifact_root()),"Reporte IMPL2 (*.json *.csv)")
+        if path:self.load(Path(path),historical=True)
     def choose_exploratory(self):
-        paths,_=QFileDialog.getOpenFileNames(self,"Comparar resultados EXPLORATORY",str(Path.home()),"Ejecución Dino (result.json)")
+        paths,_=QFileDialog.getOpenFileNames(self,"Abrir corridas EXPLORATORY",str(artifact_root()),"Ejecución Dino (result.json)")
         if paths:
             self.path_label.setText("Verificando artifacts EXPLORATORY…")
             run_background(import_exploratory_runs,paths,on_done=self._loaded_exploratory,on_error=self._exploratory_failed)
     def _loaded_exploratory(self,data):
-        self.dataset=data;self.source=None;self.path_label.setText(f"{len(data['points'])} ciclos EXPLORATORY · provisional · no interpolación · no validación experimental")
+        self.dataset=data;self.source=None;self.source_kind="EXPLORATORY";self.path_label.setText(f"{len(data['points'])} ciclos EXPLORATORY · provisional · no interpolación · no validación experimental")
+        self.source_notice.setText(f"Corridas exploratorias importadas · no asociadas automáticamente al proyecto {self.context.project['project_id']}. Auditoría y periodicidad se muestran por separado.")
         variants=sorted({r['variant_id'] for r in data['points']});self.variants.blockSignals(True);self.variants.clear()
         for name in variants:
             item=QListWidgetItem(name);item.setFlags(item.flags()|Qt.ItemFlag.ItemIsUserCheckable);item.setCheckState(Qt.CheckState.Checked);self.variants.addItem(item)
@@ -73,15 +81,26 @@ class ResultsPage(QWidget):
         self.redraw();self.redraw_trace()
     def _exploratory_failed(self,message):
         self.path_label.setText("Ejecución EXPLORATORY inválida");self.trace_group.hide();QMessageBox.warning(self,"Artifact exploratorio inválido",message)
-    def load(self,path):
+    def load(self,path,*,historical=False):
+        path=Path(path)
+        if path.suffix.lower()==".json":
+            try:
+                raw=json.loads(path.read_text(encoding="utf-8"))
+                historical=historical or raw.get("schema")=="FULL_RPM_SWEEP_V1_IMPL2_AGGREGATE_REPORT_V1"
+            except (OSError,ValueError):pass
         self.loading=True;self.trace_group.hide();self.path_label.setText(f"Cargando {path}…")
         def done(data):
-            self.dataset=data;self.source=Path(path);self.path_label.setText(f"{path} · {len(data['points'])} puntos · {data['provenance']} · validación experimental {data['experimental_validation']}")
+            self.dataset=data;self.source=path;self.source_kind="HISTORICAL_IMPL2" if historical else "IMPORTED_EXTERNAL"
+            if historical:
+                self.source_notice.setText("EVIDENCIA HISTÓRICA IMPL2 · sintética · importada explícitamente · no pertenece a la corrida actual de este proyecto · validación experimental no realizada.")
+            else:
+                self.source_notice.setText(f"Datos importados desde fuera del proyecto {self.context.project['project_id']}. Se conservan su provenance, identidades, huecos y clasificaciones originales.")
+            self.path_label.setText(f"{path} · {len(data['points'])} puntos · {data['provenance']} · validación experimental {data['experimental_validation']}")
             variants=sorted({r['variant_id'] for r in data['points']});self.variants.blockSignals(True);self.variants.clear()
             for name in variants:
                 item=QListWidgetItem(name);item.setFlags(item.flags()|Qt.ItemFlag.ItemIsUserCheckable);item.setCheckState(Qt.CheckState.Checked);self.variants.addItem(item)
             self.variants.blockSignals(False);self.loading=False;self.redraw()
-        def fail(message):self.loading=False;self.path_label.setText("No se pudo cargar el reporte");QMessageBox.warning(self,"Reporte inválido",message)
+        def fail(message):self.loading=False;self.path_label.setText("No se pudieron cargar los datos");QMessageBox.warning(self,"Reporte inválido",message)
         run_background(load_results,path,on_done=done,on_error=fail)
     def redraw(self,*_):
         if not self.dataset:return

@@ -21,7 +21,8 @@ from motorsim.desktop.exhaust_page import ExhaustPage
 from motorsim.desktop.execution_page import ExecutionPage
 from motorsim.desktop.project_page import ProjectPage
 from motorsim.desktop.results_page import ResultsPage
-from motorsim.desktop.services import DEFAULT_REPORT, load_results, new_project, run_background
+from motorsim.desktop.preferences import impl2_historical_report_candidate
+from motorsim.desktop.services import load_results, new_project, run_background
 from motorsim.engine_configuration import identity,create,resolve_for_operating_point
 from motorsim.engine_project import create_project,load_project,save_project
 
@@ -51,7 +52,8 @@ class DinoDesktopTests(unittest.TestCase):
         self.assertTrue(window.pages[3].start.isEnabled())
         self.assertIn("Preflight PASS", window.pages[3].preflight_label.text())
         self.assertIn("EXPLORATORY", window.pages[3].mode.text())
-        self.assertTrue(spin_until(lambda: window.pages[4].dataset is not None))
+        self.assertIsNone(window.pages[4].dataset)
+        self.assertIn("no se cargó evidencia histórica",window.pages[4].source_notice.text())
         window.close()
 
     def test_engine_edit_validates_then_updates_identity_and_dirty_state(self):
@@ -165,13 +167,19 @@ class DinoDesktopTests(unittest.TestCase):
         self.assertIn("guardada", page.diff.text().lower())
 
     def test_real_impl2_import_keeps_invalid_points_as_gaps_and_exports_plot(self):
-        data = load_results(DEFAULT_REPORT)
+        report=impl2_historical_report_candidate()
+        if not report.is_file():self.skipTest("external IMPL2 artifact root is not configured")
+        data = load_results(report)
         self.assertEqual(len(data["points"]), 30)
         invalid = [p for p in data["points"] if p["classification"] == "NUMERICAL_INVALID"]
         self.assertEqual(len(invalid), 3)
         self.assertTrue(all(p["brake_power"] is None for p in invalid))
         page = ResultsPage(self.context)
+        self.assertIsNone(page.dataset)
+        page.load(report,historical=True)
         self.assertTrue(spin_until(lambda: page.dataset is not None))
+        self.assertEqual(page.source_kind,"HISTORICAL_IMPL2")
+        self.assertIn("EVIDENCIA HISTÓRICA IMPL2",page.source_notice.text())
         self.assertEqual(len(page.dataset["points"]), 30)
         self.assertTrue(any(p["value"] is None for s in page.plot.series for p in s["points"]))
         self.assertTrue(any(p["value"] < 0 for s in page.plot.series for p in s["points"] if p["value"] is not None))

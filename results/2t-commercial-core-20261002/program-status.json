@@ -4668,21 +4668,27 @@
     },
     {
       "id": "DSUX2-P0-RESULTS-ISOLATION",
-      "description": "Remove automatic historical IMPL2 loading and fixed artifact paths; unify configurable artifact-root preference and fix responsive results framing.",
+      "description": "Prevent implicit historical result loading; distinguish explicitly opened IMPL2 evidence from imported/project runs; use one configurable artifact-root preference across Simular and Resultados.",
       "dependencies": [
         "DSUX2-PRESERVATION"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Use user-selected/project-indexed runs only; label historical IMPL2 evidence separately and never import it as current project results.",
+      "evidence": [
+        "Results starts with no dataset and no auto-import even when external artifacts exist. A separate explicit historical-evidence action identifies the IMPL2 aggregate by schema and labels it synthetic/historical; imported external data are never represented as a project-associated run.",
+        "Added shared QSettings artifact_root with DINO_ARTIFACT_ROOT/home fallback; Results and Execution use the same preference; removed the absolute E: drive report path.",
+        "17 desktop/context regression tests pass, including explicit real IMPL2 report import from this test session artifact root and shared path preference."
+      ],
+      "next_action": "P0 source isolation closed. Responsive panes and indexed run selection are covered by the P1 Results and history tasks.",
       "objective": "DINO_DESKTOP_UX_V2",
       "owner_role": "implementation / results",
       "write_scope": [
         "motorsim/desktop/results_page.py",
         "motorsim/desktop/services.py",
-        "motorsim/desktop/preferences.py"
+        "motorsim/desktop/preferences.py",
+        "tests/test_dino_desktop.py",
+        "tests/test_dino_desktop_ux_v2.py"
       ],
       "evidence_level": "L0"
     },
@@ -4711,7 +4717,7 @@
       "dependencies": [
         "DSUX2-P0-RESULTS-ISOLATION"
       ],
-      "state": "WAITING",
+      "state": "READY",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -4751,7 +4757,7 @@
       "dependencies": [
         "DSUX2-P0-SHELL-CONTEXT"
       ],
-      "state": "WAITING",
+      "state": "READY",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -4770,7 +4776,7 @@
       "dependencies": [
         "DSUX2-P0-SHELL-CONTEXT"
       ],
-      "state": "WAITING",
+      "state": "READY",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -4789,7 +4795,7 @@
       "dependencies": [
         "DSUX2-P0-SHELL-CONTEXT"
       ],
-      "state": "WAITING",
+      "state": "READY",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -6365,6 +6371,12 @@
       "task": "DSUX2-P0-SHELL-CONTEXT",
       "kind": "completion",
       "summary": "Persistent resizable workspace/context bar, saved split layout and guarded variant APIs implemented; 4 Qt tests pass."
+    },
+    {
+      "at": "2026-10-14T14:29:12+00:00",
+      "task": "DSUX2-P0-RESULTS-ISOLATION",
+      "kind": "completion",
+      "summary": "Historical IMPL2 no longer auto-loads; explicit historical label and shared configurable artifact root implemented; 17 desktop tests pass."
     }
   ],
   "legacy_gate_status": {
@@ -6384,16 +6396,13 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 10,
-    "gate_tasks_done": 1,
+    "gate_tasks_done": 3,
     "gate_task_states": {
-      "DONE": 1,
-      "IN_PROGRESS": 1,
-      "READY": 2,
-      "WAITING": 6
+      "DONE": 3,
+      "READY": 5,
+      "WAITING": 2
     },
     "remaining": [
-      "DSUX2-P0-SHELL-CONTEXT",
-      "DSUX2-P0-RESULTS-ISOLATION",
       "DSUX2-P0-EXHAUST-CREATION",
       "DSUX2-P1-RUN-HISTORY",
       "DSUX2-P1-RESULTS-COMPARE",
@@ -6402,7 +6411,7 @@
       "DSUX2-P2-NAVIGATION",
       "DSUX2-VISUAL-PACKAGE"
     ],
-    "updated_at": "2026-10-14T14:20:08+00:00"
+    "updated_at": "2026-10-14T14:29:12+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -6450,7 +6459,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-14T11:23:46-03:00",
+  "updated_at": "2026-10-14T11:29:12-03:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",

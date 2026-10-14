@@ -16,6 +16,7 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushB
 from ..engine_configuration import identity
 from ..exploratory_workflow import preflight, run_exploratory
 from .services import run_background
+from .preferences import artifact_root, set_artifact_root
 
 
 class ExecutionPage(QWidget):
@@ -23,7 +24,7 @@ class ExecutionPage(QWidget):
     progress_signal=Signal(object)
     def __init__(self, context):
         super().__init__(); self.context=context; self.task=None; self.cancel_event=None
-        self.artifact_root=Path(os.environ.get("DINO_ARTIFACT_ROOT", Path.home()/"Dino-artifacts"))
+        self.artifact_root=artifact_root()
         root=QVBoxLayout(self); root.setContentsMargins(24,20,24,20)
         title=QLabel("Simulación local"); title.setObjectName("title"); root.addWidget(title)
         notice=QLabel("EXPLORATORY produce evidencia provisional, sin claim de validación. VERIFIED permanece bloqueado hasta contar con contrato, preregistro y autorización coincidentes. No se ejecutan campañas históricas.")
@@ -82,7 +83,7 @@ class ExecutionPage(QWidget):
 
     def choose_root(self):
         path=QFileDialog.getExistingDirectory(self,"Artifact root de ejecuciones locales",str(self.artifact_root))
-        if path:self.artifact_root=Path(path);self.root_label.setText(path);self.refresh()
+        if path:self.artifact_root=set_artifact_root(path);self.root_label.setText(path);self.refresh()
 
     def save_request(self):
         target,_=QFileDialog.getSaveFileName(self,"Guardar solicitud","dino-execution-request.json","JSON (*.json)")
