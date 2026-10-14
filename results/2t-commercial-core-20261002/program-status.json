@@ -3650,14 +3650,21 @@
       "id": "ECFG-CONFIG-MODEL",
       "description": "Implement versioned editable configuration schema, dimensions/consistency validation, deterministic identity, and no-step IntegratedEngine2T adapter.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "ENGINE_CONFIGURATION_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
       "write_scope": [
-        "motorsim/engine_config.py",
-        "tests/test_engine_config.py"
-      ]
+        "motorsim/engine_configuration.py",
+        "tests/test_engine_configuration_v1.py"
+      ],
+      "started_at": "2026-10-14T00:00:00+00:00",
+      "evidence": [
+        "motorsim/engine_configuration.py",
+        "tests/test_engine_configuration_v1.py",
+        "python -m pytest -q tests/test_engine_configuration_v1.py tests/test_integrated_2t.py: 80 passed"
+      ],
+      "classification": "CONFIG_SCHEMA_ADAPTER_TESTS_PASS"
     },
     {
       "id": "ECFG-ESCAPE-VARIANTS",
@@ -3665,15 +3672,20 @@
       "dependencies": [
         "ECFG-CONFIG-MODEL"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "ENGINE_CONFIGURATION_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
       "write_scope": [
-        "motorsim/engine_config.py",
         "motorsim/engine_variants.py",
-        "tests/test_engine_variants.py"
-      ]
+        "tests/test_engine_configuration_v1.py"
+      ],
+      "evidence": [
+        "motorsim/engine_variants.py",
+        "tests/test_engine_configuration_v1.py",
+        "python -m pytest -q tests/test_engine_configuration_v1.py tests/test_integrated_2t.py: 80 passed"
+      ],
+      "classification": "SUPPORTED_ESCAPE_VARIANTS_PASS"
     },
     {
       "id": "ECFG-PROJECT-STORE",
@@ -3681,40 +3693,58 @@
       "dependencies": [
         "ECFG-CONFIG-MODEL"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "ENGINE_CONFIGURATION_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
       "write_scope": [
         "motorsim/engine_project.py",
-        "tests/test_engine_project.py"
-      ]
+        "tests/test_engine_configuration_v1.py"
+      ],
+      "evidence": [
+        "motorsim/engine_project.py",
+        "tests/test_engine_configuration_v1.py",
+        "python -m pytest -q tests/test_engine_configuration_v1.py tests/test_integrated_2t.py: 80 passed"
+      ],
+      "classification": "PROJECT_PERSISTENCE_TESTS_PASS"
     },
     {
       "id": "ECFG-RESULT-COMPARISON",
       "description": "Import versioned IMPL2 curves and compare series while preserving invalid gaps, units, periodicity, hard gates and synthetic provenance.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "ENGINE_CONFIGURATION_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
       "write_scope": [
         "motorsim/engine_results.py",
-        "tests/test_engine_results.py"
-      ]
+        "tests/test_engine_configuration_v1.py"
+      ],
+      "started_at": "2026-10-14T00:00:00+00:00",
+      "evidence": [
+        "motorsim/engine_results.py",
+        "tests/test_engine_configuration_v1.py",
+        "python -m pytest -q tests/test_engine_configuration_v1.py tests/test_integrated_2t.py: 80 passed"
+      ],
+      "classification": "IMPL2_JSON_CSV_COMPARISON_PASS"
     },
     {
       "id": "ECFG-POWERVALE-PROPOSAL",
       "description": "Persist a scientific change proposal with bounded ULP tolerance, exact/out-of-range tests, identity impact and three-point revalidation plan; do not modify solver.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "ENGINE_CONFIGURATION_V1",
       "owner_role": "verification",
       "evidence_level": "L0",
       "write_scope": [
-        "results/engine-configuration-v1/powervalve-endpoint-remediation-proposal.json",
-        "tests/test_engine_configuration_powervalve_proposal.py"
-      ]
+        "results/engine-configuration-v1/powervalve-endpoint-roundoff-proposal.json"
+      ],
+      "evidence": [
+        "results/engine-configuration-v1/powervalve-endpoint-roundoff-proposal.json",
+        "results/full-rpm-sweep-v1/impl2-invalid-point-forensics.json",
+        "python -m pytest -q tests/test_engine_configuration_v1.py tests/test_integrated_2t.py: 80 passed"
+      ],
+      "classification": "VERSIONED_PROPOSAL_PERSISTED"
     },
     {
       "id": "ECFG-TESTS-DOCS",
@@ -3725,13 +3755,23 @@
         "ECFG-RESULT-COMPARISON",
         "ECFG-POWERVALE-PROPOSAL"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "ENGINE_CONFIGURATION_V1",
       "owner_role": "verification",
       "evidence_level": "L0",
       "write_scope": [
-        "docs/engine-configuration-v1.md",
-        "tests/test_engine_configuration_integration.py"
+        "docs/engine_configuration_v1.md",
+        "examples/engine_configuration_v1.py",
+        "tests/test_engine_configuration_v1.py"
+      ],
+      "classification": "DOCUMENTATION_TESTS_OPENSPEC_STATUS_PASS",
+      "evidence": [
+        "docs/engine_configuration_v1.md",
+        "examples/engine_configuration_v1.py",
+        "openspec/changes/engine-configuration-v1/tasks.md",
+        "openspec validate engine-configuration-v1 --strict --no-interactive: valid",
+        "python scripts/agents/program_status.py check: CHECK OK",
+        "python -m pytest -q tests/test_engine_configuration_v1.py tests/test_integrated_2t.py: 80 passed"
       ]
     }
   ],
@@ -4785,6 +4825,42 @@
       "task": "ENGINE_CONFIGURATION_V1",
       "kind": "authorization",
       "summary": "Owner explicitly authorized ENGINE_CONFIGURATION_V1. Recorded a manual, traceable current-objective transition; FULL_RPM_SWEEP_V1 remains archived PARTIAL/REVIEW with 27 PERIOD_1 and 3 NUMERICAL_INVALID. No campaign authorization."
+    },
+    {
+      "at": "2026-10-14T10:40:13+00:00",
+      "task": "ECFG-CONFIG-MODEL",
+      "kind": "task",
+      "summary": "Implemented strict versioned engine configuration, SI/native unit declaration, deterministic identity and no-step IntegratedEngine2T adapter; focused tests and 80-test regression passed."
+    },
+    {
+      "at": "2026-10-14T10:40:13+00:00",
+      "task": "ECFG-ESCAPE-VARIANTS",
+      "kind": "task",
+      "summary": "Implemented exact per-section circular-frustum exhaust mesh adaptation and explicit variants/diffs; unsupported topology and discontinuity fail closed."
+    },
+    {
+      "at": "2026-10-14T10:40:13+00:00",
+      "task": "ECFG-PROJECT-STORE",
+      "kind": "task",
+      "summary": "Implemented atomic project persistence, strict load/identity checks, duplication and external result references without bulk evidence."
+    },
+    {
+      "at": "2026-10-14T10:40:13+00:00",
+      "task": "ECFG-RESULT-COMPARISON",
+      "kind": "task",
+      "summary": "Imported actual 30-point IMPL2 JSON and matched CSV companion; preserved 3 NUMERICAL_INVALID gaps and hard-gate metadata with no interpolation."
+    },
+    {
+      "at": "2026-10-14T10:40:13+00:00",
+      "task": "ECFG-POWERVALE-PROPOSAL",
+      "kind": "task",
+      "summary": "Persisted bounded ULP-only future fix proposal and required tests/revalidation; solver and historical artifacts untouched."
+    },
+    {
+      "at": "2026-10-14T10:40:26+00:00",
+      "task": "ECFG-TESTS-DOCS",
+      "kind": "task",
+      "summary": "Documented supported capabilities/physical limits and future Windows service API; strict OpenSpec passed, status check clean, and 80 focused plus integrated regression tests passed."
     }
   ],
   "legacy_gate_status": {
@@ -4800,28 +4876,18 @@
   },
   "gate_status": {
     "objective": "ENGINE_CONFIGURATION_V1",
-    "state": "OPEN",
-    "classification": "ENGINE_CONFIGURATION_V1_IN_PROGRESS",
+    "state": "PASS",
+    "classification": "ENGINE_CONFIGURATION_V1_READY",
     "evidence": [
-      "results/engine-configuration-v1/owner-authorization.json",
-      "openspec/changes/engine-configuration-v1/specs/engine-configuration-v1/spec.md"
+      "ENGINE_CONFIGURATION_V1 backend, tests, docs, proposal; OpenSpec strict and program-status check passed"
     ],
     "gate_tasks_total": 7,
-    "gate_tasks_done": 1,
+    "gate_tasks_done": 7,
     "gate_task_states": {
-      "DONE": 1,
-      "READY": 3,
-      "WAITING": 3
+      "DONE": 7
     },
-    "remaining": [
-      "ECFG-CONFIG-MODEL",
-      "ECFG-ESCAPE-VARIANTS",
-      "ECFG-PROJECT-STORE",
-      "ECFG-RESULT-COMPARISON",
-      "ECFG-POWERVAlVE-PROPOSAL",
-      "ECFG-TESTS-DOCS"
-    ],
-    "updated_at": "2026-10-14T10:29:30+00:00"
+    "remaining": [],
+    "updated_at": "2026-10-14T10:45:05+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

@@ -1,0 +1,131 @@
+import copy
+import json
+from pathlib import Path
+
+import pytest
+
+from motorsim.engine_configuration import create, identity, validate, sha256
+from motorsim.engine_variants import escape_sections, replace_escape_sections, variant
+from motorsim.engine_project import (create_project, duplicate_project, load_project,
+                                     save_project, compare_project_engines)
+from motorsim.engine_results import import_report, compare
+
+ROOT = Path(__file__).resolve().parents[1]
+FIXTURE = ROOT / "results/2t-commercial-core-20261002/fixtures/v1-prime-mesh/fixture_a_prime-mesh-0.json"
+
+
+def configured(name="base"):
+    fixture = json.loads(FIXTURE.read_text(encoding="utf-8"))
+    return create(native_configuration=fixture["engine_configuration"],
+                  mechanical_loss_model=fixture["mechanical_loss_model"],
+                  operating_conditions={"reference_rpm": 3000, "load": 1.0,
+                                        "fuel_id": "fixture-synthetic-fuel", "afr": 49.0},
+                  provenance={"configuration_source": {"path": str(FIXTURE.relative_to(ROOT)),
+                                                         "classification": fixture["classification"]},
+                              "fuel": fixture["fuel_surrogate_snapshot"]},
+                  display_name=name)
+
+
+def test_fixture_adapter_hash_and_display_name():
+    a, b = configured("A"), configured("B")
+    assert validate(a).configuration_identity == validate(b).configuration_identity
+    assert identity(a) == identity(b)
+    assert a["native_configuration_sha256"] == sha256(a["native_configuration"])
+
+
+def test_invalid_implicit_loss_and_mutated_native_rejected():
+    doc = configured()
+    missing = copy.deepcopy(doc); missing["mechanical_loss_model"] = None
+    with pytest.raises((ValueError, TypeError)): validate(missing)
+    bad = copy.deepcopy(doc); bad["native_configuration"]["max_cfl"] = float("nan")
+    with pytest.raises(ValueError): validate(bad)
+    bad = copy.deepcopy(doc); bad["native_configuration"]["max_cfl"] *= 0.5
+    with pytest.raises(ValueError, match="hash mismatch"): validate(bad)
+    bad = copy.deepcopy(doc); bad["native_configuration"]["unimplemented_component"] = {"kind": "invented"}
+    bad["native_configuration_sha256"] = sha256(bad["native_configuration"])
+    with pytest.raises(ValueError): validate(bad)
+
+
+def test_exhaust_variant_builds_exact_frustum_mesh_without_solver_step():
+    base = configured()
+    sections = escape_sections(base)
+    sections[1]["length_mm"] += 10
+    changed = replace_escape_sections(base, sections, display_name="longer diffuser")
+    assert len(changed["native_configuration"]["ducts"][4]["mesh"]["volumes"]) == 5
+    assert identity(changed) != identity(base)
+    deltas = compare_project_engines(create_project("p", base, variants={"longer": changed}), "longer")
+    assert any("geometry_identity/chamber/sections/1/length_mm" in item["path"] for item in deltas)
+    with pytest.raises(ValueError, match="discontinuous"):
+        broken = copy.deepcopy(sections); broken[1]["inlet_diameter_mm"] += 1
+        replace_escape_sections(base, broken)
+    tuned = variant(base, display_name="higher reference speed",
+                    operating_conditions_patch={"reference_rpm": 3200})
+    assert tuned["operating_conditions"]["reference_rpm"] == 3200
+    assert tuned["native_configuration"] == base["native_configuration"]
+
+
+def test_project_roundtrip_duplicate_and_external_reference(tmp_path):
+    base = configured()
+    project = create_project("demo", base, result_references=[{
+        "path": "external/report.json", "identity_sha256": "a"*64,
+        "artifact_sha256": "b"*64, "classification": "SYNTHETIC"}])
+    path = tmp_path / "project.json"
+    digest = save_project(path, project)
+    assert len(digest) == 64 and load_project(path) == project
+    duplicate = duplicate_project(project, project_id="copy", display_name="renamed")
+    assert duplicate["base_identity_sha256"] == project["base_identity_sha256"]
+
+
+def test_curve_comparison_preserves_invalid_gaps_and_hard_gates(tmp_path):
+    def report(prefix, classification="PERIOD_1"):
+        rows = []
+        for rpm, cls, status, val in [(1000, "NUMERICAL_INVALID", "NOT_VALID_FOR_NONCONVERGED_POINT", None),
+                                      (2000, classification, "DEFINED", 12.0)]:
+            row = {"point_id": f"{prefix}@{rpm}", "variant_id": prefix, "rpm": rpm,
+                   "classification": cls, "result_sha256": "a"*64,
+                   "point_configuration_sha256": "b"*64, "hard_gates": {"all_passed": True}}
+            for field in ("brake_power", "brake_torque", "IMEP", "FMEP", "BMEP", "ISFC", "BSFC"):
+                row[field] = val if status == "DEFINED" else None
+                row[field+"_status"] = status
+                row[field+"_reason"] = "synthetic test gap" if val is None else None
+            rows.append(row)
+        return {"schema": "FULL_RPM_SWEEP_V1_IMPL2_AGGREGATE_REPORT_V1",
+                "experimental_validation": "NOT_PERFORMED", "implementation_identity_sha256": "c"*64,
+                "preregistration_sha256": "d"*64, "producer_sha256": "e"*64,
+                "units": {"brake_power":"kW", "brake_torque":"N·m", "IMEP":"kPa", "FMEP":"kPa", "BMEP":"kPa", "ISFC":"g/kWh", "BSFC":"g/kWh"}, "points": rows}
+    files=[]
+    for idx, prefix in enumerate(("A", "B")):
+        path=tmp_path/f"{idx}.json"; path.write_text(json.dumps(report(prefix)),encoding="utf-8"); files.append(path)
+    result = compare({"A": import_report(files[0]), "B": import_report(files[1])}, ("power",))
+    series=result["metrics"]["power"]["curves"]["A"]
+    assert series[0]["value"] is None and series[0]["classification"] == "NUMERICAL_INVALID"
+    assert series[1]["value"] == 12.0 and series[1]["hard_gates"] == {"all_passed": True}
+    assert result["interpolation"] == "NONE"
+
+
+def test_csv_requires_matching_metadata_and_checks_rows(tmp_path):
+    payload = {"schema": "FULL_RPM_SWEEP_V1_IMPL2_AGGREGATE_REPORT_V1",
+               "experimental_validation": "NOT_PERFORMED", "implementation_identity_sha256": "c"*64,
+               "preregistration_sha256": "d"*64, "producer_sha256": "e"*64,
+               "csv": "curves.csv", "units": {"brake_power":"kW", "brake_torque":"N*m", "IMEP":"kPa", "FMEP":"kPa", "BMEP":"kPa", "ISFC":"g/kWh", "BSFC":"g/kWh"},
+               "points": []}
+    for variant_id in ("A", "B"):
+        row = {"point_id": variant_id+"@1000", "variant_id": variant_id, "rpm": 1000,
+               "classification":"PERIOD_1", "result_sha256":"a"*64,
+               "point_configuration_sha256":"b"*64, "hard_gates": {}}
+        for field in ("brake_power", "brake_torque", "IMEP", "FMEP", "BMEP", "ISFC", "BSFC"):
+            row[field]=1.0; row[field+"_status"]="DEFINED"; row[field+"_reason"]=None
+        payload["points"].append(row)
+    meta=tmp_path/"report.json"; meta.write_text(json.dumps(payload),encoding="utf-8")
+    cols=["point_id","variant_id","classification","result_sha256","point_configuration_sha256"]
+    for field in ("brake_power", "brake_torque", "IMEP", "FMEP", "BMEP", "ISFC", "BSFC"):
+        cols.extend([field,field+"_status"])
+    import csv
+    csv_path=tmp_path/"curves.csv"
+    with csv_path.open("w",encoding="utf-8",newline="") as handle:
+        writer=csv.DictWriter(handle,fieldnames=cols);writer.writeheader()
+        for row in payload["points"]:
+            writer.writerow({k: row[k] for k in cols})
+    assert len(import_report(csv_path,metadata_path=meta)["points"]) == 2
+    with pytest.raises(ValueError,match="requires its companion"):
+        import_report(csv_path)

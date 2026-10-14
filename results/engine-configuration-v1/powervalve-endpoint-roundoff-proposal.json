@@ -1,0 +1,43 @@
+{
+  "schema": "ENGINE_POWERVALE_ENDPOINT_ROUNDOFF_PROPOSAL_V1",
+  "status": "PROPOSED_NOT_IMPLEMENTED",
+  "cause_evidence": {
+    "receipt": "results/full-rpm-sweep-v1/impl2-invalid-point-forensics.json",
+    "failure_reason": "RPM is outside the configured powervalve map",
+    "map_domain_rpm": [1000.0, 5000.0],
+    "observed_excursions": {
+      "1000_rpm": 999.9999999999999,
+      "5000_rpm": 5000.000000000001
+    },
+    "affected_points": [
+      "A_PRIME_MESH_0@1000RPM",
+      "B_PRIME_MESH_0@1000RPM",
+      "A_PRIME_MESH_0@5000RPM"
+    ],
+    "campaigns_started_by_diagnostic": 0
+  },
+  "recommended_future_change": {
+    "versioning": "new solver/producer identity and preregistration required",
+    "policy": "preserve configured operating RPM for map resolution, or snap only an endpoint excursion within a narrowly bounded ULP count; reject any genuine out-of-domain value",
+    "tolerance": "ULP-based at the relevant endpoint, explicitly bounded and tested; no percentage or broad absolute tolerance",
+    "solver_modified_in_this_change": false
+  },
+  "required_tests": [
+    "exact lower endpoint accepted",
+    "exact upper endpoint accepted",
+    "one representable value within the declared endpoint ULP allowance accepted",
+    "value beyond the ULP allowance rejected",
+    "materially out-of-range values rejected"
+  ],
+  "identity_and_revalidation": {
+    "identity_impact": "any implementation change changes solver/producer identity; do not manually override hashes",
+    "historical_artifacts": "immutable",
+    "required_future_revalidation": [
+      "A_PRIME_MESH_0@1000RPM",
+      "B_PRIME_MESH_0@1000RPM",
+      "A_PRIME_MESH_0@5000RPM"
+    ],
+    "replay_and_hard_gates": "rerun under a new authorized preregistration; retain all original invalid classifications"
+  },
+  "provenance": "Forensic cause communicated and persisted in the read-only diagnostic receipt; this document recommends a future correction but does not itself alter or authorize the solver."
+}
