@@ -6,7 +6,8 @@ from pathlib import Path
 from PySide6.QtCore import QSettings,Qt,QThreadPool
 from PySide6.QtGui import QAction,QKeySequence
 from PySide6.QtWidgets import (QMainWindow,QWidget,QHBoxLayout,QVBoxLayout,QListWidget,QListWidgetItem,
-    QStackedWidget,QLabel,QToolBar,QFileDialog,QMessageBox,QApplication)
+    QStackedWidget,QLabel,QToolBar,QFileDialog,QMessageBox,QApplication,QSplitter,QScrollArea,
+    QGroupBox,QFormLayout)
 from ..engine_configuration import validate
 from ..engine_project import load_project,save_project
 from .services import new_project
@@ -16,6 +17,7 @@ from .exhaust_page import ExhaustPage
 from .project_page import ProjectPage
 from .results_page import ResultsPage
 from .execution_page import ExecutionPage
+from .widgets.context_bar import ContextBar
 
 PAGES=(('Motor',EnginePage),('Escape',ExhaustPage),('Proyecto',ProjectPage),('Simulación',ExecutionPage),('Resultados',ResultsPage))
 
@@ -33,21 +35,42 @@ class DinoDesktopWindow(QMainWindow):
             QPushButton#primaryAction {background:#1479ad;border-color:#219bd7;font-weight:600;}
             QLineEdit,QDoubleSpinBox,QComboBox,QTableWidget,QPlainTextEdit,QListWidget {background:#0c121b;border:1px solid #30435a;border-radius:4px;padding:5px;selection-background-color:#17638c;}
             QHeaderView::section {background:#1a2838;padding:6px;border:0;color:#afc7dd;}
-            QListWidget#nav {background:#0c121b;border:0;border-right:1px solid #2b3b4d;padding:10px;}
+            QListWidget#nav {background:#0c121b;border:0;border-right:1px solid #2b3b4d;padding:8px;}
             QListWidget#nav::item {padding:14px;border-radius:5px;} QListWidget#nav::item:selected {background:#19334a;color:#57c4f5;}
             QLabel#notice {color:#9eb7cf;background:#162332;border:1px solid #263e55;border-radius:5px;padding:9px;}
+            QWidget#contextBar {background:#152130;border-bottom:1px solid #31455b;}
+            QLabel#modeBadge {background:#4b3514;color:#ffd58a;border:1px solid #76551d;border-radius:8px;padding:4px 9px;font-weight:600;}
+            QGroupBox#inspector {border:0;border-left:1px solid #2b3b4d;border-radius:0;margin:0;padding:12px;}
             QStatusBar {background:#0b1119;color:#9db2c7;}
         """)
+        saved_variant=self.settings.value(f"active_variant/{self.context.project['project_id']}")
+        if saved_variant in self.context.project["variants"]: self.context.select_variant(saved_variant)
         self._build_ui();self._build_actions();self.context.changed.connect(self._state_changed)
+        self.context.variant_changed.connect(self._variant_changed)
         self._restore_settings();self._state_changed()
     def _build_ui(self):
-        shell=QWidget();layout=QHBoxLayout(shell);layout.setContentsMargins(0,0,0,0);layout.setSpacing(0)
-        self.nav=QListWidget();self.nav.setObjectName('nav');self.nav.setFixedWidth(200)
+        shell=QWidget();layout=QVBoxLayout(shell);layout.setContentsMargins(0,0,0,0);layout.setSpacing(0)
+        self.context_bar=ContextBar();self.context_bar.setObjectName("contextBar")
+        self.context_bar.variant_selected.connect(self.context.select_variant);layout.addWidget(self.context_bar)
+        self.body_splitter=QSplitter(Qt.Orientation.Horizontal);self.body_splitter.setChildrenCollapsible(False)
+        self.nav=QListWidget();self.nav.setObjectName('nav');self.nav.setMinimumWidth(118);self.nav.setMaximumWidth(260)
         for title,_ in PAGES:self.nav.addItem(QListWidgetItem(title))
         self.stack=QStackedWidget();self.pages=[]
         for _,page_type in PAGES:
-            page=page_type(self.context);self.pages.append(page);self.stack.addWidget(page)
-        layout.addWidget(self.nav);layout.addWidget(self.stack,1);self.setCentralWidget(shell)
+            page=page_type(self.context);self.pages.append(page)
+            scroll=QScrollArea();scroll.setWidgetResizable(True);scroll.setFrameShape(QScrollArea.Shape.NoFrame);scroll.setWidget(page)
+            self.stack.addWidget(scroll)
+        self.inspector=QGroupBox("Preparación y estado");self.inspector.setObjectName("inspector");self.inspector.setMinimumWidth(145);self.inspector.setMaximumWidth(320)
+        inspector_layout=QVBoxLayout(self.inspector);inspector_layout.setContentsMargins(12,12,10,12)
+        self.inspector_variant=QLabel();self.inspector_variant.setWordWrap(True);self.inspector_variant.setStyleSheet("font-size:12pt;font-weight:600;color:#d8edff")
+        self.inspector_diff=QLabel();self.inspector_diff.setWordWrap(True)
+        self.inspector_validity=QLabel();self.inspector_validity.setWordWrap(True)
+        self.inspector_science=QLabel("Modo EXPLORATORIO. Los diagnósticos de escape no demostraron independencia espacial.");self.inspector_science.setWordWrap(True)
+        inspector_layout.addWidget(QLabel("Variante activa"));inspector_layout.addWidget(self.inspector_variant)
+        inspector_layout.addWidget(self.inspector_diff);inspector_layout.addWidget(self.inspector_validity);inspector_layout.addStretch(1);inspector_layout.addWidget(self.inspector_science)
+        self.body_splitter.addWidget(self.nav);self.body_splitter.addWidget(self.stack);self.body_splitter.addWidget(self.inspector)
+        self.body_splitter.setStretchFactor(0,0);self.body_splitter.setStretchFactor(1,1);self.body_splitter.setStretchFactor(2,0)
+        self.body_splitter.setSizes([175,930,230]);layout.addWidget(self.body_splitter,1);self.setCentralWidget(shell)
         self.nav.currentRowChanged.connect(self.stack.setCurrentIndex)
         last=int(self.settings.value('last_page',0));self.nav.setCurrentRow(max(0,min(last,len(PAGES)-1)))
         self.statusBar().showMessage('Listo')
@@ -64,14 +87,30 @@ class DinoDesktopWindow(QMainWindow):
         menu.addSeparator();imp=menu.addAction('Importar configuración…',self.import_configuration);exp=menu.addAction('Exportar configuración…',self.export_configuration)
         self._action('Nuevo',self.new_file);self._action('Abrir',self.open_file);self._action('Guardar',self.save_file,QKeySequence.StandardKey.Save)
         self._action('Guardar como',self.save_as)
-        self.state=QLabel();self.state.setContentsMargins(14,0,14,0);self.toolbar.addWidget(self.state)
     def _state_changed(self):
         mark=' • Cambios sin guardar' if self.context.dirty else ''
         self.setWindowTitle(f"Dino 2T — {self.context.project['project_id']}{mark}")
-        self.state.setText('Modificado' if self.context.dirty else 'Guardado')
+        if hasattr(self,"context_bar"):
+            self.context_bar.set_context(self.context.project,self.context.selected_variant,self.context.dirty)
+            engine=self.context.engine()
+            self.inspector_variant.setText(engine.get("display_name","Motor base"))
+            selected=self.context.selected_variant
+            if selected is None:
+                self.inspector_diff.setText("Motor base del proyecto")
+            else:
+                from ..engine_variants import compare_configurations
+                changes=compare_configurations(self.context.project["base_engine"],engine)
+                self.inspector_diff.setText(f"Difiere del motor base en {len(changes)} propiedades.")
+            self.inspector_validity.setText("Configuración cargada · el preflight completo se muestra en Simular.")
+            self.settings.setValue(f"active_variant/{self.context.project['project_id']}",selected or "")
+
+    def _variant_changed(self,_name):
+        self._state_changed()
     def _restore_settings(self):
         geometry=self.settings.value('window_geometry')
         if geometry:self.restoreGeometry(geometry)
+        splitter=self.settings.value('workspace_splitter')
+        if splitter:self.body_splitter.restoreState(splitter)
     def _confirm_discard(self):
         if not self.context.dirty:return True
         result=QMessageBox.question(self,'Cambios pendientes','¿Guardar los cambios del proyecto antes de continuar?',QMessageBox.StandardButton.Save|QMessageBox.StandardButton.Discard|QMessageBox.StandardButton.Cancel,QMessageBox.StandardButton.Save)
@@ -87,7 +126,11 @@ class DinoDesktopWindow(QMainWindow):
         if not path:return
         self._open(Path(path))
     def _open(self,path):
-        try:self.context.replace_project(load_project(path),path)
+        try:
+            project=load_project(path);self.context.replace_project(project,path)
+            saved_variant=self.settings.value(f"active_variant/{project['project_id']}")
+            if saved_variant in project["variants"]:self.context.select_variant(saved_variant)
+            self.statusBar().showMessage(f"Proyecto {project['project_id']} abierto",4000)
         except Exception as exc:QMessageBox.warning(self,'No se pudo abrir el proyecto',f'{type(exc).__name__}: {exc}')
     def save_file(self):
         if self.context.path is None:return self.save_as()
@@ -132,4 +175,5 @@ class DinoDesktopWindow(QMainWindow):
         if not QThreadPool.globalInstance().waitForDone(10000):
             self.statusBar().showMessage('Una lectura sigue activa; cierre cancelado para conservar la interfaz estable.')
             event.ignore();return
-        self.settings.setValue('window_geometry',self.saveGeometry());self.settings.setValue('last_page',self.nav.currentRow());super().closeEvent(event)
+        self.settings.setValue('window_geometry',self.saveGeometry());self.settings.setValue('last_page',self.nav.currentRow())
+        self.settings.setValue('workspace_splitter',self.body_splitter.saveState());super().closeEvent(event)

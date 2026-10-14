@@ -4647,17 +4647,22 @@
       "dependencies": [
         "DSUX2-PRESERVATION"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Implement shell/context without changing scientific backend; preserve compatibility aliases for existing page tests.",
+      "evidence": [
+        "Persistent project/active-variant/save/mode context bar, resizable three-pane workspace and saved splitter state implemented; variant selection API validates names and preserves active context.",
+        "Variant duplicate/rename/delete methods validate configs; deletion fails closed if result references exist because current project reference schema cannot associate them safely.",
+        "Four Qt tests pass: active variant through all pages, variant lifecycle/no base propagation, reference-protected delete and desktop startup."
+      ],
+      "next_action": "Shell task complete. Continue P0 results isolation and escape creation using the shared context API.",
       "objective": "DINO_DESKTOP_UX_V2",
       "owner_role": "implementation / UI integration",
       "write_scope": [
         "motorsim/desktop/app.py",
         "motorsim/desktop/context.py",
-        "motorsim/desktop/widgets/context_bar.py"
+        "motorsim/desktop/widgets/context_bar.py",
+        "tests/test_dino_desktop_ux_v2.py"
       ],
       "evidence_level": "L0"
     },
@@ -6354,6 +6359,12 @@
       "task": "DINO_DESKTOP_UX_V2",
       "kind": "transition",
       "summary": "Owner-authorized transition from terminal EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL; Opus proposal and all 17 captures preserved with hashes. Scientific gate remains archived and immutable; no campaigns or push."
+    },
+    {
+      "at": "2026-10-14T14:23:46+00:00",
+      "task": "DSUX2-P0-SHELL-CONTEXT",
+      "kind": "completion",
+      "summary": "Persistent resizable workspace/context bar, saved split layout and guarded variant APIs implemented; 4 Qt tests pass."
     }
   ],
   "legacy_gate_status": {
@@ -6439,7 +6450,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-14T11:20:08-03:00",
+  "updated_at": "2026-10-14T11:23:46-03:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
