@@ -3,11 +3,11 @@ import json
 import os
 import tempfile
 from pathlib import Path
-from PySide6.QtCore import QSettings,Qt,QThreadPool
-from PySide6.QtGui import QAction,QKeySequence
+from PySide6.QtCore import QSettings,Qt,QThreadPool,QTimer
+from PySide6.QtGui import QAction,QKeySequence,QGuiApplication
 from PySide6.QtWidgets import (QMainWindow,QWidget,QHBoxLayout,QVBoxLayout,QListWidget,QListWidgetItem,
     QStackedWidget,QLabel,QToolBar,QFileDialog,QMessageBox,QApplication,QSplitter,QScrollArea,
-    QGroupBox,QFormLayout)
+    QGroupBox,QFormLayout,QTreeWidget,QTreeWidgetItem)
 from ..engine_configuration import validate
 from ..engine_project import load_project,save_project
 from .services import new_project
@@ -24,7 +24,11 @@ PAGES=(('Motor',EnginePage),('Escape',ExhaustPage),('Proyecto',ProjectPage),('Si
 class DinoDesktopWindow(QMainWindow):
     def __init__(self,project=None):
         super().__init__();self.settings=QSettings('Dino2T','DinoDesktop');self.context=DesktopContext(project or new_project())
-        self.setWindowTitle('Dino 2T');self.resize(1360,900);self.setMinimumSize(980,680)
+        self.setWindowTitle('Dino 2T')
+        screen=QApplication.primaryScreen();available=screen.availableGeometry() if screen else None
+        width=min(1360,available.width()) if available else 1360
+        height=min(900,available.height()) if available else 900
+        self.setMinimumSize(min(980,width),min(680,height));self.resize(width,height)
         self.setStyleSheet("""
             QMainWindow,QWidget { background:#101722; color:#e5edf6; font-family:'Segoe UI'; font-size:10pt; }
             QLabel#title {font-size:22pt;font-weight:600;color:#f3f8ff;padding:4px 0;}
@@ -53,13 +57,21 @@ class DinoDesktopWindow(QMainWindow):
         self.context_bar=ContextBar();self.context_bar.setObjectName("contextBar")
         self.context_bar.variant_selected.connect(self.context.select_variant);layout.addWidget(self.context_bar)
         self.body_splitter=QSplitter(Qt.Orientation.Horizontal);self.body_splitter.setChildrenCollapsible(False)
-        self.nav=QListWidget();self.nav.setObjectName('nav');self.nav.setMinimumWidth(118);self.nav.setMaximumWidth(260)
+        self.nav_panel=QWidget();nav_layout=QVBoxLayout(self.nav_panel);nav_layout.setContentsMargins(0,4,4,4);nav_layout.setSpacing(5)
+        nav_layout.addWidget(QLabel("Proyecto"))
+        self.project_tree=QTreeWidget();self.project_tree.setHeaderHidden(True);self.project_tree.setMaximumHeight(180)
+        self.project_tree.itemClicked.connect(self._project_tree_clicked);nav_layout.addWidget(self.project_tree)
+        nav_layout.addWidget(QLabel("Vistas"))
+        self.nav=QListWidget();self.nav.setObjectName('nav');self.nav.setMinimumWidth(128);self.nav.setMaximumWidth(260)
         for title,_ in PAGES:self.nav.addItem(QListWidgetItem(title))
+        nav_layout.addWidget(self.nav,1)
         self.stack=QStackedWidget();self.pages=[]
         for _,page_type in PAGES:
             page=page_type(self.context);self.pages.append(page)
             scroll=QScrollArea();scroll.setWidgetResizable(True);scroll.setFrameShape(QScrollArea.Shape.NoFrame);scroll.setWidget(page)
             self.stack.addWidget(scroll)
+        execution=self.pages[3];results=self.pages[4]
+        execution.open_runs_requested.connect(self._open_indexed_runs)
         self.inspector=QGroupBox("Preparación y estado");self.inspector.setObjectName("inspector");self.inspector.setMinimumWidth(145);self.inspector.setMaximumWidth(320)
         inspector_layout=QVBoxLayout(self.inspector);inspector_layout.setContentsMargins(12,12,10,12)
         self.inspector_variant=QLabel();self.inspector_variant.setWordWrap(True);self.inspector_variant.setStyleSheet("font-size:12pt;font-weight:600;color:#d8edff")
@@ -68,13 +80,15 @@ class DinoDesktopWindow(QMainWindow):
         self.inspector_science=QLabel("Modo EXPLORATORIO. Los diagnósticos de escape no demostraron independencia espacial.");self.inspector_science.setWordWrap(True)
         inspector_layout.addWidget(QLabel("Variante activa"));inspector_layout.addWidget(self.inspector_variant)
         inspector_layout.addWidget(self.inspector_diff);inspector_layout.addWidget(self.inspector_validity);inspector_layout.addStretch(1);inspector_layout.addWidget(self.inspector_science)
-        self.body_splitter.addWidget(self.nav);self.body_splitter.addWidget(self.stack);self.body_splitter.addWidget(self.inspector)
+        self.body_splitter.addWidget(self.nav_panel);self.body_splitter.addWidget(self.stack);self.body_splitter.addWidget(self.inspector)
         self.body_splitter.setStretchFactor(0,0);self.body_splitter.setStretchFactor(1,1);self.body_splitter.setStretchFactor(2,0)
         self.body_splitter.setSizes([175,930,230]);layout.addWidget(self.body_splitter,1);self.setCentralWidget(shell)
         self.nav.currentRowChanged.connect(self.stack.setCurrentIndex)
         last=int(self.settings.value('last_page',0));self.nav.setCurrentRow(max(0,min(last,len(PAGES)-1)))
         self.statusBar().showMessage('Listo')
         self.toolbar=QToolBar('Proyecto',self);self.toolbar.setMovable(False);self.addToolBar(self.toolbar)
+    def _open_indexed_runs(self,paths):
+        self.nav.setCurrentRow(4);self.pages[4].open_runs(paths)
     def _action(self,label,callback,shortcut=None):
         action=QAction(label,self)
         if shortcut:action.setShortcut(shortcut)
@@ -91,6 +105,7 @@ class DinoDesktopWindow(QMainWindow):
         mark=' • Cambios sin guardar' if self.context.dirty else ''
         self.setWindowTitle(f"Dino 2T — {self.context.project['project_id']}{mark}")
         if hasattr(self,"context_bar"):
+            self._refresh_project_tree()
             self.context_bar.set_context(self.context.project,self.context.selected_variant,self.context.dirty)
             engine=self.context.engine()
             self.inspector_variant.setText(engine.get("display_name","Motor base"))
@@ -104,8 +119,31 @@ class DinoDesktopWindow(QMainWindow):
             self.inspector_validity.setText("Configuración cargada · el preflight completo se muestra en Simular.")
             self.settings.setValue(f"active_variant/{self.context.project['project_id']}",selected or "")
 
+    def _refresh_project_tree(self):
+        tree=self.project_tree;tree.blockSignals(True);tree.clear()
+        project=QTreeWidgetItem([self.context.project["project_id"]]);project.setData(0,Qt.ItemDataRole.UserRole,"project");tree.addTopLevelItem(project)
+        base=QTreeWidgetItem([self.context.project["base_engine"].get("display_name","Motor base")]);base.setData(0,Qt.ItemDataRole.UserRole,None);project.addChild(base)
+        for name in sorted(self.context.project["variants"]):
+            item=QTreeWidgetItem([name]);item.setData(0,Qt.ItemDataRole.UserRole,name);project.addChild(item)
+        project.setExpanded(True)
+        selected=self.context.selected_variant
+        for i in range(project.childCount()):
+            child=project.child(i)
+            if child.data(0,Qt.ItemDataRole.UserRole)==selected:tree.setCurrentItem(child);break
+        tree.blockSignals(False)
+
+    def _project_tree_clicked(self,item,_column):
+        if item.data(0,Qt.ItemDataRole.UserRole)!="project":
+            self.context.select_variant(item.data(0,Qt.ItemDataRole.UserRole))
+
     def _variant_changed(self,_name):
         self._state_changed()
+    def resizeEvent(self,event):
+        super().resizeEvent(event)
+        if hasattr(self,"inspector"):
+            # Keep the inspector available at desktop widths and reclaim its
+            # space below the supported 980 px breakpoint.
+            self.inspector.setVisible(event.size().width()>=1120)
     def _restore_settings(self):
         geometry=self.settings.value('window_geometry')
         if geometry:self.restoreGeometry(geometry)
@@ -177,3 +215,12 @@ class DinoDesktopWindow(QMainWindow):
             event.ignore();return
         self.settings.setValue('window_geometry',self.saveGeometry());self.settings.setValue('last_page',self.nav.currentRow())
         self.settings.setValue('workspace_splitter',self.body_splitter.saveState());super().closeEvent(event)
+    def showEvent(self,event):
+        super().showEvent(event)
+        QTimer.singleShot(0,self._fit_initial_window)
+    def _fit_initial_window(self):
+        screen=QApplication.primaryScreen()
+        if screen and QGuiApplication.platformName()=="windows" and not self.isMaximized():
+            available=screen.availableGeometry();frame=self.frameGeometry()
+            if frame.width()>available.width() or frame.height()>available.height():
+                self.showMaximized()

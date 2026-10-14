@@ -11,7 +11,7 @@ from datetime import datetime,timezone
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
     QPlainTextEdit, QFileDialog, QMessageBox, QDoubleSpinBox, QSpinBox, QLineEdit,
-    QFormLayout, QGroupBox)
+    QFormLayout, QGroupBox, QComboBox)
 
 from ..engine_configuration import identity
 from ..exploratory_workflow import preflight, run_exploratory
@@ -22,6 +22,8 @@ from .preferences import artifact_root, set_artifact_root
 class ExecutionPage(QWidget):
     """Single-point EXPLORATORY controls; VERIFIED remains unavailable."""
     progress_signal=Signal(object)
+    open_runs_requested=Signal(object)
+    resume_run_requested=Signal(object)
     def __init__(self, context):
         super().__init__(); self.context=context; self.task=None; self.cancel_event=None
         self.artifact_root=artifact_root()
@@ -35,6 +37,11 @@ class ExecutionPage(QWidget):
         self.rpm=QDoubleSpinBox(); self.rpm.setRange(100,10000); self.rpm.setDecimals(3); self.rpm.setValue(3000); self.rpm.setSuffix(" RPM")
         form.addRow("RPM",self.rpm)
         self.cycles=QSpinBox(); self.cycles.setRange(1,111); self.cycles.setValue(1); form.addRow("Horizonte (máx. 111 ciclos)",self.cycles)
+        self.preset=QComboBox();self.preset.addItem("Diagnóstico breve · 1 ciclo",1)
+        self.preset.addItem("Observar periodicidad · 24 ciclos",24)
+        self.preset.addItem("Configuración avanzada · elegir horizonte",-1)
+        form.addRow("Preset de horizonte",self.preset)
+        self.expected=QLabel();self.expected.setWordWrap(True);form.addRow("Resultados esperables",self.expected)
         self.budget=QDoubleSpinBox(); self.budget.setRange(1,600); self.budget.setDecimals(0); self.budget.setValue(60); self.budget.setSuffix(" s")
         form.addRow("Presupuesto de tiempo",self.budget)
         self.memory=QSpinBox(); self.memory.setRange(256,4096); self.memory.setValue(1024); self.memory.setSuffix(" MiB · RSS máximo supervisado")
@@ -55,11 +62,23 @@ class ExecutionPage(QWidget):
         self.cancel=QPushButton("Cancelar"); self.cancel.setEnabled(False); self.cancel.clicked.connect(self.cancel_run); actions.addWidget(self.cancel)
         self.request=QPushButton("Guardar solicitud de revisión…"); self.request.clicked.connect(self.save_request); actions.addWidget(self.request)
         self.output=QPlainTextEdit(); self.output.setReadOnly(True); root.addWidget(self.output,1)
+        from .widgets.run_history import RunHistoryWidget
+        self.history=RunHistoryWidget(self.context,self.artifact_root)
+        self.history.open_runs.connect(self.open_runs_requested.emit)
+        self.history.resume_run.connect(self.resume_from_entry)
+        self.history.setMinimumHeight(210);self.history.setMaximumHeight(340);root.addWidget(self.history)
         self.context.changed.connect(self.refresh)
         self.progress_signal.connect(self._progress)
         self.rpm.valueChanged.connect(self.refresh); self.cycles.valueChanged.connect(self.refresh)
+        self.preset.currentIndexChanged.connect(self._apply_preset)
         self.budget.valueChanged.connect(self.refresh); self.memory.valueChanged.connect(self.refresh)
         self.run_id.textChanged.connect(self.refresh)
+        self.refresh()
+
+    def _apply_preset(self,index):
+        value=self.preset.itemData(index)
+        if value and value>0:
+            self.cycles.blockSignals(True);self.cycles.setValue(value);self.cycles.blockSignals(False)
         self.refresh()
 
     def _engine(self): return self.context.engine()
@@ -73,6 +92,7 @@ class ExecutionPage(QWidget):
             engine=self._engine(); self.engine_label.setText(f"{engine['display_name']} · identity {identity(engine)[:16]}…")
             check=self._preflight()
             self.preflight_label.setText(f"Preflight PASS · {check['rpm']:g} RPM · 0 pasos · {check['total_finite_volume_cells']} celdas · pérdidas explícitas · fuel {check['fuel_id']} · AFR {check['afr_kg_air_per_kg_fuel']:g}")
+            self.expected.setText("Se guardarán primarias por ciclo para auditar presión y flujos. Un solo ciclo no permite potencia o torque periódicos admisibles. Un horizonte mayor sólo permite observar el detector; no garantiza periodicidad ni convergencia. Las magnitudes no identificables permanecerán sin valor.")
             self.start.setEnabled(self.task is None)
             candidate=self.artifact_root/'exploratory-workflow-v1'/self.context.project['project_id']/self.run_id.text().strip()
             resumable=(bool(self.run_id.text().strip()) and (candidate/'run.json').is_file() and (candidate/'checkpoint.json').is_file())
@@ -83,7 +103,31 @@ class ExecutionPage(QWidget):
 
     def choose_root(self):
         path=QFileDialog.getExistingDirectory(self,"Artifact root de ejecuciones locales",str(self.artifact_root))
-        if path:self.artifact_root=set_artifact_root(path);self.root_label.setText(path);self.refresh()
+        if path:
+            self.artifact_root=set_artifact_root(path);self.root_label.setText(path)
+            self.history.artifact_root=self.artifact_root;self.history.refresh();self.refresh()
+
+    def resume_from_entry(self,entry):
+        """Populate the existing guarded resume path from a read-only index row."""
+        if self.task is not None:return
+        try:
+            matches=[]
+            for name,engine in [(None,self.context.project["base_engine"]),*self.context.project["variants"].items()]:
+                if identity(engine)==entry.get("identity_sha256"):matches.append(name)
+            if len(matches)!=1:
+                raise ValueError("No hay una única variante del proyecto con la identidad exacta del checkpoint.")
+            self.context.select_variant(matches[0])
+            from pathlib import Path
+            self.artifact_root=Path(entry["artifact_root"])
+            self.root_label.setText(str(self.artifact_root));set_artifact_root(self.artifact_root)
+            self.run_id.setText(str(entry["run_id"]))
+            if entry.get("rpm") is not None:self.rpm.setValue(float(entry["rpm"]))
+            cycles=entry.get("details",{}).get("cycles_requested")
+            if cycles is not None:self.cycles.setValue(int(cycles))
+            self.history.artifact_root=self.artifact_root;self.history.refresh()
+            self.start_run(resume=True)
+        except Exception as exc:
+            QMessageBox.warning(self,"No se puede reanudar este checkpoint",f"FAIL-CLOSED: {type(exc).__name__}: {exc}")
 
     def save_request(self):
         target,_=QFileDialog.getSaveFileName(self,"Guardar solicitud","dino-execution-request.json","JSON (*.json)")
@@ -166,7 +210,7 @@ class ExecutionPage(QWidget):
         self.output.appendPlainText("FAIL-CLOSED: "+message); self._release_task()
 
     def _release_task(self):
-        self.task=None; self.cancel_event=None; self.cancel.setEnabled(False); self.refresh()
+        self.task=None; self.cancel_event=None; self.cancel.setEnabled(False); self.refresh();self.history.refresh()
 
     def cancel_run(self):
         if self.cancel_event is not None:

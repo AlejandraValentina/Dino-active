@@ -4724,16 +4724,24 @@
       "dependencies": [
         "DSUX2-P0-RESULTS-ISOLATION"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "tests/test_dino_desktop_ux_v2.py::test_run_history_is_read_only_and_preserves_identity_and_status_gaps",
+        "tests/test_dino_desktop_ux_v2.py::test_history_compares_two_referenced_roots_without_moving_artifacts",
+        "results/dino-desktop-ux-v2/visual-check-receipt-100pct.json"
+      ],
       "next_action": "Index only by references; preserve per-run artifact roots and identity bindings.",
       "objective": "DINO_DESKTOP_UX_V2",
       "owner_role": "implementation / services",
       "write_scope": [
         "motorsim/desktop/run_history.py",
-        "motorsim/desktop/widgets/explorer.py"
+        "motorsim/desktop/widgets/run_history.py",
+        "motorsim/desktop/execution_page.py",
+        "motorsim/desktop/results_page.py",
+        "motorsim/desktop/app.py",
+        "tests/test_dino_desktop_ux_v2.py"
       ],
       "evidence_level": "L0"
     },
@@ -4744,10 +4752,13 @@
         "DSUX2-P0-RESULTS-ISOLATION",
         "DSUX2-P1-RUN-HISTORY"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "results/dino-desktop-ux-v2/visual-check-receipt-100pct.json",
+        "docs/dino_desktop_ux_v2/captures/after/resultados_comparados-1360x900-100pct.png"
+      ],
       "next_action": "Keep classifications, undefined metrics, negative values, audit and conservation distinct; no interpolation of invalid points.",
       "objective": "DINO_DESKTOP_UX_V2",
       "owner_role": "implementation / results",
@@ -4764,10 +4775,13 @@
       "dependencies": [
         "DSUX2-P0-SHELL-CONTEXT"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "tests/test_dino_desktop_ux_v2.py::test_simulation_presets_explain_non_guaranteed_periodicity",
+        "docs/dino_desktop_ux_v2/captures/after/simulacion_preparada-1360x900-100pct.png"
+      ],
       "next_action": "One explicit confirmation per run; VERIFIED disabled; no queue/batch execution or campaign.",
       "objective": "DINO_DESKTOP_UX_V2",
       "owner_role": "implementation / workflow UI",
@@ -4783,10 +4797,14 @@
       "dependencies": [
         "DSUX2-P0-SHELL-CONTEXT"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "tests/test_dino_desktop_ux_v2.py::test_engine_editor_uses_backend_port_angles_and_locale_decimal_input",
+        "docs/dino_desktop_ux_v2/captures/after/motor-980x680-100pct.png",
+        "docs/dino_desktop_ux_v2/verification.md"
+      ],
       "next_action": "Consume existing backend APIs only; do not modify engine or physics models.",
       "objective": "DINO_DESKTOP_UX_V2",
       "owner_role": "implementation / engine UI",
@@ -4802,10 +4820,14 @@
       "dependencies": [
         "DSUX2-P0-SHELL-CONTEXT"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "tests/test_dino_desktop_ux_v2.py::test_project_tree_and_splitter_fit_minimum_supported_window",
+        "tests/test_dino_desktop_ux_v2.py::test_variant_creation_uses_owner_selected_name",
+        "docs/dino_desktop_ux_v2/captures/after/proyecto-1360x900-100pct.png"
+      ],
       "next_action": "Base changes must not propagate into existing variants; protect referenced runs on delete.",
       "objective": "DINO_DESKTOP_UX_V2",
       "owner_role": "implementation / project UI",
@@ -4825,7 +4847,7 @@
         "DSUX2-P2-NAVIGATION",
         "DSUX2-P0-EXHAUST-CREATION"
       ],
-      "state": "WAITING",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -4833,10 +4855,12 @@
       "objective": "DINO_DESKTOP_UX_V2",
       "owner_role": "verification / release",
       "write_scope": [
-        "tests/test_dino_desktop.py",
-        "tests/test_dino_desktop_ux_v2.py",
+        "docs/dino_desktop_ux_v2/captures/after",
+        "docs/dino_desktop_ux_v2/verification.md",
         "results/dino-desktop-ux-v2",
-        "packaging/build_windows.py"
+        "scripts/agents/dino_desktop_ux_v2_smoke.py",
+        "packaging",
+        "dist"
       ],
       "evidence_level": "L0"
     }
@@ -6390,6 +6414,48 @@
       "task": "DSUX2-P0-EXHAUST-CREATION",
       "kind": "completion",
       "summary": "Shared-station escape geometry, dimensionally scaled profile, advanced mesh warning and explicit variant save actions implemented; focused tests pass."
+    },
+    {
+      "at": "2026-10-14T14:59:58+00:00",
+      "task": "DSUX2-P1-RUN-HISTORY",
+      "kind": "task",
+      "summary": "Índice de manifests y referencias de sólo lectura; comparación abre artifacts en roots distintos a través del importador que reaudita primarias. Tests de metadata, integridad y recuperación pasan."
+    },
+    {
+      "at": "2026-10-14T14:59:58+00:00",
+      "task": "DSUX2-P1-RESULTS-COMPARE",
+      "kind": "task",
+      "summary": "Resultados muestra estado honesto, huecos y razones; comparación directa desde historial importó dos corridas existentes de raíces separadas sin mover artifacts."
+    },
+    {
+      "at": "2026-10-14T14:59:59+00:00",
+      "task": "DSUX2-P1-SIMULATION-PREP",
+      "kind": "task",
+      "summary": "Presets breve/periodicidad/avanzado, preflight y expectativas explícitas; un ciclo no se presenta como torque/potencia periódicos y no se ejecutó solver."
+    },
+    {
+      "at": "2026-10-14T14:59:59+00:00",
+      "task": "DSUX2-P2-RESPONSIVE-ENGINE",
+      "kind": "task",
+      "summary": "Formularios verticales, tablas accesibles, geometría y eventos angulares derivados, coma/punto decimal; verificación en 1360x900 y 980x680 con Qt 100/125/150."
+    },
+    {
+      "at": "2026-10-14T15:00:00+00:00",
+      "task": "DSUX2-P2-NAVIGATION",
+      "kind": "task",
+      "summary": "Árbol de proyecto/variantes, contexto persistente, lifecycle con nombre/confirmación y protección de referencias; flujo save/reopen completado en fixture temporal."
+    },
+    {
+      "at": "2026-10-14T15:00:47+00:00",
+      "task": "DSUX2-P1-RESULTS-COMPARE",
+      "kind": "task",
+      "summary": "Asynchronous ResultsPage open adapter covered with a background-task test; prior end-to-end two-root comparison used the full read-only importer."
+    },
+    {
+      "at": "2026-10-14T15:03:10+00:00",
+      "task": "DSUX2-VISUAL-PACKAGE",
+      "kind": "task",
+      "summary": "Live Windows app opened and captured; functional project/variant/escape/result workflow and Qt layouts at 1360x900/980x680 under 100/125/150 percent completed. Windows display scale left unchanged; trial build pending."
     }
   ],
   "legacy_gate_status": {
@@ -6409,22 +6475,15 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 10,
-    "gate_tasks_done": 3,
+    "gate_tasks_done": 9,
     "gate_task_states": {
-      "DONE": 3,
-      "READY": 5,
-      "WAITING": 2
+      "DONE": 9,
+      "READY": 1
     },
     "remaining": [
-      "DSUX2-P0-EXHAUST-CREATION",
-      "DSUX2-P1-RUN-HISTORY",
-      "DSUX2-P1-RESULTS-COMPARE",
-      "DSUX2-P1-SIMULATION-PREP",
-      "DSUX2-P2-RESPONSIVE-ENGINE",
-      "DSUX2-P2-NAVIGATION",
       "DSUX2-VISUAL-PACKAGE"
     ],
-    "updated_at": "2026-10-14T14:29:12+00:00"
+    "updated_at": "2026-10-14T15:00:06+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

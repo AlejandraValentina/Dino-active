@@ -12,6 +12,14 @@ from ..exploratory_workflow import import_exploratory_runs
 
 METRICS={"Potencia de freno (kW)":"brake_power","Torque (N·m)":"brake_torque","IMEP (kPa)":"IMEP","FMEP (kPa)":"FMEP","BMEP (kPa)":"BMEP","BSFC (g/kWh)":"BSFC"}
 
+def _state_label(value):
+    return {"EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED":"Terminada · sin periodicidad identificada",
+        "INTERRUPTED_CHECKPOINTED":"Interrumpida; checkpoint disponible",
+        "PERIOD_1":"Periódica observada · orden 1","PERIOD_2":"Periódica observada · orden 2",
+        "NOT_EVALUATED":"No evaluada","NOT_IDENTIFIABLE":"No identificable",
+        "UNDEFINED":"No definido","NUMERICAL_INVALID":"Inválido numéricamente",
+        "EXPLORATORY":"Exploratoria · no validada"}.get(value,value)
+
 class ResultsPage(QWidget):
     def __init__(self,context):
         super().__init__();self.context=context;self.dataset=None;self.source=None;self.loading=False
@@ -19,19 +27,20 @@ class ResultsPage(QWidget):
         title=QLabel("Resultados y comparación");title.setObjectName('title');root.addWidget(title)
         self.source_notice=QLabel("No hay una corrida seleccionada. Elegila desde el historial o abrí datos importados; todavía no se cargó evidencia histórica.")
         self.source_notice.setWordWrap(True);self.source_notice.setObjectName("notice");root.addWidget(self.source_notice)
-        root.addWidget(QLabel("PERIOD_1 describe periodicidad observada; no representa aprobación científica PASS. Los valores no definidos quedan como huecos y no se interpolan."))
+        explanation=QLabel("PERIOD_1 describe periodicidad observada; no representa aprobación científica PASS. Los valores no definidos quedan como huecos y no se interpolan.");explanation.setWordWrap(True);root.addWidget(explanation)
         bar=QHBoxLayout();root.addLayout(bar);self.metric=QComboBox();self.metric.addItems(METRICS);bar.addWidget(self.metric)
         self.path_label=QLabel("Sin fuente seleccionada");self.path_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse);self.path_label.setWordWrap(True);bar.addWidget(self.path_label,1)
-        browse=QPushButton("Abrir datos…");browse.clicked.connect(self.choose);bar.addWidget(browse)
-        historical=QPushButton("Evidencia IMPL2 histórica…");historical.clicked.connect(self.choose_historical);bar.addWidget(historical)
-        browse_runs=QPushButton("Abrir corridas EXPLORATORY…");browse_runs.clicked.connect(self.choose_exploratory);bar.addWidget(browse_runs)
+        actions=QHBoxLayout();root.addLayout(actions)
+        browse=QPushButton("Abrir datos…");browse.clicked.connect(self.choose);actions.addWidget(browse)
+        historical=QPushButton("Evidencia IMPL2 histórica…");historical.clicked.connect(self.choose_historical);actions.addWidget(historical)
+        browse_runs=QPushButton("Abrir corridas EXPLORATORY…");browse_runs.clicked.connect(self.choose_exploratory);actions.addWidget(browse_runs);actions.addStretch()
         self.variants=QListWidget();self.variants.setMaximumHeight(80);self.variants.setFlow(QListWidget.Flow.LeftToRight);self.variants.setWrapping(True);root.addWidget(self.variants)
         self.plot=CurvePlot();root.addWidget(self.plot,2)
         controls=QHBoxLayout();root.addLayout(controls)
         self.unit=QLabel();controls.addWidget(self.unit);controls.addStretch()
         export_table=QPushButton("Exportar tabla CSV");export_table.clicked.connect(self.export_csv);controls.addWidget(export_table)
         export_plot=QPushButton("Exportar gráfico PNG");export_plot.clicked.connect(self.export_png);controls.addWidget(export_plot)
-        self.point_table=QTableWidget(0,7);self.point_table.setHorizontalHeaderLabels(["Variante","RPM","Clasificación","Periodicidad","Auditoría","Ciclos","BMEP"]);self.point_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.point_table.setMaximumHeight(170);self.point_table.currentCellChanged.connect(self._point_row_selected);root.addWidget(self.point_table)
+        self.point_table=QTableWidget(0,8);self.point_table.setHorizontalHeaderLabels(["Variante","RPM","Clasificación","Periodicidad","Auditoría","Ciclos","Conservación","BMEP"]);self.point_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.point_table.setMinimumHeight(180);self.point_table.currentCellChanged.connect(self._point_row_selected);root.addWidget(self.point_table)
         self.trace_group=QGroupBox("Señales de presión, ondas y flujo EXPLORATORY")
         trace_layout=QVBoxLayout(self.trace_group)
         trace_bar=QHBoxLayout();trace_layout.addLayout(trace_bar)
@@ -52,12 +61,17 @@ class ResultsPage(QWidget):
         if path:self.load(Path(path),historical=True)
     def choose_exploratory(self):
         paths,_=QFileDialog.getOpenFileNames(self,"Abrir corridas EXPLORATORY",str(artifact_root()),"Ejecución Dino (result.json)")
+        if paths:self.open_runs(paths)
+    def open_runs(self,paths):
+        """Load one or more indexed runs through the full independent importer."""
         if paths:
             self.path_label.setText("Verificando artifacts EXPLORATORY…")
             run_background(import_exploratory_runs,paths,on_done=self._loaded_exploratory,on_error=self._exploratory_failed)
     def _loaded_exploratory(self,data):
         self.dataset=data;self.source=None;self.source_kind="EXPLORATORY";self.path_label.setText(f"{len(data['points'])} ciclos EXPLORATORY · provisional · no interpolación · no validación experimental")
-        self.source_notice.setText(f"Corridas exploratorias importadas · no asociadas automáticamente al proyecto {self.context.project['project_id']}. Auditoría y periodicidad se muestran por separado.")
+        runs=sorted({str(r.get("run_id")) for r in data["points"] if r.get("run_id")})
+        variants_shown=sorted({str(r.get("variant_id")) for r in data["points"]})
+        self.source_notice.setText(f"Proyecto abierto: {self.context.project['project_id']} · corridas EXPLORATORY importadas: {', '.join(runs) or 'sin identificador'} · variantes: {', '.join(variants_shown)}. Son artifacts de sólo lectura y no se asocian ni guardan automáticamente en el proyecto.")
         variants=sorted({r['variant_id'] for r in data['points']});self.variants.blockSignals(True);self.variants.clear()
         for name in variants:
             item=QListWidgetItem(name);item.setFlags(item.flags()|Qt.ItemFlag.ItemIsUserCheckable);item.setCheckState(Qt.CheckState.Checked);self.variants.addItem(item)
@@ -121,8 +135,12 @@ class ResultsPage(QWidget):
             periodicity=row.get('periodicity')
             if periodicity is None:
                 periodicity=row.get('classification') if row.get('classification') in {"PERIOD_1","PERIOD_2"} else "NOT_REPORTED"
-            values=[row['variant_id'],row['rpm'],row['classification'],periodicity,
-                    row.get('audit_status','NOT_REPORTED'),row.get('cycles_completed'),
+            cons=row.get('conservation')
+            if isinstance(cons,dict) and cons and all(value in ("PASS",True) for value in cons.values()):cons_state="PASS"
+            elif isinstance(cons,dict) and any(value=="FAIL" or (isinstance(value,dict) and value.get("status")=="FAIL") for value in cons.values()):cons_state="FAIL"
+            else:cons_state="REPORTADA" if cons else "NO REPORTADA"
+            values=[row['variant_id'],row['rpm'],_state_label(row['classification']),_state_label(periodicity),
+                    _state_label(row.get('audit_status','NOT_REPORTED')),row.get('cycles_completed'),cons_state,
                     row.get('BMEP') if row.get('BMEP_status')=='DEFINED' else None]
             for j,value in enumerate(values):
                 item=QTableWidgetItem('—' if value is None else str(value));item.setData(Qt.ItemDataRole.UserRole,row);self.point_table.setItem(i,j,item)
@@ -157,7 +175,7 @@ class ResultsPage(QWidget):
         periodicity=row.get('periodicity')
         if periodicity is None:
             periodicity=row.get('classification') if row.get('classification') in {"PERIOD_1","PERIOD_2"} else "NOT_REPORTED"
-        items=[("RPM",row.get('rpm')), ("Variante",row.get('variant_id')),
+        items=[("Proyecto abierto",self.context.project["project_id"]), ("RPM",row.get('rpm')), ("Variante",row.get('variant_id')),
             ("Modo",row.get('mode','NOT_REPORTED · historical aggregate')),
             ("Clasificación",row.get('classification')), ("Periodicidad",periodicity),
             ("Auditoría primaria",row.get('audit_status','NOT_REPORTED')),

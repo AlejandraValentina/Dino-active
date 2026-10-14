@@ -9,4 +9,4 @@ Se conservó sin editar el informe textual de Opus `DINO_DESKTOP_UX_REDESIGN_PRO
 - El prompt menciona 15 capturas; el directorio contenía 17 PNG. Se preservaron los 17 y no se descartó ningún archivo.
 - SHA-256 del informe preservado: `b0f552b61092e51d616bba6ca6220d1659e1965dd906795f0c8d4a35b794ca1f`.
 
-Las capturas son evidencia de la inspección previa y no una inspección manual completa de menús/hover. Las capturas nuevas se almacenarán bajo `results/dino-desktop-ux-v2/visual/` con sus propias condiciones y hashes.
+Las capturas son evidencia de la inspección previa y no una inspección manual completa de menús/hover. Las capturas posteriores están en `../captures/after/`; sus condiciones y hashes constan en `results/dino-desktop-ux-v2/visual-check-receipt.json`. El registro distingue el lanzamiento/captura de ventana en Windows de las renderizaciones Qt offscreen a 100 %, 125 % y 150 %.

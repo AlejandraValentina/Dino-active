@@ -16,8 +16,7 @@ class EnginePage(QWidget):
         root=QVBoxLayout(self);root.setContentsMargins(24,20,24,20);root.setSpacing(14)
         title=QLabel("Configuración del motor");title.setObjectName("title");root.addWidget(title)
         root.addWidget(QLabel("Editor del modelo integrado 2T · las unidades y la procedencia se conservan en el proyecto."))
-        row=QHBoxLayout();root.addLayout(row)
-        group=QGroupBox("Geometría y operación");form=QFormLayout(group);row.addWidget(group,1)
+        group=QGroupBox("Geometría y operación");form=QFormLayout(group);root.addWidget(group)
         self.controls={}
         definitions=[("bore_mm","Diámetro del cilindro","mm",1,250),("stroke_mm","Carrera","mm",1,250),
           ("rod_length_mm","Longitud de biela","mm",1,500),("volume_bdc_cm3","Volumen de cárter en PMI","cm³",0.1,5000),
@@ -37,25 +36,28 @@ class EnginePage(QWidget):
         form.addRow(QLabel(
             "El AFR editable aún no está acoplado a una ley de alimentación; "
             "no usarlo como consigna simulada."))
-        side=QVBoxLayout();row.addLayout(side,2)
         group=QGroupBox("Lumbreras y distribución");v=QVBoxLayout(group)
         v.addWidget(QLabel("Dimensiones geométricas editables; los perfiles efectivos derivados se regeneran con el modelo existente."))
-        self.ports=QTableWidget(0,7);self.ports.setHorizontalHeaderLabels(["Lumbrera","Rol","Borde superior (mm)","Altura (mm)","Ancho (mm)","Cd","Techo variable (mm)"])
-        self.ports.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents);self.ports.setAlternatingRowColors(True);self.ports.cellChanged.connect(self._port_changed);v.addWidget(self.ports)
-        side.addWidget(group,2)
+        self.ports=QTableWidget(0,7);self.ports.setHorizontalHeaderLabels(["Lumbrera","Rol","Borde (mm)","Altura (mm)","Ancho (mm)","Cd","Recorrido techo (mm)"])
+        self.ports.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Interactive)
+        for col,width in enumerate((112,92,105,90,90,55,135)):self.ports.setColumnWidth(col,width)
+        self.ports.setAlternatingRowColors(True);self.ports.setMinimumHeight(220);self.ports.cellChanged.connect(self._port_changed);v.addWidget(self.ports)
+        self.derived=QLabel();self.derived.setWordWrap(True);v.addWidget(self.derived)
+        root.addWidget(group)
         loss_group=QGroupBox("Pérdidas mecánicas explícitas");loss_layout=QVBoxLayout(loss_group)
         loss_layout.addWidget(QLabel("Editá la MEP de cada término declarado. Se conserva modelo, fuente y provenance; no se insertan defaults."))
         self.losses=QTableWidget(0,4);self.losses.setHorizontalHeaderLabels(["Término","Fuente","MEP (Pa)","Provenance"])
-        self.losses.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         self.losses.cellDoubleClicked.connect(self._edit_loss_map)
-        loss_layout.addWidget(self.losses);side.addWidget(loss_group)
+        self.losses.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Interactive)
+        for col,width in enumerate((150,140,90,260)):self.losses.setColumnWidth(col,width)
+        loss_layout.addWidget(self.losses);root.addWidget(loss_group)
         group=QGroupBox("Combustión y combustible");f=QFormLayout(group)
         self.comb={}
         for key,label,unit,lo,hi in [("combustion_efficiency","Eficiencia declarada","1",0,1),("ignition_timing_deg","Inicio/encendido","°",0,720),("duration_deg","Duración","°",0,720),("shape_a","Forma A","—",0.01,100),("shape_m","Forma M","—",0.01,100)]:
             spin=QDoubleSpinBox();spin.setRange(lo,hi);spin.setDecimals(5);self.comb[key]=spin;f.addRow(f"{label} ({unit})",spin)
         self.combustion_notice=QLabel();self.combustion_notice.setWordWrap(True);f.addRow(self.combustion_notice)
         self.fuel=QLabel();self.fuel.setWordWrap(True);self.fuel.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
-        f.addRow("Fuel snapshot",self.fuel);side.addWidget(group)
+        f.addRow("Fuel snapshot",self.fuel);root.addWidget(group)
         self.validation=QLabel();self.validation.setWordWrap(True);self.validation.setObjectName("notice");root.addWidget(self.validation)
         buttons=QHBoxLayout();root.addLayout(buttons)
         self.apply_button=QPushButton("Validar y aplicar cambios");self.apply_button.setObjectName("primaryAction");self.apply_button.clicked.connect(self.apply);buttons.addWidget(self.apply_button)
@@ -87,6 +89,13 @@ class EnginePage(QWidget):
                     if j<2 or p["family"]=="effective_profile" or value is None:item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
                     self.ports.setItem(i,j,item)
             self.ports.blockSignals(False)
+            bore=cc["bore_mm"];stroke=cc["stroke_mm"];swept=math.pi*(bore/2)**2*stroke/1000
+            port_set=TwoStrokePortSet.from_dict(n["port_binding"]["port_set"])
+            profile_rows=[]
+            for profile in port_set.compile_profiles():
+                if profile.event_angles_deg:
+                    profile_rows.append(f"{profile.port_id}: " + ", ".join(f"{angle:g}°" for angle in profile.event_angles_deg))
+            self.derived.setText(f"Cilindrada geométrica derivada: {swept:.2f} cm³ · eventos angulares del perfil existente: " + ("; ".join(profile_rows) if profile_rows else "no declarados"))
             terms=doc["mechanical_loss_model"]["terms"];self.loss_model_draft=deepcopy(doc["mechanical_loss_model"])
             self.controls["load"].setEnabled(any(term["operating_map"] is not None for term in terms))
             self.losses.blockSignals(True);self.losses.setRowCount(len(terms))
@@ -135,7 +144,7 @@ class EnginePage(QWidget):
                 item=self.ports.item(i,j)
                 if item and item.flags() & Qt.ItemFlag.ItemIsEditable:
                     text=item.text().strip()
-                    try:value=float(text)
+                    try:value=self._decimal(text)
                     except ValueError as exc:raise ValueError(f"Lumbrera {p['name']}: {key} debe ser numérico") from exc
                     if not math.isfinite(value):raise ValueError(f"Lumbrera {p['name']}: valor no finito")
                     p[key]=value
@@ -177,3 +186,10 @@ class EnginePage(QWidget):
             validate(doc);self.context.replace_engine(doc);self.validation.setText(f"Validación correcta sin pasos de solver.\nConfig hash: {identity(doc)}\nCambios aplicados como borrador sintético.")
         except Exception as exc:
             self.validation.setText(f"Edición rechazada; no se guardó como válida. {type(exc).__name__}: {exc}")
+
+    @staticmethod
+    def _decimal(text):
+        value=text.strip()
+        if "," in value and "." in value:
+            raise ValueError("Usá coma o punto decimal, no ambos")
+        return float(value.replace(",","."))

@@ -28,7 +28,7 @@ def _number(text: str, label: str) -> float:
 class ExhaustProfile(QWidget):
     """Dimensionally scaled (equal mm/px on both axes) conical profile."""
     def __init__(self,parent=None):
-        super().__init__(parent);self.sections=[];self.overlay=[];self.refinements=[];self.changed_sections=set();self.setMinimumHeight(205)
+        super().__init__(parent);self.sections=[];self.overlay=[];self.refinements=[];self.changed_sections=set();self.setMinimumHeight(220)
 
     def set_sections(self,sections,refinements=None,overlay=None,changed_sections=None):
         self.sections=deepcopy(sections);self.overlay=deepcopy(overlay or [])
@@ -60,12 +60,12 @@ class ExhaustProfile(QWidget):
 
     def paintEvent(self,event):
         painter=QPainter(self);painter.setRenderHint(QPainter.RenderHint.Antialiasing);painter.fillRect(self.rect(),QColor("#101a28"))
-        rect=self.rect().adjusted(42,14,-18,-34);painter.setPen(QPen(QColor("#34475c"),1));painter.drawRect(rect)
+        rect=self.rect().adjusted(42,14,-18,-54);painter.setPen(QPen(QColor("#34475c"),1));painter.drawRect(rect)
         if not self.sections:painter.end();return
         self._draw_profile(painter,self.sections,rect,"#43c5f5",3)
         if self.overlay:self._draw_profile(painter,self.overlay,rect,"#f59e0b",2,Qt.PenStyle.DashLine)
         total=sum(s["length_mm"] for s in self.sections)
-        painter.setPen(QColor("#cad8e7"));painter.drawText(rect.left(),self.height()-5,f"0 ───────────────────── {total:.1f} mm · escala axial/radial idéntica")
+        painter.setPen(QColor("#cad8e7"));painter.drawText(rect.left(),self.height()-8,f"Largo total: {total:.1f} mm · escala axial/radial idéntica")
         painter.end()
 
 
