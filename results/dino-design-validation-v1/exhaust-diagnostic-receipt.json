@@ -1,0 +1,211 @@
+{
+  "schema": "DINO_DESIGN_VALIDATION_V1_EXHAUST_DIAGNOSTIC_RECEIPT_V1",
+  "objective": "DINO_DESIGN_VALIDATION_V1",
+  "classification": "REPRODUCIBLE_EXPLORATORY_PHYSICAL_SENSITIVITY_OBSERVED_WITH_NUMERICAL_SCOPE_LIMITS",
+  "level": "L1_DIAGNOSTIC_NOT_SCIENTIFIC_VALIDATION",
+  "source_report": {
+    "path": "${DINO_ARTIFACT_ROOT}/dino-design-validation-v1/reports/design-validation-20261014-a-report.json",
+    "sha256": "74470141c5d3275fecbceb4a884418dc4248acde0638cb3a7800ce447a3f4f62",
+    "run_logged_summary_path": "${DINO_ARTIFACT_ROOT}/dino-design-validation-v1/logs/exhaust-sensitivity-20261014-attempt3.summary.json",
+    "run_logged_wall_seconds": 189.313,
+    "harness_wall_seconds": 188.04700000000594,
+    "aggregate_budget_seconds": 570,
+    "run_logged_timeout_seconds": 600
+  },
+  "setup": {
+    "project": "examples/projects/dino-2t-exhaust-comparison.dino2t.json",
+    "variants": [
+      "Escape original",
+      "Escape modified +20 mm"
+    ],
+    "controlled_change": "diffuser section length 180 → 200 mm (+20 mm); same motor, ports/distribution, fuel/combustion, mechanical losses, operating conditions and boundaries",
+    "rpms": [
+      3000,
+      4000
+    ],
+    "cycles_each": 1,
+    "repeat": "Escape original @3000 RPM repeated once",
+    "workers": 1,
+    "memory_limit_mib": 2048,
+    "artifact_root": "${DINO_ARTIFACT_ROOT}/dino-design-validation-v1/exploratory-workflow-v1/dino-exhaust-comparison-starter"
+  },
+  "runs": [
+    {
+      "run_id": "design-validation-20261014-a-base-3000-r1",
+      "variant": "Escape original",
+      "rpm": 3000.0,
+      "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+      "periodicity": "NOT_EVALUATED",
+      "cycles_completed": 1,
+      "elapsed_seconds": 26.25,
+      "memory_rss_at_finish_mib": 322.71484375,
+      "rejected_step_count": 518,
+      "result_sha256": "34f733e9ad3bccb56083e160dda90e832220d5f96f08ea59da18d5d28e9b79f7",
+      "checkpoint_sha256": "e06bf1a2ef55bd248259fa32ff1462ee4e729bb70efda6cc574c6a62e50d843d",
+      "primary_sha256": "435ea63f528a3cd67af511a52acfea2310d44ba6eaffe8e1817ec41f76894ac7",
+      "independent_replay_audit": "PASS",
+      "audit_recomputed": true,
+      "conservation": {
+        "energy_residual_J": 2.7450264283856995e-13,
+        "mass_residual_kg": -1.0050045919172274e-18,
+        "species_residual_kg": [
+          -6.414156993083189e-19,
+          -1.2176098616780567e-21,
+          -4.491973297196246e-20,
+          2.097816708844007e-21
+        ]
+      }
+    },
+    {
+      "run_id": "design-validation-20261014-a-modified-3000-r1",
+      "variant": "Escape modified +20 mm",
+      "rpm": 3000.0,
+      "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+      "periodicity": "NOT_EVALUATED",
+      "cycles_completed": 1,
+      "elapsed_seconds": 26.46799999999348,
+      "memory_rss_at_finish_mib": 449.93359375,
+      "rejected_step_count": 518,
+      "result_sha256": "6224937f6da7f27f4f4a07e7bf67fe51b154474b04cd71fc52bbf063d2517b12",
+      "checkpoint_sha256": "d55e2f230c242c1008a9d0f7ba5ffff3729d0433083166f43ac5122ef5b0cebe",
+      "primary_sha256": "c061e2c24724f7fb6dcfca7adf362a6c57e7a7aa0ea209ebb19bec003411e98f",
+      "independent_replay_audit": "PASS",
+      "audit_recomputed": true,
+      "conservation": {
+        "energy_residual_J": 2.3342439092743916e-14,
+        "mass_residual_kg": 7.771527291058206e-20,
+        "species_residual_kg": [
+          -1.1773757966834775e-19,
+          0.0,
+          2.3204535832432093e-19,
+          -9.011650549136751e-22
+        ]
+      }
+    },
+    {
+      "run_id": "design-validation-20261014-a-base-4000-r1",
+      "variant": "Escape original",
+      "rpm": 4000.0,
+      "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+      "periodicity": "NOT_EVALUATED",
+      "cycles_completed": 1,
+      "elapsed_seconds": 17.375,
+      "memory_rss_at_finish_mib": 371.953125,
+      "rejected_step_count": 84,
+      "result_sha256": "0de20914cd7b1e3930d843b9eb5977db628761dc6647a2d563a3c863f264bbcd",
+      "checkpoint_sha256": "cf65ebf672c8f71190e7caa821f9254a5ecfe7c577e6c47ec5d52c471d0ee508",
+      "primary_sha256": "416c32192be9bba6055b19a9fb35f62a0b4478d7023daa6e3d120db0e92ea5be",
+      "independent_replay_audit": "PASS",
+      "audit_recomputed": true,
+      "conservation": {
+        "energy_residual_J": 2.724487302430134e-13,
+        "mass_residual_kg": -1.9481757786848908e-20,
+        "species_residual_kg": [
+          -3.7862372742267225e-19,
+          9.26442286059391e-23,
+          1.86501659751855e-19,
+          1.0039224079288737e-21
+        ]
+      }
+    },
+    {
+      "run_id": "design-validation-20261014-a-modified-4000-r1",
+      "variant": "Escape modified +20 mm",
+      "rpm": 4000.0,
+      "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+      "periodicity": "NOT_EVALUATED",
+      "cycles_completed": 1,
+      "elapsed_seconds": 17.296999999991385,
+      "memory_rss_at_finish_mib": 355.91796875,
+      "rejected_step_count": 84,
+      "result_sha256": "126be3e85334c834e97846f5590d10a8efdf6f218b0721384c6f9885db421b60",
+      "checkpoint_sha256": "53481b4142475259ea6205adc7c17f22ef79f60ef4e5ed2c9fae09186feb2d04",
+      "primary_sha256": "c7a1b4e6b8445dfb3938a5a3697f7a61dc12bb12115242e7fa906afd70fdaba6",
+      "independent_replay_audit": "PASS",
+      "audit_recomputed": true,
+      "conservation": {
+        "energy_residual_J": -2.30593322214645e-13,
+        "mass_residual_kg": 9.368184396632562e-19,
+        "species_residual_kg": [
+          -3.7269449679189215e-19,
+          -4.367513634279986e-22,
+          2.1140900503636432e-19,
+          -5.946703627796477e-22
+        ]
+      }
+    },
+    {
+      "run_id": "design-validation-20261014-a-base-3000-repeat",
+      "variant": "Escape original",
+      "rpm": 3000.0,
+      "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+      "periodicity": "NOT_EVALUATED",
+      "cycles_completed": 1,
+      "elapsed_seconds": 26.811999999990803,
+      "memory_rss_at_finish_mib": 475.7421875,
+      "rejected_step_count": 518,
+      "result_sha256": "fbb7d9e5932483daa0d30c1b859a779b11dcc736fe11870aa46a9c702e6f6847",
+      "checkpoint_sha256": "0a10112490ff690f87528563e3dd7a29c9936e5675a47d6b3e6dff3926a8301b",
+      "primary_sha256": "435ea63f528a3cd67af511a52acfea2310d44ba6eaffe8e1817ec41f76894ac7",
+      "independent_replay_audit": "PASS",
+      "audit_recomputed": true,
+      "conservation": {
+        "energy_residual_J": 2.7450264283856995e-13,
+        "mass_residual_kg": -1.0050045919172274e-18,
+        "species_residual_kg": [
+          -6.414156993083189e-19,
+          -1.2176098616780567e-21,
+          -4.491973297196246e-20,
+          2.097816708844007e-21
+        ]
+      }
+    }
+  ],
+  "sensitivity": {
+    "comparison_basis": "exact shared crank-angle samples; no interpolation",
+    "3000_rpm": {
+      "cylinder_pressure_pa_max_abs": 63.219913315202575,
+      "exhaust_cell_1_pressure_pa_max_abs": 175.28917374780576,
+      "exhaust_face_2_mass_flow_kg_s_max_abs": 0.00045502038867617327,
+      "common_samples": 1243
+    },
+    "4000_rpm": {
+      "cylinder_pressure_pa_max_abs": 786.5128491306677,
+      "exhaust_cell_1_pressure_pa_max_abs": 181.59566066873958,
+      "exhaust_face_2_mass_flow_kg_s_max_abs": 0.0005061084256464989,
+      "common_samples": 809
+    }
+  },
+  "repeatability": {
+    "same_primary_sha256": true,
+    "max_abs_repeat_difference": 0.0,
+    "comparison": "bit-identical primary SHA and zero pressure/flow differences at all exact common samples"
+  },
+  "claims": {
+    "periodicity": "NOT_ESTABLISHED_BY_ONE_CYCLE",
+    "steady_performance_comparison": "NOT_VALID; transient power/torque are not used",
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_validation": "NOT_CLAIMED",
+    "interpolation": "NONE; compare exact common crank-angle samples only"
+  },
+  "limitations": [
+    "One 360° cycle per point; periodicity was NOT_EVALUATED and transient power/torque were not compared.",
+    "Exact repeat is bitwise reproducible but does not quantify spatial/discretization uncertainty.",
+    "The solver maps each named exhaust section to one finite-volume cell; this is a coarse quasi-1D axisymmetric area/volume representation. It does not resolve within-section gradients, radial/3D modes, boundary-layer separation or baffle-cone internal reflection surfaces.",
+    "A baffle-named section is currently a linear circular-frustum duct segment; the name adds no separate baffle-flow physics.",
+    "No experimental data or validation claim."
+  ],
+  "resource_measurement": {
+    "points": 5,
+    "wall_seconds": 189.313,
+    "max_memory_rss_at_finish_mib": 475.7421875,
+    "cpu_utilization": "not instrumented in the persisted diagnostic; one process/worker was used.",
+    "rejected_steps_by_run": {
+      "design-validation-20261014-a-base-3000-r1": 518,
+      "design-validation-20261014-a-modified-3000-r1": 518,
+      "design-validation-20261014-a-base-4000-r1": 84,
+      "design-validation-20261014-a-modified-4000-r1": 84,
+      "design-validation-20261014-a-base-3000-repeat": 518
+    }
+  }
+}

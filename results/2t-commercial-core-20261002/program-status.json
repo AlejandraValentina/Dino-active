@@ -4211,7 +4211,7 @@
       "id": "DINO-EXHAUST-DIAGNOSTICS",
       "description": "Run short real IntegratedEngine2T diagnostics and compare pressure/waves/flow with audit, conservation, repeatability, runtime and convergence; no transient performance claims.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "DINO_DESIGN_VALIDATION_V1",
       "owner_role": "orchestrator",
       "evidence_level": "L1",
@@ -4222,8 +4222,14 @@
       ],
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Take against the DINO_DESIGN_VALIDATION_V1 spec; preserve historical evidence and obey diagnostic budgets."
+      "evidence": [
+        "results/dino-design-validation-v1/exhaust-diagnostic-receipt.json",
+        "scripts/diagnostics/run_dino_exhaust_sensitivity_v1.py",
+        "results/dino-design-validation-v1/exhaust-fixture.json"
+      ],
+      "next_action": null,
+      "classification": "REPRODUCIBLE_NONPERIODIC_PRESSURE_FLOW_SENSITIVITY_OBSERVED",
+      "qualification": "Five single-cycle audited EXPLORATORY points completed at 3000/4000 RPM plus an exact repeat within a 570 s aggregate allowance. Independent replay audits and conservation pass; pressure/flow differ at exact common angles. Periodicity and steady performance are undefined. Spatial error is not quantified and exhaust mesh uses one finite volume per section."
     },
     {
       "id": "DINO-POWERVALVE-VERIFICATION",
@@ -5676,6 +5682,24 @@
       "task": "DINO-EXHAUST-SENSITIVITY-FIXTURE",
       "kind": "task",
       "summary": "Verified committed exhaust fixture changes only diffuser length (+20 mm) and derived exhaust mesh/state initialization; all other engine/fuel/operating/loss/port/thermal/boundary inputs match. Two exhaust solver meshes differ; 2 focused tests pass."
+    },
+    {
+      "at": "2026-10-14T12:02:00+00:00",
+      "task": "DINO-EXHAUST-DIAGNOSTICS",
+      "kind": "task",
+      "summary": "Created an isolated diagnostics-only harness for the 3000/4000 RPM A/B points plus an identical 3000 RPM repeat; configured aggregate wall budget is 570 s and artifacts go under DINO_ARTIFACT_ROOT/dino-design-validation-v1."
+    },
+    {
+      "at": "2026-10-14T12:09:46+00:00",
+      "task": "DINO-EXHAUST-DIAGNOSTICS",
+      "kind": "task",
+      "summary": "Five real one-cycle points completed at 3000/4000 RPM plus repeat in 189.3 s. Independent replay audits and conservation PASS; pressure and flow differ at exact common angles; repeat primary SHA is identical. No periodicity or transient-power claim; one-cell/section spatial uncertainty remains."
+    },
+    {
+      "at": "2026-10-14T12:10:45+00:00",
+      "task": "DINO-EXHAUST-DIAGNOSTICS",
+      "kind": "task",
+      "summary": "Five real one-cycle points completed at 3000/4000 RPM plus repeat in 189.3 s. Independent replay audit and conservation pass; pressure/flow differ at exact angles; repeat primary SHA identical. 3000-RPM runs had 518 rejected CFL trials each, 4000-RPM runs 84 each. No periodicity/performance claim; coarse one-cell/section mesh limits resolution."
     }
   ],
   "legacy_gate_status": {
@@ -5698,19 +5722,18 @@
       "openspec/changes/dino-design-validation-v1/specs/dino-design-validation-v1/spec.md"
     ],
     "gate_tasks_total": 8,
-    "gate_tasks_done": 3,
+    "gate_tasks_done": 4,
     "gate_task_states": {
-      "DONE": 3,
-      "READY": 5
+      "DONE": 4,
+      "READY": 4
     },
     "remaining": [
-      "DINO-EXHAUST-DIAGNOSTICS",
       "DINO-RESULT-SEMANTICS",
       "DINO-EXPERIMENT-IMPORT-CONTRACT",
       "DINO-DESIGN-INTEGRATION-TESTS",
       "DINO-DESIGN-DOCS"
     ],
-    "updated_at": "2026-10-14T12:00:42+00:00"
+    "updated_at": "2026-10-14T12:10:46+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
