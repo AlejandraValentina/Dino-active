@@ -1,0 +1,261 @@
+{
+  "schema": "EXHAUST_MESH_V1_DIAGNOSTIC_RECEIPT_V1",
+  "objective": "EXHAUST_MESH_V1",
+  "classification": "SIX_POINTS_COMPLETE_ALL_HASHES_AND_INDEPENDENT_AUDITS_PASS",
+  "source_report": "${DINO_ARTIFACT_ROOT}/exhaust-mesh-v1/reports/exhaust-mesh-v1-1-2-4-report.json",
+  "source_report_sha256": "35384496361c01140038f182e492be7690f1ea22a069e46164dbea4ef19cbec8",
+  "run_logged_summary": "${DINO_ARTIFACT_ROOT}/exhaust-mesh-v1/logs/exhaust-mesh-v1-1-2-4.summary.json",
+  "run_logged_wall_seconds": 360.797,
+  "aggregate_budget_seconds": 600,
+  "owner_maximum_seconds": 1800,
+  "artifact_root": "${DINO_ARTIFACT_ROOT}/exhaust-mesh-v1",
+  "execution": "six one-cycle runs, sequential, each isolated and conventionally audited",
+  "workflow_import": "PASS; six points, six traces; independent primary replay recomputed PASS for all points",
+  "points": [
+    {
+      "run_id": "exm-escape-modified-plus20-mm-3000rpm-1c",
+      "cells_per_section": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "total_cells": 5,
+      "identity_sha256": "0ebaccadaeec4080806d4327b5ff3fe4633a4bfd975a0ef8d7eb9b7a1b9caf17",
+      "adapter_sha256": "9b49d467c46d1d8d01b023d234b28b046de23589b74da66dcc423bbee9cec2a4",
+      "discrete_geometry_sha256": "817546bf47808a5aa526b1eebdbfdcb6a40d10326917798d40957d015c33de7e",
+      "configuration_artifact_sha256": "5f1bb579e32691b1b26723cd0aa812c796e0d87ccd3b2dd9edd2d7d1685d06eb",
+      "checkpoint_sha256": "51ef58608cba7e985dc4de36b1906f6dd0bc6c16468e3a04eeaa9dd92bb4cf51",
+      "result_sha256": "adf3828aa66794bf868a8d68176b7a183dd63177119aa8d7c0eeacf95bd00d8f",
+      "primary_sha256": "b26445b7045bd13e7a0e53446fe54add97778320a1e614c5fd3d8ff702478a04",
+      "independent_reaudit": "PASS",
+      "recomputed": true,
+      "completed_cycles": 1,
+      "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+      "solver_elapsed_seconds": 27.25,
+      "accepted_steps": 1242,
+      "rejected_trials": 518,
+      "max_stage_cfl": 0.3977794101466447,
+      "min_stage_cfl": 0.013423602149687453,
+      "memory_rss_at_finish_mib": 597.76171875,
+      "conservation": {
+        "energy_residual_J": 2.3342439092743916e-14,
+        "mass_residual_kg": 7.771527291058206e-20,
+        "species_residual_kg": [
+          -1.1773757966834775e-19,
+          0.0,
+          2.3204535832432093e-19,
+          -9.011650549136751e-22
+        ]
+      },
+      "boundary_faces": 6,
+      "mesh_length_m": 0.67
+    },
+    {
+      "run_id": "exm-escape-modified-plus20-mm-3000rpm-2c",
+      "cells_per_section": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "total_cells": 10,
+      "identity_sha256": "99dfde3e1650c76e0bcda7bd5471c6bc62c94147f3b1612e06111712b76d2e29",
+      "adapter_sha256": "9b49d467c46d1d8d01b023d234b28b046de23589b74da66dcc423bbee9cec2a4",
+      "discrete_geometry_sha256": "f01a2c2af9914a261fa8b1e2f0ec64a8efd12c3de9e3295ab4b512defb97504b",
+      "configuration_artifact_sha256": "f5d32f46b9d95c058ca7343d5b140e896ed119d786befc3d995727614f11d736",
+      "checkpoint_sha256": "91ece04ee0b4a456ff01d0b38c9674e3289aa4b73d441b1ac2b8aea87074caa0",
+      "result_sha256": "fcae5cb8f61986098038e621461927292bf24556f2652bed6baad83213b8632b",
+      "primary_sha256": "f0240886805d79721a6ffa22fa20124859f53b0c82a6bb604809b28003500816",
+      "independent_reaudit": "PASS",
+      "recomputed": true,
+      "completed_cycles": 1,
+      "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+      "solver_elapsed_seconds": 32.421999999991385,
+      "accepted_steps": 1242,
+      "rejected_trials": 518,
+      "max_stage_cfl": 0.39777938613801317,
+      "min_stage_cfl": 0.013423602149687453,
+      "memory_rss_at_finish_mib": 591.86328125,
+      "conservation": {
+        "energy_residual_J": 2.975120150239263e-13,
+        "mass_residual_kg": 1.6093625997831706e-19,
+        "species_residual_kg": [
+          7.691059161069047e-19,
+          1.1117307432712692e-21,
+          -2.4607817974435363e-19,
+          1.694065921165811e-21
+        ]
+      },
+      "boundary_faces": 11,
+      "mesh_length_m": 0.67
+    },
+    {
+      "run_id": "exm-escape-modified-plus20-mm-3000rpm-4c",
+      "cells_per_section": [
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "total_cells": 20,
+      "identity_sha256": "be76a1d716ee800131d7338d4a4f17daa933045b2a4b70333d44917b2d07f382",
+      "adapter_sha256": "9b49d467c46d1d8d01b023d234b28b046de23589b74da66dcc423bbee9cec2a4",
+      "discrete_geometry_sha256": "d6fa08d8edceda51692811662c363df2f100e7999cb292eee9c9776b742ad8c0",
+      "configuration_artifact_sha256": "d830250b8c56e4622fa4f5bc7901bc9c6d481ee995694748025c6fd447fda463",
+      "checkpoint_sha256": "ee74502e67fb80e55dd80305b08d49bd6effb6b17937169b366757ef6e72fe2f",
+      "result_sha256": "79ac4cd60f6e9f4f0f6d6088c1abe6af2aca68d98dcbe72589adab9fe24ed01a",
+      "primary_sha256": "c2a93ee4ca3f735407a326e40e5981355c3eea64afd276e547514a83de1f37b6",
+      "independent_reaudit": "PASS",
+      "recomputed": true,
+      "completed_cycles": 1,
+      "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+      "solver_elapsed_seconds": 48.79700000000594,
+      "accepted_steps": 1444,
+      "rejected_trials": 720,
+      "max_stage_cfl": 0.30742847729907213,
+      "min_stage_cfl": 0.01769524739038035,
+      "memory_rss_at_finish_mib": 798.4140625,
+      "conservation": {
+        "energy_residual_J": 7.549516567451064e-14,
+        "mass_residual_kg": -4.845028458294598e-19,
+        "species_residual_kg": [
+          -3.1509625637859973e-19,
+          1.7470054537119944e-21,
+          1.7065165767793063e-19,
+          1.6940658945086007e-21
+        ]
+      },
+      "boundary_faces": 21,
+      "mesh_length_m": 0.67
+    },
+    {
+      "run_id": "exm-escape-original-3000rpm-1c",
+      "cells_per_section": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "total_cells": 5,
+      "identity_sha256": "2fe61aebd0b528eac8fd4a7084708bb87a8283389f487cf181256cafbc8c8544",
+      "adapter_sha256": "9b49d467c46d1d8d01b023d234b28b046de23589b74da66dcc423bbee9cec2a4",
+      "discrete_geometry_sha256": "6fd749bfa54f4a8b739325c96d7dd7b94b127b13a7621d0f28760fabac13e3c4",
+      "configuration_artifact_sha256": "75e101693a82472d9e59867cc940530f50461269abccfb688ccdd0f7ba429ed2",
+      "checkpoint_sha256": "73362004a95a046da059e5a506e154c398d3dfafc8299489d81db5c42d4b3041",
+      "result_sha256": "9495090bc5a40601401d8c46135ed27f0ca0e3ff00850faf64ae9ebe5e1c32dc",
+      "primary_sha256": "5f91bc23549e6c7d8b7a8725bcb79affd9105956c4b08bf27d0a00f683a8d307",
+      "independent_reaudit": "PASS",
+      "recomputed": true,
+      "completed_cycles": 1,
+      "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+      "solver_elapsed_seconds": 26.328000000008615,
+      "accepted_steps": 1242,
+      "rejected_trials": 518,
+      "max_stage_cfl": 0.39777940985258625,
+      "min_stage_cfl": 0.013423602149687453,
+      "memory_rss_at_finish_mib": 322.78515625,
+      "conservation": {
+        "energy_residual_J": 2.7450264283856995e-13,
+        "mass_residual_kg": -1.0050045919172274e-18,
+        "species_residual_kg": [
+          -6.414156993083189e-19,
+          -1.2176098616780567e-21,
+          -4.491973297196246e-20,
+          2.097816708844007e-21
+        ]
+      },
+      "boundary_faces": 6,
+      "mesh_length_m": 0.65
+    },
+    {
+      "run_id": "exm-escape-original-3000rpm-2c",
+      "cells_per_section": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "total_cells": 10,
+      "identity_sha256": "416fbb2153b097671a879bc607d2d35f74bc7d53d921e03e9a9686b8dbae1564",
+      "adapter_sha256": "9b49d467c46d1d8d01b023d234b28b046de23589b74da66dcc423bbee9cec2a4",
+      "discrete_geometry_sha256": "2aa97c5f27efa43067c81554db5ac4ff58c91335504e0e1fddd3d349196e2b39",
+      "configuration_artifact_sha256": "8a0303e634e93f986e4c7d9bb12d5b11a667e81156099af3e0be1d747213ca3c",
+      "checkpoint_sha256": "51c77e8a1ac115a95a97b79d2a6d5c11ab102e02c2587b9e9e44b23d3d2ea1a5",
+      "result_sha256": "965c7f16ef6834708f1a4b8c8f92e307b99da167dc2b4055c9296dc78f044481",
+      "primary_sha256": "672efffbee17941a591d6fd2615c1eb24d447d3210bdfeb3581a4478a3eccd35",
+      "independent_reaudit": "PASS",
+      "recomputed": true,
+      "completed_cycles": 1,
+      "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+      "solver_elapsed_seconds": 31.46799999999348,
+      "accepted_steps": 1242,
+      "rejected_trials": 518,
+      "max_stage_cfl": 0.397779385594997,
+      "min_stage_cfl": 0.013423602149687453,
+      "memory_rss_at_finish_mib": 499.40625,
+      "conservation": {
+        "energy_residual_J": -9.54236689665322e-14,
+        "mass_residual_kg": -1.8126505071242027e-19,
+        "species_residual_kg": [
+          -8.521151449378261e-19,
+          3.441071348220595e-22,
+          -5.966281365100383e-20,
+          -1.6940658619596447e-21
+        ]
+      },
+      "boundary_faces": 11,
+      "mesh_length_m": 0.65
+    },
+    {
+      "run_id": "exm-escape-original-3000rpm-4c",
+      "cells_per_section": [
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "total_cells": 20,
+      "identity_sha256": "11ba06b3309399dbbc41f03c732e5ad61d2a30902b661f7480a8d951f92a74ce",
+      "adapter_sha256": "9b49d467c46d1d8d01b023d234b28b046de23589b74da66dcc423bbee9cec2a4",
+      "discrete_geometry_sha256": "5cea93d311bd5aa03a522209e4283c89f84745a07666cbfa3021160eb5001984",
+      "configuration_artifact_sha256": "dc9fd79cb6ae9998c80be8f9c647d69a3d2409fd70a59dc948446713d30694f2",
+      "checkpoint_sha256": "049dd122fdc304af1cd31786e65ced595f8e43547e2c57635ccf5d76c15c702f",
+      "result_sha256": "824c1ef8f8c8d426974a36c488fdbbd23d0b6b9efbfb403e2ab6d623a6e5cd4e",
+      "primary_sha256": "93a098f6b6c138165662f7e9e59c38487d9efda03e29f84d12a246e5d9ee7e94",
+      "independent_reaudit": "PASS",
+      "recomputed": true,
+      "completed_cycles": 1,
+      "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+      "solver_elapsed_seconds": 47.96899999999732,
+      "accepted_steps": 1444,
+      "rejected_trials": 720,
+      "max_stage_cfl": 0.3074178162823812,
+      "min_stage_cfl": 0.01769501963284985,
+      "memory_rss_at_finish_mib": 707.140625,
+      "conservation": {
+        "energy_residual_J": 1.5304424394457783e-13,
+        "mass_residual_kg": -4.0657581468206416e-19,
+        "species_residual_kg": [
+          -4.506215279392878e-19,
+          -1.1117307432712692e-21,
+          1.3450689344962372e-19,
+          3.3881317890172014e-21
+        ]
+      },
+      "boundary_faces": 21,
+      "mesh_length_m": 0.65
+    }
+  ],
+  "cpu_utilization": "NOT_INSTRUMENTED",
+  "periodicity": "NOT_EVALUATED; one cycle each",
+  "steady_performance": "NOT_CLAIMED",
+  "experimental_validation": "NOT_PERFORMED",
+  "spatial_independence": "NOT_ESTABLISHED"
+}

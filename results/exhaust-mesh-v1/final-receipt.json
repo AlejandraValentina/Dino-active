@@ -1,0 +1,73 @@
+{
+  "schema": "EXHAUST_MESH_V1_FINAL_RECEIPT_V1",
+  "objective": "EXHAUST_MESH_V1",
+  "classification": "EXHAUST_MESH_V1_PARTIAL",
+  "implementation": "EXHAUST_MESH_V1 adapter in motorsim/exhaust_mesh_v1.py; explicit independent axial cells per named section; legacy one-cell replace adapter is untouched.",
+  "geometry_result": "PASS within represented linear circular-frustum axisymmetric sections: exact section lengths/end diameters/interface continuity; exact analytic frustum volume; deterministic shared face mesh; face area and control volume reflect diameter change.",
+  "solver_result": "Existing IntegratedEngine2T already uses area-weighted HLLC fluxes, actual inlet/outlet face areas, and p*(A_right-A_left)/V momentum source in shared SSPRK2 stages. No solver equation changes. Static variable-area pressure balance, constant-area reduction, wave flux, CFL, checkpoint mismatch and exact restore/restart tests pass.",
+  "conservation": "Conservative 1/2/4 remapping of density, momentum, total energy and all four species inventories; geometric, mass, species, energy, and six independently recomputed primary audits PASS.",
+  "desktop_result": "Per-section 1/2/4 selector, mesh boundary drawing, total cells, per-section lengths/face areas/volumes/axial positions, configuration hash and project round-trip integrated; no solver step during editing.",
+  "diagnostics": {
+    "receipt": "results/exhaust-mesh-v1/diagnostic-receipt.json",
+    "report": "${DINO_ARTIFACT_ROOT}/exhaust-mesh-v1/reports/exhaust-mesh-v1-1-2-4-report.json",
+    "report_sha256": "35384496361c01140038f182e492be7690f1ea22a069e46164dbea4ef19cbec8",
+    "points": 6,
+    "wall_seconds": 360.797,
+    "aggregate_budget_seconds": 1800,
+    "operating_point_rpm": 3000,
+    "cycles_per_point": 1,
+    "results": {
+      "matrix_runtime": {
+        "1": {
+          "solver_seconds_mean": 26.789000000004307,
+          "accepted_steps_mean": 1242,
+          "rejected_trials_mean": 518,
+          "max_stage_cfl_mean": 0.3977794099996155,
+          "finish_rss_max_mib": 597.76171875
+        },
+        "2": {
+          "solver_seconds_mean": 31.944999999992433,
+          "accepted_steps_mean": 1242,
+          "rejected_trials_mean": 518,
+          "max_stage_cfl_mean": 0.3977793858665051,
+          "finish_rss_max_mib": 591.86328125
+        },
+        "4": {
+          "solver_seconds_mean": 48.38300000000163,
+          "accepted_steps_mean": 1444,
+          "rejected_trials_mean": 720,
+          "max_stage_cfl_mean": 0.3074231467907267,
+          "finish_rss_max_mib": 798.4140625
+        }
+      },
+      "mean_spatial_change": {
+        "original_1_to_2_pressure_rms_pa": 480.21101310250947,
+        "original_2_to_4_pressure_rms_pa": 775.0165305057972,
+        "modified_1_to_2_pressure_rms_pa": 477.66483443070325,
+        "modified_2_to_4_pressure_rms_pa": 758.4602933772768
+      },
+      "design_difference": {
+        "1": {
+          "pressure_rms_mean_pa": 65.20882331579749,
+          "interface_mass_flow_rms_mean_kg_s": 7.761627440457118e-05
+        },
+        "2": {
+          "pressure_rms_mean_pa": 86.49493588738652,
+          "interface_mass_flow_rms_mean_kg_s": 0.00013853006773006655
+        },
+        "4": {
+          "pressure_rms_mean_pa": 114.30190998542149,
+          "interface_mass_flow_rms_mean_kg_s": 0.00023612050276193734
+        }
+      }
+    }
+  },
+  "spatial_convergence": "NOT_ESTABLISHED. Mean 1-to-2 and 2-to-4 pressure differences do not decrease; A-vs-B pressure and named-interface mass-flow differences increase with refinement. The design response is smaller than the observed refinement sensitivity; 1/2/4 cells per section are insufficient to distinguish design from spatial error.",
+  "periodicity": "NOT_EVALUATED; one cycle only. No steady power/torque claim.",
+  "resolution_recommendation": "Use 4 cells per section for further mesh-sensitive exploratory diagnostics and 2 only for interactive preview/prototyping. Neither supports quantitative design ranking. A future 8-cell comparison is technically justified; it was not executed in this bounded 1/2/4 matrix.",
+  "resource_limits": "Per-run elapsed time and finish RSS recorded; accepted steps, rejected CFL trials, max CFL recorded. CPU utilization and peak RSS were not instrumented. No full RPM campaign, KT100, or experimental validation.",
+  "compatibility": "New identity is embedded in native geometry_identity and therefore binds engine/project/run/checkpoint hashes. Current adapter source hash: f05940a34142a7eeec93b30a560177f909e7521c8c717ec9107ac638e2e474b2. Diagnostic artifacts retain each executed adapter/configuration/source hash; v1, IMPL2 and DINO_DESIGN_VALIDATION_V1 artifacts were not modified.",
+  "historical_preservation": "Confirmed no tracked diff under results/dino-design-validation-v1/ or results/full-rpm-sweep-v1/. R2, IMPL2 and v1 evidence left unchanged.",
+  "experimental_validation": "NOT_PERFORMED",
+  "campaigns_started_for_this_objective": 0
+}

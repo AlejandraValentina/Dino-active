@@ -153,11 +153,16 @@ class DinoDesktopTests(unittest.TestCase):
         base_hash = identity(self.context.engine())
         first = float(page.table.item(0, 2).text())
         page.table.item(0, 2).setText(str(first + 1.0))
+        page.table.cellWidget(0, 6).setCurrentText("2")
         page.apply()
         self.assertEqual(identity(self.context.project["base_engine"]), base_hash)
         self.assertEqual(self.context.selected_variant, "Escape 1")
         self.assertNotEqual(identity(self.context.engine()), base_hash)
-        self.assertIn("validada", page.diff.text().lower())
+        native=self.context.engine()["native_configuration"]
+        mesh_meta=native["geometry_identity"]["exhaust_mesh_discretization"]
+        self.assertEqual(mesh_meta["cells_per_section"][0],2)
+        self.assertEqual(len(next(d for d in native["ducts"] if d["id"]=="exhaust")["mesh"]["volumes"]),6)
+        self.assertIn("guardada", page.diff.text().lower())
 
     def test_real_impl2_import_keeps_invalid_points_as_gaps_and_exports_plot(self):
         data = load_results(DEFAULT_REPORT)

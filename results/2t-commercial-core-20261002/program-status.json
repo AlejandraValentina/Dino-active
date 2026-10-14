@@ -4386,7 +4386,7 @@
       "dependencies": [
         "EXM-FORENSICS"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "objective": "EXHAUST_MESH_V1",
       "owner_role": "orchestrator",
       "evidence_level": "L0",
@@ -4396,8 +4396,12 @@
       ],
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": null
+      "evidence": [
+        "motorsim/exhaust_mesh_v1.py",
+        "tests/test_exhaust_mesh_v1.py"
+      ],
+      "next_action": null,
+      "classification": "EXACT_FRUSTUM_GEOMETRY_AND_CONSERVATIVE_NESTED_REFINEMENT_VERIFIED"
     },
     {
       "id": "EXM-SOLVER-VERIFICATION",
@@ -4405,7 +4409,7 @@
       "dependencies": [
         "EXM-ADAPTER"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "EXHAUST_MESH_V1",
       "owner_role": "orchestrator",
       "evidence_level": "L2",
@@ -4415,8 +4419,12 @@
       ],
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": null
+      "evidence": [
+        "tests/test_exhaust_mesh_v1_solver.py",
+        "results/exhaust-mesh-v1/diagnostic-receipt.json"
+      ],
+      "next_action": null,
+      "classification": "AREA_SOURCE_BALANCE_WAVE_CFL_CONSERVATION_AND_CHECKPOINT_TESTS_PASS"
     },
     {
       "id": "EXM-DESKTOP-INTEGRATION",
@@ -4424,7 +4432,7 @@
       "dependencies": [
         "EXM-ADAPTER"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "EXHAUST_MESH_V1",
       "owner_role": "orchestrator",
       "evidence_level": "L0",
@@ -4435,8 +4443,12 @@
       ],
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": null
+      "evidence": [
+        "motorsim/desktop/exhaust_page.py",
+        "tests/test_dino_desktop.py"
+      ],
+      "next_action": null,
+      "classification": "DESKTOP_PROJECT_PER_SECTION_MESH_SELECTOR_AND_PREVIEW_VERIFIED"
     },
     {
       "id": "EXM-IDENTITY-CHECKPOINT",
@@ -4445,7 +4457,7 @@
         "EXM-ADAPTER",
         "EXM-DESKTOP-INTEGRATION"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "EXHAUST_MESH_V1",
       "owner_role": "orchestrator",
       "evidence_level": "L2",
@@ -4455,8 +4467,13 @@
       ],
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": null
+      "evidence": [
+        "motorsim/exhaust_mesh_v1.py",
+        "tests/test_exhaust_mesh_v1_solver.py",
+        "results/exhaust-mesh-v1/diagnostic-receipt.json"
+      ],
+      "next_action": null,
+      "classification": "MESH_ADAPTER_GEOMETRY_CONFIGURATION_AND_CHECKPOINT_IDENTITIES_BOUND"
     },
     {
       "id": "EXM-BOUNDED-DIAGNOSTICS",
@@ -4465,7 +4482,7 @@
         "EXM-SOLVER-VERIFICATION",
         "EXM-IDENTITY-CHECKPOINT"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "EXHAUST_MESH_V1",
       "owner_role": "orchestrator",
       "evidence_level": "L2",
@@ -4475,8 +4492,12 @@
       ],
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": null
+      "evidence": [
+        "results/exhaust-mesh-v1/diagnostic-receipt.json",
+        "${DINO_ARTIFACT_ROOT}/exhaust-mesh-v1/reports/exhaust-mesh-v1-1-2-4-report.json"
+      ],
+      "next_action": null,
+      "classification": "SIX_ONE_CYCLE_POINTS_PASS_AUDIT_SPATIAL_CONVERGENCE_NOT_ESTABLISHED"
     },
     {
       "id": "EXM-REGRESSION-ADMIN",
@@ -4484,7 +4505,7 @@
       "dependencies": [
         "EXM-BOUNDED-DIAGNOSTICS"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "EXHAUST_MESH_V1",
       "owner_role": "orchestrator",
       "evidence_level": "L0",
@@ -4496,8 +4517,18 @@
       ],
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": null
+      "evidence": [
+        "tests/test_exhaust_mesh_v1.py",
+        "tests/test_exhaust_mesh_v1_solver.py",
+        "tests/test_engine_configuration_v1.py",
+        "tests/test_dino_desktop.py",
+        "tests/test_exploratory_workflow.py",
+        "tests/test_integrated_2t.py",
+        "results/exhaust-mesh-v1/final-receipt.json",
+        "openspec/changes/exhaust-mesh-v1/specs/exhaust-mesh-v1/spec.md"
+      ],
+      "next_action": null,
+      "classification": "113_RELEVANT_TESTS_OPENSPEC_STRICT_AND_PROGRAM_STATUS_PASS_OBJECTIVE_PARTIAL_ON_SPATIAL_NONCONVERGENCE"
     }
   ],
   "audit_remediation_mode": false,
@@ -4699,10 +4730,10 @@
   ],
   "current_objective": {
     "id": "EXHAUST_MESH_V1",
-    "state": "ACTIVE",
+    "state": "FAIL_TERMINAL",
     "owner_approved": true,
-    "classification": "IN_PROGRESS",
-    "summary": "Implement a versioned 1/2/4 axial exhaust mesh, preserve exact section geometry and conservation, integrate configuration/Desktop/workflow, and run bounded refinement diagnostics without claiming spatial independence.",
+    "classification": "EXHAUST_MESH_V1_PARTIAL",
+    "summary": "Versioned exact 1/2/4 exhaust mesh, conservative mapping, area-aware solver balance, Desktop integration, checkpoint identity and six audited one-cycle diagnostics completed. Spatial response did not stabilize and no periodicity was evaluated; terminal classification will be PARTIAL.",
     "change": "openspec/changes/exhaust-mesh-v1",
     "spec": "openspec/changes/exhaust-mesh-v1/specs/exhaust-mesh-v1/spec.md",
     "set_by": "explicit owner authorization communicated 2026-10-14; receipt results/exhaust-mesh-v1/owner-authorization.json",
@@ -4955,9 +4986,9 @@
     },
     {
       "id": "EXHAUST_MESH_V1",
-      "state": "APPROVED",
+      "state": "FAIL_TERMINAL",
       "owner_approved": true,
-      "classification": "IN_PROGRESS",
+      "classification": "EXHAUST_MESH_V1_PARTIAL",
       "summary": "Implement a versioned 1/2/4 axial exhaust mesh, preserve exact section geometry and conservation, integrate configuration/Desktop/workflow, and run bounded refinement diagnostics without claiming spatial independence.",
       "change": "openspec/changes/exhaust-mesh-v1",
       "spec": "openspec/changes/exhaust-mesh-v1/specs/exhaust-mesh-v1/spec.md",
@@ -5936,6 +5967,18 @@
       "task": "EXM-FORENSICS",
       "kind": "task",
       "summary": "Confirmed exact frustum geometry, area-weighted HLLC fluxes, quasi-1D p*dA/V momentum source, physical face-area boundaries and shared SSPRK2/CFL path. Solver already supports varying area; implement a new adapter without altering legacy behavior."
+    },
+    {
+      "at": "2026-10-14T13:13:00+00:00",
+      "task": "EXM-ADAPTER",
+      "kind": "task",
+      "summary": "Implemented EXHAUST_MESH_V1 exact conical 1/2/4 mesh construction, conservative nested refinement remap, identity/checkpoint binding, Desktop per-section selector/visual mesh summary, and passed initial geometry/solver/UI tests; 6 isolated diagnostics completed in 360.8 s with independent re-audit pending verification receipt."
+    },
+    {
+      "at": "2026-10-14T13:23:38+00:00",
+      "task": "EXM-REGRESSION-ADMIN",
+      "kind": "task",
+      "summary": "113 focused/new, configuration, Desktop, workflow, and IntegratedEngine2T tests pass; six diagnostic artifacts independently imported and re-audited; OpenSpec strict passes. Spatial sensitivity fails to stabilize, so classify EXHAUST_MESH_V1_PARTIAL; preserve historical evidence and Ostacky."
     }
   ],
   "legacy_gate_status": {
@@ -5951,29 +5994,18 @@
   },
   "gate_status": {
     "objective": "EXHAUST_MESH_V1",
-    "state": "OPEN",
-    "classification": null,
+    "state": "FAIL_TERMINAL",
+    "classification": "EXHAUST_MESH_V1_PARTIAL",
     "evidence": [
-      "results/exhaust-mesh-v1/owner-authorization.json",
-      "openspec/changes/exhaust-mesh-v1/specs/exhaust-mesh-v1/spec.md"
+      "results/exhaust-mesh-v1/final-receipt.json"
     ],
     "gate_tasks_total": 7,
-    "gate_tasks_done": 0,
+    "gate_tasks_done": 7,
     "gate_task_states": {
-      "IN_PROGRESS": 1,
-      "WAITING": 5,
-      "DONE": 1
+      "DONE": 7
     },
-    "remaining": [
-      "EXM-FORENSICS",
-      "EXM-ADAPTER",
-      "EXM-SOLVER-VERIFICATION",
-      "EXM-DESKTOP-INTEGRATION",
-      "EXM-IDENTITY-CHECKPOINT",
-      "EXM-BOUNDED-DIAGNOSTICS",
-      "EXM-REGRESSION-ADMIN"
-    ],
-    "updated_at": "2026-10-14"
+    "remaining": [],
+    "updated_at": "2026-10-14T13:23:47+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
