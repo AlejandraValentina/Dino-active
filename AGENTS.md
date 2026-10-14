@@ -22,17 +22,17 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: EXHAUST_NUMERICAL_CONVERGENCE_V2
-change/spec:       openspec/changes/exhaust-numerical-convergence-v2/
-                   (specs/exhaust-numerical-convergence-v2/spec.md is the authority of requirements)
-completion:        controlled duct wave/reflection/area-transition and separated
-                   temporal/spatial diagnostics; bounded A/B 1/2/4/8 at 3000 RPM
-                   only if interpretable and within the aggregate 1800 s budget.
-                   Final classification: EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL;
-                   material 4-to-8 sensitivity and one-cycle transients do not
-                   establish asymptotic convergence or spatial independence.
-                   No full RPM campaign, KT100, periodicity fiction, spatial
-                   independence claim without evidence, or experimental claim.
+CURRENT_OBJECTIVE: DINO_DESKTOP_UX_V2
+change/spec:       openspec/changes/dino-desktop-ux-v2/
+                   (specs/dino-desktop-ux-v2/spec.md is the authority of requirements)
+completion:        P0/P1/P2 project- and variant-centered Windows Qt UX,
+                   historical/run isolation, honest scientific presentation,
+                   responsive layout, functional and visual verification,
+                   and TRIAL Windows package. Solver, physics, contracts and
+                   historical scientific evidence are immutable. No RPM runs.
+previous objective: EXHAUST_NUMERICAL_CONVERGENCE_V2 remains
+                   FAIL_TERMINAL / EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL;
+                   one-cycle transients did not establish spatial independence.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

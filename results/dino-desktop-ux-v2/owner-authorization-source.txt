@@ -1,0 +1,336 @@
+# DINO-ACTIVE — DINO DESKTOP UX REDESIGN V2
+
+Repositorio: E:\dino\Dino-active
+
+Referencia de auditoría: Claude Opus, DINO_DESKTOP_UX_REDESIGN_PROPOSAL.
+
+HEAD inspeccionado por Opus: f2b6517.
+
+Utilizar el HEAD local real al iniciar. No retroceder ni descartar cambios posteriores.
+
+## AUTORIZACIÓN
+
+Como propietario autorizo desarrollar DINO_DESKTOP_UX_V2.
+
+Objetivo: transformar la interfaz existente en un entorno de ingeniería intuitivo, centrado en proyectos, variantes, simulaciones y comparación de resultados.
+
+Esta tarea autoriza cambios de UI, integración, presentación, navegación, persistencia de preferencias, índice de corridas y pruebas.
+
+No autoriza cambios de física, solver, contratos científicos ni campañas RPM.
+
+Leer AGENTS.md y registrar la transición administrativa válida.
+
+## 1. CONSERVAR LA AUDITORÍA DE OPUS
+
+Antes de modificar código, localizar:
+
+%TEMP%\dino_ux\DINO_DESKTOP_UX_REDESIGN_PROPOSAL.md
+
+y sus 15 capturas.
+
+Preservar el informe y las capturas fuera de TEMP, con hashes y ubicación documentada.
+
+Guardar el informe textual en la documentación del proyecto y las capturas en una ubicación apropiada según el tamaño y las reglas del repositorio.
+
+No reemplazar el informe original por un resumen.
+
+Si TEMP ya no existe, registrar esa limitación y utilizar el diagnóstico comunicado por el propietario junto con nuevas inspecciones y capturas.
+
+## 2. NUEVA ARQUITECTURA DE INTERFAZ
+
+Implementar la mesa de trabajo recomendada por Opus:
+
+- Árbol persistente del proyecto a la izquierda.
+- Barra superior con proyecto, variante activa, estado de guardado y modalidad científica.
+- Área central con Motor, Escape, Simular y Resultados.
+- Vista Comparar relacionada con las variantes.
+- Panel lateral de validez, diferencias y preparación de ejecución.
+
+Utilizar componentes Qt nativos y el backend existente.
+
+Conservar la selección de la variante activa al cambiar de pantalla.
+
+Evitar que un cambio de contexto modifique accidentalmente otra variante.
+
+Permitir redimensionar los paneles y conservar preferencias de disposición.
+
+Las pantallas deben funcionar a 1360×900 y 980×680 sin superposiciones ni controles esenciales inaccesibles.
+
+Verificar escalado Windows 100 %, 125 % y 150 % cuando el entorno lo permita.
+
+## 3. PRIORIDAD P0 — CORREGIR DEFECTOS
+
+Resolver inmediatamente:
+
+A. Combos duplicados y superpuestos del editor de escape.
+
+B. Carga automática del reporte histórico IMPL2 al abrir Resultados.
+
+C. Ausencia de indicación persistente de la variante activa.
+
+D. Botón de creación de variante que siempre genera Escape N.
+
+E. Validación incómoda de diámetros de tramos adyacentes.
+
+F. Confusión entre las rutas de artifacts y la selección de resultados.
+
+G. Recortes y superposiciones en Resultados.
+
+H. Formularios Motor inutilizables en ventanas pequeñas.
+
+Confirmar con la aplicación real los defectos cuya existencia Opus dedujo del código.
+
+No corregir únicamente la apariencia: resolver el comportamiento.
+
+## 4. PROYECTOS Y VARIANTES
+
+Implementar:
+
+- Crear variante con nombre elegido.
+- Renombrar variante.
+- Duplicar variante.
+- Eliminar variante con confirmación y protección de referencias.
+- Mostrar variante activa permanentemente.
+- Indicar cambios sin guardar.
+- Comparar diferencias respecto del motor base.
+- Abrir el proyecto directamente en el último contexto apropiado.
+
+Política:
+
+Los cambios del motor base NO se propagan automáticamente a variantes existentes.
+
+Las variantes deben conservar sus configuraciones, identidades y resultados.
+
+No borrar artifacts científicos cuando se elimina una referencia visual del proyecto.
+
+## 5. EDITOR DE ESCAPE POR ESTACIONES
+
+Reorganizar la edición para que:
+
+- Cada estación tenga un diámetro.
+- Cada tramo tenga una longitud.
+- El diámetro compartido entre tramos se edite una sola vez.
+- La continuidad geométrica se mantenga automáticamente.
+- El perfil longitudinal esté representado a escala.
+- Las cotas y dimensiones sean visibles.
+- Puedan superponerse dos variantes.
+
+Traducir esa representación al backend sin alterar su significado físico.
+
+Mostrar validaciones comprensibles y unidades consistentes.
+
+No permitir geometrías que el solver no soporta bajo apariencia de geometría simulable.
+
+No implementar todavía edición mediante arrastre si compromete el alcance.
+
+## 6. SIMULACIÓN COMPRENSIBLE
+
+Reorganizar Simular como un asistente claro de preparación y ejecución.
+
+Antes de ejecutar, mostrar:
+
+- Motor y variante.
+- RPM.
+- Número de ciclos o criterio aplicable.
+- Presupuesto.
+- Modo exploratorio.
+- Estimación orientativa de qué resultados pueden estar disponibles.
+- Preflight y motivos de bloqueo.
+
+Ofrecer opciones comprensibles de horizonte, sin modificar los contratos científicos:
+
+- Diagnóstico breve: presión y flujos, sin prometer potencia periódica.
+- Diagnóstico de periodicidad: horizonte mayor, sin garantizar convergencia.
+- Configuración avanzada: límites permitidos por el backend.
+
+Explicar que un ciclo no permite obtener potencia y torque periódicos aceptados.
+
+No prometer que cuatro ciclos serán suficientes para converger.
+
+Mostrar progreso, cancelación, checkpoints y reanudación.
+
+Mantener una confirmación explícita por corrida. No habilitar colas de ejecución masivas.
+
+No activar VERIFIED si todavía no está implementado y autorizado.
+
+## 7. HISTORIAL DE CORRIDAS
+
+Implementar un índice de corridas asociado al proyecto y variante.
+
+Cada entrada debe mostrar:
+
+- Variante y configuración.
+- RPM.
+- Fecha.
+- Clasificación.
+- Periodicidad.
+- Auditoría.
+- Estado de conservación.
+- Ruta de artifacts.
+- Identidades y hashes en detalles avanzados.
+
+Descubrir e indexar corridas mediante referencias y metadata, sin trasladar ni reescribir los primaries originales.
+
+Utilizar un root de navegación coherente en la aplicación, pero conservar los roots físicos aislados y sus contratos de identidad.
+
+Permitir recuperar corridas antiguas sin navegar manualmente a cada result.json.
+
+Un historial incompleto debe mostrar el estado real, nunca inventar resultados.
+
+## 8. RESULTADOS Y COMPARACIÓN
+
+Rediseñar Resultados para que siempre indique:
+
+- Qué proyecto se está visualizando.
+- Qué variante.
+- Qué corrida.
+- Qué resultados están definidos.
+- Qué resultados no están disponibles y por qué.
+
+Permitir comparar dos corridas seleccionándolas desde el historial, aunque sus artifacts estén en carpetas distintas.
+
+Incluir gráficos claros de:
+
+- Presión y ondas.
+- Flujo.
+- Potencia y torque cuando existan resultados admisibles.
+- BMEP, IMEP, FMEP y consumo definidos.
+- Diagrama posición × ángulo de ondas cuando los datos reales lo permitan.
+
+Las curvas históricas IMPL2 deben estar separadas y etiquetadas como evidencia sintética histórica.
+
+No cargarlas automáticamente como resultados del proyecto.
+
+Conservar:
+- Potencias negativas.
+- Huecos.
+- NUMERICAL_INVALID.
+- Estados NOT_EVALUATED.
+- Hard gates.
+- Provenance.
+- Ausencia de interpolación de puntos inválidos.
+
+Los gráficos deben funcionar en ventanas pequeñas y tener ejes, unidades y leyendas legibles.
+
+## 9. LENGUAJE Y UNIDADES
+
+Usar mensajes comprensibles en español.
+
+Traducir las clasificaciones técnicas para presentación, conservando el código original en detalles avanzados.
+
+Ejemplo:
+EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED
+→ "Simulación terminada; todavía no se identificó un régimen periódico".
+
+Mostrar la causa de un bloqueo y una acción posible cuando corresponda.
+
+Unificar el ingreso decimal en spinboxes y tablas según configuración regional, aceptando coma o punto cuando no haya ambigüedad.
+
+Mostrar distribución en grados cuando el backend proporcione ese dato, junto a las dimensiones geométricas.
+
+Evitar hashes y nombres internos como información principal.
+
+## 10. POLÍTICAS DE INTEGRIDAD
+
+Decisiones del propietario:
+
+- No permitir confirmación masiva de varias simulaciones.
+- Permitir caché de verificaciones de lectura sólo cuando esté vinculada a hashes exactos de artifacts, auditor y contrato.
+- La caché nunca reemplaza auditorías científicas obligatorias.
+- No propagar automáticamente cambios del motor base.
+- Conservar MotorSim.exe sin modificar ni fusionar.
+
+Preservar completamente los comportamientos fail-closed existentes.
+
+No modificar:
+- IntegratedEngine2T.
+- Modelos físicos.
+- Contratos de periodicidad.
+- Hard gates.
+- Preregistros históricos.
+- Resultados IMPL2.
+- EXHAUST_MESH_V1 y sus evidencias.
+
+## 11. VERIFICACIÓN VISUAL Y FUNCIONAL
+
+Codex debe abrir realmente la aplicación.
+
+Probar el recorrido completo:
+
+1. Crear proyecto.
+2. Crear o abrir motor.
+3. Seleccionar variante.
+4. Modificar escape.
+5. Duplicar y renombrar variante.
+6. Guardar y reabrir.
+7. Preparar simulación.
+8. Comprender qué resultados pueden obtenerse.
+9. Abrir una corrida existente.
+10. Comparar corridas de dos variantes sin buscar archivos manualmente.
+
+Comprobar con capturas reales:
+- 1360×900.
+- 980×680.
+- Escalas de pantalla disponibles.
+- Paneles redimensionados.
+- Formularios largos.
+- Resultados con y sin datos periódicos.
+
+Agregar tests automatizados de navegación, persistencia, identidad, historial, selección, comparación, validaciones y mensajes.
+
+Utilizar artifacts existentes o fixtures acotados.
+
+No iniciar campañas científicas ni simulaciones costosas.
+
+No aceptar como READY una interfaz con controles superpuestos o acciones esenciales inaccesibles.
+
+## 12. EMPAQUETADO
+
+Reconstruir el paquete Windows de prueba.
+
+Verificar arranque real, apertura de proyecto, navegación, carga de resultados y cierre correcto.
+
+Conservar MotorSim.exe.
+
+Registrar versión, hash y condiciones del build.
+
+Si el paquete se construye desde un árbol con cambios locales ajenos, declararlo TRIAL, no release final.
+
+## 13. ENTREGA
+
+Implementar las prioridades P0, P1 y P2 de forma integral.
+
+P3 (arrastre geométrico, deshacer/rehacer generalizado, funciones visuales avanzadas) queda fuera de esta versión salvo que exista una justificación fuerte.
+
+Entregar:
+
+- Aplicación rediseñada y funcional.
+- Informe y capturas de Opus preservados.
+- Proyecto y variantes editables.
+- Historial de corridas.
+- Comparación directa de resultados.
+- Diseñador de escape mejorado.
+- Pantalla de simulación comprensible.
+- Capturas ANTES / DESPUÉS.
+- Tests y verificaciones.
+- Paquete Windows de prueba.
+- Limitaciones restantes.
+- HEAD y commits.
+
+Ejecutar OpenSpec strict y program_status.py check.
+
+Respetar AGENTS.md y su prohibición vigente de push.
+
+No stagear archivos Ostacky.
+
+Resultado:
+
+DINO_DESKTOP_UX_V2_READY
+
+o
+
+DINO_DESKTOP_UX_V2_PARTIAL
+
+con blockers concretos.
+
+No realizar cambios científicos ni iniciar campañas RPM.

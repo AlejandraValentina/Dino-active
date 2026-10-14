@@ -4618,6 +4618,209 @@
         "results/2t-commercial-core-20261002/program-status.json"
       ],
       "evidence_level": "L0"
+    },
+    {
+      "id": "DSUX2-PRESERVATION",
+      "description": "Preserve the complete Opus UX proposal and every TEMP capture with exact hashes before UI modifications; record owner authorization.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "docs/dino_desktop_ux_v2/reference/DINO_DESKTOP_UX_REDESIGN_PROPOSAL.md",
+        "docs/dino_desktop_ux_v2/reference/captures/ (17 PNG files)",
+        "docs/dino_desktop_ux_v2/reference/preservation-manifest.json",
+        "results/dino-desktop-ux-v2/owner-authorization.json"
+      ],
+      "next_action": "Preservation complete; source report is byte-identical to TEMP and all discovered PNGs are hashed.",
+      "objective": "DINO_DESKTOP_UX_V2",
+      "owner_role": "orchestrator / evidence",
+      "write_scope": [
+        "docs/dino_desktop_ux_v2/reference",
+        "results/dino-desktop-ux-v2/owner-authorization.json"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "DSUX2-P0-SHELL-CONTEXT",
+      "description": "Fix application shell with persistent active variant/context, responsive split navigation, settings and accurate dirty/project status.",
+      "dependencies": [
+        "DSUX2-PRESERVATION"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Implement shell/context without changing scientific backend; preserve compatibility aliases for existing page tests.",
+      "objective": "DINO_DESKTOP_UX_V2",
+      "owner_role": "implementation / UI integration",
+      "write_scope": [
+        "motorsim/desktop/app.py",
+        "motorsim/desktop/context.py",
+        "motorsim/desktop/widgets/context_bar.py"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "DSUX2-P0-RESULTS-ISOLATION",
+      "description": "Remove automatic historical IMPL2 loading and fixed artifact paths; unify configurable artifact-root preference and fix responsive results framing.",
+      "dependencies": [
+        "DSUX2-PRESERVATION"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Use user-selected/project-indexed runs only; label historical IMPL2 evidence separately and never import it as current project results.",
+      "objective": "DINO_DESKTOP_UX_V2",
+      "owner_role": "implementation / results",
+      "write_scope": [
+        "motorsim/desktop/results_page.py",
+        "motorsim/desktop/services.py",
+        "motorsim/desktop/preferences.py"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "DSUX2-P0-EXHAUST-CREATION",
+      "description": "Fix duplicate escape combos and variant creation/edit behavior; add named save-in-current/save-as-new actions and shared station geometry validation.",
+      "dependencies": [
+        "DSUX2-PRESERVATION"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Keep mesh selector advanced, visibly marked spatial independence not demonstrated; no solver or adapter edits.",
+      "objective": "DINO_DESKTOP_UX_V2",
+      "owner_role": "implementation / UI",
+      "write_scope": [
+        "motorsim/desktop/exhaust_page.py",
+        "motorsim/desktop/widgets/exhaust_editor.py"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "DSUX2-P1-RUN-HISTORY",
+      "description": "Build read-only project/variant run index from manifests and metadata; provide view/resume/comparison references without moving primaries.",
+      "dependencies": [
+        "DSUX2-P0-RESULTS-ISOLATION"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Index only by references; preserve per-run artifact roots and identity bindings.",
+      "objective": "DINO_DESKTOP_UX_V2",
+      "owner_role": "implementation / services",
+      "write_scope": [
+        "motorsim/desktop/run_history.py",
+        "motorsim/desktop/widgets/explorer.py"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "DSUX2-P1-RESULTS-COMPARE",
+      "description": "Responsive single-run results, semantic status explanations and direct comparison of selected runs across artifact directories, with gaps preserved.",
+      "dependencies": [
+        "DSUX2-P0-RESULTS-ISOLATION",
+        "DSUX2-P1-RUN-HISTORY"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Keep classifications, undefined metrics, negative values, audit and conservation distinct; no interpolation of invalid points.",
+      "objective": "DINO_DESKTOP_UX_V2",
+      "owner_role": "implementation / results",
+      "write_scope": [
+        "motorsim/desktop/results_page.py",
+        "motorsim/desktop/compare_page.py",
+        "motorsim/desktop/presentation.py"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "DSUX2-P1-SIMULATION-PREP",
+      "description": "Clarify bounded single-run execution presets, preflight, expected outputs, progress/checkpoint/restart/cancel and explicit confirmation.",
+      "dependencies": [
+        "DSUX2-P0-SHELL-CONTEXT"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "One explicit confirmation per run; VERIFIED disabled; no queue/batch execution or campaign.",
+      "objective": "DINO_DESKTOP_UX_V2",
+      "owner_role": "implementation / workflow UI",
+      "write_scope": [
+        "motorsim/desktop/execution_page.py",
+        "motorsim/desktop/presentation.py"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "DSUX2-P2-RESPONSIVE-ENGINE",
+      "description": "Make engine forms usable at small dimensions, add derived geometry/port timing presentation, legible units and locale-consistent numeric input.",
+      "dependencies": [
+        "DSUX2-P0-SHELL-CONTEXT"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Consume existing backend APIs only; do not modify engine or physics models.",
+      "objective": "DINO_DESKTOP_UX_V2",
+      "owner_role": "implementation / engine UI",
+      "write_scope": [
+        "motorsim/desktop/engine_page.py",
+        "motorsim/desktop/widgets/numeric.py"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "DSUX2-P2-NAVIGATION",
+      "description": "Add project explorer, variant lifecycle, clear differences and persistent screen/context selection.",
+      "dependencies": [
+        "DSUX2-P0-SHELL-CONTEXT"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Base changes must not propagate into existing variants; protect referenced runs on delete.",
+      "objective": "DINO_DESKTOP_UX_V2",
+      "owner_role": "implementation / project UI",
+      "write_scope": [
+        "motorsim/desktop/project_page.py",
+        "motorsim/desktop/widgets/explorer.py"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "DSUX2-VISUAL-PACKAGE",
+      "description": "Add navigation/persistence/integrity tests; capture actual application at 1360x900 and 980x680 (and available DPI scales), complete end-to-end manual UI smoke and build/launch Windows trial package.",
+      "dependencies": [
+        "DSUX2-P1-RESULTS-COMPARE",
+        "DSUX2-P1-SIMULATION-PREP",
+        "DSUX2-P2-RESPONSIVE-ENGINE",
+        "DSUX2-P2-NAVIGATION",
+        "DSUX2-P0-EXHAUST-CREATION"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Complete after feature tasks; package must be TRIAL because the worktree contains unrelated Ostacky changes. Preserve MotorSim.exe.",
+      "objective": "DINO_DESKTOP_UX_V2",
+      "owner_role": "verification / release",
+      "write_scope": [
+        "tests/test_dino_desktop.py",
+        "tests/test_dino_desktop_ux_v2.py",
+        "results/dino-desktop-ux-v2",
+        "packaging/build_windows.py"
+      ],
+      "evidence_level": "L0"
     }
   ],
   "audit_remediation_mode": false,
@@ -4818,22 +5021,28 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
-    "state": "FAIL_TERMINAL",
+    "id": "DINO_DESKTOP_UX_V2",
+    "state": "ACTIVE",
     "owner_approved": true,
-    "classification": "EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL",
-    "summary": "Controlled duct checks passed and the bounded A/B 1/2/4/8 matrix completed; material 4-to-8 mesh sensitivity and one-cycle transient scope do not support asymptotic convergence or spatial independence. No campaign or experimental claim.",
-    "change": "openspec/changes/exhaust-numerical-convergence-v2",
-    "spec": "openspec/changes/exhaust-numerical-convergence-v2/specs/exhaust-numerical-convergence-v2/spec.md",
-    "set_by": "explicit owner authorization communicated 2026-10-14; attachment SHA-256 facf16260be493926c23b356a38ec09b140c59ad610ba1b068103a1585fdf433",
-    "authorization": "results/exhaust-numerical-convergence-v2/owner-authorization.json",
-    "completion_criterion": "Classify EXHAUST_NUMERICAL_CONVERGENCE_V2_READY only if controlled waves and bounded A/B refinements support a defensible spatial error/convergence conclusion; otherwise PARTIAL or BLOCKED with concrete limits. Never claim spatial independence or experimental validation without evidence.",
+    "classification": null,
+    "summary": "Redesign the Windows Qt desktop into a project/variant-centered engineering workspace. Deliver P0/P1/P2 UI behavior, audited run browsing/comparison, responsive pages and trial package without changes to solver, physics, contracts, or scientific campaigns. Preserve EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL as immutable history.",
+    "change": "openspec/changes/dino-desktop-ux-v2",
+    "spec": "openspec/changes/dino-desktop-ux-v2/specs/dino-desktop-ux-v2/spec.md",
+    "set_by": "explicit owner authorization communicated 2026-10-14; full prompt SHA-256 f4eb610d0cad49eb0c9ce3c74daf900eabbb785c25e37ea0bddfe679d825f911",
+    "authorization": "results/dino-desktop-ux-v2/owner-authorization.json",
+    "completion_criterion": "DINO_DESKTOP_UX_V2_READY only when P0/P1/P2 behavior, automated tests, visual checks at supported sizes, real application workflow and Windows trial package are verified; otherwise DINO_DESKTOP_UX_V2_PARTIAL with blockers. No scientific changes/campaigns/push.",
     "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
     "gate_tasks": [
-      "ENCV2-IDENTITY-FORENSICS",
-      "ENCV2-CONTROLLED-DUCT",
-      "ENCV2-AB-MATRIX",
-      "ENCV2-REGRESSION-ADMIN"
+      "DSUX2-PRESERVATION",
+      "DSUX2-P0-SHELL-CONTEXT",
+      "DSUX2-P0-RESULTS-ISOLATION",
+      "DSUX2-P0-EXHAUST-CREATION",
+      "DSUX2-P1-RUN-HISTORY",
+      "DSUX2-P1-RESULTS-COMPARE",
+      "DSUX2-P1-SIMULATION-PREP",
+      "DSUX2-P2-RESPONSIVE-ENGINE",
+      "DSUX2-P2-NAVIGATION",
+      "DSUX2-VISUAL-PACKAGE"
     ]
   },
   "objectives": [
@@ -5107,6 +5316,28 @@
         "ENCV2-REGRESSION-ADMIN"
       ],
       "classification": "EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL"
+    },
+    {
+      "id": "DINO_DESKTOP_UX_V2",
+      "state": "APPROVED",
+      "owner_approved": true,
+      "classification": null,
+      "summary": "Redesign the Windows Qt desktop into a project/variant-centered engineering workspace. Deliver P0/P1/P2 UI behavior, audited run browsing/comparison, responsive pages and trial package without changes to solver, physics, contracts, or scientific campaigns. Preserve EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL as immutable history.",
+      "change": "openspec/changes/dino-desktop-ux-v2",
+      "spec": "openspec/changes/dino-desktop-ux-v2/specs/dino-desktop-ux-v2/spec.md",
+      "authorization": "results/dino-desktop-ux-v2/owner-authorization.json",
+      "gate_tasks": [
+        "DSUX2-PRESERVATION",
+        "DSUX2-P0-SHELL-CONTEXT",
+        "DSUX2-P0-RESULTS-ISOLATION",
+        "DSUX2-P0-EXHAUST-CREATION",
+        "DSUX2-P1-RUN-HISTORY",
+        "DSUX2-P1-RESULTS-COMPARE",
+        "DSUX2-P1-SIMULATION-PREP",
+        "DSUX2-P2-RESPONSIVE-ENGINE",
+        "DSUX2-P2-NAVIGATION",
+        "DSUX2-VISUAL-PACKAGE"
+      ]
     }
   ],
   "owner_decisions_pending": [
@@ -6117,6 +6348,12 @@
       "task": "ENCV2-REGRESSION-ADMIN",
       "kind": "completion",
       "summary": "106 focal regressions PASS; OpenSpec strict and program-status check PASS; receipts persisted; terminal classification PARTIAL under 1800 s aggregate budget."
+    },
+    {
+      "at": "2026-10-14T14:20:08+00:00",
+      "task": "DINO_DESKTOP_UX_V2",
+      "kind": "transition",
+      "summary": "Owner-authorized transition from terminal EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL; Opus proposal and all 17 captures preserved with hashes. Scientific gate remains archived and immutable; no campaigns or push."
     }
   ],
   "legacy_gate_status": {
@@ -6131,19 +6368,30 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
-    "state": "FAIL_TERMINAL",
-    "classification": "EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL",
-    "evidence": [
-      "results/exhaust-numerical-convergence-v2/final-receipt.json"
-    ],
-    "gate_tasks_total": 4,
-    "gate_tasks_done": 4,
+    "objective": "DINO_DESKTOP_UX_V2",
+    "state": "OPEN",
+    "classification": null,
+    "evidence": [],
+    "gate_tasks_total": 10,
+    "gate_tasks_done": 1,
     "gate_task_states": {
-      "DONE": 4
+      "DONE": 1,
+      "IN_PROGRESS": 1,
+      "READY": 2,
+      "WAITING": 6
     },
-    "remaining": [],
-    "updated_at": "2026-10-14T14:12:48+00:00"
+    "remaining": [
+      "DSUX2-P0-SHELL-CONTEXT",
+      "DSUX2-P0-RESULTS-ISOLATION",
+      "DSUX2-P0-EXHAUST-CREATION",
+      "DSUX2-P1-RUN-HISTORY",
+      "DSUX2-P1-RESULTS-COMPARE",
+      "DSUX2-P1-SIMULATION-PREP",
+      "DSUX2-P2-RESPONSIVE-ENGINE",
+      "DSUX2-P2-NAVIGATION",
+      "DSUX2-VISUAL-PACKAGE"
+    ],
+    "updated_at": "2026-10-14T14:20:08+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -6191,7 +6439,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-14T11:12:48-03:00",
+  "updated_at": "2026-10-14T11:20:08-03:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -6370,5 +6618,20 @@
     },
     "remaining": [],
     "updated_at": "2026-10-14T13:23:47+00:00"
+  },
+  "gate_status_archive_before_dino_desktop_ux_v2": {
+    "objective": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
+    "state": "FAIL_TERMINAL",
+    "classification": "EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL",
+    "evidence": [
+      "results/exhaust-numerical-convergence-v2/final-receipt.json"
+    ],
+    "gate_tasks_total": 4,
+    "gate_tasks_done": 4,
+    "gate_task_states": {
+      "DONE": 4
+    },
+    "remaining": [],
+    "updated_at": "2026-10-14T14:12:48+00:00"
   }
 }
