@@ -3778,7 +3778,7 @@
       "id": "DESKTOP-SHELL",
       "description": "Implement native Qt desktop shell, navigation, preferences and async/error service boundary.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "DINO_DESKTOP_V1",
       "owner_role": "architecture",
       "evidence_level": "L0",
@@ -3786,7 +3786,15 @@
         "motorsim/desktop/app.py",
         "motorsim/dino_desktop.py",
         "tests/test_dino_desktop.py"
-      ]
+      ],
+      "evidence": [
+        "motorsim/desktop/app.py",
+        "motorsim/desktop/context.py",
+        "motorsim/desktop/services.py",
+        "motorsim/dino_desktop.py",
+        "tests/test_dino_desktop.py"
+      ],
+      "blocker": null
     },
     {
       "id": "DESKTOP-ENGINE-EDITOR",
@@ -3794,14 +3802,20 @@
       "dependencies": [
         "DESKTOP-SHELL"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "DINO_DESKTOP_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
       "write_scope": [
         "motorsim/desktop/engine_page.py",
         "tests/test_dino_desktop.py"
-      ]
+      ],
+      "evidence": [
+        "motorsim/desktop/engine_page.py",
+        "tests/test_dino_desktop.py::test_engine_edit_validates_then_updates_identity_and_dirty_state",
+        "tests/test_dino_desktop.py::test_mechanical_loss_terms_are_explicit_editable_and_validated"
+      ],
+      "blocker": null
     },
     {
       "id": "DESKTOP-EXHAUST-EDITOR",
@@ -3809,14 +3823,19 @@
       "dependencies": [
         "DESKTOP-ENGINE-EDITOR"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "DINO_DESKTOP_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
       "write_scope": [
         "motorsim/desktop/exhaust_page.py",
         "tests/test_dino_desktop.py"
-      ]
+      ],
+      "evidence": [
+        "motorsim/desktop/exhaust_page.py",
+        "tests/test_dino_desktop.py::test_exhaust_edit_changes_variant_using_backend_and_keeps_base"
+      ],
+      "blocker": null
     },
     {
       "id": "DESKTOP-PROJECT-LIFECYCLE",
@@ -3824,40 +3843,60 @@
       "dependencies": [
         "DESKTOP-SHELL"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "DINO_DESKTOP_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
       "write_scope": [
-        "motorsim/desktop/project_controller.py",
+        "motorsim/desktop/app.py",
+        "motorsim/desktop/project_page.py",
         "tests/test_dino_desktop.py"
-      ]
+      ],
+      "evidence": [
+        "motorsim/desktop/project_page.py",
+        "motorsim/desktop/app.py",
+        "motorsim/engine_project.py",
+        "tests/test_dino_desktop.py::test_project_save_open_and_variant_edit_preserve_base"
+      ],
+      "blocker": null
     },
     {
       "id": "DESKTOP-RESULTS-VIEW",
       "description": "Actual IMPL2 import, interactive plots, point detail and export.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "DINO_DESKTOP_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
       "write_scope": [
         "motorsim/desktop/results_page.py",
         "tests/test_dino_desktop.py"
-      ]
+      ],
+      "evidence": [
+        "motorsim/desktop/results_page.py",
+        "motorsim/desktop/plot.py",
+        "external IMPL2 aggregate: 30 points; 3 NUMERICAL_INVALID retained as gaps",
+        "tests/test_dino_desktop.py::test_real_impl2_import_keeps_invalid_points_as_gaps_and_exports_plot"
+      ],
+      "blocker": null
     },
     {
       "id": "DESKTOP-EXECUTION-GUARD",
       "description": "Fail-closed authorization and preregistration status/request panel; no campaign execution.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "DINO_DESKTOP_V1",
       "owner_role": "contract",
       "evidence_level": "L0",
       "write_scope": [
         "motorsim/desktop/execution_page.py",
         "tests/test_dino_desktop.py"
-      ]
+      ],
+      "evidence": [
+        "motorsim/desktop/execution_page.py",
+        "tests/test_dino_desktop.py::test_execution_request_never_starts_and_is_atomic"
+      ],
+      "blocker": null
     },
     {
       "id": "DESKTOP-WINDOWS-DISTRIBUTION",
@@ -3865,7 +3904,7 @@
       "dependencies": [
         "DESKTOP-SHELL"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "DINO_DESKTOP_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
@@ -3873,7 +3912,15 @@
         "packaging/dino_desktop_entry.py",
         "packaging/build_windows.py",
         "packaging/MotorSim.spec"
-      ]
+      ],
+      "evidence": [
+        "packaging/MotorSim.spec",
+        "packaging/build_windows.py",
+        "packaging/dino_desktop_entry.py",
+        "docs/dino_desktop_v1.md",
+        "Windows x64 PyInstaller trial package and GUI/open-starter/clean-close smoke test; ZIP SHA256 c38b58fa9704b1daa2e3907647f84647e3ead2d83360f847b1cab254a99ab097"
+      ],
+      "blocker": null
     },
     {
       "id": "DESKTOP-UI-INTEGRATION-TESTS",
@@ -3886,14 +3933,21 @@
         "DESKTOP-EXECUTION-GUARD",
         "DESKTOP-WINDOWS-DISTRIBUTION"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "objective": "DINO_DESKTOP_V1",
       "owner_role": "verification",
       "evidence_level": "L0",
       "write_scope": [
         "tests/test_dino_desktop.py",
         "docs/dino_desktop_v1.md"
-      ]
+      ],
+      "evidence": [
+        "tests/test_dino_desktop.py",
+        "docs/dino_desktop_v1.md",
+        "16 focused UI and ENGINE_CONFIGURATION_V1 tests passed",
+        "OpenSpec strict PASS; program_status check PASS"
+      ],
+      "blocker": null
     },
     {
       "id": "DINO-DESKTOP-OWNER-TRANSITION",
@@ -5047,6 +5101,60 @@
       "task": "DINO_DESKTOP_V1",
       "kind": "authorization",
       "summary": "Owner authorized DINO_DESKTOP_V1. Transitioned current objective with prior ENGINE_CONFIGURATION_V1 PASS archived; FULL_RPM_SWEEP_V1 remains PARTIAL/REVIEW with 27 PERIOD_1 and 3 NUMERICAL_INVALID. No campaign authorized."
+    },
+    {
+      "at": "2026-10-14T11:06:00+00:00",
+      "task": "DESKTOP-SHELL",
+      "kind": "task",
+      "summary": "Implemented native Qt shell, local preferences, project lifecycle actions and asynchronous service lifetime/error handling."
+    },
+    {
+      "at": "2026-10-14T11:06:00+00:00",
+      "task": "DESKTOP-ENGINE-EDITOR",
+      "kind": "task",
+      "summary": "Implemented validated geometry, port/distribution, operating, combustion, fixed MEP and visual operating-map edits with provenance retained."
+    },
+    {
+      "at": "2026-10-14T11:06:00+00:00",
+      "task": "DESKTOP-EXHAUST-EDITOR",
+      "kind": "task",
+      "summary": "Implemented backend-validated linear-section geometry, live profile and variant diff."
+    },
+    {
+      "at": "2026-10-14T11:06:00+00:00",
+      "task": "DESKTOP-PROJECT-LIFECYCLE",
+      "kind": "task",
+      "summary": "Implemented validated new/open/save/save-as/import/export, identity and atomic project persistence; bulk evidence stays external."
+    },
+    {
+      "at": "2026-10-14T11:06:00+00:00",
+      "task": "DESKTOP-RESULTS-VIEW",
+      "kind": "task",
+      "summary": "Imported the real external IMPL2 aggregate; plots and exports preserve negative values, invalid gaps, point classifications and provenance."
+    },
+    {
+      "at": "2026-10-14T11:06:00+00:00",
+      "task": "DESKTOP-EXECUTION-GUARD",
+      "kind": "task",
+      "summary": "Implemented fail-closed status/request panel; supervisor stays disabled and no campaign was launched."
+    },
+    {
+      "at": "2026-10-14T11:06:00+00:00",
+      "task": "DESKTOP-WINDOWS-DISTRIBUTION",
+      "kind": "task",
+      "summary": "Added reproducible onedir launch recipe and starter project; built and smoke-tested a clearly marked trial package on Windows x64."
+    },
+    {
+      "at": "2026-10-14T11:06:00+00:00",
+      "task": "DESKTOP-UI-INTEGRATION-TESTS",
+      "kind": "task",
+      "summary": "Added Qt functional tests for lifecycle, editing, real IMPL2 result visualization/export, async errors and no unauthorized execution; OpenSpec strict and status checks pass."
+    },
+    {
+      "at": "2026-10-14T11:07:20+00:00",
+      "task": "DESKTOP-UI-INTEGRATION-TESTS",
+      "kind": "verification",
+      "summary": "16 focused UI/backend tests pass; OpenSpec strict 41/41, compileall, diff check, program-status check, package SHA-256 and native EXE starter-project smoke pass."
     }
   ],
   "legacy_gate_status": {
@@ -5062,29 +5170,19 @@
   },
   "gate_status": {
     "objective": "DINO_DESKTOP_V1",
-    "state": "OPEN",
-    "classification": "DINO_DESKTOP_V1_IN_PROGRESS",
+    "state": "PASS",
+    "classification": "DINO_DESKTOP_V1_READY",
     "evidence": [
-      "results/dino-desktop-v1/owner-authorization.json",
-      "openspec/changes/dino-desktop-v1/specs/dino-desktop-v1/spec.md"
+      "Windows Qt desktop, editor, variants, project lifecycle, IMPL2 visualizer and fail-closed execution panel implemented; no campaign launched.",
+      "16 UI/ENGINE_CONFIGURATION_V1 tests; OpenSpec strict 41/41; PyInstaller trial on Windows x64 and native EXE/starter project smoke; trial archive SHA-256 verified."
     ],
     "gate_tasks_total": 8,
-    "gate_tasks_done": 0,
+    "gate_tasks_done": 8,
     "gate_task_states": {
-      "READY": 3,
-      "WAITING": 5
+      "DONE": 8
     },
-    "remaining": [
-      "DESKTOP-SHELL",
-      "DESKTOP-ENGINE-EDITOR",
-      "DESKTOP-EXHAUST-EDITOR",
-      "DESKTOP-PROJECT-LIFECYCLE",
-      "DESKTOP-RESULTS-VIEW",
-      "DESKTOP-EXECUTION-GUARD",
-      "DESKTOP-WINDOWS-DISTRIBUTION",
-      "DESKTOP-UI-INTEGRATION-TESTS"
-    ],
-    "updated_at": "2026-10-14T10:49:56+00:00"
+    "remaining": [],
+    "updated_at": "2026-10-14T11:07:22+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
