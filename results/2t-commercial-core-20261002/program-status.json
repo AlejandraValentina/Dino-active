@@ -3968,6 +3968,152 @@
         "openspec/changes/dino-desktop-v1/specs/dino-desktop-v1/spec.md"
       ],
       "classification": "OWNER_AUTHORIZED_OBJECTIVE_TRANSITION"
+    },
+    {
+      "id": "DINO-WORKFLOW-ADAPTER",
+      "description": "Adapt a validated project/variant into native IntegratedEngine2T configuration; bind canonical project, effective config and dependencies.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "DINO_SIMULATION_WORKFLOW_V1",
+      "owner_role": "architecture",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/engine_configuration.py",
+        "motorsim/desktop/services.py",
+        "tests/test_engine_configuration_v1.py"
+      ],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Implement and verify; preserve historical artifacts and Ostacky state."
+    },
+    {
+      "id": "DINO-POWERVAlVE-ENDPOINT",
+      "description": "Implement the versioned configured-RPM power-valve endpoint resolution; preserve strict out-of-map rejection and record new solver identity.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "DINO_SIMULATION_WORKFLOW_V1",
+      "owner_role": "physics/numerics",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/integrated_2t.py",
+        "motorsim/powervalve.py",
+        "tests/test_integrated_2t.py"
+      ],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Implement and verify; preserve historical artifacts and Ostacky state."
+    },
+    {
+      "id": "DINO-WORKFLOW-PREFLIGHT",
+      "description": "Implement user-engine preflight for supported topology, geometry, thermal, combustion, mechanical and boundary inputs.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "DINO_SIMULATION_WORKFLOW_V1",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/engine_configuration.py",
+        "tests/test_engine_configuration_v1.py"
+      ],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Implement and verify; preserve historical artifacts and Ostacky state."
+    },
+    {
+      "id": "DINO-EXPLORATORY-RUNNER",
+      "description": "Build versioned isolated local exploratory runner with explicit budget, conventional evidence audit, classification, atomic checkpoints, resume and cancellation.",
+      "dependencies": [
+        "DINO-WORKFLOW-ADAPTER",
+        "DINO-POWERVAlVE-ENDPOINT",
+        "DINO-WORKFLOW-PREFLIGHT"
+      ],
+      "state": "WAITING",
+      "objective": "DINO_SIMULATION_WORKFLOW_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/exploratory_workflow.py",
+        "tests/test_exploratory_workflow.py"
+      ],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Implement and verify; preserve historical artifacts and Ostacky state."
+    },
+    {
+      "id": "DINO-EXHAUST-SOLVER-BINDING",
+      "description": "Ensure supported exhaust edits bind to actual solver section geometry and unsupported topologies fail closed.",
+      "dependencies": [
+        "DINO-WORKFLOW-ADAPTER"
+      ],
+      "state": "WAITING",
+      "objective": "DINO_SIMULATION_WORKFLOW_V1",
+      "owner_role": "architecture",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/engine_configuration.py",
+        "motorsim/desktop/exhaust_page.py",
+        "tests/test_dino_desktop.py"
+      ],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Implement and verify; preserve historical artifacts and Ostacky state."
+    },
+    {
+      "id": "DINO-EXECUTION-UI",
+      "description": "Add explicit confirmation and asynchronous progress/cancel/resume/result display for implemented EXPLORATORY mode; VERIFIED remains disabled.",
+      "dependencies": [
+        "DINO-EXPLORATORY-RUNNER"
+      ],
+      "state": "WAITING",
+      "objective": "DINO_SIMULATION_WORKFLOW_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/execution_page.py",
+        "motorsim/desktop/services.py",
+        "tests/test_dino_desktop.py"
+      ],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Implement and verify; preserve historical artifacts and Ostacky state."
+    },
+    {
+      "id": "DINO-WORKFLOW-INTEGRATION-TESTS",
+      "description": "Exercise real bounded engine run, audit, conservation, cancel/restart, isolation, historical protection and Qt workflow.",
+      "dependencies": [
+        "DINO-EXPLORATORY-RUNNER",
+        "DINO-EXHAUST-SOLVER-BINDING",
+        "DINO-EXECUTION-UI"
+      ],
+      "state": "WAITING",
+      "objective": "DINO_SIMULATION_WORKFLOW_V1",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "tests/test_exploratory_workflow.py",
+        "tests/test_dino_desktop.py"
+      ],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Implement and verify; preserve historical artifacts and Ostacky state."
+    },
+    {
+      "id": "DINO-WORKFLOW-DOCS-PACKAGE",
+      "description": "Document supported physical scope and exploratory controls, ship reproducible example and rebuild Windows package.",
+      "dependencies": [
+        "DINO-WORKFLOW-INTEGRATION-TESTS"
+      ],
+      "state": "WAITING",
+      "objective": "DINO_SIMULATION_WORKFLOW_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "docs/dino_simulation_workflow_v1.md",
+        "packaging/"
+      ],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Implement and verify; preserve historical artifacts and Ostacky state."
     }
   ],
   "audit_remediation_mode": false,
@@ -4168,22 +4314,27 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_DESKTOP_V1",
-    "change": "openspec/changes/dino-desktop-v1",
-    "spec": "openspec/changes/dino-desktop-v1/specs/dino-desktop-v1/spec.md",
-    "completion_criterion": "Deliver tested Windows Qt application integrating engine editor, exhaust variants, project lifecycle, IMPL2 result visualization and fail-closed execution panel; package/launch path documented. No campaigns.",
-    "gate_tasks": [
-      "DESKTOP-SHELL",
-      "DESKTOP-ENGINE-EDITOR",
-      "DESKTOP-EXHAUST-EDITOR",
-      "DESKTOP-PROJECT-LIFECYCLE",
-      "DESKTOP-RESULTS-VIEW",
-      "DESKTOP-EXECUTION-GUARD",
-      "DESKTOP-WINDOWS-DISTRIBUTION",
-      "DESKTOP-UI-INTEGRATION-TESTS"
-    ],
+    "id": "DINO_SIMULATION_WORKFLOW_V1",
+    "state": "ACTIVE",
+    "owner_approved": true,
+    "classification": "DINO_SIMULATION_WORKFLOW_V1_IN_PROGRESS",
+    "summary": "Owner-authorized local workflow connecting user engine projects to IntegratedEngine2T with bounded exploratory runs, actual exhaust geometry, explicit confirmation, checkpoint/recovery and comparison; no RPM campaigns or KT100.",
+    "change": "openspec/changes/dino-simulation-workflow-v1",
+    "spec": "openspec/changes/dino-simulation-workflow-v1/specs/dino-simulation-workflow-v1/spec.md",
+    "set_by": "explicit owner authorization communicated 2026-10-14; receipt results/dino-simulation-workflow-v1/owner-authorization.json",
+    "authorization": "results/dino-simulation-workflow-v1/owner-authorization.json",
+    "completion_criterion": "DINO_SIMULATION_WORKFLOW_V1_READY or explicit PARTIAL with concrete limits; user-configured engines can be adapted, preflighted and explicitly confirmed for bounded local EXPLORATORY execution with isolated provenance, audit, conservation, checkpoint/restart/cancel, and comparisons; VERIFIED remains unavailable without a matching preregistration and authorization. No full RPM campaign, KT100, historical artifact changes or Ostacky staging.",
     "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
-    "set_by": "explicit owner authorization communicated 2026-10-14; receipt results/dino-desktop-v1/owner-authorization.json"
+    "gate_tasks": [
+      "DINO-WORKFLOW-ADAPTER",
+      "DINO-POWERVAlVE-ENDPOINT",
+      "DINO-WORKFLOW-PREFLIGHT",
+      "DINO-EXPLORATORY-RUNNER",
+      "DINO-EXHAUST-SOLVER-BINDING",
+      "DINO-EXECUTION-UI",
+      "DINO-WORKFLOW-INTEGRATION-TESTS",
+      "DINO-WORKFLOW-DOCS-PACKAGE"
+    ]
   },
   "objectives": [
     {
@@ -4335,10 +4486,10 @@
     },
     {
       "id": "DINO_DESKTOP_V1",
-      "state": "ACTIVE",
+      "state": "PASS",
       "owner_approved": true,
-      "classification": "DINO_DESKTOP_V1_IN_PROGRESS",
-      "summary": "Owner-authorized Windows Qt desktop app over ENGINE_CONFIGURATION_V1; no new campaigns or scientific changes.",
+      "classification": "DINO_DESKTOP_V1_READY",
+      "summary": "Owner-authorized Windows Qt application completed and tested; historical results remain read-only and execution stays fail-closed pending the separately authorized workflow objective.",
       "change": "openspec/changes/dino-desktop-v1",
       "spec": "openspec/changes/dino-desktop-v1/specs/dino-desktop-v1/spec.md",
       "set_by": "explicit owner authorization communicated 2026-10-14; receipt results/dino-desktop-v1/owner-authorization.json",
@@ -4354,6 +4505,45 @@
         "DESKTOP-EXECUTION-GUARD",
         "DESKTOP-WINDOWS-DISTRIBUTION",
         "DESKTOP-UI-INTEGRATION-TESTS"
+      ],
+      "gate_status_archive": {
+        "objective": "DINO_DESKTOP_V1",
+        "state": "PASS",
+        "classification": "DINO_DESKTOP_V1_READY",
+        "evidence": [
+          "Windows Qt desktop, editor, variants, project lifecycle, IMPL2 visualizer and fail-closed execution panel implemented; no campaign launched.",
+          "16 UI/ENGINE_CONFIGURATION_V1 tests; OpenSpec strict 41/41; PyInstaller trial on Windows x64 and native EXE/starter project smoke; trial archive SHA-256 verified."
+        ],
+        "gate_tasks_total": 8,
+        "gate_tasks_done": 8,
+        "gate_task_states": {
+          "DONE": 8
+        },
+        "remaining": [],
+        "updated_at": "2026-10-14T11:07:22+00:00"
+      }
+    },
+    {
+      "id": "DINO_SIMULATION_WORKFLOW_V1",
+      "state": "ACTIVE",
+      "owner_approved": true,
+      "classification": "DINO_SIMULATION_WORKFLOW_V1_IN_PROGRESS",
+      "summary": "Owner-authorized local workflow connecting user engine projects to IntegratedEngine2T with bounded exploratory runs, actual exhaust geometry, explicit confirmation, checkpoint/recovery and comparison; no RPM campaigns or KT100.",
+      "change": "openspec/changes/dino-simulation-workflow-v1",
+      "spec": "openspec/changes/dino-simulation-workflow-v1/specs/dino-simulation-workflow-v1/spec.md",
+      "set_by": "explicit owner authorization communicated 2026-10-14; receipt results/dino-simulation-workflow-v1/owner-authorization.json",
+      "authorization": "results/dino-simulation-workflow-v1/owner-authorization.json",
+      "completion_criterion": "DINO_SIMULATION_WORKFLOW_V1_READY or explicit PARTIAL with concrete limits; user-configured engines can be adapted, preflighted and explicitly confirmed for bounded local EXPLORATORY execution with isolated provenance, audit, conservation, checkpoint/restart/cancel, and comparisons; VERIFIED remains unavailable without a matching preregistration and authorization. No full RPM campaign, KT100, historical artifact changes or Ostacky staging.",
+      "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
+      "gate_tasks": [
+        "DINO-WORKFLOW-ADAPTER",
+        "DINO-POWERVAlVE-ENDPOINT",
+        "DINO-WORKFLOW-PREFLIGHT",
+        "DINO-EXPLORATORY-RUNNER",
+        "DINO-EXHAUST-SOLVER-BINDING",
+        "DINO-EXECUTION-UI",
+        "DINO-WORKFLOW-INTEGRATION-TESTS",
+        "DINO-WORKFLOW-DOCS-PACKAGE"
       ]
     }
   ],
@@ -5155,6 +5345,12 @@
       "task": "DESKTOP-UI-INTEGRATION-TESTS",
       "kind": "verification",
       "summary": "16 focused UI/backend tests pass; OpenSpec strict 41/41, compileall, diff check, program-status check, package SHA-256 and native EXE starter-project smoke pass."
+    },
+    {
+      "at": "2026-10-14T12:00:00-03:00",
+      "task": "DINO_SIMULATION_WORKFLOW_V1",
+      "kind": "authorization",
+      "summary": "Owner authorized DINO_SIMULATION_WORKFLOW_V1; receipt binds source request SHA-256 2FE7C0F9D1E6052D7C4C769552C00419E6283783A9C1B3999217DABFEA76E4E9 and reference HEAD 0a32e463210c70e59b9d67e44a56126457ef0094. DINO_DESKTOP_V1 PASS archived. Explicit exclusions: no full RPM campaign, no KT100, no historic artifact edits."
     }
   ],
   "legacy_gate_status": {
@@ -5169,20 +5365,29 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_DESKTOP_V1",
-    "state": "PASS",
-    "classification": "DINO_DESKTOP_V1_READY",
+    "objective": "DINO_SIMULATION_WORKFLOW_V1",
+    "state": "OPEN",
+    "classification": "DINO_SIMULATION_WORKFLOW_V1_IN_PROGRESS",
     "evidence": [
-      "Windows Qt desktop, editor, variants, project lifecycle, IMPL2 visualizer and fail-closed execution panel implemented; no campaign launched.",
-      "16 UI/ENGINE_CONFIGURATION_V1 tests; OpenSpec strict 41/41; PyInstaller trial on Windows x64 and native EXE/starter project smoke; trial archive SHA-256 verified."
+      "Owner authorization receipt and OpenSpec change recorded; implementation and verification pending."
     ],
     "gate_tasks_total": 8,
-    "gate_tasks_done": 8,
+    "gate_tasks_done": 0,
     "gate_task_states": {
-      "DONE": 8
+      "READY": 3,
+      "WAITING": 5
     },
-    "remaining": [],
-    "updated_at": "2026-10-14T11:07:22+00:00"
+    "remaining": [
+      "DINO-WORKFLOW-ADAPTER",
+      "DINO-POWERVAlVE-ENDPOINT",
+      "DINO-WORKFLOW-PREFLIGHT",
+      "DINO-EXPLORATORY-RUNNER",
+      "DINO-EXHAUST-SOLVER-BINDING",
+      "DINO-EXECUTION-UI",
+      "DINO-WORKFLOW-INTEGRATION-TESTS",
+      "DINO-WORKFLOW-DOCS-PACKAGE"
+    ],
+    "updated_at": "2026-10-14T12:05:00-03:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -5230,7 +5435,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-14T10:29:30+00:00",
+  "updated_at": "2026-10-14T12:00:00-03:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -5341,5 +5546,21 @@
     },
     "remaining": [],
     "updated_at": "2026-10-14T10:45:05+00:00"
+  },
+  "gate_status_archive_before_dino_simulation_workflow": {
+    "objective": "DINO_DESKTOP_V1",
+    "state": "PASS",
+    "classification": "DINO_DESKTOP_V1_READY",
+    "evidence": [
+      "Windows Qt desktop, editor, variants, project lifecycle, IMPL2 visualizer and fail-closed execution panel implemented; no campaign launched.",
+      "16 UI/ENGINE_CONFIGURATION_V1 tests; OpenSpec strict 41/41; PyInstaller trial on Windows x64 and native EXE/starter project smoke; trial archive SHA-256 verified."
+    ],
+    "gate_tasks_total": 8,
+    "gate_tasks_done": 8,
+    "gate_task_states": {
+      "DONE": 8
+    },
+    "remaining": [],
+    "updated_at": "2026-10-14T11:07:22+00:00"
   }
 }

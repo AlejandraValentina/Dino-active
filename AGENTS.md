@@ -22,12 +22,14 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_DESKTOP_V1
-change/spec:       openspec/changes/dino-desktop-v1/
-                   (specs/dino-desktop-v1/spec.md es la autoridad de requisitos)
-completion:        aplicación Windows Qt integrada con ENGINE_CONFIGURATION_V1,
-                   visualización de resultados y panel de ejecución fail-closed;
-                   no iniciar campañas, modificar solver ni reabrir resultados históricos.
+CURRENT_OBJECTIVE: DINO_SIMULATION_WORKFLOW_V1
+change/spec:       openspec/changes/dino-simulation-workflow-v1/
+                   (specs/dino-simulation-workflow-v1/spec.md es la autoridad de requisitos)
+completion:        workflow Windows para configurar, preflightear y ejecutar sólo
+                   EXPLORATORY local con confirmación explícita, presupuesto,
+                   auditoría, conservación, checkpoint/restart/cancel y comparación;
+                   VERIFIED bloqueado sin contrato/preregistro/autorización exactos.
+                   No campañas RPM completas, KT100 ni alteración histórica.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

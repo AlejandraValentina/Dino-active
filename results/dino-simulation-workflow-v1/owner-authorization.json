@@ -1,0 +1,35 @@
+{
+  "schema": "DINO_SIMULATION_WORKFLOW_V1_OWNER_AUTHORIZATION_V1",
+  "objective": "DINO_SIMULATION_WORKFLOW_V1",
+  "authorization": "OWNER_AUTHORIZED",
+  "source": "user-provided request attachment",
+  "source_sha256": "2FE7C0F9D1E6052D7C4C769552C00419E6283783A9C1B3999217DABFEA76E4E9",
+  "reference_head": "0a32e463210c70e59b9d67e44a56126457ef0094",
+  "recorded_at": "2026-10-14T12:00:00-03:00",
+  "scope": [
+    "desktop workflow integration",
+    "unit tests",
+    "bounded local diagnostics",
+    "versioned powervalve endpoint correction",
+    "exploratory execution route",
+    "checkpoint/restart/cancel",
+    "exhaust geometry binding",
+    "comparison",
+    "Windows docs/package"
+  ],
+  "prohibited": [
+    "full RPM campaigns",
+    "KT100 experiments",
+    "modification/reclassification of historic artifacts",
+    "reuse of IMPL2 authorization for new motors",
+    "verified execution without matching contract, preregistration and explicit authorization",
+    "Ostacky files in commits"
+  ],
+  "execution_authority": "This implementation authorization does not itself authorize any actual exploratory solver run; EXPLORATORY execution requires a separate explicit in-app confirmation after showing scope and budget.",
+  "baseline_historical_state": {
+    "ENGINE_PHYSICS_V1_R2": "PASS",
+    "FULL_RPM_SWEEP_V1": "PARTIAL / REVIEW",
+    "IMPL2 historical artifacts": "immutable"
+  },
+  "source_commit": "0a32e463210c70e59b9d67e44a56126457ef0094"
+}
