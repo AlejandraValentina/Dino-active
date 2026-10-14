@@ -4223,7 +4223,7 @@
       "id": "DINO-POWERVALVE-VERIFICATION",
       "description": "Verify existing versioned endpoint fix, endpoint/near-boundary/outside/interior tests and confirm historical point classifications/artifacts remain unchanged.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "DINO_DESIGN_VALIDATION_V1",
       "owner_role": "orchestrator",
       "evidence_level": "L0",
@@ -4235,8 +4235,14 @@
       ],
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Take against the DINO_DESIGN_VALIDATION_V1 spec; preserve historical evidence and obey diagnostic budgets."
+      "evidence": [
+        "results/dino-design-validation-v1/powervalve-verification.json",
+        "tests/test_integrated_2t.py",
+        "tests/test_powervalve.py"
+      ],
+      "next_action": null,
+      "classification": "VERSIONED_ENDPOINT_FIX_VERIFIED_HISTORIC_POINTS_UNCHANGED",
+      "qualification": "The already versioned configured-RPM endpoint correction passes exact/near-boundary and strict direct range tests. Read-only IMPL2 aggregate remains 27 PERIOD_1 / 3 NUMERICAL_INVALID with unchanged SHA-256."
     },
     {
       "id": "DINO-RESULT-SEMANTICS",
@@ -5640,6 +5646,18 @@
       "task": "DINO-DESIGN-PROPAGATION",
       "kind": "task",
       "summary": "Traced project edits into actual IntegratedEngine2T geometry/combustion and fixed-loss/map accounting. Disabled metadata-only AFR, disabled load when losses are fixed, and added explicit solver-scope notes. 19 UI/configuration tests pass."
+    },
+    {
+      "at": "2026-10-14T11:57:58+00:00",
+      "task": "DINO-POWERVALVE-VERIFICATION",
+      "kind": "task",
+      "summary": "Verifying existing versioned configured-RPM endpoint correction, direct strict map rejection and historical campaign classification isolation; no campaign execution."
+    },
+    {
+      "at": "2026-10-14T11:58:29+00:00",
+      "task": "DINO-POWERVALVE-VERIFICATION",
+      "kind": "task",
+      "summary": "Existing versioned configured-RPM correction passes 9 focused real-stage/map boundary tests; read-only IMPL2 aggregate hash unchanged and still 27 PERIOD_1 / 3 NUMERICAL_INVALID."
     }
   ],
   "legacy_gate_status": {
@@ -5662,21 +5680,20 @@
       "openspec/changes/dino-design-validation-v1/specs/dino-design-validation-v1/spec.md"
     ],
     "gate_tasks_total": 8,
-    "gate_tasks_done": 1,
+    "gate_tasks_done": 2,
     "gate_task_states": {
-      "DONE": 1,
-      "READY": 7
+      "DONE": 2,
+      "READY": 6
     },
     "remaining": [
       "DINO-EXHAUST-SENSITIVITY-FIXTURE",
       "DINO-EXHAUST-DIAGNOSTICS",
-      "DINO-POWERVALVE-VERIFICATION",
       "DINO-RESULT-SEMANTICS",
       "DINO-EXPERIMENT-IMPORT-CONTRACT",
       "DINO-DESIGN-INTEGRATION-TESTS",
       "DINO-DESIGN-DOCS"
     ],
-    "updated_at": "2026-10-14T11:57:38+00:00"
+    "updated_at": "2026-10-14T11:58:30+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

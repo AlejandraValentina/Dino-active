@@ -1,0 +1,30 @@
+{
+  "schema": "DINO_DESIGN_VALIDATION_V1_POWERVAlVE_VERIFICATION_V1",
+  "objective": "DINO_DESIGN_VALIDATION_V1",
+  "class": "VERIFIED_EXISTING_VERSIONED_ENDPOINT_CORRECTION",
+  "verification_executed_here": {
+    "command": "python -m pytest -q tests/test_powervalve.py tests/test_integrated_2t.py -k powervalve",
+    "result": "9 passed, 73 deselected",
+    "scope": "Real integrated stage geometry uses configured reference RPM at constant speed; exact configured map endpoints, reconstructed below/above endpoint cases, strict direct out-of-range rejection and interior behavior."
+  },
+  "identity": {
+    "pre_correction_integrated_2t_sha256_at_c08efc3": "e3d1e449240478bd6ca955c032ec835fce65479965a5d305d48288a3ef3e29b3",
+    "current_integrated_2t_sha256": "38d9896e8bf4405945cdc53aea091eb895d7e00a3ec52df0f0263115e971af17",
+    "versioned_source_change_commit": "3fdc38c2ca2bbab96127bc9d12cacc12d95dcf92",
+    "fix_location": "motorsim/integrated_2t.py IntegratedEngine2T._geometry"
+  },
+  "historical_campaign_read_only": {
+    "report": "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1-impl2/authorized-extension-26-v1/reports/impl2-full-rpm-sweep-30-points.json",
+    "report_sha256": "65f8c0bee1e98096c127ed2d05b9d9b499ada00afb3a544761e950bcebcee9a7",
+    "point_count": 30,
+    "classification_counts": {
+      "PERIOD_1": 27,
+      "NUMERICAL_INVALID": 3
+    },
+    "writes_performed": false
+  },
+  "limitations": [
+    "No historical campaign rerun.",
+    "Source identity changed only through the already versioned correction; no equations, limits or historical classifications changed."
+  ]
+}
