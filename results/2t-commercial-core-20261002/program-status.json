@@ -4534,11 +4534,16 @@
       "id": "ENCV2-IDENTITY-FORENSICS",
       "description": "Verify final f059 exhaust adapter implementation against the 9b49 diagnostic adapter, focal geometry/remap/area-source/boundary/checkpoint tests, and current identity.",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Inspect source history and run focal tests under current adapter identity.",
+      "evidence": [
+        "motorsim/exhaust_mesh_v1.py current adapter hash f05940a34142a7eeec93b30a560177f909e7521c8c717ec9107ac638e2e474b2 confirmed; solver hash 38d9896e8bf4405945cdc53aea091eb895d7e00a3ec52df0f0263115e971af17 confirmed.",
+        "10 focal EXHAUST_MESH_V1 geometry/remap/area-balance/CFL/checkpoint tests pass under f059.",
+        "The archived 9b49 adapter source file is absent from Git and the configured artifact store, so an exact old-source diff cannot be independently reconstructed. The earlier final receipt describes the f059 changes as metadata/topology fail-closed checks; no equation change is identified. Exact source equivalence remains a provenance limitation.",
+        "Added EXHAUST_MESH_V2 diagnostic adapter, source hash b54d6728264f932c8699dd4e5f1f318eda7f53d6e6d7966f21ce0ec7c9741b92; only count set/identity differs from V1 equations, and it enables 8 cells without changing V1."
+      ],
+      "next_action": "Historical exact-source comparison is limited by missing 9b49 source; current-hash tests and separate V2 identity recorded.",
       "objective": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
       "owner_role": "orchestrator / verification",
       "write_scope": [
@@ -4554,11 +4559,16 @@
       "dependencies": [
         "ENCV2-IDENTITY-FORENSICS"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Start after final-identity review.",
+      "evidence": [
+        "Five production IntegratedEngine2T SSPRK2 diagnostic tests pass: constant-area small pulse 40/80/160, rigid-wall reflection, static smooth-area equilibrium, transient smooth-area refinement against N=320 reference, CFL 0.1/0.2/0.4 sensitivity, exact checkpoint restore/replay.",
+        "Pulse centroid speed relative error 0.000109 to 0.000219 at N=40/80/160; normalized pressure L2 error 0.160/0.128/0.093; peak amplitude ratio 0.357/0.476/0.608. Diffusion remains material at these resolutions although speed and L2 improve monotonically.",
+        "The smooth linear-frustum pressure wave errors versus refined reference decrease 40->80->160. Mass, energy and species residual gates pass; maximum stage CFL stays within prescribed values.",
+        "A sharp zero-length area step is not representable by Mesh/EXHAUST_MESH_V1/V2 because adjoining sections require one continuous shared face area. Results cover a resolved smooth taper only; no sharp-step reflection coefficient claim."
+      ],
+      "next_action": "Controlled smooth-area results are interpretable; continue the authorized A/B matrix under V2 identity.",
       "objective": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
       "owner_role": "orchestrator / verification",
       "write_scope": [
@@ -4573,11 +4583,11 @@
       "dependencies": [
         "ENCV2-CONTROLLED-DUCT"
       ],
-      "state": "WAITING",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [],
-      "next_action": "Do not execute until controlled cases pass and budget check confirms capacity.",
+      "next_action": "Finish only the eight preregistered one-cycle diagnostics within the current 540 s invocation; do not launch any other points.",
       "objective": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
       "owner_role": "orchestrator / verification",
       "write_scope": [
@@ -4591,7 +4601,7 @@
       "dependencies": [
         "ENCV2-CONTROLLED-DUCT"
       ],
-      "state": "WAITING",
+      "state": "READY",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -6071,6 +6081,18 @@
       "task": "EXHAUST_NUMERICAL_CONVERGENCE_V2",
       "kind": "objective_transition",
       "summary": "Owner-authorized transition to EXHAUST_NUMERICAL_CONVERGENCE_V2; authorization attachment SHA-256 facf16260be493926c23b356a38ec09b140c59ad610ba1b068103a1585fdf433. Prior EXHAUST_MESH_V1 gate archived unchanged; 1800 s new diagnostic budget; no campaign or push."
+    },
+    {
+      "at": "2026-10-14T14:05:00+00:00",
+      "task": "ENCV2-IDENTITY-FORENSICS",
+      "kind": "task",
+      "summary": "Confirmed current f059 adapter hash and IntegratedEngine2T solver hash; 10 focal tests pass. Archived 9b49 implementation source is unavailable for exact byte diff, retained as provenance limitation. Added separately hash-bound EXHAUST_MESH_V2 1/2/4/8 diagnostic adapter without changing V1."
+    },
+    {
+      "at": "2026-10-14T14:05:00+00:00",
+      "task": "ENCV2-CONTROLLED-DUCT",
+      "kind": "task",
+      "summary": "Five integrated SSPRK2 controlled duct checks pass: analytic constant-area pulse, positive rigid-wall pressure reflection, static smooth-frustum balance, smooth-area transient convergence against refined reference, CFL sensitivity and exact replay. Diffusion is strong at coarse resolution; no sharp discontinuity model exists."
     }
   ],
   "legacy_gate_status": {
@@ -6090,18 +6112,17 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 4,
-    "gate_tasks_done": 0,
+    "gate_tasks_done": 2,
     "gate_task_states": {
+      "DONE": 2,
       "IN_PROGRESS": 1,
-      "WAITING": 3
+      "READY": 1
     },
     "remaining": [
-      "ENCV2-IDENTITY-FORENSICS",
-      "ENCV2-CONTROLLED-DUCT",
       "ENCV2-AB-MATRIX",
       "ENCV2-REGRESSION-ADMIN"
     ],
-    "updated_at": "2026-10-14T13:50:00+00:00"
+    "updated_at": "2026-10-14T13:47:31+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

@@ -2,6 +2,14 @@
 
 ## ADDED Requirements
 
+### Requirement: Versioned 8-cell diagnostic mesh
+Supporting 8 cells per exhaust section MUST use an independently versioned adapter identity and artifact binding. The existing EXHAUST_MESH_V1 source hash, metadata, checkpoints, and historical evidence MUST remain unchanged. EXHAUST_MESH_V1 and the new diagnostic identity MUST reject one another's mesh metadata and checkpoints.
+
+#### Scenario: 1/2/4/8 diagnostic identity
+- **WHEN** a diagnostic configuration is produced for any of 1, 2, 4, or 8 cells per named section
+- **THEN** the selected adapter identity and source hash are embedded in geometry/configuration identity
+- **AND** incompatible adapter metadata or checkpoints fail closed.
+
 ### Requirement: Current implementation identity
 The diagnostic evidence MUST bind to the final adapter and solver source hashes actually used. Earlier EXHAUST_MESH_V1 evidence MUST remain attributed to its original adapter hash and MUST NOT be relabeled as current-hash evidence. Geometry, conservative remapping, variable-area source, interfaces, boundaries, and checkpoint compatibility MUST be verified.
 

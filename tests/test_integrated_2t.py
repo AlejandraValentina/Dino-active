@@ -73,7 +73,8 @@ def _case(*, crankcase_pressure=130000.0, cylinder_pressure=101325.0,
           duct_species=None, slider_crank=None,
           combustion_start_angle_deg=None, cylinder_species=None,
           intake_plenum=None, network_volumes=(), dynamic_reed_binding=None,
-          fuel_coupled_combustion=None):
+          fuel_coupled_combustion=None, outlet_boundary=None, inlet_boundary=None,
+          exhaust_initial_states=None):
     def duct_mesh(duct_id):
         if duct_id == "exhaust" and exhaust_mesh is not None:
             return exhaust_mesh
@@ -95,6 +96,8 @@ def _case(*, crankcase_pressure=130000.0, cylinder_pressure=101325.0,
     states = {path.id: ((1.1768, 0.0,
                          transfer_pressure if path.role == "transfer" else duct_pressure,
                          1.0),) * len(path.mesh.volumes) for path in paths}
+    if exhaust_initial_states is not None:
+        states["exhaust"] = tuple(exhaust_initial_states)
     component_species = {
         "crankcase": (0.0, 0.0, 0.00017652, 0.0),
         "cylinder": (0.000211824, 0.0, 0.0, 0.0),
@@ -121,8 +124,8 @@ def _case(*, crankcase_pressure=130000.0, cylinder_pressure=101325.0,
         (1.1768, 0.0, crankcase_pressure, 1.0),
         (1.1768, 0.0, cylinder_pressure, 1.0),
         paths, states, geometry, species=component_species,
-        inlet_boundary=Boundary("nonreflecting", state=(1.1768, 0.0, 101325.0, 1.0)),
-        outlet_boundary=Boundary("nonreflecting", state=(1.1768, 0.0, 101325.0, 1.0)),
+        inlet_boundary=inlet_boundary or Boundary("nonreflecting", state=(1.1768, 0.0, 101325.0, 1.0)),
+        outlet_boundary=outlet_boundary or Boundary("nonreflecting", state=(1.1768, 0.0, 101325.0, 1.0)),
         geometry_identity=(geometry_identity or
                            {"fixture": "three-transfer-static-volume-v1"}),
         reed_petals=reed_petals,
@@ -2207,3 +2210,183 @@ def test_integrated_duct_rejects_mutable_mesh_arrays():
     mutable_mesh = Mesh([0.0, 1.0], [1.0, 1.0], [1.0], [0.5])
     with pytest.raises(ValueError, match="immutable tuples"):
         DuctPath2T("mutable", mutable_mesh, "intake").validate()
+
+
+# EXHAUST_NUMERICAL_CONVERGENCE_V2 controlled diagnostics.  These are short
+# isolated ducts advanced by the production IntegratedEngine2T SSPRK2 solver.
+def _convergence_duct(mesh, *, cfl=0.25, outlet=None, pulse=None):
+    base_rho=1.1768
+    sound=math.sqrt(1.35*101325.0/base_rho)
+    initial=[]
+    for x in mesh.centers:
+        dp=0.0 if pulse is None else pulse[2]*math.exp(-((x-pulse[0])/pulse[1])**2)
+        initial.append((base_rho+dp/(sound*sound),dp/(base_rho*sound),
+                        101325.0+dp,1.0))
+    return _case(exhaust_mesh=mesh, exhaust_initial_states=initial,
+                 duct_length=0.02, reference_rpm=3000.0, max_cfl=0.4,
+                 intake_area=0.0, transfer_area=0.0, exhaust_area=0.0,
+                 outlet_boundary=outlet)
+
+
+def _advance_acoustic_duct(engine, *, final_time_s, cfl, probe_x_m=None,
+                           outlet_boundary=None, rpm=3000.0):
+    # A uniform upper bound from the production characteristic speed. The
+    # production SSPRK2 step independently evaluates both stage CFL values.
+    mesh = engine.exhaust.mesh
+    t = 0.0
+    probes = []
+    max_stage_cfl = 0.0
+    while t < final_time_s - 1e-18:
+        primitives = [engine._primitive(q) for q in engine.state['ducts']['exhaust']]
+        speed = max(abs(q[1])+engine.eos.sound_speed(q) for q in primitives)
+        dt = min(0.99*cfl*min(mesh.widths)/speed, final_time_s-t)
+        record = engine.step(dt, 6.0*rpm*dt, capture_trace=True)
+        t += dt
+        max_stage_cfl = max(max_stage_cfl, *record['stage_cfl'])
+        if probe_x_m is not None:
+            values = [engine._primitive(q)[2] for q in engine.state['ducts']['exhaust']]
+            j = max(0, min(len(values)-2,
+                           next((i for i,x in enumerate(mesh.centers[:-1])
+                                 if x <= probe_x_m <= mesh.centers[i+1]), 0)))
+            x0, x1 = mesh.centers[j:j+2]
+            pressure = values[j] + (values[j+1]-values[j])*(probe_x_m-x0)/(x1-x0)
+            probes.append((t, pressure))
+    return probes, max_stage_cfl
+
+
+def _pulse_pressure_error(engine, *, initial_center, sigma, amplitude, elapsed):
+    mesh = engine.exhaust.mesh
+    eos = engine.eos
+    # The base state is fixed by this controlled fixture; use the documented
+    # ambient state and linear right-running acoustic solution.
+    c = eos.sound_speed((101325.0/(eos.R*300.0), 0.0, 101325.0, 1.0))
+    errors=[]; actual=[]; exact=[]; weights=[]
+    for q,x,v in zip(engine.state['ducts']['exhaust'],mesh.centers,mesh.volumes):
+        p=engine._primitive(q)[2]
+        expected=101325.0+amplitude*math.exp(-((x-initial_center-c*elapsed)/sigma)**2)
+        actual.append(p);exact.append(expected);weights.append(v);errors.append((p-expected)**2*v)
+    l2=math.sqrt(sum(errors)/sum(weights))/amplitude
+    excess=[max(0.0,p-101325.0)*v for p,v in zip(actual,weights)]
+    centroid=sum(x*w for x,w in zip(mesh.centers,excess))/sum(excess)
+    peak=max(actual)-101325.0
+    return {'relative_pressure_l2':l2,'centroid_m':centroid,
+            'centroid_speed_relative_error':abs((centroid-initial_center)/elapsed/c-1.0),
+            'amplitude_ratio':peak/amplitude}
+
+
+def test_exhaust_v2_integrated_constant_area_pulse_converges_against_linear_acoustics():
+    from motorsim.gas1d.mesh import uniform_mesh
+    rows=[]
+    for n in (40, 80, 160):
+        mesh=uniform_mesh(n, length=0.04, area=1e-4)
+        engine=_convergence_duct(mesh,pulse=(0.005,0.002,5.0))
+        elapsed=0.00004
+        _,max_cfl=_advance_acoustic_duct(engine,final_time_s=elapsed,cfl=0.2)
+        metrics=_pulse_pressure_error(engine,initial_center=0.005,sigma=0.002,
+                                      amplitude=5.0,elapsed=elapsed)
+        metrics.update(n=n,max_stage_cfl=max_cfl,
+                       mass_residual=engine.conservation_report()['mass']['residual'],
+                       energy_residual=engine.conservation_report()['energy']['residual'])
+        assert max_cfl <= 0.2*(1+1e-8)
+        assert abs(metrics['mass_residual']) < 1e-12
+        assert abs(metrics['energy_residual']) < 1e-9
+        rows.append(metrics)
+    assert rows[-1]['relative_pressure_l2'] < rows[0]['relative_pressure_l2']
+    assert rows[-1]['centroid_speed_relative_error'] < 0.03
+    assert rows[0]['amplitude_ratio'] < rows[1]['amplitude_ratio'] < rows[2]['amplitude_ratio']
+
+
+def test_exhaust_v2_wall_reflection_has_positive_pressure_coefficient():
+    from motorsim.gas1d.mesh import uniform_mesh
+    mesh=uniform_mesh(160,length=0.04,area=1e-4)
+    engine=_convergence_duct(mesh,outlet=Boundary('wall'),
+                             pulse=(0.02,0.0015,5.0))
+    probe_x=0.025
+    probes,max_cfl=_advance_acoustic_duct(
+        engine,final_time_s=0.00013,cfl=0.2,probe_x_m=probe_x)
+    incident=[p-101325.0 for t,p in probes if 0.000005 <= t <= 0.00004]
+    reflected=[p-101325.0 for t,p in probes if 0.000075 <= t <= 0.000125]
+    incident_peak=max(incident)
+    reflected_peak=max(reflected)
+    coefficient=reflected_peak/incident_peak
+    assert max_cfl <= 0.2*(1+1e-8)
+    assert incident_peak > 1.0
+    assert 0.45 < coefficient < 1.55
+    assert abs(engine.conservation_report()['mass']['residual']) < 1e-11
+    assert abs(engine.conservation_report()['energy']['residual']) < 1e-8
+
+
+def test_exhaust_v2_smooth_area_change_preserves_static_pressure_and_species():
+    from motorsim.gas1d.mesh import segments_mesh
+    mesh=segments_mesh([dict(length=40.0,start_diameter=20.0,
+                             end_diameter=35.0)],0.001)
+    engine=_convergence_duct(mesh)
+    _,max_cfl=_advance_acoustic_duct(engine,final_time_s=2e-6,cfl=0.2)
+    primitives=[engine._primitive(q) for q in engine.state['ducts']['exhaust']]
+    assert max(abs(q[2]-101325.0) for q in primitives) < 1e-6
+    assert max(abs(q[1]) for q in primitives) < 1e-8
+    assert max_cfl <= 0.2*(1+1e-8)
+    assert abs(engine.conservation_report()['mass']['residual']) < 1e-12
+    assert abs(engine.conservation_report()['energy']['residual']) < 1e-9
+    assert all(abs(row['residual']) < 1e-12
+               for row in engine.conservation_report()['species'].values())
+    assert sum(mesh.volumes) == pytest.approx(
+        math.pi*0.04*(0.02**2+0.02*0.035+0.035**2)/12,rel=1e-12)
+
+
+def test_exhaust_v2_pulse_crosses_smooth_area_transition_against_refined_reference():
+    from motorsim.gas1d.mesh import segments_mesh
+    solutions=[]
+    for n in (40,80,160,320):
+        mesh=segments_mesh([dict(length=40.0,start_diameter=20.0,
+                                 end_diameter=35.0)],0.04/n)
+        engine=_convergence_duct(mesh,pulse=(0.005,0.002,5.0))
+        _,max_cfl=_advance_acoustic_duct(engine,final_time_s=0.00004,cfl=0.2)
+        pressure=[engine._primitive(q)[2]-101325.0
+                  for q in engine.state['ducts']['exhaust']]
+        assert max_cfl <= 0.2*(1+1e-8)
+        assert abs(engine.conservation_report()['mass']['residual']) < 1e-11
+        assert abs(engine.conservation_report()['energy']['residual']) < 1e-8
+        assert all(abs(row['residual']) < 1e-11
+                   for row in engine.conservation_report()['species'].values())
+        solutions.append((mesh,pressure))
+    ref_mesh,ref_pressure=solutions[-1]
+    errors=[]
+    for mesh,pressure in solutions[:-1]:
+        differences=[]
+        for x,value in zip(mesh.centers,pressure):
+            j=max(0,min(len(ref_pressure)-2,
+                        next((i for i,xr in enumerate(ref_mesh.centers[:-1])
+                              if xr<=x<=ref_mesh.centers[i+1]),0)))
+            x0,x1=ref_mesh.centers[j:j+2]
+            reference=ref_pressure[j]+(ref_pressure[j+1]-ref_pressure[j])*(x-x0)/(x1-x0)
+            differences.append((value-reference)**2)
+        errors.append(math.sqrt(sum(differences)/len(differences))/5.0)
+    assert errors[1] < errors[0]
+    assert errors[2] < errors[1]
+
+
+def test_exhaust_v2_temporal_sensitivity_and_checkpoint_replay_are_explicit():
+    from motorsim.gas1d.mesh import uniform_mesh
+    mesh=uniform_mesh(96,length=0.04,area=1e-4)
+    results=[]
+    for cfl in (0.1,0.2,0.4):
+        engine=_convergence_duct(mesh,pulse=(0.005,0.002,5.0))
+        elapsed=0.00003
+        _,max_cfl=_advance_acoustic_duct(engine,final_time_s=elapsed,cfl=cfl)
+        metrics=_pulse_pressure_error(engine,initial_center=0.005,sigma=0.002,
+                                      amplitude=5.0,elapsed=elapsed)
+        assert max_cfl <= cfl*(1+1e-8)
+        results.append(metrics['relative_pressure_l2'])
+    assert max(results)-min(results) < 0.5
+
+    continuous=_convergence_duct(mesh,pulse=(0.005,0.002,5.0))
+    dt=0.2*min(mesh.widths)/continuous.eos.sound_speed(
+        (101325.0/(continuous.eos.R*300.0),0.0,101325.0,1.0))
+    for _ in range(4): continuous.step(dt,6*3000*dt,capture_trace=True)
+    checkpoint=continuous.snapshot()
+    expected=continuous.step(dt,6*3000*dt,capture_trace=True)
+    restored=_convergence_duct(mesh,pulse=(0.005,0.002,5.0))
+    restored.restore(checkpoint)
+    restored.step(dt,6*3000*dt,capture_trace=True)
+    assert restored.snapshot()==continuous.snapshot()
