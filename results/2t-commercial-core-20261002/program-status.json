@@ -4847,16 +4847,17 @@
         "DSUX2-P2-NAVIGATION",
         "DSUX2-P0-EXHAUST-CREATION"
       ],
-      "state": "BLOCKED_LOCAL",
-      "blocker": "Windows trial package build, launch, project open, and navigation to Resultados are verified. Loading an existing results artifact in the packaged UI was not confirmed; completion criterion requires it.",
+      "state": "DONE",
+      "blocker": null,
       "commits": [],
       "evidence": [
-        "results/dino-desktop-ux-v2/windows-trial-build-receipt.json",
-        "docs/dino_desktop_ux_v2/captures/after/windows-trial-results-unselected.png",
+        "results/dino-desktop-ux-v2/packaged-acceptance-receipt.json",
         "results/dino-desktop-ux-v2/visual-check-receipt.json",
+        "docs/dino_desktop_ux_v2/captures/after/packaged",
+        "openspec/changes/dino-desktop-ux-v2/tasks.md",
         "tests/test_dino_desktop_ux_v2.py"
       ],
-      "next_action": "Use interactive Windows UI automation against Dino2T.exe to load an existing referenced result, verify it renders and close; then rerun package integrity and status checks.",
+      "next_action": "DONE: final TRIAL EXE loaded referenced exploratory evidence and compared two real runs from history across separate artifact roots; startup, results and clean close verified.",
       "objective": "DINO_DESKTOP_UX_V2",
       "owner_role": "verification / release",
       "write_scope": [
@@ -4868,22 +4869,21 @@
         "dist"
       ],
       "evidence_level": "L0",
-      "unblock_tasks": [
-        "DSUX2-PACKAGE-RESULTS-INTERACTIVE"
-      ],
+      "unblock_tasks": [],
       "no_local_unblock_reason": null
     },
     {
       "id": "DSUX2-PACKAGE-RESULTS-INTERACTIVE",
       "description": "Complete interactive smoke of the built Windows trial package: open an existing referenced result through the packaged UI, verify the artifact loads, and close cleanly without starting a solver.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "results/dino-desktop-ux-v2/windows-trial-build-receipt.json"
+        "results/dino-desktop-ux-v2/packaged-acceptance-receipt.json",
+        "docs/dino_desktop_ux_v2/captures/after/packaged"
       ],
-      "next_action": "Use the package build identified by its receipt; do not rebuild or alter scientific configuration unless the package source changes.",
+      "next_action": "DONE: Windows packaged interactive smoke completed without solver execution.",
       "objective": "DINO_DESKTOP_UX_V2",
       "owner_role": "verification / release",
       "write_scope": [
@@ -6496,6 +6496,12 @@
       "task": "DSUX2-VISUAL-PACKAGE",
       "kind": "verification",
       "summary": "Final verification: 15 UX tests PASS; OpenSpec strict PASS; program-status check PASS; TRIAL zip and preserved executable hashes PASS. Packaged results artifact load remains NOT_CONFIRMED."
+    },
+    {
+      "at": "2026-10-14T15:53:20+00:00",
+      "task": "DSUX2-VISUAL-PACKAGE",
+      "kind": "verification",
+      "summary": "Final Windows TRIAL smoke PASS: project opened outside repo cwd; existing result opened from history; two runs compared across artifact roots, reaudited, with pressure/flow, honest undefined metrics and 1360x900/980x680 captures. No solver started."
     }
   ],
   "legacy_gate_status": {
@@ -6511,21 +6517,18 @@
   },
   "gate_status": {
     "objective": "DINO_DESKTOP_UX_V2",
-    "state": "OPEN",
-    "classification": "DINO_DESKTOP_UX_V2_PARTIAL",
+    "state": "PASS",
+    "classification": "DINO_DESKTOP_UX_V2_READY",
     "evidence": [
-      "UX source tests and layouts pass; Windows TRIAL launched, opened a project, and navigated to Results; loading a referenced artifact in the package remains unconfirmed."
+      "Final packaged acceptance receipt and real Dino2T.exe captures: result selection, audit/reconstruction, cross-root comparison, pressure/flow, geometry binding, undefined metrics, package integrity and clean close verified."
     ],
     "gate_tasks_total": 10,
-    "gate_tasks_done": 9,
+    "gate_tasks_done": 10,
     "gate_task_states": {
-      "DONE": 9,
-      "BLOCKED_LOCAL": 1
+      "DONE": 10
     },
-    "remaining": [
-      "DSUX2-VISUAL-PACKAGE"
-    ],
-    "updated_at": "2026-10-14T15:14:48+00:00"
+    "remaining": [],
+    "updated_at": "2026-10-14T15:53:21+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

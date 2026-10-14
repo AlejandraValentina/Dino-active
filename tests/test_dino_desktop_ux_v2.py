@@ -27,6 +27,28 @@ APP=QApplication.instance() or QApplication([])
 
 
 class DesktopContextV2Tests(unittest.TestCase):
+    def test_run_history_uses_result_metadata_when_manifest_is_summary_only(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=__import__("pathlib").Path(temp)
+            run=root/"run-3000";run.mkdir()
+            manifest={"schema":"DINO_EXPLORATORY_RUN_V1","run_id":"run-3000","status":"COMPLETE",
+                "classification":"EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+                "result_sha256":"a"*64,"bindings":{"variant_label":"Escape original",
+                    "identity_sha256":"b"*64,"configuration_sha256":"c"*64},
+                "cycles":[{"audit":{"status":"PASS","recomputed":True},
+                    "conservation":{"mass":"PASS","energy":"PASS","species":"PASS"}}]}
+            result={"status":"COMPLETE","classification":"EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+                "periodicity":"NOT_EVALUATED","preflight":{"rpm":3000.0,"max_cycles":1}}
+            (run/"run.json").write_text(__import__("json").dumps(manifest),encoding="utf-8")
+            (run/"result.json").write_text(__import__("json").dumps(result),encoding="utf-8")
+            entries=list_project_runs({"project_id":"ux-summary-manifest","result_references":[
+                {"path":str(run/"result.json"),"identity_sha256":"b"*64}]},root)
+            self.assertEqual(len(entries),1)
+            self.assertEqual(entries[0]["rpm"],3000.0)
+            self.assertEqual(entries[0]["periodicity"],"NOT_EVALUATED")
+            self.assertEqual(entries[0]["classification"],"EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED")
+            self.assertEqual(entries[0]["audit"],"PASS")
+
     def test_run_history_is_read_only_and_preserves_identity_and_status_gaps(self):
         with tempfile.TemporaryDirectory() as temp:
             root=__import__("pathlib").Path(temp)

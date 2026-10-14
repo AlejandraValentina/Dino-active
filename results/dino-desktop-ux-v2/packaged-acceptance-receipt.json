@@ -1,0 +1,190 @@
+{
+  "schema": "DINO_DESKTOP_UX_V2_PACKAGED_ACCEPTANCE_RECEIPT_V1",
+  "result": "DINO_DESKTOP_UX_V2_READY",
+  "source_head": "6649d79a037f93b0315a61c5841568810a9593ea",
+  "package": {
+    "classification": "TRIAL",
+    "folder": "dist/MotorSim-0.1.0-rc6-windows-x64-6649d79a-trial-20261014T153220Z/MotorSim",
+    "zip": "dist/MotorSim-0.1.0-rc6-windows-x64-6649d79a-trial-20261014T153220Z.zip",
+    "zip_sha256": "bc79abcf09ecb31e71ead7cb0b6e64fbdc76836c191f52b95b523357c929ed81",
+    "zip_bytes": 46231911,
+    "zip_entries": 299,
+    "zip_test": "PASS",
+    "executables_sha256": {
+      "Dino2T.exe": "5a05133eccf07248476a9bcec114a056aa898191389444f75b58c5d408f5a063",
+      "MotorSim.exe": "9a78cfb85adc1dfc4dfd03841c9f36e529708164add892b13b38f9f65a080a8e",
+      "MotorSimWorker.exe": "bb15fa861d1ded09f96ba1dea662406ef944f13ca5e6455cad1730f63d761c44"
+    },
+    "source_dirty": true,
+    "tree_clean_build": false,
+    "launched_from_distribution": true,
+    "working_directory": "%TEMP%",
+    "preexisting_distribution_executables_modified": false,
+    "preexisting_MotorSim_exes_preserved": true,
+    "preserved_prior_MotorSim_exes_sha256": {
+      "MotorSim-0.1.0-rc6-windows-x64-39e0bcf8-trial-20261014T105853Z": "0a4cfe1de236738fad73a832dd3efa8ccc86412e95537b8f93b109a644932b22",
+      "MotorSim-0.1.0-rc6-windows-x64-39e0bcf8-trial-20261014T110005Z": "104f545fc67472f3082501e52bc631cd50237b74cf5c29fbb066c7e2c5485b85",
+      "MotorSim-0.1.0-rc6-windows-x64-39e0bcf8-trial-20261014T110422Z": "474ef1c5a279082616afc67f349d0b18272ce10637633780fd66f51115ec2549",
+      "MotorSim-0.1.0-rc6-windows-x64-6649d79a-trial-20261014T152303Z": "1360d25870561d8ece4b967da892e69d222eb9f9e74c899ff810d70ed20903f6",
+      "MotorSim-0.1.0-rc6-windows-x64-7477d714-trial-20261014T150329Z": "667e04e1068a19ddaf8c6ee7e04343f3ad87e5966bbc9acfb138365002228cc4",
+      "MotorSim-0.1.0-rc6-windows-x64-c08efc30-trial-20261014T114516Z": "02177593255a3038719144326a49c738764053c7f0a5dabd2d6c85c6d0cd7f1e"
+    }
+  },
+  "smoke": {
+    "startup": "PASS",
+    "project_open": "PASS",
+    "navigation_to_results": "PASS",
+    "selection_from_history": "PASS",
+    "single_run_load": "PASS",
+    "two_run_comparison_from_history": "PASS",
+    "clean_close": "PASS",
+    "solver_started": false,
+    "failure_dialogs_on_final_build": "NONE_OBSERVED",
+    "stale_diagnostics": "Two TypeError diagnostics timestamped 12:27 and 12:34 predate the final 15:32 build; none were generated during the final package smoke."
+  },
+  "runs": [
+    {
+      "run_id": "exm-escape-original-3000rpm-2c",
+      "artifact_root": "E:/Dino-artifacts/exhaust-mesh-v1/exploratory-workflow-v1/dino-exhaust-comparison-starter/exm-escape-original-3000rpm-2c",
+      "variant": "Escape original / 2 cells per section",
+      "rpm": 3000,
+      "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+      "periodicity": "NOT_EVALUATED",
+      "audit": "PASS",
+      "audit_recomputed": true,
+      "configuration_sha256": "79bf598d2cc6c49672150f3fe11fd96149baf2e427c4d84085c34d599a3f7467",
+      "identity_sha256": "416fbb2153b097671a879bc607d2d35f74bc7d53d921e03e9a9686b8dbae1564",
+      "result_sha256": "965c7f16ef6834708f1a4b8c8f92e307b99da167dc2b4055c9296dc78f044481",
+      "primary_sha256": "672efffbee17941a591d6fd2615c1eb24d447d3210bdfeb3581a4478a3eccd35",
+      "conservation_audit": "PASS",
+      "conservation_residuals": {
+        "energy_residual_J": -9.54236689665322e-14,
+        "mass_residual_kg": -1.8126505071242027e-19,
+        "species_residual_kg": [
+          -8.521151449378261e-19,
+          3.441071348220595e-22,
+          -5.966281365100383e-20,
+          -1.6940658619596447e-21
+        ]
+      }
+    },
+    {
+      "run_id": "encv2-escape-modified-plus20-mm-3000rpm-2c",
+      "artifact_root": "E:/Dino-artifacts/exhaust-numerical-convergence-v2/exploratory-workflow-v1/dino-exhaust-comparison-starter/encv2-escape-modified-plus20-mm-3000rpm-2c",
+      "variant": "Escape modified +20 mm / 2 cells per section",
+      "rpm": 3000,
+      "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+      "periodicity": "NOT_EVALUATED",
+      "audit": "PASS",
+      "audit_recomputed": true,
+      "configuration_sha256": "bd15dac0d2a9bfa3d7037826f43e4f6461de99b6d76f9c16b9cad07bb2dfffd8",
+      "identity_sha256": "dd67870048fb3933064fcc496527f0b1daae4e352e90da9567c8b64dee7ccd35",
+      "result_sha256": "f1dae714ab15b12c961ca3c38a002ab369872bdab9e5285d632fdd662a4920a4",
+      "primary_sha256": "0c9585575bd7fd20e7a1f0ee498c18ee28bec46c66858cc98df4925f6a661e29",
+      "conservation_audit": "PASS",
+      "conservation_residuals": {
+        "energy_residual_J": 2.975120150239263e-13,
+        "mass_residual_kg": 1.6093625997831706e-19,
+        "species_residual_kg": [
+          7.691059161069047e-19,
+          1.1117307432712692e-21,
+          -2.4607817974435363e-19,
+          1.694065921165811e-21
+        ]
+      }
+    }
+  ],
+  "comparison": {
+    "roots_differ": true,
+    "geometry_configuration_diff_verified": true,
+    "geometry_differences": [
+      "native chamber section 1 length: 180 mm -> 200 mm",
+      "EXHAUST_MESH_V1 -> EXHAUST_MESH_V2; mapped face/center positions and discrete geometry identity differ"
+    ],
+    "pressure_channels_rendered": true,
+    "exhaust_mass_flow_channels_rendered": true,
+    "flow_unit": "kg/s",
+    "primary_angles": "exact common angles",
+    "interpolation": "NONE",
+    "undefined_metrics": "BMEP, brake power and torque remain blank/undefined with periodicity-dependent reason"
+  },
+  "captures": [
+    {
+      "path": "docs/dino_desktop_ux_v2/captures/after/packaged/comparison-flow-channel-980x680.png",
+      "bytes": 45111,
+      "sha256": "eb9c3a9d8d912a718120fa4e6c9385bcb030615e7a881bd3f9257d8d69e52486",
+      "window_pixels": [
+        996,
+        719
+      ],
+      "client_content_area_px": [
+        980,
+        680
+      ]
+    },
+    {
+      "path": "docs/dino_desktop_ux_v2/captures/after/packaged/comparison-results-980x680.png",
+      "bytes": 42463,
+      "sha256": "93ceaee865bd6e5e96e27186731d959b9a9bdc7fe5021eafc9dac6796843fe5a",
+      "window_pixels": [
+        996,
+        719
+      ],
+      "client_content_area_px": [
+        980,
+        680
+      ]
+    },
+    {
+      "path": "docs/dino_desktop_ux_v2/captures/after/packaged/comparison-results-current.png",
+      "bytes": 66738,
+      "sha256": "2b2806ce50bd216eac20cb09924c5cde45e079733aae13690d369d31063fce5f",
+      "window_pixels": [
+        1360,
+        900
+      ]
+    },
+    {
+      "path": "docs/dino_desktop_ux_v2/captures/after/packaged/project-active-variant-1360x900.png",
+      "bytes": 42344,
+      "sha256": "0466d7757bff6f8941513cda627b508b5fbc80c349c32288b9c4fc5aa9e0f502",
+      "window_pixels": [
+        1360,
+        900
+      ]
+    },
+    {
+      "path": "docs/dino_desktop_ux_v2/captures/after/packaged/single-run-results-1360x900.png",
+      "bytes": 62392,
+      "sha256": "b424f4b5e08ec1873ecdc09feb65306d4b610a089295d85629e29de4d3a44c44",
+      "window_pixels": [
+        1360,
+        900
+      ]
+    },
+    {
+      "path": "docs/dino_desktop_ux_v2/captures/after/packaged/single-run-results-trace-1360x900.png",
+      "bytes": 60618,
+      "sha256": "a4890e2ccd0b6eb9c0ac22583093d663a523a52deb7f1f7cac89bb1e8923e2b9",
+      "window_pixels": [
+        1360,
+        900
+      ]
+    },
+    {
+      "path": "docs/dino_desktop_ux_v2/captures/after/packaged/single-run-undefined-metrics-1360x900.png",
+      "bytes": 62817,
+      "sha256": "7069cb3ea7efba941095750bc8d22817b05823c8050c233926d0b19d3dea5130",
+      "window_pixels": [
+        1360,
+        900
+      ]
+    }
+  ],
+  "tests": {
+    "tests/test_dino_desktop_ux_v2.py": "16 passed in 42.92s",
+    "openspec_strict": "PASS: openspec validate dino-desktop-ux-v2 --strict --no-interactive",
+    "program_status_check": "PASS: python scripts/agents/program_status.py check",
+    "program_status_gate": "PASS 10/10: DINO_DESKTOP_UX_V2_READY"
+  }
+}

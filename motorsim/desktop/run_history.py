@@ -31,6 +31,23 @@ def _entry(folder: Path, *, artifact_root: Path, project_id: str, referenced=Fal
         base["status"]="MANIFEST_INVALID";return base
     bindings=manifest.get("bindings") if isinstance(manifest.get("bindings"),dict) else {}
     preflight=manifest.get("preflight") if isinstance(manifest.get("preflight"),dict) else {}
+    # Some existing run manifests intentionally contain only summary/provenance;
+    # their result.json carries the original preflight and final periodicity.
+    # Read only this metadata for display and leave the independent importer to
+    # verify hashes, primaries, and scientific evidence when a run is opened.
+    result_path=run_dir/"result.json"
+    result_doc={}
+    needs_result_metadata=(preflight.get("rpm") is None or manifest.get("periodicity") is None
+                           or manifest.get("status") is None or manifest.get("classification") is None)
+    if needs_result_metadata and result_path.is_file():
+        try:
+            candidate=json.loads(result_path.read_text(encoding="utf-8"))
+            if isinstance(candidate,dict):result_doc=candidate
+        except (OSError,ValueError):
+            pass
+    result_preflight=result_doc.get("preflight") if isinstance(result_doc.get("preflight"),dict) else {}
+    if preflight.get("rpm") is None and result_preflight:
+        preflight=result_preflight
     cycles=manifest.get("cycles") if isinstance(manifest.get("cycles"),list) else []
     audits=[c.get("audit",{}) for c in cycles if isinstance(c,dict)]
     audit_status="PASS" if audits and all(a.get("status")=="PASS" for a in audits) else ("FAIL" if any(a.get("status")=="FAIL" for a in audits) else "NOT_REPORTED")
@@ -39,16 +56,21 @@ def _entry(folder: Path, *, artifact_root: Path, project_id: str, referenced=Fal
     except OSError:updated=None
     checkpoint_name=manifest.get("checkpoint_artifact","checkpoint.json")
     checkpoint=(run_dir/checkpoint_name if isinstance(checkpoint_name,str) and Path(checkpoint_name).name==checkpoint_name else run_dir/"__invalid_checkpoint_path__")
-    result=run_dir/"result.json"
+    result=result_path
+    periodicity=manifest.get("periodicity")
+    if periodicity is None:periodicity=result_doc.get("periodicity")
+    if periodicity is None and isinstance(result_doc.get("cycles"),list) and result_doc["cycles"]:
+        periodicity=result_doc["cycles"][-1].get("periodicity")
     base.update({
       "run_id":manifest.get("run_id",run_dir.name),"variant":bindings.get("variant_label","No informado"),
       "rpm":preflight.get("rpm"),"updated_at":updated,
-      "classification":manifest.get("classification"),"periodicity":manifest.get("periodicity","NOT_REPORTED"),
+      "classification":manifest.get("classification") or result_doc.get("classification"),
+      "periodicity":periodicity or "NOT_REPORTED",
       "audit":audit_status,"audit_recomputed":bool(audits) and all(a.get("recomputed") is True for a in audits),
       "conservation":"REPORTED" if conservation else "NOT_REPORTED","conservation_cycles":len(conservation),
       "identity_sha256":bindings.get("identity_sha256"),"configuration_sha256":bindings.get("configuration_sha256"),
       "result_sha256":manifest.get("result_sha256"),"checkpoint_sha256":manifest.get("checkpoint_sha256"),
-      "status":manifest.get("status","STATUS_NOT_REPORTED"),
+      "status":manifest.get("status") or result_doc.get("status","STATUS_NOT_REPORTED"),
       "resumable":manifest.get("status")=="INTERRUPTED_CHECKPOINTED" and checkpoint.is_file()
                   and bool(bindings.get("identity_sha256")) and preflight.get("rpm") is not None,
       "result_path":str(result) if result.is_file() else None,

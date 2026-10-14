@@ -18,7 +18,13 @@ gui_a.datas=[item for item in gui_a.datas if '/translations/' not in item[0].rep
 dino_a=Analysis([str(root/'packaging/dino_desktop_entry.py')],datas=[
     (str(generated/'build.json'),'motorsim'),
     (str(root/'results/2t-commercial-core-20261002/fixtures/v1-prime-mesh/fixture_a_prime-mesh-0.json'),
-     'results/2t-commercial-core-20261002/fixtures/v1-prime-mesh')],**common)
+     'results/2t-commercial-core-20261002/fixtures/v1-prime-mesh'),
+    # Read-only provenance auditing uses inspect.getsource() for exact producer
+    # and solver dependency fingerprints. PyInstaller stores bytecode in PYZ;
+    # retain the matching sources as data so frozen replay can perform the same
+    # checks instead of failing closed merely because source files are absent.
+    *[(str(source),str(source.parent.relative_to(root)).replace('\\','/'))
+      for source in sorted((root/'motorsim').rglob('*.py'))]],**common)
 dino_a.binaries=[item for item in dino_a.binaries if '/plugins/' not in item[0].replace('\\','/')
     or Path(item[0]).name.lower() in ('qwindows.dll','qmodernwindowsstyle.dll')]
 dino_a.datas=[item for item in dino_a.datas if '/translations/' not in item[0].replace('\\','/')
