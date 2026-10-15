@@ -5253,6 +5253,148 @@
         "TRIAL package built at dist/MotorSim-0.1.0-rc6-windows-x64-2b271361-trial-20261015T120333Z; package ZIP SHA-256 C9A9FBA4CB8521D8CEC4B8727E5D3AE3669606B31C3741CF3E343E3D283BE10B; archive testzip=None, 300 members. Real EXE opened example project, five-run history and imported results/comparison.",
         "Dino2T.exe SHA-256 a886e2ca3c53b95feb073c64b648db3f6f90f73b86c7aabb9aad124f403aaaf2; MotorSim.exe SHA-256 d0092a9ea64f9fb53310c10190338602d7bebc0af780aa5ee040c71544bd0eff. Build metadata records source_dirty=true and trial=true; not promoted to release."
       ]
+    },
+    {
+      "id": "V31-REFERENCE",
+      "description": "Persist the M1-M6 reference inventory and compare current packaged captures against each mockup.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "openspec/changes/dino-desktop-v3-1-visual-parity/",
+        "results/dino-desktop-v3-1-visual-parity/"
+      ],
+      "blocker": null,
+      "unblock_tasks": [],
+      "evidence": [
+        "Directly compared all six external M1-M6 mockups with the final V3 TRIAL EXE captures: M1 separate station editing; M2 split cylinder/ports views; M3 duplicated standalone execution page and strip; M4 history competes with signal area; M5 lacks integrated engineering delta; M6 compact layout remains vertically stacked. Review and mockup SHA-256 inventory: results/dino-desktop-v3-1-visual-parity/owner-authorization.json."
+      ]
+    },
+    {
+      "id": "V31-DESIGN-EDITORS",
+      "description": "Integrate per-section exhaust editing and cylinder/distribution in single engineering views.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/exhaust_page.py",
+        "motorsim/desktop/engine_page.py"
+      ],
+      "blocker": null,
+      "unblock_tasks": [],
+      "evidence": [
+        "motorsim/desktop/exhaust_page.py",
+        "motorsim/desktop/engine_page.py",
+        "tests/test_dino_desktop_v3_1_visual_parity.py: direct segment diameter edit, shared station propagation, integrated cylinder/distribution widgets; 37 relevant desktop regressions PASS; no solver invoked."
+      ]
+    },
+    {
+      "id": "V31-EXECUTION-ANALYSIS",
+      "description": "Make preparation a run-bar panel and improve analysis/comparison engineering hierarchy.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/app.py",
+        "motorsim/desktop/execution_page.py",
+        "motorsim/desktop/results_page.py",
+        "motorsim/desktop/plot.py"
+      ],
+      "blocker": null,
+      "unblock_tasks": [],
+      "evidence": [
+        "motorsim/desktop/app.py",
+        "motorsim/desktop/execution_page.py",
+        "motorsim/desktop/results_page.py",
+        "motorsim/desktop/plot.py",
+        "tests/test_dino_desktop_v3_1_visual_parity.py: shared run state/panel/history, exact-RPM compare preference, explicit unavailability reasons and trace-before-table order; 37 relevant desktop regressions PASS."
+      ]
+    },
+    {
+      "id": "V31-COMPACT-SAFETY",
+      "description": "Complete compact layout behavior and fail closed on repository artifact roots.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/theme.py",
+        "motorsim/desktop/preferences.py",
+        "motorsim/desktop/app.py",
+        "motorsim/desktop/exhaust_page.py",
+        "motorsim/desktop/results_page.py"
+      ],
+      "blocker": null,
+      "unblock_tasks": [],
+      "evidence": [
+        "motorsim/desktop/theme.py",
+        "motorsim/desktop/preferences.py",
+        "motorsim/desktop/app.py",
+        "tests/test_dino_desktop_v3_1_visual_parity.py: 980x680 horizontal component tabs; repository root rejected for new runs and resume before directory creation."
+      ]
+    },
+    {
+      "id": "V31-REGRESSION",
+      "description": "Add focused UI, fail-closed, and V3 compatibility regressions.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "tests/desktop/"
+      ],
+      "blocker": null,
+      "unblock_tasks": [],
+      "evidence": [
+        "41 relevant desktop tests PASS before final minor visual polish; focused tests for saved baseline synchronization, compact layout, integrated ports, map channel selection, and missing numeric map data PASS after the corresponding changes.",
+        "No simulations or campaigns launched."
+      ]
+    },
+    {
+      "id": "V31-PACKAGED-ACCEPTANCE",
+      "description": "Build and verify TRIAL, exercise actual EXE, capture M1-M6, run OpenSpec and program-status checks.",
+      "dependencies": [],
+      "state": "BLOCKED_LOCAL",
+      "objective": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "scripts/build_windows_trial.py",
+        "dist/",
+        "results/dino-desktop-v3-1-visual-parity/"
+      ],
+      "blocker": "Windows locked screen prevented visual interaction/capture of the exact final TRIAL build after startup. Previous V3.1 builds were interacted with and captured; final small baseline-sync and map-scale-label changes passed source tests but need packaged visual recapture.",
+      "unblock_tasks": [
+        "V31-FINAL-EXE-RECAPTURE"
+      ],
+      "evidence": [
+        "results/dino-desktop-v3-1-visual-parity/packaged-acceptance-receipt.json",
+        "dist/MotorSim-0.1.0-rc6-windows-x64-d1878219-trial-20261015T152844Z.zip",
+        "M1-M6 real EXE captures are recorded with their exact build generations; the final build launched but Windows session lock blocked the last recapture."
+      ]
+    },
+    {
+      "id": "V31-FINAL-EXE-RECAPTURE",
+      "description": "When the Windows desktop session is unlocked, launch the final 20261015T152844Z TRIAL, confirm startup baseline synchronization and map scale labels, capture M1-M6 on that exact build, then close packaged acceptance.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "blocker": null,
+      "unblock_tasks": [],
+      "write_scope": [
+        "results/dino-desktop-v3-1-visual-parity/",
+        "dist/MotorSim-0.1.0-rc6-windows-x64-d1878219-trial-20261015T152844Z.zip"
+      ]
     }
   ],
   "audit_remediation_mode": false,
@@ -5453,27 +5595,23 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_COMMERCIAL_DESKTOP_V3",
+    "id": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
     "state": "ACTIVE",
     "owner_approved": true,
-    "summary": "Owner-authorized professional two-mode 2T desktop redesign using existing scientific backends. Preserve all science and historical artifacts; no campaigns, no new simulations, no automatic next phase, no push.",
-    "change": "openspec/changes/dino-commercial-desktop-v3",
-    "spec": "openspec/changes/dino-commercial-desktop-v3/specs/dino-commercial-desktop-v3/spec.md",
-    "set_by": "explicit owner authorization communicated 2026-10-15; receipt results/dino-commercial-desktop-v3/owner-authorization.json",
-    "authorization": "results/dino-commercial-desktop-v3/owner-authorization.json",
-    "completion_criterion": "DINO_COMMERCIAL_DESKTOP_V3_READY only after P0/P1 behavior and isolated regressions, real Windows and packaged workflow, visual captures, package integrity, OpenSpec strict and program-status checks pass. If live desktop acceptance is unavailable, classify PARTIAL with exact blockers. No scientific changes or campaign.",
-    "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
+    "summary": "Owner-authorized focused UI visual parity and usability finish against external M1-M6. No science changes, simulations, campaigns, or push; preserve V3 PASS and unrelated local files.",
+    "change": "openspec/changes/dino-desktop-v3-1-visual-parity",
+    "spec": "openspec/changes/dino-desktop-v3-1-visual-parity/specs/dino-desktop-v3-1-visual-parity/spec.md",
+    "authorization": "results/dino-desktop-v3-1-visual-parity/owner-authorization.json",
+    "transitioned_from": "DINO_COMMERCIAL_DESKTOP_V3",
     "gate_tasks": [
-      "DVC3-P0",
-      "DVC3-SHELL",
-      "DVC3-EXHAUST",
-      "DVC3-CYLINDER",
-      "DVC3-EXECUTION",
-      "DVC3-ANALYSIS",
-      "DVC3-RESPONSIVE",
-      "DVC3-TESTS",
-      "DVC3-PACKAGE"
-    ]
+      "V31-REFERENCE",
+      "V31-DESIGN-EDITORS",
+      "V31-EXECUTION-ANALYSIS",
+      "V31-COMPACT-SAFETY",
+      "V31-REGRESSION",
+      "V31-PACKAGED-ACCEPTANCE"
+    ],
+    "completion_criterion": "DINO_DESKTOP_V3_1_READY only after functional M1-M6 parity is shown in actual TRIAL EXE captures before/after, artifact root write safety is verified, relevant tests and OpenSpec/program-status checks pass, and the package integrity/hashes are recorded. No simulations or campaigns."
   },
   "objectives": [
     {
@@ -5814,10 +5952,10 @@
     },
     {
       "id": "DINO_COMMERCIAL_DESKTOP_V3",
-      "state": "ACTIVE",
+      "state": "PASS",
       "owner_approved": true,
-      "classification": null,
-      "summary": "Owner-authorized professional two-mode 2T desktop redesign using existing scientific backends. Preserve all science and historical artifacts; no campaigns, no new simulations, no automatic next phase, no push.",
+      "classification": "DINO_COMMERCIAL_DESKTOP_V3_READY",
+      "summary": "V3 functional gate PASS, preserved as historical immutable objective; V3.1 is a separate owner-authorized visual-parity change.",
       "change": "openspec/changes/dino-commercial-desktop-v3",
       "spec": "openspec/changes/dino-commercial-desktop-v3/specs/dino-commercial-desktop-v3/spec.md",
       "authorization": "results/dino-commercial-desktop-v3/owner-authorization.json",
@@ -5832,7 +5970,44 @@
         "DVC3-TESTS",
         "DVC3-PACKAGE"
       ],
-      "transitioned_from": "DINO_TUNING_WORKBENCH_V1"
+      "transitioned_from": "DINO_TUNING_WORKBENCH_V1",
+      "completed_at": "2026-10-15T13:00:00-03:00",
+      "gate_status_archive": {
+        "objective": "DINO_COMMERCIAL_DESKTOP_V3",
+        "state": "PASS",
+        "classification": "DINO_COMMERCIAL_DESKTOP_V3_READY",
+        "evidence": [
+          "All V3 gate tasks complete; 38 desktop regressions PASS; final packaged EXE loaded and compared two existing EXPLORATORY runs with recomputed primary audits; TRIAL ZIP integrity PASS; OpenSpec strict PASS; no simulations."
+        ],
+        "gate_tasks_total": 9,
+        "gate_tasks_done": 9,
+        "gate_task_states": {
+          "DONE": 9
+        },
+        "remaining": [],
+        "updated_at": "2026-10-15T12:26:34+00:00"
+      },
+      "preserved_immutable": true
+    },
+    {
+      "id": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
+      "state": "ACTIVE",
+      "owner_approved": true,
+      "classification": null,
+      "summary": "Owner-authorized focused UI visual parity and usability finish against external M1-M6. No science changes, simulations, campaigns, or push; preserve V3 PASS and unrelated local files.",
+      "change": "openspec/changes/dino-desktop-v3-1-visual-parity",
+      "spec": "openspec/changes/dino-desktop-v3-1-visual-parity/specs/dino-desktop-v3-1-visual-parity/spec.md",
+      "authorization": "results/dino-desktop-v3-1-visual-parity/owner-authorization.json",
+      "transitioned_from": "DINO_COMMERCIAL_DESKTOP_V3",
+      "gate_tasks": [
+        "V31-REFERENCE",
+        "V31-DESIGN-EDITORS",
+        "V31-EXECUTION-ANALYSIS",
+        "V31-COMPACT-SAFETY",
+        "V31-REGRESSION",
+        "V31-PACKAGED-ACCEPTANCE"
+      ],
+      "completion_criterion": "DINO_DESKTOP_V3_1_READY only after functional M1-M6 parity is shown in actual TRIAL EXE captures before/after, artifact root write safety is verified, relevant tests and OpenSpec/program-status checks pass, and the package integrity/hashes are recorded. No simulations or campaigns."
     }
   ],
   "owner_decisions_pending": [
@@ -6969,6 +7144,18 @@
       "task": "DVC3-TESTS",
       "kind": "verification",
       "summary": "Base desktop suite completed after isolating a modal QInputDialog in the project variant test: 12 PASS, 1 optional IMPL2 historical-import SKIP (external report root unavailable). Combined V3/F0/UX2 suite remains 38 PASS."
+    },
+    {
+      "at": "2026-10-15T13:10:27+00:00",
+      "task": "V31-DESIGN-EDITORS",
+      "kind": "task",
+      "summary": "M1/M2 editors reorganized with direct per-section output diameter editing, integrated cylinder/port view and existing geometric derivations; automated desktop regression group passed."
+    },
+    {
+      "at": "2026-10-15T15:32:55+00:00",
+      "task": "V31-PACKAGED-ACCEPTANCE",
+      "kind": "status",
+      "summary": "Built and verified final TRIAL ZIP (300 entries, preserved MotorSim hashes); prior packaged M1-M6 interactions/captures and final startup are recorded. Windows screen lock blocked exact-final visual recapture; added READY unblock V31-FINAL-EXE-RECAPTURE."
     }
   ],
   "legacy_gate_status": {
@@ -6983,19 +7170,22 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_COMMERCIAL_DESKTOP_V3",
-    "state": "PASS",
-    "classification": "DINO_COMMERCIAL_DESKTOP_V3_READY",
+    "objective": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
+    "state": "REVIEW",
+    "classification": "DINO_DESKTOP_V3_1_PARTIAL",
     "evidence": [
-      "All V3 gate tasks complete; 38 desktop regressions PASS; final packaged EXE loaded and compared two existing EXPLORATORY runs with recomputed primary audits; TRIAL ZIP integrity PASS; OpenSpec strict PASS; no simulations."
+      "results/dino-desktop-v3-1-visual-parity/packaged-acceptance-receipt.json; final TRIAL launched but Windows lock screen blocked exact-final visual recapture; READY unblock task V31-FINAL-EXE-RECAPTURE"
     ],
-    "gate_tasks_total": 9,
-    "gate_tasks_done": 9,
+    "gate_tasks_total": 6,
+    "gate_tasks_done": 5,
     "gate_task_states": {
-      "DONE": 9
+      "DONE": 5,
+      "BLOCKED_LOCAL": 1
     },
-    "remaining": [],
-    "updated_at": "2026-10-15T12:26:34+00:00"
+    "remaining": [
+      "V31-PACKAGED-ACCEPTANCE"
+    ],
+    "updated_at": "2026-10-15T15:32:43+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -7043,7 +7233,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-14T11:31:12-03:00",
+  "updated_at": "2026-10-15T14:15:00-03:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -7277,5 +7467,20 @@
       "transitioned_to": "DINO_COMMERCIAL_DESKTOP_V3",
       "transition_authorization": "results/dino-commercial-desktop-v3/owner-authorization.json"
     }
-  ]
+  ],
+  "gate_status_archive_before_dino_desktop_v3_1": {
+    "objective": "DINO_COMMERCIAL_DESKTOP_V3",
+    "state": "PASS",
+    "classification": "DINO_COMMERCIAL_DESKTOP_V3_READY",
+    "evidence": [
+      "All V3 gate tasks complete; 38 desktop regressions PASS; final packaged EXE loaded and compared two existing EXPLORATORY runs with recomputed primary audits; TRIAL ZIP integrity PASS; OpenSpec strict PASS; no simulations."
+    ],
+    "gate_tasks_total": 9,
+    "gate_tasks_done": 9,
+    "gate_task_states": {
+      "DONE": 9
+    },
+    "remaining": [],
+    "updated_at": "2026-10-15T12:26:34+00:00"
+  }
 }

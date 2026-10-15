@@ -31,6 +31,10 @@ def stylesheet() -> str:
         QTabBar::tab {{background:#202d3c;color:#d7e2ee;border:1px solid #3a4d63;padding:9px 12px;min-height:22px;}}
         QTabBar::tab:selected {{background:#145579;color:#ffffff;border-color:#42b9ed;}}
         QTabBar::tab:hover {{background:#2b4054;color:#ffffff;}}
+        QTabWidget::pane {{border:1px solid #2b3e53;border-radius:5px;top:-1px;background:{c['canvas']};}}
+        QTableView::item:alternate {{background:#1b2a3b;color:{c['text']};}}
+        QTableView::item:selected {{background:#145579;color:#ffffff;}}
+        QHeaderView::section {{min-height:25px;}}
         QLabel#notice {{color:{c['text_muted']};background:#162332;border:1px solid #263e55;border-radius:5px;padding:9px;}}
         QWidget#contextBar {{background:{c['panel']};border-bottom:1px solid #31455b;}}
         QLabel#modeBadge {{background:#4b3514;color:#ffd58a;border:1px solid #76551d;border-radius:8px;padding:4px 9px;font-weight:600;}}

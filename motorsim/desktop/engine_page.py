@@ -4,7 +4,7 @@ import math
 from PySide6.QtCore import Qt,QPointF,Signal
 from PySide6.QtGui import QColor,QPainter,QPen,QFont
 from PySide6.QtWidgets import (QWidget,QVBoxLayout,QHBoxLayout,QFormLayout,QGroupBox,QLabel,QTabWidget,
-    QDoubleSpinBox,QPushButton,QComboBox,QTableWidget,QTableWidgetItem,QHeaderView,QMessageBox,QDialog,QDialogButtonBox)
+    QDoubleSpinBox,QPushButton,QComboBox,QTableWidget,QTableWidgetItem,QHeaderView,QMessageBox,QDialog,QDialogButtonBox,QSplitter)
 from ..engine_configuration import validate,identity,sha256
 from ..two_stroke_ports import TwoStrokePortSet,DuctBinding,PortDefinition
 from ..crankcase import CrankcaseGeometry
@@ -13,7 +13,7 @@ from ..integrated_2t import SliderCrankChambers2T
 
 class CylinderSketch(QWidget):
     def __init__(self,parent=None):
-        super().__init__(parent);self.bore=50.0;self.stroke=50.0;self.rod=100.0;self.setMinimumHeight(150);self.setMinimumWidth(360)
+        super().__init__(parent);self.bore=50.0;self.stroke=50.0;self.rod=100.0;self.setMinimumHeight(60);self.setMaximumHeight(66);self.setMinimumWidth(220)
     def set_geometry(self,bore,stroke,rod):self.bore=float(bore);self.stroke=float(stroke);self.rod=float(rod);self.update()
     def paintEvent(self,event):
         p=QPainter(self);p.setRenderHint(QPainter.RenderHint.Antialiasing);p.fillRect(self.rect(),QColor("#101a28"))
@@ -45,12 +45,17 @@ class EnginePage(QWidget):
     component_state_changed=Signal()
     def __init__(self,context):
         super().__init__();self.context=context;self.loading=False
-        root=QVBoxLayout(self);root.setContentsMargins(24,20,24,20);root.setSpacing(14)
-        title=QLabel("Configuración del motor");title.setObjectName("title");root.addWidget(title)
-        intro=QLabel("Editor del modelo integrado 2T · las unidades y la procedencia se conservan en el proyecto.");intro.setWordWrap(True);root.addWidget(intro)
+        root=QVBoxLayout(self);root.setContentsMargins(12,10,12,10);root.setSpacing(7)
+        title=QLabel("Motor");title.setObjectName("title");root.addWidget(title)
+        title.setToolTip("Geometría y distribución derivada del modelo actual.")
         self.component_tabs=QTabWidget();root.addWidget(self.component_tabs,1)
         self.geometry_group=QGroupBox("Geometría y operación");form=QFormLayout(self.geometry_group)
         self.cylinder_diagram=CylinderSketch();form.addRow("Esquema del cilindro",self.cylinder_diagram)
+        self.advanced_operation=QGroupBox("Avanzado · operación y metadata")
+        self.advanced_operation_toggle=QPushButton("Avanzado ▸")
+        self.advanced_operation_toggle.clicked.connect(self._toggle_advanced_operation)
+        self.advanced_operation.hide()
+        advanced_form=QFormLayout(self.advanced_operation)
         self.controls={}
         definitions=[("bore_mm","Diámetro cilindro","mm",1,250),("stroke_mm","Carrera","mm",1,250),
           ("rod_length_mm","Longitud biela","mm",1,500),("volume_bdc_cm3","Cárter en PMI","cm³",0.1,5000),
@@ -58,8 +63,10 @@ class EnginePage(QWidget):
           ("load","Carga del mapa MEP","relativa",0,10),
           ("afr","AFR declarada · metadata","kg/kg",0.01,1000)]
         for key,label,unit,low,high in definitions:
-            spin=QDoubleSpinBox();spin.setObjectName("engine_"+key);spin.setRange(low,high);spin.setDecimals(5);spin.setSingleStep(0.1);spin.setMaximumWidth(170)
-            self.controls[key]=spin;form.addRow(f"{label} ({unit})",spin);spin.valueChanged.connect(lambda _v:self._mark_component(0,"modificado"))
+            spin=QDoubleSpinBox();spin.setObjectName("engine_"+key);spin.setRange(low,high);spin.setDecimals(0 if key=="reference_rpm" else (1 if key=="afr" else 2));spin.setSingleStep(0.1);spin.setMaximumWidth(150);spin.setMaximumHeight(28)
+            self.controls[key]=spin
+            (advanced_form if key in {"reference_rpm","load","afr"} else form).addRow(f"{label} ({unit})",spin)
+            spin.valueChanged.connect(lambda _v:self._mark_component(0,"modificado"))
         self.controls["load"].setToolTip(
             "Sólo selecciona pérdidas si el modelo mecánico declara un mapa dependiente de carga; "
             "no controla mariposa, admisión ni la carga del flujo de gas.")
@@ -67,20 +74,21 @@ class EnginePage(QWidget):
         self.controls["afr"].setToolTip(
             "El AFR de operación se conserva como metadata. La entrega de aire/combustible "
             "la determina el estado de especies del modelo; este campo no modifica el solver.")
-        afr_note=QLabel(
-            "El AFR editable aún no está acoplado a una ley de alimentación; "
-            "no usarlo como consigna simulada.");afr_note.setWordWrap(True);form.addRow(afr_note)
+        afr_note=QLabel("AFR guardado como metadata; no es una consigna de mezcla.");afr_note.setWordWrap(True);advanced_form.addRow(afr_note)
+        form.addRow(self.advanced_operation_toggle);form.addRow(self.advanced_operation)
         self.port_group=QGroupBox("Lumbreras y distribución");v=QVBoxLayout(self.port_group)
-        v.addWidget(QLabel("Dimensiones geométricas editables; los perfiles efectivos derivados se regeneran con el modelo existente."))
-        self.ports=QTableWidget(0,7);self.ports.setHorizontalHeaderLabels(["Lumbrera","Rol","Borde (mm)","Altura (mm)","Ancho (mm)","Cd","Recorrido techo (mm)"])
+        v.addWidget(QLabel("Lumbreras · dimensiones y eventos derivados"))
+        self.ports=QTableWidget(0,10);self.ports.setObjectName("integratedPortTiming");self.ports.setHorizontalHeaderLabels(["Lumbrera","Rol","Ø borde","Alt. (mm)","Ancho (mm)","Cd","Rec. (mm)","Abre (°)","Cierra (°)","Dur. (°)"])
         self.ports.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Interactive)
-        for col,width in enumerate((88,62,68,68,68,50,75)):self.ports.setColumnWidth(col,width)
-        self.ports.setAlternatingRowColors(True);self.ports.setMinimumHeight(220);self.ports.cellChanged.connect(self._port_changed);v.addWidget(self.ports)
+        for col,width in enumerate((105,56,78,64,55,43,55,58,58,68)):self.ports.setColumnWidth(col,width)
+        for col in (4,5,6):self.ports.setColumnHidden(col,True)
+        self.port_advanced_toggle=QPushButton("Más dimensiones ▸");self.port_advanced_toggle.clicked.connect(self._toggle_advanced_ports);v.addWidget(self.port_advanced_toggle)
+        self.ports.setAlternatingRowColors(True);self.ports.setMinimumHeight(248);self.ports.setMaximumHeight(254);self.ports.cellChanged.connect(self._port_changed);v.addWidget(self.ports)
         self.derived=QLabel();self.derived.setWordWrap(True);v.addWidget(self.derived)
-        self.timing=QTableWidget(0,4);self.timing.setObjectName("portTiming");self.timing.setHorizontalHeaderLabels(["Lumbrera","Apertura (°)","Cierre (°)","Duración (°)"]);self.timing.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);v.addWidget(self.timing)
-        self.area_plot=PortAreaPlot();self.area_plot.setObjectName("portAreaAnglePlot");v.addWidget(self.area_plot)
+        self.timing=QTableWidget(0,4);self.timing.setObjectName("portTiming");self.timing.setHorizontalHeaderLabels(["Lumbrera","Abre °","Cierra °","Duración °"]);self.timing.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.timing.hide()
+        self.area_plot=PortAreaPlot();self.area_plot.setObjectName("portAreaAnglePlot");self.area_plot.setMinimumHeight(130);self.area_plot.setMaximumHeight(165)
         self.port_areas=QTableWidget(0,3);self.port_areas.setHorizontalHeaderLabels(["Lumbrera","Evento existente (°)","Área efectiva (mm²)"])
-        self.port_areas.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.port_areas.setMaximumHeight(180);v.addWidget(self.port_areas)
+        self.port_areas.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.port_areas.setMaximumHeight(350)
         self.loss_group=QGroupBox("Pérdidas mecánicas explícitas");loss_layout=QVBoxLayout(self.loss_group)
         loss_layout.addWidget(QLabel("Editá la MEP de cada término declarado. Se conserva modelo, fuente y provenance; no se insertan defaults."))
         self.losses=QTableWidget(0,4);self.losses.setHorizontalHeaderLabels(["Término","Fuente","MEP (Pa)","Provenance"])
@@ -91,12 +99,17 @@ class EnginePage(QWidget):
         self.combust_group=QGroupBox("Combustión y combustible");f=QFormLayout(self.combust_group)
         self.comb={}
         for key,label,unit,lo,hi in [("combustion_efficiency","Eficiencia declarada","1",0,1),("ignition_timing_deg","Inicio/encendido","°",0,720),("duration_deg","Duración","°",0,720),("shape_a","Forma A","—",0.01,100),("shape_m","Forma M","—",0.01,100)]:
-            spin=QDoubleSpinBox();spin.setRange(lo,hi);spin.setDecimals(5);self.comb[key]=spin;f.addRow(f"{label} ({unit})",spin);spin.valueChanged.connect(lambda _v:self._mark_component(3,"modificado"))
+            spin=QDoubleSpinBox();spin.setRange(lo,hi);spin.setDecimals(2);self.comb[key]=spin;f.addRow(f"{label} ({unit})",spin);spin.valueChanged.connect(lambda _v:self._mark_component(3,"modificado"))
         self.combustion_notice=QLabel();self.combustion_notice.setWordWrap(True);f.addRow(self.combustion_notice)
         self.fuel=QLabel();self.fuel.setWordWrap(True);self.fuel.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         f.addRow("Fuel snapshot",self.fuel)
-        self.component_names=("Cilindro y operación","Lumbreras y distribución","Pérdidas","Combustión y combustible")
-        for name,widget in zip(self.component_names,(self.geometry_group,self.port_group,self.loss_group,self.combust_group)):
+        self.component_names=("Cilindro y distribución","Eventos de área","Pérdidas","Combustión y combustible")
+        integrated=QWidget();integrated_layout=QVBoxLayout(integrated);integrated_layout.setContentsMargins(0,0,0,0)
+        split=QSplitter(Qt.Orientation.Horizontal,integrated);split.setChildrenCollapsible(False)
+        split.addWidget(self.geometry_group);split.addWidget(self.port_group);split.setStretchFactor(0,1);split.setStretchFactor(1,2)
+        integrated_layout.addWidget(split,1);integrated_layout.addWidget(self.area_plot,1);self.component_tabs.addTab(integrated,self.component_names[0])
+        event_page=QWidget();event_layout=QVBoxLayout(event_page);event_layout.addWidget(QLabel("Eventos y áreas efectivas reportados por el modelo existente. La edición habitual y sus grados de apertura/cierre están en Cilindro y distribución."));event_layout.addWidget(self.port_areas,1);self.component_tabs.addTab(event_page,self.component_names[1])
+        for name,widget in ((self.component_names[2],self.loss_group),(self.component_names[3],self.combust_group)):
             pane=QWidget();layout=QVBoxLayout(pane);layout.addWidget(widget);layout.addStretch(1);self.component_tabs.addTab(pane,name)
         self.validation=QLabel();self.validation.setWordWrap(True);self.validation.setObjectName("notice");root.addWidget(self.validation)
         buttons=QHBoxLayout();root.addLayout(buttons)
@@ -123,23 +136,25 @@ class EnginePage(QWidget):
             snapshot=combustion.get("fuel_snapshot") or {}
             self.fuel.setText(f"{snapshot.get('schema','Sin snapshot')} · {snapshot.get('provenance','provenance no declarada')}\nLos datos de combustible son de solo lectura; importá un snapshot validado para cambiarlo.")
             self.fuel.setToolTip(f"Fuel snapshot SHA-256: {snapshot.get('sha256','no informado')}")
-            ports=n["port_binding"]["port_set"]["ports"];self.ports.blockSignals(True);self.ports.setRowCount(len(ports))
+            ports=n["port_binding"]["port_set"]["ports"];port_set=TwoStrokePortSet.from_dict(n["port_binding"]["port_set"])
+            timing_by_id={port.id:self._area_timing(port_set,port) for port in port_set.ports}
+            self.ports.blockSignals(True);self.ports.setRowCount(len(ports))
             for i,p in enumerate(ports):
-                vals=[p["id"],p["role"],p["top_mm"],p["height_mm"],p["width_mm"],p["discharge_coefficient"],p["roof_travel_mm"]]
+                vals=[p["id"],p["role"],p["top_mm"],p["height_mm"],p["width_mm"],p["discharge_coefficient"],p["roof_travel_mm"],*timing_by_id.get(p["id"],(None,None,None))]
                 for j,value in enumerate(vals):
-                    item=QTableWidgetItem("—" if value is None else str(value));item.setData(Qt.ItemDataRole.UserRole,p["id"])
-                    if j<2 or p["family"]=="effective_profile" or value is None:item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+                    display="—" if value is None else (f"{value:.1f}" if isinstance(value,(int,float)) else str(value))
+                    item=QTableWidgetItem(display);item.setData(Qt.ItemDataRole.UserRole,p["id"])
+                    if j<2 or j>=7 or p["family"]=="effective_profile" or value is None:item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
                     self.ports.setItem(i,j,item)
             self.ports.blockSignals(False)
             bore=cc["bore_mm"];stroke=cc["stroke_mm"];swept=math.pi*(bore/2)**2*stroke/1000
-            port_set=TwoStrokePortSet.from_dict(n["port_binding"]["port_set"])
             profile_rows=[]
             for profile in port_set.compile_profiles():
                 if profile.event_angles_deg:
                     profile_rows.append(f"{profile.port_id}: " + ", ".join(f"{angle:g}°" for angle in profile.event_angles_deg))
             ratio=stroke/bore;rod_ratio=cc["rod_length_mm"]/stroke;mean_speed=2*stroke/1000*cond["reference_rpm"]/60
-            self.derived.setText(f"Cilindrada {swept:.2f} cm³ · S/D {ratio:.3f} · biela/carrera {rod_ratio:.3f} · velocidad media del pistón {mean_speed:.2f} m/s\n"
-                "Distribución calculada de las transiciones de área efectiva del backend; no son controles inversos.")
+            self.derived.setText(f"Cilindrada {swept:.1f} cm³ · S/D {ratio:.2f} · biela/carrera {rod_ratio:.2f} · Vm pistón {mean_speed:.2f} m/s")
+            self.derived.setToolTip("Distribución calculada por transiciones de área efectiva del backend; no son controles inversos.")
             timing_rows=[];area_series=[];area_rows=[]
             for port in port_set.ports:
                 opening,closing,duration=self._area_timing(port_set,port)
@@ -156,7 +171,7 @@ class EnginePage(QWidget):
             self.area_plot.set_series(area_series)
             self.port_areas.setRowCount(len(area_rows))
             for i,(port_id,angle,area) in enumerate(area_rows):
-                for j,value in enumerate((port_id,f"{angle:g}",f"{area:.4f}")):
+                for j,value in enumerate((port_id,f"{angle:g}",f"{area:.2f}")):
                     item=QTableWidgetItem(str(value));item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable);self.port_areas.setItem(i,j,item)
             terms=doc["mechanical_loss_model"]["terms"];self.loss_model_draft=deepcopy(doc["mechanical_loss_model"])
             self.controls["load"].setEnabled(any(term["operating_map"] is not None for term in terms))
@@ -184,6 +199,15 @@ class EnginePage(QWidget):
         if self.loading:return
         self.component_tabs.setTabText(index,f"{self.component_names[index]} · {status}")
         self.component_state_changed.emit()
+
+    def _toggle_advanced_operation(self):
+        visible=not self.advanced_operation.isVisible()
+        self.advanced_operation.setVisible(visible);self.advanced_operation_toggle.setText("Avanzado ▾" if visible else "Avanzado ▸")
+
+    def _toggle_advanced_ports(self):
+        visible=self.ports.isColumnHidden(4)
+        for column in (4,5,6):self.ports.setColumnHidden(column,not visible)
+        self.port_advanced_toggle.setText("Más dimensiones ▾" if visible else "Más dimensiones ▸")
 
     def _edit_loss_map(self,row,_column):
         if row>=len(self.loss_model_draft["terms"]):return

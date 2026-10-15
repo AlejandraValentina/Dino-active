@@ -30,7 +30,9 @@ class DiscreteAngleCellMap(QWidget):
     def set_grid(self,angles,rows):
         self.angles=list(angles);self.rows=list(rows);self.raw_samples=[]
         finite=[float(v) for row in self.rows for v in row.get("values",[]) if v is not None and math.isfinite(float(v))]
-        low=min(finite) if finite else 0.;high=max(finite) if finite else 1.;self.value_range=(low,high)
+        if not finite:
+            self.value_range=None;self.image=QImage();self.update();return
+        low=min(finite);high=max(finite);self.value_range=(low,high)
         width=max(2,min(1200,len(self.angles)*2));height=max(2,min(600,len(self.rows)*8));self.image=QImage(width,height,QImage.Format.Format_RGB32);self.image.fill(QColor("#182536"))
         raster=QPainter(self.image);xmin=self.angles[0] if self.angles else 0.;span=max(1e-9,(self.angles[-1]-xmin) if len(self.angles)>1 else 1.)
         groups={}
@@ -71,21 +73,21 @@ class DiscreteAngleCellMap(QWidget):
         low,high=self.value_range or (0,1);bar=r.adjusted(r.width()+22,0,r.width()+52,0)
         for y in range(max(0,bar.top()),min(self.height(),bar.bottom()+1)):
             f=1-(y-bar.top())/max(bar.height(),1);p.setPen(self._color(f));p.drawLine(bar.left(),y,bar.right(),y)
-        p.setPen(QColor("#cad8e7"));p.drawText(bar.left()-28,bar.top(),45,15,Qt.AlignmentFlag.AlignRight,f"{high:.4g}");p.drawText(bar.left()-28,bar.bottom(),45,15,Qt.AlignmentFlag.AlignRight,f"{low:.4g}");p.end()
+        p.setPen(QColor("#cad8e7"));p.drawText(bar.left()-70,bar.top(),64,15,Qt.AlignmentFlag.AlignRight,f"{high:.4g}");p.drawText(bar.left()-70,bar.bottom(),64,15,Qt.AlignmentFlag.AlignRight,f"{low:.4g}");p.end()
 
 class ResultsPage(QWidget):
     evidence_updated=Signal()
     def __init__(self,context):
         super().__init__();self.context=context;self.dataset=None;self.source=None;self.loading=False
-        root=QVBoxLayout(self);root.setContentsMargins(24,20,24,20)
-        title=QLabel("Resultados y comparación");title.setObjectName('title');root.addWidget(title)
+        root=QVBoxLayout(self);root.setContentsMargins(12,10,12,10);root.setSpacing(6)
+        title=QLabel("Análisis");title.setObjectName('title');root.addWidget(title)
         self.source_notice=QLabel("No hay una corrida seleccionada. Elegila desde el historial o abrí datos importados; todavía no se cargó evidencia histórica.")
         self.source_notice.setWordWrap(True);self.source_notice.setObjectName("notice");root.addWidget(self.source_notice)
         self.run_summary=QLabel("Sin una corrida seleccionada · las métricas de desempeño no están definidas.");self.run_summary.setWordWrap(True);self.run_summary.setObjectName("notice");root.addWidget(self.run_summary)
         self.metric_cards=[];cards=QHBoxLayout();root.addLayout(cards)
         for name in ("Potencia","Torque","BMEP","Auditoría"):
             card=QLabel(f"{name}\n—");card.setObjectName("metricCard");card.setWordWrap(True);card.setMinimumHeight(50);cards.addWidget(card);self.metric_cards.append(card)
-        explanation=QLabel("PERIOD_1 describe periodicidad observada; no representa aprobación científica PASS. Los valores no definidos quedan como huecos y no se interpolan.");explanation.setWordWrap(True);root.addWidget(explanation)
+        explanation=QLabel("Los estados científicos se conservan. Métricas no definidas se explican; no se interpolan.");explanation.setWordWrap(True);root.addWidget(explanation)
         bar=QHBoxLayout();root.addLayout(bar);self.metric_selector=QComboBox();self.metric_selector.addItems(METRICS);bar.addWidget(self.metric_selector)
         self.path_label=QLabel("Sin fuente seleccionada");self.path_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse);self.path_label.setWordWrap(True);bar.addWidget(self.path_label,1)
         actions=QHBoxLayout();root.addLayout(actions)
@@ -101,7 +103,7 @@ class ResultsPage(QWidget):
         self.unit=QLabel();controls.addWidget(self.unit);controls.addStretch()
         export_table=QPushButton("Exportar tabla CSV");export_table.clicked.connect(self.export_csv);controls.addWidget(export_table)
         export_plot=QPushButton("Exportar gráfico PNG");export_plot.clicked.connect(self.export_png);controls.addWidget(export_plot)
-        self.point_table=QTableWidget(0,8);self.point_table.setHorizontalHeaderLabels(["Variante","RPM","Estado","Período","Auditoría","Ciclos","Balance","BMEP"]);self.point_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.point_table.horizontalHeader().setMinimumSectionSize(48);self.point_table.setMinimumHeight(180);self.point_table.currentCellChanged.connect(self._point_row_selected);root.addWidget(self.point_table)
+        self.point_table=QTableWidget(0,8);self.point_table.setHorizontalHeaderLabels(["Variante","RPM","Estado","Período","Auditoría","Ciclos","Balance","BMEP"]);self.point_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.point_table.horizontalHeader().setMinimumSectionSize(48);self.point_table.setMinimumHeight(125);self.point_table.setMaximumHeight(190);self.point_table.currentCellChanged.connect(self._point_row_selected);root.addWidget(self.point_table)
         self.trace_group=QGroupBox("Señales de presión, ondas y flujo EXPLORATORY")
         trace_layout=QVBoxLayout(self.trace_group)
         trace_bar=QHBoxLayout();trace_layout.addLayout(trace_bar)
@@ -113,9 +115,13 @@ class ResultsPage(QWidget):
         self.trace_map=DiscreteAngleCellMap();trace_layout.addWidget(self.trace_map)
         self.export_trace_map=QPushButton("Exportar muestras x–θ CSV");self.export_trace_map.clicked.connect(self.export_trace_csv);trace_layout.addWidget(self.export_trace_map)
         self.trace_group.hide();root.addWidget(self.trace_group)
+        self.compare_group=QGroupBox("Comparación de ingeniería")
+        compare_layout=QVBoxLayout(self.compare_group);self.compare_notice=QLabel("Seleccioná dos variantes con corridas para comparar.");self.compare_notice.setWordWrap(True);compare_layout.addWidget(self.compare_notice)
+        self.compare_table=QTableWidget(0,5);self.compare_table.setObjectName("engineeringComparisonTable");self.compare_table.setHorizontalHeaderLabels(["Elemento","Baseline","Variante","Δ","Estado"]);self.compare_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.compare_table.setMaximumHeight(220);compare_layout.addWidget(self.compare_table);root.addWidget(self.compare_group)
         self.details=QTableWidget(0,2);self.details.setHorizontalHeaderLabels(["Detalle del punto","Valor"]);self.details.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.details.setMaximumHeight(190);root.addWidget(self.details)
-        self.metric_selector.currentIndexChanged.connect(self.redraw);self.variants.itemChanged.connect(self.redraw);self.plot.pointSelected.connect(self.show_point)
+        self.metric_selector.currentIndexChanged.connect(self.redraw);self.variants.itemChanged.connect(self.redraw);self.variants.itemChanged.connect(self._update_engineering_compare);self.plot.pointSelected.connect(self.show_point)
         self.baseline_selector.currentIndexChanged.connect(self._baseline_changed)
+        root.removeWidget(self.trace_group);root.insertWidget(root.indexOf(self.plot),self.trace_group)
         self.context.changed.connect(self._project_context_changed);self._project_context_changed()
 
     def _project_context_changed(self,*_):
@@ -161,7 +167,107 @@ class ResultsPage(QWidget):
             elif other is not None:diffs.append(f"{candidate}: corridas presentes; diff de geometría no confirmado contra sus hashes")
         self.baseline_notice.setText(f"Baseline {name} · " + ("; ".join(diffs) if diffs else ("hash de geometría de corrida verificado." if baseline_matches else "configuración actual sin hash de corrida verificable.")))
         self._update_condition_notice()
+        self._update_engineering_compare()
         self.redraw()
+
+    def _update_engineering_compare(self,*_):
+        self.compare_table.setRowCount(0)
+        baseline_name=self.baseline_selector.currentData() if hasattr(self,"baseline_selector") else None
+        selected=[self.variants.item(i).text() for i in range(self.variants.count()) if self.variants.item(i).checkState()==Qt.CheckState.Checked]
+        candidate_run=next((name for name in selected if self._project_variant_for_run(name) not in (None,baseline_name)),None)
+        candidate_name=self._project_variant_for_run(candidate_run) if candidate_run else None
+        if not baseline_name or not candidate_name:
+            self.compare_notice.setText("Seleccioná baseline y variante para ver diferencias geométricas y métricas.")
+            return
+        base=self.context.project["base_engine"] if baseline_name=="base" else self.context.project["variants"].get(baseline_name)
+        candidate=self.context.project["base_engine"] if candidate_name=="base" else self.context.project["variants"].get(candidate_name)
+        rows=[]
+        if base is not None and candidate is not None:
+            from ..engine_variants import compare_configurations
+            for change in compare_configurations(base,candidate):
+                path=change.get("path","").replace("/native_configuration/","")
+                # The native ducts, species, and their discretization are
+                # derived backend state. Report the editable source geometry,
+                # not dozens of low-level mesh coordinates and inventories.
+                if path.startswith(("ducts/","duct_species/","initial_duct_states/")) or any(
+                    part in f"/{path}/" for part in ("/ducts/","/duct_species/","/initial_duct_states/")
+                ):
+                    continue
+                parts=path.split("/");tail=parts[-1]
+                labels={"length_mm":"longitud","inlet_diameter_mm":"Ø entrada",
+                    "outlet_diameter_mm":"Ø salida","bore_mm":"Ø cilindro",
+                    "stroke_mm":"carrera","rod_length_mm":"biela",
+                    "volume_bdc_cm3":"volumen PMI","cylinder_compression_ratio":"relación de compresión",
+                    "reference_rpm":"RPM de referencia"}
+                label=labels.get(tail,tail.replace("_mm"," ").replace("_"," "))
+                if "geometry_identity/chamber/sections" in path:
+                    try:
+                        section_index=int(parts[parts.index("sections")+1])
+                        from ..engine_variants import escape_sections
+                        label=f"{escape_sections(candidate)[section_index]['name']} · {label}"
+                    except (ValueError,IndexError,KeyError):pass
+                before=change.get("before");after=change.get("after");unit=change.get("unit","")
+                fmt=lambda x: f"{x:g}" if isinstance(x,(int,float)) else str(x)
+                delta=f"{after-before:+g} {unit}".strip() if isinstance(before,(int,float)) and isinstance(after,(int,float)) else "—"
+                state="Geometría del proyecto" if any(k in path for k in ("geometry_identity","slider_crank","port_binding")) else "Configuración declarada"
+                rows.append((label,f"{fmt(before)} {unit}".strip(),f"{fmt(after)} {unit}".strip(),delta,state))
+                if len(rows)>=12:break
+        points=(self.dataset or {}).get("points",[])
+        baseline_runs={name for name in selected if self._project_variant_for_run(name)==baseline_name}
+        candidate_runs={name for name in selected if self._project_variant_for_run(name)==candidate_name}
+        bpoints=[r for r in points if r.get("variant_id") in baseline_runs]
+        cpoints=[r for r in points if r.get("variant_id") in candidate_runs]
+        pairs=[]
+        for b in bpoints:
+            for c in cpoints:
+                if b.get("rpm")!=c.get("rpm"):continue
+                fields=("fuel_id","afr_kg_air_per_kg_fuel","mesh_resolution","total_finite_volume_cells","cycles_requested","solver_identity_sha256","implementation_identity_sha256")
+                mismatches=[key for key in fields if b.get(key) is not None and c.get(key) is not None and b.get(key)!=c.get(key)]
+                pairs.append((len(mismatches),b,c,mismatches))
+        pair=min(pairs,key=lambda p:(p[0],p[1].get("rpm",0))) if pairs else None
+        if pair:
+            _,b,c,mismatches=pair
+            for label,key in (("Potencia de freno","brake_power"),("Torque","brake_torque"),("BMEP","BMEP"),("IMEP","IMEP"),("FMEP","FMEP")):
+                bval=b.get(key);cval=c.get(key);bs=b.get(key+"_status");cs=c.get(key+"_status")
+                defined=bs=="DEFINED" and cs=="DEFINED" and isinstance(bval,(int,float)) and isinstance(cval,(int,float))
+                unit={"Potencia de freno":"kW","Torque":"N·m","BMEP":"kPa","IMEP":"kPa","FMEP":"kPa"}[label]
+                reason="Definido" if defined else str(c.get(key+"_reason") or b.get(key+"_reason") or "No definido por el artifact")
+                rows.append((label,f"{bval:g} {unit}" if defined else "—",f"{cval:g} {unit}" if defined else "—",f"{cval-bval:+g} {unit}" if defined else "—",reason))
+            identity_fields=("solver_identity_sha256","implementation_identity_sha256")
+            identity_known=any(b.get(key) is not None and c.get(key) is not None for key in identity_fields)
+            identity_matches=identity_known and all(b.get(key)==c.get(key) for key in identity_fields if b.get(key) is not None and c.get(key) is not None)
+            condition="Mismo RPM; condiciones declaradas coinciden" if not mismatches else "Advertencia: difieren "+", ".join(mismatches)
+            if not identity_known:condition+="; identidad del solver por punto no informada"
+            elif not identity_matches:condition+="; identidad del solver distinta"
+            self.compare_notice.setText(f"{baseline_name} vs {candidate_name} · {b.get('rpm'):g} RPM · {condition}. La identidad de configuración conserva las diferencias geométricas mostradas.")
+        else:
+            self.compare_notice.setText(f"{baseline_name} vs {candidate_name}: sin par de corridas a la misma RPM. Se muestra sólo el diff geométrico del proyecto; no se comparan métricas entre condiciones distintas.")
+        self.compare_table.setRowCount(len(rows))
+        for i,row in enumerate(rows):
+            for j,value in enumerate(row):
+                item=QTableWidgetItem(str(value));item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable);self.compare_table.setItem(i,j,item)
+
+    def _project_variant_for_run(self,variant_id):
+        """Resolve imported history labels to this project's immutable variants."""
+        if not variant_id:return None
+        label=str(variant_id)
+        prefix=f"{self.context.project.get('project_id')} / "
+        if label.startswith(prefix):label=label[len(prefix):]
+        # Prefer an explicit project variant label over configuration hash
+        # matching. A named variant may intentionally equal base geometry;
+        # hash-first matching would then alias its imported run to "base" and
+        # make the selected baseline appear to have no matching RPM point.
+        if label in self.context.project.get("variants",{}):return label
+        if label in {"base","Motor base"}:return "base"
+        configurations=[("base",self.context.project.get("base_engine",{}))]
+        configurations.extend(self.context.project.get("variants",{}).items())
+        data_points=[r for r in (self.dataset or {}).get("points",[]) if r.get("variant_id")==variant_id]
+        hashes={r.get("point_configuration_sha256") or r.get("configuration_sha256") for r in data_points}
+        hashes.discard(None)
+        for name,configuration in configurations:
+            native_hash=configuration.get("native_configuration_sha256")
+            if native_hash and native_hash in hashes:return name
+        return "base" if label in {"base","Motor base"} else None
 
     @staticmethod
     def _engineering_change(change,baseline,candidate):
@@ -225,13 +331,13 @@ class ResultsPage(QWidget):
         common=(set.intersection(*(set(row.get("channels",{})) for row in traces)
                                  if traces else [set()]))
         options=[]
-        if "cylinder_pressure_pa" in common:
-            options.append(("Presión absoluta cilindro (bar abs)","cylinder_pressure_pa"))
         for key in sorted(common):
             if key.startswith("duct:exhaust:cell:") and key.endswith(":pressure_pa"):
                 options.append((f"Presión absoluta escape · celda {key.split(':')[3]} (bar abs)",key))
             elif key.startswith("duct:exhaust:face:") and key.endswith(":mass_flow_kg_s"):
                 options.append((f"Flujo escape · cara {key.split(':')[3]} (kg/s)",key))
+        if "cylinder_pressure_pa" in common:
+            options.append(("Presión absoluta cilindro (bar abs)","cylinder_pressure_pa"))
         for label,key in options:self.trace_metric.addItem(label,key)
         self.trace_metric.blockSignals(False)
         self.trace_group.setVisible(bool(traces and options))
@@ -241,7 +347,7 @@ class ResultsPage(QWidget):
         if not traces or not options:
             reason="No hay trazas auditadas de presión/flujo disponibles." if not traces else "No hay canales de presión/flujo comunes para superponer."
             self.source_notice.setText(self.source_notice.text()+" "+reason)
-        self.redraw();self.redraw_trace();self._redraw_trace_map();self._update_condition_notice();self.evidence_updated.emit()
+        self.redraw();self.redraw_trace();self._redraw_trace_map();self._update_condition_notice();self._update_engineering_compare();self.evidence_updated.emit()
     def _exploratory_failed(self,message):
         self.path_label.setText("Ejecución EXPLORATORY inválida");self.trace_group.hide();QMessageBox.warning(self,"Artifact exploratorio inválido",message)
     def load(self,path,*,historical=False):
@@ -297,6 +403,7 @@ class ResultsPage(QWidget):
                 item=QTableWidgetItem('—' if value is None else str(value));item.setData(Qt.ItemDataRole.UserRole,row);self.point_table.setItem(i,j,item)
         self.point_table.blockSignals(False)
         self._update_condition_notice()
+        self._update_engineering_compare()
     def redraw_trace(self,*_):
         if not self.dataset or self.dataset.get("schema")!="DINO_EXPLORATORY_COMPARISON_V1":
             self.trace_plot.set_series([]);self.trace_legend.setText("");return
@@ -352,8 +459,8 @@ class ResultsPage(QWidget):
         for entry in channels:
             rows.append({"label":entry["label"],"group":f"{entry['trace'].get('variant_id')} · {entry['trace'].get('run_id')} · {entry['trace'].get('cycle')}","length_mm":entry["length_mm"],"position_m":entry["position_m"],"values":[entry["values_by_angle"].get(angle) for angle in ordered]})
         self.trace_map.set_grid(ordered,rows)
-        low,high=self.trace_map.value_range or (0,0)
-        self.trace_map_legend.setText((f"Mapa discreto posición × ángulo · escala {low:.6g}–{high:.6g} · celdas reales en bandas proporcionales · muestras exactas, sin interpolar." if rows else "Mapa discreto posición × ángulo · no hay muestras numéricas disponibles."))
+        value_range=self.trace_map.value_range
+        self.trace_map_legend.setText((f"Mapa discreto posición × ángulo · escala {value_range[0]:.6g}–{value_range[1]:.6g} · celdas reales en bandas proporcionales · muestras exactas, sin interpolar." if value_range else "Mapa discreto posición × ángulo · no hay muestras numéricas disponibles; no se interpolan ni se sustituyen datos ausentes."))
         self.trace_map.setToolTip("QImage construido con muestras originales. Cada banda representa una celda espacial y cada bloque coloreado conserva un valor muestreado; las ausencias quedan vacías.")
 
     def _trace_positions(self,trace,family):

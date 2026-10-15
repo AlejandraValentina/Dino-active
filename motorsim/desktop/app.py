@@ -5,9 +5,9 @@ import tempfile
 from pathlib import Path
 from PySide6.QtCore import QSettings,Qt,QThreadPool,QTimer,QElapsedTimer
 from PySide6.QtGui import QAction,QKeySequence,QGuiApplication
-from PySide6.QtWidgets import (QMainWindow,QWidget,QHBoxLayout,QVBoxLayout,QListWidget,QListWidgetItem,
+from PySide6.QtWidgets import (QMainWindow,QWidget,QHBoxLayout,QVBoxLayout,QBoxLayout,QListWidget,QListWidgetItem,
     QStackedWidget,QLabel,QToolBar,QFileDialog,QMessageBox,QApplication,QSplitter,QScrollArea,
-    QGroupBox,QFormLayout,QTreeWidget,QTreeWidgetItem,QDockWidget,QDoubleSpinBox,QSpinBox,QPushButton,QPlainTextEdit,QTabBar,QProgressBar,QTableWidget)
+    QGroupBox,QFormLayout,QTreeWidget,QTreeWidgetItem,QDockWidget,QDoubleSpinBox,QSpinBox,QPushButton,QPlainTextEdit,QTabBar,QProgressBar,QTableWidget,QDialog,QTabWidget)
 from ..engine_configuration import validate
 from ..engine_project import load_project,save_project
 from .services import new_project
@@ -30,18 +30,20 @@ class DinoDesktopWindow(QMainWindow):
         screen=QApplication.primaryScreen();available=screen.availableGeometry() if screen else None
         width=min(1360,available.width()) if available else 1360
         height=min(900,available.height()) if available else 900
-        self.setMinimumSize(min(980,width),min(680,height));self.resize(width,height)
+        # Keep a 980×680 outer window usable on Windows, where Qt's requested
+        # size excludes the native frame (about 16×39 px on the supported style).
+        self.setMinimumSize(min(964,width),min(641,height));self.resize(width,height)
         self.setStyleSheet(stylesheet())
         saved_variant=self.settings.value(f"active_variant/{self.context.project['project_id']}")
         if saved_variant in self.context.project["variants"]: self.context.select_variant(saved_variant)
-        self._build_ui();self._build_actions();self.context.changed.connect(self._state_changed)
+        self._build_ui();self._build_actions();self.toolbar.hide();self.context.changed.connect(self._state_changed)
         self.context.variant_changed.connect(self._variant_changed)
-        self._restore_settings();self._state_changed()
+        self._restore_settings();self._state_changed();self._select_baseline(self.context_bar.baseline.currentData())
     def _build_ui(self):
         shell=QWidget();layout=QVBoxLayout(shell);layout.setContentsMargins(0,0,0,0);layout.setSpacing(0)
         self.context_bar=ContextBar();self.context_bar.setObjectName("contextBar")
         self.context_bar.variant_selected.connect(self.context.select_variant);layout.addWidget(self.context_bar)
-        mode_row=QHBoxLayout();mode_row.setContentsMargins(12,6,12,6);mode_row.addWidget(QLabel("ESPACIO DE TRABAJO"))
+        mode_row=QHBoxLayout();mode_row.setContentsMargins(8,3,8,3);mode_row.addWidget(QLabel("VISTA"))
         self.design_mode=QPushButton("DISE\u00d1O");self.design_mode.setCheckable(True);self.design_mode.setChecked(True);self.design_mode.setObjectName("modeDesign")
         self.analysis_mode=QPushButton("AN\u00c1LISIS");self.analysis_mode.setCheckable(True);self.analysis_mode.setObjectName("modeAnalysis")
         mode_row.addWidget(self.design_mode);mode_row.addWidget(self.analysis_mode);mode_row.addStretch(1);layout.addLayout(mode_row)
@@ -59,7 +61,7 @@ class DinoDesktopWindow(QMainWindow):
                     if item:item.setToolTip(item.text())
         self.context_bar.baseline_selected.connect(self._select_baseline)
         self.results.baseline_selector.currentIndexChanged.connect(lambda *_: self._sync_baseline_bar())
-        self.design_workspace=QWidget();design_layout=QHBoxLayout(self.design_workspace);design_layout.setContentsMargins(8,4,8,4);design_layout.setSpacing(8)
+        self.design_workspace=QWidget()
         self.component_nav=QTabBar();self.component_nav.setObjectName("componentRail");self.component_nav.setShape(QTabBar.Shape.RoundedWest);self.component_nav.setExpanding(False);self.component_nav.setUsesScrollButtons(True)
         self.component_nav.setMinimumWidth(132);self.component_nav.setMaximumWidth(190)
         self.component_stack=QStackedWidget();self.component_stack.setObjectName("designComponentStack")
@@ -67,25 +69,30 @@ class DinoDesktopWindow(QMainWindow):
         for index in range(4):
             title=PAGES[index][0];page=self.pages[index]
             scroll=QScrollArea();scroll.setWidgetResizable(True);scroll.setFrameShape(QScrollArea.Shape.NoFrame);scroll.setWidget(page)
-            self.component_stack.addWidget(scroll);self.component_nav.addTab(title)
-        while self.component_nav.count():self.component_nav.removeTab(self.component_nav.count()-1)
-        for label in ("✓ Cilindro","✓ Lumbreras","✓ Admisión","✓ Combustión","✓ Pérdidas","✓ Escape","Proyecto","Simulación"):
+            self.component_stack.addWidget(scroll)
+            if index==3:self.execution_scroll=scroll
+        for label in ("Cilindro y distribución","Eventos de área","Escape","Pérdidas","Combustión","Proyecto"):
             self.component_nav.addTab(label)
-        design_layout.addWidget(self.component_nav);design_layout.addWidget(self.component_stack,1)
+        self.design_layout=QBoxLayout(QBoxLayout.Direction.LeftToRight);self.design_layout.setContentsMargins(8,4,8,4);self.design_layout.setSpacing(8)
+        self.design_workspace.setLayout(self.design_layout);self.design_layout.addWidget(self.component_nav);self.design_layout.addWidget(self.component_stack,1)
         self.mode_stack.addWidget(self.design_workspace)
         self.analysis_workspace=QWidget();analysis_layout=QVBoxLayout(self.analysis_workspace);analysis_layout.setContentsMargins(6,4,6,4)
         self.analysis_splitter=QSplitter(Qt.Orientation.Vertical);self.analysis_splitter.setChildrenCollapsible(False)
         results_scroll=QScrollArea();results_scroll.setWidgetResizable(True);results_scroll.setFrameShape(QScrollArea.Shape.NoFrame);results_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff);results_scroll.setWidget(self.results)
         self.analysis_splitter.addWidget(results_scroll)
         from .widgets.run_history import RunHistoryWidget
-        self.analysis_history=RunHistoryWidget(self.context,self.pages[3].artifact_root,async_load=True,auto_refresh=False);self.analysis_history.setMinimumHeight(170)
+        self.analysis_history=RunHistoryWidget(self.context,self.pages[3].artifact_root,async_load=True,auto_refresh=False);self.analysis_history.setMinimumHeight(110);self.analysis_history.setMaximumHeight(190)
         self.analysis_history.open_runs.connect(self._open_indexed_runs)
         self.analysis_history.resume_run.connect(self.pages[3].resume_from_entry)
         self.analysis_history.entries_changed.connect(self.pages[3].set_history_entries)
         self.pages[3].set_history_entries(self.analysis_history.entries)
         self.pages[3].artifact_root_changed.connect(self._artifact_root_changed)
         self.pages[3].refresh_history_requested.connect(self.analysis_history.refresh)
-        self.analysis_splitter.addWidget(self.analysis_history);self.analysis_splitter.setSizes([580,250]);analysis_layout.addWidget(self.analysis_splitter)
+        self.analysis_splitter.addWidget(self.analysis_history);self.analysis_splitter.setSizes([710,130]);analysis_layout.addWidget(self.analysis_splitter)
+        self.history_toggle=QPushButton("Ocultar corridas")
+        self.history_toggle.clicked.connect(lambda checked=False:self._toggle_history())
+        self.history_toggle.hide()
+        mode_row.addWidget(self.history_toggle)
         self.mode_stack.addWidget(self.analysis_workspace)
         execution=self.pages[3];results=self.pages[4]
         execution.open_runs_requested.connect(self._open_indexed_runs)
@@ -105,15 +112,25 @@ class DinoDesktopWindow(QMainWindow):
         self.addDockWidget(Qt.DockWidgetArea.BottomDockWidgetArea,self.evidence_dock);self.evidence_dock.hide()
         self.simulation_strip=QWidget();self.simulation_strip.setObjectName("simulationStatusStrip")
         strip=QHBoxLayout(self.simulation_strip);strip.setContentsMargins(12,5,12,5)
-        self.run_state=QLabel("LISTO · sin corrida activa");self.run_state.setMinimumWidth(210);strip.addWidget(self.run_state)
-        self.run_progress=QProgressBar();self.run_progress.setRange(0,100);self.run_progress.setValue(0);self.run_progress.setMaximumWidth(240);self.run_progress.setFormat("Sin actividad");strip.addWidget(self.run_progress)
+        self.run_state=QLabel("LISTO · sin corrida activa");self.run_state.setMinimumWidth(105);strip.addWidget(self.run_state)
+        self.run_progress=QProgressBar();self.run_progress.setRange(0,100);self.run_progress.setValue(0);self.run_progress.setMaximumWidth(160);self.run_progress.setFormat("Sin actividad");strip.addWidget(self.run_progress)
         self.run_clock=QLabel("—");strip.addWidget(self.run_clock)
+        self.run_config_summary=QLabel();strip.addWidget(self.run_config_summary)
         self.checkpoint_state=QLabel("Checkpoint: —");strip.addWidget(self.checkpoint_state,1)
+        self.prepare_button=QPushButton("Preparar…");self.prepare_button.setObjectName("prepareRunPanel");self.prepare_button.clicked.connect(self._show_execution_panel);strip.addWidget(self.prepare_button)
         self.strip_run=execution.start;self.strip_run.setText("Iniciar corrida…");self.strip_run.setMinimumWidth(150);strip.addWidget(self.strip_run)
         self.strip_cancel=QPushButton("Cancelar");self.strip_cancel.setEnabled(False);self.strip_cancel.clicked.connect(execution.cancel_run);strip.addWidget(self.strip_cancel)
         execution.state_changed.connect(self._update_strip);execution.progress_signal.connect(self._update_progress)
         execution.progress_signal.connect(lambda *_: self._update_strip())
+        execution.rpm.valueChanged.connect(self._update_strip);execution.cycles.valueChanged.connect(self._update_strip);execution.budget.valueChanged.connect(self._update_strip)
         self.design_mode.clicked.connect(lambda:self.set_workspace_mode(0));self.analysis_mode.clicked.connect(lambda:self.set_workspace_mode(1))
+        execution.cancel.hide()
+        self.execution_dialog=QDialog(self);self.execution_dialog.setWindowTitle("Preparar prueba")
+        screen=QApplication.primaryScreen();available=screen.availableGeometry() if screen else None
+        self.execution_dialog.resize(min(900,available.width()) if available else 900,min(650,available.height()) if available else 650)
+        execution_dialog_layout=QVBoxLayout(self.execution_dialog);self.execution_dialog_tabs=QTabWidget();execution_dialog_layout.addWidget(self.execution_dialog_tabs)
+        self.execution_dialog_scroll=QScrollArea();self.execution_dialog_scroll.setWidgetResizable(True);self.execution_dialog_scroll.setFrameShape(QScrollArea.Shape.NoFrame);self.execution_dialog_tabs.addTab(self.execution_dialog_scroll,"Preparar")
+        self.execution_dialog.finished.connect(self._restore_execution_page)
         self.component_nav.currentChanged.connect(self._component_selected)
         self._refresh_component_states();layout.addWidget(self.simulation_strip);self.setCentralWidget(shell)
         self.stack=self.component_stack
@@ -125,6 +142,7 @@ class DinoDesktopWindow(QMainWindow):
         if not hasattr(self,"pages"):return
         execution=self.pages[3]
         active=execution.task is not None
+        self.run_config_summary.setText(f"{execution.rpm.value():g} rpm · {execution.cycles.value()} ciclos · {execution.budget.value():g} s")
         self.strip_cancel.setEnabled(active)
         self.run_state.setText(execution.status_text if not active else ("CANCELACIÓN SOLICITADA" if execution.cancel_event and execution.cancel_event.is_set() else "CORRIENDO"))
         self.run_progress.setVisible(active or execution.progress_latest is not None)
@@ -145,22 +163,46 @@ class DinoDesktopWindow(QMainWindow):
     def set_workspace_mode(self,index):
         index=1 if index else 0
         self.mode_stack.setCurrentIndex(index);self.design_mode.setChecked(index==0);self.analysis_mode.setChecked(index==1)
+        self.history_toggle.setVisible(index==1)
         self.settings.setValue("workspace_mode",index)
         if index==1:self.analysis_history.activate()
         if index==0:self._component_selected(max(0,self.component_nav.currentIndex()))
     def _component_selected(self,index):
-        if index<5:
+        if index in (0,1,3,4):
             self.component_stack.setCurrentIndex(0)
-            self.pages[0].component_tabs.setCurrentIndex(min(index,3))
-        else:self.component_stack.setCurrentIndex(index-4)
+            self.pages[0].component_tabs.setCurrentIndex({0:0,1:1,3:2,4:3}[index])
+        elif index==2:self.component_stack.setCurrentIndex(1)
+        elif index==5:self.component_stack.setCurrentIndex(2)
+
+    def _show_execution_panel(self):
+        if self.pages[3].parentWidget() is self.execution_scroll.viewport():
+            page=self.execution_scroll.takeWidget()
+            if page is not None:self.execution_dialog_scroll.setWidget(page)
+        if self.execution_dialog_tabs.indexOf(self.analysis_history)<0:
+            self.analysis_history.setMaximumHeight(16777215);self.execution_dialog_tabs.addTab(self.analysis_history,"Corridas")
+        self.analysis_history.activate();self.analysis_history.refresh()
+        self.pages[3].refresh()
+        self.execution_dialog.show();self.execution_dialog.raise_();self.execution_dialog.activateWindow()
+
+    def _restore_execution_page(self,*_):
+        if self.pages[3].parentWidget() is self.execution_dialog_scroll.viewport():
+            self.execution_dialog_scroll.takeWidget();self.execution_scroll.setWidget(self.pages[3])
+        index=self.execution_dialog_tabs.indexOf(self.analysis_history)
+        if index>=0:
+            self.execution_dialog_tabs.removeTab(index);self.analysis_history.setMaximumHeight(190);self.analysis_splitter.addWidget(self.analysis_history)
+
+    def _toggle_history(self):
+        visible=not self.analysis_history.isVisible()
+        self.analysis_history.setVisible(visible)
+        self.history_toggle.setText("Ocultar corridas" if visible else "Mostrar corridas")
     def _run_started(self):
         self.pages[3].status_text="CORRIENDO";self._update_strip()
     def _refresh_component_states(self):
-        labels=("Cilindro","Lumbreras","Admisión","Combustión","Pérdidas","Escape","Proyecto","Simulación")
+        labels=("Cilindro y distribución","Eventos de área","Escape","Pérdidas","Combustión","Proyecto")
         validation=self.pages[0].validation.text().lower()
         valid="no se pudo presentar" not in validation and "rechazada" not in validation
         engine_status=[self.pages[0].component_tabs.tabText(i).lower() for i in range(4)]
-        status_by_tab=(engine_status[0],engine_status[1],engine_status[2],engine_status[3],engine_status[2],self.pages[1].edit_state)
+        status_by_tab=(engine_status[0],engine_status[1],self.pages[1].edit_state,engine_status[2],engine_status[3],"complete")
         for i in range(self.component_nav.count()):
             title=labels[i] if i<len(labels) else PAGES[i][0]
             state=status_by_tab[i] if i<len(status_by_tab) else "complete"
@@ -184,6 +226,7 @@ class DinoDesktopWindow(QMainWindow):
     def _start_from_strip(self,execution):
         execution.start_run(resume=False);self._update_strip()
     def _open_indexed_runs(self,paths):
+        if self.execution_dialog.isVisible():self.execution_dialog.reject()
         self.set_workspace_mode(1);self.pages[4].open_runs(paths)
     def _select_baseline(self,name):
         selector=self.results.baseline_selector;index=selector.findData(name)
@@ -251,8 +294,19 @@ class DinoDesktopWindow(QMainWindow):
     def resizeEvent(self,event):
         super().resizeEvent(event)
         if hasattr(self,"component_nav"):
-            self.component_nav.setMinimumWidth(132)
-            self.component_nav.setMaximumWidth(190)
+            compact=self.width()<=1120
+            self.menuBar().setVisible(not compact)
+            if hasattr(self,"pages"):
+                self.pages[1].set_compact_layout(compact, self.width()<=1000)
+            if compact:
+                self.design_layout.setDirection(QBoxLayout.Direction.TopToBottom)
+                self.component_nav.setShape(QTabBar.Shape.RoundedNorth);self.component_nav.setMinimumWidth(0);self.component_nav.setMaximumWidth(16777215);self.component_nav.setFixedHeight(38);self.component_nav.setExpanding(False)
+                self.checkpoint_state.hide();self.run_progress.setMaximumWidth(145);self.run_clock.setMinimumWidth(48)
+            else:
+                self.design_layout.setDirection(QBoxLayout.Direction.LeftToRight)
+                self.component_nav.setShape(QTabBar.Shape.RoundedWest);self.component_nav.setMinimumWidth(132);self.component_nav.setMaximumWidth(190);self.component_nav.setMaximumHeight(16777215);self.component_nav.setExpanding(False)
+                self.checkpoint_state.show();self.run_progress.setMaximumWidth(220)
+            if hasattr(self,"history_toggle"):self.history_toggle.setVisible(self.mode_stack.currentIndex()==1)
             self._refresh_component_states()
     def _restore_settings(self):
         geometry=self.settings.value('window_geometry')

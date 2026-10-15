@@ -22,23 +22,20 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_COMMERCIAL_DESKTOP_V3
-change/spec:       openspec/changes/dino-commercial-desktop-v3/
-                   (specs/dino-commercial-desktop-v3/spec.md is the authority)
-completion:        Owner-authorized two-mode commercial desktop redesign using
-                   existing backends only. Complete P0/P1 criteria, tests, real
-                   Windows UI/package checks where available; otherwise PARTIAL
-                   with exact blockers. No physics, solver, mesh, campaigns, or
-                   historical result changes. No automatic next phase or push.
+CURRENT_OBJECTIVE: DINO_DESKTOP_V3_1_VISUAL_PARITY
+change/spec:       openspec/changes/dino-desktop-v3-1-visual-parity/
+                   (specs/dino-desktop-v3-1-visual-parity/spec.md is the authority)
+completion:        Owner-authorized visual-parity finish against M1–M6 in the
+                   packaged EXE. Require functional workflows and real captures,
+                   relevant regressions, package integrity and strict checks.
+                   No physics, solver, mesh, simulations, campaigns, historical
+                   artifact changes, or push. V3 remains PASS and immutable.
 previous objective: DINO_TUNING_WORKBENCH_V1 = PARTIAL; packaged interaction
                    acceptance remains blocked by unavailable unlocked desktop
                    interaction. This limitation is preserved, not promoted.
-previous completed objective: DINO_DESKTOP_UX_V2 = PASS /
-                   DINO_DESKTOP_UX_V2_READY; packaged acceptance receipt is
-                   durable and the prior gate remains recorded.
-previous objective: DINO_DESKTOP_UX_V2 = PASS /
-                   DINO_DESKTOP_UX_V2_READY; packaged acceptance receipt is
-                   durable and the prior gate remains recorded.
+previous objective: DINO_COMMERCIAL_DESKTOP_V3 = PASS /
+                   DINO_COMMERCIAL_DESKTOP_V3_READY; immutable V3 gate archive
+                   retained. V3.1 is a separate objective.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

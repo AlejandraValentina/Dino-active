@@ -49,7 +49,7 @@ def artifact_root() -> Path:
 def set_artifact_root(path: str | Path, *, allow_repository: bool = False) -> Path:
     value=Path(path).expanduser()
     repository=repository_root_containing(value)
-    if repository is not None and not allow_repository:
+    if repository is not None:
         raise ValueError(f"La raíz de artifacts no puede estar dentro del repositorio {repository}; elegí una carpeta externa.")
     settings().setValue("artifact_root",str(value))
     settings().sync()

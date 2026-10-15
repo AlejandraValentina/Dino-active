@@ -1,0 +1,84 @@
+{
+  "schema": "DINO_DESKTOP_V3_1_OWNER_AUTHORIZATION_V1",
+  "objective": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
+  "authorization_source": "Explicit owner authorization in conversation, 2026-10-15",
+  "communicated_by_owner": true,
+  "implemented_by_codex": false,
+  "scope": "UI composition, usability, package verification, and artifact-root write safety only",
+  "prohibitions": [
+    "No physics/solver/mesh/scientific contract changes",
+    "No historical artifact changes",
+    "No simulations or campaigns",
+    "No push",
+    "Preserve unrelated local files"
+  ],
+  "reference_root": "E:\\dino\\Dino-ux-reviews\\DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015",
+  "reference_inventory": [
+    {
+      "path": "E:\\dino\\Dino-ux-reviews\\DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015\\DINO_COMMERCIAL_VISUAL_UX_REVIEW.md",
+      "sha256": "7532fe55429b53803032e14e17b38f20ddbc3cf850cd8b5221a4acb8323744b0"
+    },
+    {
+      "path": "E:\\dino\\Dino-ux-reviews\\DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015\\mockups\\M1_ventana_principal_diseno_escape.png",
+      "sha256": "a5b024b9e1e481f6ea767607417dde441efa22dc7de7834890411fb67a01bd9f"
+    },
+    {
+      "path": "E:\\dino\\Dino-ux-reviews\\DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015\\mockups\\M2_editor_motor_distribucion.png",
+      "sha256": "391603bd54d27e0e42820d3fea8d226900b52e207beed4d685a25d71d0426490"
+    },
+    {
+      "path": "E:\\dino\\Dino-ux-reviews\\DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015\\mockups\\M3_simulacion_panel_y_estados.png",
+      "sha256": "5d4199438c64868f93e15b9dd0b9ea787fab92482449f4085bdaa8bed4c1fd0e"
+    },
+    {
+      "path": "E:\\dino\\Dino-ux-reviews\\DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015\\mockups\\M4_modo_analisis_ondas.png",
+      "sha256": "aca0b292aef887ac7a937ed694c9b894afe28d9940130b5a9b48b567e2a32f32"
+    },
+    {
+      "path": "E:\\dino\\Dino-ux-reviews\\DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015\\mockups\\M5_comparacion_configuracion_metricas.png",
+      "sha256": "36c7c9e2115df87581a33e5314cd216e8f76259a4123328333975a3172340a08"
+    },
+    {
+      "path": "E:\\dino\\Dino-ux-reviews\\DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015\\mockups\\M6_compacto_980x680.png",
+      "sha256": "e582a255bedbdcd7570b31b6ccac2046ceef79ee10a1e5e694aba44aa5e6868f"
+    }
+  ],
+  "before_comparison": [
+    {
+      "screen": "M1",
+      "mockup": "M1_ventana_principal_diseno_escape.png",
+      "capture": "results/dino-commercial-desktop-v3/captures/04-exhaust-real-exe.png",
+      "gap": "Routine diameter edits require a separate shared-stations table; per-section row does not edit outlet diameter."
+    },
+    {
+      "screen": "M2",
+      "mockup": "M2_editor_motor_distribucion.png",
+      "capture": "results/dino-commercial-desktop-v3/captures/02-cylinder-real-exe.png",
+      "gap": "Cylinder geometry and port dimensions/timing/area plot are split across tabs and long scrolls."
+    },
+    {
+      "screen": "M3",
+      "mockup": "M3_simulacion_panel_y_estados.png",
+      "capture": "results/dino-commercial-desktop-v3/captures/05-simulation-real-exe.png",
+      "gap": "Preparation is a separate page with duplicate execution controls; no in-strip expandable preparation panel."
+    },
+    {
+      "screen": "M4",
+      "mockup": "M4_modo_analisis_ondas.png",
+      "capture": "results/dino-commercial-desktop-v3/captures/06-analysis-pressure-real-exe.png",
+      "gap": "History consumes vertical area; signal and x-theta views lack the target dashboard hierarchy."
+    },
+    {
+      "screen": "M5",
+      "mockup": "M5_comparacion_configuracion_metricas.png",
+      "capture": "results/dino-commercial-desktop-v3/captures/06-comparison-real-exe.png",
+      "gap": "Comparison lacks integrated geometry overlay plus engineering delta/metric table."
+    },
+    {
+      "screen": "M6",
+      "mockup": "M6_compacto_980x680.png",
+      "capture": "results/dino-commercial-desktop-v3/captures/08-responsive-980x680-real-exe.png",
+      "gap": "Compact view remains vertical rail/content with crowded and clipped execution layout."
+    }
+  ]
+}

@@ -149,7 +149,7 @@ class ExecutionPage(QWidget):
             self.start.setEnabled(self.task is None and not unsafe)
             candidate=self.artifact_root/'exploratory-workflow-v1'/self.context.project['project_id']/self.run_id.text().strip()
             resumable=(bool(self.run_id.text().strip()) and (candidate/'run.json').is_file() and (candidate/'checkpoint.json').is_file())
-            self.resume.setEnabled(self.task is None and resumable)
+            self.resume.setEnabled(self.task is None and resumable and not unsafe)
         except Exception as exc:
             self.preflight_label.setText(f"Preflight FAIL-CLOSED: {type(exc).__name__}: {exc}")
             self.start.setEnabled(False); self.resume.setEnabled(False)
@@ -175,7 +175,7 @@ class ExecutionPage(QWidget):
             self.context.select_variant(matches[0])
             from pathlib import Path
             self.artifact_root=Path(entry["artifact_root"])
-            self.root_label.setText(str(self.artifact_root));self.history.artifact_root=self.artifact_root;set_artifact_root(self.artifact_root,allow_repository=True)
+            self.root_label.setText(str(self.artifact_root));self.history.artifact_root=self.artifact_root;set_artifact_root(self.artifact_root)
             self.run_id.setText(str(entry["run_id"]))
             if entry.get("rpm") is not None:self.rpm.setValue(float(entry["rpm"]))
             cycles=entry.get("details",{}).get("cycles_requested")
@@ -239,6 +239,8 @@ class ExecutionPage(QWidget):
 
     def start_run(self, *, resume):
         if self.task is not None:return
+        if repository_root_containing(self.artifact_root) is not None:
+            QMessageBox.warning(self,"Artifact root bloqueado","No se permiten ejecuciones ni reanudaciones que escriban dentro del repositorio. Elegí una raíz externa.");return
         run_id=self.run_id.text().strip()
         if not resume:
             run_id=run_id or uuid.uuid4().hex

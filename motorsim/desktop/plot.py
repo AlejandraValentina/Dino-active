@@ -56,10 +56,8 @@ class CurvePlot(QWidget):
             if missing:
                 xs=[float(p[s.get("x_key","rpm")]) for s,_,p in missing];xmin,xmax=min(xs),max(xs)
                 if xmin==xmax:xmax=xmin+1
-                for s,_,p in missing:
-                    x=rect.left()+(float(p[s.get("x_key","rpm")])-xmin)/(xmax-xmin)*rect.width();y=rect.center().y()
-                    painter.setPen(QPen(QColor("#fb7185"),2));painter.drawLine(round(x)-5,round(y)-5,round(x)+5,round(y)+5);painter.drawLine(round(x)-5,round(y)+5,round(x)+5,round(y)-5)
-                painter.setPen(QColor("#cad8e7"));painter.drawText(rect,Qt.AlignmentFlag.AlignCenter,"Sin valores numéricos definidos · las × indican puntos no graficables")
+                reasons=sorted({str(p.get("reason")) for _,_,p in missing if p.get("reason")})
+                painter.setPen(QColor("#cad8e7"));painter.drawText(rect.adjusted(12,12,-12,-24),Qt.AlignmentFlag.AlignCenter,"Sin valores numéricos definidos\n"+(reasons[0] if reasons else "La métrica requiere un estado de corrida que aún no está disponible."))
                 painter.drawText(rect.left(),rect.bottom()+26,f"RPM  {xmin:g} — {xmax:g}")
             else:painter.drawText(rect,Qt.AlignmentFlag.AlignCenter,"Sin valores válidos para graficar")
             painter.end(); return
@@ -69,7 +67,7 @@ class CurvePlot(QWidget):
         painter.setFont(QFont("Segoe UI",8));painter.setPen(QColor("#9fb3c8"))
         for tick in self.y_ticks:
             y=rect.bottom()-(tick-ymin)/(ymax-ymin)*rect.height()
-            label=f"{tick:.3f}" if self.series and self.series[0].get("unit")=="bar abs" else f"{tick:g}"
+            label=f"{tick:.2f}" if self.series and self.series[0].get("unit")=="bar abs" else f"{tick:g}"
             painter.drawText(2,round(y)-7,68,14,Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignVCenter,label)
         for si,series in enumerate(self.series):
             baseline=series.get("role")=="baseline"
@@ -83,12 +81,9 @@ class CurvePlot(QWidget):
                 painter.setBrush(QColor(self.COLORS[si%len(self.COLORS)]));painter.drawEllipse(current,3.5,3.5)
                 if self.selected==(series.get("name"),index):painter.drawEllipse(current,7,7)
                 previous=current
-            for _,point_index,point in (entry for entry in missing if entry[0] is series):
-                x=rect.left()+(float(point[series.get("x_key","rpm")])-xmin)/(xmax-xmin)*rect.width();y=rect.bottom()
-                painter.setPen(QPen(QColor("#fb7185"),2));painter.drawLine(round(x)-5,round(y)-5,round(x)+5,round(y)+5);painter.drawLine(round(x)-5,round(y)+5,round(x)+5,round(y)-5)
         painter.setFont(QFont("Segoe UI",9));painter.setPen(QColor("#cad8e7"))
         painter.drawText(rect.left(),rect.bottom()+26,f"{xlabel}  {xmin:g} — {xmax:g}")
-        if missing:painter.drawText(rect.left(),rect.bottom()+38,"× = sin métrica numérica; posición vertical simbólica")
+        if missing:painter.drawText(rect.left(),rect.bottom()+38,"Los puntos sin valor se omiten; la curva no se conecta ni se interpola.")
         painter.drawText(6,rect.top()+12,self.series[0].get("unit","") if self.series else "")
         painter.end()
     def mousePressEvent(self,event):

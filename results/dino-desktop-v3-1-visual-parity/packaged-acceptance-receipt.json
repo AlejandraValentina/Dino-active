@@ -1,0 +1,89 @@
+{
+  "schema": "DINO_DESKTOP_V3_1_PACKAGED_ACCEPTANCE_RECEIPT_V1",
+  "objective": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
+  "result": "DINO_DESKTOP_V3_1_PARTIAL",
+  "reference_head": "d187821931dacae588ed90531e3edeb9cfacefc3",
+  "package": {
+    "type": "TRIAL",
+    "folder": "dist/MotorSim-0.1.0-rc6-windows-x64-d1878219-trial-20261015T152844Z/MotorSim",
+    "zip": "dist/MotorSim-0.1.0-rc6-windows-x64-d1878219-trial-20261015T152844Z.zip",
+    "sha256": "690dbeaa61e5c733b4291476aae5717eda7e5cb61cdc455f5125d48a15c6907f",
+    "entries": 300,
+    "zip_test": "PASS",
+    "source_dirty": true,
+    "dino2t_sha256": "ADE2554F5109A516B29EC976E9EF436A17B6F92564A38ED47244880D7E4A8844",
+    "motorsim_sha256_preserved": "D0092A9EA64F9FB53310C10190338602D7BEBC0AF780AA5EE040C71544BD0EFF",
+    "worker_sha256_preserved": "BD2AC2CEE833F3233F9F71C2932196568F3B6FADF213D448F09548366A6B0254"
+  },
+  "execution": {
+    "final_trial_exe_started": true,
+    "pid": 10324,
+    "window_title": "Dino 2T — dino-project",
+    "project_and_results_loaded_on_final_build": false,
+    "blocker": "Windows desktop session locked after final package start; further on-screen interaction and capture of the exact final build were unavailable. The preceding V3.1 TRIAL EXEs were interactively exercised and captured.",
+    "simulations_started": 0,
+    "campaigns_started": 0
+  },
+  "verification": {
+    "desktop_regression_suite": "41 passed (before final small baseline/colorbar polish)",
+    "post_polish_focused": "4 passed; later map-focused 2 passed",
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "openspec_strict": "PASS",
+    "artifact_root_repository_rejection": "PASS in tests; start and resume remain fail-closed",
+    "historical_v1_and_R2": "not modified"
+  },
+  "screens": [
+    {
+      "id": "M1",
+      "mockup": "E:\\dino\\Dino-ux-reviews\\DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015\\mockups\\M1_ventana_principal_diseno_escape.png",
+      "before": "results/dino-commercial-desktop-v3/captures/04-exhaust-real-exe.png",
+      "after": "results/dino-desktop-v3-1-visual-parity/captures-after/exe_m1_trial_152215_1360x900.png",
+      "result": "TABLE_AND_PROFILE_PASS; baseline-difference shown; final startup synchronization polish is source-tested but not visible-captured on the locked final build."
+    },
+    {
+      "id": "M2",
+      "mockup": "E:\\dino\\Dino-ux-reviews\\DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015\\mockups\\M2_editor_motor_distribucion.png",
+      "before": "results/dino-commercial-desktop-v3/captures/02-cylinder-real-exe.png",
+      "after": "results/dino-desktop-v3-1-visual-parity/captures-after/exe_m2_trial_152215_1360x900.png",
+      "result": "INTEGRATED_CYLINDER_PORT_TIMING_AREA_ANGLE_PASS; compact headers; area-angle graph remains scrollable at this size."
+    },
+    {
+      "id": "M3",
+      "mockup": "E:\\dino\\Dino-ux-reviews\\DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015\\mockups\\M3_simulacion_panel_y_estados.png",
+      "before": "results/dino-commercial-desktop-v3/captures/05-simulation-real-exe.png",
+      "after": [
+        "results/dino-desktop-v3-1-visual-parity/captures-after/exe_m3_trial_152215_preparar.png",
+        "results/dino-desktop-v3-1-visual-parity/captures-after/exe_m3_trial_152215_corridas.png"
+      ],
+      "result": "PREPARATION_AND_HISTORY_PANEL_PASS; shared RPM/horizon/budget; no run started."
+    },
+    {
+      "id": "M4",
+      "mockup": "E:\\dino\\Dino-ux-reviews\\DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015\\mockups\\M4_modo_analisis_ondas.png",
+      "before": "results/dino-commercial-desktop-v3/captures/06-analysis-pressure-real-exe.png",
+      "after": "results/dino-desktop-v3-1-visual-parity/captures-after/exe_m4_trial_152215_pressure_map.png",
+      "result": "ACTUAL_3000_RPM_PRESSURE_TRACE_AND_DISCRETE_EXHAUST_MAP_PASS; common exact angles, no interpolation; unavailable performance remains empty. Final colorbar-label width polish is source-tested but not visible-captured on the locked final build."
+    },
+    {
+      "id": "M5",
+      "mockup": "E:\\dino\\Dino-ux-reviews\\DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015\\mockups\\M5_comparacion_configuracion_metricas.png",
+      "before": "results/dino-commercial-desktop-v3/captures/06-comparison-real-exe.png",
+      "after": "results/dino-desktop-v3-1-visual-parity/captures-after/exe_m5_final_comparison.png",
+      "result": "PASS_ON_PRECEDING_V3_1_TRIAL; two existing EXPLORATORY runs at 3000 RPM from different variants; geometry delta and warnings visible; undefined metrics remain blank with reasons. Not recaptured on exact final package due session lock."
+    },
+    {
+      "id": "M6",
+      "mockup": "E:\\dino\\Dino-ux-reviews\\DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015\\mockups\\M6_compacto_980x680.png",
+      "before": "results/dino-commercial-desktop-v3/captures/08-responsive-980x680-real-exe.png",
+      "after": "results/dino-desktop-v3-1-visual-parity/captures-after/exe_m6_trial_150617_980x680_screen.png",
+      "result": "980x680 ACTUAL_EXE; horizontal component tabs, all five segment rows and run bar visible; genuine screen capture includes thin desktop edges."
+    }
+  ],
+  "remaining_differences": [
+    "Cannot visually certify the exact final TRIAL executable build because the Windows session locked after its startup; the two final small UI polish changes are covered by tests but not a new on-screen capture.",
+    "M2 graph and M4 map occupy scrollable pages; at compact heights their full content is reached by scrolling.",
+    "M5 uses a two-run selection and comparison workflow; solver identity missing from those historical artifacts remains explicitly warned, and performance metrics stay undefined."
+  ],
+  "provenance": "All screenshots referenced above are real Windows executable captures from the listed V3.1 TRIAL build generations. Earlier screenshots are identified where they predate the final packaging rebuild; no source screenshot is represented as packaged evidence."
+}

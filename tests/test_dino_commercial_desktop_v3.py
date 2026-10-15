@@ -140,7 +140,7 @@ class CommercialDesktopV3P0Tests(unittest.TestCase):
         self.assertAlmostEqual(rows["inlet-window"][2],198.0,delta=.1)
         self.assertEqual(len(page.area_plot.series),6)
         self.assertEqual(len(page.area_plot.series[0]["points"]),181)
-        self.assertIn("no son controles inversos",page.derived.text())
+        self.assertIn("no son controles inversos",page.derived.toolTip())
 
 
 if __name__ == "__main__":
