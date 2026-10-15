@@ -3,7 +3,7 @@ from __future__ import annotations
 from copy import deepcopy
 import math
 
-from PySide6.QtCore import QPointF, Qt
+from PySide6.QtCore import QPointF, Qt, Signal
 from PySide6.QtGui import QColor, QPainter, QPen
 from PySide6.QtWidgets import (QWidget,QVBoxLayout,QHBoxLayout,QLabel,QTableWidget,QTableWidgetItem,
     QHeaderView,QPushButton,QMessageBox,QComboBox,QGroupBox,QInputDialog,QAbstractItemView)
@@ -28,7 +28,7 @@ def _number(text: str, label: str) -> float:
 class ExhaustProfile(QWidget):
     """Dimensionally scaled (equal mm/px on both axes) conical profile."""
     def __init__(self,parent=None):
-        super().__init__(parent);self.sections=[];self.overlay=[];self.refinements=[];self.changed_sections=set();self.setMinimumHeight(220)
+        super().__init__(parent);self.sections=[];self.overlay=[];self.refinements=[];self.changed_sections=set();self.setMinimumHeight(340)
 
     def set_sections(self,sections,refinements=None,overlay=None,changed_sections=None):
         self.sections=deepcopy(sections);self.overlay=deepcopy(overlay or [])
@@ -54,7 +54,13 @@ class ExhaustProfile(QWidget):
                         painter.drawLine(xx,round(center-d*scale/2),xx,round(center+d*scale/2))
                 if i in self.changed_sections:
                     painter.fillRect(round(x0),rect.top(),max(2,round(x1-x0)),rect.height(),QColor(245,158,11,24))
-                painter.setPen(QColor("#cad8e7"));painter.drawText(round((x0+x1)/2)-35,rect.bottom()+17,s["name"][:9])
+                painter.setPen(QColor("#cad8e7"))
+                painter.drawText(round((x0+x1)/2)-70,rect.top()+13,140,16,Qt.AlignmentFlag.AlignCenter,
+                                 f"Ø {s['inlet_diameter_mm']:.1f} → {s['outlet_diameter_mm']:.1f} mm")
+                painter.setPen(QPen(QColor("#91a8bf"),1));painter.drawLine(round(x0),rect.bottom()+8,round(x1),rect.bottom()+8)
+                painter.drawLine(round(x0),rect.bottom()+4,round(x0),rect.bottom()+12);painter.drawLine(round(x1),rect.bottom()+4,round(x1),rect.bottom()+12)
+                painter.setPen(QColor("#cad8e7"));painter.drawText(round((x0+x1)/2)-76,rect.bottom()+26,152,16,Qt.AlignmentFlag.AlignCenter,
+                                 f"{s['name']} · {s['length_mm']:.1f} mm")
             cursor+=s["length_mm"]
         painter.setPen(QPen(QColor(color),width,style));painter.drawPolyline(upper);painter.drawPolyline(list(reversed(lower)))
 
@@ -64,33 +70,34 @@ class ExhaustProfile(QWidget):
         if not self.sections:painter.end();return
         self._draw_profile(painter,self.sections,rect,"#43c5f5",3)
         if self.overlay:self._draw_profile(painter,self.overlay,rect,"#f59e0b",2,Qt.PenStyle.DashLine)
-        total=sum(s["length_mm"] for s in self.sections)
-        painter.setPen(QColor("#cad8e7"));painter.drawText(rect.left(),self.height()-8,f"Largo total: {total:.1f} mm · escala axial/radial idéntica")
         painter.end()
 
 
 class ExhaustPage(QWidget):
+    component_state_changed=Signal()
     def __init__(self,context):
-        super().__init__();self.context=context;self.loading=False
+        super().__init__();self.context=context;self.loading=False;self.edit_state="complete"
         root=QVBoxLayout(self);root.setContentsMargins(20,16,20,16);root.setSpacing(9)
         title=QLabel("Diseñador de escape");title.setObjectName("title");root.addWidget(title)
         intro=QLabel("Perfil axisimétrico de tramos cónicos lineales. El solver conserva el número y tipo de tramos admitidos; la continuidad se define en estaciones compartidas.")
         intro.setWordWrap(True);root.addWidget(intro)
         self.profile=ExhaustProfile();root.addWidget(self.profile)
-        self.overlay_selector=QComboBox();self.overlay_selector.addItem("Sin superposición",None)
-        for name in sorted(context.project["variants"]):self.overlay_selector.addItem(f"Superponer: {name}",name)
+        self.overlay_selector=QComboBox();self.overlay_selector.addItem("Motor base", "base")
+        for name in sorted(context.project["variants"]):self.overlay_selector.addItem(name,name)
         self.overlay_selector.currentIndexChanged.connect(self.refresh_overlay)
         overlay_row=QHBoxLayout();overlay_row.addWidget(QLabel("Comparación visual"));overlay_row.addWidget(self.overlay_selector);overlay_row.addStretch();root.addLayout(overlay_row)
 
         self.stations=QTableWidget(0,3);self.stations.setObjectName("exhaustStations")
-        self.stations.setHorizontalHeaderLabels(["Estación","Posición (mm)","Diámetro compartido (mm)"])
+        self.stations.setHorizontalHeaderLabels(["Estación compartida","Posición (mm)","Ø (mm)"])
         self.stations.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        self.stations.setMaximumHeight(185);self.stations.cellChanged.connect(self._cell_changed)
-        self.table=QTableWidget(0,8);self.table.setObjectName("exhaustSegments");self.segments=self.table
-        self.table.setHorizontalHeaderLabels(["Estación / tramo","Posición o largo (mm)","Diámetro estación (mm)","Ø entrada (mm)","Ø salida (mm)","Semiángulo (°)","Volumen (cm³)","Provenance"])
+        self.stations.setMaximumHeight(150);self.stations.cellChanged.connect(self._cell_changed)
+        station_group=QGroupBox("Diámetros en estaciones compartidas")
+        station_layout=QVBoxLayout(station_group);station_layout.addWidget(self.stations);root.addWidget(station_group)
+        self.table=QTableWidget(0,7);self.table.setObjectName("exhaustSegments");self.segments=self.table
+        self.table.setHorizontalHeaderLabels(["Tramo","Largo (mm)","Ø entrada (mm)","Ø salida (mm)","Semiángulo (°)","Volumen (cm³)","Estado"])
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        self.table.setMaximumHeight(390);self.table.cellChanged.connect(self._cell_changed)
-        segment_group=QGroupBox("Tramos y estaciones · cada diámetro compartido se edita una sola vez")
+        self.table.setMaximumHeight(300);self.table.cellChanged.connect(self._cell_changed)
+        segment_group=QGroupBox("Tramos · una fila por sección; cambiá los diámetros desde la estación compartida")
         segment_layout=QVBoxLayout(segment_group);segment_layout.addWidget(self.table);root.addWidget(segment_group)
 
         self.mesh_group=QGroupBox("Opciones avanzadas · malla numérica");self.mesh_group.setCheckable(True);self.mesh_group.setChecked(False)
@@ -110,14 +117,14 @@ class ExhaustPage(QWidget):
     def _refresh_overlay_options(self):
         """Keep the selector bound to the currently open project's variants."""
         selected=self.overlay_selector.currentData()
-        names=sorted(self.context.project["variants"])
-        if names==[self.overlay_selector.itemData(i) for i in range(1,self.overlay_selector.count())]:
+        names=["base",*sorted(self.context.project["variants"])]
+        if names==[self.overlay_selector.itemData(i) for i in range(self.overlay_selector.count())]:
             return
         self.overlay_selector.blockSignals(True);self.overlay_selector.clear()
-        self.overlay_selector.addItem("Sin superposición",None)
-        for name in names:self.overlay_selector.addItem(f"Superponer: {name}",name)
+        self.overlay_selector.addItem("Motor base","base")
+        for name in names[1:]:self.overlay_selector.addItem(name,name)
         index=self.overlay_selector.findData(selected)
-        self.overlay_selector.setCurrentIndex(index if index>=0 else 0)
+        self.overlay_selector.setCurrentIndex(index if index>=0 else self.overlay_selector.findData("base"))
         self.overlay_selector.blockSignals(False)
 
     def _counts(self,engine):
@@ -131,64 +138,62 @@ class ExhaustPage(QWidget):
 
     def refresh(self):
         try:
+            self.edit_state="complete"
             self._refresh_overlay_options()
             engine=self.context.engine();sections=escape_sections(engine);counts=self._counts(engine)
-            self.loading=True;self._clear_widgets();self.table.blockSignals(True);self.mesh_table.blockSignals(True)
-            self.table.setRowCount(len(sections)*2+1);position=0.0
+            self.loading=True;self._clear_widgets();self.table.blockSignals(True);self.stations.blockSignals(True);self.mesh_table.blockSignals(True)
+            self.table.setRowCount(len(sections));self.stations.setRowCount(len(sections)+1)
+            changed_sections=self._changed_sections()
             diameters=[sections[0]["inlet_diameter_mm"]]+[s["outlet_diameter_mm"] for s in sections]
             for i,diameter in enumerate(diameters):
                 label="Entrada" if i==0 else ("Salida" if i==len(sections) else f"Unión {i}")
-                station_row=2*i
-                for col in range(self.table.columnCount()):
-                    item=QTableWidgetItem("");item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable);self.table.setItem(station_row,col,item)
-                self.table.item(station_row,0).setText(label);self.table.item(station_row,1).setText(f"{position:.2f}")
-                self.table.item(station_row,2).setText(f"{diameter:.3f}");self.table.item(station_row,2).setFlags(self.table.item(station_row,2).flags()|Qt.ItemFlag.ItemIsEditable)
-                if i<len(sections):position+=sections[i]["length_mm"]
+                for col,value in enumerate((label,"0.00",f"{diameter:.3f}")):
+                    item=QTableWidgetItem(value)
+                    if col<2:item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+                    self.stations.setItem(i,col,item)
             self.mesh_table.setRowCount(len(sections))
             for i,s in enumerate(sections):
                 angle=math.degrees(math.atan2((s["outlet_diameter_mm"]-s["inlet_diameter_mm"])/2,s["length_mm"]))
                 r0=s["inlet_diameter_mm"]/2;r1=s["outlet_diameter_mm"]/2
                 volume=math.pi*s["length_mm"]*(r0*r0+r0*r1+r1*r1)/3/1000
-                segment_row=2*i+1
                 for col in range(self.table.columnCount()):
-                    item=QTableWidgetItem("");item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable);self.table.setItem(segment_row,col,item)
-                values=((0,s["name"]),(1,f"{s['length_mm']:.3f}"),(3,f"{s['inlet_diameter_mm']:.3f}"),
-                        (4,f"{s['outlet_diameter_mm']:.3f}"),(5,f"{angle:.3f}"),(6,f"{volume:.3f}"),(7,s["provenance"]))
+                    item=QTableWidgetItem("");item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable);self.table.setItem(i,col,item)
+                values=((0,s["name"]),(1,f"{s['length_mm']:.3f}"),(2,f"{s['inlet_diameter_mm']:.3f}"),
+                        (3,f"{s['outlet_diameter_mm']:.3f}"),(4,f"{angle:.3f}"),(5,f"{volume:.3f}"),(6,"Modificado" if i in changed_sections else "Sin cambios"))
                 for col,value in values:
                     item=QTableWidgetItem(str(value))
                     if col!=1:item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
-                    self.table.setItem(segment_row,col,item)
+                    self.table.setItem(i,col,item)
                 item=QTableWidgetItem(s["name"]);item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable);self.mesh_table.setItem(i,0,item)
                 combo=QComboBox();combo.setObjectName(f"meshResolution_{i}");combo.addItems(["1","2","4"]);combo.setCurrentText(str(counts[i]));combo.currentIndexChanged.connect(self._cell_changed)
                 self.mesh_table.setCellWidget(i,1,combo)
-            self.table.blockSignals(False);self.mesh_table.blockSignals(False)
-            self.profile.set_sections(self._rows(),self._resolutions(),self._overlay_sections(),self._changed_sections())
-            self.diff.setText(self._mesh_summary(engine));self.save_current_button.setEnabled(self.context.selected_variant is not None)
+            self.table.blockSignals(False);self.stations.blockSignals(False);self.mesh_table.blockSignals(False)
             self._update_station_positions()
+            self.profile.set_sections(self._rows(),self._resolutions(),self._overlay_sections(),self._changed_sections())
+            self.diff.setText(self._engineering_diff(engine));self.save_current_button.setEnabled(self.context.selected_variant is not None)
         except Exception as exc:self.diff.setText(f"Escape no disponible: {type(exc).__name__}: {exc}")
         finally:self.loading=False
 
     def _update_station_positions(self):
-        self.table.blockSignals(True)
+        self.stations.blockSignals(True)
         position=0.0
         sections=len(escape_sections(self.context.engine()))
         for i in range(sections+1):
-            station_row=2*i;self.table.item(station_row,1).setText(f"{position:.2f}")
-            if i<sections:position+=_number(self.table.item(2*i+1,1).text(),f"Longitud del tramo {i+1}")
-        self.table.blockSignals(False)
+            self.stations.item(i,1).setText(f"{position:.2f}")
+            if i<sections:position+=_number(self.table.item(i,1).text(),f"Longitud del tramo {i+1}")
+        self.stations.blockSignals(False)
 
     def _rows(self):
         rows=[];source_sections=escape_sections(self.context.engine())
         for i in range(len(source_sections)):
             try:
-                segment_row=2*i+1
-                length=_number(self.table.item(segment_row,1).text(),f"Longitud del tramo {i+1}")
-                d0=_number(self.table.item(2*i,2).text(),f"Diámetro de estación {i}")
-                d1=_number(self.table.item(2*i+2,2).text(),f"Diámetro de estación {i+1}")
+                length=_number(self.table.item(i,1).text(),f"Longitud del tramo {i+1}")
+                d0=_number(self.stations.item(i,2).text(),f"Diámetro de estación {i}")
+                d1=_number(self.stations.item(i+1,2).text(),f"Diámetro de estación {i+1}")
             except AttributeError as exc:raise ValueError(f"Tramo {i+1}: falta un dato geométrico") from exc
-            rows.append({"name":self.table.item(2*i+1,0).text(),"kind":source_sections[i]["kind"],
+            rows.append({"name":self.table.item(i,0).text(),"kind":source_sections[i]["kind"],
                 "length_mm":length,"inlet_diameter_mm":d0,"outlet_diameter_mm":d1,
-                "provenance":self.table.item(2*i+1,7).text()})
+                "provenance":source_sections[i]["provenance"]})
         return rows
 
     def _resolutions(self):
@@ -196,13 +201,19 @@ class ExhaustPage(QWidget):
 
     def _overlay_sections(self):
         name=self.overlay_selector.currentData() if hasattr(self,"overlay_selector") else None
-        if not name or name not in self.context.project["variants"]:return []
-        try:return escape_sections(self.context.project["variants"][name])
+        if not name:return []
+        engine=self.context.project["base_engine"] if name=="base" else self.context.project["variants"].get(name)
+        if engine is None:return []
+        if identity(engine)==identity(self.context.engine()):return []
+        try:return escape_sections(engine)
         except (ValueError,KeyError):return []
 
     def _changed_sections(self):
         if self.context.selected_variant is None:return set()
-        changes=compare_configurations(self.context.project["base_engine"],self.context.engine())
+        baseline_name=self.overlay_selector.currentData()
+        baseline=self.context.project["base_engine"] if baseline_name=="base" else self.context.project["variants"].get(baseline_name)
+        if baseline is None:return set()
+        changes=compare_configurations(baseline,self.context.engine())
         changed=set()
         for item in changes:
             path=item.get("path","")
@@ -229,18 +240,42 @@ class ExhaustPage(QWidget):
             rows.append(f"{section['name']}: {section['length_mm']:.1f} mm, Ø {section['inlet_diameter_mm']:.1f}→{section['outlet_diameter_mm']:.1f} mm")
             offset+=count
         length=sum(s["length_mm"] for s in sections);volume=math.fsum(mesh["volumes"])
-        return f"Longitud total {length:.1f} mm · volumen interno {volume*1e6:.3f} cm³\n"+" · ".join(rows)+f"\nConfiguración {identity(engine)[:16]}… · {len(mesh['volumes'])} celdas"
+        return f"Longitud total {length:.1f} mm · volumen interno {volume*1e6:.3f} cm³\n"+" · ".join(rows)+f"\nConfiguración activa · {len(mesh['volumes'])} celdas"
+
+    def _engineering_diff(self,engine):
+        name=self.overlay_selector.currentData();baseline=(self.context.project["base_engine"] if name=="base" else self.context.project["variants"].get(name))
+        if baseline is None:return "No hay una baseline compatible seleccionada."
+        before=escape_sections(baseline);after=escape_sections(engine);lines=[]
+        for old,new in zip(before,after):
+            if old["length_mm"]!=new["length_mm"]:
+                lines.append(f"{new['name']}: longitud {old['length_mm']:g} → {new['length_mm']:g} mm")
+        old_length=math.fsum(section["length_mm"] for section in before);new_length=math.fsum(section["length_mm"] for section in after)
+        old_mesh=next(d for d in baseline["native_configuration"]["ducts"] if d["id"]=="exhaust")["mesh"]
+        new_mesh=next(d for d in engine["native_configuration"]["ducts"] if d["id"]=="exhaust")["mesh"]
+        old_volume=math.fsum(old_mesh["volumes"])*1e6;new_volume=math.fsum(new_mesh["volumes"])*1e6
+        if len(before)==len(after):
+            for old,new in zip(before,after):
+                old_angle=math.degrees(math.atan2((old["outlet_diameter_mm"]-old["inlet_diameter_mm"])/2,old["length_mm"]))
+                new_angle=math.degrees(math.atan2((new["outlet_diameter_mm"]-new["inlet_diameter_mm"])/2,new["length_mm"]))
+                if not math.isclose(old_angle,new_angle,abs_tol=1e-6):lines.append(f"{new['name']}: semiángulo {old_angle:.2f}° → {new_angle:.2f}°")
+        prefix="\n".join(lines) if lines else "Geometría coincidente con la baseline."
+        return (f"Baseline: {name or 'no seleccionada'}\n{prefix}\nLongitud total: {old_length:.1f} → {new_length:.1f} mm\n"
+                f"Volumen interno: {old_volume:.2f} → {new_volume:.2f} cm³\nDiferencia geométrica únicamente; no estima prestaciones.")
 
     def _cell_changed(self,*_):
         if self.loading:return
         try:
             rows=self._rows();validate(self._draft());self._update_station_positions()
+            self.edit_state="modified"
             self.profile.set_sections(rows,self._resolutions(),self._overlay_sections(),self._changed_sections())
-            self.diff.setText("Geometría continua · validación correcta sin pasos del solver\n"+self._mesh_summary(self.context.engine()))
-        except Exception as exc:self.diff.setText(f"Geometría rechazada: {type(exc).__name__}: {exc}")
+            self.diff.setText("Geometría continua · validación correcta sin pasos del solver\n"+self._engineering_diff(self._draft()))
+        except Exception as exc:self.edit_state="invalid";self.diff.setText(f"Geometría rechazada: {type(exc).__name__}: {exc}")
+        self.component_state_changed.emit()
 
     def refresh_overlay(self,*_):
-        if hasattr(self,"profile"):self.profile.set_sections(self._rows(),self._resolutions(),self._overlay_sections(),self._changed_sections())
+        if hasattr(self,"profile"):
+            self.profile.set_sections(self._rows(),self._resolutions(),self._overlay_sections(),self._changed_sections())
+            self.diff.setText(self._engineering_diff(self.context.engine()))
 
     def save_current(self):
         name=self.context.selected_variant
@@ -248,6 +283,7 @@ class ExhaustPage(QWidget):
             QMessageBox.information(self,"Motor base","El motor base se conserva. Usá ‘Guardar como nueva variante’ para crear una copia editable.");return False
         try:
             edited=self._draft();edited["display_name"]=name;validate(edited);self.context.replace_engine(edited,variant_name=name)
+            self.edit_state="complete"
             self.diff.setText(f"Geometría guardada en {name}. No se ejecutó el solver.\n"+self._mesh_summary(edited));return True
         except Exception as exc:self.diff.setText(f"No se aplicó la geometría: {type(exc).__name__}: {exc}");return False
 
@@ -260,6 +296,7 @@ class ExhaustPage(QWidget):
             edited["provenance"]={**edited["provenance"],"variant_parent_identity":identity(source)};validate(edited)
             self.context.duplicate_variant(self.context.selected_variant,name)
             self.context.replace_engine(edited,variant_name=name.strip())
+            self.edit_state="complete"
             changes=compare_configurations(source,edited)
             self.diff.setText(f"Variante {name.strip()} guardada · {len(changes)} diferencias · sin pasos del solver.\n"+self._mesh_summary(edited));return True
         except Exception as exc:self.diff.setText(f"No se guardó la variante: {type(exc).__name__}: {exc}");return False

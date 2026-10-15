@@ -1,0 +1,73 @@
+{
+  "objective": "DINO_COMMERCIAL_DESKTOP_V3",
+  "result": "DINO_COMMERCIAL_DESKTOP_V3_READY",
+  "recorded_by": "Codex from direct source/test/package checks and live packaged interaction",
+  "source_head": "2b271361dc4f17c875ff6883e9e218346799ebfb",
+  "package": {
+    "directory": "dist/MotorSim-0.1.0-rc6-windows-x64-2b271361-trial-20261015T120333Z",
+    "zip": "dist/MotorSim-0.1.0-rc6-windows-x64-2b271361-trial-20261015T120333Z.zip",
+    "zip_sha256": "C9A9FBA4CB8521D8CEC4B8727E5D3AE3669606B31C3741CF3E343E3D283BE10B",
+    "archive_integrity": "PASS; zipfile.testzip returned None; 300 members",
+    "trial": true,
+    "source_dirty": true,
+    "Dino2T.exe_sha256": "a886e2ca3c53b95feb073c64b648db3f6f90f73b86c7aabb9aad124f403aaaf2",
+    "MotorSim.exe_sha256": "d0092a9ea64f9fb53310c10190338602d7bebc0af780aa5ee040c71544bd0eff"
+  },
+  "packaged_workflow": {
+    "example_project": "examples/projects/dino-2t-exhaust-comparison.dino2t.json",
+    "runs": [
+      "design-validation-20261014-a-base-3000-repeat",
+      "design-validation-20261014-a-modified-4000-r1"
+    ],
+    "variants": [
+      "Escape original",
+      "Escape modified +20 mm"
+    ],
+    "rpm": [
+      3000,
+      4000
+    ],
+    "artifact_access": "history index across variant artifact directories; read-only imports",
+    "primary_audit": "PASS, recomputed for both runs",
+    "pressure": "cylinder absolute pressure in bar abs; exact stored common angles; no interpolation",
+    "comparison": "PASS; RPM and configuration difference warning shown; no causal isolation claim",
+    "undefined_metrics": "power, torque and BMEP remain undefined; no values fabricated",
+    "screenshots": [
+      "results/dino-commercial-desktop-v3/captures/01-design-real-exe.png",
+      "results/dino-commercial-desktop-v3/captures/02-cylinder-real-exe.png",
+      "results/dino-commercial-desktop-v3/captures/02-port-distribution-real-exe.png",
+      "results/dino-commercial-desktop-v3/captures/03-history-real-exe.png",
+      "results/dino-commercial-desktop-v3/captures/04-exhaust-real-exe.png",
+      "results/dino-commercial-desktop-v3/captures/05-simulation-real-exe.png",
+      "results/dino-commercial-desktop-v3/captures/06-analysis-pressure-real-exe.png",
+      "results/dino-commercial-desktop-v3/captures/08-responsive-980x680-real-exe.png",
+      "results/dino-commercial-desktop-v3/captures/09-qt-scale-125-real-exe.png",
+      "results/dino-commercial-desktop-v3/captures/10-qt-scale-150-real-exe.png",
+      "results/dino-commercial-desktop-v3/captures/11-comparison-final-trial-real-exe.png",
+      "results/dino-commercial-desktop-v3/captures/12-comparison-pressure-table-final-trial-real-exe.png"
+    ],
+    "condition_warning_evidence": "Shown during live final-TRIAL comparison; persisted capture 07-comparison-warning-real-exe.png is from the immediately preceding TRIAL build, whose only subsequent code change was exhaust-profile label layout."
+  },
+  "tests": {
+    "command": "python -m pytest tests/test_dino_commercial_desktop_v3.py tests/test_dino_workbench_f0.py tests/test_dino_desktop_ux_v2.py -q",
+    "result": "38 passed in 113.17s",
+    "base_desktop_suite": {
+      "command": "python -m pytest tests/test_dino_desktop.py -q",
+      "result": "12 passed, 1 skipped in 47.05s",
+      "skip_reason": "Optional historical IMPL2 import test skipped because external IMPL2 report root is not configured in this local test environment."
+    },
+    "test_modal_isolation_fix": "test_project_save_open_and_variant_edit_preserve_base now stubs QInputDialog.getText; isolated case PASS in 3.02s."
+  },
+  "openspec_strict": "PASS",
+  "program_status_check": "PASS after final task/status update",
+  "scope_preservation": {
+    "solver_physics_mesh_hard_gates_historical_artifacts": "unchanged",
+    "new_simulations": "none",
+    "push": "prohibited and not performed",
+    "QSettings_artifact_root": "restored to original repository path E:\\dino\\Dino-active"
+  },
+  "limitations": [
+    "Package is intentionally TRIAL because it was built from a dirty source tree; no clean-tree release acceptance.",
+    "Qt 125% and 150% are simulated Qt factors, not Windows OS display-DPI scaling."
+  ]
+}

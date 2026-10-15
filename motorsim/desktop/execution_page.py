@@ -6,9 +6,10 @@ from pathlib import Path
 import tempfile
 import threading
 import uuid
+from types import SimpleNamespace
 from datetime import datetime,timezone
 
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Qt, Signal, QElapsedTimer
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
     QPlainTextEdit, QFileDialog, QMessageBox, QDoubleSpinBox, QSpinBox, QLineEdit,
     QFormLayout, QGroupBox, QComboBox)
@@ -25,8 +26,11 @@ class ExecutionPage(QWidget):
     open_runs_requested=Signal(object)
     resume_run_requested=Signal(object)
     state_changed=Signal()
+    artifact_root_changed=Signal(object)
+    refresh_history_requested=Signal()
     def __init__(self, context):
         super().__init__(); self.context=context; self.task=None; self.cancel_event=None
+        self.elapsed_timer=QElapsedTimer();self.progress_latest=None;self.status_text="LISTO · preparado";self.checkpoint_summary=None
         self.artifact_root=artifact_root()
         root=QVBoxLayout(self); root.setContentsMargins(24,20,24,20)
         title=QLabel("Simulación local"); title.setObjectName("title"); root.addWidget(title)
@@ -49,32 +53,34 @@ class ExecutionPage(QWidget):
         self.apply_budget_estimate=QPushButton("Aplicar presupuesto sugerido (máx. 600 s)");self.apply_budget_estimate.clicked.connect(self._apply_budget_estimate)
         form.addRow("",self.apply_budget_estimate)
         self.memory=QSpinBox(); self.memory.setRange(256,4096); self.memory.setValue(1024); self.memory.setSuffix(" MiB · RSS máximo supervisado")
-        form.addRow("Memoria",self.memory)
         self.mode=QLabel("EXPLORATORY · 1 worker · pipeline convencional + auditoría independiente")
         form.addRow("Modo",self.mode)
-        root_row=QHBoxLayout(); root.addLayout(root_row)
+        self.advanced_toggle=QPushButton("Configuración avanzada ▸");self.advanced_toggle.setCheckable(True);root.addWidget(self.advanced_toggle)
+        self.advanced_panel=QWidget();advanced_layout=QVBoxLayout(self.advanced_panel);advanced_layout.setContentsMargins(8,4,8,4)
+        advanced_form=QFormLayout();advanced_form.addRow("Límite de memoria",self.memory);advanced_layout.addLayout(advanced_form)
+        root_row=QHBoxLayout()
         self.root_label=QLabel(str(self.artifact_root)); self.root_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         self.root_label.setWordWrap(True); root_row.addWidget(self.root_label,1)
-        self.root_warning=QLabel();self.root_warning.setWordWrap(True);self.root_warning.setObjectName("notice");root.addWidget(self.root_warning)
-        choose=QPushButton("Elegir artifact root…"); choose.clicked.connect(self.choose_root); root_row.addWidget(choose)
-        runrow=QHBoxLayout(); root.addLayout(runrow)
+        choose=QPushButton("Elegir artifact root…"); choose.clicked.connect(self.choose_root); root_row.addWidget(choose);advanced_layout.addLayout(root_row)
+        self.root_warning=QLabel();self.root_warning.setWordWrap(True);self.root_warning.setObjectName("notice");advanced_layout.addWidget(self.root_warning)
+        runrow=QHBoxLayout()
         self.run_id=QLineEdit(); self.run_id.setPlaceholderText("Se genera un identificador para una ejecución nueva; para resume, pegar el existente")
         runrow.addWidget(QLabel("Run ID")); runrow.addWidget(self.run_id,1)
+        self.request=QPushButton("Guardar solicitud de revisión…"); self.request.clicked.connect(self.save_request);runrow.addWidget(self.request);advanced_layout.addLayout(runrow)
+        self.output=QPlainTextEdit(); self.output.setReadOnly(True);self.output.setMaximumHeight(150);advanced_layout.addWidget(self.output)
+        root.addWidget(self.advanced_panel);self.advanced_panel.hide()
+        self.advanced_toggle.toggled.connect(self.advanced_panel.setVisible)
+        self.advanced_toggle.toggled.connect(lambda checked:self.advanced_toggle.setText("Configuración avanzada ▾" if checked else "Configuración avanzada ▸"))
         actions=QHBoxLayout(); root.addLayout(actions)
         self.preflight_label=QLabel(); self.preflight_label.setWordWrap(True); actions.addWidget(self.preflight_label,1)
         self.start=QPushButton("Simular…"); self.start.setObjectName("primaryAction"); self.start.clicked.connect(lambda: self.start_run(resume=False)); actions.addWidget(self.start)
         self.resume=QPushButton("Reanudar…"); self.resume.clicked.connect(lambda: self.start_run(resume=True)); actions.addWidget(self.resume)
         self.cancel=QPushButton("Cancelar"); self.cancel.setEnabled(False); self.cancel.clicked.connect(self.cancel_run); actions.addWidget(self.cancel)
-        self.request=QPushButton("Guardar solicitud de revisión…"); self.request.clicked.connect(self.save_request); actions.addWidget(self.request)
-        self.output=QPlainTextEdit(); self.output.setReadOnly(True); root.addWidget(self.output,1)
-        from .widgets.run_history import RunHistoryWidget
-        self.history=RunHistoryWidget(self.context,self.artifact_root)
-        self.history.open_runs.connect(self.open_runs_requested.emit)
-        self.history.resume_run.connect(self.resume_from_entry)
-        self.history.setMinimumHeight(210);self.history.setMaximumHeight(340);root.addWidget(self.history)
+        self.history=SimpleNamespace(entries=[],artifact_root=self.artifact_root)
         self.context.changed.connect(self.refresh)
         self.progress_signal.connect(self._progress)
         self.rpm.valueChanged.connect(self.refresh); self.cycles.valueChanged.connect(self.refresh)
+        self.cycles.valueChanged.connect(self._cycles_changed)
         self.preset.currentIndexChanged.connect(self._apply_preset)
         self.budget.valueChanged.connect(self.refresh); self.memory.valueChanged.connect(self.refresh)
         self.run_id.textChanged.connect(self.refresh)
@@ -86,18 +92,22 @@ class ExecutionPage(QWidget):
             self.cycles.blockSignals(True);self.cycles.setValue(value);self.cycles.blockSignals(False)
         self.refresh()
 
+    def _cycles_changed(self,value):
+        preset_index=0 if value==1 else (1 if value==24 else 2)
+        if self.preset.currentIndex()!=preset_index:
+            self.preset.blockSignals(True);self.preset.setCurrentIndex(preset_index);self.preset.blockSignals(False)
+        self.refresh()
+
     def _cycle_seconds(self,cell_count):
-        """Estimate from matching history when possible; otherwise use a labeled fallback."""
+        """Estimate from runs with the same finite-volume cell count; otherwise use fallback."""
         rates=[]
         try:
-            self.history.refresh()
             for entry in self.history.entries:
                 details=entry.get("details",{})
-                if entry.get("identity_sha256")!=identity(self._engine()):continue
                 if details.get("total_finite_volume_cells")==cell_count and details.get("cycles_completed",0)>0 and details.get("elapsed_seconds",0)>0:
                     rates.append(float(details["elapsed_seconds"])/int(details["cycles_completed"]))
         except (AttributeError,TypeError,ValueError):pass
-        return (sum(rates)/len(rates),"estimación basada en corridas de la misma configuración") if rates else (30.0,"fallback conservador de 30 s/ciclo; aún sin historial comparable")
+        return (sum(rates)/len(rates),f"estimación basada en {len(rates)} corridas con {cell_count} celdas") if rates else (30.0,"fallback conservador de 30 s/ciclo; aún sin historial comparable")
 
     def _apply_budget_estimate(self):
         try:
@@ -110,6 +120,9 @@ class ExecutionPage(QWidget):
 
     def _engine(self): return self.context.engine()
 
+    def set_history_entries(self,entries):
+        self.history.entries=list(entries or [])
+
     def _preflight(self):
         return preflight(self._engine(),rpm=self.rpm.value(),max_cycles=self.cycles.value(),
                          budget_seconds=self.budget.value(),memory_limit_mib=self.memory.value())
@@ -117,13 +130,13 @@ class ExecutionPage(QWidget):
     def refresh(self,*_):
         try:
             engine=self._engine();visible_variant=self.context.selected_variant or "Motor base"
-            self.engine_label.setText(f"{visible_variant} · identity {identity(engine)[:16]}…")
+            self.engine_label.setText(visible_variant)
             check=self._preflight()
             repository=repository_root_containing(self.artifact_root)
             unsafe=repository is not None
             self.root_warning.setText((f"Esta raíz está dentro del repositorio ({repository}). Los artifacts existentes se conservan. Elegí una ubicación externa antes de iniciar una corrida nueva." if unsafe else "La raíz de artifacts está fuera del repositorio."))
             self.root_warning.setProperty("unsafeRoot",unsafe)
-            self.preflight_label.setText(f"Preflight PASS · {check['rpm']:g} RPM · 0 pasos · {check['total_finite_volume_cells']} celdas · pérdidas explícitas · fuel {check['fuel_id']} · AFR {check['afr_kg_air_per_kg_fuel']:g}")
+            self.preflight_label.setText(f"Preflight PASS · {check['rpm']:g} RPM · 0 pasos · {check['total_finite_volume_cells']} celdas · pérdidas explícitas · combustible configurado · AFR {check['afr_kg_air_per_kg_fuel']:g}")
             self.expected.setText("Se guardarán primarias por ciclo para auditar presión y flujos. Un solo ciclo no permite potencia o torque periódicos admisibles. Un horizonte mayor sólo permite observar el detector; no garantiza periodicidad ni convergencia. Las magnitudes no identificables permanecerán sin valor.")
             seconds,source=self._cycle_seconds(check["total_finite_volume_cells"])
             import math
@@ -148,7 +161,7 @@ class ExecutionPage(QWidget):
             if repository_root_containing(path) is not None:
                 QMessageBox.warning(self,"Raíz dentro del repositorio","Elegí una ubicación externa para una corrida nueva. No se modificó la raíz guardada ni se movieron artifacts.");return
             self.artifact_root=set_artifact_root(path);self.root_label.setText(path)
-            self.history.artifact_root=self.artifact_root;self.history.refresh();self.refresh()
+            self.history.artifact_root=self.artifact_root;self.artifact_root_changed.emit(self.artifact_root);self.refresh()
 
     def resume_from_entry(self,entry):
         """Populate the existing guarded resume path from a read-only index row."""
@@ -162,12 +175,11 @@ class ExecutionPage(QWidget):
             self.context.select_variant(matches[0])
             from pathlib import Path
             self.artifact_root=Path(entry["artifact_root"])
-            self.root_label.setText(str(self.artifact_root));set_artifact_root(self.artifact_root,allow_repository=True)
+            self.root_label.setText(str(self.artifact_root));self.history.artifact_root=self.artifact_root;set_artifact_root(self.artifact_root,allow_repository=True)
             self.run_id.setText(str(entry["run_id"]))
             if entry.get("rpm") is not None:self.rpm.setValue(float(entry["rpm"]))
             cycles=entry.get("details",{}).get("cycles_requested")
             if cycles is not None:self.cycles.setValue(int(cycles))
-            self.history.artifact_root=self.artifact_root;self.history.refresh()
             self.start_run(resume=True)
         except Exception as exc:
             QMessageBox.warning(self,"No se puede reanudar este checkpoint",f"FAIL-CLOSED: {type(exc).__name__}: {exc}")
@@ -214,6 +226,17 @@ class ExecutionPage(QWidget):
             f"Artifact root: {self.artifact_root}\nRun ID: {run_id}\n\n"
             "Los resultados serán provisionales, con periodicidad aún no evaluada hasta cumplir el detector. No se usará autorización IMPL2 ni el runner de campañas.")
 
+    @staticmethod
+    def confirmation_button_labels(resume=False):
+        return ("Reanudar corrida" if resume else "Iniciar corrida", "Cancelar")
+
+    def _confirm_run(self,run_id,resume):
+        primary,cancel=self.confirmation_button_labels(resume)
+        dialog=QMessageBox(QMessageBox.Icon.Question,"Confirmación de ejecución",self._confirmation_text(run_id,resume),QMessageBox.StandardButton.NoButton,self)
+        accept=dialog.addButton(primary,QMessageBox.ButtonRole.AcceptRole)
+        reject=dialog.addButton(cancel,QMessageBox.ButtonRole.RejectRole);dialog.setDefaultButton(reject);dialog.exec()
+        return dialog.clickedButton() is accept
+
     def start_run(self, *, resume):
         if self.task is not None:return
         run_id=self.run_id.text().strip()
@@ -226,9 +249,7 @@ class ExecutionPage(QWidget):
             _run_directory(self.artifact_root,self.context.project['project_id'],run_id)
         except Exception as exc:
             QMessageBox.warning(self,"Preflight bloqueado",str(exc));return
-        if QMessageBox.question(self,"Confirmación de ejecución",self._confirmation_text(run_id,resume),
-            QMessageBox.StandardButton.Yes|QMessageBox.StandardButton.No,
-            QMessageBox.StandardButton.No)!=QMessageBox.StandardButton.Yes:return
+        if not self._confirm_run(run_id,resume):return
         document=json.loads(json.dumps(self._engine(),allow_nan=False))
         project_id=self.context.project['project_id']; self.cancel_event=threading.Event()
         self.output.appendPlainText(f"{'Resume' if resume else 'Inicio'} autorizado explícitamente · run {run_id}")
@@ -238,23 +259,30 @@ class ExecutionPage(QWidget):
             budget_seconds=self.budget.value(),memory_limit_mib=self.memory.value(),resume=resume,
             cancel_event=self.cancel_event,variant_label=variant_label,
             progress=self.progress_signal.emit,on_done=self._done,on_error=self._failed)
+        self.elapsed_timer.start();self.progress_latest=None;self.status_text="CORRIENDO";self.checkpoint_summary="se conserva al completar cada ciclo"
         self.cancel.setEnabled(True); self.start.setEnabled(False); self.resume.setEnabled(False)
+        self.state_changed.emit()
 
     def _progress(self,row):
+        self.progress_latest=dict(row);self.status_text="CORRIENDO"
         self.output.appendPlainText(f"Ciclo {row['cycle']} · {row['angle_deg']:.1f}° · RSS {row['rss_bytes']/1048576:.0f} MiB")
+        self.state_changed.emit()
 
     def _done(self,result):
+        self.status_text=f"TERMINADA · {result.get('classification','clasificación no informada')}"
+        self.checkpoint_summary=f"{result.get('cycles_completed',0)} ciclos guardados · {result.get('periodicity','periodicidad no evaluada')}"
         summary={k:result.get(k) for k in ("status","classification","mode","scientific_validation","cycles_completed","periodicity","failure","elapsed_seconds","artifact_directory","result_sha256")}
         summary["cycles"]=[{"cycle":r["cycle"],"primary_sha256":r["primary_sha256"],"audit_recomputed":r["audit"].get("recomputed"),"conservation":r["conservation"],"metric_statuses":{k:v.get("status") for k,v in r["engineering_output"].get("cycle_metrics",{}).items() if isinstance(v,dict)}} for r in result.get("cycles",[])]
         self.output.appendPlainText(json.dumps(summary,indent=2,ensure_ascii=False))
         self._release_task()
 
     def _failed(self,message):
+        self.status_text="BLOQUEADA · error FAIL-CLOSED";self.checkpoint_summary="evidencia previa conservada"
         self.output.appendPlainText("FAIL-CLOSED: "+message); self._release_task()
 
     def _release_task(self):
-        self.task=None; self.cancel_event=None; self.cancel.setEnabled(False); self.refresh();self.history.refresh()
+        self.task=None; self.cancel_event=None; self.cancel.setEnabled(False); self.refresh();self.refresh_history_requested.emit();self.state_changed.emit()
 
     def cancel_run(self):
         if self.cancel_event is not None:
-            self.cancel_event.set(); self.output.appendPlainText("Cancelación solicitada; se detendrá en un límite de paso y conservará el último checkpoint completo.")
+            self.cancel_event.set();self.status_text="CANCELACIÓN SOLICITADA"; self.output.appendPlainText("Cancelación solicitada; se detendrá en un límite de paso y conservará el último checkpoint completo.");self.state_changed.emit()

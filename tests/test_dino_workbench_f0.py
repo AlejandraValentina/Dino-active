@@ -28,7 +28,7 @@ class WorkbenchF0Tests(unittest.TestCase):
         second=new_project("second");second["variants"]["Variant B"]=second["base_engine"]
         context.replace_project(second,None)
         self.assertEqual(page.overlay_selector.findData("Variant B")>=0,True)
-        self.assertEqual(page.overlay_selector.currentData(),None)
+        self.assertEqual(page.overlay_selector.currentData(),"base")
 
     def test_changed_section_path_maps_to_index(self):
         context=DesktopContext(new_project("sections"));context.duplicate_variant(None,"Variant A");context.select_variant("Variant A")
@@ -70,17 +70,18 @@ class WorkbenchF0Tests(unittest.TestCase):
 
     def test_component_build_uses_backend_derived_port_schedule(self):
         page=__import__("motorsim.desktop.engine_page",fromlist=["EnginePage"]).EnginePage(DesktopContext(new_project("components")))
-        self.assertEqual([page.component_tabs.tabText(i) for i in range(4)],
+        self.assertEqual([page.component_tabs.tabText(i).split(" · ")[0] for i in range(4)],
                          ["Cilindro y operación","Lumbreras y distribución","Pérdidas","Combustión y combustible"])
         self.assertGreater(page.port_areas.rowCount(),0)
-        self.assertIn("eventos angulares del perfil existente",page.derived.text())
+        self.assertIn("transiciones de área efectiva",page.derived.text())
+        self.assertGreater(page.timing.rowCount(),0)
 
     def test_results_angle_cell_map_preserves_discrete_samples_and_baseline(self):
         context=DesktopContext(new_project("trace-map"));page=ResultsPage(context)
         item=QListWidgetItem("base");item.setCheckState(Qt.CheckState.Checked);page.variants.addItem(item)
         config=context.project["base_engine"]
         exhaust=next(d for d in config["native_configuration"]["ducts"] if d["id"]=="exhaust")
-        exact_position=exhaust["mesh"]["centers"][3]
+        exact_position=(exhaust["mesh"]["faces"][3]+exhaust["mesh"]["faces"][4])/2
         page.dataset={"schema":"DINO_EXPLORATORY_COMPARISON_V1","points":[
             {"point_id":"p1","variant_id":"base","rpm":3000,"point_configuration_sha256":config["native_configuration_sha256"],"brake_power":1.0,"brake_power_status":"DEFINED","classification":"PERIOD_1"},
             {"variant_id":"base","rpm":4000,"brake_power":None,"brake_power_status":"UNDEFINED","classification":"NOT_IDENTIFIABLE"}],"traces":[{
@@ -89,10 +90,10 @@ class WorkbenchF0Tests(unittest.TestCase):
         page.trace_metric.addItem("Presión celda 3","duct:exhaust:cell:3:pressure_pa")
         page.baseline_selector.addItem("base","base");page.baseline_selector.setCurrentIndex(1);page._baseline_changed()
         page._redraw_trace_map()
-        self.assertEqual(page.trace_map.columnCount(),3)
-        self.assertEqual(page.trace_map.item(0,1).text(),"99000")
-        self.assertEqual(page.trace_map.item(0,2).text(),"101000")
-        self.assertIn(f"x={float(exact_position):.6g} m",page.trace_map.item(0,0).text())
+        self.assertEqual(page.trace_map.angles,[0.0,2.0])
+        self.assertEqual(page.trace_map.raw_samples[0]["values"],[99000.0,101000.0])
+        self.assertAlmostEqual(page.trace_map.raw_samples[0]["position_m"],float(exact_position))
+        self.assertFalse(page.trace_map.image.isNull())
         self.assertIn("Baseline base",page.baseline_notice.text())
         self.assertTrue(any(p.get("value") is None for series in page.plot.series for p in series.get("points",[])))
         reopened=ResultsPage(DesktopContext(new_project("trace-map")))
@@ -101,7 +102,9 @@ class WorkbenchF0Tests(unittest.TestCase):
     def test_main_window_keeps_results_and_single_run_strip_visible(self):
         from motorsim.desktop.app import DinoDesktopWindow
         window=DinoDesktopWindow(new_project("workbench-shell"));window.resize(980,680);window.show();APP.processEvents()
-        self.assertTrue(window.results_panel.isVisible());self.assertTrue(window.simulation_strip.isVisible())
-        self.assertEqual(window.stack.count(),5)
+        self.assertFalse(window.results.isVisible());self.assertTrue(window.simulation_strip.isVisible())
+        self.assertEqual(window.mode_stack.count(),2)
+        self.assertTrue(window.analysis_mode.isCheckable())
         self.assertTrue(window.pages[3].start.isEnabled())
+        window.set_workspace_mode(1);APP.processEvents();self.assertTrue(window.results.isVisible())
         window.close();APP.processEvents()

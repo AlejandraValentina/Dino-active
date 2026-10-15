@@ -5086,6 +5086,173 @@
         "results/dino-tuning-workbench-v1"
       ],
       "evidence_level": "L0"
+    },
+    {
+      "id": "DVC3-P0",
+      "description": "Correct thirteen P0 Windows desktop defects and verify focused regressions before P1.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_COMMERCIAL_DESKTOP_V3",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/",
+        "tests/desktop"
+      ],
+      "blocker": null,
+      "unblock_tasks": [],
+      "evidence": [
+        "tests/test_dino_commercial_desktop_v3.py: 11 passed",
+        "App starts in DISEÑO; actual ResultsPage is isolated in ANÁLISIS; one shared RPM/horizon/budget state; progress and cancel are persistent; pressure traces use bar abs; confirmation labels Spanish; history defaults active + baseline; five same-cell-count runs feed estimator."
+      ]
+    },
+    {
+      "id": "DVC3-SHELL",
+      "description": "Implement DISEÑO/ANÁLISIS shell, persistent context, component states and evidence access.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_COMMERCIAL_DESKTOP_V3",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/app.py",
+        "motorsim/desktop/widgets/"
+      ],
+      "blocker": null,
+      "unblock_tasks": [],
+      "evidence": [
+        "motorsim/desktop/app.py and widgets: DISEÑO/ANÁLISIS modes, persistent project/variant/baseline/run context, component rail and organized evidence surface implemented; 38 desktop regressions PASS.",
+        "Packaged EXE screenshots: 01-design-real-exe.png, 03-history-real-exe.png; real project preserved across mode switch."
+      ]
+    },
+    {
+      "id": "DVC3-EXHAUST",
+      "description": "Improve exhaust profile, segment table and baseline engineering differences.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_COMMERCIAL_DESKTOP_V3",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/exhaust_page.py"
+      ],
+      "blocker": null,
+      "unblock_tasks": [],
+      "evidence": [
+        "motorsim/desktop/exhaust_page.py: dimensioned exhaust profile, shared editable stations, segment table and baseline engineering differences; final profile labels verified from packaged EXE in 04-exhaust-real-exe.png.",
+        "Existing geometry backend retained; no solver, physical model or result changes."
+      ]
+    },
+    {
+      "id": "DVC3-CYLINDER",
+      "description": "Add cylinder and distribution diagram using existing geometry APIs.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_COMMERCIAL_DESKTOP_V3",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/engine_page.py"
+      ],
+      "blocker": null,
+      "unblock_tasks": [],
+      "evidence": [
+        "Existing engine geometry APIs shown in cylinder sketch and port-event/area-angle view; packaged EXE captures 02-cylinder-real-exe.png and 02-port-distribution-real-exe.png.",
+        "No inverse timing or new physics introduced."
+      ]
+    },
+    {
+      "id": "DVC3-EXECUTION",
+      "description": "Unify execution inputs and expose progress/checkpoint state.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_COMMERCIAL_DESKTOP_V3",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/execution_page.py"
+      ],
+      "blocker": null,
+      "unblock_tasks": [],
+      "evidence": [
+        "Shared RPM/horizon/budget state and visible readiness/progress/cancel/checkpoint bar verified by 38 desktop regressions and packaged EXE capture 05-simulation-real-exe.png.",
+        "No simulation was started."
+      ]
+    },
+    {
+      "id": "DVC3-ANALYSIS",
+      "description": "Present available analysis signals, maps and condition-aware comparisons.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_COMMERCIAL_DESKTOP_V3",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/results_page.py",
+        "motorsim/desktop/plot.py"
+      ],
+      "blocker": null,
+      "unblock_tasks": [],
+      "evidence": [
+        "Final TRIAL EXE loaded two existing EXPLORATORY runs from history in separate variant artifact folders and compared Escape original @3000 with Escape modified +20 mm @4000. Both primaries re-audited PASS; pressure curves use exact common angles with bar abs units and no interpolation.",
+        "Metric plot correctly reports no defined numeric values; power, torque and BMEP are not fabricated. Condition warning identifies RPM/configuration differences. Final captures 11-comparison-final-trial-real-exe.png and 12-condition-warning-final-trial-real-exe.png; 06/07 captures show the full warning and curves from earlier near-identical trial."
+      ]
+    },
+    {
+      "id": "DVC3-RESPONSIVE",
+      "description": "Verify supported dimensions and Qt scaling with essential controls accessible.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_COMMERCIAL_DESKTOP_V3",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/"
+      ],
+      "blocker": null,
+      "unblock_tasks": [],
+      "evidence": [
+        "Actual packaged EXE inspected at 980x680 client size and Qt QT_SCALE_FACTOR 1.25/1.50. Essential execution controls remain accessible; 150% component tabs expose horizontal scrolling. Qt simulation is distinguished from Windows display scaling. Captures 08-responsive-980x680-real-exe.png, 09-qt-scale-125-real-exe.png, 10-qt-scale-150-real-exe.png.",
+        "The 125%/150% checks simulate Qt scale factors; they do not assert OS-level Windows DPI scaling."
+      ]
+    },
+    {
+      "id": "DVC3-TESTS",
+      "description": "Add isolated P0/P1 desktop regressions and execute relevant suites.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_COMMERCIAL_DESKTOP_V3",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "tests/desktop"
+      ],
+      "blocker": null,
+      "unblock_tasks": [],
+      "evidence": [
+        "python -m pytest tests/test_dino_commercial_desktop_v3.py tests/test_dino_workbench_f0.py tests/test_dino_desktop_ux_v2.py -q: 38 passed in 113.17s.",
+        "Final exhaust-specific tests after the label adjustment: 3 passed in 27.15s. All relevant tests use isolated QSettings; no scientific runs launched.",
+        "tests/test_dino_desktop.py: 12 passed, 1 optional historical IMPL2 import skipped because its external report root is not configured; test_project_save_open_and_variant_edit_preserve_base now isolates QInputDialog and passes."
+      ]
+    },
+    {
+      "id": "DVC3-PACKAGE",
+      "description": "Build TRIAL and verify live packaged workflows; retain PARTIAL if desktop interaction is unavailable.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_COMMERCIAL_DESKTOP_V3",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "scripts/build_windows_trial.py",
+        "dist/"
+      ],
+      "blocker": null,
+      "unblock_tasks": [],
+      "evidence": [
+        "TRIAL package built at dist/MotorSim-0.1.0-rc6-windows-x64-2b271361-trial-20261015T120333Z; package ZIP SHA-256 C9A9FBA4CB8521D8CEC4B8727E5D3AE3669606B31C3741CF3E343E3D283BE10B; archive testzip=None, 300 members. Real EXE opened example project, five-run history and imported results/comparison.",
+        "Dino2T.exe SHA-256 a886e2ca3c53b95feb073c64b648db3f6f90f73b86c7aabb9aad124f403aaaf2; MotorSim.exe SHA-256 d0092a9ea64f9fb53310c10190338602d7bebc0af780aa5ee040c71544bd0eff. Build metadata records source_dirty=true and trial=true; not promoted to release."
+      ]
     }
   ],
   "audit_remediation_mode": false,
@@ -5286,24 +5453,26 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_TUNING_WORKBENCH_V1",
+    "id": "DINO_COMMERCIAL_DESKTOP_V3",
     "state": "ACTIVE",
     "owner_approved": true,
-    "summary": "Implement owner-authorized B+ engineering tuning workbench. Preserve solver, physics, mesh, periodicity, hard gates and historical results; no campaigns, batch runs, or push.",
-    "change": "openspec/changes/dino-tuning-workbench-v1",
-    "spec": "openspec/changes/dino-tuning-workbench-v1/specs/dino-tuning-workbench-v1/spec.md",
-    "set_by": "explicit owner authorization communicated 2026-10-14; request hash in results/dino-tuning-workbench-v1/owner-authorization.json",
-    "authorization": "results/dino-tuning-workbench-v1/owner-authorization.json",
-    "completion_criterion": "DINO_TUNING_WORKBENCH_V1_READY only after F0-F4 behavior, isolated tests, supported-size visual workflow, end-to-end scenario and packaged TRIAL smoke pass; otherwise PARTIAL with concrete blockers. No scientific changes, campaign, or push.",
+    "summary": "Owner-authorized professional two-mode 2T desktop redesign using existing scientific backends. Preserve all science and historical artifacts; no campaigns, no new simulations, no automatic next phase, no push.",
+    "change": "openspec/changes/dino-commercial-desktop-v3",
+    "spec": "openspec/changes/dino-commercial-desktop-v3/specs/dino-commercial-desktop-v3/spec.md",
+    "set_by": "explicit owner authorization communicated 2026-10-15; receipt results/dino-commercial-desktop-v3/owner-authorization.json",
+    "authorization": "results/dino-commercial-desktop-v3/owner-authorization.json",
+    "completion_criterion": "DINO_COMMERCIAL_DESKTOP_V3_READY only after P0/P1 behavior and isolated regressions, real Windows and packaged workflow, visual captures, package integrity, OpenSpec strict and program-status checks pass. If live desktop acceptance is unavailable, classify PARTIAL with exact blockers. No scientific changes or campaign.",
     "durable_queue": "results/2t-commercial-core-20261002/program-status.json#queue",
     "gate_tasks": [
-      "DWT-REFERENCE-PRESERVATION",
-      "DWT-F0-DESKTOP-DEFECTS",
-      "DWT-F1-COMPONENT-BUILD",
-      "DWT-F2-WORKBENCH-SHELL",
-      "DWT-F3-INTEGRATED-RUN-RESULTS",
-      "DWT-F4-ENGINEERING-VIEWS",
-      "DWT-PACKAGED-ACCEPTANCE"
+      "DVC3-P0",
+      "DVC3-SHELL",
+      "DVC3-EXHAUST",
+      "DVC3-CYLINDER",
+      "DVC3-EXECUTION",
+      "DVC3-ANALYSIS",
+      "DVC3-RESPONSIVE",
+      "DVC3-TESTS",
+      "DVC3-PACKAGE"
     ]
   },
   "objectives": [
@@ -5602,9 +5771,9 @@
     },
     {
       "id": "DINO_TUNING_WORKBENCH_V1",
-      "state": "APPROVED",
+      "state": "PARTIAL",
       "owner_approved": true,
-      "summary": "Owner-authorized unified 2T engineering tuning workbench. Correct UX defects and implement B+ component editor, coordinated single-run/results flow, discrete exact data views, and packaged acceptance without changing physics or historical evidence.",
+      "summary": "Owner-authorized F0-F4 implementation is complete, but packaged interaction acceptance remains BLOCKED_LOCAL. Preserved as PARTIAL; owner reprioritized to V3 without implying DWT readiness.",
       "change": "openspec/changes/dino-tuning-workbench-v1",
       "spec": "openspec/changes/dino-tuning-workbench-v1/specs/dino-tuning-workbench-v1/spec.md",
       "authorization": "results/dino-tuning-workbench-v1/owner-authorization.json",
@@ -5616,7 +5785,54 @@
         "DWT-F3-INTEGRATED-RUN-RESULTS",
         "DWT-F4-ENGINEERING-VIEWS",
         "DWT-PACKAGED-ACCEPTANCE"
-      ]
+      ],
+      "classification": "DINO_TUNING_WORKBENCH_V1_PARTIAL",
+      "transitioned_to": "DINO_COMMERCIAL_DESKTOP_V3",
+      "transition_authorization": "results/dino-commercial-desktop-v3/owner-authorization.json",
+      "transitioned_at": "2026-10-15T11:02:45+00:00",
+      "gate_status_archive": {
+        "objective": "DINO_TUNING_WORKBENCH_V1",
+        "state": "OPEN",
+        "classification": "DINO_TUNING_WORKBENCH_V1_PARTIAL",
+        "evidence": [
+          "DWT-F0-F4 implemented and tested; package TRIAL built, ZIP integrity and startup smoke PASS, but locked Windows session prevented actual packaged result loading/comparison and valid visual evidence. DWT-PACKAGED-ACCEPTANCE BLOCKED_LOCAL with READY unblock task.",
+          "Owner explicitly reprioritized to DINO_COMMERCIAL_DESKTOP_V3; DWT packaged interaction remains BLOCKED_LOCAL and is not promoted."
+        ],
+        "gate_tasks_total": 7,
+        "gate_tasks_done": 6,
+        "gate_task_states": {
+          "DONE": 6,
+          "BLOCKED_LOCAL": 1
+        },
+        "remaining": [
+          "DWT-PACKAGED-ACCEPTANCE"
+        ],
+        "updated_at": "2026-10-15T11:02:45+00:00",
+        "transitioned_to": "DINO_COMMERCIAL_DESKTOP_V3",
+        "transition_authorization": "results/dino-commercial-desktop-v3/owner-authorization.json"
+      }
+    },
+    {
+      "id": "DINO_COMMERCIAL_DESKTOP_V3",
+      "state": "ACTIVE",
+      "owner_approved": true,
+      "classification": null,
+      "summary": "Owner-authorized professional two-mode 2T desktop redesign using existing scientific backends. Preserve all science and historical artifacts; no campaigns, no new simulations, no automatic next phase, no push.",
+      "change": "openspec/changes/dino-commercial-desktop-v3",
+      "spec": "openspec/changes/dino-commercial-desktop-v3/specs/dino-commercial-desktop-v3/spec.md",
+      "authorization": "results/dino-commercial-desktop-v3/owner-authorization.json",
+      "gate_tasks": [
+        "DVC3-P0",
+        "DVC3-SHELL",
+        "DVC3-EXHAUST",
+        "DVC3-CYLINDER",
+        "DVC3-EXECUTION",
+        "DVC3-ANALYSIS",
+        "DVC3-RESPONSIVE",
+        "DVC3-TESTS",
+        "DVC3-PACKAGE"
+      ],
+      "transitioned_from": "DINO_TUNING_WORKBENCH_V1"
     }
   ],
   "owner_decisions_pending": [
@@ -6729,6 +6945,30 @@
       "task": "DWT-F0-DESKTOP-DEFECTS",
       "kind": "task",
       "summary": "D1-D8 fixed; F0-F4 implemented, 26 focused tests PASS, actual external EXPLORATORY artifacts re-audited; packaged TRIAL startup and ZIP verified. Interactive packaged workflow remains BLOCKED_LOCAL on unlocked Windows desktop; no simulation run."
+    },
+    {
+      "at": "2026-10-15T11:02:45+00:00",
+      "task": "DVC3-ADMIN",
+      "kind": "transition",
+      "summary": "Owner authorization persisted with SHA-256 inventory of the external Opus review, 80 captures, 8 annotations and 6 mockups. DWT preserved as PARTIAL with packaged-interaction blocker; V3 is current. No scientific artifacts or code changed."
+    },
+    {
+      "at": "2026-10-15T11:13:12+00:00",
+      "task": "DVC3-P0",
+      "kind": "task",
+      "summary": "All 13 P0 items implemented with focused desktop regressions (11 PASS): native tab/table contrast and header sizing, Design startup, results isolation, unified execution state, visible progress/cancel, absolute pressure in bar, Spanish confirmation, active+baseline history, compatible runtime estimate and hashes in Evidence."
+    },
+    {
+      "at": "2026-10-15T12:26:34+00:00",
+      "task": "DVC3-PACKAGE",
+      "kind": "verification",
+      "summary": "Final TRIAL executable acceptance complete: actual project/history/import/comparison across variants with recomputed audits and pressure curves; 980x680 and Qt 125%/150% inspected; ZIP integrity and 38 regressions PASS. Package remains TRIAL because source tree is dirty; no simulation started."
+    },
+    {
+      "at": "2026-10-15T12:32:22+00:00",
+      "task": "DVC3-TESTS",
+      "kind": "verification",
+      "summary": "Base desktop suite completed after isolating a modal QInputDialog in the project variant test: 12 PASS, 1 optional IMPL2 historical-import SKIP (external report root unavailable). Combined V3/F0/UX2 suite remains 38 PASS."
     }
   ],
   "legacy_gate_status": {
@@ -6743,22 +6983,19 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_TUNING_WORKBENCH_V1",
-    "state": "OPEN",
-    "classification": "DINO_TUNING_WORKBENCH_V1_PARTIAL",
+    "objective": "DINO_COMMERCIAL_DESKTOP_V3",
+    "state": "PASS",
+    "classification": "DINO_COMMERCIAL_DESKTOP_V3_READY",
     "evidence": [
-      "DWT-F0-F4 implemented and tested; package TRIAL built, ZIP integrity and startup smoke PASS, but locked Windows session prevented actual packaged result loading/comparison and valid visual evidence. DWT-PACKAGED-ACCEPTANCE BLOCKED_LOCAL with READY unblock task."
+      "All V3 gate tasks complete; 38 desktop regressions PASS; final packaged EXE loaded and compared two existing EXPLORATORY runs with recomputed primary audits; TRIAL ZIP integrity PASS; OpenSpec strict PASS; no simulations."
     ],
-    "gate_tasks_total": 7,
-    "gate_tasks_done": 6,
+    "gate_tasks_total": 9,
+    "gate_tasks_done": 9,
     "gate_task_states": {
-      "DONE": 6,
-      "BLOCKED_LOCAL": 1
+      "DONE": 9
     },
-    "remaining": [
-      "DWT-PACKAGED-ACCEPTANCE"
-    ],
-    "updated_at": "2026-10-14T17:57:12+00:00"
+    "remaining": [],
+    "updated_at": "2026-10-15T12:26:34+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -7018,6 +7255,27 @@
         "docs/dino_desktop_ux_v2/captures/after/packaged",
         "openspec/changes/dino-desktop-ux-v2/tasks.md"
       ]
+    },
+    {
+      "objective": "DINO_TUNING_WORKBENCH_V1",
+      "state": "OPEN",
+      "classification": "DINO_TUNING_WORKBENCH_V1_PARTIAL",
+      "evidence": [
+        "DWT-F0-F4 implemented and tested; package TRIAL built, ZIP integrity and startup smoke PASS, but locked Windows session prevented actual packaged result loading/comparison and valid visual evidence. DWT-PACKAGED-ACCEPTANCE BLOCKED_LOCAL with READY unblock task.",
+        "Owner explicitly reprioritized to DINO_COMMERCIAL_DESKTOP_V3; DWT packaged interaction remains BLOCKED_LOCAL and is not promoted."
+      ],
+      "gate_tasks_total": 7,
+      "gate_tasks_done": 6,
+      "gate_task_states": {
+        "DONE": 6,
+        "BLOCKED_LOCAL": 1
+      },
+      "remaining": [
+        "DWT-PACKAGED-ACCEPTANCE"
+      ],
+      "updated_at": "2026-10-15T11:02:45+00:00",
+      "transitioned_to": "DINO_COMMERCIAL_DESKTOP_V3",
+      "transition_authorization": "results/dino-commercial-desktop-v3/owner-authorization.json"
     }
   ]
 }

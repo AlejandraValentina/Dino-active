@@ -47,14 +47,17 @@ class DinoDesktopTests(unittest.TestCase):
 
     def test_startup_has_real_pages_and_explicitly_confirmed_exploratory_mode(self):
         window = DinoDesktopWindow(new_project("startup-test"))
-        self.assertEqual(window.stack.count(), 5)
-        self.assertEqual([window.nav.item(i).text() for i in range(5)],
-                         ["Motor", "Escape", "Proyecto", "Simulación", "Resultados"])
+        self.assertEqual(window.mode_stack.count(), 2)
+        self.assertEqual(window.component_stack.count(), 4)
+        self.assertEqual(window.mode_stack.currentIndex(),0)
+        self.assertEqual(window.component_nav.tabText(0),"✓ Cilindro")
         self.assertTrue(window.pages[3].start.isEnabled())
         self.assertIn("Preflight PASS", window.pages[3].preflight_label.text())
         self.assertIn("EXPLORATORY", window.pages[3].mode.text())
         self.assertIsNone(window.pages[4].dataset)
         self.assertIn("no se cargó evidencia histórica",window.pages[4].source_notice.text())
+        self.assertTrue(window.strip_run.isEnabled())
+        self.assertFalse(window.results.isVisible())
         window.close()
 
     def test_engine_edit_validates_then_updates_identity_and_dirty_state(self):
@@ -140,7 +143,8 @@ class DinoDesktopTests(unittest.TestCase):
     def test_project_save_open_and_variant_edit_preserve_base(self):
         page = ProjectPage(self.context)
         base_hash = identity(self.context.project["base_engine"])
-        page.make_variant()
+        with patch("motorsim.desktop.project_page.QInputDialog.getText", return_value=("Variante 1", True)):
+            page.make_variant()
         self.assertEqual(identity(self.context.project["base_engine"]), base_hash)
         self.assertTrue(self.context.dirty)
         with tempfile.TemporaryDirectory() as tmp:
@@ -154,8 +158,8 @@ class DinoDesktopTests(unittest.TestCase):
     def test_exhaust_edit_changes_variant_using_backend_and_keeps_base(self):
         page = ExhaustPage(self.context)
         base_hash = identity(self.context.engine())
-        first = float(page.table.item(1, 1).text())
-        page.table.item(1, 1).setText(str(first + 1.0))
+        first = float(page.table.item(0, 1).text())
+        page.table.item(0, 1).setText(str(first + 1.0))
         page.mesh_table.cellWidget(0, 1).setCurrentText("2")
         page.apply(name="Escape 1")
         self.assertEqual(identity(self.context.project["base_engine"]), base_hash)
@@ -241,8 +245,7 @@ class DinoDesktopTests(unittest.TestCase):
 
     def test_exploratory_run_requires_explicit_confirmation(self):
         page=ExecutionPage(self.context)
-        with patch("motorsim.desktop.execution_page.QMessageBox.question",
-                   return_value=QMessageBox.StandardButton.No), \
+        with patch.object(page,"_confirm_run",return_value=False), \
              patch("motorsim.desktop.execution_page.run_background") as launch:
             page.start_run(resume=False)
         launch.assert_not_called()

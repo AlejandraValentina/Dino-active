@@ -125,7 +125,7 @@ class DesktopContextV2Tests(unittest.TestCase):
     def test_engine_editor_uses_backend_port_angles_and_locale_decimal_input(self):
         page=EnginePage(DesktopContext(new_project("ux-engine-responsive")))
         self.assertIn("cm³",page.derived.text())
-        self.assertIn("°",page.derived.text())
+        self.assertGreater(page.timing.rowCount(),0)
         self.assertEqual(page._decimal("21,5"),21.5)
         self.assertEqual(page._decimal("21.5"),21.5)
         with self.assertRaises(ValueError):page._decimal("21,5.2")
@@ -168,8 +168,8 @@ class DesktopContextV2Tests(unittest.TestCase):
         name=context.duplicate_variant(None,"Escape prueba")
         window=DinoDesktopWindow(context.project)
         window.context.select_variant(name)
-        for page in range(window.stack.count()):
-            window.nav.setCurrentRow(page)
+        for page in range(window.nav.count()):
+            window.nav.setCurrentIndex(page)
             self.assertEqual(window.context.selected_variant,name)
             self.assertEqual(window.context_bar.variant.currentData(),name)
             self.assertEqual(window.inspector_variant.text(),"Escape prueba")
@@ -217,12 +217,13 @@ class DesktopContextV2Tests(unittest.TestCase):
     def test_escape_editor_uses_each_shared_station_once_and_rebuilds_widgets_safely(self):
         page=ExhaustPage(DesktopContext(new_project("ux-v2-stations")))
         count=page.mesh_table.rowCount()
-        self.assertEqual(page.table.rowCount(),2*count+1)
+        self.assertEqual(page.table.rowCount(),count)
+        self.assertEqual(page.stations.rowCount(),count+1)
         page.refresh();page.refresh()
         combos=[page.mesh_table.cellWidget(i,1) for i in range(count)]
         self.assertEqual(sum(widget is not None for widget in combos),count)
         # One station diameter feeds both adjoining segments without duplicate fields.
-        page.table.item(2,2).setText("21,5")
+        page.stations.item(1,2).setText("21,5")
         rows=page._rows()
         self.assertEqual(rows[0]["outlet_diameter_mm"],21.5)
         self.assertEqual(rows[1]["inlet_diameter_mm"],21.5)
@@ -233,7 +234,7 @@ class DesktopContextV2Tests(unittest.TestCase):
         self.assertTrue(page.save_as_new(name="Resonador B"))
         self.assertEqual(context.selected_variant,"Resonador B")
         variant_count=len(context.project["variants"])
-        page.table.item(3,1).setText("185,5")
+        page.table.item(1,1).setText("185,5")
         self.assertTrue(page.save_current())
         self.assertEqual(len(context.project["variants"]),variant_count)
         self.assertEqual(context.engine()["native_configuration"]["geometry_identity"]["chamber"]["sections"][1]["length_mm"],185.5)

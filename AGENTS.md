@@ -22,13 +22,20 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_TUNING_WORKBENCH_V1
-change/spec:       openspec/changes/dino-tuning-workbench-v1/
-                   (specs/dino-tuning-workbench-v1/spec.md is the authority of requirements)
-completion:        Owner-authorized F0-F4 engineering workbench and packaged
-                   workflow. Desktop-only changes and isolated tests; preserve
-                   solver, physics, mesh, periodicity, hard gates and historical
-                   evidence. No campaigns, batch runs, or push.
+CURRENT_OBJECTIVE: DINO_COMMERCIAL_DESKTOP_V3
+change/spec:       openspec/changes/dino-commercial-desktop-v3/
+                   (specs/dino-commercial-desktop-v3/spec.md is the authority)
+completion:        Owner-authorized two-mode commercial desktop redesign using
+                   existing backends only. Complete P0/P1 criteria, tests, real
+                   Windows UI/package checks where available; otherwise PARTIAL
+                   with exact blockers. No physics, solver, mesh, campaigns, or
+                   historical result changes. No automatic next phase or push.
+previous objective: DINO_TUNING_WORKBENCH_V1 = PARTIAL; packaged interaction
+                   acceptance remains blocked by unavailable unlocked desktop
+                   interaction. This limitation is preserved, not promoted.
+previous completed objective: DINO_DESKTOP_UX_V2 = PASS /
+                   DINO_DESKTOP_UX_V2_READY; packaged acceptance receipt is
+                   durable and the prior gate remains recorded.
 previous objective: DINO_DESKTOP_UX_V2 = PASS /
                    DINO_DESKTOP_UX_V2_READY; packaged acceptance receipt is
                    durable and the prior gate remains recorded.

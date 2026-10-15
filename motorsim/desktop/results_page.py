@@ -2,9 +2,8 @@ from __future__ import annotations
 import csv,json
 import math
 from pathlib import Path
-from PySide6.QtCore import Qt,Signal
-from PySide6.QtGui import QPixmap
-from PySide6.QtGui import QColor
+from PySide6.QtCore import Qt,Signal,QRect
+from PySide6.QtGui import QPixmap,QColor,QPainter,QPen,QImage
 from PySide6.QtWidgets import (QWidget,QVBoxLayout,QHBoxLayout,QLabel,QComboBox,QPushButton,
     QFileDialog,QCheckBox,QGroupBox,QListWidget,QListWidgetItem,QTableWidget,QTableWidgetItem,QHeaderView,QMessageBox)
 from .plot import CurvePlot
@@ -22,6 +21,58 @@ def _state_label(value):
         "UNDEFINED":"No definido","NUMERICAL_INVALID":"Inválido numéricamente",
         "EXPLORATORY":"Exploratoria · no validada"}.get(value,value)
 
+
+class DiscreteAngleCellMap(QWidget):
+    """QImage view of exact cell/angle observations; each pixel band holds one sample."""
+    def __init__(self,parent=None):
+        super().__init__(parent);self.setObjectName("traceAngleCellMap");self.setMinimumHeight(240)
+        self.angles=[];self.rows=[];self.image=QImage();self.value_range=None;self.raw_samples=[]
+    def set_grid(self,angles,rows):
+        self.angles=list(angles);self.rows=list(rows);self.raw_samples=[]
+        finite=[float(v) for row in self.rows for v in row.get("values",[]) if v is not None and math.isfinite(float(v))]
+        low=min(finite) if finite else 0.;high=max(finite) if finite else 1.;self.value_range=(low,high)
+        width=max(2,min(1200,len(self.angles)*2));height=max(2,min(600,len(self.rows)*8));self.image=QImage(width,height,QImage.Format.Format_RGB32);self.image.fill(QColor("#182536"))
+        raster=QPainter(self.image);xmin=self.angles[0] if self.angles else 0.;span=max(1e-9,(self.angles[-1]-xmin) if len(self.angles)>1 else 1.)
+        groups={}
+        for row in self.rows:groups.setdefault(row.get("group","run"),[]).append(row)
+        group_height=height/max(1,len(groups));group_index=0
+        for group,group_rows in groups.items():
+            total=sum(max(1e-9,float(row.get("length_mm",1.))) for row in group_rows);cursor=group_index*group_height
+            for row in group_rows:
+                band=group_height*max(1e-9,float(row.get("length_mm",1.)))/total;y0=round(cursor);y1=max(y0+1,round(cursor+band));cursor+=band
+                vals=row.get("values",[]);self.raw_samples.append({'label':row.get('label'),'values':list(vals),'angles_deg':list(self.angles),'position_m':row.get('position_m')})
+                for j,value in enumerate(vals):
+                    if value is None or not math.isfinite(float(value)):continue
+                    x0=0 if j==0 else round((((self.angles[j-1]+self.angles[j])/2-xmin)/span)*width)
+                    x1=width if j==len(vals)-1 else round((((self.angles[j]+self.angles[j+1])/2-xmin)/span)*width)
+                    f=.5 if high==low else (float(value)-low)/(high-low);color=self._color(f)
+                    raster.fillRect(QRect(max(0,x0),y0,max(1,min(width,x1)-max(0,x0)),min(height,y1)-y0),color)
+            group_index+=1
+        raster.end()
+        self.update()
+    @staticmethod
+    def _color(value):
+        stops=((0.,(35,55,110)),(.45,(29,155,174)),(.72,(150,205,87)),(1.,(252,210,73)))
+        for i in range(len(stops)-1):
+            if stops[i][0]<=value<=stops[i+1][0]:
+                a,ca=stops[i];b,cb=stops[i+1];f=(value-a)/(b-a)
+                return QColor(*(round(ca[j]+(cb[j]-ca[j])*f) for j in range(3)))
+        return QColor(*stops[-1][1])
+    def paintEvent(self,event):
+        p=QPainter(self);p.fillRect(self.rect(),QColor("#101a28"));r=self.rect().adjusted(100,14,-72,-46)
+        p.setPen(QPen(QColor("#536b82"),1));p.drawRect(r)
+        if self.image.isNull():p.setPen(QColor("#cad8e7"));p.drawText(r,Qt.AlignmentFlag.AlignCenter,"No hay muestras de celda y ángulo disponibles.");p.end();return
+        p.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform,False);p.drawImage(r,self.image)
+        p.setPen(QColor("#cad8e7"));p.drawText(6,r.center().y(),90,18,Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignVCenter,"Celdas reales")
+        low_angle=self.angles[0] if self.angles else 0.;high_angle=self.angles[-1] if self.angles else 0.
+        for i in range(5):
+            angle=low_angle+(high_angle-low_angle)*i/4;x=r.left()+i/4*r.width();p.drawText(round(x)-28,r.bottom()+18,56,16,Qt.AlignmentFlag.AlignCenter,f"{angle:g}°")
+        p.drawText(r.left(),self.height()-5,"Ángulo muestreado · bandas discretas, sin interpolación")
+        low,high=self.value_range or (0,1);bar=r.adjusted(r.width()+22,0,r.width()+52,0)
+        for y in range(max(0,bar.top()),min(self.height(),bar.bottom()+1)):
+            f=1-(y-bar.top())/max(bar.height(),1);p.setPen(self._color(f));p.drawLine(bar.left(),y,bar.right(),y)
+        p.setPen(QColor("#cad8e7"));p.drawText(bar.left()-28,bar.top(),45,15,Qt.AlignmentFlag.AlignRight,f"{high:.4g}");p.drawText(bar.left()-28,bar.bottom(),45,15,Qt.AlignmentFlag.AlignRight,f"{low:.4g}");p.end()
+
 class ResultsPage(QWidget):
     evidence_updated=Signal()
     def __init__(self,context):
@@ -30,6 +81,10 @@ class ResultsPage(QWidget):
         title=QLabel("Resultados y comparación");title.setObjectName('title');root.addWidget(title)
         self.source_notice=QLabel("No hay una corrida seleccionada. Elegila desde el historial o abrí datos importados; todavía no se cargó evidencia histórica.")
         self.source_notice.setWordWrap(True);self.source_notice.setObjectName("notice");root.addWidget(self.source_notice)
+        self.run_summary=QLabel("Sin una corrida seleccionada · las métricas de desempeño no están definidas.");self.run_summary.setWordWrap(True);self.run_summary.setObjectName("notice");root.addWidget(self.run_summary)
+        self.metric_cards=[];cards=QHBoxLayout();root.addLayout(cards)
+        for name in ("Potencia","Torque","BMEP","Auditoría"):
+            card=QLabel(f"{name}\n—");card.setObjectName("metricCard");card.setWordWrap(True);card.setMinimumHeight(50);cards.addWidget(card);self.metric_cards.append(card)
         explanation=QLabel("PERIOD_1 describe periodicidad observada; no representa aprobación científica PASS. Los valores no definidos quedan como huecos y no se interpolan.");explanation.setWordWrap(True);root.addWidget(explanation)
         bar=QHBoxLayout();root.addLayout(bar);self.metric_selector=QComboBox();self.metric_selector.addItems(METRICS);bar.addWidget(self.metric_selector)
         self.path_label=QLabel("Sin fuente seleccionada");self.path_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse);self.path_label.setWordWrap(True);bar.addWidget(self.path_label,1)
@@ -46,7 +101,7 @@ class ResultsPage(QWidget):
         self.unit=QLabel();controls.addWidget(self.unit);controls.addStretch()
         export_table=QPushButton("Exportar tabla CSV");export_table.clicked.connect(self.export_csv);controls.addWidget(export_table)
         export_plot=QPushButton("Exportar gráfico PNG");export_plot.clicked.connect(self.export_png);controls.addWidget(export_plot)
-        self.point_table=QTableWidget(0,8);self.point_table.setHorizontalHeaderLabels(["Variante","RPM","Clasificación","Periodicidad","Auditoría","Ciclos","Conservación","BMEP"]);self.point_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.point_table.setMinimumHeight(180);self.point_table.currentCellChanged.connect(self._point_row_selected);root.addWidget(self.point_table)
+        self.point_table=QTableWidget(0,8);self.point_table.setHorizontalHeaderLabels(["Variante","RPM","Estado","Período","Auditoría","Ciclos","Balance","BMEP"]);self.point_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.point_table.horizontalHeader().setMinimumSectionSize(48);self.point_table.setMinimumHeight(180);self.point_table.currentCellChanged.connect(self._point_row_selected);root.addWidget(self.point_table)
         self.trace_group=QGroupBox("Señales de presión, ondas y flujo EXPLORATORY")
         trace_layout=QVBoxLayout(self.trace_group)
         trace_bar=QHBoxLayout();trace_layout.addLayout(trace_bar)
@@ -55,7 +110,8 @@ class ResultsPage(QWidget):
         self.trace_legend=QLabel();self.trace_legend.setWordWrap(True);trace_layout.addWidget(self.trace_legend)
         self.trace_plot=CurvePlot();self.trace_plot.setMinimumHeight(220);trace_layout.addWidget(self.trace_plot)
         self.trace_map_legend=QLabel("Mapa discreto de posición × ángulo · celdas reales · sin interpolación.");self.trace_map_legend.setWordWrap(True);trace_layout.addWidget(self.trace_map_legend)
-        self.trace_map=QTableWidget(0,0);self.trace_map.setObjectName("traceAngleCellMap");self.trace_map.setMinimumHeight(140);self.trace_map.setMaximumHeight(260);trace_layout.addWidget(self.trace_map)
+        self.trace_map=DiscreteAngleCellMap();trace_layout.addWidget(self.trace_map)
+        self.export_trace_map=QPushButton("Exportar muestras x–θ CSV");self.export_trace_map.clicked.connect(self.export_trace_csv);trace_layout.addWidget(self.export_trace_map)
         self.trace_group.hide();root.addWidget(self.trace_group)
         self.details=QTableWidget(0,2);self.details.setHorizontalHeaderLabels(["Detalle del punto","Valor"]);self.details.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.details.setMaximumHeight(190);root.addWidget(self.details)
         self.metric_selector.currentIndexChanged.connect(self.redraw);self.variants.itemChanged.connect(self.redraw);self.plot.pointSelected.connect(self.show_point)
@@ -69,7 +125,7 @@ class ResultsPage(QWidget):
             data_names={str(row.get("variant_id")) for row in self.dataset.get("points",[]) if row.get("variant_id")};names.update(data_names)
         prefs=settings();key=f"baseline_variant/{self.context.project['project_id']}"
         preferred=prefs.value(key)
-        if not preferred:preferred=self.context.selected_variant or (sorted(data_names)[0] if data_names else "base")
+        if not preferred:preferred="base"
         self.baseline_selector.blockSignals(True);self.baseline_selector.clear();self.baseline_selector.addItem("Sin baseline",None)
         self.baseline_selector.addItem("Motor base","base")
         for name in sorted(names-{"base"}):self.baseline_selector.addItem(name,name)
@@ -99,8 +155,7 @@ class ResultsPage(QWidget):
             if other is not None and baseline_matches and other.get("native_configuration_sha256") in hashes:
                 changes=compare_configurations(base,other);descriptions=[]
                 for change in changes[:4]:
-                    path=change["path"].replace("/native_configuration/","",1)
-                    descriptions.append(f"{path}: {change['before']} → {change['after']} {change['unit']}")
+                    descriptions.append(self._engineering_change(change,base,other))
                 suffix="; …" if len(changes)>4 else ""
                 diffs.append(f"{candidate}: {len(changes)} diferencias nativas ({'; '.join(descriptions)}{suffix}) · hashes coinciden")
             elif other is not None:diffs.append(f"{candidate}: corridas presentes; diff de geometría no confirmado contra sus hashes")
@@ -108,17 +163,37 @@ class ResultsPage(QWidget):
         self._update_condition_notice()
         self.redraw()
 
+    @staticmethod
+    def _engineering_change(change,baseline,candidate):
+        path=change.get("path","").replace("/native_configuration/","")
+        unit=change.get("unit") or ""
+        before,after=change.get("before"),change.get("after")
+        label=path
+        parts=path.split("/")
+        if "chamber/sections" in path:
+            try:
+                i=int(parts[parts.index("sections")+1]);name=__import__("motorsim.engine_variants",fromlist=["escape_sections"]).escape_sections(candidate)[i]["name"]
+                tail=parts[-1];label=f"{name} · "+({"length_mm":"longitud","inlet_diameter_mm":"Ø entrada","outlet_diameter_mm":"Ø salida"}.get(tail,tail))
+            except (ValueError,IndexError,KeyError):pass
+        elif parts[-1]=="bore_mm":label="Diámetro de cilindro"
+        elif parts[-1]=="stroke_mm":label="Carrera"
+        elif parts[-1]=="rod_length_mm":label="Longitud de biela"
+        def fmt(value):return f"{value:g}" if isinstance(value,(int,float)) else str(value)
+        return f"{label}: {fmt(before)} → {fmt(after)} {unit}".strip()
+
     def _update_condition_notice(self):
         if not self.dataset or not isinstance(self.dataset.get("points"),list):
             self.condition_notice.setText("Condiciones entre corridas: sin datos cargados.");return
         selected={self.variants.item(i).text() for i in range(self.variants.count()) if self.variants.item(i).checkState()==Qt.CheckState.Checked}
         points=[row for row in self.dataset["points"] if row.get("variant_id") in selected]
-        fields=("rpm","fuel_id","afr_kg_air_per_kg_fuel","mesh_resolution","total_finite_volume_cells")
+        fields=("rpm","fuel_id","afr_kg_air_per_kg_fuel","mesh_resolution","total_finite_volume_cells","cycles_requested","point_configuration_sha256")
         differing=[]
         for key in fields:
             values={json.dumps(row.get(key),sort_keys=True) for row in points if row.get(key) is not None}
             if len(values)>1:differing.append(key)
-        self.condition_notice.setText(("Advertencia: las corridas difieren en "+", ".join(differing)+"; la comparación no aísla sólo el cambio de escape." ) if differing else "Condiciones comparables disponibles en los campos reportados; los campos ausentes no se asumen iguales." )
+        labels={"rpm":"RPM","fuel_id":"combustible","afr_kg_air_per_kg_fuel":"AFR","mesh_resolution":"resolución de malla","total_finite_volume_cells":"cantidad de celdas","cycles_requested":"horizonte","point_configuration_sha256":"identidad de configuración"}
+        named=[labels.get(key,key) for key in differing]
+        self.condition_notice.setText(("Advertencia: las corridas difieren en "+", ".join(named)+"; la comparación no aísla sólo el cambio de escape." ) if differing else "Condiciones comparables en los campos reportados; los campos ausentes no se asumen iguales." )
     def choose(self):
         path,_=QFileDialog.getOpenFileName(self,"Abrir datos de resultados",str(artifact_root()),"Reportes y datos (*.json *.csv)")
         if path:self.load(Path(path))
@@ -151,10 +226,10 @@ class ResultsPage(QWidget):
                                  if traces else [set()]))
         options=[]
         if "cylinder_pressure_pa" in common:
-            options.append(("Presión absoluta del cilindro (Pa)","cylinder_pressure_pa"))
+            options.append(("Presión absoluta cilindro (bar abs)","cylinder_pressure_pa"))
         for key in sorted(common):
             if key.startswith("duct:exhaust:cell:") and key.endswith(":pressure_pa"):
-                options.append((f"Presión absoluta escape · celda {key.split(':')[3]} (Pa)",key))
+                options.append((f"Presión absoluta escape · celda {key.split(':')[3]} (bar abs)",key))
             elif key.startswith("duct:exhaust:face:") and key.endswith(":mass_flow_kg_s"):
                 options.append((f"Flujo escape · cara {key.split(':')[3]} (kg/s)",key))
         for label,key in options:self.trace_metric.addItem(label,key)
@@ -202,7 +277,7 @@ class ResultsPage(QWidget):
             for row in sorted((r for r in self.dataset['points'] if r['variant_id']==name),key=lambda r:r['rpm']):
                 status=row.get(metric+'_status');value=row.get(metric) if status=='DEFINED' else None
                 points.append({"rpm":row['rpm'],"value":value,"classification":row['classification'],"status":status,"reason":row.get(metric+'_reason'),"point":row})
-            series.append({"name":("Baseline · " if name==baseline else "")+name,"unit":unit,"points":points})
+            series.append({"name":("Baseline · " if name==baseline else "")+name,"unit":unit,"role":"baseline" if name==baseline else "variant","points":points})
         self.unit.setText(f"{unit} · los estados sin valor permanecen como huecos · sin interpolación")
         self.plot.set_series(series)
         rows=sorted((r for r in self.dataset['points'] if r['variant_id'] in selected),key=lambda r:(r['variant_id'],r['rpm']))
@@ -237,49 +312,49 @@ class ResultsPage(QWidget):
             if not isinstance(channel,dict):continue
             name=f"{trace['variant_id']} · {trace['rpm']:g} RPM · ciclo {trace['cycle']}"
             labels.append(name)
-            series.append({"name":name,"unit":channel.get("unit",""),
+            pressure=key.endswith("_pressure_pa")
+            unit="bar abs" if pressure else channel.get("unit","")
+            values=[(float(value)/100000.0 if value is not None else None) for value in channel.get("values",[])] if pressure else channel.get("values",[])
+            baseline=self.baseline_selector.currentData()==trace.get("variant_id")
+            series.append({"name":name,"unit":unit,"role":"baseline" if baseline else "variant",
                 "x_key":"angle_deg","x_label":"Ángulo de cigüeñal (°)",
                 "points":[{"angle_deg":angle,"value":value}
-                           for angle,value in zip(trace["angles_deg"],channel["values"])]})
-        self.trace_plot.set_series(series,y_scale_mode="data_margin")
+                           for angle,value in zip(trace["angles_deg"],values)]})
+        pressure=key.endswith("_pressure_pa")
+        self.trace_plot.set_series(series,y_scale_mode="nonnegative_data_margin" if pressure else "data_margin")
         self.trace_legend.setText("Series: " + " | ".join(labels) if labels else "Sin trazas disponibles")
         self._redraw_trace_map()
 
     def _redraw_trace_map(self):
-        """Tabulate exact angle/cell observations; blank entries are never interpolated."""
-        self.trace_map.clear();self.trace_map.setRowCount(0);self.trace_map.setColumnCount(0)
-        if not self.dataset or self.dataset.get("schema")!="DINO_EXPLORATORY_COMPARISON_V1":return
+        """Render exact cell/angle samples into a discrete QImage without interpolation."""
+        if not self.dataset or self.dataset.get("schema")!="DINO_EXPLORATORY_COMPARISON_V1":
+            self.trace_map.set_grid([],[]);return
         selected={self.variants.item(i).text() for i in range(self.variants.count()) if self.variants.item(i).checkState()==Qt.CheckState.Checked}
-        key=self.trace_metric.currentData();
-        if not key or not key.startswith("duct:exhaust:"):return
+        key=self.trace_metric.currentData()
+        if not key or not key.startswith("duct:exhaust:"):
+            self.trace_map.set_grid([],[]);return
         family="cell" if ":cell:" in key else ("face" if ":face:" in key else None)
-        if family is None:return
+        if family is None:self.trace_map.set_grid([],[]);return
         suffix=key.rsplit(":",1)[-1];channels=[];angles=set()
         traces=[trace for trace in self.dataset.get("traces",[]) if trace.get("variant_id") in selected]
         for trace in traces:
             for channel,channel_doc in (trace.get("channels") or {}).items():
-                if channel.startswith(f"duct:exhaust:{family}:") and channel.endswith(":"+suffix):
-                    values=channel_doc.get("values",[]) if isinstance(channel_doc,dict) else channel_doc
-                    channels.append((trace,channel,values));angles.update(trace.get("angles_deg",[]))
-        ordered=sorted(angles);self.trace_map.setColumnCount(len(ordered)+1);self.trace_map.setRowCount(len(channels))
-        self.trace_map.setHorizontalHeaderLabels(["Señal / celda"]+[f"{angle:g}°" for angle in ordered])
-        observed=[float(value) for _,_,values in channels for value in values if value is not None and math.isfinite(float(value))]
-        low=min(observed) if observed else None;high=max(observed) if observed else None
-        for row,(trace,channel,values) in enumerate(channels):
-            index=int(channel.split(":")[3]);positions=self._trace_positions(trace,family)
-            position=f" · x={float(positions[index]):.6g} m" if index<len(positions) else " · posición no reportada"
-            label=f"{trace.get('variant_id','variante')} · {family} {index}{position} · {trace.get('run_id','run')}"
-            item=QTableWidgetItem(label);item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable);self.trace_map.setItem(row,0,item)
-            value_by_angle={float(a):v for a,v in zip(trace.get("angles_deg",[]),values)}
-            for col,angle in enumerate(ordered,1):
-                value=value_by_angle.get(float(angle));cell=QTableWidgetItem("—" if value is None else f"{value:.6g}")
-                cell.setFlags(cell.flags() & ~Qt.ItemFlag.ItemIsEditable)
-                if value is not None and low is not None:
-                    fraction=0.5 if high==low else (float(value)-low)/(high-low)
-                    cell.setBackground(QColor(round(19+236*fraction),round(59+99*fraction),round(92-49*fraction)))
-                self.trace_map.setItem(row,col,cell)
-        self.trace_map_legend.setText((f"Mapa discreto posición × ángulo · escala de color {low:.6g}–{high:.6g} · cada celda es una muestra exacta; huecos sin interpolar." if observed else "Mapa discreto posición × ángulo · no hay muestras numéricas disponibles."))
-        self.trace_map.setToolTip("Mapa tabular de observaciones discretas. Cada columna corresponde a un ángulo presente; los valores ausentes se dejan vacíos y no se interpolan.")
+                if not (channel.startswith(f"duct:exhaust:{family}:") and channel.endswith(":"+suffix)):continue
+                values=channel_doc.get("values",[]) if isinstance(channel_doc,dict) else channel_doc
+                angles.update(float(a) for a in trace.get("angles_deg",[]))
+                index=int(channel.split(":")[3]);positions=self._trace_positions(trace,family)
+                if family=="cell" and index+1<len(positions):length=abs(float(positions[index+1])-float(positions[index]))*1000;position=(float(positions[index])+float(positions[index+1]))/2
+                elif index<len(positions):length=1.;position=float(positions[index])
+                else:length=1.;position=None
+                label=f"{trace.get('variant_id','variante')} · {family} {index} · {trace.get('run_id','run')}"
+                channels.append({"trace":trace,"label":label,"index":index,"values_by_angle":{float(a):v for a,v in zip(trace.get("angles_deg",[]),values)},"length_mm":length,"position_m":position})
+        ordered=sorted(angles);rows=[]
+        for entry in channels:
+            rows.append({"label":entry["label"],"group":f"{entry['trace'].get('variant_id')} · {entry['trace'].get('run_id')} · {entry['trace'].get('cycle')}","length_mm":entry["length_mm"],"position_m":entry["position_m"],"values":[entry["values_by_angle"].get(angle) for angle in ordered]})
+        self.trace_map.set_grid(ordered,rows)
+        low,high=self.trace_map.value_range or (0,0)
+        self.trace_map_legend.setText((f"Mapa discreto posición × ángulo · escala {low:.6g}–{high:.6g} · celdas reales en bandas proporcionales · muestras exactas, sin interpolar." if rows else "Mapa discreto posición × ángulo · no hay muestras numéricas disponibles."))
+        self.trace_map.setToolTip("QImage construido con muestras originales. Cada banda representa una celda espacial y cada bloque coloreado conserva un valor muestreado; las ausencias quedan vacías.")
 
     def _trace_positions(self,trace,family):
         """Resolve positions only when the loaded run hash matches this project config exactly."""
@@ -289,13 +364,23 @@ class ResultsPage(QWidget):
             return []
         duct=next((d for d in engine["native_configuration"].get("ducts",[]) if d.get("id")=="exhaust"),None)
         mesh=(duct or {}).get("mesh",{})
-        return mesh.get("centers" if family=="cell" else "faces",[])
+        return mesh.get("faces" if family=="cell" else "centers",[])
     def _point_row_selected(self,row,*_):
         if row<0 or self.point_table.item(row,0) is None:return
         data=self.point_table.item(row,0).data(Qt.ItemDataRole.UserRole)
         if data:self.show_point({"point":data,"rpm":data['rpm'],"value":None})
     def show_point(self,point):
         row=point.get('point',point)
+        def card(label,key,unit):
+            status=row.get(key+"_status");value=row.get(key)
+            if status=="DEFINED" and value is not None:return f"{label}\n{float(value):.4g} {unit} · Δ vs baseline disponible si comparable"
+            reason=row.get(key+"_reason") or row.get(key+"_status") or "No reportado"
+            return f"{label}\nNo definido · {reason}"
+        self.metric_cards[0].setText(card("Potencia","brake_power","kW"))
+        self.metric_cards[1].setText(card("Torque","brake_torque","N·m"))
+        self.metric_cards[2].setText(card("BMEP","BMEP","kPa"))
+        self.metric_cards[3].setText(f"Auditoría\n{_state_label(row.get('audit_status','NOT_REPORTED'))} · recomputada: {row.get('audit_recomputed','NOT_REPORTED')}")
+        self.run_summary.setText(f"{row.get('variant_id','Variante no informada')} · {row.get('rpm','—')} RPM · {_state_label(row.get('classification'))} · periodicidad {_state_label(row.get('periodicity') or row.get('classification'))} · conservación {row.get('conservation','no reportada')}")
         periodicity=row.get('periodicity')
         if periodicity is None:
             periodicity=row.get('classification') if row.get('classification') in {"PERIOD_1","PERIOD_2"} else "NOT_REPORTED"
@@ -339,3 +424,14 @@ class ResultsPage(QWidget):
         if path:
             pix=QPixmap(self.plot.size());self.plot.render(pix)
             if not pix.save(path,"PNG"):QMessageBox.warning(self,"Error de escritura","No se pudo guardar el gráfico.")
+    def export_trace_csv(self):
+        if not self.trace_map.raw_samples:return
+        path,_=QFileDialog.getSaveFileName(self,"Exportar muestras originales x–θ","dino-mapa-ondas.csv","CSV (*.csv)")
+        if not path:return
+        angles=self.trace_map.angles
+        try:
+            with open(path,"w",encoding="utf-8-sig",newline="") as stream:
+                writer=csv.writer(stream);writer.writerow(["Señal/celda","Posición (m)","Ángulo (deg)","Valor"])
+                for row in self.trace_map.raw_samples:
+                    for angle,value in zip(angles,row["values"]):writer.writerow([row["label"],row["position_m"],angle,value])
+        except OSError as exc:QMessageBox.warning(self,"Error de escritura",str(exc))

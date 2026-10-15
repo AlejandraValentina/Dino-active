@@ -12,7 +12,7 @@ class CurvePlot(QWidget):
     def __init__(self,parent=None):
         super().__init__(parent); self.series=[]; self.selected=None;self.y_scale_mode="include_zero";self.axis_y_bounds=None;self.y_ticks=();self.setMinimumHeight(260); self.setMouseTracking(True)
     def set_series(self,series,*,y_scale_mode="include_zero"):
-        if y_scale_mode not in {"include_zero","data_margin"}:raise ValueError("unknown y-axis scale mode")
+        if y_scale_mode not in {"include_zero","data_margin","nonnegative_data_margin"}:raise ValueError("unknown y-axis scale mode")
         self.series=series;self.selected=None;self.y_scale_mode=y_scale_mode;self.update()
     def _points(self):
         return [(s, i, p) for s in self.series for i,p in enumerate(s.get("points",[]))
@@ -26,10 +26,11 @@ class CurvePlot(QWidget):
         xs.extend(float(p[s.get("x_key","rpm")]) for s,_,p in self._missing_points())
         ys=[float(p["value"]) for _,_,p in allp]
         xmin,xmax=min(xs),max(xs);raw_min,raw_max=min(ys),max(ys)
-        if self.y_scale_mode=="data_margin":
+        if self.y_scale_mode in {"data_margin","nonnegative_data_margin"}:
             span=raw_max-raw_min
             margin=span*.05 if span>0 else max(abs(raw_min)*.05,1.0)
             ymin,ymax=raw_min-margin,raw_max+margin
+            if self.y_scale_mode=="nonnegative_data_margin" and raw_min>=0:ymin=max(0.0,ymin)
         else:ymin,ymax=min(0.0,raw_min),max(0.0,raw_max)
         if xmax==xmin:xmax=xmin+1
         if ymax==ymin:
@@ -43,7 +44,7 @@ class CurvePlot(QWidget):
                 and math.isfinite(float(p[s.get("x_key","rpm")]))]
     def paintEvent(self,event):
         painter=QPainter(self); painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-        painter.fillRect(self.rect(),QColor("#101a28")); rect=self.rect().adjusted(58,18,-18,-40)
+        painter.fillRect(self.rect(),QColor("#101a28")); rect=self.rect().adjusted(76,18,-18,-40)
         allp=self._points()
         painter.setPen(QPen(QColor("#34475c"),1))
         for i in range(5):
@@ -68,9 +69,12 @@ class CurvePlot(QWidget):
         painter.setFont(QFont("Segoe UI",8));painter.setPen(QColor("#9fb3c8"))
         for tick in self.y_ticks:
             y=rect.bottom()-(tick-ymin)/(ymax-ymin)*rect.height()
-            painter.drawText(2,round(y)-7,52,14,Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignVCenter,f"{tick:g}")
+            label=f"{tick:.3f}" if self.series and self.series[0].get("unit")=="bar abs" else f"{tick:g}"
+            painter.drawText(2,round(y)-7,68,14,Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignVCenter,label)
         for si,series in enumerate(self.series):
-            pen=QPen(QColor(self.COLORS[si%len(self.COLORS)]),2); painter.setPen(pen)
+            baseline=series.get("role")=="baseline"
+            pen=QPen(QColor("#f6bd60" if baseline else self.COLORS[si%len(self.COLORS)]),2,
+                     Qt.PenStyle.DashLine if baseline else Qt.PenStyle.SolidLine); painter.setPen(pen)
             previous=None
             for index,point in enumerate(series.get("points",[])):
                 if point.get("value") is None: previous=None; continue
@@ -89,7 +93,7 @@ class CurvePlot(QWidget):
         painter.end()
     def mousePressEvent(self,event):
         if event.button()!=Qt.MouseButton.LeftButton:return
-        rect=self.rect().adjusted(58,18,-18,-40); allp=self._points()
+        rect=self.rect().adjusted(76,18,-18,-40); allp=self._points()
         if not allp:return
         xmin,xmax,ymin,ymax=self._axis_ranges(allp)
         near=None;distance=1e9
