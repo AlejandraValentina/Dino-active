@@ -24,6 +24,10 @@ def stylesheet() -> str:
         QPushButton {{background:#1b293a;border:1px solid #344b65;border-radius:6px;padding:8px 12px;}}
         QPushButton:hover {{background:#263a51;}} QPushButton:disabled {{color:#708296;}}
         QPushButton#primaryAction {{background:#1479ad;border-color:#219bd7;font-weight:600;}}
+        QLabel#workspaceModeLabel {{color:#8fa8bf;font-size:9pt;font-weight:700;letter-spacing:1px;padding-right:6px;}}
+        QPushButton#modeDesign,QPushButton#modeAnalysis {{background:#172333;border:1px solid #435c75;border-radius:9px;padding:10px 22px;font-size:11pt;font-weight:600;}}
+        QPushButton#modeDesign:hover,QPushButton#modeAnalysis:hover {{background:#24364a;border-color:#6591b3;}}
+        QPushButton#modeDesign:checked,QPushButton#modeAnalysis:checked {{background:#145579;border:2px solid #43c5f5;color:#ffffff;}}
         QLineEdit,QDoubleSpinBox,QComboBox,QTableWidget,QPlainTextEdit,QListWidget {{background:{c['panel_deep']};border:1px solid #30435a;border-radius:4px;padding:5px;selection-background-color:#17638c;}}
         QHeaderView::section {{background:#26394d;color:#f0f6fc;font-weight:600;padding:7px 5px;border-right:1px solid #3b5067;}}
         QTableWidget {{alternate-background-color:#182536;color:{c['text']};gridline-color:#33465b;}}
@@ -31,6 +35,9 @@ def stylesheet() -> str:
         QTabBar::tab {{background:#202d3c;color:#d7e2ee;border:1px solid #3a4d63;padding:9px 12px;min-height:22px;}}
         QTabBar::tab:selected {{background:#145579;color:#ffffff;border-color:#42b9ed;}}
         QTabBar::tab:hover {{background:#2b4054;color:#ffffff;}}
+        QTabBar#designSectionNav {{background:transparent;border-bottom:1px solid #2b4054;padding:4px 0 1px;}}
+        QTabBar#designSectionNav::tab {{border-radius:6px 6px 0 0;padding:10px 16px;min-height:23px;margin-right:4px;}}
+        QTabBar#designSectionNav::tab:selected {{background:#173c55;border-bottom:3px solid #43c5f5;color:#ffffff;font-weight:600;}}
         QTabWidget::pane {{border:1px solid #2b3e53;border-radius:5px;top:-1px;background:{c['canvas']};}}
         QTableView::item:alternate {{background:#1b2a3b;color:{c['text']};}}
         QTableView::item:selected {{background:#145579;color:#ffffff;}}

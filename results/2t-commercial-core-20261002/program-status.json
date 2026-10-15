@@ -5395,6 +5395,32 @@
         "results/dino-desktop-v3-1-visual-parity/",
         "dist/MotorSim-0.1.0-rc6-windows-x64-d1878219-trial-20261015T152844Z.zip"
       ]
+    },
+    {
+      "id": "V31-NAVIGATION",
+      "description": "Replace the redundant vertical and internal navigation with a single horizontal two-level Design/Analysis navigation; verify state retention, compact access, and packaged Windows behavior.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "objective": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/app.py",
+        "motorsim/desktop/theme.py",
+        "tests/test_dino_desktop_v3_1_visual_parity.py",
+        "openspec/changes/dino-desktop-v3-1-visual-parity/",
+        "results/dino-desktop-v3-1-visual-parity/navigation-redesign-receipt.json",
+        "results/dino-desktop-v3-1-visual-parity/captures-after/nav-redesign/",
+        "tests/test_dino_desktop.py",
+        "tests/test_dino_commercial_desktop_v3.py"
+      ],
+      "evidence": [
+        "39 passed, 1 skipped across focused V3.1/commercial desktop/base desktop suites",
+        "new Windows TRIAL EXE navigated through six Design sections and Analysis",
+        "navigation-redesign-receipt.json; real executable captures"
+      ]
     }
   ],
   "audit_remediation_mode": false,
@@ -5609,6 +5635,7 @@
       "V31-EXECUTION-ANALYSIS",
       "V31-COMPACT-SAFETY",
       "V31-REGRESSION",
+      "V31-NAVIGATION",
       "V31-PACKAGED-ACCEPTANCE"
     ],
     "completion_criterion": "DINO_DESKTOP_V3_1_READY only after functional M1-M6 parity is shown in actual TRIAL EXE captures before/after, artifact root write safety is verified, relevant tests and OpenSpec/program-status checks pass, and the package integrity/hashes are recorded. No simulations or campaigns."
@@ -7156,6 +7183,12 @@
       "task": "V31-PACKAGED-ACCEPTANCE",
       "kind": "status",
       "summary": "Built and verified final TRIAL ZIP (300 entries, preserved MotorSim hashes); prior packaged M1-M6 interactions/captures and final startup are recorded. Windows screen lock blocked exact-final visual recapture; added READY unblock V31-FINAL-EXE-RECAPTURE."
+    },
+    {
+      "at": "2026-10-15T16:15:03+00:00",
+      "task": "V31-NAVIGATION",
+      "kind": "task",
+      "summary": "Replaced the vertical component rail and duplicate EnginePage tabs with one horizontal Design section bar; active Design/Analysis modes are distinct. 39 passed, 1 skipped across desktop suites; new TRIAL EXE interactions across all six sections and Analysis passed. Global gate remains PARTIAL pending exact-final M1-M6 recapture."
     }
   ],
   "legacy_gate_status": {
@@ -7174,18 +7207,19 @@
     "state": "REVIEW",
     "classification": "DINO_DESKTOP_V3_1_PARTIAL",
     "evidence": [
-      "results/dino-desktop-v3-1-visual-parity/packaged-acceptance-receipt.json; final TRIAL launched but Windows lock screen blocked exact-final visual recapture; READY unblock task V31-FINAL-EXE-RECAPTURE"
+      "results/dino-desktop-v3-1-visual-parity/packaged-acceptance-receipt.json; final TRIAL launched but Windows lock screen blocked exact-final visual recapture; READY unblock task V31-FINAL-EXE-RECAPTURE",
+      "results/dino-desktop-v3-1-visual-parity/navigation-redesign-receipt.json; V31-NAVIGATION DONE"
     ],
-    "gate_tasks_total": 6,
-    "gate_tasks_done": 5,
+    "gate_tasks_total": 7,
+    "gate_tasks_done": 6,
     "gate_task_states": {
-      "DONE": 5,
+      "DONE": 6,
       "BLOCKED_LOCAL": 1
     },
     "remaining": [
       "V31-PACKAGED-ACCEPTANCE"
     ],
-    "updated_at": "2026-10-15T15:32:43+00:00"
+    "updated_at": "2026-10-15T16:15:03+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -7233,7 +7267,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-15T14:15:00-03:00",
+  "updated_at": "2026-10-15T16:15:03+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",

@@ -29,7 +29,7 @@ class CommercialDesktopV3P0Tests(unittest.TestCase):
         self.assertEqual(window.component_nav.currentIndex(), 0)
         self.assertFalse(window.results.isVisible())
         self.assertTrue(window.strip_run.isEnabled())
-        self.assertIn("DISE", window.design_mode.text())
+        self.assertEqual(window.design_mode.text(), "Diseño")
         window.close(); APP.processEvents()
 
     def test_design_analysis_switch_preserves_active_variant_and_baseline(self):

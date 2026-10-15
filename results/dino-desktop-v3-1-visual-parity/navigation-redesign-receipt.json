@@ -1,0 +1,91 @@
+{
+  "schema": "DINO_DESKTOP_V3_1_NAVIGATION_RECEIPT_V1",
+  "task": "V31-NAVIGATION",
+  "result": "PASS",
+  "global_gate": "DINO_DESKTOP_V3_1_PARTIAL",
+  "global_gate_blocker": "V31-PACKAGED-ACCEPTANCE remains blocked on a separate exact-final M1-M6 recapture; this receipt does not close it.",
+  "implementation": {
+    "navigation": "Single horizontal QTabBar for six Design sections; internal EnginePage QTabBar hidden while its existing page stack is retained.",
+    "work_modes": "Design and Analysis buttons use exclusive selection and distinct active styling.",
+    "state": "Existing EnginePage widgets are retained when switching sections; verified by regression test.",
+    "science_unchanged": true,
+    "no_simulation_started": true
+  },
+  "verification": {
+    "compileall": "PASS",
+    "openspec_strict": "PASS",
+    "windows_exe": "PASS; new TRIAL EXE launched, all six Design destinations selected, Análisis selected; no run started.",
+    "actual_window_sizes": "wide window 1360x820 outer screen-fitted capture; compact 980x680 exact. Automated responsive regression resizes to both 1360x900 and 980x680.",
+    "navigation_observations": [
+      "six section labels fit without clipping at 980x680",
+      "active section and active work mode are visually distinct",
+      "Project remains directly accessible",
+      "Analysis remains a separate mode",
+      "no duplicate visible EnginePage tabs"
+    ],
+    "desktop_suite": "39 passed, 1 skipped: tests/test_dino_desktop_v3_1_visual_parity.py, tests/test_dino_commercial_desktop_v3.py, tests/test_dino_desktop.py"
+  },
+  "package": {
+    "type": "TRIAL",
+    "folder": "dist/MotorSim-0.1.0-rc6-windows-x64-49b48adb-trial-20261015T160359Z",
+    "zip": "dist/MotorSim-0.1.0-rc6-windows-x64-49b48adb-trial-20261015T160359Z.zip",
+    "source_commit": "49b48adbb4c0f0cacff464a5d3f213f702ad731e",
+    "source_dirty": true,
+    "built_utc": "20261015T160359Z",
+    "zip_sha256": "27299ae035f9e68bfb248a867c7b76cd5521e2ba61ee3a25ab0c8bee549a9bc5",
+    "zip_entries": 300,
+    "zip_integrity": "PASS",
+    "dino2t_exe_sha256": "037b9aab9635dea7a4e1fb264caf2499f2cd0c5e4504183301ee4ddacd0cc71d",
+    "motorsim_exe_sha256": "2798e7e978a813766eec35f120f8daf0b475d7f9ba8049e5970801e0b531c641",
+    "worker_exe_sha256": "348688d98096e6bba8adbe00b58072c8b9273abefa4c7d8e047d467f15326d68",
+    "solver_and_workflow_source_hashes_match_previous_trial": true,
+    "binary_hash_note": "MotorSim.exe and MotorSimWorker.exe byte hashes differ from the prior TRIAL rebuild; compiled workflow source hashes are identical. This is a rebuild artifact distinction, not a source change."
+  },
+  "captures": [
+    {
+      "file": "results/dino-desktop-v3-1-visual-parity/captures-after/nav-redesign/design-wide.png",
+      "sha256": "14a626812a5549a53a77ad249ea4c0641d06183e35b4118ff2844fcedbbf6798",
+      "source": "new Windows TRIAL Dino2T.exe"
+    },
+    {
+      "file": "results/dino-desktop-v3-1-visual-parity/captures-after/nav-redesign/events-wide.png",
+      "sha256": "a895b89d6d39899227a5bf1f41430905b8a9c665470518a1b2810c4763863bbe",
+      "source": "new Windows TRIAL Dino2T.exe"
+    },
+    {
+      "file": "results/dino-desktop-v3-1-visual-parity/captures-after/nav-redesign/exhaust-wide.png",
+      "sha256": "6614a70aaec7b31a384754ebdae419b3c74894dadf456d4f21ea597894b08acb",
+      "source": "new Windows TRIAL Dino2T.exe"
+    },
+    {
+      "file": "results/dino-desktop-v3-1-visual-parity/captures-after/nav-redesign/losses-wide.png",
+      "sha256": "1ea081f2f46c1f9e1333bce9285a457fd476c162a30f8b89b590d11e82e4373b",
+      "source": "new Windows TRIAL Dino2T.exe"
+    },
+    {
+      "file": "results/dino-desktop-v3-1-visual-parity/captures-after/nav-redesign/combustion-wide.png",
+      "sha256": "d9d69effc75224f72ae8eec02188b2cdef22814f1bbd0f97a36035c7c2b06874",
+      "source": "new Windows TRIAL Dino2T.exe"
+    },
+    {
+      "file": "results/dino-desktop-v3-1-visual-parity/captures-after/nav-redesign/project-wide.png",
+      "sha256": "a981ac7e1fdfb80685c9df789acad7e6aa477b45f824028ecb80d0208e3f9601",
+      "source": "new Windows TRIAL Dino2T.exe"
+    },
+    {
+      "file": "results/dino-desktop-v3-1-visual-parity/captures-after/nav-redesign/analysis-wide.png",
+      "sha256": "7119548b81aa503f846c36328f4f786be9735cbab095cad1ce8a6dfd1a9f270f",
+      "source": "new Windows TRIAL Dino2T.exe"
+    },
+    {
+      "file": "results/dino-desktop-v3-1-visual-parity/captures-after/nav-redesign/design-compact.png",
+      "sha256": "4c2e2f14539ad2cca2c10a712ff1f9d35595390960f6baef5999c79d8f93522c",
+      "source": "new Windows TRIAL Dino2T.exe"
+    },
+    {
+      "file": "results/dino-desktop-v3-1-visual-parity/captures-after/nav-redesign/analysis-compact.png",
+      "sha256": "4e00bd05b979778e06d53922896cedcb3cc172c18cdc91283100d45f8da3e882",
+      "source": "new Windows TRIAL Dino2T.exe"
+    }
+  ]
+}

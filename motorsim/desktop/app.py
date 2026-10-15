@@ -5,9 +5,9 @@ import tempfile
 from pathlib import Path
 from PySide6.QtCore import QSettings,Qt,QThreadPool,QTimer,QElapsedTimer
 from PySide6.QtGui import QAction,QKeySequence,QGuiApplication
-from PySide6.QtWidgets import (QMainWindow,QWidget,QHBoxLayout,QVBoxLayout,QBoxLayout,QListWidget,QListWidgetItem,
+from PySide6.QtWidgets import (QMainWindow,QWidget,QHBoxLayout,QVBoxLayout,QListWidget,QListWidgetItem,
     QStackedWidget,QLabel,QToolBar,QFileDialog,QMessageBox,QApplication,QSplitter,QScrollArea,
-    QGroupBox,QFormLayout,QTreeWidget,QTreeWidgetItem,QDockWidget,QDoubleSpinBox,QSpinBox,QPushButton,QPlainTextEdit,QTabBar,QProgressBar,QTableWidget,QDialog,QTabWidget)
+    QGroupBox,QFormLayout,QTreeWidget,QTreeWidgetItem,QDockWidget,QDoubleSpinBox,QSpinBox,QPushButton,QPlainTextEdit,QTabBar,QProgressBar,QTableWidget,QDialog,QTabWidget,QButtonGroup)
 from ..engine_configuration import validate
 from ..engine_project import load_project,save_project
 from .services import new_project
@@ -43,9 +43,13 @@ class DinoDesktopWindow(QMainWindow):
         shell=QWidget();layout=QVBoxLayout(shell);layout.setContentsMargins(0,0,0,0);layout.setSpacing(0)
         self.context_bar=ContextBar();self.context_bar.setObjectName("contextBar")
         self.context_bar.variant_selected.connect(self.context.select_variant);layout.addWidget(self.context_bar)
-        mode_row=QHBoxLayout();mode_row.setContentsMargins(8,3,8,3);mode_row.addWidget(QLabel("VISTA"))
-        self.design_mode=QPushButton("DISE\u00d1O");self.design_mode.setCheckable(True);self.design_mode.setChecked(True);self.design_mode.setObjectName("modeDesign")
-        self.analysis_mode=QPushButton("AN\u00c1LISIS");self.analysis_mode.setCheckable(True);self.analysis_mode.setObjectName("modeAnalysis")
+        mode_row=QHBoxLayout();mode_row.setContentsMargins(18,9,18,10);mode_row.setSpacing(12)
+        mode_label=QLabel("MODO DE TRABAJO");mode_label.setObjectName("workspaceModeLabel");mode_row.addWidget(mode_label)
+        self.design_mode=QPushButton("Diseño");self.design_mode.setCheckable(True);self.design_mode.setChecked(True);self.design_mode.setObjectName("modeDesign")
+        self.analysis_mode=QPushButton("Análisis");self.analysis_mode.setCheckable(True);self.analysis_mode.setObjectName("modeAnalysis")
+        for button in (self.design_mode,self.analysis_mode):
+            button.setProperty("class","workspaceModeButton");button.setMinimumSize(132,42)
+        self.mode_group=QButtonGroup(self);self.mode_group.setExclusive(True);self.mode_group.addButton(self.design_mode,0);self.mode_group.addButton(self.analysis_mode,1)
         mode_row.addWidget(self.design_mode);mode_row.addWidget(self.analysis_mode);mode_row.addStretch(1);layout.addLayout(mode_row)
         self.mode_stack=QStackedWidget();layout.addWidget(self.mode_stack,1)
         self.pages=[page_type(self.context) for _,page_type in PAGES]
@@ -62,8 +66,8 @@ class DinoDesktopWindow(QMainWindow):
         self.context_bar.baseline_selected.connect(self._select_baseline)
         self.results.baseline_selector.currentIndexChanged.connect(lambda *_: self._sync_baseline_bar())
         self.design_workspace=QWidget()
-        self.component_nav=QTabBar();self.component_nav.setObjectName("componentRail");self.component_nav.setShape(QTabBar.Shape.RoundedWest);self.component_nav.setExpanding(False);self.component_nav.setUsesScrollButtons(True)
-        self.component_nav.setMinimumWidth(132);self.component_nav.setMaximumWidth(190)
+        self.component_nav=QTabBar();self.component_nav.setObjectName("designSectionNav");self.component_nav.setShape(QTabBar.Shape.RoundedNorth);self.component_nav.setExpanding(False);self.component_nav.setUsesScrollButtons(True);self.component_nav.setMovable(False)
+        self.component_nav.setDocumentMode(True);self.component_nav.setElideMode(Qt.TextElideMode.ElideNone)
         self.component_stack=QStackedWidget();self.component_stack.setObjectName("designComponentStack")
         self.project_tree=QTreeWidget();self.project_tree.setHeaderHidden(True);self.project_tree.setMaximumHeight(120);self.project_tree.itemClicked.connect(self._project_tree_clicked)
         for index in range(4):
@@ -73,7 +77,11 @@ class DinoDesktopWindow(QMainWindow):
             if index==3:self.execution_scroll=scroll
         for label in ("Cilindro y distribución","Eventos de área","Escape","Pérdidas","Combustión","Proyecto"):
             self.component_nav.addTab(label)
-        self.design_layout=QBoxLayout(QBoxLayout.Direction.LeftToRight);self.design_layout.setContentsMargins(8,4,8,4);self.design_layout.setSpacing(8)
+        # The section bar is the only visible navigation inside Design. The
+        # EnginePage keeps its stack as an implementation detail, but its
+        # second visible tab bar is hidden to avoid duplicate section systems.
+        self.pages[0].component_tabs.tabBar().hide()
+        self.design_layout=QVBoxLayout();self.design_layout.setContentsMargins(14,0,14,8);self.design_layout.setSpacing(7)
         self.design_workspace.setLayout(self.design_layout);self.design_layout.addWidget(self.component_nav);self.design_layout.addWidget(self.component_stack,1)
         self.mode_stack.addWidget(self.design_workspace)
         self.analysis_workspace=QWidget();analysis_layout=QVBoxLayout(self.analysis_workspace);analysis_layout.setContentsMargins(6,4,6,4)
@@ -299,12 +307,8 @@ class DinoDesktopWindow(QMainWindow):
             if hasattr(self,"pages"):
                 self.pages[1].set_compact_layout(compact, self.width()<=1000)
             if compact:
-                self.design_layout.setDirection(QBoxLayout.Direction.TopToBottom)
-                self.component_nav.setShape(QTabBar.Shape.RoundedNorth);self.component_nav.setMinimumWidth(0);self.component_nav.setMaximumWidth(16777215);self.component_nav.setFixedHeight(38);self.component_nav.setExpanding(False)
                 self.checkpoint_state.hide();self.run_progress.setMaximumWidth(145);self.run_clock.setMinimumWidth(48)
             else:
-                self.design_layout.setDirection(QBoxLayout.Direction.LeftToRight)
-                self.component_nav.setShape(QTabBar.Shape.RoundedWest);self.component_nav.setMinimumWidth(132);self.component_nav.setMaximumWidth(190);self.component_nav.setMaximumHeight(16777215);self.component_nav.setExpanding(False)
                 self.checkpoint_state.show();self.run_progress.setMaximumWidth(220)
             if hasattr(self,"history_toggle"):self.history_toggle.setVisible(self.mode_stack.currentIndex()==1)
             self._refresh_component_states()

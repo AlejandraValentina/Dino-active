@@ -92,6 +92,37 @@ class VisualParityV31Tests(unittest.TestCase):
         self.assertIs(window.analysis_history.parentWidget(), window.analysis_splitter)
         window.close()
 
+    def test_design_has_one_horizontal_section_navigation_without_duplicate_engine_tabs(self):
+        window=DinoDesktopWindow(new_project("v31-navigation"));window.resize(1360,900);window.show();APP.processEvents()
+        labels=[window.component_nav.tabText(i).split(" ",1)[-1] for i in range(window.component_nav.count())]
+        self.assertEqual(labels,["Cilindro y distribución","Eventos de área","Escape","Pérdidas","Combustión","Proyecto"])
+        self.assertEqual(window.component_nav.shape().name,"RoundedNorth")
+        self.assertTrue(window.pages[0].component_tabs.tabBar().isHidden())
+        self.assertGreater(window.design_mode.width(),100)
+        self.assertGreater(window.analysis_mode.x()-window.design_mode.geometry().right(),5)
+
+        engine=window.pages[0]
+        engine.controls["bore_mm"].setValue(55.25)
+        window.component_nav.setCurrentIndex(1);APP.processEvents()
+        self.assertEqual(engine.component_tabs.currentIndex(),1)
+        window.component_nav.setCurrentIndex(3);APP.processEvents()
+        self.assertEqual(engine.component_tabs.currentIndex(),2)
+        window.component_nav.setCurrentIndex(4);APP.processEvents()
+        self.assertEqual(engine.component_tabs.currentIndex(),3)
+        window.component_nav.setCurrentIndex(0);APP.processEvents()
+        self.assertEqual(engine.controls["bore_mm"].value(),55.25)
+        window.component_nav.setCurrentIndex(5);APP.processEvents()
+        self.assertEqual(window.component_stack.currentIndex(),2)
+
+        window.set_workspace_mode(1)
+        self.assertTrue(window.analysis_mode.isChecked());self.assertFalse(window.design_mode.isChecked())
+        window.set_workspace_mode(0)
+        self.assertTrue(window.design_mode.isChecked());self.assertEqual(window.component_nav.currentIndex(),5)
+        window.resize(980,680);APP.processEvents()
+        self.assertEqual(window.component_nav.shape().name,"RoundedNorth")
+        self.assertTrue(window.component_nav.isVisible())
+        window.close()
+
     def test_repository_artifact_roots_are_rejected_even_for_resume_compatibility(self):
         with self.assertRaisesRegex(ValueError, "no puede estar dentro del repositorio"):
             set_artifact_root(os.getcwd(), allow_repository=True)

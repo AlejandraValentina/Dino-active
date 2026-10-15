@@ -49,6 +49,18 @@ En ventanas compactas, navegación y edición MUST conservar acceso a controles 
 - **WHEN** la ventana tiene 1120 píxeles lógicos de ancho o menos
 - **THEN** la navegación de componentes cambia a pestañas horizontales y el editor conserva acceso a perfil y tabla
 
+### Requirement: Navegación de dos niveles
+La aplicación MUST presentar Diseño y Análisis como modos principales claramente separados. Dentro de Diseño MUST existir una única navegación horizontal para Cilindro y distribución, Eventos de área, Escape, Pérdidas, Combustión y Proyecto. No MUST mostrar una barra lateral vertical ni pestañas visibles duplicadas para esas mismas secciones. La navegación MUST conservar los widgets y borradores actuales al cambiar de sección, y mantenerse horizontal y accesible en ventanas compactas.
+
+#### Scenario: Cambiar de sección de diseño
+- **WHEN** el usuario selecciona una sección de Diseño y luego cambia a otra
+- **THEN** la vista correspondiente cambia sin reconstruir ni descartar la edición en curso
+- **AND** no hay una segunda barra de pestañas visible que repita las secciones
+
+#### Scenario: Cambiar entre modos principales
+- **WHEN** el usuario selecciona Diseño o Análisis
+- **THEN** el modo activo queda claramente indicado, separado de las acciones de ejecución, y se conserva la sección de Diseño seleccionada
+
 ### Requirement: Seguridad y provenance
 La aplicación MUST rechazar fail-closed cualquier artifact root dentro del repositorio al crear nuevos resultados. El ZIP TRIAL MUST contener los cambios V3.1 y conservar los hashes del ejecutable MotorSim.exe.
 

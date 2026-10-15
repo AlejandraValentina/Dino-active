@@ -50,7 +50,7 @@ class DinoDesktopTests(unittest.TestCase):
         self.assertEqual(window.mode_stack.count(), 2)
         self.assertEqual(window.component_stack.count(), 4)
         self.assertEqual(window.mode_stack.currentIndex(),0)
-        self.assertEqual(window.component_nav.tabText(0),"✓ Cilindro")
+        self.assertEqual(window.component_nav.tabText(0),"✓ Cilindro y distribución")
         self.assertTrue(window.pages[3].start.isEnabled())
         self.assertIn("Preflight PASS", window.pages[3].preflight_label.text())
         self.assertIn("EXPLORATORY", window.pages[3].mode.text())
@@ -136,7 +136,7 @@ class DinoDesktopTests(unittest.TestCase):
         self.assertIn("no controla mariposa",page.controls["load"].toolTip())
         self.assertFalse(page.controls["afr"].isEnabled())
         self.assertIn("no modifica el solver",page.controls["afr"].toolTip())
-        self.assertTrue(any("AFR editable aún" in label.text() for label in page.findChildren(QLabel)))
+        self.assertTrue(any("AFR guardado como metadata" in label.text() for label in page.findChildren(QLabel)))
         self.assertTrue(all(control.isEnabled() for control in page.comb.values()))
         self.assertIn("supuestos sintéticos",page.combustion_notice.text())
 
