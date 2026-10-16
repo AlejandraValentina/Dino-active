@@ -1,0 +1,44 @@
+{
+  "schema": "DINO_DESKTOP_V3_1_PACKAGED_ACCEPTANCE_ATTEMPT_V1",
+  "task": "V31-PACKAGED-ACCEPTANCE",
+  "classification": "BLOCKED_LOCAL_PENDING_INTERACTIVE_WINDOWS_RECAPTURE",
+  "attempt_date": "2026-10-16",
+  "current_head": "5d0ce539e82d71c05b081364021a5ed5ae571bd1",
+  "package": {
+    "type": "TRIAL",
+    "directory": "dist/MotorSim-0.1.0-rc6-windows-x64-5d0ce539-trial-20261016T105411Z/MotorSim",
+    "zip": "dist/MotorSim-0.1.0-rc6-windows-x64-5d0ce539-trial-20261016T105411Z.zip",
+    "sha256": "9be4b5568bc466519f93d13c185b534651356ea425d78b9eafce410176672919",
+    "bytes": 46319995,
+    "entries": 300,
+    "zip_test": "PASS",
+    "source_commit": "5d0ce539e82d71c05b081364021a5ed5ae571bd1",
+    "source_dirty": true,
+    "built_utc": "20261016T105411Z",
+    "exe_sha256": {
+      "MotorSim/Dino2T.exe": "22f672aa575107136f43f0c5c2bb9f8f0e97ee2734eaac4d77c3c391711d8c5a",
+      "MotorSim/MotorSim.exe": "eae6e07973cebac51a525b45b94eebedf1b645033bb644b8a3b11d8da089498e",
+      "MotorSim/MotorSimWorker.exe": "8a3a655a5827c07b01c53bccc33adae53b9d03f47b1eb4e64b60bed8b6871985"
+    },
+    "build_metadata_sha256": "24ccadf576095451d4dce89ada52b50b02f97f1229a4a17ab289f45c1d534a32"
+  },
+  "verification": {
+    "package_integrity": "PASS",
+    "head_binding": "PASS; build metadata source_commit equals HEAD at build time",
+    "windows_device": "PC-21206 via Remote Desktop Commander",
+    "interactive_state": "BLOCKED; process inventory showed LockApp.exe and LogonUI.exe, with no interactive app capture capability available while locked",
+    "current_trial_launch": "NOT_PERFORMED; launching behind the lock screen cannot verify the required visible workflows",
+    "m1_m6_recapture": "NOT_PERFORMED",
+    "simulations_started": 0,
+    "campaigns_started": 0,
+    "source_regressions": {
+      "command": "python -m pytest tests/test_dino_desktop_v3_1_visual_parity.py tests/test_dino_commercial_desktop_v3.py tests/test_dino_desktop.py -q",
+      "result": "39 passed, 1 skipped",
+      "duration_seconds": 141.844,
+      "summary": "results/dino-desktop-v3-1-visual-parity/test-runs/20261016/v31-final-desktop-regressions.summary.json",
+      "classification": "SOURCE_REGRESSION_PASS; does not replace required packaged GUI recapture"
+    }
+  },
+  "blocker": "The Windows desktop is locked. The new exact-HEAD TRIAL still requires visible execution and fresh M1-M6 captures after the desktop session is unlocked.",
+  "next_action": "On an unlocked Windows desktop, launch the recorded trial ZIP build, verify M1-M6 at required sizes, capture those screens, then rerun relevant acceptance checks. Do not begin scientific phase B until V3.1 closes."
+}

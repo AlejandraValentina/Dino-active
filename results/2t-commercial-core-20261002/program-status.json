@@ -5367,23 +5367,24 @@
       "owner_role": "verification",
       "evidence_level": "L0",
       "write_scope": [
-        "scripts/build_windows_trial.py",
+        "packaging/build_windows.py",
         "dist/",
         "results/dino-desktop-v3-1-visual-parity/"
       ],
-      "blocker": "Windows locked screen prevented visual interaction/capture of the exact final TRIAL build after startup. Previous V3.1 builds were interacted with and captured; final small baseline-sync and map-scale-label changes passed source tests but need packaged visual recapture.",
+      "blocker": "The exact-HEAD TRIAL was rebuilt and ZIP integrity passed, but the Windows desktop is locked (LockApp/LogonUI present), preventing launch verification and fresh M1-M6 visual captures. Keep BLOCKED_LOCAL until interactive desktop access is available.",
       "unblock_tasks": [
         "V31-FINAL-EXE-RECAPTURE"
       ],
       "evidence": [
-        "results/dino-desktop-v3-1-visual-parity/packaged-acceptance-receipt.json",
-        "dist/MotorSim-0.1.0-rc6-windows-x64-d1878219-trial-20261015T152844Z.zip",
-        "M1-M6 real EXE captures are recorded with their exact build generations; the final build launched but Windows session lock blocked the last recapture."
+        "results/dino-desktop-v3-1-visual-parity/packaged-acceptance-attempt-20261016.json",
+        "dist/MotorSim-0.1.0-rc6-windows-x64-5d0ce539-trial-20261016T105411Z.zip",
+        "Earlier M1-M6 captures remain attached to earlier exact TRIAL generations and do not satisfy recapture on this exact-HEAD build.",
+        "results/dino-desktop-v3-1-visual-parity/test-runs/20261016/v31-final-desktop-regressions.summary.json"
       ]
     },
     {
       "id": "V31-FINAL-EXE-RECAPTURE",
-      "description": "When the Windows desktop session is unlocked, launch the final 20261015T152844Z TRIAL, confirm startup baseline synchronization and map scale labels, capture M1-M6 on that exact build, then close packaged acceptance.",
+      "description": "When the Windows desktop session is unlocked, launch TRIAL dist/MotorSim-0.1.0-rc6-windows-x64-5d0ce539-trial-20261016T105411Z; verify startup, project/history/results, M1-M6 at wide and compact sizes, capture the same build, then close packaged acceptance.",
       "dependencies": [],
       "state": "READY",
       "objective": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
@@ -5393,7 +5394,10 @@
       "unblock_tasks": [],
       "write_scope": [
         "results/dino-desktop-v3-1-visual-parity/",
-        "dist/MotorSim-0.1.0-rc6-windows-x64-d1878219-trial-20261015T152844Z.zip"
+        "dist/MotorSim-0.1.0-rc6-windows-x64-5d0ce539-trial-20261016T105411Z.zip"
+      ],
+      "evidence": [
+        "results/dino-desktop-v3-1-visual-parity/packaged-acceptance-attempt-20261016.json"
       ]
     },
     {
@@ -7204,6 +7208,18 @@
       "task": "DINO-2T-PROFESSIONAL-ROADMAP-AUDIT",
       "kind": "process",
       "summary": "Audited current solver, receipts, OpenSpec and tests; recorded four-stage plan as owner-unapproved proposal. No implementation or simulation; current V3.1 objective/gate preserved."
+    },
+    {
+      "at": "2026-10-16T10:56:00+00:00",
+      "task": "V31-PACKAGED-ACCEPTANCE",
+      "kind": "verification",
+      "summary": "Rebuilt TRIAL from HEAD 5d0ce539; ZIP integrity PASS, 300 entries, SHA-256 recorded. Windows LockApp/LogonUI session remains locked, so exact-build GUI launch and M1-M6 recapture remain BLOCKED_LOCAL; no simulation started."
+    },
+    {
+      "at": "2026-10-16T10:58:46+00:00",
+      "task": "V31-PACKAGED-ACCEPTANCE",
+      "kind": "verification",
+      "summary": "V3.1/V3 desktop source regressions rerun: 39 passed, 1 skipped in 141.8 s. Exact-HEAD TRIAL package integrity passes; locked Windows session still prevents packaged interaction and M1-M6 recapture."
     }
   ],
   "legacy_gate_status": {
@@ -7223,7 +7239,9 @@
     "classification": "DINO_DESKTOP_V3_1_PARTIAL",
     "evidence": [
       "results/dino-desktop-v3-1-visual-parity/packaged-acceptance-receipt.json; final TRIAL launched but Windows lock screen blocked exact-final visual recapture; READY unblock task V31-FINAL-EXE-RECAPTURE",
-      "results/dino-desktop-v3-1-visual-parity/navigation-redesign-receipt.json; V31-NAVIGATION DONE"
+      "results/dino-desktop-v3-1-visual-parity/navigation-redesign-receipt.json; V31-NAVIGATION DONE",
+      "results/dino-desktop-v3-1-visual-parity/packaged-acceptance-attempt-20261016.json; exact-HEAD TRIAL ZIP integrity PASS (300 entries, SHA-256 9be4b5568bc466519f93d13c185b534651356ea425d78b9eafce410176672919); Windows locked, M1-M6 recapture pending.",
+      "Source regressions rerun 2026-10-16: 39 passed, 1 skipped; packaged GUI remains unverified on exact-HEAD TRIAL because Windows session is locked."
     ],
     "gate_tasks_total": 7,
     "gate_tasks_done": 6,

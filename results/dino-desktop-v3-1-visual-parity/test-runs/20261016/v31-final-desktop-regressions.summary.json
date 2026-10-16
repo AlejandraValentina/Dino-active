@@ -1,0 +1,25 @@
+{
+  "name": "v31-final-desktop-regressions",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_dino_desktop_v3_1_visual_parity.py",
+    "tests/test_dino_commercial_desktop_v3.py",
+    "tests/test_dino_desktop.py",
+    "-q"
+  ],
+  "started_at": "2026-10-16T10:56:08+00:00",
+  "finished_at": "2026-10-16T10:58:30+00:00",
+  "duration_s": 141.844,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\dino-desktop-v3-1-visual-parity\\test-runs\\20261016\\v31-final-desktop-regressions.log",
+  "log_lines": 2,
+  "log_bytes": 122,
+  "error_lines": [],
+  "tail": [
+    "......................................s.                                 [100%]",
+    "39 passed, 1 skipped in 140.86s (0:02:20)"
+  ]
+}
