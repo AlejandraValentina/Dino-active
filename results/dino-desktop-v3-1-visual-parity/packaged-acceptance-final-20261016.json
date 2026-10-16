@@ -1,0 +1,232 @@
+{
+  "schema": "DINO_DESKTOP_V3_1_PACKAGED_ACCEPTANCE_RECEIPT_V2",
+  "objective": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
+  "result": "DINO_DESKTOP_V3_1_READY",
+  "recorded_at": "2026-10-16T10:00:22.835448-03:00",
+  "reference_head": "9085383ae71610fe342af97624ab631ffb7d0abf",
+  "package": {
+    "type": "TRIAL",
+    "folder": "dist/MotorSim-0.1.0-rc6-windows-x64-9085383a-trial-20261016T124042Z/MotorSim",
+    "zip": "dist/MotorSim-0.1.0-rc6-windows-x64-9085383a-trial-20261016T124042Z.zip",
+    "sha256": "52d7e4ddd814442cded4efad063160eeee1e035243659935b10bbf68a20b471d",
+    "entries": 300,
+    "zip_test": "PASS",
+    "source_commit": "9085383ae71610fe342af97624ab631ffb7d0abf",
+    "source_dirty": true,
+    "built_utc": "20261016T124042Z",
+    "build_manifest_sha256": "6ad9baa66a522a85fff1e8e6d5a44b0f7cdf953bf2199c8cb7d706416b8e4e2f",
+    "executable_sha256": {
+      "Dino2T.exe": "c81bceed6b64372973fecccce1994a0f43fb2ef2f233b98445f0e300cbcc003c",
+      "MotorSim.exe": "d0092a9ea64f9fb53310c10190338602d7bebc0af780aa5ee040c71544bd0eff",
+      "MotorSimWorker.exe": "bd2ac2cee833f3233f9f71c2932196568f3b6fadf213d448f09548366a6b0254"
+    },
+    "preserved_hashes": {
+      "MotorSim.exe": "d0092a9ea64f9fb53310c10190338602d7bebc0af780aa5ee040c71544bd0eff",
+      "MotorSimWorker.exe": "bd2ac2cee833f3233f9f71c2932196568f3b6fadf213d448f09548366a6b0254"
+    }
+  },
+  "execution": {
+    "performed_by": "Codex in this session",
+    "exe_started": true,
+    "exe_path": "E:\\dino\\Dino-active\\dist\\MotorSim-0.1.0-rc6-windows-x64-9085383a-trial-20261016T124042Z\\MotorSim\\Dino2T.exe",
+    "window_title": "Dino 2T — dino-exhaust-comparison-starter",
+    "project_opened": "desktop-dino-2t-exhaust-comparison.dino2t.json from package examples",
+    "project_history_results_loaded": true,
+    "import_method": "EXPLORATORY run history import from two external artifact directories; read-only; no auto-association or project writes",
+    "selected_run": "design-validation-20261014-a-modified-3000-r1",
+    "comparison_runs": [
+      "design-validation-20261014-a-base-3000-repeat",
+      "design-validation-20261014-a-modified-3000-r1"
+    ],
+    "historical_IMPL2_report_auto_loaded": false,
+    "simulation_invocations": 0,
+    "campaigns_started": 0,
+    "closed_cleanly": true
+  },
+  "artifact_root": {
+    "path": "E:\\Dino-artifacts\\dino-design-validation-v1",
+    "repository_containing_path": null,
+    "write_safety": "PASS; root resolves outside worktree and source rejects repository-contained roots for new runs and resume; no artifacts written during this UI inspection"
+  },
+  "existing_runs": [
+    {
+      "run_id": "design-validation-20261014-a-base-3000-repeat",
+      "variant": "Escape original",
+      "mode": "EXPLORATORY",
+      "status": "COMPLETE",
+      "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+      "rpm": 2999.999999999903,
+      "periodicity": "NOT_EVALUATED",
+      "cycles_completed": 1,
+      "configuration_sha256": "d3f000f72dda247e11a561ad63fb93daab1145cca689105a17cd8e6ae7c71ab7",
+      "identity_sha256": "383b6b779301099c8e2f86905576d91b9e2e5c98bcf3371f5265422be7d2259d",
+      "result_sha256": "fbb7d9e5932483daa0d30c1b859a779b11dcc736fe11870aa46a9c702e6f6847",
+      "checkpoint_sha256": "0a10112490ff690f87528563e3dd7a29c9936e5675a47d6b3e6dff3926a8301b",
+      "primary_sha256": "435ea63f528a3cd67af511a52acfea2310d44ba6eaffe8e1817ec41f76894ac7",
+      "result_json_sha256": "5932b0dc23407ce74b2046016a4dd998d317aa1921180e779cd0b43dff97ab3c",
+      "checkpoint_file_sha256": "0a10112490ff690f87528563e3dd7a29c9936e5675a47d6b3e6dff3926a8301b",
+      "primary_reaudit": {
+        "status": "PASS",
+        "recomputed": true
+      },
+      "conservation": {
+        "energy_residual_J": 2.7450264283856995e-13,
+        "mass_residual_kg": -1.0050045919172274e-18,
+        "species_residual_kg": [
+          -6.414156993083189e-19,
+          -1.2176098616780567e-21,
+          -4.491973297196246e-20,
+          2.097816708844007e-21
+        ]
+      }
+    },
+    {
+      "run_id": "design-validation-20261014-a-modified-3000-r1",
+      "variant": "Escape modified +20 mm",
+      "mode": "EXPLORATORY",
+      "status": "COMPLETE",
+      "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+      "rpm": 2999.999999999903,
+      "periodicity": "NOT_EVALUATED",
+      "cycles_completed": 1,
+      "configuration_sha256": "1c22db2d27533042ee47c6303b98d67f39d90477c754cf84d59deb586ebdcb79",
+      "identity_sha256": "f6e1f317953164d5247187796f65f3db91c19bea6c69f983e8bc463f7355f47f",
+      "result_sha256": "6224937f6da7f27f4f4a07e7bf67fe51b154474b04cd71fc52bbf063d2517b12",
+      "checkpoint_sha256": "d55e2f230c242c1008a9d0f7ba5ffff3729d0433083166f43ac5122ef5b0cebe",
+      "primary_sha256": "c061e2c24724f7fb6dcfca7adf362a6c57e7a7aa0ea209ebb19bec003411e98f",
+      "result_json_sha256": "047a2a06008beb9c0a5116a0c740848d2f821ac913128e6c1a6bd9534cefe3fc",
+      "checkpoint_file_sha256": "d55e2f230c242c1008a9d0f7ba5ffff3729d0433083166f43ac5122ef5b0cebe",
+      "primary_reaudit": {
+        "status": "PASS",
+        "recomputed": true
+      },
+      "conservation": {
+        "energy_residual_J": 2.3342439092743916e-14,
+        "mass_residual_kg": 7.771527291058206e-20,
+        "species_residual_kg": [
+          -1.1773757966834775e-19,
+          0.0,
+          2.3204535832432093e-19,
+          -9.011650549136751e-22
+        ]
+      }
+    }
+  ],
+  "ui_findings": {
+    "selected_result_classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+    "periodicity": "NOT_EVALUATED",
+    "independent_primary_audit": "PASS; recomputed=True for both runs",
+    "undefined_metrics": {
+      "power": "UNDEFINED; accepted periodic cycle required",
+      "torque": "UNDEFINED; accepted periodic cycle required",
+      "BMEP": "UNDEFINED; accepted periodic cycle required",
+      "IMEP": "UNDEFINED; not populated as a numeric result"
+    },
+    "provenance_and_hashes": "present in imported result artifacts and not altered",
+    "pressure_and_flow": "actual stored pressure series and discrete map rendered; no interpolation",
+    "comparison": "same RPM 3000; original vs +20 mm diffuser; warning shown because per-run solver identity is unavailable; geometry delta +20 mm",
+    "no_fabrication": "PASS; no power or torque values fabricated"
+  },
+  "capture_sizes": {
+    "wide": "1700x1094 physical window capture at 125% display scale (~1360x875 logical); full graph/table content remains accessible by the page scroll",
+    "compact": "1225x850 physical window capture at 125% display scale (980x680 logical)"
+  },
+  "screens": [
+    {
+      "id": "M1",
+      "mockup": "E:/dino/Dino-ux-reviews/DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015/mockups/M1_ventana_principal_diseno_escape.png",
+      "before": "results/dino-commercial-desktop-v3/captures/04-exhaust-real-exe.png",
+      "after": "results/dino-desktop-v3-1-visual-parity/captures-after/exact-9085383a-trial-20261016T124042Z/M1_escape.png",
+      "capture": {
+        "sha256": "eb219cf4851856f9fd4f3c8b189f65ec2819b93f9f8b3123af35836cb7421bb4",
+        "width_px": 1700,
+        "height_px": 1102,
+        "bytes": 105045
+      },
+      "result": "Segment profile and editable geometry table; diffuser delta against baseline shown; no performance claim."
+    },
+    {
+      "id": "M2",
+      "mockup": "E:/dino/Dino-ux-reviews/DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015/mockups/M2_editor_motor_distribucion.png",
+      "before": "results/dino-commercial-desktop-v3/captures/02-cylinder-real-exe.png",
+      "after": "results/dino-desktop-v3-1-visual-parity/captures-after/exact-9085383a-trial-20261016T124042Z/M2_cylinder_ports_area_angle.png",
+      "capture": {
+        "sha256": "8013e3d477ed629ffa0973fcb293a062cbb361b5679bda8ce460588a90f42206",
+        "width_px": 1700,
+        "height_px": 1102,
+        "bytes": 115583
+      },
+      "result": "Cylinder parameters, port dimensions/timing and area-angle plot visible in the integrated editor."
+    },
+    {
+      "id": "M3",
+      "mockup": "E:/dino/Dino-ux-reviews/DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015/mockups/M3_simulacion_panel_y_estados.png",
+      "before": "results/dino-commercial-desktop-v3/captures/05-simulation-real-exe.png",
+      "after": "results/dino-desktop-v3-1-visual-parity/captures-after/exact-9085383a-trial-20261016T124042Z/M3_preparation.png",
+      "capture": {
+        "sha256": "c1a132b30cbec8788e05b0c56c811baf29af243de81c906bee4f68b869a8a032",
+        "width_px": 1143,
+        "height_px": 860,
+        "bytes": 59401
+      },
+      "result": "Preparation panel opened from the execution bar; one-cycle exploratory setup visible; no run launched."
+    },
+    {
+      "id": "M4",
+      "mockup": "E:/dino/Dino-ux-reviews/DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015/mockups/M4_modo_analisis_ondas.png",
+      "before": "results/dino-commercial-desktop-v3/captures/06-analysis-pressure-real-exe.png",
+      "after": "results/dino-desktop-v3-1-visual-parity/captures-after/exact-9085383a-trial-20261016T124042Z/M4_pressure_trace_and_map.png",
+      "capture": {
+        "sha256": "84a6a4602db3f68b72182142944a3beee971679c4fe5e6cbbf3b646a253b1c1d",
+        "width_px": 1700,
+        "height_px": 1000,
+        "bytes": 113271
+      },
+      "result": "Real imported pressure trace and discrete map; exact common angles, no interpolation."
+    },
+    {
+      "id": "M5",
+      "mockup": "E:/dino/Dino-ux-reviews/DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015/mockups/M5_comparacion_configuracion_metricas.png",
+      "before": "results/dino-commercial-desktop-v3/captures/06-comparison-real-exe.png",
+      "after": "results/dino-desktop-v3-1-visual-parity/captures-after/exact-9085383a-trial-20261016T124042Z/M5_comparison_geometry.png",
+      "capture": {
+        "sha256": "34b22c89abf45afbb810688274a8392b5927dafcf6cc5c02588ac1480f194fa9",
+        "width_px": 1700,
+        "height_px": 1000,
+        "bytes": 78292
+      },
+      "result": "Two imported runs at 3000 RPM; geometry +20 mm shown; undefined performance cells remain blank with reasons and identity warning."
+    },
+    {
+      "id": "M6",
+      "mockup": "E:/dino/Dino-ux-reviews/DINO_COMMERCIAL_VISUAL_UX_REVIEW-20261015/mockups/M6_compacto_980x680.png",
+      "before": "results/dino-commercial-desktop-v3/captures/08-responsive-980x680-real-exe.png",
+      "after": "results/dino-desktop-v3-1-visual-parity/captures-after/exact-9085383a-trial-20261016T124042Z/M6_compact_escape_profile_and_table.png",
+      "capture": {
+        "sha256": "e470674d57fe15246978503349d74df7aa023c6e2d14b763454269592d6f8475",
+        "width_px": 1225,
+        "height_px": 850,
+        "bytes": 62128
+      },
+      "result": "Compact view at 980x680 logical; all five editable segment rows shown; mesh section header separately captured without clipping."
+    }
+  ],
+  "verification": {
+    "desktop_test_command": "python -m pytest tests/test_dino_desktop_v3_1_visual_parity.py tests/test_dino_desktop_ux_v2.py tests/test_dino_desktop.py tests/test_dino_commercial_desktop_v3.py -q",
+    "desktop_tests": "55 passed, 1 skipped",
+    "openspec_strict": "PASS",
+    "program_status_check": "PASS after receipt/task update",
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "zip_integrity": "PASS; 300 entries",
+    "artifact_root_safety": "PASS",
+    "no_simulations_or_campaigns": "PASS"
+  },
+  "remaining_differences": [
+    "Package remains classified TRIAL because it was built from a dirty source tree.",
+    "The display exposed 980x680 logical compact and a wide ~1360x875 logical viewport; a full 1360x900 desktop viewport was unavailable on this 1920x1080 display at 125% scaling. Wide layout behavior was exercised with the full content accessible by scrolling.",
+    "The imported exploratory artifacts do not report per-run solver identity; the comparison warning remains visible.",
+    "No scientific validation is claimed; periodicity was not evaluated and power/torque/BMEP remain undefined."
+  ],
+  "historical_protection": "V2/V3/V3.1 historical receipts, R2, solver, physics, mesh, hard gates, historical artifacts, and local Ostacky files were not altered."
+}

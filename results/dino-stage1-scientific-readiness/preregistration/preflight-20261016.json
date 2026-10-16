@@ -1,0 +1,40 @@
+{
+  "schema": "DINO_STAGE1_PERIODICITY_PREFLIGHT_V1",
+  "classification": "PREFLIGHT_ONLY_NO_SOLVER_STEPS",
+  "preflight": {
+    "schema": "DINO_EXPLORATORY_PREFLIGHT_V1",
+    "status": "PASS",
+    "mode": "EXPLORATORY",
+    "solver_steps": 0,
+    "identity_sha256": "5808faa3abe90a50648afde445e501f8af86fcc50a831674f3c12455626d5503",
+    "configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+    "rpm": 3000.0,
+    "max_cycles": 8,
+    "budget_seconds": 600.0,
+    "memory_limit_mib": 2048,
+    "workers": 1,
+    "total_finite_volume_cells": 48,
+    "artifact_limit_bytes": 536870912,
+    "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+    "mechanical_loss_preflight": {
+      "compatible": true,
+      "friction_mep_pa": 1500.0,
+      "term_mep_pa_by_term": {
+        "synthetic-piston-ring": 1000.0,
+        "synthetic-bearing-accessory": 500.0
+      }
+    },
+    "fuel_id": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+    "afr_kg_air_per_kg_fuel": 49.0,
+    "periodicity_contract": "REFERENCE_PERIODIC_CONVERGENCE_V2",
+    "periodicity_initial": "NOT_EVALUATED",
+    "verified_mode": "UNAVAILABLE_WITHOUT_PREREGISTRATION_AND_AUTHORIZATION",
+    "classification": "PREFLIGHT_ONLY_NO_SOLVER_STEPS"
+  },
+  "project_sha256": "42535dfb53c95407e75e109151ff1893db6338510de4f832e7ec48dd46ef8d34",
+  "runner_sha256": "456d1db498fcb68c36f5e071736c800174d03ada43c1321b19a5ecf6ca22f372",
+  "artifact_root": "E:\\Dino-artifacts\\dino-stage1-scientific-readiness\\v1",
+  "protocol_sha256": "5c1f3699ab6411c5e1f5c26c74801179e40319b04e216dc1d4c95463527420c6",
+  "configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+  "identity_sha256": "5808faa3abe90a50648afde445e501f8af86fcc50a831674f3c12455626d5503"
+}

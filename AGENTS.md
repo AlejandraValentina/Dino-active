@@ -22,20 +22,13 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_DESKTOP_V3_1_VISUAL_PARITY
-change/spec:       openspec/changes/dino-desktop-v3-1-visual-parity/
-                   (specs/dino-desktop-v3-1-visual-parity/spec.md is the authority)
-completion:        Owner-authorized visual-parity finish against M1–M6 in the
-                   packaged EXE. Require functional workflows and real captures,
-                   relevant regressions, package integrity and strict checks.
-                   No physics, solver, mesh, simulations, campaigns, historical
-                   artifact changes, or push. V3 remains PASS and immutable.
-previous objective: DINO_TUNING_WORKBENCH_V1 = PARTIAL; packaged interaction
-                   acceptance remains blocked by unavailable unlocked desktop
-                   interaction. This limitation is preserved, not promoted.
-previous objective: DINO_COMMERCIAL_DESKTOP_V3 = PASS /
-                   DINO_COMMERCIAL_DESKTOP_V3_READY; immutable V3 gate archive
-                   retained. V3.1 is a separate objective.
+CURRENT_OBJECTIVE: DINO_2T_STAGE1_SCIENTIFIC_READINESS
+change/spec:       openspec/changes/dino-stage1-scientific-readiness/
+                   (specs/dino-stage1-scientific-readiness/spec.md is the authority)
+completion:        classify spatial independence, periodicity, conservation and
+                   performance consistency from reproducible hash-bound evidence;
+                   prepare RPM contract/preflight only. No campaign authorization,
+                   no full RPM sweep, no Stage 2 or later-stage activation.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

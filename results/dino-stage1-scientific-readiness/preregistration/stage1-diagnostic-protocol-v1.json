@@ -1,0 +1,189 @@
+{
+  "schema": "DINO_STAGE1_FOCAL_DIAGNOSTIC_PREREGISTRATION_V1",
+  "objective": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
+  "protocol_id": "STAGE1_DIAGNOSTIC_PROTOCOL_V1",
+  "state": "FROZEN_BEFORE_EXECUTION",
+  "pre_registered_at_utc": "2026-10-16T13:06:11.170213+00:00",
+  "authorization": {
+    "owner_instruction": "DINO 2T: Cierre V3.1 y preparación de la Etapa 1 científica, 2026-10-16",
+    "scope": "one focal bounded engineering diagnostic after protocol/preflight; no full RPM campaign",
+    "campaign_authorization": false,
+    "solver_execution_authorized_within_this_single_point_scope": true
+  },
+  "scope": {
+    "purpose": "classify periodicity for one existing 3000-RPM baseline point and independently audit each persisted cycle",
+    "variants": [
+      "Escape original"
+    ],
+    "rpm": [
+      3000
+    ],
+    "cells_per_section": [
+      8
+    ],
+    "max_cycles": 8,
+    "not_in_scope": [
+      "mesh refinement campaign",
+      "second variant",
+      "other RPM",
+      "FULL_RPM_SWEEP",
+      "KT100",
+      "experimental validation",
+      "solver equation/criterion changes"
+    ]
+  },
+  "immutable_input": {
+    "project": "examples/projects/dino-2t-exhaust-comparison.dino2t.json",
+    "project_sha256": "42535dfb53c95407e75e109151ff1893db6338510de4f832e7ec48dd46ef8d34",
+    "variant": "Escape original",
+    "configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+    "identity_sha256": "5808faa3abe90a50648afde445e501f8af86fcc50a831674f3c12455626d5503",
+    "mesh_adapter": "EXHAUST_MESH_V2",
+    "cells_per_section": 8,
+    "cells_total": 48,
+    "rpm": 3000,
+    "fuel_id": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+    "fuel_basis": "explicit synthetic fuel provenance already bound to project configuration; AFR pseudo-species metadata is not measured chemical AFR",
+    "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+    "mechanical_loss_model": "explicit configuration-bound model from selected engine variant; preflight friction MEP 1500 Pa comprises synthetic piston-ring 1000 Pa plus synthetic bearing/accessory 500 Pa; not a universal constant",
+    "wot_and_boundaries": "existing frozen project operating conditions and open-end boundaries; no edits"
+  },
+  "periodicity": {
+    "contract": "REFERENCE_PERIODIC_CONVERGENCE_V2",
+    "implementation_sha256": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+    "thresholds": "use exact existing versioned V2 thresholds and streaks; do not modify",
+    "observables": "all existing cycle state and integral observables in detector",
+    "max_cycles": 8,
+    "classification": [
+      "PERIOD_1",
+      "PERIOD_2",
+      "NO_CONVERGENCE_WITHIN_HORIZON",
+      "BUDGET_LIMITED_CHECKPOINTED",
+      "NUMERICAL_INVALID",
+      "AUDIT_FAIL"
+    ],
+    "no_numeric_performance_without_accepted_periodic_cycle": true
+  },
+  "spatial_error": {
+    "current_classification": "NOT_ESTABLISHED",
+    "basis": "historical 1/2/4 and 1/2/4/8 matrices are nonmonotonic/material; observed design response is below refinement sensitivity",
+    "new_mesh_execution_in_this_protocol": false,
+    "categories": [
+      "spatial discretization",
+      "temporal discretization",
+      "boundary condition",
+      "implementation",
+      "physical model",
+      "insufficient evidence"
+    ],
+    "comparison_method": "reuse exact-angle and named-interface historical diagnostics; do not interpolate or infer a mesh-independent design effect",
+    "acceptance": "no spatial independence claim unless a preregistered multi-resolution sequence has decreasing refinement uncertainty that is smaller than the declared design-response uncertainty; the current protocol does not attempt to pass this gate"
+  },
+  "conservation_and_performance": {
+    "auditor": "existing independent integrated-cycle primary replay; every complete cycle must report recomputed=True and status PASS",
+    "ledgers": [
+      "mass",
+      "four species",
+      "energy",
+      "coupled cylinder/crankcase/duct interfaces"
+    ],
+    "performance": "verify existing accounting identities only when periodicity is accepted; otherwise IMEP/FMEP/BMEP/torque/power outputs remain explicit undefined states with reasons",
+    "conservation_is_not_physical_validation": true
+  },
+  "resources": {
+    "workers": 1,
+    "memory_limit_mib": 2048,
+    "budget_seconds": 600,
+    "budget_basis": "AGENTS.md diagnostic invocation limit <=600 seconds; no repeated invocation unless a persisted checkpoint requires resume and the same budget is still available",
+    "checkpoint": "one isolated point checkpoint after each complete cycle; resume only with all protocol/config/source hashes compatible",
+    "artifact_root": "${DINO_ARTIFACT_ROOT}/dino-stage1-scientific-readiness/v1",
+    "artifact_root_must_be_outside_repository": true,
+    "max_artifact_bytes": 536870912
+  },
+  "frozen_binding": {
+    "runner_sha256": "456d1db498fcb68c36f5e071736c800174d03ada43c1321b19a5ecf6ca22f372",
+    "project_sha256": "42535dfb53c95407e75e109151ff1893db6338510de4f832e7ec48dd46ef8d34",
+    "configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+    "identity_sha256": "5808faa3abe90a50648afde445e501f8af86fcc50a831674f3c12455626d5503",
+    "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+    "fuel_id": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+    "solver_source_hashes": {
+      "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+      "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+      "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+      "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+      "motorsim.gas1d.eos": "72ec337f941b1259ab23c04f70ec75593870bdcc4b065d481b38834430221186",
+      "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+      "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+      "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+      "motorsim.integrated_2t": "38d9896e8bf4405945cdc53aea091eb895d7e00a3ec52df0f0263115e971af17",
+      "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+      "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+      "motorsim.p6_species": "7ed60395642eecb6b5b9f15bbe095489468da7b562f72d0b53b13527a97e2dab",
+      "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+      "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+      "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+      "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+      "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+      "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095",
+      "motorsim.mechanical": "de71d3bacb18e7661de0ff15cbac50f1a252fc01970c7ef9aa04c8a3424d0fff",
+      "motorsim.engine_configuration": "6c99e7516348066a01e785ce1735940ce43f92765274e9cc8aaf50517bbadf3e",
+      "motorsim.engine_variants": "ad21a71bc2528f55ad8becbe7fc019b63c27211b0939f5a284ef3a508f3856fa",
+      "motorsim.engineering_outputs": "c01c3c7195f28a67c3fb866df704d15a595d079d32be71057ab2d2c5095f5424",
+      "motorsim.reference_harness.convergence": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+      "motorsim.exploratory_workflow": "db3d601824dc2f7d32082ac4ff95c7f35dc6d03ad904e5e97c506ee02baf5403"
+    }
+  },
+  "preflight": {
+    "status": "PASS",
+    "solver_steps": 0,
+    "identity_sha256": "5808faa3abe90a50648afde445e501f8af86fcc50a831674f3c12455626d5503",
+    "configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+    "mesh_cells": 48,
+    "budget_seconds": 600,
+    "memory_limit_mib": 2048,
+    "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+    "fuel_id": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+    "periodicity_contract": "REFERENCE_PERIODIC_CONVERGENCE_V2"
+  },
+  "decision_rules": {
+    "periodic_cycle_detected": "retain exact contract classification; do not generalize beyond this configuration/RPM/mesh",
+    "horizon_reached": "NO_CONVERGENCE_WITHIN_HORIZON; no performance outputs",
+    "budget_exhausted": "BUDGET_LIMITED_CHECKPOINTED; retain prior completed-cycle checkpoint and no terminal performance values",
+    "audit_or_conservation_failure": "AUDIT_FAIL or NUMERICAL_INVALID, preserve raw artifacts and do not accept metrics",
+    "mesh": "remain NOT_ESTABLISHED based on existing evidence regardless of a periodicity result at one mesh"
+  },
+  "provenance": {
+    "runner": "scripts/diagnostics/stage1/run_stage1_periodicity_focal_v1.py",
+    "runner_sha256": "456d1db498fcb68c36f5e071736c800174d03ada43c1321b19a5ecf6ca22f372",
+    "solver_source_hashes": {
+      "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+      "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+      "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+      "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+      "motorsim.gas1d.eos": "72ec337f941b1259ab23c04f70ec75593870bdcc4b065d481b38834430221186",
+      "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+      "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+      "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+      "motorsim.integrated_2t": "38d9896e8bf4405945cdc53aea091eb895d7e00a3ec52df0f0263115e971af17",
+      "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+      "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+      "motorsim.p6_species": "7ed60395642eecb6b5b9f15bbe095489468da7b562f72d0b53b13527a97e2dab",
+      "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+      "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+      "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+      "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+      "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+      "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095",
+      "motorsim.mechanical": "de71d3bacb18e7661de0ff15cbac50f1a252fc01970c7ef9aa04c8a3424d0fff",
+      "motorsim.engine_configuration": "6c99e7516348066a01e785ce1735940ce43f92765274e9cc8aaf50517bbadf3e",
+      "motorsim.engine_variants": "ad21a71bc2528f55ad8becbe7fc019b63c27211b0939f5a284ef3a508f3856fa",
+      "motorsim.engineering_outputs": "c01c3c7195f28a67c3fb866df704d15a595d079d32be71057ab2d2c5095f5424",
+      "motorsim.reference_harness.convergence": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+      "motorsim.exploratory_workflow": "db3d601824dc2f7d32082ac4ff95c7f35dc6d03ad904e5e97c506ee02baf5403"
+    },
+    "report_schema": "DINO_STAGE1_PERIODICITY_DIAGNOSTIC_RESULT_V1"
+  },
+  "no_criteria_relaxation": true,
+  "historical_artifacts_immutable": true
+}

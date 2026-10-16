@@ -5362,7 +5362,7 @@
       "id": "V31-PACKAGED-ACCEPTANCE",
       "description": "Build and verify TRIAL, exercise actual EXE, capture M1-M6, run OpenSpec and program-status checks.",
       "dependencies": [],
-      "state": "BLOCKED_LOCAL",
+      "state": "DONE",
       "objective": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
       "owner_role": "verification",
       "evidence_level": "L0",
@@ -5371,22 +5371,19 @@
         "dist/",
         "results/dino-desktop-v3-1-visual-parity/"
       ],
-      "blocker": "The exact-HEAD TRIAL was rebuilt and ZIP integrity passed, but the Windows desktop is locked (LockApp/LogonUI present), preventing launch verification and fresh M1-M6 visual captures. Keep BLOCKED_LOCAL until interactive desktop access is available.",
-      "unblock_tasks": [
-        "V31-FINAL-EXE-RECAPTURE"
-      ],
+      "blocker": null,
+      "unblock_tasks": [],
       "evidence": [
-        "results/dino-desktop-v3-1-visual-parity/packaged-acceptance-attempt-20261016.json",
-        "dist/MotorSim-0.1.0-rc6-windows-x64-5d0ce539-trial-20261016T105411Z.zip",
-        "Earlier M1-M6 captures remain attached to earlier exact TRIAL generations and do not satisfy recapture on this exact-HEAD build.",
-        "results/dino-desktop-v3-1-visual-parity/test-runs/20261016/v31-final-desktop-regressions.summary.json"
+        "results/dino-desktop-v3-1-visual-parity/packaged-acceptance-final-20261016.json",
+        "results/dino-desktop-v3-1-visual-parity/captures-after/exact-9085383a-trial-20261016T124042Z/",
+        "55 passed, 1 skipped desktop regressions; OpenSpec strict PASS; ZIP integrity PASS (300 entries)."
       ]
     },
     {
       "id": "V31-FINAL-EXE-RECAPTURE",
       "description": "When the Windows desktop session is unlocked, launch TRIAL dist/MotorSim-0.1.0-rc6-windows-x64-5d0ce539-trial-20261016T105411Z; verify startup, project/history/results, M1-M6 at wide and compact sizes, capture the same build, then close packaged acceptance.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
       "owner_role": "verification",
       "evidence_level": "L0",
@@ -5397,7 +5394,9 @@
         "dist/MotorSim-0.1.0-rc6-windows-x64-5d0ce539-trial-20261016T105411Z.zip"
       ],
       "evidence": [
-        "results/dino-desktop-v3-1-visual-parity/packaged-acceptance-attempt-20261016.json"
+        "results/dino-desktop-v3-1-visual-parity/packaged-acceptance-final-20261016.json",
+        "results/dino-desktop-v3-1-visual-parity/captures-after/exact-9085383a-trial-20261016T124042Z/",
+        "Exact TRIAL executable launched; example project opened; existing read-only EXPLORATORY results selected and compared; no simulations started."
       ]
     },
     {
@@ -5432,10 +5431,13 @@
       "dependencies": [
         "V31-PACKAGED-ACCEPTANCE"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "results/dino-stage1-scientific-readiness/forensics/inventory-20261016.json",
+        "sha256:a4ed0989d5ca5b43e6255e0b9ca14f3a5e166d513f6bf3a3e566905cfe7cbaf6"
+      ],
       "next_action": "Read-only inventory of prior receipts, configurations, tests, and reproducible mesh/periodicity cases; no solver execution.",
       "objective": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
       "owner_role": "verification",
@@ -5443,7 +5445,8 @@
       "write_scope": [
         "results/dino-stage1-scientific-readiness/forensics/"
       ],
-      "classification": "NO_CAMPAIGN_AUTHORIZATION"
+      "classification": "FORENSICS_COMPLETE_NO_SOLVER_EXECUTION",
+      "unblock_tasks": []
     },
     {
       "id": "S1-PROTOCOL",
@@ -5451,19 +5454,26 @@
       "dependencies": [
         "S1-FORENSICS"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "openspec/changes/dino-stage1-scientific-readiness/protocol.md",
+        "results/dino-stage1-scientific-readiness/preregistration/stage1-diagnostic-protocol-v1.json",
+        "results/dino-stage1-scientific-readiness/preregistration/preflight-20261016.json",
+        "preregistration_sha256:5c1f3699ab6411c5e1f5c26c74801179e40319b04e216dc1d4c95463527420c6"
+      ],
       "next_action": "Write versioned diagnostic protocol/preregistration with justified observables, error categories, provenance and bounded budget before new numerical work.",
       "objective": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
       "owner_role": "architecture",
       "evidence_level": "L1",
       "write_scope": [
         "openspec/changes/dino-stage1-scientific-readiness/",
-        "results/dino-stage1-scientific-readiness/preregistration/"
+        "results/dino-stage1-scientific-readiness/preregistration/",
+        "scripts/diagnostics/stage1/"
       ],
-      "classification": "NO_CAMPAIGN_AUTHORIZATION"
+      "classification": "PREREGISTERED_SINGLE_POINT_BOUNDED_PROTOCOL",
+      "unblock_tasks": []
     },
     {
       "id": "S1-BOUNDED-EVIDENCE",
@@ -5471,10 +5481,14 @@
       "dependencies": [
         "S1-PROTOCOL"
       ],
-      "state": "WAITING",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "Preflight real PASS, solver_steps=0, artifact root E:\\Dino-artifacts\\dino-stage1-scientific-readiness\\v1; configuration 5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203; identity 5808faa3abe90a50648afde445e501f8af86fcc50a831674f3c12455626d5503.",
+        "tests/scientific_stage1/test_periodicity_preflight.py: 6 passed; covers repository-root rejection, invalid prereg hash before solver, missing checkpoint, source identity mismatch, and invalid preflight.",
+        "Focal periodicity diagnostic remains pending; no solver execution yet."
+      ],
       "next_action": "Run only focal diagnostics explicitly permitted by preregistration/specification; audit conservation/replay and classify results without relaxing criteria.",
       "objective": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
       "owner_role": "physics/numerics",
@@ -5705,24 +5719,21 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
+    "id": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
     "state": "ACTIVE",
     "owner_approved": true,
-    "summary": "Owner-authorized focused UI visual parity and usability finish against external M1-M6. No science changes, simulations, campaigns, or push; preserve V3 PASS and unrelated local files.",
-    "change": "openspec/changes/dino-desktop-v3-1-visual-parity",
-    "spec": "openspec/changes/dino-desktop-v3-1-visual-parity/specs/dino-desktop-v3-1-visual-parity/spec.md",
-    "authorization": "results/dino-desktop-v3-1-visual-parity/owner-authorization.json",
-    "transitioned_from": "DINO_COMMERCIAL_DESKTOP_V3",
+    "summary": "Owner-authorized next objective only after DINO_DESKTOP_V3_1_VISUAL_PARITY closes: Stage 1 scientific forensics, preregistered bounded numerical evidence for mesh/periodicity/conservation/performance consistency, then RPM contract/preflight preparation. No full campaign, no Stage 2 execution, no optimization, and no stages 3/4 activation.",
+    "change": "openspec/changes/dino-stage1-scientific-readiness",
+    "spec": "openspec/changes/dino-stage1-scientific-readiness/specs/dino-stage1-scientific-readiness/spec.md",
+    "authorization_source": "Explicit owner instruction in DINO 2T roadmap continuation request (2026-10-16); execution is ordered after current V3.1 closure.",
+    "transitioned_from": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
     "gate_tasks": [
-      "V31-REFERENCE",
-      "V31-DESIGN-EDITORS",
-      "V31-EXECUTION-ANALYSIS",
-      "V31-COMPACT-SAFETY",
-      "V31-REGRESSION",
-      "V31-NAVIGATION",
-      "V31-PACKAGED-ACCEPTANCE"
+      "S1-FORENSICS",
+      "S1-PROTOCOL",
+      "S1-BOUNDED-EVIDENCE",
+      "S1-RPM-PREPARATION"
     ],
-    "completion_criterion": "DINO_DESKTOP_V3_1_READY only after functional M1-M6 parity is shown in actual TRIAL EXE captures before/after, artifact root write safety is verified, relevant tests and OpenSpec/program-status checks pass, and the package integrity/hashes are recorded. No simulations or campaigns."
+    "completion_criterion": "Classify mesh independence, periodicity, conservation and performance consistency from reproducible, hash-bound evidence or state precise PARTIAL/BLOCKED limits; prepare an RPM contract/preflight only, preserving all historical artifacts and without campaign execution."
   },
   "objectives": [
     {
@@ -6102,10 +6113,10 @@
     },
     {
       "id": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
-      "state": "ACTIVE",
+      "state": "PASS",
       "owner_approved": true,
-      "classification": null,
-      "summary": "Owner-authorized focused UI visual parity and usability finish against external M1-M6. No science changes, simulations, campaigns, or push; preserve V3 PASS and unrelated local files.",
+      "classification": "DINO_DESKTOP_V3_1_READY",
+      "summary": "Packaged M1-M6 acceptance completed on exact TRIAL build; receipt and screenshot hashes persisted.",
       "change": "openspec/changes/dino-desktop-v3-1-visual-parity",
       "spec": "openspec/changes/dino-desktop-v3-1-visual-parity/specs/dino-desktop-v3-1-visual-parity/spec.md",
       "authorization": "results/dino-desktop-v3-1-visual-parity/owner-authorization.json",
@@ -6118,7 +6129,8 @@
         "V31-REGRESSION",
         "V31-PACKAGED-ACCEPTANCE"
       ],
-      "completion_criterion": "DINO_DESKTOP_V3_1_READY only after functional M1-M6 parity is shown in actual TRIAL EXE captures before/after, artifact root write safety is verified, relevant tests and OpenSpec/program-status checks pass, and the package integrity/hashes are recorded. No simulations or campaigns."
+      "completion_criterion": "DINO_DESKTOP_V3_1_READY only after functional M1-M6 parity is shown in actual TRIAL EXE captures before/after, artifact root write safety is verified, relevant tests and OpenSpec/program-status checks pass, and the package integrity/hashes are recorded. No simulations or campaigns.",
+      "completed_at": "2026-10-16T13:01:30-03:00"
     },
     {
       "id": "DINO_2T_PROFESSIONAL_ROADMAP",
@@ -6131,7 +6143,7 @@
     },
     {
       "id": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
-      "state": "PROPOSED",
+      "state": "ACTIVE",
       "owner_approved": true,
       "summary": "Owner-authorized next objective only after DINO_DESKTOP_V3_1_VISUAL_PARITY closes: Stage 1 scientific forensics, preregistered bounded numerical evidence for mesh/periodicity/conservation/performance consistency, then RPM contract/preflight preparation. No full campaign, no Stage 2 execution, no optimization, and no stages 3/4 activation.",
       "change": "openspec/changes/dino-stage1-scientific-readiness",
@@ -6143,7 +6155,9 @@
         "S1-RPM-PREPARATION"
       ],
       "completion_criterion": "Classify mesh independence, periodicity, conservation and performance consistency from reproducible, hash-bound evidence or state precise PARTIAL/BLOCKED limits; prepare an RPM contract/preflight only, preserving all historical artifacts and without campaign execution.",
-      "authorization_source": "Explicit owner instruction in DINO 2T roadmap continuation request (2026-10-16); execution is ordered after current V3.1 closure."
+      "authorization_source": "Explicit owner instruction in DINO 2T roadmap continuation request (2026-10-16); execution is ordered after current V3.1 closure.",
+      "transitioned_from": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
+      "activated_at": "2026-10-16T13:05:00-03:00"
     }
   ],
   "owner_decisions_pending": [
@@ -7322,6 +7336,36 @@
       "task": "DINO-STAGE1-SCIENTIFIC-READINESS",
       "kind": "authorization",
       "summary": "Owner authorized Stage 1 scientific investigation and RPM contract preparation only after V3.1 closes; registered as approved future objective with sequential WAITING tasks. No campaign, optimization, or stages 2-4 activation."
+    },
+    {
+      "at": "2026-10-16T13:01:30+00:00",
+      "task": "V31-PACKAGED-ACCEPTANCE",
+      "kind": "task",
+      "summary": "Exact packaged TRIAL UI acceptance completed: M1-M6 real EXE captures, two existing read-only EXPLORATORY runs imported/re-audited and compared; 55 passed, 1 skipped; ZIP/OpenSpec checks PASS; no simulation."
+    },
+    {
+      "at": "2026-10-16T13:02:07+00:00",
+      "task": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
+      "kind": "transition",
+      "summary": "Activated owner-approved Stage 1 after V3.1 packaged acceptance PASS; no campaigns authorized; S1-FORENSICS started read-only."
+    },
+    {
+      "at": "2026-10-16T13:03:29+00:00",
+      "task": "S1-FORENSICS",
+      "kind": "task",
+      "summary": "Hash-bound read-only inventory completed: mesh 1/2/4 and 1/2/4/8 remain spatially inconclusive; one-cycle matrices leave periodicity NOT_EVALUATED; existing conservation audits pass only in tested scope. No solver run."
+    },
+    {
+      "at": "2026-10-16T13:08:29+00:00",
+      "task": "S1-PROTOCOL",
+      "kind": "task",
+      "summary": "Frozen Stage 1 single-point periodicity preregistration with explicit hashes, V2 thresholds unchanged, 600 s cumulative budget, one worker, 2048 MiB and fail-closed runner. Preflight PASS, zero solver steps."
+    },
+    {
+      "at": "2026-10-16T13:10:43+00:00",
+      "task": "S1-BOUNDED-EVIDENCE",
+      "kind": "progress",
+      "summary": "Hash-bound focal runner and fail-closed preflight complete; six preflight tests PASS; actual preflight PASS at external artifact root, zero solver steps. Numerical diagnostic not yet started."
     }
   ],
   "legacy_gate_status": {
@@ -7336,25 +7380,25 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
-    "state": "REVIEW",
-    "classification": "DINO_DESKTOP_V3_1_PARTIAL",
+    "objective": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
+    "state": "OPEN",
+    "classification": "DINO_STAGE1_SCIENTIFIC_READINESS_IN_PROGRESS",
     "evidence": [
-      "results/dino-desktop-v3-1-visual-parity/packaged-acceptance-receipt.json; final TRIAL launched but Windows lock screen blocked exact-final visual recapture; READY unblock task V31-FINAL-EXE-RECAPTURE",
-      "results/dino-desktop-v3-1-visual-parity/navigation-redesign-receipt.json; V31-NAVIGATION DONE",
-      "results/dino-desktop-v3-1-visual-parity/packaged-acceptance-attempt-20261016.json; exact-HEAD TRIAL ZIP integrity PASS (300 entries, SHA-256 9be4b5568bc466519f93d13c185b534651356ea425d78b9eafce410176672919); Windows locked, M1-M6 recapture pending.",
-      "Source regressions rerun 2026-10-16: 39 passed, 1 skipped; packaged GUI remains unverified on exact-HEAD TRIAL because Windows session is locked."
+      "results/dino-desktop-v3-1-visual-parity/packaged-acceptance-final-20261016.json",
+      "openspec/changes/dino-stage1-scientific-readiness/specs/dino-stage1-scientific-readiness/spec.md"
     ],
-    "gate_tasks_total": 7,
-    "gate_tasks_done": 6,
+    "gate_tasks_total": 4,
+    "gate_tasks_done": 2,
     "gate_task_states": {
-      "DONE": 6,
-      "BLOCKED_LOCAL": 1
+      "DONE": 2,
+      "READY": 1,
+      "WAITING": 1
     },
     "remaining": [
-      "V31-PACKAGED-ACCEPTANCE"
+      "S1-BOUNDED-EVIDENCE",
+      "S1-RPM-PREPARATION"
     ],
-    "updated_at": "2026-10-15T16:15:03+00:00"
+    "updated_at": "2026-10-16T13:08:29+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

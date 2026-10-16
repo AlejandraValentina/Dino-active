@@ -1,0 +1,469 @@
+{
+  "schema": "DINO_STAGE1_FORENSICS_INVENTORY_V1",
+  "objective": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
+  "task": "S1-FORENSICS",
+  "recorded_at_utc": "2026-10-16T16:10:00Z",
+  "classification": "FORENSICS_COMPLETE_NO_SOLVER_EXECUTION",
+  "execution": {
+    "solver_steps": 0,
+    "new_simulations": 0,
+    "campaigns_started": 0,
+    "historical_artifacts_modified": false
+  },
+  "evidence_file_sha256": {
+    "results/exhaust-mesh-v1/final-receipt.json": "f0202453e515f8fa399315c123d80c8357efb48027079cbcbece0aa316d317e2",
+    "results/exhaust-mesh-v1/diagnostic-receipt.json": "38c9ab4668aa0c02acb73524dbbd76971b33aca916d476f08a8cf79a72a994ad",
+    "results/exhaust-numerical-convergence-v2/final-receipt.json": "e807328b607a209facc7986761c33e565bde23d415cd0feda0bbc7cb644cb39b",
+    "results/exhaust-numerical-convergence-v2/diagnostic-receipt.json": "5d1b980ca37a9301237bdf4a12c40045ddc800fb239c8a8f76d0c42c40d40a48",
+    "results/dino-design-validation-v1/final-receipt.json": "447edcae99c98ec554200d77dbf7f444548c271a422d27952805a82014cbe6a3",
+    "results/dino-design-validation-v1/exhaust-diagnostic-receipt.json": "35bdf63c59ba47c66789b24a13a207973c29f941f2a46ba5af10421156fb4572",
+    "results/dino-design-validation-v1/exhaust-fixture.json": "a32eeebdb131623ae03fd541ac8148fe42e119df28080e754948613ab9f56e0a"
+  },
+  "external_report_sha256": {
+    "E:\\Dino-artifacts\\exhaust-mesh-v1\\reports\\exhaust-mesh-v1-1-2-4-report.json": "35384496361c01140038f182e492be7690f1ea22a069e46164dbea4ef19cbec8",
+    "E:\\Dino-artifacts\\exhaust-numerical-convergence-v2\\reports\\exhaust-numerical-convergence-v2-matrix-full.json": "13b9b9b75a44398f9a4a2302a34b71207262069361277ed6bde2b57fbac12e14"
+  },
+  "implementation_and_test_sha256": {
+    "periodicity": {
+      "motorsim/reference_harness/convergence.py": "5220658823de6ee30543a1add7aa5d2ee431691294650a6f8feaf872157b585f",
+      "tests/test_reference_harness.py": "3b4a802166f47266c12ade85c3238c8176f7c6204e531868032b0967e3be5aaa",
+      "tests/test_v1_closure_periodicity.py": "fb45fe304f2a52a934ff85274c360e7ed764fc573cf377eb364a4d8ed1dad40b",
+      "openspec/changes/full-rpm-sweep-v1/specs/full-rpm-sweep-v1/spec.md": "b99ba1c7e3d7398f31b9152083f5f281f0c1084846bf6f8023deb73281fa004b"
+    },
+    "mesh": {
+      "motorsim/exhaust_mesh_v1.py": "67f7553eee055e797b5df9b9120fc0bb99ce030f55cdc951a0edf498340d7760",
+      "motorsim/exhaust_mesh_v2.py": "3279390a2c524fd0ea217c87a2fe7ebce3956f85bc2725bea03088a47e599c3c",
+      "tests/test_exhaust_mesh_v1.py": "f009e161eb94f207b8f82dff9e42f64edb7f4059610a2272aef2864e61c35872",
+      "tests/test_exhaust_mesh_v1_solver.py": "fb5d67c2c0b29bd703a0609a4fbe7448bd010c949bf5e47b22f041a54113a811",
+      "tests/test_exhaust_mesh_v2.py": "d0e429a42baef1d5d3d1216d5aea9da257f9d3c8f54e86567a3f105c059159fa",
+      "tests/test_v1_closure_mesh_study.py": "e74780205630159345561996b4b12e3b53b0b2d4a7563374127687fb69bd7281"
+    },
+    "conservation_and_performance": {
+      "motorsim/integrated_2t.py": "78203e97bd4b0356ad462d71068e98876a4a388cc2b75a9bd45035aa750a9ea7",
+      "motorsim/reference_harness/evidence.py": "9a5eb5c5a2fd25b271aa8499573ab842f647c823888253b686c4f27952f72797",
+      "scripts/produce_integrated_cycle_evidence.py": "c9105cdf50a9dca84736d2afce094c3ed331b1054d50aa525c07671a6736d193",
+      "scripts/evaluate_integrated_cycle_evidence.py": "c0b2477fa710b8ad70444370d4ac1fc5625ca0d89772857751a167afc739dd2c",
+      "tests/test_integrated_2t.py": "8f5b4af10ac40b97726adc49b782b8bd1f7815c9f26aa9dc2cee9f4f1288f773",
+      "tests/test_integrated_cycle_evidence_producer.py": "52199f515d0509615cead3398926409fb454acbe0b488a9d065b53ccd51a3744",
+      "tests/test_integrated_cycle_evaluator.py": "d61d2caa78838552c8bdf49f0fbfd766679e8304783a617624bd6a89b53f34fa",
+      "tests/test_p5b_integrated_coupling.py": "d34313063832b7de23f99bea8c546fac31d694c136b56f986c60bb74dcb75167",
+      "tests/test_p5c_integrated.py": "8d96845e30dd81eef245287e2606cdbf51cfccab675e72efdadd3ef036c38b45",
+      "motorsim/p8_performance.py": "35c803269752332aaafefd65e220a4fc89b18ea36b657d8e9caf33130c948dfa",
+      "tests/test_p8_performance.py": "1e2df405e062a483e94ea872c1726915f33997fdd1921e32088c750599d4e6f4"
+    }
+  },
+  "reproducible_cases": [
+    {
+      "id": "EXHAUST_MESH_V1_A_B_1_2_4",
+      "source_receipt": "results/exhaust-mesh-v1/diagnostic-receipt.json",
+      "report_sha256": "35384496361c01140038f182e492be7690f1ea22a069e46164dbea4ef19cbec8",
+      "points": [
+        {
+          "run_id": "exm-escape-original-3000rpm-1c",
+          "variant": "Escape original",
+          "cells_per_section": 1,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "cycles_completed": 1,
+          "periodicity": "NOT_EVALUATED",
+          "result_sha256": "9495090bc5a40601401d8c46135ed27f0ca0e3ff00850faf64ae9ebe5e1c32dc",
+          "primary_sha256": "5f91bc23549e6c7d8b7a8725bcb79affd9105956c4b08bf27d0a00f683a8d307",
+          "checkpoint_sha256": "73362004a95a046da059e5a506e154c398d3dfafc8299489d81db5c42d4b3041"
+        },
+        {
+          "run_id": "exm-escape-original-3000rpm-2c",
+          "variant": "Escape original",
+          "cells_per_section": 2,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "cycles_completed": 1,
+          "periodicity": "NOT_EVALUATED",
+          "result_sha256": "965c7f16ef6834708f1a4b8c8f92e307b99da167dc2b4055c9296dc78f044481",
+          "primary_sha256": "672efffbee17941a591d6fd2615c1eb24d447d3210bdfeb3581a4478a3eccd35",
+          "checkpoint_sha256": "51c77e8a1ac115a95a97b79d2a6d5c11ab102e02c2587b9e9e44b23d3d2ea1a5"
+        },
+        {
+          "run_id": "exm-escape-original-3000rpm-4c",
+          "variant": "Escape original",
+          "cells_per_section": 4,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "cycles_completed": 1,
+          "periodicity": "NOT_EVALUATED",
+          "result_sha256": "824c1ef8f8c8d426974a36c488fdbbd23d0b6b9efbfb403e2ab6d623a6e5cd4e",
+          "primary_sha256": "93a098f6b6c138165662f7e9e59c38487d9efda03e29f84d12a246e5d9ee7e94",
+          "checkpoint_sha256": "049dd122fdc304af1cd31786e65ced595f8e43547e2c57635ccf5d76c15c702f"
+        },
+        {
+          "run_id": "exm-escape-modified-plus20-mm-3000rpm-1c",
+          "variant": "Escape modified +20 mm",
+          "cells_per_section": 1,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "cycles_completed": 1,
+          "periodicity": "NOT_EVALUATED",
+          "result_sha256": "adf3828aa66794bf868a8d68176b7a183dd63177119aa8d7c0eeacf95bd00d8f",
+          "primary_sha256": "b26445b7045bd13e7a0e53446fe54add97778320a1e614c5fd3d8ff702478a04",
+          "checkpoint_sha256": "51ef58608cba7e985dc4de36b1906f6dd0bc6c16468e3a04eeaa9dd92bb4cf51"
+        },
+        {
+          "run_id": "exm-escape-modified-plus20-mm-3000rpm-2c",
+          "variant": "Escape modified +20 mm",
+          "cells_per_section": 2,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "cycles_completed": 1,
+          "periodicity": "NOT_EVALUATED",
+          "result_sha256": "fcae5cb8f61986098038e621461927292bf24556f2652bed6baad83213b8632b",
+          "primary_sha256": "f0240886805d79721a6ffa22fa20124859f53b0c82a6bb604809b28003500816",
+          "checkpoint_sha256": "91ece04ee0b4a456ff01d0b38c9674e3289aa4b73d441b1ac2b8aea87074caa0"
+        },
+        {
+          "run_id": "exm-escape-modified-plus20-mm-3000rpm-4c",
+          "variant": "Escape modified +20 mm",
+          "cells_per_section": 4,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "cycles_completed": 1,
+          "periodicity": "NOT_EVALUATED",
+          "result_sha256": "79ac4cd60f6e9f4f0f6d6088c1abe6af2aca68d98dcbe72589adab9fe24ed01a",
+          "primary_sha256": "c2a93ee4ca3f735407a326e40e5981355c3eea64afd276e547514a83de1f37b6",
+          "checkpoint_sha256": "ee74502e67fb80e55dd80305b08d49bd6effb6b17937169b366757ef6e72fe2f"
+        }
+      ],
+      "rpm": 3000,
+      "cycles_per_point": 1,
+      "audit": "independent primary audit recomputed PASS for six points",
+      "conservation": "mass/species/energy PASS in tested scope",
+      "finding": "1->2 and 2->4 pressure RMS changes grow; A/B response is smaller than refinement sensitivity. Spatial independence NOT_ESTABLISHED; periodicity NOT_EVALUATED."
+    },
+    {
+      "id": "EXHAUST_NUMERICAL_CONVERGENCE_V2_A_B_1_2_4_8",
+      "source_receipt": "results/exhaust-numerical-convergence-v2/diagnostic-receipt.json",
+      "report_sha256": "13b9b9b75a44398f9a4a2302a34b71207262069361277ed6bde2b57fbac12e14",
+      "points": [
+        {
+          "run_id": "encv2-escape-original-3000rpm-1c",
+          "variant": "Escape original",
+          "cells_per_section": 1,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "cycles_completed": 1,
+          "periodicity": "NOT_EVALUATED",
+          "result_sha256": "8a91791323cfc5e74b3e052ea4b367e6c5c9fa6545a4ee02ffa91c392c6d2996",
+          "primary_sha256": "73eb0dd290297cab9f36c65e107665dffa502e4dc3c938f151402bc95e3f6c90",
+          "checkpoint_sha256": "1b33d2c9c4a72eac9c38f3a04747b57b462e7dad76128685914253701f8b0220"
+        },
+        {
+          "run_id": "encv2-escape-original-3000rpm-2c",
+          "variant": "Escape original",
+          "cells_per_section": 2,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "cycles_completed": 1,
+          "periodicity": "NOT_EVALUATED",
+          "result_sha256": "7f32dc79676d7e2ab5fde7207d6d8d2c4ab1015a40f322b74c70f1700069075f",
+          "primary_sha256": "a54b14b4a3c6d61fa608d465b762e70002aa6726dd7ae89fc247b40b875671ef",
+          "checkpoint_sha256": "b6f90030e96942a84e54dc5ceb7dd417c80fa38a9467dd5f164e3ac3930cc44c"
+        },
+        {
+          "run_id": "encv2-escape-original-3000rpm-4c",
+          "variant": "Escape original",
+          "cells_per_section": 4,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "cycles_completed": 1,
+          "periodicity": "NOT_EVALUATED",
+          "result_sha256": "dce8ebee71cdca788868c4c1284138acb7ae37de6e67ff9027eab40ef75cbeea",
+          "primary_sha256": "41faedd1b527fff4b4d6e21ddd8829465a7bec355edf2cfa4757376d66b4b900",
+          "checkpoint_sha256": "e1daa9eefbeba6d99f74473cc6c19cf6342736bf00dc8e413c41fe52d5a8f375"
+        },
+        {
+          "run_id": "encv2-escape-original-3000rpm-8c",
+          "variant": "Escape original",
+          "cells_per_section": 8,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "cycles_completed": 1,
+          "periodicity": "NOT_EVALUATED",
+          "result_sha256": "984631a6b106c0ccee2ee08e51ce4d0365c3fdd8318d7fb8178dce86437b79b4",
+          "primary_sha256": "d058d20f15e5436a229ec71158196cc5f4eeb81247932f6c5000cef191aad03c",
+          "checkpoint_sha256": "7b07219ec5915451359dadbfa2d75f44973d4c0fa3a71a61b15b81ae88353b67"
+        },
+        {
+          "run_id": "encv2-escape-modified-plus20-mm-3000rpm-1c",
+          "variant": "Escape modified +20 mm",
+          "cells_per_section": 1,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "cycles_completed": 1,
+          "periodicity": "NOT_EVALUATED",
+          "result_sha256": "016773e7013258a1b82a5883d3ba7e2ea997d1c0d9812cac5790fd7e073815c2",
+          "primary_sha256": "4d46d72df358d15af5395334277079d65fef3ad01a5cebaff0eedaba35e1326b",
+          "checkpoint_sha256": "2a4acf9a1460168568bb6609943c1633cef2f3b002eacbc10bfcf645abb02fc2"
+        },
+        {
+          "run_id": "encv2-escape-modified-plus20-mm-3000rpm-2c",
+          "variant": "Escape modified +20 mm",
+          "cells_per_section": 2,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "cycles_completed": 1,
+          "periodicity": "NOT_EVALUATED",
+          "result_sha256": "f1dae714ab15b12c961ca3c38a002ab369872bdab9e5285d632fdd662a4920a4",
+          "primary_sha256": "0c9585575bd7fd20e7a1f0ee498c18ee28bec46c66858cc98df4925f6a661e29",
+          "checkpoint_sha256": "897f54d61e638eef18706226156775443ece363d12ce344650e7cc9b7c3cc442"
+        },
+        {
+          "run_id": "encv2-escape-modified-plus20-mm-3000rpm-4c",
+          "variant": "Escape modified +20 mm",
+          "cells_per_section": 4,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "cycles_completed": 1,
+          "periodicity": "NOT_EVALUATED",
+          "result_sha256": "527f8f4387a1112533f6114a95f3799c3a49af21b39492291df31e7195a0ad5a",
+          "primary_sha256": "859120eb87c96668aab4f76c0d99ab8339b7c900b7f839a7c744b8469e27a996",
+          "checkpoint_sha256": "8e62b4b0d9415899e46605f80b509c6083b0d9831741040edb2426852c483b3b"
+        },
+        {
+          "run_id": "encv2-escape-modified-plus20-mm-3000rpm-8c",
+          "variant": "Escape modified +20 mm",
+          "cells_per_section": 8,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "cycles_completed": 1,
+          "periodicity": "NOT_EVALUATED",
+          "result_sha256": "4e5fab7ca0cfe002fadd7f7c3c45ff13b8ce4d9525124e2ab3b7619b8aa48469",
+          "primary_sha256": "542101f0c9424ab5e2f0968da5a28ab6fe0b909b7db6d6955e8cf0f5a47619fc",
+          "checkpoint_sha256": "87b3a76be0dca5752903914e991b4e742033e61a62f29cf0014fdb6ef7e7d3b3"
+        }
+      ],
+      "matrix_complete": true,
+      "matrix_attempts_total": 8,
+      "classification": "EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL",
+      "audit": "historical receipt reports the persisted matrix and independent re-audit; no re-audit executed in this task",
+      "conservation": "historical verification only; see source receipt; not re-executed",
+      "finding": "4->8 remains material; short transients do not establish asymptotic spatial error or isolate design response. Spatial independence NOT_ESTABLISHED; periodicity NOT_EVALUATED."
+    },
+    {
+      "id": "DINO_DESIGN_VALIDATION_V1_A_B_3000_4000_REPEAT",
+      "source_receipt": "results/dino-design-validation-v1/exhaust-diagnostic-receipt.json",
+      "runs": [
+        {
+          "run_id": "design-validation-20261014-a-base-3000-r1",
+          "variant": "Escape original",
+          "rpm": 3000.0,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "periodicity": "NOT_EVALUATED",
+          "cycles_completed": 1,
+          "elapsed_seconds": 26.25,
+          "memory_rss_at_finish_mib": 322.71484375,
+          "rejected_step_count": 518,
+          "result_sha256": "34f733e9ad3bccb56083e160dda90e832220d5f96f08ea59da18d5d28e9b79f7",
+          "checkpoint_sha256": "e06bf1a2ef55bd248259fa32ff1462ee4e729bb70efda6cc574c6a62e50d843d",
+          "primary_sha256": "435ea63f528a3cd67af511a52acfea2310d44ba6eaffe8e1817ec41f76894ac7",
+          "independent_replay_audit": "PASS",
+          "audit_recomputed": true,
+          "conservation": {
+            "energy_residual_J": 2.7450264283856995e-13,
+            "mass_residual_kg": -1.0050045919172274e-18,
+            "species_residual_kg": [
+              -6.414156993083189e-19,
+              -1.2176098616780567e-21,
+              -4.491973297196246e-20,
+              2.097816708844007e-21
+            ]
+          }
+        },
+        {
+          "run_id": "design-validation-20261014-a-modified-3000-r1",
+          "variant": "Escape modified +20 mm",
+          "rpm": 3000.0,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "periodicity": "NOT_EVALUATED",
+          "cycles_completed": 1,
+          "elapsed_seconds": 26.46799999999348,
+          "memory_rss_at_finish_mib": 449.93359375,
+          "rejected_step_count": 518,
+          "result_sha256": "6224937f6da7f27f4f4a07e7bf67fe51b154474b04cd71fc52bbf063d2517b12",
+          "checkpoint_sha256": "d55e2f230c242c1008a9d0f7ba5ffff3729d0433083166f43ac5122ef5b0cebe",
+          "primary_sha256": "c061e2c24724f7fb6dcfca7adf362a6c57e7a7aa0ea209ebb19bec003411e98f",
+          "independent_replay_audit": "PASS",
+          "audit_recomputed": true,
+          "conservation": {
+            "energy_residual_J": 2.3342439092743916e-14,
+            "mass_residual_kg": 7.771527291058206e-20,
+            "species_residual_kg": [
+              -1.1773757966834775e-19,
+              0.0,
+              2.3204535832432093e-19,
+              -9.011650549136751e-22
+            ]
+          }
+        },
+        {
+          "run_id": "design-validation-20261014-a-base-4000-r1",
+          "variant": "Escape original",
+          "rpm": 4000.0,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "periodicity": "NOT_EVALUATED",
+          "cycles_completed": 1,
+          "elapsed_seconds": 17.375,
+          "memory_rss_at_finish_mib": 371.953125,
+          "rejected_step_count": 84,
+          "result_sha256": "0de20914cd7b1e3930d843b9eb5977db628761dc6647a2d563a3c863f264bbcd",
+          "checkpoint_sha256": "cf65ebf672c8f71190e7caa821f9254a5ecfe7c577e6c47ec5d52c471d0ee508",
+          "primary_sha256": "416c32192be9bba6055b19a9fb35f62a0b4478d7023daa6e3d120db0e92ea5be",
+          "independent_replay_audit": "PASS",
+          "audit_recomputed": true,
+          "conservation": {
+            "energy_residual_J": 2.724487302430134e-13,
+            "mass_residual_kg": -1.9481757786848908e-20,
+            "species_residual_kg": [
+              -3.7862372742267225e-19,
+              9.26442286059391e-23,
+              1.86501659751855e-19,
+              1.0039224079288737e-21
+            ]
+          }
+        },
+        {
+          "run_id": "design-validation-20261014-a-modified-4000-r1",
+          "variant": "Escape modified +20 mm",
+          "rpm": 4000.0,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "periodicity": "NOT_EVALUATED",
+          "cycles_completed": 1,
+          "elapsed_seconds": 17.296999999991385,
+          "memory_rss_at_finish_mib": 355.91796875,
+          "rejected_step_count": 84,
+          "result_sha256": "126be3e85334c834e97846f5590d10a8efdf6f218b0721384c6f9885db421b60",
+          "checkpoint_sha256": "53481b4142475259ea6205adc7c17f22ef79f60ef4e5ed2c9fae09186feb2d04",
+          "primary_sha256": "c7a1b4e6b8445dfb3938a5a3697f7a61dc12bb12115242e7fa906afd70fdaba6",
+          "independent_replay_audit": "PASS",
+          "audit_recomputed": true,
+          "conservation": {
+            "energy_residual_J": -2.30593322214645e-13,
+            "mass_residual_kg": 9.368184396632562e-19,
+            "species_residual_kg": [
+              -3.7269449679189215e-19,
+              -4.367513634279986e-22,
+              2.1140900503636432e-19,
+              -5.946703627796477e-22
+            ]
+          }
+        },
+        {
+          "run_id": "design-validation-20261014-a-base-3000-repeat",
+          "variant": "Escape original",
+          "rpm": 3000.0,
+          "classification": "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+          "periodicity": "NOT_EVALUATED",
+          "cycles_completed": 1,
+          "elapsed_seconds": 26.811999999990803,
+          "memory_rss_at_finish_mib": 475.7421875,
+          "rejected_step_count": 518,
+          "result_sha256": "fbb7d9e5932483daa0d30c1b859a779b11dcc736fe11870aa46a9c702e6f6847",
+          "checkpoint_sha256": "0a10112490ff690f87528563e3dd7a29c9936e5675a47d6b3e6dff3926a8301b",
+          "primary_sha256": "435ea63f528a3cd67af511a52acfea2310d44ba6eaffe8e1817ec41f76894ac7",
+          "independent_replay_audit": "PASS",
+          "audit_recomputed": true,
+          "conservation": {
+            "energy_residual_J": 2.7450264283856995e-13,
+            "mass_residual_kg": -1.0050045919172274e-18,
+            "species_residual_kg": [
+              -6.414156993083189e-19,
+              -1.2176098616780567e-21,
+              -4.491973297196246e-20,
+              2.097816708844007e-21
+            ]
+          }
+        }
+      ],
+      "finding": "one-cycle A/B at 3000/4000 RPM plus exact repeat; repeat establishes deterministic replay for that configuration, not spatial independence or periodicity."
+    },
+    {
+      "id": "CONTROLLED_DUCT_ANALYTIC_REFERENCE",
+      "source": "results/exhaust-numerical-convergence-v2/diagnostic-receipt.json#controlled_duct_evidence",
+      "observables": {
+        "tests_sha256": {
+          "tests/test_exhaust_mesh_v1.py": "f009e161eb94f207b8f82dff9e42f64edb7f4059610a2272aef2864e61c35872",
+          "tests/test_exhaust_mesh_v1_solver.py": "fb5d67c2c0b29bd703a0609a4fbe7448bd010c949bf5e47b22f041a54113a811",
+          "tests/test_exhaust_mesh_v2.py": "d0e429a42baef1d5d3d1216d5aea9da257f9d3c8f54e86567a3f105c059159fa",
+          "tests/test_dino_desktop.py": "baf051d6fc0eb440f935cbcdabf7d2849cfd3ad15545f63cd95afc3871dcf4c6",
+          "tests/test_integrated_2t.py": "8f5b4af10ac40b97726adc49b782b8bd1f7815c9f26aa9dc2cee9f4f1288f773"
+        },
+        "constant_area_pulse_normalized_pressure_l2_by_cells": {
+          "40": 0.1599483,
+          "80": 0.1278916,
+          "160": 0.0932246
+        },
+        "pulse_centroid_speed_relative_error_by_cells": {
+          "40": 0.00021935,
+          "80": 0.00012122,
+          "160": 0.00010949
+        },
+        "peak_amplitude_ratio_by_cells": {
+          "40": 0.35739,
+          "80": 0.47554,
+          "160": 0.60805
+        },
+        "stage_cfl_approx": 0.198,
+        "outcomes": [
+          "rigid-wall reflection test passed",
+          "static smooth-frustum pressure/species/conservation test passed",
+          "smooth-area transient error versus N=320 decreased over 40/80/160",
+          "CFL 0.1/0.2/0.4 sensitivity and exact checkpoint restore/replay passed"
+        ],
+        "limitation": "Mesh/adapter requires continuous shared face area; sharp zero-length area step not represented, so no sharp-step reflection coefficient claim."
+      },
+      "finding": "uniform/smooth duct, pulse and CFL/checkpoint tests provide a reference for numerical behavior; they do not validate the integrated engine exhaust mesh or its design ranking."
+    }
+  ],
+  "periodicity_inventory": {
+    "contract": "REFERENCE_PERIODIC_CONVERGENCE_V2",
+    "implementation": "motorsim/reference_harness/convergence.py",
+    "cycles_in_all_selected_engine_mesh_diagnostics": 1,
+    "classification": "NOT_EVALUATED",
+    "cycle_metrics": "must remain undefined without accepted periodic cycle",
+    "existing_tests": [
+      "tests/test_reference_harness.py",
+      "tests/test_v1_closure_periodicity.py",
+      "tests/test_periodicity_e13_r1.py"
+    ],
+    "test_thresholds_are_existing_contract_only": true
+  },
+  "conservation_and_performance_inventory": {
+    "conservation": "historical one-cycle runs report mass, species, energy and independent primary replay PASS within tested scopes; this is necessary but not evidence of physical accuracy",
+    "coupled_interfaces": [
+      "cylinder-crankcase",
+      "crankcase-intake",
+      "transfer ducts",
+      "cylinder-exhaust"
+    ],
+    "test_modules": [
+      "tests/test_integrated_2t.py",
+      "tests/test_integrated_cycle_evidence_producer.py",
+      "tests/test_integrated_cycle_evaluator.py",
+      "tests/test_p5b_integrated_coupling.py",
+      "tests/test_p5c_integrated.py"
+    ],
+    "performance": "p8 and engineering output contracts exist; no selected mesh/design diagnostic has accepted periodic performance. BMEP/torque/power remain undefined in one-cycle evidence."
+  },
+  "limitations": [
+    "No multi-cycle engine mesh evidence is available for periodicity classification in the selected mesh matrices.",
+    "Historical EXHAUST_NUMERICAL_CONVERGENCE_V2 is PARTIAL with terminal gate FAIL_TERMINAL and NOT_ESTABLISHED spatial independence; preserve both labels.",
+    "The controlled duct reference shows mesh trends for its smooth-area reference problem only; do not transfer that convergence claim to the integrated engine.",
+    "No independent experimental dataset is registered or present; VALIDATED claims remain out of scope.",
+    "Do not change solver equations, mesh/periodicity thresholds, or reinterpret historical artifacts as part of this inventory."
+  ],
+  "protocol_inputs_for_S1_PROTOCOL": {
+    "compare_space_and_time_separately": true,
+    "retain_common_fixed_rpm_and_immutable_configuration": true,
+    "observables": [
+      "pressure waveform at exact crank angles",
+      "exhaust interface mass flow",
+      "mass/species/energy conservation ledgers",
+      "cycle state/integral periodicity vector",
+      "IMEP/FMEP/BMEP/torque/power only when contract-defined"
+    ],
+    "classification_required": [
+      "SPATIAL_NOT_ESTABLISHED",
+      "PERIOD_1",
+      "PERIOD_2",
+      "NOT_EVALUATED",
+      "NOT_CONVERGED_WITHIN_HORIZON",
+      "BUDGET_LIMITED",
+      "NUMERICAL_INVALID",
+      "AUDIT_FAIL"
+    ],
+    "preserve_no_interpolation_and_no_unsupported_claims": true
+  }
+}
