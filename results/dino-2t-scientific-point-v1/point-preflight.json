@@ -25,7 +25,7 @@
   },
   "implementation": {
     "runner": "scripts/diagnostics/scientific_point_v1_preflight.py",
-    "runner_sha256": "f5b0a8cb2b8941f6e485cd3e36df401ab971f1a5c2c6fff367fc145146971b24",
+    "runner_sha256": "ab50c02d1f8e562a1b31ff23a772302697fbfebfe8a64b077bd741e55cb51138",
     "solver_source_hashes": {
       "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
       "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
@@ -150,6 +150,7 @@
     "historical_cycles": "4/8",
     "historical_sampled_peak_rss_bytes": 2151251968,
     "memory_option_basis": "3072 MiB proposed headroom above observed peak; not a measured requirement",
+    "execution_memory_precondition": "available physical RAM must be at least the authorized cap + 1024 MiB before launch",
     "AGENTS_MAX_FIXTURE_SECONDS": 1800
   },
   "historical_stage1_compatibility": {

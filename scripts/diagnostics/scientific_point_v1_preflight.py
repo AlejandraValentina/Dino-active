@@ -6,6 +6,7 @@ solver and does not authorize execution or checkpoint reuse.
 from __future__ import annotations
 
 import argparse
+import ctypes
 import hashlib
 import json
 import os
@@ -44,6 +45,32 @@ def _artifact_root() -> Path:
     if repository_root_containing(root) is not None:
         raise RuntimeError("FAIL_CLOSED point artifact root resolves inside a Git repository")
     return root
+
+
+def _available_memory_mib() -> int:
+    """Read available physical RAM without depending on optional packages."""
+    if os.name == "nt":
+        class MemoryStatusEx(ctypes.Structure):
+            _fields_ = [("dwLength", ctypes.c_ulong), ("dwMemoryLoad", ctypes.c_ulong),
+                        ("ullTotalPhys", ctypes.c_ulonglong), ("ullAvailPhys", ctypes.c_ulonglong),
+                        ("ullTotalPageFile", ctypes.c_ulonglong), ("ullAvailPageFile", ctypes.c_ulonglong),
+                        ("ullTotalVirtual", ctypes.c_ulonglong), ("ullAvailVirtual", ctypes.c_ulonglong),
+                        ("ullAvailExtendedVirtual", ctypes.c_ulonglong)]
+        status = MemoryStatusEx()
+        status.dwLength = ctypes.sizeof(MemoryStatusEx)
+        if not ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(status)):
+            raise OSError("GlobalMemoryStatusEx failed")
+        return int(status.ullAvailPhys // (1024 * 1024))
+    page_size = os.sysconf("SC_PAGE_SIZE")
+    available_pages = os.sysconf("SC_AVPHYS_PAGES")
+    return int(page_size * available_pages // (1024 * 1024))
+
+
+def _validate_available_memory(memory_limit_mib: int, available_mib: int) -> None:
+    required = memory_limit_mib + 1024  # leave at least 1 GiB for Windows and other processes
+    if available_mib < required:
+        raise RuntimeError(f"FAIL_CLOSED available memory {available_mib} MiB is below the "
+                           f"{required} MiB run-plus-system reserve")
 
 
 def build_preflight() -> dict:
@@ -120,6 +147,7 @@ def build_preflight() -> dict:
         "resource_basis": {"historical_wall_seconds": 689.359, "historical_solver_seconds": 682.829,
                            "historical_cycles": "4/8", "historical_sampled_peak_rss_bytes": 2151251968,
                            "memory_option_basis": "3072 MiB proposed headroom above observed peak; not a measured requirement",
+                           "execution_memory_precondition": "available physical RAM must be at least the authorized cap + 1024 MiB before launch",
                            "AGENTS_MAX_FIXTURE_SECONDS": 1800},
         "historical_stage1_compatibility": {"preregistration_sha256": _normalized_sha256(protocol_path),
                                             "expected_identity_sha256": historical_binding.get("identity_sha256"),
@@ -203,6 +231,8 @@ def execute_authorized(*, preflight_path: Path, authorization_path: Path,
             _normalized_sha256(Path(__file__)) != receipt["implementation"]["runner_sha256"]):
         raise RuntimeError("FAIL_CLOSED current source/configuration no longer matches preflight")
     artifact_root = _artifact_root()
+    available_memory_mib = _available_memory_mib()
+    _validate_available_memory(authorization["memory_limit_mib"], available_memory_mib)
     run_directory = artifact_root / "exploratory-workflow-v1" / project["project_id"] / RUN_ID
     report_path = artifact_root / "reports" / f"{RUN_ID}.json"
     previous_wall = 0.0
@@ -238,6 +268,7 @@ def execute_authorized(*, preflight_path: Path, authorization_path: Path,
               "periodicity": result["periodicity"], "cycles_completed": result["cycles_completed"],
               "elapsed_seconds": result["elapsed_seconds"], "invocation_wall_seconds": invocation_wall,
               "cumulative_wall_seconds": previous_wall + invocation_wall,
+              "available_memory_at_launch_mib": available_memory_mib,
               "result_sha256": result["result_sha256"], "checkpoint_sha256": result["checkpoint_sha256"],
               "artifact_directory": result["artifact_directory"], "cycles": result["cycles"],
               "resume_requested": resume, "campaign_started": False,

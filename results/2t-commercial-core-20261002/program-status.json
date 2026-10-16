@@ -5881,9 +5881,10 @@
       "blocker": null,
       "commits": [],
       "evidence": [
-        "results/dino-2t-scientific-point-v1/point-preflight.json SHA-256 b9a16366ac9b53fadde27c10a92da0720eac0a407751c2f76df1df0dde81947a",
+        "results/dino-2t-scientific-point-v1/point-preflight.json SHA-256 89e5f47165dbc49d94e15adbedbed4b7c99ca7445ce5f556ac4fdad209622853",
         "scripts/diagnostics/scientific_point_v1_preflight.py; current candidate identity 40303dcffd3ddc8264b19e586db2fe1c2e6c2b729939dbd97a23c704a02dbdc5; zero-step preflight PASS; historical V1 binding mismatch rejected; old checkpoint not reusable; execution path requires matching durable owner authorization, fixed point and max 600 s per invocation.",
-        "Proposed options: 600 or 1200 s cumulative (<=1800 s fixture ceiling), 3072 MiB, 1 worker, 8-cycle horizon; no run authorized. Tests: 48 passed; OpenSpec strict valid; program-status check PASS."
+        "Proposed options: 600 or 1200 s cumulative (<=1800 s fixture ceiling), 3072 MiB, 1 worker, 8-cycle horizon; no run authorized. Tests: 48 passed; OpenSpec strict valid; program-status check PASS.",
+        "Execution has a runtime fail-closed memory reserve: available physical RAM must be at least authorized cap + 1024 MiB; current sample 3116 MiB is insufficient for a 3072 MiB cap."
       ],
       "next_action": "Bind any owner-approved execution to the final preflight hash and explicit resource limits.",
       "objective": "DINO_2T_SCIENTIFIC_POINT_V1",

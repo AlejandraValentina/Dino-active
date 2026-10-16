@@ -1,6 +1,10 @@
 import pytest
 
-from scripts.diagnostics.scientific_point_v1_preflight import build_preflight, validate_authorization
+from scripts.diagnostics.scientific_point_v1_preflight import (
+    _validate_available_memory,
+    build_preflight,
+    validate_authorization,
+)
 
 
 def test_scientific_point_preflight_is_zero_step_and_fail_closed_for_old_binding():
@@ -41,3 +45,9 @@ def test_point_authorization_must_bind_identity_and_preflight():
     authorization["identity_sha256"] = "0" * 64
     with pytest.raises(RuntimeError, match="identity_sha256"):
         validate_authorization(authorization, preflight_sha256=preflight_sha, receipt=receipt)
+
+
+def test_point_run_fails_closed_without_one_gibibyte_system_memory_reserve():
+    _validate_available_memory(3072, 4096)
+    with pytest.raises(RuntimeError, match="FAIL_CLOSED"):
+        _validate_available_memory(3072, 4095)
