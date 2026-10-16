@@ -1,0 +1,51 @@
+{
+  "schema": "DINO_SCIENTIFIC_POINT_V1_PERFORMANCE_RECEIPT",
+  "recorded_at_utc": "2026-10-16T15:51:19+00:00",
+  "classification": "BOUNDED_DIAGNOSTIC_PROFILE_ONLY_NO_END_TO_END_PERFORMANCE_CLAIM",
+  "profile_report": "${DINO_ARTIFACT_ROOT}/dino-2t-scientific-point-v1/profile-20261016T154336Z/profile-report.json",
+  "profile_report_sha256": "134d9c9c2e18ad2cc6419f2fc1a91cb0f78e1e5b2b43acb5b31c14b8d7e2c8d6",
+  "run_logged_summary": "${DINO_ARTIFACT_ROOT}/dino-2t-scientific-point-v1/logs/profile-invocation-01/scientific-point-v1-profile.summary.json",
+  "run_logged_summary_sha256": "73759a91ccd8c5b342dd8156c12b05f5d2dfc3b355571c4dbc89da78878a3605",
+  "replay_memory_summary": "${DINO_ARTIFACT_ROOT}/dino-2t-scientific-point-v1/logs/replay-memory-01/scientific-point-v1-replay-memory.summary.json",
+  "replay_memory_summary_sha256": "697d969dfb1a3aa302e544cb2b6f1917b4a15cadb09eaf8f4b11ab6a13d83021",
+  "live_segment": {
+    "configuration": "3000 RPM, 48 finite-volume cells; fresh engine, 5.125 degree bounded segment",
+    "accepted_steps": 31,
+    "rejected_trials": 32,
+    "wall_seconds_uninstrumented": 0.23370069998782128,
+    "wall_seconds_cprofile": 0.9783837999566458,
+    "cprofile_overhead_ratio": 4.186482111553931,
+    "wall_seconds_tracemalloc": 0.8300397000275552,
+    "tracemalloc_overhead_ratio": 3.551721069174421,
+    "sampled_peak_rss_bytes": 51585024,
+    "alloc_measurement": "71,045 live Python blocks; 3.22 MB tracemalloc peak, not cumulative allocations; native allocations may be omitted"
+  },
+  "replay": {
+    "existing_primary_sha256": "d058d20f15e5436a229ec71158196cc5f4eeb81247932f6c5000cef191aad03c",
+    "audit_status": "PASS",
+    "recomputed": true,
+    "cprofile_wall_seconds": 265.8305099999998,
+    "uninstrumented_wall_seconds": 75.61017300002277,
+    "uninstrumented_cpu_seconds": 74.53125,
+    "peak_sampled_rss_bytes": 1468989440,
+    "parse_seconds": 3.1311141999904066,
+    "canonical_serialize_seconds": 3.6099261000053957,
+    "primary_bytes": 108925768
+  },
+  "checkpoint_persistence_microbenchmark": {
+    "source": "old checkpoint serialized to a new external artifact; old file never restored or written",
+    "checkpoint_bytes": 159946,
+    "median_json_serialize_seconds": 0.007474199985153973,
+    "median_atomic_fsync_replace_seconds": 0.056154899997636676,
+    "iterations": 5
+  },
+  "optimization_decision": "No new safe dominant optimization was demonstrated by this bounded profile. Keep canonical audits, equations, CFL, resolution, species and thresholds unchanged. Recovery V2 output-only copy removal remains a component-only result; no full-cycle end-to-end speedup has been measured.",
+  "historical_run_unchanged": true,
+  "campaign_or_resume_started": false,
+  "external_artifact_integrity": {
+    "profile_run_exit_code": 0,
+    "profile_timed_out": false,
+    "replay_audit_exit_code": 0,
+    "replay_audit_timed_out": false
+  }
+}

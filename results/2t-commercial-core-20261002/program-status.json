@@ -5791,11 +5791,12 @@
       "id": "SPV1-PROFILE",
       "description": "Profile bounded existing/reproducible workloads by subsystem; preserve canonical audits and report instrumentation overhead.",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "Recovery V2 component profiles reviewed; existing cProfile grouping is too coarse for the requested subsystem breakdown. A new, isolated bounded profiler is in progress."
+        "results/dino-2t-scientific-point-v1/performance-profile.json SHA-256 3577b901b1a412f19e0a2e1e2eefb5e8d3fa624b3581f45e59c4323d4a38290a",
+        "Bounded segment, cProfile/tracemalloc overhead, independent replay CPU/RSS, atomic checkpoint persistence and limitations recorded; no further safe end-to-end optimization justified."
       ],
       "next_action": "Profile bounded existing/reproducible workloads by subsystem; preserve canonical audits and report instrumentation overhead.",
       "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
@@ -8003,6 +8004,18 @@
       "task": "SPV1-GEOMETRY",
       "kind": "task",
       "summary": "Verified mapped exhaust roof area against the independent slider-crank/rectangular-window formula on the exact historical 3000 RPM, 48-cell configuration at 47 points; max absolute error 3.98e-13 mm2; 11 powervalve tests pass; no solver steps or code physics change."
+    },
+    {
+      "at": "2026-10-16T15:50:54+00:00",
+      "task": "SPV1-PROFILE",
+      "kind": "task",
+      "summary": "Bounded 48-cell profile: 31 steps/32 CFL rejections over 5.125 degrees, 0.234 s uninstrumented; cProfile 4.19x and tracemalloc 3.55x overhead. Existing primary independently replayed PASS/recomputed in 75.61 s, 1.469 GB sampled RSS; no further safe dominant optimization or end-to-end speedup established."
+    },
+    {
+      "at": "2026-10-16T15:52:31+00:00",
+      "task": "SPV1-PROFILE",
+      "kind": "task",
+      "summary": "New bounded profiler and independent replay-memory measurement completed in isolated DINO_ARTIFACT_ROOT; no further safe optimization verified. Performance remains PARTIAL without end-to-end cycle before/after evidence."
     }
   ],
   "legacy_gate_status": {
@@ -8022,15 +8035,13 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 9,
-    "gate_tasks_done": 2,
+    "gate_tasks_done": 3,
     "gate_task_states": {
-      "DONE": 2,
-      "IN_PROGRESS": 1,
+      "DONE": 3,
       "READY": 3,
       "WAITING": 3
     },
     "remaining": [
-      "SPV1-PROFILE",
       "SPV1-PERIODICITY",
       "SPV1-MESH-PREFLIGHT",
       "SPV1-POINT-PREFLIGHT",
@@ -8038,7 +8049,7 @@
       "SPV1-POINT-EXECUTION",
       "SPV1-RESULT-VERIFY"
     ],
-    "updated_at": "2026-10-16T15:42:27+00:00"
+    "updated_at": "2026-10-16T15:52:31+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
