@@ -1,0 +1,86 @@
+{
+  "schema": "DINO_SCIENTIFIC_POINT_V1_BASELINE_RECEIPT",
+  "recorded_at_utc": "2026-10-16T15:38:59+00:00",
+  "scope": "Read-only inventory of the prior single-point diagnostic; no solver steps and no mutation of historical artifacts.",
+  "repository_head": "702f3ba4f952ccefc98b5ed7f4a9a3d23440e046",
+  "historical": {
+    "preregistration_path": "results/dino-stage1-scientific-readiness/preregistration/stage1-diagnostic-protocol-v1.json",
+    "preregistration_sha256": "5c1f3699ab6411c5e1f5c26c74801179e40319b04e216dc1d4c95463527420c6",
+    "expected_preregistration_sha256": "5c1f3699ab6411c5e1f5c26c74801179e40319b04e216dc1d4c95463527420c6",
+    "historic_result_receipt_path": "results/dino-stage1-scientific-readiness/evidence/focal-periodicity-v1-result.json",
+    "historic_result_receipt_sha256": "f01349ecf9a501547ab0c36f67b38043b22cc268cabc5463e85ef774de709b24",
+    "run_status": "INTERRUPTED_CHECKPOINTED",
+    "classification": "EXPLORATORY_TIMEOUT_CHECKPOINTED",
+    "configured_budget_seconds": 600,
+    "solver_elapsed_seconds": 682.829000000027,
+    "run_logged_wall_seconds": 689.359,
+    "cycles_completed": 4,
+    "max_cycles": 8,
+    "periodicity_state": "NOT_EVALUATED",
+    "resume_performed": false,
+    "campaign_started": false,
+    "spatial_independence": "NOT_ESTABLISHED",
+    "preregistration_working_tree_sha256": "1644205beaf559f303ddbccc895af79e4d3dab905c6d4714c745156864578fa9",
+    "preregistration_line_endings": "Working tree CRLF; normalized bytes exactly equal committed LF blob."
+  },
+  "point": {
+    "variant": "Escape original",
+    "rpm": 3000,
+    "mesh_adapter": "EXHAUST_MESH_V2",
+    "cells_per_section": 8,
+    "cells_total": 48,
+    "configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+    "project_sha256": "42535dfb53c95407e75e109151ff1893db6338510de4f832e7ec48dd46ef8d34",
+    "fuel_sha256": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+    "mechanical_loss_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e"
+  },
+  "source_hashes_normalized_lf": {
+    "motorsim.integrated_2t": "38d9896e8bf4405945cdc53aea091eb895d7e00a3ec52df0f0263115e971af17",
+    "motorsim.exploratory_workflow": "c7a3b85203736feffa93fe577c743e091fb9f905f40a6e494409b6702c316b36",
+    "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+    "motorsim.reference_harness.convergence": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+    "motorsim.mesh_study_v1": "01f937a7345f4cb93dd4a9927665a3c7fcdcafda63f90c5eb11d806ee8f771e3"
+  },
+  "source_matches_stage1_frozen_hashes": {
+    "motorsim.integrated_2t": true,
+    "motorsim.exploratory_workflow": false,
+    "motorsim.powervalve": true,
+    "motorsim.reference_harness.convergence": true
+  },
+  "artifact_root": "E:/Dino-artifacts/dino-stage1-scientific-readiness/v1",
+  "historical_artifacts": {
+    "run.json": {
+      "sha256": "6844fac86383a8853b36262f4ab765b08df1538681aea0119996230344479ec0",
+      "bytes": 305110
+    },
+    "configuration.json": {
+      "sha256": "85dcd69256f745ab05ef11727b38651852fea7bd954d1fc2772869fafd3c5e6a",
+      "bytes": 141197
+    },
+    "result.json": {
+      "sha256": "9b80cd30d1deb7705eed62ca7b4f6a09b5210f93fc4f2f3c7495e8fa340e5f6a",
+      "bytes": 306287
+    },
+    "checkpoint.json": {
+      "sha256": "1b9341670a9e9d50cfcaef4b750b0e90f72bb1bb905cba6e9c96ba6a4185c9a0",
+      "bytes": 159946
+    },
+    "cycle-0001.json.gz": {
+      "sha256": "93964c20ce6e5858bf0e0904a421559f89ea377901fce6fa27b24886a804315f",
+      "bytes": 29067898
+    },
+    "cycle-0002.json.gz": {
+      "sha256": "fdeefb752a6fb8a84fe7059f872ede0941a201522a439d38a479469f08791670",
+      "bytes": 50003395
+    },
+    "cycle-0003.json.gz": {
+      "sha256": "fe2611707786723a8ce9f9ab2a2d45d513ff9260bdb9722c81860fe4e0c769ef",
+      "bytes": 50090917
+    },
+    "cycle-0004.json.gz": {
+      "sha256": "3e7c3f80ad50693c7340bd2a9747af102d639350d18b4b4d2efb7d516e7a760b",
+      "bytes": 50244141
+    }
+  },
+  "immutability_note": "This receipt records present hashes. It does not authorize resuming or overwriting the old checkpoint; a new run needs a separate root/run ID and exact compatible identity."
+}

@@ -5765,6 +5765,178 @@
         "results/2t-commercial-core-20261002/program-status.json"
       ],
       "unblock_tasks": []
+    },
+    {
+      "id": "SPV1-BASELINE",
+      "description": "Hash current solver/configuration and inspect historical 48-cell artifacts without changing them.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/dino-2t-scientific-point-v1/baseline.json SHA-256 8f085d42531873f772ff3d1d27c0a8357edd9392f3038685368fa63ad51f963a",
+        "Committed preregistration hash matches preregistered receipt; working-tree CRLF normalized bytes equal committed LF blob.",
+        "Existing timeout/checkpoint and cycle artifacts remain untouched; no solver advancement."
+      ],
+      "next_action": "Hash current solver/configuration and inspect historical 48-cell artifacts without changing them.",
+      "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/dino-2t-scientific-point-v1/baseline.json",
+        "results/dino-stage1-scientific-readiness/evidence/"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "SPV1-PROFILE",
+      "description": "Profile bounded existing/reproducible workloads by subsystem; preserve canonical audits and report instrumentation overhead.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Profile bounded existing/reproducible workloads by subsystem; preserve canonical audits and report instrumentation overhead.",
+      "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "scripts/diagnostics/",
+        "results/dino-2t-scientific-point-v1/performance/"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "SPV1-GEOMETRY",
+      "description": "Reconstruct power-valve effective-area semantics and verify against an independent analytical reference.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Reconstruct power-valve effective-area semantics and verify against an independent analytical reference.",
+      "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
+      "owner_role": "physics/numerics",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/powervalve.py",
+        "motorsim/integrated_2t.py",
+        "tests/"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "SPV1-PERIODICITY",
+      "description": "Adversarially verify PeriodicityDetectorV2 variables, cycle synchronization, residuals, persistence and resume behavior.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Adversarially verify PeriodicityDetectorV2 variables, cycle synchronization, residuals, persistence and resume behavior.",
+      "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
+      "owner_role": "contract/regression guardian",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/exploratory_workflow.py",
+        "tests/"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "SPV1-MESH-PREFLIGHT",
+      "description": "Prepare a no-campaign spatial/temporal/boundary error separation plan with measurable observables and budget.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Prepare a no-campaign spatial/temporal/boundary error separation plan with measurable observables and budget.",
+      "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
+      "owner_role": "architecture",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/mesh_study_v1.py",
+        "openspec/changes/dino-2t-scientific-point-v1/"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "SPV1-POINT-PREFLIGHT",
+      "description": "Resolve supported engine identity/configuration and generate a complete single-point preflight plus resource-budget options, with no solver steps.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Resolve supported engine identity/configuration and generate a complete single-point preflight plus resource-budget options, with no solver steps.",
+      "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "scripts/",
+        "results/dino-2t-scientific-point-v1/"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "SPV1-POINT-AUTHORIZATION",
+      "description": "Bind any owner-approved execution to the final preflight hash and explicit wall-time, memory and cycle limits.",
+      "dependencies": [
+        "SPV1-POINT-PREFLIGHT"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Bind any owner-approved execution to the final preflight hash and explicit wall-time, memory and cycle limits.",
+      "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
+      "owner_role": "orchestrator",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/dino-2t-scientific-point-v1/authorization.json"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "SPV1-POINT-EXECUTION",
+      "description": "Execute one integrated point only after matching durable authorization; do not run a sweep or exceed the authorized budget.",
+      "dependencies": [
+        "SPV1-POINT-AUTHORIZATION"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Execute one integrated point only after matching durable authorization; do not run a sweep or exceed the authorized budget.",
+      "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "scripts/",
+        "DINO_ARTIFACT_ROOT/dino-2t-scientific-point-v1/"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "SPV1-RESULT-VERIFY",
+      "description": "Verify identity, independent replay/audit, conservation, periodicity, checkpoints and engineering outputs; classify precisely.",
+      "dependencies": [
+        "SPV1-POINT-EXECUTION"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Verify identity, independent replay/audit, conservation, periodicity, checkpoints and engineering outputs; classify precisely.",
+      "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/dino-2t-scientific-point-v1/",
+        "openspec/changes/dino-2t-scientific-point-v1/"
+      ],
+      "unblock_tasks": []
     }
   ],
   "audit_remediation_mode": false,
@@ -5965,25 +6137,26 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_2T_SOLVER_RECOVERY_V2",
-    "state": "PASS",
+    "id": "DINO_2T_SCIENTIFIC_POINT_V1",
+    "state": "OPEN",
     "owner_approved": true,
-    "summary": "Software recovery requirements verified within bounded scope. Physical solver source was unchanged; mesh independence and production end-to-end speedup remain unclaimed. Historical identity mismatch remains fail-closed; no campaigns or Stage 2.",
-    "change": "openspec/changes/dino-solver-recovery-v2",
-    "spec": "openspec/changes/dino-solver-recovery-v2/specs/dino-solver-recovery-v2/spec.md",
-    "authorization_source": "Explicit owner request CODEX — DINO 2T: SOLVER RECOVERY V2 — Implementación de fixes (2026-10-16)",
-    "transitioned_from": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1",
+    "summary": "Owner-authorized preparation and bounded verification toward one integrated operating point. No run until preflight is complete and a durable matching resource-budget authorization exists. No RPM sweep or mesh-independence claim.",
+    "change": "openspec/changes/dino-2t-scientific-point-v1",
+    "spec": "openspec/changes/dino-2t-scientific-point-v1/specs/dino-2t-scientific-point-v1/spec.md",
+    "authorization_source": "Explicit owner request CODEX — DINO 2T: SCIENTIFIC POINT V1 (2026-10-16); prompt explicitly conditions execution on hash-bound preflight authorization and says not to consume a high budget automatically.",
+    "transitioned_from": "DINO_2T_SOLVER_RECOVERY_V2",
     "gate_tasks": [
-      "SRV2-BASELINE",
-      "SRV2-PERIODICITY",
-      "SRV2-GEOMETRY",
-      "SRV2-PERFORMANCE",
-      "SRV2-ROBUSTNESS",
-      "SRV2-MESH",
-      "SRV2-VERIFY"
+      "SPV1-BASELINE",
+      "SPV1-PROFILE",
+      "SPV1-GEOMETRY",
+      "SPV1-PERIODICITY",
+      "SPV1-MESH-PREFLIGHT",
+      "SPV1-POINT-PREFLIGHT",
+      "SPV1-POINT-AUTHORIZATION",
+      "SPV1-POINT-EXECUTION",
+      "SPV1-RESULT-VERIFY"
     ],
-    "completion_criterion": "Implement and verify concrete fixes within bounded scope; preserve historical evidence and scientific contracts; no campaign or mesh-independence claim.",
-    "classification": "DINO_2T_SOLVER_RECOVERY_V2_READY"
+    "completion_criterion": "Complete bounded implementation and verification; only classify SCIENTIFIC_POINT_ACCEPTED if one explicitly authorized integrated point passes existing physical/numerical/audit gates. Otherwise retain precise PARTIAL/FAIL_TERMINAL. No sweep, no automatic budget increase, no experimental claim."
   },
   "objectives": [
     {
@@ -6482,6 +6655,28 @@
         "remaining": [],
         "updated_at": "2026-10-16T14:52:19+00:00"
       }
+    },
+    {
+      "id": "DINO_2T_SCIENTIFIC_POINT_V1",
+      "state": "OPEN",
+      "owner_approved": true,
+      "summary": "Owner-authorized preparation and bounded verification toward one integrated operating point. No run until preflight is complete and a durable matching resource-budget authorization exists. No RPM sweep or mesh-independence claim.",
+      "change": "openspec/changes/dino-2t-scientific-point-v1",
+      "spec": "openspec/changes/dino-2t-scientific-point-v1/specs/dino-2t-scientific-point-v1/spec.md",
+      "authorization_source": "Explicit owner request CODEX — DINO 2T: SCIENTIFIC POINT V1 (2026-10-16); prompt explicitly conditions execution on hash-bound preflight authorization and says not to consume a high budget automatically.",
+      "transitioned_from": "DINO_2T_SOLVER_RECOVERY_V2",
+      "gate_tasks": [
+        "SPV1-BASELINE",
+        "SPV1-PROFILE",
+        "SPV1-GEOMETRY",
+        "SPV1-PERIODICITY",
+        "SPV1-MESH-PREFLIGHT",
+        "SPV1-POINT-PREFLIGHT",
+        "SPV1-POINT-AUTHORIZATION",
+        "SPV1-POINT-EXECUTION",
+        "SPV1-RESULT-VERIFY"
+      ],
+      "completion_criterion": "Complete bounded implementation and verification; only classify SCIENTIFIC_POINT_ACCEPTED if one explicitly authorized integrated point passes existing physical/numerical/audit gates. Otherwise retain precise PARTIAL/FAIL_TERMINAL. No sweep, no automatic budget increase, no experimental claim."
     }
   ],
   "owner_decisions_pending": [
@@ -7786,6 +7981,18 @@
       "task": "SRV2-VERIFY",
       "kind": "task",
       "summary": "Focused suite 122 passed; mesh suite 4 passed; OpenSpec strict 53/53; program-status and diff checks pass."
+    },
+    {
+      "at": "2026-10-16T15:38:09+00:00",
+      "task": "DINO_2T_SCIENTIFIC_POINT_V1",
+      "kind": "transition",
+      "summary": "Owner-authorized objective activated after Recovery V2 PASS; historical 48-cell run preserved, no campaign/solver run authorized by transition. Preparing bounded baseline, geometry, periodicity, mesh and point preflight."
+    },
+    {
+      "at": "2026-10-16T15:38:46+00:00",
+      "task": "SPV1-BASELINE",
+      "kind": "task",
+      "summary": "Read-only baseline recorded: 3000 RPM/48-cell historical diagnostic timed out at 4/8 cycles, 682.829 s solver and 687.891 s report-call; preserved original artifacts/checkpoint and recorded actual source/artifact hashes. No resume or solver steps."
     }
   ],
   "legacy_gate_status": {
@@ -7800,19 +8007,28 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_2T_SOLVER_RECOVERY_V2",
-    "state": "PASS",
-    "classification": "DINO_2T_SOLVER_RECOVERY_V2_READY",
-    "evidence": [
-      "results/dino-stage1-solver-diagnostic-recovery/v2/recovery-receipt.json SHA-256 06ca95f0931bc66e221ab959dbe36526d9d3d7424f5d27a51eebf32f9b474a27; focused suite 122 PASS plus final numeric/mesh regressions; OpenSpec 53/53"
-    ],
-    "gate_tasks_total": 7,
-    "gate_tasks_done": 7,
+    "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
+    "state": "OPEN",
+    "classification": null,
+    "evidence": [],
+    "gate_tasks_total": 9,
+    "gate_tasks_done": 1,
     "gate_task_states": {
-      "DONE": 7
+      "READY": 5,
+      "WAITING": 3,
+      "DONE": 1
     },
-    "remaining": [],
-    "updated_at": "2026-10-16T14:53:06+00:00"
+    "remaining": [
+      "SPV1-PROFILE",
+      "SPV1-GEOMETRY",
+      "SPV1-PERIODICITY",
+      "SPV1-MESH-PREFLIGHT",
+      "SPV1-POINT-PREFLIGHT",
+      "SPV1-POINT-AUTHORIZATION",
+      "SPV1-POINT-EXECUTION",
+      "SPV1-RESULT-VERIFY"
+    ],
+    "updated_at": "2026-10-16T15:38:09+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -7860,7 +8076,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-16T21:02:00+00:00",
+  "updated_at": "2026-10-16T15:38:09+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -8127,6 +8343,21 @@
       },
       "remaining": [],
       "updated_at": "2026-10-16T13:59:32+00:00"
+    },
+    {
+      "objective": "DINO_2T_SOLVER_RECOVERY_V2",
+      "state": "PASS",
+      "classification": "DINO_2T_SOLVER_RECOVERY_V2_READY",
+      "evidence": [
+        "results/dino-stage1-solver-diagnostic-recovery/v2/recovery-receipt.json SHA-256 06ca95f0931bc66e221ab959dbe36526d9d3d7424f5d27a51eebf32f9b474a27; focused suite 122 PASS plus final numeric/mesh regressions; OpenSpec 53/53"
+      ],
+      "gate_tasks_total": 7,
+      "gate_tasks_done": 7,
+      "gate_task_states": {
+        "DONE": 7
+      },
+      "remaining": [],
+      "updated_at": "2026-10-16T14:53:06+00:00"
     }
   ],
   "gate_status_archive_before_dino_desktop_v3_1": {
