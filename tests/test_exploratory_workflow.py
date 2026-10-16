@@ -138,6 +138,7 @@ def test_exploratory_run_cancels_at_step_boundary_and_resumes_audited_checkpoint
     assert imported["points"][0]["audit_status"]=="PASS"
     assert imported["points"][0]["audit_recomputed"] is True
     assert imported["points"][0]["periodicity"]=="NOT_EVALUATED"
+    assert imported["points"][0]["periodicity_diagnostics"] == resumed["periodicity_diagnostics"]
     assert imported["points"][0]["conservation"]["mass_residual_kg"]==pytest.approx(0.0,abs=1e-11)
     assert len(imported["traces"])==2
     assert imported["traces"][0]["audit_recomputed"] is True

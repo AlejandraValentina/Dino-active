@@ -5834,10 +5834,14 @@
       "id": "SPV1-PERIODICITY",
       "description": "Adversarially verify PeriodicityDetectorV2 variables, cycle synchronization, residuals, persistence and resume behavior.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "results/dino-2t-scientific-point-v1/periodicity-replay.json SHA-256 5468ea19973982000b44c59f69351ec838536c90b8ef2bfe73953f36d3b859b5",
+        "Three lag-1 and two lag-2 comparisons replayed exactly from hashed saved primaries; every comparison FAIL, 4/8 cycles only; saved result field NOT_EVALUATED remains immutable.",
+        "34 detector/geometry tests PASS; 3 synthetic consumer/checkpoint/restart and fail-closed tests PASS; no new physical solver point run."
+      ],
       "next_action": "Adversarially verify PeriodicityDetectorV2 variables, cycle synchronization, residuals, persistence and resume behavior.",
       "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
       "owner_role": "contract/regression guardian",
@@ -8016,6 +8020,12 @@
       "task": "SPV1-PROFILE",
       "kind": "task",
       "summary": "New bounded profiler and independent replay-memory measurement completed in isolated DINO_ARTIFACT_ROOT; no further safe optimization verified. Performance remains PARTIAL without end-to-end cycle before/after evidence."
+    },
+    {
+      "at": "2026-10-16T15:58:24+00:00",
+      "task": "SPV1-PERIODICITY",
+      "kind": "task",
+      "summary": "Read-only replay exactly reproduced all historical persisted detector outcomes: 3 lag-1 and 2 lag-2 FAIL across 4/8 cycles; full-horizon nonperiodicity not claimed. Historical NOT_EVALUATED preserved. New consumer diagnostics exposure, restart and stale-binding checks passed."
     }
   ],
   "legacy_gate_status": {
@@ -8035,21 +8045,20 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 9,
-    "gate_tasks_done": 3,
+    "gate_tasks_done": 4,
     "gate_task_states": {
-      "DONE": 3,
-      "READY": 3,
+      "DONE": 4,
+      "READY": 2,
       "WAITING": 3
     },
     "remaining": [
-      "SPV1-PERIODICITY",
       "SPV1-MESH-PREFLIGHT",
       "SPV1-POINT-PREFLIGHT",
       "SPV1-POINT-AUTHORIZATION",
       "SPV1-POINT-EXECUTION",
       "SPV1-RESULT-VERIFY"
     ],
-    "updated_at": "2026-10-16T15:52:31+00:00"
+    "updated_at": "2026-10-16T15:58:24+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

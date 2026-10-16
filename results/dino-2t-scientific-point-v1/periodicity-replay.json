@@ -1,0 +1,40 @@
+{
+  "schema": "DINO_SCIENTIFIC_POINT_V1_PERIODICITY_RECEIPT",
+  "recorded_at_utc": "2026-10-16T15:58:24+00:00",
+  "classification": "DETECTOR_AND_CONSUMER_VERIFIED_NO_PERIOD_ACCEPTED_BEFORE_TIMEOUT",
+  "historical_field": "NOT_EVALUATED (preserved unchanged)",
+  "interpretation": "Detector executed; four complete cycles exist but the registered eight-cycle horizon did not complete. Do not label the point NON_PERIODIC at its full horizon. No period-dependent performance metrics are valid.",
+  "offline_replay_report": "${DINO_ARTIFACT_ROOT}/dino-2t-scientific-point-v1/periodicity-replay-01/periodicity-replay.json",
+  "offline_replay_report_sha256": "583b2805861096c7389402d0398ae1c25897f4c863643a42c7636f9efff9c642",
+  "run_logged_replay_summary": "${DINO_ARTIFACT_ROOT}/dino-2t-scientific-point-v1/logs/periodicity-replay-01/scientific-point-v1-periodicity-replay.summary.json",
+  "run_logged_replay_summary_sha256": "3e4b084511a7ce02756d924eadc8d94f1189c9ccdc2603c11e3142ce98b01461",
+  "cycles": 4,
+  "registered_max_cycles": 8,
+  "lag1_comparisons": 3,
+  "lag2_comparisons": 2,
+  "lag1_statuses": [
+    "FAIL",
+    "FAIL",
+    "FAIL"
+  ],
+  "lag2_statuses": [
+    "FAIL",
+    "FAIL"
+  ],
+  "metrics_per_comparison": 449,
+  "all_saved_updates_recomputed_exactly": true,
+  "no_period_accepted": true,
+  "branch_streaks_final": {
+    "A": 0,
+    "B": 0
+  },
+  "historical_cycle_audits_recomputed_pass": true,
+  "consumer_and_restart_tests": {
+    "run_logged_summary": "${DINO_ARTIFACT_ROOT}/dino-2t-scientific-point-v1/logs/checkpoint-restart-fixture-v2/scientific-point-v1-periodicity-consumer-restart.summary.json",
+    "summary_sha256": "2f12d49f77a5f685c45711df8f09f25700bd384fe3c5f0baf479c7286acd33c4",
+    "result": "3 passed; includes new assertion that imported run exposes periodicity_diagnostics, compatible cancel/checkpoint/resume, rejects pre-V2 binding and preserves corrupt checkpoint."
+  },
+  "unit_tests": "34 passed: PeriodicDetectorV2 period-1/period-2, nonperiodic evidence, wrong contract, restart, classification, plus power-valve geometry.",
+  "solver_runs_in_this_task": 0,
+  "historical_result_or_artifacts_modified": false
+}
