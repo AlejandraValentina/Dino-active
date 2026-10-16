@@ -5856,10 +5856,13 @@
       "id": "SPV1-MESH-PREFLIGHT",
       "description": "Prepare a no-campaign spatial/temporal/boundary error separation plan with measurable observables and budget.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "results/dino-2t-scientific-point-v1/mesh-preflight.json SHA-256 3ceac28801b08c4447edc0eec95ad31627c3b76d352ff7733d9a6043018c8c95",
+        "No-solver 1/2/4/8 setup verified; 48 total base duct cells (40 exhaust + 8 other), conservative remap setup; exact-angle pressure/flow plan; temporal CFL ladder; integrated boundary sensitivity explicitly unquantified; no campaign or solver steps."
+      ],
       "next_action": "Prepare a no-campaign spatial/temporal/boundary error separation plan with measurable observables and budget.",
       "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
       "owner_role": "architecture",
@@ -8026,6 +8029,12 @@
       "task": "SPV1-PERIODICITY",
       "kind": "task",
       "summary": "Read-only replay exactly reproduced all historical persisted detector outcomes: 3 lag-1 and 2 lag-2 FAIL across 4/8 cycles; full-horizon nonperiodicity not claimed. Historical NOT_EVALUATED preserved. New consumer diagnostics exposure, restart and stale-binding checks passed."
+    },
+    {
+      "at": "2026-10-16T16:02:03+00:00",
+      "task": "SPV1-MESH-PREFLIGHT",
+      "kind": "task",
+      "summary": "Completed no-solver refinement preflight: 1/2/4/8 matrix setup, 48-cell base, temporal CFL plan, boundary sensitivity limitation and 1800 s proposal recorded; no solver steps or campaign."
     }
   ],
   "legacy_gate_status": {
@@ -8045,20 +8054,19 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 9,
-    "gate_tasks_done": 4,
+    "gate_tasks_done": 5,
     "gate_task_states": {
-      "DONE": 4,
-      "READY": 2,
+      "DONE": 5,
+      "READY": 1,
       "WAITING": 3
     },
     "remaining": [
-      "SPV1-MESH-PREFLIGHT",
       "SPV1-POINT-PREFLIGHT",
       "SPV1-POINT-AUTHORIZATION",
       "SPV1-POINT-EXECUTION",
       "SPV1-RESULT-VERIFY"
     ],
-    "updated_at": "2026-10-16T15:58:24+00:00"
+    "updated_at": "2026-10-16T16:02:03+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
