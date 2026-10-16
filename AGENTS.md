@@ -22,10 +22,10 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1
-change/spec:       openspec/changes/dino-solver-diagnostic-recovery-v1/
-                   specs/dino-solver-diagnostic-recovery-v1/spec.md
-completion:        Measured bounded diagnostics, explicit periodicity and mesh limits, IMPL2 drift analysis, and safe Windows output handling; no campaign, no exhausted-run resume, no scientific criterion changes.
+CURRENT_OBJECTIVE: DINO_2T_SOLVER_RECOVERY_V2
+change/spec:       openspec/changes/dino-solver-recovery-v2/
+                   specs/dino-solver-recovery-v2/spec.md
+completion:        Implement and verify concrete fixes for performance, periodicity reporting, geometry consistency, operational robustness and mesh-study infrastructure; preserve V1 and all historical evidence; no campaigns or Stage 2.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

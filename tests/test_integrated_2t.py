@@ -972,6 +972,20 @@ def test_integrated_powervalve_uses_configured_rpm_at_reconstructed_step_endpoin
         valve.at(5000.001)
 
 
+def test_powervalve_area_uses_constant_operating_rpm_across_float_reconstruction():
+    import math
+    for configured_rpm in (1000.0, 3000.0, 5000.0):
+        system = _internal_cycle_fixture(rpm=configured_rpm)
+        expected = [system._geometry(angle, configured_rpm).exhaust_area_m2
+                    for angle in (100.0, 180.0, 260.0)]
+        reconstructed = [math.nextafter(configured_rpm, -math.inf),
+                         math.nextafter(configured_rpm, math.inf)]
+        for rpm in reconstructed:
+            actual = [system._geometry(angle, rpm).exhaust_area_m2
+                      for angle in (100.0, 180.0, 260.0)]
+            assert actual == expected
+
+
 def test_fresh_exhaust_flow_is_counted_as_short_circuit_only_with_open_transfers():
     system = _case(cylinder_pressure=130000.0, exhaust_area=1e-5,
                    cylinder_species=(0.000105912, 0.000052956,

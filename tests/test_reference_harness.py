@@ -149,6 +149,23 @@ class ReferenceHarnessTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "contract mismatch"):
             PeriodicDetectorV2(PeriodicDetector().snapshot())
 
+    def test_v2_nonperiodic_evidence_and_wrong_record_contract_are_not_accepted(self):
+        detector = PeriodicDetectorV2()
+        for i in range(1, 9):
+            result = detector.update(cycle(i, phase=float(i * 10)))
+        self.assertIsNone(detector.classification)
+        self.assertEqual(result["outcomes"]["lag1"]["status"], "FAIL")
+
+        wrong_contract = PeriodicDetectorV2()
+        first = cycle(1)
+        first["contract"] = "REFERENCE_PERIODIC_CONVERGENCE_V2"
+        second = cycle(2)
+        second["contract"] = "REFERENCE_PERIODIC_CONVERGENCE_V2"
+        wrong_contract.update(first)
+        result = wrong_contract.update(second)
+        self.assertEqual(result["outcomes"]["lag1"]["status"], "INVALID")
+        self.assertIsNone(wrong_contract.classification)
+
     def test_config_schema_and_cycle_relative_geometry_adapter(self):
         config = synthetic_configuration()
         parsed = validate_config(config)

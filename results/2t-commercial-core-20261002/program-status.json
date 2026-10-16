@@ -5607,6 +5607,164 @@
         "scripts/agents/run_logged.py UTF-8 child and backslash-safe summary; tests/test_run_logged.py 2 PASS; results/dino-stage1-solver-diagnostic-recovery/operations/cp1252-regression.json"
       ],
       "commits": []
+    },
+    {
+      "id": "SRV2-BASELINE",
+      "description": "Establish code/test/artifact baseline from existing receipts; do not modify historical evidence.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/dino-stage1-solver-diagnostic-recovery/v2/recovery-receipt.json",
+        "Existing 48-cell focal receipt/checkpoint/primary hashes verified; baseline receipts left unchanged."
+      ],
+      "next_action": "Establish code/test/artifact baseline from existing receipts; do not modify historical evidence.",
+      "objective": "DINO_2T_SOLVER_RECOVERY_V2",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/dino-stage1-solver-diagnostic-recovery/",
+        "tests/"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "SRV2-PERIODICITY",
+      "description": "Correct new-run PeriodicDetectorV2 identity binding and persist evaluation, metrics, termination and accepted-period details.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "motorsim/exploratory_workflow.py",
+        "tests/test_exploratory_workflow.py",
+        "tests/test_reference_harness.py",
+        "V2 detector source/threshold hashes bound separately from the frozen V1 primary data contract; resume/replay integration and periodic classifications verified."
+      ],
+      "next_action": "Correct new-run PeriodicDetectorV2 identity binding and persist evaluation, metrics, termination and accepted-period details.",
+      "objective": "DINO_2T_SOLVER_RECOVERY_V2",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/exploratory_workflow.py",
+        "tests/test_exploratory_workflow.py"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "SRV2-GEOMETRY",
+      "description": "Verify power-valve RPM/map semantics and endpoint continuity with controlled configurations; correct only a demonstrated defect.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "tests/test_integrated_2t.py::test_integrated_powervalve_uses_configured_rpm_at_reconstructed_step_endpoints",
+        "tests/test_integrated_2t.py::test_powervalve_area_uses_constant_operating_rpm_across_float_reconstruction",
+        "Existing constant-reference-RPM map lookup verified at endpoints/interior and adjacent ULP; no solver change."
+      ],
+      "next_action": "Verify power-valve RPM/map semantics and endpoint continuity with controlled configurations; correct only a demonstrated defect.",
+      "objective": "DINO_2T_SOLVER_RECOVERY_V2",
+      "owner_role": "physics/numerics",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/integrated_2t.py",
+        "tests/test_integrated_2t.py"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "SRV2-PERFORMANCE",
+      "description": "Profile bounded representative workloads and implement only safe optimizations with canonical before/after equivalence.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/dino-stage1-solver-diagnostic-recovery/v2/recovery-receipt.json",
+        "${DINO_ARTIFACT_ROOT}/dino-stage1-solver-diagnostic-recovery/v2/profile-20261016T142349Z/bounded-profile.json",
+        "${DINO_ARTIFACT_ROOT}/dino-stage1-solver-diagnostic-recovery/v2/primary-copy-20261016T143834Z/benchmark.json",
+        "One full-primary JSON roundtrip removed; component-only speed/memory measurement and exact object equivalence recorded; no end-to-end claim."
+      ],
+      "next_action": "Profile bounded representative workloads and implement only safe optimizations with canonical before/after equivalence.",
+      "objective": "DINO_2T_SOLVER_RECOVERY_V2",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/",
+        "tests/",
+        "results/dino-stage1-solver-diagnostic-recovery/performance/"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "SRV2-ROBUSTNESS",
+      "description": "Verify classified timeout, memory, cancellation, checkpoint/restart, console output and partial-result behavior.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "tests/test_exploratory_workflow.py",
+        "tests/test_run_logged.py",
+        "tests/test_exploratory_workflow.py timeout/resource/cancel/resume/replay and stale-binding rejection passed; CP1252 regression suite passed."
+      ],
+      "next_action": "Verify classified timeout, memory, cancellation, checkpoint/restart, console output and partial-result behavior.",
+      "objective": "DINO_2T_SOLVER_RECOVERY_V2",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/exploratory_workflow.py",
+        "tests/"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "SRV2-MESH",
+      "description": "Prepare reproducible refinement configuration, observable extraction, comparison and receipts without launching the study.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "motorsim/mesh_study_v1.py",
+        "tests/test_mesh_study_v1.py",
+        "1/2/4/8 setup, conservative remap, native phase extraction, receipts and comparison passed; zero solver steps; independence NOT_EVALUATED."
+      ],
+      "next_action": "Prepare reproducible refinement configuration, observable extraction, comparison and receipts without launching the study.",
+      "objective": "DINO_2T_SOLVER_RECOVERY_V2",
+      "owner_role": "architecture",
+      "evidence_level": "L0",
+      "write_scope": [
+        "scripts/diagnostics/",
+        "tests/",
+        "openspec/changes/dino-solver-recovery-v2/"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "SRV2-VERIFY",
+      "description": "Run focused unit/integration/conservation/replay checks, strict OpenSpec and program-status; persist bounded recovery receipt.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/dino-stage1-solver-diagnostic-recovery/v2/recovery-receipt.json",
+        "results/dino-stage1-solver-diagnostic-recovery/v2/technical-report.md",
+        "122-test focused suite PASS; 4 mesh tests PASS after native phase extractor addition; OpenSpec strict 53/53; program-status check PASS; git diff --check PASS."
+      ],
+      "next_action": "Run focused unit/integration/conservation/replay checks, strict OpenSpec and program-status; persist bounded recovery receipt.",
+      "objective": "DINO_2T_SOLVER_RECOVERY_V2",
+      "owner_role": "contract/regression guardian",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/dino-stage1-solver-diagnostic-recovery/",
+        "openspec/changes/dino-solver-recovery-v2/",
+        "results/2t-commercial-core-20261002/program-status.json"
+      ],
+      "unblock_tasks": []
     }
   ],
   "audit_remediation_mode": false,
@@ -5807,22 +5965,25 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1",
-    "state": "FAIL_TERMINAL",
+    "id": "DINO_2T_SOLVER_RECOVERY_V2",
+    "state": "PASS",
     "owner_approved": true,
-    "summary": "Bounded profiling, workflow classification, mesh protocol, IMPL2 source drift candidate, CP1252 fix and focused verification are complete. Scientific/operational limits remain: production point exceeded 600 s and 2048 MiB sampled RSS, periodicity was not accepted before timeout, mesh independence remains NOT_ESTABLISHED, and the frozen IMPL2 identity is incompatible with current integrated_2t.py. No solver optimization was justified, campaign launched, or exhausted focal run resumed.",
-    "change": "openspec/changes/dino-solver-diagnostic-recovery-v1",
-    "spec": "openspec/changes/dino-solver-diagnostic-recovery-v1/specs/dino-solver-diagnostic-recovery-v1/spec.md",
-    "authorization_source": "Explicit owner request in CODEX — DINO 2T: Diagnóstico y recuperación del solver científico (2026-10-16)",
-    "transitioned_from": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
+    "summary": "Software recovery requirements verified within bounded scope. Physical solver source was unchanged; mesh independence and production end-to-end speedup remain unclaimed. Historical identity mismatch remains fail-closed; no campaigns or Stage 2.",
+    "change": "openspec/changes/dino-solver-recovery-v2",
+    "spec": "openspec/changes/dino-solver-recovery-v2/specs/dino-solver-recovery-v2/spec.md",
+    "authorization_source": "Explicit owner request CODEX — DINO 2T: SOLVER RECOVERY V2 — Implementación de fixes (2026-10-16)",
+    "transitioned_from": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1",
     "gate_tasks": [
-      "SDR-PERF-PROFILE",
-      "SDR-PERIODICITY-MESH",
-      "SDR-IMPL2-IDENTITY",
-      "SDR-WINDOWS-HARDENING"
+      "SRV2-BASELINE",
+      "SRV2-PERIODICITY",
+      "SRV2-GEOMETRY",
+      "SRV2-PERFORMANCE",
+      "SRV2-ROBUSTNESS",
+      "SRV2-MESH",
+      "SRV2-VERIFY"
     ],
-    "completion_criterion": "Produce measured, reproducible diagnostics and a safe operational correction; preserve all historical identities; classify scientific readiness limits without campaigns or claims beyond evidence.",
-    "classification": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_PARTIAL"
+    "completion_criterion": "Implement and verify concrete fixes within bounded scope; preserve historical evidence and scientific contracts; no campaign or mesh-independence claim.",
+    "classification": "DINO_2T_SOLVER_RECOVERY_V2_READY"
   },
   "objectives": [
     {
@@ -6284,6 +6445,42 @@
         },
         "remaining": [],
         "updated_at": "2026-10-16T13:59:32+00:00"
+      }
+    },
+    {
+      "id": "DINO_2T_SOLVER_RECOVERY_V2",
+      "state": "PASS",
+      "owner_approved": true,
+      "classification": "DINO_2T_SOLVER_RECOVERY_V2_READY",
+      "summary": "Software recovery requirements verified within bounded scope. Physical solver source was unchanged; mesh independence and production end-to-end speedup remain unclaimed. Historical identity mismatch remains fail-closed; no campaigns or Stage 2.",
+      "change": "openspec/changes/dino-solver-recovery-v2",
+      "spec": "openspec/changes/dino-solver-recovery-v2/specs/dino-solver-recovery-v2/spec.md",
+      "authorization_source": "Explicit owner request CODEX — DINO 2T: SOLVER RECOVERY V2 — Implementación de fixes (2026-10-16)",
+      "transitioned_from": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1",
+      "gate_tasks": [
+        "SRV2-BASELINE",
+        "SRV2-PERIODICITY",
+        "SRV2-GEOMETRY",
+        "SRV2-PERFORMANCE",
+        "SRV2-ROBUSTNESS",
+        "SRV2-MESH",
+        "SRV2-VERIFY"
+      ],
+      "completion_criterion": "Implement and verify concrete fixes within bounded scope; preserve historical evidence and scientific contracts; no campaign or mesh-independence claim.",
+      "gate_status_archive": {
+        "objective": "DINO_2T_SOLVER_RECOVERY_V2",
+        "state": "PASS",
+        "classification": "DINO_2T_SOLVER_RECOVERY_V2_READY",
+        "evidence": [
+          "results/dino-stage1-solver-diagnostic-recovery/v2/recovery-receipt.json; 122 focused tests, 4 mesh tests, OpenSpec strict 53/53, bounded performance and replay receipts"
+        ],
+        "gate_tasks_total": 7,
+        "gate_tasks_done": 7,
+        "gate_task_states": {
+          "DONE": 7
+        },
+        "remaining": [],
+        "updated_at": "2026-10-16T14:52:19+00:00"
       }
     }
   ],
@@ -7541,6 +7738,54 @@
       "task": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1",
       "kind": "gate",
       "summary": "Closed diagnostic-recovery objective as FAIL_TERMINAL/PARTIAL with bounded measurements and explicit remaining blockers. Stage 1 and all IMPL2/v1 historical artifacts and preregistrations preserved; no campaigns or exhausted-focal resume."
+    },
+    {
+      "at": "2026-10-16T14:34:54+00:00",
+      "task": "SRV2-PERIODICITY",
+      "kind": "task",
+      "summary": "Correcting and testing V2 detector/primary data-contract separation; initial integration exposed invalid records because the cycle payload contract remains frozen V1."
+    },
+    {
+      "at": "2026-10-16T14:52:14+00:00",
+      "task": "SRV2-BASELINE",
+      "kind": "task",
+      "summary": "Recorded immutable V1 baseline receipts and verified the preserved 48-cell artifacts; no historical file changed."
+    },
+    {
+      "at": "2026-10-16T14:52:14+00:00",
+      "task": "SRV2-PERIODICITY",
+      "kind": "task",
+      "summary": "Bound detector V2 source/threshold identity separately from the frozen V1 primary contract; canonical replay/restart tests pass."
+    },
+    {
+      "at": "2026-10-16T14:52:14+00:00",
+      "task": "SRV2-GEOMETRY",
+      "kind": "task",
+      "summary": "Verified exact configured-RPM power-valve lookup against ULP endpoint drift with controlled geometry tests; solver unchanged."
+    },
+    {
+      "at": "2026-10-16T14:52:14+00:00",
+      "task": "SRV2-PERFORMANCE",
+      "kind": "task",
+      "summary": "Removed one full-primary JSON roundtrip; exact output object equivalence and component-only timing/memory evidence persisted."
+    },
+    {
+      "at": "2026-10-16T14:52:14+00:00",
+      "task": "SRV2-ROBUSTNESS",
+      "kind": "task",
+      "summary": "Timeout, resource, cancellation, checkpoint/restart, stale-binding rejection, replay/conservation, and CP1252 regressions verified."
+    },
+    {
+      "at": "2026-10-16T14:52:14+00:00",
+      "task": "SRV2-MESH",
+      "kind": "task",
+      "summary": "Added tested no-solver 1/2/4/8 setup, conservative remap, native signal extraction, receipts, and non-claiming comparison."
+    },
+    {
+      "at": "2026-10-16T14:52:14+00:00",
+      "task": "SRV2-VERIFY",
+      "kind": "task",
+      "summary": "Focused suite 122 passed; mesh suite 4 passed; OpenSpec strict 53/53; program-status and diff checks pass."
     }
   ],
   "legacy_gate_status": {
@@ -7555,23 +7800,19 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1",
-    "state": "FAIL_TERMINAL",
-    "classification": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_PARTIAL",
+    "objective": "DINO_2T_SOLVER_RECOVERY_V2",
+    "state": "PASS",
+    "classification": "DINO_2T_SOLVER_RECOVERY_V2_READY",
     "evidence": [
-      "results/dino-stage1-solver-diagnostic-recovery/technical-report.md",
-      "results/dino-stage1-solver-diagnostic-recovery/performance/performance-profile.json",
-      "results/dino-stage1-solver-diagnostic-recovery/science/periodicity-mesh-assessment.json",
-      "results/dino-stage1-solver-diagnostic-recovery/identity/impl2-derivative-identity-candidate.json",
-      "results/dino-stage1-solver-diagnostic-recovery/verification.json"
+      "results/dino-stage1-solver-diagnostic-recovery/v2/recovery-receipt.json SHA-256 06ca95f0931bc66e221ab959dbe36526d9d3d7424f5d27a51eebf32f9b474a27; focused suite 122 PASS plus final numeric/mesh regressions; OpenSpec 53/53"
     ],
-    "gate_tasks_total": 4,
-    "gate_tasks_done": 4,
+    "gate_tasks_total": 7,
+    "gate_tasks_done": 7,
     "gate_task_states": {
-      "DONE": 4
+      "DONE": 7
     },
     "remaining": [],
-    "updated_at": "2026-10-16T13:59:32+00:00"
+    "updated_at": "2026-10-16T14:53:06+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -7619,7 +7860,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-16T13:59:32+00:00",
+  "updated_at": "2026-10-16T21:02:00+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -7867,6 +8108,25 @@
       },
       "remaining": [],
       "updated_at": "2026-10-16T13:34:27+00:00"
+    },
+    {
+      "objective": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1",
+      "state": "FAIL_TERMINAL",
+      "classification": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_PARTIAL",
+      "evidence": [
+        "results/dino-stage1-solver-diagnostic-recovery/technical-report.md",
+        "results/dino-stage1-solver-diagnostic-recovery/performance/performance-profile.json",
+        "results/dino-stage1-solver-diagnostic-recovery/science/periodicity-mesh-assessment.json",
+        "results/dino-stage1-solver-diagnostic-recovery/identity/impl2-derivative-identity-candidate.json",
+        "results/dino-stage1-solver-diagnostic-recovery/verification.json"
+      ],
+      "gate_tasks_total": 4,
+      "gate_tasks_done": 4,
+      "gate_task_states": {
+        "DONE": 4
+      },
+      "remaining": [],
+      "updated_at": "2026-10-16T13:59:32+00:00"
     }
   ],
   "gate_status_archive_before_dino_desktop_v3_1": {

@@ -26,7 +26,10 @@ from .integrated_2t import (IntegratedEngine2T, audit_integrated_cycle_primary,
                             make_integrated_cycle_primary,
                             make_integrated_engineering_output)
 from .mechanical import MechanicalLossModel
-from .reference_harness.convergence import PeriodicDetectorV2
+from .reference_harness.convergence import (CONTRACT as CYCLE_PRIMARY_CONTRACT,
+                                           CONTRACT_V2 as PERIODICITY_CONTRACT_V2,
+                                           THRESHOLDS as PERIODICITY_THRESHOLDS_V2,
+                                           PeriodicDetectorV2)
 
 try:
     import resource as _resource  # POSIX
@@ -50,6 +53,11 @@ class RunDeadline(Exception):
 
 def _sha(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def _periodicity_source_sha256() -> str:
+    source = Path(__file__).with_name("reference_harness") / "convergence.py"
+    return _sha(source.read_bytes().replace(b"\r\n", b"\n"))
 
 
 def _replay_equivalent(left: Any, right: Any, path: str = "") -> bool:
@@ -92,6 +100,59 @@ def _read_json(path: Path) -> dict:
     if not isinstance(value, dict):
         raise ValueError(f"artifact must contain an object: {path.name}")
     return value
+
+
+def _periodicity_evaluation_status(*, complete_cycles: int,
+                                   comparison_count: int,
+                                   invalid_comparison_count: int = 0,
+                                   accepted_period: str | None,
+                                   termination_reason: str,
+                                   failure_kind: str | None = None) -> str:
+    """Classify detector evidence independently from the run termination."""
+    if accepted_period:
+        return "PERIOD_ACCEPTED"
+    if invalid_comparison_count:
+        return "INVALID_COMPARISON_EVIDENCE"
+    if termination_reason == "TIMEOUT" and comparison_count:
+        return "TIMEOUT_PARTIAL"
+    if termination_reason == "CANCELLED" and comparison_count:
+        return "CANCELLED_PARTIAL"
+    if failure_kind == "NUMERICAL_INVALID":
+        return "NUMERICAL_FAILURE"
+    if complete_cycles == 0:
+        return "NOT_EXECUTED"
+    if failure_kind:
+        return "EVALUATION_INTERRUPTED_BY_FAILURE"
+    if comparison_count == 0:
+        return "INSUFFICIENT_EVIDENCE"
+    return "EXECUTED_NO_PERIOD_ACCEPTED"
+
+
+def _prepare_engineering_output_record(primary: dict,
+                                       periodicity_evidence: dict | None) -> dict:
+    """Attach derived output metadata after the canonical primary is persisted.
+
+    The caller has already serialized and hashed the scientific primary, so it
+    is safe to enrich this single-use in-memory object without a JSON roundtrip.
+    """
+    if periodicity_evidence is not None:
+        primary["periodicity_evidence"] = periodicity_evidence
+    return primary
+
+
+def _periodicity_comparison_index(records: list[dict]) -> list[dict]:
+    """Index persisted comparison vectors without duplicating their metrics."""
+    index = []
+    for row in records:
+        update = row.get("periodicity_update", {})
+        outcomes = update.get("outcomes", {})
+        for name in ("lag1", "lag2"):
+            comparison = outcomes.get(name)
+            if comparison is not None:
+                index.append({"cycle": row["cycle"], "comparison": name,
+                    "branch": outcomes.get("lag2_branch") if name == "lag2" else None,
+                    "status": comparison.get("status")})
+    return index
 
 
 def _rss_bytes() -> int:
@@ -183,7 +244,10 @@ def preflight(document: dict, *, rpm: float | None = None,
                 "term_mep_pa_by_term": loss_preview["friction_mep_pa_by_term"]},
             "fuel_id": effective["operating_conditions"]["fuel_id"],
             "afr_kg_air_per_kg_fuel": effective["operating_conditions"]["afr"],
-            "periodicity_contract": "REFERENCE_PERIODIC_CONVERGENCE_V2",
+            "periodicity_contract": PERIODICITY_CONTRACT_V2,
+            "cycle_primary_contract": CYCLE_PRIMARY_CONTRACT,
+            "periodicity_source_sha256": _periodicity_source_sha256(),
+            "periodicity_thresholds_sha256": _sha(_json_bytes(PERIODICITY_THRESHOLDS_V2)),
             "periodicity_initial": "NOT_EVALUATED",
             "verified_mode": "UNAVAILABLE_WITHOUT_PREREGISTRATION_AND_AUTHORIZATION",
             "classification": "PREFLIGHT_ONLY_NO_SOLVER_STEPS"}
@@ -272,6 +336,10 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
     expected_binding = {"workflow_schema": SCHEMA, "identity_sha256": effective["identity_sha256"],
                         "configuration_sha256": effective["native_configuration_sha256"],
                         "source_hashes": effective["source_hashes"],
+                        "periodicity_contract": PERIODICITY_CONTRACT_V2,
+                        "cycle_primary_contract": CYCLE_PRIMARY_CONTRACT,
+                        "periodicity_source_sha256": _periodicity_source_sha256(),
+                        "periodicity_thresholds_sha256": _sha(_json_bytes(PERIODICITY_THRESHOLDS_V2)),
                         "project_id": project_id, "variant_label": variant_label,
                         "run_id": run_id}
     configuration_sha = _sha(_json_bytes(effective))
@@ -350,9 +418,11 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
             primary, preserve_precycle_p7_baseline=True)
         if audit.get("recomputed") is not True or primary.get("admissible") is not True:
             failure = "PRIMARY_AUDIT_FAIL"; failure_kind="AUDIT_FAIL"; break
+        # V2 versions the evaluator, while its compared primary records retain
+        # their frozen V1 data contract.
         update = detector.update({"cycle_index": cycle,
             "configuration_hash": primary["configuration_hash"],
-            "contract": "REFERENCE_PERIODIC_CONVERGENCE_V1",
+            "contract": CYCLE_PRIMARY_CONTRACT,
             "observables": primary["observables"]})
         primary_payload = _json_bytes(primary)
         primary_sha = _sha(primary_payload)
@@ -365,14 +435,13 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
         _atomic_write(output / artifact_rel,compressed_primary)
         # Keep terminal cycle record for output derivation, but store only the
         # replay-baselined compact state for the following cycle's checkpoint.
-        output_record = json.loads(json.dumps(primary, allow_nan=False))
         periodicity_evidence = None
         if detector.classification is not None:
             periodicity_evidence = {"status": detector.classification,
                 "configuration_hash": primary["configuration_hash"],
                 "terminal_cycle": cycle,
                 "detector_sha256": _sha(_json_bytes(detector.snapshot()))}
-            output_record["periodicity_evidence"] = periodicity_evidence
+        output_record = _prepare_engineering_output_record(primary, periodicity_evidence)
         engineering = make_integrated_engineering_output(output_record,
             displacement_m3=primary.get("swept_displacement_m3"),
             mechanical_loss_model=loss,
@@ -406,26 +475,57 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
             "checkpoint_sha256": _sha(cp_payload), "checkpoint_artifact": "checkpoint.json",
             "cycles_completed": cycle}
         _atomic_write(manifest_path, _json_bytes(manifest))
+        if detector.classification is not None:
+            break
     classification = (f"EXPLORATORY_{interruption_kind}_CHECKPOINTED" if interrupted else
         f"EXPLORATORY_{failure_kind}" if failure else
         "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED" if detector.classification is None else
         "EXPLORATORY_COMPLETE_PERIODICITY_OBSERVED")
     if failure and not interrupted:
         status = "FAILED_CLOSED"
-    elif interrupted or cp["next_cycle"] <= max_cycles:
+    elif interrupted or (cp["next_cycle"] <= max_cycles and detector.classification is None):
         status = "INTERRUPTED_CHECKPOINTED"
     else:
         status = "COMPLETE"
     # Preserve a restart point at the latest complete cycle, including when
     # all requested cycles completed (next_cycle=max_cycles+1).
     cp_payload = _json_bytes(cp); _atomic_write(checkpoint_path, cp_payload)
+    comparison_index = _periodicity_comparison_index(records)
+    accepted_period = detector.classification
+    termination_reason = ("TIMEOUT" if interruption_kind == "TIMEOUT" else
+        "CANCELLED" if interruption_kind == "CANCELLED" else
+        failure_kind if failure else "PERIOD_ACCEPTED" if accepted_period else
+        "HORIZON_COMPLETED")
+    periodicity_evaluation_status = _periodicity_evaluation_status(
+        complete_cycles=len(records), comparison_count=len(comparison_index),
+        invalid_comparison_count=sum(row["status"] == "INVALID" for row in comparison_index),
+        accepted_period=accepted_period, termination_reason=termination_reason,
+        failure_kind=failure_kind)
+    periodicity_diagnostics = {
+        "contract": PERIODICITY_CONTRACT_V2,
+        "cycle_primary_contract": CYCLE_PRIMARY_CONTRACT,
+        "source_sha256": expected_binding["periodicity_source_sha256"],
+        "thresholds_sha256": expected_binding["periodicity_thresholds_sha256"],
+        "detector_executed": bool(records),
+        "evaluation_status": periodicity_evaluation_status,
+        "termination_reason": termination_reason,
+        "complete_cycles_evaluated": len(records),
+        "comparison_count": len(comparison_index),
+        "accepted_period": accepted_period,
+        "converged_cycle": detector.converged_cycle,
+        "thresholds": PERIODICITY_THRESHOLDS_V2,
+        "comparison_index": comparison_index,
+        "residuals_and_per_comparison_thresholds_at": "cycles[].periodicity_update.outcomes.lag1|lag2",
+        "detector_snapshot_sha256": _sha(_json_bytes(detector.snapshot())),
+    }
     final = {"schema": SCHEMA, "status": status, "classification": classification,
         "mode": "EXPLORATORY", "scientific_validation": "NOT_CLAIMED",
         "verified_mode": "UNAVAILABLE", "failure": failure,
         "bindings": expected_binding, "preflight": check,
         "cycles_completed": len(records), "cycles": records,
         "periodicity": detector.classification or "NOT_EVALUATED",
-        "periodicity_contract": "REFERENCE_PERIODIC_CONVERGENCE_V2",
+        "periodicity_contract": PERIODICITY_CONTRACT_V2,
+        "periodicity_diagnostics": periodicity_diagnostics,
         "elapsed_seconds": time.monotonic() - started,
         "memory_rss_at_finish_bytes": _rss_bytes(),
         "checkpoint_artifact": "checkpoint.json", "checkpoint_sha256": _sha(cp_payload),
@@ -554,6 +654,19 @@ def import_exploratory_runs(paths: list[str | Path]) -> dict:
                 not isinstance(checkpoint.get("periodicity_snapshot"),dict)):
             raise ValueError("exploratory checkpoint state is malformed")
         loss=MechanicalLossModel.from_dict(effective["mechanical_loss_model"])
+        periodicity_diag = result.get("periodicity_diagnostics")
+        if periodicity_diag is not None and (
+                periodicity_diag.get("contract") != PERIODICITY_CONTRACT_V2 or
+                periodicity_diag.get("cycle_primary_contract") != CYCLE_PRIMARY_CONTRACT or
+                periodicity_diag.get("source_sha256") != _periodicity_source_sha256() or
+                periodicity_diag.get("thresholds_sha256") !=
+                    _sha(_json_bytes(PERIODICITY_THRESHOLDS_V2)) or
+                periodicity_diag.get("thresholds") != PERIODICITY_THRESHOLDS_V2 or
+                binding.get("periodicity_source_sha256") != _periodicity_source_sha256() or
+                binding.get("periodicity_thresholds_sha256") !=
+                    _sha(_json_bytes(PERIODICITY_THRESHOLDS_V2))):
+            raise ValueError("exploratory periodicity diagnostic contract/threshold mismatch")
+        periodicity_detector = PeriodicDetectorV2()
         variant_id=f"{binding.get('project_id')} / {binding.get('variant_label')}"
         rpm=result.get("preflight",{}).get("rpm")
         verified_cycles=[]
@@ -588,6 +701,16 @@ def import_exploratory_runs(paths: list[str | Path]) -> dict:
                     recorded_audit.get("status")!="PASS" or
                     recorded_audit.get("recomputed") is not True):
                 raise ValueError("exploratory cycle independent audit failed")
+            if periodicity_diag is not None:
+                replayed_update = periodicity_detector.update({
+                    "cycle_index": index,
+                    "configuration_hash": primary["configuration_hash"],
+                    "contract": CYCLE_PRIMARY_CONTRACT,
+                    "observables": primary["observables"]})
+                if (cycle.get("periodicity_update") != replayed_update or
+                        cycle.get("periodicity") !=
+                        (periodicity_detector.classification or "NOT_EVALUATED")):
+                    raise ValueError("exploratory periodicity update differs from canonical replay")
             analysis_primary=json.loads(_json_bytes(primary))
             periodicity=cycle.get("periodicity") or "NOT_EVALUATED"
             if cycle.get("periodicity_evidence") is not None:
@@ -607,6 +730,40 @@ def import_exploratory_runs(paths: list[str | Path]) -> dict:
                 raise ValueError("exploratory engineering summary differs from audited primary replay")
             verified_cycles.append((cycle,audit,primary,output))
 
+        if periodicity_diag is not None:
+            replayed_snapshot = periodicity_detector.snapshot()
+            replayed_comparison_index = _periodicity_comparison_index(result.get("cycles", []))
+            termination = periodicity_diag.get("termination_reason")
+            replayed_failure_kind = (termination if termination not in
+                {"TIMEOUT", "CANCELLED", "HORIZON_COMPLETED", "PERIOD_ACCEPTED", None}
+                else None)
+            expected_status = _periodicity_evaluation_status(
+                complete_cycles=count, comparison_count=len(replayed_comparison_index),
+                invalid_comparison_count=sum(row["status"] == "INVALID"
+                                             for row in replayed_comparison_index),
+                accepted_period=periodicity_detector.classification,
+                termination_reason=termination,
+                failure_kind=replayed_failure_kind)
+            expected_diagnostics = {
+                "contract": PERIODICITY_CONTRACT_V2,
+                "cycle_primary_contract": CYCLE_PRIMARY_CONTRACT,
+                "source_sha256": binding["periodicity_source_sha256"],
+                "thresholds_sha256": binding["periodicity_thresholds_sha256"],
+                "detector_executed": count > 0,
+                "evaluation_status": expected_status,
+                "termination_reason": termination,
+                "complete_cycles_evaluated": count,
+                "comparison_count": len(replayed_comparison_index),
+                "accepted_period": periodicity_detector.classification,
+                "converged_cycle": periodicity_detector.converged_cycle,
+                "thresholds": PERIODICITY_THRESHOLDS_V2,
+                "comparison_index": replayed_comparison_index,
+                "residuals_and_per_comparison_thresholds_at": "cycles[].periodicity_update.outcomes.lag1|lag2",
+                "detector_snapshot_sha256": _sha(_json_bytes(replayed_snapshot)),
+            }
+            if periodicity_diag != expected_diagnostics:
+                raise ValueError("exploratory periodicity diagnostics differ from canonical replay")
+
         if count==0:
             gap={"point_id":binding.get("run_id"),"variant_id":variant_id,"rpm":rpm,
                  "classification":result.get("classification"),"cycles_completed":0,
@@ -614,6 +771,7 @@ def import_exploratory_runs(paths: list[str | Path]) -> dict:
                  "point_configuration_sha256":binding.get("configuration_sha256"),
                  "hard_gates":{"status":"NOT_EVALUATED_EXPLORATORY"},
                  "periodicity":result.get("periodicity"),"audit_status":"NO_COMPLETE_CYCLE",
+                 "periodicity_diagnostics":result.get("periodicity_diagnostics"),
                  "audit_recomputed":False,"run_id":binding.get("run_id"),"cycle":None,
                  "mode":"EXPLORATORY","experimental_validation":"NOT_CLAIMED",
                  "conservation":None}
@@ -632,6 +790,7 @@ def import_exploratory_runs(paths: list[str | Path]) -> dict:
                  "point_configuration_sha256":binding.get("configuration_sha256"),
                  "hard_gates":{"status":"NOT_EVALUATED_EXPLORATORY"},
                  "periodicity":cycle.get("periodicity") or "NOT_EVALUATED",
+                 "periodicity_diagnostics":result.get("periodicity_diagnostics"),
                  "audit_status":audit.get("status"),"audit_recomputed":audit.get("recomputed"),
                  "primary_sha256":cycle.get("primary_sha256"),
                  "conservation":primary.get("conservation"),

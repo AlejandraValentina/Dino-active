@@ -1,0 +1,172 @@
+{
+  "schema": "DINO_2T_SOLVER_RECOVERY_V2_RECEIPT_V1",
+  "classification": "DINO_2T_SOLVER_RECOVERY_V2_READY",
+  "scope": "Software/reporting readiness and bounded evidence only; no campaign or scientific performance claim.",
+  "baseline": {
+    "starting_head": "883b7144e965019f74c4ce036b4c3436a2fb43b7",
+    "historical_v1_focal_receipt": "results/dino-stage1-scientific-readiness/evidence/focal-periodicity-v1-result.json",
+    "historical_v1_focal_receipt_sha256": "f01349ecf9a501547ab0c36f67b38043b22cc268cabc5463e85ef774de709b24",
+    "frozen_stage1_preregistration_sha256": "5c1f3699ab6411c5e1f5c26c74801179e40319b04e216dc1d4c95463527420c6",
+    "frozen_impl2_preregistration_sha256": "e26c0599325a9e6296291178ffd2e36457838052f1d9b59de7b6dc0f282d59e3",
+    "historical_focal_run": {
+      "wall_seconds": 682.829,
+      "completed_cycles": 4,
+      "budget_seconds": 600,
+      "sampled_peak_working_set_bytes": 2151251968,
+      "classification": "EXPLORATORY_TIMEOUT_CHECKPOINTED",
+      "resumed": false
+    }
+  },
+  "fixes": {
+    "periodicity": {
+      "root_cause": "The workflow had mixed the evaluator contract identity with the cycle-primary data contract. PeriodicDetectorV2 intentionally compares frozen REFERENCE_PERIODIC_CONVERGENCE_V1 primary records; the detector/checkpoint/report identity is REFERENCE_PERIODIC_CONVERGENCE_V2.",
+      "correction": "Keep the primary data contract V1; bind evaluator V2 contract, detector source SHA-256, threshold SHA-256 and threshold table separately in new run/checkpoint/result. Persist evaluation status, termination reason, cycles/comparison counts, accepted period and comparison index; full residuals/thresholds remain in per-cycle outcomes.",
+      "compatibility": "Prior checkpoint bindings without these V2 evaluator hashes are rejected for resume. Historical receipts and NOT_EVALUATED fields remain unchanged. Old results without the new diagnostic object remain readable through the legacy import path.",
+      "classification_semantics": [
+        "NOT_EXECUTED",
+        "INSUFFICIENT_EVIDENCE",
+        "EXECUTED_NO_PERIOD_ACCEPTED",
+        "INVALID_COMPARISON_EVIDENCE",
+        "PERIOD_ACCEPTED",
+        "TIMEOUT_PARTIAL",
+        "CANCELLED_PARTIAL",
+        "NUMERICAL_FAILURE",
+        "EVALUATION_INTERRUPTED_BY_FAILURE"
+      ]
+    },
+    "geometry": {
+      "finding": "Existing IntegratedEngine2T._geometry uses exact configured reference RPM for the power-valve map, preserving reconstructed RPM for kinematics. Reconstructed endpoint RPM can be one ULP outside the map (e.g. 999.9999999999999 or 5000.000000000001) and falsely reject a valid configured endpoint.",
+      "action": "Existing numerical fix verified; no solver or physical source change made in V2.",
+      "regression_tests": [
+        "tests/test_integrated_2t.py::test_integrated_powervalve_uses_configured_rpm_at_reconstructed_step_endpoints",
+        "tests/test_integrated_2t.py::test_powervalve_area_uses_constant_operating_rpm_across_float_reconstruction"
+      ],
+      "verification": "At 1000, 3000 and 5000 RPM and three crank angles, area is invariant to adjacent nextafter RPM values; invalid map endpoints remain fail-closed."
+    },
+    "performance": {
+      "code_change": "Removed json.dumps/json.loads full-primary roundtrip when adding output-only periodicity metadata after the canonical primary has already been compressed and hashed. The workflow attaches metadata to its single-use in-memory primary; persisted primary bytes are captured before this step.",
+      "component_benchmark": {
+        "source_primary_sha256": "d058d20f15e5436a229ec71158196cc5f4eeb81247932f6c5000cef191aad03c",
+        "primary_uncompressed_bytes": 108925768,
+        "prior_roundtrip_seconds": 6.954357200011145,
+        "prior_sampled_peak_working_set_bytes": 804642816,
+        "direct_attachment_median_seconds_per_operation": 1.1729760002344847e-07,
+        "direct_attachment_batch_seconds": [
+          0.02948389999801293,
+          0.029324400005862117,
+          0.02911780000431463
+        ],
+        "direct_attachment_sampled_peak_working_set_bytes": 575229952,
+        "exact_object_equivalence": "EXACT_OBJECT_EQUALITY_AFTER_SAME_METADATA_ATTACHMENT"
+      },
+      "limit": "Component-only measured change on one archived production-size primary; no end-to-end full-case or campaign speedup claimed."
+    },
+    "mesh": {
+      "implementation": "motorsim/mesh_study_v1.py",
+      "setup": "Reproducible 1/2/4/8 cells-per-section candidate configurations, canonical hashes, exact named geometry preservation, conservative extensive-state checks, accepted-step native phase extraction, per-resolution audited receipt builder, raw scalar deltas and explicit offline-only phase interpolation.",
+      "setup_only_solver_steps": 0,
+      "total_exhaust_cells_by_level": {
+        "1": 5,
+        "2": 10,
+        "4": 20,
+        "8": 40
+      },
+      "max_relative_remap_error": 5.890004335750591e-16,
+      "spatial_independence": "NOT_EVALUATED",
+      "acceptance_tolerances": "NOT_REGISTERED",
+      "full_mesh_study_started": false
+    },
+    "robustness": {
+      "existing_CP1252_fix_preserved": true,
+      "classification_tests": [
+        "timeout",
+        "memory/resource failure",
+        "numerical failure status mapping",
+        "cancel/checkpoint/resume",
+        "V2-incompatible checkpoint rejection"
+      ],
+      "independent_primary_replay_and_conservation": "Verified in two-cycle resume integration test; audit recomputed true."
+    }
+  },
+  "bounded_profile": {
+    "classification": "BOUNDED_PROFILE_ONLY_NO_COMPLETE_CYCLE",
+    "profile_receipt_sha256": "51b90f4b1595880823471378e8f604d1f703e0eda1fe5b1ccdb3e2721a476e6e",
+    "raw_profile_directory": "${DINO_ARTIFACT_ROOT}/dino-stage1-solver-diagnostic-recovery/v2/profile-20261016T142349Z",
+    "live_48_cell_segment": {
+      "status": "CANCELLED_AT_BOUNDARY_AFTER_PROGRESS_CALLBACK",
+      "angle_end_deg": 5.125,
+      "wall_seconds": 1.0229922999860719,
+      "process_cpu_seconds": 1.03125,
+      "rss_at_finish_bytes": 736755712
+    },
+    "stored_primary_replay": {
+      "primary_sha256": "d058d20f15e5436a229ec71158196cc5f4eeb81247932f6c5000cef191aad03c",
+      "audit_status": "PASS",
+      "audit_recomputed": true,
+      "wall_seconds_including_parse_audit_canonical_serialization": 249.6477264999994
+    },
+    "dominant_audit_replay_inclusive_seconds": 242.67,
+    "measurement_limit": "Short 5.125-degree segment and one archived cycle replay; not a complete cycle or full 48-cell before/after benchmark. No exhausted run was resumed.",
+    "self_time_percent_by_subsystem": {
+      "48_cell_short_solver_segment": {
+        "copies_and_serialization": 14.4,
+        "species_validation_and_transport": 13.9,
+        "duct_numerics": 30.5,
+        "interfaces_and_geometry": 0.6,
+        "engine_integration_and_other": 40.3
+      },
+      "stored_primary_parse_audit_and_serialization": {
+        "copies_and_serialization": 29.7,
+        "species_validation_and_transport": 8.7,
+        "duct_numerics": 18.7,
+        "interfaces_and_geometry": 0.4,
+        "replay_primary_audit_control": 0.5,
+        "engine_integration_and_other": 41.7
+      }
+    },
+    "self_time_note": "Percentages classify exclusive cProfile self time in that separate measurement phase; grouped timing excludes nested cumulative time. The full audit wrapper consumed 242.67 s inclusive in the instrumented stored-primary replay."
+  },
+  "verification": {
+    "focused_suite_command": "python -m pytest tests/test_exploratory_workflow.py tests/test_mesh_study_v1.py tests/test_integrated_2t.py tests/test_reference_harness.py tests/test_v1_closure_periodicity.py tests/test_run_logged.py -q",
+    "focused_suite": "122 passed in 380.38 seconds",
+    "run_logged_summary": "${DINO_ARTIFACT_ROOT}/dino-stage1-solver-diagnostic-recovery/v2/verification-logs/solver-recovery-v2-focused-suite.summary.json",
+    "run_logged_summary_sha256": "dbd7f756dadba82ed8e5e15f146a0dc4e1d66078e6898a0a9930b302365d5d33",
+    "mesh_extraction_regression_after_profile": "4 passed in 3.48 seconds",
+    "openspec_strict": "53 passed, 0 failed",
+    "program_status_check": "PASS",
+    "git_diff_check": "PASS",
+    "post_suite_regressions": {
+      "tests/test_exploratory_workflow.py::test_runner_persists_timeout_and_memory_failure_classifications_without_solver": "3 passed in 5.32 seconds, including numeric failure classification",
+      "tests/test_mesh_study_v1.py": "4 passed in 3.48 seconds, including native phase extraction"
+    }
+  },
+  "scientific_scope": {
+    "solver_physics_modified": false,
+    "periodicity_tolerances_changed": false,
+    "historical_artifacts_modified": false,
+    "full_rpm_campaign_started": false,
+    "exhausted_focal_run_resumed": false,
+    "stage_2_activated": false,
+    "mesh_independent": false,
+    "experimental_validation": "NOT_CLAIMED",
+    "historical_impl2_compatibility": {
+      "historical_registered_integrated_2t_sha256": "e3d1e449240478bd6ca955c032ec835fce65479965a5d305d48288a3ef3e29b3",
+      "current_integrated_2t_sha256": "38d9896e8bf4405945cdc53aea091eb895d7e00a3ec52df0f0263115e971af17",
+      "historical_preregistration_modified": false,
+      "old_checkpoint_reuse_authorized": false,
+      "new_preregistration_created": false,
+      "campaign_authorized": false,
+      "status": "HISTORICAL_IDENTITY_MISMATCH_REMAINS_FAIL_CLOSED"
+    }
+  },
+  "implementation_hashes": {
+    "integrated_2t_normalized_sha256": "38d9896e8bf4405945cdc53aea091eb895d7e00a3ec52df0f0263115e971af17",
+    "exploratory_workflow_normalized_sha256": "c7a3b85203736feffa93fe577c743e091fb9f905f40a6e494409b6702c316b36",
+    "mesh_study_normalized_sha256": "01f937a7345f4cb93dd4a9927665a3c7fcdcafda63f90c5eb11d806ee8f771e3"
+  },
+  "source_artifact_hashes": {
+    "bounded_profile": "51b90f4b1595880823471378e8f604d1f703e0eda1fe5b1ccdb3e2721a476e6e",
+    "primary_copy_benchmark": "835561646bd6663d75db281961ff95c9e8107b97d74f13eba7391dd6fc68d6dc"
+  },
+  "campaign_authorization": "NONE"
+}

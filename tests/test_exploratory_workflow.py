@@ -35,6 +35,44 @@ def engine_document():
         display_name="Exploratory test engine")
 
 
+@pytest.mark.parametrize(("kwargs", "expected"), [
+    ({"complete_cycles": 0, "comparison_count": 0, "accepted_period": None,
+      "termination_reason": "TIMEOUT"}, "NOT_EXECUTED"),
+    ({"complete_cycles": 1, "comparison_count": 0, "accepted_period": None,
+      "termination_reason": "HORIZON_COMPLETED"}, "INSUFFICIENT_EVIDENCE"),
+    ({"complete_cycles": 4, "comparison_count": 4, "accepted_period": None,
+      "termination_reason": "HORIZON_COMPLETED"}, "EXECUTED_NO_PERIOD_ACCEPTED"),
+    ({"complete_cycles": 4, "comparison_count": 3, "accepted_period": None,
+      "termination_reason": "TIMEOUT"}, "TIMEOUT_PARTIAL"),
+    ({"complete_cycles": 4, "comparison_count": 3, "accepted_period": None,
+      "termination_reason": "CANCELLED"}, "CANCELLED_PARTIAL"),
+    ({"complete_cycles": 2, "comparison_count": 1, "accepted_period": None,
+      "termination_reason": "NUMERICAL_INVALID", "failure_kind": "NUMERICAL_INVALID"},
+     "NUMERICAL_FAILURE"),
+    ({"complete_cycles": 2, "comparison_count": 1, "invalid_comparison_count": 1,
+      "accepted_period": None, "termination_reason": "HORIZON_COMPLETED"},
+     "INVALID_COMPARISON_EVIDENCE"),
+    ({"complete_cycles": 5, "comparison_count": 4, "accepted_period": "PERIOD_1",
+      "termination_reason": "PERIOD_ACCEPTED"}, "PERIOD_ACCEPTED"),
+])
+def test_periodicity_evaluation_status_distinguishes_evidence_and_termination(kwargs, expected):
+    assert workflow._periodicity_evaluation_status(**kwargs) == expected
+
+
+def test_engineering_output_metadata_avoids_primary_json_roundtrip():
+    primary = {"schema": "primary", "trajectory": [{"angle": 12.0}],
+               "conservation": {"mass": 0.0}}
+    canonical_primary_bytes = workflow._json_bytes(primary)
+    prior_roundtrip = json.loads(json.dumps(primary, allow_nan=False))
+    evidence = {"status": "PERIOD_1", "terminal_cycle": 4}
+    output_record = workflow._prepare_engineering_output_record(primary, evidence)
+    prior_roundtrip["periodicity_evidence"] = evidence
+    assert output_record is primary
+    assert output_record == prior_roundtrip
+    assert workflow._json_bytes({key: value for key, value in primary.items()
+                                  if key != "periodicity_evidence"}) == canonical_primary_bytes
+
+
 def test_preflight_is_no_step_and_resolves_explicit_operating_point():
     document = engine_document()
     effective = resolve_for_operating_point(document, rpm=3200.0)
@@ -70,6 +108,9 @@ def test_exploratory_run_cancels_at_step_boundary_and_resumes_audited_checkpoint
         memory_limit_mib=1024, cancel_event=cancel, progress=progress)
     assert first["status"] == "INTERRUPTED_CHECKPOINTED"
     assert first["cycles_completed"] == 1
+    assert first["periodicity_diagnostics"]["evaluation_status"] == "INSUFFICIENT_EVIDENCE"
+    assert first["periodicity_diagnostics"]["detector_executed"] is True
+    assert first["periodicity_diagnostics"]["comparison_count"] == 0
     resumed = run_exploratory(document, project_id="test-project", run_id="cancel-resume",
         artifact_root=tmp_path, rpm=3000.0, max_cycles=2, budget_seconds=600,
         memory_limit_mib=1024, resume=True)
@@ -82,6 +123,14 @@ def test_exploratory_run_cancels_at_step_boundary_and_resumes_audited_checkpoint
     assert [row["cycle"] for row in resumed["cycles"]]==[1,2]
     assert resumed["cycles"][1]["audit"]["recomputed"] is True
     assert resumed["periodicity"] == "NOT_EVALUATED"
+    assert resumed["periodicity_contract"] == "REFERENCE_PERIODIC_CONVERGENCE_V2"
+    assert resumed["bindings"]["periodicity_contract"] == resumed["periodicity_contract"]
+    assert resumed["periodicity_diagnostics"]["evaluation_status"] == "EXECUTED_NO_PERIOD_ACCEPTED"
+    assert resumed["periodicity_diagnostics"]["complete_cycles_evaluated"] == 2
+    assert resumed["periodicity_diagnostics"]["comparison_count"] == 1
+    assert resumed["periodicity_diagnostics"]["comparison_index"][0]["status"] in {"PASS", "FAIL"}
+    assert resumed["periodicity_diagnostics"]["residuals_and_per_comparison_thresholds_at"].startswith("cycles[]")
+    assert resumed["cycles"][1]["periodicity_update"]["outcomes"]["lag1"]["contract"] == resumed["periodicity_contract"]
     imported=import_exploratory_runs([tmp_path/"exploratory-workflow-v1"/"test-project"/"cancel-resume"])
     assert len(imported["points"])==2
     assert imported["points"][0]["mode"]=="EXPLORATORY"
@@ -116,6 +165,8 @@ def test_exploratory_run_cancels_at_step_boundary_and_resumes_audited_checkpoint
      "EXPLORATORY_TIMEOUT_CHECKPOINTED"),
     (MemoryError("test memory limit"), "FAILED_CLOSED",
      "EXPLORATORY_RESOURCE_LIMIT_EXCEEDED"),
+    (ValueError("synthetic numerical failure"), "FAILED_CLOSED",
+     "EXPLORATORY_NUMERICAL_INVALID"),
 ])
 def test_runner_persists_timeout_and_memory_failure_classifications_without_solver(
         tmp_path, monkeypatch, failure, status, classification):
@@ -140,6 +191,29 @@ def test_runner_persists_timeout_and_memory_failure_classifications_without_solv
     assert checkpoint["next_cycle"] == 1
     assert manifest["status"] == status
     assert manifest["cycles_completed"] == 0
+    expected_periodicity_status = ("NUMERICAL_FAILURE" if isinstance(failure, ValueError)
+                                   else "NOT_EXECUTED")
+    assert result["periodicity_diagnostics"]["evaluation_status"] == expected_periodicity_status
+    expected_termination = ("TIMEOUT" if isinstance(failure, workflow.RunDeadline) else
+                            "NUMERICAL_INVALID" if isinstance(failure, ValueError) else
+                            "RESOURCE_LIMIT_EXCEEDED")
+    assert result["periodicity_diagnostics"]["termination_reason"] == expected_termination
+
+
+def test_resume_rejects_pre_v2_periodicity_binding(tmp_path):
+    cancel = threading.Event(); cancel.set()
+    run_exploratory(engine_document(), project_id="binding", run_id="legacy-contract",
+        artifact_root=tmp_path, max_cycles=1, budget_seconds=10,
+        memory_limit_mib=1024, cancel_event=cancel)
+    run_dir = tmp_path / "exploratory-workflow-v1" / "binding" / "legacy-contract"
+    manifest_path = run_dir / "run.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["bindings"].pop("periodicity_contract")
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    with pytest.raises(ValueError, match="resume rejected: run identity/configuration/solver binding mismatch"):
+        run_exploratory(engine_document(), project_id="binding", run_id="legacy-contract",
+            artifact_root=tmp_path, max_cycles=1, budget_seconds=10,
+            memory_limit_mib=1024, resume=True)
 
 
 def test_exploratory_runner_rejects_existing_partial_directory_without_resume(tmp_path):
