@@ -2,5 +2,5 @@
 
 - [x] S1-FORENSICS: Inventario hash-bound de receipts, configuraciones, tests y casos reproducibles completado en `results/dino-stage1-scientific-readiness/forensics/inventory-20261016.json`; no se ejecutó solver.
 - [x] S1-PROTOCOL: Protocolo versionado y preregistro focal hash-bound preparados con presupuesto acumulado 600 s, un worker, 2048 MiB y criterio V2 sin cambios; preflight PASS con cero pasos de solver. Hash: `5c1f3699ab6411c5e1f5c26c74801179e40319b04e216dc1d4c95463527420c6`.
-- [ ] S1-BOUNDED-EVIDENCE: Ejecutar las verificaciones acotadas permitidas por el protocolo; guardar evidencia/provenance y clasificar cada límite sin forzar PASS.
-- [ ] S1-RPM-PREPARATION: Preparar contrato/preflight de curva RPM y datos de salida; no autorizar ni iniciar una campaña.
+- [x] S1-BOUNDED-EVIDENCE: Diagnóstico focal limitado a 4 ciclos y 600 s, persistido como `PARTIAL_BUDGET_EXCEEDED_CHECKPOINTED_PERIODICITY_NOT_EVALUATED`; primarias hash-check PASS y auditorías `recomputed=true`. Receipt: `results/dino-stage1-scientific-readiness/evidence/focal-periodicity-v1-result.json`. El tiempo real excedió el presupuesto y no se reanudó.
+- [x] S1-RPM-PREPARATION: Contrato y preflight sin solver documentados; preflight actual clasificado `FAIL_CLOSED` por hash obsoleto de `integrated_2t.py` y presupuesto global aún sin decidir. Se preservó la identidad histórica y no se autorizó ni ejecutó campaña. Receipt: `results/dino-stage1-scientific-readiness/rpm-preflight/preflight-20261016.json`.

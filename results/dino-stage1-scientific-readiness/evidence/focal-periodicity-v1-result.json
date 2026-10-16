@@ -1,0 +1,152 @@
+{
+  "schema": "DINO_STAGE1_FOCAL_PERIODICITY_RESULT_V1",
+  "recorded_at_utc": "2026-10-16T13:29:54.346731+00:00",
+  "classification": "PARTIAL_BUDGET_EXCEEDED_CHECKPOINTED",
+  "scope": {
+    "variant": "Escape original",
+    "rpm": 3000,
+    "mesh_adapter": "EXHAUST_MESH_V2",
+    "cells_per_section": 8,
+    "cells_total": 48,
+    "max_cycles": 8
+  },
+  "preregistration": {
+    "path": "results/dino-stage1-scientific-readiness/preregistration/stage1-diagnostic-protocol-v1.json",
+    "sha256": "5c1f3699ab6411c5e1f5c26c74801179e40319b04e216dc1d4c95463527420c6",
+    "runner_sha256": "456d1db498fcb68c36f5e071736c800174d03ada43c1321b19a5ecf6ca22f372",
+    "configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+    "identity_sha256": "5808faa3abe90a50648afde445e501f8af86fcc50a831674f3c12455626d5503"
+  },
+  "execution": {
+    "budget_seconds": 600,
+    "solver_elapsed_seconds": 682.829000000027,
+    "runner_report_call_wall_seconds": 687.8910000000033,
+    "run_logged_wall_seconds": 689.359,
+    "run_logged_overrun_seconds": 89.359,
+    "status": "INTERRUPTED_CHECKPOINTED",
+    "classification": "EXPLORATORY_TIMEOUT_CHECKPOINTED",
+    "cycles_completed": 4,
+    "periodicity": "NOT_EVALUATED",
+    "campaign_started": false,
+    "resume_performed": false,
+    "reason_no_resume": "Cumulative 600 s diagnostic budget was exhausted; checkpoint preserved."
+  },
+  "resources": {
+    "workers": 1,
+    "memory_limit_mib": 2048,
+    "workflow_rss_at_finish_bytes": 2051182592,
+    "sampled_windows_working_set_peak_bytes": 2151251968,
+    "sampled_peak_exceeded_mib": 4,
+    "note": "Peak is a sampled process working-set observation; workflow completed with a checkpoint and final RSS below the configured limit."
+  },
+  "scientific_scope": {
+    "cycle_audits": "Each persisted cycle primary records independent audit status PASS and recomputed=true; Codex checked artifact SHA-256 values against manifest and report.",
+    "conservation": "Mass, energy and four species ledgers are preserved per cycle in the listed primary artifacts.",
+    "performance_outputs": "Undefined because accepted periodicity was not identified.",
+    "spatial_independence": "NOT_ESTABLISHED",
+    "scientific_validation": "NOT_CLAIMED"
+  },
+  "durable_artifacts": {
+    "artifact_root": "E:\\Dino-artifacts\\dino-stage1-scientific-readiness\\v1",
+    "run_directory": "E:\\Dino-artifacts\\dino-stage1-scientific-readiness\\v1\\exploratory-workflow-v1\\dino-exhaust-comparison-starter\\stage1-original-3000rpm-mesh8-periodicity-v1",
+    "report_path": "E:\\Dino-artifacts\\dino-stage1-scientific-readiness\\v1\\reports\\stage1-original-3000rpm-mesh8-periodicity-v1.json",
+    "report_file_sha256": "ef4d0a644657a9875943f9499822282c8a1c323c170b5ed545b3ce1ffa6b6588",
+    "result_path": "E:\\Dino-artifacts\\dino-stage1-scientific-readiness\\v1\\exploratory-workflow-v1\\dino-exhaust-comparison-starter\\stage1-original-3000rpm-mesh8-periodicity-v1\\result.json",
+    "result_file_sha256": "9b80cd30d1deb7705eed62ca7b4f6a09b5210f93fc4f2f3c7495e8fa340e5f6a",
+    "result_canonical_sha256": "10b9ea44479dfb3e0d36b5be2de3af7ccc33d514507114a530767c1302161dfb",
+    "manifest_path": "E:\\Dino-artifacts\\dino-stage1-scientific-readiness\\v1\\exploratory-workflow-v1\\dino-exhaust-comparison-starter\\stage1-original-3000rpm-mesh8-periodicity-v1\\run.json",
+    "manifest_sha256": "6844fac86383a8853b36262f4ab765b08df1538681aea0119996230344479ec0",
+    "checkpoint_path": "E:\\Dino-artifacts\\dino-stage1-scientific-readiness\\v1\\exploratory-workflow-v1\\dino-exhaust-comparison-starter\\stage1-original-3000rpm-mesh8-periodicity-v1\\checkpoint.json",
+    "checkpoint_sha256": "1b9341670a9e9d50cfcaef4b750b0e90f72bb1bb905cba6e9c96ba6a4185c9a0",
+    "checkpoint_next_cycle": 5,
+    "run_logged_summary_path": "E:\\Dino-artifacts\\dino-stage1-scientific-readiness\\v1\\logs\\stage1-original-3000rpm-mesh8-periodicity-v1.summary.json"
+  },
+  "cycles": [
+    {
+      "cycle": 1,
+      "artifact": "cycle-0001.json.gz",
+      "compressed_sha256": "93964c20ce6e5858bf0e0904a421559f89ea377901fce6fa27b24886a804315f",
+      "primary_sha256": "d058d20f15e5436a229ec71158196cc5f4eeb81247932f6c5000cef191aad03c",
+      "primary_hash_matches_manifest": true,
+      "audit_status": "PASS",
+      "audit_recomputed": true,
+      "conservation": {
+        "energy_residual_J": 5.492828414332962e-14,
+        "mass_residual_kg": 6.708500942254059e-19,
+        "species_residual_kg": [
+          6.522153693858113e-19,
+          -1.0058516248644817e-21,
+          -1.0841849812415103e-19,
+          8.451636214537294e-76
+        ]
+      }
+    },
+    {
+      "cycle": 2,
+      "artifact": "cycle-0002.json.gz",
+      "compressed_sha256": "fdeefb752a6fb8a84fe7059f872ede0941a201522a439d38a479469f08791670",
+      "primary_sha256": "53f7fa2b79fc1b8419c772a75692e0a7df7cbc21c981842d735a2da5b6aa65ae",
+      "primary_hash_matches_manifest": true,
+      "audit_status": "PASS",
+      "audit_recomputed": true,
+      "conservation": {
+        "energy_residual_J": -4.605205106145149e-13,
+        "mass_residual_kg": 4.0657581468206416e-19,
+        "species_residual_kg": [
+          -4.352161162111002e-19,
+          1.3234889800848443e-23,
+          -2.5169284734661905e-19,
+          -3.200960704581979e-21
+        ]
+      }
+    },
+    {
+      "cycle": 3,
+      "artifact": "cycle-0003.json.gz",
+      "compressed_sha256": "fe2611707786723a8ce9f9ab2a2d45d513ff9260bdb9722c81860fe4e0c769ef",
+      "primary_sha256": "8439634e0e94bd5a841a87f8284a974134fa414608d978208afc6dd96aab954c",
+      "primary_hash_matches_manifest": true,
+      "audit_status": "PASS",
+      "audit_recomputed": true,
+      "conservation": {
+        "energy_residual_J": 1.8784973576657649e-13,
+        "mass_residual_kg": -4.0996394647108136e-19,
+        "species_residual_kg": [
+          -2.2054620364133845e-19,
+          -3.705769144237564e-22,
+          -4.345422201676272e-19,
+          1.4264803508502188e-21
+        ]
+      }
+    },
+    {
+      "cycle": 4,
+      "artifact": "cycle-0004.json.gz",
+      "compressed_sha256": "3e7c3f80ad50693c7340bd2a9747af102d639350d18b4b4d2efb7d516e7a760b",
+      "primary_sha256": "44dcdc210aba40ed039151bcbe391cabb3f06811b7b565a386afb340a798d462",
+      "primary_hash_matches_manifest": true,
+      "audit_status": "PASS",
+      "audit_recomputed": true,
+      "conservation": {
+        "energy_residual_J": 5.150602166992257e-13,
+        "mass_residual_kg": -1.2891841457210451e-18,
+        "species_residual_kg": [
+          -1.1983398621280214e-18,
+          1.733770563911146e-21,
+          3.3213428166104855e-19,
+          1.001344569727229e-20
+        ]
+      }
+    }
+  ],
+  "runner_exit": {
+    "exit_code": 1,
+    "cause": "Windows cp1252 stdout could not encode the integral symbol (UnicodeEncodeError) while printing the already persisted result. The run_logged summary and all report/result/checkpoint artifacts were written before process exit.",
+    "timed_out": false
+  },
+  "limitations": [
+    "Actual invocation exceeded the 600 s preregistered budget by 89.359 s per run_logged; the workflow returned EXPLORATORY_TIMEOUT_CHECKPOINTED after its solver-step-boundary deadline.",
+    "Only four cycles completed; periodicity remains NOT_EVALUATED.",
+    "No further resume or campaign execution is authorized by this diagnostic preregistration."
+  ]
+}

@@ -1,0 +1,187 @@
+{
+  "schema": "DINO_STAGE1_RPM_READINESS_PREFLIGHT_V1",
+  "recorded_at_utc": "2026-10-16T13:31:59.680416+00:00",
+  "classification": "FULL_RPM_SWEEP_IMPL2_PREFLIGHT_BLOCKED_STALE_SOLVER_IDENTITY",
+  "solver_steps_started": 0,
+  "campaign_started_by_this_preflight": false,
+  "implementation": "FULL_RPM_SWEEP_V1_IMPL2",
+  "historical_contract": {
+    "preregistration_path": "results\\full-rpm-sweep-v1\\implementation-v2-campaign-preregistration.json",
+    "preregistration_sha256": "e26c0599325a9e6296291178ffd2e36457838052f1d9b59de7b6dc0f282d59e3",
+    "identity_path": "results\\full-rpm-sweep-v1\\implementation-v2-campaign-identity.json",
+    "identity_sha256": "ac78d48abb23697804d9db28ee28d6f0eeaab712dc9d711cdb3572bc6ebaa63a",
+    "historical_readiness_receipt": "results\\full-rpm-sweep-v1\\implementation-v2-campaign-readiness-receipt.json",
+    "historical_readiness_classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION"
+  },
+  "configuration": {
+    "variants": [
+      {
+        "id": "A_PRIME_MESH_0",
+        "fixture_path": "results/2t-commercial-core-20261002/fixtures/v1-prime-mesh/fixture_a_prime-mesh-0.json",
+        "fixture_sha256": "1f1298c0fd38e925eeac0be3049d7fa7d260ac8d5a07ba97042e02e2d7c7a9cf",
+        "configuration_sha256": "d3f000f72dda247e11a561ad63fb93daab1145cca689105a17cd8e6ae7c71ab7",
+        "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+        "mechanical_loss_mep_pa_at_reference": 1500.0,
+        "fuel_sha256": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+        "fuel_provenance": "SYNTHETIC_ASSUMPTION",
+        "pseudo_species_ratio": 49.0,
+        "boundaries": {
+          "inlet": {
+            "kind": "open_end_plenum_v2",
+            "p0": 101325.0,
+            "T0": 300.0
+          },
+          "outlet": {
+            "kind": "open_end_plenum_v2",
+            "p0": 101325.0,
+            "T0": 300.0
+          }
+        }
+      },
+      {
+        "id": "B_PRIME_MESH_0",
+        "fixture_path": "results/2t-commercial-core-20261002/fixtures/v1-prime-mesh/fixture_b_prime-mesh-0.json",
+        "fixture_sha256": "5b487b01044beee19cc537db158264e52aa9e34a567004bcbe883e1166bfe173",
+        "configuration_sha256": "b21dd08a23679954c1ac39aae383fc2a78c702c5a358c8e2387fcecd00f2af82",
+        "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+        "mechanical_loss_mep_pa_at_reference": 1500.0,
+        "fuel_sha256": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+        "fuel_provenance": "SYNTHETIC_ASSUMPTION",
+        "pseudo_species_ratio": 49.0,
+        "boundaries": {
+          "inlet": {
+            "kind": "open_end_plenum_v2",
+            "p0": 101325.0,
+            "T0": 300.0
+          },
+          "outlet": {
+            "kind": "open_end_plenum_v2",
+            "p0": 101325.0,
+            "T0": 300.0
+          }
+        }
+      }
+    ],
+    "wot": {
+      "mode": "WOT",
+      "throttle_fraction": 1.0,
+      "boundary_semantics": "existing unthrottled OPEN_END_PLENUM_V2 inlet and outlet; no throttle component exists in the bound integrated configuration",
+      "powervalve": "existing RPM map retained unchanged"
+    },
+    "rpm_grid": [
+      1000,
+      1300,
+      1600,
+      1900,
+      2200,
+      2500,
+      2800,
+      3100,
+      3400,
+      3700,
+      4000,
+      4300,
+      4600,
+      4900,
+      5000
+    ],
+    "points_total": 30
+  },
+  "scientific_contract": {
+    "periodicity": {
+      "contract": "REFERENCE_PERIODIC_CONVERGENCE_V2",
+      "streak": 3,
+      "thresholds": {
+        "chamber_mass_relative": 0.002,
+        "chamber_total_energy_relative": 0.002,
+        "chamber_pressure_relative": 0.005,
+        "chamber_temperature_relative": 0.005,
+        "duct_cell_mass_relative": 0.002,
+        "duct_cell_total_energy_relative": 0.002,
+        "duct_cell_pressure_relative": 0.005,
+        "duct_cell_temperature_relative": 0.005,
+        "duct_cell_species_mass_fraction_absolute": 0.002,
+        "duct_cell_velocity_over_sound_speed_absolute": 0.005,
+        "global_species_inventory_over_total_mass": 0.002,
+        "work_relative_floor_1J": 0.005,
+        "fresh_delivery_fraction_of_cycle_start_mass": 0.002,
+        "fresh_short_circuit_fraction_of_cycle_start_mass": 0.002,
+        "p7_burned_species_fraction_of_cycle_start_mass": 0.002,
+        "p7_heat_fraction_of_cycle_start_energy": 0.002
+      },
+      "thresholds_sha256": "43419bccbbcefaf04200448148e74d576d6fa1ecb0d9adf9c26a614e67828eff"
+    },
+    "horizon": {
+      "max_complete_cycles_per_point": 111,
+      "nonconvergence_classification": "NO_CONVERGENCE_WITHIN_HORIZON"
+    },
+    "outputs": {
+      "IMEP": "Pa",
+      "FMEP": "Pa",
+      "BMEP": "Pa",
+      "brake_torque": "N m",
+      "brake_power": "W",
+      "ISFC": "g/kWh",
+      "BSFC": "g/kWh"
+    },
+    "evidence_pipeline": "CONVENTIONAL_FULL_AUDIT",
+    "fast_recipe_enabled": false,
+    "checkpoint_budget": {
+      "wall_clock_seconds_per_invocation": 3600,
+      "checkpoint_after_each_accepted_cycle": true,
+      "checkpoint_after_each_completed_rpm_point": true,
+      "resume_requires_exact_configuration_solver_detector_hashes": true
+    }
+  },
+  "resources": {
+    "parallel_execution": {
+      "mode": "SPAWN_PROCESS_POOL",
+      "recommended_workers": 4,
+      "maximum_workers": 4,
+      "worker_reservation_mib": 512,
+      "memory_budget_mib": 4096,
+      "coordinator_only_global_manifest": true,
+      "point_owned_checkpoints": true
+    },
+    "artifact_root": "E:/Dino-artifacts/engine-physics-v1/full-rpm-sweep-v1-impl2",
+    "artifact_root_outside_repository": true,
+    "artifact_root_actual": "E:/Dino-artifacts/engine-physics-v1/full-rpm-sweep-v1-impl2",
+    "per_invocation_budget_seconds": 3600,
+    "global_campaign_budget": {
+      "global_budget_seconds": null,
+      "status": "OWNER_DECISION_REQUIRED_BEFORE_AUTHORIZATION",
+      "note": "No global campaign budget is inferred from diagnostic speedup or serial projection."
+    }
+  },
+  "hash_verification": {
+    "registered_source_hash_count": 24,
+    "matching_count": 23,
+    "mismatches": [
+      {
+        "component": "solver:motorsim.integrated_2t",
+        "path": "motorsim/integrated_2t.py",
+        "expected_sha256": "e3d1e449240478bd6ca955c032ec835fce65479965a5d305d48288a3ef3e29b3",
+        "actual_sha256": "38d9896e8bf4405945cdc53aea091eb895d7e00a3ec52df0f0263115e971af17",
+        "match": false
+      }
+    ],
+    "all_source_hashes_match": false
+  },
+  "preflight_checks": {
+    "30_configurations_declared": true,
+    "explicit_mechanical_loss_models": true,
+    "explicit_fuel_and_mixture": true,
+    "wot_and_boundaries_explicit": true,
+    "periodicity_contract_bound": true,
+    "checkpoint_restart_contract_present": true,
+    "workers_within_memory_budget": true,
+    "global_budget_decision_present": false,
+    "runner_identity_hashes_match": false
+  },
+  "blocking_reason": "The frozen IMPL2 campaign identity binds motorsim.integrated_2t to e3d1e449240478bd6ca955c032ec835fce65479965a5d305d48288a3ef3e29b3, while the current normalized source hash is 38d9896e8bf4405945cdc53aea091eb895d7e00a3ec52df0f0263115e971af17. No hash was edited and no campaign runner or solver was invoked.",
+  "campaign_authorization": {
+    "future_campaign_requires_explicit_owner_decision": true,
+    "global_campaign_budget_seconds": null,
+    "historical_campaign_artifacts_unchanged": true
+  }
+}

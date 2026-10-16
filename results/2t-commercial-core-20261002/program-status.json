@@ -5481,13 +5481,14 @@
       "dependencies": [
         "S1-PROTOCOL"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "Preflight real PASS, solver_steps=0, artifact root E:\\Dino-artifacts\\dino-stage1-scientific-readiness\\v1; configuration 5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203; identity 5808faa3abe90a50648afde445e501f8af86fcc50a831674f3c12455626d5503.",
-        "tests/scientific_stage1/test_periodicity_preflight.py: 6 passed; covers repository-root rejection, invalid prereg hash before solver, missing checkpoint, source identity mismatch, and invalid preflight.",
-        "Focal periodicity diagnostic remains pending; no solver execution yet."
+        "results/dino-stage1-scientific-readiness/evidence/focal-periodicity-v1-result.json; SHA-256 f01349ecf9a501547ab0c36f67b38043b22cc268cabc5463e85ef774de709b24.",
+        "One preregistered Escape original @3000 RPM, EXHAUST_MESH_V2 48-cell focal diagnostic: 4 complete cycles, each persisted primary hash verified, audit PASS/recomputed=true, checkpoint next_cycle=5; periodicity NOT_EVALUATED and no performance metrics accepted.",
+        "Actual wall time 689.359 s exceeded the 600 s budget by 89.359 s; runner returned EXPLORATORY_TIMEOUT_CHECKPOINTED. Sampled Windows working set peaked at 2151251968 bytes (~2052 MiB); no additional resume authorized.",
+        "Runner exit code 1 arose after report/result/checkpoint persistence when Windows cp1252 stdout could not encode an integral symbol in the result JSON. All durable artifact hashes are recorded; scientific validation NOT_CLAIMED and spatial independence NOT_ESTABLISHED."
       ],
       "next_action": "Run only focal diagnostics explicitly permitted by preregistration/specification; audit conservation/replay and classify results without relaxing criteria.",
       "objective": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
@@ -5498,7 +5499,8 @@
         "scripts/diagnostics/stage1/",
         "results/dino-stage1-scientific-readiness/evidence/"
       ],
-      "classification": "NO_CAMPAIGN_AUTHORIZATION"
+      "classification": "PARTIAL_BUDGET_EXCEEDED_CHECKPOINTED_PERIODICITY_NOT_EVALUATED",
+      "unblock_tasks": []
     },
     {
       "id": "S1-RPM-PREPARATION",
@@ -5506,10 +5508,15 @@
       "dependencies": [
         "S1-BOUNDED-EVIDENCE"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "results/dino-stage1-scientific-readiness/rpm-preflight/preflight-20261016.json; SHA-256 89aa0a4bde52b04fd5df72bf165a96a6a6e959ff5468d1230b63c02957949bfb.",
+        "Read-only hash preflight: 23/24 registered source files match; motorsim.integrated_2t expected e3d1e449240478bd6ca955c032ec835fce65479965a5d305d48288a3ef3e29b3, current normalized hash 38d9896e8bf4405945cdc53aea091eb895d7e00a3ec52df0f0263115e971af17. Historical preregistration and identity preserved unchanged.",
+        "Existing IMPL2 contract documents two variants × 15 RPM, WOT, explicit synthetic fuel/AFR and mechanical loss models, REFERENCE_PERIODIC_CONVERGENCE_V2, 111-cycle horizon, conventional full audit, spawn workers (4 × 512 MiB within 4096 MiB), per-invocation 3600 s, point checkpoints and external isolated artifact root.",
+        "Global campaign budget remains unset; campaign authorization must be a later owner decision. No runner execution, campaign, or solver steps occurred in this preflight."
+      ],
       "next_action": "Prepare RPM curve contract and no-solver preflight for hashes, grid, WOT, fuel/AFR/losses, outputs, resources, restart and budgets; do not authorize or run points.",
       "objective": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
       "owner_role": "contract/regression guardian",
@@ -5518,7 +5525,8 @@
         "openspec/changes/dino-stage1-scientific-readiness/",
         "results/dino-stage1-scientific-readiness/rpm-preflight/"
       ],
-      "classification": "NO_CAMPAIGN_AUTHORIZATION"
+      "classification": "PREFLIGHT_FAIL_CLOSED_STALE_SOLVER_HASH_GLOBAL_BUDGET_UNSET",
+      "unblock_tasks": []
     }
   ],
   "audit_remediation_mode": false,
@@ -7366,6 +7374,18 @@
       "task": "S1-BOUNDED-EVIDENCE",
       "kind": "progress",
       "summary": "Hash-bound focal runner and fail-closed preflight complete; six preflight tests PASS; actual preflight PASS at external artifact root, zero solver steps. Numerical diagnostic not yet started."
+    },
+    {
+      "at": "2026-10-16T13:30:07+00:00",
+      "task": "S1-BOUNDED-EVIDENCE",
+      "kind": "task",
+      "summary": "Bounded focal run persisted 4 complete independently audited cycles and a valid checkpoint; budget overrun and Windows Unicode console failure recorded explicitly; periodicity NOT_EVALUATED, no resume."
+    },
+    {
+      "at": "2026-10-16T13:34:22+00:00",
+      "task": "S1-RPM-PREPARATION",
+      "kind": "task",
+      "summary": "Read-only IMPL2 contract and source-hash preflight completed for 2x15 RPM; fail-closed on one stale integrated_2t hash and unset future global campaign budget; no solver or runner execution."
     }
   ],
   "legacy_gate_status": {
@@ -7381,24 +7401,18 @@
   },
   "gate_status": {
     "objective": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
-    "state": "OPEN",
-    "classification": "DINO_STAGE1_SCIENTIFIC_READINESS_IN_PROGRESS",
+    "state": "FAIL_TERMINAL",
+    "classification": "DINO_STAGE1_SCIENTIFIC_READINESS_PARTIAL",
     "evidence": [
-      "results/dino-desktop-v3-1-visual-parity/packaged-acceptance-final-20261016.json",
-      "openspec/changes/dino-stage1-scientific-readiness/specs/dino-stage1-scientific-readiness/spec.md"
+      "Forensics, frozen single-point preregistration, partial four-cycle timeout-checkpointed evidence, and read-only RPM preflight are persisted; spatial independence NOT_ESTABLISHED, periodicity NOT_EVALUATED, diagnostic budget exceeded by 89.359 s, and current IMPL2 campaign preflight FAIL_CLOSED on stale motorsim.integrated_2t hash. No campaign authorization or execution."
     ],
     "gate_tasks_total": 4,
-    "gate_tasks_done": 2,
+    "gate_tasks_done": 4,
     "gate_task_states": {
-      "DONE": 2,
-      "READY": 1,
-      "WAITING": 1
+      "DONE": 4
     },
-    "remaining": [
-      "S1-BOUNDED-EVIDENCE",
-      "S1-RPM-PREPARATION"
-    ],
-    "updated_at": "2026-10-16T13:08:29+00:00"
+    "remaining": [],
+    "updated_at": "2026-10-16T13:34:27+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
