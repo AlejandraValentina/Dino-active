@@ -6035,6 +6035,15 @@
         "V31-PACKAGED-ACCEPTANCE"
       ],
       "completion_criterion": "DINO_DESKTOP_V3_1_READY only after functional M1-M6 parity is shown in actual TRIAL EXE captures before/after, artifact root write safety is verified, relevant tests and OpenSpec/program-status checks pass, and the package integrity/hashes are recorded. No simulations or campaigns."
+    },
+    {
+      "id": "DINO_2T_PROFESSIONAL_ROADMAP",
+      "state": "PROPOSED",
+      "owner_approved": false,
+      "summary": "Initial four-stage gap audit recorded in docs/roadmaps/dino-2t-professional-roadmap-audit.md and openspec/changes/dino-2t-professional-roadmap/. Proposal only; no implementation, campaign or simulations authorized. Activate only by later owner-approved transition after current objective closes.",
+      "change": "openspec/changes/dino-2t-professional-roadmap",
+      "spec": "openspec/changes/dino-2t-professional-roadmap/specs/dino-2t-professional-roadmap/spec.md",
+      "classification": "AUDIT_COMPLETE_PLAN_PROPOSED_NOT_ACTIVATED"
     }
   ],
   "owner_decisions_pending": [
@@ -7189,6 +7198,12 @@
       "task": "V31-NAVIGATION",
       "kind": "task",
       "summary": "Replaced the vertical component rail and duplicate EnginePage tabs with one horizontal Design section bar; active Design/Analysis modes are distinct. 39 passed, 1 skipped across desktop suites; new TRIAL EXE interactions across all six sections and Analysis passed. Global gate remains PARTIAL pending exact-final M1-M6 recapture."
+    },
+    {
+      "at": "2026-10-16T10:22:34+00:00",
+      "task": "DINO-2T-PROFESSIONAL-ROADMAP-AUDIT",
+      "kind": "process",
+      "summary": "Audited current solver, receipts, OpenSpec and tests; recorded four-stage plan as owner-unapproved proposal. No implementation or simulation; current V3.1 objective/gate preserved."
     }
   ],
   "legacy_gate_status": {
