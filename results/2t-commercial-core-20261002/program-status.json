@@ -5877,11 +5877,15 @@
       "id": "SPV1-POINT-PREFLIGHT",
       "description": "Resolve supported engine identity/configuration and generate a complete single-point preflight plus resource-budget options, with no solver steps.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Resolve supported engine identity/configuration and generate a complete single-point preflight plus resource-budget options, with no solver steps.",
+      "evidence": [
+        "results/dino-2t-scientific-point-v1/point-preflight.json SHA-256 b9a16366ac9b53fadde27c10a92da0720eac0a407751c2f76df1df0dde81947a",
+        "scripts/diagnostics/scientific_point_v1_preflight.py; current candidate identity 40303dcffd3ddc8264b19e586db2fe1c2e6c2b729939dbd97a23c704a02dbdc5; zero-step preflight PASS; historical V1 binding mismatch rejected; old checkpoint not reusable; execution path requires matching durable owner authorization, fixed point and max 600 s per invocation.",
+        "Proposed options: 600 or 1200 s cumulative (<=1800 s fixture ceiling), 3072 MiB, 1 worker, 8-cycle horizon; no run authorized. Tests: 48 passed; OpenSpec strict valid; program-status check PASS."
+      ],
+      "next_action": "Bind any owner-approved execution to the final preflight hash and explicit resource limits.",
       "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
@@ -5897,7 +5901,7 @@
       "dependencies": [
         "SPV1-POINT-PREFLIGHT"
       ],
-      "state": "WAITING",
+      "state": "READY",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -8035,6 +8039,12 @@
       "task": "SPV1-MESH-PREFLIGHT",
       "kind": "task",
       "summary": "Completed no-solver refinement preflight: 1/2/4/8 matrix setup, 48-cell base, temporal CFL plan, boundary sensitivity limitation and 1800 s proposal recorded; no solver steps or campaign."
+    },
+    {
+      "at": "2026-10-16T16:09:10+00:00",
+      "task": "SPV1-POINT-PREFLIGHT",
+      "kind": "task",
+      "summary": "Built deterministic identity-bound 3000-RPM/48-cell no-step preflight and authorization-gated runner; historical Stage1 binding mismatch remains fail-closed; execution not authorized. 48 relevant tests pass."
     }
   ],
   "legacy_gate_status": {
@@ -8054,19 +8064,18 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 9,
-    "gate_tasks_done": 5,
+    "gate_tasks_done": 6,
     "gate_task_states": {
-      "DONE": 5,
+      "DONE": 6,
       "READY": 1,
-      "WAITING": 3
+      "WAITING": 2
     },
     "remaining": [
-      "SPV1-POINT-PREFLIGHT",
       "SPV1-POINT-AUTHORIZATION",
       "SPV1-POINT-EXECUTION",
       "SPV1-RESULT-VERIFY"
     ],
-    "updated_at": "2026-10-16T16:02:03+00:00"
+    "updated_at": "2026-10-16T16:09:10+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

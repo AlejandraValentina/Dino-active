@@ -1,0 +1,205 @@
+{
+  "schema": "DINO_SCIENTIFIC_POINT_V1_PREFLIGHT_V1",
+  "classification": "PREFLIGHT_ONLY_NO_SOLVER_STEPS",
+  "scope": "one integrated operating point; no campaign or sweep",
+  "project": {
+    "path": "examples/projects/dino-2t-exhaust-comparison.dino2t.json",
+    "sha256": "42535dfb53c95407e75e109151ff1893db6338510de4f832e7ec48dd46ef8d34",
+    "project_id": "dino-exhaust-comparison-starter"
+  },
+  "selected_point": {
+    "variant": "Escape original",
+    "rpm": 3000,
+    "mesh_adapter": "EXHAUST_MESH_V2",
+    "cells_per_section": 8,
+    "duct_cells_by_id": {
+      "intake": 2,
+      "primary": 2,
+      "secondary": 2,
+      "boost": 2,
+      "exhaust": 40
+    },
+    "total_finite_volume_cells": 48,
+    "configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+    "identity_sha256": "40303dcffd3ddc8264b19e586db2fe1c2e6c2b729939dbd97a23c704a02dbdc5"
+  },
+  "implementation": {
+    "runner": "scripts/diagnostics/scientific_point_v1_preflight.py",
+    "runner_sha256": "f5b0a8cb2b8941f6e485cd3e36df401ab971f1a5c2c6fff367fc145146971b24",
+    "solver_source_hashes": {
+      "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+      "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+      "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+      "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+      "motorsim.gas1d.eos": "72ec337f941b1259ab23c04f70ec75593870bdcc4b065d481b38834430221186",
+      "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+      "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+      "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+      "motorsim.integrated_2t": "38d9896e8bf4405945cdc53aea091eb895d7e00a3ec52df0f0263115e971af17",
+      "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+      "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+      "motorsim.p6_species": "7ed60395642eecb6b5b9f15bbe095489468da7b562f72d0b53b13527a97e2dab",
+      "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+      "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+      "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+      "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+      "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+      "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095",
+      "motorsim.mechanical": "de71d3bacb18e7661de0ff15cbac50f1a252fc01970c7ef9aa04c8a3424d0fff",
+      "motorsim.engine_configuration": "6c99e7516348066a01e785ce1735940ce43f92765274e9cc8aaf50517bbadf3e",
+      "motorsim.engine_variants": "ad21a71bc2528f55ad8becbe7fc019b63c27211b0939f5a284ef3a508f3856fa",
+      "motorsim.engineering_outputs": "c01c3c7195f28a67c3fb866df704d15a595d079d32be71057ab2d2c5095f5424",
+      "motorsim.reference_harness.convergence": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+      "motorsim.exploratory_workflow": "c7a3b85203736feffa93fe577c743e091fb9f905f40a6e494409b6702c316b36"
+    },
+    "periodicity_contract": "REFERENCE_PERIODIC_CONVERGENCE_V2",
+    "periodicity_source_sha256": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+    "periodicity_thresholds_sha256": "97049f91c7664b906fd743ec2a05991ad313f860df23b154b482a5c783f13b70"
+  },
+  "physical_inputs": {
+    "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+    "mechanical_loss_preflight": {
+      "compatible": true,
+      "friction_mep_pa": 1500.0,
+      "term_mep_pa_by_term": {
+        "synthetic-piston-ring": 1000.0,
+        "synthetic-bearing-accessory": 500.0
+      }
+    },
+    "fuel_id": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+    "afr_kg_air_per_kg_fuel": 49.0,
+    "boundary_identity": {
+      "inlet": {
+        "T0": 300.0,
+        "Y0": 1.0,
+        "kind": "open_end_plenum_v2",
+        "p0": 101325.0,
+        "state": null
+      },
+      "outlet": {
+        "T0": 300.0,
+        "Y0": 1.0,
+        "kind": "open_end_plenum_v2",
+        "p0": 101325.0,
+        "state": null
+      }
+    },
+    "fuel_provenance": null,
+    "loss_provenance": {
+      "schema": "MECHANICAL_LOSS_MODEL_V1",
+      "cycle_convention": "2T_360_DEG_ONE_CYCLE_PER_REV",
+      "terms": [
+        {
+          "id": "synthetic-piston-ring",
+          "source": "piston_ring",
+          "provenance": "SYNTHETIC_ASSUMPTION",
+          "mep_pa": 1000.0,
+          "operating_map": null
+        },
+        {
+          "id": "synthetic-bearing-accessory",
+          "source": "bearing_accessory",
+          "provenance": "SYNTHETIC_ASSUMPTION",
+          "mep_pa": 500.0,
+          "operating_map": null
+        }
+      ]
+    }
+  },
+  "execution_contract": {
+    "max_cycles": 8,
+    "periodicity_initial": "NOT_EVALUATED",
+    "existing_conservation_gates": [
+      "mass",
+      "energy",
+      "four species",
+      "coupled interfaces"
+    ],
+    "terminal_classifications": [
+      "PERIOD_1",
+      "PERIOD_2",
+      "NO_CONVERGENCE_WITHIN_HORIZON",
+      "BUDGET_LIMITED_CHECKPOINTED",
+      "NUMERICAL_INVALID",
+      "AUDIT_FAIL"
+    ],
+    "checkpoint_policy": "per complete cycle; new run id/root; resume only after all current identity hashes validate",
+    "artifact_root": "${DINO_ARTIFACT_ROOT}/dino-2t-scientific-point-v1/run-01",
+    "artifact_root_configuration": "DINO_ARTIFACT_ROOT or per-user Dino-artifacts default",
+    "artifact_root_resolved_outside_repository": true,
+    "fast_recipe": "DISABLED",
+    "evidence_pipeline": "CONVENTIONAL_PRIMARY_PLUS_INDEPENDENT_AUDIT"
+  },
+  "resource_options_not_authorized": [
+    {
+      "wall_seconds": 600,
+      "memory_mib": 3072,
+      "workers": 1,
+      "interpretation": "bounded diagnostic; likely partial based on historical 4/8-cycle timeout"
+    },
+    {
+      "wall_seconds": 1200,
+      "memory_mib": 3072,
+      "workers": 1,
+      "interpretation": "bounded integration fixture; no convergence guarantee"
+    }
+  ],
+  "resource_basis": {
+    "historical_wall_seconds": 689.359,
+    "historical_solver_seconds": 682.829,
+    "historical_cycles": "4/8",
+    "historical_sampled_peak_rss_bytes": 2151251968,
+    "memory_option_basis": "3072 MiB proposed headroom above observed peak; not a measured requirement",
+    "AGENTS_MAX_FIXTURE_SECONDS": 1800
+  },
+  "historical_stage1_compatibility": {
+    "preregistration_sha256": "5c1f3699ab6411c5e1f5c26c74801179e40319b04e216dc1d4c95463527420c6",
+    "expected_identity_sha256": "5808faa3abe90a50648afde445e501f8af86fcc50a831674f3c12455626d5503",
+    "current_identity_sha256": "40303dcffd3ddc8264b19e586db2fe1c2e6c2b729939dbd97a23c704a02dbdc5",
+    "mismatches": [
+      "identity_sha256",
+      "solver_source_hashes"
+    ],
+    "legacy_runner_preflight": "FAIL_CLOSED identity_sha256, solver_source_hashes; historical runner remains unchanged",
+    "old_checkpoint_resume": "REJECTED; no reuse permitted",
+    "historical_files_modified": false
+  },
+  "preflight_check": {
+    "schema": "DINO_EXPLORATORY_PREFLIGHT_V1",
+    "status": "PASS",
+    "mode": "EXPLORATORY",
+    "solver_steps": 0,
+    "identity_sha256": "40303dcffd3ddc8264b19e586db2fe1c2e6c2b729939dbd97a23c704a02dbdc5",
+    "configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+    "rpm": 3000.0,
+    "max_cycles": 8,
+    "budget_seconds": 600.0,
+    "memory_limit_mib": 3072,
+    "workers": 1,
+    "total_finite_volume_cells": 48,
+    "artifact_limit_bytes": 536870912,
+    "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+    "mechanical_loss_preflight": {
+      "compatible": true,
+      "friction_mep_pa": 1500.0,
+      "term_mep_pa_by_term": {
+        "synthetic-piston-ring": 1000.0,
+        "synthetic-bearing-accessory": 500.0
+      }
+    },
+    "fuel_id": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+    "afr_kg_air_per_kg_fuel": 49.0,
+    "periodicity_contract": "REFERENCE_PERIODIC_CONVERGENCE_V2",
+    "cycle_primary_contract": "REFERENCE_PERIODIC_CONVERGENCE_V1",
+    "periodicity_source_sha256": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+    "periodicity_thresholds_sha256": "97049f91c7664b906fd743ec2a05991ad313f860df23b154b482a5c783f13b70",
+    "periodicity_initial": "NOT_EVALUATED",
+    "verified_mode": "UNAVAILABLE_WITHOUT_PREREGISTRATION_AND_AUTHORIZATION",
+    "classification": "PREFLIGHT_ONLY_NO_SOLVER_STEPS"
+  },
+  "solver_steps": 0,
+  "execution_authorized": false,
+  "campaign_started": false,
+  "scientific_validation": "NOT_CLAIMED",
+  "spatial_independence": "NOT_ESTABLISHED"
+}
