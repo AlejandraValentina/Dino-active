@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import datetime as _dt
 import json
+import os
 import re
 import subprocess
 import sys
@@ -43,6 +44,11 @@ def run(name: str, out: Path, command: list[str], timeout: float | None, campaig
     timed_out = False
     counter = [0]
     with open(log_path, "w", encoding="utf-8", newline="\n") as log:
+        child_env = os.environ.copy()
+        # Child tools may emit Unicode scientific symbols even when the
+        # invoking Windows console uses an ANSI code page such as cp1252.
+        # Capture their UTF-8 output without changing their data or exit code.
+        child_env["PYTHONIOENCODING"] = "utf-8:backslashreplace"
         process = subprocess.Popen(
             command,
             stdout=subprocess.PIPE,
@@ -50,6 +56,7 @@ def run(name: str, out: Path, command: list[str], timeout: float | None, campaig
             text=True,
             encoding="utf-8",
             errors="replace",
+            env=child_env,
         )
         assert process.stdout is not None
 
@@ -103,6 +110,11 @@ def run(name: str, out: Path, command: list[str], timeout: float | None, campaig
 
 
 def main(argv: list[str] | None = None) -> int:
+    # The compact summary can include the child's final Unicode log lines.
+    # Keep the human console printable even if this parent was launched under
+    # cp1252, while the durable log remains UTF-8.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(errors="backslashreplace")
     argv = list(sys.argv[1:] if argv is None else argv)
     if "--" not in argv:
         print("usage: run_logged.py --name N --out DIR [--timeout S] [--campaign-summary P] -- command ...")

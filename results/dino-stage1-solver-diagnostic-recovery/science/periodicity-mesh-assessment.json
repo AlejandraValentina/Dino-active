@@ -1,0 +1,91 @@
+{
+  "schema": "DINO_PERIODICITY_AND_MESH_FORENSICS_V1",
+  "recorded_at_utc": "2026-10-16T13:43:15+00:00",
+  "historical_stage1_result": {
+    "path": "${DINO_ARTIFACT_ROOT}/dino-stage1-scientific-readiness/v1/exploratory-workflow-v1/dino-exhaust-comparison-starter/stage1-original-3000rpm-mesh8-periodicity-v1/result.json",
+    "result_sha256": "9b80cd30d1deb7705eed62ca7b4f6a09b5210f93fc4f2f3c7495e8fa340e5f6a",
+    "run_logged_result_sha256": "9b80cd30d1deb7705eed62ca7b4f6a09b5210f93fc4f2f3c7495e8fa340e5f6a",
+    "periodicity_contract": "REFERENCE_PERIODIC_CONVERGENCE_V2",
+    "reported_periodicity": "NOT_EVALUATED",
+    "run_classification": "EXPLORATORY_TIMEOUT_CHECKPOINTED",
+    "cycles_completed": 4,
+    "cycles": [
+      {
+        "cycle": 1,
+        "comparison_executed": false,
+        "lag1_status": null,
+        "lag1_metrics_count": 0,
+        "lag2_status": null,
+        "lag2_metrics_count": 0,
+        "lag1_streak": 0,
+        "branch_streaks": {
+          "A": 0,
+          "B": 0
+        },
+        "detected_period": null,
+        "audit_recomputed": true
+      },
+      {
+        "cycle": 2,
+        "comparison_executed": true,
+        "lag1_status": "FAIL",
+        "lag1_metrics_count": 449,
+        "lag2_status": null,
+        "lag2_metrics_count": 0,
+        "lag1_streak": 0,
+        "branch_streaks": {
+          "A": 0,
+          "B": 0
+        },
+        "detected_period": null,
+        "audit_recomputed": true
+      },
+      {
+        "cycle": 3,
+        "comparison_executed": true,
+        "lag1_status": "FAIL",
+        "lag1_metrics_count": 449,
+        "lag2_status": "FAIL",
+        "lag2_metrics_count": 449,
+        "lag1_streak": 0,
+        "branch_streaks": {
+          "A": 0,
+          "B": 0
+        },
+        "detected_period": null,
+        "audit_recomputed": true
+      },
+      {
+        "cycle": 4,
+        "comparison_executed": true,
+        "lag1_status": "FAIL",
+        "lag1_metrics_count": 449,
+        "lag2_status": "FAIL",
+        "lag2_metrics_count": 449,
+        "lag1_streak": 0,
+        "branch_streaks": {
+          "A": 0,
+          "B": 0
+        },
+        "detected_period": null,
+        "audit_recomputed": true
+      }
+    ]
+  },
+  "periodicity_diagnosis": {
+    "detector_executed": "YES",
+    "evidence": "Each cycle update persists lag comparison outputs and 449 metric statuses after the first cycle; cycles 2-4 lag1 FAIL, cycles 3-4 lag2 FAIL, streak remains 0, no period accepted.",
+    "reason_for_NOT_EVALUATED": "Existing result serialization maps detector.classification=None to the field NOT_EVALUATED, so it conflates comparisons executed without convergence with detector not invoked or insufficient data. The workflow did execute the V2 detector.",
+    "scientific_classification": "NO_PERIOD_ACCEPTED_BEFORE_TIMEOUT; only 4 of configured maximum 8 cycles completed. Do not call NOT_PERIODIC because registered convergence horizon was not reached. Preserve historical NOT_EVALUATED output unchanged.",
+    "scientific_metrics": "remain undefined; detector failure to meet threshold does not create periodic performance outputs."
+  },
+  "mesh_diagnosis": {
+    "historical_gate": "EXHAUST_NUMERICAL_CONVERGENCE_V2_PARTIAL / FAIL_TERMINAL",
+    "spatial_independence": "NOT_ESTABLISHED",
+    "evidence": "1/2/4 and 1/2/4/8 integrated exhaust diagnostics did not demonstrate monotonic/asymptotic independence; A/B design response cannot be separated from discretization sensitivity.",
+    "new_solver_steps": 0,
+    "proposed_protocol": "openspec/changes/dino-solver-diagnostic-recovery-v1/mesh-protocol.md",
+    "execution_authorized": false
+  },
+  "historical_artifacts_modified": false
+}

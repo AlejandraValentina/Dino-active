@@ -1,0 +1,15 @@
+{
+  "schema": "DINO_WINDOWS_RUNNER_ENCODING_FIX_V1",
+  "classification": "PASS_BOUNDED_SUBPROCESS_REGRESSION",
+  "files": {
+    "scripts\\agents\\run_logged.py": "c9de82559ccc6cb96872a6464a71c5270ff827405340ebf4e0c67527e2e4b34a",
+    "tests\\test_run_logged.py": "cae8ef551f205ab7e6a60f8ac55bf2a3dd7436155e483c4b11707cce248c7d7c"
+  },
+  "tests": [
+    "tests/test_run_logged.py::test_run_logged_child_unicode_is_safe_under_legacy_windows_codepage",
+    "tests/test_run_logged.py::test_run_logged_cli_summary_is_safe_under_cp1252"
+  ],
+  "test_result": "2 PASS",
+  "observed": "Python child process inherited cp1252 before launch and printed integral and delta symbols; child was forced to UTF-8/backslashreplace, UTF-8 log retained both Unicode symbols, parent CLI JSON summary exited normally using backslashreplace, child exit code 0 preserved.",
+  "scientific_artifacts_changed": false
+}

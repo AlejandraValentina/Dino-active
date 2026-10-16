@@ -6,6 +6,7 @@ import threading
 
 import pytest
 
+from motorsim import exploratory_workflow as workflow
 from motorsim.engine_configuration import create, resolve_for_operating_point
 from motorsim.exploratory_workflow import (import_exploratory_runs, preflight,
                                             run_exploratory,_run_directory)
@@ -108,6 +109,37 @@ def test_exploratory_run_cancels_at_step_boundary_and_resumes_audited_checkpoint
         run_exploratory(incompatible, project_id="test-project", run_id="cancel-resume",
             artifact_root=tmp_path, rpm=3100.0, max_cycles=1, budget_seconds=600,
             memory_limit_mib=1024, resume=True)
+
+
+@pytest.mark.parametrize(("failure", "status", "classification"), [
+    (workflow.RunDeadline("test deadline"), "INTERRUPTED_CHECKPOINTED",
+     "EXPLORATORY_TIMEOUT_CHECKPOINTED"),
+    (MemoryError("test memory limit"), "FAILED_CLOSED",
+     "EXPLORATORY_RESOURCE_LIMIT_EXCEEDED"),
+])
+def test_runner_persists_timeout_and_memory_failure_classifications_without_solver(
+        tmp_path, monkeypatch, failure, status, classification):
+    def fail_before_step(*args, **kwargs):
+        raise failure
+
+    monkeypatch.setattr(workflow, "_advance_cycle", fail_before_step)
+    result = run_exploratory(
+        engine_document(), project_id="bounded-failure", run_id=classification.lower(),
+        artifact_root=tmp_path, rpm=3000.0, max_cycles=1, budget_seconds=10,
+        memory_limit_mib=1024,
+    )
+
+    assert result["status"] == status
+    assert result["classification"] == classification
+    assert result["cycles_completed"] == 0
+    assert result["periodicity"] == "NOT_EVALUATED"
+    assert result["checkpoint_sha256"]
+    run_dir = tmp_path / "exploratory-workflow-v1" / "bounded-failure" / classification.lower()
+    checkpoint = json.loads((run_dir / "checkpoint.json").read_text(encoding="utf-8"))
+    manifest = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
+    assert checkpoint["next_cycle"] == 1
+    assert manifest["status"] == status
+    assert manifest["cycles_completed"] == 0
 
 
 def test_exploratory_runner_rejects_existing_partial_directory_without_resume(tmp_path):

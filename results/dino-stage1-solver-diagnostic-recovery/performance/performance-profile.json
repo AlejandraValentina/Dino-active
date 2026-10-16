@@ -1,0 +1,336 @@
+{
+  "schema": "DINO_SOLVER_PERFORMANCE_DIAGNOSTIC_V1",
+  "recorded_at_utc": "2026-10-16T13:58:48+00:00",
+  "classification": "MEASURED_HOTSPOTS_NO_SAFE_SOLVER_OPTIMIZATION_SELECTED",
+  "production_focal_evidence": {
+    "receipt": "results/dino-stage1-scientific-readiness/evidence/focal-periodicity-v1-result.json",
+    "rpm": 3000,
+    "mesh": "EXHAUST_MESH_V2, 8 cells/section, 48 cells",
+    "cycles_completed": 4,
+    "elapsed_solver_seconds": 682.829000000027,
+    "run_logged_wall_seconds": 689.359,
+    "mean_elapsed_seconds_per_completed_cycle": 170.70725000000675,
+    "budget_seconds": 600,
+    "memory_limit_mib": 2048,
+    "workflow_rss_at_finish_bytes": 2051182592,
+    "sampled_windows_working_set_peak_bytes": 2151251968,
+    "sampled_peak_over_limit_mib": 4,
+    "audit_recomputed_each_cycle": true,
+    "limitation": "End-to-end timing only; the historical run did not persist CPU subsystem timings, per-core utilization, per-cycle timings or separate persistence/audit timing. The 4-cycle average is not a horizon or campaign projection."
+  },
+  "bounded_synthetic_engine_test": {
+    "test": "tests/test_integrated_2t.py::test_internal_synthetic_integrated_engine_completes_two_cycles_and_replays",
+    "configuration": "13 duct cells across 5 paths, synthetic test fixture, two complete cycles; not the 48-cell production point",
+    "cprofile": {
+      "wall_seconds": 203.36717390001286,
+      "function_calls": 421127818,
+      "profile_sha256": "803350556f51080852c7cc97e4b931e579a5cf0fba62d8d18fb140775b56f84e",
+      "process_tree_peak_rss_bytes": 1132093440
+    },
+    "unprofiled_repeat": {
+      "wall_seconds": 52.56834060000256,
+      "exit_code": 0,
+      "process_tree_peak_rss_bytes": 1127280640
+    },
+    "profile_overhead_factor": 3.868624567160162,
+    "cpu": {
+      "mean_percent_of_one_core": 98.97788461538461,
+      "max_percent_of_one_core": 100.1,
+      "logical_cores_observed": 12,
+      "receipt": "${DINO_ARTIFACT_ROOT}/dino-stage1-solver-diagnostic-recovery/v1/integrated-fixture-cpu-receipt.json"
+    },
+    "top_cprofile_functions": [
+      {
+        "function": "test_exploratory_run_cancels_at_step_boundary_and_resumes_audited_checkpoint",
+        "file": "tests/test_exploratory_workflow.py",
+        "line": 62,
+        "primitive_calls": 1,
+        "calls": 1,
+        "self_seconds_cprofile": 0.1178325,
+        "cumulative_seconds_cprofile": 357.9686514
+      },
+      {
+        "function": "run_exploratory",
+        "file": "motorsim/exploratory_workflow.py",
+        "line": 445,
+        "primitive_calls": 3,
+        "calls": 3,
+        "self_seconds_cprofile": 0.1904936,
+        "cumulative_seconds_cprofile": 248.10661580000001
+      },
+      {
+        "function": "_run_exploratory_unlocked",
+        "file": "motorsim/exploratory_workflow.py",
+        "line": 254,
+        "primitive_calls": 3,
+        "calls": 3,
+        "self_seconds_cprofile": 0.19827260000000002,
+        "cumulative_seconds_cprofile": 247.891052
+      },
+      {
+        "function": "audit_integrated_cycle_primary",
+        "file": "motorsim/integrated_2t.py",
+        "line": 3569,
+        "primitive_calls": 5,
+        "calls": 5,
+        "self_seconds_cprofile": 0.7493141000000001,
+        "cumulative_seconds_cprofile": 235.69334320000002
+      },
+      {
+        "function": "make_integrated_cycle_primary",
+        "file": "motorsim/integrated_2t.py",
+        "line": 2920,
+        "primitive_calls": 7,
+        "calls": 7,
+        "self_seconds_cprofile": 0.7852245000000001,
+        "cumulative_seconds_cprofile": 142.86024030000002
+      },
+      {
+        "function": "import_exploratory_runs",
+        "file": "motorsim/exploratory_workflow.py",
+        "line": 474,
+        "primitive_calls": 2,
+        "calls": 2,
+        "self_seconds_cprofile": 0.1864966,
+        "cumulative_seconds_cprofile": 107.5483308
+      },
+      {
+        "function": "step",
+        "file": "motorsim/integrated_2t.py",
+        "line": 2068,
+        "primitive_calls": 14615,
+        "calls": 14615,
+        "self_seconds_cprofile": 1.5436478,
+        "cumulative_seconds_cprofile": 104.48228280000001
+      },
+      {
+        "function": "_assemble",
+        "file": "motorsim/integrated_2t.py",
+        "line": 1498,
+        "primitive_calls": 43248,
+        "calls": 43248,
+        "self_seconds_cprofile": 10.042366300000001,
+        "cumulative_seconds_cprofile": 99.03851680000001
+      },
+      {
+        "function": "_jsonify",
+        "file": "motorsim/integrated_2t.py",
+        "line": 223,
+        "primitive_calls": 348316,
+        "calls": 68802760,
+        "self_seconds_cprofile": 41.0678336,
+        "cumulative_seconds_cprofile": 88.5196255
+      },
+      {
+        "function": "deepcopy",
+        "file": "python-stdlib/copy.py",
+        "line": 128,
+        "primitive_calls": 35074,
+        "calls": 22915594,
+        "self_seconds_cprofile": 29.842403700000002,
+        "cumulative_seconds_cprofile": 62.0224435
+      },
+      {
+        "function": "_deepcopy_dict",
+        "file": "python-stdlib/copy.py",
+        "line": 227,
+        "primitive_calls": 44329,
+        "calls": 794923,
+        "self_seconds_cprofile": 2.9503104,
+        "cumulative_seconds_cprofile": 61.8336193
+      },
+      {
+        "function": "_deepcopy_list",
+        "file": "python-stdlib/copy.py",
+        "line": 201,
+        "primitive_calls": 351276,
+        "calls": 2982535,
+        "self_seconds_cprofile": 8.6259031,
+        "cumulative_seconds_cprofile": 56.208516
+      },
+      {
+        "function": "_recompute_trace_stage",
+        "file": "motorsim/integrated_2t.py",
+        "line": 2906,
+        "primitive_calls": 18600,
+        "calls": 18600,
+        "self_seconds_cprofile": 0.10719450000000001,
+        "cumulative_seconds_cprofile": 47.0101865
+      },
+      {
+        "function": "_advance_cycle",
+        "file": "motorsim/exploratory_workflow.py",
+        "line": 192,
+        "primitive_calls": 3,
+        "calls": 3,
+        "self_seconds_cprofile": 0.1062082,
+        "cumulative_seconds_cprofile": 36.930839
+      },
+      {
+        "function": "_evidence_sha256",
+        "file": "motorsim/integrated_2t.py",
+        "line": 57,
+        "primitive_calls": 62,
+        "calls": 62,
+        "self_seconds_cprofile": 0.31024470000000004,
+        "cumulative_seconds_cprofile": 36.4902345
+      },
+      {
+        "function": "_deepcopy_tuple",
+        "file": "python-stdlib/copy.py",
+        "line": 210,
+        "primitive_calls": 1039739,
+        "calls": 1040766,
+        "self_seconds_cprofile": 1.8625947,
+        "cumulative_seconds_cprofile": 10.132444000000001
+      },
+      {
+        "function": "_json_bytes",
+        "file": "motorsim/exploratory_workflow.py",
+        "line": 73,
+        "primitive_calls": 30,
+        "calls": 30,
+        "self_seconds_cprofile": 0.0641618,
+        "cumulative_seconds_cprofile": 6.613308900000001
+      },
+      {
+        "function": "_deepcopy_atomic",
+        "file": "python-stdlib/copy.py",
+        "line": 182,
+        "primitive_calls": 18097370,
+        "calls": 18097370,
+        "self_seconds_cprofile": 2.2896679,
+        "cumulative_seconds_cprofile": 2.2896679
+      },
+      {
+        "function": "compress",
+        "file": "python-stdlib/gzip.py",
+        "line": 576,
+        "primitive_calls": 2,
+        "calls": 2,
+        "self_seconds_cprofile": 1.2800000000000001e-05,
+        "cumulative_seconds_cprofile": 1.2712167
+      },
+      {
+        "function": "<built-in method zlib.compress>",
+        "file": "~",
+        "line": 0,
+        "primitive_calls": 2,
+        "calls": 2,
+        "self_seconds_cprofile": 1.2712039000000002,
+        "cumulative_seconds_cprofile": 1.2712039000000002
+      },
+      {
+        "function": "decompress",
+        "file": "python-stdlib/gzip.py",
+        "line": 594,
+        "primitive_calls": 3,
+        "calls": 3,
+        "self_seconds_cprofile": 0.0043875,
+        "cumulative_seconds_cprofile": 0.1847348
+      },
+      {
+        "function": "<method 'decompress' of 'zlib.Decompress' objects>",
+        "file": "~",
+        "line": 0,
+        "primitive_calls": 3,
+        "calls": 3,
+        "self_seconds_cprofile": 0.14042980000000002,
+        "cumulative_seconds_cprofile": 0.14042980000000002
+      },
+      {
+        "function": "_atomic_write",
+        "file": "motorsim/exploratory_workflow.py",
+        "line": 77,
+        "primitive_calls": 15,
+        "calls": 15,
+        "self_seconds_cprofile": 0.0005528,
+        "cumulative_seconds_cprofile": 0.1078128
+      },
+      {
+        "function": "_integrated_nominal_step_end",
+        "file": "motorsim/integrated_2t.py",
+        "line": 156,
+        "primitive_calls": 6614,
+        "calls": 6614,
+        "self_seconds_cprofile": 0.027809900000000002,
+        "cumulative_seconds_cprofile": 0.031056700000000003
+      },
+      {
+        "function": "<built-in method zlib.decompressobj>",
+        "file": "~",
+        "line": 0,
+        "primitive_calls": 3,
+        "calls": 3,
+        "self_seconds_cprofile": 2.0700000000000002e-05,
+        "cumulative_seconds_cprofile": 2.0700000000000002e-05
+      },
+      {
+        "function": "DecompressReader",
+        "file": "python-stdlib/_compression.py",
+        "line": 33,
+        "primitive_calls": 1,
+        "calls": 1,
+        "self_seconds_cprofile": 2.5e-06,
+        "cumulative_seconds_cprofile": 2.5e-06
+      },
+      {
+        "function": "_check_compression",
+        "file": "python-stdlib/zipfile.py",
+        "line": 689,
+        "primitive_calls": 2,
+        "calls": 2,
+        "self_seconds_cprofile": 1.1e-06,
+        "cumulative_seconds_cprofile": 1.1e-06
+      },
+      {
+        "function": "LZMADecompressor",
+        "file": "python-stdlib/zipfile.py",
+        "line": 641,
+        "primitive_calls": 1,
+        "calls": 1,
+        "self_seconds_cprofile": 4.0000000000000003e-07,
+        "cumulative_seconds_cprofile": 4.0000000000000003e-07
+      }
+    ]
+  },
+  "end_to_end_checkpoint_resume_fixture": {
+    "test": "tests/test_exploratory_workflow.py::test_exploratory_run_cancels_at_step_boundary_and_resumes_audited_checkpoint",
+    "scope": "Synthetic 13-cell configuration; cancel during cycle 2, checkpoint cycle 1, resume, independently replay audits, import/re-audit canonical artifacts, reject incompatible configuration.",
+    "cprofile_wall_seconds": 359.5793215999729,
+    "unprofiled_wall_seconds": 115.437,
+    "profile_overhead_factor": 3.1149399378013367,
+    "cprofile_process_tree_peak_rss_bytes": 763965440,
+    "profile_sha256": "cb55f039ea6a1181fc16204195827da756c2aa108c2b81622b6ae386cc8dda6a",
+    "dominant_inclusive_costs_seconds": {
+      "run_exploratory": 248.107,
+      "audit_integrated_cycle_primary": 235.693,
+      "make_integrated_cycle_primary": 142.86,
+      "import_exploratory_runs": 107.548,
+      "step": 104.482,
+      "_assemble": 99.039,
+      "_jsonify": 88.52,
+      "deepcopy": 62.022,
+      "_recompute_trace_stage": 47.01,
+      "_advance_cycle": 36.931,
+      "_evidence_sha256": 36.49,
+      "_json_bytes": 6.613,
+      "compress": 1.271,
+      "_atomic_write": 0.108
+    },
+    "notes": "Cumulative times overlap (nested calls); do not sum. Five independent primary audits dominated this instrumented test. gzip compression, JSON byte production and atomic file writes were separately visible and small relative to audit/reconstruction on this small fixture. cProfile increases wall time by the recorded factor."
+  },
+  "optimization_decision": {
+    "solver_or_evidence_changes_applied": false,
+    "reason": "Deep-copy/JSON conversion and independent primary replay are hotspots, but this fixture includes deliberate mutation branches and repeated re-audits. Removing copies or audit work could weaken independence or change identity. No production-equivalent before/after canonical artifact comparison was authorized or established, so no solver/performance optimization was selected. Persistence writer remains conventional.",
+    "safe_operational_change": "scripts/agents/run_logged.py uses explicit UTF-8 child output and backslash-safe parent console output; no scientific data path changes.",
+    "campaign_runtime_viability": "NOT_ESTABLISHED; one production point exceeded the fixed 600-second budget at four cycles and sampled RSS exceeded configured 2048 MiB by 4 MiB."
+  },
+  "measurement_limits": [
+    "No production per-core CPU sample was recorded; per-core receipt is for the 13-cell synthetic unit fixture only.",
+    "Profiler wall times are instrumented and are not production cycle-time claims.",
+    "The engine unit test does not include persistence; the workflow integration profile includes it.",
+    "No campaign, mesh study, new production RPM point or exhausted-checkpoint resume occurred."
+  ],
+  "artifact_root": "${DINO_ARTIFACT_ROOT}/dino-stage1-solver-diagnostic-recovery/v1"
+}

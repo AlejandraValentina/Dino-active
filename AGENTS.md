@@ -22,21 +22,15 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_2T_STAGE1_SCIENTIFIC_READINESS
-change/spec:       openspec/changes/dino-stage1-scientific-readiness/
-                   (specs/dino-stage1-scientific-readiness/spec.md is the authority)
-completion:        classify spatial independence, periodicity, conservation and
-                   performance consistency from reproducible hash-bound evidence;
-                   prepare RPM contract/preflight only. No campaign authorization,
-                   no full RPM sweep, no Stage 2 or later-stage activation.
+CURRENT_OBJECTIVE: DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1
+change/spec:       openspec/changes/dino-solver-diagnostic-recovery-v1/
+                   specs/dino-solver-diagnostic-recovery-v1/spec.md
+completion:        Measured bounded diagnostics, explicit periodicity and mesh limits, IMPL2 drift analysis, and safe Windows output handling; no campaign, no exhausted-run resume, no scientific criterion changes.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```
 
-El valor machine-readable vive en `program-status.json → current_objective`; si
-difiere de este bloque, prevalece `program-status.json` y se corrige este archivo
-en el mismo commit. Objetivos siguientes: `program-status.json → objectives`.
-Sólo se pasa automáticamente al siguiente si tiene `owner_approved: true`.
+The machine-readable value lives in `program-status.json → current_objective`; if it differs from this block, the JSON prevails and this file is corrected in the same commit.
 
 ## 2. Condiciones de terminación (las ÚNICAS)
 

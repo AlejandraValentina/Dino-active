@@ -1,0 +1,20 @@
+{
+  "schema": "DINO_SOLVER_DIAGNOSTIC_VERIFICATION_V1",
+  "recorded_at_utc": "2026-10-16T13:59:09+00:00",
+  "pytest_bounded_suite": {
+    "command": "python -m pytest tests/test_run_logged.py tests/test_periodicity_e13_r1.py tests/test_exploratory_workflow.py::test_exploratory_run_cancels_at_step_boundary_and_resumes_audited_checkpoint tests/test_exploratory_workflow.py::test_runner_persists_timeout_and_memory_failure_classifications_without_solver tests/scientific_stage1/test_periodicity_preflight.py -q",
+    "result": "15 passed in 120.92s",
+    "run_logged_summary": "${DINO_ARTIFACT_ROOT}/dino-stage1-solver-diagnostic-recovery/v1/tests/bounded-recovery-regressions.summary.json"
+  },
+  "repeat_cancel_resume": {
+    "command": "python -m pytest tests/test_exploratory_workflow.py::test_exploratory_run_cancels_at_step_boundary_and_resumes_audited_checkpoint -q",
+    "result": "1 passed in 114.36s",
+    "run_logged_summary": "${DINO_ARTIFACT_ROOT}/dino-stage1-solver-diagnostic-recovery/v1/tests/isolated-cancel-resume-repeat.summary.json"
+  },
+  "encoding_tests": "2 passed in 0.32s",
+  "openspec_strict": "PASS: openspec validate dino-solver-diagnostic-recovery-v1 --strict --no-interactive",
+  "program_status_check": "PASS after final gate closure",
+  "solver_physics_changed": false,
+  "full_rpm_campaign_started": false,
+  "exhausted_focal_resume": false
+}

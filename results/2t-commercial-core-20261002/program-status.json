@@ -5527,6 +5527,86 @@
       ],
       "classification": "PREFLIGHT_FAIL_CLOSED_STALE_SOLVER_HASH_GLOBAL_BUDGET_UNSET",
       "unblock_tasks": []
+    },
+    {
+      "id": "SDR-PERF-PROFILE",
+      "description": "Profile solver, audit, persistence and allocation costs from existing evidence and bounded fixtures; do not resume or repeat the exhausted focal run.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1",
+      "owner_role": "verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/dino-stage1-solver-diagnostic-recovery/performance/",
+        "tests/"
+      ],
+      "blocker": null,
+      "unblock_tasks": [],
+      "evidence": [
+        "results/dino-stage1-solver-diagnostic-recovery/performance/performance-profile.json sha256:6afdbed3e06a79e8f1b3116b1f71995200b940af8d9ca960a1835e477551d630",
+        "External raw cProfile files and samplers are under ${DINO_ARTIFACT_ROOT}/dino-stage1-solver-diagnostic-recovery/v1; synthetic 13-cell test only; no solver optimization selected because canonical production before/after equivalence was not established."
+      ],
+      "commits": []
+    },
+    {
+      "id": "SDR-PERIODICITY-MESH",
+      "description": "Trace the existing detector outcome and write a multi-resolution verification protocol from historical evidence; do not execute mesh studies or change thresholds.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1",
+      "owner_role": "physics/numerics",
+      "evidence_level": "L1",
+      "write_scope": [
+        "openspec/changes/dino-solver-diagnostic-recovery-v1/",
+        "results/dino-stage1-solver-diagnostic-recovery/science/"
+      ],
+      "blocker": null,
+      "unblock_tasks": [],
+      "evidence": [
+        "results/dino-stage1-solver-diagnostic-recovery/science/periodicity-mesh-assessment.json",
+        "openspec/changes/dino-solver-diagnostic-recovery-v1/mesh-protocol.md",
+        "No new solver steps; historical Stage 1 detector comparisons were executed but no period accepted before timeout."
+      ],
+      "commits": []
+    },
+    {
+      "id": "SDR-IMPL2-IDENTITY",
+      "description": "Compare current integrated engine source to registered IMPL2 provenance and classify physical versus audit-only changes; preserve the preregistration.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1",
+      "owner_role": "contract/regression guardian",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/dino-stage1-solver-diagnostic-recovery/identity/"
+      ],
+      "blocker": null,
+      "unblock_tasks": [],
+      "evidence": [
+        "results/dino-stage1-solver-diagnostic-recovery/identity/impl2-derivative-identity-candidate.json",
+        "The sole source hash mismatch is motorsim.integrated_2t.py; source-derived derivative identity candidate is not a preregistration or campaign authorization."
+      ],
+      "commits": []
+    },
+    {
+      "id": "SDR-WINDOWS-HARDENING",
+      "description": "Fix Windows child-process Unicode output safely, and test timeout/resource/cancel/checkpoint classifications with bounded fixtures only.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "scripts/agents/run_logged.py",
+        "tests/test_run_logged.py",
+        "results/dino-stage1-solver-diagnostic-recovery/operations/"
+      ],
+      "blocker": null,
+      "unblock_tasks": [],
+      "evidence": [
+        "scripts/agents/run_logged.py UTF-8 child and backslash-safe summary; tests/test_run_logged.py 2 PASS; results/dino-stage1-solver-diagnostic-recovery/operations/cp1252-regression.json"
+      ],
+      "commits": []
     }
   ],
   "audit_remediation_mode": false,
@@ -5727,21 +5807,22 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
-    "state": "ACTIVE",
+    "id": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1",
+    "state": "FAIL_TERMINAL",
     "owner_approved": true,
-    "summary": "Owner-authorized next objective only after DINO_DESKTOP_V3_1_VISUAL_PARITY closes: Stage 1 scientific forensics, preregistered bounded numerical evidence for mesh/periodicity/conservation/performance consistency, then RPM contract/preflight preparation. No full campaign, no Stage 2 execution, no optimization, and no stages 3/4 activation.",
-    "change": "openspec/changes/dino-stage1-scientific-readiness",
-    "spec": "openspec/changes/dino-stage1-scientific-readiness/specs/dino-stage1-scientific-readiness/spec.md",
-    "authorization_source": "Explicit owner instruction in DINO 2T roadmap continuation request (2026-10-16); execution is ordered after current V3.1 closure.",
-    "transitioned_from": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
+    "summary": "Bounded profiling, workflow classification, mesh protocol, IMPL2 source drift candidate, CP1252 fix and focused verification are complete. Scientific/operational limits remain: production point exceeded 600 s and 2048 MiB sampled RSS, periodicity was not accepted before timeout, mesh independence remains NOT_ESTABLISHED, and the frozen IMPL2 identity is incompatible with current integrated_2t.py. No solver optimization was justified, campaign launched, or exhausted focal run resumed.",
+    "change": "openspec/changes/dino-solver-diagnostic-recovery-v1",
+    "spec": "openspec/changes/dino-solver-diagnostic-recovery-v1/specs/dino-solver-diagnostic-recovery-v1/spec.md",
+    "authorization_source": "Explicit owner request in CODEX — DINO 2T: Diagnóstico y recuperación del solver científico (2026-10-16)",
+    "transitioned_from": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
     "gate_tasks": [
-      "S1-FORENSICS",
-      "S1-PROTOCOL",
-      "S1-BOUNDED-EVIDENCE",
-      "S1-RPM-PREPARATION"
+      "SDR-PERF-PROFILE",
+      "SDR-PERIODICITY-MESH",
+      "SDR-IMPL2-IDENTITY",
+      "SDR-WINDOWS-HARDENING"
     ],
-    "completion_criterion": "Classify mesh independence, periodicity, conservation and performance consistency from reproducible, hash-bound evidence or state precise PARTIAL/BLOCKED limits; prepare an RPM contract/preflight only, preserving all historical artifacts and without campaign execution."
+    "completion_criterion": "Produce measured, reproducible diagnostics and a safe operational correction; preserve all historical identities; classify scientific readiness limits without campaigns or claims beyond evidence.",
+    "classification": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_PARTIAL"
   },
   "objectives": [
     {
@@ -6151,9 +6232,9 @@
     },
     {
       "id": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
-      "state": "ACTIVE",
+      "state": "FAIL_TERMINAL",
       "owner_approved": true,
-      "summary": "Owner-authorized next objective only after DINO_DESKTOP_V3_1_VISUAL_PARITY closes: Stage 1 scientific forensics, preregistered bounded numerical evidence for mesh/periodicity/conservation/performance consistency, then RPM contract/preflight preparation. No full campaign, no Stage 2 execution, no optimization, and no stages 3/4 activation.",
+      "summary": "Historical Stage 1 gate closed as FAIL_TERMINAL/PARTIAL; its four-cycle timeout, NOT_EVALUATED output, spatial NOT_ESTABLISHED evidence and stale IMPL2 hash remain immutable.",
       "change": "openspec/changes/dino-stage1-scientific-readiness",
       "spec": "openspec/changes/dino-stage1-scientific-readiness/specs/dino-stage1-scientific-readiness/spec.md",
       "gate_tasks": [
@@ -6165,7 +6246,45 @@
       "completion_criterion": "Classify mesh independence, periodicity, conservation and performance consistency from reproducible, hash-bound evidence or state precise PARTIAL/BLOCKED limits; prepare an RPM contract/preflight only, preserving all historical artifacts and without campaign execution.",
       "authorization_source": "Explicit owner instruction in DINO 2T roadmap continuation request (2026-10-16); execution is ordered after current V3.1 closure.",
       "transitioned_from": "DINO_DESKTOP_V3_1_VISUAL_PARITY",
-      "activated_at": "2026-10-16T13:05:00-03:00"
+      "activated_at": "2026-10-16T13:05:00-03:00",
+      "classification": "DINO_STAGE1_SCIENTIFIC_READINESS_PARTIAL"
+    },
+    {
+      "id": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1",
+      "state": "FAIL_TERMINAL",
+      "owner_approved": true,
+      "summary": "Bounded profiling, workflow classification, mesh protocol, IMPL2 source drift candidate, CP1252 fix and focused verification are complete. Scientific/operational limits remain: production point exceeded 600 s and 2048 MiB sampled RSS, periodicity was not accepted before timeout, mesh independence remains NOT_ESTABLISHED, and the frozen IMPL2 identity is incompatible with current integrated_2t.py. No solver optimization was justified, campaign launched, or exhausted focal run resumed.",
+      "change": "openspec/changes/dino-solver-diagnostic-recovery-v1",
+      "spec": "openspec/changes/dino-solver-diagnostic-recovery-v1/specs/dino-solver-diagnostic-recovery-v1/spec.md",
+      "authorization_source": "Explicit owner request in CODEX — DINO 2T: Diagnóstico y recuperación del solver científico (2026-10-16)",
+      "transitioned_from": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
+      "gate_tasks": [
+        "SDR-PERF-PROFILE",
+        "SDR-PERIODICITY-MESH",
+        "SDR-IMPL2-IDENTITY",
+        "SDR-WINDOWS-HARDENING"
+      ],
+      "completion_criterion": "Produce measured, reproducible diagnostics and a safe operational correction; preserve all historical identities; classify scientific readiness limits without campaigns or claims beyond evidence.",
+      "classification": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_PARTIAL",
+      "gate_status_archive": {
+        "objective": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1",
+        "state": "FAIL_TERMINAL",
+        "classification": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_PARTIAL",
+        "evidence": [
+          "results/dino-stage1-solver-diagnostic-recovery/technical-report.md",
+          "results/dino-stage1-solver-diagnostic-recovery/performance/performance-profile.json",
+          "results/dino-stage1-solver-diagnostic-recovery/science/periodicity-mesh-assessment.json",
+          "results/dino-stage1-solver-diagnostic-recovery/identity/impl2-derivative-identity-candidate.json",
+          "results/dino-stage1-solver-diagnostic-recovery/verification.json"
+        ],
+        "gate_tasks_total": 4,
+        "gate_tasks_done": 4,
+        "gate_task_states": {
+          "DONE": 4
+        },
+        "remaining": [],
+        "updated_at": "2026-10-16T13:59:32+00:00"
+      }
     }
   ],
   "owner_decisions_pending": [
@@ -7386,6 +7505,42 @@
       "task": "S1-RPM-PREPARATION",
       "kind": "task",
       "summary": "Read-only IMPL2 contract and source-hash preflight completed for 2x15 RPM; fail-closed on one stale integrated_2t hash and unset future global campaign budget; no solver or runner execution."
+    },
+    {
+      "at": "2026-10-16T13:40:23+00:00",
+      "task": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1",
+      "kind": "transition",
+      "summary": "Owner-authorized diagnostic recovery activated after preserving Stage 1 as terminal PARTIAL. Scope excludes campaigns, exhausted focal resume, scientific criterion changes and automatic IMPL2 hash updates."
+    },
+    {
+      "at": "2026-10-16T13:59:18+00:00",
+      "task": "SDR-PERF-PROFILE",
+      "kind": "task",
+      "summary": "Measured synthetic 13-cell engine and checkpoint/resume pipeline: replay/audit and JSON reconstruction dominate the profiled fixture; compression and atomic writes are small. No safe production-equivalent optimization was established, so solver/evidence pipeline unchanged."
+    },
+    {
+      "at": "2026-10-16T13:59:18+00:00",
+      "task": "SDR-PERIODICITY-MESH",
+      "kind": "task",
+      "summary": "Historical detector executed with 449 lag-1 metrics per comparison; all comparisons failed before the 4-cycle timeout. Preserve final NOT_EVALUATED and classify no accepted period before timeout. Mesh remains NOT_ESTABLISHED; protocol written, no mesh study."
+    },
+    {
+      "at": "2026-10-16T13:59:19+00:00",
+      "task": "SDR-IMPL2-IDENTITY",
+      "kind": "task",
+      "summary": "Only one of 24 registered source hashes differs: integrated_2t.py. Power-valve RPM lookup changes numerical geometry at floating-point boundaries; audit baseline flag changes replay only. Historical preregistration retained; candidate identity is unauthorized."
+    },
+    {
+      "at": "2026-10-16T13:59:19+00:00",
+      "task": "SDR-WINDOWS-HARDENING",
+      "kind": "task",
+      "summary": "run_logged child UTF-8 and parent cp1252-safe summary verified by two subprocess tests. Existing cancel/checkpoint/resume, timeout and memory-failure classifications passed bounded tests."
+    },
+    {
+      "at": "2026-10-16T13:59:32+00:00",
+      "task": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1",
+      "kind": "gate",
+      "summary": "Closed diagnostic-recovery objective as FAIL_TERMINAL/PARTIAL with bounded measurements and explicit remaining blockers. Stage 1 and all IMPL2/v1 historical artifacts and preregistrations preserved; no campaigns or exhausted-focal resume."
     }
   ],
   "legacy_gate_status": {
@@ -7400,11 +7555,15 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
+    "objective": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_V1",
     "state": "FAIL_TERMINAL",
-    "classification": "DINO_STAGE1_SCIENTIFIC_READINESS_PARTIAL",
+    "classification": "DINO_2T_SOLVER_DIAGNOSTIC_RECOVERY_PARTIAL",
     "evidence": [
-      "Forensics, frozen single-point preregistration, partial four-cycle timeout-checkpointed evidence, and read-only RPM preflight are persisted; spatial independence NOT_ESTABLISHED, periodicity NOT_EVALUATED, diagnostic budget exceeded by 89.359 s, and current IMPL2 campaign preflight FAIL_CLOSED on stale motorsim.integrated_2t hash. No campaign authorization or execution."
+      "results/dino-stage1-solver-diagnostic-recovery/technical-report.md",
+      "results/dino-stage1-solver-diagnostic-recovery/performance/performance-profile.json",
+      "results/dino-stage1-solver-diagnostic-recovery/science/periodicity-mesh-assessment.json",
+      "results/dino-stage1-solver-diagnostic-recovery/identity/impl2-derivative-identity-candidate.json",
+      "results/dino-stage1-solver-diagnostic-recovery/verification.json"
     ],
     "gate_tasks_total": 4,
     "gate_tasks_done": 4,
@@ -7412,7 +7571,7 @@
       "DONE": 4
     },
     "remaining": [],
-    "updated_at": "2026-10-16T13:34:27+00:00"
+    "updated_at": "2026-10-16T13:59:32+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -7460,7 +7619,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-15T16:15:03+00:00",
+  "updated_at": "2026-10-16T13:59:32+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -7693,6 +7852,21 @@
       "updated_at": "2026-10-15T11:02:45+00:00",
       "transitioned_to": "DINO_COMMERCIAL_DESKTOP_V3",
       "transition_authorization": "results/dino-commercial-desktop-v3/owner-authorization.json"
+    },
+    {
+      "objective": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
+      "state": "FAIL_TERMINAL",
+      "classification": "DINO_STAGE1_SCIENTIFIC_READINESS_PARTIAL",
+      "evidence": [
+        "Forensics, frozen single-point preregistration, partial four-cycle timeout-checkpointed evidence, and read-only RPM preflight are persisted; spatial independence NOT_ESTABLISHED, periodicity NOT_EVALUATED, diagnostic budget exceeded by 89.359 s, and current IMPL2 campaign preflight FAIL_CLOSED on stale motorsim.integrated_2t hash. No campaign authorization or execution."
+      ],
+      "gate_tasks_total": 4,
+      "gate_tasks_done": 4,
+      "gate_task_states": {
+        "DONE": 4
+      },
+      "remaining": [],
+      "updated_at": "2026-10-16T13:34:27+00:00"
     }
   ],
   "gate_status_archive_before_dino_desktop_v3_1": {
