@@ -28,7 +28,7 @@ def _number(text: str, label: str) -> float:
 class ExhaustProfile(QWidget):
     """Dimensionally scaled (equal mm/px on both axes) conical profile."""
     def __init__(self,parent=None):
-        super().__init__(parent);self.sections=[];self.overlay=[];self.refinements=[];self.changed_sections=set();self.setMinimumHeight(340)
+        super().__init__(parent);self.sections=[];self.overlay=[];self.refinements=[];self.changed_sections=set();self.compact=False;self.setMinimumHeight(340)
 
     def set_sections(self,sections,refinements=None,overlay=None,changed_sections=None):
         self.sections=deepcopy(sections);self.overlay=deepcopy(overlay or [])
@@ -55,12 +55,28 @@ class ExhaustProfile(QWidget):
                 if i in self.changed_sections:
                     painter.fillRect(round(x0),rect.top(),max(2,round(x1-x0)),rect.height(),QColor(245,158,11,24))
                 painter.setPen(QColor("#cad8e7"))
-                painter.drawText(round((x0+x1)/2)-70,rect.top()+13,140,16,Qt.AlignmentFlag.AlignCenter,
-                                 f"Ø {s['inlet_diameter_mm']:.1f} → {s['outlet_diameter_mm']:.1f} mm")
+                if self.compact:
+                    # In compact mode the segment table below carries the exact
+                    # dimensions. Keep the drawing readable by identifying each
+                    # segment by its table name instead of squeezing values into
+                    # narrow slices of the profile.
+                    font=painter.font();font.setPointSizeF(7.0);painter.setFont(font)
+                    painter.setPen(QPen(QColor("#91a8bf"),1));painter.drawLine(round(x0),rect.bottom()+8,round(x1),rect.bottom()+8)
+                    painter.drawLine(round(x0),rect.bottom()+4,round(x0),rect.bottom()+12);painter.drawLine(round(x1),rect.bottom()+4,round(x1),rect.bottom()+12)
+                    painter.setPen(QColor("#cad8e7"))
+                    label_width=max(1,round(x1-x0));label_x=round(x0)
+                    painter.drawText(label_x,rect.bottom()+26,label_width,16,Qt.AlignmentFlag.AlignCenter,s["name"])
+                else:
+                    label_width=140;label_x=round((x0+x1)/2)-70
+                    painter.drawText(label_x,rect.top()+13,label_width,16,Qt.AlignmentFlag.AlignCenter,
+                                     f"Ø {s['inlet_diameter_mm']:.1f} → {s['outlet_diameter_mm']:.1f} mm")
                 painter.setPen(QPen(QColor("#91a8bf"),1));painter.drawLine(round(x0),rect.bottom()+8,round(x1),rect.bottom()+8)
                 painter.drawLine(round(x0),rect.bottom()+4,round(x0),rect.bottom()+12);painter.drawLine(round(x1),rect.bottom()+4,round(x1),rect.bottom()+12)
-                painter.setPen(QColor("#cad8e7"));painter.drawText(round((x0+x1)/2)-76,rect.bottom()+26,152,16,Qt.AlignmentFlag.AlignCenter,
-                                 f"{s['name']} · {s['length_mm']:.1f} mm")
+                painter.setPen(QColor("#cad8e7"))
+                if not self.compact:
+                    label_width=152;label_x=round((x0+x1)/2)-76
+                    painter.drawText(label_x,rect.bottom()+26,label_width,16,Qt.AlignmentFlag.AlignCenter,
+                                     f"{s['name']} · {s['length_mm']:.1f} mm")
             cursor+=s["length_mm"]
         painter.setPen(QPen(QColor(color),width,style));painter.drawPolyline(upper);painter.drawPolyline(list(reversed(lower)))
 
@@ -82,8 +98,8 @@ class ExhaustPage(QWidget):
         self.intro=QLabel("Perfil y tabla por tramo. Los deltas geométricos no estiman prestaciones.");root.addWidget(self.intro)
         self.profile=ExhaustProfile()
         self.diff=QLabel("Elegí una baseline para ver diferencias de ingeniería.");self.diff.setWordWrap(True)
-        diff_panel=QGroupBox("Cambios vs baseline");diff_layout=QVBoxLayout(diff_panel);diff_layout.addWidget(self.diff)
-        profile_split=QSplitter(Qt.Orientation.Horizontal);profile_split.setChildrenCollapsible(False);profile_split.addWidget(self.profile);profile_split.addWidget(diff_panel);profile_split.setStretchFactor(0,4);profile_split.setStretchFactor(1,1);root.addWidget(profile_split)
+        self.diff_panel=QGroupBox("Cambios vs baseline");diff_layout=QVBoxLayout(self.diff_panel);diff_layout.addWidget(self.diff)
+        self.profile_split=QSplitter(Qt.Orientation.Horizontal);self.profile_split.setChildrenCollapsible(False);self.profile_split.addWidget(self.profile);self.profile_split.addWidget(self.diff_panel);self.profile_split.setStretchFactor(0,4);self.profile_split.setStretchFactor(1,1);root.addWidget(self.profile_split)
         self.overlay_selector=QComboBox();self.overlay_selector.addItem("Motor base", "base")
         for name in sorted(context.project["variants"]):self.overlay_selector.addItem(name,name)
         self.overlay_selector.currentIndexChanged.connect(self.refresh_overlay)
@@ -102,6 +118,7 @@ class ExhaustPage(QWidget):
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.table.setMaximumHeight(260);self.table.cellChanged.connect(self._cell_changed)
         segment_group=QGroupBox("Tramos · editá largo y Ø de salida; la estación compartida actualiza el tramo siguiente")
+        self.segment_group=segment_group
         segment_layout=QVBoxLayout(segment_group);segment_layout.addWidget(self.table);root.addWidget(segment_group);root.addWidget(station_group)
 
         self.mesh_group=QGroupBox("Opciones avanzadas · malla numérica");self.mesh_group.setCheckable(True);self.mesh_group.setChecked(False)
@@ -192,12 +209,33 @@ class ExhaustPage(QWidget):
 
     def resizeEvent(self,event):
         super().resizeEvent(event)
-        compact=self.width()<=1120
-        self.set_compact_layout(compact,self.width()<=1000)
+        # The component stack may retain a wider child size than the window
+        # while its splitter is being laid out. Use the actual window width so
+        # a compact resize cannot be undone by that transient child geometry.
+        width=self.window().width()
+        compact=width<=1120
+        self.set_compact_layout(compact,width<=1000)
 
     def set_compact_layout(self,compact,very_compact=False):
         self.title.setVisible(not compact);self.intro.setVisible(not compact)
-        self.profile.setMinimumHeight(125 if very_compact else 220 if compact else 300)
+        self.profile.compact=compact;self.profile.update()
+        self.profile.setMinimumHeight(90 if very_compact else 150 if compact else 300)
+        self.profile.setMaximumHeight(110 if very_compact else 175 if compact else 16777215)
+        # At compact widths the delta column already carries the per-section
+        # differences. Hide the redundant summary panel and reserve enough
+        # vertical space for the complete editable segment table.
+        self.diff_panel.setVisible(not compact)
+        # Preserve a readable collapsed header at compact height; 38 px clipped
+        # the group title in the packaged 980×680 view.
+        self.mesh_group.setMaximumHeight(50 if compact else 16777215)
+        self.table.verticalHeader().setDefaultSectionSize(20 if compact else 30)
+        if compact:
+            for row in range(self.table.rowCount()):self.table.setRowHeight(row,20)
+            self.table.setMaximumHeight(210)
+            self.segment_group.setMaximumHeight(240)
+        else:
+            self.table.setMaximumHeight(260)
+            self.segment_group.setMaximumHeight(16777215)
 
     def _rows(self):
         rows=[];source_sections=escape_sections(self.context.engine())
