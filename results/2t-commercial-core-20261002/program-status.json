@@ -5425,6 +5425,86 @@
         "new Windows TRIAL EXE navigated through six Design sections and Analysis",
         "navigation-redesign-receipt.json; real executable captures"
       ]
+    },
+    {
+      "id": "S1-FORENSICS",
+      "description": "Read-only inventory of prior receipts, configurations, tests, and reproducible mesh/periodicity cases; no solver execution.",
+      "dependencies": [
+        "V31-PACKAGED-ACCEPTANCE"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Read-only inventory of prior receipts, configurations, tests, and reproducible mesh/periodicity cases; no solver execution.",
+      "objective": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/dino-stage1-scientific-readiness/forensics/"
+      ],
+      "classification": "NO_CAMPAIGN_AUTHORIZATION"
+    },
+    {
+      "id": "S1-PROTOCOL",
+      "description": "Write versioned diagnostic protocol/preregistration with justified observables, error categories, provenance and bounded budget before new numerical work.",
+      "dependencies": [
+        "S1-FORENSICS"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Write versioned diagnostic protocol/preregistration with justified observables, error categories, provenance and bounded budget before new numerical work.",
+      "objective": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
+      "owner_role": "architecture",
+      "evidence_level": "L1",
+      "write_scope": [
+        "openspec/changes/dino-stage1-scientific-readiness/",
+        "results/dino-stage1-scientific-readiness/preregistration/"
+      ],
+      "classification": "NO_CAMPAIGN_AUTHORIZATION"
+    },
+    {
+      "id": "S1-BOUNDED-EVIDENCE",
+      "description": "Run only focal diagnostics explicitly permitted by preregistration/specification; audit conservation/replay and classify results without relaxing criteria.",
+      "dependencies": [
+        "S1-PROTOCOL"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Run only focal diagnostics explicitly permitted by preregistration/specification; audit conservation/replay and classify results without relaxing criteria.",
+      "objective": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
+      "owner_role": "physics/numerics",
+      "evidence_level": "L1",
+      "write_scope": [
+        "tests/scientific_stage1/",
+        "scripts/diagnostics/stage1/",
+        "results/dino-stage1-scientific-readiness/evidence/"
+      ],
+      "classification": "NO_CAMPAIGN_AUTHORIZATION"
+    },
+    {
+      "id": "S1-RPM-PREPARATION",
+      "description": "Prepare RPM curve contract and no-solver preflight for hashes, grid, WOT, fuel/AFR/losses, outputs, resources, restart and budgets; do not authorize or run points.",
+      "dependencies": [
+        "S1-BOUNDED-EVIDENCE"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Prepare RPM curve contract and no-solver preflight for hashes, grid, WOT, fuel/AFR/losses, outputs, resources, restart and budgets; do not authorize or run points.",
+      "objective": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
+      "owner_role": "contract/regression guardian",
+      "evidence_level": "L1",
+      "write_scope": [
+        "openspec/changes/dino-stage1-scientific-readiness/",
+        "results/dino-stage1-scientific-readiness/rpm-preflight/"
+      ],
+      "classification": "NO_CAMPAIGN_AUTHORIZATION"
     }
   ],
   "audit_remediation_mode": false,
@@ -6048,6 +6128,22 @@
       "change": "openspec/changes/dino-2t-professional-roadmap",
       "spec": "openspec/changes/dino-2t-professional-roadmap/specs/dino-2t-professional-roadmap/spec.md",
       "classification": "AUDIT_COMPLETE_PLAN_PROPOSED_NOT_ACTIVATED"
+    },
+    {
+      "id": "DINO_2T_STAGE1_SCIENTIFIC_READINESS",
+      "state": "PROPOSED",
+      "owner_approved": true,
+      "summary": "Owner-authorized next objective only after DINO_DESKTOP_V3_1_VISUAL_PARITY closes: Stage 1 scientific forensics, preregistered bounded numerical evidence for mesh/periodicity/conservation/performance consistency, then RPM contract/preflight preparation. No full campaign, no Stage 2 execution, no optimization, and no stages 3/4 activation.",
+      "change": "openspec/changes/dino-stage1-scientific-readiness",
+      "spec": "openspec/changes/dino-stage1-scientific-readiness/specs/dino-stage1-scientific-readiness/spec.md",
+      "gate_tasks": [
+        "S1-FORENSICS",
+        "S1-PROTOCOL",
+        "S1-BOUNDED-EVIDENCE",
+        "S1-RPM-PREPARATION"
+      ],
+      "completion_criterion": "Classify mesh independence, periodicity, conservation and performance consistency from reproducible, hash-bound evidence or state precise PARTIAL/BLOCKED limits; prepare an RPM contract/preflight only, preserving all historical artifacts and without campaign execution.",
+      "authorization_source": "Explicit owner instruction in DINO 2T roadmap continuation request (2026-10-16); execution is ordered after current V3.1 closure."
     }
   ],
   "owner_decisions_pending": [
@@ -7220,6 +7316,12 @@
       "task": "V31-PACKAGED-ACCEPTANCE",
       "kind": "verification",
       "summary": "V3.1/V3 desktop source regressions rerun: 39 passed, 1 skipped in 141.8 s. Exact-HEAD TRIAL package integrity passes; locked Windows session still prevents packaged interaction and M1-M6 recapture."
+    },
+    {
+      "at": "2026-10-16T11:00:19+00:00",
+      "task": "DINO-STAGE1-SCIENTIFIC-READINESS",
+      "kind": "authorization",
+      "summary": "Owner authorized Stage 1 scientific investigation and RPM contract preparation only after V3.1 closes; registered as approved future objective with sequential WAITING tasks. No campaign, optimization, or stages 2-4 activation."
     }
   ],
   "legacy_gate_status": {
