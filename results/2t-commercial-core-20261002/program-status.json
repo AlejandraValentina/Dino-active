@@ -5775,8 +5775,7 @@
       "commits": [],
       "evidence": [
         "results/dino-2t-scientific-point-v1/baseline.json SHA-256 8f085d42531873f772ff3d1d27c0a8357edd9392f3038685368fa63ad51f963a",
-        "Committed preregistration hash matches preregistered receipt; working-tree CRLF normalized bytes equal committed LF blob.",
-        "Existing timeout/checkpoint and cycle artifacts remain untouched; no solver advancement."
+        "Historical Stage 1 preregistration normalized to LF matches frozen SHA 5c1f3699ab6411c5e1f5c26c74801179e40319b04e216dc1d4c95463527420c6; historical artifact hashes checked; no old checkpoint resume."
       ],
       "next_action": "Hash current solver/configuration and inspect historical 48-cell artifacts without changing them.",
       "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
@@ -5792,10 +5791,12 @@
       "id": "SPV1-PROFILE",
       "description": "Profile bounded existing/reproducible workloads by subsystem; preserve canonical audits and report instrumentation overhead.",
       "dependencies": [],
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "Recovery V2 component profiles reviewed; existing cProfile grouping is too coarse for the requested subsystem breakdown. A new, isolated bounded profiler is in progress."
+      ],
       "next_action": "Profile bounded existing/reproducible workloads by subsystem; preserve canonical audits and report instrumentation overhead.",
       "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
       "owner_role": "verification",
@@ -5810,10 +5811,13 @@
       "id": "SPV1-GEOMETRY",
       "description": "Reconstruct power-valve effective-area semantics and verify against an independent analytical reference.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "results/dino-2t-scientific-point-v1/geometry-reference.json SHA-256 e75e837c7123dea11eec4ac2a3157eeaf402e511a9f52aa2001a3daa503c26dd",
+        "Independent closed-form slider-crank/window-area evaluation over 47 samples on the exact 48-cell/3000-RPM configuration; max absolute error 3.98e-13 mm2; 11 powervalve tests PASS; no solver steps; no defect found."
+      ],
       "next_action": "Reconstruct power-valve effective-area semantics and verify against an independent analytical reference.",
       "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
       "owner_role": "physics/numerics",
@@ -7993,6 +7997,12 @@
       "task": "SPV1-BASELINE",
       "kind": "task",
       "summary": "Read-only baseline recorded: 3000 RPM/48-cell historical diagnostic timed out at 4/8 cycles, 682.829 s solver and 687.891 s report-call; preserved original artifacts/checkpoint and recorded actual source/artifact hashes. No resume or solver steps."
+    },
+    {
+      "at": "2026-10-16T15:42:27+00:00",
+      "task": "SPV1-GEOMETRY",
+      "kind": "task",
+      "summary": "Verified mapped exhaust roof area against the independent slider-crank/rectangular-window formula on the exact historical 3000 RPM, 48-cell configuration at 47 points; max absolute error 3.98e-13 mm2; 11 powervalve tests pass; no solver steps or code physics change."
     }
   ],
   "legacy_gate_status": {
@@ -8012,15 +8022,15 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 9,
-    "gate_tasks_done": 1,
+    "gate_tasks_done": 2,
     "gate_task_states": {
-      "READY": 5,
-      "WAITING": 3,
-      "DONE": 1
+      "DONE": 2,
+      "IN_PROGRESS": 1,
+      "READY": 3,
+      "WAITING": 3
     },
     "remaining": [
       "SPV1-PROFILE",
-      "SPV1-GEOMETRY",
       "SPV1-PERIODICITY",
       "SPV1-MESH-PREFLIGHT",
       "SPV1-POINT-PREFLIGHT",
@@ -8028,7 +8038,7 @@
       "SPV1-POINT-EXECUTION",
       "SPV1-RESULT-VERIFY"
     ],
-    "updated_at": "2026-10-16T15:38:09+00:00"
+    "updated_at": "2026-10-16T15:42:27+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

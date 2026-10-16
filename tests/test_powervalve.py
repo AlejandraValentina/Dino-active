@@ -42,6 +42,49 @@ def test_continuous_rpm_interpolation_and_effective_port_area():
     assert all(closed <= opened for closed, opened in zip(areas_closed, areas_open))
 
 
+@pytest.mark.parametrize("rpm", [2000.0, 4000.0, 6000.0])
+def test_effective_area_matches_independent_slider_crank_window_reference(rpm):
+    """Check the movable-roof area against a separately evaluated analytic reference.
+
+    This guards area units, clipping at opening/closing, and the RPM-to-roof
+    interpolation without calling either production area helper for expected values.
+    """
+    ports, valve = setup()
+    port = ports.ports[0]
+    roof_position = 0.0 if rpm == 2000.0 else 0.5 if rpm == 4000.0 else 1.0
+    top = port.top_mm + port.roof_travel_mm * roof_position
+    radius = ports.stroke_mm / 2.0
+    angles = (0.0, 45.0, 90.0, 135.0, 180.0, 225.0, 270.0, 315.0, 360.0)
+
+    for angle_deg in angles:
+        theta = math.radians(angle_deg % 360.0)
+        piston_from_tdc_mm = (
+            radius * (1.0 - math.cos(theta))
+            + ports.rod_length_mm
+            - math.sqrt(ports.rod_length_mm**2 - radius**2 * math.sin(theta)**2)
+        )
+        exposed_height_mm = max(0.0, min(
+            port.height_mm, piston_from_tdc_mm - top))
+        expected_area_mm2 = (
+            port.discharge_coefficient * port.width_mm * exposed_height_mm)
+        actual_area_mm2 = valve.area_at(ports, rpm, angle_deg)
+        assert actual_area_mm2 == pytest.approx(expected_area_mm2, rel=1e-13, abs=1e-13)
+
+
+def test_effective_area_opens_closes_and_is_bounded_by_independent_window_geometry():
+    ports, valve = setup()
+    port = ports.ports[0]
+    for rpm in (2000.0, 3000.0, 4000.0, 6000.0):
+        samples = [valve.area_at(ports, rpm, angle) for angle in range(361)]
+        maximum = port.discharge_coefficient * port.width_mm * port.height_mm
+        assert samples[0] == samples[-1] == 0.0
+        assert min(samples) >= 0.0
+        assert max(samples) <= maximum + 1e-12
+        assert max(samples) == pytest.approx(maximum)
+        assert samples[90] <= samples[120] <= samples[180]
+        assert samples[270] <= samples[240] <= samples[180]
+
+
 def test_roundtrip_and_rpm_range_rejection():
     _, valve = setup()
     assert PowerValve.from_dict(valve.to_dict()) == valve
