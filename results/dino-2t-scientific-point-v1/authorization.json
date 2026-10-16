@@ -1,0 +1,18 @@
+{
+  "schema": "DINO_SCIENTIFIC_POINT_V1_EXECUTION_AUTHORIZATION_V1",
+  "state": "OWNER_APPROVED",
+  "authorization_source": "Owner selected option 2 in conversation; 1200 s cumulative for one point only.",
+  "selected_option": "2",
+  "owner_decision": "Authorize only Escape original @ 3000 RPM, EXHAUST_MESH_V2 8 cells/section (48 total duct cells), at most 8 cycles; cumulative 1200 wall seconds, at most 600 seconds per invocation, 3072 MiB memory cap, one worker. No sweep or other point authorized.",
+  "preflight_sha256": "89e5f47165dbc49d94e15adbedbed4b7c99ca7445ce5f556ac4fdad209622853",
+  "configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+  "identity_sha256": "40303dcffd3ddc8264b19e586db2fe1c2e6c2b729939dbd97a23c704a02dbdc5",
+  "runner_sha256": "ab50c02d1f8e562a1b31ff23a772302697fbfebfe8a64b077bd741e55cb51138",
+  "workers": 1,
+  "max_cycles": 8,
+  "budget_seconds": 1200,
+  "memory_limit_mib": 3072,
+  "campaign_authorized": false,
+  "resource_precondition": "Do not launch unless at least 4096 MiB physical RAM is available (3072 MiB cap + 1024 MiB system reserve).",
+  "authorization_sha256_excludes_self": true
+}

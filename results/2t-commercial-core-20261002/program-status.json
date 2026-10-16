@@ -5902,11 +5902,14 @@
       "dependencies": [
         "SPV1-POINT-PREFLIGHT"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Bind any owner-approved execution to the final preflight hash and explicit wall-time, memory and cycle limits.",
+      "evidence": [
+        "results/dino-2t-scientific-point-v1/authorization.json SHA-256 9079c84db206eec19a8faf67fbbe0d91d6772a0a04df8d72873524f51d1afbae",
+        "Owner selected option 2: one point only, 1200 s cumulative, at most 600 s/invocation, 3072 MiB, one worker, max 8 cycles; no sweep. Authorization is bound to preflight SHA-256 89e5f47165dbc49d94e15adbedbed4b7c99ca7445ce5f556ac4fdad209622853. No solver steps started."
+      ],
+      "next_action": "Owner authorization is durable; point execution remains blocked until runtime memory precondition passes.",
       "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
       "owner_role": "orchestrator",
       "evidence_level": "L0",
@@ -5921,10 +5924,12 @@
       "dependencies": [
         "SPV1-POINT-AUTHORIZATION"
       ],
-      "state": "WAITING",
-      "blocker": null,
+      "state": "BLOCKED_LOCAL",
+      "blocker": "Runtime resource precondition unmet: latest free physical RAM sample 3637 MiB; execution requires at least 4096 MiB (3072 MiB cap + 1024 MiB reserve).",
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "Authorization is valid and hash-bound, but no solver invocation has started. Do not reduce authorized memory cap or reserve."
+      ],
       "next_action": "Execute one integrated point only after matching durable authorization; do not run a sweep or exceed the authorized budget.",
       "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
       "owner_role": "implementation",
@@ -5933,7 +5938,9 @@
         "scripts/",
         "DINO_ARTIFACT_ROOT/dino-2t-scientific-point-v1/"
       ],
-      "unblock_tasks": []
+      "unblock_tasks": [
+        "SPV1-RUNTIME-RESOURCE-RECHECK"
+      ]
     },
     {
       "id": "SPV1-RESULT-VERIFY",
@@ -5952,6 +5959,26 @@
       "write_scope": [
         "results/dino-2t-scientific-point-v1/",
         "openspec/changes/dino-2t-scientific-point-v1/"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "SPV1-RUNTIME-RESOURCE-RECHECK",
+      "description": "Recheck the exact preflight/authorization hashes and available physical RAM; unblock the authorized single point only when RAM is at least the cap plus 1024 MiB.",
+      "dependencies": [
+        "SPV1-POINT-AUTHORIZATION"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Recheck resource headroom immediately before any solver invocation; no execution unless the guard passes.",
+      "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "scripts/diagnostics/",
+        "results/dino-2t-scientific-point-v1/"
       ],
       "unblock_tasks": []
     }
@@ -8046,6 +8073,12 @@
       "task": "SPV1-POINT-PREFLIGHT",
       "kind": "task",
       "summary": "Built deterministic identity-bound 3000-RPM/48-cell no-step preflight and authorization-gated runner; historical Stage1 binding mismatch remains fail-closed; execution not authorized. 48 relevant tests pass."
+    },
+    {
+      "at": "2026-10-16T16:16:05+00:00",
+      "task": "SPV1-POINT-AUTHORIZATION",
+      "kind": "task",
+      "summary": "Persisted owner option 2 authorization hash-bound to preflight. Single point only, 1200 s cumulative/600 s per invocation, 3072 MiB, one worker, 8-cycle cap. Execution remains blocked: 3637 MiB free versus 4096 MiB required; no solver steps."
     }
   ],
   "legacy_gate_status": {
@@ -8065,18 +8098,17 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 9,
-    "gate_tasks_done": 6,
+    "gate_tasks_done": 7,
     "gate_task_states": {
-      "DONE": 6,
-      "READY": 1,
-      "WAITING": 2
+      "DONE": 7,
+      "BLOCKED_LOCAL": 1,
+      "WAITING": 1
     },
     "remaining": [
-      "SPV1-POINT-AUTHORIZATION",
       "SPV1-POINT-EXECUTION",
       "SPV1-RESULT-VERIFY"
     ],
-    "updated_at": "2026-10-16T16:09:10+00:00"
+    "updated_at": "2026-10-16T16:16:05+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
