@@ -5925,11 +5925,12 @@
         "SPV1-POINT-AUTHORIZATION"
       ],
       "state": "BLOCKED_LOCAL",
-      "blocker": "Runtime resource precondition unmet: free physical RAM measured at 1153 MiB on 2026-10-19 07:26:50 -03:00; execution requires at least 4096 MiB (3072 MiB cap + 1024 MiB reserve).",
+      "blocker": "Invocation 1 was externally terminated at 600.125 s. Three cycles and checkpoint through cycle 3 are manifest-bound and audited; cycle-0004.json.gz exists but is unmanifested. The current workflow rejects resume when any unmanifested primary exists; no run receipt was emitted before timeout.",
       "commits": [],
       "evidence": [
         "Authorization is valid and hash-bound, but no solver invocation has started. Do not reduce authorized memory cap or reserve.",
-        "Latest runtime RAM recheck: 1153 MiB free of 20225 MiB total at 2026-10-19 07:26:50 -03:00; required >=4096 MiB. Authorization, preflight, and runner SHA-256 values still match; no solver invocation started."
+        "Latest runtime RAM recheck: 1153 MiB free of 20225 MiB total at 2026-10-19 07:26:50 -03:00; required >=4096 MiB. Authorization, preflight, and runner SHA-256 values still match; no solver invocation started.",
+        "Durable interruption receipt: results/dino-2t-scientific-point-v1/execution-receipt-01.json; exact hashes and artifacts recorded. Do not move, overwrite, or accept the orphaned primary without a versioned recovery procedure."
       ],
       "next_action": "Execute one integrated point only after matching durable authorization; do not run a sweep or exceed the authorized budget.",
       "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
@@ -5940,7 +5941,7 @@
         "DINO_ARTIFACT_ROOT/dino-2t-scientific-point-v1/"
       ],
       "unblock_tasks": [
-        "SPV1-RUNTIME-RESOURCE-RECHECK"
+        "SPV1-CHECKPOINT-INTERRUPTION-RECOVERY"
       ]
     },
     {
@@ -5969,11 +5970,12 @@
       "dependencies": [
         "SPV1-POINT-AUTHORIZATION"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "2026-10-19 07:26:50 -03:00 recheck: 1153 MiB free of 20225 MiB; failed 4096 MiB minimum. Exact hashes remain valid: preflight 89e5f47165dbc49d94e15adbedbed4b7c99ca7445ce5f556ac4fdad209622853; authorization 9079c84db206eec19a8faf67fbbe0d91d6772a0a04df8d72873524f51d1afbae; runner ab50c02d1f8e562a1b31ff23a772302697fbfebfe8a64b077bd741e55cb51138. No solver invocation started."
+        "2026-10-19 07:26:50 -03:00 recheck: 1153 MiB free of 20225 MiB; failed 4096 MiB minimum. Exact hashes remain valid: preflight 89e5f47165dbc49d94e15adbedbed4b7c99ca7445ce5f556ac4fdad209622853; authorization 9079c84db206eec19a8faf67fbbe0d91d6772a0a04df8d72873524f51d1afbae; runner ab50c02d1f8e562a1b31ff23a772302697fbfebfe8a64b077bd741e55cb51138. No solver invocation started.",
+        "Passed on 2026-10-19 07:37:09 -03:00: 4970 MiB free >= 4096 MiB; preflight, authorization and runner hashes matched. Authorized invocation 1 then started."
       ],
       "next_action": "Recheck resource headroom immediately before any solver invocation; no execution unless the guard passes.",
       "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
@@ -5982,6 +5984,27 @@
       "write_scope": [
         "scripts/diagnostics/",
         "results/dino-2t-scientific-point-v1/"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "SPV1-CHECKPOINT-INTERRUPTION-RECOVERY",
+      "description": "Read-only recovery design and verification for the authorized point interrupted after an external timeout: determine a contract-compliant way to preserve the unmanifested primary, validate the last committed checkpoint, and restore accounting without weakening hash or audit checks. Do not execute solver or mutate existing artifacts.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "Execution receipt: results/dino-2t-scientific-point-v1/execution-receipt-01.json. Existing runner explicitly rejects the unmanifested cycle-0004 primary. Any future execution requires a compatible durable recovery path and remaining authorized budget."
+      ],
+      "next_action": "Inspect current fail-closed restore behavior and existing quarantine/recovery contracts; produce a read-only recovery plan and tests without editing the artifacts or launching solver.",
+      "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
+      "owner_role": "architecture",
+      "evidence_level": "L0",
+      "write_scope": [
+        "scripts/diagnostics/",
+        "tests/",
+        "DINO_ARTIFACT_ROOT/dino-2t-scientific-point-v1/"
       ],
       "unblock_tasks": []
     }
@@ -8088,6 +8111,12 @@
       "task": "SPV1-RUNTIME-RESOURCE-RECHECK",
       "kind": "task",
       "summary": "RAM recheck 2026-10-19 07:26 -03:00: 1153 MiB free, below the 4096 MiB guard; authorized hashes match and no solver was started."
+    },
+    {
+      "at": "2026-10-19T10:48:30+00:00",
+      "task": "SPV1-POINT-EXECUTION",
+      "kind": "task",
+      "summary": "Authorized 3000 RPM point invocation 1 stopped at 600.125 s; 3 manifest-bound cycles/checkpoint preserved, an unmanifested cycle-4 primary causes fail-closed resume rejection. Persisted exact artifact receipt; no further solver run."
     }
   ],
   "legacy_gate_status": {

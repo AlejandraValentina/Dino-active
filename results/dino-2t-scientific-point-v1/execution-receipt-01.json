@@ -1,0 +1,76 @@
+{
+  "schema": "DINO_SCIENTIFIC_POINT_V1_INTERRUPTED_INVOCATION_RECEIPT_V1",
+  "classification": "PARTIAL_INTERRUPTED_CHECKPOINTED_RECOVERY_BLOCKED",
+  "authorization_sha256": "9079c84db206eec19a8faf67fbbe0d91d6772a0a04df8d72873524f51d1afbae",
+  "preflight_sha256": "89e5f47165dbc49d94e15adbedbed4b7c99ca7445ce5f556ac4fdad209622853",
+  "runner_sha256": "ab50c02d1f8e562a1b31ff23a772302697fbfebfe8a64b077bd741e55cb51138",
+  "identity_sha256": "40303dcffd3ddc8264b19e586db2fe1c2e6c2b729939dbd97a23c704a02dbdc5",
+  "scope": "Escape original @ 3000 RPM; EXHAUST_MESH_V2; 8 cells/section; single authorized point",
+  "launch_resource_check": {
+    "sampled_at": "2026-10-19T07:37:09-03:00",
+    "free_mib": 4970,
+    "required_mib": 4096,
+    "passed": true
+  },
+  "run_logged_summary": {
+    "path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\dino-2t-scientific-point-v1\\logs\\invocation-01\\scientific-point-v1-escape-original-3000rpm-mesh8.summary.json",
+    "sha256": "ab2004c73c4a195dbe9684ba934e6341a6b316220238c5f5ff1a9f2748004503",
+    "started_at": "2026-10-19T10:37:59+00:00",
+    "finished_at": "2026-10-19T10:47:59+00:00",
+    "duration_s": 600.125,
+    "exit_code": 124,
+    "timed_out": true
+  },
+  "run_manifest": {
+    "path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\dino-2t-scientific-point-v1\\run-01\\exploratory-workflow-v1\\dino-exhaust-comparison-starter\\scientific-point-v1-escape-original-3000rpm-mesh8\\run.json",
+    "sha256": "0dab385019d52c4728201e4b343b9696442f57873d77a5d624eaf49c0027081f",
+    "state": "RUNNING",
+    "cycles_completed": 3,
+    "checkpoint_sha256": "b0c88c4374f56c01cf3f74b4e77cde7832e58b15bc68b81d82cf736eab216b1f",
+    "committed_primaries": [
+      {
+        "cycle": 1,
+        "artifact": "cycle-0001.json.gz",
+        "sha256": "f19e9815042517f7e19c2c7db292927e5d263a91e8bd3d32617cb8e05aa5a3ed",
+        "audit_status": "PASS",
+        "audit_recomputed": true
+      },
+      {
+        "cycle": 2,
+        "artifact": "cycle-0002.json.gz",
+        "sha256": "427ab09a52b861f561489a415b8ab4d936861f0e48fee5bc6ee6ea04d651eec1",
+        "audit_status": "PASS",
+        "audit_recomputed": true
+      },
+      {
+        "cycle": 3,
+        "artifact": "cycle-0003.json.gz",
+        "sha256": "3276c639019ef08a06532b5497284da0fb50ccb888d5b9facfadf99919093ade",
+        "audit_status": "PASS",
+        "audit_recomputed": true
+      }
+    ]
+  },
+  "checkpoint": {
+    "path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\dino-2t-scientific-point-v1\\run-01\\exploratory-workflow-v1\\dino-exhaust-comparison-starter\\scientific-point-v1-escape-original-3000rpm-mesh8\\checkpoint.json",
+    "sha256": "b0c88c4374f56c01cf3f74b4e77cde7832e58b15bc68b81d82cf736eab216b1f",
+    "matches_manifest": true
+  },
+  "unmanifested_primary": {
+    "path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\dino-2t-scientific-point-v1\\run-01\\exploratory-workflow-v1\\dino-exhaust-comparison-starter\\scientific-point-v1-escape-original-3000rpm-mesh8\\cycle-0004.json.gz",
+    "sha256": "41e1b00bd1b3baa7e46578dec480d777c3ae8bec44a0e2beb18935cd4743d6e8",
+    "bytes": 50244144,
+    "committed": false,
+    "modified_or_moved": false
+  },
+  "resume_status": "FAIL_CLOSED: motorsim.exploratory_workflow rejects unmanifested cycle primary; report receipt was not emitted before external timeout.",
+  "cumulative_budget_seconds_consumed_conservative": 600.125,
+  "cumulative_budget_seconds_remaining": 599.875,
+  "scientific_claims": {
+    "periodicity": "NOT_EVALUATED",
+    "scientific_validation": "NOT_CLAIMED",
+    "spatial_independence": "NOT_ESTABLISHED",
+    "campaign_started": false
+  },
+  "next_action": "Resolve recovery through a versioned, auditable procedure that preserves identity and quarantines evidence only under an explicit contract; do not resume or alter artifacts before that path is accepted."
+}
