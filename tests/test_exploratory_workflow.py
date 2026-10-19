@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import threading
 
@@ -111,6 +112,13 @@ def test_exploratory_run_cancels_at_step_boundary_and_resumes_audited_checkpoint
     assert first["periodicity_diagnostics"]["evaluation_status"] == "INSUFFICIENT_EVIDENCE"
     assert first["periodicity_diagnostics"]["detector_executed"] is True
     assert first["periodicity_diagnostics"]["comparison_count"] == 0
+    run_dir = tmp_path / "exploratory-workflow-v1" / "test-project" / "cancel-resume"
+    committed_manifest = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
+    checkpoint_path = run_dir / committed_manifest["checkpoint_artifact"]
+    checkpoint_bytes = checkpoint_path.read_bytes()
+    assert committed_manifest["checkpoint_artifact"] == "checkpoint-next-cycle-0002.json"
+    assert hashlib.sha256(checkpoint_bytes).hexdigest() == committed_manifest["checkpoint_sha256"]
+    assert json.loads(checkpoint_bytes)["next_cycle"] == 2
     resumed = run_exploratory(document, project_id="test-project", run_id="cancel-resume",
         artifact_root=tmp_path, rpm=3000.0, max_cycles=2, budget_seconds=600,
         memory_limit_mib=1024, resume=True)
@@ -208,6 +216,58 @@ def test_runner_persists_timeout_and_memory_failure_classifications_without_solv
                             "NUMERICAL_INVALID" if isinstance(failure, ValueError) else
                             "RESOURCE_LIMIT_EXCEEDED")
     assert result["periodicity_diagnostics"]["termination_reason"] == expected_termination
+
+
+def test_interrupted_manifest_commit_preserves_last_confirmed_checkpoint(
+        tmp_path, monkeypatch):
+    document = engine_document()
+    original_atomic_write = workflow._atomic_write
+
+    def fail_before_second_cycle_manifest_commit(path, payload):
+        if Path(path).name == "run.json":
+            manifest = json.loads(payload)
+            if manifest.get("cycles_completed") == 2:
+                raise OSError("simulated interruption before manifest replace")
+        return original_atomic_write(path, payload)
+
+    monkeypatch.setattr(workflow, "_atomic_write", fail_before_second_cycle_manifest_commit)
+    with pytest.raises(OSError, match="simulated interruption"):
+        run_exploratory(document, project_id="fault-project", run_id="manifest-interrupt",
+            artifact_root=tmp_path, rpm=3000.0, max_cycles=2, budget_seconds=600,
+            memory_limit_mib=1024)
+
+    run_dir = tmp_path / "exploratory-workflow-v1" / "fault-project" / "manifest-interrupt"
+    manifest = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
+    assert manifest["cycles_completed"] == 1
+    assert [row["cycle"] for row in manifest["cycles"]] == [1]
+    confirmed_checkpoint = run_dir / manifest["checkpoint_artifact"]
+    confirmed_bytes = confirmed_checkpoint.read_bytes()
+    assert hashlib.sha256(confirmed_bytes).hexdigest() == manifest["checkpoint_sha256"]
+    assert json.loads(confirmed_bytes)["next_cycle"] == 2
+    assert (run_dir / "cycle-0002.json.gz").is_file()
+    assert (run_dir / "checkpoint-next-cycle-0003.json").is_file()
+
+    monkeypatch.setattr(workflow, "_atomic_write", original_atomic_write)
+    with pytest.raises(ValueError, match="unmanifested cycle primary"):
+        run_exploratory(document, project_id="fault-project", run_id="manifest-interrupt",
+            artifact_root=tmp_path, rpm=3000.0, max_cycles=2, budget_seconds=600,
+            memory_limit_mib=1024, resume=True)
+    assert confirmed_checkpoint.read_bytes() == confirmed_bytes
+
+
+def test_atomic_write_failure_preserves_previous_file_and_cleans_temp(tmp_path, monkeypatch):
+    target = tmp_path / "run.json"
+    target.write_bytes(b"previous committed bytes")
+
+    def fail_replace(_source, _destination):
+        raise OSError("simulated interruption at atomic replace")
+
+    monkeypatch.setattr(workflow.os, "replace", fail_replace)
+    with pytest.raises(OSError, match="simulated interruption"):
+        workflow._atomic_write(target, b"uncommitted replacement")
+
+    assert target.read_bytes() == b"previous committed bytes"
+    assert list(tmp_path.glob("run.json.*.tmp")) == []
 
 
 def test_resume_rejects_pre_v2_periodicity_binding(tmp_path):

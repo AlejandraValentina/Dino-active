@@ -55,7 +55,10 @@ def _source_sha256(*objects) -> str:
 
 
 def _evidence_sha256(value) -> str:
-    encoded = json.dumps(_jsonify(value), sort_keys=True,
+    # The JSON encoder already serializes tuples as arrays.  Avoid recursively
+    # rebuilding large trajectory trees solely to compute their canonical
+    # digest; this preserves the exact canonical bytes used by _jsonify.
+    encoded = json.dumps(value, sort_keys=True,
                          separators=(",", ":"), allow_nan=False).encode("utf-8")
     return hashlib.sha256(encoded).hexdigest()
 

@@ -1,0 +1,116 @@
+{
+  "schema": "DINO_SOLVER_PERFORMANCE_FIX_V1_RECEIPT",
+  "classification": "MEASURED_AUDIT_PERFORMANCE_GAIN_WITH_CHECKPOINT_COMMIT_FIX",
+  "historical_artifacts_modified": false,
+  "campaign_or_point_started": false,
+  "preexisting_profile_evidence": {
+    "production_case": {
+      "source": "results/dino-stage1-solver-diagnostic-recovery/performance/performance-profile.json",
+      "rpm": 3000,
+      "mesh": "EXHAUST_MESH_V2, 8 cells per section, 48 cells",
+      "complete_cycles": 4,
+      "elapsed_seconds": 682.829,
+      "mean_seconds_per_complete_cycle": 170.707,
+      "sampled_peak_working_set_bytes": 2151251968,
+      "limitations": "Historical run did not separate production phase timing or persist solver step count, per-core CPU, or per-cycle timing. The 600 s fixed invocation limit was exceeded."
+    },
+    "bounded_48_cell_advance": {
+      "source": "results/dino-2t-scientific-point-v1/performance-profile.json",
+      "scope": "fresh engine, 5.125 degree segment; not a full cycle",
+      "accepted_steps": 31,
+      "rejected_trials": 32,
+      "wall_seconds_uninstrumented": 0.2337007,
+      "wall_seconds_cprofile": 0.9783838,
+      "sampled_peak_rss_bytes": 51585024
+    },
+    "replay_and_evidence_hotspots": {
+      "source": "results/dino-stage1-solver-diagnostic-recovery/performance/performance-profile.json",
+      "scope": "13-cell synthetic two-cycle workflow with five deliberate independent primary audits; cProfile times overlap and are instrumented",
+      "audit_integrated_cycle_primary_cumulative_seconds": 235.693,
+      "make_integrated_cycle_primary_cumulative_seconds": 142.860,
+      "step_cumulative_seconds": 104.482,
+      "assemble_cumulative_seconds": 99.039,
+      "jsonify_cumulative_seconds": 88.520,
+      "deepcopy_cumulative_seconds": 62.022,
+      "evidence_hash_cumulative_seconds": 36.490,
+      "json_bytes_cumulative_seconds": 6.613,
+      "gzip_compress_cumulative_seconds": 1.271,
+      "atomic_write_cumulative_seconds": 0.108,
+      "cpu_percent_of_one_core_on_synthetic_fixture": 98.98,
+      "peak_process_tree_rss_bytes": 1132093440,
+      "measurement_limit": "Cumulative timings overlap; this profile does not establish the 48-cell production phase shares."
+    },
+    "persisted_48_cell_audit": {
+      "source": "results/dino-2t-scientific-point-v1/performance-profile.json",
+      "primary_uncompressed_bytes": 108925768,
+      "parse_seconds": 3.131,
+      "canonical_serialize_seconds": 3.610,
+      "uninstrumented_audit_seconds": 75.610,
+      "peak_sampled_rss_bytes": 1468989440
+    }
+  },
+  "optimization": {
+    "function": "motorsim.integrated_2t._evidence_sha256",
+    "change": "Pass tuple/list/dict trees directly to json.dumps; the encoder already emits tuples as JSON arrays, so the recursive _jsonify copy is unnecessary for canonical hashing.",
+    "canonical_hash_equivalence": "PASS; direct canonical JSON bytes and legacy _jsonify canonical bytes are identical for tuple/list nesting, and persisted primary digests match.",
+    "large_primary_hash_microbenchmark": {
+      "artifact_sha256": "f19e9815042517f7e19c2c7db292927e5d263a91e8bd3d32617cb8e05aa5a3ed",
+      "compressed_bytes": 29067897,
+      "expanded_bytes": 108925767,
+      "repetitions_each": 3,
+      "recursive_copy_median_seconds": 6.249927999917418,
+      "direct_json_median_seconds": 3.63267119997181,
+      "hashing_speedup": 1.7208,
+      "hashing_time_reduction_fraction": 0.4188,
+      "sha256_equal": true
+    },
+    "complete_offline_primary_replay": {
+      "configuration": "persisted Escape original, 3000 RPM, EXHAUST_MESH_V2, 48 cells; cycle 1 with 2627 accepted trajectory steps",
+      "audit_run_order": ["baseline", "candidate"],
+      "baseline_wall_seconds": 62.27787510002963,
+      "candidate_wall_seconds": 56.62007679999806,
+      "baseline_cpu_seconds": 62.28125,
+      "candidate_cpu_seconds": 56.5625,
+      "baseline_replayed_steps_per_second": 42.18,
+      "candidate_replayed_steps_per_second": 46.40,
+      "speedup": 1.0999,
+      "audit_wall_reduction_fraction": 0.09085,
+      "baseline_audit_status": "PASS",
+      "candidate_audit_status": "PASS",
+      "both_recomputed": true,
+      "canonical_audit_result_equal": true,
+      "peak_memory_delta": "NOT_MEASURED; process RSS at audit boundaries was sampled, not a paired peak-memory measurement",
+      "candidate_method": "bounded monkey-patched benchmark using the exact direct-json serialization implementation now installed in production source; source-bound historical primary was not accepted under modified source"
+    },
+    "end_to_end_cycle_speedup": "NOT_CLAIMED; this paired replay measures independent primary audit, not a complete solver cycle or run"
+  },
+  "checkpoint_commit_protocol": {
+    "change": "Write each next-cycle checkpoint to a unique immutable path; atomically update the run manifest last to select it. Resume reads only the checkpoint named by the manifest, with legacy checkpoint.json fallback for old-format manifests.",
+    "atomic_file_interruption_test": "PASS; failure at replace preserved prior bytes and removed the temporary file",
+    "manifest_commit_interruption_test": "PASS; after cycle 1 was confirmed and cycle 2 primary/checkpoint were written, injected failure before cycle 2 manifest replace preserved cycle 1 and its hash-bound checkpoint; cycle 2 remained unmanifested and resume rejected it fail-closed",
+    "normal_checkpoint_resume_test": "PASS; manifest-selected immutable checkpoint resumed cycle 2 without duplicate cycles",
+    "automatic_orphan_adoption": false
+  },
+  "identity": {
+    "integrated_2t_sha256_before": "38d9896e8bf4405945cdc53aea091eb895d7e00a3ec52df0f0263115e971af17",
+    "integrated_2t_sha256_after": "237cc2a715aecf64c59ef3a8844dcb7c52b66cbf8024928b6e59b03d53d8c06c",
+    "exploratory_workflow_sha256_before": "2a6a0009540a0fc2547cc0c75ab04f04810e721b9e820cc57a591a315a1bb520",
+    "exploratory_workflow_sha256_after": "29e4c0c4bbed14b1e20431c2831e7424e7e1d103f24415c13a0df0a04ac6f3ac",
+    "historical_identity_mutation": false,
+    "compatibility": "Old run/checkpoint bindings do not match the updated source hashes and remain fail-closed; no old checkpoint was restored or rewritten. New runs bind the current workflow source hash."
+  },
+  "verification": {
+    "tests": "109 passed across tests/test_integrated_2t.py, tests/test_integrated_cycle_evidence_producer.py and tests/test_exploratory_workflow.py; the two focused atomic-temp/hash tests are included in that count and also passed in a separate focused retest.",
+    "solver_equivalence": "PASS within exercised tests; cycle replay and generated evidence retain exact canonical results and conservation checks",
+    "periodicity_claim": "NOT_MADE; tests exercised detector classification only",
+    "conservation": "PASS in integrated replay, producer and workflow regressions",
+    "campaign_started": false,
+    "authorized_point_resumed": false
+  },
+  "remaining_cost": {
+    "largest_measured_component": "Independent cycle-primary replay/audit; one real 48-cell cycle audit remained 56.62 seconds after this change.",
+    "solver_step_throughput": "NOT_MEASURED as an isolated production solver advance in this task",
+    "memory_reduction": "NOT_CLAIMED",
+    "next_follow_up": "Consider a separately versioned, measured optimization for repeated _jsonify/deepcopy during audit reconstruction; do not weaken replay, conservation, species, CFL or source-binding checks."
+  }
+}

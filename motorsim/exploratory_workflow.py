@@ -328,6 +328,7 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
     output = _run_directory(Path(artifact_root), project_id, run_id)
     manifest_path = output / "run.json"
     checkpoint_path = output / "checkpoint.json"
+    checkpoint_artifact = "checkpoint.json"
     config_path = output / "configuration.json"
     started = time.monotonic(); deadline = started + float(budget_seconds)
     engine = IntegratedEngine2T.from_configuration_dict(effective["native_configuration"])
@@ -340,21 +341,27 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
                         "cycle_primary_contract": CYCLE_PRIMARY_CONTRACT,
                         "periodicity_source_sha256": _periodicity_source_sha256(),
                         "periodicity_thresholds_sha256": _sha(_json_bytes(PERIODICITY_THRESHOLDS_V2)),
+                        "workflow_source_sha256": _sha(Path(__file__).read_bytes()),
                         "project_id": project_id, "variant_label": variant_label,
                         "run_id": run_id}
     configuration_sha = _sha(_json_bytes(effective))
     if output.exists():
-        if not resume or not manifest_path.is_file() or not checkpoint_path.is_file():
+        if not resume or not manifest_path.is_file():
             raise FileExistsError("run directory exists; explicit resume requires its manifest and checkpoint")
         existing = _read_json(manifest_path)
         if existing.get("bindings") != expected_binding:
             raise ValueError("resume rejected: run identity/configuration/solver binding mismatch")
+        checkpoint_artifact = existing.get("checkpoint_artifact", "checkpoint.json")
+        if (not isinstance(checkpoint_artifact, str) or
+                Path(checkpoint_artifact).name != checkpoint_artifact or
+                not (output / checkpoint_artifact).is_file()):
+            raise ValueError("resume rejected: manifest checkpoint artifact is missing or invalid")
         config_payload = config_path.read_bytes()
         if existing.get("configuration_sha256") != _sha(config_payload):
             raise ValueError("resume rejected: executable configuration artifact hash mismatch")
         if json.loads(config_payload) != effective:
             raise ValueError("resume rejected: executable configuration artifact identity mismatch")
-        cp_bytes = checkpoint_path.read_bytes()
+        cp_bytes = (output / checkpoint_artifact).read_bytes()
         if _sha(cp_bytes) != existing.get("checkpoint_sha256"):
             raise ValueError("resume rejected: checkpoint artifact hash mismatch")
         try: cp=json.loads(cp_bytes)
@@ -394,7 +401,7 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
             "classification": "EXPLORATORY_PROVISIONAL", "bindings": expected_binding,
             "configuration_artifact": "configuration.json", "cycles": [],
             "configuration_sha256": configuration_sha,
-            "checkpoint_sha256": _sha(payload), "checkpoint_artifact": "checkpoint.json"}))
+            "checkpoint_sha256": _sha(payload), "checkpoint_artifact": checkpoint_artifact}))
     first_cycle = cp["next_cycle"]
     loss = MechanicalLossModel.from_dict(effective["mechanical_loss_model"])
     interrupted = False; interruption_kind = None; failure = None; failure_kind = None
@@ -466,15 +473,22 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
         cp = {"schema": "DINO_EXPLORATORY_CHECKPOINT_V1", "bindings": expected_binding,
               "next_cycle": cycle + 1, "engine_snapshot": engine.snapshot(),
               "periodicity_snapshot": detector.snapshot()}
-        cp_payload = _json_bytes(cp); _atomic_write(checkpoint_path, cp_payload)
+        cp_payload = _json_bytes(cp)
+        # Keep the previously committed checkpoint immutable until the new
+        # cycle manifest commits.  A crash after this write leaves only an
+        # unreferenced checkpoint file; the manifest still selects its valid
+        # prior checkpoint and the orphan cycle primary remains fail-closed.
+        next_checkpoint_artifact = f"checkpoint-next-cycle-{cycle + 1:04d}.json"
+        _atomic_write(output / next_checkpoint_artifact, cp_payload)
         manifest = {"schema": SCHEMA,
             "status": "INTERRUPTED_CHECKPOINTED" if interrupted else "RUNNING",
             "classification": "EXPLORATORY_PROVISIONAL", "bindings": expected_binding,
             "configuration_artifact": "configuration.json", "cycles": records,
             "configuration_sha256": configuration_sha,
-            "checkpoint_sha256": _sha(cp_payload), "checkpoint_artifact": "checkpoint.json",
+            "checkpoint_sha256": _sha(cp_payload), "checkpoint_artifact": next_checkpoint_artifact,
             "cycles_completed": cycle}
         _atomic_write(manifest_path, _json_bytes(manifest))
+        checkpoint_artifact = next_checkpoint_artifact
         if detector.classification is not None:
             break
     classification = (f"EXPLORATORY_{interruption_kind}_CHECKPOINTED" if interrupted else
@@ -489,7 +503,7 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
         status = "COMPLETE"
     # Preserve a restart point at the latest complete cycle, including when
     # all requested cycles completed (next_cycle=max_cycles+1).
-    cp_payload = _json_bytes(cp); _atomic_write(checkpoint_path, cp_payload)
+    cp_payload = _json_bytes(cp)
     comparison_index = _periodicity_comparison_index(records)
     accepted_period = detector.classification
     termination_reason = ("TIMEOUT" if interruption_kind == "TIMEOUT" else
@@ -528,7 +542,7 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
         "periodicity_diagnostics": periodicity_diagnostics,
         "elapsed_seconds": time.monotonic() - started,
         "memory_rss_at_finish_bytes": _rss_bytes(),
-        "checkpoint_artifact": "checkpoint.json", "checkpoint_sha256": _sha(cp_payload),
+        "checkpoint_artifact": checkpoint_artifact, "checkpoint_sha256": _sha(cp_payload),
         "result_sha256": None}
     final["result_sha256"] = _sha(_json_bytes({k:v for k,v in final.items() if k!="result_sha256"}))
     _atomic_write(output / "result.json", _json_bytes(final))

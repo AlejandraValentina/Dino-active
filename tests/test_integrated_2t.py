@@ -51,6 +51,25 @@ def test_specific_fuel_consumption_is_undefined_without_positive_fuel_time_and_p
     assert _specific_consumption_value(fuel, duration, power) is None
 
 
+def test_evidence_hash_serializes_tuples_without_changing_canonical_digest():
+    value = {"state": (1.25, (2.5, 3.75)), "ledger": [True, None, {"mass": 4.0}]}
+    legacy_canonical = json.dumps(
+        _legacy_jsonify_for_hash_test(value), sort_keys=True,
+        separators=(",", ":"), allow_nan=False).encode("utf-8")
+    direct_canonical = json.dumps(
+        value, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("utf-8")
+    assert direct_canonical == legacy_canonical
+    assert _evidence_sha256(value) == hashlib.sha256(legacy_canonical).hexdigest()
+
+
+def _legacy_jsonify_for_hash_test(value):
+    if isinstance(value, (list, tuple)):
+        return [_legacy_jsonify_for_hash_test(item) for item in value]
+    if isinstance(value, dict):
+        return {key: _legacy_jsonify_for_hash_test(item) for key, item in value.items()}
+    return value
+
+
 def test_specific_fuel_consumption_uses_positive_p7_consumed_mass():
     assert _specific_consumption_value(0.01, 2.0, 1000.0) == pytest.approx(
         0.01 / 2.0 * 3.6e9 / 1000.0)
