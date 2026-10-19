@@ -1,0 +1,116 @@
+{
+  "schema": "DINO_POWER_CURVE_V2_WINDOWS_ACCEPTANCE_RECEIPT_V1",
+  "classification": {
+    "WINDOWS_READY": "PASS_TRIAL",
+    "REAL_POINT_AVAILABLE": "NO",
+    "EXPLORATORY_CURVE_AVAILABLE": "NO_REAL_POINTS",
+    "SCIENTIFIC_CURVE_ACCEPTED": "NOT_CLAIMED",
+    "BLOCKED": "REAL_POINT_EXECUTION_RECOVERY_REQUIRED"
+  },
+  "source_commit": "3daf5836efac0bbc5abdce918a583009fb7338b2",
+  "source_dirty": true,
+  "trial": true,
+  "built_utc": "20261019T115444Z",
+  "package": {
+    "folder": "E:\\dino\\Dino-active\\dist\\MotorSim-0.1.0-rc6-windows-x64-3daf5836-trial-20261019T115444Z\\MotorSim",
+    "zip": "E:\\dino\\Dino-active\\dist\\MotorSim-0.1.0-rc6-windows-x64-3daf5836-trial-20261019T115444Z.zip",
+    "zip_sha256": "f88bebb2d13761043933842f7d2d24cb292f4828cba8e21057eb0d08ff91ba0d",
+    "zip_bytes": 46407344,
+    "zip_entries": 304,
+    "zip_integrity": "PASS",
+    "required_entries": [
+      "MotorSim/MotorSim.exe",
+      "MotorSim/MotorSimWorker.exe",
+      "MotorSim/Dino2T.exe",
+      "MotorSim/_internal/motorsim/power_curve.py"
+    ],
+    "executables": {
+      "MotorSim.exe": {
+        "path": "E:\\dino\\Dino-active\\dist\\MotorSim-0.1.0-rc6-windows-x64-3daf5836-trial-20261019T115444Z\\MotorSim\\MotorSim.exe",
+        "bytes": 2099881,
+        "sha256": "f971450b551d8be3c4c331e321b7537df0712f748af53df23058c0d2c0fd481a"
+      },
+      "MotorSimWorker.exe": {
+        "path": "E:\\dino\\Dino-active\\dist\\MotorSim-0.1.0-rc6-windows-x64-3daf5836-trial-20261019T115444Z\\MotorSim\\MotorSimWorker.exe",
+        "bytes": 1865976,
+        "sha256": "8233e66eff5149e98fedd00ce3c674afb9f9b3f451c5ff76f280570426d14682"
+      },
+      "Dino2T.exe": {
+        "path": "E:\\dino\\Dino-active\\dist\\MotorSim-0.1.0-rc6-windows-x64-3daf5836-trial-20261019T115444Z\\MotorSim\\Dino2T.exe",
+        "bytes": 2464545,
+        "sha256": "35a15a5658e9ac7e53a06ec02f43aa24acfe8f6a759cbf954278e3c4cacbba91"
+      }
+    }
+  },
+  "packaged_smoke": {
+    "MotorSim.exe": "launched from an external working directory; window visible; WM_CLOSE returned 0",
+    "Dino2T.exe": "launched externally; opened packaged desktop-dino-2t-starter.dino2t.json; entered Análisis; closed normally",
+    "curves_panel": "present in Análisis with HP/kW/CV, power and torque controls, maxima, tables, comparison and CSV action",
+    "units": "interactive package selector HP -> kW -> CV -> HP PASS",
+    "comparison_fixture": {
+      "path": "E:\\Dino-artifacts\\DINO_POWER_CURVE_V2\\package-smoke\\dpcv2-synthetic-ui-fixture-not-solver.json",
+      "provenance": "SYNTHETIC_UI_FIXTURE_ONLY; NOT_PERFORMED; not solver evidence",
+      "import": "PASS through packaged UI",
+      "rows": "4 synthetic rows: two labeled variants at exact shared RPM 3000 and 4000",
+      "comparison": "PASS; both exact RPM rows COMPARABLE, no interpolation; deltas shown in UI: +0.6705/+1.073 HP and +1/+1 N·m",
+      "solver_started": false
+    },
+    "empty_state": "PASS; no run selected and values remain undefined; no fabricated output",
+    "artifact_root": "isolated under E:\\Dino-artifacts; process working directory external to repository"
+  },
+  "screenshots": {
+    "analysis-empty-1360x900.png": {
+      "path": "E:\\Dino-artifacts\\DINO_POWER_CURVE_V2\\package-smoke\\analysis-empty-1360x900.png",
+      "sha256": "d90ad91c27b5a1ca4748e8a15e816f0e3ed303ea0ffbc155b304d105e636d9c3",
+      "bytes": 46376,
+      "capture": "PrintWindow of actual packaged Dino2T.exe HWND"
+    },
+    "analysis-empty-980x680.png": {
+      "path": "E:\\Dino-artifacts\\DINO_POWER_CURVE_V2\\package-smoke\\analysis-empty-980x680.png",
+      "sha256": "fa4b5b26cb950c227b40942aac07fa5e5c2aeb917bc505069ea2f2834ff97d0a",
+      "bytes": 39357,
+      "capture": "PrintWindow of actual packaged Dino2T.exe HWND"
+    },
+    "analysis-synthetic-comparison-1360x900.png": {
+      "path": "E:\\Dino-artifacts\\DINO_POWER_CURVE_V2\\package-smoke\\analysis-synthetic-comparison-1360x900.png",
+      "sha256": "1766b315772221996226b8ae5b63be21067b4d32534fc85aeefa41534e8355d3",
+      "bytes": 76966,
+      "capture": "PrintWindow of actual packaged Dino2T.exe HWND"
+    },
+    "analysis-synthetic-comparison-980x680.png": {
+      "path": "E:\\Dino-artifacts\\DINO_POWER_CURVE_V2\\package-smoke\\analysis-synthetic-comparison-980x680.png",
+      "sha256": "b465dfb91a57b491888d85c1962bbe6ae24ce9ed106dba665f93b57e62e1e93f",
+      "bytes": 45382,
+      "capture": "PrintWindow of actual packaged Dino2T.exe HWND"
+    }
+  },
+  "tests": [
+    {
+      "command": "python -m pytest tests/test_power_curve.py tests/test_power_curve_sweep.py -q",
+      "result": "11 passed"
+    },
+    {
+      "command": "openspec validate dino-power-curve-v1 --strict --no-interactive",
+      "result": "PASS"
+    },
+    {
+      "command": "python scripts/agents/program_status.py check",
+      "result": "PASS"
+    },
+    {
+      "command": "ZIP CRC/decompression validation across all entries",
+      "result": "PASS; 304 entries"
+    }
+  ],
+  "prior_v1_suite": "38 focused desktop, curve and sweep regressions passed at the preceding V1 implementation HEAD; no source code changed during this packaging turn",
+  "execution_blocker": {
+    "evidence": "results/dino-2t-scientific-point-v1/execution-receipt-01.json",
+    "prior_invocation_seconds": 600.125,
+    "cycles_committed": 3,
+    "checkpoint_sha256": "b0c88c4374f56c01cf3f74b4e77cde7832e58b15bc68b81d82cf736eab216b1f",
+    "unmanifested_primary_sha256": "41e1b00bd1b3baa7e46578dec480d777c3ae8bec44a0e2beb18935cd4743d6e8",
+    "resume_status": "FAIL_CLOSED: unmanifested cycle-0004 primary; a versioned recovery procedure is required before using the remaining authorized budget",
+    "new_solver_execution": "NOT STARTED"
+  },
+  "git_policy": "No push. Existing Ostacky/local changes were not staged."
+}

@@ -8279,6 +8279,12 @@
       "task": "DINO_POWER_CURVE_V1",
       "kind": "task",
       "summary": "Final UI regression after curve chart and resume controls: 38 tests PASS (27 desktop, 11 power-curve/sweep); 2-RPM fixture preflight PASS with solver_steps=0. OpenSpec strict and program-status checks PASS; gate remains REVIEW pending real curve data/authorization."
+    },
+    {
+      "at": "2026-10-19T12:09:41+00:00",
+      "task": "DINO_POWER_CURVE_V1",
+      "kind": "task",
+      "summary": "Windows TRIAL empaquetado desde 3daf5836; ZIP con 304 entradas PASS; MotorSim.exe y Dino2T.exe abren/cierran, ejemplo del paquete y Análisis verificados; comparación UI sintética exacta a 3000/4000 RPM y HP-kW-CV PASS; 11 tests y OpenSpec PASS. Sin solver: SPV1 sigue bloqueado por primary ciclo 4 sin manifest y resume FAIL_CLOSED. Receipt: results/dino-power-curve-v2/windows-trial-receipt.json."
     }
   ],
   "legacy_gate_status": {
