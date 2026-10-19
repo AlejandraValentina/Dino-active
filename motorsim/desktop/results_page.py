@@ -7,6 +7,7 @@ from PySide6.QtGui import QPixmap,QColor,QPainter,QPen,QImage
 from PySide6.QtWidgets import (QWidget,QVBoxLayout,QHBoxLayout,QLabel,QComboBox,QPushButton,
     QFileDialog,QCheckBox,QGroupBox,QListWidget,QListWidgetItem,QTableWidget,QTableWidgetItem,QHeaderView,QMessageBox)
 from .plot import CurvePlot
+from .performance_curves import PowerCurvePanel
 from .services import load_results,run_background
 from .preferences import artifact_root,impl2_historical_report_candidate,settings
 from ..exploratory_workflow import import_exploratory_runs
@@ -99,6 +100,7 @@ class ResultsPage(QWidget):
         self.baseline_notice=QLabel("La baseline identifica la referencia de comparación; las curvas usan sólo puntos realmente disponibles.");self.baseline_notice.setWordWrap(True);baseline_row.addWidget(self.baseline_notice,1)
         self.condition_notice=QLabel();self.condition_notice.setWordWrap(True);self.condition_notice.setObjectName("notice");root.addWidget(self.condition_notice)
         self.plot=CurvePlot();root.addWidget(self.plot,2)
+        self.power_curves=PowerCurvePanel();root.addWidget(self.power_curves)
         controls=QHBoxLayout();root.addLayout(controls)
         self.unit=QLabel();controls.addWidget(self.unit);controls.addStretch()
         export_table=QPushButton("Exportar tabla CSV");export_table.clicked.connect(self.export_csv);controls.addWidget(export_table)
@@ -119,7 +121,7 @@ class ResultsPage(QWidget):
         compare_layout=QVBoxLayout(self.compare_group);self.compare_notice=QLabel("Seleccioná dos variantes con corridas para comparar.");self.compare_notice.setWordWrap(True);compare_layout.addWidget(self.compare_notice)
         self.compare_table=QTableWidget(0,5);self.compare_table.setObjectName("engineeringComparisonTable");self.compare_table.setHorizontalHeaderLabels(["Elemento","Baseline","Variante","Δ","Estado"]);self.compare_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.compare_table.setMaximumHeight(220);compare_layout.addWidget(self.compare_table);root.addWidget(self.compare_group)
         self.details=QTableWidget(0,2);self.details.setHorizontalHeaderLabels(["Detalle del punto","Valor"]);self.details.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.details.setMaximumHeight(190);root.addWidget(self.details)
-        self.metric_selector.currentIndexChanged.connect(self.redraw);self.variants.itemChanged.connect(self.redraw);self.variants.itemChanged.connect(self._update_engineering_compare);self.plot.pointSelected.connect(self.show_point)
+        self.metric_selector.currentIndexChanged.connect(self.redraw);self.variants.itemChanged.connect(self.redraw);self.variants.itemChanged.connect(self._update_engineering_compare);self.plot.pointSelected.connect(self.show_point);self.power_curves.pointSelected.connect(self.show_point)
         self.baseline_selector.currentIndexChanged.connect(self._baseline_changed)
         root.removeWidget(self.trace_group);root.insertWidget(root.indexOf(self.plot),self.trace_group)
         self.context.changed.connect(self._project_context_changed);self._project_context_changed()
@@ -404,6 +406,7 @@ class ResultsPage(QWidget):
         self.point_table.blockSignals(False)
         self._update_condition_notice()
         self._update_engineering_compare()
+        self.power_curves.set_dataset(self.dataset, selected)
     def redraw_trace(self,*_):
         if not self.dataset or self.dataset.get("schema")!="DINO_EXPLORATORY_COMPARISON_V1":
             self.trace_plot.set_series([]);self.trace_legend.setText("");return

@@ -137,6 +137,15 @@ def test_exploratory_run_cancels_at_step_boundary_and_resumes_audited_checkpoint
     assert imported["points"][0]["hard_gates"]["status"]=="NOT_EVALUATED_EXPLORATORY"
     assert imported["points"][0]["audit_status"]=="PASS"
     assert imported["points"][0]["audit_recomputed"] is True
+    point_provenance=imported["points"][0]
+    assert len(point_provenance["implementation_identity_sha256"])==64
+    assert point_provenance["solver_identity_sha256"]==resumed["bindings"]["source_hashes"]["motorsim.integrated_2t"]
+    assert point_provenance["producer_sha256"]==resumed["bindings"]["source_hashes"]["motorsim.exploratory_workflow"]
+    assert point_provenance["fuel_id"]==resumed["preflight"]["fuel_id"]
+    assert point_provenance["mechanical_loss_model_sha256"]==resumed["preflight"]["mechanical_loss_model_sha256"]
+    assert point_provenance["periodicity_contract"]==resumed["periodicity_contract"]
+    assert point_provenance["total_finite_volume_cells"]==resumed["preflight"]["total_finite_volume_cells"]
+    assert point_provenance["mesh_resolution"]
     assert imported["points"][0]["periodicity"]=="NOT_EVALUATED"
     assert imported["points"][0]["periodicity_diagnostics"] == resumed["periodicity_diagnostics"]
     assert imported["points"][0]["conservation"]["mass_residual_kg"]==pytest.approx(0.0,abs=1e-11)

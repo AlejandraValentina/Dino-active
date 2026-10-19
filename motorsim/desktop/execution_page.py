@@ -12,7 +12,7 @@ from datetime import datetime,timezone
 from PySide6.QtCore import Qt, Signal, QElapsedTimer
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
     QPlainTextEdit, QFileDialog, QMessageBox, QDoubleSpinBox, QSpinBox, QLineEdit,
-    QFormLayout, QGroupBox, QComboBox)
+    QFormLayout, QGroupBox, QComboBox, QDialog, QDialogButtonBox)
 
 from ..engine_configuration import identity
 from ..exploratory_workflow import preflight, run_exploratory
@@ -75,6 +75,9 @@ class ExecutionPage(QWidget):
         self.preflight_label=QLabel(); self.preflight_label.setWordWrap(True); actions.addWidget(self.preflight_label,1)
         self.start=QPushButton("Simular…"); self.start.setObjectName("primaryAction"); self.start.clicked.connect(lambda: self.start_run(resume=False)); actions.addWidget(self.start)
         self.resume=QPushButton("Reanudar…"); self.resume.clicked.connect(lambda: self.start_run(resume=True)); actions.addWidget(self.resume)
+        self.sweep=QPushButton("Curva RPM…");self.sweep.setToolTip("Preflight y barrido exploratorio acotado con el motor integrado")
+        self.sweep.clicked.connect(self.start_power_curve);actions.addWidget(self.sweep)
+        self.resume_sweep=QPushButton("Reanudar curva…");self.resume_sweep.clicked.connect(self.resume_power_curve);actions.addWidget(self.resume_sweep)
         self.cancel=QPushButton("Cancelar"); self.cancel.setEnabled(False); self.cancel.clicked.connect(self.cancel_run); actions.addWidget(self.cancel)
         self.history=SimpleNamespace(entries=[],artifact_root=self.artifact_root)
         self.context.changed.connect(self.refresh)
@@ -147,12 +150,14 @@ class ExecutionPage(QWidget):
             if raw_estimate>600:status+=f" El tope no alcanza la estimación sin margen ({raw_estimate} s); no se alteró el horizonte ni el presupuesto."
             self.budget_estimate.setText(f"{self.cycles.value()} ciclos · {status} {source}. Cambiar el preset nunca cambia el presupuesto.")
             self.start.setEnabled(self.task is None and not unsafe)
+            self.sweep.setEnabled(self.task is None and not unsafe)
+            self.resume_sweep.setEnabled(self.task is None and not unsafe)
             candidate=self.artifact_root/'exploratory-workflow-v1'/self.context.project['project_id']/self.run_id.text().strip()
             resumable=(bool(self.run_id.text().strip()) and (candidate/'run.json').is_file() and (candidate/'checkpoint.json').is_file())
             self.resume.setEnabled(self.task is None and resumable and not unsafe)
         except Exception as exc:
             self.preflight_label.setText(f"Preflight FAIL-CLOSED: {type(exc).__name__}: {exc}")
-            self.start.setEnabled(False); self.resume.setEnabled(False)
+            self.start.setEnabled(False); self.resume.setEnabled(False);self.sweep.setEnabled(False);self.resume_sweep.setEnabled(False)
         self.state_changed.emit()
 
     def choose_root(self):
@@ -265,15 +270,133 @@ class ExecutionPage(QWidget):
         self.cancel.setEnabled(True); self.start.setEnabled(False); self.resume.setEnabled(False)
         self.state_changed.emit()
 
+    def start_power_curve(self):
+        """Prepare and explicitly confirm a bounded exploratory RPM sweep."""
+        if self.task is not None:return
+        from ..power_curve import plan_rpm_range
+        from ..power_curve_sweep import prepare_power_curve,run_power_curve
+        dialog=QDialog(self);dialog.setWindowTitle("Preparar curva RPM · EXPLORATORY")
+        form=QFormLayout(dialog)
+        start=QSpinBox();start.setRange(2500,15000);start.setSingleStep(100);start.setValue(3000)
+        stop=QSpinBox();stop.setRange(2500,15000);stop.setSingleStep(100);stop.setValue(6000)
+        step=QSpinBox();step.setRange(1,5000);step.setSingleStep(100);step.setValue(500)
+        cycles=QSpinBox();cycles.setRange(1,111);cycles.setValue(24)
+        point_budget=QSpinBox();point_budget.setRange(1,600);point_budget.setValue(int(self.budget.value()))
+        total_budget=QSpinBox();total_budget.setRange(1,3600);total_budget.setValue(1800)
+        memory=QSpinBox();memory.setRange(256,4096);memory.setValue(self.memory.value())
+        for label,widget in (("RPM inicial",start),("RPM final",stop),("Incremento",step),
+            ("Horizonte máximo por punto",cycles),("Presupuesto por punto (s)",point_budget),
+            ("Presupuesto total de esta invocación (s)",total_budget),("Memoria RSS máxima (MiB)",memory)):
+            form.addRow(label,widget)
+        form.addRow(QLabel("Cada punto usa el solver integrado y su checkpoint/auditoría independientes. No se extrapolan gaps."))
+        buttons=QDialogButtonBox(QDialogButtonBox.StandardButton.Ok|QDialogButtonBox.StandardButton.Cancel)
+        buttons.button(QDialogButtonBox.StandardButton.Ok).setText("Preflight y continuar…")
+        buttons.accepted.connect(dialog.accept);buttons.rejected.connect(dialog.reject);form.addRow(buttons)
+        if dialog.exec()!=QDialog.DialogCode.Accepted:return
+        try:
+            grid=plan_rpm_range(start.value(),stop.value(),step.value())
+            if len(grid)>30:raise ValueError("Una invocación admite como máximo 30 puntos.")
+            document=json.loads(json.dumps(self._engine(),allow_nan=False))
+            project_id=self.context.project["project_id"];variant=self.context.selected_variant or "base"
+            prepared=prepare_power_curve(document,project_id=project_id,variant_label=variant,
+                artifact_root=self.artifact_root,start_rpm=start.value(),stop_rpm=stop.value(),
+                step_rpm=step.value(),max_cycles=cycles.value(),point_budget_seconds=point_budget.value(),
+                total_budget_seconds=total_budget.value(),memory_limit_mib=memory.value())
+            confirmation=(f"Preflight PASS · 0 pasos del solver\n\nVariante: {variant}\n"
+                f"RPM: {', '.join(map(str,grid))}\nPuntos: {len(grid)} · serial, 1 worker\n"
+                f"Horizonte: hasta {cycles.value()} ciclos/punto\nPresupuesto: {total_budget.value()} s agregado; "
+                f"hasta {point_budget.value()} s/punto\nMemoria RSS: {memory.value()} MiB\n"
+                f"Identidad: {prepared['identity_sha256']}\nArtifact root: {self.artifact_root}\n\n"
+                "EXPLORATORY; no implica periodicidad, convergencia ni aceptación científica.")
+            answer=QMessageBox.question(self,"Confirmar barrido RPM",confirmation,
+                QMessageBox.StandardButton.Yes|QMessageBox.StandardButton.No,QMessageBox.StandardButton.No)
+            if answer!=QMessageBox.StandardButton.Yes:return
+        except Exception as exc:
+            QMessageBox.warning(self,"Preflight de curva bloqueado",f"FAIL-CLOSED: {type(exc).__name__}: {exc}");return
+        self.cancel_event=threading.Event();self.progress_latest=None
+        self.output.appendPlainText(f"Barrido EXPLORATORY iniciado · {len(grid)} RPM · sin autorización VERIFIED.")
+        self.task=run_background(run_power_curve,document,project_id=project_id,variant_label=variant,
+            artifact_root=self.artifact_root,start_rpm=start.value(),stop_rpm=stop.value(),step_rpm=step.value(),
+            max_cycles=cycles.value(),point_budget_seconds=point_budget.value(),
+            total_budget_seconds=total_budget.value(),memory_limit_mib=memory.value(),
+            cancel_event=self.cancel_event,progress=self.progress_signal.emit,
+            on_done=self._done,on_error=self._failed)
+        self.elapsed_timer.start();self.status_text="CORRIENDO BARRIDO";self.checkpoint_summary="manifiesto guardado por punto"
+        self.cancel.setEnabled(True);self.start.setEnabled(False);self.resume.setEnabled(False);self.sweep.setEnabled(False)
+        self.resume_sweep.setEnabled(False)
+        self.state_changed.emit()
+
+    def resume_power_curve(self):
+        """Resume only an explicitly selected, binding-compatible sweep manifest."""
+        if self.task is not None:return
+        from ..power_curve_sweep import run_power_curve
+        selected,_=QFileDialog.getOpenFileName(self,"Elegir manifiesto de curva para reanudar",
+            str(self.artifact_root),"Manifiesto de curva (series.json)")
+        if not selected:return
+        try:
+            manifest_path=Path(selected).resolve()
+            if manifest_path.name!="series.json":raise ValueError("Seleccioná el archivo series.json de una curva.")
+            manifest=json.loads(manifest_path.read_text(encoding="utf-8"))
+            binding=manifest.get("bindings",{})
+            document=json.loads(json.dumps(self._engine(),allow_nan=False))
+            if binding.get("project_id")!=self.context.project["project_id"]:
+                raise ValueError("El proyecto activo no coincide con la curva.")
+            if binding.get("variant_label")!=(self.context.selected_variant or "base"):
+                raise ValueError("La variante activa no coincide con la curva.")
+            from ..power_curve_sweep import prepare_power_curve
+            prepared=prepare_power_curve(document,project_id=binding["project_id"],
+                variant_label=binding["variant_label"],artifact_root=binding["artifact_root"],
+                start_rpm=binding["rpms"][0],stop_rpm=binding["rpms"][-1],
+                step_rpm=binding["rpms"][1]-binding["rpms"][0] if len(binding["rpms"])>1 else 1,
+                max_cycles=binding["max_cycles"],point_budget_seconds=binding["point_budget_seconds"],
+                total_budget_seconds=binding["total_budget_seconds"],memory_limit_mib=binding["memory_limit_mib"])
+            if manifest.get("schema")!="DINO_POWER_CURVE_SWEEP_V1" or prepared["identity_sha256"]!=binding.get("identity_sha256") or str(manifest_path.parent)!=str((Path(binding["artifact_root"])/"dino-power-curve-v1"/binding["project_id"]/manifest_path.parent.name).resolve()):
+                raise ValueError("La identidad o ubicación del manifiesto no coincide; reanudación bloqueada.")
+            answer=QMessageBox.question(self,"Reanudar curva RPM",
+                f"Reanudar {len(binding['rpms'])} puntos desde el manifiesto seleccionado?\n"
+                f"RPM: {binding['rpms']}\nConsumido previamente: {manifest.get('elapsed_seconds',0):.1f} s\n"
+                f"Presupuesto agregado: {binding['total_budget_seconds']} s\n"
+                "Se conservarán los checkpoints válidos; no se reiniciarán puntos completos.",
+                QMessageBox.StandardButton.Yes|QMessageBox.StandardButton.No,QMessageBox.StandardButton.No)
+            if answer!=QMessageBox.StandardButton.Yes:return
+        except Exception as exc:
+            QMessageBox.warning(self,"Reanudación bloqueada",f"FAIL-CLOSED: {type(exc).__name__}: {exc}");return
+        self.cancel_event=threading.Event();self.output.appendPlainText(f"Reanudación solicitada · curva {manifest_path.parent.name}")
+        self.task=run_background(run_power_curve,document,project_id=binding["project_id"],
+            variant_label=binding["variant_label"],artifact_root=binding["artifact_root"],
+            start_rpm=binding["rpms"][0],stop_rpm=binding["rpms"][-1],
+            step_rpm=(binding["rpms"][1]-binding["rpms"][0] if len(binding["rpms"])>1 else 1),
+            max_cycles=binding["max_cycles"],point_budget_seconds=binding["point_budget_seconds"],
+            total_budget_seconds=binding["total_budget_seconds"],memory_limit_mib=binding["memory_limit_mib"],
+            sweep_id=manifest_path.parent.name,resume=True,cancel_event=self.cancel_event,
+            progress=self.progress_signal.emit,on_done=self._done,on_error=self._failed)
+        self.elapsed_timer.start();self.status_text="REANUDANDO BARRIDO";self.checkpoint_summary="se validan hashes y checkpoints antes de continuar"
+        self.cancel.setEnabled(True);self.start.setEnabled(False);self.resume.setEnabled(False);self.sweep.setEnabled(False);self.resume_sweep.setEnabled(False)
+        self.state_changed.emit()
+
     def _progress(self,row):
         self.progress_latest=dict(row);self.status_text="CORRIENDO"
-        self.output.appendPlainText(f"Ciclo {row['cycle']} · {row['angle_deg']:.1f}° · RSS {row['rss_bytes']/1048576:.0f} MiB")
+        if "point_index" in row:
+            if "point" in row:
+                self.output.appendPlainText(f"Punto {row['point_index']}/{row['point_count']} · {row['rpm']} RPM · {row['point'].get('classification')}")
+            elif "solver_progress" in row:
+                p=row["solver_progress"]
+                self.output.appendPlainText(f"{row['rpm']} RPM · ciclo {p['cycle']} · {p['angle_deg']:.1f}° · RSS {p['rss_bytes']/1048576:.0f} MiB")
+        else:
+            self.output.appendPlainText(f"Ciclo {row['cycle']} · {row['angle_deg']:.1f}° · RSS {row['rss_bytes']/1048576:.0f} MiB")
         self.state_changed.emit()
 
     def _done(self,result):
         self.status_text=f"TERMINADA · {result.get('classification','clasificación no informada')}"
-        self.checkpoint_summary=f"{result.get('cycles_completed',0)} ciclos guardados · {result.get('periodicity','periodicidad no evaluada')}"
-        summary={k:result.get(k) for k in ("status","classification","mode","scientific_validation","cycles_completed","periodicity","failure","elapsed_seconds","artifact_directory","result_sha256")}
+        if isinstance(result.get("points"),list):
+            complete=sum(row.get("status")=="COMPLETE" for row in result["points"])
+            interrupted=sum(row.get("status")=="INTERRUPTED_CHECKPOINTED" for row in result["points"])
+            not_started=sum(row.get("status")=="NOT_STARTED" for row in result["points"])
+            self.checkpoint_summary=(f"{complete} puntos ejecutados · {interrupted} interrumpidos con checkpoint · "
+                f"{not_started} sin iniciar · {result.get('curve_availability','curva parcial')}")
+        else:
+            self.checkpoint_summary=f"{result.get('cycles_completed',0)} ciclos guardados · {result.get('periodicity','periodicidad no evaluada')}"
+        summary={k:result.get(k) for k in ("status","classification","mode","scientific_validation","cycles_completed","periodicity","failure","elapsed_seconds","artifact_directory","result_sha256","bindings","points")}
         summary["cycles"]=[{"cycle":r["cycle"],"primary_sha256":r["primary_sha256"],"audit_recomputed":r["audit"].get("recomputed"),"conservation":r["conservation"],"metric_statuses":{k:v.get("status") for k,v in r["engineering_output"].get("cycle_metrics",{}).items() if isinstance(v,dict)}} for r in result.get("cycles",[])]
         self.output.appendPlainText(json.dumps(summary,indent=2,ensure_ascii=False))
         self._release_task()

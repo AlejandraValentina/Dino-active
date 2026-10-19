@@ -22,10 +22,10 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_2T_SCIENTIFIC_POINT_V1
-change/spec:       openspec/changes/dino-2t-scientific-point-v1/
-                   specs/dino-2t-scientific-point-v1/spec.md
-completion:        Prepare and verify one integrated 2T operating point; do not execute without a matching durable authorization with explicit budget; no RPM sweep or mesh-independence claim.
+CURRENT_OBJECTIVE: DINO_POWER_CURVE_V1
+change/spec:       openspec/changes/dino-power-curve-v1/
+                   specs/dino-power-curve-v1/spec.md
+completion:        Deliver integrated exploratory RPM sweep, audited history import, HP/torque curves and exact compatible comparison; verify UI and infrastructure without starting a campaign or claiming scientific acceptance.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

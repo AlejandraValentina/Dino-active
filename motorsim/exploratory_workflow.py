@@ -780,6 +780,12 @@ def import_exploratory_runs(paths: list[str | Path]) -> dict:
                 gap[field+"_reason"]="No complete audited cycle was produced."
             points.append(gap)
 
+        source_hashes=binding.get("source_hashes",{})
+        implementation_identity_sha256=_sha(_json_bytes(source_hashes))
+        preflight_identity=result.get("preflight",{})
+        periodicity_contract=result.get("periodicity_contract")
+        mesh_resolution=[len(duct.get("mesh",{}).get("volumes",[]))
+                         for duct in effective.get("native_configuration",{}).get("ducts",[])]
         for cycle,audit,primary,output in verified_cycles:
             metrics=output.get("cycle_metrics",{})
             row={"point_id":f"{binding.get('run_id')}@cycle-{cycle.get('cycle')}",
@@ -795,7 +801,15 @@ def import_exploratory_runs(paths: list[str | Path]) -> dict:
                  "primary_sha256":cycle.get("primary_sha256"),
                  "conservation":primary.get("conservation"),
                  "run_id":binding.get("run_id"),"cycle":cycle.get("cycle"),
-                 "mode":"EXPLORATORY","experimental_validation":"NOT_CLAIMED"}
+                 "mode":"EXPLORATORY","experimental_validation":"NOT_CLAIMED",
+                 "implementation_identity_sha256":implementation_identity_sha256,
+                 "solver_identity_sha256":source_hashes.get("motorsim.integrated_2t"),
+                 "producer_sha256":source_hashes.get("motorsim.exploratory_workflow"),
+                 "fuel_id":preflight_identity.get("fuel_id"),
+                 "mechanical_loss_model_sha256":preflight_identity.get("mechanical_loss_model_sha256"),
+                 "periodicity_contract":periodicity_contract,
+                 "total_finite_volume_cells":preflight_identity.get("total_finite_volume_cells"),
+                 "mesh_resolution":mesh_resolution}
             for metric,field in names.items():
                 record=metrics.get(metric,{})
                 value=record.get("value") if record.get("status")=="DEFINED" else None

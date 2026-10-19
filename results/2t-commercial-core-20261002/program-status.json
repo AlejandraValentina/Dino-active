@@ -6007,6 +6007,117 @@
         "DINO_ARTIFACT_ROOT/dino-2t-scientific-point-v1/"
       ],
       "unblock_tasks": []
+    },
+    {
+      "id": "DPCV1-DATA-HISTORY",
+      "description": "Connect existing RPM results to V3.1 history and audited Analysis import.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "Existing exploratory and IMPL2 results continue through supported history/import paths; imported point rows now carry source, fuel, mechanical-loss, periodicity, and mesh provenance."
+      ],
+      "next_action": "Completed; see DINO_POWER_CURVE_V1 OpenSpec and focused regression evidence.",
+      "objective": "DINO_POWER_CURVE_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/run_history.py",
+        "motorsim/desktop/widgets/run_history.py",
+        "motorsim/desktop/results_page.py"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "DPCV1-DUAL-CURVES",
+      "description": "Build the HP/kW/CV and Nm dual-axis plot, exact point table, maxima, gap handling, and CSV export.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "Dual power/torque chart, HP/kW/CV conversion, maxima, exact point table, gap preservation, per-variant visibility, and provenance-rich CSV implemented and tested."
+      ],
+      "next_action": "Completed; see DINO_POWER_CURVE_V1 OpenSpec and focused regression evidence.",
+      "objective": "DINO_POWER_CURVE_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/power_curve.py",
+        "motorsim/desktop/performance_curves.py",
+        "motorsim/desktop/results_page.py"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "DPCV1-BOUNDED-SWEEP",
+      "description": "Reuse integrated solver/preflight for an explicitly budgeted, checkpointed per-RPM exploratory sweep.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "Integrated serial sweep, full-grid no-step preflight, external artifact root, atomic single-coordinator manifest, per-point checkpoints, explicit cancel/resume, budget accounting, and completed-point re-audit implemented; no sweep launched."
+      ],
+      "next_action": "Completed; see DINO_POWER_CURVE_V1 OpenSpec and focused regression evidence.",
+      "objective": "DINO_POWER_CURVE_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/power_curve_sweep.py",
+        "motorsim/desktop/execution_page.py"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "DPCV1-COMPARE",
+      "description": "Compare compatible series at exact shared RPM and show absent/undefined values without interpolation.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "Comparison uses exact shared RPM and fail-closed implementation, fuel, loss-model, periodicity, and mesh compatibility; unmatched/incompatible values remain unpaired."
+      ],
+      "next_action": "Completed; see DINO_POWER_CURVE_V1 OpenSpec and focused regression evidence.",
+      "objective": "DINO_POWER_CURVE_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/power_curve.py",
+        "motorsim/desktop/performance_curves.py",
+        "motorsim/desktop/results_page.py"
+      ],
+      "unblock_tasks": []
+    },
+    {
+      "id": "DPCV1-ACCEPTANCE",
+      "description": "Run requested tests, OpenSpec strict, program-status checks, and Windows UI verification without launching a campaign.",
+      "dependencies": [
+        "DPCV1-DATA-HISTORY",
+        "DPCV1-DUAL-CURVES",
+        "DPCV1-BOUNDED-SWEEP",
+        "DPCV1-COMPARE"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "11 power-curve and sweep tests PASS; 27 V3/V3.1 desktop regressions PASS at 1360x900 and 980x680; independent audited 2-cycle workflow resume/provenance test PASS.",
+        "OpenSpec dino-power-curve-v1 strict PASS; program-status check PASS; no real RPM campaign or solver point started under this objective.",
+        "No completed converged RPM series is available in this work, so curve availability and scientific acceptance remain unclaimed.",
+        "Actual 2-point fixture preflight (3000/4000 RPM) PASS with zero solver steps; no artifact was started or written."
+      ],
+      "next_action": "Implementation verified. New real curves require a separately authorized exploratory sweep; scientific acceptance requires its own contract and review.",
+      "objective": "DINO_POWER_CURVE_V1",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "tests/",
+        "scripts/"
+      ],
+      "unblock_tasks": []
     }
   ],
   "audit_remediation_mode": false,
@@ -6207,26 +6318,22 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_2T_SCIENTIFIC_POINT_V1",
+    "id": "DINO_POWER_CURVE_V1",
     "state": "OPEN",
     "owner_approved": true,
-    "summary": "Owner-authorized preparation and bounded verification toward one integrated operating point. No run until preflight is complete and a durable matching resource-budget authorization exists. No RPM sweep or mesh-independence claim.",
-    "change": "openspec/changes/dino-2t-scientific-point-v1",
-    "spec": "openspec/changes/dino-2t-scientific-point-v1/specs/dino-2t-scientific-point-v1/spec.md",
-    "authorization_source": "Explicit owner request CODEX — DINO 2T: SCIENTIFIC POINT V1 (2026-10-16); prompt explicitly conditions execution on hash-bound preflight authorization and says not to consume a high budget automatically.",
-    "transitioned_from": "DINO_2T_SOLVER_RECOVERY_V2",
+    "summary": "Implement integrated exploratory RPM sweep configuration, history-backed HP/torque curves, exact compatible comparisons, and Windows UI use without authorizing or starting a campaign.",
+    "change": "openspec/changes/dino-power-curve-v1",
+    "spec": "openspec/changes/dino-power-curve-v1/specs/dino-power-curve-v1/spec.md",
+    "authorization_source": "Explicit owner request in CODEX — DINO_POWER_CURVE_V1 (2026-10-19); request authorizes implementation and verification, but does not authorize starting an RPM campaign.",
+    "transitioned_from": "DINO_2T_SCIENTIFIC_POINT_V1",
     "gate_tasks": [
-      "SPV1-BASELINE",
-      "SPV1-PROFILE",
-      "SPV1-GEOMETRY",
-      "SPV1-PERIODICITY",
-      "SPV1-MESH-PREFLIGHT",
-      "SPV1-POINT-PREFLIGHT",
-      "SPV1-POINT-AUTHORIZATION",
-      "SPV1-POINT-EXECUTION",
-      "SPV1-RESULT-VERIFY"
+      "DPCV1-DATA-HISTORY",
+      "DPCV1-DUAL-CURVES",
+      "DPCV1-BOUNDED-SWEEP",
+      "DPCV1-COMPARE",
+      "DPCV1-ACCEPTANCE"
     ],
-    "completion_criterion": "Complete bounded implementation and verification; only classify SCIENTIFIC_POINT_ACCEPTED if one explicitly authorized integrated point passes existing physical/numerical/audit gates. Otherwise retain precise PARTIAL/FAIL_TERMINAL. No sweep, no automatic budget increase, no experimental claim."
+    "completion_criterion": "Deliver working history, HP/torque curves, exact compatible comparisons and bounded integrated sweep infrastructure; verify via tests and Windows UI. Preserve exploratory classifications and report BLOCKED if real numerical curves cannot be produced without new run authorization."
   },
   "objectives": [
     {
@@ -6746,7 +6853,44 @@
         "SPV1-POINT-EXECUTION",
         "SPV1-RESULT-VERIFY"
       ],
-      "completion_criterion": "Complete bounded implementation and verification; only classify SCIENTIFIC_POINT_ACCEPTED if one explicitly authorized integrated point passes existing physical/numerical/audit gates. Otherwise retain precise PARTIAL/FAIL_TERMINAL. No sweep, no automatic budget increase, no experimental claim."
+      "completion_criterion": "Complete bounded implementation and verification; only classify SCIENTIFIC_POINT_ACCEPTED if one explicitly authorized integrated point passes existing physical/numerical/audit gates. Otherwise retain precise PARTIAL/FAIL_TERMINAL. No sweep, no automatic budget increase, no experimental claim.",
+      "gate_status_archive": {
+        "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
+        "state": "OPEN",
+        "classification": null,
+        "evidence": [],
+        "gate_tasks_total": 9,
+        "gate_tasks_done": 7,
+        "gate_task_states": {
+          "DONE": 7,
+          "BLOCKED_LOCAL": 1,
+          "WAITING": 1
+        },
+        "remaining": [
+          "SPV1-POINT-EXECUTION",
+          "SPV1-RESULT-VERIFY"
+        ],
+        "updated_at": "2026-10-16T16:16:05+00:00"
+      },
+      "transition_note": "Owner explicitly authorized DINO_POWER_CURVE_V1 on 2026-10-19. Point execution remains PARTIAL/BLOCKED_LOCAL; its recovery task and evidence remain queued and unchanged."
+    },
+    {
+      "id": "DINO_POWER_CURVE_V1",
+      "state": "OPEN",
+      "owner_approved": true,
+      "summary": "Implement integrated exploratory RPM sweep configuration, history-backed HP/torque curves, exact compatible comparisons, and Windows UI use without authorizing or starting a campaign.",
+      "change": "openspec/changes/dino-power-curve-v1",
+      "spec": "openspec/changes/dino-power-curve-v1/specs/dino-power-curve-v1/spec.md",
+      "authorization_source": "Explicit owner request in CODEX — DINO_POWER_CURVE_V1 (2026-10-19); request authorizes implementation and verification, but does not authorize starting an RPM campaign.",
+      "transitioned_from": "DINO_2T_SCIENTIFIC_POINT_V1",
+      "gate_tasks": [
+        "DPCV1-DATA-HISTORY",
+        "DPCV1-DUAL-CURVES",
+        "DPCV1-BOUNDED-SWEEP",
+        "DPCV1-COMPARE",
+        "DPCV1-ACCEPTANCE"
+      ],
+      "completion_criterion": "Deliver working history, HP/torque curves, exact compatible comparisons and bounded integrated sweep infrastructure; verify via tests and Windows UI. Preserve exploratory classifications and report BLOCKED if real numerical curves cannot be produced without new run authorization."
     }
   ],
   "owner_decisions_pending": [
@@ -8117,6 +8261,24 @@
       "task": "SPV1-POINT-EXECUTION",
       "kind": "task",
       "summary": "Authorized 3000 RPM point invocation 1 stopped at 600.125 s; 3 manifest-bound cycles/checkpoint preserved, an unmanifested cycle-4 primary causes fail-closed resume rejection. Persisted exact artifact receipt; no further solver run."
+    },
+    {
+      "at": "2026-10-19T11:00:00+00:00",
+      "task": "DINO_POWER_CURVE_V1",
+      "kind": "objective",
+      "summary": "Owner explicitly authorized DINO_POWER_CURVE_V1 implementation. DINO_2T_SCIENTIFIC_POINT_V1 remains PARTIAL with its unmanifested-primary recovery blocker and queued work preserved; no RPM sweep authorized or started."
+    },
+    {
+      "at": "2026-10-19T11:33:49+00:00",
+      "task": "DINO_POWER_CURVE_V1",
+      "kind": "task",
+      "summary": "Dino power-curve UI and bounded integrated sweep infrastructure implemented; 11 focused tests, 27 desktop regressions, provenance/resume test, OpenSpec strict pass. No sweep started; no real curve or scientific acceptance claimed."
+    },
+    {
+      "at": "2026-10-19T11:36:08+00:00",
+      "task": "DINO_POWER_CURVE_V1",
+      "kind": "task",
+      "summary": "Final UI regression after curve chart and resume controls: 38 tests PASS (27 desktop, 11 power-curve/sweep); 2-RPM fixture preflight PASS with solver_steps=0. OpenSpec strict and program-status checks PASS; gate remains REVIEW pending real curve data/authorization."
     }
   ],
   "legacy_gate_status": {
@@ -8131,22 +8293,19 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
-    "state": "OPEN",
-    "classification": null,
-    "evidence": [],
-    "gate_tasks_total": 9,
-    "gate_tasks_done": 7,
-    "gate_task_states": {
-      "DONE": 7,
-      "BLOCKED_LOCAL": 1,
-      "WAITING": 1
-    },
-    "remaining": [
-      "SPV1-POINT-EXECUTION",
-      "SPV1-RESULT-VERIFY"
+    "objective": "DINO_POWER_CURVE_V1",
+    "state": "REVIEW",
+    "classification": "DINO_POWER_CURVE_V1_SWEEP_INFRASTRUCTURE_READY",
+    "evidence": [
+      "UI and sweep infrastructure verified; real converged curve not produced because no RPM campaign was authorized in this implementation task. Scientific acceptance remains unclaimed."
     ],
-    "updated_at": "2026-10-16T16:16:05+00:00"
+    "gate_tasks_total": 5,
+    "gate_tasks_done": 5,
+    "gate_task_states": {
+      "DONE": 5
+    },
+    "remaining": [],
+    "updated_at": "2026-10-19T11:33:50+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
