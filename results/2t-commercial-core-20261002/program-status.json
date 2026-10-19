@@ -5925,10 +5925,11 @@
         "SPV1-POINT-AUTHORIZATION"
       ],
       "state": "BLOCKED_LOCAL",
-      "blocker": "Runtime resource precondition unmet: latest free physical RAM sample 3637 MiB; execution requires at least 4096 MiB (3072 MiB cap + 1024 MiB reserve).",
+      "blocker": "Runtime resource precondition unmet: free physical RAM measured at 1153 MiB on 2026-10-19 07:26:50 -03:00; execution requires at least 4096 MiB (3072 MiB cap + 1024 MiB reserve).",
       "commits": [],
       "evidence": [
-        "Authorization is valid and hash-bound, but no solver invocation has started. Do not reduce authorized memory cap or reserve."
+        "Authorization is valid and hash-bound, but no solver invocation has started. Do not reduce authorized memory cap or reserve.",
+        "Latest runtime RAM recheck: 1153 MiB free of 20225 MiB total at 2026-10-19 07:26:50 -03:00; required >=4096 MiB. Authorization, preflight, and runner SHA-256 values still match; no solver invocation started."
       ],
       "next_action": "Execute one integrated point only after matching durable authorization; do not run a sweep or exceed the authorized budget.",
       "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
@@ -5971,7 +5972,9 @@
       "state": "READY",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "2026-10-19 07:26:50 -03:00 recheck: 1153 MiB free of 20225 MiB; failed 4096 MiB minimum. Exact hashes remain valid: preflight 89e5f47165dbc49d94e15adbedbed4b7c99ca7445ce5f556ac4fdad209622853; authorization 9079c84db206eec19a8faf67fbbe0d91d6772a0a04df8d72873524f51d1afbae; runner ab50c02d1f8e562a1b31ff23a772302697fbfebfe8a64b077bd741e55cb51138. No solver invocation started."
+      ],
       "next_action": "Recheck resource headroom immediately before any solver invocation; no execution unless the guard passes.",
       "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
       "owner_role": "verification",
@@ -8079,6 +8082,12 @@
       "task": "SPV1-POINT-AUTHORIZATION",
       "kind": "task",
       "summary": "Persisted owner option 2 authorization hash-bound to preflight. Single point only, 1200 s cumulative/600 s per invocation, 3072 MiB, one worker, 8-cycle cap. Execution remains blocked: 3637 MiB free versus 4096 MiB required; no solver steps."
+    },
+    {
+      "at": "2026-10-19T10:26:56+00:00",
+      "task": "SPV1-RUNTIME-RESOURCE-RECHECK",
+      "kind": "task",
+      "summary": "RAM recheck 2026-10-19 07:26 -03:00: 1153 MiB free, below the 4096 MiB guard; authorized hashes match and no solver was started."
     }
   ],
   "legacy_gate_status": {
