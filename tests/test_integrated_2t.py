@@ -25,7 +25,7 @@ from motorsim.integrated_2t import (
     make_integrated_engineering_output, make_integrated_engineering_output_v4,
     _fresh_air_fuel_species_ratio, _duct_ids_by_role, _role_face_outputs,
     _specific_consumption_value, _gross_fresh_short_circuit_rate,
-    _evidence_sha256, _angle_increment_matches,
+    _evidence_sha256, _angle_increment_matches, _predictor_state_copy,
 )
 from motorsim.engineering_outputs import (validate_integrated_engineering_output_v3,
                                           validate_integrated_engineering_output_v4,
@@ -68,6 +68,34 @@ def _legacy_jsonify_for_hash_test(value):
     if isinstance(value, dict):
         return {key: _legacy_jsonify_for_hash_test(item) for key, item in value.items()}
     return value
+
+
+def test_predictor_state_copy_isolated_maps_and_preserves_immutable_physical_leaves():
+    state = {
+        "chambers": {"cylinder": (1.0, 2.0, 3.0)},
+        "ducts": {"exhaust": [(1.0, 2.0, 3.0, 4.0)]},
+        "network_volumes": {},
+        "species": {
+            "chambers": {"cylinder": (1.0, 2.0, 3.0, 4.0)},
+            "ducts": {"exhaust": [(1.0, 2.0, 3.0, 4.0)]},
+            "network_volumes": {},
+        },
+    }
+    copied = _predictor_state_copy(state)
+
+    assert copied is not state
+    assert copied["chambers"] is not state["chambers"]
+    assert copied["species"] is not state["species"]
+    assert copied["species"]["chambers"] is not state["species"]["chambers"]
+    assert copied["chambers"]["cylinder"] is state["chambers"]["cylinder"]
+    assert copied["species"]["chambers"]["cylinder"] is state["species"]["chambers"]["cylinder"]
+
+    copied["chambers"]["new"] = (0.0, 0.0, 0.0)
+    copied["ducts"]["exhaust"] = [(9.0, 9.0, 9.0, 9.0)]
+    copied["species"]["ducts"]["exhaust"] = [(8.0, 8.0, 8.0, 8.0)]
+    assert "new" not in state["chambers"]
+    assert state["ducts"]["exhaust"] == [(1.0, 2.0, 3.0, 4.0)]
+    assert state["species"]["ducts"]["exhaust"] == [(1.0, 2.0, 3.0, 4.0)]
 
 
 def test_specific_fuel_consumption_uses_positive_p7_consumed_mass():

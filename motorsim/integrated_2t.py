@@ -232,6 +232,34 @@ def _jsonify(value):
     return value
 
 
+def _predictor_state_copy(state):
+    """Copy only mutable predictor containers; physical leaves are tuples/scalars.
+
+    The stage predictor overwrites every chamber, duct and network-volume
+    value. Rebuilding these small maps avoids deep-copying the 48-cell state
+    tree at every accepted step while keeping all containers it mutates private.
+    Fall back to the historical deep copy if the state schema grows.
+    """
+    expected = {"chambers", "ducts", "network_volumes", "species"}
+    if "dynamic_reed" in state:
+        expected.add("dynamic_reed")
+    if (set(state) != expected or
+            set(state["species"]) != {"chambers", "ducts", "network_volumes"}):
+        return deepcopy(state)
+    result = dict(state)
+    result["chambers"] = dict(state["chambers"])
+    result["ducts"] = {}
+    result["network_volumes"] = dict(state["network_volumes"])
+    species = dict(state["species"])
+    species["chambers"] = dict(state["species"]["chambers"])
+    species["ducts"] = {}
+    species["network_volumes"] = dict(state["species"]["network_volumes"])
+    result["species"] = species
+    if "dynamic_reed" in state:
+        result["dynamic_reed"] = dict(state["dynamic_reed"])
+    return result
+
+
 def _port_face_flux(exchange, duct_primitive, geometric_area, effective_area):
     """Return +x extensive flux, including pressure traction on blocked area.
 
@@ -2144,14 +2172,17 @@ class IntegratedEngine2T:
                    for boundary in fuel_boundaries):
                 raise ValueError(
                     "fuel-coupled SSPRK steps must align to ignition and Wiebe support boundaries")
-        q0 = deepcopy(self.state)
+        # Stage 0 is read-only: validation and RHS assembly only inspect it.
+        # Keep the committed engine state as the immutable stage input and
+        # allocate private containers only for the predictor stage below.
+        q0 = self.state
         self._validate(q0)
         rpm = float(delta_angle_deg) / (6.0 * float(dt_s))
         r0 = self._assemble(q0, start_angle, rpm, step_p7_event,
                             step_fuel_event, float(dt_s), capture_trace=capture_trace)
         limiter0 = self._limit_p7_stage_source(q0, r0, float(dt_s))
         cfl0 = self._cfl(q0, r0, float(dt_s))
-        q1 = deepcopy(q0)
+        q1 = _predictor_state_copy(q0)
         for name in ("crankcase", "cylinder"):
             q = q0["chambers"][name]
             rhs = r0["q"]["chambers"][name]

@@ -27,12 +27,12 @@
       "source": "results/dino-stage1-solver-diagnostic-recovery/performance/performance-profile.json",
       "scope": "13-cell synthetic two-cycle workflow with five deliberate independent primary audits; cProfile times overlap and are instrumented",
       "audit_integrated_cycle_primary_cumulative_seconds": 235.693,
-      "make_integrated_cycle_primary_cumulative_seconds": 142.860,
+      "make_integrated_cycle_primary_cumulative_seconds": 142.86,
       "step_cumulative_seconds": 104.482,
       "assemble_cumulative_seconds": 99.039,
-      "jsonify_cumulative_seconds": 88.520,
+      "jsonify_cumulative_seconds": 88.52,
       "deepcopy_cumulative_seconds": 62.022,
-      "evidence_hash_cumulative_seconds": 36.490,
+      "evidence_hash_cumulative_seconds": 36.49,
       "json_bytes_cumulative_seconds": 6.613,
       "gzip_compress_cumulative_seconds": 1.271,
       "atomic_write_cumulative_seconds": 0.108,
@@ -44,8 +44,8 @@
       "source": "results/dino-2t-scientific-point-v1/performance-profile.json",
       "primary_uncompressed_bytes": 108925768,
       "parse_seconds": 3.131,
-      "canonical_serialize_seconds": 3.610,
-      "uninstrumented_audit_seconds": 75.610,
+      "canonical_serialize_seconds": 3.61,
+      "uninstrumented_audit_seconds": 75.61,
       "peak_sampled_rss_bytes": 1468989440
     }
   },
@@ -66,13 +66,16 @@
     },
     "complete_offline_primary_replay": {
       "configuration": "persisted Escape original, 3000 RPM, EXHAUST_MESH_V2, 48 cells; cycle 1 with 2627 accepted trajectory steps",
-      "audit_run_order": ["baseline", "candidate"],
+      "audit_run_order": [
+        "baseline",
+        "candidate"
+      ],
       "baseline_wall_seconds": 62.27787510002963,
       "candidate_wall_seconds": 56.62007679999806,
       "baseline_cpu_seconds": 62.28125,
       "candidate_cpu_seconds": 56.5625,
       "baseline_replayed_steps_per_second": 42.18,
-      "candidate_replayed_steps_per_second": 46.40,
+      "candidate_replayed_steps_per_second": 46.4,
       "speedup": 1.0999,
       "audit_wall_reduction_fraction": 0.09085,
       "baseline_audit_status": "PASS",
@@ -82,7 +85,48 @@
       "peak_memory_delta": "NOT_MEASURED; process RSS at audit boundaries was sampled, not a paired peak-memory measurement",
       "candidate_method": "bounded monkey-patched benchmark using the exact direct-json serialization implementation now installed in production source; source-bound historical primary was not accepted under modified source"
     },
-    "end_to_end_cycle_speedup": "NOT_CLAIMED; this paired replay measures independent primary audit, not a complete solver cycle or run"
+    "end_to_end_cycle_speedup": "NOT_CLAIMED; isolated bounded advancement measurement is not a complete cycle or run",
+    "bounded_solver_advance": {
+      "configuration": "Frozen stage-1 Escape original, 3000 RPM, EXHAUST_MESH_V2, 48 cells; fresh engine; controlled stop at 5.125 degrees; 7 paired repetitions, alternating execution order",
+      "baseline_source": "HEAD before this task; original q0=deepcopy(self.state), q1=deepcopy(q0)",
+      "candidate_source": "Current integrated_2t.py; q0 is inspected read-only state and q1 uses _predictor_state_copy with schema fallback to deepcopy",
+      "baseline_integrated_2t_sha256": "e4012ef34198802da1fa428f6bb48e848f8382b5534c256cc59de55e71a10c33",
+      "candidate_integrated_2t_sha256": "dc05b28d77a1fa222e4b0c4812ab49ecd1b7fe1e55a4b05fe36a59799ba48598",
+      "baseline_wall_seconds": [
+        0.23290480009745806,
+        0.2295287000015378,
+        0.2294002000708133,
+        0.22969750000629574,
+        0.2241496000206098,
+        0.23973629996180534,
+        0.228660500026308
+      ],
+      "candidate_wall_seconds": [
+        0.2083219001069665,
+        0.20697589998599142,
+        0.21085869998205453,
+        0.2046824999852106,
+        0.20733610005117953,
+        0.20550380006898195,
+        0.2176346000051126
+      ],
+      "baseline_median_seconds": 0.2295287000015378,
+      "candidate_median_seconds": 0.20733610005117953,
+      "median_speedup": 1.1070368350947093,
+      "median_wall_reduction_fraction": 0.09668769069057415,
+      "all_trials_identical_final_state_sha256": "9ec7bd2c0b68cf840c88cbe4d499b15536b072835d17bc7b3228eb8e7683e387",
+      "all_trials_accepted_steps": 31,
+      "all_trials_rejected_trials": 32,
+      "all_trials_final_angle_deg": 5.125,
+      "comparison": "PASS; exact state hash, accepted/rejected counts and final angle identical across baseline and candidate",
+      "scope_limit": "Short 5.125-degree engineering segment only. No complete-cycle, audit-pipeline, campaign, or end-to-end speedup claimed."
+    },
+    "state_copy_change": {
+      "change": "IntegratedEngine2T.step now treats committed stage-0 self.state as read-only input; predictor stage copies only mutable dict containers and rebuilds duct maps. Physical tuple/scalar leaves are shared. Unknown top-level/schema changes use historical deepcopy fallback.",
+      "safety_basis": "_validate and _assemble inspect stage-0 state; predictor overwrites all mutable stage-1 duct, chamber, species and network maps before integration. Targeted alias-isolation test plus full solver/replay/conservation regressions pass."
+    },
+    "memory_reduction": "NOT_MEASURED",
+    "next_follow_up": "No further micro-optimization proposed; independent 48-cell cycle audit remains a separately measured 56.62 s component."
   },
   "checkpoint_commit_protocol": {
     "change": "Write each next-cycle checkpoint to a unique immutable path; atomically update the run manifest last to select it. Resume reads only the checkpoint named by the manifest, with legacy checkpoint.json fallback for old-format manifests.",
@@ -100,16 +144,17 @@
     "compatibility": "Old run/checkpoint bindings do not match the updated source hashes and remain fail-closed; no old checkpoint was restored or rewritten. New runs bind the current workflow source hash."
   },
   "verification": {
-    "tests": "109 passed across tests/test_integrated_2t.py, tests/test_integrated_cycle_evidence_producer.py and tests/test_exploratory_workflow.py; the two focused atomic-temp/hash tests are included in that count and also passed in a separate focused retest.",
+    "tests": "110 passed across tests/test_integrated_2t.py, tests/test_integrated_cycle_evidence_producer.py and tests/test_exploratory_workflow.py after predictor-copy optimization.",
     "solver_equivalence": "PASS within exercised tests; cycle replay and generated evidence retain exact canonical results and conservation checks",
     "periodicity_claim": "NOT_MADE; tests exercised detector classification only",
     "conservation": "PASS in integrated replay, producer and workflow regressions",
     "campaign_started": false,
-    "authorized_point_resumed": false
+    "authorized_point_resumed": false,
+    "bounded_solver_advance_equivalence": "PASS; baseline and optimized source produced identical canonical final state hash, accepted/rejected step counts and angle over all 7 paired repetitions"
   },
   "remaining_cost": {
     "largest_measured_component": "Independent cycle-primary replay/audit; one real 48-cell cycle audit remained 56.62 seconds after this change.",
-    "solver_step_throughput": "NOT_MEASURED as an isolated production solver advance in this task",
+    "solver_step_throughput": "MEASURED on a bounded 5.125-degree 48-cell engineering segment only: baseline median 0.22953 s, candidate 0.20734 s, 1.107x; no full-cycle throughput claim.",
     "memory_reduction": "NOT_CLAIMED",
     "next_follow_up": "Consider a separately versioned, measured optimization for repeated _jsonify/deepcopy during audit reconstruction; do not weaken replay, conservation, species, CFL or source-binding checks."
   }
