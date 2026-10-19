@@ -1,0 +1,109 @@
+{
+  "schema": "ISV1_PROVENANCE_REPAIR_RECEIPT_V1",
+  "recorded_at": "2026-10-19T12:05:00-03:00",
+  "request": "isv1-a0-a2-20261019",
+  "change": "openspec/changes/integrated-solver-verification-v1",
+  "base_head": "ea2ff2d13d8dd04bf321bf986d38ed446edc50c6",
+  "owner_instructions_2026-10-19": [
+    "A0/A1 without altering P0-P9 contracts or rewriting historical evidence.",
+    "A2 with two verification lines: numerical accuracy of the integrated solver and computational performance of its execution pipeline.",
+    "No MUSCL yet: first determine if the current first-order scheme has spatial/temporal convergence and quantify errors.",
+    "Explicitly separate physical integration cost from audit/reconstruction/serialization cost.",
+    "A3 with strict budgets, interruption criteria and prohibition of automatic extensions.",
+    "No campaigns, no physical model changes, no new features without authorization.",
+    "Numerical convergence is necessary but not sufficient for a predictive power curve."
+  ],
+  "objective_transition": {
+    "from": "DINO_POWER_CURVE_V1",
+    "from_state": "OPEN; gate REVIEW / DINO_POWER_CURVE_V1_SWEEP_INFRASTRUCTURE_READY 5/5",
+    "to": "INTEGRATED_SOLVER_VERIFICATION_V1 (OPEN, owner_approved)",
+    "gate": "REVIEW / INTEGRATED_SOLVER_VERIFICATION_V1_DESIGN_REVIEW",
+    "gate_archives": [
+      "objectives[DINO_POWER_CURVE_V1].gate_status_archive",
+      "top-level gate_status_archive_before_integrated_solver_verification_v1"
+    ],
+    "queue_delta": [
+      "ISV1-PROVENANCE-REPAIR: DONE (working-tree qualification)",
+      "ISV1-A2-DESIGN: REVIEW",
+      "ISV1-PREREGISTRATION: WAITING (dep ISV1-A2-DESIGN)",
+      "ISV1-A3-EXECUTION: BLOCKED_LOCAL (owner authorization required)",
+      "ISV1-ACCEPTANCE: WAITING (dep ISV1-A3-EXECUTION)"
+    ],
+    "provenance_fixes": [
+      "README.md: status note after the historical P1-R5E block; historical P2_PASS_1D_CORE_VERIFIED is not a global P2 PASS; P2B closed as FAILED_INFRASTRUCTURE / P2_BLOCKED_SECOND_ORDER.",
+      "program-status.json r2_gate_status.review_provenance: third review recorded as owner-communicated (artifact NOT_PROVIDED, not independently reproduced); dates NOT_RECORDED in the receipt, target_head 2ef2fdf146a45b5aba932169ce9f9b0d4899bc7e; prior reviews preserved.",
+      "program-status.json continuation_status refreshed (was stale: ready_tasks=1, C11-C16).",
+      "AGENTS.md CURRENT_OBJECTIVE block updated together with program-status.json."
+    ]
+  },
+  "files": [
+    {
+      "path": "README.md",
+      "change": "status note on the historical P1-R5E block",
+      "sha256_before": "1c7da0e03692cdbc3e62e225ab71b8342f34a1b2e0464f7be8222c6b35692ccb",
+      "sha256_after": "5caf79bc1f5f9d385f010b8ad0364a7f802c5952bff066fb9e2258c2ea11fc27"
+    },
+    {
+      "path": "AGENTS.md",
+      "change": "CURRENT_OBJECTIVE block",
+      "sha256_before": "1eb9826f128795b7767ec0d9fef9b01bc9606fef25851f947c0a0be111597969",
+      "sha256_after": "ffc0e5121f3f1573508decde6bc2babb1d3c7d02ae668f6e421be41c2e2525e8"
+    },
+    {
+      "path": "results/2t-commercial-core-20261002/program-status.json",
+      "change": "objective transition, ISV1 queue tasks, gate archive + new gate REVIEW, continuation_status, R2 review provenance, progress_log",
+      "sha256_before": "ce142572690d80674bbdddd370bc89394793b21cea68c7a1216ed77b8259c74f",
+      "sha256_after": "596efbf3b5c146303ae1bdb5f3981efd176475eac566d91be7b5847c0f38340f"
+    },
+    {
+      "path": "docs/audits/dino-2t-vs-engmod2t-2026-10-19.md",
+      "change": "audit report (created earlier in this request)",
+      "sha256_before": null,
+      "sha256_after": "1c1dd1fa2a00773e46a445af575372c140b96b386f4b15d9e642d6235793c748"
+    },
+    {
+      "path": "openspec/changes/integrated-solver-verification-v1/proposal.md",
+      "change": "new (A2)",
+      "sha256_before": null,
+      "sha256_after": "c07630e50d1e3c65f002f61afeb0bae6b4aeecd37583570bbad0227fff372a14"
+    },
+    {
+      "path": "openspec/changes/integrated-solver-verification-v1/design.md",
+      "change": "new (A2; includes Alternatives)",
+      "sha256_before": null,
+      "sha256_after": "850520289c72251d6cb2892191a34d588ac18691e0a8c14e4659e2ea1ac2b767"
+    },
+    {
+      "path": "openspec/changes/integrated-solver-verification-v1/tasks.md",
+      "change": "new (A2; scope A0-A2; A3 phase tracked in the durable queue)",
+      "sha256_before": null,
+      "sha256_after": "2a97ebb0f207ee7cfae2b983e108d2c5f94d8e2df8d58463c6f138e7848e3278"
+    },
+    {
+      "path": "openspec/changes/integrated-solver-verification-v1/specs/integrated-solver-verification-v1/spec.md",
+      "change": "new (A2; openspec strict PASS)",
+      "sha256_before": null,
+      "sha256_after": "f2781753925879f79e4cf357671f0feca0998c4075563dcd72bd78a6d3bad70e"
+    }
+  ],
+  "checks": {
+    "program_status_check": "CHECK OK (exit 0)",
+    "openspec_validate_strict": "Change 'integrated-solver-verification-v1' is valid (exit 0)",
+    "p9_spec_hash": "PASS 79fbe9b88d26fc4af5083d65d468f59c9208535f0ab389d2f3cb9a7654b88a4d (unchanged)",
+    "git_diff_check": "clean (exit 0; only LF/CRLF warnings)"
+  },
+  "constraints_respected": {
+    "p0_p9_untouched": true,
+    "historical_evidence_not_rewritten": true,
+    "no_solver_steps": true,
+    "no_campaign_started": true,
+    "no_muscl_no_physics_changes": true,
+    "a3_not_executed": true,
+    "no_commit_performed": true
+  },
+  "notes": [
+    "The working-copy .gitignore (uncommitted local change from a previous session) ignores openspec/; this receipt and the change files are committed with a scoped 'git add -f' (2026-10-19) without modifying that local .gitignore, preserving other sessions' changes.",
+    "P2B decision.json records FAILED_INFRASTRUCTURE with P2_PASS false; resume-decision.json records P2_BLOCKED_SECOND_ORDER.",
+    "Commit performed 2026-10-19 under explicit owner authorization; no push. The 'no_commit_performed' constraint flag describes the A0-A2 request boundary, before this authorization."
+  ]
+}

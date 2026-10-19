@@ -6118,6 +6118,106 @@
         "scripts/"
       ],
       "unblock_tasks": []
+    },
+    {
+      "id": "ISV1-PROVENANCE-REPAIR",
+      "description": "A0+A1: close DINO_POWER_CURVE_V1 honestly (infrastructure ready, real curve blocked without authorization/data), repair stale provenance (README P1-R5E note, continuation_status), archive the old gate and switch the objective. No P0-P9 or historical evidence changes.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "docs/audits/dino-2t-vs-engmod2t-2026-10-19.md",
+        "results/integrated-solver-verification-v1/provenance-repair-receipt.json",
+        "README.md status note on the historical P1-R5E block; R2 third review provenance recorded as owner-communicated (third-review.json attribution boundary)"
+      ],
+      "next_action": "Working-tree changes only; committing the provenance repair is a separate owner authorization.",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "evidence/release reviewer",
+      "evidence_level": "L0",
+      "write_scope": [
+        "README.md",
+        "AGENTS.md",
+        "results/2t-commercial-core-20261002/program-status.json"
+      ],
+      "qualification": "DONE as working-tree state; no commit was requested or performed."
+    },
+    {
+      "id": "ISV1-A2-DESIGN",
+      "description": "A2: create openspec/changes/integrated-solver-verification-v1 (proposal, design, tasks, spec) with two verification lines (numerical accuracy, pipeline performance), no MUSCL, strict budgets, interruption rules, acceptance criteria, convergence-as-necessary-not-sufficient.",
+      "dependencies": [],
+      "state": "REVIEW",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "openspec/changes/integrated-solver-verification-v1/proposal.md",
+        "openspec/changes/integrated-solver-verification-v1/design.md",
+        "openspec/changes/integrated-solver-verification-v1/tasks.md",
+        "openspec/changes/integrated-solver-verification-v1/specs/integrated-solver-verification-v1/spec.md"
+      ],
+      "next_action": "Owner reviews the design (tier, frozen identity, tolerances) and records the explicit A3 authorization, or requests changes.",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "architecture",
+      "evidence_level": "L0",
+      "write_scope": [
+        "openspec/changes/integrated-solver-verification-v1/"
+      ]
+    },
+    {
+      "id": "ISV1-PREREGISTRATION",
+      "description": "Freeze the authorized matrix, tolerances and budget tier with SHA-256 (no solver steps).",
+      "dependencies": [
+        "ISV1-A2-DESIGN"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "After design approval and A3 authorization, commit the preregistration before any run.",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "evidence/release reviewer",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/integrated-solver-verification-v1/"
+      ]
+    },
+    {
+      "id": "ISV1-A3-EXECUTION",
+      "description": "Execute only the authorized tier of the bounded study (temporal and spatial convergence plus pipeline cost separation) with fail-closed caps, identity-bound checkpoints and no automatic extensions.",
+      "dependencies": [
+        "ISV1-PREREGISTRATION"
+      ],
+      "state": "BLOCKED_LOCAL",
+      "blocker": "A3 requires explicit owner authorization of scope, budget tier and tolerances (owner instruction 2026-10-19: do not execute A3 yet).",
+      "unblock_tasks": [],
+      "no_local_unblock_reason": "The missing input is an owner budget/scope authorization; no local engineering action can substitute for it. Preflight without solver is covered by the A2 design and preregistration tasks.",
+      "commits": [],
+      "evidence": [],
+      "next_action": "Wait for the owner authorization recorded in program-status; then run only the authorized tier.",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/integrated-solver-verification-v1/"
+      ]
+    },
+    {
+      "id": "ISV1-ACCEPTANCE",
+      "description": "Classify results against preregistered acceptance criteria: convergence or NOT_CONVERGED per observable, cost separation, supported domain and the necessary-not-sufficient statement. No predictive claim.",
+      "dependencies": [
+        "ISV1-A3-EXECUTION"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "After the authorized execution completes, produce the acceptance report with hashes.",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "evidence/release reviewer",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/integrated-solver-verification-v1/"
+      ]
     }
   ],
   "audit_remediation_mode": false,
@@ -6300,40 +6400,41 @@
       }
     }
   },
-  "last_status_reviewed_head": "f2c6926",
+  "last_status_reviewed_head": "ea2ff2d13d8dd04bf321bf986d38ed446edc50c6",
   "continuation_status": {
     "mode": "MOTORSIM_AUTONOMOUS_ENGINEERING_TEAM",
     "audit_remediation_mode": false,
-    "ready_tasks": 1,
+    "ready_tasks": 5,
     "local_blockers": [
-      "C11 exact continuous/checkpoint/restart/replay comparisons for both prime fixtures remain READY.",
-      "C13 campaign preregistration and C14-C16 remain blocked until C11 passes; no A-prime/B-prime campaign has started."
+      "FRPM-V2-EVIDENCE-HOTSPOT-OPT (evidence pipeline hotspots), DWT-PACKAGED-ACCEPTANCE, SPV1-POINT-EXECUTION.",
+      "ISV1-A3-EXECUTION: bounded convergence/performance study designed (A2) but not authorized; no campaign may start.",
+      "DPCV1 parked: the real converged power curve still requires a separately authorized run and real engine data."
     ],
-    "next_action": "Complete C11 exact continuous/checkpoint/restart/replay comparisons for A-prime and B-prime; then commit C13 preregistration before either campaign.",
+    "next_action": "Review the ISV1-A2 design and decide A3 authorization (tier, frozen identity, tolerances). Existing READY tasks unchanged; no campaign and no solver step is authorized.",
     "in_progress_tasks": 0,
-    "blocker_triage_date": "2026-10-06",
+    "blocker_triage_date": "2026-10-19",
     "superseded_by": "current_objective, gate_status, progress_log (MOTORSIM_PROGRAM_STATUS_V2)"
   },
   "schema_history": [
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_POWER_CURVE_V1",
+    "id": "INTEGRATED_SOLVER_VERIFICATION_V1",
     "state": "OPEN",
     "owner_approved": true,
-    "summary": "Implement integrated exploratory RPM sweep configuration, history-backed HP/torque curves, exact compatible comparisons, and Windows UI use without authorizing or starting a campaign.",
-    "change": "openspec/changes/dino-power-curve-v1",
-    "spec": "openspec/changes/dino-power-curve-v1/specs/dino-power-curve-v1/spec.md",
-    "authorization_source": "Explicit owner request in CODEX — DINO_POWER_CURVE_V1 (2026-10-19); request authorizes implementation and verification, but does not authorize starting an RPM campaign.",
-    "transitioned_from": "DINO_2T_SCIENTIFIC_POINT_V1",
+    "summary": "Verify the current first-order integrated solver before any predictive power-curve claim: spatial (mesh) and temporal (max_cfl) convergence, error quantification, and separation of physical integration cost from audit/reconstruction/serialization cost.",
+    "change": "openspec/changes/integrated-solver-verification-v1",
+    "spec": "openspec/changes/integrated-solver-verification-v1/specs/integrated-solver-verification-v1/spec.md",
+    "authorization_source": "Owner approval of Option A in CODEX (2026-10-19): complete A0-A2 and deliver design, budgets and acceptance criteria; A3 execution requires a new explicit owner authorization of scope and budget.",
+    "transitioned_from": "DINO_POWER_CURVE_V1",
     "gate_tasks": [
-      "DPCV1-DATA-HISTORY",
-      "DPCV1-DUAL-CURVES",
-      "DPCV1-BOUNDED-SWEEP",
-      "DPCV1-COMPARE",
-      "DPCV1-ACCEPTANCE"
+      "ISV1-PROVENANCE-REPAIR",
+      "ISV1-A2-DESIGN",
+      "ISV1-PREREGISTRATION",
+      "ISV1-A3-EXECUTION",
+      "ISV1-ACCEPTANCE"
     ],
-    "completion_criterion": "Deliver working history, HP/torque curves, exact compatible comparisons and bounded integrated sweep infrastructure; verify via tests and Windows UI. Preserve exploratory classifications and report BLOCKED if real numerical curves cannot be produced without new run authorization."
+    "completion_criterion": "Deliver the approved experiment design and preregistration; after explicit authorization execute the bounded study (mesh/CFL convergence plus cost separation) with fail-closed budgets and no automatic extensions; classify convergence or NOT_CONVERGED exactly and quantify observed error. Convergence is necessary but not sufficient for a predictive power curve; no campaign, no MUSCL, no physics changes, no P0-P9 edits."
   },
   "objectives": [
     {
@@ -6876,7 +6977,7 @@
     },
     {
       "id": "DINO_POWER_CURVE_V1",
-      "state": "OPEN",
+      "state": "REVIEW",
       "owner_approved": true,
       "summary": "Implement integrated exploratory RPM sweep configuration, history-backed HP/torque curves, exact compatible comparisons, and Windows UI use without authorizing or starting a campaign.",
       "change": "openspec/changes/dino-power-curve-v1",
@@ -6890,7 +6991,42 @@
         "DPCV1-COMPARE",
         "DPCV1-ACCEPTANCE"
       ],
-      "completion_criterion": "Deliver working history, HP/torque curves, exact compatible comparisons and bounded integrated sweep infrastructure; verify via tests and Windows UI. Preserve exploratory classifications and report BLOCKED if real numerical curves cannot be produced without new run authorization."
+      "completion_criterion": "Deliver working history, HP/torque curves, exact compatible comparisons and bounded integrated sweep infrastructure; verify via tests and Windows UI. Preserve exploratory classifications and report BLOCKED if real numerical curves cannot be produced without new run authorization.",
+      "superseded_by": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "transition_note": "Owner approved verification-first (Option A) on 2026-10-19 after the Dino 2T vs EngMod2T audit (docs/audits/dino-2t-vs-engmod2t-2026-10-19.md). Infrastructure remains ready; no real converged curve exists because no campaign or solver point was authorized and no real engine data is available. Objective transitioned to INTEGRATED_SOLVER_VERIFICATION_V1; no evidence rewritten.",
+      "gate_status_archive": {
+        "objective": "DINO_POWER_CURVE_V1",
+        "state": "REVIEW",
+        "classification": "DINO_POWER_CURVE_V1_SWEEP_INFRASTRUCTURE_READY",
+        "evidence": [
+          "UI and sweep infrastructure verified; real converged curve not produced because no RPM campaign was authorized in this implementation task. Scientific acceptance remains unclaimed."
+        ],
+        "gate_tasks_total": 5,
+        "gate_tasks_done": 5,
+        "gate_task_states": {
+          "DONE": 5
+        },
+        "remaining": [],
+        "updated_at": "2026-10-19T11:33:50+00:00"
+      }
+    },
+    {
+      "id": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "state": "OPEN",
+      "owner_approved": true,
+      "summary": "Verify the current first-order integrated solver before any predictive power-curve claim: spatial (mesh) and temporal (max_cfl) convergence, error quantification, and separation of physical integration cost from audit/reconstruction/serialization cost.",
+      "change": "openspec/changes/integrated-solver-verification-v1",
+      "spec": "openspec/changes/integrated-solver-verification-v1/specs/integrated-solver-verification-v1/spec.md",
+      "authorization_source": "Owner approval of Option A in CODEX (2026-10-19): complete A0-A2 and deliver design, budgets and acceptance criteria; A3 execution requires a new explicit owner authorization of scope and budget.",
+      "transitioned_from": "DINO_POWER_CURVE_V1",
+      "gate_tasks": [
+        "ISV1-PROVENANCE-REPAIR",
+        "ISV1-A2-DESIGN",
+        "ISV1-PREREGISTRATION",
+        "ISV1-A3-EXECUTION",
+        "ISV1-ACCEPTANCE"
+      ],
+      "completion_criterion": "Deliver the approved experiment design and preregistration; after explicit authorization execute the bounded study (mesh/CFL convergence plus cost separation) with fail-closed budgets and no automatic extensions; classify convergence or NOT_CONVERGED exactly and quantify observed error. Convergence is necessary but not sufficient for a predictive power curve; no campaign, no MUSCL, no physics changes, no P0-P9 edits."
     }
   ],
   "owner_decisions_pending": [
@@ -8297,6 +8433,24 @@
       "task": "DINO_POWER_CURVE_V1",
       "kind": "task",
       "summary": "DINO_SOLVER_PERFORMANCE_FIX_V1 follow-up: optimized IntegratedEngine2T stage-state copying; 7 paired bounded 48-cell runs show 1.107x median segment speedup with identical state SHA, 31 accepted/32 rejected and 5.125-degree endpoint; relevant solver/producer/workflow suite 110 PASS, no campaign or point started. Full-cycle and end-to-end gain remain unclaimed."
+    },
+    {
+      "at": "2026-10-19T11:38:28-03:00",
+      "task": "AUDIT-DINO2T-VS-ENGMOD2T",
+      "kind": "evidence",
+      "summary": "Audit report delivered: docs/audits/dino-2t-vs-engmod2t-2026-10-19.md (A-H; Dino 2T vs EngMod2T, solver/pipeline evidence, mechanical-loss semantics). Basis for the verification-first objective."
+    },
+    {
+      "at": "2026-10-19T11:38:28-03:00",
+      "task": "ISV1-PROVENANCE-REPAIR",
+      "kind": "process",
+      "summary": "A0/A1: DINO_POWER_CURVE_V1 archived as infrastructure-ready with real curve blocked (no run authorization, no real engine data); README P1-R5E note added (historical P2_PASS is not a global P2 PASS; P2B failed infrastructure); R2 third-review provenance recorded (owner-communicated, not reproduced; no date in receipt, target_head 2ef2fdf). Objective -> INTEGRATED_SOLVER_VERIFICATION_V1."
+    },
+    {
+      "at": "2026-10-19T11:38:28-03:00",
+      "task": "ISV1-A2-DESIGN",
+      "kind": "design",
+      "summary": "A2: openspec/changes/integrated-solver-verification-v1 created (proposal/design/tasks/spec). Two lines: first-order spatial+temporal convergence with error quantification; pipeline cost separation. No MUSCL; budgets T0-T2 fail-closed, no automatic extensions; A3 not authorized (BLOCKED_LOCAL). Pending owner inputs: tier, frozen identity, tolerances."
     }
   ],
   "legacy_gate_status": {
@@ -8311,26 +8465,51 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_POWER_CURVE_V1",
+    "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
     "state": "REVIEW",
-    "classification": "DINO_POWER_CURVE_V1_SWEEP_INFRASTRUCTURE_READY",
+    "classification": "INTEGRATED_SOLVER_VERIFICATION_V1_DESIGN_REVIEW",
     "evidence": [
-      "UI and sweep infrastructure verified; real converged curve not produced because no RPM campaign was authorized in this implementation task. Scientific acceptance remains unclaimed."
+      "A2 design delivered: openspec/changes/integrated-solver-verification-v1 (proposal/design/tasks/spec) with two verification lines, no MUSCL, strict budgets, fail-closed interruption and acceptance criteria.",
+      "A3 remains BLOCKED_LOCAL pending explicit owner authorization of scope and budget; no campaign and no solver step was started.",
+      "DPCV1 archived after transition: infrastructure ready, real curve not produced (no run authorization, no real engine data available)."
     ],
     "gate_tasks_total": 5,
-    "gate_tasks_done": 5,
+    "gate_tasks_done": 1,
     "gate_task_states": {
-      "DONE": 5
+      "DONE": 1,
+      "REVIEW": 1,
+      "WAITING": 2,
+      "BLOCKED_LOCAL": 1
     },
-    "remaining": [],
-    "updated_at": "2026-10-19T11:33:50+00:00"
+    "remaining": [
+      "ISV1-PREREGISTRATION",
+      "ISV1-A3-EXECUTION",
+      "ISV1-ACCEPTANCE",
+      "ISV1-A2-DESIGN"
+    ],
+    "updated_at": "2026-10-19T14:38:28+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
     "state": "PASS",
     "classification": "GENERAL_PURPOSE_2T_SIMULATION_CORE_VERIFIED",
     "baseline_commit": "1a58b2a5c23447f81308609acc37ab74a8bd5de5",
-    "note": "Historical superseding R2 gate remains PASS, synthetic CONDITIONAL_ON_P4, experimental validation not performed, P9 not claimed; it is not reopened by ENGINE_PHYSICS_V1."
+    "note": "Historical superseding R2 gate remains PASS, synthetic CONDITIONAL_ON_P4, experimental validation not performed, P9 not claimed; it is not reopened by ENGINE_PHYSICS_V1.",
+    "review_provenance": {
+      "third_review_receipt": "results/engine-physics-v1/r2-external-review/third-review.json",
+      "attribution": "Third-review result recorded as communicated by the requester; the agent did not observe the reviewer run, inspect an artifact (review_report_artifact NOT_PROVIDED) or independently reproduce the checks.",
+      "reviewer_reported_scope": [
+        "Mutation detection for IMEP, indicated work, power, torque, ISFC, BSFC, FMEP, AFR, fuel, trapped quantities and partition.",
+        "Fabricated numeric value with valid metadata rejected by a hard failure.",
+        "TE/CE/SE remain UNDEFINED/NOT_IDENTIFIABLE; old values only in superseded evidence.",
+        "Independent conservation verified; read-only evidence verification confirmed; IMEP comparison corrected; primaries and historical states unchanged."
+      ],
+      "review_dates": "NOT_RECORDED in the receipt; target_head 2ef2fdf146a45b5aba932169ce9f9b0d4899bc7e. Date left as not recorded rather than invented.",
+      "preserved_prior_reviews": [
+        "results/engine-physics-v1/r2-external-review/first-review.json",
+        "results/engine-physics-v1/r2-external-review/second-review.json"
+      ]
+    }
   },
   "next_objective": null,
   "full_rpm_sweep_precondition": "EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED",
@@ -8371,7 +8550,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-16T15:38:09+00:00",
+  "updated_at": "2026-10-19T14:38:28+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -8669,5 +8848,20 @@
     },
     "remaining": [],
     "updated_at": "2026-10-15T12:26:34+00:00"
+  },
+  "gate_status_archive_before_integrated_solver_verification_v1": {
+    "objective": "DINO_POWER_CURVE_V1",
+    "state": "REVIEW",
+    "classification": "DINO_POWER_CURVE_V1_SWEEP_INFRASTRUCTURE_READY",
+    "evidence": [
+      "UI and sweep infrastructure verified; real converged curve not produced because no RPM campaign was authorized in this implementation task. Scientific acceptance remains unclaimed."
+    ],
+    "gate_tasks_total": 5,
+    "gate_tasks_done": 5,
+    "gate_task_states": {
+      "DONE": 5
+    },
+    "remaining": [],
+    "updated_at": "2026-10-19T11:33:50+00:00"
   }
 }

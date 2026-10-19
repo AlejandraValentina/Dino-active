@@ -22,10 +22,10 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_POWER_CURVE_V1
-change/spec:       openspec/changes/dino-power-curve-v1/
-                   specs/dino-power-curve-v1/spec.md
-completion:        Deliver integrated exploratory RPM sweep, audited history import, HP/torque curves and exact compatible comparison; verify UI and infrastructure without starting a campaign or claiming scientific acceptance.
+CURRENT_OBJECTIVE: INTEGRATED_SOLVER_VERIFICATION_V1
+change/spec:       openspec/changes/integrated-solver-verification-v1/
+                   specs/integrated-solver-verification-v1/spec.md
+completion:        Verify the current first-order integrated solver before any predictive power-curve claim: spatial (mesh) and temporal (max_cfl) convergence, error quantification, and separation of physical integration cost from audit/reconstruction/serialization cost. A3 execution is NOT authorized until the owner approves scope and budget; no campaign, no MUSCL, no physics changes, no P0-P9 edits.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

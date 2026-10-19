@@ -144,6 +144,12 @@ Aceptación humana P2 pendiente; NO iniciar P3, archivar ni publicar.
 Los gates nativos BLOCKED por falta de reviewer conectado se conservan;
 [decisión derivada con revisión independiente](results/p1-r5e-20260918/decision.json)
 y [tablas, delta y resultados](results/p1-r5e-20260918/analysis.md).
+Nota de estado vigente (2026-10-19): este bloque es histórico y su
+`P2_PASS_1D_CORE_VERIFIED` no constituye un PASS global de P2. La reanudación
+P2B posterior terminó `FAILED_INFRASTRUCTURE` /
+`P2_BLOCKED_SECOND_ORDER` ([decisión](results/p2b-gas1d-20260918/decision.json)),
+y el estado vigente de `P2_PASS` es falso hasta una reanudación autorizada. La
+evidencia original no se reescribe: esta nota sólo agrega provenance.
 
 Antecedente histórico:
 
