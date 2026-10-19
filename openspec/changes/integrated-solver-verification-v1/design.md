@@ -1,8 +1,10 @@
 # Design — integrated-solver-verification-v1
 
 Verificación de precisión numérica y costo computacional de la ruta integrada
-2T de primer orden. Este documento es el diseño (A2); la ejecución (A3) queda
-bloqueada hasta autorización explícita del dueño.
+2T de primer orden. Este documento es el diseño (A2) con la revisión
+2026-10-19; la ejecución plena (A3b) queda bloqueada hasta autorización
+explícita del dueño (A3a tiene autorización limitada; su corrida requiere
+confirmación del dueño con el preregistro a la vista).
 
 ## Contexto y evidencia disponible
 
@@ -19,7 +21,9 @@ bloqueada hasta autorización explícita del dueño.
   baseline 4 ciclos en 682.829 s (`INTERRUPTED_CHECKPOINTED`); recibo 600.125 s
   con 3 ciclos; perfil: `audit_integrated_cycle_primary` 235.693 s,
   `make_integrated_cycle_primary` 142.86 s, `step` 104.482 s, `_assemble`
-  99.039 s, `jsonify` serialización; RSS pico 51,585,024 B.
+  99.039 s, `jsonify` serialización; RSS pico 51,585,024 B en los segmentos
+  acotados del perfil (la corrida completa histórica llegó a ~2 GiB, cap
+  3072 MiB).
 - Fixture: `examples/projects/dino-2t-exhaust-comparison.dino2t.json`
   (sintético, AFR 49 / lambda 3.33, dos variantes de escape). NO existe motor
   Dino real ni datos medidos: este estudio verifica el solver, no el motor.
@@ -34,6 +38,21 @@ bloqueada hasta autorización explícita del dueño.
 
 Alcance: líneas 1 (precisión) y 2 (rendimiento). No-metas: sin MUSCL, sin
 cambios de física, sin campañas, sin optimizaciones, sin claim predictivo.
+
+## Fases de ejecución (revisión 2026-10-19)
+
+- **A3a — Perfil de una corrida (autorizada con límites)**: UNA corrida de
+  solver instrumentada a 3000 RPM sobre la identidad base ya caracterizada
+  (variante "Escape original", malla 48 celdas, `max_cfl` 0.4), un solo
+  proceso, cap duro global 1200 s (`run_logged --timeout 1200`) con deadline
+  interno de stepping a t0+1080 s, `max_cycles` 8, memoria ≤3072 MiB, sin
+  reintentos, sin resume, sin extensiones. Objetivo: perfil computacional,
+  separación de costos por buckets exclusivos, tiempo por ciclo, RSS,
+  periodicidad y conservación observadas. NO decide convergencia: alimenta la
+  estimación revisada de costo y la propuesta de A3b.
+- **A3b — Estudio de convergencia (NO autorizada)**: matriz revisada de la
+  Línea 1, con preregistro propio y nueva autorización explícita del dueño.
+  Nada de A3b inicia con este change.
 
 ## Identidad congelada del experimento (propuesta a fijar en preregistro)
 
@@ -54,13 +73,30 @@ cambios de física, sin campañas, sin optimizaciones, sin claim predictivo.
 | Eje | Niveles | Fijo | Celdas de matriz |
 |---|---|---|---|
 | Temporal | `max_cfl` ∈ {0.4, 0.2, 0.1} | malla base (48 celdas) | 3 |
-| Espacial | malla ∈ {1, 2, 4, 8} celdas/sección vía `RESOLUTIONS` | `max_cfl` = 0.4 | 4 (2 nuevas + 2 ya caracterizadas) |
+| Espacial | malla ∈ {1, 2, 4, 8} celdas/sección vía `RESOLUTIONS` | `max_cfl` = 0.2 (un nivel por debajo del base) | 4 |
+| Control de contaminación | `max_cfl` ∈ {0.2, 0.1} | malla más gruesa del brazo espacial (1 celda/sección) | 1 nueva |
 
+- Regla de atribución: **ningún delta se computa entre configuraciones que
+  difieran en más de un eje** (malla, CFL o índice de ciclo).
 - No se extiende `RESOLUTIONS` ni `_ALLOWED`: malla 16 o CFL < 0.1 serían
   capability nueva versionada.
-- Límite declarado: convergencia espacial a un solo CFL y temporal a una sola
-  malla no prueban independencia conjunta; el dominio que se declare es la
-  "par malla/CFL estudiada", no un espacio bidimensional completo.
+
+### Acoplamiento espacial/temporal declarado
+
+- No existe knob de `dt` fijo en `integrated_2t` (solo `max_cfl`; el paso es
+  adaptativo con rechazos CFL). Refinar la malla a CFL constante también
+  reduce `dt` (dt ∝ Δx), de modo que los deltas espaciales contienen una
+  componente temporal decreciente, y en las mallas gruesas `dt` crece y la
+  componente temporal puede dominar. **No se asume aislamiento.**
+- El brazo temporal (malla fija) cuantifica la componente temporal en la malla
+  base; el brazo espacial corre a `max_cfl` 0.2 (no 0.4) para reducir esa
+  componente en todos los niveles; el control de contaminación mide la
+  sensibilidad temporal en la malla más gruesa, donde la contaminación es
+  máxima. Si el delta temporal allí supera la tolerancia, el par grueso se
+  excluye de los juicios de convergencia espacial y la exclusión se reporta
+  explícitamente (nunca en silencio).
+- El dominio declarable es la "par malla/CFL estudiada" con contaminación
+  cuantificada; NUNCA independencia conjunta plena.
 
 ### Observables y comparación
 
@@ -86,24 +122,55 @@ cambios de física, sin campañas, sin optimizaciones, sin claim predictivo.
 
 - `CONVERGING_MONOTONE`: |delta| decreciente en ≥2 pares consecutivos.
 - `NON_MONOTONE` / `NOT_EVALUATED` / `NOT_CONVERGED` en el resto de los casos.
-- Consistencia con primer orden: banda `p ∈ [0.5, 1.5]` (PROPUESTA).
-- Tolerancia de convergencia: |delta entre los dos niveles más finos| ≤ 5%
-  relativo para métricas clave (trabajos y masas) (PROPUESTA). Ambos valores
-  se congelan en el preregistro; sin preregistro no hay veredicto.
+- Tolerancia mixta preregistrada (se congela POR OBSERVABLE en el preregistro
+  de A3b; sin preregistro no hay veredicto): `|Δ| ≤ max(0.05·|x_fino|, atol_obs)`.
+  - `Δ` = diferencia entre los dos niveles más finos comparados en el MISMO
+    índice de ciclo; el denominador es `|x_fino|`, nunca el nivel grueso.
+  - `atol_obs` = banda absoluta por observable, congelada ANTES de comparar y
+    derivada de la configuración base congelada (malla 48 / CFL 0.4):
+    `atol_obs = max(0.05·|x_base|, resolución numérica declarada del
+    observable)`; para trabajos, la resolución declarada es ≥ la tolerancia de
+    replay del contrato (5e-12 J); para masas, ≥ el ruido de conservación
+    declarado por el contrato.
+  - Cercanía a cero: si `|x_fino| ≤ atol_obs`, el criterio relativo no aplica
+    y rige SOLO la banda absoluta. Cruce de signo entre niveles con alguna
+    magnitud > `atol_obs` → `NOT_CONVERGED` (un cruce nunca es PASS por sí
+    solo). `crankcase_gas_work_J` es el caso testigo (cruza cero en el barrido
+    de referencia).
+- Orden observado `p`: SOLO diagnóstico de consistencia. `p ∈ [0.5, 1.5]` es
+  una etiqueta ("consistente con primer orden"), jamás un criterio de
+  aceptación: la aceptación es la tolerancia. `p` no se calcula con pares no
+  monótonos ni ratio ≠ 2. Sin extrapolación de Richardson como resultado,
+  cota de error ni insumo de aceptación.
 
 ## Línea 2 — Rendimiento del pipeline
 
-Buckets por fase usando los hooks de perfil existentes:
+Buckets de tiempo EXCLUSIVO, medidos con timers in-process durante la corrida
+(sin cProfile ni tracemalloc dentro de la corrida; el replay perfilado de un
+primary almacenado queda como análisis posterior, fuera del presupuesto):
 
-1. `INTEGRATION_PHYSICAL`: `step` + `_assemble` + copia de estados de etapa.
-2. `AUDIT_RECONSTRUCTION`: `audit_integrated_cycle_primary` +
-   `make_integrated_cycle_primary` (+ replay).
-3. `SERIALIZATION_IO`: `jsonify` + escritura de primary/manifest.
+1. `INTEGRATION_PHYSICAL`: tiempo dentro de `IntegratedEngine2T.step`
+   (incluye `_assemble` y copias de etapa internas).
+2. `AUDIT_RECONSTRUCTION`: `make_integrated_cycle_primary` y
+   `audit_integrated_cycle_primary` por ciclo como sub-timers separados; la
+   reconstrucción interna que ejecuta el audit queda dentro del sub-timer de
+   audit y no se suma a ningún otro bucket.
+3. `SERIALIZATION_IO`: `_json_bytes`/`jsonify` del primary, gzip y escrituras
+   `_atomic_write` (artefacto de ciclo, checkpoint, manifiesto) más lecturas
+   de verificación.
+4. `STATE_SNAPSHOT_ORCHESTRATION`: `engine.snapshot()`/`restore`/
+   `compact_cycle_trace` por ciclo (copias de estado del orquestador).
+
+Regla de exclusividad: cada bucket acumula tiempo en el punto de entrada de su
+componente; los solapamientos se restan o se reportan como subcomponente;
+prohibido sumar dos timers inclusivos. El residuo (`_advance_cycle` menos
+`step`) se reporta como `DISPATCH_OVERHEAD`.
 
 Métricas por configuración: s/ciclo, s/paso aceptado, s/(celda·ciclo), RSS
-pico, bytes de artefacto por ciclo y share % por bucket. Una corrida de control
-repetida por configuración del eje temporal estima el ruido; si el tier no la
-incluye, el share se declara "single-sample" (estimación, no reproducibilidad).
+pico (sampler + `_rss_bytes`), bytes de artefacto por ciclo y share % por
+bucket. A3a es una corrida única por autorización: sus shares se declaran
+"single-sample" (estimación, no reproducibilidad); repetir la corrida requiere
+autorización nueva.
 
 Criterio de decisión (medición, no ejecución): si
 `AUDIT_RECONSTRUCTION + SERIALIZATION_IO` ≥ 50% del total, la próxima
@@ -120,15 +187,33 @@ implementa ninguna optimización aquí.
   preregistro y exige uno nuevo.
 - Los resultados se comparan solo contra criterios preregistrados; sin
   análisis post-hoc ni reclasificación retrospectiva.
-- Restricción de artefactos: A3 escribe solo bajo
-  `results/integrated-solver-verification-v1/` con sufijo de tier.
+- Artefactos: los recibos durables (preregistro, resultado, informes) van bajo
+  `results/integrated-solver-verification-v1/`; los artefactos crudos de
+  corrida (primaries, checkpoints, manifiestos, logs) van bajo el artifact
+  root externo `DINO_ARTIFACT_ROOT`, nunca dentro del repo (precedente SPV1).
+- A3a usa un driver de diagnóstico versionado
+  (`scripts/diagnostics/integrated_solver_verification_a3a.py`) que NO modifica
+  `motorsim/`: replica el loop de ciclos del exploratory workflow con los
+  MISMOS primitivos importados (`_advance_cycle`,
+  `make_integrated_cycle_primary`, `audit_integrated_cycle_primary`,
+  `PeriodicDetectorV2`, `_atomic_write`, clasificación de periodicidad),
+  porque el contrato por invocación del workflow es ≤600 s y A3a tiene cap
+  autorizado de 1200 s. Divergencias declaradas: deadline de stepping
+  t0+1080 s, cap externo 1200 s, `max_cycles` 8, timers/sampler de
+  instrumentación, esquema propio de artefactos y `runner_sha256` = hash del
+  driver. `--execute` exige el SHA-256 exacto del preregistro.
 
 ## Presupuestos e interrupciones
 
 Modelo de costo: `costo ≈ ciclos × (celdas/48) × (0.4/CFL) × 200 s`, con tasa
 base medida ≈170–230 s/ciclo a 48 celdas (primer orden limitado por CFL).
-Estimaciones seriales: CFL 0.4 → 600 s; CFL 0.2 → 1,200 s; CFL 0.1 → 2,400 s;
-malla 24 → 300 s; malla 12 → 150 s (3 ciclos).
+Estimaciones seriales preliminares (se recalculan con los costos medidos por
+A3a antes de proponer A3b): CFL 0.4 → 600 s; CFL 0.2 → 1,200 s; CFL 0.1 →
+2,400 s; malla 24 → 300 s; malla 12 → 150 s (3 ciclos).
+
+- **A3a (autorizada 2026-10-19)**: una corrida, 3000 RPM, malla 48 / CFL 0.4,
+  cap global 1200 s (deadline de stepping t0+1080 s + margen de finalización de
+  120 s), `max_cycles` 8, memoria ≤3072 MiB, sin reintentos ni extensiones.
 
 | Tier | Contenido | Estimado serial | Cap propuesto |
 |---|---|---|---|
@@ -150,6 +235,12 @@ malla 24 → 300 s; malla 12 → 150 s (3 ciclos).
 
 ## Criterios de aceptación (de A3, cuando se autorice)
 
+0. A3a (perfil, autorizada con límites): éxito = evidencia completa — ≥2
+   ciclos con timers completos, auditoría por ciclo `recomputed`/`admissible`,
+   periodicidad y conservación registradas o ausencia declarada
+   (`NOT_EVALUATED`), recibo L1 con hashes, y estimación revisada de costo con
+   banda de incertidumbre. A3a NO decide convergencia; cap agotado →
+   `PARTIAL`/`INTERRUPTED_CHECKPOINTED` con evidencia exacta y sin extensiones.
 1. Cada configuración de la matriz termina `DONE`/`PARTIAL`/`FAIL_CLOSED` con
    recibo y hash; sin omisiones silenciosas.
 2. Reporte de convergencia por observable con deltas crudos en índices de
@@ -163,13 +254,18 @@ malla 24 → 300 s; malla 12 → 150 s (3 ciclos).
    validación experimental; sin claim predictivo.
 6. P0–P9 y evidencia histórica intactas (verificación por hash).
 
-## Decisiones del dueño pendientes (inputs del preregistro; no bloquean A2)
+## Estado de decisiones del dueño (revisión 2026-10-19)
 
-- Tier de presupuesto a autorizar: T0 / T1 / T2 (recomendación: T1).
-- Identidad congelada: variante de escape A (recomendada) y RPM 3000.
-- Tolerancia de convergencia (propuesta 5% relativo) y banda de orden
-  (propuesta p ∈ [0.5, 1.5]).
-- Registro explícito de que A3 no se ejecuta hasta su autorización.
+- A3a: AUTORIZADA con límites: variante A, 3000 RPM, configuración base, UNA
+  corrida, 1200 s, sin reintentos ni extensiones, sin MUSCL/física, P0–P9
+  intactos. Ejecución pendiente de: preregistro commiteado + identidad
+  reproducible validada + confirmación explícita del dueño con el preregistro
+  a la vista.
+- A3b: NO autorizada — tier (T0/T1/T2) sobre la matriz revisada y preregistro
+  propio; sin autorización no inicia.
+- Identidad: variante "Escape original" y RPM 3000 fijadas.
+- Tolerancia: política mixta preregistrada definida en este diseño; los
+  valores `atol_obs` por observable se congelan en el preregistro de A3b.
 
 ## Alternatives
 

@@ -25,7 +25,7 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 CURRENT_OBJECTIVE: INTEGRATED_SOLVER_VERIFICATION_V1
 change/spec:       openspec/changes/integrated-solver-verification-v1/
                    specs/integrated-solver-verification-v1/spec.md
-completion:        Verify the current first-order integrated solver before any predictive power-curve claim: spatial (mesh) and temporal (max_cfl) convergence, error quantification, and separation of physical integration cost from audit/reconstruction/serialization cost. A3 execution is NOT authorized until the owner approves scope and budget; no campaign, no MUSCL, no physics changes, no P0-P9 edits.
+completion:        Verify the current first-order integrated solver before any predictive power-curve claim: spatial (mesh) and temporal (max_cfl) convergence, error quantification, and separation of physical integration cost from audit/reconstruction/serialization cost. A3a (ONE instrumented 3000 RPM profile run, 1200 s cap, no retries/extensions) is authorized in scope, contingent on the frozen preregistration and the owner's explicit confirmation with it visible; A3b (convergence matrix) is NOT authorized; no campaign, no MUSCL, no physics changes, no P0-P9 edits.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

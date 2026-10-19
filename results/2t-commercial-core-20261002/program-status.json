@@ -6125,13 +6125,15 @@
       "dependencies": [],
       "state": "DONE",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "e1a888074ceb65dde5b179dd964448da0f94c365"
+      ],
       "evidence": [
         "docs/audits/dino-2t-vs-engmod2t-2026-10-19.md",
         "results/integrated-solver-verification-v1/provenance-repair-receipt.json",
         "README.md status note on the historical P1-R5E block; R2 third review provenance recorded as owner-communicated (third-review.json attribution boundary)"
       ],
-      "next_action": "Working-tree changes only; committing the provenance repair is a separate owner authorization.",
+      "next_action": "Committed as e1a8880 (2026-10-19) under explicit owner authorization; no push.",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "evidence/release reviewer",
       "evidence_level": "L0",
@@ -6140,13 +6142,13 @@
         "AGENTS.md",
         "results/2t-commercial-core-20261002/program-status.json"
       ],
-      "qualification": "DONE as working-tree state; no commit was requested or performed."
+      "qualification": "DONE; committed as e1a8880 under explicit owner authorization (2026-10-19)."
     },
     {
       "id": "ISV1-A2-DESIGN",
       "description": "A2: create openspec/changes/integrated-solver-verification-v1 (proposal, design, tasks, spec) with two verification lines (numerical accuracy, pipeline performance), no MUSCL, strict budgets, interruption rules, acceptance criteria, convergence-as-necessary-not-sufficient.",
       "dependencies": [],
-      "state": "REVIEW",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
@@ -6155,7 +6157,7 @@
         "openspec/changes/integrated-solver-verification-v1/tasks.md",
         "openspec/changes/integrated-solver-verification-v1/specs/integrated-solver-verification-v1/spec.md"
       ],
-      "next_action": "Owner reviews the design (tier, frozen identity, tolerances) and records the explicit A3 authorization, or requests changes.",
+      "next_action": "Owner reviewed the design (2026-10-19) and approved the revision direction (A3a/A3b split, declared coupling, mixed tolerance); revisions landed under ISV1-A3A-DESIGN-REVISION.",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "architecture",
       "evidence_level": "L0",
@@ -6165,15 +6167,19 @@
     },
     {
       "id": "ISV1-PREREGISTRATION",
-      "description": "Freeze the authorized matrix, tolerances and budget tier with SHA-256 (no solver steps).",
+      "description": "Freeze the authorized scope with SHA-256 (no solver steps): A3a single instrumented profile run; the A3b convergence-matrix preregistration requires its own authorization.",
       "dependencies": [
         "ISV1-A2-DESIGN"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "After design approval and A3 authorization, commit the preregistration before any run.",
+      "evidence": [
+        "results/integrated-solver-verification-v1/a3a-preregistration.json (schema DINO_ISV1_A3A_PREREGISTRATION_V1; frozen_binding; SHA-256 790fa2f756c31bfcb702e1f5525219446b619d85940c3c1a9b7d11c7d2a9ff1e)",
+        "results/integrated-solver-verification-v1/a3a-preflight-receipt.json (dry-run: preregistration_check PASS; zero solver steps)",
+        "scripts/diagnostics/integrated_solver_verification_a3a.py (instrumented driver; does not modify motorsim/)"
+      ],
+      "next_action": "A3a execution waits for the explicit owner confirmation with the frozen preregistration visible (a3a-owner-confirmation.json); A3b preregistration requires its own authorization.",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "evidence/release reviewer",
       "evidence_level": "L0",
@@ -6183,17 +6189,20 @@
     },
     {
       "id": "ISV1-A3-EXECUTION",
-      "description": "Execute only the authorized tier of the bounded study (temporal and spatial convergence plus pipeline cost separation) with fail-closed caps, identity-bound checkpoints and no automatic extensions.",
+      "description": "Execute the owner-authorized A3a single instrumented profile run (3000 RPM, 48 cells, max_cfl 0.4, hard cap 1200 s, no retries/extensions); the A3b convergence matrix (spatial/temporal plus cost separation) requires its own authorization and preregistration.",
       "dependencies": [
         "ISV1-PREREGISTRATION"
       ],
       "state": "BLOCKED_LOCAL",
-      "blocker": "A3 requires explicit owner authorization of scope, budget tier and tolerances (owner instruction 2026-10-19: do not execute A3 yet).",
+      "blocker": "A3a is authorized in scope (2026-10-19: one run, 1200 s cap, no extensions) but execution requires the explicit owner confirmation with the frozen preregistration visible; A3b remains unauthorized.",
       "unblock_tasks": [],
-      "no_local_unblock_reason": "The missing input is an owner budget/scope authorization; no local engineering action can substitute for it. Preflight without solver is covered by the A2 design and preregistration tasks.",
+      "no_local_unblock_reason": "The only missing input is the owner's explicit confirmation of the single pre-authorized A3a run after reviewing the frozen preregistration; driver, frozen binding and dry-run PASS are complete.",
       "commits": [],
-      "evidence": [],
-      "next_action": "Wait for the owner authorization recorded in program-status; then run only the authorized tier.",
+      "evidence": [
+        "results/integrated-solver-verification-v1/a3a-preregistration.json",
+        "results/integrated-solver-verification-v1/a3a-preflight-receipt.json"
+      ],
+      "next_action": "After the owner confirms with the preregistration visible, write a3a-owner-confirmation.json and launch the single run under run_logged --timeout 1200.",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "verification",
       "evidence_level": "L1",
@@ -6400,17 +6409,17 @@
       }
     }
   },
-  "last_status_reviewed_head": "ea2ff2d13d8dd04bf321bf986d38ed446edc50c6",
+  "last_status_reviewed_head": "e1a888074ceb65dde5b179dd964448da0f94c365",
   "continuation_status": {
     "mode": "MOTORSIM_AUTONOMOUS_ENGINEERING_TEAM",
     "audit_remediation_mode": false,
     "ready_tasks": 5,
     "local_blockers": [
       "FRPM-V2-EVIDENCE-HOTSPOT-OPT (evidence pipeline hotspots), DWT-PACKAGED-ACCEPTANCE, SPV1-POINT-EXECUTION.",
-      "ISV1-A3-EXECUTION: bounded convergence/performance study designed (A2) but not authorized; no campaign may start.",
+      "ISV1-A3-EXECUTION: A3a authorized in scope (one instrumented run, 1200 s cap, no extensions); execution waits for the explicit owner confirmation with the frozen preregistration visible. A3b not authorized.",
       "DPCV1 parked: the real converged power curve still requires a separately authorized run and real engine data."
     ],
-    "next_action": "Review the ISV1-A2 design and decide A3 authorization (tier, frozen identity, tolerances). Existing READY tasks unchanged; no campaign and no solver step is authorized.",
+    "next_action": "Present the frozen A3a preregistration to the owner and await the explicit run confirmation; then write a3a-owner-confirmation.json and launch the single run under run_logged --timeout 1200. The A3b tier decision (T0/T1/T2) requires its own authorization and preregistration.",
     "in_progress_tasks": 0,
     "blocker_triage_date": "2026-10-19",
     "superseded_by": "current_objective, gate_status, progress_log (MOTORSIM_PROGRAM_STATUS_V2)"
@@ -6425,7 +6434,7 @@
     "summary": "Verify the current first-order integrated solver before any predictive power-curve claim: spatial (mesh) and temporal (max_cfl) convergence, error quantification, and separation of physical integration cost from audit/reconstruction/serialization cost.",
     "change": "openspec/changes/integrated-solver-verification-v1",
     "spec": "openspec/changes/integrated-solver-verification-v1/specs/integrated-solver-verification-v1/spec.md",
-    "authorization_source": "Owner approval of Option A in CODEX (2026-10-19): complete A0-A2 and deliver design, budgets and acceptance criteria; A3 execution requires a new explicit owner authorization of scope and budget.",
+    "authorization_source": "Owner approval of Option A in CODEX (2026-10-19): complete A0-A2 and deliver design, budgets and acceptance criteria. Owner limited authorization (2026-10-19, after design review): A3a = one instrumented 3000 RPM profile run (48 cells, max_cfl 0.4, 1200 s cap, no retries/extensions), contingent on the frozen preregistration and the explicit owner confirmation with it visible; A3b (convergence matrix) requires a new authorization of scope and budget.",
     "transitioned_from": "DINO_POWER_CURVE_V1",
     "gate_tasks": [
       "ISV1-PROVENANCE-REPAIR",
@@ -6434,7 +6443,7 @@
       "ISV1-A3-EXECUTION",
       "ISV1-ACCEPTANCE"
     ],
-    "completion_criterion": "Deliver the approved experiment design and preregistration; after explicit authorization execute the bounded study (mesh/CFL convergence plus cost separation) with fail-closed budgets and no automatic extensions; classify convergence or NOT_CONVERGED exactly and quantify observed error. Convergence is necessary but not sufficient for a predictive power curve; no campaign, no MUSCL, no physics changes, no P0-P9 edits."
+    "completion_criterion": "Deliver the approved experiment design and frozen preregistration (done); after the owner confirmation execute the single bounded A3a profile run with fail-closed caps and no automatic extensions; classify and quantify only per the preregistered criteria. The A3b convergence matrix and any convergence/NOT_CONVERGED classification require their own authorization and preregistration. Convergence is necessary but not sufficient for a predictive power curve; no campaign, no MUSCL, no physics changes, no P0-P9 edits."
   },
   "objectives": [
     {
@@ -7017,7 +7026,7 @@
       "summary": "Verify the current first-order integrated solver before any predictive power-curve claim: spatial (mesh) and temporal (max_cfl) convergence, error quantification, and separation of physical integration cost from audit/reconstruction/serialization cost.",
       "change": "openspec/changes/integrated-solver-verification-v1",
       "spec": "openspec/changes/integrated-solver-verification-v1/specs/integrated-solver-verification-v1/spec.md",
-      "authorization_source": "Owner approval of Option A in CODEX (2026-10-19): complete A0-A2 and deliver design, budgets and acceptance criteria; A3 execution requires a new explicit owner authorization of scope and budget.",
+      "authorization_source": "Owner approval of Option A in CODEX (2026-10-19): complete A0-A2 and deliver design, budgets and acceptance criteria. Owner limited authorization (2026-10-19, after design review): A3a = one instrumented 3000 RPM profile run (48 cells, max_cfl 0.4, 1200 s cap, no retries/extensions), contingent on the frozen preregistration and the explicit owner confirmation with it visible; A3b (convergence matrix) requires a new authorization of scope and budget.",
       "transitioned_from": "DINO_POWER_CURVE_V1",
       "gate_tasks": [
         "ISV1-PROVENANCE-REPAIR",
@@ -7026,7 +7035,7 @@
         "ISV1-A3-EXECUTION",
         "ISV1-ACCEPTANCE"
       ],
-      "completion_criterion": "Deliver the approved experiment design and preregistration; after explicit authorization execute the bounded study (mesh/CFL convergence plus cost separation) with fail-closed budgets and no automatic extensions; classify convergence or NOT_CONVERGED exactly and quantify observed error. Convergence is necessary but not sufficient for a predictive power curve; no campaign, no MUSCL, no physics changes, no P0-P9 edits."
+      "completion_criterion": "Deliver the approved experiment design and frozen preregistration (done); after the owner confirmation execute the single bounded A3a profile run with fail-closed caps and no automatic extensions; classify and quantify only per the preregistered criteria. The A3b convergence matrix and any convergence/NOT_CONVERGED classification require their own authorization and preregistration. Convergence is necessary but not sufficient for a predictive power curve; no campaign, no MUSCL, no physics changes, no P0-P9 edits."
     }
   ],
   "owner_decisions_pending": [
@@ -8451,6 +8460,18 @@
       "task": "ISV1-A2-DESIGN",
       "kind": "design",
       "summary": "A2: openspec/changes/integrated-solver-verification-v1 created (proposal/design/tasks/spec). Two lines: first-order spatial+temporal convergence with error quantification; pipeline cost separation. No MUSCL; budgets T0-T2 fail-closed, no automatic extensions; A3 not authorized (BLOCKED_LOCAL). Pending owner inputs: tier, frozen identity, tolerances."
+    },
+    {
+      "at": "2026-10-19T15:19:10+00:00",
+      "task": "ISV1-A3A-DESIGN-REVISION",
+      "kind": "design",
+      "summary": "A3a design revision per owner review: single-axis attribution rule, declared spatial/temporal coupling (no fixed-dt knob), preregistered mixed tolerance with absolute band near zero, order p diagnostic-only, exclusive cost buckets (integration/audit/serialization/snapshot), A3a/A3b phases; spec scenarios and tasks updated; openspec strict PASS."
+    },
+    {
+      "at": "2026-10-19T15:19:25+00:00",
+      "task": "ISV1-A3A-PREREGISTRATION",
+      "kind": "process",
+      "summary": "A3a preregistration frozen: driver scripts/diagnostics/integrated_solver_verification_a3a.py (no motorsim/ changes) + a3a-preregistration.json (SHA-256 790fa2f756c31bfcb702e1f5525219446b619d85940c3c1a9b7d11c7d2a9ff1e); dry-run preregistration_check PASS; run pending explicit owner confirmation with preregistration visible; A3b not authorized."
     }
   ],
   "legacy_gate_status": {
@@ -8474,20 +8495,17 @@
       "DPCV1 archived after transition: infrastructure ready, real curve not produced (no run authorization, no real engine data available)."
     ],
     "gate_tasks_total": 5,
-    "gate_tasks_done": 1,
+    "gate_tasks_done": 3,
     "gate_task_states": {
-      "DONE": 1,
-      "REVIEW": 1,
-      "WAITING": 2,
-      "BLOCKED_LOCAL": 1
+      "DONE": 3,
+      "BLOCKED_LOCAL": 1,
+      "WAITING": 1
     },
     "remaining": [
-      "ISV1-PREREGISTRATION",
       "ISV1-A3-EXECUTION",
-      "ISV1-ACCEPTANCE",
-      "ISV1-A2-DESIGN"
+      "ISV1-ACCEPTANCE"
     ],
-    "updated_at": "2026-10-19T14:38:28+00:00"
+    "updated_at": "2026-10-19T15:19:11+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

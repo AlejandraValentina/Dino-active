@@ -41,6 +41,21 @@ claiming spatial independence beyond the preregistration.
 - **THEN** the interpolation MUST be declared explicitly; native fields MUST
   NOT be interpolated
 
+#### Scenario: temporal contamination in the spatial arm
+
+- **WHEN** spatial-arm deltas are computed
+- **THEN** the temporal contribution MUST be bounded from the temporal-arm
+  data and the coarsest-level contamination control; if the temporal delta at
+  the coarsest level exceeds the preregistered tolerance, that level MUST be
+  excluded from spatial convergence judgments and the exclusion MUST be
+  reported explicitly
+
+#### Scenario: multi-axis delta
+
+- **WHEN** two configurations differ in more than one axis (mesh, CFL or cycle
+  index)
+- **THEN** their delta MUST NOT be used for any convergence judgment
+
 ### Requirement: temporal convergence (CFL)
 
 The study MUST evaluate at least two `max_cfl` values inside the allowed range,
@@ -71,6 +86,28 @@ MUST declare the supported resolution domain or its absence.
 - **THEN** the report MUST state that it is a necessary but not sufficient
   condition for a predictive curve; without experimental validation the
   predictive claim remains prohibited
+
+### Requirement: preregistered mixed tolerance and order as diagnostic
+
+The study MUST judge convergence with a preregistered per-observable mixed
+tolerance `|delta| <= max(0.05*|x_fine|, atol_obs)` where `atol_obs` is frozen
+before comparison; it MUST apply an absolute band when the observable is near
+zero, and it MUST report the observed order only as a consistency diagnostic,
+never as an acceptance criterion or error bound.
+
+#### Scenario: near-zero observable
+
+- **WHEN** `|x_fine| <= atol_obs`, including a sign crossing between levels
+- **THEN** the relative criterion MUST NOT apply and only the absolute band
+  MUST govern; a sign crossing with magnitude beyond `atol_obs` MUST be
+  classified `NOT_CONVERGED`
+
+#### Scenario: order estimate
+
+- **WHEN** an observed order `p` is computed from monotone pairs with
+  refinement ratio 2
+- **THEN** it MUST be reported as a diagnostic label only; no Richardson
+  extrapolation MUST be presented as a result, bound or acceptance input
 
 ### Requirement: pipeline cost separation
 
