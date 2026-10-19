@@ -1,0 +1,195 @@
+{
+  "schema": "DINO_ISV1_A3A_RESULT_RECEIPT_V1",
+  "run_id": "isv1-a3a-profile-3000rpm-mesh8-v1",
+  "project_id": "dino-exhaust-comparison-starter",
+  "status": "COMPLETE",
+  "classification": "A3A_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+  "mode": "SINGLE_RUN_PROFILE",
+  "failure": null,
+  "scientific_validation": "NOT_CLAIMED",
+  "verified_mode": "UNAVAILABLE",
+  "protocol": {
+    "variant": "Escape original",
+    "rpm": 3000,
+    "cells_per_section": 8,
+    "total_finite_volume_cells": 48,
+    "max_cfl": 0.4,
+    "max_cycles": 8,
+    "single_process": true,
+    "internal_stepping_deadline_seconds": 1080.0,
+    "external_cap_seconds": 1200.0,
+    "memory_limit_mib": 3072,
+    "resume_allowed": false,
+    "retries_allowed": false,
+    "extensions_allowed": false,
+    "terminal_stop_rule": "max_cycles 8 completed without an accepted period (rule 5 of the frozen stop_rules); the external cap was armed but not triggered"
+  },
+  "execution": {
+    "elapsed_seconds": 1135.594,
+    "cycle_wall_seconds_total": 1132.056,
+    "run_logged": {
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_s": 1138.656,
+      "name": "isv1-a3a-run1"
+    }
+  },
+  "bindings": {
+    "preregistration_sha256": "790fa2f756c31bfcb702e1f5525219446b619d85940c3c1a9b7d11c7d2a9ff1e",
+    "driver_source_sha256": "db054fc9ec42b28f1087c6a6bfe9c8438ead38b01273b676b0f137f14f802eea",
+    "identity_sha256": "4c4e0863d6368132de468d63d2ccedf659eeac1aebdc8a62d11ba36cbfa9f33f",
+    "configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+    "project_sha256": "42535dfb53c95407e75e109151ff1893db6338510de4f832e7ec48dd46ef8d34"
+  },
+  "owner_confirmation": {
+    "path": "results/integrated-solver-verification-v1/a3a-owner-confirmation.json",
+    "preregistration_sha256": "790fa2f756c31bfcb702e1f5525219446b619d85940c3c1a9b7d11c7d2a9ff1e"
+  },
+  "prechecks": {
+    "run_logged_timeout": "PASS - empirical: exit_code 124, timed_out true, duration 5.094 s with --timeout 5 on a single-process child; source run_logged.py L75-80 (wait(timeout) -> kill -> exit 124)",
+    "run_logged_child_termination": "PASS for the A3a topology - run_logged kills the direct child only; the A3a driver spawns zero descendants (no subprocess/multiprocessing in the driver nor in motorsim/*.py), so the process tree equals the direct child",
+    "hashes_vs_preregistration": "PASS - driver LF-sha256 equals the preregistration runner_sha256; preregistration LF-sha256 equals the frozen 790fa2f7...; worktree clean at commit 3f29aff; driver preflight preregistration_check PASS"
+  },
+  "timers_seconds": {
+    "integration_physical_seconds": 185.54847031401005,
+    "audit_reconstruction_make_seconds": 235.5354052002076,
+    "audit_reconstruction_audit_seconds": 560.8552802000195,
+    "serialization_io_seconds": 98.1963255002629,
+    "state_snapshot_orchestration_seconds": 30.744354499853216,
+    "engineering_output_seconds": 14.7662140999455,
+    "periodicity_detector_seconds": 0.021831299760378897,
+    "dispatch_overhead_seconds": 6.387480886070989,
+    "finalization_seconds": 0.045478800078853965
+  },
+  "timer_shares_of_total_wall": {
+    "integration_physical_seconds": 0.16339331690199432,
+    "audit_reconstruction_make_seconds": 0.20741163232651733,
+    "audit_reconstruction_audit_seconds": 0.4938871464625555,
+    "serialization_io_seconds": 0.08647133174379167,
+    "state_snapshot_orchestration_seconds": 0.02707336821069159,
+    "engineering_output_seconds": 0.013003075130676075,
+    "periodicity_detector_seconds": 1.922456420197545e-05,
+    "dispatch_overhead_seconds": 0.0056247927393687875,
+    "finalization_seconds": 4.004846809586201e-05
+  },
+  "audit_and_reconstruction_combined_share": 0.7012987787890728,
+  "per_cycle": [
+    {"cycle": 1, "wall_seconds": 120.2, "integration_physical_seconds": 20.6, "audit_make_seconds": 25.1, "audit_audit_seconds": 60.6, "serialization_io_seconds": 7.9, "state_snapshot_seconds": 3.7, "engineering_output_seconds": 1.6, "dispatch_overhead_seconds": 0.7, "rejected_steps": 3084, "step_calls_attempted": 5711, "rss_at_cycle_end_gib": 1.21, "energy_residual_J": 5.492828414332962e-14, "mass_residual_kg": 6.708500942254059e-19, "audit_recomputed": true},
+    {"cycle": 2, "wall_seconds": 144.3, "integration_physical_seconds": 23.6, "audit_make_seconds": 29.8, "audit_audit_seconds": 72.1, "serialization_io_seconds": 12.7, "state_snapshot_seconds": 3.6, "engineering_output_seconds": 1.7, "dispatch_overhead_seconds": 0.8, "rejected_steps": 3596, "step_calls_attempted": 6478, "rss_at_cycle_end_gib": 1.72, "energy_residual_J": -4.605205106145149e-13, "mass_residual_kg": 4.0657581468206416e-19, "audit_recomputed": true},
+    {"cycle": 3, "wall_seconds": 142.8, "integration_physical_seconds": 23.6, "audit_make_seconds": 29.0, "audit_audit_seconds": 70.6, "serialization_io_seconds": 13.0, "state_snapshot_seconds": 3.9, "engineering_output_seconds": 1.9, "dispatch_overhead_seconds": 0.9, "rejected_steps": 3596, "step_calls_attempted": 6478, "rss_at_cycle_end_gib": 1.85, "energy_residual_J": 1.8784973576657649e-13, "mass_residual_kg": -4.0996394647108136e-19, "audit_recomputed": true},
+    {"cycle": 4, "wall_seconds": 144.0, "integration_physical_seconds": 22.9, "audit_make_seconds": 30.3, "audit_audit_seconds": 71.6, "serialization_io_seconds": 13.0, "state_snapshot_seconds": 3.6, "engineering_output_seconds": 1.9, "dispatch_overhead_seconds": 0.8, "rejected_steps": 3596, "step_calls_attempted": 6478, "rss_at_cycle_end_gib": 1.98, "energy_residual_J": 5.150602166992257e-13, "mass_residual_kg": -1.2891841457210451e-18, "audit_recomputed": true},
+    {"cycle": 5, "wall_seconds": 143.5, "integration_physical_seconds": 22.9, "audit_make_seconds": 30.5, "audit_audit_seconds": 70.5, "serialization_io_seconds": 13.0, "state_snapshot_seconds": 4.0, "engineering_output_seconds": 1.9, "dispatch_overhead_seconds": 0.8, "rejected_steps": 3596, "step_calls_attempted": 6478, "rss_at_cycle_end_gib": 2.09, "energy_residual_J": 3.1240288134171124e-13, "mass_residual_kg": -2.541098841762901e-19, "audit_recomputed": true},
+    {"cycle": 6, "wall_seconds": 146.0, "integration_physical_seconds": 24.8, "audit_make_seconds": 31.5, "audit_audit_seconds": 70.2, "serialization_io_seconds": 12.8, "state_snapshot_seconds": 3.9, "engineering_output_seconds": 1.9, "dispatch_overhead_seconds": 0.8, "rejected_steps": 3596, "step_calls_attempted": 6478, "rss_at_cycle_end_gib": 2.17, "energy_residual_J": -4.113376306236205e-14, "mass_residual_kg": -7.420008617947671e-19, "audit_recomputed": true},
+    {"cycle": 7, "wall_seconds": 146.2, "integration_physical_seconds": 24.4, "audit_make_seconds": 29.6, "audit_audit_seconds": 72.4, "serialization_io_seconds": 12.9, "state_snapshot_seconds": 4.0, "engineering_output_seconds": 1.9, "dispatch_overhead_seconds": 0.8, "rejected_steps": 3596, "step_calls_attempted": 6478, "rss_at_cycle_end_gib": 2.25, "energy_residual_J": -1.5065726444163374e-13, "mass_residual_kg": -7.098136097991037e-19, "audit_recomputed": true},
+    {"cycle": 8, "wall_seconds": 145.0, "integration_physical_seconds": 22.8, "audit_make_seconds": 29.8, "audit_audit_seconds": 72.9, "serialization_io_seconds": 12.8, "state_snapshot_seconds": 4.1, "engineering_output_seconds": 1.9, "dispatch_overhead_seconds": 0.8, "rejected_steps": 3596, "step_calls_attempted": 6478, "rss_at_cycle_end_gib": 2.33, "energy_residual_J": -3.971267759084185e-13, "mass_residual_kg": -1.2874900798265365e-19, "audit_recomputed": true}
+  ],
+  "per_cycle_wall_note": "per-cycle wall = sum of the exclusive buckets (integration + audit make + audit + serialization + snapshot + engineering + dispatch + periodicity + finalization) rounded to 0.1 s; the overlapping advance_total_seconds timer is excluded (it would double-count); sum of walls 1132.05 s = cycle_wall_seconds_total 1132.056 s",
+  "rejected_step_share": {
+    "steady_state": "3596 rejected / 6478 attempted step calls = 55.5% per cycle (cycles 2-8)",
+    "cycle_1": "3084 rejected / 5711 attempted = 54.0%",
+    "note": "Instrumented datum, not a stop condition: the frozen A3a stop_rules do not include a rejection-share halt (the general fail-closed example in the older design text applied to matrix configurations). Flag for the A3b preregistration to define explicitly."
+  },
+  "rss_bytes": {"start": 38711296, "peak_sampled": 2773868544, "finish": 2502426624},
+  "rss_mib": {"start": 36.9, "peak_sampled": 2645.4, "finish": 2386.5, "limit_mib": 3072, "peak_fraction_of_limit": 0.861},
+  "conservation": {
+    "energy_residual_J": {"min": -4.605205106145149e-13, "max": 5.150602166992257e-13},
+    "mass_residual_kg": {"min": -1.2891841457210451e-18, "max": 6.708500942254059e-19},
+    "note": "Per-cycle residuals recorded in a3a-result.json (conservation block per cycle); magnitudes ~1e-13 J / 1e-18 kg, far below the 5e-12 J replay tolerance"
+  },
+  "audit": {
+    "recomputed_all_cycles": true,
+    "status": "PASS",
+    "method": "INTEGRATED_CYCLE_REPLAY_V2_PRE_CYCLE_P7_BASELINE",
+    "note": "primary admissible enforced by the driver loop (AUDIT_FAIL would have stopped the run); no audit failure occurred"
+  },
+  "periodicity": {
+    "evaluation_status": "EXECUTED_NO_PERIOD_ACCEPTED",
+    "accepted_period": null,
+    "comparison_count": 13,
+    "complete_cycles_evaluated": 8,
+    "all_comparisons_failed": true,
+    "termination_reason": "HORIZON_COMPLETED",
+    "contract": "REFERENCE_PERIODIC_CONVERGENCE_V2",
+    "thresholds_sha256": "97049f91c7664b906fd743ec2a05991ad313f860df23b154b482a5c783f13b70",
+    "sample_failing_metric_cycle8_lag1": "crankcase.mass_kg relative 0.013074889965591458 vs threshold 0.002",
+    "note": "A3a does not decide convergence; the classification records that no period was accepted within the 8-cycle horizon"
+  },
+  "artifacts": {
+    "artifact_root_env": "DINO_ARTIFACT_ROOT",
+    "directory_relative_to_root": "integrated-solver-verification-v1/a3a/dino-exhaust-comparison-starter/isv1-a3a-profile-3000rpm-mesh8-v1",
+    "sha256": {
+      "a3a-result.json": "7f58481a48bd0fdaea0e81047facd9dc4f82da36d4ec2059987083f823a13627",
+      "a3a-result.json#internal_result_sha256": "00664e1640e5ba3d0c3353c23a207bd62e113a9a4db69156dde0058fa11d56c1",
+      "a3a-run.json": "fa8a4aff6e8cc1ee121dcc2d6ff9a7d28f52007bcf225e743a58e27235d05691",
+      "a3a-checkpoint-next-cycle-0002.json": "65a812c419842bbe6a4434e57e19753cfb1487243d13b240676eb7f824e5035c",
+      "a3a-checkpoint-next-cycle-0003.json": "b0b6ada37783fa17f2cda9d64fee935fc3aca11f174b606ed6541e2b034cc1bd",
+      "a3a-checkpoint-next-cycle-0004.json": "3ba58b26fb646683268c1f0c8234fc22465852bd0f1fb4d4aed193c7ba9889e8",
+      "a3a-checkpoint-next-cycle-0005.json": "f8d8a10f74f4fd54d6e9e33b1a4308cd1691428ce5b9e54e50a0fcdb9b4a9879",
+      "a3a-checkpoint-next-cycle-0006.json": "bfbe332e85a0fb9d3a05d65143d93510993eae3787f5c545c4ebabfaa2169457",
+      "a3a-checkpoint-next-cycle-0007.json": "bd8265674f12ed1a8cc11ce4bbf9a69167f277f7599cde6ab61a446eb6e14704",
+      "a3a-checkpoint-next-cycle-0008.json": "04a0ebf6e9924b228d9545559da7893abe5f09b7c4ea26c6301680a3b000b79a",
+      "a3a-checkpoint-next-cycle-0009.json": "1b0b634d3a182a2983fc1d96a4fdaee1f9ef7b655b7038ab6a16223521c7f753",
+      "a3a-checkpoint.json": "ad3926ab50d04a766b80706750b7fded41eb2cd38074f56c912bca21ecc87e59",
+      "configuration.json": "0820c6eb59808c687ac565c872b1c66a185995f57e5bee796cbe997549ee4f77",
+      "cycle-0001.json.gz": "d957c73054d225fa790edfc9c7e7e8e5d840b812181ef7f17e9a1b62dbfb49f0",
+      "cycle-0002.json.gz": "c8c1332319fe5028bca04d9e599bd527cd36ec8f09f45bd1851f033df7c07b25",
+      "cycle-0003.json.gz": "aaf93cacc071c14abf0e16d59339a9bbfdb6008d62a97095c36a8ace535743d4",
+      "cycle-0004.json.gz": "fa11bd7201dd4498f3314e09236fe82f19dc8726b26d3323e71fcd9ebd98a1f3",
+      "cycle-0005.json.gz": "277aa69e993ba75238090d3c6876e556db63a90a81de3c8dfc5078eec2597fb0",
+      "cycle-0006.json.gz": "84b0783c14c8a1d23d9ef307051dcdf68ef47db04fb842e1ba7c916485b52ea4",
+      "cycle-0007.json.gz": "824734be27bed8bb3741b523ed8902aebb183a8fb955b0ae034693903dadbd4c",
+      "cycle-0008.json.gz": "2874e790c81aad9feea559288e22baefb8832fdb96aafeada5467e139e5afdfe",
+      "run_logged/isv1-a3a-run1.log": "3b4a9b4a5937a9017db2e73ae35dc365ffc3b89f3ba56f669d2f98b46a4d75e5",
+      "run_logged/isv1-a3a-run1.summary.json": "af2265f20c17287e5dc17eda41b20048c65ee18c6ca6a99e097ace754d5981a2"
+    },
+    "note": "run_logged log/summary relocated here from the repo to honor the frozen preregistration (logs external); complete inventory: 22 artifact files + 1 internal content hash"
+  },
+  "acceptance_criterion_0": {
+    "two_or_more_cycles_with_complete_timers": true,
+    "per_cycle_audit_recomputed_admissible": true,
+    "periodicity_recorded_or_absence_declared": "recorded (EXECUTED_NO_PERIOD_ACCEPTED)",
+    "conservation_recorded": true,
+    "l1_receipt_with_hashes": "this file",
+    "revised_cost_estimate_with_band": "see revised_cost_estimate_for_a3b",
+    "verdict": "A3a acceptance (criterion 0) satisfied; A3a does NOT decide convergence and makes no predictive claim"
+  },
+  "revised_cost_estimate_for_a3b": {
+    "measured_base_rate": {
+      "steady_state_seconds_per_cycle_cycles_2_to_8": 144.55,
+      "cycle_1_seconds": 120.2,
+      "overall_seconds_per_cycle": 141.5,
+      "previous_pre_run_assumption_seconds_per_cycle": "170-230 (SPV1-era, pre-performance commits)",
+      "note": "Measured on this machine, post perf commits f6a955c/ea2ff2d; single sample, no repetition authorized"
+    },
+    "model": "costo ≈ ciclos × (celdas/48) × (0.4/CFL) × 145 s (declared linear-in-cells model, recalibrated at 145 s/cycle)",
+    "serial_estimates_with_3_cycles_per_configuration": {
+      "temporal_arm_{0.4,0.2,0.1}_at_48_cells": "≈ 3,045 s",
+      "spatial_arm_{6,12,24,48}_cells_at_CFL_0.2": "≈ 1,251 s",
+      "contamination_control_6_cells_at_CFL_0.1": "≈ 217 s",
+      "full_matrix_total": "≈ 4,500 s ≈ 75 min",
+      "tier_T0": "≈ 2,400 s (cap 3,600 s still adequate)",
+      "tier_T1": "≈ 4,200 s (cap 7,200 s still adequate)"
+    },
+    "band": "Single-sample; mesh-scaling of the audit-dominated pipeline is unvalidated beyond the measured point; treat all extrapolations as ± >20%. Timers show audit+reconstruction ≈ 70% of wall - cost is pipeline-dominated, not physics-dominated.",
+    "memory_considerations": {
+      "observed": "RSS at cycle end grew 1.21 → 2.33 GiB over 8 cycles (≈ +0.08-0.13 GiB/cycle, decelerating); peak sampled 2.58 GiB (86.1% of the 3072 MiB cap)",
+      "implication": "A per-process cycle horizon beyond ~10-12 cycles risks approaching the 3072 MiB step-boundary check; the A3b preregistration should fix per-configuration horizons (or the owner may authorize a different cap - new authorization)",
+      "interpretation": "Growth is consistent with large-object/allocator retention from 50 MB jsonify artifacts; 'leak vs fragmentation' cannot be distinguished from one run"
+    },
+    "decision_rule_input": "AUDIT_RECONSTRUCTION (make+audit) + SERIALIZATION_IO = 70.1% + 8.6% = 78.7% of wall → if an optimization were ever authorized (NOT in this change), it should target audit/reconstruction first, not _assemble/deepcopy (INTEGRATION_PHYSICAL = 16.3%)"
+  },
+  "limitations": [
+    "Single sample: all shares are single-sample estimates; no repetition was authorized; no run-to-run dispersion is known",
+    "Synthetic fixture (dino-2t-exhaust-comparison, AFR 49): verifies the solver pipeline, not any real Dino engine; no experimental validation",
+    "A3a does not decide convergence: periodicity EXECUTED_NO_PERIOD_ACCEPTED within 8 cycles; no spatial/temporal matrix was run (A3b not authorized)",
+    "Identity 4c4e0863 supersedes the SPV1-era 40303dcf (perf commits changed motor source hashes; configuration/fuel/loss/thresholds unchanged)",
+    "High CFL rejection share (55.5% of attempted step calls) is a property of the CFL-limited first-order scheme at max_cfl 0.4; A3b should preregister its handling explicitly",
+    "Cost extrapolation across mesh/CFL is model-based (linear in cells), not measured",
+    "Convergence is necessary but not sufficient for predictive power: no predictive claim is made here"
+  ],
+  "non_claims": {
+    "predictive_power_curve": "NOT_CLAIMED",
+    "experimental_validation": "NOT_PERFORMED",
+    "a3b_matrix": "EXPRESSLY_NOT_AUTHORIZED"
+  }
+}

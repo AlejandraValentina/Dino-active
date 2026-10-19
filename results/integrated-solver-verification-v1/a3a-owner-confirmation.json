@@ -1,0 +1,22 @@
+{
+  "schema": "DINO_ISV1_A3A_OWNER_CONFIRMATION_V1",
+  "confirmed": true,
+  "preregistration_sha256": "790fa2f756c31bfcb702e1f5525219446b619d85940c3c1a9b7d11c7d2a9ff1e",
+  "confirmed_at": "2026-10-19",
+  "confirmed_by": "owner",
+  "quote": "Autorizo la ejecución única de A3a, con una comprobación previa pendiente: verificar que el supervisor run_logged.py aplique efectivamente el timeout global de 1200 segundos y termine también los procesos hijos; confirmar que los hashes del código y la configuración local coincidan con el preregistro congelado; registrar la autorización en a3a-owner-confirmation.json, vinculándola al SHA-256 exacto. Si alguna comprobación falla, detenerse sin ejecutar el solver. Condiciones de ejecución: variante Escape original, 3000 RPM; malla de 48 celdas, CFL 0.4; máximo 8 ciclos; deadline interno de 1080 segundos y cap externo de 1200 segundos; memoria máxima de 3072 MiB; una sola ejecución, sin reintentos, reanudaciones ni extensiones; sin modificaciones físicas, MUSCL ni cambios en P0–P9. A3b permanece expresamente NO AUTORIZADA.",
+  "prechecks": {
+    "run_logged_timeout_global": {
+      "status": "PASS",
+      "evidence": "empirical smoke test: exit_code 124, timed_out true, duration 5.094 s with --timeout 5 (single-process child). run_logged.py L75-80: process.wait(timeout) -> kill -> exit 124."
+    },
+    "run_logged_tree_kill": {
+      "status": "PASS_FOR_A3A_TOPOLOGY",
+      "evidence": "run_logged kills the direct child only (Popen.kill, no tree-kill); smoke test showed a grandchild survives. A3a driver spawns zero descendants (no subprocess/multiprocessing/os.system in scripts/diagnostics/integrated_solver_verification_a3a.py nor in motorsim/*.py), so the process tree equals the direct child and nothing can survive the cap."
+    },
+    "hashes_match_preregistration": {
+      "status": "PASS",
+      "evidence": "driver LF-sha256 db054fc9ec42b28f1087c6a6bfe9c8438ead38b01273b676b0f137f14f802eea equals preregistration runner_sha256; preregistration file LF-sha256 790fa2f756c31bfcb702e1f5525219446b619d85940c3c1a9b7d11c7d2a9ff1e equals the frozen SHA; worktree clean at commit 3f29aff; driver preflight verdict preregistration_check PASS."
+    }
+  }
+}
