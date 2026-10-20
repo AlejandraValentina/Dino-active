@@ -1,0 +1,150 @@
+{
+  "schema": "FULL_RPM_SWEEP_V1_IMPL2_INDEPENDENT_REVIEW_V1",
+  "recorded_at": "2026-10-20T00:26:00Z",
+  "review_classification": "INDEPENDENT_REVIEW",
+  "independent_review": true,
+  "review_mode": "READ_ONLY",
+  "reviewer": {
+    "kind": "FRESH_SUBAGENT",
+    "attribution_note": "Executed by a fresh subagent context (no implementation history), read-only, per AGENTS.md section 4; not the implementer."
+  },
+  "reviewed_head": "7d6930ea42272481d45eecb97175ab8cb8701949",
+  "implementation_commits": [
+    "7057590",
+    "f994c63",
+    "cce8273"
+  ],
+  "claims": [
+    {
+      "id": "RESTORE-ATOMICITY",
+      "self_review_result": "PASS",
+      "independent_result": "PASS",
+      "evidence": [
+        "motorsim/integrated_2t.py:2601-2618 validates cycle-local/full trace-origin invariants before any assignment",
+        "motorsim/integrated_2t.py:2865-2891 is the first place restore mutates the live engine; all validation (state, clock, ledger, trace, P7, fuel events) precedes it",
+        "tests/test_integrated_2t.py:1944-1950 corrupts trace_origin_state, asserts ValueError, and asserts target.snapshot() is unchanged",
+        "tests/test_integrated_2t.py:720-759 covers atomic rejection for clock, chamber-volume, geometry-callback, and trace-geometry corruption",
+        "scripts/full_rpm_sweep_v1_campaign.py:697-713 calls engine.restore and detector.restore before any point-start/manifest write"
+      ],
+      "notes": "The receiving IntegratedEngine2T.restore is commit-at-end: validation reads a deep copy and raises before the single assignment block. The bounded trace-origin/checkpoint suite (9 tests) passed. A failure in detector.restore after engine.restore leaves only an abandoned in-memory engine; no artifact is written, so there is no persisted state leakage."
+    },
+    {
+      "id": "TRACE-LEDGER-CONTINUITY",
+      "self_review_result": "PASS",
+      "independent_result": "PASS",
+      "evidence": [
+        "motorsim/integrated_2t.py:2583-2597 requires trace_scope in {FULL, CYCLE_LOCAL}, a well-formed trace_fuel_combustion_baseline, and a zero baseline for FULL",
+        "motorsim/integrated_2t.py:2601-2618 requires trace_origin_state for CYCLE_LOCAL, requires stage_states[0] == trace_origin_state when trace is non-empty, requires state == trace_origin_state at an empty-trace boundary, and forbids trace_origin_state for FULL",
+        "motorsim/integrated_2t.py:2836-2864 requires ledger[fuel_combustion_*] - trace_baseline == the integral of trace fuel-combustion increments",
+        "motorsim/integrated_2t.py:2484-2492 stores the cumulative fuel-ledger baseline and origin state in compact_cycle_trace before clearing the trace",
+        "tests/test_integrated_2t.py:1916-1942 restarts at a compact boundary and mid-cycle, then asserts identical state, ledger, and conservation_report after the next step"
+      ],
+      "notes": "All listed continuity invariants are enforced in production engine.restore, not only in tests. Bounded test set B passed 9/9. Campaign-level structural binding is weaker: checkpoint next_cycle is not cross-checked against engine.cycle, detector history length, or an exact primary count (see additional finding CHECKPOINT-HISTORY-NOT-CROSS-BOUND)."
+    },
+    {
+      "id": "LEGACY-CHECKPOINT-ISOLATION",
+      "self_review_result": "PASS",
+      "independent_result": "PASS",
+      "evidence": [
+        "scripts/full_rpm_sweep_v1_campaign.py:561-579 rejects any checkpoint whose schema is not FULL_RPM_SWEEP_V1_IMPL2_POINT_CHECKPOINT, whose implementation_version is not FULL_RPM_SWEEP_V1_IMPL2, or whose bindings differ exactly",
+        "scripts/full_rpm_sweep_v1_campaign.py:526-543 binds preregistration, fixture, engine/point configuration, loss model, fuel, solver hashes, periodicity contract, campaign producer, implementation identity, and output adapter",
+        "scripts/full_rpm_sweep_v1_campaign.py:987-1039 requires IMPL2 preflight/authorization, an IMPL2-prefixed campaign_id, and an output root inside engine-physics-v1/full-rpm-sweep-v1-impl2",
+        "motorsim/integrated_2t.py:2583-2597 plus 2857-2863 reject a markerless compact snapshot with nonzero cumulative fuel ledger because it is interpreted as FULL with a zero baseline",
+        "tests/test_full_rpm_sweep_v1.py:237-260 rejects the v1 schema name; tests/test_integrated_2t.py:1952-1958 rejects a markerless compacted snapshot",
+        "motorsim/full_rpm_sweep_v1_impl2.py:47-104 enforces the IMPL2 identity, checkpoint_schema, v1_artifacts_reusable=false, and isolated artifact root"
+      ],
+      "notes": "A v1 checkpoint cannot be loaded by the IMPL2 resume path: schema/version or exact-binding comparison raises before engine.restore. v1 manifest/root reuse is also rejected by campaign_id and artifact-root checks. The frozen identity is currently stale at HEAD, so preflight fails closed (see additional finding IMPL2-FROZEN-IDENTITY-DRIFT); this strengthens fail-closed behavior but blocks production resume until the identity is re-frozen."
+    },
+    {
+      "id": "CHECKPOINT-FILE-INTEGRITY",
+      "self_review_result": "PASS_WITH_BOUNDARY",
+      "independent_result": "PASS",
+      "evidence": [
+        "scripts/full_rpm_sweep_v1_campaign.py:561-567 reads checkpoint bytes once, compares SHA-256 to expected_file_sha256, and only then calls json.loads",
+        "scripts/full_rpm_sweep_v1_campaign.py:687-700 requires a checkpoint_sha256 string in campaign.json and passes it to _load_checkpoint; a missing hash or a byte mismatch raises before restore",
+        "scripts/full_rpm_sweep_v1_campaign.py:226-243 records the checkpoint SHA-256 after the atomic checkpoint write",
+        "scripts/verify_full_rpm_sweep_v1_artifacts.py:139-153 independently rechecks checkpoint bytes against the manifest digest and revalidates checkpoint bindings"
+      ],
+      "notes": "The required ordering is exact: hash check before deserialization. Mismatch or absent manifest hash fails closed. The manifest is still not a signed authenticity source, so a coherent rewrite of campaign.json plus checkpoint/result bytes is outside this check; the external verifier compensates for corruption and partial mismatch, but not for a fully consistent unsigned-manifest rewrite. The self-review already records this as PASS_WITH_BOUNDARY, not PASS."
+    }
+  ],
+  "additional_findings": [
+    {
+      "id": "IMPL2-FROZEN-IDENTITY-DRIFT",
+      "severity": "MEDIUM",
+      "result": "FAIL_CLOSED_AT_HEAD: IMPL2 preflight cannot start at HEAD; an existing checkpoint bound to the frozen solver hash would also be rejected; no invalid checkpoint is accepted.",
+      "evidence": [
+        "results/full-rpm-sweep-v1/implementation-v2-campaign-identity.json:51 freezes motorsim.integrated_2t at e3d1e449240478bd6ca955c032ec835fce65479965a5d305d48288a3ef3e29b3",
+        "current motorsim/integrated_2t.py SHA-256 (CRLF-normalized) is dc05b28d77a1fa222e4b0c4812ab49ecd1b7fe1e55a4b05fe36a59799ba48598 after commits ea2ff2d and f6a955c",
+        "read-only audit_impl2_campaign_preflight(HEAD) returned FAIL_CLOSED with source_hashes_exact=false and underlying_scientific_preflight=false",
+        "scripts/full_rpm_sweep_v1_campaign.py:1000-1002 refuses to proceed unless IMPL2 preflight_status is PASS",
+        "scripts/full_rpm_sweep_v1_campaign.py:534 and 571 bind current solver hashes into new checkpoints, so a checkpoint carrying the old e3d1 binding would fail the exact-binding check"
+      ]
+    },
+    {
+      "id": "CHECKPOINT-PUBLISH-BEFORE-MANIFEST-WINDOW",
+      "severity": "LOW",
+      "result": "A crash after checkpoint publication but before campaign.json records its hash leaves a valid checkpoint unresumable: resume raises on missing/stale checkpoint_sha256, and the previously published checkpoint was already replaced. Fail-closed, but no automatic recovery.",
+      "evidence": [
+        "scripts/full_rpm_sweep_v1_campaign.py:900-913 writes checkpoint.json, then checkpoint-status.json, then updates campaign.json",
+        "scripts/full_rpm_sweep_v1_campaign.py:690-700 raises if the manifest row lacks checkpoint_sha256 or if the bytes do not match it",
+        "scripts/full_rpm_sweep_v1_campaign.py:639-655 enters orphan-temp recovery only when checkpoint.json does not exist"
+      ]
+    },
+    {
+      "id": "CHECKPOINT-HISTORY-NOT-CROSS-BOUND",
+      "severity": "LOW",
+      "result": "Resume validates the engine snapshot and the cycles 1..next_cycle-1 files, but does not bind next_cycle to engine.cycle, the detector history length, or an exact primary/metric file set. A mid-cycle engine snapshot (accepted by engine.restore for CYCLE_LOCAL) would be treated as a cycle boundary by _run_point and could produce a partial-cycle primary; extra cycle files beyond next_cycle-1 are not rejected. Unreachable through the runner's own write sites and bounded by the manifest hash, but not fail-closed structurally.",
+      "evidence": [
+        "scripts/full_rpm_sweep_v1_campaign.py:561-579 validates next_cycle only as an int >= 1 and the two snapshots only as dicts",
+        "scripts/full_rpm_sweep_v1_campaign.py:582-604 checks that cycles 1..next_cycle-1 exist and audit cleanly, but does not reject extra cycle files or inspect detector/engine counters",
+        "scripts/full_rpm_sweep_v1_campaign.py:697-711 restores engine/detector and sets first_cycle = next_cycle without requiring an empty trace or accepted_steps == 0",
+        "motorsim/integrated_2t.py:2520-2527 ties engine.cycle only to unwrapped_angle // 360, not to next_cycle",
+        "motorsim/reference_harness/convergence.py:308-329 validates detector history internally but not against next_cycle",
+        "scripts/full_rpm_sweep_v1_campaign.py:745-757 and 904-910 write cycle_primaries in checkpoint-status.json, which the resume path never reads",
+        "runner write sites are boundary-only: scripts/full_rpm_sweep_v1_campaign.py:892-899 and 736-743"
+      ]
+    },
+    {
+      "id": "TRACE-ORIGIN-NEGATIVE-TEST-COVERAGE",
+      "severity": "INFO",
+      "result": "Production enforces all trace-origin/baseline cases, but bounded tests do not exercise a corrupted non-empty first-stage origin, a FULL snapshot carrying trace_origin_state, or a FULL snapshot with a nonzero baseline; those branches are code-inspected only.",
+      "evidence": [
+        "tests/test_integrated_2t.py:1916-1958 covers a bad empty-trace boundary origin, a valid mid-cycle restore, and markerless legacy rejection",
+        "motorsim/integrated_2t.py:2595-2597 and 2601-2618 enforce the FULL zero-baseline, FULL no-origin, and non-empty first-stage-origin branches"
+      ]
+    },
+    {
+      "id": "SELF-REVIEW-CLASSIFICATION-DISCREPANCY",
+      "severity": "INFO",
+      "result": "The task context describes four PASS findings, but implementation-v2-self-review.json records CHECKPOINT-FILE-INTEGRITY as PASS_WITH_BOUNDARY with an explicit unsigned-manifest limitation. This review uses the recorded value.",
+      "evidence": [
+        "results/full-rpm-sweep-v1/implementation-v2-self-review.json:23-28"
+      ]
+    }
+  ],
+  "tests_run": [
+    {
+      "command": "python -m pytest tests/test_full_rpm_sweep_v1_impl2_checkpoint_d1d2.py -q -k \"atomic_writers or orphan_first_write or restarts_only_from_orphan\" --disable-warnings",
+      "result": "PASS",
+      "summary": "3 passed, 2 deselected in 1.30s; atomic temp uniqueness/cleanup, orphan quarantine, and orphan-only restart with unknown-partial rejection."
+    },
+    {
+      "command": "python -m pytest tests/test_integrated_2t.py -q -k \"trace_origin or checkpoint\" --disable-warnings",
+      "result": "PASS",
+      "summary": "9 passed, 74 deselected in 5.10s; includes compact boundary/mid-cycle restore, atomic clock/geometry/trace rejection, P7 checkpoint replay, and exhaust checkpoint replay."
+    }
+  ],
+  "verdict": "PASS_WITH_CONCERNS",
+  "limitations": [
+    "Read-only review: no campaign point, solver campaign, git add/commit, or deletion was performed; only this receipt was written.",
+    "The frozen IMPL2 identity is stale at HEAD (integrated_2t.py changed after the identity/preregistration freeze), so the production IMPL2 preflight fails closed and the resume path could not be executed end-to-end at HEAD. Claims were verified from production code plus the bounded tests.",
+    "The local campaign manifest is unsigned; the external artifact verifier detects corruption and binding mismatch but is not an authenticity source. A coherent rewrite of manifest plus checkpoint/result bytes is outside the integrity check.",
+    "Per instructions, the full D2 spawn/equivalence test and the full integrated_2t suite were not rerun; the prior receipts report them, but this review did not reproduce them.",
+    "Bounded negative coverage is incomplete for the trace-origin branches listed in TRACE-ORIGIN-NEGATIVE-TEST-COVERAGE; those were verified by code inspection.",
+    "The three implementation commits listed in the request predate later solver/perf commits (ea2ff2d, f6a955c) that changed integrated_2t.py; this review applies to the current HEAD tree, not only to those three commits."
+  ],
+  "campaign_started": false,
+  "artifacts_modified": false,
+  "no_campaign_statement": "No campaign point was started; historical v1/IMPL2 artifacts were not modified."
+}
