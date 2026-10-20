@@ -3104,7 +3104,8 @@
         "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-power-vs-rpm.png",
         "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-torque-vs-rpm.png",
         "results/full-rpm-sweep-v1/impl2-invalid-point-forensics.json",
-        "results/full-rpm-sweep-v1/implementation-v2-review.json"
+        "results/full-rpm-sweep-v1/implementation-v2-review.json",
+        "results/full-rpm-sweep-v1/fast-evidence-review.json"
       ],
       "unblock_tasks": [
         "FRPM-V2-RESTORE-INDEPENDENT-REVIEW",
@@ -3212,7 +3213,7 @@
       "id": "FRPM-V2-EVIDENCE-HOTSPOT-OPT",
       "description": "Design and benchmark a versioned optimization for primary construction, JSON conversion, replay audit and evidence hashing; retain independent audit semantics and all hard gates.",
       "dependencies": [],
-      "state": "BLOCKED_LOCAL",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "architecture",
       "evidence_level": "L1",
@@ -3221,17 +3222,18 @@
         "tests/test_full_rpm_sweep_v1_performance.py",
         "openspec/changes/full-rpm-sweep-v1-performance-v2"
       ],
-      "blocker": "The persisted-primary segmented prototype is 1.4% smaller but 10.9% slower end-to-end because encode/write/read/reconstruction overhead does not reduce the independent audit. The existing auditor remains the largest measured stage.",
-      "unblock_tasks": [
-        "FRPM-V2-FAST-EVIDENCE-ACCEPTANCE"
-      ],
+      "blocker": null,
+      "unblock_tasks": [],
       "no_local_unblock_reason": null,
       "evidence": [
         "results/full-rpm-sweep-v1/performance-recovery-v2.json",
         "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/reports/frpm-v2-stepcost-a4000.json",
         "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/reports/frpm-v2-stepcost-b4000.json",
-        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/reports/frpm-v2-sampling-profile.json"
-      ]
+        "DINO_ARTIFACT_ROOT/engine-physics-v1/full-rpm-sweep-v1/reports/frpm-v2-sampling-profile.json",
+        "results/full-rpm-sweep-v1/fast-evidence-review.json"
+      ],
+      "resolution": "REJECTED_BY_INDEPENDENT_REVIEW",
+      "outcome_note": "Design and benchmark completed; the columnar/segmented prototype is 1.4% smaller but 10.9% slower end-to-end (+17.4% on evidence components), so it is not adopted. Conventional canonical-primary evidence remains authoritative; no redesign justified."
     },
     {
       "id": "FRPM-V2-CHECKPOINT-ROUNDTRIP",
@@ -3449,13 +3451,24 @@
       "dependencies": [
         "FRPM-V2-COLUMNAR-PROTOTYPE"
       ],
-      "state": "READY",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "skeptic/adversarial review",
       "evidence_level": "L1",
       "write_scope": [
         "results/full-rpm-sweep-v1/fast-evidence-review.json"
-      ]
+      ],
+      "commits": [
+        "2e3a0eb706c426167779b98ea5cb9d70da0a7675"
+      ],
+      "evidence": [
+        "results/full-rpm-sweep-v1/fast-evidence-review.json"
+      ],
+      "review_decision": {
+        "decision": "REJECT_FOR_ADOPTION",
+        "rationale": "Lossless canonical reconstruction and independent audit preserved (24/24 audits PASS), but the prototype costs 16.88 s vs 15.22 s per task (+10.9% full cycle; +17.4% on evidence components) for a 1.4% size reduction. Encode +0.497 s, extra write +0.575 s, reconstruction +0.477 s; audit unchanged within noise. Memory: no per-path RSS measured; transient pointer-array overhead small (~0.32 MiB estimate); paired peak 280-283 MiB. No redesign justified.",
+        "receipt_sha256": "f26841df01a24d210a0d93c2c39c690105eb329c835c783d9bcf7fe77ff67228"
+      }
     },
     {
       "id": "FRPM-V2-PARALLEL-EXECUTOR-REVIEW",
@@ -6459,11 +6472,11 @@
       }
     }
   },
-  "last_status_reviewed_head": "097611f99bd1a4182a8e3c765f5423d853588a33",
+  "last_status_reviewed_head": "2e3a0eb706c426167779b98ea5cb9d70da0a7675",
   "continuation_status": {
     "mode": "MOTORSIM_AUTONOMOUS_ENGINEERING_TEAM",
     "audit_remediation_mode": false,
-    "ready_tasks": 4,
+    "ready_tasks": 3,
     "local_blockers": [
       "FRPM-V2-EVIDENCE-HOTSPOT-OPT (evidence pipeline hotspots), DWT-PACKAGED-ACCEPTANCE, SPV1-POINT-EXECUTION.",
       "ISV1-A3-EXECUTION: DONE - A3a executed once on 2026-10-19 (exit 0, 1138.7 s): classification A3A_COMPLETE_PERIODICITY_NOT_IDENTIFIED; receipt committed 2665b93. ISV1-A3B-MATRIX and the convergence acceptance remain pending owner authorization (tier T0/T1/T2 + own preregistration).",
@@ -8575,6 +8588,12 @@
       "task": "FRPM-V2-RESTORE-INDEPENDENT-REVIEW",
       "kind": "task",
       "summary": "Independent review PASS_WITH_CONCERNS committed 097611f: four self-review claims verified; MEDIUM frozen IMPL2 identity drift (preflight FAIL_CLOSED at HEAD), LOW publish/manifest window, LOW next_cycle not cross-bound. No campaign point started; v1/IMPL2 artifacts untouched."
+    },
+    {
+      "at": "2026-10-20T10:40:00+00:00",
+      "task": "FRPM-V2-FAST-EVIDENCE-ACCEPTANCE",
+      "kind": "task",
+      "summary": "Independent review REJECT_FOR_ADOPTION committed 2e3a0eb: lossless 12/12 and audit independence 24/24 PASS; +10.9% full-cycle cost (evidence path +17.4%) for -1.4% bytes; audit unchanged; memory not isolated per path (paired peak 280-283 MiB). Hotspot task closed as rejected; no redesign."
     }
   ],
   "legacy_gate_status": {
