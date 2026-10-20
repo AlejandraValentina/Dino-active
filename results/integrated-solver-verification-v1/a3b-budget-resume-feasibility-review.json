@@ -1,0 +1,95 @@
+{
+  "schema": "DINO_ISV1_A3B_BUDGET_RESUME_FEASIBILITY_REVIEW_V1",
+  "recorded_date": "2026-10-20",
+  "classification": "CHECKPOINT_INTEGRITY_PASS_BUT_RESUME_NOT_PERMITTED_BY_CURRENT_BUDGET_AND_INVOCATION_PLAN",
+  "scope": "Read-only budget-planning and T1-A checkpoint feasibility review. No solver steps, resume, comparison, or tolerance freeze performed.",
+  "source_identities": {
+    "protocol_sha256": "c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed",
+    "driver_sha256": "3062ed465f1a8d0e715ef9be07a4ddee4a0a1f11dba7cf4cf7824594e7b8bb42",
+    "addendum_sha256": "b93e743919f91486de166422d03ebe24e44702bfc40a7d355ddafa1054ba7d0b",
+    "authorization_sha256": "499986e1f74aeb1d35e77b087d0bb01d457ecc00f848e5868b87eeff8a4a0213"
+  },
+  "persisted_external_evidence": {
+    "artifact_root": "${USERPROFILE}/Dino-artifacts/isv1-a3b-fix1-exec-20261020/integrated-solver-verification-v1/a3b",
+    "ledger_sha256": "12031ff8f7e0ca1f5be14854654e283773e0842c54e146f965d72f4c5108165e",
+    "ledger_entries": [
+      {
+        "config_id": "T1-A",
+        "invocation_index": 1,
+        "elapsed_seconds": 112.094,
+        "cycles_completed": 0,
+        "status": "FAILED_CLOSED",
+        "failure": "PRIMARY_CONFIGURATION_HASH_MISMATCH"
+      },
+      {
+        "config_id": "T1-A",
+        "invocation_index": 1,
+        "elapsed_seconds": 266.469,
+        "cycles_completed": 2,
+        "cycle_indices": [1, 2],
+        "status": "PARTIAL_BUDGET",
+        "failure": "T1-A cap exceeded: projected 542.568 s > 525 s"
+      }
+    ],
+    "checkpoint": {
+      "path": "T1-A/checkpoint.json",
+      "sha256": "3b1203b6a1e4cb162910b8c011f4f562b693ee04f8f2801051f122416b11fcba",
+      "next_cycle": 3,
+      "cycles": [1, 2],
+      "bindings_match_result": true,
+      "bindings_match_frozen_protocol_and_driver": true
+    },
+    "result_sha256": "7124fbfe4929975ce68f4f94b1a67f89c267ad51372be81501098b23d6f85402",
+    "primary_artifact_verification": {
+      "method": "SHA-256 of gzip-decompressed canonical primary JSON compared with each checkpoint primary_sha256",
+      "cycle_1": {
+        "sha256": "32403b157a6e8a0daa77d8468e5b5cc9030c521f4e2e45cd52b2b32e44d5d161",
+        "matches": true,
+        "audit": "PASS",
+        "recomputed": true
+      },
+      "cycle_2": {
+        "sha256": "312d1908da270f90a3df36d5820ece38b9749f2c8d1670921c988edc9c6e51e9",
+        "matches": true,
+        "audit": "PASS",
+        "recomputed": true
+      }
+    }
+  },
+  "current_budget": {
+    "global_cap_seconds": 4320.0,
+    "conservative_cumulative_wall_seconds": 379.751,
+    "conservative_global_remaining_seconds": 3940.249,
+    "t1a_config_cap_seconds": 525.0,
+    "t1a_recorded_ledger_seconds": 378.563,
+    "t1a_remaining_by_cap_seconds": 146.437,
+    "next_cycle_reservation_seconds": 164.005,
+    "projected_t1a_spend_seconds": 542.568,
+    "projection_exceeds_t1a_cap_seconds": 17.568,
+    "t1a_frozen_invocation_plan": [3],
+    "conclusion": "Global budget remains, but the per-configuration cap and one-invocation plan prohibit resuming under the current authorization. The previous 112.094 s failed attempt had zero cycles but is charged in the immutable ledger; it is not reclassified or subtracted here."
+  },
+  "prospective_budget_plan_not_authorized": {
+    "status": "PLANNING_ONLY_NOT_PREREGISTERED_NOT_AUTHORIZED",
+    "preferred_path": "A versioned preregistration must explicitly permit a single cycle-3 continuation from this exact checkpoint and preserve its origin bindings and hashes as lineage. Current driver checkpoint validation requires exact protocol binding, so changing the preregistration hash will reject this checkpoint unless a reviewed, versioned continuation mechanism is provided.",
+    "conditional_cap_scenario": {
+      "t1a_cumulative_cap_seconds": 560.0,
+      "unchanged_t1b_to_t1e_cap_sum_seconds": 3670.0,
+      "total_configuration_cap_sum_seconds": 4230.0,
+      "headroom_under_4320_global_cap_seconds": 90.0,
+      "remaining_t1a_cap_after_current_ledger_seconds": 181.437,
+      "buffer_after_current_driver_cycle_reservation_seconds": 17.432,
+      "meaning": "Arithmetic scenario only, not a recommended or approved cap. It accommodates the current conservative cycle reservation if exact checkpoint continuation is contractually and technically enabled. It provides little per-configuration margin; full-run execution must still stop at the global deadline and all frozen scientific guards remain in force."
+    },
+    "if_checkpoint_continuation_cannot_be_enabled": "A fresh T1-A trajectory would be needed under a new versioned protocol/authorization; do not reuse the two cycles as solver state. Recalculate the remaining campaign envelope from measured cycle costs before any authorization."
+  },
+  "contract_constraints": {
+    "new_preregistration_and_explicit_owner_authorization_required_for_budget_increase": true,
+    "automatic_extension_or_resume_outside_frozen_identity_and_preregistration_prohibited": true,
+    "frozen_protocol_or_existing_artifacts_modified": false,
+    "solver_or_physics_modified": false,
+    "campaign_or_next_invocation_started": false,
+    "atol_obs_frozen": false
+  },
+  "decision": "Preserve the valid T1-A checkpoint and evidence. Do not resume under the current authorization. Prepare any continuation only as a new, versioned preregistration that explicitly defines budget accounting, invocation count, checkpoint lineage, and the remaining global envelope; execution requires separate explicit owner authorization."
+}

@@ -8860,6 +8860,12 @@
       "task": "ISV1-A3B-MATRIX",
       "kind": "terminal",
       "summary": "A3b T1 stopped PARTIAL_BUDGET at T1-A after 2 audited cycles; projected cumulative config cost 542.568 s exceeded frozen 525 s cap. Ledger 378.563 s; run_logged wall 267.657 s. T1-B..E NOT_STARTED; no atol freeze/comparisons. See a3b-terminal-receipt-v2-fix1.json."
+    },
+    {
+      "at": "2026-10-20T16:54:57+00:00",
+      "task": "ISV1-A3B-BUDGET-RESUME-REVIEW",
+      "kind": "decision",
+      "summary": "Checkpoint T1-A cycles 1–2 binding and primary hashes verified; audits recomputed PASS. Resume blocked by 542.568 s projection vs 525 s cap and frozen single-invocation plan. Failed 112.094 s remains charged. Planning-only receipt records a versioned budget/lineage path; no solver run."
     }
   ],
   "legacy_gate_status": {
