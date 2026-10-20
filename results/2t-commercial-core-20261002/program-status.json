@@ -6193,16 +6193,20 @@
       "dependencies": [
         "ISV1-PREREGISTRATION"
       ],
-      "state": "BLOCKED_LOCAL",
-      "blocker": "A3a is authorized in scope (2026-10-19: one run, 1200 s cap, no extensions) but execution requires the explicit owner confirmation with the frozen preregistration visible; A3b remains unauthorized.",
+      "state": "DONE",
+      "blocker": null,
       "unblock_tasks": [],
-      "no_local_unblock_reason": "The only missing input is the owner's explicit confirmation of the single pre-authorized A3a run after reviewing the frozen preregistration; driver, frozen binding and dry-run PASS are complete.",
-      "commits": [],
+      "commits": [
+        "2665b935fb5c383028479127585fc2c3d0bfe03f"
+      ],
       "evidence": [
         "results/integrated-solver-verification-v1/a3a-preregistration.json",
-        "results/integrated-solver-verification-v1/a3a-preflight-receipt.json"
+        "results/integrated-solver-verification-v1/a3a-preflight-receipt.json",
+        "results/integrated-solver-verification-v1/a3a-owner-confirmation.json (owner authorization 2026-10-19 bound to SHA-256 790fa2f756c31bfcb702e1f5525219446b619d85940c3c1a9b7d11c7d2a9ff1e; run_logged timeout and hash prechecks PASS; no descendants in the A3a topology)",
+        "results/integrated-solver-verification-v1/a3a-run-receipt.json (L1 receipt: 8/8 cycles, A3A_COMPLETE_PERIODICITY_NOT_IDENTIFIED, exclusive-timer buckets, per-cycle walls, RSS, conservation, periodicity diagnostics, full artifact hashes, revised A3b estimate)",
+        "external artifacts (DINO_ARTIFACT_ROOT/integrated-solver-verification-v1/a3a/dino-exhaust-comparison-starter/isv1-a3a-profile-3000rpm-mesh8-v1): 22 files incl. a3a-result.json (sha256 7f58481a48bd0fdaea0e81047facd9dc4f82da36d4ec2059987083f823a13627) and the run_logged log/summary"
       ],
-      "next_action": "After the owner confirms with the preregistration visible, write a3a-owner-confirmation.json and launch the single run under run_logged --timeout 1200.",
+      "next_action": "A3a executed once (exit 0, 1138.7 s, cap not triggered); classification recorded. No convergence verdict and no predictive claim; the A3b matrix requires its own authorization and preregistration (owner decision pending: ISV1-A3B-AUTHORIZATION-DECISION).",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "verification",
       "evidence_level": "L1",
@@ -6214,15 +6218,39 @@
       "id": "ISV1-ACCEPTANCE",
       "description": "Classify results against preregistered acceptance criteria: convergence or NOT_CONVERGED per observable, cost separation, supported domain and the necessary-not-sufficient statement. No predictive claim.",
       "dependencies": [
-        "ISV1-A3-EXECUTION"
+        "ISV1-A3-EXECUTION",
+        "ISV1-A3B-MATRIX"
       ],
       "state": "WAITING",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "After the authorized execution completes, produce the acceptance report with hashes.",
+      "evidence": [
+        "results/integrated-solver-verification-v1/a3a-run-receipt.json (A3a acceptance criterion 0 satisfied; convergence acceptance requires the A3b matrix)"
+      ],
+      "next_action": "A3a classification recorded (COMPLETE / PERIODICITY_NOT_IDENTIFIED; no convergence verdict by design). Full objective acceptance (convergence or NOT_CONVERGED per observable, supported domain) requires the A3b matrix, which is NOT authorized: owner decision pending (ISV1-A3B-AUTHORIZATION-DECISION).",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "evidence/release reviewer",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/integrated-solver-verification-v1/"
+      ]
+    },
+    {
+      "id": "ISV1-A3B-MATRIX",
+      "description": "A3b: convergence matrix on the revised design (spatial mesh + temporal max_cfl + contamination control) with error quantification and validation of the revised cost model. NOT authorized as of 2026-10-19: requires explicit owner authorization (tier T0/T1/T2) and its own frozen preregistration, including how the observed CFL rejection share (~55.5%) and the per-process RSS cycle horizon are handled.",
+      "dependencies": [],
+      "state": "BLOCKED_LOCAL",
+      "blocker": "Owner decision pending: authorize the A3b tier (T0/T1/T2) and budget; then freeze the A3b preregistration before any run. An unauthorized matrix run would violate the frozen scope.",
+      "unblock_tasks": [],
+      "no_local_unblock_reason": "The missing input is a genuine owner decision on scope and budget (AGENTS condition B); no local action can authorize a convergence matrix.",
+      "commits": [],
+      "evidence": [
+        "results/integrated-solver-verification-v1/a3a-run-receipt.json (revised rate ~145 s/cycle at 48 cells CFL 0.4; T0 ~2.4-2.6 ks (cap 3,600 s); T1 ~4.2-4.5 ks (cap 7,200 s); single-sample band > +/-20%; audit/reconstruction 70% of wall)",
+        "openspec/changes/integrated-solver-verification-v1/design.md (tier matrix T0/T1/T2)"
+      ],
+      "next_action": "Owner decision ISV1-A3B-AUTHORIZATION-DECISION: select tier and budget; then freeze the A3b preregistration before any run.",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "verification",
       "evidence_level": "L1",
       "write_scope": [
         "results/integrated-solver-verification-v1/"
@@ -6409,17 +6437,17 @@
       }
     }
   },
-  "last_status_reviewed_head": "e1a888074ceb65dde5b179dd964448da0f94c365",
+  "last_status_reviewed_head": "2665b935fb5c383028479127585fc2c3d0bfe03f",
   "continuation_status": {
     "mode": "MOTORSIM_AUTONOMOUS_ENGINEERING_TEAM",
     "audit_remediation_mode": false,
     "ready_tasks": 5,
     "local_blockers": [
       "FRPM-V2-EVIDENCE-HOTSPOT-OPT (evidence pipeline hotspots), DWT-PACKAGED-ACCEPTANCE, SPV1-POINT-EXECUTION.",
-      "ISV1-A3-EXECUTION: A3a authorized in scope (one instrumented run, 1200 s cap, no extensions); execution waits for the explicit owner confirmation with the frozen preregistration visible. A3b not authorized.",
+      "ISV1-A3-EXECUTION: DONE - A3a executed once on 2026-10-19 (exit 0, 1138.7 s): classification A3A_COMPLETE_PERIODICITY_NOT_IDENTIFIED; receipt committed 2665b93. ISV1-A3B-MATRIX and the convergence acceptance remain pending owner authorization (tier T0/T1/T2 + own preregistration).",
       "DPCV1 parked: the real converged power curve still requires a separately authorized run and real engine data."
     ],
-    "next_action": "Present the frozen A3a preregistration to the owner and await the explicit run confirmation; then write a3a-owner-confirmation.json and launch the single run under run_logged --timeout 1200. The A3b tier decision (T0/T1/T2) requires its own authorization and preregistration.",
+    "next_action": "Present the A3a result report to the owner (buckets, per-cycle times, memory, conservation, periodicity, classification, artifact hashes, revised A3b estimate) and await the A3b authorization decision (tier T0/T1/T2) with its own preregistration; no second A3a run.",
     "in_progress_tasks": 0,
     "blocker_triage_date": "2026-10-19",
     "superseded_by": "current_objective, gate_status, progress_log (MOTORSIM_PROGRAM_STATUS_V2)"
@@ -7064,6 +7092,41 @@
         "A3000 PERIOD_1 @ cycle 73; A4000 PERIOD_1 @ cycle 88; B3000 PERIOD_1 @ cycle 34; B4000 persisted 9/47 cycles"
       ],
       "recommendation": "B executed exactly once; terminal gate evaluation now supersedes the pending decision. No further extension or R3."
+    },
+    {
+      "id": "ISV1-A3B-AUTHORIZATION-DECISION",
+      "status": "PENDING",
+      "selected_option": null,
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "decision_id": "ISV1-A3B-AUTHORIZATION-DECISION",
+      "question": "After reviewing the A3a result (COMPLETE, PERIODICITY_NOT_IDENTIFIED, no convergence verdict), authorize the A3b convergence matrix? If authorized, which tier and budget? The A3b preregistration must be frozen before any run.",
+      "options": [
+        {
+          "id": "T0",
+          "label": "T0 minimo: temporal {0.4, 0.2} + espacial {24, 48}, 3 cycles per configuration",
+          "consequence": "Design estimate ~2,700 s (cap 3,600 s); revised estimate ~2.4-2.6 ks. Leaves malla 12 and CFL 0.1 open; answers the coarsest convergence question only."
+        },
+        {
+          "id": "T1",
+          "label": "T1 recomendado (design): T0 + temporal {0.1} + malla 12",
+          "consequence": "Design estimate ~5,250 s (cap 7,200 s); revised estimate ~4.2-4.5 ks. Covers the designed matrix core; still single-sample (no noise repetition)."
+        },
+        {
+          "id": "T2",
+          "label": "T2 extendido: T1 + noise repetition + 4th cycle",
+          "consequence": "Design estimate ~10,000 s (cap 10,800 s); needs its revised estimate re-derived; per-process RSS horizon (8-12 cycles) and CFL rejection share handling must be preregistered."
+        },
+        {
+          "id": "NONE",
+          "label": "Do not authorize A3b now",
+          "consequence": "Objective remains open at the A3a classification; convergence stays unverified; no predictive power-curve claim is possible."
+        }
+      ],
+      "evidence": [
+        "results/integrated-solver-verification-v1/a3a-run-receipt.json (revised cost estimate, timers, memory profile, limitations)",
+        "openspec/changes/integrated-solver-verification-v1/design.md (tier matrix and design recommendation T1)"
+      ],
+      "recommendation": "T1 (design recommendation) if the A3a report is accepted as sufficient basis; any tier requires its own frozen preregistration before the first run. No second A3a run is authorized."
     }
   ],
   "hard_stop": null,
@@ -8472,6 +8535,18 @@
       "task": "ISV1-A3A-PREREGISTRATION",
       "kind": "process",
       "summary": "A3a preregistration frozen: driver scripts/diagnostics/integrated_solver_verification_a3a.py (no motorsim/ changes) + a3a-preregistration.json (SHA-256 790fa2f756c31bfcb702e1f5525219446b619d85940c3c1a9b7d11c7d2a9ff1e); dry-run preregistration_check PASS; run pending explicit owner confirmation with preregistration visible; A3b not authorized."
+    },
+    {
+      "at": "2026-10-19T13:38:53-03:00",
+      "task": "ISV1-A3-EXECUTION",
+      "kind": "process",
+      "summary": "A3a prechecks PASS: run_logged --timeout terminates the direct child (exit 124 empirically; the driver spawns no descendants); driver/prereg hashes match the frozen binding; owner confirmation registered (a3a-owner-confirmation.json bound to prereg SHA 790fa2f7...). Single authorized run then executed under run_logged --timeout 1200: exit 0, 1138.7 s, external cap not triggered."
+    },
+    {
+      "at": "2026-10-19T13:38:53-03:00",
+      "task": "ISV1-A3-EXECUTION",
+      "kind": "evidence",
+      "summary": "A3a result COMPLETE, 8/8 cycles, classification A3A_COMPLETE_PERIODICITY_NOT_IDENTIFIED; audit recomputed PASS each cycle; audit+make 70.1% of wall vs integration_physical 16.3%; RSS peak 2.58 GiB (<3072 MiB); residuals ~1e-13 J / 1e-18 kg; receipt committed 2665b93. No convergence verdict; A3b NOT authorized."
     }
   ],
   "legacy_gate_status": {
@@ -8488,24 +8563,23 @@
   "gate_status": {
     "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
     "state": "REVIEW",
-    "classification": "INTEGRATED_SOLVER_VERIFICATION_V1_DESIGN_REVIEW",
+    "classification": "INTEGRATED_SOLVER_VERIFICATION_V1_A3A_EXECUTED_AWAITING_A3B_AUTHORIZATION",
     "evidence": [
       "A2 design delivered: openspec/changes/integrated-solver-verification-v1 (proposal/design/tasks/spec) with two verification lines, no MUSCL, strict budgets, fail-closed interruption and acceptance criteria.",
-      "A3 remains BLOCKED_LOCAL pending explicit owner authorization of scope and budget; no campaign and no solver step was started.",
+      "A3a executed once on 2026-10-19 under the confirmed frozen preregistration: exit 0, 1138.7 s, 8/8 cycles, classification A3A_COMPLETE_PERIODICITY_NOT_IDENTIFIED; audit recomputed PASS; receipt committed 2665b93. No convergence verdict and no predictive claim.",
+      "ISV1-ACCEPTANCE remains WAITING on ISV1-A3B-MATRIX: the A3b convergence matrix is NOT authorized (owner decision pending: tier T0/T1/T2 + own preregistration); no campaign, no MUSCL, no physics changes, no P0-P9 edits.",
       "DPCV1 archived after transition: infrastructure ready, real curve not produced (no run authorization, no real engine data available)."
     ],
     "gate_tasks_total": 5,
-    "gate_tasks_done": 3,
+    "gate_tasks_done": 4,
     "gate_task_states": {
-      "DONE": 3,
-      "BLOCKED_LOCAL": 1,
+      "DONE": 4,
       "WAITING": 1
     },
     "remaining": [
-      "ISV1-A3-EXECUTION",
       "ISV1-ACCEPTANCE"
     ],
-    "updated_at": "2026-10-19T15:19:11+00:00"
+    "updated_at": "2026-10-20T00:00:19+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
