@@ -6275,11 +6275,9 @@
       "description": "A3b T1 sensitivity matrix on the frozen v2 protocol: five configurations (48/0.4, 48/0.2, 48/0.1, 28/0.4, 18/0.4), 3 cycles each, 4,320 s cap, B fail-closed rule, transient-only claim scope. No contamination control and no matrix expansion.",
       "dependencies": [],
       "state": "BLOCKED_LOCAL",
-      "blocker": "EXECUTION AUTHORIZED by owner on 2026-10-20 (protocol sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed; global cap 4,320 s; aggregate memory 4,096 MiB). T1-A invocation 1 terminated FAILED_CLOSED at 112.094 s with PRIMARY_CONFIGURATION_HASH_MISMATCH and 0 cycles. Diagnosis: the driver compared primary.configuration_hash (effective solver_configuration_sha256 b472cce9...) against binding.configuration_sha256 (preflight native_configuration_sha256 5baa4cbd...). The frozen driver/addendum remain at driver sha256 3f3df5ba... and addendum sha256 329af0a5...; no rerun was performed. A corrected driver would change the driver SHA-256 and invalidate the addendum/preflight, requiring a new addendum and explicit owner authorization.",
-      "unblock_tasks": [
-        "ISV1-A3B-HASH-BINDING-FIX"
-      ],
-      "no_local_unblock_reason": null,
+      "blocker": "A3b execution remains NOT authorized. The hash-binding fix is verified (driver 3062ed465f1a8d0e715ef9be07a4ddee4a0a1f11dba7cf4cf7824594e7b8bb42; preflight 53997aaa6102fb967c249e007b2abbbf0dcf35809d1f3c651d359483c423868f; addendum b93e743919f91486de166422d03ebe24e44702bfc40a7d355ddafa1054ba7d0b with authorization NOT_GRANTED; verification 176190f14d98ef28663d4c84004aab7c80eab7ada289f99896eeb9480e412b79). The historical owner confirmation is rejected because it does not bind the corrected driver. A new owner execution authorization must quote the corrected driver SHA-256, protocol v2 SHA-256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed, and the 4,320 s cap. Ledger: 112.094 s spent, 4,207.906 s remaining; central and +5 pp estimates fit, +10 pp stress does not.",
+      "unblock_tasks": [],
+      "no_local_unblock_reason": "Fix verified; only explicit owner execution authorization remains.",
       "commits": [],
       "evidence": [
         "results/integrated-solver-verification-v1/a3a-run-receipt.json (revised rate ~145 s/cycle at 48 cells CFL 0.4; T0 ~2.4-2.6 ks (cap 3,600 s); T1 ~4.2-4.5 ks (cap 7,200 s); single-sample band > +/-20%; audit/reconstruction 70% of wall)",
@@ -6295,9 +6293,13 @@
         "results/integrated-solver-verification-v1/a3b-owner-execution-confirmation.json",
         "results/integrated-solver-verification-v1/a3b-terminal-receipt.json (TERMINAL_FAILED_CLOSED; 112.094 s; 0 cycles; driver binding defect)",
         "scripts/diagnostics/integrated_solver_verification_a3b.py",
-        "tests/test_integrated_solver_verification_a3b.py"
+        "tests/test_integrated_solver_verification_a3b.py",
+        "results/integrated-solver-verification-v1/a3b-hash-binding-fix-verification.json",
+        "results/integrated-solver-verification-v1/a3b-hash-binding-fix-evidence.json",
+        "results/integrated-solver-verification-v1/a3b-preflight-receipt-v2-fix1.json",
+        "results/integrated-solver-verification-v1/a3b-execution-addendum-v2-fix1.json"
       ],
-      "next_action": "Owner decision: authorize a corrected driver hash-binding fix plus a new execution addendum/preflight and a fresh run, or close A3b as a terminal driver defect. Do not rerun the frozen driver; it will fail identically at the first cycle check.",
+      "next_action": "Present fix results and corrected driver identity to the owner; obtain a new execution authorization quoting the corrected driver SHA-256 and protocol v2; then run T1 sequentially with the existing ledger (112.094 s already spent).",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "verification",
       "evidence_level": "L1",
@@ -6414,15 +6416,21 @@
       "dependencies": [
         "ISV1-A3B-DRIVER-ADDENDUM"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [
-        "results/integrated-solver-verification-v1/a3b-terminal-receipt.json (T1-A FAILED_CLOSED at 112.094 s; 0 cycles; PRIMARY_CONFIGURATION_HASH_MISMATCH)",
-        "scripts/diagnostics/integrated_solver_verification_a3b.py:1041 (compares primary.configuration_hash to binding.configuration_sha256)",
-        "scripts/diagnostics/integrated_solver_verification_a3b.py:382 (binding.configuration_sha256 uses preflight native hash)"
+      "commits": [
+        "e6f1b657cfc9233123d795da94ce6c14cf2052bd"
       ],
-      "next_action": "Patch the binding, add the regression test, rerun the synthetic suite and zero-step preflight, and write a new execution addendum with the new driver SHA-256. Execution remains blocked on explicit owner authorization.",
+      "evidence": [
+        "scripts/diagnostics/integrated_solver_verification_a3b.py (driver SHA-256 3062ed465f1a8d0e715ef9be07a4ddee4a0a1f11dba7cf4cf7824594e7b8bb42)",
+        "tests/test_integrated_solver_verification_a3b.py (15 synthetic tests PASS)",
+        "results/integrated-solver-verification-v1/a3b-hash-binding-fix-evidence.json",
+        "results/integrated-solver-verification-v1/a3b-hash-binding-fix-verification.json",
+        "results/integrated-solver-verification-v1/a3b-preflight-receipt-v2-fix1.json (SHA-256 53997aaa6102fb967c249e007b2abbbf0dcf35809d1f3c651d359483c423868f; zero solver steps)",
+        "results/integrated-solver-verification-v1/a3b-execution-addendum-v2-fix1.json (SHA-256 b93e743919f91486de166422d03ebe24e44702bfc40a7d355ddafa1054ba7d0b; authorization NOT_GRANTED)",
+        "results/integrated-solver-verification-v1/a3b-terminal-receipt.json"
+      ],
+      "next_action": "Fix verified and committed. Present the corrected driver identity and verification to the owner; no A3b execution until a new owner authorization quotes the corrected driver SHA-256 and protocol v2.",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "implementation / verification",
       "evidence_level": "L1",
@@ -6638,7 +6646,7 @@
     "summary": "Verify the current first-order integrated solver before any predictive power-curve claim: spatial (mesh) and temporal (max_cfl) convergence, error quantification, and separation of physical integration cost from audit/reconstruction/serialization cost.",
     "change": "openspec/changes/integrated-solver-verification-v1",
     "spec": "openspec/changes/integrated-solver-verification-v1/specs/integrated-solver-verification-v1/spec.md",
-    "authorization_source": "Owner approval of Option A in CODEX (2026-10-19): complete A0-A2 and deliver design, budgets and acceptance criteria. Owner limited authorization (2026-10-19, after design review): A3a = one instrumented 3000 RPM profile run (48 cells, max_cfl 0.4, 1200 s cap, no retries/extensions), contingent on the frozen preregistration and the explicit owner confirmation with it visible; A3b (convergence matrix) requires a new authorization of scope and budget. Owner authorized option A on 2026-10-20: correct T1-D to 28 total cells and T1-E to 18 total cells, keeping CFL 0.4; protocol v2 frozen (sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed), v1 preserved.",
+    "authorization_source": "Owner approval of Option A in CODEX (2026-10-19): complete A0-A2 and deliver design, budgets and acceptance criteria. Owner limited authorization (2026-10-19, after design review): A3a = one instrumented 3000 RPM profile run (48 cells, max_cfl 0.4, 1200 s cap, no retries/extensions), contingent on the frozen preregistration and the explicit owner confirmation with it visible; A3b (convergence matrix) requires a new authorization of scope and budget. Owner authorized option A on 2026-10-20: correct T1-D to 28 total cells and T1-E to 18 total cells, keeping CFL 0.4; protocol v2 frozen (sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed), v1 preserved. Owner authorized the hash-binding fix on 2026-10-20: correct the native-vs-solver configuration identity defect, add positive/negative tests, reproduce the failed binding, regenerate preflight/addendum, preserve historical artifacts and budget, and do not execute A3b until the fix and corrected driver identity are presented.",
     "transitioned_from": "DINO_POWER_CURVE_V1",
     "gate_tasks": [
       "ISV1-PROVENANCE-REPAIR",
@@ -7309,7 +7317,7 @@
       "owner_preference": "T1",
       "preferred_tier": "T1",
       "authorization": "NOT_GRANTED",
-      "authorization_note": "Owner recorded T1 as the preferred tier and authorized the v2 spatial correction (T1-D 28 cells, T1-E 18 cells, CFL 0.4) on 2026-10-20, but explicitly did not authorize execution. No A3b run may start before a frozen driver addendum, an owner execution confirmation quoting the v2 protocol SHA, and a zero-step preflight.",
+      "authorization_note": "The owner authorized the hash-binding fix on 2026-10-20, not execution. The fix is verified: corrected driver, 15 synthetic tests PASS, zero-step preflight PASS for five configs, and a new addendum with authorization NOT_GRANTED. The historical owner confirmation is rejected because it does not bind the corrected driver. A new execution authorization quoting the corrected driver SHA-256 and protocol v2 is required before any A3b run.",
       "estimate_artifact": "results/integrated-solver-verification-v1/a3b-t1-cost-estimate-v2.json",
       "estimate_sha256": "b986e9a6c7162ecbd906d693d218777abe75630b77f92988694230090ca6c05e",
       "prerequisites": [
@@ -7335,6 +7343,30 @@
         "authorized_at": "2026-10-20",
         "quote": "Autorizo la opción A: corregir T1-D a 28 celdas y T1-E a 18 celdas, manteniendo CFL 0.4",
         "effect": "T1-D 28 total cells, T1-E 18 total cells, CFL 0.4; protocol v2 re-frozen; v1 preserved."
+      },
+      "fix_verification": {
+        "status": "VERIFIED_NO_SOLVER_EXECUTION",
+        "commit": "e6f1b657cfc9233123d795da94ce6c14cf2052bd",
+        "driver_sha256": "3062ed465f1a8d0e715ef9be07a4ddee4a0a1f11dba7cf4cf7824594e7b8bb42",
+        "protocol_sha256": "c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed",
+        "preflight_sha256": "53997aaa6102fb967c249e007b2abbbf0dcf35809d1f3c651d359483c423868f",
+        "addendum_sha256": "b93e743919f91486de166422d03ebe24e44702bfc40a7d355ddafa1054ba7d0b",
+        "verification_sha256": "176190f14d98ef28663d4c84004aab7c80eab7ada289f99896eeb9480e412b79",
+        "tests": "15 PASS",
+        "preflight_status": "PASS",
+        "preflight_solver_steps": 0,
+        "authorization_status": "NOT_GRANTED",
+        "spent_seconds": 112.094,
+        "remaining_seconds": 4207.906,
+        "central_estimate_fits": true,
+        "plus_5pp_fits": true,
+        "stress_plus_10pp_fits": false
+      },
+      "prerequisite_status": {
+        "driver_addendum": "DONE_CORRECTED",
+        "owner_execution_confirmation": "PENDING_NEW_AUTHORIZATION",
+        "zero_step_preflight": "DONE_PASS",
+        "historical_preregistration_preserved": "DONE"
       }
     }
   ],
@@ -8798,6 +8830,12 @@
       "task": "ISV1-A3B-MATRIX",
       "kind": "terminal",
       "summary": "Owner authorized A3b v2 execution (protocol c8ab07da..., 4,320 s cap, 4,096 MiB aggregate). Hashes and zero-step identity/preflight verification PASS. T1-A invocation 1 then terminated FAILED_CLOSED after 112.094 s with 0 cycles due PRIMARY_CONFIGURATION_HASH_MISMATCH: the driver compared primary.configuration_hash (effective solver_configuration_sha256 b472cce9...) against binding.configuration_sha256 (preflight native_configuration_sha256 5baa4cbd...). Results preserved in the external artifact root and a3b-terminal-receipt.json; no rerun. A READY unblock task ISV1-A3B-HASH-BINDING-FIX was added; a corrected driver changes its SHA and requires a new addendum/preflight plus explicit owner authorization."
+    },
+    {
+      "at": "2026-10-20T15:20:47+00:00",
+      "task": "ISV1-A3B-HASH-BINDING-FIX",
+      "kind": "progress",
+      "summary": "Hash-binding fix verified without solver execution (commit e6f1b657cfc9233123d795da94ce6c14cf2052bd). Corrected driver 3062ed465f1a8d0e715ef9be07a4ddee4a0a1f11dba7cf4cf7824594e7b8bb42 separates native preflight identity from solver identity; 15 synthetic tests PASS; zero-step preflight PASS for all five configs (receipt 53997aaa6102fb967c249e007b2abbbf0dcf35809d1f3c651d359483c423868f); addendum b93e743919f91486de166422d03ebe24e44702bfc40a7d355ddafa1054ba7d0b binds corrected driver and protocol v2 with authorization NOT_GRANTED; verification receipt 176190f14d98ef28663d4c84004aab7c80eab7ada289f99896eeb9480e412b79. T1-A spent 112.094 s, remaining 4,207.906 s; central and +5 pp fit, +10 pp stress does not. No A3b execution authorized: owner review and a new authorization quoting the corrected driver SHA-256 are required."
     }
   ],
   "legacy_gate_status": {
@@ -8814,14 +8852,15 @@
   "gate_status": {
     "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
     "state": "REVIEW",
-    "classification": "INTEGRATED_SOLVER_VERIFICATION_V1_A3B_EXECUTION_TERMINAL_DRIVER_HASH_BINDING_DEFECT",
+    "classification": "INTEGRATED_SOLVER_VERIFICATION_V1_A3B_HASH_BINDING_FIX_VERIFIED_AWAITING_OWNER_EXECUTION_AUTHORIZATION",
     "evidence": [
       "A2 design delivered: openspec/changes/integrated-solver-verification-v1 (proposal/design/tasks/spec) with two verification lines, no MUSCL, strict budgets, fail-closed interruption and acceptance criteria.",
       "A3a executed once on 2026-10-19 under the confirmed frozen preregistration: exit 0, 1138.7 s, 8/8 cycles, classification A3A_COMPLETE_PERIODICITY_NOT_IDENTIFIED; audit recomputed PASS; receipt committed 2665b93. No convergence verdict and no predictive claim.",
       "ISV1-A3B-DRIVER-ADDENDUM complete: the v2 driver is frozen (driver SHA-256 LF 3f3df5ba290a20739c4adc8e5a562ff7fe3b8fe328d215d33bb72d4e49679c72), synthetic tests PASS (10), zero-step preflight PASS for all five configs (receipt SHA-256 7f08bf5636e2b980980b27d27d2c1f8898581c9b3b22f8e110c1fb68afa0ccba), and the execution addendum references protocol v2 with authorization NOT_GRANTED (addendum SHA-256 329af0a5e05f19a57a2891fcf5767c528da01611c5e243a3bc5ee5fcb0b08d86).",
       "ISV1-ACCEPTANCE remains WAITING on ISV1-A3B-MATRIX: the A3b T1 protocol v2 is frozen (protocol sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed, commit 4e1b1fc) after the owner-authorized correction of the spatial configs to 28/18 total cells at CFL 0.4. The owner authorized execution on 2026-10-20 with the 4,320 s cap and 4,096 MiB aggregate; hashes and zero-step identity/preflight verification passed. T1-A invocation 1 terminated FAILED_CLOSED at 112.094 s with PRIMARY_CONFIGURATION_HASH_MISMATCH and 0 cycles: the driver compared the effective solver configuration hash b472cce9... against the preflight native configuration hash 5baa4cbd.... Results are preserved; no rerun. A corrected driver changes its SHA-256 and requires a new addendum/preflight plus explicit owner authorization; no campaign, no MUSCL, no physics changes, no P0-P9 edits.",
       "ISV1-A3B-HASH-BINDING-FIX is READY: patch the primary hash comparison to use effective.solver_configuration_sha256, add a regression test, regenerate preflight/addendum. Execution remains blocked on owner authorization after the fix.",
-      "DPCV1 archived after transition: infrastructure ready, real curve not produced (no run authorization, no real engine data available)."
+      "DPCV1 archived after transition: infrastructure ready, real curve not produced (no run authorization, no real engine data available).",
+      "ISV1-A3B-HASH-BINDING-FIX complete (commit e6f1b657cfc9233123d795da94ce6c14cf2052bd): corrected driver SHA-256 3062ed465f1a8d0e715ef9be07a4ddee4a0a1f11dba7cf4cf7824594e7b8bb42 separates the native preflight identity from the solver identity; synthetic tests PASS (15); zero-step preflight PASS for all five configs (receipt SHA-256 53997aaa6102fb967c249e007b2abbbf0dcf35809d1f3c651d359483c423868f); addendum SHA-256 b93e743919f91486de166422d03ebe24e44702bfc40a7d355ddafa1054ba7d0b binds the corrected driver and protocol v2 with authorization NOT_GRANTED; verification receipt SHA-256 176190f14d98ef28663d4c84004aab7c80eab7ada289f99896eeb9480e412b79; no solver execution."
     ],
     "gate_tasks_total": 5,
     "gate_tasks_done": 4,
@@ -8832,7 +8871,7 @@
     "remaining": [
       "ISV1-ACCEPTANCE"
     ],
-    "updated_at": "2026-10-20T14:44:59+00:00"
+    "updated_at": "2026-10-20T15:20:47+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -8895,7 +8934,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-20T14:44:59+00:00",
+  "updated_at": "2026-10-20T15:20:47+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
