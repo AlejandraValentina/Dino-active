@@ -1,0 +1,42 @@
+{
+  "schema": "DINO_ISV1_A3B_PREREGISTRATION_FREEZE_V1",
+  "recorded_at": "2026-10-20T11:16:05Z",
+  "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+  "protocol": "results/integrated-solver-verification-v1/a3b-preregistration.json",
+  "protocol_sha256": "ffd7c1782674937e37a05eca520629222b1d7d6fffa3c19c6d56e63870b2a34f",
+  "protocol_status": "FROZEN_PROTOCOL_EXECUTION_NOT_AUTHORIZED",
+  "owner_scope_confirmation": {
+    "confirmed": true,
+    "confirmed_at": "2026-10-20",
+    "quote": "Yo elegiría B + T1 + 4.320 segundos, pero exigiría que T1 se considere una primera evaluación de sensibilidad numérica, no el cierre definitivo de convergencia del solver. No ampliaría indiscriminadamente la matriz porque Dino ya tiene un problema importante de costo computacional. Y mantendría claro el objetivo: A3b debe ayudarnos a determinar si podemos confiar en los cálculos del motor. No debería convertirse en otra etapa administrativa que nos aleje de conseguir curvas reales de potencia y torque. La decisión sobre congelar el preregistro me parece razonable con esas dos correcciones de alcance. La autorización para ejecutar vendría después."
+  },
+  "frozen_decisions": {
+    "fail_closed_rule": "B (rejection share is an observable; fail-closed on NaN/Inf, identity, conservation and no-progress)",
+    "tier": "T1",
+    "hard_cap_seconds": 4320,
+    "configuration_set": "five configurations: 48/0.4, 48/0.2, 48/0.1, 24/0.4, 12/0.4",
+    "cycles_per_configuration": 3,
+    "evaluation_class": "FIRST_NUMERICAL_SENSITIVITY_EVALUATION",
+    "definitive_convergence_closure": false,
+    "matrix_expansion": "PROHIBITED_WITHOUT_NEW_PREREGISTRATION",
+    "claim_scope": "transient-horizon sensitivity only; periodicity NOT_EVALUATED; no steady-state or predictive claim"
+  },
+  "execution_gate": {
+    "owner_execution_authorization": "NOT_GRANTED",
+    "driver_binding": "PENDING_EXECUTION_ADDENDUM",
+    "required_before_execution": [
+      "A3b driver authored and frozen by SHA-256 in a versioned execution addendum referencing the protocol SHA-256.",
+      "Owner execution confirmation quoting the protocol SHA-256 and the 4,320 s cap.",
+      "Zero-step preflight (identity, configuration, memory, artifact root).",
+      "Verification that no historical preregistration or P0-P9 artifact is modified."
+    ]
+  },
+  "pending_analysis_freeze": {
+    "artifact": "results/integrated-solver-verification-v1/a3b-analysis-freeze.json",
+    "content": "Numeric atol_obs per observable, derived from the T1-A base run before any cross-config comparison.",
+    "reason": "The base values are produced by this matrix; the numeric table is frozen before comparisons, preserving the design intent."
+  },
+  "no_run_statement": "No A3b configuration was run, no solver step was executed, and no historical preregistration was modified. Execution remains unauthorized.",
+  "campaign_started": false,
+  "artifacts_modified": false
+}
