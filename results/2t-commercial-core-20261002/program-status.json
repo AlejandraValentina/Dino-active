@@ -6272,10 +6272,10 @@
     },
     {
       "id": "ISV1-A3B-MATRIX",
-      "description": "A3b: convergence matrix on the revised design (spatial mesh + temporal max_cfl + contamination control) with error quantification and validation of the revised cost model. NOT authorized as of 2026-10-19: requires explicit owner authorization (tier T0/T1/T2) and its own frozen preregistration, including how the observed CFL rejection share (~55.5%) and the per-process RSS cycle horizon are handled.",
+      "description": "A3b T1 sensitivity matrix on the frozen v2 protocol: five configurations (48/0.4, 48/0.2, 48/0.1, 28/0.4, 18/0.4), 3 cycles each, 4,320 s cap, B fail-closed rule, transient-only claim scope. No contamination control and no matrix expansion.",
       "dependencies": [],
       "state": "BLOCKED_LOCAL",
-      "blocker": "Preregistration frozen (protocol sha256 ffd7c1782674937e37a05eca520629222b1d7d6fffa3c19c6d56e63870b2a34f, commit 92a7e19); EXECUTION NOT AUTHORIZED. Remaining: driver SHA-256 addendum, owner execution confirmation with the 4,320 s cap, and zero-step preflight.",
+      "blocker": "Preregistration v2 frozen (protocol sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed, commit 4e1b1fc); EXECUTION NOT AUTHORIZED. Remaining: driver SHA-256 addendum referencing v2, owner execution confirmation with the 4,320 s cap, and zero-step preflight.",
       "unblock_tasks": [],
       "no_local_unblock_reason": "The missing input is a genuine owner decision on scope and budget (AGENTS condition B); no local action can authorize a convergence matrix.",
       "commits": [],
@@ -6284,9 +6284,12 @@
         "openspec/changes/integrated-solver-verification-v1/design.md (tier matrix T0/T1/T2)",
         "results/integrated-solver-verification-v1/a3b-t1-cost-estimate.json",
         "results/integrated-solver-verification-v1/a3b-preregistration.json",
-        "results/integrated-solver-verification-v1/a3b-preregistration-freeze.json"
+        "results/integrated-solver-verification-v1/a3b-preregistration-freeze.json",
+        "results/integrated-solver-verification-v1/a3b-preregistration-v2.json",
+        "results/integrated-solver-verification-v1/a3b-preregistration-v2-freeze.json",
+        "results/integrated-solver-verification-v1/a3b-t1-cost-estimate-v2.json"
       ],
-      "next_action": "Author and freeze the A3b driver in a versioned execution addendum; then owner execution confirmation; then preflight; only then run the frozen T1 set.",
+      "next_action": "Author and freeze the A3b driver in a versioned execution addendum referencing v2; then owner execution confirmation; then preflight; only then run the frozen T1 set (48/28/18 cells, CFL 0.4).",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "verification",
       "evidence_level": "L1",
@@ -6306,9 +6309,10 @@
         "50b8308eb0d41a5ed194c644f8a5ad47e6ba57d9"
       ],
       "evidence": [
-        "results/integrated-solver-verification-v1/a3b-t1-cost-estimate.json"
+        "results/integrated-solver-verification-v1/a3b-t1-cost-estimate.json",
+        "results/integrated-solver-verification-v1/a3b-t1-cost-estimate-v2.json"
       ],
-      "next_action": "Consumed by the frozen A3b T1 preregistration; no run authorized.",
+      "next_action": "v1 numbers are superseded by the v2 estimate for the corrected 28/18-cell configs; no run is authorized.",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "verification",
       "evidence_level": "L0",
@@ -6329,9 +6333,36 @@
       ],
       "evidence": [
         "results/integrated-solver-verification-v1/a3b-preregistration.json",
-        "results/integrated-solver-verification-v1/a3b-preregistration-freeze.json"
+        "results/integrated-solver-verification-v1/a3b-preregistration-freeze.json",
+        "results/integrated-solver-verification-v1/a3b-preregistration-v2.json",
+        "results/integrated-solver-verification-v1/a3b-preregistration-v2-freeze.json"
       ],
-      "next_action": "Execution remains NOT authorized. Before any run: author and freeze the A3b driver SHA-256 in a versioned execution addendum, obtain the owner execution confirmation quoting the protocol SHA, and pass a zero-step preflight.",
+      "next_action": "v1 is historical; protocol v2 (a3b-preregistration-v2.json, sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed) supersedes it for execution. Execution remains NOT authorized: the driver addendum must reference v2, and the owner execution confirmation and zero-step preflight remain.",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "evidence/release reviewer",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/integrated-solver-verification-v1/"
+      ]
+    },
+    {
+      "id": "ISV1-A3B-PREREG-V2",
+      "description": "Owner-authorized correction of the A3b T1 spatial configuration set: T1-D 28 total cells (4 per exhaust section), T1-E 18 total cells (2 per exhaust section), CFL 0.4; re-freeze protocol v2 and update the cost estimate. No execution.",
+      "dependencies": [
+        "ISV1-A3B-PREREG"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [
+        "4e1b1fcbdc6ac472da7693c28c18a571a274d6f7"
+      ],
+      "evidence": [
+        "results/integrated-solver-verification-v1/a3b-preregistration-v2.json",
+        "results/integrated-solver-verification-v1/a3b-preregistration-v2-freeze.json",
+        "results/integrated-solver-verification-v1/a3b-t1-cost-estimate-v2.json",
+        "owner authorization 2026-10-20: Autorizo la opción A: corregir T1-D a 28 celdas y T1-E a 18 celdas, manteniendo CFL 0.4"
+      ],
+      "next_action": "v2 supersedes v1 for execution; the driver addendum must reference v2 protocol sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed; execution still NOT authorized.",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "evidence/release reviewer",
       "evidence_level": "L0",
@@ -6520,7 +6551,7 @@
       }
     }
   },
-  "last_status_reviewed_head": "92a7e19310eee61128a3007aff25cd6ea3e8c3bb",
+  "last_status_reviewed_head": "4e1b1fcbdc6ac472da7693c28c18a571a274d6f7",
   "continuation_status": {
     "mode": "MOTORSIM_AUTONOMOUS_ENGINEERING_TEAM",
     "audit_remediation_mode": false,
@@ -6545,7 +6576,7 @@
     "summary": "Verify the current first-order integrated solver before any predictive power-curve claim: spatial (mesh) and temporal (max_cfl) convergence, error quantification, and separation of physical integration cost from audit/reconstruction/serialization cost.",
     "change": "openspec/changes/integrated-solver-verification-v1",
     "spec": "openspec/changes/integrated-solver-verification-v1/specs/integrated-solver-verification-v1/spec.md",
-    "authorization_source": "Owner approval of Option A in CODEX (2026-10-19): complete A0-A2 and deliver design, budgets and acceptance criteria. Owner limited authorization (2026-10-19, after design review): A3a = one instrumented 3000 RPM profile run (48 cells, max_cfl 0.4, 1200 s cap, no retries/extensions), contingent on the frozen preregistration and the explicit owner confirmation with it visible; A3b (convergence matrix) requires a new authorization of scope and budget.",
+    "authorization_source": "Owner approval of Option A in CODEX (2026-10-19): complete A0-A2 and deliver design, budgets and acceptance criteria. Owner limited authorization (2026-10-19, after design review): A3a = one instrumented 3000 RPM profile run (48 cells, max_cfl 0.4, 1200 s cap, no retries/extensions), contingent on the frozen preregistration and the explicit owner confirmation with it visible; A3b (convergence matrix) requires a new authorization of scope and budget. Owner authorized option A on 2026-10-20: correct T1-D to 28 total cells and T1-E to 18 total cells, keeping CFL 0.4; protocol v2 frozen (sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed), v1 preserved.",
     "transitioned_from": "DINO_POWER_CURVE_V1",
     "gate_tasks": [
       "ISV1-PROVENANCE-REPAIR",
@@ -7178,7 +7209,7 @@
     },
     {
       "id": "ISV1-A3B-AUTHORIZATION-DECISION",
-      "status": "PENDING",
+      "status": "SCOPE_RESOLVED_EXECUTION_NOT_AUTHORIZED",
       "selected_option": "T1",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "decision_id": "ISV1-A3B-AUTHORIZATION-DECISION",
@@ -7191,8 +7222,8 @@
         },
         {
           "id": "T1",
-          "label": "T1 recomendado (design): T0 + temporal {0.1} + malla 12",
-          "consequence": "Refined estimate (a3b-t1-cost-estimate.json, 2026-10-20): central 3.25-3.46 ks (54-58 min), +5 pp rejection case 3.85 ks, +10 pp stress 4.24 ks; recommended cap 4,320 s (design cap 7,200 s). Five-configuration design set; single-sample; transient-only claim, no periodicity."
+          "label": "T1 recomendado (v2): T0 + temporal {0.1} + coarsest attainable spatial level (18 total cells)",
+          "consequence": "Refined estimate v2 (a3b-t1-cost-estimate-v2.json, 2026-10-20): central 3.32-3.55 ks (55-59 min), +5 pp rejection case 3.95 ks, +10 pp stress 4.35 ks; recommended cap 4,320 s. Five configurations: 48/0.4, 48/0.2, 48/0.1, 28/0.4, 18/0.4; transient-only claim, no periodicity."
         },
         {
           "id": "T2",
@@ -7212,31 +7243,36 @@
         "results/integrated-solver-verification-v1/a3b-preregistration.json",
         "results/integrated-solver-verification-v1/a3b-preregistration-freeze.json"
       ],
-      "recommendation": "Scope frozen: B + T1 + 4,320 s, five configurations, first sensitivity evaluation, transient-only claim scope, no expansion. Execution NOT authorized; remaining gate is the driver addendum plus owner execution confirmation and preflight.",
+      "recommendation": "Scope frozen as v2: B + T1 + 4,320 s, five configurations (48/0.4, 48/0.2, 48/0.1, 28/0.4, 18/0.4), first sensitivity evaluation, transient-only claim scope, no expansion. Execution NOT authorized; remaining gate is the driver addendum referencing v2, owner execution confirmation, and preflight.",
       "owner_preference": "T1",
       "preferred_tier": "T1",
       "authorization": "NOT_GRANTED",
-      "authorization_note": "Owner recorded T1 as the preferred tier on 2026-10-20 but explicitly did not authorize execution pending the columnar review, this cost estimate, and the transient-vs-periodicity boundary. No A3b run may start before a frozen preregistration and a fixed budget.",
-      "estimate_artifact": "results/integrated-solver-verification-v1/a3b-t1-cost-estimate.json",
-      "estimate_sha256": "d9eee494158dd49a7318edcbf0a99e69543874794fae9e2c84c41cd204731f53",
+      "authorization_note": "Owner recorded T1 as the preferred tier and authorized the v2 spatial correction (T1-D 28 cells, T1-E 18 cells, CFL 0.4) on 2026-10-20, but explicitly did not authorize execution. No A3b run may start before a frozen driver addendum, an owner execution confirmation quoting the v2 protocol SHA, and a zero-step preflight.",
+      "estimate_artifact": "results/integrated-solver-verification-v1/a3b-t1-cost-estimate-v2.json",
+      "estimate_sha256": "b986e9a6c7162ecbd906d693d218777abe75630b77f92988694230090ca6c05e",
       "prerequisites": [
-        "Author and freeze the A3b driver SHA-256 in a versioned execution addendum referencing the protocol SHA-256.",
-        "Owner execution confirmation quoting the protocol SHA-256 and the 4,320 s cap.",
+        "Author and freeze the A3b driver SHA-256 in a versioned execution addendum referencing the v2 protocol SHA-256.",
+        "Owner execution confirmation quoting the v2 protocol SHA-256 and the 4,320 s cap.",
         "Zero-step preflight: identity, configuration, memory and artifact-root checks.",
-        "Verification that no historical preregistration or P0-P9 artifact is modified."
+        "Verification that no historical preregistration (v1) or P0-P9 artifact is modified."
       ],
       "scope_resolved": true,
       "execution_authorized": false,
       "budget_cap_seconds": 4320,
       "fail_closed_rule": "B",
       "preregistration": {
-        "path": "results/integrated-solver-verification-v1/a3b-preregistration.json",
-        "protocol_sha256": "ffd7c1782674937e37a05eca520629222b1d7d6fffa3c19c6d56e63870b2a34f"
+        "path": "results/integrated-solver-verification-v1/a3b-preregistration-v2.json",
+        "protocol_sha256": "c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed"
       },
       "preregistration_freeze": {
-        "path": "results/integrated-solver-verification-v1/a3b-preregistration-freeze.json",
-        "sha256": "88ca0599e9ed952d9043ad5d9e6e2ca84b5b384f9d0030b5b73912b52d1d328d",
-        "commit": "92a7e19310eee61128a3007aff25cd6ea3e8c3bb"
+        "path": "results/integrated-solver-verification-v1/a3b-preregistration-v2-freeze.json",
+        "sha256": "3b73672138a32df29df7515cce840048c3921fa538eaf0b5b379f99d26038c0b",
+        "commit": "4e1b1fcbdc6ac472da7693c28c18a571a274d6f7"
+      },
+      "owner_amendment": {
+        "authorized_at": "2026-10-20",
+        "quote": "Autorizo la opción A: corregir T1-D a 28 celdas y T1-E a 18 celdas, manteniendo CFL 0.4",
+        "effect": "T1-D 28 total cells, T1-E 18 total cells, CFL 0.4; protocol v2 re-frozen; v1 preserved."
       }
     }
   ],
@@ -8682,6 +8718,12 @@
       "task": "ISV1-A3B-PREREG",
       "kind": "decision",
       "summary": "A3b T1 preregistration frozen (commit 92a7e19, protocol sha ffd7c178...): B fail-closed rule, five configs, 3 cycles, 4,320 s cap, first sensitivity evaluation only, no matrix expansion, transient-only claim scope, periodicity NOT_EVALUATED. Execution NOT authorized: driver addendum + owner confirmation + preflight remain."
+    },
+    {
+      "at": "2026-10-20T12:50:00+00:00",
+      "task": "ISV1-A3B-PREREG-V2",
+      "kind": "decision",
+      "summary": "Owner authorized option A: T1-D 28 total cells, T1-E 18 total cells, CFL 0.4. v1's 24/12 totals are not attainable under the uniform refinement contract (5 exhaust sections + 8 fixed cells; attainable 48/28/18/13). Protocol v2 and updated cost estimate frozen (protocol sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed); v1 preserved; execution still NOT authorized."
     }
   ],
   "legacy_gate_status": {
@@ -8698,11 +8740,11 @@
   "gate_status": {
     "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
     "state": "REVIEW",
-    "classification": "INTEGRATED_SOLVER_VERIFICATION_V1_A3A_EXECUTED_AWAITING_A3B_AUTHORIZATION",
+    "classification": "INTEGRATED_SOLVER_VERIFICATION_V1_A3B_PROTOCOL_V2_FROZEN_AWAITING_EXECUTION_AUTHORIZATION",
     "evidence": [
       "A2 design delivered: openspec/changes/integrated-solver-verification-v1 (proposal/design/tasks/spec) with two verification lines, no MUSCL, strict budgets, fail-closed interruption and acceptance criteria.",
       "A3a executed once on 2026-10-19 under the confirmed frozen preregistration: exit 0, 1138.7 s, 8/8 cycles, classification A3A_COMPLETE_PERIODICITY_NOT_IDENTIFIED; audit recomputed PASS; receipt committed 2665b93. No convergence verdict and no predictive claim.",
-      "ISV1-ACCEPTANCE remains WAITING on ISV1-A3B-MATRIX: the A3b convergence matrix is NOT authorized (owner decision pending: tier T0/T1/T2 + own preregistration); no campaign, no MUSCL, no physics changes, no P0-P9 edits.",
+      "ISV1-ACCEPTANCE remains WAITING on ISV1-A3B-MATRIX: the A3b T1 protocol v2 is frozen (protocol sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed, commit 4e1b1fc) after the owner-authorized correction of the spatial configs to 28/18 total cells at CFL 0.4; execution is NOT authorized (driver SHA-256 addendum referencing v2, owner execution confirmation with the protocol SHA and 4,320 s cap, and zero-step preflight remain). No campaign, no MUSCL, no physics changes, no P0-P9 edits.",
       "DPCV1 archived after transition: infrastructure ready, real curve not produced (no run authorization, no real engine data available)."
     ],
     "gate_tasks_total": 5,
@@ -8714,7 +8756,7 @@
     "remaining": [
       "ISV1-ACCEPTANCE"
     ],
-    "updated_at": "2026-10-20T00:00:19+00:00"
+    "updated_at": "2026-10-20T12:50:00+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -8777,7 +8819,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-19T14:38:28+00:00",
+  "updated_at": "2026-10-20T12:50:00+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
