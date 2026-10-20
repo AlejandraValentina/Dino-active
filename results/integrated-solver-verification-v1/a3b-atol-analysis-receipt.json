@@ -1,0 +1,20 @@
+{
+  "schema": "DINO_ISV1_A3B_TASK_RECEIPT_V1",
+  "task_id": "A3B-DRIVER-ATOL-ANALYSIS",
+  "status": "COMPLETED",
+  "created_utc": "2026-10-20T14:35:13.471612+00:00",
+  "driver_path": "scripts/diagnostics/integrated_solver_verification_a3b.py",
+  "driver_sha256": "3f3df5ba290a20739c4adc8e5a562ff7fe3b8fe328d215d33bb72d4e49679c72",
+  "evidence": {
+    "tests": {
+      "command": "python -m pytest tests/test_integrated_solver_verification_a3b.py -q",
+      "status": "PASS",
+      "passed": 10
+    },
+    "addendum": {
+      "path": "results/integrated-solver-verification-v1/a3b-execution-addendum.json",
+      "sha256": "329af0a5e05f19a57a2891fcf5767c528da01611c5e243a3bc5ee5fcb0b08d86"
+    }
+  },
+  "scope": "freeze-atol and analyze require the execution addendum; atol_obs is frozen from T1-A before any comparison; no A3b execution performed"
+}

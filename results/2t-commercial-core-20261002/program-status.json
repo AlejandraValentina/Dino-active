@@ -6275,9 +6275,9 @@
       "description": "A3b T1 sensitivity matrix on the frozen v2 protocol: five configurations (48/0.4, 48/0.2, 48/0.1, 28/0.4, 18/0.4), 3 cycles each, 4,320 s cap, B fail-closed rule, transient-only claim scope. No contamination control and no matrix expansion.",
       "dependencies": [],
       "state": "BLOCKED_LOCAL",
-      "blocker": "Preregistration v2 frozen (protocol sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed, commit 4e1b1fc); EXECUTION NOT AUTHORIZED. Remaining: driver SHA-256 addendum referencing v2, owner execution confirmation with the 4,320 s cap, and zero-step preflight.",
+      "blocker": "Preregistration v2 frozen (protocol sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed, commit 4e1b1fc). Driver/addendum/tests/preflight are complete (driver sha256 3f3df5ba290a20739c4adc8e5a562ff7fe3b8fe328d215d33bb72d4e49679c72; addendum sha256 329af0a5e05f19a57a2891fcf5767c528da01611c5e243a3bc5ee5fcb0b08d86; tests 10 PASS; preflight receipt sha256 7f08bf5636e2b980980b27d27d2c1f8898581c9b3b22f8e110c1fb68afa0ccba). EXECUTION NOT AUTHORIZED: only the owner execution confirmation quoting the protocol SHA and the 4,320 s cap remains.",
       "unblock_tasks": [],
-      "no_local_unblock_reason": "The missing input is a genuine owner decision on scope and budget (AGENTS condition B); no local action can authorize a convergence matrix.",
+      "no_local_unblock_reason": "The missing input is a genuine owner decision on scope and budget (AGENTS condition B); driver, addendum, tests and zero-step preflight are already complete, and no local action can authorize a convergence matrix.",
       "commits": [],
       "evidence": [
         "results/integrated-solver-verification-v1/a3a-run-receipt.json (revised rate ~145 s/cycle at 48 cells CFL 0.4; T0 ~2.4-2.6 ks (cap 3,600 s); T1 ~4.2-4.5 ks (cap 7,200 s); single-sample band > +/-20%; audit/reconstruction 70% of wall)",
@@ -6287,9 +6287,13 @@
         "results/integrated-solver-verification-v1/a3b-preregistration-freeze.json",
         "results/integrated-solver-verification-v1/a3b-preregistration-v2.json",
         "results/integrated-solver-verification-v1/a3b-preregistration-v2-freeze.json",
-        "results/integrated-solver-verification-v1/a3b-t1-cost-estimate-v2.json"
+        "results/integrated-solver-verification-v1/a3b-t1-cost-estimate-v2.json",
+        "results/integrated-solver-verification-v1/a3b-execution-addendum.json",
+        "results/integrated-solver-verification-v1/a3b-preflight-receipt.json",
+        "scripts/diagnostics/integrated_solver_verification_a3b.py",
+        "tests/test_integrated_solver_verification_a3b.py"
       ],
-      "next_action": "Author and freeze the A3b driver in a versioned execution addendum referencing v2; then owner execution confirmation; then preflight; only then run the frozen T1 set (48/28/18 cells, CFL 0.4).",
+      "next_action": "Owner execution confirmation with the frozen v2 protocol SHA and 4,320 s cap; then run the frozen T1 set only through the addendum-bound driver (five configs, 3 cycles, 48/28/18 cells, CFL 0.4/0.2/0.1). No matrix expansion, no retry, no extension.",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "verification",
       "evidence_level": "L1",
@@ -6367,6 +6371,34 @@
       "owner_role": "evidence/release reviewer",
       "evidence_level": "L0",
       "write_scope": [
+        "results/integrated-solver-verification-v1/"
+      ]
+    },
+    {
+      "id": "ISV1-A3B-DRIVER-ADDENDUM",
+      "description": "Implement and freeze the A3b T1 driver plus execution addendum against protocol v2: five configurations, bounded invocation plan, durable budget ledger and checkpoint/resume, identity/preflight binding, synthetic tests, and zero-solver-step preflight. No A3b execution.",
+      "dependencies": [
+        "ISV1-A3B-PREREG-V2"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "scripts/diagnostics/integrated_solver_verification_a3b.py (driver SHA-256 LF 3f3df5ba290a20739c4adc8e5a562ff7fe3b8fe328d215d33bb72d4e49679c72)",
+        "tests/test_integrated_solver_verification_a3b.py (10 synthetic tests PASS; python -m pytest tests/test_integrated_solver_verification_a3b.py -q)",
+        "results/integrated-solver-verification-v1/a3b-preflight-receipt.json (zero solver steps; SHA-256 7f08bf5636e2b980980b27d27d2c1f8898581c9b3b22f8e110c1fb68afa0ccba)",
+        "results/integrated-solver-verification-v1/a3b-execution-addendum.json (SHA-256 329af0a5e05f19a57a2891fcf5767c528da01611c5e243a3bc5ee5fcb0b08d86; authorization NOT_GRANTED)",
+        "results/integrated-solver-verification-v1/a3b-preregistration-v2.json (protocol SHA-256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed)",
+        "results/integrated-solver-verification-v1/a3b-preregistration-v2-freeze.json",
+        "results/integrated-solver-verification-v1/a3b-t1-cost-estimate-v2.json"
+      ],
+      "next_action": "Driver/addendum are frozen and execution remains NOT authorized. The owner execution confirmation quoting the v2 protocol SHA and the 4,320 s cap is the only remaining gate.",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "implementation / verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/diagnostics/",
+        "tests/",
         "results/integrated-solver-verification-v1/"
       ]
     }
@@ -8724,6 +8756,12 @@
       "task": "ISV1-A3B-PREREG-V2",
       "kind": "decision",
       "summary": "Owner authorized option A: T1-D 28 total cells, T1-E 18 total cells, CFL 0.4. v1's 24/12 totals are not attainable under the uniform refinement contract (5 exhaust sections + 8 fixed cells; attainable 48/28/18/13). Protocol v2 and updated cost estimate frozen (protocol sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed); v1 preserved; execution still NOT authorized."
+    },
+    {
+      "at": "2026-10-20T13:53:29+00:00",
+      "task": "ISV1-A3B-DRIVER-ADDENDUM",
+      "kind": "progress",
+      "summary": "A3b v2 driver and execution addendum frozen without execution: driver sha256 3f3df5ba..., 10 synthetic tests PASS, zero-step preflight PASS for all five configs (48/48/48/28/18 cells; receipt 7f08bf56...), addendum sha256 329af0a5... with authorization NOT_GRANTED. Only the owner execution confirmation quoting protocol v2 and the 4,320 s cap remains."
     }
   ],
   "legacy_gate_status": {
@@ -8740,11 +8778,12 @@
   "gate_status": {
     "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
     "state": "REVIEW",
-    "classification": "INTEGRATED_SOLVER_VERIFICATION_V1_A3B_PROTOCOL_V2_FROZEN_AWAITING_EXECUTION_AUTHORIZATION",
+    "classification": "INTEGRATED_SOLVER_VERIFICATION_V1_A3B_DRIVER_ADDENDUM_FROZEN_AWAITING_OWNER_EXECUTION_CONFIRMATION",
     "evidence": [
       "A2 design delivered: openspec/changes/integrated-solver-verification-v1 (proposal/design/tasks/spec) with two verification lines, no MUSCL, strict budgets, fail-closed interruption and acceptance criteria.",
       "A3a executed once on 2026-10-19 under the confirmed frozen preregistration: exit 0, 1138.7 s, 8/8 cycles, classification A3A_COMPLETE_PERIODICITY_NOT_IDENTIFIED; audit recomputed PASS; receipt committed 2665b93. No convergence verdict and no predictive claim.",
-      "ISV1-ACCEPTANCE remains WAITING on ISV1-A3B-MATRIX: the A3b T1 protocol v2 is frozen (protocol sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed, commit 4e1b1fc) after the owner-authorized correction of the spatial configs to 28/18 total cells at CFL 0.4; execution is NOT authorized (driver SHA-256 addendum referencing v2, owner execution confirmation with the protocol SHA and 4,320 s cap, and zero-step preflight remain). No campaign, no MUSCL, no physics changes, no P0-P9 edits.",
+      "ISV1-A3B-DRIVER-ADDENDUM complete: the v2 driver is frozen (driver SHA-256 LF 3f3df5ba290a20739c4adc8e5a562ff7fe3b8fe328d215d33bb72d4e49679c72), synthetic tests PASS (10), zero-step preflight PASS for all five configs (receipt SHA-256 7f08bf5636e2b980980b27d27d2c1f8898581c9b3b22f8e110c1fb68afa0ccba), and the execution addendum references protocol v2 with authorization NOT_GRANTED (addendum SHA-256 329af0a5e05f19a57a2891fcf5767c528da01611c5e243a3bc5ee5fcb0b08d86).",
+      "ISV1-ACCEPTANCE remains WAITING on ISV1-A3B-MATRIX: the A3b T1 protocol v2 is frozen (protocol sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed, commit 4e1b1fc) after the owner-authorized correction of the spatial configs to 28/18 total cells at CFL 0.4; execution is NOT authorized. Only the owner execution confirmation with the protocol SHA and the 4,320 s cap remains; no campaign, no MUSCL, no physics changes, no P0-P9 edits.",
       "DPCV1 archived after transition: infrastructure ready, real curve not produced (no run authorization, no real engine data available)."
     ],
     "gate_tasks_total": 5,
@@ -8756,7 +8795,7 @@
     "remaining": [
       "ISV1-ACCEPTANCE"
     ],
-    "updated_at": "2026-10-20T12:50:00+00:00"
+    "updated_at": "2026-10-20T13:53:05+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -8819,7 +8858,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-20T12:50:00+00:00",
+  "updated_at": "2026-10-20T13:53:05+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
