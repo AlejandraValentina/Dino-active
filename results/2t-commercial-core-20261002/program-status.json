@@ -6262,7 +6262,7 @@
       "evidence": [
         "results/integrated-solver-verification-v1/a3a-run-receipt.json (A3a acceptance criterion 0 satisfied; convergence acceptance requires the A3b matrix)"
       ],
-      "next_action": "A3a classification recorded (COMPLETE / PERIODICITY_NOT_IDENTIFIED; no convergence verdict by design). Full objective acceptance (convergence or NOT_CONVERGED per observable, supported domain) requires the A3b matrix, which is NOT authorized: owner decision pending (ISV1-A3B-AUTHORIZATION-DECISION).",
+      "next_action": "A3a classification recorded (COMPLETE / PERIODICITY_NOT_IDENTIFIED). The A3b T1 cost estimate is recorded but the matrix is NOT authorized; full acceptance still requires the authorized A3b matrix.",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "evidence/release reviewer",
       "evidence_level": "L1",
@@ -6275,15 +6275,16 @@
       "description": "A3b: convergence matrix on the revised design (spatial mesh + temporal max_cfl + contamination control) with error quantification and validation of the revised cost model. NOT authorized as of 2026-10-19: requires explicit owner authorization (tier T0/T1/T2) and its own frozen preregistration, including how the observed CFL rejection share (~55.5%) and the per-process RSS cycle horizon are handled.",
       "dependencies": [],
       "state": "BLOCKED_LOCAL",
-      "blocker": "Owner decision pending: authorize the A3b tier (T0/T1/T2) and budget; then freeze the A3b preregistration before any run. An unauthorized matrix run would violate the frozen scope.",
+      "blocker": "Owner authorization and budget not granted. Pending prerequisites: >50% CFL-rejection rule, exact configuration set, transient-only claim scope (periodicity NOT_EVALUATED), checkpoint/worker policy; then freeze the A3b preregistration. Estimate recorded; no run authorized.",
       "unblock_tasks": [],
       "no_local_unblock_reason": "The missing input is a genuine owner decision on scope and budget (AGENTS condition B); no local action can authorize a convergence matrix.",
       "commits": [],
       "evidence": [
         "results/integrated-solver-verification-v1/a3a-run-receipt.json (revised rate ~145 s/cycle at 48 cells CFL 0.4; T0 ~2.4-2.6 ks (cap 3,600 s); T1 ~4.2-4.5 ks (cap 7,200 s); single-sample band > +/-20%; audit/reconstruction 70% of wall)",
-        "openspec/changes/integrated-solver-verification-v1/design.md (tier matrix T0/T1/T2)"
+        "openspec/changes/integrated-solver-verification-v1/design.md (tier matrix T0/T1/T2)",
+        "results/integrated-solver-verification-v1/a3b-t1-cost-estimate.json"
       ],
-      "next_action": "Owner decision ISV1-A3B-AUTHORIZATION-DECISION: select tier and budget; then freeze the A3b preregistration before any run.",
+      "next_action": "Owner review of a3b-t1-cost-estimate.json and decision on the rejection rule; then authorize T1 with a fixed budget and freeze the preregistration before any run.",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "verification",
       "evidence_level": "L1",
@@ -6472,7 +6473,7 @@
       }
     }
   },
-  "last_status_reviewed_head": "2e3a0eb706c426167779b98ea5cb9d70da0a7675",
+  "last_status_reviewed_head": "50b8308eb0d41a5ed194c644f8a5ad47e6ba57d9",
   "continuation_status": {
     "mode": "MOTORSIM_AUTONOMOUS_ENGINEERING_TEAM",
     "audit_remediation_mode": false,
@@ -7144,7 +7145,7 @@
         {
           "id": "T1",
           "label": "T1 recomendado (design): T0 + temporal {0.1} + malla 12",
-          "consequence": "Design estimate ~5,250 s (cap 7,200 s); revised estimate ~4.2-4.5 ks. Covers the designed matrix core; still single-sample (no noise repetition)."
+          "consequence": "Refined estimate (a3b-t1-cost-estimate.json, 2026-10-20): central 3.25-3.46 ks (54-58 min), +5 pp rejection case 3.85 ks, +10 pp stress 4.24 ks; recommended cap 4,320 s (design cap 7,200 s). Five-configuration design set; single-sample; transient-only claim, no periodicity."
         },
         {
           "id": "T2",
@@ -7159,9 +7160,24 @@
       ],
       "evidence": [
         "results/integrated-solver-verification-v1/a3a-run-receipt.json (revised cost estimate, timers, memory profile, limitations)",
-        "openspec/changes/integrated-solver-verification-v1/design.md (tier matrix and design recommendation T1)"
+        "openspec/changes/integrated-solver-verification-v1/design.md (tier matrix and design recommendation T1)",
+        "results/integrated-solver-verification-v1/a3b-t1-cost-estimate.json"
       ],
-      "recommendation": "T1 (design recommendation) if the A3a report is accepted as sufficient basis; any tier requires its own frozen preregistration before the first run. No second A3a run is authorized."
+      "recommendation": "T1 preference recorded; execution NOT authorized. Use a3b-t1-cost-estimate.json for budgeting. Resolve the rejection rule, enumerate the configuration set, fix transient-only claim scope and the checkpoint/worker policy, then freeze the A3b preregistration. No second A3a run.",
+      "owner_preference": "T1",
+      "preferred_tier": "T1",
+      "authorization": "NOT_GRANTED",
+      "authorization_note": "Owner recorded T1 as the preferred tier on 2026-10-20 but explicitly did not authorize execution pending the columnar review, this cost estimate, and the transient-vs-periodicity boundary. No A3b run may start before a frozen preregistration and a fixed budget.",
+      "estimate_artifact": "results/integrated-solver-verification-v1/a3b-t1-cost-estimate.json",
+      "estimate_sha256": "d9eee494158dd49a7318edcbf0a99e69543874794fae9e2c84c41cd204731f53",
+      "prerequisites": [
+        "Owner decision on the >50% CFL-rejection fail-closed rule (design L229-231; A3a steady share is 55.5%): versioned ceiling, observable-only rule, or keep the rule (matrix infeasible at 48/CFL 0.4).",
+        "Owner authorization of T1 and a fixed budget cap (recommended 4,320 s; design ceiling 7,200 s).",
+        "Preregistration enumerates the exact configuration set (design five-config set vs the A3a receipt superset with mesh 6 at CFL 0.2 plus a control), cycles, observables, reference, tolerances and abort rules.",
+        "Claim scope fixed to transient-horizon only; periodicity and steady-state explicitly NOT evaluated (3 cycles insufficient; A3a 8 cycles already returned 13/13 FAIL).",
+        "Checkpoint/resume plan for the 600 s per-invocation cap, bound to the frozen identity and preregistration; worker/memory policy (sequential 48-cell configs, aggregate RSS <= 4,096 MiB, per-process <= 3,072 MiB).",
+        "Frozen SHA-256 binding of preregistration and driver; no historical preregistration edits."
+      ]
     }
   ],
   "hard_stop": null,
@@ -8594,6 +8610,12 @@
       "task": "FRPM-V2-FAST-EVIDENCE-ACCEPTANCE",
       "kind": "task",
       "summary": "Independent review REJECT_FOR_ADOPTION committed 2e3a0eb: lossless 12/12 and audit independence 24/24 PASS; +10.9% full-cycle cost (evidence path +17.4%) for -1.4% bytes; audit unchanged; memory not isolated per path (paired peak 280-283 MiB). Hotspot task closed as rejected; no redesign."
+    },
+    {
+      "at": "2026-10-20T10:55:00+00:00",
+      "task": "ISV1-A3B-T1-COST-ESTIMATE",
+      "kind": "decision-support",
+      "summary": "A3b T1 estimate recorded (commit 50b8308): central 3.25-3.46 ks, +5 pp rejection 3.85 ks, stress 4.24 ks; recommended cap 4,320 s; memory 2.0 GiB/worker at 48 cells -> sequential under the 4,096 MiB aggregate cap; claim scope transient-only, periodicity NOT_EVALUATED. Owner preference T1 recorded; execution NOT authorized."
     }
   ],
   "legacy_gate_status": {
