@@ -6275,9 +6275,11 @@
       "description": "A3b T1 sensitivity matrix on the frozen v2 protocol: five configurations (48/0.4, 48/0.2, 48/0.1, 28/0.4, 18/0.4), 3 cycles each, 4,320 s cap, B fail-closed rule, transient-only claim scope. No contamination control and no matrix expansion.",
       "dependencies": [],
       "state": "BLOCKED_LOCAL",
-      "blocker": "Preregistration v2 frozen (protocol sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed, commit 4e1b1fc). Driver/addendum/tests/preflight are complete (driver sha256 3f3df5ba290a20739c4adc8e5a562ff7fe3b8fe328d215d33bb72d4e49679c72; addendum sha256 329af0a5e05f19a57a2891fcf5767c528da01611c5e243a3bc5ee5fcb0b08d86; tests 10 PASS; preflight receipt sha256 7f08bf5636e2b980980b27d27d2c1f8898581c9b3b22f8e110c1fb68afa0ccba). EXECUTION NOT AUTHORIZED: only the owner execution confirmation quoting the protocol SHA and the 4,320 s cap remains.",
-      "unblock_tasks": [],
-      "no_local_unblock_reason": "The missing input is a genuine owner decision on scope and budget (AGENTS condition B); driver, addendum, tests and zero-step preflight are already complete, and no local action can authorize a convergence matrix.",
+      "blocker": "EXECUTION AUTHORIZED by owner on 2026-10-20 (protocol sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed; global cap 4,320 s; aggregate memory 4,096 MiB). T1-A invocation 1 terminated FAILED_CLOSED at 112.094 s with PRIMARY_CONFIGURATION_HASH_MISMATCH and 0 cycles. Diagnosis: the driver compared primary.configuration_hash (effective solver_configuration_sha256 b472cce9...) against binding.configuration_sha256 (preflight native_configuration_sha256 5baa4cbd...). The frozen driver/addendum remain at driver sha256 3f3df5ba... and addendum sha256 329af0a5...; no rerun was performed. A corrected driver would change the driver SHA-256 and invalidate the addendum/preflight, requiring a new addendum and explicit owner authorization.",
+      "unblock_tasks": [
+        "ISV1-A3B-HASH-BINDING-FIX"
+      ],
+      "no_local_unblock_reason": null,
       "commits": [],
       "evidence": [
         "results/integrated-solver-verification-v1/a3a-run-receipt.json (revised rate ~145 s/cycle at 48 cells CFL 0.4; T0 ~2.4-2.6 ks (cap 3,600 s); T1 ~4.2-4.5 ks (cap 7,200 s); single-sample band > +/-20%; audit/reconstruction 70% of wall)",
@@ -6290,10 +6292,12 @@
         "results/integrated-solver-verification-v1/a3b-t1-cost-estimate-v2.json",
         "results/integrated-solver-verification-v1/a3b-execution-addendum.json",
         "results/integrated-solver-verification-v1/a3b-preflight-receipt.json",
+        "results/integrated-solver-verification-v1/a3b-owner-execution-confirmation.json",
+        "results/integrated-solver-verification-v1/a3b-terminal-receipt.json (TERMINAL_FAILED_CLOSED; 112.094 s; 0 cycles; driver binding defect)",
         "scripts/diagnostics/integrated_solver_verification_a3b.py",
         "tests/test_integrated_solver_verification_a3b.py"
       ],
-      "next_action": "Owner execution confirmation with the frozen v2 protocol SHA and 4,320 s cap; then run the frozen T1 set only through the addendum-bound driver (five configs, 3 cycles, 48/28/18 cells, CFL 0.4/0.2/0.1). No matrix expansion, no retry, no extension.",
+      "next_action": "Owner decision: authorize a corrected driver hash-binding fix plus a new execution addendum/preflight and a fresh run, or close A3b as a terminal driver defect. Do not rerun the frozen driver; it will fail identically at the first cycle check.",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "verification",
       "evidence_level": "L1",
@@ -6395,6 +6399,30 @@
         "results/integrated-solver-verification-v1/a3b-t1-cost-estimate-v2.json"
       ],
       "next_action": "Driver/addendum are frozen and execution remains NOT authorized. The owner execution confirmation quoting the v2 protocol SHA and the 4,320 s cap is the only remaining gate.",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "implementation / verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/diagnostics/",
+        "tests/",
+        "results/integrated-solver-verification-v1/"
+      ]
+    },
+    {
+      "id": "ISV1-A3B-HASH-BINDING-FIX",
+      "description": "Fix the A3b driver primary configuration hash binding: compare primary.configuration_hash against effective.solver_configuration_sha256 instead of preflight.native_configuration_sha256; add a synthetic regression test that would have caught T1-A's first-cycle mismatch; regenerate the zero-step preflight and execution addendum. No solver execution.",
+      "dependencies": [
+        "ISV1-A3B-DRIVER-ADDENDUM"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/integrated-solver-verification-v1/a3b-terminal-receipt.json (T1-A FAILED_CLOSED at 112.094 s; 0 cycles; PRIMARY_CONFIGURATION_HASH_MISMATCH)",
+        "scripts/diagnostics/integrated_solver_verification_a3b.py:1041 (compares primary.configuration_hash to binding.configuration_sha256)",
+        "scripts/diagnostics/integrated_solver_verification_a3b.py:382 (binding.configuration_sha256 uses preflight native hash)"
+      ],
+      "next_action": "Patch the binding, add the regression test, rerun the synthetic suite and zero-step preflight, and write a new execution addendum with the new driver SHA-256. Execution remains blocked on explicit owner authorization.",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "implementation / verification",
       "evidence_level": "L1",
@@ -8764,6 +8792,12 @@
       "task": "ISV1-A3B-DRIVER-ADDENDUM",
       "kind": "progress",
       "summary": "A3b v2 driver and execution addendum frozen without execution: driver sha256 3f3df5ba..., 10 synthetic tests PASS, zero-step preflight PASS for all five configs (48/48/48/28/18 cells; receipt 7f08bf56...), addendum sha256 329af0a5... with authorization NOT_GRANTED. Only the owner execution confirmation quoting protocol v2 and the 4,320 s cap remains."
+    },
+    {
+      "at": "2026-10-20T14:44:59+00:00",
+      "task": "ISV1-A3B-MATRIX",
+      "kind": "terminal",
+      "summary": "Owner authorized A3b v2 execution (protocol c8ab07da..., 4,320 s cap, 4,096 MiB aggregate). Hashes and zero-step identity/preflight verification PASS. T1-A invocation 1 then terminated FAILED_CLOSED after 112.094 s with 0 cycles due PRIMARY_CONFIGURATION_HASH_MISMATCH: the driver compared primary.configuration_hash (effective solver_configuration_sha256 b472cce9...) against binding.configuration_sha256 (preflight native_configuration_sha256 5baa4cbd...). Results preserved in the external artifact root and a3b-terminal-receipt.json; no rerun. A READY unblock task ISV1-A3B-HASH-BINDING-FIX was added; a corrected driver changes its SHA and requires a new addendum/preflight plus explicit owner authorization."
     }
   ],
   "legacy_gate_status": {

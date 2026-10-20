@@ -1,0 +1,19 @@
+{
+  "schema": "DINO_ISV1_A3B_OWNER_EXECUTION_CONFIRMATION_V1",
+  "confirmed_at": "2026-10-20T14:41:31.435837+00:00",
+  "protocol_sha256": "c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed",
+  "owner_confirmation": "utorizo la ejecución de A3b V2 bajo el protocolo congelado:\n\nSHA-256: c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed\n\nPresupuesto global máximo: 4.320 segundos, incluyendo todas las invocaciones, reanudaciones y sobrecostos.\n\nMantener las cinco configuraciones T1, tres ciclos por configuración, memoria agregada máxima de 4.096 MiB y ejecuciones de 48 celdas secuenciales.\n\nAntes de iniciar, verificar los hashes del protocolo, driver y addendum, la identidad científica y el preflight de cero pasos. Detener sin ejecutar si existe cualquier incompatibilidad.\n\nAplicar las guardas de conservación, NaN/Inf, identidad, progreso y recursos. Registrar rechazos CFL y distribución del paso temporal efectivo.\n\nCongelar atol_obs conforme al protocolo después de T1-A y antes de comparar configuraciones.\n\nNo modificar el protocolo, las tolerancias ni los presupuestos durante la ejecución.\n\nSi se alcanza una condición terminal, conservar los resultados y emitir la clasificación correspondiente sin repetir automáticamente la campaña.\n\nLimitar las conclusiones a sensibilidad numérica transitoria. No declarar periodicidad, convergencia estacionaria ni validez predictiva.\n\nAl finalizar, entregar resultados numéricos, tiempos, memoria, errores por observable y una conclusión técnica sobre el comportamiento del solver.",
+  "global_cap_seconds": 4320,
+  "aggregate_memory_limit_mib": 4096,
+  "per_process_memory_limit_mib": 3072,
+  "configs": [
+    "T1-A",
+    "T1-B",
+    "T1-C",
+    "T1-D",
+    "T1-E"
+  ],
+  "cycles_per_configuration": 3,
+  "sequential_invocations": true,
+  "scope": "Transient numerical sensitivity only. No periodicity, steady-state convergence, or predictive validity claim."
+}

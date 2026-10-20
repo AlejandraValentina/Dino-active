@@ -1,0 +1,36 @@
+{
+  "schema": "DINO_ISV1_A3B_TERMINAL_RECEIPT_V1",
+  "status": "TERMINAL_FAILED_CLOSED",
+  "classification": "A3B_TERMINAL_PRIMARY_CONFIGURATION_HASH_BINDING_DEFECT",
+  "created_utc": "2026-10-20T14:44:59.151680+00:00",
+  "config_id": "T1-A",
+  "invocation_index": 1,
+  "elapsed_seconds": 112.094,
+  "global_spent_seconds": 112.094,
+  "global_cap_seconds": 4320,
+  "cycles_completed": 0,
+  "failure": "PRIMARY_CONFIGURATION_HASH_MISMATCH",
+  "protocol_sha256": "c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed",
+  "driver_sha256": "3f3df5ba290a20739c4adc8e5a562ff7fe3b8fe328d215d33bb72d4e49679c72",
+  "addendum_sha256": "329af0a5e05f19a57a2891fcf5767c528da01611c5e243a3bc5ee5fcb0b08d86",
+  "authorization_sha256": "2288d3f39c1308313e0e89b098dbd271ccbbf9379be3a29619b4f62775e9a1e8",
+  "artifact_root": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\integrated-solver-verification-v1\\a3b",
+  "result_path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\integrated-solver-verification-v1\\a3b\\T1-A\\result.json",
+  "ledger_path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\integrated-solver-verification-v1\\a3b\\a3b-budget-ledger.json",
+  "diagnosis": {
+    "preflight_configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+    "effective_native_configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+    "effective_solver_configuration_sha256": "b472cce9d24e6fe659cc9be9de4d87f9f9fd059cdfcdc191f18e0a690c8fa4ee",
+    "cause": "The driver compares primary.configuration_hash (the effective solver_configuration_sha256) against binding.configuration_sha256 (the preflight native_configuration_sha256). The two values are intentionally different hashes of the same configuration.",
+    "driver_location": "scripts/diagnostics/integrated_solver_verification_a3b.py:1041",
+    "binding_location": "scripts/diagnostics/integrated_solver_verification_a3b.py:382"
+  },
+  "solver_data": "No cycle completed. No observables, convergence result, or sensitivity comparison were produced.",
+  "claims": {
+    "convergence": "NOT_EVALUATED",
+    "periodicity": "NOT_EVALUATED_HORIZON_INSUFFICIENT",
+    "predictive_validation": "NOT_CLAIMED",
+    "experimental_validation": "NOT_PERFORMED"
+  },
+  "rerun": "NOT_PERFORMED. A corrected driver would change its SHA-256 and invalidate the frozen execution addendum and preflight; it requires a new addendum and explicit owner authorization."
+}
