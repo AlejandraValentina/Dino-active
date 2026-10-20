@@ -81,7 +81,10 @@ from motorsim.reference_harness.convergence import (
 from motorsim import exploratory_workflow as exploratory_workflow_module
 
 PROTOCOL = ROOT / "results/integrated-solver-verification-v1/a3b-preregistration-v2.json"
-ADDENDUM = ROOT / "results/integrated-solver-verification-v1/a3b-execution-addendum.json"
+# The historical v2 addendum remains at a3b-execution-addendum.json.  This
+# driver revision writes a separate addendum so the failed frozen artifact is
+# preserved byte-for-byte.
+ADDENDUM = ROOT / "results/integrated-solver-verification-v1/a3b-execution-addendum-v2-fix1.json"
 ANALYSIS_FREEZE = ROOT / "results/integrated-solver-verification-v1/a3b-analysis-freeze.json"
 REPORT = ROOT / "results/integrated-solver-verification-v1/a3b-sensitivity-report.json"
 RECEIPT = ROOT / "results/integrated-solver-verification-v1/a3b-analysis-receipt.json"
@@ -177,6 +180,31 @@ def _file_sha(path: Path) -> str:
 
 def _file_sha_raw(path: Path) -> str:
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def _is_sha256(value: Any) -> bool:
+    return (isinstance(value, str) and len(value) == 64
+            and all(character in "0123456789abcdef" for character in value))
+
+
+def _configuration_hash_failure(*, actual: Any, binding: dict[str, Any],
+                                label: str) -> str | None:
+    """Return a fail-closed reason when an artifact hash is not the solver identity.
+
+    ``binding["configuration_sha256"]`` is the native configuration hash used by
+    the zero-step preflight.  ``binding["solver_configuration_sha256"]`` is the
+    normalized solver identity persisted in cycle primaries and engineering
+    outputs.  They describe different objects and must never be compared to
+    each other.
+    """
+    expected = binding.get("solver_configuration_sha256")
+    if not _is_sha256(expected):
+        return (f"{label}_HASH_BINDING_INVALID: "
+                "solver_configuration_sha256 missing or invalid")
+    if actual != expected:
+        return (f"{label}_HASH_MISMATCH: actual={actual} solver={expected} "
+                f"native={binding.get('configuration_sha256')}")
+    return None
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -283,6 +311,10 @@ def _load_authorization(path: Path) -> dict[str, Any]:
     if cap != GLOBAL_CAP_SECONDS:
         raise Refused(
             f"owner authorization global cap {cap!r} differs from {GLOBAL_CAP_SECONDS}")
+    if value.get("driver_sha256") != _file_sha(Path(__file__)):
+        raise Refused(
+            "owner authorization does not bind the current driver SHA-256; "
+            "a new authorization is required after any driver edit")
     return value
 
 
@@ -342,6 +374,17 @@ def _build_configuration(config_id: str) -> dict[str, Any]:
             f"!= {spec['cells']}")
     if effective.get("native_configuration_sha256") != check.get("configuration_sha256"):
         raise Refused(f"{config_id} configuration hash mismatch between resolve/preflight")
+    if engine_configuration_sha256(effective["native_configuration"]) != effective.get(
+            "native_configuration_sha256"):
+        raise Refused(f"{config_id} effective native configuration hash is not reproducible")
+    solver_hash = effective.get("solver_configuration_sha256")
+    if not _is_sha256(solver_hash):
+        raise Refused(f"{config_id} effective solver configuration hash is invalid")
+    solver_identity = IntegratedEngine2T.from_configuration_dict(
+        effective["native_configuration"]).configuration_identity
+    if solver_identity.get("configuration_sha256") != solver_hash:
+        raise Refused(
+            f"{config_id} solver configuration identity is not reproducible")
     return {
         "config_id": config_id,
         "spec": spec,
@@ -374,12 +417,21 @@ def _validate_identity(protocol: dict[str, Any], built: dict[str, Any]) -> None:
 def _binding(built: dict[str, Any]) -> dict[str, Any]:
     check = built["preflight"]
     effective = built["effective"]
+    native_hash = check["configuration_sha256"]
+    solver_hash = effective["solver_configuration_sha256"]
+    if not _is_sha256(native_hash):
+        raise Refused("preflight native configuration hash is invalid")
+    if not _is_sha256(solver_hash):
+        raise Refused("effective solver configuration hash is invalid")
+    if native_hash != effective.get("native_configuration_sha256"):
+        raise Refused("binding native hash differs from the effective native identity")
     return {
         "config_id": built["config_id"],
         "protocol_sha256": PROTOCOL_SHA256,
         "driver_sha256": _file_sha(Path(__file__)),
         "project_sha256": _file_sha_raw(PROJECT),
-        "configuration_sha256": check["configuration_sha256"],
+        "configuration_sha256": native_hash,
+        "solver_configuration_sha256": solver_hash,
         "identity_sha256": check["identity_sha256"],
         "mechanical_loss_model_sha256": check["mechanical_loss_model_sha256"],
         "fuel_id": check["fuel_id"],
@@ -405,6 +457,8 @@ def _protocol_preflight_receipt(config_ids: list[str]) -> dict[str, Any]:
             "cells": CONFIG_SPECS[config_id]["cells"],
             "max_cfl": CONFIG_SPECS[config_id]["max_cfl"],
             "configuration_sha256": check["configuration_sha256"],
+            "native_configuration_sha256": check["configuration_sha256"],
+            "solver_configuration_sha256": built["effective"]["solver_configuration_sha256"],
             "identity_sha256": check["identity_sha256"],
             "total_finite_volume_cells": check["total_finite_volume_cells"],
             "solver_steps": check["solver_steps"],
@@ -1032,13 +1086,16 @@ def _run_config(config_id: str, invocation_index: int, authorization_path: Path)
                         status = "FAILED_CLOSED"
                         failure = "PRIMARY_AUDIT_FAIL"
                         break
-                    if primary.get("configuration_hash") != binding["configuration_sha256"]:
+                    failure = _configuration_hash_failure(
+                        actual=primary.get("configuration_hash"),
+                        binding=binding,
+                        label="PRIMARY_CONFIGURATION")
+                    if failure:
                         try:
                             engine.restore(cycle_start)
                         except Exception:
                             pass
                         status = "FAILED_CLOSED"
-                        failure = "PRIMARY_CONFIGURATION_HASH_MISMATCH"
                         break
 
                     detector_mark = time.perf_counter()
@@ -1106,13 +1163,16 @@ def _run_config(config_id: str, invocation_index: int, authorization_path: Path)
                         break
                     cycle_timers["engineering_output_seconds"] += (
                         time.perf_counter() - engineering_mark)
-                    if engineering.get("configuration_sha256") != binding["configuration_sha256"]:
+                    failure = _configuration_hash_failure(
+                        actual=engineering.get("configuration_sha256"),
+                        binding=binding,
+                        label="ENGINEERING_CONFIGURATION")
+                    if failure:
                         try:
                             engine.restore(cycle_start)
                         except Exception:
                             pass
                         status = "FAILED_CLOSED"
-                        failure = "ENGINEERING_CONFIGURATION_HASH_MISMATCH"
                         break
 
                     observables = {

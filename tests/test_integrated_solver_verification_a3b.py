@@ -60,6 +60,15 @@ def _write_test_addendum(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Non
     })
 
 
+_BUILT: dict[str, dict] = {}
+
+
+def _built(config_id: str) -> dict:
+    if config_id not in _BUILT:
+        _BUILT[config_id] = a3b._build_configuration(config_id)
+    return _BUILT[config_id]
+
+
 def test_protocol_and_zero_step_preflight() -> None:
     protocol = a3b._load_protocol()
     assert protocol["status"] == "FROZEN_PROTOCOL_EXECUTION_NOT_AUTHORIZED"
@@ -73,8 +82,76 @@ def test_protocol_and_zero_step_preflight() -> None:
         48, 48, 48, 28, 18]
     assert all(row["solver_steps"] == 0 for row in receipt["configs"])
     assert all(row["status"] == "PASS" for row in receipt["configs"])
+    for row in receipt["configs"]:
+        assert row["native_configuration_sha256"] == row["configuration_sha256"]
+        assert row["solver_configuration_sha256"] != row["native_configuration_sha256"]
+        assert a3b._is_sha256(row["native_configuration_sha256"])
+        assert a3b._is_sha256(row["solver_configuration_sha256"])
     assert receipt["configs"][0]["identity_sha256"] == (
         protocol["scope"]["identity_invariants"]["identity_sha256"])
+
+
+def test_hash_binding_separates_native_and_solver_identities() -> None:
+    built = _built("T1-A")
+    binding = a3b._binding(built)
+    native = binding["configuration_sha256"]
+    solver = binding["solver_configuration_sha256"]
+    assert native == built["preflight"]["configuration_sha256"]
+    assert native == a3b.engine_configuration_sha256(
+        built["effective"]["native_configuration"])
+    assert solver == built["effective"]["solver_configuration_sha256"]
+    assert solver == a3b.IntegratedEngine2T.from_configuration_dict(
+        built["effective"]["native_configuration"]
+    ).configuration_identity["configuration_sha256"]
+    assert native != solver
+    assert a3b._is_sha256(native)
+    assert a3b._is_sha256(solver)
+
+
+def test_primary_and_engineering_hash_checks_use_solver_identity() -> None:
+    built = _built("T1-A")
+    binding = a3b._binding(built)
+    native = binding["configuration_sha256"]
+    solver = binding["solver_configuration_sha256"]
+
+    assert a3b._configuration_hash_failure(
+        actual=solver, binding=binding, label="PRIMARY_CONFIGURATION") is None
+    primary_failure = a3b._configuration_hash_failure(
+        actual=native, binding=binding, label="PRIMARY_CONFIGURATION")
+    assert primary_failure is not None
+    assert primary_failure.startswith("PRIMARY_CONFIGURATION_HASH_MISMATCH")
+    assert solver in primary_failure
+    assert native in primary_failure
+
+    assert a3b._configuration_hash_failure(
+        actual=solver, binding=binding,
+        label="ENGINEERING_CONFIGURATION") is None
+    engineering_failure = a3b._configuration_hash_failure(
+        actual=native, binding=binding, label="ENGINEERING_CONFIGURATION")
+    assert engineering_failure is not None
+    assert engineering_failure.startswith("ENGINEERING_CONFIGURATION_HASH_MISMATCH")
+    assert solver in engineering_failure
+    assert native in engineering_failure
+
+
+def test_hash_binding_fails_closed_without_solver_identity() -> None:
+    binding = {"configuration_sha256": "a" * 64}
+    failure = a3b._configuration_hash_failure(
+        actual="b" * 64, binding=binding, label="PRIMARY_CONFIGURATION")
+    assert failure is not None
+    assert failure.startswith("PRIMARY_CONFIGURATION_HASH_BINDING_INVALID")
+
+
+def test_hash_binding_rejects_a_different_configuration() -> None:
+    base = _built("T1-A")
+    other = _built("T1-B")
+    binding = a3b._binding(base)
+    other_solver = a3b._binding(other)["solver_configuration_sha256"]
+    assert other_solver != binding["solver_configuration_sha256"]
+    failure = a3b._configuration_hash_failure(
+        actual=other_solver, binding=binding, label="PRIMARY_CONFIGURATION")
+    assert failure is not None
+    assert failure.startswith("PRIMARY_CONFIGURATION_HASH_MISMATCH")
 
 
 def test_budget_ledger_closes_stale_and_enforces_caps(tmp_path: Path) -> None:
@@ -257,6 +334,25 @@ def test_addendum_binds_current_driver(
         a3b._write_addendum(receipt_path, "PASS")
 
 
+def test_authorization_must_bind_current_driver(tmp_path: Path) -> None:
+    path = tmp_path / "authorization.json"
+    payload = {
+        "protocol_sha256": a3b.PROTOCOL_SHA256,
+        "driver_sha256": a3b._file_sha(Path(a3b.__file__)),
+        "owner_confirmation": "synthetic test authorization",
+        "global_cap_seconds": a3b.GLOBAL_CAP_SECONDS,
+    }
+    a3b._write_json(path, payload)
+    assert a3b._load_authorization(path)["driver_sha256"] == payload["driver_sha256"]
+    a3b._write_json(path, {**payload, "driver_sha256": "0" * 64})
+    with pytest.raises(a3b.Refused):
+        a3b._load_authorization(path)
+    a3b._write_json(path, {key: value for key, value in payload.items()
+                           if key != "driver_sha256"})
+    with pytest.raises(a3b.Refused):
+        a3b._load_authorization(path)
+
+
 def test_completed_config_is_not_rewritten(
         tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(a3b, "_artifact_root", lambda: tmp_path)
@@ -264,6 +360,7 @@ def test_completed_config_is_not_rewritten(
     authorization = tmp_path / "authorization.json"
     a3b._write_json(authorization, {
         "protocol_sha256": a3b.PROTOCOL_SHA256,
+        "driver_sha256": a3b._file_sha(Path(a3b.__file__)),
         "owner_confirmation": "synthetic test authorization",
         "global_cap_seconds": a3b.GLOBAL_CAP_SECONDS,
     })
@@ -294,5 +391,9 @@ def test_checkpoint_rejects_changed_binding(tmp_path: Path) -> None:
     assert loaded is not None
     changed = dict(binding)
     changed["driver_sha256"] = "0" * 64
+    with pytest.raises(a3b.Refused):
+        a3b._load_checkpoint(path, changed)
+    changed = dict(binding)
+    changed["solver_configuration_sha256"] = "0" * 64
     with pytest.raises(a3b.Refused):
         a3b._load_checkpoint(path, changed)
