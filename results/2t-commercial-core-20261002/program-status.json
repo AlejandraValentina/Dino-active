@@ -3103,7 +3103,8 @@
         "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-bsfc-vs-rpm.png",
         "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-power-vs-rpm.png",
         "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\authorized-extension-26-v1\\reports\\impl2-torque-vs-rpm.png",
-        "results/full-rpm-sweep-v1/impl2-invalid-point-forensics.json"
+        "results/full-rpm-sweep-v1/impl2-invalid-point-forensics.json",
+        "results/full-rpm-sweep-v1/implementation-v2-review.json"
       ],
       "unblock_tasks": [
         "FRPM-V2-RESTORE-INDEPENDENT-REVIEW",
@@ -3336,13 +3337,34 @@
       "id": "FRPM-V2-RESTORE-INDEPENDENT-REVIEW",
       "description": "Perform a read-only skeptical review of compacted checkpoint validation, ledger-baseline handling, atomic rejection, and IMPL2/v1 isolation; persist findings.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "skeptic/adversarial review",
       "evidence_level": "L1",
       "write_scope": [
         "results/full-rpm-sweep-v1/implementation-v2-review.json"
-      ]
+      ],
+      "commits": [
+        "097611f99bd1a4182a8e3c765f5423d853588a33"
+      ],
+      "evidence": [
+        "results/full-rpm-sweep-v1/implementation-v2-review.json"
+      ],
+      "review_findings": {
+        "verdict": "PASS_WITH_CONCERNS",
+        "claims_verified": [
+          "RESTORE-ATOMICITY",
+          "TRACE-LEDGER-CONTINUITY",
+          "LEGACY-CHECKPOINT-ISOLATION",
+          "CHECKPOINT-FILE-INTEGRITY"
+        ],
+        "concerns": [
+          "IMPL2-FROZEN-IDENTITY-DRIFT (MEDIUM): preflight FAIL_CLOSED at HEAD; no production resume until identity re-frozen",
+          "CHECKPOINT-PUBLISH-BEFORE-MANIFEST-WINDOW (LOW): fail-closed but no automatic recovery",
+          "CHECKPOINT-HISTORY-NOT-CROSS-BOUND (LOW): next_cycle not cross-checked against engine/detector/file set"
+        ],
+        "receipt_sha256": "55aaa480015c8416864c69367774bc0a513c3031885488f1f22fc4f7bb035ce5"
+      }
     },
     {
       "id": "FRPM-V2-COLUMNAR-PROTOTYPE",
@@ -6437,11 +6459,11 @@
       }
     }
   },
-  "last_status_reviewed_head": "2665b935fb5c383028479127585fc2c3d0bfe03f",
+  "last_status_reviewed_head": "097611f99bd1a4182a8e3c765f5423d853588a33",
   "continuation_status": {
     "mode": "MOTORSIM_AUTONOMOUS_ENGINEERING_TEAM",
     "audit_remediation_mode": false,
-    "ready_tasks": 5,
+    "ready_tasks": 4,
     "local_blockers": [
       "FRPM-V2-EVIDENCE-HOTSPOT-OPT (evidence pipeline hotspots), DWT-PACKAGED-ACCEPTANCE, SPV1-POINT-EXECUTION.",
       "ISV1-A3-EXECUTION: DONE - A3a executed once on 2026-10-19 (exit 0, 1138.7 s): classification A3A_COMPLETE_PERIODICITY_NOT_IDENTIFIED; receipt committed 2665b93. ISV1-A3B-MATRIX and the convergence acceptance remain pending owner authorization (tier T0/T1/T2 + own preregistration).",
@@ -8547,6 +8569,12 @@
       "task": "ISV1-A3-EXECUTION",
       "kind": "evidence",
       "summary": "A3a result COMPLETE, 8/8 cycles, classification A3A_COMPLETE_PERIODICITY_NOT_IDENTIFIED; audit recomputed PASS each cycle; audit+make 70.1% of wall vs integration_physical 16.3%; RSS peak 2.58 GiB (<3072 MiB); residuals ~1e-13 J / 1e-18 kg; receipt committed 2665b93. No convergence verdict; A3b NOT authorized."
+    },
+    {
+      "at": "2026-10-20T00:32:00+00:00",
+      "task": "FRPM-V2-RESTORE-INDEPENDENT-REVIEW",
+      "kind": "task",
+      "summary": "Independent review PASS_WITH_CONCERNS committed 097611f: four self-review claims verified; MEDIUM frozen IMPL2 identity drift (preflight FAIL_CLOSED at HEAD), LOW publish/manifest window, LOW next_cycle not cross-bound. No campaign point started; v1/IMPL2 artifacts untouched."
     }
   ],
   "legacy_gate_status": {
