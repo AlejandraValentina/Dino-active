@@ -1,0 +1,249 @@
+{
+  "schema": "FULL_RPM_SWEEP_V1_FAST_EVIDENCE_INDEPENDENT_REVIEW_V1",
+  "recorded_at": "2026-10-20T10:36:40Z",
+  "review_classification": "INDEPENDENT_REVIEW",
+  "independent_review": true,
+  "review_mode": "READ_ONLY",
+  "reviewer": {
+    "kind": "FRESH_SUBAGENT",
+    "attribution_note": "Fresh subagent context, read-only, not the implementer."
+  },
+  "reviewed_head": "51e128440a577040742433658a59d9959a309ac1",
+  "object": "COLUMNAR_SEGMENTED_PRIMARY_PROTOTYPE",
+  "decision": "REJECT_FOR_ADOPTION",
+  "decision_rationale": "The prototype is lossless and preserves audit independence, but it fails its performance purpose. On the one-worker mean it costs 16.88 s vs 15.22 s (+1.66 s, +10.9% full cycle; +17.4% on the evidence-only components, derived), while reducing compressed artifacts by only 36,506 bytes (1.4%). Encode (+0.497 s), extra gzip write (+0.575 s), reconstruction (+0.477 s), and audit (+0.132 s, unchanged within noise) account for the delta. The codec also introduces a second on-disk schema and a reconstruction step, and its write_segment_atomic function is not the persistence path used in the diagnostic. With no audit or scientific benefit and a material per-task cost, the prototype should remain prototype-only; the existing conventional canonical-primary plus independent-audit evidence path remains authoritative. A redesign is not warranted for a 1.4% size benefit.",
+  "claims": [
+    {
+      "id": "LOSSLESS_RECONSTRUCTION",
+      "result": "PASS",
+      "evidence": [
+        "motorsim/full_rpm_evidence_impl2.py:19-25",
+        "motorsim/full_rpm_evidence_impl2.py:28-47",
+        "motorsim/full_rpm_evidence_impl2.py:50-74",
+        "tests/test_full_rpm_evidence_impl2.py:11-29",
+        "scripts/benchmark_full_rpm_sweep_v2_architecture.py:157-161",
+        "results/full-rpm-sweep-v1/performance-architecture-v2-diagnostic-receipt.json:57-66"
+      ],
+      "notes": "encode/decode is canonical-byte identical for the 12 real V3 primaries (12/12 canonical_equality=true; 808 rows x 26 columns). A reviewer probe additionally covered booleans, large integers, unicode strings, empty lists/dicts, nested containers, explicit nulls versus missing keys, and -0.0; all were canonical-equal. The tests cover floats, nested dict/list, explicit null, missing-key presence masks, a mutated used column, and shape mismatch, but do not exercise booleans, large ints, unicode, empty containers, malformed segment shapes, or write_segment_atomic. Non-string dict keys would be stringified by JSON canonicalization but are outside the V3 contract. No lossless failure found."
+    },
+    {
+      "id": "PERSISTED_HASHES",
+      "result": "CONCERN",
+      "evidence": [
+        "motorsim/full_rpm_evidence_impl2.py:41",
+        "motorsim/full_rpm_evidence_impl2.py:72-73",
+        "motorsim/full_rpm_evidence_impl2.py:77-91",
+        "scripts/benchmark_full_rpm_sweep_v2_architecture.py:146-152",
+        "E:/Dino-artifacts/engine-physics-v1/full-rpm-sweep-v1-impl2/diagnostics/fast-evidence-multiprocess/run-20261009-v5/artifacts/benchmark-report.json:58",
+        "results/full-rpm-sweep-v1/performance-architecture-v2-diagnostic-receipt.json:63-66"
+      ],
+      "notes": "For the A and B artifacts, sha256(raw .json.gz) equals segmented_file_sha256, sha256(decompressed canonical payload) equals segmented_payload_sha256, segment.canonical_primary_sha256 equals the receipt primary_sha256, and the reconstructed canonical bytes equal the legacy payload. A mutated used column cell is rejected by the canonical hash (tests/test_full_rpm_evidence_impl2.py:24-29; reviewer probe). CONCERN: the diagnostic never calls write_segment_atomic; it uses _write_gzip_atomic and computes the payload/file hashes inline (scripts/benchmark_full_rpm_sweep_v2_architecture.py:146-152), so that function's atomicity/hash contract is not exercised by the persisted artifacts, although a reviewer temp-directory probe of write_segment_atomic passed. The hash binds the reconstructed primary, not every stored cell: changing a column value where presence is false is not detected, but it does not change the decoded primary. The hash is unkeyed, so it is corruption detection, not tamper-proof storage; the independent physics audit remains the authority."
+    },
+    {
+      "id": "AUDIT_INDEPENDENCE",
+      "result": "PASS",
+      "evidence": [
+        "scripts/benchmark_full_rpm_sweep_v2_architecture.py:140-169",
+        "motorsim/integrated_2t.py:3603-3822",
+        "motorsim/integrated_2t.py:3792-3812",
+        "E:/Dino-artifacts/engine-physics-v1/full-rpm-sweep-v1-impl2/diagnostics/fast-evidence-multiprocess/run-20261009-v5/artifacts/benchmark-report.json:44-47",
+        "results/full-rpm-sweep-v1/performance-architecture-v2-diagnostic-receipt.json:57-66"
+      ],
+      "notes": "The benchmark decodes the persisted segment to a reconstructed canonical primary and calls the existing audit_integrated_cycle_primary on that object, not on columns or trusted metadata; it requires status PASS and recomputed=True for both paths (scripts/benchmark_full_rpm_sweep_v2_architecture.py:162-169). The auditor replays every accepted step with replay.step, rebuilds the primary with make_integrated_cycle_primary, and compares the complete record (motorsim/integrated_2t.py:3792-3812), returning recomputed=True at motorsim/integrated_2t.py:3822. 24 audits passed, which is 12 legacy plus 12 segmented across 12 tasks; the segmented path alone is 12/12. Nothing in the codec calls, samples, or relaxes the audit, and the measured harness has no provisional or short-circuit branch for the segmented path."
+    }
+  ],
+  "cpu_impact": {
+    "measured": {
+      "reported_one_worker_means": {
+        "legacy_end_to_end_seconds_mean": 15.22,
+        "segmented_end_to_end_seconds_mean": 16.88,
+        "segmented_relative_change": 0.109,
+        "legacy_compressed_bytes_mean": 2624076,
+        "segmented_compressed_bytes_mean": 2587570,
+        "segmented_size_reduction_fraction": 0.014,
+        "primary_construction_seconds_mean": 3.533,
+        "legacy_audit_seconds_mean": 8.467,
+        "segmented_independent_audit_seconds_mean": 8.599,
+        "segmented_encode_seconds_mean": 0.497,
+        "segmented_read_parse_seconds_mean": 0.492,
+        "segmented_canonical_reconstruction_seconds_mean": 0.477
+      },
+      "derived_one_worker_means": {
+        "solver_seconds_mean": 2.131,
+        "legacy_atomic_write_seconds_mean": 0.578,
+        "segmented_atomic_write_seconds_mean": 1.153,
+        "write_delta_seconds": 0.575,
+        "legacy_read_parse_seconds_mean": 0.511,
+        "read_parse_delta_seconds": -0.019,
+        "encode_delta_seconds": 0.497,
+        "reconstruction_delta_seconds": 0.477,
+        "audit_delta_seconds": 0.132,
+        "total_delta_seconds": 1.662,
+        "relative_change_full_cycle": 0.109,
+        "legacy_evidence_path_seconds_mean": 9.555,
+        "segmented_evidence_path_seconds_mean": 11.217,
+        "evidence_path_relative_change": 0.174,
+        "size_reduction_bytes_mean": 36506,
+        "all_task_paired_audit_delta_mean_seconds": -0.019,
+        "all_task_paired_audit_delta_sd_seconds": 0.202,
+        "all_task_paired_audit_delta_se_seconds": 0.058
+      },
+      "worker_scaling": {
+        "wall_seconds_by_workers": {
+          "1": 114.22,
+          "2": 55.10,
+          "4": 30.56
+        },
+        "speedup_vs_one_worker": {
+          "1": 1.0,
+          "2": 2.073,
+          "4": 3.738
+        },
+        "worker_cpu_seconds_sum": {
+          "1": 112.44,
+          "2": 107.33,
+          "4": 116.20
+        },
+        "cpu_core_count": 12,
+        "four_worker_cpu_sum_overhead_fraction_vs_one_worker": 0.033
+      }
+    },
+    "interpretation": "The +1.662 s (+10.9%) full-cycle delta is fully explained by encode +0.497 s, extra write +0.575 s, reconstruction +0.477 s, and audit +0.132 s, offset by read/parse -0.019 s. The headline +10.9% understates the evidence-path overhead because about 5.665 s of solver plus primary construction is common to both paths; on the evidence components alone, 9.555 s versus 11.217 s is +17.4% (derived). Audit time is unchanged within noise: across all 12 paired tasks the segmented-minus-legacy delta has mean -0.019 s, sd 0.202 s, and se 0.058 s, with mixed signs; the one-worker subset mean is +0.132 s. Worker CPU sums are 112.44/107.33/116.20 s (range about 8.9 s, or 7.9% of the largest sum) and the 4-worker sum is +3.3% versus 1 worker, while wall speedups are 2.073 and 3.738. There is no evidence of material parallel contention, only normal variance and a small 4-worker overhead.",
+    "evidence": [
+      "results/full-rpm-sweep-v1/performance-architecture-v2-diagnostic-receipt.json:27-55",
+      "scripts/benchmark_full_rpm_sweep_v2_architecture.py:112-120",
+      "scripts/benchmark_full_rpm_sweep_v2_architecture.py:128-169",
+      "scripts/benchmark_full_rpm_sweep_v2_architecture.py:206-210",
+      "scripts/benchmark_full_rpm_sweep_v2_architecture.py:271-286",
+      "E:/Dino-artifacts/engine-physics-v1/full-rpm-sweep-v1-impl2/diagnostics/fast-evidence-multiprocess/run-20261009-v5/artifacts/benchmark-report.json:27",
+      "E:/Dino-artifacts/engine-physics-v1/full-rpm-sweep-v1-impl2/diagnostics/fast-evidence-multiprocess/run-20261009-v5/artifacts/benchmark-report.json:52"
+    ]
+  },
+  "memory_impact": {
+    "measured": {
+      "peak_worker_rss_mib_by_scale": {
+        "1": 282.3,
+        "2": 283.2,
+        "4": 280.4
+      },
+      "example_stage_rss_bytes_A_prime": {
+        "process_start": 27553792,
+        "engine_constructed": 32239616,
+        "primary_constructed": 142798848,
+        "audited_and_reconstructed": 294080512
+      },
+      "per_task_max_rss_is_max_of_stage_snapshots": true,
+      "compressed_bytes": {
+        "legacy_mean": 2624076,
+        "segmented_mean": 2587570,
+        "A_legacy": 2428904,
+        "A_segmented": 2390901,
+        "B_legacy": 2819248,
+        "B_segmented": 2784239
+      },
+      "uncompressed_canonical_bytes_reviewer_probe": {
+        "A_legacy": 13678581,
+        "A_segmented": 13346810,
+        "B_legacy": 13726277,
+        "B_segmented": 13394506,
+        "segment_over_primary_ratio_A": 0.9757,
+        "segment_over_primary_ratio_B": 0.9758
+      }
+    },
+    "not_measured": [
+      "Per-path peak RSS: there is no legacy-only or segmented-only RSS series; only cumulative stage snapshots per task.",
+      "Codec encode/decode transient high-water mark.",
+      "Allocator high-water mark attributable to the column lists and presence masks.",
+      "Per-scenario memory in benchmark-report.json: it contains max_observed_worker_rss_bytes and worker_rss_stage_bytes per task, not per-path memory."
+    ],
+    "codec_transient_analysis": "Encode keeps the 808-row primary plus 26 column lists and 26 presence lists live. The column entries are references to values already held in the row dictionaries, so the added column and presence arrays are pointer arrays of about 2 x 808 x 26 x 8 B, approximately 0.32 MiB (estimate), plus list overhead; they are not a deep copy of the values. Decode builds 808 new row dictionaries that reference values held in the parsed columns while the segment remains live, so it creates new dictionary containers but not new leaf values. For the A artifact the compressed payloads are 2.43 MB (legacy) and 2.39 MB (segmented), and the uncompressed canonical payloads are 13.68 MB and 13.35 MB, so the segment representation is about 2.4% smaller, not a memory blow-up. The measured peak RSS of 278-297 MB occurs at the audited_and_reconstructed stage, after both paths have run, and is dominated by solver and audit working sets. Direction: a small positive transient; magnitude is not measured and should not be reported as a precise per-path RSS.",
+    "evidence": [
+      "scripts/benchmark_full_rpm_sweep_v2_architecture.py:95-122",
+      "scripts/benchmark_full_rpm_sweep_v2_architecture.py:171-172",
+      "scripts/benchmark_full_rpm_sweep_v2_architecture.py:212-213",
+      "motorsim/full_rpm_evidence_impl2.py:36-37",
+      "motorsim/full_rpm_evidence_impl2.py:67-69",
+      "E:/Dino-artifacts/engine-physics-v1/full-rpm-sweep-v1-impl2/diagnostics/fast-evidence-multiprocess/run-20261009-v5/artifacts/benchmark-report.json:27",
+      "E:/Dino-artifacts/engine-physics-v1/full-rpm-sweep-v1-impl2/diagnostics/fast-evidence-multiprocess/run-20261009-v5/artifacts/benchmark-report.json:87",
+      "E:/Dino-artifacts/engine-physics-v1/full-rpm-sweep-v1-impl2/diagnostics/fast-evidence-multiprocess/run-20261009-v5/artifacts/w1-r1-A_PRIME_MESH_0-4000/legacy-primary.json.gz",
+      "E:/Dino-artifacts/engine-physics-v1/full-rpm-sweep-v1-impl2/diagnostics/fast-evidence-multiprocess/run-20261009-v5/artifacts/w1-r1-A_PRIME_MESH_0-4000/segmented-primary.json.gz"
+    ]
+  },
+  "fast_recipe_scope_note": "FAST_RECIPE_V1 is a separate trace-free capture/reconstruction prototype recorded in results/full-rpm-sweep-v1/fast-recipe-v1-benchmark-receipt.json (classification FAST_RECIPE_V1_PARTIAL at line 11; adoption recommendation EXPLORATORY_ONLY at line 2; implementation_identity FAST_RECIPE_V1 at line 14). Its artifact_bytes and primary_persisted_bytes fields, and its provisional-versus-audited labels, describe that prototype and are not measurements of the columnar segmented codec. This review concerns only motorsim/full_rpm_evidence_impl2.py and its benchmark path.",
+  "additional_findings": [
+    {
+      "id": "SEGMENTED_WRITE_COST_OMITTED",
+      "severity": "MEDIUM",
+      "result": "The headline benchmark block omits the segmented atomic-write cost, which is the largest single added component: 1.153 s segmented versus 0.578 s legacy, a +0.575 s delta (derived one-worker means). The reported +10.9% conclusion remains correct, but the component table is incomplete and does not by itself sum to the reported delta.",
+      "evidence": [
+        "results/full-rpm-sweep-v1/performance-architecture-v2-diagnostic-receipt.json:27-38",
+        "E:/Dino-artifacts/engine-physics-v1/full-rpm-sweep-v1-impl2/diagnostics/fast-evidence-multiprocess/run-20261009-v5/artifacts/benchmark-report.json:52"
+      ]
+    },
+    {
+      "id": "WRITE_SEGMENT_ATOMIC_UNUSED",
+      "severity": "LOW",
+      "result": "The diagnostic does not use write_segment_atomic. It persists through _write_gzip_atomic and computes the payload and file SHA-256 values inline, so the function's atomic-write and hash contract is not exercised by the persisted artifacts. A reviewer temp-directory probe of write_segment_atomic passed, but the measured path has no caller.",
+      "evidence": [
+        "motorsim/full_rpm_evidence_impl2.py:77-91",
+        "scripts/benchmark_full_rpm_sweep_v2_architecture.py:60-73",
+        "scripts/benchmark_full_rpm_sweep_v2_architecture.py:146-152"
+      ]
+    },
+    {
+      "id": "EVIDENCE_PATH_OVERHEAD_DILUTED",
+      "severity": "INFO",
+      "result": "The reported +10.9% is a full-cycle figure that includes about 5.665 s of solver plus primary construction common to both paths. On the evidence components alone the means are 9.555 s legacy versus 11.217 s segmented, or +17.4% (derived). The decision should use the evidence-path cost, which strengthens the rejection.",
+      "evidence": [
+        "results/full-rpm-sweep-v1/performance-architecture-v2-diagnostic-receipt.json:27-38",
+        "scripts/benchmark_full_rpm_sweep_v2_architecture.py:206-210"
+      ]
+    },
+    {
+      "id": "PRESENCE_FALSE_MUTATION_UNDETECTED",
+      "severity": "LOW",
+      "result": "The canonical hash binds the reconstructed primary, not every stored cell. Changing a column value at a row where presence is false is not rejected by decode, although the decoded primary is unchanged. Mutating a cell that is actually used is rejected. This is an integrity nuance, not a reconstruction failure.",
+      "evidence": [
+        "motorsim/full_rpm_evidence_impl2.py:36-37",
+        "motorsim/full_rpm_evidence_impl2.py:67-73",
+        "tests/test_full_rpm_evidence_impl2.py:24-29"
+      ]
+    },
+    {
+      "id": "NO_PER_PATH_MEMORY",
+      "severity": "LOW",
+      "result": "benchmark-report.json contains only cumulative stage snapshots and a per-task maximum RSS. It has no legacy-only versus segmented-only peak, so the memory conclusion is a direction and bound, not a measured per-path RSS difference.",
+      "evidence": [
+        "scripts/benchmark_full_rpm_sweep_v2_architecture.py:95-122",
+        "scripts/benchmark_full_rpm_sweep_v2_architecture.py:171-172",
+        "scripts/benchmark_full_rpm_sweep_v2_architecture.py:212-213",
+        "E:/Dino-artifacts/engine-physics-v1/full-rpm-sweep-v1-impl2/diagnostics/fast-evidence-multiprocess/run-20261009-v5/artifacts/benchmark-report.json:27",
+        "E:/Dino-artifacts/engine-physics-v1/full-rpm-sweep-v1-impl2/diagnostics/fast-evidence-multiprocess/run-20261009-v5/artifacts/benchmark-report.json:87"
+      ]
+    }
+  ],
+  "tests_run": [
+    {
+      "command": "python -m pytest tests/test_full_rpm_evidence_impl2.py -q",
+      "result": "PASS",
+      "summary": "3 passed in 0.14s."
+    },
+    {
+      "command": "python <reviewer temp codec probe>",
+      "result": "PASS",
+      "summary": "Extended type round-trip, presence-mask mutation, write_segment_atomic, and persisted artifact hash-chain checks passed; the probe wrote only inside a temporary directory."
+    }
+  ],
+  "limitations": [
+    "Diagnostic, not a campaign: 12 tasks (2 configurations x 2 repeats x 3 worker scales), one complete cycle per task; no 30-point sweep, periodicity, checkpoint/restart, or failure-classification coverage.",
+    "The one-worker timing population is small (n=4); the audit delta is within noise and must not be interpreted as a real audit-speed change.",
+    "Per-path RSS was not measured; the codec transient analysis is an estimate from container counts and serialized sizes, not an RSS measurement.",
+    "The reviewer did not re-run the solver or the 24 full audits; audit pass results are read from the persisted task receipts, and the auditor implementation was inspected.",
+    "The external report hash was verified, and the external artifacts were read-only; no campaign point or heavy benchmark was started.",
+    "The legacy path is measured before the segmented path in the same process; any cache warming would favor the segmented path, so the observed segmented penalty is not an artifact of ordering.",
+    "write_segment_atomic was exercised only in a reviewer temporary-directory probe, not by the diagnostic persistence path."
+  ],
+  "campaign_started": false,
+  "artifacts_modified": false,
+  "no_campaign_statement": "No campaign point was started; historical artifacts were not modified."
+}
