@@ -6262,7 +6262,7 @@
       "evidence": [
         "results/integrated-solver-verification-v1/a3a-run-receipt.json (A3a acceptance criterion 0 satisfied; convergence acceptance requires the A3b matrix)"
       ],
-      "next_action": "A3a classification recorded (COMPLETE / PERIODICITY_NOT_IDENTIFIED). The A3b T1 cost estimate is recorded but the matrix is NOT authorized; full acceptance still requires the authorized A3b matrix.",
+      "next_action": "A3a classification recorded (COMPLETE / PERIODICITY_NOT_IDENTIFIED). A3b T1 protocol is frozen but execution is NOT authorized; full acceptance still requires the authorized run and its analysis.",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "evidence/release reviewer",
       "evidence_level": "L1",
@@ -6275,19 +6275,66 @@
       "description": "A3b: convergence matrix on the revised design (spatial mesh + temporal max_cfl + contamination control) with error quantification and validation of the revised cost model. NOT authorized as of 2026-10-19: requires explicit owner authorization (tier T0/T1/T2) and its own frozen preregistration, including how the observed CFL rejection share (~55.5%) and the per-process RSS cycle horizon are handled.",
       "dependencies": [],
       "state": "BLOCKED_LOCAL",
-      "blocker": "Owner authorization and budget not granted. Pending prerequisites: >50% CFL-rejection rule, exact configuration set, transient-only claim scope (periodicity NOT_EVALUATED), checkpoint/worker policy; then freeze the A3b preregistration. Estimate recorded; no run authorized.",
+      "blocker": "Preregistration frozen (protocol sha256 ffd7c1782674937e37a05eca520629222b1d7d6fffa3c19c6d56e63870b2a34f, commit 92a7e19); EXECUTION NOT AUTHORIZED. Remaining: driver SHA-256 addendum, owner execution confirmation with the 4,320 s cap, and zero-step preflight.",
       "unblock_tasks": [],
       "no_local_unblock_reason": "The missing input is a genuine owner decision on scope and budget (AGENTS condition B); no local action can authorize a convergence matrix.",
       "commits": [],
       "evidence": [
         "results/integrated-solver-verification-v1/a3a-run-receipt.json (revised rate ~145 s/cycle at 48 cells CFL 0.4; T0 ~2.4-2.6 ks (cap 3,600 s); T1 ~4.2-4.5 ks (cap 7,200 s); single-sample band > +/-20%; audit/reconstruction 70% of wall)",
         "openspec/changes/integrated-solver-verification-v1/design.md (tier matrix T0/T1/T2)",
-        "results/integrated-solver-verification-v1/a3b-t1-cost-estimate.json"
+        "results/integrated-solver-verification-v1/a3b-t1-cost-estimate.json",
+        "results/integrated-solver-verification-v1/a3b-preregistration.json",
+        "results/integrated-solver-verification-v1/a3b-preregistration-freeze.json"
       ],
-      "next_action": "Owner review of a3b-t1-cost-estimate.json and decision on the rejection rule; then authorize T1 with a fixed budget and freeze the preregistration before any run.",
+      "next_action": "Author and freeze the A3b driver in a versioned execution addendum; then owner execution confirmation; then preflight; only then run the frozen T1 set.",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "verification",
       "evidence_level": "L1",
+      "write_scope": [
+        "results/integrated-solver-verification-v1/"
+      ]
+    },
+    {
+      "id": "ISV1-A3B-T1-COST-ESTIMATE",
+      "description": "Owner-requested A3b T1 cost estimate derived from the A3a measured run, including the 55.5% rejection share, memory limits, invocation plan and transient-vs-periodicity claim boundary.",
+      "dependencies": [
+        "ISV1-A3-EXECUTION"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [
+        "50b8308eb0d41a5ed194c644f8a5ad47e6ba57d9"
+      ],
+      "evidence": [
+        "results/integrated-solver-verification-v1/a3b-t1-cost-estimate.json"
+      ],
+      "next_action": "Consumed by the frozen A3b T1 preregistration; no run authorized.",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/integrated-solver-verification-v1/"
+      ]
+    },
+    {
+      "id": "ISV1-A3B-PREREG",
+      "description": "Freeze the A3b T1 preregistration with the owner scope corrections: first numerical sensitivity evaluation (not definitive convergence closure), no matrix expansion, B fail-closed rule, T1 five-configuration set, 4,320 s cap, transient-only claim scope. No execution.",
+      "dependencies": [
+        "ISV1-A3B-T1-COST-ESTIMATE"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [
+        "92a7e19310eee61128a3007aff25cd6ea3e8c3bb"
+      ],
+      "evidence": [
+        "results/integrated-solver-verification-v1/a3b-preregistration.json",
+        "results/integrated-solver-verification-v1/a3b-preregistration-freeze.json"
+      ],
+      "next_action": "Execution remains NOT authorized. Before any run: author and freeze the A3b driver SHA-256 in a versioned execution addendum, obtain the owner execution confirmation quoting the protocol SHA, and pass a zero-step preflight.",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "evidence/release reviewer",
+      "evidence_level": "L0",
       "write_scope": [
         "results/integrated-solver-verification-v1/"
       ]
@@ -6473,7 +6520,7 @@
       }
     }
   },
-  "last_status_reviewed_head": "50b8308eb0d41a5ed194c644f8a5ad47e6ba57d9",
+  "last_status_reviewed_head": "92a7e19310eee61128a3007aff25cd6ea3e8c3bb",
   "continuation_status": {
     "mode": "MOTORSIM_AUTONOMOUS_ENGINEERING_TEAM",
     "audit_remediation_mode": false,
@@ -7132,7 +7179,7 @@
     {
       "id": "ISV1-A3B-AUTHORIZATION-DECISION",
       "status": "PENDING",
-      "selected_option": null,
+      "selected_option": "T1",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "decision_id": "ISV1-A3B-AUTHORIZATION-DECISION",
       "question": "After reviewing the A3a result (COMPLETE, PERIODICITY_NOT_IDENTIFIED, no convergence verdict), authorize the A3b convergence matrix? If authorized, which tier and budget? The A3b preregistration must be frozen before any run.",
@@ -7161,9 +7208,11 @@
       "evidence": [
         "results/integrated-solver-verification-v1/a3a-run-receipt.json (revised cost estimate, timers, memory profile, limitations)",
         "openspec/changes/integrated-solver-verification-v1/design.md (tier matrix and design recommendation T1)",
-        "results/integrated-solver-verification-v1/a3b-t1-cost-estimate.json"
+        "results/integrated-solver-verification-v1/a3b-t1-cost-estimate.json",
+        "results/integrated-solver-verification-v1/a3b-preregistration.json",
+        "results/integrated-solver-verification-v1/a3b-preregistration-freeze.json"
       ],
-      "recommendation": "T1 preference recorded; execution NOT authorized. Use a3b-t1-cost-estimate.json for budgeting. Resolve the rejection rule, enumerate the configuration set, fix transient-only claim scope and the checkpoint/worker policy, then freeze the A3b preregistration. No second A3a run.",
+      "recommendation": "Scope frozen: B + T1 + 4,320 s, five configurations, first sensitivity evaluation, transient-only claim scope, no expansion. Execution NOT authorized; remaining gate is the driver addendum plus owner execution confirmation and preflight.",
       "owner_preference": "T1",
       "preferred_tier": "T1",
       "authorization": "NOT_GRANTED",
@@ -7171,13 +7220,24 @@
       "estimate_artifact": "results/integrated-solver-verification-v1/a3b-t1-cost-estimate.json",
       "estimate_sha256": "d9eee494158dd49a7318edcbf0a99e69543874794fae9e2c84c41cd204731f53",
       "prerequisites": [
-        "Owner decision on the >50% CFL-rejection fail-closed rule (design L229-231; A3a steady share is 55.5%): versioned ceiling, observable-only rule, or keep the rule (matrix infeasible at 48/CFL 0.4).",
-        "Owner authorization of T1 and a fixed budget cap (recommended 4,320 s; design ceiling 7,200 s).",
-        "Preregistration enumerates the exact configuration set (design five-config set vs the A3a receipt superset with mesh 6 at CFL 0.2 plus a control), cycles, observables, reference, tolerances and abort rules.",
-        "Claim scope fixed to transient-horizon only; periodicity and steady-state explicitly NOT evaluated (3 cycles insufficient; A3a 8 cycles already returned 13/13 FAIL).",
-        "Checkpoint/resume plan for the 600 s per-invocation cap, bound to the frozen identity and preregistration; worker/memory policy (sequential 48-cell configs, aggregate RSS <= 4,096 MiB, per-process <= 3,072 MiB).",
-        "Frozen SHA-256 binding of preregistration and driver; no historical preregistration edits."
-      ]
+        "Author and freeze the A3b driver SHA-256 in a versioned execution addendum referencing the protocol SHA-256.",
+        "Owner execution confirmation quoting the protocol SHA-256 and the 4,320 s cap.",
+        "Zero-step preflight: identity, configuration, memory and artifact-root checks.",
+        "Verification that no historical preregistration or P0-P9 artifact is modified."
+      ],
+      "scope_resolved": true,
+      "execution_authorized": false,
+      "budget_cap_seconds": 4320,
+      "fail_closed_rule": "B",
+      "preregistration": {
+        "path": "results/integrated-solver-verification-v1/a3b-preregistration.json",
+        "protocol_sha256": "ffd7c1782674937e37a05eca520629222b1d7d6fffa3c19c6d56e63870b2a34f"
+      },
+      "preregistration_freeze": {
+        "path": "results/integrated-solver-verification-v1/a3b-preregistration-freeze.json",
+        "sha256": "88ca0599e9ed952d9043ad5d9e6e2ca84b5b384f9d0030b5b73912b52d1d328d",
+        "commit": "92a7e19310eee61128a3007aff25cd6ea3e8c3bb"
+      }
     }
   ],
   "hard_stop": null,
@@ -8616,6 +8676,12 @@
       "task": "ISV1-A3B-T1-COST-ESTIMATE",
       "kind": "decision-support",
       "summary": "A3b T1 estimate recorded (commit 50b8308): central 3.25-3.46 ks, +5 pp rejection 3.85 ks, stress 4.24 ks; recommended cap 4,320 s; memory 2.0 GiB/worker at 48 cells -> sequential under the 4,096 MiB aggregate cap; claim scope transient-only, periodicity NOT_EVALUATED. Owner preference T1 recorded; execution NOT authorized."
+    },
+    {
+      "at": "2026-10-20T11:18:00+00:00",
+      "task": "ISV1-A3B-PREREG",
+      "kind": "decision",
+      "summary": "A3b T1 preregistration frozen (commit 92a7e19, protocol sha ffd7c178...): B fail-closed rule, five configs, 3 cycles, 4,320 s cap, first sensitivity evaluation only, no matrix expansion, transient-only claim scope, periodicity NOT_EVALUATED. Execution NOT authorized: driver addendum + owner confirmation + preflight remain."
     }
   ],
   "legacy_gate_status": {
