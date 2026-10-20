@@ -8814,12 +8814,13 @@
   "gate_status": {
     "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
     "state": "REVIEW",
-    "classification": "INTEGRATED_SOLVER_VERIFICATION_V1_A3B_DRIVER_ADDENDUM_FROZEN_AWAITING_OWNER_EXECUTION_CONFIRMATION",
+    "classification": "INTEGRATED_SOLVER_VERIFICATION_V1_A3B_EXECUTION_TERMINAL_DRIVER_HASH_BINDING_DEFECT",
     "evidence": [
       "A2 design delivered: openspec/changes/integrated-solver-verification-v1 (proposal/design/tasks/spec) with two verification lines, no MUSCL, strict budgets, fail-closed interruption and acceptance criteria.",
       "A3a executed once on 2026-10-19 under the confirmed frozen preregistration: exit 0, 1138.7 s, 8/8 cycles, classification A3A_COMPLETE_PERIODICITY_NOT_IDENTIFIED; audit recomputed PASS; receipt committed 2665b93. No convergence verdict and no predictive claim.",
       "ISV1-A3B-DRIVER-ADDENDUM complete: the v2 driver is frozen (driver SHA-256 LF 3f3df5ba290a20739c4adc8e5a562ff7fe3b8fe328d215d33bb72d4e49679c72), synthetic tests PASS (10), zero-step preflight PASS for all five configs (receipt SHA-256 7f08bf5636e2b980980b27d27d2c1f8898581c9b3b22f8e110c1fb68afa0ccba), and the execution addendum references protocol v2 with authorization NOT_GRANTED (addendum SHA-256 329af0a5e05f19a57a2891fcf5767c528da01611c5e243a3bc5ee5fcb0b08d86).",
-      "ISV1-ACCEPTANCE remains WAITING on ISV1-A3B-MATRIX: the A3b T1 protocol v2 is frozen (protocol sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed, commit 4e1b1fc) after the owner-authorized correction of the spatial configs to 28/18 total cells at CFL 0.4; execution is NOT authorized. Only the owner execution confirmation with the protocol SHA and the 4,320 s cap remains; no campaign, no MUSCL, no physics changes, no P0-P9 edits.",
+      "ISV1-ACCEPTANCE remains WAITING on ISV1-A3B-MATRIX: the A3b T1 protocol v2 is frozen (protocol sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed, commit 4e1b1fc) after the owner-authorized correction of the spatial configs to 28/18 total cells at CFL 0.4. The owner authorized execution on 2026-10-20 with the 4,320 s cap and 4,096 MiB aggregate; hashes and zero-step identity/preflight verification passed. T1-A invocation 1 terminated FAILED_CLOSED at 112.094 s with PRIMARY_CONFIGURATION_HASH_MISMATCH and 0 cycles: the driver compared the effective solver configuration hash b472cce9... against the preflight native configuration hash 5baa4cbd.... Results are preserved; no rerun. A corrected driver changes its SHA-256 and requires a new addendum/preflight plus explicit owner authorization; no campaign, no MUSCL, no physics changes, no P0-P9 edits.",
+      "ISV1-A3B-HASH-BINDING-FIX is READY: patch the primary hash comparison to use effective.solver_configuration_sha256, add a regression test, regenerate preflight/addendum. Execution remains blocked on owner authorization after the fix.",
       "DPCV1 archived after transition: infrastructure ready, real curve not produced (no run authorization, no real engine data available)."
     ],
     "gate_tasks_total": 5,
@@ -8831,7 +8832,7 @@
     "remaining": [
       "ISV1-ACCEPTANCE"
     ],
-    "updated_at": "2026-10-20T13:53:05+00:00"
+    "updated_at": "2026-10-20T14:44:59+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -8894,7 +8895,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-20T13:53:05+00:00",
+  "updated_at": "2026-10-20T14:44:59+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
