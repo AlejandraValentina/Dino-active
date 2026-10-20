@@ -1,0 +1,243 @@
+{
+  "schema": "DINO_ISV1_A3B_T1_COST_ESTIMATE_V1",
+  "status": "PROPOSAL_NOT_AUTHORIZED",
+  "recorded_at": "2026-10-20T10:50:56Z",
+  "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+  "purpose": "Owner-requested cost estimate for the A3b T1 convergence matrix, derived from the single A3a measured run and the frozen design tiers. This is a budgeting artifact only: it does not authorize, preregister, or execute A3b.",
+  "authorization": {
+    "owner_preference": "T1",
+    "execution_authorized": false,
+    "authorization_status": "NOT_GRANTED",
+    "owner_statement_es": "Para A3b, mi opción preferida es T1, pero todavía no autorizo su ejecución. Primero quiero conocer el resultado de la revisión del prototipo columnar, su impacto real en CPU y memoria y si mantiene intacta la auditoría independiente. Después prepará una estimación de costo para T1 basada en las mediciones de A3a, considerando el 55,5 % de pasos rechazados y los límites de memoria. También distinguí explícitamente convergencia de la solución transitoria e identificación de periodicidad. Tres ciclos no deben utilizarse para afirmar convergencia del régimen permanente. Cuando esos puntos estén resueltos, podremos congelar el preregistro de A3b y autorizar su ejecución con un presupuesto definido. No modifiques los preregistros históricos ni ejecutes A3b todavía.",
+    "no_run_statement": "No A3b configuration was run, no solver step was executed, and no historical preregistration was modified. campaign_started=false.",
+    "columnar_review_input": {
+      "decision": "REJECT_FOR_ADOPTION",
+      "receipt": "results/full-rpm-sweep-v1/fast-evidence-review.json",
+      "receipt_sha256": "f26841df01a24d210a0d93c2c39c690105eb329c835c783d9bcf7fe77ff67228",
+      "relevance": "The columnar prototype does not replace the conventional canonical-primary evidence path, so this estimate assumes the existing audit/reconstruction pipeline and its measured cost share."
+    }
+  },
+  "based_on": {
+    "a3a_receipt": "results/integrated-solver-verification-v1/a3a-run-receipt.json",
+    "a3a_receipt_sha256": "76d95248cae2b419a99357c28408fed6cbb21907024fbf6da6b3bf211a35f24e",
+    "design": "openspec/changes/integrated-solver-verification-v1/design.md",
+    "design_lines": {
+      "cost_model": "L208-212",
+      "tiers": "L218-222",
+      "caps_and_workers": "L224-226",
+      "invocation_and_fail_closed": "L227-231"
+    },
+    "measured_head_at_estimate": "f894757da690b1150045c8a787a8c5dbe7acce08"
+  },
+  "measured_inputs": {
+    "rate": {
+      "steady_state_seconds_per_cycle_cycles_2_to_8": 144.55,
+      "cycle_1_seconds": 120.2,
+      "overall_seconds_per_cycle": 141.5,
+      "steady_cycle_spread_seconds": "142.8-146.2 (-1.2%/+1.1% around the mean)",
+      "machine": "same host, post performance commits f6a955c/ea2ff2d; single sample, no repetition authorized"
+    },
+    "exclusive_timer_shares": {
+      "audit": {"seconds": 560.855, "share": 0.4939},
+      "audit_make": {"seconds": 235.535, "share": 0.2074},
+      "integration_physical": {"seconds": 185.548, "share": 0.1634},
+      "serialization_io": {"seconds": 98.196, "share": 0.0865},
+      "snapshot": {"seconds": 30.744, "share": 0.0271},
+      "engineering": {"seconds": 14.766, "share": 0.0130},
+      "dispatch": {"seconds": 6.387, "share": 0.0056},
+      "periodicity": {"seconds": 0.0218, "share": 0.00002},
+      "finalization": {"seconds": 0.0455, "share": 0.00004},
+      "audit_plus_make_share": 0.7013,
+      "audit_make_serialization_share": 0.7878
+    },
+    "cfl_rejections": {
+      "cycle_1": {"rejected": 3084, "attempted": 5711, "share": 0.5400},
+      "cycles_2_to_8": {"rejected": 3596, "attempted": 6478, "share": 0.5550},
+      "note": "The measured 144.55 s/cycle already includes rejected attempts; it is an end-to-end per-cycle cost, not an accepted-step cost."
+    },
+    "rss": {
+      "process_start_mib": 36.9,
+      "cycle_end_gib_cycles_1_to_3": [1.21, 1.58, 1.85],
+      "eight_cycle_peak_mib": 2645.4,
+      "growth_gib_per_cycle": "0.08-0.13 (decelerating)",
+      "per_process_cap_mib": 3072,
+      "aggregate_cap_mib": 4096
+    },
+    "periodicity": {
+      "result_8_cycles": "EXECUTED_NO_PERIOD_ACCEPTED",
+      "accepted_period": null,
+      "comparisons_failed": "13/13",
+      "horizon_status": "HORIZON_COMPLETED",
+      "worst_lag1_relative_difference": 0.0131,
+      "threshold": 0.002
+    }
+  },
+  "model": {
+    "design_model_linear": "C_lin(N, cfl) = 144.55 * (N/48) * (0.4/cfl)",
+    "design_model_note": "This is the declared design formula recalibrated at the measured steady rate (the design used a 200 s placeholder).",
+    "quadratic_sensitivity": "C_quad(N, cfl) = F + S * (N/48)^2 * (0.4/cfl), with F = 2.65 s/cycle and S = 141.90 s/cycle",
+    "quadratic_rationale": "At fixed CFL the accepted/attempted step count scales with N and the per-step work also scales with N (state arrays and replay), so the physical expectation is quadratic in cells. The linear formula is dimensionally a per-step-constant assumption and is therefore treated as the conservative bound, not the physical prediction.",
+    "fixed_overhead_derivation": "dispatch 0.80 + engineering 1.85 + periodicity 0.003 + finalization 0.006 = 2.65 s/cycle; snapshot and serialization scale with the state and are assigned to the N-scaling term.",
+    "single_sample_band": "The A3a measurement is a single run; the receipt records a > +/-20% uncertainty band for extrapolations. Mesh scaling beyond 48 cells is unvalidated.",
+    "no_double_counting": "The 55.5% rejection share is embedded in the measured 144.55 s/cycle. It is not added again in the base estimate; it appears only in the sensitivity below."
+  },
+  "t1_configuration_set": {
+    "source": "design.md L220-221: T1 = T0 + temporal {0.1} + malla 12; T0 = temporal {0.4, 0.2} + espacial {24, 48}",
+    "resolved_set": [
+      {"id": "T1-A", "cells": 48, "max_cfl": 0.4, "role": "base, shared by both arms"},
+      {"id": "T1-B", "cells": 48, "max_cfl": 0.2, "role": "temporal arm"},
+      {"id": "T1-C", "cells": 48, "max_cfl": 0.1, "role": "temporal arm, T1 addition"},
+      {"id": "T1-D", "cells": 24, "max_cfl": 0.4, "role": "spatial arm"},
+      {"id": "T1-E", "cells": 12, "max_cfl": 0.4, "role": "spatial arm, T1 addition"}
+    ],
+    "cycles_per_configuration": 3,
+    "ambiguity_note": "The frozen design text, the design arithmetic, and the A3a receipt's revised matrix do not define the same set. The receipt's revised spatial arm is {6,12,24,48} cells at CFL 0.2 plus a 6-cell/CFL 0.1 contamination control, while the design text names only mesh 12 as the T1 spatial addition and its preliminary mesh estimates are consistent with CFL 0.4. The preregistration must enumerate the set explicitly; this estimate uses the five-configuration design set above and reports the receipt's superset separately."
+  },
+  "per_configuration_estimate": [
+    {"id": "T1-A", "cells": 48, "max_cfl": 0.4, "linear_seconds_per_cycle": 144.55, "quadratic_seconds_per_cycle": 144.55, "linear_3_cycles": 433.7, "quadratic_3_cycles": 433.7, "recommended_cap_seconds": 525},
+    {"id": "T1-B", "cells": 48, "max_cfl": 0.2, "linear_seconds_per_cycle": 289.10, "quadratic_seconds_per_cycle": 286.45, "linear_3_cycles": 867.3, "quadratic_3_cycles": 859.3, "recommended_cap_seconds": 1050},
+    {"id": "T1-C", "cells": 48, "max_cfl": 0.1, "linear_seconds_per_cycle": 578.20, "quadratic_seconds_per_cycle": 570.24, "linear_3_cycles": 1734.6, "quadratic_3_cycles": 1710.7, "recommended_cap_seconds": 2100},
+    {"id": "T1-D", "cells": 24, "max_cfl": 0.4, "linear_seconds_per_cycle": 72.28, "quadratic_seconds_per_cycle": 38.13, "linear_3_cycles": 216.8, "quadratic_3_cycles": 114.4, "recommended_cap_seconds": 275},
+    {"id": "T1-E", "cells": 12, "max_cfl": 0.4, "linear_seconds_per_cycle": 36.14, "quadratic_seconds_per_cycle": 11.52, "linear_3_cycles": 108.4, "quadratic_3_cycles": 34.6, "recommended_cap_seconds": 150}
+  ],
+  "t1_cost_summary": {
+    "serial_linear_seconds": 3360.8,
+    "serial_quadratic_seconds": 3152.7,
+    "orchestration_overhead_fraction": 0.03,
+    "with_orchestration_linear_seconds": 3461.6,
+    "with_orchestration_quadratic_seconds": 3247.2,
+    "central_range_seconds": [3247, 3462],
+    "central_range_minutes": [54.1, 57.7],
+    "rejection_plus_5pp_seconds": 3849.3,
+    "rejection_stress_plus_10pp_seconds": 4240.5,
+    "interpretation": "Central T1 cost is about 3.25-3.46 ks (54-58 min) depending on the mesh-scaling assumption. A realistic upper planning value with a 5 percentage-point deterioration in the CFL rejection share is about 3.85 ks; a 10-point stress case is about 4.24 ks. The previously recorded 4.2-4.5 ks envelope remains conservative but is not a reproducible per-configuration sum (see open issues).",
+    "comparison": {
+      "design_T1_estimate_seconds": 5250,
+      "design_cap_seconds": 7200,
+      "a3a_receipt_T1_estimate_seconds": 4200,
+      "refined_central_seconds": 3461.6,
+      "headroom_under_design_cap_seconds": 3738.4
+    }
+  },
+  "rejection_sensitivity": {
+    "measured_share": 0.555,
+    "cost_relation": "cost is proportional to attempted steps = accepted/(1-share), so dC/C = dr/(1-r)",
+    "per_percentage_point_fraction": 0.0225,
+    "examples": {
+      "plus_1pp": 0.0225,
+      "plus_5pp": 0.1124,
+      "plus_10pp": 0.2247
+    },
+    "fail_closed_conflict": {
+      "design_rule": "design.md L229-231: >50% of steps rejected by CFL -> stop the configuration and classify FAIL_CLOSED",
+      "measured": "A3a steady share is 55.5% (54.0% in cycle 1), above the design ceiling",
+      "consequence": "If the A3b preregistration inherits the 50% rule unchanged, configuration T1-A (48 cells / CFL 0.4) trips it on the measured evidence and the matrix is infeasible as designed. The rule cannot be silently relaxed: it is a preregistered stop condition.",
+      "owner_options": [
+        {"id": "A", "label": "Versioned ceiling", "detail": "New preregistration sets a justified ceiling (e.g., 60%) with the A3a measurement as rationale; >ceiling still FAIL_CLOSED."},
+        {"id": "B", "label": "Observable, not stop rule", "detail": "Rejection share is reported per configuration; fail-closed is reserved for NaN/Inf, identity mismatch, and conservation failure."},
+        {"id": "C", "label": "Keep 50%", "detail": "The 48-cell/CFL-0.4 configuration fails immediately and the matrix cannot answer the convergence question at the measured operating point."}
+      ],
+      "recommendation": "Option A or B, decided by the owner in the A3b preregistration; this artifact does not decide it."
+    }
+  },
+  "memory_estimate": {
+    "measured_48_cells_3_cycles": {
+      "cycle_end_gib": [1.21, 1.58, 1.85],
+      "planning_peak_gib": 2.0,
+      "margin_note": "The cycle-3 sample is 1.85 GiB; 2.0 GiB is a conservative planning value for a fresh 3-cycle invocation, below the 3072 MiB per-process cap."
+    },
+    "estimated_by_mesh": {
+      "48_cells": {"planning_gib_per_worker": 2.0, "basis": "measured cycle 3 plus margin"},
+      "24_cells": {"planning_gib_per_worker": 0.9, "basis": "state arrays scale approximately with cells plus process/audit overhead; estimate, not measured"},
+      "12_cells": {"planning_gib_per_worker": 0.55, "basis": "same scaling; estimate, not measured"}
+    },
+    "aggregate_cap_mib": 4096,
+    "worker_policy": {
+      "48_cells": "1 worker sequential. Two 48-cell workers at 2.0 GiB each would consume 4.0 GiB, i.e. 100% of the aggregate cap with no headroom.",
+      "24_cells": "up to 4 workers (4 x 0.9 = 3.6 GiB), sequential preferred for simplicity.",
+      "12_cells": "up to 4 workers (4 x 0.55 = 2.2 GiB).",
+      "checkpoint_effect": "Splitting a 48-cell configuration into per-cycle invocations resets RSS to about 1.21 GiB at each restart, so 2 workers become feasible if the invocation plan does so; this trades wall-clock simplicity for memory headroom."
+    },
+    "horizon_note": "The measured 8-cycle peak was 2.58 GiB and growth is 0.08-0.13 GiB/cycle. A 3-cycle matrix is safely inside the 3072 MiB per-process cap; any extension beyond ~10-12 cycles in one process requires a new horizon/memory plan and authorization."
+  },
+  "invocation_and_wall_plan": {
+    "per_invocation_cap_seconds": 600,
+    "tier_cap_seconds": 7200,
+    "invocations": [
+      {"id": "T1-A", "invocations": 1, "seconds_per_invocation": 434},
+      {"id": "T1-B", "invocations": 2, "seconds_per_invocation": "578 then 289 (2 cycles + 1 cycle)"},
+      {"id": "T1-C", "invocations": 3, "seconds_per_invocation": "about 570 per cycle; two cycles would exceed the 600 s invocation cap"},
+      {"id": "T1-D", "invocations": 1, "seconds_per_invocation": 217},
+      {"id": "T1-E", "invocations": 1, "seconds_per_invocation": 108}
+    ],
+    "total_invocations": 8,
+    "resume_overhead_seconds": 40,
+    "serial_wall_seconds": [3290, 3500],
+    "critical_path_seconds": 1735,
+    "parallel_note": "The (48, 0.1) configuration dominates the critical path and cannot be shortened by parallelism. Coarse configurations can overlap, but the 48-cell configurations must not overlap under the 4,096 MiB aggregate cap. Sequential execution is recommended; an optional 2-worker schedule over the coarse configurations yields at most a few hundred seconds and does not change the budget.",
+    "checkpoint_requirement": "Resume must be bound to the frozen identity and preregistration, never to convenience (design L227-228)."
+  },
+  "budget_recommendation": {
+    "recommended_hard_cap_seconds": 4320,
+    "recommended_hard_cap_minutes": 72,
+    "per_configuration_caps_seconds": {"T1-A": 525, "T1-B": 1050, "T1-C": 2100, "T1-D": 275, "T1-E": 150},
+    "design_cap_seconds": 7200,
+    "rationale": "4,320 s is about 25% above the conservative orchestration-inclusive estimate (3,462 s) and about 12% above the +5 pp rejection case (3,849 s). The design's 7,200 s ceiling remains available if the owner prefers the full design margin; a cap should be fixed in the preregistration before execution.",
+    "status": "RECOMMENDATION_ONLY_NOT_AUTHORIZED"
+  },
+  "claim_scope": {
+    "required_distinction": {
+      "transient_horizon_convergence": {
+        "allowed": true,
+        "horizon": "cycles 1-3",
+        "method": "compare observables at identical cycle indices across mesh and CFL; report relative differences against the reference configuration; quantify discretization sensitivity of the transient solution over the first three cycles.",
+        "limit": "necessary-not-sufficient; no extrapolation beyond cycle 3; no steady-state statement."
+      },
+      "periodicity_identification": {
+        "allowed": false,
+        "reason": "Three cycles are insufficient for lag1/lag2 periodicity acceptance. A3a with 8 cycles already returned EXECUTED_NO_PERIOD_ACCEPTED (13/13 comparisons failed, accepted_period null, worst lag1 1.31% vs 0.2% threshold).",
+        "required_field": "periodicity_status = NOT_EVALUATED_HORIZON_INSUFFICIENT"
+      },
+      "steady_state_convergence": {
+        "allowed": false,
+        "reason": "Cannot be asserted from three cycles or from a periodicity-not-identified result. A separate preregistration with an adequate horizon and a periodicity/steady-state criterion is required."
+      }
+    },
+    "recommended_prereg_fields": {
+      "claim_scope": "TRANSIENT_HORIZON_ONLY",
+      "steady_state_claim": "NONE",
+      "periodicity_claim": "NONE",
+      "periodicity_status": "NOT_EVALUATED_HORIZON_INSUFFICIENT",
+      "predictive_claim": "NONE",
+      "experimental_validation": "NOT_PERFORMED"
+    },
+    "extension_warning": "If the owner later wants periodicity or steady-state identification, that is a new scope: A3a's 8-cycle horizon and 0.08-0.13 GiB/cycle RSS growth imply a checkpoint/resume plan or a new memory-cap authorization; it must not be attached to T1 post-hoc."
+  },
+  "prereg_prerequisites": [
+    "Owner decision on the >50% CFL-rejection fail-closed rule (options A/B/C above).",
+    "Owner authorization of T1 and a fixed budget cap (recommended 4,320 s; design ceiling 7,200 s).",
+    "Preregistration enumerates the exact configuration set, cycles, observables, reference configuration, tolerances, abort rules, and claim scope.",
+    "Claim scope fixed to transient-horizon only; periodicity and steady-state explicitly not evaluated.",
+    "Checkpoint/resume plan for the 600 s invocation cap, bound to the frozen identity and preregistration.",
+    "Worker/memory policy: sequential 48-cell configurations; aggregate RSS <= 4,096 MiB; per-process <= 3,072 MiB.",
+    "Frozen SHA-256 binding of preregistration and driver; no historical preregistration edits."
+  ],
+  "open_issues": [
+    "Configuration-set ambiguity: design text (five configurations, spatial arm at CFL 0.4) versus the A3a receipt's revised matrix (six configurations including mesh 6 at CFL 0.2 plus a 6-cell/CFL 0.1 control). The preregistration must pick one.",
+    "Design arithmetic: the design T0 estimate (2,700 s) counts the shared (48, 0.4) base twice; the per-configuration sum is 2,100 s at the design rate. T1's 5,250 s inherits that duplicate.",
+    "A3a receipt aggregate: the spatial-arm figure (1,251 s) is not reproducible from the receipt's declared linear model over {6,12,24,48} cells at CFL 0.2 (which gives about 1,631 s at 145 s/cycle). The 4.2-4.5 ks envelope is therefore treated as conservative, not as a per-configuration sum.",
+    "Single-sample base rate: the steady-cycle spread is small (142.8-146.2 s), but the run-to-run and host-to-host variance is not measured; the receipt's > +/-20% band applies to extrapolations.",
+    "Mesh scaling is unvalidated beyond 48 cells: the linear and quadratic models diverge mainly at 24 and 12 cells (216.8 vs 114.4 s and 108.4 vs 34.6 s over 3 cycles).",
+    "Rejection share at CFL 0.2/0.1 and at coarser meshes is unknown; only (48, 0.4) was measured.",
+    "Per-path memory was not the object here, but no per-configuration RSS series exists for 24/12 cells; those values are estimates."
+  ],
+  "non_claims": [
+    "No A3b execution, no solver step, no campaign point.",
+    "No convergence verdict of any kind; A3a remains COMPLETE / PERIODICITY_NOT_IDENTIFIED.",
+    "No periodicity or steady-state identification from a 3-cycle matrix.",
+    "No predictive power-curve claim and no experimental validation.",
+    "No historical preregistration was modified; this artifact is a new, non-authorizing proposal."
+  ],
+  "campaign_started": false,
+  "artifacts_modified": false
+}
