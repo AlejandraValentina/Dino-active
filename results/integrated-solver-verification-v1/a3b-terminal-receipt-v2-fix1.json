@@ -1,0 +1,425 @@
+{
+  "schema": "DINO_ISV1_A3B_EXECUTION_TERMINAL_RECEIPT_V1",
+  "classification": "PARTIAL_BUDGET",
+  "status": "TERMINAL_FOR_CURRENT_AUTHORIZATION",
+  "recorded_utc": "2026-10-20T16:41:03.442525+00:00",
+  "authorization": {
+    "path": "results/integrated-solver-verification-v1/a3b-owner-execution-confirmation-v2-fix1.json",
+    "sha256": "499986e1f74aeb1d35e77b087d0bb01d457ecc00f848e5868b87eeff8a4a0213",
+    "protocol_sha256": "c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed",
+    "driver_sha256": "3062ed465f1a8d0e715ef9be07a4ddee4a0a1f11dba7cf4cf7824594e7b8bb42",
+    "addendum_sha256": "b93e743919f91486de166422d03ebe24e44702bfc40a7d355ddafa1054ba7d0b",
+    "preflight_receipt_sha256": "748f726273303393665a4a9ebee9ac7a235f9088b8abf2b2691a22e5d044d769",
+    "authorization_validated_by_driver": true,
+    "owner_scope": "A3b T1, five configurations, three cycles each, transient numerical sensitivity only; no periodicity, steady-state or predictive claim."
+  },
+  "execution": {
+    "artifact_root": "${DINO_ARTIFACT_ROOT}/isv1-a3b-fix1-exec-20261020/integrated-solver-verification-v1/a3b",
+    "runner_summary": "results\\integrated-solver-verification-v1\\runlogs\\isv1-a3b-t1a-fix1-exec.summary.json",
+    "runner_wall_seconds": 267.657,
+    "driver_invocation_seconds": 266.46899999992456,
+    "timed_out": false,
+    "exit_code": 0,
+    "solver_configs_started": [
+      "T1-A"
+    ],
+    "solver_configs_not_started": [
+      "T1-B",
+      "T1-C",
+      "T1-D",
+      "T1-E"
+    ],
+    "T1-A_status": "PARTIAL_BUDGET",
+    "T1-A_cycles_completed": 2,
+    "T1-A_cycles_required": 3,
+    "checkpoint_next_cycle": 3,
+    "failure": "T1-A cap exceeded: projected 542.568 s > 525 s",
+    "config_cap_seconds": 525.0,
+    "projected_config_spend_seconds": 542.568,
+    "cap_exceeded_by_projected_seconds": 17.568,
+    "analysis_freeze_written": false,
+    "sensitivity_analysis_performed": false,
+    "reason_matrix_stopped": "T1-A cannot complete its third cycle within the frozen per-configuration cap after charging the prior 112.094 s failed invocation; no retry, cap change, or continuation under this authorization."
+  },
+  "budget": {
+    "global_cap_seconds": 4320.0,
+    "previously_consumed_seconds": 112.094,
+    "corrected_driver_elapsed_seconds": 266.46899999992456,
+    "ledger_total_consumed_seconds": 378.5629999998491,
+    "ledger_remaining_seconds": 3941.437000000151,
+    "new_run_logged_wall_seconds": 267.657,
+    "conservative_known_execution_wall_total_seconds": 379.751,
+    "conservative_known_execution_wall_remaining_seconds": 3940.249,
+    "ledger_sha256": "12031ff8f7e0ca1f5be14854654e283773e0842c54e146f965d72f4c5108165e",
+    "note": "Driver ledger includes checkpoint/audit/invocation work; run_logged wall also includes process orchestration and is used for the conservative aggregate remaining figure."
+  },
+  "T1A_cycle_evidence": [
+    {
+      "cycle": 1,
+      "primary_artifact": "cycle-0001.json.gz",
+      "primary_sha256": "32403b157a6e8a0daa77d8468e5b5cc9030c521f4e2e45cd52b2b32e44d5d161",
+      "primary_file_sha256": "240a21cc3e1360d51ac1f9c3a49881af0e4884269b3f1095207d687da31ff79a",
+      "audit_status": "PASS",
+      "audit_recomputed": true,
+      "cycle_wall_seconds": 118.76099450001493,
+      "timers": {
+        "audit_reconstruction_audit_seconds": 59.813181999954395,
+        "audit_reconstruction_make_seconds": 24.871791300014593,
+        "cycle_wall_seconds": 118.76099450001493,
+        "dispatch_overhead_seconds": 0.7268485017120838,
+        "engineering_output_seconds": 1.4578995999181643,
+        "integration_physical_seconds": 20.421312998398207,
+        "periodicity_detector_seconds": 0.0004070999566465616,
+        "serialization_io_seconds": 7.946769900037907,
+        "state_snapshot_orchestration_seconds": 3.517804300179705
+      },
+      "accepted_steps": 5254,
+      "rejected_attempts": 3084,
+      "cfl_rejected_stage_entries": 6168,
+      "attempted_stage_entries": 11422,
+      "rejection_share": 0.5400105060409736,
+      "dt_accepted_s": {
+        "count": 5254,
+        "max": 1.0416666666666666e-05,
+        "median": 7.8125e-06,
+        "min": 9.843175309719577e-07
+      },
+      "effective_cfl_step": {
+        "count": 5254,
+        "max": 0.39982829397636843,
+        "median": 0.30348887263285435,
+        "min": 0.03606857978845336
+      },
+      "conservation": {
+        "energy_residual_J": 5.492828414332962e-14,
+        "mass_residual_kg": 6.708500942254059e-19,
+        "species_residual_kg": [
+          6.522153693858113e-19,
+          -1.0058516248644817e-21,
+          -1.0841849812415103e-19,
+          8.451636214537294e-76
+        ]
+      },
+      "periodicity": "NOT_EVALUATED",
+      "observables": {
+        "bmep_pa": {
+          "status": "UNDEFINED",
+          "value": null,
+          "reason": "Performance requires an accepted periodic cycle."
+        },
+        "brake_power_w": {
+          "status": "UNDEFINED",
+          "value": null,
+          "reason": "Performance requires an accepted periodic cycle."
+        },
+        "brake_torque_nm": {
+          "status": "UNDEFINED",
+          "value": null,
+          "reason": "Performance requires an accepted periodic cycle."
+        },
+        "brake_work_j": {
+          "status": "UNDEFINED",
+          "value": null,
+          "reason": "Performance requires an accepted periodic cycle."
+        },
+        "crankcase.mass_kg": {
+          "status": "DEFINED",
+          "value": 0.00013131089654361416,
+          "reason": null
+        },
+        "crankcase_gas_work_J": {
+          "status": "DEFINED",
+          "value": -10.233335198869627,
+          "reason": null
+        },
+        "fmep_pa": {
+          "status": "UNDEFINED",
+          "value": null,
+          "reason": "Performance requires an accepted periodic cycle."
+        },
+        "imep_pa": {
+          "status": "UNDEFINED",
+          "value": null,
+          "reason": "Performance requires an accepted periodic cycle."
+        },
+        "indicated_power_w": {
+          "status": "UNDEFINED",
+          "value": null,
+          "reason": "Performance requires an accepted periodic cycle."
+        },
+        "indicated_torque_nm": {
+          "status": "UNDEFINED",
+          "value": null,
+          "reason": "Performance requires an accepted periodic cycle."
+        },
+        "net_piston_mep_pa": {
+          "status": "UNDEFINED",
+          "value": null,
+          "reason": "Performance requires an accepted periodic cycle."
+        }
+      }
+    },
+    {
+      "cycle": 2,
+      "primary_artifact": "cycle-0002.json.gz",
+      "primary_sha256": "312d1908da270f90a3df36d5820ece38b9749f2c8d1670921c988edc9c6e51e9",
+      "primary_file_sha256": "ae18c9bc07a5e1c277951e8db9317ec57d348a5a3f706528e810b1d12a545694",
+      "audit_status": "PASS",
+      "audit_recomputed": true,
+      "cycle_wall_seconds": 144.02719219995197,
+      "timers": {
+        "audit_reconstruction_audit_seconds": 71.35241389996372,
+        "audit_reconstruction_make_seconds": 29.428671299945563,
+        "cycle_wall_seconds": 144.02719219995197,
+        "dispatch_overhead_seconds": 0.8352505044313148,
+        "engineering_output_seconds": 1.6739595000399277,
+        "integration_physical_seconds": 23.58542559563648,
+        "periodicity_detector_seconds": 0.0016574999317526817,
+        "serialization_io_seconds": 12.691674300003797,
+        "state_snapshot_orchestration_seconds": 4.452390999998897
+      },
+      "accepted_steps": 5764,
+      "rejected_attempts": 3596,
+      "cfl_rejected_stage_entries": 7192,
+      "attempted_stage_entries": 12956,
+      "rejection_share": 0.5551096017289286,
+      "dt_accepted_s": {
+        "count": 5764,
+        "max": 8.934977102879e-06,
+        "median": 6.944444444444445e-06,
+        "min": 9.843175309735368e-07
+      },
+      "effective_cfl_step": {
+        "count": 5764,
+        "max": 0.39343092308997957,
+        "median": 0.31281704313093184,
+        "min": 0.04224979497615123
+      },
+      "conservation": {
+        "energy_residual_J": -4.605205106145149e-13,
+        "mass_residual_kg": 4.0657581468206416e-19,
+        "species_residual_kg": [
+          -4.352161162111002e-19,
+          1.3234889800848443e-23,
+          -2.5169284734661905e-19,
+          -3.200960704581979e-21
+        ]
+      },
+      "periodicity": "NOT_EVALUATED",
+      "observables": {
+        "bmep_pa": {
+          "status": "UNDEFINED",
+          "value": null,
+          "reason": "Performance requires an accepted periodic cycle."
+        },
+        "brake_power_w": {
+          "status": "UNDEFINED",
+          "value": null,
+          "reason": "Performance requires an accepted periodic cycle."
+        },
+        "brake_torque_nm": {
+          "status": "UNDEFINED",
+          "value": null,
+          "reason": "Performance requires an accepted periodic cycle."
+        },
+        "brake_work_j": {
+          "status": "UNDEFINED",
+          "value": null,
+          "reason": "Performance requires an accepted periodic cycle."
+        },
+        "crankcase.mass_kg": {
+          "status": "DEFINED",
+          "value": 0.00012209117828639772,
+          "reason": null
+        },
+        "crankcase_gas_work_J": {
+          "status": "DEFINED",
+          "value": -2.264821050669958,
+          "reason": null
+        },
+        "fmep_pa": {
+          "status": "UNDEFINED",
+          "value": null,
+          "reason": "Performance requires an accepted periodic cycle."
+        },
+        "imep_pa": {
+          "status": "UNDEFINED",
+          "value": null,
+          "reason": "Performance requires an accepted periodic cycle."
+        },
+        "indicated_power_w": {
+          "status": "UNDEFINED",
+          "value": null,
+          "reason": "Performance requires an accepted periodic cycle."
+        },
+        "indicated_torque_nm": {
+          "status": "UNDEFINED",
+          "value": null,
+          "reason": "Performance requires an accepted periodic cycle."
+        },
+        "net_piston_mep_pa": {
+          "status": "UNDEFINED",
+          "value": null,
+          "reason": "Performance requires an accepted periodic cycle."
+        }
+      }
+    }
+  ],
+  "checkpoint": {
+    "path": "T1-A/checkpoint.json",
+    "sha256": "3b1203b6a1e4cb162910b8c011f4f562b693ee04f8f2801051f122416b11fcba",
+    "bindings_match_corrected_identity": true,
+    "cycles_in_checkpoint": [
+      1,
+      2
+    ],
+    "reused_incompatible_prior_cycle_data": false
+  },
+  "integrity": {
+    "result_sha256": "7124fbfe4929975ce68f4f94b1a67f89c267ad51372be81501098b23d6f85402",
+    "primary_sha256s": [
+      "32403b157a6e8a0daa77d8468e5b5cc9030c521f4e2e45cd52b2b32e44d5d161",
+      "312d1908da270f90a3df36d5820ece38b9749f2c8d1670921c988edc9c6e51e9"
+    ],
+    "both_primaries_recomputed_audit_pass": true,
+    "all_primary_compressed_artifact_hashes_match_recorded_sha": false,
+    "memory_peak_bytes": 2036133888,
+    "memory_peak_note": "Invocation receipt records rss_peak_bytes; see corresponding inv01 invocation.json.",
+    "invocation_receipt_sha256": "b27c9856acdda2062f336501de9740fe4b32bba9a2f84b931f15ea0280872de7"
+  },
+  "claim_limits": {
+    "observable_errors": "NOT_COMPUTABLE: only T1-A cycles 1-2 exist; T1-B..E were not started and atol_obs was not frozen.",
+    "temporal_sensitivity": "NOT_CONVERGED_NO_ESTIMATE",
+    "spatial_sensitivity": "NOT_CONVERGED_NO_ESTIMATE",
+    "periodicity": "NOT_EVALUATED",
+    "steady_state_convergence": "NOT_CLAIMED",
+    "predictive_validation": "NOT_CLAIMED",
+    "experimental_validation": "NOT_PERFORMED",
+    "observable_errors_by_name": {
+      "indicated_power_w": {
+        "classification": "NOT_CONVERGED",
+        "error": null,
+        "reason": "No estimate is possible: T1-A has only two cycles and T1-B through T1-E were not started; atol_obs was not frozen and no cross-configuration comparison was made."
+      },
+      "indicated_torque_nm": {
+        "classification": "NOT_CONVERGED",
+        "error": null,
+        "reason": "No estimate is possible: T1-A has only two cycles and T1-B through T1-E were not started; atol_obs was not frozen and no cross-configuration comparison was made."
+      },
+      "imep_pa": {
+        "classification": "NOT_CONVERGED",
+        "error": null,
+        "reason": "No estimate is possible: T1-A has only two cycles and T1-B through T1-E were not started; atol_obs was not frozen and no cross-configuration comparison was made."
+      },
+      "brake_work_j": {
+        "classification": "NOT_CONVERGED",
+        "error": null,
+        "reason": "No estimate is possible: T1-A has only two cycles and T1-B through T1-E were not started; atol_obs was not frozen and no cross-configuration comparison was made."
+      },
+      "brake_power_w": {
+        "classification": "NOT_CONVERGED",
+        "error": null,
+        "reason": "No estimate is possible: T1-A has only two cycles and T1-B through T1-E were not started; atol_obs was not frozen and no cross-configuration comparison was made."
+      },
+      "brake_torque_nm": {
+        "classification": "NOT_CONVERGED",
+        "error": null,
+        "reason": "No estimate is possible: T1-A has only two cycles and T1-B through T1-E were not started; atol_obs was not frozen and no cross-configuration comparison was made."
+      },
+      "bmep_pa": {
+        "classification": "NOT_CONVERGED",
+        "error": null,
+        "reason": "No estimate is possible: T1-A has only two cycles and T1-B through T1-E were not started; atol_obs was not frozen and no cross-configuration comparison was made."
+      },
+      "fmep_pa": {
+        "classification": "NOT_CONVERGED",
+        "error": null,
+        "reason": "No estimate is possible: T1-A has only two cycles and T1-B through T1-E were not started; atol_obs was not frozen and no cross-configuration comparison was made."
+      },
+      "net_piston_mep_pa": {
+        "classification": "NOT_CONVERGED",
+        "error": null,
+        "reason": "No estimate is possible: T1-A has only two cycles and T1-B through T1-E were not started; atol_obs was not frozen and no cross-configuration comparison was made."
+      },
+      "crankcase_gas_work_J": {
+        "classification": "NOT_CONVERGED",
+        "error": null,
+        "reason": "No estimate is possible: T1-A has only two cycles and T1-B through T1-E were not started; atol_obs was not frozen and no cross-configuration comparison was made."
+      },
+      "crankcase.mass_kg": {
+        "classification": "NOT_CONVERGED",
+        "error": null,
+        "reason": "No estimate is possible: T1-A has only two cycles and T1-B through T1-E were not started; atol_obs was not frozen and no cross-configuration comparison was made."
+      }
+    },
+    "supported_resolution_domain": "NOT_IDENTIFIED"
+  },
+  "acceptance": {
+    "classification": "PARTIAL",
+    "comparison_performed": false,
+    "atol_obs_frozen": false,
+    "per_observable_error_estimates": {
+      "indicated_power_w": null,
+      "indicated_torque_nm": null,
+      "imep_pa": null,
+      "brake_work_j": null,
+      "brake_power_w": null,
+      "brake_torque_nm": null,
+      "bmep_pa": null,
+      "fmep_pa": null,
+      "net_piston_mep_pa": null,
+      "crankcase_gas_work_J": null,
+      "crankcase.mass_kg": null
+    },
+    "per_observable_classification": {
+      "indicated_power_w": "NOT_CONVERGED",
+      "indicated_torque_nm": "NOT_CONVERGED",
+      "imep_pa": "NOT_CONVERGED",
+      "brake_work_j": "NOT_CONVERGED",
+      "brake_power_w": "NOT_CONVERGED",
+      "brake_torque_nm": "NOT_CONVERGED",
+      "bmep_pa": "NOT_CONVERGED",
+      "fmep_pa": "NOT_CONVERGED",
+      "net_piston_mep_pa": "NOT_CONVERGED",
+      "crankcase_gas_work_J": "NOT_CONVERGED",
+      "crankcase.mass_kg": "NOT_CONVERGED"
+    },
+    "temporal_sensitivity": "NOT_CONVERGED_NO_ESTIMATE",
+    "spatial_sensitivity": "NOT_CONVERGED_NO_ESTIMATE",
+    "supported_resolution_domain": "NOT_IDENTIFIED",
+    "reason": "The three-cycle T1-A base could not complete within its frozen per-configuration cap after charging the prior failed 112.094 s invocation. The protocol cap guard stopped before cycle 3. Without complete T1-A and comparisons, numerical errors and sensitivity cannot be estimated.",
+    "interpretation": "This is an incomplete-evidence classification, not evidence that the computed transient physically diverges. No error bound was demonstrated; no predictive or validated performance curve is supported.",
+    "cost_separation": "Single-sample diagnostic from two audited T1-A cycles only; not a configuration comparison or verified campaign performance estimate.",
+    "cost_separation_summary": {
+      "sample": "two T1-A cycles; single run",
+      "cycle_wall_seconds": [
+        118.76099450001493,
+        144.02719219995197
+      ],
+      "mean_cycle_wall_seconds": 131.39409334998345,
+      "combined_cycle_wall_seconds": 262.7881866999669,
+      "component_seconds": {
+        "integration_physical_seconds": 44.00673859403469,
+        "audit_reconstruction_make_seconds": 54.300462599960156,
+        "audit_reconstruction_audit_seconds": 131.16559589991812,
+        "serialization_io_seconds": 20.638444200041704,
+        "dispatch_overhead_seconds": 1.5620990061433986,
+        "engineering_output_seconds": 3.131859099958092,
+        "state_snapshot_orchestration_seconds": 7.970195300178602,
+        "periodicity_detector_seconds": 0.0020645998883992434
+      },
+      "component_wall_share": {
+        "integration_physical_seconds": 0.16746087085063108,
+        "audit_reconstruction_make_seconds": 0.20663205329681206,
+        "audit_reconstruction_audit_seconds": 0.499130488120738,
+        "serialization_io_seconds": 0.0785364230379398,
+        "dispatch_overhead_seconds": 0.005944327352610007,
+        "engineering_output_seconds": 0.011917807795271363,
+        "state_snapshot_orchestration_seconds": 0.030329351559773163,
+        "periodicity_detector_seconds": 7.856517122500863e-06
+      },
+      "memory_peak_bytes": 2036133888,
+      "measurement_limit": "Times are from the incomplete T1-A run; independent audit/reconstruction is included. No repeated control and no full-matrix basis."
+    }
+  }
+}
