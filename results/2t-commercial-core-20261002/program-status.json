@@ -6309,9 +6309,12 @@
         "results/integrated-solver-verification-v1/a3b-preflight-receipt-v2-fix1-exec.json",
         "results/integrated-solver-verification-v1/a3b-terminal-receipt-v2-fix1.json",
         "${DINO_ARTIFACT_ROOT}/isv1-a3b-fix1-exec-20261020/integrated-solver-verification-v1/a3b/a3b-budget-ledger.json",
-        "results/integrated-solver-verification-v1/runlogs/isv1-a3b-t1a-fix1-exec.summary.json"
+        "results/integrated-solver-verification-v1/runlogs/isv1-a3b-t1a-fix1-exec.summary.json",
+        "results/integrated-solver-verification-v1/a3b-owner-execution-confirmation-v3.json (v3 T1-A cycle-3 authorization SHA-256 f7b267e6f3d25c9e43df1f66b765f3e038cae34adc7adf04d91f10d82a210560)",
+        "results/integrated-solver-verification-v1/runlogs/isv1-a3b-t1a-cycle3-v3.summary.json (v3 T1-A cycle 3; SHA-256 d960da5e47e6a00daf614dc2426b7c89bcd2cff0f026b377ae7a733d732dfea2)",
+        "results/integrated-solver-verification-v1/a3b-t1a-cycle3-receipt-v3.json (v3 terminal receipt; SHA-256 86baf3af53e33f16bcff6cc80bb6ba21b493f31db90ed69d35247f2f9652e074)"
       ],
-      "next_action": "No continuation under this authorization. ISV1-ACCEPTANCE records the partial outcome; any further solver execution requires a new preregistration and explicit owner authorization.",
+      "next_action": "T1-A cycles 1-3 are complete via the v3 continuation; T1-B..E were not authorized. The matrix is INCOMPLETE_MATRIX; any further solver execution requires a new owner authorization and budget.",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "verification",
       "evidence_level": "L1",
@@ -6488,7 +6491,7 @@
         "results/integrated-solver-verification-v1/",
         "openspec/changes/integrated-solver-verification-v1/"
       ],
-      "next_action": "Owner execution authorization is the only remaining gate. It must quote protocol b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325, driver 66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932 and addendum 6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144. Do not run-config before that authorization.",
+      "next_action": "Executed under owner authorization; see ISV1-A3B-T1A-CYCLE3-EXEC and results/integrated-solver-verification-v1/a3b-t1a-cycle3-receipt-v3.json. T1-B..E remain not authorized.",
       "completed_at": "2026-10-21T11:07:25+00:00",
       "result": "V3_DRIVER_AND_ADDENDUM_DONE_EXECUTION_NOT_AUTHORIZED",
       "evidence": [
@@ -6498,7 +6501,8 @@
         "results/integrated-solver-verification-v1/a3b-preflight-receipt-v3.json (zero-step preflight PASS for all 5 configs, 0 solver steps, SHA-256 4866974ec2237c0d2ead88a3dafc4c4b5c3b24c3275747bb27fe3a7100d51611)",
         "results/integrated-solver-verification-v1/a3b-execution-addendum-v3.json (addendum SHA-256 6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144; protocol b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325; parent checkpoint 3b1203b6a1e4cb162910b8c011f4f562b693ee04f8f2801051f122416b11fcba)",
         "v3 protocol freeze receipt SHA-256 8d1aa104e5066b4c899973dae62286af5694759140d8892fb6f39d6d078d3e52",
-        "No run-config, no solver execution; v2 checkpoints/results/ledger and v1 artifacts unchanged."
+        "No run-config, no solver execution; v2 checkpoints/results/ledger and v1 artifacts unchanged.",
+        "results/integrated-solver-verification-v1/a3b-t1a-cycle3-receipt-v3.json (cycle 3 executed; SHA-256 86baf3af53e33f16bcff6cc80bb6ba21b493f31db90ed69d35247f2f9652e074)"
       ],
       "verification": {
         "tests": "python -m pytest tests/test_integrated_solver_verification_a3b.py tests/test_integrated_solver_verification_a3b_v3.py -q -> 23 passed",
@@ -6508,6 +6512,59 @@
         "run_config_invoked": false,
         "solver_steps": 0
       }
+    },
+    {
+      "id": "ISV1-A3B-T1A-CYCLE3-EXEC",
+      "description": "Owner-authorized single T1-A cycle-3 continuation on the frozen v3 protocol: invocation 2, 600 s cumulative T1-A cap, one cycle, no retries, fail-closed, v2 artifacts preserved. Run, audit, freeze atol and record the incomplete matrix.",
+      "dependencies": [
+        "ISV1-A3B-RESUME-V3-IMPLEMENT"
+      ],
+      "state": "DONE",
+      "unblock_tasks": [],
+      "commits": [],
+      "completed_at": "2026-10-21T11:19:18+00:00",
+      "result": "T1A_CYCLE3_COMPLETE_MATRIX_INCOMPLETE",
+      "evidence": [
+        "results/integrated-solver-verification-v1/a3b-owner-execution-confirmation-v3.json (owner authorization SHA-256 f7b267e6f3d25c9e43df1f66b765f3e038cae34adc7adf04d91f10d82a210560; protocol b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325; driver 66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932; addendum 6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144)",
+        "results/integrated-solver-verification-v1/runlogs/isv1-a3b-t1a-cycle3-v3.summary.json (exit 0, runner wall 153.391 s, driver 151.906 s, SHA-256 d960da5e47e6a00daf614dc2426b7c89bcd2cff0f026b377ae7a733d732dfea2)",
+        "results/integrated-solver-verification-v1/runlogs/isv1-a3b-t1a-cycle3-v3.log (73 lines, SHA-256 095f8bbb2b1ca32ee730ce2dd971867763f0bd77b25b8b7fb07b006d833552bc)",
+        "T1-A cycle 3 primary SHA-256 a7eaf55bffc8855117f01c2419201533425e1b9bdf21ddac6e6bf7b37c4d4f2f; audit recomputed PASS",
+        "T1-A cumulative 530.469/600 s (69.531 s buffer); global 530.469/4320 s",
+        "v3 result SHA-256 883214a9108a835a374234d2ac265d1c9b893b6f1229e72e9ced966f51b6658a; v3 checkpoint SHA-256 98f49c7c052aa7f58368c8407514824c783700c4e1e48d373103fa076ad756f3; v3 ledger SHA-256 2de8566252a76c818c80668f045f639dc1bf8afe6c9dc1d541cb7c6765a23eb6",
+        "results/integrated-solver-verification-v1/a3b-analysis-freeze-v3.json (FROZEN_BEFORE_COMPARISON, 11 observables, SHA-256 19214a5ca3cd290fea8b0634cdbddfae46b5e1cc3f801dfa4f8201b67e1be8c2)",
+        "results/integrated-solver-verification-v1/a3b-sensitivity-report-v3.json / results/integrated-solver-verification-v1/a3b-analysis-receipt-v3.json (INCOMPLETE_MATRIX because T1-B..E were not authorized; SHA-256 e0dcec55697913157f5d37a3ada5d542fc2f101cd285864b0390053e438ce958 / fc81f5226cc260d5faccf588ddc60c554fecc9f5054a20c5b243b5b353fbc19b)",
+        "results/integrated-solver-verification-v1/a3b-t1a-cycle3-receipt-v3.json (terminal receipt SHA-256 86baf3af53e33f16bcff6cc80bb6ba21b493f31db90ed69d35247f2f9652e074)",
+        "v2 parent checkpoint 3b1203b6..., result 7124fbfe..., ledger 12031ff8... verified unchanged."
+      ],
+      "verification": {
+        "run_config_exit_code": 0,
+        "runner_timed_out": false,
+        "driver_invocation_seconds": 151.90599999995902,
+        "t1a_cycle3_primary_sha256": "a7eaf55bffc8855117f01c2419201533425e1b9bdf21ddac6e6bf7b37c4d4f2f",
+        "audit_recomputed": true,
+        "t1a_cumulative_spent_seconds": 530.4689999998081,
+        "t1a_cap_seconds": 600.0,
+        "global_spent_seconds": 530.4689999998081,
+        "global_cap_seconds": 4320.0,
+        "v2_parent_hashes_unchanged": true,
+        "analysis_status": "INCOMPLETE_MATRIX",
+        "solver_configs_started": [
+          "T1-A"
+        ],
+        "solver_configs_not_started": [
+          "T1-B",
+          "T1-C",
+          "T1-D",
+          "T1-E"
+        ]
+      },
+      "next_action": "No further solver execution under this authorization. T1-B..E require a new owner authorization and budget; the matrix remains INCOMPLETE_MATRIX and no convergence or predictive claim is supported.",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "verification",
+      "evidence_level": "L2",
+      "write_scope": [
+        "results/integrated-solver-verification-v1/"
+      ]
     },
     {
       "id": "SPV1-CHECKPOINT-RECOVERY-IMPL",
@@ -6745,7 +6802,7 @@
     "summary": "Verify the current first-order integrated solver before any predictive power-curve claim: spatial (mesh) and temporal (max_cfl) convergence, error quantification, and separation of physical integration cost from audit/reconstruction/serialization cost.",
     "change": "openspec/changes/integrated-solver-verification-v1",
     "spec": "openspec/changes/integrated-solver-verification-v1/specs/integrated-solver-verification-v1/spec.md",
-    "authorization_source": "Owner approval of Option A in CODEX (2026-10-19): complete A0-A2 and deliver design, budgets and acceptance criteria. Owner limited authorization (2026-10-19, after design review): A3a = one instrumented 3000 RPM profile run (48 cells, max_cfl 0.4, 1200 s cap, no retries/extensions), contingent on the frozen preregistration and the explicit owner confirmation with it visible; A3b (convergence matrix) requires a new authorization of scope and budget. Owner authorized option A on 2026-10-20: correct T1-D to 28 total cells and T1-E to 18 total cells, keeping CFL 0.4; protocol v2 frozen (sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed), v1 preserved. Owner authorized the hash-binding fix on 2026-10-20: correct the native-vs-solver configuration identity defect, add positive/negative tests, reproduce the failed binding, regenerate preflight/addendum, preserve historical artifacts and budget, and do not execute A3b until the fix and corrected driver identity are presented. Explicit owner execution authorization received 2026-10-20, bound to corrected driver 3062ed465f1a8d0e715ef9be07a4ddee4a0a1f11dba7cf4cf7824594e7b8bb42, protocol c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed, addendum b93e743919f91486de166422d03ebe24e44702bfc40a7d355ddafa1054ba7d0b, global 4,320 s and 4,096 MiB aggregate cap. Execution reached T1-A PARTIAL_BUDGET after cycles 1-2; stopped by frozen T1-A cap projection, no retry or extension. Owner selected option C on 2026-10-21: a 600 s cumulative T1-A cap, continuing from the exact v2 checkpoint at cycle 3; the v3 protocol is frozen at sha256 b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325. The v3 driver (66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932), lineage/ledger tests (8 PASS), lineage-preflight (PASS), zero-step preflight (PASS, 5/5, 0 solver steps) and execution addendum (6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144) are complete without solver execution. Execution remains NOT_GRANTED pending a separate owner authorization quoting the final v3 protocol, driver and addendum SHA-256.",
+    "authorization_source": "Owner approval of Option A in CODEX (2026-10-19): complete A0-A2 and deliver design, budgets and acceptance criteria. Owner limited authorization (2026-10-19, after design review): A3a = one instrumented 3000 RPM profile run (48 cells, max_cfl 0.4, 1200 s cap, no retries/extensions), contingent on the frozen preregistration and the explicit owner confirmation with it visible; A3b (convergence matrix) requires a new authorization of scope and budget. Owner authorized option A on 2026-10-20: correct T1-D to 28 total cells and T1-E to 18 total cells, keeping CFL 0.4; protocol v2 frozen (sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed), v1 preserved. Owner authorized the hash-binding fix on 2026-10-20: correct the native-vs-solver configuration identity defect, add positive/negative tests, reproduce the failed binding, regenerate preflight/addendum, preserve historical artifacts and budget, and do not execute A3b until the fix and corrected driver identity are presented. Explicit owner execution authorization received 2026-10-20, bound to corrected driver 3062ed465f1a8d0e715ef9be07a4ddee4a0a1f11dba7cf4cf7824594e7b8bb42, protocol c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed, addendum b93e743919f91486de166422d03ebe24e44702bfc40a7d355ddafa1054ba7d0b, global 4,320 s and 4,096 MiB aggregate cap. Execution reached T1-A PARTIAL_BUDGET after cycles 1-2; stopped by frozen T1-A cap projection, no retry or extension. Owner selected option C on 2026-10-21: a 600 s cumulative T1-A cap, continuing from the exact v2 checkpoint at cycle 3; the v3 protocol is frozen at sha256 b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325. The v3 driver (66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932), lineage/ledger tests (8 PASS), lineage-preflight (PASS), zero-step preflight (PASS, 5/5, 0 solver steps) and execution addendum (6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144) are complete without solver execution. Execution remains NOT_GRANTED pending a separate owner authorization quoting the final v3 protocol, driver and addendum SHA-256. Owner authorized one T1-A cycle-3 continuation on 2026-10-21, quoting protocol b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325, driver 66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932 and addendum 6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144, with the 600 s cumulative cap. The run completed once (exit 0, 153.391 s runner wall, 151.906 s driver, T1-A cumulative 530.469/600 s, global 530.469/4320 s, cycle 3 audit recomputed PASS); atol was frozen and the sensitivity report/receipt are INCOMPLETE_MATRIX because T1-B..E were not authorized. No further solver execution is authorized.",
     "transitioned_from": "DINO_POWER_CURVE_V1",
     "gate_tasks": [
       "ISV1-PROVENANCE-REPAIR",
@@ -6754,7 +6811,7 @@
       "ISV1-A3-EXECUTION",
       "ISV1-ACCEPTANCE"
     ],
-    "completion_criterion": "A3a completed: one instrumented run, PERIODICITY_NOT_IDENTIFIED. A3b T1 v2 stopped at the frozen T1-A cap after two audited cycles. The v3 continuation package for T1-A cycle 3 is complete (driver 66fa9cb9..., 8 v3 tests PASS, lineage and zero-step preflights PASS, addendum 6efd73f1...), but cycle 3 has not run and execution is NOT_AUTHORIZED. T1-B..E were not started; atol_obs was not frozen; spatial/temporal errors are NOT_CONVERGED because no estimate is possible. Acceptance PARTIAL; gate REVIEW; no supported resolution domain or predictive claim. Any A3b solver execution requires explicit owner authorization quoting the final v3 protocol, driver and addendum SHA-256."
+    "completion_criterion": "A3a completed: one instrumented run, PERIODICITY_NOT_IDENTIFIED. A3b T1-A cycles 1-3 are complete via the v3 continuation: cycle 3 exit 0, audit recomputed PASS, T1-A cumulative 530.469/600 s, global 530.469/4320 s, v2 parent hashes unchanged. The sensitivity matrix is INCOMPLETE_MATRIX because T1-B..E were not authorized; atol was frozen but no spatial/temporal convergence estimate is possible. Acceptance PARTIAL; gate REVIEW; no supported resolution domain or predictive claim. Any T1-B..E execution requires a new owner authorization and budget."
   },
   "objectives": [
     {
@@ -7378,7 +7435,7 @@
     },
     {
       "id": "ISV1-A3B-AUTHORIZATION-DECISION",
-      "status": "T1A_CAP_SELECTED_V3_FROZEN_EXECUTION_NOT_AUTHORIZED",
+      "status": "T1A_CYCLE3_EXECUTED_MATRIX_INCOMPLETE",
       "selected_option": "T1",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "decision_id": "ISV1-A3B-AUTHORIZATION-DECISION",
@@ -7415,13 +7472,18 @@
         "results/integrated-solver-verification-v1/a3b-resume-preregistration-draft-v3.md",
         "results/integrated-solver-verification-v1/a3b-budget-resume-feasibility-review.json",
         "results/integrated-solver-verification-v1/a3b-preregistration-v3.json",
-        "results/integrated-solver-verification-v1/a3b-preregistration-v3-freeze.json"
+        "results/integrated-solver-verification-v1/a3b-preregistration-v3-freeze.json",
+        "results/integrated-solver-verification-v1/a3b-owner-execution-confirmation-v3.json (owner authorization SHA-256 f7b267e6f3d25c9e43df1f66b765f3e038cae34adc7adf04d91f10d82a210560)",
+        "results/integrated-solver-verification-v1/a3b-t1a-cycle3-receipt-v3.json (T1-A cycle-3 terminal receipt SHA-256 86baf3af53e33f16bcff6cc80bb6ba21b493f31db90ed69d35247f2f9652e074)",
+        "results/integrated-solver-verification-v1/runlogs/isv1-a3b-t1a-cycle3-v3.summary.json (exit 0, 153.391 s; SHA-256 d960da5e47e6a00daf614dc2426b7c89bcd2cff0f026b377ae7a733d732dfea2)",
+        "results/integrated-solver-verification-v1/a3b-analysis-freeze-v3.json (SHA-256 19214a5ca3cd290fea8b0634cdbddfae46b5e1cc3f801dfa4f8201b67e1be8c2)",
+        "results/integrated-solver-verification-v1/a3b-sensitivity-report-v3.json / results/integrated-solver-verification-v1/a3b-analysis-receipt-v3.json (INCOMPLETE_MATRIX; SHA-256 e0dcec55697913157f5d37a3ada5d542fc2f101cd285864b0390053e438ce958 / fc81f5226cc260d5faccf588ddc60c554fecc9f5054a20c5b243b5b353fbc19b)"
       ],
-      "recommendation": "v3 continuation package complete for T1-A cycle 3: parent scientific binding equal, v3 ledger carries 378.563 s, lineage-preflight PASS, zero-step preflight PASS 5/5, addendum frozen with authorization NOT_GRANTED. Only a separate owner execution authorization quoting the final v3 protocol, driver and addendum SHA-256 remains before any solver run.",
+      "recommendation": "T1-A cycles 1-3 are complete and audited under the 600 s cumulative cap. The A3b matrix remains incomplete because T1-B..E were not authorized; no temporal or spatial convergence statement is possible. A new owner authorization and budget are required for T1-B..E.",
       "owner_preference": "T1",
       "preferred_tier": "T1",
-      "authorization": "NOT_GRANTED",
-      "authorization_note": "On 2026-10-21 the owner selected option C from the resume draft: a 600 s cumulative T1-A cap, continuing from the exact v2 checkpoint (cycles 1-2 preserved; cycle 3 not started). The v3 protocol is frozen at SHA-256 b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325 with execution NOT_GRANTED. The v3 driver (66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932), lineage/ledger tests (8 PASS), lineage-preflight (PASS), zero-step preflight (PASS, 5/5, 0 solver steps) and execution addendum (6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144) are complete. The v2 terminal history and the failed 112.094 s charge remain unchanged. A separate owner authorization quoting the final v3 protocol, driver and addendum SHA-256 is still required before any solver execution.",
+      "authorization": "GRANTED_AND_EXECUTED_FOR_T1A_CYCLE3_ONLY",
+      "authorization_note": "On 2026-10-21 the owner selected option C (600 s cumulative T1-A cap) and then authorized one T1-A cycle-3 continuation quoting protocol b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325, driver 66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932 and addendum 6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144. The run completed once: exit 0, runner wall 153.391 s, cycle 3 audit recomputed PASS, cumulative T1-A 530.469/600 s (69.531 s buffer), global 530.469/4320 s. The v3 result is 883214a9108a835a374234d2ac265d1c9b893b6f1229e72e9ced966f51b6658a, checkpoint 98f49c7c052aa7f58368c8407514824c783700c4e1e48d373103fa076ad756f3, ledger 2de8566252a76c818c80668f045f639dc1bf8afe6c9dc1d541cb7c6765a23eb6. atol was frozen at 19214a5ca3cd290fea8b0634cdbddfae46b5e1cc3f801dfa4f8201b67e1be8c2; the sensitivity report/receipt are INCOMPLETE_MATRIX because T1-B..E were not authorized. v2 parent hashes are unchanged. No further solver execution is authorized; no convergence or predictive claim.",
       "estimate_artifact": "results/integrated-solver-verification-v1/a3b-t1-cost-estimate-v2.json",
       "estimate_sha256": "b986e9a6c7162ecbd906d693d218777abe75630b77f92988694230090ca6c05e",
       "prerequisites": [
@@ -7468,12 +7530,14 @@
       },
       "prerequisite_status": {
         "driver_addendum": "DONE_CORRECTED",
-        "owner_execution_confirmation": "PENDING_NEW_AUTHORIZATION",
+        "owner_execution_confirmation": "DONE_T1A_CYCLE3_EXECUTED",
         "zero_step_preflight": "DONE_PASS",
         "historical_preregistration_preserved": "DONE",
         "v3_driver_addendum": "DONE",
         "v3_lineage_preflight": "DONE_PASS",
-        "v3_zero_step_preflight": "DONE_PASS"
+        "v3_zero_step_preflight": "DONE_PASS",
+        "v3_t1a_cycle3_execution": "DONE_COMPLETE",
+        "t1b_e_authorization": "PENDING_NEW_AUTHORIZATION"
       },
       "t1a_resume": {
         "selected_at": "2026-10-21",
@@ -7501,12 +7565,13 @@
         },
         "execution_authorized": false,
         "remaining_conditions": [
-          "Owner execution authorization quoting the final v3 protocol, driver and addendum SHA-256."
+          "T1-B..E require a new owner authorization and budget; no further T1-A execution is authorized."
         ],
         "completed_conditions": [
           "Implement and freeze the v3 driver and lineage/ledger tests.",
           "Run lineage-preflight and zero-step preflight for T1-A cycle 3.",
-          "Write the v3 execution addendum binding the v3 protocol and driver."
+          "Write the v3 execution addendum binding the v3 protocol and driver.",
+          "Owner execution authorization and T1-A cycle 3 execution."
         ],
         "implementation_v3": {
           "status": "DONE_EXECUTION_NOT_AUTHORIZED",
@@ -7547,10 +7612,46 @@
           "solver_executed": false,
           "v2_artifacts_modified": false,
           "execution_authorized": false
+        },
+        "cycle3_executed": true,
+        "cycle3_execution": {
+          "status": "DONE",
+          "authorization": {
+            "path": "results/integrated-solver-verification-v1/a3b-owner-execution-confirmation-v3.json",
+            "sha256": "f7b267e6f3d25c9e43df1f66b765f3e038cae34adc7adf04d91f10d82a210560"
+          },
+          "receipt": {
+            "path": "results/integrated-solver-verification-v1/a3b-t1a-cycle3-receipt-v3.json",
+            "sha256": "86baf3af53e33f16bcff6cc80bb6ba21b493f31db90ed69d35247f2f9652e074"
+          },
+          "runner_summary": {
+            "path": "results/integrated-solver-verification-v1/runlogs/isv1-a3b-t1a-cycle3-v3.summary.json",
+            "sha256": "d960da5e47e6a00daf614dc2426b7c89bcd2cff0f026b377ae7a733d732dfea2"
+          },
+          "runner_log": {
+            "path": "results/integrated-solver-verification-v1/runlogs/isv1-a3b-t1a-cycle3-v3.log",
+            "sha256": "095f8bbb2b1ca32ee730ce2dd971867763f0bd77b25b8b7fb07b006d833552bc"
+          },
+          "exit_code": 0,
+          "timed_out": false,
+          "runner_wall_seconds": 153.391,
+          "driver_invocation_seconds": 151.90599999995902,
+          "t1a_cycle3_primary_sha256": "a7eaf55bffc8855117f01c2419201533425e1b9bdf21ddac6e6bf7b37c4d4f2f",
+          "t1a_cumulative_spent_seconds": 530.4689999998081,
+          "t1a_cumulative_cap_seconds": 600.0,
+          "t1a_remaining_seconds": 69.53100000019187,
+          "global_spent_seconds": 530.4689999998081,
+          "global_cap_seconds": 4320.0,
+          "audit_recomputed": true,
+          "t1a_status": "COMPLETE",
+          "t1a_cycles_completed": 3,
+          "matrix_status": "INCOMPLETE_MATRIX",
+          "v2_artifacts_unchanged": true,
+          "execution_authorized_for_further_runs": false
         }
       },
       "v3_implementation": {
-        "status": "DONE_EXECUTION_NOT_AUTHORIZED",
+        "status": "DONE_CYCLE3_EXECUTED",
         "protocol": {
           "path": "results/integrated-solver-verification-v1/a3b-preregistration-v3.json",
           "sha256": "b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325"
@@ -7587,7 +7688,77 @@
         },
         "solver_executed": false,
         "v2_artifacts_modified": false,
-        "execution_authorized": false
+        "execution_authorized": false,
+        "execution": {
+          "status": "DONE",
+          "authorization": {
+            "path": "results/integrated-solver-verification-v1/a3b-owner-execution-confirmation-v3.json",
+            "sha256": "f7b267e6f3d25c9e43df1f66b765f3e038cae34adc7adf04d91f10d82a210560"
+          },
+          "receipt": {
+            "path": "results/integrated-solver-verification-v1/a3b-t1a-cycle3-receipt-v3.json",
+            "sha256": "86baf3af53e33f16bcff6cc80bb6ba21b493f31db90ed69d35247f2f9652e074"
+          },
+          "runner_summary": {
+            "path": "results/integrated-solver-verification-v1/runlogs/isv1-a3b-t1a-cycle3-v3.summary.json",
+            "sha256": "d960da5e47e6a00daf614dc2426b7c89bcd2cff0f026b377ae7a733d732dfea2"
+          },
+          "runner_log": {
+            "path": "results/integrated-solver-verification-v1/runlogs/isv1-a3b-t1a-cycle3-v3.log",
+            "sha256": "095f8bbb2b1ca32ee730ce2dd971867763f0bd77b25b8b7fb07b006d833552bc"
+          },
+          "exit_code": 0,
+          "timed_out": false,
+          "runner_wall_seconds": 153.391,
+          "driver_invocation_seconds": 151.90599999995902,
+          "t1a_cycle3_primary_sha256": "a7eaf55bffc8855117f01c2419201533425e1b9bdf21ddac6e6bf7b37c4d4f2f",
+          "t1a_cumulative_spent_seconds": 530.4689999998081,
+          "t1a_cumulative_cap_seconds": 600.0,
+          "t1a_remaining_seconds": 69.53100000019187,
+          "global_spent_seconds": 530.4689999998081,
+          "global_cap_seconds": 4320.0,
+          "audit_recomputed": true,
+          "t1a_status": "COMPLETE",
+          "t1a_cycles_completed": 3,
+          "matrix_status": "INCOMPLETE_MATRIX",
+          "v2_artifacts_unchanged": true,
+          "execution_authorized_for_further_runs": false
+        }
+      },
+      "t1a_cycle3_execution": {
+        "status": "DONE",
+        "authorization": {
+          "path": "results/integrated-solver-verification-v1/a3b-owner-execution-confirmation-v3.json",
+          "sha256": "f7b267e6f3d25c9e43df1f66b765f3e038cae34adc7adf04d91f10d82a210560"
+        },
+        "receipt": {
+          "path": "results/integrated-solver-verification-v1/a3b-t1a-cycle3-receipt-v3.json",
+          "sha256": "86baf3af53e33f16bcff6cc80bb6ba21b493f31db90ed69d35247f2f9652e074"
+        },
+        "runner_summary": {
+          "path": "results/integrated-solver-verification-v1/runlogs/isv1-a3b-t1a-cycle3-v3.summary.json",
+          "sha256": "d960da5e47e6a00daf614dc2426b7c89bcd2cff0f026b377ae7a733d732dfea2"
+        },
+        "runner_log": {
+          "path": "results/integrated-solver-verification-v1/runlogs/isv1-a3b-t1a-cycle3-v3.log",
+          "sha256": "095f8bbb2b1ca32ee730ce2dd971867763f0bd77b25b8b7fb07b006d833552bc"
+        },
+        "exit_code": 0,
+        "timed_out": false,
+        "runner_wall_seconds": 153.391,
+        "driver_invocation_seconds": 151.90599999995902,
+        "t1a_cycle3_primary_sha256": "a7eaf55bffc8855117f01c2419201533425e1b9bdf21ddac6e6bf7b37c4d4f2f",
+        "t1a_cumulative_spent_seconds": 530.4689999998081,
+        "t1a_cumulative_cap_seconds": 600.0,
+        "t1a_remaining_seconds": 69.53100000019187,
+        "global_spent_seconds": 530.4689999998081,
+        "global_cap_seconds": 4320.0,
+        "audit_recomputed": true,
+        "t1a_status": "COMPLETE",
+        "t1a_cycles_completed": 3,
+        "matrix_status": "INCOMPLETE_MATRIX",
+        "v2_artifacts_unchanged": true,
+        "execution_authorized_for_further_runs": false
       }
     }
   ],
@@ -9111,6 +9282,12 @@
       "task": "ISV1-A3B-RESUME-V3-IMPLEMENT",
       "kind": "implementation",
       "summary": "V3_DRIVER_AND_ADDENDUM_DONE_EXECUTION_NOT_AUTHORIZED. Driver SHA-256 LF 66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932; v3 tests 8 PASS (23 PASS including v2); lineage-preflight PASS (scientific fields equal, zero solver steps); zero-step preflight PASS 5/5 configs (0 solver steps); addendum SHA-256 6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144 binds protocol b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325 and parent checkpoint 3b1203b6a1e4cb162910b8c011f4f562b693ee04f8f2801051f122416b11fcba. No run-config, no solver execution, v2 artifacts untouched. Remaining gate: owner authorization quoting final v3 protocol, driver and addendum hashes."
+    },
+    {
+      "at": "2026-10-21T11:19:18+00:00",
+      "task": "ISV1-A3B-T1A-CYCLE3-EXEC",
+      "kind": "execution",
+      "summary": "T1A_CYCLE3_COMPLETE_MATRIX_INCOMPLETE. Owner authorization f7b267e6f3d25c9e43df1f66b765f3e038cae34adc7adf04d91f10d82a210560; exit 0, run_logged 153.391 s, driver 151.906 s, cumulative T1-A 530.469/600 s (69.531 s buffer), global 530.469/4320 s; cycle 3 primary a7eaf55bffc8855117f01c2419201533425e1b9bdf21ddac6e6bf7b37c4d4f2f, audit recomputed PASS; v3 result 883214a9108a835a374234d2ac265d1c9b893b6f1229e72e9ced966f51b6658a, checkpoint 98f49c7c052aa7f58368c8407514824c783700c4e1e48d373103fa076ad756f3, ledger 2de8566252a76c818c80668f045f639dc1bf8afe6c9dc1d541cb7c6765a23eb6; v2 parent hashes unchanged. atol freeze 19214a5ca3cd290fea8b0634cdbddfae46b5e1cc3f801dfa4f8201b67e1be8c2; sensitivity report/receipt INCOMPLETE_MATRIX because T1-B..E were not authorized. No convergence or predictive claim; no further solver execution authorized."
     }
   ],
   "legacy_gate_status": {
@@ -9139,7 +9316,8 @@
       "ISV1-A3B-AUTHORIZATION-DECISION: on 2026-10-21 the owner selected option C (600 s cumulative T1-A cap) from the resume draft. Protocol v3 is frozen at SHA-256 b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325, continuing T1-A at cycle 3 from the exact v2 checkpoint; v2 artifacts and the failed 112.094 s charge are unchanged. Execution remains NOT_GRANTED pending the v3 driver, zero-step preflight, addendum and a separate owner authorization quoting the final hashes.",
       "results/integrated-solver-verification-v1/a3b-terminal-receipt-v2-fix1.json",
       "results/integrated-solver-verification-v1/a3a-run-receipt.json",
-      "A3b T1-A v3 continuation package complete without solver execution: driver SHA-256 LF 66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932, v3 tests 8/8 PASS (23/23 including v2), lineage-preflight PASS (scientific fields equal, zero steps, receipt ea220a4ed479905d6833be933ba7e9a7e6a0c3a2fd664e9476c1c36fb7a7c716), zero-step preflight PASS 5/5 configs (receipt 4866974ec2237c0d2ead88a3dafc4c4b5c3b24c3275747bb27fe3a7100d51611), execution addendum SHA-256 6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144 binds protocol b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325 and parent checkpoint 3b1203b6...; authorization remains NOT_GRANTED."
+      "A3b T1-A v3 continuation package complete without solver execution: driver SHA-256 LF 66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932, v3 tests 8/8 PASS (23/23 including v2), lineage-preflight PASS (scientific fields equal, zero steps, receipt ea220a4ed479905d6833be933ba7e9a7e6a0c3a2fd664e9476c1c36fb7a7c716), zero-step preflight PASS 5/5 configs (receipt 4866974ec2237c0d2ead88a3dafc4c4b5c3b24c3275747bb27fe3a7100d51611), execution addendum SHA-256 6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144 binds protocol b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325 and parent checkpoint 3b1203b6...; authorization remains NOT_GRANTED.",
+      "ISV1 A3b T1-A v3 cycle 3 executed once under explicit owner authorization: exit 0, run_logged wall 153.391 s, driver 151.906 s, cumulative T1-A 530.469/600 s (69.531 s buffer), global 530.469/4320 s; cycle 3 primary a7eaf55bffc8855117f01c2419201533425e1b9bdf21ddac6e6bf7b37c4d4f2f, audit recomputed PASS; v3 result 883214a9108a835a374234d2ac265d1c9b893b6f1229e72e9ced966f51b6658a, checkpoint 98f49c7c052aa7f58368c8407514824c783700c4e1e48d373103fa076ad756f3, ledger 2de8566252a76c818c80668f045f639dc1bf8afe6c9dc1d541cb7c6765a23eb6; v2 parent hashes unchanged. atol freeze 19214a5ca3cd290fea8b0634cdbddfae46b5e1cc3f801dfa4f8201b67e1be8c2; sensitivity report/receipt INCOMPLETE_MATRIX (T1-B..E not authorized). No convergence or predictive claim."
     ],
     "gate_tasks_total": 5,
     "gate_tasks_done": 5,
@@ -9147,7 +9325,7 @@
       "DONE": 5
     },
     "remaining": [],
-    "updated_at": "2026-10-21T11:07:25+00:00"
+    "updated_at": "2026-10-21T11:19:18+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -9210,7 +9388,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-21T11:07:25+00:00",
+  "updated_at": "2026-10-21T11:19:18+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",

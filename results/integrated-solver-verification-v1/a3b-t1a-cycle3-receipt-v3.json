@@ -1,0 +1,140 @@
+{
+  "schema": "DINO_ISV1_A3B_T1A_CYCLE3_RECEIPT_V3",
+  "classification": "T1A_CYCLE3_COMPLETE_MATRIX_INCOMPLETE",
+  "status": "TERMINAL_FOR_CURRENT_AUTHORIZATION",
+  "recorded_utc": "2026-10-21T11:17:59+00:00",
+  "authorization": {
+    "path": "results/integrated-solver-verification-v1/a3b-owner-execution-confirmation-v3.json",
+    "sha256": "f7b267e6f3d25c9e43df1f66b765f3e038cae34adc7adf04d91f10d82a210560",
+    "protocol_sha256": "b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325",
+    "driver_sha256": "66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932",
+    "addendum_sha256": "6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144",
+    "owner_confirmation": "Autorizo la ejecución única de T1-A cycle 3 (invocation 2) bajo el protocolo b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325, driver 66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932 y addendum 6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144, con cap acumulado de 600 s, un solo ciclo, sin reintentos, fail-closed y preservando todos los artefactos v2.",
+    "authorization_validated_by_driver": true,
+    "owner_scope": "One T1-A cycle-3 continuation, invocation 2, 600 s cumulative T1-A cap, no retries, fail-closed, v2 artifacts preserved."
+  },
+  "execution": {
+    "artifact_root": "${DINO_ARTIFACT_ROOT}/isv1-a3b-fix1-exec-20261020/integrated-solver-verification-v1/a3b",
+    "runner_summary": "results/integrated-solver-verification-v1/runlogs/isv1-a3b-t1a-cycle3-v3.summary.json",
+    "runner_summary_sha256": "d960da5e47e6a00daf614dc2426b7c89bcd2cff0f026b377ae7a733d732dfea2",
+    "runner_log": "results/integrated-solver-verification-v1/runlogs/isv1-a3b-t1a-cycle3-v3.log",
+    "runner_log_sha256": "095f8bbb2b1ca32ee730ce2dd971867763f0bd77b25b8b7fb07b006d833552bc",
+    "runner_wall_seconds": 153.391,
+    "driver_invocation_seconds": 151.90599999995902,
+    "timed_out": false,
+    "exit_code": 0,
+    "solver_configs_started": [
+      "T1-A"
+    ],
+    "solver_configs_not_started": [
+      "T1-B",
+      "T1-C",
+      "T1-D",
+      "T1-E"
+    ],
+    "T1-A_status": "COMPLETE",
+    "T1-A_cycles_completed": 3,
+    "T1-A_cycles_required": 3,
+    "checkpoint_next_cycle": 4,
+    "failure": null,
+    "invocation_id": "T1-A-inv02-6bf9177006",
+    "invocation_index": 2,
+    "invocation_dir": "${DINO_ARTIFACT_ROOT}/isv1-a3b-fix1-exec-20261020/integrated-solver-verification-v1/a3b/T1-A/v3/inv02-01f9f57dea"
+  },
+  "budget": {
+    "global_cap_seconds": 4320.0,
+    "t1a_cumulative_cap_seconds": 600.0,
+    "per_invocation_cap_seconds": 600.0,
+    "parent_t1a_charge_seconds": 378.563,
+    "cycle3_actual_seconds": 151.90599999995902,
+    "t1a_cumulative_spent_seconds": 530.4689999998081,
+    "t1a_remaining_seconds": 69.53100000019186,
+    "global_spent_seconds": 530.4689999998081,
+    "global_remaining_seconds": 3789.531000000192,
+    "reserved_seconds_at_completion": 0.0,
+    "ledger_sha256": "2de8566252a76c818c80668f045f639dc1bf8afe6c9dc1d541cb7c6765a23eb6",
+    "note": "Parent charges 112.094 s FAILED_CLOSED + 266.469 s PARTIAL_BUDGET are carried forward unchanged; cycle 3 is the only V3 charge."
+  },
+  "T1A_cycle3_evidence": {
+    "cycle": 3,
+    "origin": "V3",
+    "primary_artifact": "cycle-0003.json.gz",
+    "primary_sha256": "a7eaf55bffc8855117f01c2419201533425e1b9bdf21ddac6e6bf7b37c4d4f2f",
+    "primary_file_sha256": "d0311b7e6b19c893f51d05c7771832cd355354bbd1e5fc47288d8772c64deb8d",
+    "primary_file_bytes": 50090923,
+    "audit_status": "PASS",
+    "audit_recomputed": true,
+    "audit_method": "INTEGRATED_CYCLE_REPLAY_V2_PRE_CYCLE_P7_BASELINE",
+    "configuration_hash": "b472cce9d24e6fe659cc9be9de4d87f9f9fd059cdfcdc191f18e0a690c8fa4ee",
+    "cycle_wall_seconds": 148.07935790007468,
+    "cfl_primary_max": 0.3864941611706398,
+    "cfl_primary_min": 0.04162739591739521,
+    "accepted_steps": 5764,
+    "rejected_attempts": 7192,
+    "rejected_step_count": 3596,
+    "rss_bytes_at_cycle_end": 1488887808,
+    "timers": {
+      "audit_reconstruction_audit_seconds": 76.34440910001285,
+      "audit_reconstruction_make_seconds": 28.40069779998157,
+      "cycle_wall_seconds": 148.07935790007468,
+      "dispatch_overhead_seconds": 0.8144679995020851,
+      "engineering_output_seconds": 1.6113082999363542,
+      "integration_physical_seconds": 23.78153290040791,
+      "periodicity_detector_seconds": 0.002953000017441809,
+      "serialization_io_seconds": 12.940722099971026,
+      "state_snapshot_orchestration_seconds": 4.176075900089927
+    }
+  },
+  "analysis": {
+    "freeze": {
+      "path": "results/integrated-solver-verification-v1/a3b-analysis-freeze-v3.json",
+      "sha256": "19214a5ca3cd290fea8b0634cdbddfae46b5e1cc3f801dfa4f8201b67e1be8c2",
+      "status": "FROZEN_BEFORE_COMPARISON",
+      "observables": 11,
+      "claim_scope": "TRANSIENT_CYCLES_1_TO_3_ONLY"
+    },
+    "sensitivity_report": {
+      "path": "results/integrated-solver-verification-v1/a3b-sensitivity-report-v3.json",
+      "sha256": "e0dcec55697913157f5d37a3ada5d542fc2f101cd285864b0390053e438ce958",
+      "status": "INCOMPLETE_MATRIX",
+      "missing": [
+        "T1-B: required file is missing",
+        "T1-C: required file is missing",
+        "T1-D: required file is missing",
+        "T1-E: required file is missing"
+      ]
+    },
+    "analysis_receipt": {
+      "path": "results/integrated-solver-verification-v1/a3b-analysis-receipt-v3.json",
+      "sha256": "fc81f5226cc260d5faccf588ddc60c554fecc9f5054a20c5b243b5b353fbc19b",
+      "status": "INCOMPLETE_MATRIX",
+      "no_global_verdict": true
+    },
+    "note": "T1-A cycles 1-3 are complete and the atol table is frozen. The sensitivity matrix remains incomplete because T1-B..E were not authorized; no temporal or spatial convergence statement is possible."
+  },
+  "lineage": {
+    "parent_protocol_sha256": "c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed",
+    "parent_checkpoint_sha256": "3b1203b6a1e4cb162910b8c011f4f562b693ee04f8f2801051f122416b11fcba",
+    "parent_result_sha256": "7124fbfe4929975ce68f4f94b1a67f89c267ad51372be81501098b23d6f85402",
+    "parent_ledger_sha256": "12031ff8f7e0ca1f5be14854654e283773e0842c54e146f965d72f4c5108165e",
+    "parent_binding_sha256": "1bf01d20acbc1e9f59aa36d4d933aa17c877b904a49a268c4d0d973f31d46e7e",
+    "parent_artifacts_unchanged": true,
+    "v3_result_sha256": "883214a9108a835a374234d2ac265d1c9b893b6f1229e72e9ced966f51b6658a",
+    "v3_checkpoint_sha256": "98f49c7c052aa7f58368c8407514824c783700c4e1e48d373103fa076ad756f3",
+    "v3_ledger_sha256": "2de8566252a76c818c80668f045f639dc1bf8afe6c9dc1d541cb7c6765a23eb6",
+    "cycle_origin": {
+      "1": "V2_CARRY_FORWARD",
+      "2": "V2_CARRY_FORWARD",
+      "3": "V3"
+    }
+  },
+  "claims": {
+    "periodicity": "NOT_EVALUATED",
+    "global_convergence": "NO_GLOBAL_VERDICT",
+    "predictive_validation": "NOT_CLAIMED",
+    "experimental_validation": "NOT_PERFORMED",
+    "bounded_statement": "T1-A cycle 3 completed and audited under the frozen 600 s cumulative cap; the A3b matrix is incomplete because T1-B..E were not authorized, so no convergence or predictive statement is made."
+  },
+  "v2_artifacts_unchanged": true,
+  "next_gate": "T1-B..E require a new owner authorization and budget. No further solver execution is authorized under this receipt."
+}

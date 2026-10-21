@@ -1,0 +1,27 @@
+{
+  "schema": "DINO_ISV1_A3B_OWNER_EXECUTION_CONFIRMATION_V3",
+  "authorized_at": "2026-10-21T11:12:21+00:00",
+  "owner_confirmation": "Autorizo la ejecución única de T1-A cycle 3 (invocation 2) bajo el protocolo b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325, driver 66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932 y addendum 6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144, con cap acumulado de 600 s, un solo ciclo, sin reintentos, fail-closed y preservando todos los artefactos v2.",
+  "protocol_sha256": "b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325",
+  "parent_protocol_sha256": "c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed",
+  "driver_sha256": "66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932",
+  "execution_authorized": true,
+  "global_cap_seconds": 4320,
+  "t1a_cumulative_cap_seconds": 600,
+  "per_invocation_cap_seconds": 600,
+  "parent_checkpoint_sha256": "3b1203b6a1e4cb162910b8c011f4f562b693ee04f8f2801051f122416b11fcba",
+  "parent_result_sha256": "7124fbfe4929975ce68f4f94b1a67f89c267ad51372be81501098b23d6f85402",
+  "parent_ledger_sha256": "12031ff8f7e0ca1f5be14854654e283773e0842c54e146f965d72f4c5108165e",
+  "parent_binding_sha256": "1bf01d20acbc1e9f59aa36d4d933aa17c877b904a49a268c4d0d973f31d46e7e",
+  "config_id": "T1-A",
+  "invocation_index": 2,
+  "scope": {
+    "cycles": [
+      3
+    ],
+    "one_cycle": true,
+    "retries": 0,
+    "fail_closed": true,
+    "v2_artifacts_preserved": true
+  }
+}

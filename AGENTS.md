@@ -25,7 +25,7 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 CURRENT_OBJECTIVE: INTEGRATED_SOLVER_VERIFICATION_V1
 change/spec:       openspec/changes/integrated-solver-verification-v1/
                    specs/integrated-solver-verification-v1/spec.md
-completion:        A3a completed: one instrumented run, PERIODICITY_NOT_IDENTIFIED. A3b T1 v2 stopped at the frozen T1-A cap after two audited cycles. The v3 continuation package for T1-A cycle 3 is complete (driver 66fa9cb9..., 8 v3 tests PASS, lineage and zero-step preflights PASS, addendum 6efd73f1...), but cycle 3 has not run and execution is NOT_AUTHORIZED. T1-B..E were not started; atol_obs was not frozen; spatial/temporal errors are NOT_CONVERGED because no estimate is possible. Acceptance PARTIAL; gate REVIEW; no supported resolution domain or predictive claim. Any A3b solver execution requires explicit owner authorization quoting the final v3 protocol, driver and addendum SHA-256.
+completion:        A3a completed: one instrumented run, PERIODICITY_NOT_IDENTIFIED. A3b T1-A cycles 1-3 are complete via the v3 continuation: cycle 3 exit 0, audit recomputed PASS, T1-A cumulative 530.469/600 s, global 530.469/4320 s, v2 parent hashes unchanged. The sensitivity matrix is INCOMPLETE_MATRIX because T1-B..E were not authorized; atol was frozen but no spatial/temporal convergence estimate is possible. Acceptance PARTIAL; gate REVIEW; no supported resolution domain or predictive claim. Any T1-B..E execution requires a new owner authorization and budget.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```
