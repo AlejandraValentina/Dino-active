@@ -6475,6 +6475,22 @@
       ]
     },
     {
+      "id": "ISV1-A3B-RESUME-V3-IMPLEMENT",
+      "description": "Implement and test the frozen v3 A3b T1-A continuation: parent-binding acceptance, v3 ledger carry-forward, T1-A/v3 artifact subtree, lineage-preflight and zero-step preflight, and the v3 execution addendum. Do not execute the solver; do not modify v2 artifacts; do not authorize execution.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "implementation / verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "scripts/diagnostics/",
+        "tests/",
+        "results/integrated-solver-verification-v1/",
+        "openspec/changes/integrated-solver-verification-v1/"
+      ],
+      "next_action": "Create scripts/diagnostics/integrated_solver_verification_a3b_v3.py from the frozen v3 protocol, add lineage and ledger tests, run lineage-preflight and zero-step preflight, write a3b-execution-addendum-v3.json, and record the final hashes. No run-config."
+    },
+    {
       "id": "SPV1-CHECKPOINT-RECOVERY-IMPL",
       "description": "Implement and test the contract-compliant recovery path selected by SPV1-CHECKPOINT-INTERRUPTION-RECOVERY: preserve the unmanifested cycle-0004 primary without reinterpreting it, validate the last committed checkpoint, and restore accounting without weakening hash or audit checks. Do not execute the solver and do not mutate existing artifacts.",
       "dependencies": [
@@ -7343,7 +7359,7 @@
     },
     {
       "id": "ISV1-A3B-AUTHORIZATION-DECISION",
-      "status": "SCOPE_RESOLVED_EXECUTION_NOT_AUTHORIZED",
+      "status": "T1A_CAP_SELECTED_V3_FROZEN_EXECUTION_NOT_AUTHORIZED",
       "selected_option": "T1",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "decision_id": "ISV1-A3B-AUTHORIZATION-DECISION",
@@ -7375,13 +7391,18 @@
         "openspec/changes/integrated-solver-verification-v1/design.md (tier matrix and design recommendation T1)",
         "results/integrated-solver-verification-v1/a3b-t1-cost-estimate.json",
         "results/integrated-solver-verification-v1/a3b-preregistration.json",
-        "results/integrated-solver-verification-v1/a3b-preregistration-freeze.json"
+        "results/integrated-solver-verification-v1/a3b-preregistration-freeze.json",
+        "results/integrated-solver-verification-v1/a3b-resume-preregistration-draft-v3.json",
+        "results/integrated-solver-verification-v1/a3b-resume-preregistration-draft-v3.md",
+        "results/integrated-solver-verification-v1/a3b-budget-resume-feasibility-review.json",
+        "results/integrated-solver-verification-v1/a3b-preregistration-v3.json",
+        "results/integrated-solver-verification-v1/a3b-preregistration-v3-freeze.json"
       ],
       "recommendation": "Scope frozen as v2: B + T1 + 4,320 s, five configurations (48/0.4, 48/0.2, 48/0.1, 28/0.4, 18/0.4), first sensitivity evaluation, transient-only claim scope, no expansion. Execution NOT authorized; remaining gate is the driver addendum referencing v2, owner execution confirmation, and preflight.",
       "owner_preference": "T1",
       "preferred_tier": "T1",
       "authorization": "NOT_GRANTED",
-      "authorization_note": "The owner authorized the hash-binding fix on 2026-10-20, not execution. The fix is verified: corrected driver, 15 synthetic tests PASS, zero-step preflight PASS for five configs, and a new addendum with authorization NOT_GRANTED. The historical owner confirmation is rejected because it does not bind the corrected driver. A new execution authorization quoting the corrected driver SHA-256 and protocol v2 is required before any A3b run.",
+      "authorization_note": "On 2026-10-21 the owner selected option C from the resume draft: a 600 s cumulative T1-A cap, continuing from the exact v2 checkpoint (cycles 1-2 preserved; cycle 3 not started). The v3 protocol is frozen at SHA-256 b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325 with execution NOT_GRANTED. The v2 terminal history and the failed 112.094 s charge remain unchanged. Before any solver execution, the v3 driver, lineage/ledger tests, zero-step preflight and v3 addendum must be authored, and a separate owner authorization must quote the final v3 protocol, driver and addendum SHA-256 values.",
       "estimate_artifact": "results/integrated-solver-verification-v1/a3b-t1-cost-estimate-v2.json",
       "estimate_sha256": "b986e9a6c7162ecbd906d693d218777abe75630b77f92988694230090ca6c05e",
       "prerequisites": [
@@ -7431,6 +7452,38 @@
         "owner_execution_confirmation": "PENDING_NEW_AUTHORIZATION",
         "zero_step_preflight": "DONE_PASS",
         "historical_preregistration_preserved": "DONE"
+      },
+      "t1a_resume": {
+        "selected_at": "2026-10-21",
+        "selection_quote": "vamos por 600s",
+        "selected_option": "C",
+        "t1a_cumulative_cap_seconds": 600,
+        "global_cap_seconds": 4320,
+        "per_invocation_cap_seconds": 600,
+        "memory_limit_mib": 3072,
+        "parent_cycles": [
+          1,
+          2
+        ],
+        "start_cycle": 3,
+        "continuation_invocation_index": 2,
+        "carry_forward_t1a_seconds": 378.563,
+        "carry_forward_conservative_global_seconds": 379.751,
+        "protocol_v3": {
+          "path": "results/integrated-solver-verification-v1/a3b-preregistration-v3.json",
+          "sha256": "b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325",
+          "status": "FROZEN_PROTOCOL_EXECUTION_NOT_AUTHORIZED",
+          "freeze": {
+            "path": "results/integrated-solver-verification-v1/a3b-preregistration-v3-freeze.json"
+          }
+        },
+        "execution_authorized": false,
+        "remaining_conditions": [
+          "Implement and freeze the v3 driver and lineage/ledger tests.",
+          "Run lineage-preflight and zero-step preflight for T1-A cycle 3.",
+          "Write the v3 execution addendum binding the v3 protocol and driver.",
+          "Owner execution authorization quoting the final v3 protocol, driver and addendum SHA-256."
+        ]
       }
     }
   ],
@@ -8936,6 +8989,18 @@
       "task": "ISV1-A3B-RESUME-PREREG-DRAFT",
       "kind": "design",
       "summary": "DRAFT_NOT_FROZEN_NOT_AUTHORIZED. Defined parent-binding acceptance for a v3 protocol/driver, v3 ledger carry-forward (112.094 + 266.469 = 378.563 s; 379.751 s conservative global), and combined-cycle analysis. Presented T1-A cap options A-F without selecting one: 525 infeasible, 560 arithmetic-only (17.432 s buffer), 600 feasible (57.432 s buffer, 50 s global headroom), 620/650 progressively less headroom, no-resume zero-risk. No solver, no cap freeze, no v2 artifact modified."
+    },
+    {
+      "at": "2026-10-21T10:36:00+00:00",
+      "task": "ISV1-A3B-AUTHORIZATION-DECISION",
+      "kind": "decision",
+      "summary": "Owner selected option C: 600 s cumulative T1-A cap (literal \"vamos por 600s\"). Arithmetic: parent ledger 378.563 s, cycle-3 reservation 164.005 s, 221.437 s available, 57.432 s buffer, 50 s global headroom, total caps 4,270 < 4,320. Frozen v3 protocol b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325 continues T1-A at cycle 3 from the exact v2 checkpoint; execution NOT_GRANTED. v2 artifacts and the failed 112.094 s charge unchanged."
+    },
+    {
+      "at": "2026-10-21T10:36:00+00:00",
+      "task": "ISV1-A3B-RESUME-V3-IMPLEMENT",
+      "kind": "process",
+      "summary": "Added READY task to implement the frozen v3 continuation without solver execution: parent-binding acceptance, v3 ledger carry-forward, T1-A/v3 subtree, lineage-preflight, zero-step preflight and v3 addendum. READY remains 3 after the draft closed; no run authorization."
     }
   ],
   "legacy_gate_status": {
@@ -8961,6 +9026,7 @@
       "ISV1-A3B-HASH-BINDING-FIX is READY: patch the primary hash comparison to use effective.solver_configuration_sha256, add a regression test, regenerate preflight/addendum. Execution remains blocked on owner authorization after the fix.",
       "DPCV1 archived after transition: infrastructure ready, real curve not produced (no run authorization, no real engine data available).",
       "ISV1-A3B-HASH-BINDING-FIX complete (commit e6f1b657cfc9233123d795da94ce6c14cf2052bd): corrected driver SHA-256 3062ed465f1a8d0e715ef9be07a4ddee4a0a1f11dba7cf4cf7824594e7b8bb42 separates the native preflight identity from the solver identity; synthetic tests PASS (15); zero-step preflight PASS for all five configs (receipt SHA-256 53997aaa6102fb967c249e007b2abbbf0dcf35809d1f3c651d359483c423868f); addendum SHA-256 b93e743919f91486de166422d03ebe24e44702bfc40a7d355ddafa1054ba7d0b binds the corrected driver and protocol v2 with authorization NOT_GRANTED; verification receipt SHA-256 176190f14d98ef28663d4c84004aab7c80eab7ada289f99896eeb9480e412b79; no solver execution.",
+      "ISV1-A3B-AUTHORIZATION-DECISION: on 2026-10-21 the owner selected option C (600 s cumulative T1-A cap) from the resume draft. Protocol v3 is frozen at SHA-256 b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325, continuing T1-A at cycle 3 from the exact v2 checkpoint; v2 artifacts and the failed 112.094 s charge are unchanged. Execution remains NOT_GRANTED pending the v3 driver, zero-step preflight, addendum and a separate owner authorization quoting the final hashes.",
       "results/integrated-solver-verification-v1/a3b-terminal-receipt-v2-fix1.json",
       "results/integrated-solver-verification-v1/a3a-run-receipt.json"
     ],
@@ -8970,7 +9036,7 @@
       "DONE": 5
     },
     "remaining": [],
-    "updated_at": "2026-10-20T16:43:02+00:00"
+    "updated_at": "2026-10-21T10:36:00+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

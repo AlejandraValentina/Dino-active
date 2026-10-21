@@ -1,0 +1,44 @@
+{
+  "schema": "DINO_ISV1_A3B_PREREGISTRATION_V3_FREEZE",
+  "status": "FROZEN_PROTOCOL_EXECUTION_NOT_AUTHORIZED",
+  "frozen_at": "2026-10-21T10:35:00Z",
+  "protocol": {
+    "path": "results/integrated-solver-verification-v1/a3b-preregistration-v3.json",
+    "sha256": "b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325",
+    "schema": "DINO_ISV1_A3B_PREREGISTRATION_V3"
+  },
+  "parent_protocol": {
+    "path": "results/integrated-solver-verification-v1/a3b-preregistration-v2.json",
+    "sha256": "c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed",
+    "preserved": true
+  },
+  "owner_selection": {
+    "literal": "vamos por 600s",
+    "selected_option": "C",
+    "selected_t1a_cumulative_cap_seconds": 600,
+    "confirmed_at": "2026-10-21",
+    "source": "a3b-resume-preregistration-draft-v3.json budget_options.options[id=C]",
+    "interpretation": "The owner selected the 600 s cumulative T1-A cap. This freeze authorizes the v3 protocol, driver, preflight and addendum preparation only; solver execution remains NOT_GRANTED until a separate owner authorization quotes the final v3 hashes."
+  },
+  "scope": {
+    "continuation": "T1-A cycle 3 only from the exact v2 checkpoint",
+    "parent_cycles": [1, 2],
+    "start_cycle": 3,
+    "continuation_invocation_index": 2,
+    "global_cap_seconds": 4320,
+    "t1a_cumulative_cap_seconds": 600,
+    "per_invocation_cap_seconds": 600,
+    "memory_limit_mib": 3072,
+    "carry_forward_t1a_seconds": 378.563,
+    "carry_forward_conservative_global_seconds": 379.751,
+    "t1b_to_t1e_authorized": false
+  },
+  "execution_authorization": "NOT_GRANTED",
+  "no_run_statement": "No solver step has been executed under the v3 protocol. No T1-A cycle 3 has been run. Execution requires a separate explicit owner authorization quoting the v3 protocol, driver and addendum SHA-256 values.",
+  "integrity": {
+    "parent_protocol_preserved": true,
+    "v2_artifacts_modified": false,
+    "owner_decision_record_modified": false,
+    "notes": "The v3 protocol continues T1-A from the v2 checkpoint; v2 remains the frozen parent and is not superseded."
+  }
+}
