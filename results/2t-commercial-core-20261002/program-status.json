@@ -6454,6 +6454,50 @@
         "tests/",
         "results/integrated-solver-verification-v1/"
       ]
+    },
+    {
+      "id": "ISV1-A3B-RESUME-PREREG-DRAFT",
+      "description": "Read-only preparation of a new A3b resume preregistration: define versioned protocol/driver lineage compatibility for resuming T1-A from its checkpoint, preserve and validate cycles 1-2, present budget scenarios and their consequences, and specify what a new owner authorization would have to bind. Do not execute the solver, do not freeze a cap, do not claim authorization, and do not modify frozen v1/v2 protocols or existing artifacts.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "architecture",
+      "evidence_level": "L0",
+      "write_scope": [
+        "openspec/changes/integrated-solver-verification-v1/",
+        "results/integrated-solver-verification-v1/"
+      ],
+      "next_action": "Inspect the v2 protocol/addendum hash binding and the T1-A checkpoint lineage; draft options for a compatible versioned resume without executing or choosing a cap."
+    },
+    {
+      "id": "SPV1-CHECKPOINT-RECOVERY-IMPL",
+      "description": "Implement and test the contract-compliant recovery path selected by SPV1-CHECKPOINT-INTERRUPTION-RECOVERY: preserve the unmanifested cycle-0004 primary without reinterpreting it, validate the last committed checkpoint, and restore accounting without weakening hash or audit checks. Do not execute the solver and do not mutate existing artifacts.",
+      "dependencies": [
+        "SPV1-CHECKPOINT-INTERRUPTION-RECOVERY"
+      ],
+      "state": "WAITING",
+      "objective": "DINO_2T_SCIENTIFIC_POINT_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "scripts/diagnostics/",
+        "tests/"
+      ],
+      "next_action": "Wait for the recovery design; then implement the selected fail-closed path with regression tests and no solver run."
+    },
+    {
+      "id": "FRPM-V2-PREFLIGHT-TEST-STATE-ALIGNMENT",
+      "description": "Reconcile the IMPL2 preflight tests with the post-campaign state and environment-derived worker plans: separate pre-execution assertions from post-execution assertions, derive expected effective workers from the reported plan instead of a hardcoded 4, and preserve all frozen hash/identity checks and fail-closed behavior. Do not relax any scientific check and do not start a campaign.",
+      "dependencies": [],
+      "state": "READY",
+      "objective": "FULL_RPM_SWEEP_V1",
+      "owner_role": "contract/regression guardian",
+      "evidence_level": "L0",
+      "write_scope": [
+        "tests/test_full_rpm_sweep_v1_impl2.py",
+        "tests/test_full_rpm_sweep_v1_parallel_impl2.py"
+      ],
+      "next_action": "Reproduce the three state/environment failures recorded in impl2-administrative-acceptance-durable-verify.json, then update only the test premises while keeping the identity and fail-closed assertions intact."
     }
   ],
   "audit_remediation_mode": false,
@@ -8875,6 +8919,12 @@
       "task": "FRPM-V2-ADMIN-ACCEPTANCE-DURABLE-VERIFY",
       "kind": "verification",
       "summary": "PASS_WITH_FINDINGS (SELF_REVIEW). Receipts 98457ccd.../95e580b1... match HEAD blobs, introduced once in 107bbe0 and unmodified; gate REVIEW / FULL_RPM_SWEEP_V1_PARTIAL consistent at acceptance and now; final receipt 27 PERIOD_1 / 3 NUMERICAL_INVALID with no PASS claim; zero acceptance-attributable point starts, later starts separately authorized. Live preflight FAIL_CLOSED on known identity drift; supplemental tests 18 pass / 3 fail, recorded as finding. No solver or campaign."
+    },
+    {
+      "at": "2026-10-21T10:20:50+00:00",
+      "task": "ISV1-QUEUE-REPLAN",
+      "kind": "process",
+      "summary": "After closing FRPM-V2-ADMIN-ACCEPTANCE-DURABLE-VERIFY, READY fell to 2, triggering replan. Added ISV1-A3B-RESUME-PREREG-DRAFT and FRPM-V2-PREFLIGHT-TEST-STATE-ALIGNMENT as READY, and SPV1-CHECKPOINT-RECOVERY-IMPL as WAITING on the recovery design. All three are non-executing; no solver or campaign. READY=4."
     }
   ],
   "legacy_gate_status": {
