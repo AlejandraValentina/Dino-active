@@ -1,0 +1,110 @@
+{
+  "schema": "DINO_ISV1_A3B_V4_ATTEMPT_2_CLOSURE",
+  "recorded_at": "2026-10-21T14:40:52.498738+00:00",
+  "classification": "PARTIAL — EXECUTION LIMIT",
+  "runtime_classification": "PARTIAL_RESOURCE",
+  "attempt_closed": true,
+  "authorization_path": "results/integrated-solver-verification-v1/a3b-owner-execution-confirmation-v4-attempt2.json",
+  "authorization_sha256": "bb8d19af93b8b9cf594d595bbcd03beb7f10191f15300885f8da58688ea7fbe5",
+  "authorization_disposition": "Consumed by one terminal invocation; no automatic retry or continuation authorized",
+  "preflight": {
+    "status": "PASS",
+    "solver_steps": 0,
+    "configurations": 4,
+    "reference_status": "COMPLETE",
+    "reference_next_cycle": 4,
+    "available_mib": 5887.53125,
+    "frozen_hash_comparisons": "PASS"
+  },
+  "supervisor_receipt": {
+    "accumulated_seconds": 783.3759999998631,
+    "aggregate_peak_bytes": 3265036288,
+    "elapsed_seconds": 240.23400000005495,
+    "exit_code": 15,
+    "overhead_charged_seconds": 250.23400000005495,
+    "status": "PARTIAL_RESOURCE",
+    "stop_reason": "RESOURCE",
+    "token": "aacd634b75c4419297e0f6b9c33304f4",
+    "worker_peak_bytes": 3222351872
+  },
+  "launcher_wall_seconds": 240.703,
+  "memory": {
+    "sampled_worker_peak_mib": 3073.07421875,
+    "worker_cap_mib": 3072,
+    "sampled_aggregate_peak_mib": 3113.78125,
+    "aggregate_cap_mib": 4096,
+    "cause": "Per-worker RSS exceeded 3072 MiB; aggregate remained below 4096 MiB. Sampled guard triggered termination; this is not an OS hard cap."
+  },
+  "budget": {
+    "historical_conservative_seconds": 533.142,
+    "invocation_supervisor_wall_seconds": 240.23400000005495,
+    "charged_new_seconds": 250.23399999986304,
+    "closure_reserve_seconds": 10,
+    "accumulated_charged_seconds": 783.3759999998631,
+    "remaining_seconds": 3536.624000000137,
+    "global_cap_seconds": 4320,
+    "launcher_overhead_note": "Launcher wall is 240.703 s; conservative invocation charge 250.234 s includes closure reserve and exceeds launcher wall."
+  },
+  "configurations": {
+    "T1-A": {
+      "status": "COMPLETE_V3",
+      "cycles": [
+        1,
+        2,
+        3
+      ],
+      "next_cycle": 4,
+      "new_execution": false
+    },
+    "T1-B": {
+      "status": "PARTIAL_RESOURCE",
+      "completed_audited_cycles": 0,
+      "checkpoint_exists": false,
+      "result_exists": false,
+      "last_durable_progress_angle_deg": 359.617,
+      "progress_is_not_a_scientific_result": true
+    },
+    "T1-C": {
+      "status": "NOT_STARTED",
+      "cycles": []
+    },
+    "T1-D": {
+      "status": "NOT_STARTED",
+      "cycles": []
+    },
+    "T1-E": {
+      "status": "NOT_STARTED",
+      "cycles": []
+    }
+  },
+  "integrity": {
+    "historical_source_files_sha256_verified": 17,
+    "active_invocation_exists": false,
+    "new_primary_files": 0,
+    "immutable_history_preserved": true
+  },
+  "scientific_evidence": {
+    "historical_audits": "T1-A recorded PASS/recomputed; not reaudited in this attempt",
+    "new_audits_and_conservation": "No completed primary or durable audit; NOT_EVALUATED",
+    "cfl_rejections": "Unavailable: worker terminated before final telemetry persistence",
+    "effective_dt": "Unavailable: worker terminated before final telemetry persistence",
+    "sensitivity_errors": "INCOMPLETE_MATRIX; no B cycle available for comparison, no error estimate or demonstrated divergence",
+    "atol": "Frozen V3 unchanged; nine unavailable observables remain NOT_EVALUATED",
+    "periodicity": "NOT_EVALUATED",
+    "steady_state": "NOT_CLAIMED",
+    "predictive_power_torque": "NOT_CLAIMED"
+  },
+  "defects": "No concrete implementation defect established. Measured limitation: current execution path exceeds frozen worker memory cap before a full audited cycle is persisted; exact allocation phase was not instrumented.",
+  "consequence": "No new evidence of discretization adequacy. Existing V4 cannot complete this authorized attempt under the observed memory requirement. No cap increase, driver change, V5 or next objective initiated.",
+  "external_evidence_sha256": {
+    "T1-B-inv01-supervisor.json": "c9a9d07f6a4deb36bdda410a2753e21e6ce60b7523ac5613d2b0efbcc01fb0d1",
+    "a3b-budget-ledger.json": "eeff25dc933d6720fa5e2b0e459f0c048660c4e4c50fa3b8581cece1325db4db",
+    "a3b-v4-T1-B-inv1.summary.json": "83228e927a35de57f0be361436d98f9499d2e39eb0ad36015a8487762f342a1f",
+    "T1-B-inv01.log": "c3995287a1172de262569c3fdb578ca52169dbcedd3c3938820ca715e3c13433"
+  },
+  "checks": {
+    "openspec_strict": "PASS",
+    "targeted_tests": "52 passed in 44.38 s; no new scientific engine advancement by test fixtures",
+    "program_status": "CHECK OK (verified before closure commit)"
+  }
+}

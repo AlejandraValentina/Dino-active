@@ -25,7 +25,7 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 CURRENT_OBJECTIVE: INTEGRATED_SOLVER_VERIFICATION_V1
 change/spec:       openspec/changes/integrated-solver-verification-v1/
                    specs/integrated-solver-verification-v1/spec.md
-completion:        A3b V4 attempt 2 explicitly owner authorized after prior memory-blocked attempt closed. Full zero-step preflight PASS: four configurations, T1-A COMPLETE next_cycle=4, frozen identities valid, 5887.531 MiB available. Execute only frozen B1/B2/B3/D1/E1/C1/C2/C3 sequential plan; 533.142/4320 s consumed, 3786.858 s remaining, original caps unchanged. Matrix incomplete; scientific gate REVIEW, no periodicity or predictive claim.
+completion:        A3b V4 attempt 2 CLOSED: PARTIAL — EXECUTION LIMIT / PARTIAL_RESOURCE. Full zero-step preflight passed; one T1-B invocation terminated at sampled worker RSS 3073.074 MiB > frozen 3072 MiB cap, aggregate 3113.781 MiB < 4096 MiB. Launcher wall 240.703 s; conservative new charge 250.234 s; global consumed 783.376/4320 s, remaining 3536.624 s. T1-A V3 COMPLETE with 3 cycles preserved; T1-B zero audited cycles/no checkpoint, T1-C..E NOT_STARTED. 17 historical source hashes unchanged, 52 tests PASS, OpenSpec strict PASS. Matrix INCOMPLETE_MATRIX, scientific gate REVIEW; no sensitivity/periodicity/predictive claim. Authorization consumed by terminal invocation: no automatic retry, budget change, new infrastructure or next objective.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```
