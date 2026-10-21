@@ -3536,7 +3536,7 @@
         "FRPM-V2-PARALLEL-EXECUTOR-REVIEW",
         "FRPM-V2-IMPL2-PREFLIGHT-AUDIT"
       ],
-      "state": "READY",
+      "state": "DONE",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "verification",
       "evidence_level": "L0",
@@ -3545,9 +3545,12 @@
         "results/full-rpm-sweep-v1/impl2-administrative-acceptance-receipt.json",
         "results/2t-commercial-core-20261002/program-status.json"
       ],
+      "resolution": "Durable read-only verification PASS_WITH_FINDINGS (SELF_REVIEW): both acceptance receipts are byte-identical to their HEAD blobs (98457ccd... external review, 95e580b1... administrative acceptance), introduced once in 107bbe0 and never modified; cce8273 -> 107bbe0 -> HEAD ancestry holds; program_status.py check PASS with gate REVIEW / FULL_RPM_SWEEP_V1_PARTIAL and FRPM-FULL-CAMPAIGN-EXECUTION still REVIEW; final receipt matches 30 registered / 30 terminal / 27 PERIOD_1 / 3 NUMERICAL_INVALID with no PASS claim; zero point starts are attributable to the acceptance act, while later starts carry separate subset-pilot and v6 extension authorizations. Live preflight remains FAIL_CLOSED on the already-recorded frozen-identity drift; supplemental focused replay was 18 passed / 3 failed for state/environment reasons, recorded as a finding. No solver or campaign started.",
       "evidence": [
+        "results/full-rpm-sweep-v1/impl2-administrative-acceptance-durable-verify.json",
         "results/full-rpm-sweep-v1/impl2-external-review-receipt.json",
-        "results/full-rpm-sweep-v1/impl2-administrative-acceptance-receipt.json"
+        "results/full-rpm-sweep-v1/impl2-administrative-acceptance-receipt.json",
+        "results/full-rpm-sweep-v1/impl2-extension-final-receipt.json"
       ]
     },
     {
@@ -8866,6 +8869,12 @@
       "task": "ISV1-A3B-BUDGET-RESUME-REVIEW",
       "kind": "decision",
       "summary": "Checkpoint T1-A cycles 1–2 binding and primary hashes verified; audits recomputed PASS. Resume blocked by 542.568 s projection vs 525 s cap and frozen single-invocation plan. Failed 112.094 s remains charged. Planning-only receipt records a versioned budget/lineage path; no solver run."
+    },
+    {
+      "at": "2026-10-21T10:15:42+00:00",
+      "task": "FRPM-V2-ADMIN-ACCEPTANCE-DURABLE-VERIFY",
+      "kind": "verification",
+      "summary": "PASS_WITH_FINDINGS (SELF_REVIEW). Receipts 98457ccd.../95e580b1... match HEAD blobs, introduced once in 107bbe0 and unmodified; gate REVIEW / FULL_RPM_SWEEP_V1_PARTIAL consistent at acceptance and now; final receipt 27 PERIOD_1 / 3 NUMERICAL_INVALID with no PASS claim; zero acceptance-attributable point starts, later starts separately authorized. Live preflight FAIL_CLOSED on known identity drift; supplemental tests 18 pass / 3 fail, recorded as finding. No solver or campaign."
     }
   ],
   "legacy_gate_status": {

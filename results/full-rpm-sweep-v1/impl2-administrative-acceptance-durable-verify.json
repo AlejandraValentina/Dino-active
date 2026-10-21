@@ -1,0 +1,191 @@
+{
+  "schema": "FULL_RPM_SWEEP_V1_IMPL2_ADMINISTRATIVE_ACCEPTANCE_DURABLE_VERIFY_V1",
+  "recorded_at": "2026-10-21T10:15:42Z",
+  "task_id": "FRPM-V2-ADMIN-ACCEPTANCE-DURABLE-VERIFY",
+  "objective": "FULL_RPM_SWEEP_V1",
+  "verification_mode": "SELF_REVIEW",
+  "attribution_note": "Sequential same-agent read-only pass. This is not an INDEPENDENT_REVIEW and no external reviewer executed this verification.",
+  "reviewed_head": "5e97d52b37dd116c2b93bbd9ec7b49c8e681888d",
+  "acceptance_commit": {
+    "sha": "107bbe0858fa3e14e4d7735a437daa166440bfff",
+    "subject": "Accept IMPL2 administrative review",
+    "committed_at_utc": "2026-10-13T10:51:05Z",
+    "reviewed_head_recorded_in_receipts": "cce8273e482d5cc644554e42bdba152efc710f84",
+    "reviewed_head_is_ancestor": true,
+    "acceptance_commit_is_ancestor_of_reviewed_head": true,
+    "files_added": [
+      "results/full-rpm-sweep-v1/impl2-administrative-acceptance-receipt.json",
+      "results/full-rpm-sweep-v1/impl2-external-review-receipt.json",
+      "tests/test_full_rpm_sweep_v1_impl2.py"
+    ],
+    "campaign_artifacts_added": false
+  },
+  "committed_receipts": [
+    {
+      "path": "results/full-rpm-sweep-v1/impl2-external-review-receipt.json",
+      "sha256": "98457ccd631586149a0cc4ea336a17f2fb55e28eb1f58e50b6464298b24d7297",
+      "git_blob_sha256_at_head": "98457ccd631586149a0cc4ea336a17f2fb55e28eb1f58e50b6464298b24d7297",
+      "disk_matches_head": true,
+      "introduced_by": "107bbe0858fa3e14e4d7735a437daa166440bfff",
+      "modified_after_introduction": false,
+      "history_commits": [
+        "107bbe0858fa3e14e4d7735a437daa166440bfff"
+      ]
+    },
+    {
+      "path": "results/full-rpm-sweep-v1/impl2-administrative-acceptance-receipt.json",
+      "sha256": "95e580b18040fa3fafae39ed3771ba1540ac7b3e36be1ca86f02c0d57dd52006",
+      "git_blob_sha256_at_head": "95e580b18040fa3fafae39ed3771ba1540ac7b3e36be1ca86f02c0d57dd52006",
+      "disk_matches_head": true,
+      "introduced_by": "107bbe0858fa3e14e4d7735a437daa166440bfff",
+      "modified_after_introduction": false,
+      "history_commits": [
+        "107bbe0858fa3e14e4d7735a437daa166440bfff"
+      ]
+    }
+  ],
+  "receipt_claims": {
+    "external_review_verdict": "IMPL2_EXTERNAL_REVIEW_PASS",
+    "external_review_source": "USER_COMMUNICATED_EXTERNAL_REVIEW_VERDICT",
+    "external_review_executed_by_agent": false,
+    "implementation_acceptance": "PASS",
+    "acceptance_scope": "administrative and diagnostic implementation acceptance under the existing IMPL2 contract; does not authorize campaign execution",
+    "codex_preflight_status": "PASS",
+    "campaign_started": false,
+    "campaign_execution_authorized": false,
+    "campaign_points_started": 0,
+    "no_campaign_execution": true,
+    "historical_preservation": {
+      "R2": "UNCHANGED",
+      "v1_preregistration": "UNCHANGED",
+      "primaries": "UNCHANGED",
+      "checkpoints": "UNCHANGED",
+      "historical_receipts": "UNCHANGED"
+    }
+  },
+  "program_status": {
+    "check": "PASS",
+    "gate_objective": "FULL_RPM_SWEEP_V1",
+    "gate_state": "REVIEW",
+    "classification": "FULL_RPM_SWEEP_V1_PARTIAL",
+    "gate_task_FRPM-FULL-CAMPAIGN-EXECUTION": "REVIEW",
+    "gate_task_blocker": "Three preregistered points are NUMERICAL_INVALID; preserve those classifications and keep the campaign scientific gate PARTIAL/REVIEW.",
+    "queue_counts": {
+      "READY": 3,
+      "IN_PROGRESS": 0,
+      "WAITING": 1,
+      "BLOCKED_LOCAL": 2,
+      "REVIEW": 1,
+      "DONE": 259
+    },
+    "at_acceptance_commit": {
+      "gate_state": "REVIEW",
+      "classification": "FULL_RPM_SWEEP_V1_PARTIAL",
+      "campaigns_started": 0
+    },
+    "consistency_checks": {
+      "objective_state_review_matches_gate": true,
+      "classification_partial_matches_gate": true,
+      "campaign_task_not_marked_done": true,
+      "campaigns_started_remains_zero_in_authorization_record": true,
+      "no_pass_claim_in_objective_summary": true
+    }
+  },
+  "campaign_classification": {
+    "evidence": "results/full-rpm-sweep-v1/impl2-extension-final-receipt.json",
+    "receipt_sha256": "fd8b98af3c9953c3e6ae76a8a34b9bdc60ea2314931c7e72575e97b1e956c3af",
+    "registered": 30,
+    "terminal": 30,
+    "not_started": 0,
+    "period_1": 27,
+    "numerical_invalid": 3,
+    "invalid_point_ids": [
+      "A_PRIME_MESH_0@1000RPM",
+      "A_PRIME_MESH_0@5000RPM",
+      "B_PRIME_MESH_0@1000RPM"
+    ],
+    "campaign_status": "COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
+    "scientific_status": "PARTIAL_REVIEW",
+    "pass_claim": false,
+    "matches_objective_summary": true,
+    "matches_gate_classification": true
+  },
+  "point_start_boundary": {
+    "acceptance_recorded_at_utc": "2026-10-13T10:49:46.293779+00:00",
+    "acceptance_commit_at_utc": "2026-10-13T10:51:05Z",
+    "first_later_campaign_start_utc": "2026-10-13T13:29:50Z",
+    "first_later_campaign_start_evidence": "E:\\Dino-artifacts\\engine-physics-v1\\full-rpm-sweep-v1-impl2\\campaign.json (started_at_unix 1791898190.2463474; failed infrastructure attempt, 0 valid checkpoints)",
+    "subset_pilot_authorization_recorded_at_utc": "2026-10-13T13:28:11+00:00",
+    "subset_pilot_authorization_sha256": "61aa8beb2dfb40055d3e465f737b7d300b563f2d7c90bf0c6af9c7d11b457e8f",
+    "extension_authorization_v6_recorded_at_utc": "2026-10-13T18:03:38.487958+00:00",
+    "acceptance_attributable_point_starts": 0,
+    "later_starts_covered_by_separate_authorizations": true,
+    "scope_limitation": "The acceptance act itself started zero points. A literal 'zero point starts after the acceptance commit' no longer holds at verification time because the separately authorized pilot and 26-point extension ran later; those starts are bound to their own authorization records and are not attributable to the administrative acceptance.",
+    "timeline_gap_acceptance_to_first_later_start_seconds": 9525.0
+  },
+  "live_checks": {
+    "impl2_campaign_preflight": {
+      "status": "FAIL_CLOSED",
+      "failing_checks": [
+        "source_hashes_exact",
+        "underlying_scientific_preflight"
+      ],
+      "errors": [
+        "SWEEP_SOLVER_HASH_MISMATCH"
+      ],
+      "solver_steps_started": 0,
+      "interpretation": "Known IMPL2 frozen-identity drift already recorded in FRPM-V2-RESTORE-INDEPENDENT-REVIEW; fail-closed behavior preserved. Not caused by this verification."
+    },
+    "impl2_non_executing_preflight": {
+      "status": "FAIL_CLOSED",
+      "failing_checks": [
+        "solver_dependency_hashes",
+        "producer_and_benchmark_hashes",
+        "no_v1_campaign_artifacts_or_campaign_started"
+      ],
+      "solver_steps_started": 0,
+      "interpretation": "Source drift plus post-campaign state. The preflight remains fail-closed and no solver was started."
+    },
+    "campaign_points_started_by_verification": 0
+  },
+  "supplemental_test_replay": {
+    "command": "python -m pytest tests/test_full_rpm_sweep_v1_impl2.py tests/test_full_rpm_sweep_v1_parallel_impl2.py -q",
+    "result": "18 passed, 3 failed in 5.69s",
+    "classification": "NOT_GREEN_ENVIRONMENT_OR_STATE_DEPENDENT",
+    "blocking_for_acceptance_verdict": false,
+    "failures": [
+      {
+        "test": "tests/test_full_rpm_sweep_v1_impl2.py::test_impl2_campaign_preflight_passes_all_30_without_solver",
+        "observed": "preflight_status FAIL_CLOSED (expected PASS)",
+        "cause": "frozen solver/source identity drift and post-campaign artifact root state; the test asserts the pre-execution condition"
+      },
+      {
+        "test": "tests/test_full_rpm_sweep_v1_impl2.py::test_impl2_preflight_validates_explicit_loss_models_and_resource_plans",
+        "observed": "effective_workers [1, 2, 3] (expected [1, 2, 4])",
+        "cause": "available memory at verification is 1,627,283,456 bytes versus 8,321,548,288 bytes recorded at acceptance; the worker plan correctly reduces effective workers"
+      },
+      {
+        "test": "tests/test_full_rpm_sweep_v1_parallel_impl2.py::test_impl2_execution_requires_exact_authorized_subset",
+        "observed": "RuntimeError 'preflight failed closed' before the expected 'authorized subset scope mismatch'",
+        "cause": "downstream of the same fail-closed preflight; no solver step started"
+      }
+    ],
+    "note": "These failures do not invalidate the four acceptance-verification properties, but the focused suite is not reproducible green at this HEAD. The identity drift is already a recorded concern; the memory-dependent assertion and the pre-execution preflight premise require a separate follow-up if this suite is to be used as a gate."
+  },
+  "verdict": "PASS_WITH_FINDINGS",
+  "verdict_scope": "Verified: receipt bytes equal committed HEAD blobs; receipts were introduced once and never modified; program-status check passes and is consistent with REVIEW/PARTIAL; campaign classification is 27 PERIOD_1 and 3 NUMERICAL_INVALID with no PASS claim; zero point starts are attributable to the acceptance act, and later starts carry separate authorizations. Not verified: an independent external re-review, a green live preflight, or a green focused test suite.",
+  "findings": [
+    "Both acceptance receipts are committed once in 107bbe0 and are byte-identical to their HEAD blobs; no post-acceptance modification.",
+    "The reviewed external head cce8273 is an ancestor of the acceptance commit, which is an ancestor of the current HEAD.",
+    "program_status.py check passes; gate remains REVIEW with classification FULL_RPM_SWEEP_V1_PARTIAL; FRPM-FULL-CAMPAIGN-EXECUTION remains REVIEW with the NUMERICAL_INVALID blocker.",
+    "The final campaign receipt records 30 registered / 30 terminal / 27 PERIOD_1 / 3 NUMERICAL_INVALID / 0 not started and scientific_status PARTIAL_REVIEW, matching the objective and gate records; no PASS claim exists.",
+    "Acceptance-attributable point starts are zero. The first later campaign start is 9,525 s after the acceptance commit and is covered by the separately recorded subset-pilot authorization; the 26-point extension has its own v6 authorization.",
+    "The live preflight is FAIL_CLOSED on the already-recorded IMPL2 frozen-identity drift; no solver step was started by this verification.",
+    "Supplemental focused test replay is 18 passed / 3 failed for known state and environment reasons; this is reported as a finding, not hidden."
+  ],
+  "no_execution": {
+    "solver_started": false,
+    "campaign_started": false,
+    "campaign_artifacts_mutated": false
+  }
+}
