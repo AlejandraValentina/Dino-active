@@ -50,8 +50,42 @@ def _diagnostic_checkpoint_worker(root, point_id, steps, stop_after=None,
     return result
 
 
-def test_impl2_execution_requires_exact_authorized_subset(tmp_path: Path) -> None:
+def test_impl2_execution_requires_exact_authorized_subset(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # Isolate the scope gate from the real preflight, which is currently FAIL_CLOSED
+    # on frozen-identity drift. The fail-closed ordering is covered separately below.
+    authorization = json.loads(
+        (campaign.ROOT / "results/full-rpm-sweep-v1/implementation-v2-campaign-authorization.json")
+        .read_text(encoding="utf-8")
+    )
+    monkeypatch.setattr(
+        campaign,
+        "audit_impl2_campaign_preflight",
+        lambda root: {
+            "preflight_status": "PASS",
+            "preregistration_sha256": authorization["preregistration_sha256"],
+            "implementation_version": campaign.IMPLEMENTATION_VERSION,
+        },
+    )
+    monkeypatch.setattr(
+        campaign, "_run_point", lambda *args, **kwargs: pytest.fail("solver must not start")
+    )
     with pytest.raises(RuntimeError, match="authorized subset scope mismatch"):
+        campaign.execute_campaign(output_root=tmp_path / "full-rpm-sweep-v1-impl2",
+                                  implementation="impl2", selected_point_ids=["A_PRIME_MESH_0@4000RPM"])
+    assert not (tmp_path / "full-rpm-sweep-v1-impl2").exists()
+
+
+def test_impl2_execution_fails_closed_before_scope_validation(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(
+        campaign,
+        "audit_impl2_campaign_preflight",
+        lambda root: {"preflight_status": "FAIL_CLOSED"},
+    )
+    with pytest.raises(RuntimeError, match="preflight failed closed"):
         campaign.execute_campaign(output_root=tmp_path / "full-rpm-sweep-v1-impl2",
                                   implementation="impl2", selected_point_ids=["A_PRIME_MESH_0@4000RPM"])
     assert not (tmp_path / "full-rpm-sweep-v1-impl2").exists()
