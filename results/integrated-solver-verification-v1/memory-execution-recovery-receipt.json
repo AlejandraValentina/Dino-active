@@ -1,0 +1,225 @@
+{
+  "classification": "MEMORY_OPTIMIZATION_VERIFIED",
+  "scope": "Limited small synthetic engine fixture; T1-B/C recovery NOT_VERIFIED; no gate promotion",
+  "date": "2026-10-21T15:00:26.449804+00:00",
+  "review_kind": "SELF_REVIEW",
+  "report": "results/integrated-solver-verification-v1/memory-execution-recovery.md",
+  "cause": "Required per-step trace retention plus simultaneously materialized snapshots, primary/replay trees and avoidable canonical serialization/equality temporaries. No unbounded leak established. Historical worker allocation phase unavailable.",
+  "production_changes": [
+    "Hash top-level trajectory row-by-row with exact canonical array framing",
+    "Compare complete reconstructed evidence recursively without two JSON-normalized full-tree copies"
+  ],
+  "before": {
+    "wall_s": 50.305591500015,
+    "cpu_s": 50.21875,
+    "sampled_peak_rss_bytes": 613105664,
+    "sampled_phase_peak_rss_bytes": {
+      "1:advance": 90161152,
+      "1:end_snapshot": 137175040,
+      "1:make": 227737600,
+      "1:audit": 399532032,
+      "1:measurement_serialization": 249143296,
+      "2:start_snapshot": 142094336,
+      "2:advance": 207925248,
+      "2:end_snapshot": 312045568,
+      "2:make": 415657984,
+      "2:audit": 613105664,
+      "2:measurement_serialization": 439087104
+    },
+    "final_rss_bytes": 206712832,
+    "final_private_uss_bytes": 198631424,
+    "cycles": [
+      {
+        "cycle": 1,
+        "steps": 1242,
+        "advance_s": 3.5905871000140905,
+        "seconds_per_step": 0.0028909719001723754,
+        "steps_per_second": 345.90443440158464,
+        "snapshot_s": 0.7174456000793725,
+        "make_s": 5.190041399910115,
+        "audit_s": 12.687493500066921,
+        "rss_start": 35147776,
+        "rss_after_advance": 90542080,
+        "rss_growth_per_step": 44600.88888888889,
+        "primary_sha256": "0d29870356e67c318a2f90fbeb80fa641841aa60e0f3292b7267c4eea22fba33",
+        "conservation": {
+          "mass_residual_kg": -8.809142651444724e-20,
+          "energy_residual_J": 5.920264278813647e-14,
+          "species_residual_kg": [
+            -2.7740329022578336e-19,
+            -6.352747104407253e-22,
+            4.3095024239458766e-19,
+            4.02672814660521e-21
+          ]
+        }
+      },
+      {
+        "cycle": 2,
+        "steps": 1442,
+        "advance_s": 4.187354299938306,
+        "seconds_per_step": 0.002903851803008534,
+        "steps_per_second": 344.37019098700233,
+        "snapshot_s": 1.4831944000907242,
+        "make_s": 5.835485199932009,
+        "audit_s": 14.273356099962257,
+        "rss_start": 142786560,
+        "rss_after_advance": 208293888,
+        "rss_growth_per_step": 45428.105409153955,
+        "primary_sha256": "4ef7ae7f80f7be6031e70015239025c5a038d977b4d6ee1d90eda19a9ba74b31",
+        "conservation": {
+          "mass_residual_kg": 1.1553529400548657e-18,
+          "energy_residual_J": -1.3602167352536054e-13,
+          "species_residual_kg": [
+            -2.6890649097363866e-19,
+            -5.0664812518872945e-24,
+            3.2116610771351384e-19,
+            -3.758088317981543e-21
+          ]
+        }
+      }
+    ]
+  },
+  "after": {
+    "wall_s": 47.19296619994566,
+    "cpu_s": 47.203125,
+    "sampled_peak_rss_bytes": 538996736,
+    "sampled_phase_peak_rss_bytes": {
+      "1:advance": 90411008,
+      "1:end_snapshot": 138858496,
+      "1:make": 229498880,
+      "1:audit": 336154624,
+      "1:measurement_serialization": 249319424,
+      "2:start_snapshot": 140693504,
+      "2:advance": 207511552,
+      "2:end_snapshot": 313839616,
+      "2:make": 414085120,
+      "2:audit": 538996736,
+      "2:measurement_serialization": 437960704
+    },
+    "final_rss_bytes": 195448832,
+    "final_private_uss_bytes": 187375616,
+    "cycles": [
+      {
+        "cycle": 1,
+        "steps": 1242,
+        "advance_s": 3.4457512999651954,
+        "seconds_per_step": 0.002774356924287597,
+        "steps_per_second": 360.4438892651786,
+        "snapshot_s": 0.5969414999708533,
+        "make_s": 4.8771609999239445,
+        "audit_s": 11.006378100020811,
+        "rss_start": 35422208,
+        "rss_after_advance": 90681344,
+        "rss_growth_per_step": 44492.057971014496,
+        "primary_sha256": "0d29870356e67c318a2f90fbeb80fa641841aa60e0f3292b7267c4eea22fba33",
+        "conservation": {
+          "mass_residual_kg": -8.809142651444724e-20,
+          "energy_residual_J": 5.920264278813647e-14,
+          "species_residual_kg": [
+            -2.7740329022578336e-19,
+            -6.352747104407253e-22,
+            4.3095024239458766e-19,
+            4.02672814660521e-21
+          ]
+        }
+      },
+      {
+        "cycle": 2,
+        "steps": 1442,
+        "advance_s": 4.304573000059463,
+        "seconds_per_step": 0.0029851407767402657,
+        "steps_per_second": 334.99257649483013,
+        "snapshot_s": 1.471235700068064,
+        "make_s": 5.80640180001501,
+        "audit_s": 13.257400700007565,
+        "rss_start": 141991936,
+        "rss_after_advance": 207589376,
+        "rss_growth_per_step": 45490.596393897365,
+        "primary_sha256": "4ef7ae7f80f7be6031e70015239025c5a038d977b4d6ee1d90eda19a9ba74b31",
+        "conservation": {
+          "mass_residual_kg": 1.1553529400548657e-18,
+          "energy_residual_J": -1.3602167352536054e-13,
+          "species_residual_kg": [
+            -2.6890649097363866e-19,
+            -5.0664812518872945e-24,
+            3.2116610771351384e-19,
+            -3.758088317981543e-21
+          ]
+        }
+      }
+    ]
+  },
+  "rss_reduction_percent": 12.087464258036928,
+  "kernel": {
+    "legacy_hash": {
+      "traced_peak_bytes": 2261464,
+      "wall_seconds": 0.05776290001813322,
+      "result": "7d2e6b82b48a3e071d77fcd7f0aa09375aba2216bad4f6c2cf48014e9f2c0913"
+    },
+    "optimized_hash": {
+      "traced_peak_bytes": 6528,
+      "wall_seconds": 0.0624491999624297,
+      "result": "7d2e6b82b48a3e071d77fcd7f0aa09375aba2216bad4f6c2cf48014e9f2c0913"
+    },
+    "legacy_equal": {
+      "traced_peak_bytes": 2656696,
+      "wall_seconds": 0.09177689999341965,
+      "result": true
+    },
+    "optimized_equal": {
+      "traced_peak_bytes": 2904,
+      "wall_seconds": 0.11986480001360178,
+      "result": true
+    }
+  },
+  "equivalence": {
+    "canonical_primary_hashes_identical": true,
+    "both_cycles_both_modes_audit_recomputed_PASS": true,
+    "conservation_identical": true
+  },
+  "tests": {
+    "new_memory_tests": "8 passed in 0.72 s",
+    "current_integrated_suite": "83 passed before combined invocation reached the frozen A3b identity assertion; 83 tests collected in this file",
+    "current_frozen_a3b_suite": {
+      "passed": 32,
+      "failed": 3,
+      "setup_errors": 17,
+      "reason": "Frozen V2/V3 identity assertions and V4 contract dependency guard reject changed integrated_2t.py; no tests or frozen hashes altered"
+    },
+    "historical_frozen_bundle_suite": "52 passed in 41.42 s at a3a6662; archived original bytes checked, Git marker initialized solely for output-isolation test. No historical source changes.",
+    "historical_bundle_setup_notes": "First extraction normalized Windows line endings; restored exact bytes only when matching frozen SHA. Without Git marker one output-isolation test failed as the extracted directory was not a worktree; final run used a Git-initialized verification bundle.",
+    "openspec_strict": "PASS",
+    "program_status_check": "PASS; READY quota warning not acted on per owner"
+  },
+  "identity": {
+    "old_repository_file_sha256": "3a00ac4a328c20b391ff156f441a19caa65074a4ba578ae0c6713b9448eeb0aa",
+    "new_repository_file_sha256": "391ba9ae206f16e2996162b2b431f47a8ecb0d1961e5503469d4ded10511ac4f",
+    "new_normalized_solver_module_sha256": "00565b6a4645a977aeb7d4aff5e656d3148406405a87d79d02228f6c95cc812e",
+    "other_frozen_repository_inputs_unchanged": 37,
+    "historical_source_files_verified_unchanged": 17,
+    "zero_step_frozen_v4_preflight": "FAIL_CLOSED: repository dependency changed: motorsim/integrated_2t.py",
+    "frozen_artifact_reuse": "REJECTED; requires explicit future compatibility/authorization; historical evidence preserved"
+  },
+  "a3b_budget": {
+    "consumed_seconds": 783.376,
+    "remaining_seconds": 3536.624,
+    "global_cap_seconds": 4320,
+    "new_a3b_invocations": 0,
+    "diagnostics_separate_from_a3b_ledger": true
+  },
+  "caps": {
+    "worker_mib": 3072,
+    "aggregate_mib": 4096,
+    "changed": false,
+    "hypothesis_3584_mib": "NOT_ADOPTED; no representative evidence to justify"
+  },
+  "remaining_limitation": "Representative B/C end-to-end peak and cycle cost have not been measured. Snapshot, primary deepcopy and accumulated replay remain; smaller CFL increases step evidence. No claim of B/C feasibility. No new infrastructure version, campaign or automatic continuation.",
+  "external_evidence_sha256": {
+    "legacy.json": "197f2d96a888a4fe2b026fbdda8e28f1949b3b6e41dc263ebf1fb6ffc10bd03f",
+    "optimized.json": "178f6408cc549801a8222172f88684dd506a9fb62621f63086b5246b73446ce9",
+    "legacy-phases.json": "179d11d15207336da426a55d9dcac884a59451d485249317fb8fbf5a15da924f",
+    "optimized-phases.json": "a075f35ac4cc4288af37776c3884906e20c61010d6124aa5b1a3067589262e7f",
+    "kernel-measurement.json": "a86cc3b33359f509a75b729ab0e630a12c089cd152a5d809662eb7e9921e25d1"
+  },
+  "benchmark_limitations": "Small synthetic engine, not T1-B/C; no campaign gzip/primary/checkpoint persistence benchmark. Other tests active during portions of timing; RSS sampled at 10 ms. No full campaign end-to-end speedup claim."
+}

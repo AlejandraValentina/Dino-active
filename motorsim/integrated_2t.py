@@ -58,9 +58,39 @@ def _evidence_sha256(value) -> str:
     # The JSON encoder already serializes tuples as arrays.  Avoid recursively
     # rebuilding large trajectory trees solely to compute their canonical
     # digest; this preserves the exact canonical bytes used by _jsonify.
-    encoded = json.dumps(value, sort_keys=True,
-                         separators=(",", ":"), allow_nan=False).encode("utf-8")
-    return hashlib.sha256(encoded).hexdigest()
+    digest = hashlib.sha256()
+    if isinstance(value, (list, tuple)):
+        # A trajectory is a sequence of independently encoded stage records.
+        # Keep the C JSON encoder, but never retain its full-cycle string and
+        # UTF-8 copy simultaneously. Array framing is byte-identical to dumps.
+        digest.update(b"[")
+        for index, row in enumerate(value):
+            if index:
+                digest.update(b",")
+            digest.update(json.dumps(row, sort_keys=True,
+                                     separators=(",", ":"), allow_nan=False).encode("utf-8"))
+        digest.update(b"]")
+    else:
+        digest.update(json.dumps(value, sort_keys=True,
+                                 separators=(",", ":"), allow_nan=False).encode("utf-8"))
+    return digest.hexdigest()
+
+
+def _json_evidence_equal(left, right):
+    """Compare JSON-shaped evidence without allocating two normalized trees.
+
+    Lists and tuples represent the same JSON array. Walk every field, including
+    stage states and species; this is an equality check, not a reduced digest.
+    """
+    if isinstance(left, (list, tuple)):
+        return (isinstance(right, (list, tuple)) and len(left) == len(right)
+                and all(_json_evidence_equal(a, b) for a, b in zip(left, right)))
+    if isinstance(left, dict):
+        return (isinstance(right, dict) and left.keys() == right.keys()
+                and all(_json_evidence_equal(left[key], right[key]) for key in left))
+    if isinstance(right, (list, tuple, dict)):
+        return False
+    return left == right
 
 
 def _solver_dependency_hashes() -> dict[str, str]:
@@ -3792,7 +3822,7 @@ def audit_integrated_cycle_primary(cycle_record: dict, *,
         replayed_row = replay.step(
             float(row["dt_s"]),
             replay_step_deg)
-        if _jsonify(replayed_row) != _jsonify(row):
+        if not _json_evidence_equal(replayed_row, row):
             raise ValueError(
                 f"offline SSPRK2 accepted-state replay differs at step {index}")
     if rejected_by_angle or consumed_rejections != len(rejection_records):
@@ -3808,7 +3838,7 @@ def audit_integrated_cycle_primary(cycle_record: dict, *,
     if (_jsonify(rebuilt["evidence_binding"]["residual_bounds"]) !=
             _jsonify(evidence["residual_bounds"])):
         raise ValueError("offline cycle residual bounds differ from reconstructed contract")
-    if _jsonify(rebuilt) != _jsonify(cycle_record):
+    if not _json_evidence_equal(rebuilt, cycle_record):
         raise ValueError("offline cycle reconstruction differs from persisted primary evidence")
     return {"status": "PASS", "configuration_hash": cycle_record["configuration_hash"],
             "producer_sha256": evidence["producer_sha256"],

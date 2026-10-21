@@ -6674,6 +6674,29 @@
         "results/integrated-solver-verification-v1/a3b-forward-execution-v4.md"
       ],
       "qualification": "Implementation closure only. Scientific matrix remains incomplete; gate REVIEW. Owner final recovery order explicitly forbids creating quota tasks; none added."
+    },
+    {
+      "id": "ISV1-MEMORY-EXECUTION-RECOVERY",
+      "description": "Owner-authorized focused production evidence memory correction and bounded before/after verification; no A3b execution.",
+      "dependencies": [],
+      "state": "DONE",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L1",
+      "write_scope": [
+        "motorsim/integrated_2t.py",
+        "tests/test_integrated_evidence_memory.py",
+        "scripts/diagnostics/integrated_evidence_memory_benchmark.py",
+        "results/integrated-solver-verification-v1/memory-execution-recovery*"
+      ],
+      "blocker": null,
+      "result": "MEMORY_OPTIMIZATION_VERIFIED",
+      "qualification": "Small fixture scope; full T1-B/C remains unverified, no historical hash changes or cap adjustment.",
+      "evidence": [
+        "results/integrated-solver-verification-v1/memory-execution-recovery-receipt.json",
+        "results/integrated-solver-verification-v1/memory-execution-recovery.md"
+      ],
+      "next_action": "No automatic continuation; representative measurements and any identity migration require separate authorization."
     }
   ],
   "audit_remediation_mode": false,
@@ -6890,7 +6913,7 @@
       "ISV1-A3-EXECUTION",
       "ISV1-ACCEPTANCE"
     ],
-    "completion_criterion": "A3b V4 attempt 2 CLOSED: PARTIAL — EXECUTION LIMIT / PARTIAL_RESOURCE. Full zero-step preflight passed; one T1-B invocation terminated at sampled worker RSS 3073.074 MiB > frozen 3072 MiB cap, aggregate 3113.781 MiB < 4096 MiB. Launcher wall 240.703 s; conservative new charge 250.234 s; global consumed 783.376/4320 s, remaining 3536.624 s. T1-A V3 COMPLETE with 3 cycles preserved; T1-B zero audited cycles/no checkpoint, T1-C..E NOT_STARTED. 17 historical source hashes unchanged, 52 tests PASS, OpenSpec strict PASS. Matrix INCOMPLETE_MATRIX, scientific gate REVIEW; no sensitivity/periodicity/predictive claim. Authorization consumed by terminal invocation: no automatic retry, budget change, new infrastructure or next objective."
+    "completion_criterion": "Memory recovery intervention COMPLETE: MEMORY_OPTIMIZATION_VERIFIED only on small two-cycle synthetic integrated fixture, peak RSS 584.70 to 514.03 MiB (12.09%), canonical primaries identical, independent audits recomputed PASS, conservation equal. Eight new tests and 83 integrated tests pass; historical frozen A3b bundle 52 PASS. Changed working tree frozen A3b suite: 32 PASS, 3 identity failures, 17 contract setup errors; strict V4 correctly rejects changed dependency. T1-B/C viability NOT_VERIFIED, no cap increase or A3b execution. Historical T1-A, V2/V3/V4 and atol preserved; scientific gate REVIEW, matrix INCOMPLETE. Budget unchanged 783.376/4320 s consumed, 3536.624 s remaining. Future representative execution/identity continuation requires independent owner authorization; no automatic next objective."
   },
   "objectives": [
     {
@@ -9410,6 +9433,12 @@
       "task": "ISV1-A3B-T1B-E-V4-PROTOCOL-DRAFT",
       "kind": "task",
       "summary": "Owner-authorized V4 attempt 2 terminal PARTIAL_RESOURCE: B1 worker peak 3073.074 MiB exceeds 3072 cap; zero audited cycles, no checkpoint. Global charged 783.376/4320 s. 17 historical hashes unchanged; 52 tests PASS; strict OpenSpec PASS. No further invocation, automatic retry or next objective."
+    },
+    {
+      "at": "2026-10-21T15:00:26+00:00",
+      "task": "ISV1-MEMORY-EXECUTION-RECOVERY",
+      "kind": "task",
+      "summary": "Bounded memory optimization verified: peak RSS 584.70 to 514.03 MiB, identical canonical two-cycle primaries, audit recomputed PASS, conservation equal. 8 new and 83 integrated tests pass; frozen historical bundle 52 PASS; live frozen identities reject optimization as required. B/C viability unverified, caps and A3b budget unchanged."
     }
   ],
   "legacy_gate_status": {
@@ -9856,5 +9885,12 @@
     "consumed_seconds": 783.3759999998631,
     "remaining_seconds": 3536.624000000137,
     "automatic_continuation": false
+  },
+  "memory_execution_recovery": {
+    "result": "MEMORY_OPTIMIZATION_VERIFIED",
+    "receipt": "results/integrated-solver-verification-v1/memory-execution-recovery-receipt.json",
+    "receipt_sha256": "16b015ff847ed249faef88353f6100d781ac4672ad624864c3d54dd3eaa3e135",
+    "full_T1B_recovery_verified": false,
+    "campaign_authorized": false
   }
 }
