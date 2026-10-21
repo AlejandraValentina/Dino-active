@@ -6459,7 +6459,7 @@
       "id": "ISV1-A3B-RESUME-PREREG-DRAFT",
       "description": "Read-only preparation of a new A3b resume preregistration: define versioned protocol/driver lineage compatibility for resuming T1-A from its checkpoint, preserve and validate cycles 1-2, present budget scenarios and their consequences, and specify what a new owner authorization would have to bind. Do not execute the solver, do not freeze a cap, do not claim authorization, and do not modify frozen v1/v2 protocols or existing artifacts.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "architecture",
       "evidence_level": "L0",
@@ -6467,7 +6467,12 @@
         "openspec/changes/integrated-solver-verification-v1/",
         "results/integrated-solver-verification-v1/"
       ],
-      "next_action": "Inspect the v2 protocol/addendum hash binding and the T1-A checkpoint lineage; draft options for a compatible versioned resume without executing or choosing a cap."
+      "resolution": "DRAFT_NOT_FROZEN_NOT_AUTHORIZED: defined a parent-binding acceptance mechanism for a v3 protocol/driver, preserving the v2 checkpoint and all scientific bindings; documented a v3 ledger carry-forward of 112.094 s + 266.469 s = 378.563 s and 379.751 s conservative global; presented cap options A-F without selecting one; specified the owner authorization fields and fail-closed checks. No solver, no cap freeze, no v2 artifact modified.",
+      "evidence": [
+        "results/integrated-solver-verification-v1/a3b-resume-preregistration-draft-v3.json",
+        "results/integrated-solver-verification-v1/a3b-resume-preregistration-draft-v3.md",
+        "results/integrated-solver-verification-v1/a3b-budget-resume-feasibility-review.json"
+      ]
     },
     {
       "id": "SPV1-CHECKPOINT-RECOVERY-IMPL",
@@ -8925,6 +8930,12 @@
       "task": "ISV1-QUEUE-REPLAN",
       "kind": "process",
       "summary": "After closing FRPM-V2-ADMIN-ACCEPTANCE-DURABLE-VERIFY, READY fell to 2, triggering replan. Added ISV1-A3B-RESUME-PREREG-DRAFT and FRPM-V2-PREFLIGHT-TEST-STATE-ALIGNMENT as READY, and SPV1-CHECKPOINT-RECOVERY-IMPL as WAITING on the recovery design. All three are non-executing; no solver or campaign. READY=4."
+    },
+    {
+      "at": "2026-10-21T10:27:51+00:00",
+      "task": "ISV1-A3B-RESUME-PREREG-DRAFT",
+      "kind": "design",
+      "summary": "DRAFT_NOT_FROZEN_NOT_AUTHORIZED. Defined parent-binding acceptance for a v3 protocol/driver, v3 ledger carry-forward (112.094 + 266.469 = 378.563 s; 379.751 s conservative global), and combined-cycle analysis. Presented T1-A cap options A-F without selecting one: 525 infeasible, 560 arithmetic-only (17.432 s buffer), 600 feasible (57.432 s buffer, 50 s global headroom), 620/650 progressively less headroom, no-resume zero-risk. No solver, no cap freeze, no v2 artifact modified."
     }
   ],
   "legacy_gate_status": {

@@ -1,0 +1,613 @@
+{
+  "schema": "DINO_ISV1_A3B_RESUME_PREREGISTRATION_DRAFT_V3",
+  "status": "DRAFT_NOT_FROZEN_NOT_AUTHORIZED",
+  "recorded_utc": "2026-10-21T10:25:33.025094+00:00",
+  "scope": "Read-only preparation of a versioned A3b T1-A resume preregistration. No solver invocation, no resume, no tolerance freeze, no cap freeze, no authorization claim, and no modification of frozen v1/v2 artifacts.",
+  "decision_owner": "OWNER",
+  "inputs": {
+    "terminal_receipt": {
+      "path": "results/integrated-solver-verification-v1/a3b-terminal-receipt-v2-fix1.json",
+      "sha256": "c57cb9c48fa51a4f93942320774a6cee87dd856eec855bbd6f0f31137ece358b",
+      "classification": "PARTIAL_BUDGET",
+      "status": "TERMINAL_FOR_CURRENT_AUTHORIZATION"
+    },
+    "budget_resume_review": {
+      "path": "results/integrated-solver-verification-v1/a3b-budget-resume-feasibility-review.json",
+      "sha256": "fea88d133b150dc5cebf2be010d06b1afff241dd414505e46c7b38f1be02ff7d",
+      "classification": "CHECKPOINT_INTEGRITY_PASS_BUT_RESUME_NOT_PERMITTED_BY_CURRENT_BUDGET_AND_INVOCATION_PLAN"
+    },
+    "parent_protocol": {
+      "path": "results/integrated-solver-verification-v1/a3b-preregistration-v2.json",
+      "sha256": "c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed",
+      "status": "FROZEN_PROTOCOL_EXECUTION_NOT_AUTHORIZED"
+    },
+    "parent_driver": {
+      "path": "scripts/diagnostics/integrated_solver_verification_a3b.py",
+      "sha256_lf": "3062ed465f1a8d0e715ef9be07a4ddee4a0a1f11dba7cf4cf7824594e7b8bb42"
+    },
+    "parent_addendum": {
+      "path": "results/integrated-solver-verification-v1/a3b-execution-addendum-v2-fix1.json",
+      "sha256": "b93e743919f91486de166422d03ebe24e44702bfc40a7d355ddafa1054ba7d0b"
+    },
+    "parent_authorization": {
+      "path": "results/integrated-solver-verification-v1/a3b-owner-execution-confirmation-v2-fix1.json",
+      "sha256": "499986e1f74aeb1d35e77b087d0bb01d457ecc00f848e5868b87eeff8a4a0213"
+    },
+    "parent_checkpoint": {
+      "path": "external:isv1-a3b-fix1-exec-20261020/integrated-solver-verification-v1/a3b/T1-A/checkpoint.json",
+      "sha256": "3b1203b6a1e4cb162910b8c011f4f562b693ee04f8f2801051f122416b11fcba",
+      "schema": "DINO_ISV1_A3B_CHECKPOINT_V1",
+      "next_cycle": 3,
+      "cycles": [1, 2]
+    },
+    "parent_result": {
+      "path": "external:isv1-a3b-fix1-exec-20261020/integrated-solver-verification-v1/a3b/T1-A/result.json",
+      "sha256": "7124fbfe4929975ce68f4f94b1a67f89c267ad51372be81501098b23d6f85402",
+      "status": "PARTIAL_BUDGET",
+      "cycles_completed": 2
+    },
+    "parent_ledger": {
+      "path": "external:isv1-a3b-fix1-exec-20261020/integrated-solver-verification-v1/a3b/a3b-budget-ledger.json",
+      "sha256": "12031ff8f7e0ca1f5be14854654e283773e0842c54e146f965d72f4c5108165e",
+      "t1a_charged_seconds": 378.563,
+      "conservative_global_wall_seconds": 379.751
+    },
+    "parent_cycle_evidence": [
+      {
+        "cycle": 1,
+        "primary_sha256": "32403b157a6e8a0daa77d8468e5b5cc9030c521f4e2e45cd52b2b32e44d5d161",
+        "primary_file_sha256": "240a21cc3e1360d51ac1f9c3a49881af0e4884269b3f1095207d687da31ff79a",
+        "audit_status": "PASS",
+        "cycle_wall_seconds": 118.76099450001493
+      },
+      {
+        "cycle": 2,
+        "primary_sha256": "312d1908da270f90a3df36d5820ece38b9749f2c8d1670921c988edc9c6e51e9",
+        "primary_file_sha256": "ae18c9bc07a5e1c277951e8db9317ec57d348a5a3f706528e810b1d12a545694",
+        "audit_status": "PASS",
+        "cycle_wall_seconds": 144.02719219995197
+      }
+    ]
+  },
+  "blocking_problem": {
+    "summary": "The T1-A checkpoint is valid, but the current driver refuses to resume it under a new protocol because _load_checkpoint compares the complete checkpoint binding, including protocol_sha256 and driver_sha256. The ledger is also keyed to the v2 protocol. A new protocol without an explicit, versioned lineage mechanism cannot resume this checkpoint.",
+    "evidence": [
+      "scripts/diagnostics/integrated_solver_verification_a3b.py: _load_checkpoint compares checkpoint['bindings'] == binding and refuses on any difference.",
+      "scripts/diagnostics/integrated_solver_verification_a3b.py: _binding includes protocol_sha256 and driver_sha256.",
+      "scripts/diagnostics/integrated_solver_verification_a3b.py: _load_ledger rejects a ledger whose protocol_sha256 differs from PROTOCOL_SHA256.",
+      "The current authorization permits only the frozen v2 protocol, driver, addendum and a single T1-A invocation; the T1-A cap is 525 s and the invocation plan is exhausted.",
+      "The 112.094 s failed invocation and the 266.469 s two-cycle invocation are immutable ledger entries and must remain charged."
+    ],
+    "not_permitted": [
+      "Editing the v2 protocol, driver, addendum, authorization, checkpoint, result or ledger.",
+      "Monkey-patching the v2 driver or overriding PROTOCOL_SHA256 at runtime to force checkpoint acceptance.",
+      "Reclassifying, subtracting or refunding the 112.094 s failed attempt.",
+      "Re-running cycles 1-2 as new solver state.",
+      "Resuming without a new frozen protocol, a new driver hash, a new addendum, and a new explicit owner authorization."
+    ]
+  },
+  "lineage_contract": {
+    "mechanism": "Versioned parent-binding acceptance. The v3 protocol records the exact parent binding and parent artifact hashes. The v3 driver accepts the v2 checkpoint only if the checkpoint binding is byte-equivalent to the recorded parent binding and all scientific fields equal the v3 binding. Protocol and driver hashes are the only fields allowed to differ, and they are bound separately as lineage fields.",
+    "parent_binding": {
+      "config_id": "T1-A",
+      "configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+      "cycle_primary_contract": "REFERENCE_PERIODIC_CONVERGENCE_V1",
+      "driver_sha256": "3062ed465f1a8d0e715ef9be07a4ddee4a0a1f11dba7cf4cf7824594e7b8bb42",
+      "exploratory_workflow_source_sha256": "29e4c0c4bbed14b1e20431c2831e7424e7e1d103f24415c13a0df0a04ac6f3ac",
+      "fuel_id": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+      "identity_sha256": "4c4e0863d6368132de468d63d2ccedf659eeac1aebdc8a62d11ba36cbfa9f33f",
+      "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+      "periodicity_contract": "REFERENCE_PERIODIC_CONVERGENCE_V2",
+      "periodicity_source_sha256": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+      "periodicity_thresholds_sha256": "97049f91c7664b906fd743ec2a05991ad313f860df23b154b482a5c783f13b70",
+      "project_sha256": "42535dfb53c95407e75e109151ff1893db6338510de4f832e7ec48dd46ef8d34",
+      "protocol_sha256": "c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed",
+      "solver_configuration_sha256": "b472cce9d24e6fe659cc9be9de4d87f9f9fd059cdfcdc191f18e0a690c8fa4ee",
+      "solver_source_hashes": {
+        "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+        "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+        "motorsim.engine_configuration": "6c99e7516348066a01e785ce1735940ce43f92765274e9cc8aaf50517bbadf3e",
+        "motorsim.engine_variants": "ad21a71bc2528f55ad8becbe7fc019b63c27211b0939f5a284ef3a508f3856fa",
+        "motorsim.engineering_outputs": "c01c3c7195f28a67c3fb866df704d15a595d079d32be71057ab2d2c5095f5424",
+        "motorsim.exploratory_workflow": "29e4c0c4bbed14b1e20431c2831e7424e7e1d103f24415c13a0df0a04ac6f3ac",
+        "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+        "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+        "motorsim.gas1d.eos": "72ec337f941b1259ab23c04f70ec75593870bdcc4b065d481b38834430221186",
+        "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+        "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+        "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+        "motorsim.integrated_2t": "dc05b28d77a1fa222e4b0c4812ab49ecd1b7fe1e55a4b05fe36a59799ba48598",
+        "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+        "motorsim.mechanical": "de71d3bacb18e7661de0ff15cbac50f1a252fc01970c7ef9aa04c8a3424d0fff",
+        "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+        "motorsim.p6_species": "7ed60395642eecb6b5b9f15bbe095489468da7b562f72d0b53b13527a97e2dab",
+        "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+        "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+        "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+        "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+        "motorsim.reference_harness.convergence": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+        "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+        "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095"
+      }
+    },
+    "parent_binding_sha256": "1bf01d20acbc1e9f59aa36d4d933aa17c877b904a49a268c4d0d973f31d46e7e",
+    "parent_binding_canonicalization": "SHA-256 of UTF-8 bytes of json.dumps(binding, sort_keys=True, separators=(',', ':')).",
+    "scientific_fields_required_equal": [
+      "config_id",
+      "configuration_sha256",
+      "cycle_primary_contract",
+      "exploratory_workflow_source_sha256",
+      "fuel_id",
+      "identity_sha256",
+      "mechanical_loss_model_sha256",
+      "periodicity_contract",
+      "periodicity_source_sha256",
+      "periodicity_thresholds_sha256",
+      "project_sha256",
+      "solver_configuration_sha256",
+      "solver_source_hashes"
+    ],
+    "versioned_fields_allowed_to_differ": [
+      "protocol_sha256",
+      "driver_sha256"
+    ],
+    "acceptance_rule": "checkpoint.bindings must equal protocol_v3.lineage.parent_binding byte-for-byte after canonical JSON normalization; the v3 binding must equal the same scientific fields and may differ only in protocol_sha256 and driver_sha256; any other difference is REFUSED before the engine is constructed.",
+    "new_artifact_subtree": "T1-A/v3/",
+    "immutability_rule": "The v2 checkpoint, result, ledger and invocation artifacts are read-only inputs. The v3 driver writes new artifacts only under T1-A/v3/ and the new v3 ledger at the artifact root. Any attempted write to a v2 path is REFUSED.",
+    "why_not_monkey_patch": "Overriding PROTOCOL_SHA256 or _load_checkpoint in a wrapper would bypass the frozen identity checks and would not produce an auditable driver/addendum/authorization chain. The lineage must be explicit in a new driver, addendum and owner authorization.",
+    "alternatives_considered": [
+      {
+        "id": "DUAL_BINDING_CHECKPOINT",
+        "description": "Create a derived v3 checkpoint that carries both the parent binding and the v3 binding, without modifying the parent.",
+        "tradeoff": "Cleaner in-run state, but duplicates the parent engine snapshot and records before cycle 3 and creates two representations of the same lineage. More bytes and more chances to diverge.",
+        "status": "NOT_RECOMMENDED"
+      },
+      {
+        "id": "FRESH_T1A_TRAJECTORY",
+        "description": "Discard the two parent cycles as solver state and rerun T1-A from cycle 1 under a new protocol.",
+        "tradeoff": "Avoids lineage complexity, but wastes the 378.563 s already charged and re-runs cycles whose audited evidence is valid. It also weakens continuity with the terminal receipt.",
+        "status": "FALLBACK_ONLY_IF_LINEAGE_CANNOT_BE_IMPLEMENTED"
+      }
+    ]
+  },
+  "proposed_v3_driver": {
+    "path": "scripts/diagnostics/integrated_solver_verification_a3b_v3.py",
+    "relationship_to_v2": "New file. The v2 driver remains byte-for-byte unchanged.",
+    "constants": {
+      "protocol_v3_path": "results/integrated-solver-verification-v1/a3b-preregistration-v3.json",
+      "parent_protocol_path": "results/integrated-solver-verification-v1/a3b-preregistration-v2.json",
+      "parent_checkpoint_sha256": "3b1203b6a1e4cb162910b8c011f4f562b693ee04f8f2801051f122416b11fcba",
+      "parent_result_sha256": "7124fbfe4929975ce68f4f94b1a67f89c267ad51372be81501098b23d6f85402",
+      "parent_ledger_sha256": "12031ff8f7e0ca1f5be14854654e283773e0842c54e146f965d72f4c5108165e",
+      "global_cap_seconds": 4320.0,
+      "per_invocation_cap_seconds": 600.0,
+      "memory_limit_mib": 3072,
+      "max_cycles": 3,
+      "t1a_start_cycle": 3,
+      "t1a_continuation_cycles": 1
+    },
+    "cap_source": "The T1-A cumulative cap is read from the frozen v3 protocol, not hardcoded to an owner-undecided value. The v3 driver refuses a cap below 542.568 s or above 650.0 s.",
+    "subcommands_to_add": [
+      "lineage-preflight: validate v3 protocol, parent protocol, parent checkpoint, parent result, parent ledger and all hashes without constructing the solver or restoring the engine snapshot.",
+      "preflight: build all five configurations and run the zero-solver-step preflight; no budget consumed.",
+      "run-config: run only T1-A cycle 3, invocation_index 2, under the v3 authorization.",
+      "freeze-atol-v3: derive the T1-A atol_obs from the combined audited cycles 1-3; refuse before cycle 3 exists.",
+      "analyze-v3: combine parent cycles 1-2 with v3 cycle 3 and label lineage; refuse any claim beyond T1-A transient sensitivity."
+    ],
+    "loader_sequence": [
+      "Load and hash the v3 protocol; require status FROZEN_PROTOCOL_EXECUTION_NOT_AUTHORIZED and the exact v3 SHA from the owner authorization.",
+      "Load and hash the parent v2 protocol; require the exact parent SHA and the parent status.",
+      "Load the parent checkpoint; require SHA-256 equality, schema equality, next_cycle == 3, records cycles [1,2], and engine/periodicity snapshots.",
+      "Compare checkpoint.bindings with protocol_v3.lineage.parent_binding; require canonical equality and the recorded parent_binding_sha256.",
+      "Recompute the v3 scientific binding; require equality on every field in scientific_fields_required_equal.",
+      "Load the parent result; require SHA-256 equality, status PARTIAL_BUDGET, cycles_completed 2, and the two primary SHA-256 values.",
+      "Load the parent ledger; require SHA-256 equality and the two T1-A entries (112.094 s FAILED_CLOSED, 266.469 s PARTIAL_BUDGET).",
+      "Load the v3 addendum and owner authorization; require both to bind the v3 protocol and v3 driver hashes, plus every parent hash.",
+      "Open the global run lock and create/load the v3 ledger with the immutable carry-forward block.",
+      "Restore the parent engine and periodicity snapshots; run cycle 3 only; write T1-A/v3/checkpoint.json, T1-A/v3/result.json and the v3 invocation receipt.",
+      "Leave every v2 artifact byte-for-byte unchanged; verify their SHA-256 values after the run."
+    ],
+    "fail_closed_checks": [
+      {
+        "id": "V3_PROTOCOL_SHA_MISMATCH",
+        "condition": "The v3 protocol SHA differs from the v3 authorization value.",
+        "action": "REFUSED before any solver construction."
+      },
+      {
+        "id": "V3_PROTOCOL_STATUS_INVALID",
+        "condition": "The v3 protocol status is not FROZEN_PROTOCOL_EXECUTION_NOT_AUTHORIZED.",
+        "action": "REFUSED."
+      },
+      {
+        "id": "PARENT_PROTOCOL_SHA_MISMATCH",
+        "condition": "The v2 protocol SHA differs from c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed.",
+        "action": "REFUSED."
+      },
+      {
+        "id": "PARENT_CHECKPOINT_SHA_MISMATCH",
+        "condition": "The parent checkpoint SHA differs from 3b1203b6a1e4cb162910b8c011f4f562b693ee04f8f2801051f122416b11fcba.",
+        "action": "REFUSED."
+      },
+      {
+        "id": "PARENT_BINDING_SHA_MISMATCH",
+        "condition": "The canonical parent binding SHA differs from 1bf01d20acbc1e9f59aa36d4d933aa17c877b904a49a268c4d0d973f31d46e7e.",
+        "action": "REFUSED."
+      },
+      {
+        "id": "PARENT_BINDING_SCIENTIFIC_FIELD_MISMATCH",
+        "condition": "Any scientific field differs between the checkpoint binding and the recorded parent binding, or between the parent binding and the v3 binding.",
+        "action": "REFUSED; report the field names."
+      },
+      {
+        "id": "PARENT_RESULT_SHA_MISMATCH",
+        "condition": "The parent result SHA differs from 7124fbfe4929975ce68f4f94b1a67f89c267ad51372be81501098b23d6f85402.",
+        "action": "REFUSED."
+      },
+      {
+        "id": "PARENT_CYCLE_PRIMARY_MISMATCH",
+        "condition": "The checkpoint records' primary_sha256 values differ from the parent cycle evidence.",
+        "action": "REFUSED."
+      },
+      {
+        "id": "PARENT_LEDGER_SHA_MISMATCH",
+        "condition": "The parent ledger SHA differs from 12031ff8f7e0ca1f5be14854654e283773e0842c54e146f965d72f4c5108165e.",
+        "action": "REFUSED."
+      },
+      {
+        "id": "PARENT_LEDGER_ENTRY_MISSING",
+        "condition": "The parent ledger lacks the 112.094 s FAILED_CLOSED entry or the 266.469 s PARTIAL_BUDGET entry for T1-A.",
+        "action": "REFUSED."
+      },
+      {
+        "id": "CHECKPOINT_NEXT_CYCLE_NOT_3",
+        "condition": "checkpoint.next_cycle is not 3.",
+        "action": "REFUSED."
+      },
+      {
+        "id": "CHECKPOINT_RECORDS_NOT_1_2",
+        "condition": "checkpoint.records cycles are not exactly [1,2].",
+        "action": "REFUSED."
+      },
+      {
+        "id": "ATTEMPT_TO_RERUN_PARENT_CYCLE",
+        "condition": "The requested run would execute cycle 1 or 2, or would run more than one cycle.",
+        "action": "REFUSED."
+      },
+      {
+        "id": "V2_ARTIFACT_WRITE_REFUSED",
+        "condition": "The output path resolves to a v2 artifact path.",
+        "action": "REFUSED before writing."
+      },
+      {
+        "id": "T1A_CAP_NOT_OWNER_SELECTED",
+        "condition": "The v3 protocol T1-A cap is null, missing, or not a finite number.",
+        "action": "REFUSED."
+      },
+      {
+        "id": "T1A_CAP_BELOW_RESERVATION",
+        "condition": "The T1-A cap is below 542.568 s (parent ledger 378.563 s + frozen cycle-3 reservation 164.005 s).",
+        "action": "REFUSED."
+      },
+      {
+        "id": "T1A_CAP_ABOVE_GLOBAL_SUM_BOUND",
+        "condition": "The T1-A cap exceeds 650.0 s, which would make the sum of per-configuration caps exceed the 4320 s global cap.",
+        "action": "REFUSED."
+      },
+      {
+        "id": "GLOBAL_CARRY_FORWARD_MISSING",
+        "condition": "The v3 ledger lacks the parent ledger SHA, the two T1-A entries, 378.563 s T1-A carry-forward, or 379.751 s conservative global carry-forward.",
+        "action": "REFUSED."
+      },
+      {
+        "id": "SOLVER_SOURCE_HASH_DRIFT",
+        "condition": "Any motorsim source hash differs from parent_binding.solver_source_hashes.",
+        "action": "REFUSED."
+      },
+      {
+        "id": "MEMORY_LIMIT_CHANGED",
+        "condition": "The v3 protocol memory limit is not 3072 MiB.",
+        "action": "REFUSED."
+      },
+      {
+        "id": "PER_INVOCATION_CAP_CHANGED",
+        "condition": "The v3 protocol per-invocation cap is not 600.0 s.",
+        "action": "REFUSED."
+      },
+      {
+        "id": "GLOBAL_CAP_CHANGED",
+        "condition": "The v3 protocol global cap is not 4320.0 s.",
+        "action": "REFUSED."
+      },
+      {
+        "id": "ANALYSIS_BEFORE_COMBINED_THREE_CYCLES",
+        "condition": "freeze-atol-v3 or analyze-v3 is invoked before T1-A/v3/result.json has three audited cycles.",
+        "action": "REFUSED."
+      },
+      {
+        "id": "ANALYSIS_CLAIMS_BEYOND_T1A",
+        "condition": "The analysis attempts a temporal/spatial sensitivity, supported resolution domain, periodicity, steady-state or predictive claim from T1-A alone.",
+        "action": "REFUSED; emit the PARTIAL claim limits instead."
+      }
+    ],
+    "ledger_v3": {
+      "path": "a3b-budget-ledger-v3.json",
+      "schema": "DINO_ISV1_A3B_BUDGET_LEDGER_V3",
+      "carry_forward": {
+        "parent_ledger_sha256": "12031ff8f7e0ca1f5be14854654e283773e0842c54e146f965d72f4c5108165e",
+        "parent_protocol_sha256": "c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed",
+        "entries": [
+          {
+            "config_id": "T1-A",
+            "invocation_index": 1,
+            "elapsed_seconds": 112.094,
+            "cycles_completed": 0,
+            "status": "FAILED_CLOSED",
+            "failure": "PRIMARY_CONFIGURATION_HASH_MISMATCH"
+          },
+          {
+            "config_id": "T1-A",
+            "invocation_index": 1,
+            "elapsed_seconds": 266.469,
+            "cycles_completed": 2,
+            "cycle_indices": [1, 2],
+            "status": "PARTIAL_BUDGET",
+            "failure": "T1-A cap exceeded: projected 542.568 s > 525 s"
+          }
+        ],
+        "t1a_ledger_seconds": 378.563,
+        "conservative_global_wall_seconds": 379.751,
+        "rule": "Carry-forward entries are charged as-is. No reclassification, subtraction, refund or retry credit is permitted."
+      },
+      "new_entries": "Only the v3 cycle-3 invocation(s). The v3 driver appends and saves atomically."
+    },
+    "result_v3": {
+      "path": "T1-A/v3/result.json",
+      "must_include": [
+        "schema DINO_ISV1_A3B_CONFIG_RESULT_V3",
+        "lineage.parent_protocol_sha256",
+        "lineage.parent_checkpoint_sha256",
+        "lineage.parent_result_sha256",
+        "lineage.parent_binding_sha256",
+        "lineage.parent_cycles [1,2]",
+        "lineage.continuation_cycles [3]",
+        "records for cycles 1,2,3",
+        "cycles_completed 3",
+        "claim_limits PARTIAL for temporal/spatial sensitivity and no predictive claim",
+        "v2_artifacts_unchanged true with post-run SHA-256 values"
+      ],
+      "must_not_include": [
+        "COMPLETE matrix status",
+        "supported_resolution_domain",
+        "periodicity or steady-state claim",
+        "atol_obs values before freeze-atol-v3"
+      ]
+    }
+  },
+  "budget_options": {
+    "parent_accounting": {
+      "t1a_charged_seconds": 378.563,
+      "failed_invocation_seconds": 112.094,
+      "partial_invocation_seconds": 266.469,
+      "conservative_global_wall_seconds": 379.751,
+      "global_remaining_conservative_seconds": 3940.249,
+      "global_cap_seconds": 4320.0,
+      "per_invocation_cap_seconds": 600.0,
+      "memory_limit_mib": 3072
+    },
+    "frozen_cycle3_reservation_seconds": 164.005,
+    "reservation_formula": "144.55 s/cycle * 1.10 + 5.0 s = 164.005 s",
+    "t1b_to_t1e_cap_sum_seconds": 3670.0,
+    "max_t1a_cap_by_global_cap_sum": 650.0,
+    "options": [
+      {
+        "id": "A",
+        "t1a_cumulative_cap_seconds": 525.0,
+        "available_after_parent_ledger_seconds": 146.437,
+        "buffer_over_reservation_seconds": -17.568,
+        "total_cap_sum_seconds": 4195.0,
+        "global_headroom_seconds": 125.0,
+        "feasible_for_cycle3": false,
+        "status": "INFEASIBLE_UNDER_FROZEN_RESERVATION",
+        "consequence": "The frozen cycle-3 reservation exceeds the remaining T1-A cap. The driver must refuse before cycle 3; no resume is possible without changing the cap or the reservation. Changing the reservation would relax a frozen guard and is not proposed."
+      },
+      {
+        "id": "B",
+        "t1a_cumulative_cap_seconds": 560.0,
+        "available_after_parent_ledger_seconds": 181.437,
+        "buffer_over_reservation_seconds": 17.432,
+        "total_cap_sum_seconds": 4230.0,
+        "global_headroom_seconds": 90.0,
+        "feasible_for_cycle3": true,
+        "status": "ARITHMETIC_ONLY_LOW_MARGIN",
+        "consequence": "Fits the current reservation and the global cap-sum planning bound, but leaves only 17.432 s above the reservation. If cycle 3 exceeds 181.437 s, T1-A terminates PARTIAL again and no freeze is possible. This is the scenario named in the feasibility review, not a recommended cap."
+      },
+      {
+        "id": "C",
+        "t1a_cumulative_cap_seconds": 600.0,
+        "available_after_parent_ledger_seconds": 221.437,
+        "buffer_over_reservation_seconds": 57.432,
+        "total_cap_sum_seconds": 4270.0,
+        "global_headroom_seconds": 50.0,
+        "feasible_for_cycle3": true,
+        "status": "FEASIBLE_IF_AUTHORIZED",
+        "consequence": "Smallest option with at least 50 s above the frozen reservation and at least 50 s of global cap-sum headroom. Still does not guarantee cycle 3 completes; the cap guard remains authoritative."
+      },
+      {
+        "id": "D",
+        "t1a_cumulative_cap_seconds": 620.0,
+        "available_after_parent_ledger_seconds": 241.437,
+        "buffer_over_reservation_seconds": 77.432,
+        "total_cap_sum_seconds": 4290.0,
+        "global_headroom_seconds": 30.0,
+        "feasible_for_cycle3": true,
+        "status": "FEASIBLE_IF_AUTHORIZED",
+        "consequence": "More per-configuration margin, less global cap-sum headroom. The full matrix remains subject to the 4320 s global cap and the 600 s per-invocation cap."
+      },
+      {
+        "id": "E",
+        "t1a_cumulative_cap_seconds": 650.0,
+        "available_after_parent_ledger_seconds": 271.437,
+        "buffer_over_reservation_seconds": 107.432,
+        "total_cap_sum_seconds": 4320.0,
+        "global_headroom_seconds": 0.0,
+        "feasible_for_cycle3": true,
+        "status": "FEASIBLE_NO_GLOBAL_HEADROOM",
+        "consequence": "Consumes the entire global cap-sum planning bound. Any overrun in T1-B..E or the cycle-3 reservation would reach the global cap. Not recommended unless the owner explicitly accepts zero headroom."
+      },
+      {
+        "id": "F",
+        "t1a_cumulative_cap_seconds": null,
+        "available_after_parent_ledger_seconds": null,
+        "buffer_over_reservation_seconds": null,
+        "total_cap_sum_seconds": null,
+        "global_headroom_seconds": null,
+        "feasible_for_cycle3": false,
+        "status": "NO_RESUME",
+        "consequence": "Preserve the PARTIAL result and the audited checkpoint. No new spend. The objective remains PARTIAL/REVIEW with no convergence, supported resolution domain or predictive claim. This is the only zero-risk option."
+      }
+    ],
+    "conditional_recommendation": "If the owner chooses to continue, option C (600 s cumulative T1-A cap) is the smallest scenario with at least a 50 s buffer over the frozen cycle-3 reservation and at least 50 s of global cap-sum headroom. Option B (560 s) is arithmetic-only and should not be presented as safe. Option E consumes all global headroom. This draft does not select a cap and does not authorize execution.",
+    "not_chosen": true
+  },
+  "downstream_implications": {
+    "t1a_completion_alone": "Completing T1-A cycle 3 allows a T1-A-only atol_obs freeze and a three-cycle transient record. It does not produce temporal or spatial sensitivity: T1-B through T1-E remain unstarted and no cross-configuration comparison exists.",
+    "remaining_matrix": {
+      "configs": ["T1-B", "T1-C", "T1-D", "T1-E"],
+      "cap_sum_seconds": 3670.0,
+      "invocation_plans": {
+        "T1-B": [2, 1],
+        "T1-C": [1, 1, 1],
+        "T1-D": [3],
+        "T1-E": [3]
+      },
+      "authorization": "Separate explicit owner authorization is required. The v3 T1-A authorization must not be read as authorization for T1-B..E."
+    },
+    "global_envelope": "The conservative remaining global budget is 3940.249 s. The sum of the unchanged T1-B..E caps plus a T1-A cap of 600 s is 4270 s, leaving 50 s under the 4320 s cap-sum planning bound. Actual spend, the 600 s per-invocation cap and the global deadline remain authoritative.",
+    "claim_limits_after_t1a": {
+      "periodicity": "NOT_EVALUATED_HORIZON_INSUFFICIENT",
+      "temporal_sensitivity": "NOT_CONVERGED_NO_ESTIMATE",
+      "spatial_sensitivity": "NOT_CONVERGED_NO_ESTIMATE",
+      "supported_resolution_domain": "NOT_IDENTIFIED",
+      "steady_state_convergence": "NOT_CLAIMED",
+      "predictive_validation": "NOT_CLAIMED",
+      "experimental_validation": "NOT_PERFORMED"
+    }
+  },
+  "owner_authorization": {
+    "schema": "DINO_ISV1_A3B_RESUME_OWNER_AUTHORIZATION_V1",
+    "status": "TEMPLATE_NOT_AUTHORIZATION",
+    "required_fields": [
+      "schema",
+      "owner_confirmation (literal text quoting every hash, the chosen cap, the single invocation and the claim limits)",
+      "protocol_v3_path",
+      "protocol_v3_sha256",
+      "driver_v3_sha256",
+      "addendum_v3_sha256",
+      "parent_protocol_sha256",
+      "parent_driver_sha256",
+      "parent_addendum_sha256",
+      "parent_authorization_sha256",
+      "parent_checkpoint_sha256",
+      "parent_result_sha256",
+      "parent_ledger_sha256",
+      "parent_cycles",
+      "start_cycle",
+      "invocation_index",
+      "t1a_cumulative_cap_seconds",
+      "global_cap_seconds",
+      "per_invocation_cap_seconds",
+      "memory_limit_mib",
+      "max_solver_invocations",
+      "no_retry",
+      "carry_forward_failed_seconds",
+      "carry_forward_partial_seconds",
+      "carry_forward_t1a_ledger_seconds",
+      "carry_forward_conservative_global_seconds",
+      "scope",
+      "claim_limits"
+    ],
+    "template": {
+      "schema": "DINO_ISV1_A3B_RESUME_OWNER_AUTHORIZATION_V1",
+      "status": "TEMPLATE_NOT_AUTHORIZATION",
+      "protocol_v3_path": "results/integrated-solver-verification-v1/a3b-preregistration-v3.json",
+      "protocol_v3_sha256": "<filled after the v3 protocol is frozen>",
+      "driver_v3_sha256": "<filled after the v3 driver is frozen>",
+      "addendum_v3_sha256": "<filled after preflight>",
+      "parent_protocol_sha256": "c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed",
+      "parent_driver_sha256": "3062ed465f1a8d0e715ef9be07a4ddee4a0a1f11dba7cf4cf7824594e7b8bb42",
+      "parent_addendum_sha256": "b93e743919f91486de166422d03ebe24e44702bfc40a7d355ddafa1054ba7d0b",
+      "parent_authorization_sha256": "499986e1f74aeb1d35e77b087d0bb01d457ecc00f848e5868b87eeff8a4a0213",
+      "parent_checkpoint_sha256": "3b1203b6a1e4cb162910b8c011f4f562b693ee04f8f2801051f122416b11fcba",
+      "parent_result_sha256": "7124fbfe4929975ce68f4f94b1a67f89c267ad51372be81501098b23d6f85402",
+      "parent_ledger_sha256": "12031ff8f7e0ca1f5be14854654e283773e0842c54e146f965d72f4c5108165e",
+      "parent_cycles": [1, 2],
+      "start_cycle": 3,
+      "invocation_index": 2,
+      "t1a_cumulative_cap_seconds": null,
+      "global_cap_seconds": 4320.0,
+      "per_invocation_cap_seconds": 600.0,
+      "memory_limit_mib": 3072,
+      "max_solver_invocations": 1,
+      "no_retry": true,
+      "carry_forward_failed_seconds": 112.094,
+      "carry_forward_partial_seconds": 266.469,
+      "carry_forward_t1a_ledger_seconds": 378.563,
+      "carry_forward_conservative_global_seconds": 379.751,
+      "scope": "A3b T1-A cycle 3 only, from the exact v2 checkpoint, under the v3 protocol; no T1-B..E; no periodicity, steady-state, supported-resolution-domain or predictive claim.",
+      "claim_limits": {
+        "periodicity": "NOT_EVALUATED_HORIZON_INSUFFICIENT",
+        "temporal_sensitivity": "NOT_CONVERGED_NO_ESTIMATE",
+        "spatial_sensitivity": "NOT_CONVERGED_NO_ESTIMATE",
+        "supported_resolution_domain": "NOT_IDENTIFIED",
+        "steady_state_convergence": "NOT_CLAIMED",
+        "predictive_validation": "NOT_CLAIMED",
+        "experimental_validation": "NOT_PERFORMED"
+      },
+      "owner_confirmation": "<literal owner text: I authorize one T1-A cycle-3 continuation from the named v2 checkpoint under the named v3 protocol, driver and addendum, with the chosen cumulative T1-A cap, global cap 4320 s, per-invocation cap 600 s, no retry, the 112.094 s failed and 266.469 s partial charges preserved, and only the claim limits above.>"
+    },
+    "hardening_note": "The v2 owner authorization records memory_limit_mib 4096 while the frozen protocol and driver enforce 3072 MiB. The v3 authorization should bind 3072 MiB explicitly and should not copy the v2 4096 value."
+  },
+  "verification_plan": {
+    "no_solver_required": [
+      "python -m pytest tests/test_integrated_solver_verification_a3b.py -q (after adding the v3 tests; no solver run)",
+      "python scripts/diagnostics/integrated_solver_verification_a3b_v3.py lineage-preflight --protocol results/integrated-solver-verification-v1/a3b-preregistration-v3.json --authorization <v3-authorization> (expected PASS, zero solver steps)",
+      "python scripts/diagnostics/integrated_solver_verification_a3b_v3.py preflight (expected five configs PASS, zero solver steps)",
+      "python scripts/agents/program_status.py check"
+    ],
+    "negative_tests": [
+      "Tamper the v3 protocol SHA: expect V3_PROTOCOL_SHA_MISMATCH.",
+      "Tamper the parent protocol SHA: expect PARENT_PROTOCOL_SHA_MISMATCH.",
+      "Tamper the parent checkpoint SHA: expect PARENT_CHECKPOINT_SHA_MISMATCH.",
+      "Change one scientific field in the checkpoint binding copy: expect PARENT_BINDING_SCIENTIFIC_FIELD_MISMATCH.",
+      "Remove one parent ledger entry: expect PARENT_LEDGER_ENTRY_MISSING.",
+      "Set next_cycle to 2 or 4: expect CHECKPOINT_NEXT_CYCLE_NOT_3.",
+      "Set the T1-A cap to 525 s: expect T1A_CAP_BELOW_RESERVATION.",
+      "Set the T1-A cap to 651 s: expect T1A_CAP_ABOVE_GLOBAL_SUM_BOUND.",
+      "Attempt to write a v2 artifact path: expect V2_ARTIFACT_WRITE_REFUSED.",
+      "Attempt analyze-v3 before cycle 3: expect ANALYSIS_BEFORE_COMBINED_THREE_CYCLES."
+    ],
+    "immutability_check": "Record SHA-256 of the v2 protocol, driver, addendum, authorization, checkpoint, result and ledger before and after every v3 preflight/test; require equality.",
+    "not_run": [
+      "run-config",
+      "any solver step",
+      "freeze-atol-v3 with real data",
+      "analyze-v3 with real data",
+      "any campaign"
+    ]
+  },
+  "non_actions": [
+    "No solver invocation or resume.",
+    "No cap selection or freeze.",
+    "No v3 protocol or driver freeze.",
+    "No atol_obs freeze.",
+    "No modification of v2 protocol, driver, addendum, authorization, checkpoint, result, ledger or invocation artifacts.",
+    "No modification of the owner decision record ISV1-A3B-AUTHORIZATION-DECISION.",
+    "No claim of convergence, supported resolution domain, periodicity, steady state or predictive capability."
+  ],
+  "handoff": {
+    "owner_decision": "ISV1-A3B-AUTHORIZATION-DECISION remains pending. This draft is evidence for that decision, not a decision.",
+    "next_if_continue": "Owner selects a cap from options B-E (or rejects). If selected, freeze the v3 protocol with that cap, implement the v3 driver and tests, run lineage-preflight and zero-step preflight, write the v3 addendum, and request a separate explicit owner authorization. No solver until that authorization exists.",
+    "next_if_stop": "Keep the PARTIAL result and checkpoint; close the objective with the existing no-convergence and no-predictive-claim limits.",
+    "explicitly_not_done": "No option was selected; no v3 artifact was frozen; no authorization was requested or claimed."
+  }
+}
