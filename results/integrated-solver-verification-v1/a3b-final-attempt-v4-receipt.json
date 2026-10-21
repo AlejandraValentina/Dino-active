@@ -1,0 +1,82 @@
+{
+  "schema": "DINO_ISV1_A3B_V4_FINAL_ATTEMPT",
+  "recorded_at": "2026-10-21T14:05:01.644417+00:00",
+  "classification": "BLOCKED — ENVIRONMENT OR INTEGRITY",
+  "reason": "BLOCKED_ENVIRONMENT_INSUFFICIENT_MEMORY",
+  "attempt_closed": true,
+  "owner_authorization": "Conditional authorization communicated by owner in A3B V4 FINAL EXECUTION & CLOSURE; resource condition failed, authorization not activated.",
+  "memory": {
+    "available_mib_at_initial_check": 1012.44921875,
+    "required_available_mib": 4096,
+    "host_total_mib": 20224.828125,
+    "aggregate_execution_cap_mib": 4096,
+    "execution_peak_mib": null,
+    "peak_status": "NOT_MEASURED_NO_EXECUTION",
+    "guard_verified_at": "scripts/diagnostics/integrated_solver_verification_a3b_v4.py:287-289 and 467-468"
+  },
+  "solver_steps_executed": 0,
+  "invocations_launched": 0,
+  "full_zero_step_preflight": "NOT_RUN: initial memory condition failed; no structural-only bypass attempted",
+  "frozen_hashes_verified_now": {
+    "scripts/diagnostics/integrated_solver_verification_a3b_v4.py": "3a4c69e820e5d93ad55c32f02c26104fb79590f85ec9babd0305dfd3163b7d79",
+    "results\\integrated-solver-verification-v1\\a3b-preregistration-v4.json": "129bc48682026810e35dc999dc8f745b4376706470b2d7daf9c316e5b45f835a",
+    "results\\integrated-solver-verification-v1\\a3b-preregistration-v4-freeze.json": "4c18568804cbf2161b068a52f1628e79e0e527ea5c07d1e5a88011cf307b6251",
+    "results\\integrated-solver-verification-v1\\a3b-execution-authorization-request-v4.json": "0c6ee428f83c57d9a775d85a7d1412fac1670ad81b84ee1e109855ab0abeb9e1",
+    "results\\integrated-solver-verification-v1\\a3b-analysis-freeze-v3.json": "19214a5ca3cd290fea8b0634cdbddfae46b5e1cc3f801dfa4f8201b67e1be8c2"
+  },
+  "configuration_states": {
+    "T1-A": {
+      "state": "COMPLETE_V3",
+      "cycles": [
+        1,
+        2,
+        3
+      ],
+      "next_cycle": 4,
+      "evidence_basis": "Historical frozen verification receipt; not reexecuted or reaudited in this attempt"
+    },
+    "T1-B": {
+      "state": "NOT_STARTED",
+      "cycles": []
+    },
+    "T1-C": {
+      "state": "NOT_STARTED",
+      "cycles": []
+    },
+    "T1-D": {
+      "state": "NOT_STARTED",
+      "cycles": []
+    },
+    "T1-E": {
+      "state": "NOT_STARTED",
+      "cycles": []
+    }
+  },
+  "budget": {
+    "global_cap_seconds": 4320,
+    "historical_conservative_consumed_seconds": 533.142,
+    "new_scientific_invocation_seconds": 0,
+    "remaining_seconds": 3786.858,
+    "basis": "Frozen V4 historical accounting; no V4 invocation, ledger or reservation created. Administrative resource check is not a scientific invocation."
+  },
+  "scientific_evidence": {
+    "historical_audits": "Previously recorded PASS/recomputed; unchanged, not rerun",
+    "conservation": "No new measurements",
+    "cfl_rejections": "NOT_MEASURED_NO_EXECUTION",
+    "effective_dt": "NOT_MEASURED_NO_EXECUTION",
+    "sensitivity": "INCOMPLETE_MATRIX; temporal/spatial errors cannot be estimated",
+    "atol_obs": "V3 frozen file hash verified unchanged",
+    "periodicity": "NOT_EVALUATED",
+    "predictive_claim": "NOT_CLAIMED"
+  },
+  "implementation_defect_identified": false,
+  "consequence": "Memory prevents launch. This attempt provides no new evidence about discretization adequacy. No automatic retry, infrastructure version or next objective.",
+  "preserved": "Solver, frozen drivers/protocols, historical artifacts and ledgers unchanged; no unrelated processes terminated.",
+  "verification_receipt_reference": "results\\integrated-solver-verification-v1\\a3b-implementation-verification-v4.json",
+  "administrative_checks": {
+    "program_status_check": "PASS; existing READY quota warning intentionally not acted on per owner",
+    "openspec_strict": "PASS",
+    "tests": "NOT_RERUN: no implementation change; initial resource failure closes attempt",
+    "new_full_preflight": "NOT_RUN_AFTER_INITIAL_RESOURCE_FAILURE"
+  }
+}

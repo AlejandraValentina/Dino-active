@@ -6890,7 +6890,7 @@
       "ISV1-A3-EXECUTION",
       "ISV1-ACCEPTANCE"
     ],
-    "completion_criterion": "A3a completed with periodicity not identified. T1-A cycles 1-3 remain COMPLETE in immutable V3 (next_cycle=4; inherited ledger 530.469 s). Final forward V4 implementation is frozen and verified: IMPLEMENTATION READY — EXECUTION NOT AUTHORIZED. Zero-step structural preflight passes, 52 targeted tests pass; T1-B..E remain NOT_STARTED. V4 accounts 2.673 s additional measured historical wrapper cost, conservatively starting at 533.142/4320 s. Live 4096 MiB free RAM and a separate owner authorization binding final V4 hashes, B single-cycle invocations and C 750 s invocation cap are required before solver execution. V3 atol freeze unchanged; matrix INCOMPLETE_MATRIX, scientific gate REVIEW; no sensitivity, periodicity or predictive claim."
+    "completion_criterion": "A3b V4 final attempt CLOSED: BLOCKED — ENVIRONMENT OR INTEGRITY / BLOCKED_ENVIRONMENT_INSUFFICIENT_MEMORY. Initial available RAM 1012.449 MiB < 4096 MiB required; conditional owner authorization not activated, zero solver steps and zero invocations. T1-A V3 remains COMPLETE (3 cycles, next_cycle=4); T1-B..E NOT_STARTED. Historical conservative consumption 533.142/4320 s; remaining 3786.858 s. Frozen V4 identities and V3 atol hashes verified unchanged. INCOMPLETE_MATRIX; scientific gate REVIEW, no sensitivity/periodicity/predictive claim. This attempt is terminal; no automatic retry, new infrastructure or next objective."
   },
   "objectives": [
     {
@@ -9398,6 +9398,12 @@
       "task": "ISV1-A3B-T1B-E-V4-PROTOCOL-DRAFT",
       "kind": "task",
       "summary": "V4 frozen: 52 targeted tests PASS, zero-step structural preflight PASS, source hashes unchanged. B split into single cycles; C requests 750 s invocations. Inclusive baseline 533.142/4320 s, projected 4093.424 s. No solver run; execution authorization and 4096 MiB free RAM required. No quota tasks added."
+    },
+    {
+      "at": "2026-10-21T14:05:10+00:00",
+      "task": "ISV1-A3B-T1B-E-V4-PROTOCOL-DRAFT",
+      "kind": "task",
+      "summary": "Final V4 attempt closed: BLOCKED_ENVIRONMENT_INSUFFICIENT_MEMORY; 1012.449 MiB available vs 4096 required. Conditional owner grant not activated. Zero solver steps/invocations; five frozen hashes verified. No automatic retry or next objective."
     }
   ],
   "legacy_gate_status": {
@@ -9427,7 +9433,8 @@
       "results/integrated-solver-verification-v1/a3b-terminal-receipt-v2-fix1.json",
       "results/integrated-solver-verification-v1/a3a-run-receipt.json",
       "A3b T1-A v3 continuation package complete without solver execution: driver SHA-256 LF 66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932, v3 tests 8/8 PASS (23/23 including v2), lineage-preflight PASS (scientific fields equal, zero steps, receipt ea220a4ed479905d6833be933ba7e9a7e6a0c3a2fd664e9476c1c36fb7a7c716), zero-step preflight PASS 5/5 configs (receipt 4866974ec2237c0d2ead88a3dafc4c4b5c3b24c3275747bb27fe3a7100d51611), execution addendum SHA-256 6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144 binds protocol b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325 and parent checkpoint 3b1203b6...; authorization remains NOT_GRANTED.",
-      "ISV1 A3b T1-A v3 cycle 3 executed once under explicit owner authorization: exit 0, run_logged wall 153.391 s, driver 151.906 s, cumulative T1-A 530.469/600 s (69.531 s buffer), global 530.469/4320 s; cycle 3 primary a7eaf55bffc8855117f01c2419201533425e1b9bdf21ddac6e6bf7b37c4d4f2f, audit recomputed PASS; v3 result 883214a9108a835a374234d2ac265d1c9b893b6f1229e72e9ced966f51b6658a, checkpoint 98f49c7c052aa7f58368c8407514824c783700c4e1e48d373103fa076ad756f3, ledger 2de8566252a76c818c80668f045f639dc1bf8afe6c9dc1d541cb7c6765a23eb6; v2 parent hashes unchanged. atol freeze 19214a5ca3cd290fea8b0634cdbddfae46b5e1cc3f801dfa4f8201b67e1be8c2; sensitivity report/receipt INCOMPLETE_MATRIX (T1-B..E not authorized). No convergence or predictive claim."
+      "ISV1 A3b T1-A v3 cycle 3 executed once under explicit owner authorization: exit 0, run_logged wall 153.391 s, driver 151.906 s, cumulative T1-A 530.469/600 s (69.531 s buffer), global 530.469/4320 s; cycle 3 primary a7eaf55bffc8855117f01c2419201533425e1b9bdf21ddac6e6bf7b37c4d4f2f, audit recomputed PASS; v3 result 883214a9108a835a374234d2ac265d1c9b893b6f1229e72e9ced966f51b6658a, checkpoint 98f49c7c052aa7f58368c8407514824c783700c4e1e48d373103fa076ad756f3, ledger 2de8566252a76c818c80668f045f639dc1bf8afe6c9dc1d541cb7c6765a23eb6; v2 parent hashes unchanged. atol freeze 19214a5ca3cd290fea8b0634cdbddfae46b5e1cc3f801dfa4f8201b67e1be8c2; sensitivity report/receipt INCOMPLETE_MATRIX (T1-B..E not authorized). No convergence or predictive claim.",
+      "results/integrated-solver-verification-v1/a3b-final-attempt-v4-receipt.json"
     ],
     "gate_tasks_total": 5,
     "gate_tasks_done": 5,
@@ -9814,11 +9821,21 @@
   },
   "a3b_v4_execution_authorization": {
     "execution_authorized": false,
-    "status": "DRAFT_NOT_AUTHORIZED",
+    "status": "CONDITIONAL_OWNER_GRANT_NOT_ACTIVATED_MEMORY_GUARD",
     "request_path": "results/integrated-solver-verification-v1/a3b-execution-authorization-request-v4.json",
     "request_sha256": "0c6ee428f83c57d9a775d85a7d1412fac1670ad81b84ee1e109855ab0abeb9e1",
     "driver_sha256": "3a4c69e820e5d93ad55c32f02c26104fb79590f85ec9babd0305dfd3163b7d79",
     "protocol_sha256": "129bc48682026810e35dc999dc8f745b4376706470b2d7daf9c316e5b45f835a",
-    "freeze_sha256": "4c18568804cbf2161b068a52f1628e79e0e527ea5c07d1e5a88011cf307b6251"
+    "freeze_sha256": "4c18568804cbf2161b068a52f1628e79e0e527ea5c07d1e5a88011cf307b6251",
+    "final_attempt_receipt": "results/integrated-solver-verification-v1/a3b-final-attempt-v4-receipt.json"
+  },
+  "a3b_v4_final_attempt": {
+    "classification": "BLOCKED — ENVIRONMENT OR INTEGRITY",
+    "reason": "BLOCKED_ENVIRONMENT_INSUFFICIENT_MEMORY",
+    "attempt_closed": true,
+    "receipt_path": "results/integrated-solver-verification-v1/a3b-final-attempt-v4-receipt.json",
+    "receipt_sha256": "388415e1ad9034b0ac7126e8594a091f39e8b34aedf40872b31cbd8398a1c5cf",
+    "solver_steps_executed": 0,
+    "automatic_continuation": false
   }
 }
