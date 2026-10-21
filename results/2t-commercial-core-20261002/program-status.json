@@ -6697,6 +6697,34 @@
         "results/integrated-solver-verification-v1/memory-execution-recovery.md"
       ],
       "next_action": "No automatic continuation; representative measurements and any identity migration require separate authorization."
+    },
+    {
+      "id": "ISV1-TRAJECTORY-MEMORY-RECOVERY",
+      "description": "Owner-authorized private trajectory spooling, production workflow integration and bounded equivalence/memory/recovery tests; no A3b execution.",
+      "dependencies": [
+        "ISV1-MEMORY-EXECUTION-RECOVERY"
+      ],
+      "state": "DONE",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L1",
+      "write_scope": [
+        "motorsim/integrated_2t.py",
+        "motorsim/exploratory_workflow.py",
+        "motorsim/_trajectory_store.py",
+        "tests/test_trajectory_spool.py",
+        "scripts/diagnostics/trajectory_growth_benchmark.py",
+        "scripts/diagnostics/integrated_evidence_memory_benchmark.py",
+        "results/integrated-solver-verification-v1/trajectory-memory-recovery*"
+      ],
+      "blocker": null,
+      "result": "MEMORY_GROWTH_REDUCED",
+      "qualification": "Integration evidence storage reduced; full-pipeline memory, B/C viability and budget fit unverified. Public snapshot/primary materialization and replay remain dominant risks.",
+      "evidence": [
+        "results/integrated-solver-verification-v1/trajectory-memory-recovery-receipt.json",
+        "results/integrated-solver-verification-v1/trajectory-memory-recovery.md"
+      ],
+      "next_action": "No automatic scientific continuation or new version. Any representative extended run and identity/budget migration require separate owner authorization."
     }
   ],
   "audit_remediation_mode": false,
@@ -6913,7 +6941,7 @@
       "ISV1-A3-EXECUTION",
       "ISV1-ACCEPTANCE"
     ],
-    "completion_criterion": "Memory recovery intervention COMPLETE: MEMORY_OPTIMIZATION_VERIFIED only on small two-cycle synthetic integrated fixture, peak RSS 584.70 to 514.03 MiB (12.09%), canonical primaries identical, independent audits recomputed PASS, conservation equal. Eight new tests and 83 integrated tests pass; historical frozen A3b bundle 52 PASS. Changed working tree frozen A3b suite: 32 PASS, 3 identity failures, 17 contract setup errors; strict V4 correctly rejects changed dependency. T1-B/C viability NOT_VERIFIED, no cap increase or A3b execution. Historical T1-A, V2/V3/V4 and atol preserved; scientific gate REVIEW, matrix INCOMPLETE. Budget unchanged 783.376/4320 s consumed, 3536.624 s remaining. Future representative execution/identity continuation requires independent owner authorization; no automatic next objective."
+    "completion_criterion": "Trajectory memory intervention COMPLETE: MEMORY_GROWTH_REDUCED on small fixtures. Lossless private spool enabled in exploratory production workflow, public checkpoint/primary unchanged. Retained growth 31458 to 1115 bytes/step; cycle-1 integration RSS 86.54 to 34.74 MiB; overall audit-dominated peak 513.51 to 481.40 MiB; wall 47.51 to 48.48 s. Canonical primaries/snapshots identical, independent audit recomputed PASS and conservation equal. 39 unique focal tests PASS including Windows spawn interruptions, disk-failure restore and production workflow. Snapshots/primaries/replay still grow; T1-B/C NOT_VERIFIED. 17 historical source files and 4 V4 evidence files unchanged. New solver/workflow identities fail frozen V4 preflight closed; no migration, new protocol or scientific execution. A3b budget unchanged 783.376/4320 s consumed, 3536.624 s left; old pending forecast already exceeds balance. Scientific gate REVIEW, matrix incomplete; no automatic continuation."
   },
   "objectives": [
     {
@@ -9439,6 +9467,12 @@
       "task": "ISV1-MEMORY-EXECUTION-RECOVERY",
       "kind": "task",
       "summary": "Bounded memory optimization verified: peak RSS 584.70 to 514.03 MiB, identical canonical two-cycle primaries, audit recomputed PASS, conservation equal. 8 new and 83 integrated tests pass; frozen historical bundle 52 PASS; live frozen identities reject optimization as required. B/C viability unverified, caps and A3b budget unchanged."
+    },
+    {
+      "at": "2026-10-21T15:22:30+00:00",
+      "task": "ISV1-TRAJECTORY-MEMORY-RECOVERY",
+      "kind": "task",
+      "summary": "MEMORY_GROWTH_REDUCED: private lossless spool in production exploratory workflow; retained growth 31458 to 1115 bytes/step, integration RSS 86.54 to 34.74 MiB. Canonical equality and independent audit PASS, 39 focal tests including spawn recovery. Public snapshots/replay still grow. B/C unverified, frozen hashes reject changes, old budget forecast no longer fits; no A3b execution."
     }
   ],
   "legacy_gate_status": {
@@ -9892,5 +9926,12 @@
     "receipt_sha256": "16b015ff847ed249faef88353f6100d781ac4672ad624864c3d54dd3eaa3e135",
     "full_T1B_recovery_verified": false,
     "campaign_authorized": false
+  },
+  "trajectory_memory_recovery": {
+    "result": "MEMORY_GROWTH_REDUCED",
+    "receipt": "results/integrated-solver-verification-v1/trajectory-memory-recovery-receipt.json",
+    "receipt_sha256": "3329cdebe9f2c8b062d6a1f994f61d2ff313dd8120013d273268a329d8dcb053",
+    "B_C_verified": false,
+    "scientific_execution_authorized": false
   }
 }

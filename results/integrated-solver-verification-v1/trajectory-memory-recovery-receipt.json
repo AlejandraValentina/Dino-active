@@ -1,0 +1,300 @@
+{
+  "schema": "DINO_TRAJECTORY_MEMORY_RECOVERY_RECEIPT",
+  "date": "2026-10-21T15:22:30.236110+00:00",
+  "classification": "MEMORY_GROWTH_REDUCED",
+  "review_kind": "SELF_REVIEW",
+  "scope": "Small engineering fixtures only; T1-B/T1-C NOT_VERIFIED, no A3b invocation",
+  "report": "results/integrated-solver-verification-v1/trajectory-memory-recovery.md",
+  "production_backend": "Private lossless marshal/zlib record spool, length/SHA framing, 8-byte-per-step offset index. Enabled in exploratory workflow; public evidence and restart format unchanged.",
+  "remaining_growth": "Index O(steps); snapshots, primary deepcopy and audit replay still materialize history; no full-pipeline constant-memory claim.",
+  "before": {
+    "wall_s": 47.51024900004268,
+    "cpu_s": 47.5,
+    "sampled_peak_rss_bytes": 538456064,
+    "sampled_phase_peak_rss_bytes": {
+      "1:advance": 90742784,
+      "1:end_snapshot": 139198464,
+      "1:make": 229904384,
+      "1:audit": 336973824,
+      "1:measurement_serialization": 248188928,
+      "2:start_snapshot": 141209600,
+      "2:advance": 207953920,
+      "2:end_snapshot": 312803328,
+      "2:make": 412651520,
+      "2:audit": 538456064,
+      "2:measurement_serialization": 437121024
+    },
+    "final_private_uss_bytes": 186327040,
+    "cycles": [
+      {
+        "cycle": 1,
+        "steps": 1242,
+        "advance_s": 3.63658970000688,
+        "snapshot_s": 0.6339472999097779,
+        "make_s": 4.9358039000071585,
+        "audit_s": 10.883639400009997,
+        "rss_growth_per_step": 44670.14492753623,
+        "spool_bytes": null,
+        "index_bytes": null,
+        "primary_sha256": "a86a74d190da9f6a74872018d9ba4278d24caa0ec98bf85a8b268f37a1a188a6",
+        "conservation": {
+          "mass_residual_kg": -8.809142651444724e-20,
+          "energy_residual_J": 5.920264278813647e-14,
+          "species_residual_kg": [
+            -2.7740329022578336e-19,
+            -6.352747104407253e-22,
+            4.3095024239458766e-19,
+            4.02672814660521e-21
+          ]
+        }
+      },
+      {
+        "cycle": 2,
+        "steps": 1442,
+        "advance_s": 4.15943470003549,
+        "snapshot_s": 1.709203999955207,
+        "make_s": 5.786605000030249,
+        "audit_s": 13.349600499961525,
+        "rss_growth_per_step": 45385.497919556175,
+        "spool_bytes": null,
+        "index_bytes": null,
+        "primary_sha256": "32c44a8d5e3573108d9228740982bb78e9936e57b4c4153442d3fe336b504fa9",
+        "conservation": {
+          "mass_residual_kg": 1.1553529400548657e-18,
+          "energy_residual_J": -1.3602167352536054e-13,
+          "species_residual_kg": [
+            -2.6890649097363866e-19,
+            -5.0664812518872945e-24,
+            3.2116610771351384e-19,
+            -3.758088317981543e-21
+          ]
+        }
+      }
+    ]
+  },
+  "after": {
+    "wall_s": 48.48254460003227,
+    "cpu_s": 48.375,
+    "sampled_peak_rss_bytes": 504786944,
+    "sampled_phase_peak_rss_bytes": {
+      "1:advance": 36425728,
+      "1:end_snapshot": 111599616,
+      "1:make": 202059776,
+      "1:audit": 308248576,
+      "1:measurement_serialization": 222199808,
+      "2:start_snapshot": 113524736,
+      "2:advance": 114888704,
+      "2:end_snapshot": 278712320,
+      "2:make": 379912192,
+      "2:audit": 504786944,
+      "2:measurement_serialization": 403689472
+    },
+    "final_private_uss_bytes": 62685184,
+    "cycles": [
+      {
+        "cycle": 1,
+        "steps": 1242,
+        "advance_s": 3.802459300030023,
+        "snapshot_s": 0.7464449000544846,
+        "make_s": 4.904837399953976,
+        "audit_s": 11.092306399950758,
+        "rss_growth_per_step": 748.6247987117553,
+        "spool_bytes": 6529842,
+        "index_bytes": 9936,
+        "primary_sha256": "a86a74d190da9f6a74872018d9ba4278d24caa0ec98bf85a8b268f37a1a188a6",
+        "conservation": {
+          "mass_residual_kg": -8.809142651444724e-20,
+          "energy_residual_J": 5.920264278813647e-14,
+          "species_residual_kg": [
+            -2.7740329022578336e-19,
+            -6.352747104407253e-22,
+            4.3095024239458766e-19,
+            4.02672814660521e-21
+          ]
+        }
+      },
+      {
+        "cycle": 2,
+        "steps": 1442,
+        "advance_s": 4.5011930000036955,
+        "snapshot_s": 1.798226699931547,
+        "make_s": 5.819341900059953,
+        "audit_s": 13.064028599997982,
+        "rss_growth_per_step": 863.511789181692,
+        "spool_bytes": 15434044,
+        "index_bytes": 21472,
+        "primary_sha256": "32c44a8d5e3573108d9228740982bb78e9936e57b4c4153442d3fe336b504fa9",
+        "conservation": {
+          "mass_residual_kg": 1.1553529400548657e-18,
+          "energy_residual_J": -1.3602167352536054e-13,
+          "species_residual_kg": [
+            -2.6890649097363866e-19,
+            -5.0664812518872945e-24,
+            3.2116610771351384e-19,
+            -3.758088317981543e-21
+          ]
+        }
+      }
+    ]
+  },
+  "growth_before": {
+    "scope": "Small synthetic engine partial horizon 60 degrees, not A3b",
+    "trajectory": "list",
+    "wall_s_with_tracemalloc": 2.9233025000430644,
+    "snapshot_sha256": "18d8a681ca0f0eb0a330f7f5af92d6e5a4f8310d822df2d5845cb3b94d5a81d3",
+    "samples": [
+      {
+        "angle": 10.0,
+        "accepted_steps": 20,
+        "rss_bytes": 38375424,
+        "retained_traced_bytes": 1155365,
+        "peak_traced_bytes": 1166061,
+        "spool_bytes": 0,
+        "index_bytes": 0
+      },
+      {
+        "angle": 30.0,
+        "accepted_steps": 60,
+        "rss_bytes": 42930176,
+        "retained_traced_bytes": 2565049,
+        "peak_traced_bytes": 2575817,
+        "spool_bytes": 0,
+        "index_bytes": 0
+      },
+      {
+        "angle": 60.0,
+        "accepted_steps": 120,
+        "rss_bytes": 49246208,
+        "retained_traced_bytes": 4301189,
+        "peak_traced_bytes": 4346237,
+        "spool_bytes": 0,
+        "index_bytes": 0
+      }
+    ],
+    "retained_growth_bytes_per_step": 31458.24
+  },
+  "growth_after": {
+    "scope": "Small synthetic engine partial horizon 60 degrees, not A3b",
+    "trajectory": "spool",
+    "wall_s_with_tracemalloc": 2.872798500000499,
+    "snapshot_sha256": "18d8a681ca0f0eb0a330f7f5af92d6e5a4f8310d822df2d5845cb3b94d5a81d3",
+    "samples": [
+      {
+        "angle": 10.0,
+        "accepted_steps": 20,
+        "rss_bytes": 36798464,
+        "retained_traced_bytes": 591746,
+        "peak_traced_bytes": 932365,
+        "spool_bytes": 41798,
+        "index_bytes": 160
+      },
+      {
+        "angle": 30.0,
+        "accepted_steps": 60,
+        "rss_bytes": 36958208,
+        "retained_traced_bytes": 684534,
+        "peak_traced_bytes": 1029297,
+        "spool_bytes": 125299,
+        "index_bytes": 480
+      },
+      {
+        "angle": 60.0,
+        "accepted_steps": 120,
+        "rss_bytes": 36999168,
+        "retained_traced_bytes": 703202,
+        "peak_traced_bytes": 1047957,
+        "spool_bytes": 250431,
+        "index_bytes": 960
+      }
+    ],
+    "retained_growth_bytes_per_step": 1114.56
+  },
+  "growth_reduction_percent": 96.45701730293875,
+  "sampled_peak_reduction_percent": 6.252900143771056,
+  "wall_factor": 1.0204649653591316,
+  "equivalence": {
+    "two_cycle_primary_canonical_hashes_identical": true,
+    "partial_snapshot_canonical_hash_identical": true,
+    "all_four_cycle_audits_recomputed_PASS": true,
+    "conservation_identical": true,
+    "identity_combination_authorized": false
+  },
+  "tests": {
+    "unique_focal_tests_passed": 39,
+    "combined_suite": "38 passed in 230.95 s: initial 8 spool, previous 8 evidence-memory and 22 exploratory workflow",
+    "final_lightweight_spool_suite": "8 passed, 1 deselected in 2.92 s; includes later no-reference-retention test, heavy real-cycle test already passed",
+    "initial_spool_suite": "7 passed in 64.52 s before adding restore-disk-failure and retention tests",
+    "development_failure": "One test fixture used incompatible schema while expecting configuration-mismatch wording; fixed fixture plenum selection, production guard unchanged.",
+    "interruption": "Real Windows spawn kill during integration and partial spool write; previous checkpoint restored, canonical equality/no duplicate steps, temporary files removed",
+    "integrity": "Short write, truncated payload, bad checksum, fsync failure, restore disk failure, incompatible checkpoint and reference nonretention tests pass",
+    "openspec_strict": "PASS",
+    "program_status": "CHECK OK; existing READY quota warning not acted on per owner",
+    "frozen_A3b_suite": "Not rerun against modified identities; prior intervention recorded the expected historical-binding failures. Frozen V4 zero-step preflight explicitly FAIL_CLOSED on modified exploratory_workflow.py; guards not weakened."
+  },
+  "identity": {
+    "changed_file_sha256": {
+      "motorsim/integrated_2t.py": "4969a488e08aff93a2d44f16cff7f2517e89f32e1ed79fc4acd065b7aedead02",
+      "motorsim/exploratory_workflow.py": "9274df05ffde5292cce51f5794695db371017f92577f06f4d2f088c1fa5442a4",
+      "motorsim/_trajectory_store.py": "aeabda8569878221f0d1021c0ea9178b02da11df739d1f6e29f4e1690bcd13aa"
+    },
+    "new_normalized_module_hashes": {
+      "motorsim._trajectory_store": "aeabda8569878221f0d1021c0ea9178b02da11df739d1f6e29f4e1690bcd13aa",
+      "motorsim.integrated_2t": "bf54242b7dcc85a8be88948b63369c81581e575ed8717864cce45a423fff7968"
+    },
+    "historical_source_files_unchanged": 17,
+    "V4_evidence_files_unchanged": 4,
+    "new_dependency_bound": "motorsim._trajectory_store",
+    "frozen_V4_preflight": "FAIL_CLOSED: repository dependency changed: motorsim/exploratory_workflow.py",
+    "compatibility": "No automatic migration/reuse; scientific backend equivalence on small fixtures is not identity authorization"
+  },
+  "memory_estimates": {
+    "zero_step_saved_48_cell_configuration_state_and_ledger_python_deep_bytes": 22128,
+    "excludes": "Interpreter, configuration, transient RHS, events, spool buffers, snapshot/primary/replay",
+    "inverse_CFL_assumption_only": {
+      "CFL_0.4_steps": [
+        5254,
+        5764
+      ],
+      "CFL_0.2_steps": [
+        10508,
+        11528
+      ],
+      "CFL_0.1_steps": [
+        21016,
+        23056
+      ]
+    },
+    "whole_pipeline_peak_B_C": "NOT_ESTIMATED_RELIABLY",
+    "caps_unchanged": {
+      "worker_mib": 3072,
+      "aggregate_mib": 4096
+    }
+  },
+  "budget": {
+    "A3b_consumed_seconds": 783.376,
+    "A3b_remaining_seconds": 3536.624,
+    "global_cap_seconds": 4320,
+    "A3b_new_invocations": 0,
+    "unchanged_old_pending_forecast_seconds": 3560.2821157859453,
+    "unchanged_forecast_total_seconds": 4343.6581157859455,
+    "hypothetical_toy_wall_ratio_pending_seconds": 3633.143165954241,
+    "fit": "NOT_DEMONSTRATED: even old forecast exceeds current balance; toy timing is not representative. No counter reset, cap increase or campaign."
+  },
+  "diagnostic_limits": {
+    "two_cycle_fixture_timeout_seconds": 180,
+    "growth_fixture_timeout_seconds": 45,
+    "growth_horizons_degrees": [
+      10,
+      30,
+      60
+    ],
+    "scientific_point_campaigns": 0
+  },
+  "external_evidence_sha256": {
+    "list-final.json": "f964ee0c05abde3328338a024a63bb660a0dbc0fdded8f06981644152a866c6b",
+    "spool-final.json": "b81356a704e624f76f778710a35f9cd6b319e02cb3a4c9938d8026cc08d6e586",
+    "growth-list.json": "19021ca651fc1257d5e92f6e031d0749c1cb241194e61d8e254f84a805935064",
+    "growth-spool.json": "c86191265bb0bb51bff432bf7adf5d4a426aa0f677adbd0b6b64930143d702d4"
+  },
+  "next_step": "No automatic continuation. Representative partial 48-cell diagnostic requires separate authorization, then explicit identity and budget plan for any scientific continuation; no V4 reconstruction implemented."
+}

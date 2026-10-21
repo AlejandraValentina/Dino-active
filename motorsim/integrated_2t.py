@@ -44,6 +44,7 @@ from .reed import ReedState
 from .reed_coupling import HingedFlapGeometryV1
 from .thermal import ThermalSystem
 from .two_stroke_ports import TwoStrokePortSet
+from ._trajectory_store import TrajectorySpool
 
 _USE_ACTIVE_P7_EVENT = object()
 _USE_ACTIVE_FUEL_EVENT = object()
@@ -97,6 +98,7 @@ def _solver_dependency_hashes() -> dict[str, str]:
     """Bind the integrated solver and the implementation modules it executes."""
     modules = {
         __name__: sys.modules[__name__],
+        TrajectorySpool.__module__: sys.modules[TrajectorySpool.__module__],
         CrankcaseGeometry.__module__: sys.modules[CrankcaseGeometry.__module__],
         ChamberState.__module__: sys.modules[ChamberState.__module__],
         Boundary.__module__: sys.modules[Boundary.__module__],
@@ -255,7 +257,7 @@ def _tuplify(value):
 
 def _jsonify(value):
     """Return one stable JSON-shaped representation for replay evidence."""
-    if isinstance(value, (list, tuple)):
+    if isinstance(value, (list, tuple, TrajectorySpool)):
         return [_jsonify(item) for item in value]
     if isinstance(value, dict):
         return {key: _jsonify(item) for key, item in value.items()}
@@ -2128,6 +2130,8 @@ class IntegratedEngine2T:
 
     def step(self, dt_s: float, delta_angle_deg: float, *, capture_trace: bool = True,
              profile_capture: bool = False):
+        if isinstance(self.trace, TrajectorySpool) and self.trace.failed:
+            raise OSError("trajectory persistence failed; restore a valid checkpoint")
         self._assert_configuration_unchanged()
         if type(capture_trace) is not bool:
             raise ValueError("capture_trace must be a bool")
@@ -2442,12 +2446,33 @@ class IntegratedEngine2T:
                     "fuel_combustion_source_species_kg"][index]
         return report
 
+    def enable_trajectory_spooling(self, directory=None):
+        """Keep accepted-stage history in a private lossless temporary spool.
+
+        The public snapshot/primary remains the complete legacy JSON tree.
+        Spooling is operational, never a physical configuration or FAST mode.
+        Exporting a large snapshot still requires proportional memory.
+        """
+        if isinstance(self.trace, TrajectorySpool):
+            return
+        spool = TrajectorySpool(directory)
+        try:
+            for row in self.trace:
+                spool.append(row)
+            spool.sync()
+        except BaseException:
+            spool.close()
+            raise
+        self.trace = spool
+
     def snapshot(self):
         self._assert_configuration_unchanged(check_identity=True)
         if self.accepted_steps != len(self.trace):
             raise ValueError(
                 "trace-free FAST capture is not a restorable checkpoint; "
                 "use fast_recipe_terminal_state")
+        if isinstance(self.trace, TrajectorySpool):
+            self.trace.sync()
         result = {"schema": self.schema, "configuration_identity": deepcopy(self.configuration_identity),
                 "state": _jsonify(self.state), "angle_deg": self.angle_deg,
                 "crank_angle_unwrapped_deg": self.crank_angle_unwrapped_deg,
@@ -2516,7 +2541,12 @@ class IntegratedEngine2T:
             "source_species_kg": list(self.ledger.get(
                 "fuel_combustion_source_species_kg", [0.0] * 4))}
         self._trace_origin_state = _jsonify(self.state)
-        self.trace = []
+        if isinstance(self.trace, TrajectorySpool):
+            old = self.trace
+            self.trace = TrajectorySpool(old.directory)
+            old.close()
+        else:
+            self.trace = []
         self.accepted_steps = 0
         self.rejected_steps = 0
         self._trace_scope = "CYCLE_LOCAL"
@@ -2892,6 +2922,20 @@ class IntegratedEngine2T:
                                 trace_baseline["heat_added_J"], heat_sum,
                                 rel_tol=1e-12, abs_tol=1e-15)):
                 raise ValueError("integrated checkpoint fuel-combustion ledger mismatch")
+        # Persist the replacement before committing any live state. A disk
+        # failure must leave the previous engine/checkpoint pair intact.
+        old_trace = self.trace
+        if isinstance(old_trace, TrajectorySpool):
+            restored_trace = TrajectorySpool(old_trace.directory)
+            try:
+                for row in trace:
+                    restored_trace.append(row)
+                restored_trace.sync()
+            except BaseException:
+                restored_trace.close()
+                raise
+        else:
+            restored_trace = deepcopy(trace)
         # Commit restored values only after the entire checkpoint passes validation.
         self.state = state
         self.angle_deg = float(angle)
@@ -2911,7 +2955,9 @@ class IntegratedEngine2T:
             self.fuel_combustion_source_species_kg = list(
                 ledger["fuel_combustion_source_species_kg"])
         self.initial_inventory = deepcopy(snapshot["initial_inventory"])
-        self.trace = deepcopy(trace)
+        self.trace = restored_trace
+        if isinstance(old_trace, TrajectorySpool):
+            old_trace.close()
         self._trace_scope = trace_scope
         self._trace_fuel_combustion_baseline = {
             "heat_added_J": float(trace_baseline["heat_added_J"]),

@@ -29,6 +29,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--mode', choices=['legacy', 'optimized'], required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--trajectory', choices=['list', 'spool'], default='list')
     args = parser.parse_args()
     if args.mode == 'legacy':
         integrated._evidence_sha256 = legacy_hash
@@ -39,6 +40,8 @@ def main():
         ignition_timing_deg=0.0, combustion_efficiency=.01)
     engine = fixture['_internal_cycle_fixture'](
         fuel_coupled_combustion=combustion, open_end_plenum_v2=True)
+    if args.trajectory == 'spool':
+        engine.enable_trajectory_spooling()
     proc = psutil.Process()
     stop = threading.Event()
     peak = [proc.memory_info().rss]
@@ -82,6 +85,8 @@ def main():
             'snapshot_s': snapshot_s, 'make_s': make_s, 'audit_s': audit_s,
             'rss_start': rss_start, 'rss_after_advance': rss_advance,
             'rss_growth_per_step': (rss_advance-rss_start)/steps,
+            'spool_bytes': getattr(engine.trace, 'storage_bytes', None),
+            'index_bytes': getattr(engine.trace, 'index_bytes', None),
             'primary_sha256': legacy_hash(primary), 'audit': audit,
             'conservation': primary['conservation']})
         del start, end, primary, audit
@@ -89,7 +94,7 @@ def main():
     thread.join()
     full = proc.memory_full_info()
     result = {'scope': 'SYNTHETIC_ASSUMPTION small engine fixture, two cycles; not T1-B/C',
-        'mode': args.mode, 'wall_s': time.perf_counter()-began,
+        'mode': args.mode, 'trajectory': args.trajectory, 'wall_s': time.perf_counter()-began,
         'cpu_s': time.process_time()-cpu, 'sampled_peak_rss_bytes': peak[0],
         'sampled_phase_peak_rss_bytes': phase_peaks,
         'final_rss_bytes': full.rss, 'final_private_uss_bytes': getattr(full, 'uss', None),

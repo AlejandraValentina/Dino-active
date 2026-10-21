@@ -333,6 +333,9 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
     started = time.monotonic(); deadline = started + float(budget_seconds)
     engine = IntegratedEngine2T.from_configuration_dict(effective["native_configuration"])
     detector = PeriodicDetectorV2()
+    # Private temporary evidence storage; checkpoints remain self-contained JSON.
+    # The frozen A3b drivers are deliberately not changed to select this path.
+    engine.enable_trajectory_spooling()
     records: list[dict] = []
     expected_binding = {"workflow_schema": SCHEMA, "identity_sha256": effective["identity_sha256"],
                         "configuration_sha256": effective["native_configuration_sha256"],
