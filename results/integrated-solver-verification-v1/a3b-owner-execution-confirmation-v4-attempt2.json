@@ -1,0 +1,88 @@
+{
+  "artifact_root": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\isv1-a3b-forward-v4",
+  "authorization_persistence": "After explicit owner approval only: resolve the two roots to absolute external directories in the authorization file, set execution_authorized true, persist the exact owner confirmation and register its SHA in program-status.a3b_v4_execution_authorization. Do not change the frozen protocol/driver/freeze.",
+  "caps": {
+    "T1-B": 1050.0,
+    "T1-C": 2100.0,
+    "T1-D": 310.0,
+    "T1-E": 210.0
+  },
+  "configs": [
+    "T1-B",
+    "T1-C",
+    "T1-D",
+    "T1-E"
+  ],
+  "conservative_initial_total_seconds": 533.142,
+  "conservative_remaining_seconds": 3786.858,
+  "driver_sha256": "3a4c69e820e5d93ad55c32f02c26104fb79590f85ec9babd0305dfd3163b7d79",
+  "execution_authorized": true,
+  "execution_order": [
+    "T1-B:1",
+    "T1-B:2",
+    "T1-B:3",
+    "T1-D:1",
+    "T1-E:1",
+    "T1-C:1",
+    "T1-C:2",
+    "T1-C:3"
+  ],
+  "freeze_sha256": "4c18568804cbf2161b068a52f1628e79e0e527ea5c07d1e5a88011cf307b6251",
+  "global_cap_seconds": 4320.0,
+  "historical_ledger_seconds": 530.469,
+  "historical_wrapper_overhead_seconds": 2.673,
+  "invocation_caps": {
+    "T1-B": 600.0,
+    "T1-C": 750.0,
+    "T1-D": 600.0,
+    "T1-E": 600.0
+  },
+  "invocations": {
+    "T1-B": [
+      1,
+      1,
+      1
+    ],
+    "T1-C": [
+      1,
+      1,
+      1
+    ],
+    "T1-D": [
+      3
+    ],
+    "T1-E": [
+      3
+    ]
+  },
+  "memory": {
+    "aggregate_cap_mib": 4096,
+    "free_required_mib": 4096,
+    "per_worker_cap_mib": 3072,
+    "workers": 1
+  },
+  "outer_run_logged_timeout_seconds": {
+    "T1-B": 620,
+    "T1-C": 770,
+    "T1-D": 620,
+    "T1-E": 620
+  },
+  "owner_confirmation": "Owner explicitly answered: Si, autorizo el nuevo intento V4 con esos limites. Confirmation authorizes frozen V4 under original limits, 533.142 s consumed and 3786.858 s remaining, conditional on full preflight; B single cycles, C 750 s, no T1-A repeat.",
+  "planning_margin_seconds": 226.576,
+  "planning_total_seconds": 4093.424,
+  "protocol_sha256": "129bc48682026810e35dc999dc8f745b4376706470b2d7daf9c316e5b45f835a",
+  "requested_scope": "Execute only T1-B,C,D,E, three cycles each, sequentially, with the frozen V3 T1-A reference and atol. No T1-A repetition. C invocation cap 750 s and B three single-cycle invocations require explicit approval.",
+  "schema": "DINO_ISV1_A3B_V4_EXECUTION_AUTHORIZATION_REQUEST",
+  "source_root": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\isv1-a3b-fix1-exec-20261020\\integrated-solver-verification-v1\\a3b",
+  "status": "OWNER_AUTHORIZED_ATTEMPT_2",
+  "stop_conditions": [
+    "No valid exact independent owner authorization registered by SHA in program-status",
+    "Less than 4096 MiB available RAM",
+    "Invalid source/config/checkpoint/primary/result/ledger identity",
+    "Independent audit not recomputed PASS",
+    "Insufficient accumulated per-config/global budget for the remaining audited horizon",
+    "Timeout, resource limit, numerical failure or worker failure; stop campaign, preserve evidence, no automatic retry"
+  ],
+  "recorded_at": "2026-10-21T14:35:35.539594+00:00",
+  "prior_closed_attempt_receipt": "results\\integrated-solver-verification-v1\\a3b-final-attempt-v4-receipt.json"
+}

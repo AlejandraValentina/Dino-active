@@ -25,7 +25,7 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 CURRENT_OBJECTIVE: INTEGRATED_SOLVER_VERIFICATION_V1
 change/spec:       openspec/changes/integrated-solver-verification-v1/
                    specs/integrated-solver-verification-v1/spec.md
-completion:        A3b V4 final attempt CLOSED: BLOCKED — ENVIRONMENT OR INTEGRITY / BLOCKED_ENVIRONMENT_INSUFFICIENT_MEMORY. Initial available RAM 1012.449 MiB < 4096 MiB required; conditional owner authorization not activated, zero solver steps and zero invocations. T1-A V3 remains COMPLETE (3 cycles, next_cycle=4); T1-B..E NOT_STARTED. Historical conservative consumption 533.142/4320 s; remaining 3786.858 s. Frozen V4 identities and V3 atol hashes verified unchanged. INCOMPLETE_MATRIX; scientific gate REVIEW, no sensitivity/periodicity/predictive claim. This attempt is terminal; no automatic retry, new infrastructure or next objective.
+completion:        A3b V4 attempt 2 explicitly owner authorized after prior memory-blocked attempt closed. Full zero-step preflight PASS: four configurations, T1-A COMPLETE next_cycle=4, frozen identities valid, 5887.531 MiB available. Execute only frozen B1/B2/B3/D1/E1/C1/C2/C3 sequential plan; 533.142/4320 s consumed, 3786.858 s remaining, original caps unchanged. Matrix incomplete; scientific gate REVIEW, no periodicity or predictive claim.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

@@ -6890,7 +6890,7 @@
       "ISV1-A3-EXECUTION",
       "ISV1-ACCEPTANCE"
     ],
-    "completion_criterion": "A3b V4 final attempt CLOSED: BLOCKED — ENVIRONMENT OR INTEGRITY / BLOCKED_ENVIRONMENT_INSUFFICIENT_MEMORY. Initial available RAM 1012.449 MiB < 4096 MiB required; conditional owner authorization not activated, zero solver steps and zero invocations. T1-A V3 remains COMPLETE (3 cycles, next_cycle=4); T1-B..E NOT_STARTED. Historical conservative consumption 533.142/4320 s; remaining 3786.858 s. Frozen V4 identities and V3 atol hashes verified unchanged. INCOMPLETE_MATRIX; scientific gate REVIEW, no sensitivity/periodicity/predictive claim. This attempt is terminal; no automatic retry, new infrastructure or next objective."
+    "completion_criterion": "A3b V4 attempt 2 explicitly owner authorized after prior memory-blocked attempt closed. Full zero-step preflight PASS: four configurations, T1-A COMPLETE next_cycle=4, frozen identities valid, 5887.531 MiB available. Execute only frozen B1/B2/B3/D1/E1/C1/C2/C3 sequential plan; 533.142/4320 s consumed, 3786.858 s remaining, original caps unchanged. Matrix incomplete; scientific gate REVIEW, no periodicity or predictive claim."
   },
   "objectives": [
     {
@@ -9820,14 +9820,16 @@
     "updated_at": "2026-10-19T11:33:50+00:00"
   },
   "a3b_v4_execution_authorization": {
-    "execution_authorized": false,
-    "status": "CONDITIONAL_OWNER_GRANT_NOT_ACTIVATED_MEMORY_GUARD",
+    "execution_authorized": true,
+    "status": "OWNER_AUTHORIZED_ATTEMPT_2_PREFLIGHT_PASS",
     "request_path": "results/integrated-solver-verification-v1/a3b-execution-authorization-request-v4.json",
     "request_sha256": "0c6ee428f83c57d9a775d85a7d1412fac1670ad81b84ee1e109855ab0abeb9e1",
     "driver_sha256": "3a4c69e820e5d93ad55c32f02c26104fb79590f85ec9babd0305dfd3163b7d79",
     "protocol_sha256": "129bc48682026810e35dc999dc8f745b4376706470b2d7daf9c316e5b45f835a",
     "freeze_sha256": "4c18568804cbf2161b068a52f1628e79e0e527ea5c07d1e5a88011cf307b6251",
-    "final_attempt_receipt": "results/integrated-solver-verification-v1/a3b-final-attempt-v4-receipt.json"
+    "final_attempt_receipt": "results/integrated-solver-verification-v1/a3b-final-attempt-v4-receipt.json",
+    "path": "results/integrated-solver-verification-v1/a3b-owner-execution-confirmation-v4-attempt2.json",
+    "sha256": "bb8d19af93b8b9cf594d595bbcd03beb7f10191f15300885f8da58688ea7fbe5"
   },
   "a3b_v4_final_attempt": {
     "classification": "BLOCKED — ENVIRONMENT OR INTEGRITY",
