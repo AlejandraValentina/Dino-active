@@ -25,7 +25,7 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 CURRENT_OBJECTIVE: INTEGRATED_SOLVER_VERIFICATION_V1
 change/spec:       openspec/changes/integrated-solver-verification-v1/
                    specs/integrated-solver-verification-v1/spec.md
-completion:        A3a completed: one instrumented run, PERIODICITY_NOT_IDENTIFIED. A3b T1-A cycles 1-3 are complete via the v3 continuation: cycle 3 exit 0, audit recomputed PASS, T1-A cumulative 530.469/600 s, global 530.469/4320 s, v2 parent hashes unchanged. The sensitivity matrix is INCOMPLETE_MATRIX because T1-B..E were not authorized; atol was frozen but no spatial/temporal convergence estimate is possible. Acceptance PARTIAL; gate REVIEW; no supported resolution domain or predictive claim. Any T1-B..E execution requires a new owner authorization and budget.
+completion:        A3a completed with periodicity not identified. T1-A cycles 1-3 remain COMPLETE in immutable V3 (next_cycle=4; inherited ledger 530.469 s). Final forward V4 implementation is frozen and verified: IMPLEMENTATION READY — EXECUTION NOT AUTHORIZED. Zero-step structural preflight passes, 52 targeted tests pass; T1-B..E remain NOT_STARTED. V4 accounts 2.673 s additional measured historical wrapper cost, conservatively starting at 533.142/4320 s. Live 4096 MiB free RAM and a separate owner authorization binding final V4 hashes, B single-cycle invocations and C 750 s invocation cap are required before solver execution. V3 atol freeze unchanged; matrix INCOMPLETE_MATRIX, scientific gate REVIEW; no sensitivity, periodicity or predictive claim.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

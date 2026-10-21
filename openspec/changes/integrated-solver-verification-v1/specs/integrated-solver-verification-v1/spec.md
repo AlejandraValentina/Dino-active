@@ -2,6 +2,47 @@
 
 ## ADDED Requirements
 
+### Requirement: isolated V4 forward completion
+
+The V4 executor MUST run only T1-B through T1-E and MUST validate the immutable
+V2/V3 reference, inherited ledger and V3 absolute-tolerance freeze before any
+solver step. It MUST reuse the independently audited conventional cycle pipeline.
+T1-A MUST remain a read-only three-cycle reference. V4 MUST NOT recalibrate atol.
+
+#### Scenario: forward invocation authorization
+
+- **WHEN** V4 execution is requested
+- **THEN** it MUST require a separate owner authorization binding the final
+  protocol, driver, freeze, configurations, roots, budgets and invocation plans,
+  registered by exact SHA-256 in program-status
+- **AND** the proposed 750-second T1-C invocation cap and T1-B plan of three
+  single-cycle invocations MUST NOT take effect without that authorization
+
+#### Scenario: inclusive supervisor budget
+
+- **WHEN** an authorized invocation runs
+- **THEN** one supervisor MUST enforce elapsed time and aggregate memory across
+  startup, stepping, independent audit, checkpointing and persistence
+- **AND** all inherited charges, identified historical wrapper overhead and new
+  supervisor costs MUST count against the accumulated 4320-second global cap
+- **AND** a conservative closure reserve MUST remain charged
+
+#### Scenario: checkpoint or worker failure
+
+- **WHEN** a checkpoint, primary, result or binding is incompatible, or a worker
+  fails, times out or exceeds its resources
+- **THEN** V4 MUST preserve artifacts and stop fail-closed without retrying a
+  terminal configuration or duplicating an already completed cycle
+- **AND** recovery after a supervisor crash MUST verify process absence and
+  conservatively account its reservation before allowing state inspection
+
+#### Scenario: structural preflight with insufficient RAM
+
+- **WHEN** a zero-step structural preflight runs on a host with insufficient RAM
+- **THEN** it MUST report the failed launch resource condition explicitly
+- **AND** structural validation or freezing MUST NOT bypass the mandatory
+  execution authorization or the live launch resource guard
+
 ### Requirement: verification targets the first-order integrated path
 
 The study MUST evaluate the current `integrated_2t` implementation (first-order

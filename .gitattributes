@@ -41,3 +41,8 @@ motorsim/valves.py -text
 
 # Preserve the frozen source bytes used by historical P0/P1 dependency hashes.
 motorsim/__init__.py -text
+
+# Exact driver identities for the A3b forward execution and its frozen delegates.
+scripts/diagnostics/integrated_solver_verification_a3b.py -text
+scripts/diagnostics/integrated_solver_verification_a3b_v3.py -text
+scripts/diagnostics/integrated_solver_verification_a3b_v4.py -text

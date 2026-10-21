@@ -57,3 +57,19 @@ de convergencia) sigue desbloqueado solo por nueva autorización del dueño
   (alcance, tier, caps); el preflight sin solver no requiere autorización.
 - Prohibido: MUSCL, cambios de física, campañas, optimizaciones, extensión
   automática de presupuesto, reescritura de P0–P9 o de evidencia histórica.
+
+## A3b — final forward V4 (implementation only)
+
+- [x] ISV1-A3B-T1B-E-V4-PROTOCOL-DRAFT — Final V4 executor reuses the frozen
+  V2 conventional scientific pipeline and immutable V3 reference/atol. Includes
+  inclusive process supervision, budget carry-forward, complete-cycle resume,
+  fail-closed checks and the single frozen execution request. Verified with 52
+  targeted tests and zero-step structural preflight; OpenSpec strict PASS.
+  — evidence: results/integrated-solver-verification-v1/a3b-implementation-verification-v4.json
+  — classification: IMPLEMENTATION READY — EXECUTION NOT AUTHORIZED.
+
+The matrix remains INCOMPLETE_MATRIX and its scientific gate remains REVIEW.
+T1-A is COMPLETE; T1-B..E are NOT_STARTED. The proposed B single-cycle plan and
+750 s C invocation cap require separate exact owner execution authorization.
+Strict launch preflight requires 4096 MiB free RAM; structural preflight does
+not bypass it. No quota tasks or further continuation variants were added.
