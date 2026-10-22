@@ -60,6 +60,13 @@ def tick():
             app.processEvents()
             window.grab().save(str(args.artifacts/"02-results.png"))
             window.results.trace_group.grab().save(str(args.artifacts/"03-pressure-flow.png"))
+            for key,name in [("duct:exhaust:face:0:mass_flow_kg_s","04-exhaust-flow.png"),
+                    ("cylinder_pressure_pa","05-cylinder-pressure.png")]:
+                index=window.results.trace_metric.findData(key)
+                if index>=0:
+                    window.results.trace_metric.setCurrentIndex(index);app.processEvents()
+                    assert window.results.trace_plot.series
+                    window.results.trace_group.grab().save(str(args.artifacts/name))
             receipt=dict(opened_project=True,existing_execution_button=True,history_selected=True,
                 loaded_points=len(rows),cycles_completed=rows[0]["cycles_completed"],
                 classification=rows[0]["classification"],audit_status=rows[0]["audit_status"],

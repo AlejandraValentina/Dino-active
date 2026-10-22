@@ -6855,13 +6855,18 @@
       "id": "ISV1-FUNCTIONAL-DESKTOP-STAGE1",
       "description": "Owner-directed delivery1: corrected gas exchange and coupled conservative scavenging, efficient point execution through existing Desktop; STANDARD investigation closed.",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [
-        "docs/gasdynamic/functional_engine_desktop_v1.md"
+      "commits": [
+        "f836cf2",
+        "d4ca5e7"
       ],
-      "next_action": "Complete focal runtime/UI checks and persist functional result; no RPM curve in this delivery.",
+      "evidence": [
+        "docs/gasdynamic/functional_engine_desktop_v1.md",
+        "results/functional-engine-desktop-v1/receipt.json",
+        "results/functional-engine-desktop-v1/report.md"
+      ],
+      "next_action": "Delivery1 engineering functionality demonstrated; owner review. Deliveries2/3 not authorized.",
       "objective": "DINO_FUNCTIONAL_ENGINE_DESKTOP_V1",
       "owner_role": "implementation",
       "write_scope": [
@@ -9746,6 +9751,12 @@
       "task": "ISV1-FUNCTIONAL-DESKTOP-STAGE1",
       "kind": "task",
       "summary": "Owner redirects to functional Desktop delivery1. GAS_EXCHANGE_V2 corrects reed/transfer topology and couples bounded partial-mixing species outflow. Legacy modes retained. Actual UI ran10 cycles and resumed11-12, with physical cards/history/checkpoints; no periodicity or predictive claim. Cancelled stiffness preparations untouched."
+    },
+    {
+      "at": "2026-10-22T15:53:24+00:00",
+      "task": "ISV1-FUNCTIONAL-DESKTOP-STAGE1",
+      "kind": "task",
+      "summary": "Delivery1 demonstrated through Desktop: corrected connections and coupled conservative scavenging; 10 cycles plus resume11-12, final-code3 cycles, real plots, nonconverged estimates explicit. Focal22 and selected94 pass. No predictive claim, sweep, package or push."
     }
   ],
   "legacy_gate_status": {
@@ -9762,18 +9773,18 @@
   "gate_status": {
     "objective": "DINO_FUNCTIONAL_ENGINE_DESKTOP_V1",
     "state": "REVIEW",
-    "classification": "FUNCTIONAL_ENGINEERING_DEMONSTRATION_IN_PROGRESS",
+    "classification": "FUNCTIONAL_ENGINEERING_DEMONSTRATED_REVIEW",
     "evidence": [
-      "docs/gasdynamic/functional_engine_desktop_v1.md"
+      "docs/gasdynamic/functional_engine_desktop_v1.md",
+      "results/functional-engine-desktop-v1/receipt.json",
+      "results/functional-engine-desktop-v1/report.md"
     ],
     "gate_tasks_total": 1,
-    "gate_tasks_done": 0,
+    "gate_tasks_done": 1,
     "gate_task_states": {
-      "IN_PROGRESS": 1
+      "DONE": 1
     },
-    "remaining": [
-      "ISV1-FUNCTIONAL-DESKTOP-STAGE1"
-    ]
+    "remaining": []
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
