@@ -2,6 +2,41 @@
 
 ## ADDED Requirements
 
+### Requirement: independently authorized single periodic point executor
+
+The operational executor MUST support only the separately prepared 3000 RPM
+reference point, with at most ten cycles, 600 seconds per invocation, 3000
+seconds accumulated, 3072 MiB worker RSS and 4096 MiB aggregate RSS. Preparation
+MUST perform zero solver steps and MUST NOT authorize scientific execution.
+The physical solver, detector and scientific thresholds MUST remain unchanged.
+
+#### Scenario: segmented continuation
+
+- **WHEN** an invocation resumes at a committed cycle checkpoint
+- **THEN** the workflow MUST reconstruct the existing detector from audited
+  primaries and compare its complete state with the stored detector snapshot
+- **AND** continuous and segmented reduced physical fixtures MUST have equal
+  canonical primaries, physical checkpoints, detector state and conservation
+- **AND** missing, duplicate, incompatible or unmanifested evidence MUST fail closed
+
+#### Scenario: accumulated resource supervision
+
+- **WHEN** a separately authorized invocation starts
+- **THEN** its reservation MUST be durable before worker launch and count against
+  the accumulated ceiling, including startup, audits, persistence and closure
+- **AND** normal invocations MUST yield at committed cycle boundaries when the
+  measured cost no longer permits another cycle with a conservative reserve
+- **AND** abrupt failure MUST preserve the full reservation until explicit
+  zero-step recovery; resource failure MUST NOT be mislabeled as a physics failure
+- **AND** terminal failures MUST NOT trigger automatic retries
+
+#### Scenario: separate authorization
+
+- **WHEN** scientific execution is requested
+- **THEN** an explicit authorization MUST bind the exact prepared definition,
+  scientific sources, operational sources, configuration, artifact root and limits
+- **AND** preparation or implementation authorization alone MUST NOT launch it
+
 ### Requirement: isolated V4 forward completion
 
 The V4 executor MUST run only T1-B through T1-E and MUST validate the immutable

@@ -327,7 +327,7 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
                     artifact_root: str | Path, rpm: float | None = None,
                     max_cycles: int = 1, budget_seconds: float = 60.0,
                     memory_limit_mib: int = 1024, resume: bool = False,
-                    cancel_event=None, progress=None,
+                    cancel_event=None, progress=None, cycle_admission=None, cycle_complete=None,
                     variant_label: str = "base") -> dict:
     """Run one user configuration; no campaign runner, campaign manifest, or FAST path."""
     check = preflight(document, rpm=rpm, max_cycles=max_cycles,
@@ -389,12 +389,21 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
         if orphan_primaries:
             raise ValueError("resume rejected: unmanifested cycle primary exists; artifacts preserved for recovery review")
         # Reconstruct every persisted primary before trusting history.
+        reconstructed_detector = PeriodicDetectorV2()
         for row in records:
             path = output / row["artifact"]
             primary = read_primary(path, expected_sha256=row["primary_sha256"])
             if audit_integrated_cycle_primary(
                     primary, preserve_precycle_p7_baseline=True).get("recomputed") is not True:
                 raise ValueError("resume rejected: primary independent audit failed")
+            update = reconstructed_detector.update({"cycle_index": row["cycle"],
+                "configuration_hash": primary["configuration_hash"],
+                "contract": CYCLE_PRIMARY_CONTRACT, "observables": primary["observables"]})
+            if update != row.get("periodicity_update"):
+                raise ValueError("resume rejected: detector update differs from audited primary")
+        if reconstructed_detector.snapshot() != detector.snapshot():
+            raise ValueError("resume rejected: detector checkpoint differs from audited history")
+        detector = reconstructed_detector
     else:
         if shutil.disk_usage(output.parent).free < MAX_RUN_ARTIFACT_BYTES:
             raise OSError("artifact root has less free space than the bounded per-run artifact budget")
@@ -414,6 +423,12 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
     loss = MechanicalLossModel.from_dict(effective["mechanical_loss_model"])
     interrupted = False; interruption_kind = None; failure = None; failure_kind = None
     for cycle in range(first_cycle, max_cycles + 1):
+        if detector.classification is not None:
+            break
+        if cycle_admission is not None and not cycle_admission(cycle):
+            interrupted = True; interruption_kind = "TIMEOUT"
+            failure = "invocation yielded at complete-cycle boundary"
+            break
         cycle_start = engine.snapshot(streaming=True)
         try:
             rejected = _advance_cycle(engine, cycle, deadline=deadline,
@@ -499,6 +514,8 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
             "cycles_completed": cycle}
         _atomic_write(manifest_path, _json_bytes(manifest))
         checkpoint_artifact = next_checkpoint_artifact
+        if cycle_complete is not None:
+            cycle_complete(cycle, records[-1])
         if detector.classification is not None:
             break
     classification = (f"EXPLORATORY_{interruption_kind}_CHECKPOINTED" if interrupted else
@@ -570,7 +587,7 @@ def run_exploratory(document: dict, *, project_id: str, run_id: str,
                     artifact_root: str | Path, rpm: float | None = None,
                     max_cycles: int = 1, budget_seconds: float = 60.0,
                     memory_limit_mib: int = 1024, resume: bool = False,
-                    cancel_event=None, progress=None,
+                    cancel_event=None, progress=None, cycle_admission=None, cycle_complete=None,
                     variant_label: str = "base") -> dict:
     """Serialize concurrent access to one project/run identity with an exclusive lock."""
     target=_run_directory(Path(artifact_root),project_id,run_id)
@@ -589,6 +606,7 @@ def run_exploratory(document: dict, *, project_id: str, run_id: str,
             artifact_root=artifact_root,rpm=rpm,max_cycles=max_cycles,
             budget_seconds=budget_seconds,memory_limit_mib=memory_limit_mib,
             resume=resume,cancel_event=cancel_event,progress=progress,
+            cycle_admission=cycle_admission,cycle_complete=cycle_complete,
             variant_label=variant_label)
     finally:
         try:lock.unlink(missing_ok=True)
