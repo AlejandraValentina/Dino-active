@@ -58,8 +58,13 @@ def _entry(folder: Path, *, artifact_root: Path, project_id: str, referenced=Fal
     except OSError:updated=None
     checkpoint_name=manifest.get("checkpoint_artifact","checkpoint.json")
     checkpoint=(run_dir/checkpoint_name if isinstance(checkpoint_name,str) and Path(checkpoint_name).name==checkpoint_name else run_dir/"__invalid_checkpoint_path__")
+    if manifest.get("schema")=="DINO_ENGINEERING_RUN_V1" and isinstance(checkpoint_name,str):
+        candidate=(run_dir/checkpoint_name).resolve()
+        if candidate.is_relative_to(run_dir.resolve()):checkpoint=candidate
     result=result_path
     periodicity=manifest.get("periodicity")
+    if manifest.get("schema")=="DINO_ENGINEERING_RUN_V1" and periodicity=="NOT_EVALUATED" and len(cycles)>=2:
+        periodicity="NOT_CONVERGED"
     if periodicity is None:periodicity=result_doc.get("periodicity")
     if periodicity is None and isinstance(result_doc.get("cycles"),list) and result_doc["cycles"]:
         periodicity=result_doc["cycles"][-1].get("periodicity")

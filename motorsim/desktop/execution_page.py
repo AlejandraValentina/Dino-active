@@ -141,6 +141,8 @@ class ExecutionPage(QWidget):
             self.root_warning.setProperty("unsafeRoot",unsafe)
             self.preflight_label.setText(f"Preflight PASS · {check['rpm']:g} RPM · 0 pasos · {check['total_finite_volume_cells']} celdas · pérdidas explícitas · combustible configurado · AFR {check['afr_kg_air_per_kg_fuel']:g}")
             self.expected.setText("Se guardarán primarias por ciclo para auditar presión y flujos. Un solo ciclo no permite potencia o torque periódicos admisibles. Un horizonte mayor sólo permite observar el detector; no garantiza periodicidad ni convergencia. Las magnitudes no identificables permanecerán sin valor.")
+            if engine["native_configuration"]["geometry_identity"].get("gas_exchange_model") is not None:
+                self.expected.setText("Modo de ingeniería: balances internos, muestras físicas y checkpoints. Sin replay ni auditoría independiente. Potencia transitoria identificada como no convergida; sin validación predictiva.")
             seconds,source=self._cycle_seconds(check["total_finite_volume_cells"])
             import math
             raw_estimate=max(1,int(math.ceil(self.cycles.value()*seconds*1.2)));estimate=min(600,raw_estimate)
@@ -397,7 +399,7 @@ class ExecutionPage(QWidget):
         else:
             self.checkpoint_summary=f"{result.get('cycles_completed',0)} ciclos guardados · {result.get('periodicity','periodicidad no evaluada')}"
         summary={k:result.get(k) for k in ("status","classification","mode","scientific_validation","cycles_completed","periodicity","failure","elapsed_seconds","artifact_directory","result_sha256","bindings","points")}
-        summary["cycles"]=[{"cycle":r["cycle"],"primary_sha256":r["primary_sha256"],"audit_recomputed":r["audit"].get("recomputed"),"conservation":r["conservation"],"metric_statuses":{k:v.get("status") for k,v in r["engineering_output"].get("cycle_metrics",{}).items() if isinstance(v,dict)}} for r in result.get("cycles",[])]
+        summary["cycles"]=[{"cycle":r["cycle"],"primary_sha256":r.get("primary_sha256"),"audit_recomputed":r.get("audit",{}).get("recomputed",False),"conservation":r["conservation"],"metric_statuses":{k:v.get("status") for k,v in r.get("engineering_output",{}).get("cycle_metrics",{}).items() if isinstance(v,dict)}} for r in result.get("cycles",[])]
         self.output.appendPlainText(json.dumps(summary,indent=2,ensure_ascii=False))
         self._release_task()
 

@@ -141,10 +141,15 @@ class EnginePage(QWidget):
             self.ports.blockSignals(True);self.ports.setRowCount(len(ports))
             for i,p in enumerate(ports):
                 vals=[p["id"],p["role"],p["top_mm"],p["height_mm"],p["width_mm"],p["discharge_coefficient"],p["roof_travel_mm"],*timing_by_id.get(p["id"],(None,None,None))]
+                reed_intake=(p["role"]=="intake" and n["geometry_identity"].get("gas_exchange_model",{}).get("intake_control")=="reed")
+                if reed_intake:vals[7:]=[None,None,None]
                 for j,value in enumerate(vals):
                     display="—" if value is None else (f"{value:.1f}" if isinstance(value,(int,float)) else str(value))
                     item=QTableWidgetItem(display);item.setData(Qt.ItemDataRole.UserRole,p["id"])
                     if j<2 or j>=7 or p["family"]=="effective_profile" or value is None:item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+                    if reed_intake:
+                        item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+                        item.setToolTip("Admisión por láminas: conexión sin distribución de pistón. El área efectiva depende de Δp y de las láminas, no de esta ventana histórica.")
                     self.ports.setItem(i,j,item)
             self.ports.blockSignals(False)
             bore=cc["bore_mm"];stroke=cc["stroke_mm"];swept=math.pi*(bore/2)**2*stroke/1000
@@ -157,6 +162,9 @@ class EnginePage(QWidget):
             self.derived.setToolTip("Distribución calculada por transiciones de área efectiva del backend; no son controles inversos.")
             timing_rows=[];area_series=[];area_rows=[]
             for port in port_set.ports:
+                if port.role=="intake" and n["geometry_identity"].get("gas_exchange_model",{}).get("intake_control")=="reed":
+                    timing_rows.append(("Admisión por láminas · Δp",None,None,None))
+                    continue
                 opening,closing,duration=self._area_timing(port_set,port)
                 timing_rows.append((port.id,opening,closing,duration))
                 area_series.append({"name":port.name,"points":[(angle,port_set.area_at(port,angle)) for angle in (*range(0,360,2),360)]})

@@ -602,6 +602,12 @@ def run_exploratory(document: dict, *, project_id: str, run_id: str,
                              "created_unix":time.time(),"schema":"DINO_RUN_LOCK_V1"})
         with os.fdopen(fd,"wb") as stream:
             stream.write(payload);stream.flush();os.fsync(stream.fileno())
+        if document.get("native_configuration",{}).get("geometry_identity",{}).get("gas_exchange_model") is not None:
+            from .engineering_workflow import run
+            return run(document,project_id=project_id,run_id=run_id,artifact_root=artifact_root,
+                rpm=rpm,max_cycles=max_cycles,budget_seconds=budget_seconds,
+                memory_limit_mib=memory_limit_mib,resume=resume,cancel_event=cancel_event,
+                progress=progress,variant_label=variant_label)
         return _run_exploratory_unlocked(document,project_id=project_id,run_id=run_id,
             artifact_root=artifact_root,rpm=rpm,max_cycles=max_cycles,
             budget_seconds=budget_seconds,memory_limit_mib=memory_limit_mib,

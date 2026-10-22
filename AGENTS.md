@@ -22,10 +22,15 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: INTEGRATED_SOLVER_VERIFICATION_V1
-change/spec:       openspec/changes/integrated-solver-verification-v1/
-                   specs/integrated-solver-verification-v1/spec.md
-completion:        Pipeline memory intervention COMPLETE: PIPELINE_MEMORY_IMPROVED_WITH_LIMITATIONS. Production exploratory path streams sealed snapshots, primary views, independent replay, canonical gzip persistence/reload and compact restart checkpoints; full-state materializations removed. Three 13-cell fixture scales (1242/2019/4330 accepted steps) match canonical primary/checkpoint/engineering hashes and gzip bytes, conservation and all 12 independent audits/re-audits. Largest RSS 1344.59 to 127.05 MiB, wall 129.25 to 131.77 s; remaining dominant engineering series scale with samples/channels. 65 unique focal tests PASS (base 64 plus final 33-case import regression with one new test); historical 17 source and 4 V4 evidence files unchanged. Full workflow/build identity now binds both helpers. Frozen V4 fails closed on new dependencies; no migration or A3b invocation. T1-B/C NOT_VERIFIED; budget remains 783.376/4320 s consumed, 3536.624 s left, fit unproven. Scientific gate REVIEW, matrix incomplete, no automatic campaign or next objective.
+CURRENT_OBJECTIVE: DINO_FUNCTIONAL_ENGINE_DESKTOP_V1
+change/spec:       openspec/changes/functional-engine-desktop-v1/
+                   specs/functional-engine-desktop-v1/spec.md
+completion:        Owner-directed delivery 1 of 3: open engine, execute and resume
+                   through existing Desktop, corrected gas-exchange connections,
+                   coupled conservative scavenging and real history/results.
+                   Engineering scope only; no predictive or packaged-release claim.
+                   Isolated STANDARD_V1 research and general audit campaigns are
+                   postponed. Deliveries 2/3 are not automatically authorized.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

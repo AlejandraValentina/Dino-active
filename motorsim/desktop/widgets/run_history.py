@@ -97,7 +97,7 @@ class RunHistoryWidget(QWidget):
         active=self.context.selected_variant or "base"
         label=(f"variante activa {active} + baseline" if self.variant_filter.currentData()=="__active_baseline__" else
                (f"variante activa {active}" if self.variant_filter.currentData()=="__active__" else "filtro seleccionado"))
-        self.status.setText(f"{len(self.entries)} registros · {label} · índice de sólo lectura; ‘Ver’ vuelve a auditar primarias.")
+        self.status.setText(f"{len(self.entries)} registros · {label} · lectura verificada; auditoría según modo de ejecución.")
         self.entries_changed.emit(list(self.entries))
         self._selection_changed()
 

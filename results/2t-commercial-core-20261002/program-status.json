@@ -6862,7 +6862,7 @@
         "docs/gasdynamic/functional_engine_desktop_v1.md"
       ],
       "next_action": "Complete focal runtime/UI checks and persist functional result; no RPM curve in this delivery.",
-      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "objective": "DINO_FUNCTIONAL_ENGINE_DESKTOP_V1",
       "owner_role": "implementation",
       "write_scope": [
         "motorsim/integrated_2t.py",
@@ -6877,7 +6877,8 @@
         "configs/reference_cases/functional_reed_125cc_v1.dino.json",
         "docs/gasdynamic/functional_engine_desktop_v1.md",
         "openspec/changes/functional-engine-desktop-v1/",
-        "results/functional-engine-desktop-v1/"
+        "results/functional-engine-desktop-v1/",
+        "AGENTS.md"
       ],
       "evidence_level": "L1"
     }
@@ -7081,22 +7082,18 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "INTEGRATED_SOLVER_VERIFICATION_V1",
+    "id": "DINO_FUNCTIONAL_ENGINE_DESKTOP_V1",
     "state": "OPEN",
     "owner_approved": true,
-    "summary": "Verify the current first-order integrated solver before any predictive power-curve claim: spatial (mesh) and temporal (max_cfl) convergence, error quantification, and separation of physical integration cost from audit/reconstruction/serialization cost.",
-    "change": "openspec/changes/integrated-solver-verification-v1",
-    "spec": "openspec/changes/integrated-solver-verification-v1/specs/integrated-solver-verification-v1/spec.md",
-    "authorization_source": "Owner approval of Option A in CODEX (2026-10-19): complete A0-A2 and deliver design, budgets and acceptance criteria. Owner limited authorization (2026-10-19, after design review): A3a = one instrumented 3000 RPM profile run (48 cells, max_cfl 0.4, 1200 s cap, no retries/extensions), contingent on the frozen preregistration and the explicit owner confirmation with it visible; A3b (convergence matrix) requires a new authorization of scope and budget. Owner authorized option A on 2026-10-20: correct T1-D to 28 total cells and T1-E to 18 total cells, keeping CFL 0.4; protocol v2 frozen (sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed), v1 preserved. Owner authorized the hash-binding fix on 2026-10-20: correct the native-vs-solver configuration identity defect, add positive/negative tests, reproduce the failed binding, regenerate preflight/addendum, preserve historical artifacts and budget, and do not execute A3b until the fix and corrected driver identity are presented. Explicit owner execution authorization received 2026-10-20, bound to corrected driver 3062ed465f1a8d0e715ef9be07a4ddee4a0a1f11dba7cf4cf7824594e7b8bb42, protocol c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed, addendum b93e743919f91486de166422d03ebe24e44702bfc40a7d355ddafa1054ba7d0b, global 4,320 s and 4,096 MiB aggregate cap. Execution reached T1-A PARTIAL_BUDGET after cycles 1-2; stopped by frozen T1-A cap projection, no retry or extension. Owner selected option C on 2026-10-21: a 600 s cumulative T1-A cap, continuing from the exact v2 checkpoint at cycle 3; the v3 protocol is frozen at sha256 b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325. The v3 driver (66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932), lineage/ledger tests (8 PASS), lineage-preflight (PASS), zero-step preflight (PASS, 5/5, 0 solver steps) and execution addendum (6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144) are complete without solver execution. Execution remains NOT_GRANTED pending a separate owner authorization quoting the final v3 protocol, driver and addendum SHA-256. Owner authorized one T1-A cycle-3 continuation on 2026-10-21, quoting protocol b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325, driver 66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932 and addendum 6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144, with the 600 s cumulative cap. The run completed once (exit 0, 153.391 s runner wall, 151.906 s driver, T1-A cumulative 530.469/600 s, global 530.469/4320 s, cycle 3 audit recomputed PASS); atol was frozen and the sensitivity report/receipt are INCOMPLETE_MATRIX because T1-B..E were not authorized. No further solver execution is authorized.",
-    "transitioned_from": "DINO_POWER_CURVE_V1",
+    "summary": "Owner-directed delivery 1 of 3: representative integrated reed engine through existing Desktop, corrected gas exchange and coupled conservative scavenging.",
+    "change": "openspec/changes/functional-engine-desktop-v1",
+    "spec": "openspec/changes/functional-engine-desktop-v1/specs/functional-engine-desktop-v1/spec.md",
+    "authorization_source": "Owner accepted functional recovery direction on 2026-10-22 and authorized implementation/demonstration of delivery1 only; no stiffness experiment or RPM sweep.",
+    "transitioned_from": "INTEGRATED_SOLVER_VERIFICATION_V1",
     "gate_tasks": [
-      "ISV1-PROVENANCE-REPAIR",
-      "ISV1-A2-DESIGN",
-      "ISV1-PREREGISTRATION",
-      "ISV1-A3-EXECUTION",
-      "ISV1-ACCEPTANCE"
+      "ISV1-FUNCTIONAL-DESKTOP-STAGE1"
     ],
-    "completion_criterion": "Pipeline memory intervention COMPLETE: PIPELINE_MEMORY_IMPROVED_WITH_LIMITATIONS. Production exploratory path streams sealed snapshots, primary views, independent replay, canonical gzip persistence/reload and compact restart checkpoints; full-state materializations removed. Three 13-cell fixture scales (1242/2019/4330 accepted steps) match canonical primary/checkpoint/engineering hashes and gzip bytes, conservation and all 12 independent audits/re-audits. Largest RSS 1344.59 to 127.05 MiB, wall 129.25 to 131.77 s; remaining dominant engineering series scale with samples/channels. 65 unique focal tests PASS (base 64 plus final 33-case import regression with one new test); historical 17 source and 4 V4 evidence files unchanged. Full workflow/build identity now binds both helpers. Frozen V4 fails closed on new dependencies; no migration or A3b invocation. T1-B/C NOT_VERIFIED; budget remains 783.376/4320 s consumed, 3536.624 s left, fit unproven. Scientific gate REVIEW, matrix incomplete, no automatic campaign or next objective."
+    "completion_criterion": "Open saved engine in existing Dino Desktop; execute and resume integrated engine with corrected intake/transfer topology and coupled conservative scavenging; load real results/pressure/flow from history with honest transient/periodicity states. Engineering proof only; no predictive or packaged-release claim."
   },
   "objectives": [
     {
@@ -7688,7 +7685,50 @@
         "ISV1-A3-EXECUTION",
         "ISV1-ACCEPTANCE"
       ],
-      "completion_criterion": "Deliver the approved experiment design and frozen preregistration (done); after the owner confirmation execute the single bounded A3a profile run with fail-closed caps and no automatic extensions; classify and quantify only per the preregistered criteria. The A3b convergence matrix and any convergence/NOT_CONVERGED classification require their own authorization and preregistration. Convergence is necessary but not sufficient for a predictive power curve; no campaign, no MUSCL, no physics changes, no P0-P9 edits."
+      "completion_criterion": "Deliver the approved experiment design and frozen preregistration (done); after the owner confirmation execute the single bounded A3a profile run with fail-closed caps and no automatic extensions; classify and quantify only per the preregistered criteria. The A3b convergence matrix and any convergence/NOT_CONVERGED classification require their own authorization and preregistration. Convergence is necessary but not sufficient for a predictive power curve; no campaign, no MUSCL, no physics changes, no P0-P9 edits.",
+      "gate_at_owner_transition": {
+        "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+        "state": "REVIEW",
+        "classification": "INTEGRATED_SOLVER_VERIFICATION_V1_PARTIAL",
+        "evidence": [
+          "A2 design delivered: openspec/changes/integrated-solver-verification-v1 (proposal/design/tasks/spec) with two verification lines, no MUSCL, strict budgets, fail-closed interruption and acceptance criteria.",
+          "A3a executed once on 2026-10-19 under the confirmed frozen preregistration: exit 0, 1138.7 s, 8/8 cycles, classification A3A_COMPLETE_PERIODICITY_NOT_IDENTIFIED; audit recomputed PASS; receipt committed 2665b93. No convergence verdict and no predictive claim.",
+          "ISV1-A3B-DRIVER-ADDENDUM complete: the v2 driver is frozen (driver SHA-256 LF 3f3df5ba290a20739c4adc8e5a562ff7fe3b8fe328d215d33bb72d4e49679c72), synthetic tests PASS (10), zero-step preflight PASS for all five configs (receipt SHA-256 7f08bf5636e2b980980b27d27d2c1f8898581c9b3b22f8e110c1fb68afa0ccba), and the execution addendum references protocol v2 with authorization NOT_GRANTED (addendum SHA-256 329af0a5e05f19a57a2891fcf5767c528da01611c5e243a3bc5ee5fcb0b08d86).",
+          "ISV1-ACCEPTANCE remains WAITING on ISV1-A3B-MATRIX: the A3b T1 protocol v2 is frozen (protocol sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed, commit 4e1b1fc) after the owner-authorized correction of the spatial configs to 28/18 total cells at CFL 0.4. The owner authorized execution on 2026-10-20 with the 4,320 s cap and 4,096 MiB aggregate; hashes and zero-step identity/preflight verification passed. T1-A invocation 1 terminated FAILED_CLOSED at 112.094 s with PRIMARY_CONFIGURATION_HASH_MISMATCH and 0 cycles: the driver compared the effective solver configuration hash b472cce9... against the preflight native configuration hash 5baa4cbd.... Results are preserved; no rerun. A corrected driver changes its SHA-256 and requires a new addendum/preflight plus explicit owner authorization; no campaign, no MUSCL, no physics changes, no P0-P9 edits.",
+          "ISV1-A3B-HASH-BINDING-FIX is READY: patch the primary hash comparison to use effective.solver_configuration_sha256, add a regression test, regenerate preflight/addendum. Execution remains blocked on owner authorization after the fix.",
+          "DPCV1 archived after transition: infrastructure ready, real curve not produced (no run authorization, no real engine data available).",
+          "ISV1-A3B-HASH-BINDING-FIX complete (commit e6f1b657cfc9233123d795da94ce6c14cf2052bd): corrected driver SHA-256 3062ed465f1a8d0e715ef9be07a4ddee4a0a1f11dba7cf4cf7824594e7b8bb42 separates the native preflight identity from the solver identity; synthetic tests PASS (15); zero-step preflight PASS for all five configs (receipt SHA-256 53997aaa6102fb967c249e007b2abbbf0dcf35809d1f3c651d359483c423868f); addendum SHA-256 b93e743919f91486de166422d03ebe24e44702bfc40a7d355ddafa1054ba7d0b binds the corrected driver and protocol v2 with authorization NOT_GRANTED; verification receipt SHA-256 176190f14d98ef28663d4c84004aab7c80eab7ada289f99896eeb9480e412b79; no solver execution.",
+          "ISV1-A3B-AUTHORIZATION-DECISION: on 2026-10-21 the owner selected option C (600 s cumulative T1-A cap) from the resume draft. Protocol v3 is frozen at SHA-256 b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325, continuing T1-A at cycle 3 from the exact v2 checkpoint; v2 artifacts and the failed 112.094 s charge are unchanged. Execution remains NOT_GRANTED pending the v3 driver, zero-step preflight, addendum and a separate owner authorization quoting the final hashes.",
+          "results/integrated-solver-verification-v1/a3b-terminal-receipt-v2-fix1.json",
+          "results/integrated-solver-verification-v1/a3a-run-receipt.json",
+          "A3b T1-A v3 continuation package complete without solver execution: driver SHA-256 LF 66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932, v3 tests 8/8 PASS (23/23 including v2), lineage-preflight PASS (scientific fields equal, zero steps, receipt ea220a4ed479905d6833be933ba7e9a7e6a0c3a2fd664e9476c1c36fb7a7c716), zero-step preflight PASS 5/5 configs (receipt 4866974ec2237c0d2ead88a3dafc4c4b5c3b24c3275747bb27fe3a7100d51611), execution addendum SHA-256 6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144 binds protocol b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325 and parent checkpoint 3b1203b6...; authorization remains NOT_GRANTED.",
+          "ISV1 A3b T1-A v3 cycle 3 executed once under explicit owner authorization: exit 0, run_logged wall 153.391 s, driver 151.906 s, cumulative T1-A 530.469/600 s (69.531 s buffer), global 530.469/4320 s; cycle 3 primary a7eaf55bffc8855117f01c2419201533425e1b9bdf21ddac6e6bf7b37c4d4f2f, audit recomputed PASS; v3 result 883214a9108a835a374234d2ac265d1c9b893b6f1229e72e9ced966f51b6658a, checkpoint 98f49c7c052aa7f58368c8407514824c783700c4e1e48d373103fa076ad756f3, ledger 2de8566252a76c818c80668f045f639dc1bf8afe6c9dc1d541cb7c6765a23eb6; v2 parent hashes unchanged. atol freeze 19214a5ca3cd290fea8b0634cdbddfae46b5e1cc3f801dfa4f8201b67e1be8c2; sensitivity report/receipt INCOMPLETE_MATRIX (T1-B..E not authorized). No convergence or predictive claim.",
+          "results/integrated-solver-verification-v1/a3b-final-attempt-v4-receipt.json",
+          "results/integrated-solver-verification-v1/a3b-final-attempt-v4-attempt2-receipt.json"
+        ],
+        "gate_tasks_total": 5,
+        "gate_tasks_done": 5,
+        "gate_task_states": {
+          "DONE": 5
+        },
+        "remaining": [],
+        "updated_at": "2026-10-21T11:19:18+00:00"
+      },
+      "execution_policy": "POSTPONED_BY_OWNER: no further isolated STANDARD_V1, A3b or general audit campaigns."
+    },
+    {
+      "id": "DINO_FUNCTIONAL_ENGINE_DESKTOP_V1",
+      "state": "OPEN",
+      "owner_approved": true,
+      "summary": "Owner-directed delivery 1 of 3: representative integrated reed engine through existing Desktop, corrected gas exchange and coupled conservative scavenging.",
+      "change": "openspec/changes/functional-engine-desktop-v1",
+      "spec": "openspec/changes/functional-engine-desktop-v1/specs/functional-engine-desktop-v1/spec.md",
+      "authorization_source": "Owner accepted functional recovery direction on 2026-10-22 and authorized implementation/demonstration of delivery1 only; no stiffness experiment or RPM sweep.",
+      "transitioned_from": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "gate_tasks": [
+        "ISV1-FUNCTIONAL-DESKTOP-STAGE1"
+      ],
+      "completion_criterion": "Open saved engine in existing Dino Desktop; execute and resume integrated engine with corrected intake/transfer topology and coupled conservative scavenging; load real results/pressure/flow from history with honest transient/periodicity states. Engineering proof only; no predictive or packaged-release claim."
     }
   ],
   "owner_decisions_pending": [
@@ -9720,32 +9760,20 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+    "objective": "DINO_FUNCTIONAL_ENGINE_DESKTOP_V1",
     "state": "REVIEW",
-    "classification": "INTEGRATED_SOLVER_VERIFICATION_V1_PARTIAL",
+    "classification": "FUNCTIONAL_ENGINEERING_DEMONSTRATION_IN_PROGRESS",
     "evidence": [
-      "A2 design delivered: openspec/changes/integrated-solver-verification-v1 (proposal/design/tasks/spec) with two verification lines, no MUSCL, strict budgets, fail-closed interruption and acceptance criteria.",
-      "A3a executed once on 2026-10-19 under the confirmed frozen preregistration: exit 0, 1138.7 s, 8/8 cycles, classification A3A_COMPLETE_PERIODICITY_NOT_IDENTIFIED; audit recomputed PASS; receipt committed 2665b93. No convergence verdict and no predictive claim.",
-      "ISV1-A3B-DRIVER-ADDENDUM complete: the v2 driver is frozen (driver SHA-256 LF 3f3df5ba290a20739c4adc8e5a562ff7fe3b8fe328d215d33bb72d4e49679c72), synthetic tests PASS (10), zero-step preflight PASS for all five configs (receipt SHA-256 7f08bf5636e2b980980b27d27d2c1f8898581c9b3b22f8e110c1fb68afa0ccba), and the execution addendum references protocol v2 with authorization NOT_GRANTED (addendum SHA-256 329af0a5e05f19a57a2891fcf5767c528da01611c5e243a3bc5ee5fcb0b08d86).",
-      "ISV1-ACCEPTANCE remains WAITING on ISV1-A3B-MATRIX: the A3b T1 protocol v2 is frozen (protocol sha256 c8ab07daeeccfaf00ee27c0bedbd4ddb25334384438b29e875d8ac04827c45ed, commit 4e1b1fc) after the owner-authorized correction of the spatial configs to 28/18 total cells at CFL 0.4. The owner authorized execution on 2026-10-20 with the 4,320 s cap and 4,096 MiB aggregate; hashes and zero-step identity/preflight verification passed. T1-A invocation 1 terminated FAILED_CLOSED at 112.094 s with PRIMARY_CONFIGURATION_HASH_MISMATCH and 0 cycles: the driver compared the effective solver configuration hash b472cce9... against the preflight native configuration hash 5baa4cbd.... Results are preserved; no rerun. A corrected driver changes its SHA-256 and requires a new addendum/preflight plus explicit owner authorization; no campaign, no MUSCL, no physics changes, no P0-P9 edits.",
-      "ISV1-A3B-HASH-BINDING-FIX is READY: patch the primary hash comparison to use effective.solver_configuration_sha256, add a regression test, regenerate preflight/addendum. Execution remains blocked on owner authorization after the fix.",
-      "DPCV1 archived after transition: infrastructure ready, real curve not produced (no run authorization, no real engine data available).",
-      "ISV1-A3B-HASH-BINDING-FIX complete (commit e6f1b657cfc9233123d795da94ce6c14cf2052bd): corrected driver SHA-256 3062ed465f1a8d0e715ef9be07a4ddee4a0a1f11dba7cf4cf7824594e7b8bb42 separates the native preflight identity from the solver identity; synthetic tests PASS (15); zero-step preflight PASS for all five configs (receipt SHA-256 53997aaa6102fb967c249e007b2abbbf0dcf35809d1f3c651d359483c423868f); addendum SHA-256 b93e743919f91486de166422d03ebe24e44702bfc40a7d355ddafa1054ba7d0b binds the corrected driver and protocol v2 with authorization NOT_GRANTED; verification receipt SHA-256 176190f14d98ef28663d4c84004aab7c80eab7ada289f99896eeb9480e412b79; no solver execution.",
-      "ISV1-A3B-AUTHORIZATION-DECISION: on 2026-10-21 the owner selected option C (600 s cumulative T1-A cap) from the resume draft. Protocol v3 is frozen at SHA-256 b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325, continuing T1-A at cycle 3 from the exact v2 checkpoint; v2 artifacts and the failed 112.094 s charge are unchanged. Execution remains NOT_GRANTED pending the v3 driver, zero-step preflight, addendum and a separate owner authorization quoting the final hashes.",
-      "results/integrated-solver-verification-v1/a3b-terminal-receipt-v2-fix1.json",
-      "results/integrated-solver-verification-v1/a3a-run-receipt.json",
-      "A3b T1-A v3 continuation package complete without solver execution: driver SHA-256 LF 66fa9cb9f9eaef2d336411c2c61af3f75aac08ade26c12e3adda6d66c985f932, v3 tests 8/8 PASS (23/23 including v2), lineage-preflight PASS (scientific fields equal, zero steps, receipt ea220a4ed479905d6833be933ba7e9a7e6a0c3a2fd664e9476c1c36fb7a7c716), zero-step preflight PASS 5/5 configs (receipt 4866974ec2237c0d2ead88a3dafc4c4b5c3b24c3275747bb27fe3a7100d51611), execution addendum SHA-256 6efd73f1adfaa22a447992e267ba725014db9bc8e1771249d87481e0eb221144 binds protocol b16fd7368bc5b590b7245a90287745d3cb485f09600e0e3d6a45a8c1d5f9e325 and parent checkpoint 3b1203b6...; authorization remains NOT_GRANTED.",
-      "ISV1 A3b T1-A v3 cycle 3 executed once under explicit owner authorization: exit 0, run_logged wall 153.391 s, driver 151.906 s, cumulative T1-A 530.469/600 s (69.531 s buffer), global 530.469/4320 s; cycle 3 primary a7eaf55bffc8855117f01c2419201533425e1b9bdf21ddac6e6bf7b37c4d4f2f, audit recomputed PASS; v3 result 883214a9108a835a374234d2ac265d1c9b893b6f1229e72e9ced966f51b6658a, checkpoint 98f49c7c052aa7f58368c8407514824c783700c4e1e48d373103fa076ad756f3, ledger 2de8566252a76c818c80668f045f639dc1bf8afe6c9dc1d541cb7c6765a23eb6; v2 parent hashes unchanged. atol freeze 19214a5ca3cd290fea8b0634cdbddfae46b5e1cc3f801dfa4f8201b67e1be8c2; sensitivity report/receipt INCOMPLETE_MATRIX (T1-B..E not authorized). No convergence or predictive claim.",
-      "results/integrated-solver-verification-v1/a3b-final-attempt-v4-receipt.json",
-      "results/integrated-solver-verification-v1/a3b-final-attempt-v4-attempt2-receipt.json"
+      "docs/gasdynamic/functional_engine_desktop_v1.md"
     ],
-    "gate_tasks_total": 5,
-    "gate_tasks_done": 5,
+    "gate_tasks_total": 1,
+    "gate_tasks_done": 0,
     "gate_task_states": {
-      "DONE": 5
+      "IN_PROGRESS": 1
     },
-    "remaining": [],
-    "updated_at": "2026-10-21T11:19:18+00:00"
+    "remaining": [
+      "ISV1-FUNCTIONAL-DESKTOP-STAGE1"
+    ]
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

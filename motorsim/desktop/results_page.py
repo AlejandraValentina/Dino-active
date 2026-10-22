@@ -16,6 +16,8 @@ METRICS={"Potencia de freno (kW)":"brake_power","Torque (N·m)":"brake_torque","
 
 def _state_label(value):
     return {"EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED":"Terminada · sin periodicidad identificada",
+        "NOT_CONVERGED":"No convergida","MAX_CYCLES_NONCONVERGED":"Límite de ciclos · no convergida",
+        "INSUFFICIENT_CYCLES":"Ciclos insuficientes","NOT_PERFORMED":"No realizada",
         "INTERRUPTED_CHECKPOINTED":"Interrumpida; checkpoint disponible",
         "PERIOD_1":"Periódica observada · orden 1","PERIOD_2":"Periódica observada · orden 2",
         "NOT_EVALUATED":"No evaluada","NOT_IDENTIFIABLE":"No identificable",
@@ -317,7 +319,8 @@ class ResultsPage(QWidget):
         """Load one or more indexed runs through the full independent importer."""
         if paths:
             self.path_label.setText("Verificando artifacts EXPLORATORY…")
-            run_background(import_exploratory_runs,paths,on_done=self._loaded_exploratory,on_error=self._exploratory_failed)
+            from ..engineering_workflow import import_desktop_runs
+            run_background(import_desktop_runs,paths,on_done=self._loaded_exploratory,on_error=self._exploratory_failed)
     def _loaded_exploratory(self,data):
         self.dataset=data;self.source=None;self.source_kind="EXPLORATORY";self.path_label.setText(f"{len(data['points'])} ciclos EXPLORATORY · provisional · no interpolación · no validación experimental")
         runs=sorted({str(r.get("run_id")) for r in data["points"] if r.get("run_id")})
@@ -343,7 +346,7 @@ class ResultsPage(QWidget):
         for label,key in options:self.trace_metric.addItem(label,key)
         self.trace_metric.blockSignals(False)
         self.trace_group.setVisible(bool(traces and options))
-        if traces and options:self.trace_status.setText("Primarios re-auditados · ángulos comunes exactos · sin interpolación")
+        if traces and options:self.trace_status.setText("Conservación interna · sin auditoría independiente · muestras aceptadas" if data.get("audit_method")=="INTERNAL_CONSERVATION_NO_REPLAY" else "Integridad según formato · consultar auditoría por corrida" if data.get("audit_method")=="MIXED_SCHEMAS" else "Primarios re-auditados · ángulos comunes exactos · sin interpolación")
         elif not traces:self.trace_status.setText("Los primarios seleccionados no contienen trazas de presión/flujo disponibles.")
         else:self.trace_status.setText("No hay canales de presión/flujo comunes en los primarios seleccionados.")
         if not traces or not options:
@@ -408,7 +411,7 @@ class ResultsPage(QWidget):
         self._update_engineering_compare()
         self.power_curves.set_dataset(self.dataset, selected)
     def redraw_trace(self,*_):
-        if not self.dataset or self.dataset.get("schema")!="DINO_EXPLORATORY_COMPARISON_V1":
+        if not self.dataset or self.dataset.get("schema") not in {"DINO_EXPLORATORY_COMPARISON_V1","DINO_DESKTOP_ENGINEERING_DATA_V1"}:
             self.trace_plot.set_series([]);self.trace_legend.setText("");return
         key=self.trace_metric.currentData()
         if not key:
@@ -422,7 +425,7 @@ class ResultsPage(QWidget):
             if not isinstance(channel,dict):continue
             name=f"{trace['variant_id']} · {trace['rpm']:g} RPM · ciclo {trace['cycle']}"
             labels.append(name)
-            pressure=key.endswith("_pressure_pa")
+            pressure=key.endswith("pressure_pa")
             unit="bar abs" if pressure else channel.get("unit","")
             values=[(float(value)/100000.0 if value is not None else None) for value in channel.get("values",[])] if pressure else channel.get("values",[])
             baseline=self.baseline_selector.currentData()==trace.get("variant_id")
@@ -430,14 +433,14 @@ class ResultsPage(QWidget):
                 "x_key":"angle_deg","x_label":"Ángulo de cigüeñal (°)",
                 "points":[{"angle_deg":angle,"value":value}
                            for angle,value in zip(trace["angles_deg"],values)]})
-        pressure=key.endswith("_pressure_pa")
+        pressure=key.endswith("pressure_pa")
         self.trace_plot.set_series(series,y_scale_mode="nonnegative_data_margin" if pressure else "data_margin")
         self.trace_legend.setText("Series: " + " | ".join(labels) if labels else "Sin trazas disponibles")
         self._redraw_trace_map()
 
     def _redraw_trace_map(self):
         """Render exact cell/angle samples into a discrete QImage without interpolation."""
-        if not self.dataset or self.dataset.get("schema")!="DINO_EXPLORATORY_COMPARISON_V1":
+        if not self.dataset or self.dataset.get("schema") not in {"DINO_EXPLORATORY_COMPARISON_V1","DINO_DESKTOP_ENGINEERING_DATA_V1"}:
             self.trace_map.set_grid([],[]);return
         selected={self.variants.item(i).text() for i in range(self.variants.count()) if self.variants.item(i).checkState()==Qt.CheckState.Checked}
         key=self.trace_metric.currentData()
@@ -484,13 +487,17 @@ class ResultsPage(QWidget):
         def card(label,key,unit):
             status=row.get(key+"_status");value=row.get(key)
             if status=="DEFINED" and value is not None:return f"{label}\n{float(value):.4g} {unit} · Δ vs baseline disponible si comparable"
+            transient=row.get("transient_estimates",{}).get(key)
+            if transient is not None:return f"{label}\n{transient:.4g} {unit} · TRANSITORIO, NO CONVERGIDO"
             reason=row.get(key+"_reason") or row.get(key+"_status") or "No reportado"
             return f"{label}\nNo definido · {reason}"
         self.metric_cards[0].setText(card("Potencia","brake_power","kW"))
         self.metric_cards[1].setText(card("Torque","brake_torque","N·m"))
         self.metric_cards[2].setText(card("BMEP","BMEP","kPa"))
         self.metric_cards[3].setText(f"Auditoría\n{_state_label(row.get('audit_status','NOT_REPORTED'))} · recomputada: {row.get('audit_recomputed','NOT_REPORTED')}")
-        self.run_summary.setText(f"{row.get('variant_id','Variante no informada')} · {row.get('rpm','—')} RPM · {_state_label(row.get('classification'))} · periodicidad {_state_label(row.get('periodicity') or row.get('classification'))} · conservación {row.get('conservation','no reportada')}")
+        conservation=row.get('conservation')
+        conservation_label=("balance interno · máx. residuo relativo "+format(max(conservation['relative'].values()),'.2g') if isinstance(conservation,dict) and conservation.get('relative') else 'reportada' if conservation else 'no reportada')
+        self.run_summary.setText(f"{row.get('variant_id','Variante no informada')} · {row.get('rpm','—')} RPM · {_state_label(row.get('classification'))} · periodicidad {_state_label(row.get('periodicity') or row.get('classification'))} · {conservation_label}")
         periodicity=row.get('periodicity')
         if periodicity is None:
             periodicity=row.get('classification') if row.get('classification') in {"PERIOD_1","PERIOD_2"} else "NOT_REPORTED"
@@ -513,6 +520,7 @@ class ResultsPage(QWidget):
             ("Validación experimental",row.get('experimental_validation',self.dataset.get('experimental_validation','NOT_REPORTED'))),
             ("Provenance",self.dataset['provenance'])]
         gates=row.get('hard_gates')
+        items=list(row.get("engineering_diagnostics",{}).items())+items
         if isinstance(gates,dict) and "status" not in gates:
             items.extend((f"Hard gate · {name}",json.dumps(value,ensure_ascii=False,sort_keys=True))
                          for name,value in sorted(gates.items()))

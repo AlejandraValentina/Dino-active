@@ -1,0 +1,6 @@
+- [x] Implement explicit corrected intake/transfer connections.
+- [x] Couple conservative partial-mixing scavenging to emitted species.
+- [x] Reuse Desktop execution, native checkpoints, history and result views.
+- [x] Demonstrate actual Desktop execution and continuation without replay.
+- [x] Display real pressure/flow and nonconverged estimates honestly.
+- [x] Run focal physical/regression tests and document limitations.
