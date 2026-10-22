@@ -211,14 +211,26 @@ def _run_power_curve_unlocked(document: dict, *, project_id: str, variant_label:
             if row.get("result_artifact_sha256") and point_manifest.get("result_sha256") != row["result_artifact_sha256"]:
                 raise ValueError(f"resume rejected: point result hash mismatch at {rpm} RPM")
             checkpoint_name = point_manifest.get("checkpoint_artifact")
-            if not isinstance(checkpoint_name, str) or Path(checkpoint_name).name != checkpoint_name:
+            engineering = point_manifest.get('schema') == 'DINO_ENGINEERING_RUN_V1'
+            if (not isinstance(checkpoint_name, str) or Path(checkpoint_name).is_absolute() or
+                    '..' in Path(checkpoint_name).parts or
+                    (not engineering and Path(checkpoint_name).name != checkpoint_name)):
                 raise ValueError(f"resume rejected: point checkpoint path is invalid at {rpm} RPM")
             checkpoint_path = run_dir / checkpoint_name
+            if not checkpoint_path.resolve().is_relative_to(run_dir.resolve()):
+                raise ValueError(f"resume rejected: point checkpoint escapes run directory at {rpm} RPM")
             if (not checkpoint_path.is_file() or
                     _sha(checkpoint_path.read_bytes()) != point_manifest.get("checkpoint_sha256") or
                     (row.get("checkpoint_sha256") and _sha(checkpoint_path.read_bytes()) != row["checkpoint_sha256"])):
                 raise ValueError(f"resume rejected: point checkpoint hash mismatch at {rpm} RPM")
             if row.get("status") == "COMPLETE":
+                if engineering:
+                    from .engineering_workflow import import_desktop_runs
+                    verified=import_desktop_runs([run_dir])
+                    if not verified.get('points') or any(item.get('audit_status')!='NOT_PERFORMED' for item in verified['points']):
+                        raise ValueError('engineering result verification failed')
+                    row['resume_audit']='INTEGRITY_VERIFIED_NOT_INDEPENDENT_AUDIT'
+                    continue
                 from .exploratory_workflow import import_exploratory_runs
                 audited = import_exploratory_runs([run_dir])
                 if (not audited.get("points") or
@@ -315,7 +327,7 @@ def _run_power_curve_unlocked(document: dict, *, project_id: str, variant_label:
                 "run_directory": result.get("artifact_directory"),
                 "identity_sha256": result.get("bindings", {}).get("identity_sha256", point["identity_sha256"])})
             point["configuration_sha256"] = result.get("bindings", {}).get("configuration_sha256", point["configuration_sha256"])
-            point["source_hashes"] = result.get("bindings", {}).get("source_hashes")
+            point["source_hashes"] = result.get("source_hashes",result.get("bindings", {}).get("source_hashes"))
         except Exception as exc:
             if 'timer' in locals(): timer.cancel()
             point.update({"status": "FAILED_CLOSED", "classification": "FAIL_CLOSED",
@@ -349,7 +361,7 @@ def _run_power_curve_unlocked(document: dict, *, project_id: str, variant_label:
         manifest["classification"] = ("EXPLORATORY_SWEEP_EXECUTION_COMPLETE" if manifest["status"] == "COMPLETE"
                                       else "EXPLORATORY_SWEEP_PARTIAL")
     manifest["curve_availability"] = ("EXPLORATORY_CURVE_AVAILABLE"
-        if manifest["status"] == "COMPLETE" and all(row.get("periodicity") in {"PERIOD_1", "PERIOD_2"} for row in manifest["points"])
+        if manifest["status"] == "COMPLETE" and all(row.get("periodicity") in {"PERIOD_1", "PERIOD_2", "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED"} for row in manifest["points"])
         else "EXPLORATORY_CURVE_PARTIAL")
     manifest["elapsed_seconds"] = elapsed_before + time.monotonic() - started
     manifest["updated_unix"] = time.time()

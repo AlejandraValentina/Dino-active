@@ -237,12 +237,22 @@ class ResultsPage(QWidget):
                 unit={"Potencia de freno":"kW","Torque":"N·m","BMEP":"kPa","IMEP":"kPa","FMEP":"kPa"}[label]
                 reason="Definido" if defined else str(c.get(key+"_reason") or b.get(key+"_reason") or "No definido por el artifact")
                 rows.append((label,f"{bval:g} {unit}" if defined else "—",f"{cval:g} {unit}" if defined else "—",f"{cval-bval:+g} {unit}" if defined else "—",reason))
+            if b.get('transient_estimates') is not None and c.get('transient_estimates') is not None:
+                for label,key,unit in (("Potencia transitoria","brake_power","kW"),("Torque transitorio","brake_torque","N·m")):
+                    x=b['transient_estimates'].get(key);y=c['transient_estimates'].get(key)
+                    if isinstance(x,(int,float)) and isinstance(y,(int,float)):
+                        rows.append((label,f"{x:.4g} {unit}",f"{y:.4g} {unit}",f"{y-x:+.4g} {unit}","NO CONVERGIDO; diferencia transitoria, no ganancia confirmada" if b.get('periodicity')=='NOT_CONVERGED' or c.get('periodicity')=='NOT_CONVERGED' else "Estimación de ingeniería"))
+                for label in ("Trabajo indicado (J/ciclo)","Aire atrapado al cierre (mg)","Calor de combustión (J/ciclo)"):
+                    x=b.get('engineering_diagnostics',{}).get(label);y=c.get('engineering_diagnostics',{}).get(label)
+                    if isinstance(x,(int,float)) and isinstance(y,(int,float)):
+                        rows.append((label,f"{x:.4g}",f"{y:.4g}",f"{y-x:+.4g}","Último ciclo; no atribución estacionaria"))
             identity_fields=("solver_identity_sha256","implementation_identity_sha256")
             identity_known=any(b.get(key) is not None and c.get(key) is not None for key in identity_fields)
             identity_matches=identity_known and all(b.get(key)==c.get(key) for key in identity_fields if b.get(key) is not None and c.get(key) is not None)
             condition="Mismo RPM; condiciones declaradas coinciden" if not mismatches else "Advertencia: difieren "+", ".join(mismatches)
             if not identity_known:condition+="; identidad del solver por punto no informada"
             elif not identity_matches:condition+="; identidad del solver distinta"
+            if b.get('periodicity')=='NOT_CONVERGED' or c.get('periodicity')=='NOT_CONVERGED':condition+="; TRANSITORIOS: no demuestra ganancia de potencia del escape"
             self.compare_notice.setText(f"{baseline_name} vs {candidate_name} · {b.get('rpm'):g} RPM · {condition}. La identidad de configuración conserva las diferencias geométricas mostradas.")
         else:
             self.compare_notice.setText(f"{baseline_name} vs {candidate_name}: sin par de corridas a la misma RPM. Se muestra sólo el diff geométrico del proyecto; no se comparan métricas entre condiciones distintas.")

@@ -109,6 +109,13 @@ def import_desktop_runs(paths):
             result_sha256=manifest["result_sha256"],checkpoint_sha256=result.get("checkpoint_sha256"),
             point_configuration_sha256=diag["bindings"]["configuration_canonical_sha256"],
             artifact_directory=str(root),experimental_validation="NOT_PERFORMED")
+        from .engine_configuration import sha256
+        row.update(solver_identity_sha256=result.get('source_hashes',{}).get('motorsim.integrated_2t'),
+            implementation_identity_sha256=sha256(result['source_hashes']) if result.get('source_hashes') else None,
+            fuel_id=result.get('preflight',{}).get('fuel_id'),
+            afr_kg_air_per_kg_fuel=c.get('afr_supplied'),
+            total_finite_volume_cells=result.get('preflight',{}).get('total_finite_volume_cells'),
+            cycles_requested=diag['bindings'].get('max_cycles',result['cycles_completed']))
         row["engineering_diagnostics"]={
             "Trabajo indicado (J/ciclo)":c["cylinder_work_J"],
             "Potencia indicada transitoria (kW)":c["indicated_power_W"]/1000,

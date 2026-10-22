@@ -6886,6 +6886,60 @@
         "AGENTS.md"
       ],
       "evidence_level": "L1"
+    },
+    {
+      "id": "FEC2-INTEGRATION",
+      "description": "Integrate topology-preserving exhaust editing, schema-aware existing coordinator, honest comparison and saved selection.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "tests/test_functional_exhaust_comparison.py"
+      ],
+      "next_action": "Integrate topology-preserving exhaust editing, schema-aware existing coordinator, honest comparison and saved selection.",
+      "objective": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1",
+      "owner_role": "implementation",
+      "write_scope": [
+        "motorsim/engine_variants.py",
+        "motorsim/engineering_workflow.py",
+        "motorsim/power_curve_sweep.py",
+        "motorsim/desktop/",
+        "tests/test_functional_exhaust_comparison.py"
+      ],
+      "evidence_level": "L1",
+      "qualification": "Focal21 tests pass; real Desktop demo pending."
+    },
+    {
+      "id": "FEC2-AB-DEMO",
+      "description": "Demonstrate real Desktop duplicate/edit/run A/B at9000RPM:30cycles/300s each,512MiB, identical initial primitives and all other settings.",
+      "dependencies": [],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Demonstrate real Desktop duplicate/edit/run A/B at9000RPM:30cycles/300s each,512MiB, identical initial primitives and all other settings.",
+      "objective": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1",
+      "owner_role": "implementation",
+      "write_scope": [
+        "scripts/diagnostics/demo_exhaust_comparison_v1.py",
+        "results/functional-exhaust-comparison-v1/"
+      ],
+      "evidence_level": "L1"
+    },
+    {
+      "id": "FEC2-INTERPRETATION",
+      "description": "Quantify A/B signals and cycle drift, regional periodicity, curve go/no-go; focal tests and final evidence.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Quantify A/B signals and cycle drift, regional periodicity, curve go/no-go; focal tests and final evidence.",
+      "objective": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L1"
     }
   ],
   "audit_remediation_mode": false,
@@ -7087,18 +7141,20 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_FUNCTIONAL_ENGINE_DESKTOP_V1",
+    "id": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1",
     "state": "OPEN",
     "owner_approved": true,
-    "summary": "Owner-directed delivery 1 of 3: representative integrated reed engine through existing Desktop, corrected gas exchange and coupled conservative scavenging.",
-    "change": "openspec/changes/functional-engine-desktop-v1",
-    "spec": "openspec/changes/functional-engine-desktop-v1/specs/functional-engine-desktop-v1/spec.md",
-    "authorization_source": "Owner accepted functional recovery direction on 2026-10-22 and authorized implementation/demonstration of delivery1 only; no stiffness experiment or RPM sweep.",
-    "transitioned_from": "INTEGRATED_SOLVER_VERIFICATION_V1",
+    "summary": "Owner-authorized delivery2: edit one exhaust dimension and compare real A/B through existing Desktop.",
+    "change": "openspec/changes/functional-exhaust-comparison-v1",
+    "spec": "openspec/changes/functional-exhaust-comparison-v1/specs/functional-exhaust-comparison-v1/spec.md",
+    "authorization_source": "Owner attachment f0d7bda0-535c-4a2a-999a-3aa13e876257; controlled A/B9000RPM then small grid only if interpretable.",
+    "transitioned_from": "DINO_FUNCTIONAL_ENGINE_DESKTOP_V1",
     "gate_tasks": [
-      "ISV1-FUNCTIONAL-DESKTOP-STAGE1"
+      "FEC2-INTEGRATION",
+      "FEC2-AB-DEMO",
+      "FEC2-INTERPRETATION"
     ],
-    "completion_criterion": "Open saved engine in existing Dino Desktop; execute and resume integrated engine with corrected intake/transfer topology and coupled conservative scavenging; load real results/pressure/flow from history with honest transient/periodicity states. Engineering proof only; no predictive or packaged-release claim."
+    "completion_criterion": "Existing Desktop duplicates/edits/runs/compares/reopens real A/B. Curve conditional on unchanged periodicity; stop if unusable. No predictive claim."
   },
   "objectives": [
     {
@@ -7733,7 +7789,40 @@
       "gate_tasks": [
         "ISV1-FUNCTIONAL-DESKTOP-STAGE1"
       ],
-      "completion_criterion": "Open saved engine in existing Dino Desktop; execute and resume integrated engine with corrected intake/transfer topology and coupled conservative scavenging; load real results/pressure/flow from history with honest transient/periodicity states. Engineering proof only; no predictive or packaged-release claim."
+      "completion_criterion": "Open saved engine in existing Dino Desktop; execute and resume integrated engine with corrected intake/transfer topology and coupled conservative scavenging; load real results/pressure/flow from history with honest transient/periodicity states. Engineering proof only; no predictive or packaged-release claim.",
+      "gate_at_owner_transition": {
+        "objective": "DINO_FUNCTIONAL_ENGINE_DESKTOP_V1",
+        "state": "REVIEW",
+        "classification": "FUNCTIONAL_ENGINEERING_DEMONSTRATED_REVIEW",
+        "evidence": [
+          "docs/gasdynamic/functional_engine_desktop_v1.md",
+          "results/functional-engine-desktop-v1/receipt.json",
+          "results/functional-engine-desktop-v1/report.md"
+        ],
+        "gate_tasks_total": 1,
+        "gate_tasks_done": 1,
+        "gate_task_states": {
+          "DONE": 1
+        },
+        "remaining": []
+      },
+      "owner_functional_acceptance": "Accepted by owner; scientific REVIEW remains unchanged."
+    },
+    {
+      "id": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1",
+      "state": "OPEN",
+      "owner_approved": true,
+      "summary": "Owner-authorized delivery2: edit one exhaust dimension and compare real A/B through existing Desktop.",
+      "change": "openspec/changes/functional-exhaust-comparison-v1",
+      "spec": "openspec/changes/functional-exhaust-comparison-v1/specs/functional-exhaust-comparison-v1/spec.md",
+      "authorization_source": "Owner attachment f0d7bda0-535c-4a2a-999a-3aa13e876257; controlled A/B9000RPM then small grid only if interpretable.",
+      "transitioned_from": "DINO_FUNCTIONAL_ENGINE_DESKTOP_V1",
+      "gate_tasks": [
+        "FEC2-INTEGRATION",
+        "FEC2-AB-DEMO",
+        "FEC2-INTERPRETATION"
+      ],
+      "completion_criterion": "Existing Desktop duplicates/edits/runs/compares/reopens real A/B. Curve conditional on unchanged periodicity; stop if unusable. No predictive claim."
     }
   ],
   "owner_decisions_pending": [
@@ -9757,6 +9846,12 @@
       "task": "ISV1-FUNCTIONAL-DESKTOP-STAGE1",
       "kind": "task",
       "summary": "Delivery1 demonstrated through Desktop: corrected connections and coupled conservative scavenging; 10 cycles plus resume11-12, final-code3 cycles, real plots, nonconverged estimates explicit. Focal22 and selected94 pass. No predictive claim, sweep, package or push."
+    },
+    {
+      "at": "2026-10-22T16:02:02+00:00",
+      "task": "FEC2-INTEGRATION",
+      "kind": "task",
+      "summary": "Reuse existing workflow:31-cell section-length editor, engineering-aware sweep resume, hash-bound saved comparisons, explicit transient diagnostics. Focal21 tests pass. A/B9000RPM authorized30cycles/300s each,512MiB, header83to103mm only. No grid until periodicity."
     }
   ],
   "legacy_gate_status": {
@@ -9771,20 +9866,21 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_FUNCTIONAL_ENGINE_DESKTOP_V1",
+    "objective": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1",
     "state": "REVIEW",
-    "classification": "FUNCTIONAL_ENGINEERING_DEMONSTRATED_REVIEW",
-    "evidence": [
-      "docs/gasdynamic/functional_engine_desktop_v1.md",
-      "results/functional-engine-desktop-v1/receipt.json",
-      "results/functional-engine-desktop-v1/report.md"
-    ],
-    "gate_tasks_total": 1,
+    "classification": "EXHAUST_COMPARISON_IN_PROGRESS",
+    "gate_tasks_total": 3,
     "gate_tasks_done": 1,
     "gate_task_states": {
-      "DONE": 1
+      "DONE": 1,
+      "IN_PROGRESS": 1,
+      "READY": 1
     },
-    "remaining": []
+    "remaining": [
+      "FEC2-AB-DEMO",
+      "FEC2-INTERPRETATION"
+    ],
+    "evidence": []
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

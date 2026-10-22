@@ -21,6 +21,8 @@ class RunHistoryWidget(QWidget):
         title=QLabel("Historial local de corridas");title.setStyleSheet("font-size:13pt;font-weight:600")
         header.addWidget(title);self.variant_filter=QComboBox();self.variant_filter.setObjectName("historyVariantFilter");header.addWidget(self.variant_filter);header.addStretch()
         refresh=QPushButton("Actualizar");refresh.clicked.connect(self.refresh);header.addWidget(refresh)
+        self.save_comparison_button=QPushButton("Guardar comparación");self.save_comparison_button.clicked.connect(self.save_comparison);header.addWidget(self.save_comparison_button)
+        self.restore_comparison_button=QPushButton("Recuperar comparación");self.restore_comparison_button.clicked.connect(self.restore_comparison);header.addWidget(self.restore_comparison_button)
         self.table=QTableWidget(0,7);self.table.setHorizontalHeaderLabels(
             ["Variante","RPM","Actualizada","Estado","Período","Auditoría","Balance"])
         self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
@@ -118,3 +120,44 @@ class RunHistoryWidget(QWidget):
         selected=self._selected()
         if len(selected)==1 and self.entries[selected[0]].get("resumable"):
             self.resume_run.emit(self.entries[selected[0]])
+
+    def save_comparison(self):
+        try:return self._save_comparison()
+        except (OSError,ValueError,KeyError,TypeError) as exc:
+            self.status.setText(f"Comparación bloqueada: {exc}");return False
+
+    def _save_comparison(self):
+        from pathlib import Path
+        import hashlib,json
+        selected=self._selected()
+        if len(selected)!=2:
+            self.status.setText("Seleccioná exactamente dos corridas para guardar la comparación.");return False
+        records=[]
+        for index in selected:
+            path=Path(self.entries[index]['result_path'])
+            if path.is_dir():path=path/'result.json'
+            raw=path.read_bytes();result=json.loads(raw)
+            if result.get('bindings',{}).get('project_id')!=self.context.project['project_id']:
+                raise ValueError('comparison run belongs to another project')
+            records.append(dict(path=str(path.resolve()),sha256=hashlib.sha256(raw).hexdigest()))
+        self.context.project['simulation_recipes']['saved_exhaust_comparison_v1']=records
+        self.context.dirty=True;self.context.changed.emit()
+        self.status.setText("Comparación vinculada por hash; guardá el proyecto para conservarla.")
+        return True
+
+    def restore_comparison(self):
+        from pathlib import Path
+        import hashlib,json
+        try:
+            records=self.context.project['simulation_recipes'].get('saved_exhaust_comparison_v1',[])
+            if len(records)!=2:raise ValueError('El proyecto no tiene una comparación guardada.')
+            paths=[]
+            for record in records:
+                path=Path(record['path']);raw=path.read_bytes();result=json.loads(raw)
+                if hashlib.sha256(raw).hexdigest()!=record['sha256'] or result.get('bindings',{}).get('project_id')!=self.context.project['project_id']:
+                    raise ValueError('La identidad o integridad de la comparación cambió.')
+                paths.append(str(path))
+            self.open_runs.emit(paths)
+            return True
+        except (OSError,ValueError,KeyError,TypeError) as exc:
+            self.status.setText(f"Comparación bloqueada: {exc}");return False

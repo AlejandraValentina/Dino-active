@@ -290,7 +290,7 @@ class ExecutionPage(QWidget):
             ("Horizonte máximo por punto",cycles),("Presupuesto por punto (s)",point_budget),
             ("Presupuesto total de esta invocación (s)",total_budget),("Memoria RSS máxima (MiB)",memory)):
             form.addRow(label,widget)
-        form.addRow(QLabel("Cada punto usa el solver integrado y su checkpoint/auditoría independientes. No se extrapolan gaps."))
+        form.addRow(QLabel("Cada punto usa el solver integrado y su checkpoint. Auditoría según el modo del motor; no se extrapolan gaps."))
         buttons=QDialogButtonBox(QDialogButtonBox.StandardButton.Ok|QDialogButtonBox.StandardButton.Cancel)
         buttons.button(QDialogButtonBox.StandardButton.Ok).setText("Preflight y continuar…")
         buttons.accepted.connect(dialog.accept);buttons.rejected.connect(dialog.reject);form.addRow(buttons)

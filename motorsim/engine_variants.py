@@ -70,6 +70,65 @@ def escape_sections(document: dict) -> list[dict]:
     return deepcopy(sections)
 
 
+def partitioned_escape_counts(document: dict) -> list[int]:
+    """Recognize existing section boundaries, without changing discretization.
+
+    Every section must end on an existing face and match its declared linear
+    diameter profile. This is recognition of geometry, never implicit refinement.
+    """
+    sections = escape_sections(document)
+    mesh = next(d['mesh'] for d in document['native_configuration']['ducts'] if d['id']=='exhaust')
+    counts=[]; start=0; position=mesh['faces'][0]
+    for section in sections:
+        end_position=position+section['length_mm']/1000
+        matches=[i for i,x in enumerate(mesh['faces']) if math.isclose(x,end_position,abs_tol=1e-11,rel_tol=1e-11)]
+        if len(matches)!=1 or matches[0]<=start:
+            raise ValueError('section boundary does not match an existing exhaust face')
+        end=matches[0]
+        for i in range(start,end+1):
+            t=(mesh['faces'][i]-position)/(end_position-position)
+            diameter=(section['inlet_diameter_mm']+t*(section['outlet_diameter_mm']-section['inlet_diameter_mm']))/1000
+            if not math.isclose(mesh['areas'][i],math.pi*diameter**2/4,rel_tol=1e-9,abs_tol=1e-15):
+                raise ValueError('declared exhaust section differs from solver area')
+        counts.append(end-start);start=end;position=end_position
+    if start!=len(mesh['volumes']):raise ValueError('unmapped exhaust cells')
+    return counts
+
+
+def stretch_partitioned_escape(document: dict, sections: list[dict]) -> dict:
+    """Length-only affine edits of recognized existing cells; primitives unchanged.
+
+    Volumes and extensive initial species scale with length. This creates a new
+    initial configuration, not a checkpoint remap. Historical adapters untouched.
+    """
+    old=escape_sections(document); counts=partitioned_escape_counts(document)
+    if len(sections)!=len(old):raise ValueError('section topology must remain unchanged')
+    for before,after in zip(old,sections):
+        if set(before)!=set(after) or any(before[k]!=after[k] for k in before if k!='length_mm'):
+            raise ValueError('partitioned profile supports length edits only; retain diameters and section identity')
+        length=after['length_mm']
+        if type(length) not in (int,float) or not math.isfinite(length) or length<=0:
+            raise ValueError('section length must be finite positive mm')
+    result=deepcopy(document);native=result['native_configuration']
+    mesh=next(d['mesh'] for d in native['ducts'] if d['id']=='exhaust')
+    original=deepcopy(mesh);offset=0;cursor=original['faces'][0]
+    for before,after,count in zip(old,sections,counts):
+        scale=after['length_mm']/before['length_mm'];origin=original['faces'][offset]
+        for i in range(offset,offset+count):
+            mesh['faces'][i]=cursor+(original['faces'][i]-origin)*scale
+            mesh['centers'][i]=cursor+(original['centers'][i]-origin)*scale
+            mesh['volumes'][i]=original['volumes'][i]*scale
+            native['duct_species']['exhaust'][i]=[m*scale for m in native['duct_species']['exhaust'][i]]
+        cursor+=after['length_mm']/1000;offset+=count
+    mesh['faces'][-1]=cursor
+    native['geometry_identity']['chamber']['sections']=deepcopy(sections)
+    from .engine_configuration import sha256
+    result['native_configuration_sha256']=sha256(native)
+    result['provenance']={**result['provenance'],'escape_geometry_adapter':'PARTITIONED_LENGTH_EDIT_V1'}
+    validate(result)
+    return result
+
+
 def replace_escape_sections(document: dict, sections: list[dict], *, display_name: str | None = None) -> dict:
     """Build exact one-cell-per-section solver mesh using linear circular frusta.
 

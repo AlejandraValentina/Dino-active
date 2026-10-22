@@ -22,15 +22,14 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_FUNCTIONAL_ENGINE_DESKTOP_V1
-change/spec:       openspec/changes/functional-engine-desktop-v1/
-                   specs/functional-engine-desktop-v1/spec.md
-completion:        Owner-directed delivery 1 of 3: open engine, execute and resume
-                   through existing Desktop, corrected gas-exchange connections,
-                   coupled conservative scavenging and real history/results.
-                   Engineering scope only; no predictive or packaged-release claim.
-                   Isolated STANDARD_V1 research and general audit campaigns are
-                   postponed. Deliveries 2/3 are not automatically authorized.
+CURRENT_OBJECTIVE: DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1
+change/spec:       openspec/changes/functional-exhaust-comparison-v1/
+                   specs/functional-exhaust-comparison-v1/spec.md
+completion:        Owner-authorized delivery2: duplicate/edit exhaust and execute
+                   controlled A/B9000RPM through existing Desktop, save/reopen
+                   comparison. Small grid only if periodicity permits useful points.
+                   Delivery1 accepted functionally; its scientific REVIEW preserved.
+                   No predictive claim; Windows packaging is outside this delivery.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

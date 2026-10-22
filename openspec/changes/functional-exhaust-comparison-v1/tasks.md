@@ -1,0 +1,3 @@
+- [ ] Preserve existing exhaust topology while editing length; integrate comparison and saved history.
+- [ ] Execute real Desktop A/B at9000RPM, up to30cycles or300seconds each,512MiB; stop early under existing detector.
+- [ ] Report regional periodicity and transient drift; run a small shared grid only if useful periodic points are demonstrated, otherwise close with explicit curve limitation.

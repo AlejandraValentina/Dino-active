@@ -9,7 +9,8 @@ from PySide6.QtWidgets import (QWidget,QVBoxLayout,QHBoxLayout,QLabel,QTableWidg
     QHeaderView,QPushButton,QMessageBox,QComboBox,QGroupBox,QInputDialog,QAbstractItemView,QSplitter)
 
 from ..engine_configuration import identity,validate
-from ..engine_variants import escape_sections,replace_escape_sections,compare_configurations
+from ..engine_variants import (escape_sections,replace_escape_sections,compare_configurations,
+    partitioned_escape_counts,stretch_partitioned_escape)
 from ..exhaust_mesh_v1 import refine_exhaust_configuration
 
 
@@ -149,7 +150,7 @@ class ExhaustPage(QWidget):
 
     def _counts(self,engine):
         meta=engine["native_configuration"]["geometry_identity"].get("exhaust_mesh_discretization")
-        return list(meta["cells_per_section"]) if meta else [1]*len(escape_sections(engine))
+        return list(meta["cells_per_section"]) if meta else partitioned_escape_counts(engine)
 
     def _clear_widgets(self):
         for row in range(self.mesh_table.rowCount()):
@@ -185,7 +186,9 @@ class ExhaustPage(QWidget):
                     if col not in (1,3):item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
                     self.table.setItem(i,col,item)
                 item=QTableWidgetItem(s["name"]);item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable);self.mesh_table.setItem(i,0,item)
-                combo=QComboBox();combo.setObjectName(f"meshResolution_{i}");combo.addItems(["1","2","4"]);combo.setCurrentText(str(counts[i]));combo.currentIndexChanged.connect(self._cell_changed)
+                combo=QComboBox();combo.setObjectName(f"meshResolution_{i}");combo.addItems(sorted({"1","2","4",str(counts[i])},key=int));combo.setCurrentText(str(counts[i]));combo.currentIndexChanged.connect(self._cell_changed)
+                if "exhaust_mesh_discretization" not in engine['native_configuration']['geometry_identity'] and counts!=[1]*len(counts):
+                    combo.setEnabled(False);combo.setToolTip("Malla existente conservada; edición de longitud sin cambiar resolución.")
                 self.mesh_table.setCellWidget(i,1,combo)
             self.table.blockSignals(False);self.stations.blockSignals(False);self.mesh_table.blockSignals(False)
             self._update_station_positions()
@@ -300,6 +303,9 @@ class ExhaustPage(QWidget):
     def _draft(self):
         base=self.context.engine();sections=self._rows();counts=self._resolutions()
         current=self._counts(base)
+        if "exhaust_mesh_discretization" not in base['native_configuration']['geometry_identity'] and current!=[1]*len(current):
+            if counts!=current:raise ValueError("Conservar la discretización existente")
+            return stretch_partitioned_escape(base,sections)
         if current!=[1]*len(current):base=refine_exhaust_configuration(base,[1]*len(current))
         legacy=replace_escape_sections(base,sections,display_name=base["display_name"]+" · escape geometry")
         legacy["native_configuration"]["geometry_identity"].pop("exhaust_mesh_discretization",None)
