@@ -22,14 +22,13 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1
-change/spec:       openspec/changes/functional-exhaust-comparison-v1/
-                   specs/functional-exhaust-comparison-v1/spec.md
-completion:        Owner-authorized delivery2: duplicate/edit exhaust and execute
-                   controlled A/B9000RPM through existing Desktop, save/reopen
-                   comparison. Small grid only if periodicity permits useful points.
-                   Delivery1 accepted functionally; its scientific REVIEW preserved.
-                   No predictive claim; Windows packaging is outside this delivery.
+CURRENT_OBJECTIVE: DINO_DESKTOP_RPM_CURVES_V1
+change/spec:       openspec/changes/desktop-rpm-curves-v1/
+                   specs/desktop-rpm-curves-v1/spec.md
+completion:        Owner-authorized delivery2B: existing Desktop/coordinator for
+                   A/B8000/9000/10000RPM; reuse existing9000, four new points only.
+                   Explicit exploratory curves, gaps, periodicity and stability.
+                   No physics/detector change or predictive claim; no push.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

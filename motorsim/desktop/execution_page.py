@@ -12,7 +12,7 @@ from datetime import datetime,timezone
 from PySide6.QtCore import Qt, Signal, QElapsedTimer
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
     QPlainTextEdit, QFileDialog, QMessageBox, QDoubleSpinBox, QSpinBox, QLineEdit,
-    QFormLayout, QGroupBox, QComboBox, QDialog, QDialogButtonBox)
+    QFormLayout, QGroupBox, QComboBox, QDialog, QDialogButtonBox,QCheckBox)
 
 from ..engine_configuration import identity
 from ..exploratory_workflow import preflight, run_exploratory
@@ -286,6 +286,15 @@ class ExecutionPage(QWidget):
         point_budget=QSpinBox();point_budget.setRange(1,600);point_budget.setValue(int(self.budget.value()))
         total_budget=QSpinBox();total_budget.setRange(1,3600);total_budget.setValue(1800)
         memory=QSpinBox();memory.setRange(256,4096);memory.setValue(self.memory.value())
+        for widget,name in ((start,'curveStartRpm'),(stop,'curveStopRpm'),(step,'curveStepRpm'),
+                            (cycles,'curveCycles'),(point_budget,'curvePointBudget'),(total_budget,'curveTotalBudget'),(memory,'curveMemory')):
+            widget.setObjectName(name)
+        reuse=QCheckBox('Reutilizar puntos completos de esta variante desde el historial, con identidad verificada')
+        reuse.setObjectName('curveReuseCompleted');reuse.setChecked(True);form.addRow(reuse)
+        hold=QCheckBox('Extender extremo ya totalmente abierto de válvula hasta RPM final · SYNTHETIC_ASSUMPTION')
+        hold.setObjectName('curveOpenEndpointHold')
+        hold.setChecked(self.context.project['simulation_recipes'].get('rpm_control_policy',{}).get('schema')=='POWERVALVE_OPEN_ENDPOINT_HOLD_V1')
+        form.addRow(hold)
         for label,widget in (("RPM inicial",start),("RPM final",stop),("Incremento",step),
             ("Horizonte máximo por punto",cycles),("Presupuesto por punto (s)",point_budget),
             ("Presupuesto total de esta invocación (s)",total_budget),("Memoria RSS máxima (MiB)",memory)):
@@ -300,14 +309,21 @@ class ExecutionPage(QWidget):
             if len(grid)>30:raise ValueError("Una invocación admite como máximo 30 puntos.")
             document=json.loads(json.dumps(self._engine(),allow_nan=False))
             project_id=self.context.project["project_id"];variant=self.context.selected_variant or "base"
+            control_policy=dict(schema='POWERVALVE_OPEN_ENDPOINT_HOLD_V1',maximum_rpm=stop.value()) if hold.isChecked() else None
+            reused=[e['run_directory'] for e in self.history.entries if reuse.isChecked() and
+                    e.get('variant')==variant and e.get('rpm') in grid and e.get('status')=='COMPLETE']
             prepared=prepare_power_curve(document,project_id=project_id,variant_label=variant,
                 artifact_root=self.artifact_root,start_rpm=start.value(),stop_rpm=stop.value(),
                 step_rpm=step.value(),max_cycles=cycles.value(),point_budget_seconds=point_budget.value(),
-                total_budget_seconds=total_budget.value(),memory_limit_mib=memory.value())
+                total_budget_seconds=total_budget.value(),memory_limit_mib=memory.value(),control_policy=control_policy)
+            from ..power_curve_sweep import _reused_points
+            verified_reuse=_reused_points(reused,prepared)
             confirmation=(f"Preflight PASS · 0 pasos del solver\n\nVariante: {variant}\n"
                 f"RPM: {', '.join(map(str,grid))}\nPuntos: {len(grid)} · serial, 1 worker\n"
                 f"Horizonte: hasta {cycles.value()} ciclos/punto\nPresupuesto: {total_budget.value()} s agregado; "
                 f"hasta {point_budget.value()} s/punto\nMemoria RSS: {memory.value()} MiB\n"
+                f"Reutilizar sin cálculo: {[p['rpm'] for p in verified_reuse]} RPM\n"
+                f"Política de control RPM: {control_policy or 'mapa original sin extensión'}\n"
                 f"Identidad: {prepared['identity_sha256']}\nArtifact root: {self.artifact_root}\n\n"
                 "EXPLORATORY; no implica periodicidad, convergencia ni aceptación científica.")
             answer=QMessageBox.question(self,"Confirmar barrido RPM",confirmation,
@@ -316,12 +332,16 @@ class ExecutionPage(QWidget):
         except Exception as exc:
             QMessageBox.warning(self,"Preflight de curva bloqueado",f"FAIL-CLOSED: {type(exc).__name__}: {exc}");return
         self.cancel_event=threading.Event();self.progress_latest=None
+        self.context.project['simulation_recipes']['rpm_curve_v1']=dict(rpms=grid,max_cycles=cycles.value(),
+            point_budget_seconds=point_budget.value(),total_budget_seconds=total_budget.value(),memory_limit_mib=memory.value())
+        if control_policy is not None:self.context.project['simulation_recipes']['rpm_control_policy']=control_policy
+        self.context.dirty=True
         self.output.appendPlainText(f"Barrido EXPLORATORY iniciado · {len(grid)} RPM · sin autorización VERIFIED.")
         self.task=run_background(run_power_curve,document,project_id=project_id,variant_label=variant,
             artifact_root=self.artifact_root,start_rpm=start.value(),stop_rpm=stop.value(),step_rpm=step.value(),
             max_cycles=cycles.value(),point_budget_seconds=point_budget.value(),
             total_budget_seconds=total_budget.value(),memory_limit_mib=memory.value(),
-            cancel_event=self.cancel_event,progress=self.progress_signal.emit,
+            cancel_event=self.cancel_event,progress=self.progress_signal.emit,reuse_runs=reused,control_policy=control_policy,
             on_done=self._done,on_error=self._failed)
         self.elapsed_timer.start();self.status_text="CORRIENDO BARRIDO";self.checkpoint_summary="manifiesto guardado por punto"
         self.cancel.setEnabled(True);self.start.setEnabled(False);self.resume.setEnabled(False);self.sweep.setEnabled(False)
@@ -351,7 +371,7 @@ class ExecutionPage(QWidget):
                 start_rpm=binding["rpms"][0],stop_rpm=binding["rpms"][-1],
                 step_rpm=binding["rpms"][1]-binding["rpms"][0] if len(binding["rpms"])>1 else 1,
                 max_cycles=binding["max_cycles"],point_budget_seconds=binding["point_budget_seconds"],
-                total_budget_seconds=binding["total_budget_seconds"],memory_limit_mib=binding["memory_limit_mib"])
+                total_budget_seconds=binding["total_budget_seconds"],memory_limit_mib=binding["memory_limit_mib"],control_policy=binding.get('control_policy'))
             if manifest.get("schema")!="DINO_POWER_CURVE_SWEEP_V1" or prepared["identity_sha256"]!=binding.get("identity_sha256") or str(manifest_path.parent)!=str((Path(binding["artifact_root"])/"dino-power-curve-v1"/binding["project_id"]/manifest_path.parent.name).resolve()):
                 raise ValueError("La identidad o ubicación del manifiesto no coincide; reanudación bloqueada.")
             answer=QMessageBox.question(self,"Reanudar curva RPM",
@@ -371,6 +391,8 @@ class ExecutionPage(QWidget):
             max_cycles=binding["max_cycles"],point_budget_seconds=binding["point_budget_seconds"],
             total_budget_seconds=binding["total_budget_seconds"],memory_limit_mib=binding["memory_limit_mib"],
             sweep_id=manifest_path.parent.name,resume=True,cancel_event=self.cancel_event,
+            reuse_runs=[item['path'] for item in binding.get('reuse_runs',[])],
+            control_policy=binding.get('control_policy'),
             progress=self.progress_signal.emit,on_done=self._done,on_error=self._failed)
         self.elapsed_timer.start();self.status_text="REANUDANDO BARRIDO";self.checkpoint_summary="se validan hashes y checkpoints antes de continuar"
         self.cancel.setEnabled(True);self.start.setEnabled(False);self.resume.setEnabled(False);self.sweep.setEnabled(False);self.resume_sweep.setEnabled(False)
@@ -391,6 +413,18 @@ class ExecutionPage(QWidget):
     def _done(self,result):
         self.status_text=f"TERMINADA · {result.get('classification','clasificación no informada')}"
         if isinstance(result.get("points"),list):
+            if result.get('bindings',{}).get('project_id')==self.context.project['project_id']:
+                import hashlib
+                refs=self.context.project['result_references'];known={r['path'] for r in refs}
+                for point in result['points']:
+                    if not point.get('run_directory') or not point.get('result_artifact_sha256'):continue
+                    path=Path(point['run_directory'])/'result.json'
+                    if str(path) in known:continue
+                    if hashlib.sha256(path.read_bytes()).hexdigest()!=point['result_artifact_sha256']:
+                        self.output.appendPlainText('Referencia rechazada: hash del resultado cambió.');continue
+                    refs.append(dict(path=str(path),identity_sha256=point['identity_sha256'],
+                        artifact_sha256=point['result_artifact_sha256'],classification=point['classification']))
+                    known.add(str(path));self.context.dirty=True
             complete=sum(row.get("status")=="COMPLETE" for row in result["points"])
             interrupted=sum(row.get("status")=="INTERRUPTED_CHECKPOINTED" for row in result["points"])
             not_started=sum(row.get("status")=="NOT_STARTED" for row in result["points"])

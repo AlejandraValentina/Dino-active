@@ -97,7 +97,6 @@ class PowerTorquePlot(QWidget):
                     ("torque", self.show_torque, torque_bounds, Qt.PenStyle.DashLine)):
                 if not enabled or axis_bounds is None:
                     continue
-                painter.setPen(QPen(color, 2, style))
                 previous = None
                 for point in curve.get("points", []):
                     value = point.get(metric)
@@ -105,17 +104,19 @@ class PowerTorquePlot(QWidget):
                         previous = None
                         continue
                     current = map_point(point["rpm"], value, axis_bounds)
-                    if previous is not None:
-                        painter.drawLine(previous, current)
-                    painter.setBrush(color)
+                    exploratory=point.get('exploratory',False)
+                    painter.setPen(QPen(color,2,Qt.PenStyle.DotLine if exploratory else style))
+                    if previous is not None and previous[1]==exploratory:
+                        painter.drawLine(previous[0], current)
+                    painter.setBrush(Qt.BrushStyle.NoBrush if exploratory else color)
                     if metric == "power":
                         painter.drawEllipse(current, 3.5, 3.5)
                     else:
                         painter.drawRect(QRectF(current.x() - 3, current.y() - 3, 6, 6))
-                    previous = current
+                    previous = (current,exploratory)
 
         painter.setPen(QColor("#cad8e7"))
-        painter.drawText(QRectF(0, 2, self.width(), 20), Qt.AlignmentFlag.AlignCenter, "Curvas de rendimiento · puntos calculados")
+        painter.drawText(QRectF(0, 2, self.width(), 20), Qt.AlignmentFlag.AlignCenter, "Punteado/hueco: EXPLORATORIO no periódico · lleno: valor periódico declarado")
         legend_x = rect.left()
         for index, curve in enumerate(self.series):
             color = QColor(self.COLORS[index % len(self.COLORS)])
@@ -155,6 +156,8 @@ class PowerCurvePanel(QGroupBox):
         controls.addWidget(self.power_toggle)
         controls.addWidget(self.unit_selector)
         controls.addWidget(self.torque_toggle)
+        self.exploratory_toggle=QCheckBox("Mostrar transitorios · EXPLORATORIO")
+        self.exploratory_toggle.setChecked(True);controls.addWidget(self.exploratory_toggle)
         controls.addStretch(1)
         self.export_button = QPushButton("Exportar curva CSV…")
         self.export_button.clicked.connect(self.choose_export)
@@ -171,14 +174,16 @@ class PowerCurvePanel(QGroupBox):
         self.compare_label = QLabel("La comparación usa sólo RPM comunes exactos; no interpola puntos.")
         self.compare_label.setWordWrap(True)
         layout.addWidget(self.compare_label)
+        self.stability_notice=QLabel('Seleccioná un punto para separar periodicidad global, variación observada y variables pendientes.')
+        self.stability_notice.setWordWrap(True);layout.addWidget(self.stability_notice)
         self.comparison = QTableWidget(0, 5)
         self.comparison.setHorizontalHeaderLabels(["RPM", "Δ Potencia", "Δ Torque", "Estado", "Advertencia"])
         self.comparison.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         self.comparison.horizontalHeader().setStretchLastSection(True)
         self.comparison.setMaximumHeight(155)
         layout.addWidget(self.comparison)
-        self.points = QTableWidget(0, 7)
-        self.points.setHorizontalHeaderLabels(["Variante / serie", "RPM", "Clasificación", "Periodicidad", "Potencia", "Torque", "Estado"])
+        self.points = QTableWidget(0, 9)
+        self.points.setHorizontalHeaderLabels(["Variante / serie", "RPM", "Clasificación", "Periodicidad", "Potencia", "Torque", "Estado", "Tiempo (s)", "Variación últimos ciclos"])
         self.points.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         self.points.horizontalHeader().setStretchLastSection(True)
         self.points.setMaximumHeight(210)
@@ -187,6 +192,7 @@ class PowerCurvePanel(QGroupBox):
         self.power_toggle.toggled.connect(self.refresh)
         self.torque_toggle.toggled.connect(self.refresh)
         self.unit_selector.currentIndexChanged.connect(self.refresh)
+        self.exploratory_toggle.toggled.connect(self.refresh)
 
     def set_dataset(self, dataset, selected_variants):
         self.dataset = dataset
@@ -203,7 +209,8 @@ class PowerCurvePanel(QGroupBox):
             self.peaks.setText("Potencia máxima: —    Torque máximo: —")
             return
         unit = self.unit_selector.currentData()
-        self.curves = build_curve_series(self.dataset, self.selected_variants, power_unit=unit)
+        self.curves = build_curve_series(self.dataset, self.selected_variants, power_unit=unit,
+            include_exploratory=self.exploratory_toggle.isChecked())
         self.plot.set_series(self.curves, power_unit=unit,
             show_power=self.power_toggle.isChecked(), show_torque=self.torque_toggle.isChecked())
         self.rows = [point for curve in self.curves for point in curve["points"]]
@@ -222,7 +229,8 @@ class PowerCurvePanel(QGroupBox):
                 return f"{label}: sin valores definidos"
             return " · ".join(f"{row['series']} {row['value']:.4g} {unit} @ {row['rpm']:g} RPM" for row in values)
         self.peaks.setText(describe("Potencia máxima", power, self.unit_selector.currentData()) +
-                           "    " + describe("Torque máximo", torque, "N·m"))
+                           "    " + describe("Torque máximo", torque, "N·m")+
+                           (" · Máximos de estimaciones exploratorias; no prestaciones definitivas" if any(p.get('exploratory') for c in self.curves for p in c['points']) else ""))
 
     def _refresh_comparison(self):
         deltas = exact_rpm_differences(self.curves)
@@ -235,7 +243,7 @@ class PowerCurvePanel(QGroupBox):
         for index, row in enumerate(deltas):
             power = "—" if row["power_delta"] is None else f"{row['power_delta']:+.4g} {power_unit}"
             torque = "—" if row["torque_delta"] is None else f"{row['torque_delta']:+.4g} N·m"
-            state = "COMPARABLE" if row["compatible"] else "INCOMPATIBLE"
+            state = "EXPLORATORIO" if row.get('exploratory') else "COMPARABLE" if row["compatible"] else "INCOMPATIBLE"
             warning = ", ".join(row["warnings"]) or ("Valores indefinidos en uno o ambos puntos" if row["power_delta"] is None and row["torque_delta"] is None else "")
             for column, value in enumerate((f"{row['rpm']:g}", power, torque, state, warning)):
                 self.comparison.setItem(index, column, QTableWidgetItem(value))
@@ -251,10 +259,13 @@ class PowerCurvePanel(QGroupBox):
                 statuses.append(str(point["power_reason"] or point["power_status"]))
             if point["torque"] is None:
                 statuses.append(str(point["torque_reason"] or point["torque_status"]))
-            status = "DEFINIDO" if not statuses else " · ".join(statuses)
+            status = "EXPLORATORIO · no periódico" if point.get('exploratory') else "DEFINIDO" if not statuses else " · ".join(statuses)
+            observed=row.get('stability_observed',{})
+            stability=(f"ΔW {observed['work_range_J']:.3g} J; Δaire {observed['trapped_air_range_mg']:.3g} mg; no cota de error" if observed else 'No informada')
             values = (row.get("variant_id", "—"), f"{point['rpm']:g}",
                       str(point.get("classification") or "—"),
-                      str(point.get("periodicity") or "NOT_REPORTED"), power, torque, status)
+                      str(point.get("periodicity") or "NOT_REPORTED"), power, torque, status,
+                      f"{row['elapsed_seconds']:.2f}" if row.get('elapsed_seconds') is not None else '—',stability)
             for column, value in enumerate(values):
                 item = QTableWidgetItem(value)
                 item.setData(Qt.ItemDataRole.UserRole, row)
@@ -267,7 +278,9 @@ class PowerCurvePanel(QGroupBox):
                     f"Producer SHA-256: {row.get('producer_sha256')}",
                     f"Fuel ID: {row.get('fuel_id')}",
                     f"Mechanical loss SHA-256: {row.get('mechanical_loss_model_sha256')}",
-                    f"Mesh resolution: {row.get('mesh_resolution')}")))
+                    f"Mesh resolution: {row.get('mesh_resolution')}",
+                    f"Tiempo: {row.get('elapsed_seconds')} s",
+                    f"Estabilidad observada (no incertidumbre estacionaria): {row.get('stability_observed')}")))
                 self.points.setItem(index, column, item)
 
     def _selected_point(self):
@@ -275,6 +288,15 @@ class PowerCurvePanel(QGroupBox):
         if row >= 0 and self.points.item(row, 0):
             value = self.points.item(row, 0).data(Qt.ItemDataRole.UserRole)
             if value:
+                observed=value.get('stability_observed',{})
+                if observed:
+                    regions=observed['regions']
+                    self.stability_notice.setText(f"Periodicidad global: {value.get('periodicity')}. "
+                        f"Ciclos {observed['window_cycles']}: rango W {observed['work_range_J']:.4g} J; "
+                        f"rango aire atrapado {observed['trapped_air_range_mg']:.4g} mg. "
+                        f"Indicadores pendientes: cilindro {regions['cylinder']['failed']}, escape {regions['exhaust']['failed']}, "
+                        f"inventario de especies {regions['global_species']['failed']}. "
+                        "La variación observada NO es una cota de incertidumbre estacionaria.")
                 self.pointSelected.emit(value)
 
     def choose_export(self):
@@ -296,7 +318,7 @@ class PowerCurvePanel(QGroupBox):
                 "brake_torque_Nm", "brake_torque_status", "brake_torque_reason",
                 "result_sha256", "point_configuration_sha256", "implementation_identity_sha256",
                 "solver_identity_sha256", "producer_sha256", "fuel_id",
-                "mechanical_loss_model_sha256", "periodicity_contract", "mesh_resolution"])
+                "mechanical_loss_model_sha256", "periodicity_contract", "mesh_resolution", "exploratory_transient", "elapsed_seconds", "observed_stability_not_stationary_uncertainty"])
             for point in self.rows:
                 row = point["row"]
                 writer.writerow([row.get("variant_id"), point["rpm"], row.get("classification"),
@@ -306,4 +328,5 @@ class PowerCurvePanel(QGroupBox):
                     row.get("implementation_identity_sha256"), row.get("solver_identity_sha256"),
                     row.get("producer_sha256"), row.get("fuel_id"),
                     row.get("mechanical_loss_model_sha256"), json.dumps(row.get("periodicity_contract"), ensure_ascii=False),
-                    json.dumps(row.get("mesh_resolution"), ensure_ascii=False)])
+                    json.dumps(row.get("mesh_resolution"), ensure_ascii=False),point.get('exploratory',False),
+                    row.get('elapsed_seconds'),json.dumps(row.get('stability_observed'),ensure_ascii=False)])

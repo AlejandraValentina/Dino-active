@@ -43,7 +43,7 @@ def _defined_value(row: dict, metric: str):
     return float(value)
 
 
-def build_curve_series(dataset: dict, selected_variants, *, power_unit: str = "HP") -> list[dict]:
+def build_curve_series(dataset: dict, selected_variants, *, power_unit: str = "HP", include_exploratory: bool = False) -> list[dict]:
     """Build gap-preserving series from importer-validated rows only."""
     if power_unit not in POWER_UNITS_W:
         raise ValueError(f"Unidad de potencia no admitida: {power_unit}")
@@ -59,18 +59,32 @@ def build_curve_series(dataset: dict, selected_variants, *, power_unit: str = "H
         grouped.setdefault(name, []).append({**source_identity, **row})
     output = []
     for name, rows in sorted(grouped.items()):
+        requested=dataset.get('requested_rpms',[])
+        present={row['rpm'] for row in rows}
+        rows += [dict(variant_id=name,rpm=rpm,classification='NOT_STARTED',periodicity='NOT_EVALUATED',
+                      brake_power_reason='NOT_STARTED',brake_torque_reason='NOT_STARTED')
+                 for rpm in requested if rpm not in present]
         rows.sort(key=lambda row: (float(row["rpm"]), str(row.get("run_id", "")), row.get("cycle") or 0))
         points = []
         for row in rows:
             power_kw = _defined_value(row, "brake_power")
             torque = _defined_value(row, "brake_torque")
+            exploratory=False
+            if (include_exploratory and row.get('mode')=='ENGINEERING_EXPLORATORY' and
+                    row.get('classification') in {'MAX_CYCLES_NONCONVERGED','TIME_LIMIT_NONCONVERGED','CANCELLED_CHECKPOINTED'}):
+                estimates=row.get('transient_estimates',{})
+                power_kw=estimates.get('brake_power');torque=estimates.get('brake_torque')
+                power_kw=power_kw if type(power_kw) in (int,float) and math.isfinite(power_kw) else None
+                torque=torque if type(torque) in (int,float) and math.isfinite(torque) else None
+                exploratory=power_kw is not None or torque is not None
             points.append({
                 "rpm": float(row["rpm"]),
                 "power": None if power_kw is None else convert_power_from_kw(power_kw, power_unit),
-                "power_status": row.get("brake_power_status", "NOT_REPORTED"),
+                "exploratory":exploratory,
+                "power_status": 'TRANSIENT_ESTIMATE' if exploratory else row.get("brake_power_status", "NOT_REPORTED"),
                 "power_reason": row.get("brake_power_reason"),
                 "torque": torque,
-                "torque_status": row.get("brake_torque_status", "NOT_REPORTED"),
+                "torque_status": 'TRANSIENT_ESTIMATE' if exploratory else row.get("brake_torque_status", "NOT_REPORTED"),
                 "torque_reason": row.get("brake_torque_reason"),
                 "classification": row.get("classification"),
                 "periodicity": row.get("periodicity"),
@@ -150,5 +164,44 @@ def exact_rpm_differences(series: list[dict]) -> list[dict]:
             if a["torque"] is not None and b["torque"] is not None:
                 row["torque_delta"] = b["torque"] - a["torque"]
                 row["torque_status"] = "DEFINED"
+            if a.get('exploratory') or b.get('exploratory'):
+                row['warnings'].append('TRANSITORIO: diferencia de estimaciones, no ganancia estacionaria')
+                row['power_status']='TRANSIENT_ESTIMATE' if row['power_delta'] is not None else row['power_status']
+                row['torque_status']='TRANSIENT_ESTIMATE' if row['torque_delta'] is not None else row['torque_status']
+                row['exploratory']=True
         rows.append(row)
     return rows
+
+
+def import_curve_runs(paths):
+    """Existing verified importer plus read-only engineering display metadata.
+
+    Raw metric statuses are retained. Stability ranges are observations, never
+    replacements for the global detector or estimates of stationary error.
+    """
+    import json,hashlib
+    from pathlib import Path
+    from .engineering_workflow import import_desktop_runs
+    data=import_desktop_runs(paths)
+    for row in data.get('points',[]):
+        if row.get('mode')!='ENGINEERING_EXPLORATORY':continue
+        root=Path(row['artifact_directory']);raw=(root/'result.json').read_bytes()
+        if hashlib.sha256(raw).hexdigest()!=row['result_sha256']:raise ValueError('curve result changed after import')
+        result=json.loads(raw);check=result['preflight'];cycles=result['cycles'];last=cycles[-1]
+        row.update(mechanical_loss_model_sha256=check['mechanical_loss_model_sha256'],
+            periodicity_contract=check['periodicity_contract'],cycles_requested=check['max_cycles'],
+            elapsed_seconds=result['elapsed_seconds'])
+        metrics=(last.get('comparison') or {}).get('metrics',{})
+        regions={}
+        for name,prefix in [('cylinder','cylinder.'),('crankcase','crankcase.'),('exhaust','ducts.exhaust'),('global_species','global_species.')]:
+            items=[v for k,v in metrics.items() if k.startswith(prefix)]
+            regions[name]=dict(evaluated=len(items),failed=sum(not v['passed'] for v in items),
+                worst_threshold_ratio=max((v['value']/v['threshold'] for v in items),default=None))
+        window=cycles[-5:]
+        work=[c['cylinder_work_J'] for c in window]
+        air=[c['closure_snapshots']['exhaust']['cylinder_species_kg'][0]*1e6 for c in window]
+        row['stability_observed']=dict(window_cycles=[c['cycle'] for c in window],
+            work_range_J=max(work)-min(work),trapped_air_range_mg=max(air)-min(air),
+            brake_power_range_kW=(max(c['mechanical_estimate']['brake_power_w'] for c in window)-min(c['mechanical_estimate']['brake_power_w'] for c in window))/1000 if all(c.get('mechanical_estimate') for c in window) else None,
+            regions=regions,stationary_uncertainty='NOT_QUANTIFIED; last-cycle variation is not a stationary error bound')
+    return data

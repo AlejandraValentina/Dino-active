@@ -110,10 +110,35 @@ def _coordinator_lock(path: Path):
             pass
 
 
+def _operating_document(document, rpm, control_policy=None):
+    """Explicit upper-range endpoint hold of an already fully open valve.
+
+    In-range configurations remain byte-for-byte equivalent. No lower-range
+    extrapolation, model change or fallback without the named policy is allowed.
+    """
+    if control_policy is None:return document
+    if (set(control_policy)!={'schema','maximum_rpm'} or
+            control_policy['schema']!='POWERVALVE_OPEN_ENDPOINT_HOLD_V1' or
+            type(control_policy['maximum_rpm']) not in (int,float) or
+            not 0<control_policy['maximum_rpm']<=15000):raise ValueError('invalid RPM control policy')
+    valve=document.get('native_configuration',{}).get('port_binding',{}).get('powervalve')
+    if not valve or valve['position'][-1]!=0:raise ValueError('explicit endpoint hold requires a fully open valve endpoint')
+    if rpm<=valve['rpm'][-1]:return document
+    if rpm>control_policy['maximum_rpm']:raise ValueError('RPM exceeds explicit control policy')
+    from copy import deepcopy
+    from .engine_configuration import sha256,validate
+    result=deepcopy(document);native=result['native_configuration'];mapping=native['port_binding']['powervalve']
+    mapping['rpm'].append(float(control_policy['maximum_rpm']));mapping['position'].append(0.0)
+    result['native_configuration_sha256']=sha256(native)
+    result['provenance']={**result['provenance'],'rpm_control_extension':dict(control_policy,provenance='SYNTHETIC_ASSUMPTION',position=0,semantics='0=fully raised/open; upper endpoint hold only')}
+    validate(result)
+    return result
+
+
 def prepare_power_curve(document: dict, *, project_id: str, variant_label: str,
                         artifact_root: str | Path, start_rpm: int, stop_rpm: int,
                         step_rpm: int, max_cycles: int, point_budget_seconds: float,
-                        total_budget_seconds: float, memory_limit_mib: int) -> dict:
+                        total_budget_seconds: float, memory_limit_mib: int,control_policy=None) -> dict:
     """Preflight the whole requested grid without taking a solver step."""
     rpms = plan_rpm_range(start_rpm, stop_rpm, step_rpm)
     if len(rpms) > 30:
@@ -134,7 +159,7 @@ def prepare_power_curve(document: dict, *, project_id: str, variant_label: str,
     repository = repository_root_containing(root)
     if repository is not None:
         raise ValueError(f"artifact root is inside repository: {repository}")
-    checks = [preflight(document, rpm=rpm, max_cycles=max_cycles,
+    checks = [preflight(_operating_document(document,rpm,control_policy), rpm=rpm, max_cycles=max_cycles,
                         budget_seconds=point_budget_seconds,
                         memory_limit_mib=memory_limit_mib) for rpm in rpms]
     return {"schema": "DINO_POWER_CURVE_PREFLIGHT_V1", "status": "PASS",
@@ -145,7 +170,42 @@ def prepare_power_curve(document: dict, *, project_id: str, variant_label: str,
             "point_budget_seconds": float(point_budget_seconds),
             "total_budget_seconds": float(total_budget_seconds),
             "memory_limit_mib": memory_limit_mib,
-            "artifact_root": str(root), "point_preflights": checks}
+            "artifact_root": str(root), "point_preflights": checks,"control_policy":control_policy}
+
+
+def _reused_points(paths, prepared):
+    """Explicit completed engineering references; never infer or migrate identity."""
+    from .engineering_workflow import import_desktop_runs,SCHEMA
+    from .desktop.preferences import repository_root_containing
+    points=[]
+    for path in paths:
+        root=Path(path).expanduser().resolve()
+        if root.is_file():root=root.parent
+        if repository_root_containing(root) is not None:raise ValueError('reused artifacts must be external')
+        raw=(root/'result.json').read_bytes();result=json.loads(raw)
+        check=result.get('preflight',{});rpm=check.get('rpm')
+        if (result.get('schema')!=SCHEMA or result.get('status')!='COMPLETE' or
+                result.get('classification') not in {'MAX_CYCLES_NONCONVERGED','PERIODIC_EXPLORATORY'} or
+                rpm not in prepared['rpms'] or result['bindings'].get('project_id')!=prepared['project_id'] or
+                result['bindings'].get('variant_label')!=prepared['variant_label']):
+            raise ValueError('reused point is not a complete authorized project/variant/grid point')
+        expected=prepared['point_preflights'][prepared['rpms'].index(rpm)]
+        if (result['bindings'].get('identity_sha256')!=expected['identity_sha256'] or
+                result['bindings'].get('configuration_sha256')!=expected['configuration_sha256'] or
+                check.get('mechanical_loss_model_sha256')!=expected['mechanical_loss_model_sha256'] or
+                check.get('max_cycles')!=prepared['max_cycles']):
+            raise ValueError('reused point scientific identity/horizon mismatch')
+        import_desktop_runs([root])  # result, diagnostic manifest and selected samples
+        points.append(dict(rpm=rpm,status='COMPLETE',classification=result['classification'],
+            periodicity=result['periodicity'],cycles_completed=result['cycles_completed'],
+            identity_sha256=expected['identity_sha256'],configuration_sha256=expected['configuration_sha256'],
+            mechanical_loss_model_sha256=expected['mechanical_loss_model_sha256'],
+            run_directory=str(root),run_id=result['bindings']['run_id'],result_artifact_sha256=_sha(raw),
+            result_canonical_sha256=_sha(raw),checkpoint_sha256=result['checkpoint_sha256'],
+            elapsed_seconds=result['elapsed_seconds'],reused=True,new_execution_seconds=0,
+            source_hashes=result['source_hashes']))
+    if len({p['rpm'] for p in points})!=len(points):raise ValueError('duplicate reused RPM')
+    return sorted(points,key=lambda p:p['rpm'])
 
 
 def _run_power_curve_unlocked(document: dict, *, project_id: str, variant_label: str,
@@ -154,13 +214,13 @@ def _run_power_curve_unlocked(document: dict, *, project_id: str, variant_label:
                     point_budget_seconds: float = 600,
                     total_budget_seconds: float = 1800,
                     memory_limit_mib: int = 1024, sweep_id: str | None = None,
-                    resume: bool = False, cancel_event=None, progress=None) -> dict:
+                    resume: bool = False, cancel_event=None, progress=None, reuse_runs=(),control_policy=None,_invocation_started=None) -> dict:
     """Run a bounded serial sweep; interruption leaves point and series checkpoints."""
     prepared = prepare_power_curve(document, project_id=project_id,
         variant_label=variant_label, artifact_root=artifact_root,
         start_rpm=start_rpm, stop_rpm=stop_rpm, step_rpm=step_rpm,
         max_cycles=max_cycles, point_budget_seconds=point_budget_seconds,
-        total_budget_seconds=total_budget_seconds, memory_limit_mib=memory_limit_mib)
+        total_budget_seconds=total_budget_seconds, memory_limit_mib=memory_limit_mib,control_policy=control_policy)
     sweep_id = sweep_id or uuid.uuid4().hex
     if not sweep_id or any(ch not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_" for ch in sweep_id):
         raise ValueError("sweep_id contains unsupported characters")
@@ -170,6 +230,10 @@ def _run_power_curve_unlocked(document: dict, *, project_id: str, variant_label:
         "identity_sha256", "max_cycles", "point_budget_seconds", "total_budget_seconds",
         "memory_limit_mib", "artifact_root")}
     binding["document_sha256"] = _sha(_canonical(document))
+    if control_policy is not None:binding['control_policy']=control_policy
+    reused=_reused_points(reuse_runs,prepared)
+    if reused:
+        binding['reuse_runs']=[dict(path=p['run_directory'],sha256=p['result_artifact_sha256']) for p in reused]
     if manifest_path.exists():
         if not resume:
             raise FileExistsError("sweep exists; explicit resume is required")
@@ -186,7 +250,7 @@ def _run_power_curve_unlocked(document: dict, *, project_id: str, variant_label:
                 raise FileNotFoundError("cannot resume: sweep manifest does not exist and the root is not an empty quarantined start")
         manifest = {"schema": "DINO_POWER_CURVE_SWEEP_V1", "status": "READY",
             "classification": "EXPLORATORY_CURVE_NOT_YET_AVAILABLE",
-            "bindings": binding, "points": [], "created_unix": time.time(),
+            "bindings": binding, "points": reused, "created_unix": time.time(),
             "elapsed_seconds": 0.0}
         _atomic_json(manifest_path, manifest)
     existing = {row["rpm"]: row for row in manifest.get("points", [])}
@@ -240,7 +304,7 @@ def _run_power_curve_unlocked(document: dict, *, project_id: str, variant_label:
                     raise ValueError(f"resume rejected: completed point independent re-audit failed at {rpm} RPM")
                 row["resume_audit"] = "PASS_RECOMPUTED"
 
-    started = time.monotonic()
+    started = time.monotonic() if _invocation_started is None else _invocation_started
     elapsed_before = float(manifest.get("elapsed_seconds", 0.0))
     # If the coordinator died while a point was active, charge its observed wall
     # time before calculating the remaining cumulative sweep budget.
@@ -294,7 +358,8 @@ def _run_power_curve_unlocked(document: dict, *, project_id: str, variant_label:
             for i, value in enumerate(prepared["rpms"])]
         _atomic_json(manifest_path, manifest)
         try:
-            remaining = total_budget_seconds - elapsed_before - (time.monotonic() - started)
+            remaining = min(total_budget_seconds - elapsed_before - (time.monotonic() - started),
+                            point_budget_seconds-float(point.get('elapsed_seconds',0)))
             if remaining < 1:
                 manifest["status"] = "INTERRUPTED_CHECKPOINTED"
                 manifest["classification"] = "EXPLORATORY_SWEEP_TOTAL_BUDGET_EXHAUSTED"
@@ -312,7 +377,7 @@ def _run_power_curve_unlocked(document: dict, *, project_id: str, variant_label:
                 if progress:
                     progress({"rpm": rpm, "solver_progress": row,
                               "point_index": index + 1, "point_count": len(prepared["rpms"])})
-            result = run_exploratory(document, project_id=project_id, run_id=run_id,
+            result = run_exploratory(_operating_document(document,rpm,control_policy), project_id=project_id, run_id=run_id,
                 artifact_root=prepared["artifact_root"], rpm=rpm,
                 max_cycles=max_cycles, budget_seconds=min(point_budget_seconds, remaining),
                 memory_limit_mib=memory_limit_mib, resume=(point.get("run_directory") is not None and Path(point["run_directory"]).exists()),
@@ -376,8 +441,9 @@ def run_power_curve(document: dict, *, project_id: str, variant_label: str,
                     point_budget_seconds: float = 600,
                     total_budget_seconds: float = 1800,
                     memory_limit_mib: int = 1024, sweep_id: str | None = None,
-                    resume: bool = False, cancel_event=None, progress=None) -> dict:
+                    resume: bool = False, cancel_event=None, progress=None,reuse_runs=(),control_policy=None) -> dict:
     """Lock one sweep coordinator identity and preserve single-writer manifests."""
+    invocation_started=time.monotonic()
     sweep_id = sweep_id or uuid.uuid4().hex
     if not sweep_id or any(ch not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_" for ch in sweep_id):
         raise ValueError("sweep_id contains unsupported characters")
@@ -385,7 +451,7 @@ def run_power_curve(document: dict, *, project_id: str, variant_label: str,
         variant_label=variant_label, artifact_root=artifact_root,
         start_rpm=start_rpm, stop_rpm=stop_rpm, step_rpm=step_rpm,
         max_cycles=max_cycles, point_budget_seconds=point_budget_seconds,
-        total_budget_seconds=total_budget_seconds, memory_limit_mib=memory_limit_mib)
+        total_budget_seconds=total_budget_seconds, memory_limit_mib=memory_limit_mib,control_policy=control_policy)
     root = Path(prepared["artifact_root"]) / "dino-power-curve-v1" / project_id / sweep_id
     with _coordinator_lock(root / ".coordinator.lock"):
         return _run_power_curve_unlocked(document, project_id=project_id,
@@ -393,4 +459,4 @@ def run_power_curve(document: dict, *, project_id: str, variant_label: str,
             start_rpm=start_rpm, stop_rpm=stop_rpm, step_rpm=step_rpm,
             max_cycles=max_cycles, point_budget_seconds=point_budget_seconds,
             total_budget_seconds=total_budget_seconds, memory_limit_mib=memory_limit_mib,
-            sweep_id=sweep_id, resume=resume, cancel_event=cancel_event, progress=progress)
+            sweep_id=sweep_id, resume=resume, cancel_event=cancel_event, progress=progress,reuse_runs=reuse_runs,control_policy=control_policy,_invocation_started=invocation_started)

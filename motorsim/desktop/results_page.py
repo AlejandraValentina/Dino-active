@@ -112,6 +112,7 @@ class ResultsPage(QWidget):
         trace_layout=QVBoxLayout(self.trace_group)
         trace_bar=QHBoxLayout();trace_layout.addLayout(trace_bar)
         self.trace_metric=QComboBox();self.trace_metric.currentIndexChanged.connect(self.redraw_trace);trace_bar.addWidget(self.trace_metric)
+        self.trace_rpm=QComboBox();self.trace_rpm.addItem('Todas las RPM',None);self.trace_rpm.currentIndexChanged.connect(self.redraw_trace);trace_bar.addWidget(self.trace_rpm)
         self.trace_status=QLabel("Las trazas sólo se muestran después de re-auditar cada primario.");trace_bar.addWidget(self.trace_status,1)
         self.trace_legend=QLabel();self.trace_legend.setWordWrap(True);trace_layout.addWidget(self.trace_legend)
         self.trace_plot=CurvePlot();self.trace_plot.setMinimumHeight(220);trace_layout.addWidget(self.trace_plot)
@@ -332,9 +333,11 @@ class ResultsPage(QWidget):
         """Load one or more indexed runs through the full independent importer."""
         if paths:
             self.path_label.setText("Verificando artifacts EXPLORATORY…")
-            from ..engineering_workflow import import_desktop_runs
-            run_background(import_desktop_runs,paths,on_done=self._loaded_exploratory,on_error=self._exploratory_failed)
+            from ..power_curve import import_curve_runs
+            run_background(import_curve_runs,paths,on_done=self._loaded_exploratory,on_error=self._exploratory_failed)
     def _loaded_exploratory(self,data):
+        recipe=self.context.project.get('simulation_recipes',{}).get('rpm_curve_v1',{})
+        if recipe.get('rpms'):data['requested_rpms']=list(recipe['rpms'])
         self.dataset=data;self.source=None;self.source_kind="EXPLORATORY";self.path_label.setText(f"{len(data['points'])} ciclos EXPLORATORY · provisional · no interpolación · no validación experimental")
         runs=sorted({str(r.get("run_id")) for r in data["points"] if r.get("run_id")})
         variants_shown=sorted({str(r.get("variant_id")) for r in data["points"]})
@@ -346,6 +349,9 @@ class ResultsPage(QWidget):
         self.variants.blockSignals(False)
         self.trace_metric.blockSignals(True);self.trace_metric.clear()
         traces=data.get("traces",[])
+        self.trace_rpm.blockSignals(True);self.trace_rpm.clear();self.trace_rpm.addItem('Todas las RPM',None)
+        for rpm in sorted({t['rpm'] for t in traces}):self.trace_rpm.addItem(f'{rpm:g} RPM',rpm)
+        self.trace_rpm.blockSignals(False)
         common=(set.intersection(*(set(row.get("channels",{})) for row in traces)
                                  if traces else [set()]))
         options=[]
@@ -434,6 +440,7 @@ class ResultsPage(QWidget):
         series=[];labels=[]
         for trace in self.dataset.get("traces",[]):
             if trace.get("variant_id") not in selected:continue
+            if self.trace_rpm.currentData() is not None and trace.get('rpm')!=self.trace_rpm.currentData():continue
             channel=trace.get("channels",{}).get(key)
             if not isinstance(channel,dict):continue
             name=f"{trace['variant_id']} · {trace['rpm']:g} RPM · ciclo {trace['cycle']}"
@@ -462,7 +469,8 @@ class ResultsPage(QWidget):
         family="cell" if ":cell:" in key else ("face" if ":face:" in key else None)
         if family is None:self.trace_map.set_grid([],[]);return
         suffix=key.rsplit(":",1)[-1];channels=[];angles=set()
-        traces=[trace for trace in self.dataset.get("traces",[]) if trace.get("variant_id") in selected]
+        traces=[trace for trace in self.dataset.get("traces",[]) if trace.get("variant_id") in selected and
+                (self.trace_rpm.currentData() is None or trace.get('rpm')==self.trace_rpm.currentData())]
         for trace in traces:
             for channel,channel_doc in (trace.get("channels") or {}).items():
                 if not (channel.startswith(f"duct:exhaust:{family}:") and channel.endswith(":"+suffix)):continue
@@ -497,6 +505,9 @@ class ResultsPage(QWidget):
         if data:self.show_point({"point":data,"rpm":data['rpm'],"value":None})
     def show_point(self,point):
         row=point.get('point',point)
+        if row.get('rpm') is not None:
+            index=self.trace_rpm.findData(row['rpm'])
+            if index>=0:self.trace_rpm.setCurrentIndex(index)
         def card(label,key,unit):
             status=row.get(key+"_status");value=row.get(key)
             if status=="DEFINED" and value is not None:return f"{label}\n{float(value):.4g} {unit} · Δ vs baseline disponible si comparable"
@@ -525,6 +536,8 @@ class ResultsPage(QWidget):
             ("Artifact directory",row.get('artifact_directory')),
             ("Condiciones de operación",json.dumps(row.get('operating_conditions'),ensure_ascii=False,sort_keys=True)),
             ("Ciclos completados",row.get('cycles_completed')),
+            ("Tiempo acumulado (s)",row.get('elapsed_seconds')),
+            ("Estabilidad observada; no sustituye periodicidad global",json.dumps(row.get('stability_observed'),ensure_ascii=False)),
             ("Métrica",row.get(METRICS[self.metric_selector.currentText()])),
             ("Estado métrica",row.get(METRICS[self.metric_selector.currentText()]+'_status')),
             ("Motivo",row.get(METRICS[self.metric_selector.currentText()]+'_reason')),

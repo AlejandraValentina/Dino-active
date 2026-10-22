@@ -6958,6 +6958,59 @@
       "write_scope": [],
       "evidence_level": "L1",
       "qualification": "Functional A/B complete; both30cycles MAX_CYCLES_NONCONVERGED. Small RPM grid deliberately not run. Delivery2 PARTIAL for periodic curves."
+    },
+    {
+      "id": "RC2B-INTEGRATION",
+      "description": "Integrate explicit reused points in existing coordinator; distinguish exploratory curves and observed stability in existing plots.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "tests/test_desktop_rpm_curves.py"
+      ],
+      "next_action": "Integrate explicit reused points in existing coordinator; distinguish exploratory curves and observed stability in existing plots.",
+      "objective": "DINO_DESKTOP_RPM_CURVES_V1",
+      "owner_role": "implementation",
+      "write_scope": [
+        "motorsim/power_curve.py",
+        "motorsim/power_curve_sweep.py",
+        "motorsim/desktop/",
+        "tests/test_desktop_rpm_curves.py"
+      ],
+      "evidence_level": "L1",
+      "qualification": "Focal21 pass. Real6point zero-step preflight and both9000 original identities verified.10000 explicit fully-open endpoint hold; equations unchanged."
+    },
+    {
+      "id": "RC2B-DEMONSTRATION",
+      "description": "Real Desktop A/B8000/9000/10000:4newpoints,30cycles/300s each,650s per variant,512MiB serial; reuse9000.",
+      "dependencies": [],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Real Desktop A/B8000/9000/10000:4newpoints,30cycles/300s each,650s per variant,512MiB serial; reuse9000.",
+      "objective": "DINO_DESKTOP_RPM_CURVES_V1",
+      "owner_role": "implementation",
+      "write_scope": [
+        "scripts/diagnostics/demo_desktop_rpm_curves_v1.py",
+        "results/desktop-rpm-curves-v1/"
+      ],
+      "evidence_level": "L1"
+    },
+    {
+      "id": "RC2B-RESULTS",
+      "description": "Interpret curves, regional periodicity and transient ranges; focal tests/receipts and scoped next-step solution.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Interpret curves, regional periodicity and transient ranges; focal tests/receipts and scoped next-step solution.",
+      "objective": "DINO_DESKTOP_RPM_CURVES_V1",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L1"
     }
   ],
   "audit_remediation_mode": false,
@@ -7159,21 +7212,20 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1",
+    "id": "DINO_DESKTOP_RPM_CURVES_V1",
     "state": "OPEN",
     "owner_approved": true,
-    "summary": "Owner-authorized delivery2: edit one exhaust dimension and compare real A/B through existing Desktop.",
-    "change": "openspec/changes/functional-exhaust-comparison-v1",
-    "spec": "openspec/changes/functional-exhaust-comparison-v1/specs/functional-exhaust-comparison-v1/spec.md",
-    "authorization_source": "Owner attachment f0d7bda0-535c-4a2a-999a-3aa13e876257; controlled A/B9000RPM then small grid only if interpretable.",
-    "transitioned_from": "DINO_FUNCTIONAL_ENGINE_DESKTOP_V1",
+    "summary": "Owner-authorized delivery2B: integrated exploratory A/B8000/9000/10000RPM curves with explicit transient distinction and existing9000 reuse.",
+    "change": "openspec/changes/desktop-rpm-curves-v1",
+    "spec": "openspec/changes/desktop-rpm-curves-v1/specs/desktop-rpm-curves-v1/spec.md",
+    "authorization_source": "Owner delivery2B message authorizes4newpoints and reuse2historical9000; no physics/detector change.",
+    "transitioned_from": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1",
     "gate_tasks": [
-      "FEC2-INTEGRATION",
-      "FEC2-AB-DEMO",
-      "FEC2-INTERPRETATION"
+      "RC2B-INTEGRATION",
+      "RC2B-DEMONSTRATION",
+      "RC2B-RESULTS"
     ],
-    "completion_criterion": "Existing Desktop duplicates/edits/runs/compares/reopens real A/B. Curve conditional on unchanged periodicity; stop if unusable. No predictive claim.",
-    "functional_result": "AB_DEMONSTRATED_CURVES_BLOCKED_NONPERIODIC"
+    "completion_criterion": "Existing Desktop executes A/B small grid, reuses9000 without steps, supports checkpoints/resume, plots honest exploratory power/torque with gaps/status and exact RPM deltas; records periodicity limitation and bounded next solution."
   },
   "objectives": [
     {
@@ -7842,7 +7894,40 @@
         "FEC2-INTERPRETATION"
       ],
       "completion_criterion": "Existing Desktop duplicates/edits/runs/compares/reopens real A/B. Curve conditional on unchanged periodicity; stop if unusable. No predictive claim.",
-      "functional_result": "AB_DEMONSTRATED_CURVES_BLOCKED_NONPERIODIC"
+      "functional_result": "AB_DEMONSTRATED_CURVES_BLOCKED_NONPERIODIC",
+      "gate_at_owner_transition": {
+        "objective": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1",
+        "state": "REVIEW",
+        "classification": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1_PARTIAL",
+        "gate_tasks_total": 3,
+        "gate_tasks_done": 3,
+        "gate_task_states": {
+          "DONE": 3
+        },
+        "remaining": [],
+        "evidence": [
+          "results/functional-exhaust-comparison-v1/report.md",
+          "results/functional-exhaust-comparison-v1/receipt.json",
+          "configs/reference_cases/functional_exhaust_ab_125cc_v1.dino.json"
+        ],
+        "scientific_blocker": "A/B9000RPM both nonperiodic after30cycles;55/54 exhaust and2 global-species comparisons fail. Grid withheld under owner stop condition."
+      }
+    },
+    {
+      "id": "DINO_DESKTOP_RPM_CURVES_V1",
+      "state": "OPEN",
+      "owner_approved": true,
+      "summary": "Owner-authorized delivery2B: integrated exploratory A/B8000/9000/10000RPM curves with explicit transient distinction and existing9000 reuse.",
+      "change": "openspec/changes/desktop-rpm-curves-v1",
+      "spec": "openspec/changes/desktop-rpm-curves-v1/specs/desktop-rpm-curves-v1/spec.md",
+      "authorization_source": "Owner delivery2B message authorizes4newpoints and reuse2historical9000; no physics/detector change.",
+      "transitioned_from": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1",
+      "gate_tasks": [
+        "RC2B-INTEGRATION",
+        "RC2B-DEMONSTRATION",
+        "RC2B-RESULTS"
+      ],
+      "completion_criterion": "Existing Desktop executes A/B small grid, reuses9000 without steps, supports checkpoints/resume, plots honest exploratory power/torque with gaps/status and exact RPM deltas; records periodicity limitation and bounded next solution."
     }
   ],
   "owner_decisions_pending": [
@@ -9884,6 +9969,12 @@
       "task": "FEC2-INTERPRETATION",
       "kind": "task",
       "summary": "Delivery2 PARTIAL: functional A/B demonstrated, periodic RPM curves blocked. Work delta-0.1256J and air-0.086mg exceed late drift but no stationary gain claim.55/54 exhaust plus2 global species failures; grid withheld. Focal21,Desktop43+1skip,strict/check PASS. No solver/detector changes or push."
+    },
+    {
+      "at": "2026-10-22T16:33:19+00:00",
+      "task": "RC2B-INTEGRATION",
+      "kind": "task",
+      "summary": "Existing coordinator adds explicit compatible result reuse; existing plot adds opt-in dotted/hollow transient estimates, exact deltas/gaps, stability and time.6zero-step preflights PASS;9000 bindings unchanged.10000 explicit synthetic fully-open endpoint hold.21focal tests pass.4newpoints30cycles/300s,650s per variant,512MiB."
     }
   ],
   "legacy_gate_status": {
@@ -9898,21 +9989,21 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1",
+    "objective": "DINO_DESKTOP_RPM_CURVES_V1",
     "state": "REVIEW",
-    "classification": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1_PARTIAL",
+    "classification": "RPM_CURVE_INTEGRATION_IN_PROGRESS",
     "gate_tasks_total": 3,
-    "gate_tasks_done": 3,
+    "gate_tasks_done": 1,
     "gate_task_states": {
-      "DONE": 3
+      "DONE": 1,
+      "IN_PROGRESS": 1,
+      "READY": 1
     },
-    "remaining": [],
-    "evidence": [
-      "results/functional-exhaust-comparison-v1/report.md",
-      "results/functional-exhaust-comparison-v1/receipt.json",
-      "configs/reference_cases/functional_exhaust_ab_125cc_v1.dino.json"
+    "remaining": [
+      "RC2B-DEMONSTRATION",
+      "RC2B-RESULTS"
     ],
-    "scientific_blocker": "A/B9000RPM both nonperiodic after30cycles;55/54 exhaust and2 global-species comparisons fail. Grid withheld under owner stop condition."
+    "evidence": []
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

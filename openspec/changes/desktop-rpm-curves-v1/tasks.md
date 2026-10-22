@@ -1,0 +1,3 @@
+- [ ] Integrate explicit reuse and distinct exploratory display with missing-point gaps.
+- [ ] Demonstrate existing Desktop A/B8000/9000/10000, reusing9000 without steps.
+- [ ] Record numerical results, stability, periodicity, discretization caveats and bounded next solution.
