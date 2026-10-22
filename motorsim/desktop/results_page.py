@@ -313,7 +313,10 @@ class ResultsPage(QWidget):
             if len(values)>1:differing.append(key)
         labels={"rpm":"RPM","fuel_id":"combustible","afr_kg_air_per_kg_fuel":"AFR","mesh_resolution":"resolución de malla","total_finite_volume_cells":"cantidad de celdas","cycles_requested":"horizonte","point_configuration_sha256":"identidad de configuración"}
         named=[labels.get(key,key) for key in differing]
-        self.condition_notice.setText(("Advertencia: las corridas difieren en "+", ".join(named)+"; la comparación no aísla sólo el cambio de escape." ) if differing else "Condiciones comparables en los campos reportados; los campos ausentes no se asumen iguales." )
+        if differing==['point_configuration_sha256']:
+            self.condition_notice.setText("Configuraciones distintas: consultar el diff geométrico. Los demás campos reportados coinciden; esto no demuestra igualdad de parámetros no informados ni convergencia.")
+        else:
+            self.condition_notice.setText(("Advertencia: las corridas difieren en "+", ".join(named)+"; la comparación no aísla sólo el cambio de escape." ) if differing else "Condiciones comparables en los campos reportados; los campos ausentes no se asumen iguales." )
     def choose(self):
         path,_=QFileDialog.getOpenFileName(self,"Abrir datos de resultados",str(artifact_root()),"Reportes y datos (*.json *.csv)")
         if path:self.load(Path(path))

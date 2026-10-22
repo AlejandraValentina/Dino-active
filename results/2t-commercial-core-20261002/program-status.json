@@ -6893,11 +6893,15 @@
       "dependencies": [],
       "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [
-        "tests/test_functional_exhaust_comparison.py"
+      "commits": [
+        "7257431"
       ],
-      "next_action": "Integrate topology-preserving exhaust editing, schema-aware existing coordinator, honest comparison and saved selection.",
+      "evidence": [
+        "results/functional-exhaust-comparison-v1/report.md",
+        "results/functional-exhaust-comparison-v1/receipt.json",
+        "configs/reference_cases/functional_exhaust_ab_125cc_v1.dino.json"
+      ],
+      "next_action": "Owner review of functional A/B and explicit nonperiodic curve blocker; no additional solver execution authorized by this closure.",
       "objective": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1",
       "owner_role": "implementation",
       "write_scope": [
@@ -6908,38 +6912,52 @@
         "tests/test_functional_exhaust_comparison.py"
       ],
       "evidence_level": "L1",
-      "qualification": "Focal21 tests pass; real Desktop demo pending."
+      "qualification": "Functional A/B complete; both30cycles MAX_CYCLES_NONCONVERGED. Small RPM grid deliberately not run. Delivery2 PARTIAL for periodic curves."
     },
     {
       "id": "FEC2-AB-DEMO",
       "description": "Demonstrate real Desktop duplicate/edit/run A/B at9000RPM:30cycles/300s each,512MiB, identical initial primitives and all other settings.",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Demonstrate real Desktop duplicate/edit/run A/B at9000RPM:30cycles/300s each,512MiB, identical initial primitives and all other settings.",
+      "commits": [
+        "7257431"
+      ],
+      "evidence": [
+        "results/functional-exhaust-comparison-v1/report.md",
+        "results/functional-exhaust-comparison-v1/receipt.json",
+        "configs/reference_cases/functional_exhaust_ab_125cc_v1.dino.json"
+      ],
+      "next_action": "Owner review of functional A/B and explicit nonperiodic curve blocker; no additional solver execution authorized by this closure.",
       "objective": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1",
       "owner_role": "implementation",
       "write_scope": [
         "scripts/diagnostics/demo_exhaust_comparison_v1.py",
         "results/functional-exhaust-comparison-v1/"
       ],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "Functional A/B complete; both30cycles MAX_CYCLES_NONCONVERGED. Small RPM grid deliberately not run. Delivery2 PARTIAL for periodic curves."
     },
     {
       "id": "FEC2-INTERPRETATION",
       "description": "Quantify A/B signals and cycle drift, regional periodicity, curve go/no-go; focal tests and final evidence.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Quantify A/B signals and cycle drift, regional periodicity, curve go/no-go; focal tests and final evidence.",
+      "commits": [
+        "7257431"
+      ],
+      "evidence": [
+        "results/functional-exhaust-comparison-v1/report.md",
+        "results/functional-exhaust-comparison-v1/receipt.json",
+        "configs/reference_cases/functional_exhaust_ab_125cc_v1.dino.json"
+      ],
+      "next_action": "Owner review of functional A/B and explicit nonperiodic curve blocker; no additional solver execution authorized by this closure.",
       "objective": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1",
       "owner_role": "implementation",
       "write_scope": [],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "Functional A/B complete; both30cycles MAX_CYCLES_NONCONVERGED. Small RPM grid deliberately not run. Delivery2 PARTIAL for periodic curves."
     }
   ],
   "audit_remediation_mode": false,
@@ -7154,7 +7172,8 @@
       "FEC2-AB-DEMO",
       "FEC2-INTERPRETATION"
     ],
-    "completion_criterion": "Existing Desktop duplicates/edits/runs/compares/reopens real A/B. Curve conditional on unchanged periodicity; stop if unusable. No predictive claim."
+    "completion_criterion": "Existing Desktop duplicates/edits/runs/compares/reopens real A/B. Curve conditional on unchanged periodicity; stop if unusable. No predictive claim.",
+    "functional_result": "AB_DEMONSTRATED_CURVES_BLOCKED_NONPERIODIC"
   },
   "objectives": [
     {
@@ -7822,7 +7841,8 @@
         "FEC2-AB-DEMO",
         "FEC2-INTERPRETATION"
       ],
-      "completion_criterion": "Existing Desktop duplicates/edits/runs/compares/reopens real A/B. Curve conditional on unchanged periodicity; stop if unusable. No predictive claim."
+      "completion_criterion": "Existing Desktop duplicates/edits/runs/compares/reopens real A/B. Curve conditional on unchanged periodicity; stop if unusable. No predictive claim.",
+      "functional_result": "AB_DEMONSTRATED_CURVES_BLOCKED_NONPERIODIC"
     }
   ],
   "owner_decisions_pending": [
@@ -9852,6 +9872,18 @@
       "task": "FEC2-INTEGRATION",
       "kind": "task",
       "summary": "Reuse existing workflow:31-cell section-length editor, engineering-aware sweep resume, hash-bound saved comparisons, explicit transient diagnostics. Focal21 tests pass. A/B9000RPM authorized30cycles/300s each,512MiB, header83to103mm only. No grid until periodicity."
+    },
+    {
+      "at": "2026-10-22T16:16:23+00:00",
+      "task": "FEC2-AB-DEMO",
+      "kind": "task",
+      "summary": "Real Desktop duplicate/edit/run/history/save/reopen passed: A83mm vs B103mm header,30cycles each,220.274/222.816s,<=228.7MiB. Both nonperiodic. Hashes/60samples checked;2 exact zero-step restores,next_cycle31. No other RPM executed."
+    },
+    {
+      "at": "2026-10-22T16:16:23+00:00",
+      "task": "FEC2-INTERPRETATION",
+      "kind": "task",
+      "summary": "Delivery2 PARTIAL: functional A/B demonstrated, periodic RPM curves blocked. Work delta-0.1256J and air-0.086mg exceed late drift but no stationary gain claim.55/54 exhaust plus2 global species failures; grid withheld. Focal21,Desktop43+1skip,strict/check PASS. No solver/detector changes or push."
     }
   ],
   "legacy_gate_status": {
@@ -9868,19 +9900,19 @@
   "gate_status": {
     "objective": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1",
     "state": "REVIEW",
-    "classification": "EXHAUST_COMPARISON_IN_PROGRESS",
+    "classification": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1_PARTIAL",
     "gate_tasks_total": 3,
-    "gate_tasks_done": 1,
+    "gate_tasks_done": 3,
     "gate_task_states": {
-      "DONE": 1,
-      "IN_PROGRESS": 1,
-      "READY": 1
+      "DONE": 3
     },
-    "remaining": [
-      "FEC2-AB-DEMO",
-      "FEC2-INTERPRETATION"
+    "remaining": [],
+    "evidence": [
+      "results/functional-exhaust-comparison-v1/report.md",
+      "results/functional-exhaust-comparison-v1/receipt.json",
+      "configs/reference_cases/functional_exhaust_ab_125cc_v1.dino.json"
     ],
-    "evidence": []
+    "scientific_blocker": "A/B9000RPM both nonperiodic after30cycles;55/54 exhaust and2 global-species comparisons fail. Grid withheld under owner stop condition."
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

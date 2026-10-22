@@ -84,6 +84,8 @@ def tick():
             print(json.dumps({('A','B')[index]:receipt[('A','B')[index]]}),flush=True)
             state['phase']='startB' if index==0 else 'history'
         elif phase=='history':
+            window.context.select_variant('B_header_plus20')
+            window.results.baseline_selector.setCurrentIndex(window.results.baseline_selector.findData('A_original'))
             window.set_workspace_mode(1);window.analysis_history.activate();window.analysis_history.refresh();state['phase']='select'
         elif phase=='select':
             history=window.analysis_history
@@ -96,10 +98,13 @@ def tick():
         elif phase=='loaded' and window.results.dataset:
             assert len(window.results.dataset['points'])==2
             assert len(window.results.trace_plot.series)==2
+            window.results.show_point(window.results.dataset['points'][0])
             window.results.baseline_selector.setCurrentIndex(window.results.baseline_selector.findData('A_original'))
             window.results._update_engineering_compare()
             capture('02-comparison.png');capture('03-pressure-overlay.png',window.results.trace_group)
             capture('04-engineering-differences.png',window.results.compare_group)
+            window.results.compare_table.scrollToBottom()
+            capture('06-transient-comparison.png',window.results.compare_group)
             index=window.results.trace_metric.findData('duct:exhaust:face:0:mass_flow_kg_s')
             window.results.trace_metric.setCurrentIndex(index);capture('05-flow-overlay.png',window.results.trace_group)
             receipt['comparison_notice']=window.results.compare_notice.text()

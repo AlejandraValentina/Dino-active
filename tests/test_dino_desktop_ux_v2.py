@@ -108,7 +108,7 @@ class DesktopContextV2Tests(unittest.TestCase):
             "provenance":"fixture","experimental_validation":"NOT_CLAIMED"}
         loop=QEventLoop();timer=QTimer();timer.setInterval(10)
         timer.timeout.connect(lambda:loop.quit() if page.dataset is not None else None);timer.start()
-        with patch("motorsim.desktop.results_page.import_exploratory_runs",return_value=dataset) as importer:
+        with patch("motorsim.engineering_workflow.import_desktop_runs",return_value=dataset) as importer:
             page.open_runs(["read-only-fixture/result.json"])
             QTimer.singleShot(3000,loop.quit);loop.exec()
         timer.stop();self.assertIs(page.dataset,dataset);importer.assert_called_once()
