@@ -6,10 +6,10 @@
 
 - **Estado:** configuración verificada; primera ejecución exploratoria autorizada,
   resultado en `results/integrated-solver-verification-v1/standard-v1-9000-report.md`.
-- **Alcance autorizado:** construir el archivo de configuración, justificar sus
-  parámetros y definir el protocolo del primer punto a 9000 RPM.
-- **Fuera de alcance en esta fase:** ejecutar `step`/`advance`, modificar el
-  solver, cambiar la arquitectura, calibrar coeficientes para obtener una
+- **Alcance autorizado actual:** configuración, runner mínimo y primer punto
+  exploratorio a 9000 RPM, según §9 y autorización del propietario.
+- **Fuera de alcance:** modificar el solver, cambiar la arquitectura,
+  calibrar coeficientes para obtener una
   potencia objetivo, lanzar un barrido RPM completo o afirmar capacidad
   predictiva.
 - **Regla de honestidad:** ninguna banda de plausibilidad de este documento es
@@ -398,7 +398,8 @@ Contrato mínimo:
 - Fija el RPM del punto y no muta la configuración.
 - Ejecuta ciclos completos y guarda un snapshot por ciclo.
 - Registra las métricas de 5.4 y los residuos de conservación.
-- Permite checkpoint/restart sin cambiar el estado físico.
+- Persiste checkpoints nativos restaurables sin cambiar el estado físico; el
+  runner mínimo no implementa un CLI de resume ni reintentos automáticos.
 - Escribe un manifiesto con SHA-256 del config, commit y parámetros.
 
 El runner se implementa separadamente; no modifica el solver.
@@ -412,7 +413,7 @@ El runner se implementa separadamente; no modifica el solver.
    `301ded4ca6df997a3207e99aef37ee5a2702c782d15aacd50cfec32993d0ed08`.
 4. Verificar que `IntegratedEngine2T.from_configuration_dict(config)` reproduce
    el mismo `configuration_dict()` (lo hace el builder).
-5. Confirmar que no se llamará `step`/`advance` hasta la autorización explícita.
+5. Autorización explícita recibida para smoke y único punto de §9.
 6. Registrar Python, versión del repo, sistema operativo y configuración de
    `max_cfl`.
 
@@ -517,7 +518,7 @@ converja, no durante el transitorio.
   inicial: 200–400 s/ciclo.
 - 20 ciclos: ~1.1–2.2 h. El presupuesto de campaña de 60 min puede excederse;
   usar checkpoints y dividir la ejecución.
-- El modo exploratorio debe excluir `make_integrated_cycle_primary`, auditoría
+- El modo exploratorio excluye `make_integrated_cycle_primary`, auditoría
   completa y serialización pesada (~70% del costo). El modo claim las incluye.
 - Si el costo proyectado excede el presupuesto, se registra como
   `BLOCKED_LOCAL` de performance; no se baja CFL, precisión ni umbrales.
@@ -635,21 +636,6 @@ powervalve 9000=0.500, exhaust_open=87.915283 deg ATDC
 
 ---
 
-## 9. Decisión pendiente antes de ejecutar
-
-La configuración está construida y validada, pero la ejecución del punto a
-9000 RPM requiere autorización explícita. Antes de ejecutar hay que confirmar:
-
-1. Que se acepta la ventana de admisión `38×36 mm` como aproximación
-   `piston_port` del reed.
-2. Que se acepta el mapa lineal de válvula 8500/9500 y el punto 9000 en 0.5.
-3. Que se acepta la malla de escape de 31 celdas y el presupuesto estimado.
-4. Que se aceptan las bandas de plausibilidad como controles, no como objetivos.
-
-Sin esas confirmaciones, el entregable es esta configuración y este protocolo,
-no un resultado de simulación.
-
-
 ## 9. Primera ejecución exploratoria autorizada (2026-10-22)
 
 El propietario autorizó implementar el runner mínimo y ejecutar sólo 9000 RPM.
@@ -683,3 +669,8 @@ No modifica el solver, geometría, coeficientes, AFR ni combustión.
 - Mapa de válvula sintético: posición 0 levantada, 1 bajada; 0.5 representa
   medio recorrido del techo, no mitad de área/caudal ni mapa medido.
 - No hay reintento automático, refinamiento ni barrido adicional.
+
+Resultado de la primera ejecución: **30 ciclos / 190.516 s / MAX_CYCLES_NONCONVERGED**.
+Informe y receipt: `results/integrated-solver-verification-v1/standard-v1-9000-report.md`.
+Trabajo indicado positivo en el último ciclo (29.099 J), sin periodicidad global.
+No hubo ajustes de parámetros ni continuación automática.

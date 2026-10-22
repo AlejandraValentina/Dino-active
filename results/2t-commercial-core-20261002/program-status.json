@@ -6802,18 +6802,23 @@
       "id": "ISV1-STANDARD-9000-EXECUTION",
       "description": "Owner-authorized 5-degree smoke then one 9000RPM point, 30 cycles/1800s; physical diagnosis; no sweep.",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Complete authorized scope",
+      "evidence": [
+        "results/integrated-solver-verification-v1/standard-v1-9000-report.md",
+        "results/integrated-solver-verification-v1/standard-v1-9000-receipt.json",
+        "results/integrated-solver-verification-v1/standard-v1-9000-cycles.csv"
+      ],
+      "next_action": "Authorized single-point scope complete. No automatic extension, parameter tuning or sweep.",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "implementation",
       "write_scope": [
         "results/integrated-solver-verification-v1/standard-v1-9000-report.md",
         "results/integrated-solver-verification-v1/standard-v1-9000-receipt.json"
       ],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "Exploratory only: 30 cycles, MAX_CYCLES_NONCONVERGED; 190.516s/1800s; no independent audit or predictive claim. Positive indicated work, low fresh filling. Native checkpoints restore exactly. Scientific gate unchanged REVIEW."
     }
   ],
   "audit_remediation_mode": false,
@@ -9616,6 +9621,12 @@
       "task": "ISV1-STANDARD-POINT-RUNNER",
       "kind": "task",
       "summary": "Owner-authorized minimal direct runner: six focal tests PASS; zero replay/primary/audit; 5-degree smoke PASS (0.762s, 27.57MiB). STANDARD JSON synchronized, provenance-only assumptions corrected; 9000RPM point limited to 30 cycles/1800s/3072MiB with explicit synthetic STANDARD_V1 FMEP postprocessing. Historical science untouched."
+    },
+    {
+      "at": "2026-10-22T13:56:03+00:00",
+      "task": "ISV1-STANDARD-9000-EXECUTION",
+      "kind": "task",
+      "summary": "9000RPM CLOSED: 30 cycles, MAX_CYCLES_NONCONVERGED, 190.516s, 110.57MiB. Last W=29.099J/Q=63.837J/AFR=8.470; 57/413 V2 metrics fail in exhaust transient. Internal conservation <5e-15; 30 checkpoints restore without solver. 22 tests, OpenSpec/status PASS. No replay/audit, retuning, extension, sweep or push. Gate REVIEW unchanged."
     }
   ],
   "legacy_gate_status": {
