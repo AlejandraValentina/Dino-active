@@ -6826,14 +6826,17 @@
       "dependencies": [
         "ISV1-STANDARD-9000-EXECUTION"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
         "results/integrated-solver-verification-v1/standard-v1-controlled-continuation-plan.md",
-        "results/integrated-solver-verification-v1/standard-v1-continuation-preflight.json"
+        "results/integrated-solver-verification-v1/standard-v1-continuation-preflight.json",
+        "results/integrated-solver-verification-v1/standard-v1-controlled-continuation-report.md",
+        "results/integrated-solver-verification-v1/standard-v1-controlled-continuation-receipt.json",
+        "results/integrated-solver-verification-v1/standard-v1-controlled-species-balances.csv"
       ],
-      "next_action": "Run only cycles 31-50 within 300s/512MiB, preserve parent.",
+      "next_action": "Authorized experiment closed at cycle50; no automatic additional cycles, parameter sensitivity, curve or campaign.",
       "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
       "owner_role": "implementation",
       "write_scope": [
@@ -6842,9 +6845,11 @@
         "results/integrated-solver-verification-v1/standard-v1-controlled-continuation-plan.md",
         "results/integrated-solver-verification-v1/standard-v1-continuation-preflight.json",
         "results/integrated-solver-verification-v1/standard-v1-controlled-continuation-report.md",
-        "results/integrated-solver-verification-v1/standard-v1-controlled-continuation-receipt.json"
+        "results/integrated-solver-verification-v1/standard-v1-controlled-continuation-receipt.json",
+        "results/integrated-solver-verification-v1/standard-v1-controlled-species-balances.csv"
       ],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "Option A only COMPLETE: exactly cycles31-50; MAX_CYCLES_NONCONVERGED, no retuning. Low filling persists; event oxygen eligibility explains rich trapped AFR; 53/55 failures in exhaust. Scientific gate unchanged REVIEW."
     }
   ],
   "audit_remediation_mode": false,
@@ -9659,6 +9664,12 @@
       "task": "ISV1-STANDARD-CONTROLLED-CONTINUATION",
       "kind": "task",
       "summary": "Existing-volume species balances close; 54/57 failures in exhaust, worst error decays 19.44 to 13.81x in cycles21-30. Select authorized option A only, cycles31-50/300s/512MiB. Exact zero-step parent restore passes; 24 tests PASS including canonical next-step equivalence and tamper rejection. No solver/configuration/threshold changes."
+    },
+    {
+      "at": "2026-10-22T15:02:34+00:00",
+      "task": "ISV1-STANDARD-CONTROLLED-CONTINUATION",
+      "kind": "task",
+      "summary": "Option A CLOSED at50: only31-50 computed,129.894s new/320.410s total,120.34MiB. W29.048J, trapped AFR8.474; 55 V2 failures(53 exhaust). Filling unchanged vs30. Species balances close; event oxygen eligibility dominates, stage clamp only0.0036%. Parent evidence unchanged;20 native restores/24 tests PASS. No B/sweep/push; gate REVIEW."
     }
   ],
   "legacy_gate_status": {

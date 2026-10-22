@@ -1,0 +1,250 @@
+{
+  "schema": "DINO_STANDARD_CONTROLLED_CONTINUATION_RECEIPT_V1",
+  "selected_option": "A_CHECKPOINT_CONTINUATION_ONLY",
+  "classification": "MAX_CYCLES_NONCONVERGED",
+  "cycles_preserved": 30,
+  "cycles_new": 20,
+  "total_cycles": 50,
+  "next_cycle": 51,
+  "prior_evidence_unchanged": true,
+  "source_commit": "28d3a183802a6ce871c343bb03ec3cbc1ecf05b3",
+  "configuration_file_sha256": "301ded4ca6df997a3207e99aef37ee5a2702c782d15aacd50cfec32993d0ed08",
+  "solver_sha256": "45f8b1b3ecbdcc4e19a527e343dcb6f35701e9e20a1be8cd6b59e724f6f8ebf1",
+  "runner_sha256": "bde3cf35be7d7f7906ea47d3b5ed3db7bd93d4c6bf656b7195461b94d922a0e7",
+  "parent": {
+    "checkpoint_sha256": "f7463e623b6d9a96cad36e70959c5822282a2acc752fa2d5538c235eedf825bd",
+    "cycles_preserved": 30,
+    "exact_state_restore": true,
+    "manifest_sha256": "e8f8a8afa0790ef4d95a20320f4ac044eb10c4eaf788151a5db2a5db401b2744",
+    "physical_steps_during_restore": 0,
+    "producer_sha256": "a0cbd31f27685b03b06b14aa461cd2238559506fa214e2553d88686e7f1488dc",
+    "source_directory": "E:\\Dino-artifacts\\standard-v1-9000-20261022\\point"
+  },
+  "artifact_directory": "E:\\Dino-artifacts\\standard-v1-9000-continuation-20261022\\point",
+  "parent_wall_s": 190.51605259999633,
+  "new_wall_s": 129.893982199952,
+  "accumulated_wall_s": 320.41003479994833,
+  "new_wall_cap_s": 300,
+  "memory_cap_MiB": 512,
+  "new_peak_rss_MiB": 120.34375,
+  "solver_step_wall_s": 115.29534429381602,
+  "diagnostic_processing_wall_s": 7.6132357029709965,
+  "new_rejected_trials": {},
+  "final_conservation": {
+    "cumulative": {
+      "energy": {
+        "external": -654.0451301663923,
+        "final": 1362.7691041065425,
+        "fuel_combustion_heat_added": 3192.019858782438,
+        "initial": 1250.8761899716535,
+        "residual": -2.4556356947869062e-11,
+        "work": -1346.6593869422913
+      },
+      "mass": {
+        "external": -7.73524305086091e-05,
+        "final": 0.002834546517647664,
+        "initial": 0.002911898948156277,
+        "residual": -3.754050022231059e-18
+      },
+      "species": {
+        "burned": {
+          "external": -9.101837326792105e-05,
+          "final": 0.0012812133819895917,
+          "fuel_combustion_source": 0.001372231755257512,
+          "initial": 0.0,
+          "residual": 8.673617379884035e-19,
+          "source": 0.0
+        },
+        "fresh_air": {
+          "external": 0.0015503304030572748,
+          "final": 0.0009412157847941712,
+          "fuel_combustion_source": -0.0012848987905849402,
+          "initial": 0.0006757841723218447,
+          "residual": -8.023096076392733e-18,
+          "source": 0.0
+        },
+        "fuel": {
+          "external": 0.00013319309345367702,
+          "final": 0.0001046239698525708,
+          "fuel_combustion_source": -8.733296467257011e-05,
+          "initial": 5.876384107146472e-05,
+          "residual": -8.267041565201971e-19,
+          "source": 0.0
+        },
+        "residual": {
+          "external": -0.0016698575537516256,
+          "final": 0.0005074933810113392,
+          "fuel_combustion_source": 0.0,
+          "initial": 0.0021773509347629673,
+          "residual": -2.6020852139652106e-18,
+          "source": 0.0
+        }
+      }
+    },
+    "independent_audit": "NOT_PERFORMED",
+    "relative": {
+      "energy": 7.693046420217393e-15,
+      "mass": 1.2892102676186637e-15,
+      "species": 2.7552797055243643e-15
+    }
+  },
+  "checkpoint_sha256": "b4e193a37a1a9b65be66aa5b4d444cc525b578cc4cd218a69f3b80391621690a",
+  "checkpoint_artifact": "checkpoint-next-051.json",
+  "native_restores_verified": 20,
+  "verification_steps": 0,
+  "independent_audit": "NOT_PERFORMED",
+  "focal_tests": 24,
+  "openspec_strict": "PASS",
+  "program_status_check": "PASS_WITH_EXISTING_READY_COUNT_WARNING",
+  "lag2_48_50_status": "FAIL",
+  "last_ten": [
+    {
+      "cycle": 41,
+      "work_J": 29.05287028515886,
+      "heat_J": 63.77222759070628,
+      "afr_trapped": 8.471676809471322,
+      "air_into_crankcase_mg": 32.25250970690503,
+      "air_trapped_mg": 25.681676901103977,
+      "failed_metrics": 60,
+      "failed_exhaust": 58,
+      "worst_ratio": 11.423662279355373
+    },
+    {
+      "cycle": 42,
+      "work_J": 29.05151258077649,
+      "heat_J": 63.77088004120105,
+      "afr_trapped": 8.471912924496747,
+      "air_into_crankcase_mg": 32.2602707660823,
+      "air_trapped_mg": 25.681284118630227,
+      "failed_metrics": 59,
+      "failed_exhaust": 57,
+      "worst_ratio": 11.3497981663086
+    },
+    {
+      "cycle": 43,
+      "work_J": 29.050428509732228,
+      "heat_J": 63.76995097934332,
+      "afr_trapped": 8.472150652746873,
+      "air_into_crankcase_mg": 32.26759017503554,
+      "air_trapped_mg": 25.68104020541359,
+      "failed_metrics": 58,
+      "failed_exhaust": 56,
+      "worst_ratio": 11.238537358249978
+    },
+    {
+      "cycle": 44,
+      "work_J": 29.04958446746309,
+      "heat_J": 63.7693852575112,
+      "afr_trapped": 8.472388392787114,
+      "air_into_crankcase_mg": 32.274490535805086,
+      "air_trapped_mg": 25.680924820460223,
+      "failed_metrics": 58,
+      "failed_exhaust": 56,
+      "worst_ratio": 11.161845661076752
+    },
+    {
+      "cycle": 45,
+      "work_J": 29.04895008036624,
+      "heat_J": 63.76913300030674,
+      "afr_trapped": 8.47262474025296,
+      "air_into_crankcase_mg": 32.28099322646383,
+      "air_trapped_mg": 25.68091966259833,
+      "failed_metrics": 58,
+      "failed_exhaust": 56,
+      "worst_ratio": 11.114085697232545
+    },
+    {
+      "cycle": 46,
+      "work_J": 29.04849799807721,
+      "heat_J": 63.76914935269815,
+      "afr_trapped": 8.472858477132954,
+      "air_into_crankcase_mg": 32.28711854970059,
+      "air_trapped_mg": 25.681008326386237,
+      "failed_metrics": 57,
+      "failed_exhaust": 55,
+      "worst_ratio": 11.030456859052462
+    },
+    {
+      "cycle": 47,
+      "work_J": 29.04820364394709,
+      "heat_J": 63.76939412103593,
+      "afr_trapped": 8.473088558110396,
+      "air_into_crankcase_mg": 32.29288498878732,
+      "air_trapped_mg": 25.681176154235512,
+      "failed_metrics": 57,
+      "failed_exhaust": 55,
+      "worst_ratio": 11.006373346543086
+    },
+    {
+      "cycle": 48,
+      "work_J": 29.0480450348266,
+      "heat_J": 63.76983139526328,
+      "afr_trapped": 8.473314093616725,
+      "air_into_crankcase_mg": 32.29831223814234,
+      "air_trapped_mg": 25.68141005440352,
+      "failed_metrics": 57,
+      "failed_exhaust": 55,
+      "worst_ratio": 10.964647010809792
+    },
+    {
+      "cycle": 49,
+      "work_J": 29.048002439080165,
+      "heat_J": 63.77042915823313,
+      "afr_trapped": 8.473534351613912,
+      "air_into_crankcase_mg": 32.30341792443385,
+      "air_trapped_mg": 25.681698516158807,
+      "failed_metrics": 55,
+      "failed_exhaust": 53,
+      "worst_ratio": 10.942930661915929
+    },
+    {
+      "cycle": 50,
+      "work_J": 29.048058461552046,
+      "heat_J": 63.77115925125236,
+      "afr_trapped": 8.473748736680466,
+      "air_into_crankcase_mg": 32.30821858236741,
+      "air_trapped_mg": 25.682031392908154,
+      "failed_metrics": 55,
+      "failed_exhaust": 53,
+      "worst_ratio": 10.933356609646616
+    }
+  ],
+  "cycle30": {
+    "cycle": 30,
+    "work_J": 29.09925273439717,
+    "heat_J": 63.83654590961942,
+    "afr_trapped": 8.469848788387527,
+    "air_into_crankcase_mg": 32.129497955302114,
+    "air_trapped_mg": 25.704003855400178,
+    "failed_metrics": 57,
+    "failed_exhaust": 54,
+    "worst_ratio": 13.813424498830273
+  },
+  "cycle50": {
+    "cycle": 50,
+    "work_J": 29.048058461552046,
+    "heat_J": 63.77115925125236,
+    "afr_trapped": 8.473748736680466,
+    "air_into_crankcase_mg": 32.30821858236741,
+    "air_trapped_mg": 25.682031392908154,
+    "failed_metrics": 55,
+    "failed_exhaust": 53,
+    "worst_ratio": 10.933356609646616
+  },
+  "final_combustion": {
+    "active_stage_time_s": 0.0007499999999999998,
+    "burned_fuel_kg": 1.744764958994635e-06,
+    "oxygen_stage_limited_time_s": 4.6296296296296296e-06,
+    "requested_fuel_kg": 1.744828196850878e-06,
+    "stage_availability_limited_time_s": 4.6296296296296296e-06
+  },
+  "final_ignition_event": {
+    "fresh_air_at_ignition_kg": 2.5682031392908156e-05,
+    "fuel_at_ignition_kg": 3.030775656792594e-06,
+    "fuel_available_for_burn_kg": 1.7455755712367265e-06,
+    "start_angle_deg": 17980.0
+  },
+  "manifest_sha256": "09db8f5fec0a3ace53e5e2d650b552fdaee7e1db6b7141398517f1c834aa0603",
+  "analysis_sha256": "b9bb6aed2710cc90317564526130df008e0d876fffbd6596a97c2fe3ee9b6fd6",
+  "additional_execution_authorized": false
+}
