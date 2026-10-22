@@ -9532,6 +9532,12 @@
       "task": "ISV1-PIPELINE-MEMORY-FINALIZATION",
       "kind": "task",
       "summary": "PROCEED_TO_PERIODIC_POINT: isolated 48-cell/3000RPM/CFL0.4 cycle PASS; 184.625s/600, worker 260.58 MiB, aggregate 298.54 MiB. Audit+reaudit recomputed PASS, exact checkpoint restore, 2627 accepted/3084 rejected. No periodicity/power claim or A3b charge. 25 tests PASS, OpenSpec 56/56. Receipt: salvage-viability-48cell-execution-receipt.json. No further solver run."
+    },
+    {
+      "at": "2026-10-22T10:42:26+00:00",
+      "task": "ISV1-PIPELINE-MEMORY-FINALIZATION",
+      "kind": "task",
+      "summary": "First stabilized-point request BLOCKED_PRECONDITION before solver. Scientific source/effective identity match; raw checkpoint restores exactly but lacks workflow/detector envelope. Workflow rejects 3000s (600s invocation cap); prior driver single-cycle. No supported cumulative executor identified; owner forbids new functionality. Receipt persisted, no A3b charge or solver step."
     }
   ],
   "legacy_gate_status": {

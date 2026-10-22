@@ -1,0 +1,93 @@
+{
+  "schema": "DINO_FIRST_STABILIZED_POINT_PRECONDITION_RECEIPT_V1",
+  "date_utc": "2026-10-22T10:42:14.323728+00:00",
+  "classification": "BLOCKED_PRECONDITION",
+  "solver_started": false,
+  "cycles_completed": 0,
+  "experiment_seconds_consumed": 0,
+  "head": "4e9b8dfeebfb543dc95083ca63c8d5813e0a786f",
+  "authorization_sha256": "13b7a571f4d721619fd6a7d3d94863abf5da081f6b9feae940ef30ac42b3958a",
+  "source_hashes": {
+    "motorsim._trajectory_store": "9a4a7c1b9fc01218e0b4d53ee2c26e6ac5a459c68bada0a556437294c04923e8",
+    "motorsim._evidence_io": "422f7981eaa53769ad2a9610cb8c07cb5c2e6351eba1fb820ef9a47a5b0ba5b1",
+    "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+    "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+    "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+    "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+    "motorsim.gas1d.eos": "72ec337f941b1259ab23c04f70ec75593870bdcc4b065d481b38834430221186",
+    "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+    "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+    "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+    "motorsim.integrated_2t": "4cfce1ff4ceb84496f8c85eb170d40d0ab9fc6392786d47e3dfdb49cc42e79c5",
+    "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+    "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+    "motorsim.p6_species": "7ed60395642eecb6b5b9f15bbe095489468da7b562f72d0b53b13527a97e2dab",
+    "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+    "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+    "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+    "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+    "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+    "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095",
+    "motorsim.mechanical": "de71d3bacb18e7661de0ff15cbac50f1a252fc01970c7ef9aa04c8a3424d0fff",
+    "motorsim.engine_configuration": "2fddbde685f8d2004c3643f787e8fcd271d175e0d831ff8fe75065821915a618",
+    "motorsim.engine_variants": "ad21a71bc2528f55ad8becbe7fc019b63c27211b0939f5a284ef3a508f3856fa",
+    "motorsim.engineering_outputs": "c01c3c7195f28a67c3fb866df704d15a595d079d32be71057ab2d2c5095f5424",
+    "motorsim.reference_harness.convergence": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+    "motorsim.exploratory_workflow": "da959c5011eff76d855bf313872329f6007667a26bfc72dbb73915f5afcd3ed4"
+  },
+  "source_identity_matches_representative_trial": true,
+  "effective_configuration_matches_representative_trial": true,
+  "native_configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+  "checkpoint": {
+    "file_sha256": "a4c3dfaed3f8f86bf8d1135e82f1442f8ce9075e284fed9426857ea4e6c1189f",
+    "engine_restore": "EXACT_CANONICAL_MATCH_ZERO_STEPS",
+    "workflow_envelope_compatible": false,
+    "reason": "Standalone engine snapshot lacks DINO_EXPLORATORY_CHECKPOINT_V1 bindings, periodicity_snapshot, next_cycle and manifest. No migration or wrapping performed. Independent initial-state run would be allowed if an authorized executor were available."
+  },
+  "environment": {
+    "available_mib": 4949.8671875,
+    "required_mib": 4096,
+    "artifact_disk_free_bytes": 32381579264
+  },
+  "preflight_10_cycles_600s": {
+    "schema": "DINO_EXPLORATORY_PREFLIGHT_V1",
+    "status": "PASS",
+    "mode": "EXPLORATORY",
+    "solver_steps": 0,
+    "identity_sha256": "0e944f99951a58c40950c552e16a33a531c50055de929f1ccc05cafb886c9938",
+    "configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+    "rpm": 3000.0,
+    "max_cycles": 10,
+    "budget_seconds": 600.0,
+    "memory_limit_mib": 3072,
+    "workers": 1,
+    "total_finite_volume_cells": 48,
+    "artifact_limit_bytes": 536870912,
+    "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+    "mechanical_loss_preflight": {
+      "compatible": true,
+      "friction_mep_pa": 1500.0,
+      "term_mep_pa_by_term": {
+        "synthetic-piston-ring": 1000.0,
+        "synthetic-bearing-accessory": 500.0
+      }
+    },
+    "fuel_id": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+    "afr_kg_air_per_kg_fuel": 49.0,
+    "periodicity_contract": "REFERENCE_PERIODIC_CONVERGENCE_V2",
+    "cycle_primary_contract": "REFERENCE_PERIODIC_CONVERGENCE_V1",
+    "periodicity_source_sha256": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+    "periodicity_thresholds_sha256": "97049f91c7664b906fd743ec2a05991ad313f860df23b154b482a5c783f13b70",
+    "periodicity_initial": "NOT_EVALUATED",
+    "verified_mode": "UNAVAILABLE_WITHOUT_PREREGISTRATION_AND_AUTHORIZATION",
+    "classification": "PREFLIGHT_ONLY_NO_SOLVER_STEPS"
+  },
+  "preflight_3000s_failure": "budget_seconds must be between 1 and 600 seconds",
+  "blocker": "Existing optimized exploratory workflow limits each invocation to 600 seconds; representative driver is fixed to one cycle. Historical scientific-point driver is bound to a different frozen identity/horizon and authorization ceiling of 1800 seconds. No existing supported executor for this requested cumulative 3000-second, 10-cycle experiment was identified. No new runner, guard modification, automatic retries, or historical identity override permitted by owner instructions.",
+  "scientific_outputs": "NOT_EVALUATED; no new primary, audit, checkpoint, periodicity or performance result",
+  "a3b": {
+    "modified": false,
+    "remaining_s": 3536.624
+  },
+  "next_step": "Authorize only the minimal experiment orchestration needed to use existing 600-second invocations with compatible checkpoints under one 3000-second accumulated supervisor budget; preserve solver, detector and all thresholds. Do not launch until supported."
+}
