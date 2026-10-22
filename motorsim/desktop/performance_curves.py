@@ -116,7 +116,7 @@ class PowerTorquePlot(QWidget):
                     previous = (current,exploratory)
 
         painter.setPen(QColor("#cad8e7"))
-        painter.drawText(QRectF(0, 2, self.width(), 20), Qt.AlignmentFlag.AlignCenter, "Punteado/hueco: EXPLORATORIO no periódico · lleno: valor periódico declarado")
+        painter.drawText(QRectF(0, 2, self.width(), 20), Qt.AlignmentFlag.AlignCenter, "○ Potencia · □ Torque · punteado/hueco: EXPLORATORIO no periódico · lleno: valor periódico declarado")
         legend_x = rect.left()
         for index, curve in enumerate(self.series):
             color = QColor(self.COLORS[index % len(self.COLORS)])
@@ -127,7 +127,11 @@ class PowerTorquePlot(QWidget):
                              Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
                              curve["name"][:22])
             legend_x += min(170, max(75, 24 + len(curve["name"]) * 7))
-        painter.drawText(QRectF(0, rect.bottom() + 20, self.width(), 20), Qt.AlignmentFlag.AlignCenter,
+        for rpm in sorted(set(rpms)):
+            x=rect.left()+(rpm-xmin)/(xmax-xmin)*rect.width()
+            painter.drawLine(round(x),round(rect.bottom()),round(x),round(rect.bottom()+4))
+            painter.drawText(QRectF(x-35,rect.bottom()+3,70,16),Qt.AlignmentFlag.AlignCenter,f'{rpm:g}')
+        painter.drawText(QRectF(0, rect.bottom() + 23, self.width(), 18), Qt.AlignmentFlag.AlignCenter,
                          f"RPM  {xmin:g} — {max(rpms):g}  ·  potencia: {self.power_unit}  ·  torque: N·m")
         if power_bounds:
             painter.drawText(QRectF(2, rect.top() - 19, rect.left() - 4, 18), Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter, self.power_unit)
@@ -218,6 +222,8 @@ class PowerCurvePanel(QGroupBox):
             f"{self.dataset.get('provenance', 'sin provenance')} · "
             f"validación experimental {self.dataset.get('experimental_validation', 'NOT_REPORTED')} · "
             "los puntos sin valor no se conectan ni se interpolan.")
+        if any(row.get('mode')=='ENGINEERING_EXPLORATORY' for row in self.dataset.get('points',[])):
+            self.provenance.setText(self.provenance.text()+" Misma cantidad de celdas no demuestra independencia espacial; no atribuir ganancias definitivas al escape.")
         self._refresh_peaks()
         self._refresh_comparison()
         self._refresh_table(unit)

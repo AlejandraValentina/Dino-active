@@ -358,11 +358,12 @@ def _run_power_curve_unlocked(document: dict, *, project_id: str, variant_label:
             for i, value in enumerate(prepared["rpms"])]
         _atomic_json(manifest_path, manifest)
         try:
-            remaining = min(total_budget_seconds - elapsed_before - (time.monotonic() - started),
-                            point_budget_seconds-float(point.get('elapsed_seconds',0)))
+            point_remaining=point_budget_seconds-float(point.get('elapsed_seconds',0))
+            remaining = min(total_budget_seconds - elapsed_before - (time.monotonic() - started),point_remaining)
             if remaining < 1:
                 manifest["status"] = "INTERRUPTED_CHECKPOINTED"
-                manifest["classification"] = "EXPLORATORY_SWEEP_TOTAL_BUDGET_EXHAUSTED"
+                manifest["classification"] = ("EXPLORATORY_SWEEP_POINT_BUDGET_EXHAUSTED" if point_remaining<1
+                                              else "EXPLORATORY_SWEEP_TOTAL_BUDGET_EXHAUSTED")
                 _atomic_json(manifest_path, manifest)
                 break
             deadline_cancel = threading.Event()

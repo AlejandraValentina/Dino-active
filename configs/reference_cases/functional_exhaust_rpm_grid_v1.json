@@ -1,0 +1,24 @@
+{
+  "project": "functional_exhaust_ab_125cc_v1.dino.json",
+  "variants": [
+    "A_original",
+    "B_header_plus20"
+  ],
+  "rpms": [
+    8000,
+    9000,
+    10000
+  ],
+  "max_cycles": 30,
+  "point_budget_seconds": 300,
+  "variant_aggregate_seconds": 650,
+  "memory_limit_mib": 512,
+  "workers": 1,
+  "explicit_control_policy": {
+    "schema": "POWERVALVE_OPEN_ENDPOINT_HOLD_V1",
+    "maximum_rpm": 10000,
+    "provenance": "SYNTHETIC_ASSUMPTION"
+  },
+  "reuse_completed_points": true,
+  "display_mode": "EXPLORATORY_TRANSIENT_DISTINCT_FROM_PERIODIC"
+}

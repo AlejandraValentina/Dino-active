@@ -245,6 +245,7 @@ class ExecutionPage(QWidget):
         return dialog.clickedButton() is accept
 
     def start_run(self, *, resume):
+        self.active_sweep_settings=None
         if self.task is not None:return
         if repository_root_containing(self.artifact_root) is not None:
             QMessageBox.warning(self,"Artifact root bloqueado","No se permiten ejecuciones ni reanudaciones que escriban dentro del repositorio. Elegí una raíz externa.");return
@@ -332,6 +333,7 @@ class ExecutionPage(QWidget):
         except Exception as exc:
             QMessageBox.warning(self,"Preflight de curva bloqueado",f"FAIL-CLOSED: {type(exc).__name__}: {exc}");return
         self.cancel_event=threading.Event();self.progress_latest=None
+        self.active_sweep_settings=prepared
         self.context.project['simulation_recipes']['rpm_curve_v1']=dict(rpms=grid,max_cycles=cycles.value(),
             point_budget_seconds=point_budget.value(),total_budget_seconds=total_budget.value(),memory_limit_mib=memory.value())
         if control_policy is not None:self.context.project['simulation_recipes']['rpm_control_policy']=control_policy
@@ -384,6 +386,7 @@ class ExecutionPage(QWidget):
         except Exception as exc:
             QMessageBox.warning(self,"Reanudación bloqueada",f"FAIL-CLOSED: {type(exc).__name__}: {exc}");return
         self.cancel_event=threading.Event();self.output.appendPlainText(f"Reanudación solicitada · curva {manifest_path.parent.name}")
+        self.active_sweep_settings=prepared
         self.task=run_background(run_power_curve,document,project_id=binding["project_id"],
             variant_label=binding["variant_label"],artifact_root=binding["artifact_root"],
             start_rpm=binding["rpms"][0],stop_rpm=binding["rpms"][-1],

@@ -1,0 +1,1140 @@
+{
+  "schema": "DINO_DESKTOP_RPM_CURVES_V1_RECEIPT",
+  "functional_result": "DINO_DESKTOP_RPM_CURVES_V1_FUNCTIONAL_EXPLORATORY_PASS",
+  "scientific_state": "REVIEW;NO_GLOBAL_PERIODICITY;NO_PREDICTIVE_VALIDATION",
+  "grid": [
+    8000,
+    9000,
+    10000
+  ],
+  "new_points": 4,
+  "reused_points": 2,
+  "new_physical_cycles": 120,
+  "old_physical_cycles_reused": 60,
+  "budget": {
+    "point_cycles": 30,
+    "point_seconds": 300,
+    "variant_aggregate_seconds": 650,
+    "aggregate_limit_seconds": 1300,
+    "memory_mib": 512,
+    "workers": 1,
+    "coordinator_execution_seconds": 934.1570000000065,
+    "coordinator_total_with_zero_step_resume_seconds": 942.609999999986,
+    "desktop_execution_wall_seconds": 973.3429999999935
+  },
+  "series": [
+    {
+      "variant": "A_original",
+      "manifest": "E:\\Dino-artifacts\\desktop-rpm-curves-v1-20261022\\dino-power-curve-v1\\functional-reed-125cc-v1\\08bbe6f9b9694ff3970bfeb02edf4283\\series.json",
+      "sha256": "33d7b63d557e35a45eebe3505e5081ab2af5205c0442be7a2b30b5705cf13cc1",
+      "elapsed_seconds": 463.43799999996554,
+      "status": "COMPLETE",
+      "control_policy": {
+        "schema": "POWERVALVE_OPEN_ENDPOINT_HOLD_V1",
+        "maximum_rpm": 10000
+      }
+    },
+    {
+      "variant": "B_header_plus20",
+      "manifest": "E:\\Dino-artifacts\\desktop-rpm-curves-v1-20261022\\dino-power-curve-v1\\functional-reed-125cc-v1\\880b382c855e46d9970b069242b14479\\series.json",
+      "sha256": "da791d230c29fa1aec5fb13c6aaab1b6a4ff5670d711d55bec8cd6c317216cde",
+      "elapsed_seconds": 479.1720000000205,
+      "status": "COMPLETE",
+      "control_policy": {
+        "schema": "POWERVALVE_OPEN_ENDPOINT_HOLD_V1",
+        "maximum_rpm": 10000
+      }
+    }
+  ],
+  "points": [
+    {
+      "variant": "A_original",
+      "rpm": 8000.0,
+      "reused": false,
+      "cycles": 30,
+      "classification": "MAX_CYCLES_NONCONVERGED",
+      "periodicity": "NOT_CONVERGED",
+      "directory": "E:\\Dino-artifacts\\desktop-rpm-curves-v1-20261022\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-08bbe6f9b9694ff3970bfeb02edf4283-8000",
+      "result_sha256": "5e70d01e7d128984a994c446d111a7899eb5758bacfe5c081abecf94a590fe79",
+      "checkpoint_sha256": "46b2f89622b74e3ef829f63b4af3f323f0231fe14b821fbb0bde6ac17379c2fb",
+      "configuration_sha256": "03b4097ce735cc3c95e8e181a468e42f4a10f76f99c7dc67ce11ed1882fba8fd",
+      "identity_sha256": "d0218f844041bb9f9dc33e6311b15ae7b75843dddd880fe306d1fb25300636c1",
+      "work_J": 34.78881913451676,
+      "crankcase_work_J": -1.1962932514668339,
+      "heat_J": 75.06946215387052,
+      "air_trapped_mg": 30.23018150192854,
+      "afr_trapped": 7.097398575814233,
+      "brake_power_kW": 3.06655009608368,
+      "brake_power_HP": 4.11231141769797,
+      "brake_torque_Nm": 3.6604245452298314,
+      "runner_wall_s": 221.1627893000841,
+      "solver_step_wall_s": 192.62786120490637,
+      "processing_wall_s": 14.632839002180845,
+      "peak_rss_mib": 227.94140625,
+      "max_accepted_cfl": 0.3267266391438121,
+      "dt_min_s": 1.0416666666666666e-05,
+      "dt_max_s": 1.0416666666666666e-05,
+      "rejected_trials": {},
+      "conservation_max_relative": {
+        "mass": 3.0159142722631553e-15,
+        "energy": 5.0948974588880616e-15,
+        "species": 2.978680762729042e-15
+      },
+      "evolution": [
+        {
+          "cycle": 1,
+          "work_J": -54.27039508591462,
+          "air_trapped_mg": 58.03625470959906,
+          "failed": 0,
+          "comparison_status": "NOT_EVALUATED"
+        },
+        {
+          "cycle": 2,
+          "work_J": 75.56370513165554,
+          "air_trapped_mg": 31.186899289992066,
+          "failed": 232,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 3,
+          "work_J": 35.25005648392526,
+          "air_trapped_mg": 30.84483210813603,
+          "failed": 173,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 10,
+          "work_J": 35.24369331669084,
+          "air_trapped_mg": 30.472366333612225,
+          "failed": 61,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 20,
+          "work_J": 34.89809189830635,
+          "air_trapped_mg": 30.28240598740901,
+          "failed": 39,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 26,
+          "work_J": 34.815236302809694,
+          "air_trapped_mg": 30.241111260185363,
+          "failed": 53,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 27,
+          "work_J": 34.80689571730181,
+          "air_trapped_mg": 30.237385738963532,
+          "failed": 53,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 28,
+          "work_J": 34.79978520390705,
+          "air_trapped_mg": 30.234366443936146,
+          "failed": 52,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 29,
+          "work_J": 34.793794923011546,
+          "air_trapped_mg": 30.231986578957205,
+          "failed": 52,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 30,
+          "work_J": 34.78881913451676,
+          "air_trapped_mg": 30.23018150192854,
+          "failed": 52,
+          "comparison_status": "FAIL"
+        }
+      ],
+      "stability_observed": {
+        "window_cycles": [
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "work_range_J": 0.026417168292937276,
+        "trapped_air_range_mg": 0.010929758256821742,
+        "brake_power_range_kW": 0.0038056297768839613,
+        "regions": {
+          "cylinder": {
+            "evaluated": 4,
+            "failed": 0,
+            "worst_threshold_ratio": 0.0821360213632374
+          },
+          "crankcase": {
+            "evaluated": 4,
+            "failed": 0,
+            "worst_threshold_ratio": 0.1907242922692051
+          },
+          "exhaust": {
+            "evaluated": 279,
+            "failed": 50,
+            "worst_threshold_ratio": 14.203557124760291
+          },
+          "global_species": {
+            "evaluated": 4,
+            "failed": 2,
+            "worst_threshold_ratio": 6.68967987537349
+          }
+        },
+        "stationary_uncertainty": "NOT_QUANTIFIED; last-cycle variation is not a stationary error bound"
+      }
+    },
+    {
+      "variant": "A_original",
+      "rpm": 9000.0,
+      "reused": true,
+      "cycles": 30,
+      "classification": "MAX_CYCLES_NONCONVERGED",
+      "periodicity": "NOT_CONVERGED",
+      "directory": "E:\\Dino-artifacts\\functional-exhaust-comparison-v1-20261022\\exploratory-workflow-v1\\functional-reed-125cc-v1\\ab-A-9000",
+      "result_sha256": "753f26a5a8fd81a4c03e1a441f371576e22e5a3142c94a057c105519eb8bbc24",
+      "checkpoint_sha256": "1f06eacdc1bf87b5cb76c66e77067980647b26c90d24125e476f61de31fc5620",
+      "configuration_sha256": "743a00de51aa4ca214afb5c84b790c1d642c92a4887fa0074bad3d76aa2c1a9c",
+      "identity_sha256": "954c2d8cad26c2092344031d84a07040ae092d238a7b96969988f46c57f9330d",
+      "work_J": 34.06899097268638,
+      "crankcase_work_J": -1.188682650281315,
+      "heat_J": 73.45562606901376,
+      "air_trapped_mg": 29.582366085226624,
+      "afr_trapped": 7.603299081364257,
+      "brake_power_kW": 3.3430362239974105,
+      "brake_power_HP": 4.483085422696879,
+      "brake_torque_Nm": 3.5470715998963502,
+      "runner_wall_s": 220.2737467000261,
+      "solver_step_wall_s": 196.65110719681252,
+      "processing_wall_s": 13.878532588365488,
+      "peak_rss_mib": 227.71484375,
+      "max_accepted_cfl": 0.2782345016609186,
+      "dt_min_s": 1.568834778380632e-06,
+      "dt_max_s": 9.259259259259259e-06,
+      "rejected_trials": {},
+      "conservation_max_relative": {
+        "mass": 1.3217895884610126e-15,
+        "energy": 1.703707343902333e-15,
+        "species": 1.5638074004327473e-15
+      },
+      "evolution": [
+        {
+          "cycle": 1,
+          "work_J": -52.51403355898726,
+          "air_trapped_mg": 50.824392099619516,
+          "failed": 0,
+          "comparison_status": "NOT_EVALUATED"
+        },
+        {
+          "cycle": 2,
+          "work_J": 67.16563230722126,
+          "air_trapped_mg": 31.837984158775125,
+          "failed": 241,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 3,
+          "work_J": 35.82714034675635,
+          "air_trapped_mg": 30.65852941629305,
+          "failed": 162,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 10,
+          "work_J": 34.42148272330263,
+          "air_trapped_mg": 29.766147891682202,
+          "failed": 63,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 20,
+          "work_J": 34.139616658121895,
+          "air_trapped_mg": 29.610327200590014,
+          "failed": 42,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 26,
+          "work_J": 34.08069090648746,
+          "air_trapped_mg": 29.58368828072733,
+          "failed": 59,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 27,
+          "work_J": 34.076079408958435,
+          "air_trapped_mg": 29.582361548265386,
+          "failed": 57,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 28,
+          "work_J": 34.07266182738556,
+          "air_trapped_mg": 29.581742687234087,
+          "failed": 57,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 29,
+          "work_J": 34.07033290642414,
+          "air_trapped_mg": 29.581766056538385,
+          "failed": 57,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 30,
+          "work_J": 34.06899097268638,
+          "air_trapped_mg": 29.582366085226624,
+          "failed": 57,
+          "comparison_status": "FAIL"
+        }
+      ],
+      "stability_observed": {
+        "window_cycles": [
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "work_range_J": 0.011699933801082807,
+        "trapped_air_range_mg": 0.0019455934932430807,
+        "brake_power_range_kW": 0.002138183835807922,
+        "regions": {
+          "cylinder": {
+            "evaluated": 4,
+            "failed": 0,
+            "worst_threshold_ratio": 0.08248737962250594
+          },
+          "crankcase": {
+            "evaluated": 4,
+            "failed": 0,
+            "worst_threshold_ratio": 0.20183612434679918
+          },
+          "exhaust": {
+            "evaluated": 279,
+            "failed": 55,
+            "worst_threshold_ratio": 13.992949791802877
+          },
+          "global_species": {
+            "evaluated": 4,
+            "failed": 2,
+            "worst_threshold_ratio": 6.82844800227355
+          }
+        },
+        "stationary_uncertainty": "NOT_QUANTIFIED; last-cycle variation is not a stationary error bound"
+      }
+    },
+    {
+      "variant": "A_original",
+      "rpm": 10000.0,
+      "reused": false,
+      "cycles": 30,
+      "classification": "MAX_CYCLES_NONCONVERGED",
+      "periodicity": "NOT_CONVERGED",
+      "directory": "E:\\Dino-artifacts\\desktop-rpm-curves-v1-20261022\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-08bbe6f9b9694ff3970bfeb02edf4283-10000",
+      "result_sha256": "2549078d4d49ad2f94b72182c591c4c73212d4a49a0a770abe893d74bf987ceb",
+      "checkpoint_sha256": "b97e954b1031014ef9ab0f65e1ad7f3a48d3ccbf6c05cc6a0364b25a2eccf3c3",
+      "configuration_sha256": "c1f564abae884101d2edf0cf0d55eb727ffe811be6261d160f8e9bf34b677f0e",
+      "identity_sha256": "757f422d2f3219ad2173b9c634053d76cae82ca3924a2e566fad0227bf84340b",
+      "work_J": 32.793368422627054,
+      "crankcase_work_J": -1.1801320192748008,
+      "heat_J": 71.53373226229633,
+      "air_trapped_mg": 28.80713349973242,
+      "afr_trapped": 8.115343009617423,
+      "brake_power_kW": 3.5033060401549876,
+      "brake_power_HP": 4.698010786459524,
+      "brake_torque_Nm": 3.345410840726162,
+      "runner_wall_s": 230.40730600000825,
+      "solver_step_wall_s": 208.09140539262444,
+      "processing_wall_s": 13.269816200016066,
+      "peak_rss_mib": 227.94140625,
+      "max_accepted_cfl": 0.2448023855298811,
+      "dt_min_s": 8.333333333333334e-06,
+      "dt_max_s": 8.333333333333334e-06,
+      "rejected_trials": {},
+      "conservation_max_relative": {
+        "mass": 2.9693723853455143e-15,
+        "energy": 5.1786537716758734e-15,
+        "species": 1.6755079290350863e-15
+      },
+      "evolution": [
+        {
+          "cycle": 1,
+          "work_J": -50.600928505846866,
+          "air_trapped_mg": 44.93631486742811,
+          "failed": 0,
+          "comparison_status": "NOT_EVALUATED"
+        },
+        {
+          "cycle": 2,
+          "work_J": 58.85126923898269,
+          "air_trapped_mg": 32.26072045460517,
+          "failed": 243,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 3,
+          "work_J": 35.83495936643638,
+          "air_trapped_mg": 31.974281538300115,
+          "failed": 173,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 10,
+          "work_J": 33.401749650994304,
+          "air_trapped_mg": 29.147267172731183,
+          "failed": 67,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 20,
+          "work_J": 32.91771535472469,
+          "air_trapped_mg": 28.86930315132514,
+          "failed": 48,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 26,
+          "work_J": 32.817696590586024,
+          "air_trapped_mg": 28.81629066992837,
+          "failed": 64,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 27,
+          "work_J": 32.809071855576576,
+          "air_trapped_mg": 28.8124382949758,
+          "failed": 63,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 28,
+          "work_J": 32.802252809492984,
+          "air_trapped_mg": 28.80969928784284,
+          "failed": 63,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 29,
+          "work_J": 32.797072132943526,
+          "air_trapped_mg": 28.80796570645927,
+          "failed": 66,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 30,
+          "work_J": 32.793368422627054,
+          "air_trapped_mg": 28.80713349973242,
+          "failed": 72,
+          "comparison_status": "FAIL"
+        }
+      ],
+      "stability_observed": {
+        "window_cycles": [
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "work_range_J": 0.02432816795896997,
+        "trapped_air_range_mg": 0.009157170195951636,
+        "brake_power_range_kW": 0.00446233291974977,
+        "regions": {
+          "cylinder": {
+            "evaluated": 4,
+            "failed": 0,
+            "worst_threshold_ratio": 0.11243079670186096
+          },
+          "crankcase": {
+            "evaluated": 4,
+            "failed": 0,
+            "worst_threshold_ratio": 0.21295597064908367
+          },
+          "exhaust": {
+            "evaluated": 279,
+            "failed": 70,
+            "worst_threshold_ratio": 13.419768475195493
+          },
+          "global_species": {
+            "evaluated": 4,
+            "failed": 2,
+            "worst_threshold_ratio": 6.913136001519481
+          }
+        },
+        "stationary_uncertainty": "NOT_QUANTIFIED; last-cycle variation is not a stationary error bound"
+      }
+    },
+    {
+      "variant": "B_header_plus20",
+      "rpm": 8000.0,
+      "reused": false,
+      "cycles": 30,
+      "classification": "MAX_CYCLES_NONCONVERGED",
+      "periodicity": "NOT_CONVERGED",
+      "directory": "E:\\Dino-artifacts\\desktop-rpm-curves-v1-20261022\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-880b382c855e46d9970b069242b14479-8000",
+      "result_sha256": "c0a12bd850d572fe01c74acce3f4499769106e7de4984869ec3bca856ce12a94",
+      "checkpoint_sha256": "0760feae0c6b5f5472fe3a0699d18e177ea1a071668beb85e7e96e20b2232096",
+      "configuration_sha256": "54862b75c8017aa2a3cd85e9ba15c271c08b597f72951d57ae9640870d7270d1",
+      "identity_sha256": "4379297bde9c4e9cf2ee401b9c97a249133b370b75a88a787a3d248c2ef56c99",
+      "work_J": 34.64410038127755,
+      "crankcase_work_J": -1.192381508369536,
+      "heat_J": 74.76581609443065,
+      "air_trapped_mg": 30.108305102511267,
+      "afr_trapped": 7.075500547453327,
+      "brake_power_kW": 3.047775828064759,
+      "brake_power_HP": 4.08713470956862,
+      "brake_torque_Nm": 3.6380144135437567,
+      "runner_wall_s": 240.25603990000673,
+      "solver_step_wall_s": 217.27483729436062,
+      "processing_wall_s": 13.09641409968026,
+      "peak_rss_mib": 227.94140625,
+      "max_accepted_cfl": 0.32770624459121395,
+      "dt_min_s": 1.0416666666666666e-05,
+      "dt_max_s": 1.0416666666666666e-05,
+      "rejected_trials": {},
+      "conservation_max_relative": {
+        "mass": 2.4858761661750225e-15,
+        "energy": 1.885622100967052e-15,
+        "species": 3.7809411958971455e-15
+      },
+      "evolution": [
+        {
+          "cycle": 1,
+          "work_J": -54.835733792287655,
+          "air_trapped_mg": 58.44117179419557,
+          "failed": 0,
+          "comparison_status": "NOT_EVALUATED"
+        },
+        {
+          "cycle": 2,
+          "work_J": 77.42519433079106,
+          "air_trapped_mg": 30.7490552156019,
+          "failed": 224,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 3,
+          "work_J": 34.39793939750217,
+          "air_trapped_mg": 30.323392527156177,
+          "failed": 159,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 10,
+          "work_J": 35.06144613132949,
+          "air_trapped_mg": 30.328234462408474,
+          "failed": 65,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 20,
+          "work_J": 34.74055905063176,
+          "air_trapped_mg": 30.153215231358743,
+          "failed": 38,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 26,
+          "work_J": 34.66671936592695,
+          "air_trapped_mg": 30.117099496538756,
+          "failed": 53,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 27,
+          "work_J": 34.65946073055591,
+          "air_trapped_mg": 30.113983633976744,
+          "failed": 52,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 28,
+          "work_J": 34.65333752341962,
+          "air_trapped_mg": 30.11151847427966,
+          "failed": 52,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 29,
+          "work_J": 34.6482488560772,
+          "air_trapped_mg": 30.10964485776336,
+          "failed": 52,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 30,
+          "work_J": 34.64410038127755,
+          "air_trapped_mg": 30.108305102511267,
+          "failed": 51,
+          "comparison_status": "FAIL"
+        }
+      ],
+      "stability_observed": {
+        "window_cycles": [
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "work_range_J": 0.022618984649398044,
+        "trapped_air_range_mg": 0.008794394027489716,
+        "brake_power_range_kW": 0.0033036477265454777,
+        "regions": {
+          "cylinder": {
+            "evaluated": 4,
+            "failed": 0,
+            "worst_threshold_ratio": 0.07673538750696487
+          },
+          "crankcase": {
+            "evaluated": 4,
+            "failed": 0,
+            "worst_threshold_ratio": 0.18918027844536836
+          },
+          "exhaust": {
+            "evaluated": 279,
+            "failed": 49,
+            "worst_threshold_ratio": 14.682909225306407
+          },
+          "global_species": {
+            "evaluated": 4,
+            "failed": 2,
+            "worst_threshold_ratio": 6.6837754292636395
+          }
+        },
+        "stationary_uncertainty": "NOT_QUANTIFIED; last-cycle variation is not a stationary error bound"
+      }
+    },
+    {
+      "variant": "B_header_plus20",
+      "rpm": 9000.0,
+      "reused": true,
+      "cycles": 30,
+      "classification": "MAX_CYCLES_NONCONVERGED",
+      "periodicity": "NOT_CONVERGED",
+      "directory": "E:\\Dino-artifacts\\functional-exhaust-comparison-v1-20261022\\exploratory-workflow-v1\\functional-reed-125cc-v1\\ab-B-9000",
+      "result_sha256": "8a04e4e3d6d3d910ffdf3b21ef29a63b3167067735b7d64534076295ebc9862f",
+      "checkpoint_sha256": "0ab34fb0a8ef710a30b8c8a10c0eeddec856e1255ce637d5c9fb45633f43078e",
+      "configuration_sha256": "72e2ded3c4bc62ffde6eb39989f39140dd39a2d185d0ec00a88167bcbe602524",
+      "identity_sha256": "ebe292fd6798e661ef677a3eef75a994fbac775b9cbf62ed2df32a3db28ce178",
+      "work_J": 33.94339325687611,
+      "crankcase_work_J": -1.1857149724638845,
+      "heat_J": 73.24408886126503,
+      "air_trapped_mg": 29.49636507646148,
+      "afr_trapped": 7.5995934891593055,
+      "brake_power_kW": 3.324641718298484,
+      "brake_power_HP": 4.458417984227437,
+      "brake_torque_Nm": 3.5275544231782425,
+      "runner_wall_s": 222.8156702000415,
+      "solver_step_wall_s": 202.6262149924878,
+      "processing_wall_s": 12.133058502105996,
+      "peak_rss_mib": 228.66015625,
+      "max_accepted_cfl": 0.27865577011756715,
+      "dt_min_s": 1.568834778380632e-06,
+      "dt_max_s": 9.259259259259259e-06,
+      "rejected_trials": {},
+      "conservation_max_relative": {
+        "mass": 4.281359883589414e-15,
+        "energy": 2.2875582684883472e-15,
+        "species": 1.3344498338460512e-15
+      },
+      "evolution": [
+        {
+          "cycle": 1,
+          "work_J": -53.20093082863369,
+          "air_trapped_mg": 51.419664355176614,
+          "failed": 0,
+          "comparison_status": "NOT_EVALUATED"
+        },
+        {
+          "cycle": 2,
+          "work_J": 69.55076507320524,
+          "air_trapped_mg": 30.73691183091708,
+          "failed": 227,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 3,
+          "work_J": 33.25008221276184,
+          "air_trapped_mg": 31.317927218774482,
+          "failed": 169,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 10,
+          "work_J": 34.352450226216945,
+          "air_trapped_mg": 29.71743767145046,
+          "failed": 67,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 20,
+          "work_J": 34.03210749274274,
+          "air_trapped_mg": 29.536798151432947,
+          "failed": 41,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 26,
+          "work_J": 33.960993877040664,
+          "air_trapped_mg": 29.501786913972733,
+          "failed": 58,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 27,
+          "work_J": 33.954763337655095,
+          "air_trapped_mg": 29.4993360899685,
+          "failed": 57,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 28,
+          "work_J": 33.94982493306736,
+          "air_trapped_mg": 29.49766058332948,
+          "failed": 57,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 29,
+          "work_J": 33.94607010623622,
+          "air_trapped_mg": 29.496692474918106,
+          "failed": 56,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 30,
+          "work_J": 33.94339325687611,
+          "air_trapped_mg": 29.49636507646148,
+          "failed": 56,
+          "comparison_status": "FAIL"
+        }
+      ],
+      "stability_observed": {
+        "window_cycles": [
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "work_range_J": 0.017600620164557768,
+        "trapped_air_range_mg": 0.005421837511253358,
+        "brake_power_range_kW": 0.0029980761095357595,
+        "regions": {
+          "cylinder": {
+            "evaluated": 4,
+            "failed": 0,
+            "worst_threshold_ratio": 0.08788461613523725
+          },
+          "crankcase": {
+            "evaluated": 4,
+            "failed": 0,
+            "worst_threshold_ratio": 0.20058454440559287
+          },
+          "exhaust": {
+            "evaluated": 279,
+            "failed": 54,
+            "worst_threshold_ratio": 14.414122596094092
+          },
+          "global_species": {
+            "evaluated": 4,
+            "failed": 2,
+            "worst_threshold_ratio": 6.837057894662438
+          }
+        },
+        "stationary_uncertainty": "NOT_QUANTIFIED; last-cycle variation is not a stationary error bound"
+      }
+    },
+    {
+      "variant": "B_header_plus20",
+      "rpm": 10000.0,
+      "reused": false,
+      "cycles": 30,
+      "classification": "MAX_CYCLES_NONCONVERGED",
+      "periodicity": "NOT_CONVERGED",
+      "directory": "E:\\Dino-artifacts\\desktop-rpm-curves-v1-20261022\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-880b382c855e46d9970b069242b14479-10000",
+      "result_sha256": "882a18fff40332b2f57031c2674c4e01d0988251ebe42b2f0833bbd66143decc",
+      "checkpoint_sha256": "242ce333bc57c18b6f39c4984df0856a1179760ff3846f55aeb386f0af4c337c",
+      "configuration_sha256": "06c20fdfcc26f87ed1240ab45aad98f372e492a4b77d364c2e1e612384a1d3c2",
+      "identity_sha256": "cc5c46e2a8cd9ab36c1041395889af032e332dde31ebab6c2debb00177e7e243",
+      "work_J": 33.520767398828866,
+      "crankcase_work_J": -1.1973637030286497,
+      "heat_J": 72.87026185767081,
+      "air_trapped_mg": 29.34460019485304,
+      "afr_trapped": 8.152701711902381,
+      "brake_power_kW": 3.621667255562981,
+      "brake_power_HP": 4.856735790872959,
+      "brake_torque_Nm": 3.4584374757414427,
+      "runner_wall_s": 227.53496389999054,
+      "solver_step_wall_s": 206.36999369377736,
+      "processing_wall_s": 12.858218994690105,
+      "peak_rss_mib": 227.94140625,
+      "max_accepted_cfl": 0.2450991919567758,
+      "dt_min_s": 8.333333333333334e-06,
+      "dt_max_s": 8.333333333333334e-06,
+      "rejected_trials": {},
+      "conservation_max_relative": {
+        "mass": 3.637302498503994e-15,
+        "energy": 2.435560241637281e-15,
+        "species": 3.4102606864954643e-15
+      },
+      "evolution": [
+        {
+          "cycle": 1,
+          "work_J": -51.34712580627779,
+          "air_trapped_mg": 45.675934607012586,
+          "failed": 0,
+          "comparison_status": "NOT_EVALUATED"
+        },
+        {
+          "cycle": 2,
+          "work_J": 60.530176634730466,
+          "air_trapped_mg": 33.10817234525446,
+          "failed": 252,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 3,
+          "work_J": 37.152549687646655,
+          "air_trapped_mg": 32.643919935340044,
+          "failed": 185,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 10,
+          "work_J": 34.26952392796221,
+          "air_trapped_mg": 29.7615922620262,
+          "failed": 71,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 20,
+          "work_J": 33.673308601507415,
+          "air_trapped_mg": 29.42358675751016,
+          "failed": 50,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 26,
+          "work_J": 33.552428852941034,
+          "air_trapped_mg": 29.35811017989632,
+          "failed": 64,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 27,
+          "work_J": 33.541618038214324,
+          "air_trapped_mg": 29.35295307862667,
+          "failed": 64,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 28,
+          "work_J": 33.53286406057032,
+          "air_trapped_mg": 29.349064522018423,
+          "failed": 64,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 29,
+          "work_J": 33.525976127875765,
+          "air_trapped_mg": 29.34632023661797,
+          "failed": 69,
+          "comparison_status": "FAIL"
+        },
+        {
+          "cycle": 30,
+          "work_J": 33.520767398828866,
+          "air_trapped_mg": 29.34460019485304,
+          "failed": 73,
+          "comparison_status": "FAIL"
+        }
+      ],
+      "stability_observed": {
+        "window_cycles": [
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "work_range_J": 0.03166145411216803,
+        "trapped_air_range_mg": 0.013509985043281603,
+        "brake_power_range_kW": 0.005656137221585596,
+        "regions": {
+          "cylinder": {
+            "evaluated": 4,
+            "failed": 0,
+            "worst_threshold_ratio": 0.11972400250218594
+          },
+          "crankcase": {
+            "evaluated": 4,
+            "failed": 0,
+            "worst_threshold_ratio": 0.20750821561063967
+          },
+          "exhaust": {
+            "evaluated": 279,
+            "failed": 71,
+            "worst_threshold_ratio": 13.593468030140333
+          },
+          "global_species": {
+            "evaluated": 4,
+            "failed": 2,
+            "worst_threshold_ratio": 6.999931372295806
+          }
+        },
+        "stationary_uncertainty": "NOT_QUANTIFIED; last-cycle variation is not a stationary error bound"
+      }
+    }
+  ],
+  "equal_rpm_differences_HP": [
+    {
+      "rpm": 8000.0,
+      "compatible": true,
+      "warnings": [
+        "TRANSITORIO: diferencia de estimaciones, no ganancia estacionaria"
+      ],
+      "power_delta": -0.025176708129349912,
+      "torque_delta": -0.022410131686074752,
+      "power_status": "TRANSIENT_ESTIMATE",
+      "torque_status": "TRANSIENT_ESTIMATE",
+      "exploratory": true
+    },
+    {
+      "rpm": 9000.0,
+      "compatible": true,
+      "warnings": [
+        "TRANSITORIO: diferencia de estimaciones, no ganancia estacionaria"
+      ],
+      "power_delta": -0.024667438469442082,
+      "torque_delta": -0.01951717671810771,
+      "power_status": "TRANSIENT_ESTIMATE",
+      "torque_status": "TRANSIENT_ESTIMATE",
+      "exploratory": true
+    },
+    {
+      "rpm": 10000.0,
+      "compatible": true,
+      "warnings": [
+        "TRANSITORIO: diferencia de estimaciones, no ganancia estacionaria"
+      ],
+      "power_delta": 0.1587250044134345,
+      "torque_delta": 0.11302663501528087,
+      "power_status": "TRANSIENT_ESTIMATE",
+      "torque_status": "TRANSIENT_ESTIMATE",
+      "exploratory": true
+    }
+  ],
+  "shared_physical_source_hashes": {
+    "motorsim._evidence_io": "422f7981eaa53769ad2a9610cb8c07cb5c2e6351eba1fb820ef9a47a5b0ba5b1",
+    "motorsim._trajectory_store": "9a4a7c1b9fc01218e0b4d53ee2c26e6ac5a459c68bada0a556437294c04923e8",
+    "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+    "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+    "motorsim.engine_configuration": "d1f8b88640fdfa3b703c2a8e87e8872a22f6fbbeac9b4400e7a4bd3e7b0fcfce",
+    "motorsim.engine_variants": "be3d8e7c723cc1627bc30900a1d8da0e049adbaa066c06dacfe946eea4fcdfa1",
+    "motorsim.engineering_outputs": "c01c3c7195f28a67c3fb866df704d15a595d079d32be71057ab2d2c5095f5424",
+    "motorsim.engineering_point": "1f5b8f94c0712f7a2bee7fbe738d64322848036f05c093500a6eae421898b4a1",
+    "motorsim.engineering_workflow": "6a7b07397e205928576864a828b2687d6d8210253b839686d8cb0a17c62c74e5",
+    "motorsim.exploratory_workflow": "b210192d6b339eccbdebaf1e3336b48f6e6d00ec1af761f357bfcad9549c6436",
+    "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+    "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+    "motorsim.gas1d.eos": "72ec337f941b1259ab23c04f70ec75593870bdcc4b065d481b38834430221186",
+    "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+    "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+    "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+    "motorsim.gas_exchange_v2": "401010e2043fc14b84343cbaa4aa979b9849c6a704629b3c45ddeb4a4ccb6bf7",
+    "motorsim.integrated_2t": "4c3efa10fa016c0a87b2fd861dd74712163241b58919d7c4db9d9f5d112267f8",
+    "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+    "motorsim.mechanical": "de71d3bacb18e7661de0ff15cbac50f1a252fc01970c7ef9aa04c8a3424d0fff",
+    "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+    "motorsim.p6_species": "7ed60395642eecb6b5b9f15bbe095489468da7b562f72d0b53b13527a97e2dab",
+    "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+    "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+    "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+    "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+    "motorsim.reference_harness.convergence": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+    "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+    "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095"
+  },
+  "independent_audit": "NOT_PERFORMED",
+  "seed_integrity": {
+    "historical9000": {
+      "A": {
+        "result_sha256": "753f26a5a8fd81a4c03e1a441f371576e22e5a3142c94a057c105519eb8bbc24",
+        "checkpoint_sha256": "1f06eacdc1bf87b5cb76c66e77067980647b26c90d24125e476f61de31fc5620",
+        "sample_files": 30,
+        "status": "UNCHANGED_VS_DELIVERY2_RECEIPT"
+      },
+      "B": {
+        "result_sha256": "8a04e4e3d6d3d910ffdf3b21ef29a63b3167067735b7d64534076295ebc9862f",
+        "checkpoint_sha256": "0ab34fb0a8ef710a30b8c8a10c0eeddec856e1255ce637d5c9fb45633f43078e",
+        "sample_files": 30,
+        "status": "UNCHANGED_VS_DELIVERY2_RECEIPT"
+      }
+    },
+    "valve_roof_position": {
+      "8000": 1.0,
+      "9000": 0.5,
+      "10000": 0.0
+    },
+    "position_semantics": "0=fully raised/open;1=lowered",
+    "solver_steps": 0
+  },
+  "completed_resume": {
+    "native_restores": 6,
+    "next_cycle": 31,
+    "solver_steps": 0,
+    "checks": [
+      {
+        "variant": "A_original",
+        "before_elapsed_s": 459.1570000000065,
+        "after_elapsed_s": 463.43799999996554,
+        "worker_calls": 0,
+        "result_hashes_unchanged": true,
+        "manifest_sha256": "33d7b63d557e35a45eebe3505e5081ab2af5205c0442be7a2b30b5705cf13cc1"
+      },
+      {
+        "variant": "B_header_plus20",
+        "before_elapsed_s": 475.0,
+        "after_elapsed_s": 479.1720000000205,
+        "worker_calls": 0,
+        "result_hashes_unchanged": true,
+        "manifest_sha256": "da791d230c29fa1aec5fb13c6aaab1b6a4ff5670d711d55bec8cd6c317216cde"
+      }
+    ],
+    "scientific_audit": "NOT_PERFORMED"
+  },
+  "saved_project_reopened_six_results": true,
+  "discretization": {
+    "total_cells": 44,
+    "exhaust_cells": 31,
+    "cells_per_section": [
+      3,
+      5,
+      6,
+      2,
+      2,
+      6,
+      7
+    ],
+    "same_partition_A_B": true,
+    "spatial_independence": "NOT_DEMONSTRATED; geometric length change also changes local dx; cannot exclude discretization error contribution"
+  },
+  "known_UI_findings": {
+    "progress": "Old run bar assumed direct cycle messages; actual sweep sent nested solver_progress. Numerical execution completed. Fixed in source and tested; final read-only GUI view clean.",
+    "pre_solver_automation": "9000 float formatting and modal button activation corrected before first solver step; no physical cycle rerun",
+    "point_budget": "Resume distinguishes exhausted point cap from exhausted sweep total; neither budget is reset."
+  },
+  "tests": {
+    "final_focal": "25 passed,14 deselected",
+    "desktop_regression": "43 passed,1 skipped; external historical IMPL2 artifact not configured"
+  },
+  "captures_sha256": {
+    "01-power-torque-curves.png": "bd796e3ba20e16861573bce6650c9771b4239b2c3ca08c8077507f825efc33df",
+    "02-rpm-points.png": "a9507467e4c66497547251973e3907001ce37d06825df0dce98d63148f7ed0f8",
+    "03-equal-rpm-deltas.png": "20bf18750c046982f5495c9e1243e2ee21fd8b137cc2e0850ddf0a9f1fdd38f8",
+    "04-global-and-observed-stability.png": "b28a3c1af1400f5aba4d7c20f21fca6e8fe4d3e4a0f5d13fa25b729dfe1bf435",
+    "05-desktop-results.png": "0b7b4d4a32ef1f8f01aaff256979b81bd461a3e956d91afabe2e7f5e6a4bf8eb",
+    "06-periodic-only.png": "ab1ffa002c593235008dd2d7c808990b7c52bfffb99165948e042a509a19a380",
+    "confirmation-A_original.png": "82be0848e101030d5a755f41cb457929d354788bf8d408975f91bdb7db826c68",
+    "confirmation-B_header_plus20.png": "c064e8ae4db75c3426d5426c5fbdd45248d99b0b6d21a0b13a27570110702324",
+    "pressure-10000.png": "ad9b73442a50c5ccc0ef8bfb2fcbc1d1ccd3dc2854b657fc2ee9e82c126936c0",
+    "pressure-8000.png": "15232427679ed51503d29bba4fa6347c48f9f5f7568a2565bd8f70590fd9e021",
+    "pressure-9000.png": "d761b152a26eed55be4e36071858ec0cea03d14e92b6c7005f2380ce79d30778"
+  },
+  "paired_transient_comparisons": [
+    {
+      "rpm": 8000,
+      "exact_angles": 720,
+      "work_delta_J": -0.14471875323920358,
+      "air_delta_mg": -0.12187639941727468,
+      "pressure": {
+        "cylinder": {
+          "A_B_rms_Pa": 7844.871128040614,
+          "A_temporal_rms_Pa": 135.9465459730178,
+          "B_temporal_rms_Pa": 114.80809645680137
+        },
+        "exhaust_entry": {
+          "A_B_rms_Pa": 1183.166753648607,
+          "A_temporal_rms_Pa": 9.054493883049657,
+          "B_temporal_rms_Pa": 8.141997325416963
+        }
+      }
+    },
+    {
+      "rpm": 9000,
+      "exact_angles": 720,
+      "work_delta_J": -0.12559771581027235,
+      "air_delta_mg": -0.0860010087651446,
+      "pressure": {
+        "cylinder": {
+          "A_B_rms_Pa": 5482.583844181532,
+          "A_temporal_rms_Pa": 98.14209882849008,
+          "B_temporal_rms_Pa": 123.51735803579459
+        },
+        "exhaust_entry": {
+          "A_B_rms_Pa": 850.8613432067735,
+          "A_temporal_rms_Pa": 11.925335330808695,
+          "B_temporal_rms_Pa": 11.11799662415186
+        }
+      }
+    },
+    {
+      "rpm": 10000,
+      "exact_angles": 720,
+      "work_delta_J": 0.7273989762018118,
+      "air_delta_mg": 0.5374666951206208,
+      "pressure": {
+        "cylinder": {
+          "A_B_rms_Pa": 11504.263754970247,
+          "A_temporal_rms_Pa": 185.43151658153442,
+          "B_temporal_rms_Pa": 216.87906048470052
+        },
+        "exhaust_entry": {
+          "A_B_rms_Pa": 1175.3227790043395,
+          "A_temporal_rms_Pa": 17.16503417220459,
+          "B_temporal_rms_Pa": 18.601180272142013
+        }
+      }
+    }
+  ],
+  "csv_sha256": "7c31c5a44c473279d916b1369482cdd3f53c04fcf3ba547af20d3c2b1f60c658",
+  "final_GUI_view": {
+    "name": "desktop-rpm-curves-final-captures",
+    "command": [
+      "python",
+      "scripts/diagnostics/demo_desktop_rpm_curves_v1.py",
+      "--artifacts",
+      "E:\\Dino-artifacts\\desktop-rpm-curves-v1-20261022",
+      "--view-only"
+    ],
+    "started_at": "2026-10-22T16:58:09+00:00",
+    "finished_at": "2026-10-22T16:58:20+00:00",
+    "duration_s": 10.922,
+    "exit_code": 0,
+    "timed_out": false,
+    "log_path": "E:\\Dino-artifacts\\desktop-rpm-curves-v1-20261022\\logs\\desktop-rpm-curves-final-captures.log",
+    "log_lines": 1,
+    "log_bytes": 1497,
+    "error_lines": [],
+    "tail": [
+      "{\"schema\": \"DINO_DESKTOP_RPM_CURVE_DEMO_V1\", \"solver_mocked\": false, \"grid\": [8000, 9000, 10000], \"new_point_cap_s\": 300, \"variant_aggregate_cap_s\": 650, \"memory_mib\": 512, \"sequential\": true, \"series\": [], \"displayed_points\": [{\"variant\": \"A_original\", \"rpm\": 8000.0, \"power\": 4.11231141769797, \"tor"
+    ]
+  },
+  "checks": {
+    "openspec_strict": "PASS",
+    "program_status": "PASS",
+    "physical_source_hashes_identical": true,
+    "historical9000": "UNCHANGED",
+    "scientific_periodicity": "NOT_CONVERGED_ALL6",
+    "spatial_independence": "NOT_DEMONSTRATED",
+    "predictive_claim": "NOT_CLAIMED"
+  }
+}

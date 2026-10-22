@@ -6965,11 +6965,16 @@
       "dependencies": [],
       "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [
-        "tests/test_desktop_rpm_curves.py"
+      "commits": [
+        "c072d18"
       ],
-      "next_action": "Integrate explicit reused points in existing coordinator; distinguish exploratory curves and observed stability in existing plots.",
+      "evidence": [
+        "results/desktop-rpm-curves-v1/report.md",
+        "results/desktop-rpm-curves-v1/receipt.json",
+        "results/desktop-rpm-curves-v1/01-power-torque-curves.png",
+        "configs/reference_cases/functional_exhaust_rpm_grid_v1.json"
+      ],
+      "next_action": "No additional solver execution. Owner may decide next bounded initialization-continuation pilot; current six points remain nonperiodic.",
       "objective": "DINO_DESKTOP_RPM_CURVES_V1",
       "owner_role": "implementation",
       "write_scope": [
@@ -6979,38 +6984,54 @@
         "tests/test_desktop_rpm_curves.py"
       ],
       "evidence_level": "L1",
-      "qualification": "Focal21 pass. Real6point zero-step preflight and both9000 original identities verified.10000 explicit fully-open endpoint hold; equations unchanged."
+      "qualification": "Functional exploratory curves demonstrated through existing Desktop.4newpoints120cycles,2reused9000 unchanged; all6 NOT_CONVERGED. No predictive/periodic scientific acceptance.25focal pass,43Desktop pass+1skip;finalGUIclean;6zero-step restores and completed-resume without workers."
     },
     {
       "id": "RC2B-DEMONSTRATION",
       "description": "Real Desktop A/B8000/9000/10000:4newpoints,30cycles/300s each,650s per variant,512MiB serial; reuse9000.",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Real Desktop A/B8000/9000/10000:4newpoints,30cycles/300s each,650s per variant,512MiB serial; reuse9000.",
+      "commits": [
+        "c072d18"
+      ],
+      "evidence": [
+        "results/desktop-rpm-curves-v1/report.md",
+        "results/desktop-rpm-curves-v1/receipt.json",
+        "results/desktop-rpm-curves-v1/01-power-torque-curves.png",
+        "configs/reference_cases/functional_exhaust_rpm_grid_v1.json"
+      ],
+      "next_action": "No additional solver execution. Owner may decide next bounded initialization-continuation pilot; current six points remain nonperiodic.",
       "objective": "DINO_DESKTOP_RPM_CURVES_V1",
       "owner_role": "implementation",
       "write_scope": [
         "scripts/diagnostics/demo_desktop_rpm_curves_v1.py",
         "results/desktop-rpm-curves-v1/"
       ],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "Functional exploratory curves demonstrated through existing Desktop.4newpoints120cycles,2reused9000 unchanged; all6 NOT_CONVERGED. No predictive/periodic scientific acceptance.25focal pass,43Desktop pass+1skip;finalGUIclean;6zero-step restores and completed-resume without workers."
     },
     {
       "id": "RC2B-RESULTS",
       "description": "Interpret curves, regional periodicity and transient ranges; focal tests/receipts and scoped next-step solution.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Interpret curves, regional periodicity and transient ranges; focal tests/receipts and scoped next-step solution.",
+      "commits": [
+        "c072d18"
+      ],
+      "evidence": [
+        "results/desktop-rpm-curves-v1/report.md",
+        "results/desktop-rpm-curves-v1/receipt.json",
+        "results/desktop-rpm-curves-v1/01-power-torque-curves.png",
+        "configs/reference_cases/functional_exhaust_rpm_grid_v1.json"
+      ],
+      "next_action": "No additional solver execution. Owner may decide next bounded initialization-continuation pilot; current six points remain nonperiodic.",
       "objective": "DINO_DESKTOP_RPM_CURVES_V1",
       "owner_role": "implementation",
       "write_scope": [],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "Functional exploratory curves demonstrated through existing Desktop.4newpoints120cycles,2reused9000 unchanged; all6 NOT_CONVERGED. No predictive/periodic scientific acceptance.25focal pass,43Desktop pass+1skip;finalGUIclean;6zero-step restores and completed-resume without workers."
     }
   ],
   "audit_remediation_mode": false,
@@ -7225,7 +7246,9 @@
       "RC2B-DEMONSTRATION",
       "RC2B-RESULTS"
     ],
-    "completion_criterion": "Existing Desktop executes A/B small grid, reuses9000 without steps, supports checkpoints/resume, plots honest exploratory power/torque with gaps/status and exact RPM deltas; records periodicity limitation and bounded next solution."
+    "completion_criterion": "Existing Desktop executes A/B small grid, reuses9000 without steps, supports checkpoints/resume, plots honest exploratory power/torque with gaps/status and exact RPM deltas; records periodicity limitation and bounded next solution.",
+    "functional_result": "FUNCTIONAL_EXPLORATORY_PASS",
+    "scientific_state": "REVIEW;ALL6_NOT_CONVERGED"
   },
   "objectives": [
     {
@@ -7927,7 +7950,9 @@
         "RC2B-DEMONSTRATION",
         "RC2B-RESULTS"
       ],
-      "completion_criterion": "Existing Desktop executes A/B small grid, reuses9000 without steps, supports checkpoints/resume, plots honest exploratory power/torque with gaps/status and exact RPM deltas; records periodicity limitation and bounded next solution."
+      "completion_criterion": "Existing Desktop executes A/B small grid, reuses9000 without steps, supports checkpoints/resume, plots honest exploratory power/torque with gaps/status and exact RPM deltas; records periodicity limitation and bounded next solution.",
+      "functional_result": "FUNCTIONAL_EXPLORATORY_PASS",
+      "scientific_state": "REVIEW;ALL6_NOT_CONVERGED"
     }
   ],
   "owner_decisions_pending": [
@@ -9975,6 +10000,24 @@
       "task": "RC2B-INTEGRATION",
       "kind": "task",
       "summary": "Existing coordinator adds explicit compatible result reuse; existing plot adds opt-in dotted/hollow transient estimates, exact deltas/gaps, stability and time.6zero-step preflights PASS;9000 bindings unchanged.10000 explicit synthetic fully-open endpoint hold.21focal tests pass.4newpoints30cycles/300s,650s per variant,512MiB."
+    },
+    {
+      "at": "2026-10-22T17:02:25+00:00",
+      "task": "RC2B-DEMONSTRATION",
+      "kind": "task",
+      "summary": "Desktop small-grid complete:4newpoints30cycles each,2historical9000 reused unchanged. A459.157s/B475s;934.157s new coordinator. Six results graphed/exported,project saved/reopened. All6 NOT_CONVERGED; no status relabel. Fixed nested sweep progress UI error without solver rerun."
+    },
+    {
+      "at": "2026-10-22T17:02:25+00:00",
+      "task": "RC2B-RESULTS",
+      "kind": "task",
+      "summary": "Functional exploratory gate PASS, science REVIEW: HP A4.112/4.483/4.698;B4.087/4.458/4.857. All30cycles;exhaust49-71fails+2globalspecies. 6exact restores and completed resume0worker calls;942.61/1300s.24focal,43Desktop+1skip,strict/check pass. Bounded warm-state pilot proposed only;no push."
+    },
+    {
+      "at": "2026-10-22T17:04:42+00:00",
+      "task": "RC2B-RESULTS",
+      "kind": "task",
+      "summary": "Final focal25PASS/14deselected includes hollow/dotted rendering+CSV, matched RPM deltas, strict9000 reuse, endpoint-policy guard, nested progress and no reset of exhausted point cap. Final read-only Desktop view exit0,no errors; no further solver steps."
     }
   ],
   "legacy_gate_status": {
@@ -9990,20 +10033,23 @@
   },
   "gate_status": {
     "objective": "DINO_DESKTOP_RPM_CURVES_V1",
-    "state": "REVIEW",
-    "classification": "RPM_CURVE_INTEGRATION_IN_PROGRESS",
+    "state": "PASS",
+    "classification": "DINO_DESKTOP_RPM_CURVES_V1_FUNCTIONAL_EXPLORATORY_PASS",
     "gate_tasks_total": 3,
-    "gate_tasks_done": 1,
+    "gate_tasks_done": 3,
     "gate_task_states": {
-      "DONE": 1,
-      "IN_PROGRESS": 1,
-      "READY": 1
+      "DONE": 3
     },
-    "remaining": [
-      "RC2B-DEMONSTRATION",
-      "RC2B-RESULTS"
+    "remaining": [],
+    "evidence": [
+      "results/desktop-rpm-curves-v1/report.md",
+      "results/desktop-rpm-curves-v1/receipt.json",
+      "results/desktop-rpm-curves-v1/01-power-torque-curves.png",
+      "configs/reference_cases/functional_exhaust_rpm_grid_v1.json"
     ],
-    "evidence": []
+    "qualification": "Functional L1 acceptance only: actual exploratory RPM curves, not periodic scientific outputs or predictive validation.",
+    "scientific_state": "REVIEW;ALL6_NONPERIODIC;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED",
+    "further_campaign_authorized": false
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

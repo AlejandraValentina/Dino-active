@@ -38,11 +38,13 @@ def dialogs():
             w.accept()
         elif isinstance(w,QMessageBox) and w.isVisible():
             if w.windowTitle()=='Confirmar barrido RPM':
-                if 'Reutilizar sin cálculo: [9000]' not in w.text():
+                import ast
+                reused=ast.literal_eval(w.text().split('Reutilizar sin cálculo: ',1)[1].split(' RPM',1)[0])
+                if reused!=[9000]:
                     state['error']='9000 reuse missing from confirmation';w.done(QMessageBox.StandardButton.No);continue
                 state['confirmed'].add(window.context.selected_variant)
                 w.grab().save(str(args.artifacts/f"confirmation-{window.context.selected_variant}.png"))
-                w.done(QMessageBox.StandardButton.Yes)
+                w.button(QMessageBox.StandardButton.Yes).click()
             else:
                 state['error']=w.windowTitle()+': '+w.text();w.reject()
 
@@ -58,6 +60,9 @@ def tick():
         if phase in ('startA','startB'):
             variant='A_original' if phase=='startA' else 'B_header_plus20'
             window.context.select_variant(variant)
+            execution.rpm.setValue(9000);execution.cycles.setValue(30);execution.budget.setValue(300);execution.memory.setValue(512)
+            execution.refresh()
+            assert execution.sweep.isEnabled(),execution.preflight_label.text()
             window.results.baseline_selector.setCurrentIndex(window.results.baseline_selector.findData('A_original'))
             entries=list_project_runs(window.context.project,args.artifacts);execution.set_history_entries(entries)
             eligible=[e for e in entries if e['variant']==variant and e['status']=='COMPLETE']

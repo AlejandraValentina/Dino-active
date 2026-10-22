@@ -155,13 +155,22 @@ class DinoDesktopWindow(QMainWindow):
         self.run_state.setText(execution.status_text if not active else ("CANCELACIÓN SOLICITADA" if execution.cancel_event and execution.cancel_event.is_set() else "CORRIENDO"))
         self.run_progress.setVisible(active or execution.progress_latest is not None)
         if active and execution.progress_latest:
-            row=execution.progress_latest;fraction=((max(0,int(row["cycle"])-1)*360)+float(row["angle_deg"]))/max(1,execution.cycles.value()*360)
+            outer=execution.progress_latest;row=outer.get('solver_progress',outer)
+            sweep=getattr(execution,'active_sweep_settings',None) or {}
+            horizon=sweep.get('max_cycles',execution.cycles.value())
+            point_index=outer.get('point_index',1);point_count=outer.get('point_count',1)
+            in_cycle='cycle' in row and 'angle_deg' in row
+            fraction=(((max(0,int(row['cycle'])-1)*360)+float(row['angle_deg']))/max(1,horizon*360)) if in_cycle else 1.0
+            fraction=(point_index-1+fraction)/point_count
             self.run_progress.setValue(max(0,min(100,int(fraction*100))))
-            self.run_progress.setFormat(f"Ciclo {row['cycle']}/{execution.cycles.value()} · {row['angle_deg']:.0f}° · {row['rss_bytes']/1048576:.0f} MiB")
+            prefix=f"{outer['rpm']:g} RPM · punto {point_index}/{point_count} · " if 'point_index' in outer else ''
+            detail=(f"ciclo {row['cycle']}/{horizon} · {row['angle_deg']:.0f}° · {row.get('rss_bytes',0)/1048576:.0f} MiB" if in_cycle else 'resultado guardado')
+            self.run_progress.setFormat(prefix+detail)
+            if sweep:self.run_config_summary.setText(f"Barrido {sweep['rpms']} RPM · {horizon} ciclos/punto · {sweep['total_budget_seconds']:g} s agregado")
             elapsed=execution.elapsed_timer.elapsed()/1000 if execution.elapsed_timer.isValid() else 0
-            remaining=max(0,execution.budget.value()-elapsed)
+            remaining=max(0,sweep.get('total_budget_seconds',execution.budget.value())-elapsed)
             self.run_clock.setText(f"{elapsed:.0f} s · quedan {remaining:.0f} s")
-            self.checkpoint_state.setText(f"Checkpoint: último cierre de ciclo {max(0,int(row['cycle'])-1)}; el siguiente es conservador.")
+            self.checkpoint_state.setText(f"Checkpoint: último cierre de ciclo {max(0,int(row['cycle'])-1)}; el siguiente es conservador." if in_cycle else f"Checkpoint: punto {point_index}/{point_count} guardado.")
         elif not active:
             self.run_progress.setValue(0);self.run_progress.setFormat("Sin actividad")
             self.run_clock.setText("—")

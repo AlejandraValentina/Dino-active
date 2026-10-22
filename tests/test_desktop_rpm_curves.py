@@ -93,3 +93,56 @@ def test_explicit_open_endpoint_policy_preserves9000_and_extends_only_control():
     assert doc['native_configuration']['port_binding']['powervalve']['rpm'][-1]==9500
     assert resolve_for_operating_point(extended,rpm=10000)['selected_rpm']==10000
     with pytest.raises(ValueError,match='exceeds'):_operating_document(doc,11000,policy)
+
+
+def test_existing_plot_renders_exploratory_points_and_csv_preserves_state(tmp_path):
+    from PySide6.QtWidgets import QApplication
+    from motorsim.desktop.performance_curves import PowerCurvePanel
+    app=QApplication.instance() or QApplication([])
+    row=dict(variant_id='A',rpm=8000,mode='ENGINEERING_EXPLORATORY',classification='MAX_CYCLES_NONCONVERGED',
+        periodicity='NOT_CONVERGED',brake_power_status='UNDEFINED',brake_torque_status='UNDEFINED',
+        transient_estimates=dict(brake_power=3,brake_torque=4))
+    panel=PowerCurvePanel();panel.resize(1100,800);panel.set_dataset(dict(points=[row],requested_rpms=[8000,9000,10000]),{'A'})
+    panel.show();app.processEvents();assert not panel.plot.grab().isNull()
+    assert panel.rows[0]['power_status']=='TRANSIENT_ESTIMATE'
+    target=tmp_path/'curve.csv';panel.export_csv(target)
+    assert 'TRANSIENT_ESTIMATE' in target.read_text(encoding='utf-8-sig')
+    panel.exploratory_toggle.setChecked(False)
+    assert all(p['power'] is None for p in panel.rows)
+    assert row['brake_power_status']=='UNDEFINED' and row['periodicity']=='NOT_CONVERGED'
+    panel.close()
+
+
+def test_run_strip_handles_real_coordinator_message_shapes_without_cycle_key():
+    from types import SimpleNamespace
+    import threading
+    from PySide6.QtCore import QElapsedTimer
+    from PySide6.QtWidgets import QApplication,QLabel,QPushButton,QProgressBar,QDoubleSpinBox,QSpinBox
+    from motorsim.desktop.app import DinoDesktopWindow
+    app=QApplication.instance() or QApplication([])
+    rpm=QDoubleSpinBox();rpm.setRange(100,15000);rpm.setValue(9000)
+    cycles=QSpinBox();cycles.setValue(30);budget=QDoubleSpinBox();budget.setRange(1,1000);budget.setValue(300)
+    timer=QElapsedTimer();timer.start()
+    execution=SimpleNamespace(task=object(),rpm=rpm,cycles=cycles,budget=budget,cancel_event=threading.Event(),
+        status_text='CORRIENDO',elapsed_timer=timer,active_sweep_settings=dict(max_cycles=30,rpms=[8000,9000,10000],total_budget_seconds=650))
+    shell=SimpleNamespace(pages=[None,None,None,execution],run_config_summary=QLabel(),strip_cancel=QPushButton(),
+        run_state=QLabel(),run_progress=QProgressBar(),run_clock=QLabel(),checkpoint_state=QLabel())
+    execution.progress_latest=dict(rpm=8000,point_index=1,point_count=3,solver_progress=dict(cycle=3,angle_deg=90,rss_bytes=200*1024**2))
+    DinoDesktopWindow._update_strip(shell)
+    assert '8000 RPM' in shell.run_progress.format() and '650' in shell.run_config_summary.text()
+    execution.progress_latest=dict(rpm=8000,point_index=1,point_count=3,point=dict(status='COMPLETE'))
+    DinoDesktopWindow._update_strip(shell)
+    assert 'resultado guardado' in shell.run_progress.format()
+    assert shell.strip_cancel.isEnabled()
+
+
+def test_resume_never_resets_exhausted_point_budget(monkeypatch,tmp_path):
+    import motorsim.power_curve_sweep as sweep
+    from test_power_curve_sweep import _patch_sweep,_kwargs
+    calls=_patch_sweep(monkeypatch,tmp_path,[('INTERRUPTED_CHECKPOINTED','EXPLORATORY_TIMEOUT_CHECKPOINTED')])
+    kw=_kwargs(tmp_path);first=sweep.run_power_curve({},**kw)
+    path=Path(first['artifact_directory'])/'series.json';m=json.loads(path.read_text())
+    m['points'][0]['elapsed_seconds']=kw['point_budget_seconds'];path.write_text(json.dumps(m))
+    result=sweep.run_power_curve({},**kw,resume=True)
+    assert calls==[(3000,False)]
+    assert result['classification']=='EXPLORATORY_SWEEP_POINT_BUDGET_EXHAUSTED'
