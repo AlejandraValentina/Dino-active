@@ -6725,6 +6725,35 @@
         "results/integrated-solver-verification-v1/trajectory-memory-recovery.md"
       ],
       "next_action": "No automatic scientific continuation or new version. Any representative extended run and identity/budget migration require separate owner authorization."
+    },
+    {
+      "id": "ISV1-PIPELINE-MEMORY-FINALIZATION",
+      "description": "Owner-authorized complete evidence pipeline memory architecture, canonical persistence/reload, independent replay and increasing-scale verification; no A3b execution.",
+      "dependencies": [
+        "ISV1-TRAJECTORY-MEMORY-RECOVERY"
+      ],
+      "state": "DONE",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "architecture",
+      "evidence_level": "L1",
+      "write_scope": [
+        "motorsim/integrated_2t.py",
+        "motorsim/_trajectory_store.py",
+        "motorsim/_evidence_io.py",
+        "motorsim/exploratory_workflow.py",
+        "motorsim/engine_configuration.py",
+        "tests/test_streaming_evidence.py",
+        "scripts/diagnostics/pipeline_memory_benchmark.py",
+        "results/integrated-solver-verification-v1/pipeline-memory-finalization*"
+      ],
+      "blocker": null,
+      "result": "PIPELINE_MEMORY_IMPROVED_WITH_LIMITATIONS",
+      "qualification": "Full-state trajectory graph growth removed in selected path; engineering vectors, rejection/scalar metadata and legacy eager paths remain linear. B/C unverified, no cap or budget increase, no historical hash change. Post-run result import uses the same strict streaming reader and isolated metadata clones; final 33-case regression passes.",
+      "evidence": [
+        "results/integrated-solver-verification-v1/pipeline-memory-finalization-receipt.json",
+        "results/integrated-solver-verification-v1/pipeline-memory-finalization.md"
+      ],
+      "next_action": "No automatic execution; separately authorize one representative current-identity diagnostic with explicit budget treatment before any scientific continuation."
     }
   ],
   "audit_remediation_mode": false,
@@ -6941,7 +6970,7 @@
       "ISV1-A3-EXECUTION",
       "ISV1-ACCEPTANCE"
     ],
-    "completion_criterion": "Trajectory memory intervention COMPLETE: MEMORY_GROWTH_REDUCED on small fixtures. Lossless private spool enabled in exploratory production workflow, public checkpoint/primary unchanged. Retained growth 31458 to 1115 bytes/step; cycle-1 integration RSS 86.54 to 34.74 MiB; overall audit-dominated peak 513.51 to 481.40 MiB; wall 47.51 to 48.48 s. Canonical primaries/snapshots identical, independent audit recomputed PASS and conservation equal. 39 unique focal tests PASS including Windows spawn interruptions, disk-failure restore and production workflow. Snapshots/primaries/replay still grow; T1-B/C NOT_VERIFIED. 17 historical source files and 4 V4 evidence files unchanged. New solver/workflow identities fail frozen V4 preflight closed; no migration, new protocol or scientific execution. A3b budget unchanged 783.376/4320 s consumed, 3536.624 s left; old pending forecast already exceeds balance. Scientific gate REVIEW, matrix incomplete; no automatic continuation."
+    "completion_criterion": "Pipeline memory intervention COMPLETE: PIPELINE_MEMORY_IMPROVED_WITH_LIMITATIONS. Production exploratory path streams sealed snapshots, primary views, independent replay, canonical gzip persistence/reload and compact restart checkpoints; full-state materializations removed. Three 13-cell fixture scales (1242/2019/4330 accepted steps) match canonical primary/checkpoint/engineering hashes and gzip bytes, conservation and all 12 independent audits/re-audits. Largest RSS 1344.59 to 127.05 MiB, wall 129.25 to 131.77 s; remaining dominant engineering series scale with samples/channels. 65 unique focal tests PASS (base 64 plus final 33-case import regression with one new test); historical 17 source and 4 V4 evidence files unchanged. Full workflow/build identity now binds both helpers. Frozen V4 fails closed on new dependencies; no migration or A3b invocation. T1-B/C NOT_VERIFIED; budget remains 783.376/4320 s consumed, 3536.624 s left, fit unproven. Scientific gate REVIEW, matrix incomplete, no automatic campaign or next objective."
   },
   "objectives": [
     {
@@ -9473,6 +9502,24 @@
       "task": "ISV1-TRAJECTORY-MEMORY-RECOVERY",
       "kind": "task",
       "summary": "MEMORY_GROWTH_REDUCED: private lossless spool in production exploratory workflow; retained growth 31458 to 1115 bytes/step, integration RSS 86.54 to 34.74 MiB. Canonical equality and independent audit PASS, 39 focal tests including spawn recovery. Public snapshots/replay still grow. B/C unverified, frozen hashes reject changes, old budget forecast no longer fits; no A3b execution."
+    },
+    {
+      "at": "2026-10-21T16:21:26+00:00",
+      "task": "ISV1-PIPELINE-MEMORY-FINALIZATION",
+      "kind": "task",
+      "summary": "Complete selected evidence path streams snapshots/primaries, independent replay and canonical gzip IO. Three scales canonical/gzip/checkpoint/engineering equal; 12 audits PASS; largest RSS 1344.59 to 127.05 MiB, wall 129.25 to 131.77 s. 64 final tests PASS. Remaining engineering vectors linear: IMPROVED_WITH_LIMITATIONS, B/C unverified; historical evidence/budget preserved, no A3b run."
+    },
+    {
+      "at": "2026-10-21T16:29:20+00:00",
+      "task": "ISV1-PIPELINE-MEMORY-FINALIZATION",
+      "kind": "task",
+      "summary": "Final result-import integration verified: strict streaming read, sealed trajectory shared with metadata-only clones; 33 tests PASS including one new isolation case, bringing distinct focal coverage to 65. Six benchmark core dependency maps still match final solver; historical identities, ledger and scientific gate unchanged."
+    },
+    {
+      "at": "2026-10-22T10:22:25+00:00",
+      "task": "ISV1-PIPELINE-MEMORY-FINALIZATION",
+      "kind": "task",
+      "summary": "SALVAGE representative 48-cell diagnostic ENVIRONMENT_BLOCKED before launch: available host RAM 2654 then 2605 MiB <4096 required. 19 zero-step integrity tests PASS; source identity and receipt persisted. No solver, no A3b charge, no new checkpoint or retries. Existing staged pipeline changes prepared for local commit; no new task or campaign."
     }
   ],
   "legacy_gate_status": {
@@ -9932,6 +9979,13 @@
     "receipt": "results/integrated-solver-verification-v1/trajectory-memory-recovery-receipt.json",
     "receipt_sha256": "3329cdebe9f2c8b062d6a1f994f61d2ff313dd8120013d273268a329d8dcb053",
     "B_C_verified": false,
+    "scientific_execution_authorized": false
+  },
+  "pipeline_memory_finalization": {
+    "result": "PIPELINE_MEMORY_IMPROVED_WITH_LIMITATIONS",
+    "receipt": "results/integrated-solver-verification-v1/pipeline-memory-finalization-receipt.json",
+    "receipt_sha256": "528009ec4512519dd4465127cb84d98a9f56cd3d7dada056ae6e98505052258f",
+    "representative_B_C_verified": false,
     "scientific_execution_authorized": false
   }
 }

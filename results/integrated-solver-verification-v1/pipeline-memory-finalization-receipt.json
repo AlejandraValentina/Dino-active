@@ -1,0 +1,814 @@
+{
+  "schema": "DINO_PIPELINE_MEMORY_FINALIZATION",
+  "classification": "PIPELINE_MEMORY_IMPROVED_WITH_LIMITATIONS",
+  "date": "2026-10-21T16:21:26.365050+00:00",
+  "starting_HEAD": "275325c36e083386d396952eed73e17077102d97",
+  "review_kind": "SELF_REVIEW",
+  "report": "results/integrated-solver-verification-v1/pipeline-memory-finalization.md",
+  "scope": "Complete current exploratory evidence pipeline, small 13-cell synthetic fixtures; not A3b or predictive validation",
+  "architecture": [
+    "Sealed leased lossless stage-record views for streaming snapshots",
+    "Primary slices and reconstruction without full-trajectory deepcopy",
+    "Independent SSPRK replay retaining its history in a private spool",
+    "Incremental canonical SHA/gzip and strict canonical streaming reload",
+    "Unchanged complete compact JSON checkpoint plus atomic production manifest",
+    "Verified dead-writer quarantine; live/unverifiable temporary owner fails closed",
+    "Both helper modules bound in solver dependencies and workflow/build-manifest identity",
+    "Result import and post-run reaudit share sealed trajectories, cloning mutable metadata without whole-primary JSON roundtrips"
+  ],
+  "measurements": [
+    {
+      "fixture_cfl": 0.4,
+      "accepted_steps": 1242,
+      "legacy": {
+        "scope": "SYNTHETIC_ASSUMPTION small integrated engine; not T1-A/B/C",
+        "pipeline": "legacy",
+        "fixture_cfl": 0.4,
+        "cells": 13,
+        "accepted_steps": 1242,
+        "rejected_steps": 518,
+        "wall_s": 34.491383200045675,
+        "cpu_s": 34.4375,
+        "phase_seconds": {
+          "start_snapshot": 0.004300499917007983,
+          "integration": 3.510474600014277,
+          "end_snapshot": 0.6385947000235319,
+          "primary": 4.963302499963902,
+          "audit": 11.612804000033066,
+          "write": 1.4038190999999642,
+          "engineering": 0.24269840004853904,
+          "read": 0.7539153000107035,
+          "reaudit": 11.336153600015678,
+          "checkpoint": 0.004522199975326657
+        },
+        "phase_peak_rss_bytes": {
+          "integration": 91529216,
+          "end_snapshot": 140214272,
+          "primary": 231833600,
+          "audit": 336945152,
+          "write": 252342272,
+          "engineering": 231370752,
+          "read": 308424704,
+          "reaudit": 430084096,
+          "checkpoint": 303431680
+        },
+        "peak_rss_bytes": 430084096,
+        "integration_samples": [
+          {
+            "angle": 60.0,
+            "steps": 120,
+            "rss_bytes": 41459712
+          },
+          {
+            "angle": 120.0,
+            "steps": 281,
+            "rss_bytes": 48574464
+          },
+          {
+            "angle": 180.0,
+            "steps": 521,
+            "rss_bytes": 59469824
+          },
+          {
+            "angle": 240.0,
+            "steps": 761,
+            "rss_bytes": 70668288
+          },
+          {
+            "angle": 300.0,
+            "steps": 1002,
+            "rss_bytes": 81543168
+          },
+          {
+            "angle": 360.0,
+            "steps": 1242,
+            "rss_bytes": 91877376
+          }
+        ],
+        "primary_sha256": "a10c23c5eda824020ae72c9fcb696f719b7cbd0821e9a848ab51c1de607a6cb7",
+        "artifact_bytes": 4284418,
+        "checkpoint_sha256": "b0c98e6169f8dd4192acd50fd32324db9a1233e619abdeea20e20bedf4ea648e",
+        "conservation": {
+          "mass_residual_kg": -8.809142651444724e-20,
+          "energy_residual_J": 5.920264278813647e-14,
+          "species_residual_kg": [
+            -2.7740329022578336e-19,
+            -6.352747104407253e-22,
+            4.3095024239458766e-19,
+            4.02672814660521e-21
+          ]
+        },
+        "engineering_sha256": "9034b60bc1c5ab61809452be589ace183116a9ab8debd5bfb8f1db5017b72072",
+        "remaining_linear_data": "offset index, rejection log and engineering waveform arrays",
+        "rss_measurement": "10 ms sampled worker RSS; other tests may run on host",
+        "audit": {
+          "status": "PASS",
+          "recomputed": true
+        },
+        "reaudit": {
+          "status": "PASS",
+          "recomputed": true
+        },
+        "integration_RSS_growth_bytes_per_step": 44935.529411764706,
+        "launcher_wall_s": 35.313
+      },
+      "streaming": {
+        "scope": "SYNTHETIC_ASSUMPTION small integrated engine; not T1-A/B/C",
+        "pipeline": "streaming",
+        "fixture_cfl": 0.4,
+        "cells": 13,
+        "accepted_steps": 1242,
+        "rejected_steps": 518,
+        "wall_s": 35.17386730003636,
+        "cpu_s": 34.9375,
+        "phase_seconds": {
+          "start_snapshot": 0.005073600099422038,
+          "integration": 3.7567529000807554,
+          "end_snapshot": 0.1564304999774322,
+          "primary": 4.370627099997364,
+          "audit": 11.349895400111564,
+          "write": 1.5277178999967873,
+          "engineering": 0.4749727000016719,
+          "read": 1.8845148999243975,
+          "reaudit": 11.638811900047585,
+          "checkpoint": 0.005445100017823279
+        },
+        "phase_peak_rss_bytes": {
+          "integration": 38404096,
+          "end_snapshot": 37822464,
+          "primary": 40628224,
+          "audit": 44105728,
+          "write": 43016192,
+          "engineering": 65249280,
+          "read": 62140416,
+          "reaudit": 62705664
+        },
+        "peak_rss_bytes": 65249280,
+        "integration_samples": [
+          {
+            "angle": 60.0,
+            "steps": 120,
+            "rss_bytes": 38400000
+          },
+          {
+            "angle": 120.0,
+            "steps": 281,
+            "rss_bytes": 38404096
+          },
+          {
+            "angle": 180.0,
+            "steps": 521,
+            "rss_bytes": 38404096
+          },
+          {
+            "angle": 240.0,
+            "steps": 761,
+            "rss_bytes": 38404096
+          },
+          {
+            "angle": 300.0,
+            "steps": 1002,
+            "rss_bytes": 38404096
+          },
+          {
+            "angle": 360.0,
+            "steps": 1242,
+            "rss_bytes": 38404096
+          }
+        ],
+        "primary_sha256": "a10c23c5eda824020ae72c9fcb696f719b7cbd0821e9a848ab51c1de607a6cb7",
+        "artifact_bytes": 4284418,
+        "checkpoint_sha256": "b0c98e6169f8dd4192acd50fd32324db9a1233e619abdeea20e20bedf4ea648e",
+        "conservation": {
+          "mass_residual_kg": -8.809142651444724e-20,
+          "energy_residual_J": 5.920264278813647e-14,
+          "species_residual_kg": [
+            -2.7740329022578336e-19,
+            -6.352747104407253e-22,
+            4.3095024239458766e-19,
+            4.02672814660521e-21
+          ]
+        },
+        "engineering_sha256": "9034b60bc1c5ab61809452be589ace183116a9ab8debd5bfb8f1db5017b72072",
+        "remaining_linear_data": "offset index, rejection log and engineering waveform arrays",
+        "rss_measurement": "10 ms sampled worker RSS; other tests may run on host",
+        "audit": {
+          "status": "PASS",
+          "recomputed": true
+        },
+        "reaudit": {
+          "status": "PASS",
+          "recomputed": true
+        },
+        "integration_RSS_growth_bytes_per_step": 3.6506238859180034,
+        "launcher_wall_s": 35.891
+      },
+      "canonical_equivalence": true,
+      "gzip_byte_equivalence": true,
+      "wall_ratio": 1.0197870898952461,
+      "peak_RSS_reduction_percent": 84.82871591699127
+    },
+    {
+      "fixture_cfl": 0.2,
+      "accepted_steps": 2019,
+      "legacy": {
+        "scope": "SYNTHETIC_ASSUMPTION small integrated engine; not T1-A/B/C",
+        "pipeline": "legacy",
+        "fixture_cfl": 0.2,
+        "cells": 13,
+        "accepted_steps": 2019,
+        "rejected_steps": 1869,
+        "wall_s": 57.47683609998785,
+        "cpu_s": 57.34375,
+        "phase_seconds": {
+          "start_snapshot": 0.0044411999406293035,
+          "integration": 6.737328700022772,
+          "end_snapshot": 1.1420480000087991,
+          "primary": 8.14227439998649,
+          "audit": 18.669585899915546,
+          "write": 2.1616877000778913,
+          "engineering": 0.3658322999253869,
+          "read": 1.1803380000637844,
+          "reaudit": 19.034974900074303,
+          "checkpoint": 0.004680600017309189
+        },
+        "phase_peak_rss_bytes": {
+          "integration": 126263296,
+          "end_snapshot": 206655488,
+          "primary": 338219008,
+          "audit": 512450560,
+          "write": 376651776,
+          "engineering": 349405184,
+          "read": 476151808,
+          "reaudit": 660791296,
+          "checkpoint": 456708096
+        },
+        "peak_rss_bytes": 660791296,
+        "integration_samples": [
+          {
+            "angle": 60.0,
+            "steps": 240,
+            "rss_bytes": 45989888
+          },
+          {
+            "angle": 120.0,
+            "steps": 545,
+            "rss_bytes": 59486208
+          },
+          {
+            "angle": 180.0,
+            "steps": 938,
+            "rss_bytes": 77844480
+          },
+          {
+            "angle": 240.0,
+            "steps": 1298,
+            "rss_bytes": 94646272
+          },
+          {
+            "angle": 300.0,
+            "steps": 1659,
+            "rss_bytes": 110911488
+          },
+          {
+            "angle": 360.0,
+            "steps": 2019,
+            "rss_bytes": 126767104
+          }
+        ],
+        "primary_sha256": "8705a53019dfceda3f0b70eb8dedbb4ac2109131394cd49d6f14561a8e981561",
+        "artifact_bytes": 6670996,
+        "checkpoint_sha256": "6fa4de6e79797237c4c18e4966e831b542079a5c43d89fc8f945420b5d7096f7",
+        "conservation": {
+          "mass_residual_kg": -5.867820742104166e-19,
+          "energy_residual_J": -5.263289803991711e-13,
+          "species_residual_kg": [
+            -1.3639348033162371e-18,
+            2.9116757561866574e-22,
+            -4.844796847723083e-21,
+            1.492245457273026e-20
+          ]
+        },
+        "engineering_sha256": "4d339e9cd7bc678bee2239d53956e422d458c816c34679d79f7b57652b124f7f",
+        "remaining_linear_data": "offset index, rejection log and engineering waveform arrays",
+        "rss_measurement": "10 ms sampled worker RSS; other tests may run on host",
+        "audit": {
+          "status": "PASS",
+          "recomputed": true
+        },
+        "reaudit": {
+          "status": "PASS",
+          "recomputed": true
+        },
+        "integration_RSS_growth_bytes_per_step": 45405.96739741428,
+        "launcher_wall_s": 58.391
+      },
+      "streaming": {
+        "scope": "SYNTHETIC_ASSUMPTION small integrated engine; not T1-A/B/C",
+        "pipeline": "streaming",
+        "fixture_cfl": 0.2,
+        "cells": 13,
+        "accepted_steps": 2019,
+        "rejected_steps": 1869,
+        "wall_s": 58.65952489990741,
+        "cpu_s": 58.34375,
+        "phase_seconds": {
+          "start_snapshot": 0.005224199965596199,
+          "integration": 7.006874600076117,
+          "end_snapshot": 0.1274525000480935,
+          "primary": 7.150114799966104,
+          "audit": 18.913410399924032,
+          "write": 2.3508359000552446,
+          "engineering": 0.7785358000546694,
+          "read": 2.993925799964927,
+          "reaudit": 19.318379700067453,
+          "checkpoint": 0.010703800013288856
+        },
+        "phase_peak_rss_bytes": {
+          "integration": 38027264,
+          "end_snapshot": 38699008,
+          "primary": 41046016,
+          "audit": 45187072,
+          "write": 44654592,
+          "engineering": 82153472,
+          "read": 75345920,
+          "reaudit": 77524992,
+          "checkpoint": 75571200
+        },
+        "peak_rss_bytes": 82153472,
+        "integration_samples": [
+          {
+            "angle": 60.0,
+            "steps": 240,
+            "rss_bytes": 37355520
+          },
+          {
+            "angle": 120.0,
+            "steps": 545,
+            "rss_bytes": 37470208
+          },
+          {
+            "angle": 180.0,
+            "steps": 938,
+            "rss_bytes": 37605376
+          },
+          {
+            "angle": 240.0,
+            "steps": 1298,
+            "rss_bytes": 37806080
+          },
+          {
+            "angle": 300.0,
+            "steps": 1659,
+            "rss_bytes": 37957632
+          },
+          {
+            "angle": 360.0,
+            "steps": 2019,
+            "rss_bytes": 38027264
+          }
+        ],
+        "primary_sha256": "8705a53019dfceda3f0b70eb8dedbb4ac2109131394cd49d6f14561a8e981561",
+        "artifact_bytes": 6670996,
+        "checkpoint_sha256": "6fa4de6e79797237c4c18e4966e831b542079a5c43d89fc8f945420b5d7096f7",
+        "conservation": {
+          "mass_residual_kg": -5.867820742104166e-19,
+          "energy_residual_J": -5.263289803991711e-13,
+          "species_residual_kg": [
+            -1.3639348033162371e-18,
+            2.9116757561866574e-22,
+            -4.844796847723083e-21,
+            1.492245457273026e-20
+          ]
+        },
+        "engineering_sha256": "4d339e9cd7bc678bee2239d53956e422d458c816c34679d79f7b57652b124f7f",
+        "remaining_linear_data": "offset index, rejection log and engineering waveform arrays",
+        "rss_measurement": "10 ms sampled worker RSS; other tests may run on host",
+        "audit": {
+          "status": "PASS",
+          "recomputed": true
+        },
+        "reaudit": {
+          "status": "PASS",
+          "recomputed": true
+        },
+        "integration_RSS_growth_bytes_per_step": 377.59640247329963,
+        "launcher_wall_s": 59.422
+      },
+      "canonical_equivalence": true,
+      "gzip_byte_equivalence": true,
+      "wall_ratio": 1.0205767902370642,
+      "peak_RSS_reduction_percent": 87.56741008888834
+    },
+    {
+      "fixture_cfl": 0.1,
+      "accepted_steps": 4330,
+      "legacy": {
+        "scope": "SYNTHETIC_ASSUMPTION small integrated engine; not T1-A/B/C",
+        "pipeline": "legacy",
+        "fixture_cfl": 0.1,
+        "cells": 13,
+        "accepted_steps": 4330,
+        "rejected_steps": 7241,
+        "wall_s": 129.25304040010087,
+        "cpu_s": 129.140625,
+        "phase_seconds": {
+          "start_snapshot": 0.004331800038926303,
+          "integration": 18.094751400058158,
+          "end_snapshot": 2.4645939000183716,
+          "primary": 16.646000499953516,
+          "audit": 42.06285789993126,
+          "write": 4.3024055999703705,
+          "engineering": 0.7634267000248656,
+          "read": 2.3709185000043362,
+          "reaudit": 42.47090670000762,
+          "checkpoint": 0.004616999998688698
+        },
+        "phase_peak_rss_bytes": {
+          "integration": 229904384,
+          "end_snapshot": 403255296,
+          "primary": 723079168,
+          "audit": 1091878912,
+          "write": 735678464,
+          "engineering": 701673472,
+          "read": 974680064,
+          "reaudit": 1409908736
+        },
+        "peak_rss_bytes": 1409908736,
+        "integration_samples": [
+          {
+            "angle": 60.0,
+            "steps": 600,
+            "rss_bytes": 60448768
+          },
+          {
+            "angle": 120.0,
+            "steps": 1307,
+            "rss_bytes": 91250688
+          },
+          {
+            "angle": 180.0,
+            "steps": 2169,
+            "rss_bytes": 131588096
+          },
+          {
+            "angle": 240.0,
+            "steps": 2889,
+            "rss_bytes": 165400576
+          },
+          {
+            "angle": 300.0,
+            "steps": 3610,
+            "rss_bytes": 198049792
+          },
+          {
+            "angle": 360.0,
+            "steps": 4330,
+            "rss_bytes": 229974016
+          }
+        ],
+        "primary_sha256": "4e4f4e7a8b54e0505e863cbd8b3fc4a591c62ef298e104a153ccf9ab83f7fd32",
+        "artifact_bytes": 13680963,
+        "checkpoint_sha256": "12932d270ebe2d0befca247b8873a69bb8950dc2e43ffe8ff4b6537e1859918c",
+        "conservation": {
+          "mass_residual_kg": 5.816998765268908e-19,
+          "energy_residual_J": 1.049160758270773e-14,
+          "species_residual_kg": [
+            -2.329340604949326e-21,
+            -4.235164736271502e-22,
+            3.2141731212578854e-19,
+            1.0451168545666082e-20
+          ]
+        },
+        "engineering_sha256": "94b495730182c9635475c3a7a0ae90c6aa4fa7f039635019fbe6d4d120c7a57b",
+        "remaining_linear_data": "offset index, rejection log and engineering waveform arrays",
+        "rss_measurement": "10 ms sampled worker RSS; other tests may run on host",
+        "audit": {
+          "status": "PASS",
+          "recomputed": true
+        },
+        "reaudit": {
+          "status": "PASS",
+          "recomputed": true
+        },
+        "integration_RSS_growth_bytes_per_step": 45449.12815013405,
+        "launcher_wall_s": 130.625
+      },
+      "streaming": {
+        "scope": "SYNTHETIC_ASSUMPTION small integrated engine; not T1-A/B/C",
+        "pipeline": "streaming",
+        "fixture_cfl": 0.1,
+        "cells": 13,
+        "accepted_steps": 4330,
+        "rejected_steps": 7241,
+        "wall_s": 131.76922789996024,
+        "cpu_s": 131.484375,
+        "phase_seconds": {
+          "start_snapshot": 0.005358600057661533,
+          "integration": 17.76271560008172,
+          "end_snapshot": 0.01841149991378188,
+          "primary": 14.68660210003145,
+          "audit": 42.76545930001885,
+          "write": 4.952180100022815,
+          "engineering": 1.7151803000597283,
+          "read": 6.197848999989219,
+          "reaudit": 43.65168170002289,
+          "checkpoint": 0.010105299996212125
+        },
+        "phase_peak_rss_bytes": {
+          "integration": 39895040,
+          "end_snapshot": 40452096,
+          "primary": 44580864,
+          "audit": 49594368,
+          "write": 50946048,
+          "engineering": 133226496,
+          "read": 117866496,
+          "reaudit": 117571584,
+          "checkpoint": 116334592
+        },
+        "peak_rss_bytes": 133226496,
+        "integration_samples": [
+          {
+            "angle": 60.0,
+            "steps": 600,
+            "rss_bytes": 37470208
+          },
+          {
+            "angle": 120.0,
+            "steps": 1307,
+            "rss_bytes": 37920768
+          },
+          {
+            "angle": 180.0,
+            "steps": 2169,
+            "rss_bytes": 38551552
+          },
+          {
+            "angle": 240.0,
+            "steps": 2889,
+            "rss_bytes": 38969344
+          },
+          {
+            "angle": 300.0,
+            "steps": 3610,
+            "rss_bytes": 39374848
+          },
+          {
+            "angle": 360.0,
+            "steps": 4330,
+            "rss_bytes": 39895040
+          }
+        ],
+        "primary_sha256": "4e4f4e7a8b54e0505e863cbd8b3fc4a591c62ef298e104a153ccf9ab83f7fd32",
+        "artifact_bytes": 13680963,
+        "checkpoint_sha256": "12932d270ebe2d0befca247b8873a69bb8950dc2e43ffe8ff4b6537e1859918c",
+        "conservation": {
+          "mass_residual_kg": 5.816998765268908e-19,
+          "energy_residual_J": 1.049160758270773e-14,
+          "species_residual_kg": [
+            -2.329340604949326e-21,
+            -4.235164736271502e-22,
+            3.2141731212578854e-19,
+            1.0451168545666082e-20
+          ]
+        },
+        "engineering_sha256": "94b495730182c9635475c3a7a0ae90c6aa4fa7f039635019fbe6d4d120c7a57b",
+        "remaining_linear_data": "offset index, rejection log and engineering waveform arrays",
+        "rss_measurement": "10 ms sampled worker RSS; other tests may run on host",
+        "audit": {
+          "status": "PASS",
+          "recomputed": true
+        },
+        "reaudit": {
+          "status": "PASS",
+          "recomputed": true
+        },
+        "integration_RSS_growth_bytes_per_step": 650.0890080428954,
+        "launcher_wall_s": 132.734
+      },
+      "canonical_equivalence": true,
+      "gzip_byte_equivalence": true,
+      "wall_ratio": 1.0194671436127967,
+      "peak_RSS_reduction_percent": 90.55070072280196
+    }
+  ],
+  "integration_retained_growth": {
+    "growth-legacy": {
+      "scope": "Small synthetic engine partial horizon 60 degrees, not A3b",
+      "trajectory": "list",
+      "wall_s_with_tracemalloc": 2.805240000016056,
+      "snapshot_sha256": "18d8a681ca0f0eb0a330f7f5af92d6e5a4f8310d822df2d5845cb3b94d5a81d3",
+      "samples": [
+        {
+          "angle": 10.0,
+          "accepted_steps": 20,
+          "rss_bytes": 38486016,
+          "retained_traced_bytes": 1155365,
+          "peak_traced_bytes": 1166061,
+          "spool_bytes": 0,
+          "index_bytes": 0
+        },
+        {
+          "angle": 30.0,
+          "accepted_steps": 60,
+          "rss_bytes": 43032576,
+          "retained_traced_bytes": 2565049,
+          "peak_traced_bytes": 2575817,
+          "spool_bytes": 0,
+          "index_bytes": 0
+        },
+        {
+          "angle": 60.0,
+          "accepted_steps": 120,
+          "rss_bytes": 49483776,
+          "retained_traced_bytes": 4301189,
+          "peak_traced_bytes": 4346237,
+          "spool_bytes": 0,
+          "index_bytes": 0
+        }
+      ],
+      "retained_growth_bytes_per_step": 31458.24
+    },
+    "growth-streaming": {
+      "scope": "Small synthetic engine partial horizon 60 degrees, not A3b",
+      "trajectory": "spool",
+      "wall_s_with_tracemalloc": 2.7784681000048295,
+      "snapshot_sha256": "18d8a681ca0f0eb0a330f7f5af92d6e5a4f8310d822df2d5845cb3b94d5a81d3",
+      "samples": [
+        {
+          "angle": 10.0,
+          "accepted_steps": 20,
+          "rss_bytes": 36814848,
+          "retained_traced_bytes": 591625,
+          "peak_traced_bytes": 932244,
+          "spool_bytes": 41798,
+          "index_bytes": 160
+        },
+        {
+          "angle": 30.0,
+          "accepted_steps": 60,
+          "rss_bytes": 37093376,
+          "retained_traced_bytes": 684413,
+          "peak_traced_bytes": 1029176,
+          "spool_bytes": 125299,
+          "index_bytes": 480
+        },
+        {
+          "angle": 60.0,
+          "accepted_steps": 120,
+          "rss_bytes": 37126144,
+          "retained_traced_bytes": 703081,
+          "peak_traced_bytes": 1047836,
+          "spool_bytes": 250431,
+          "index_bytes": 960
+        }
+      ],
+      "retained_growth_bytes_per_step": 1114.56
+    }
+  },
+  "limits": [
+    "Dense engineering sample dictionaries and public channel arrays remain O(samples*channels) and dominate the new peak",
+    "Offset index O(steps), scalar CFL/rpm metadata and rejection logs remain O(steps/trials)",
+    "Legacy eager APIs and unrelated callers can still materialize full histories",
+    "Metadata/record decoder has an individual-value bound; it is not a constant-memory representation of arbitrary manifests",
+    "10 ms RSS sampling can miss transient peaks; other tests ran on host during portions of timings",
+    "Diagnostic checkpoint phase times compact snapshot; small JSON file write included in wall, production atomic checkpoint persistence verified separately",
+    "No representative 48-cell B/C cycle, no full-matrix time or peak-RSS validation"
+  ],
+  "equivalence": {
+    "all_three_pairs_same_accepted_and_rejected_steps": true,
+    "all_three_pairs_same_canonical_primaries_and_checkpoint_bytes": true,
+    "all_three_pairs_same_gzip_bytes": true,
+    "all_three_pairs_same_engineering_digest_and_conservation": true,
+    "independent_audits_and_reaudits_PASS_recomputed": 12,
+    "benchmark_dependency_hashes_match_current_core": true,
+    "scientific_identity_combination_authorized": false
+  },
+  "tests": {
+    "final_unique_tests_passed": 65,
+    "pytest_seconds": 299.5,
+    "run_logged_seconds": 300.796,
+    "run_logged_timeout_seconds": 600,
+    "summary_sha256": "47ec850a5c6bbb4dab88c6a78fa0a023bb482291b489a47a27cfbf4550e88df2",
+    "command": "python -m pytest tests/test_streaming_evidence.py tests/test_trajectory_spool.py tests/test_integrated_evidence_memory.py tests/test_exploratory_workflow.py tests/test_engine_configuration_v1.py tests/test_integrated_solver_verification_a3b_v4.py::test_real_subprocess_supervision_no_solver tests/test_integrated_solver_verification_a3b_v4.py::test_real_worker_exits_after_abrupt_parent_death_without_solver -q --disable-warnings --maxfail=1",
+    "openspec_strict": "PASS",
+    "program_status_check": "PASS after final result-import integration; READY quota warning intentionally not acted on per owner scope",
+    "development_findings": "Corrected noncanonical-test sample and exact tuple/list-normalized restore geometry comparison. Initial 33% overhead prototype replaced by final record-view implementation; final paired overhead approximately 2%, no numeric tolerance change.",
+    "frozen_suite_scope": "Frozen identity failures preserved; no historical expected hashes or tests modified. Resource supervision cases reused directly.",
+    "final_import_regression": {
+      "result": "33 passed, 1 deselected in 163.12 s; heavy streaming physical-cycle case had already passed in base suite",
+      "run_logged_seconds": 164.484,
+      "timeout_seconds": 400,
+      "summary_sha256": "198a225ea9c58b3a5597eff89ecf2f3acd9fdde677e5d876d630c33caeb0f83d",
+      "reason": "Final result-import route switched to strict streaming loader and metadata-only analysis clones; one extra clone-isolation test added.",
+      "command": "python -m pytest tests/test_exploratory_workflow.py tests/test_streaming_evidence.py -k not_real_streaming_primary (actual expression: not real_streaming_primary) -q --disable-warnings --maxfail=1"
+    }
+  },
+  "identity": {
+    "current_solver_dependency_sha256": {
+      "motorsim._evidence_io": "422f7981eaa53769ad2a9610cb8c07cb5c2e6351eba1fb820ef9a47a5b0ba5b1",
+      "motorsim._trajectory_store": "9a4a7c1b9fc01218e0b4d53ee2c26e6ac5a459c68bada0a556437294c04923e8",
+      "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+      "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+      "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+      "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+      "motorsim.gas1d.eos": "72ec337f941b1259ab23c04f70ec75593870bdcc4b065d481b38834430221186",
+      "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+      "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+      "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+      "motorsim.integrated_2t": "4cfce1ff4ceb84496f8c85eb170d40d0ab9fc6392786d47e3dfdb49cc42e79c5",
+      "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+      "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+      "motorsim.p6_species": "7ed60395642eecb6b5b9f15bbe095489468da7b562f72d0b53b13527a97e2dab",
+      "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+      "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+      "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+      "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+      "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+      "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095"
+    },
+    "current_workflow_source_sha256": {
+      "motorsim._trajectory_store": "9a4a7c1b9fc01218e0b4d53ee2c26e6ac5a459c68bada0a556437294c04923e8",
+      "motorsim._evidence_io": "422f7981eaa53769ad2a9610cb8c07cb5c2e6351eba1fb820ef9a47a5b0ba5b1",
+      "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+      "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+      "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+      "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+      "motorsim.gas1d.eos": "72ec337f941b1259ab23c04f70ec75593870bdcc4b065d481b38834430221186",
+      "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+      "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+      "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+      "motorsim.integrated_2t": "4cfce1ff4ceb84496f8c85eb170d40d0ab9fc6392786d47e3dfdb49cc42e79c5",
+      "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+      "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+      "motorsim.p6_species": "7ed60395642eecb6b5b9f15bbe095489468da7b562f72d0b53b13527a97e2dab",
+      "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+      "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+      "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+      "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+      "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+      "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095",
+      "motorsim.mechanical": "de71d3bacb18e7661de0ff15cbac50f1a252fc01970c7ef9aa04c8a3424d0fff",
+      "motorsim.engine_configuration": "2fddbde685f8d2004c3643f787e8fcd271d175e0d831ff8fe75065821915a618",
+      "motorsim.engine_variants": "ad21a71bc2528f55ad8becbe7fc019b63c27211b0939f5a284ef3a508f3856fa",
+      "motorsim.engineering_outputs": "c01c3c7195f28a67c3fb866df704d15a595d079d32be71057ab2d2c5095f5424",
+      "motorsim.reference_harness.convergence": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+      "motorsim.exploratory_workflow": "da959c5011eff76d855bf313872329f6007667a26bfc72dbb73915f5afcd3ed4"
+    },
+    "working_tree_raw_file_sha256": {
+      "motorsim/integrated_2t.py": "45f8b1b3ecbdcc4e19a527e343dcb6f35701e9e20a1be8cd6b59e724f6f8ebf1",
+      "motorsim/_trajectory_store.py": "9a4a7c1b9fc01218e0b4d53ee2c26e6ac5a459c68bada0a556437294c04923e8",
+      "motorsim/_evidence_io.py": "422f7981eaa53769ad2a9610cb8c07cb5c2e6351eba1fb820ef9a47a5b0ba5b1",
+      "motorsim/exploratory_workflow.py": "da959c5011eff76d855bf313872329f6007667a26bfc72dbb73915f5afcd3ed4",
+      "motorsim/engine_configuration.py": "5813f49c847abb508c7e02dc54ece862fa5ec1917875b9f9d367fff8ce558364"
+    },
+    "historical_source_files_verified_unchanged": 17,
+    "V4_evidence_files_verified_unchanged": 4,
+    "frozen_V4_zero_step_preflight": {
+      "status": "FAIL_CLOSED",
+      "error": "repository dependency changed: motorsim/engine_configuration.py"
+    },
+    "frozen_V4_preflight_exit_code": 2,
+    "new_A3b_version_or_migration": false,
+    "diagnostic_driver_sha256": "d28f9d1f57fb1929b09f2f3f886e5298638305867e80dd8468248e906d1f75ec"
+  },
+  "A3b": {
+    "consumed_seconds": 783.376,
+    "remaining_seconds": 3536.624,
+    "global_cap_seconds": 4320,
+    "new_invocations": 0,
+    "old_pending_projection_seconds": 3560.2821157859453,
+    "budget_fit": "NOT_DEMONSTRATED; old forecast exceeds balance, toy ratio not transferable",
+    "caps_unchanged": {
+      "worker_mib": 3072,
+      "aggregate_mib": 4096
+    }
+  },
+  "next_minimum_step": "Separate owner authorization of one representative 48-cell CFL0.2 diagnostic cycle using current streaming identity, <=600 s, existing 3072/4096 MiB guards and full audit/checkpoint; explicit budget/identity treatment before launch. No automatic continuation or protocol reconstruction.",
+  "external_evidence_sha256": {
+    "final-legacy-cfl04.json": "b85bbaa2f5b7650b8f7bceea2837b6fa93fb083ad204c139016c26e192b2179b",
+    "final-legacy-cfl04.primary.json.gz": "ea7b03f2aeb56ec535ce00a71bba3edc9ebe6c9c1277f11767c894ac9dc11b4b",
+    "final-legacy-cfl04.checkpoint.json": "b0c98e6169f8dd4192acd50fd32324db9a1233e619abdeea20e20bedf4ea648e",
+    "final-streaming-cfl04.json": "bce0b1ec300990baf2b19789548cb59e29af0640502aa0fdecfa4b4a45b7a932",
+    "final-streaming-cfl04.primary.json.gz": "ea7b03f2aeb56ec535ce00a71bba3edc9ebe6c9c1277f11767c894ac9dc11b4b",
+    "final-streaming-cfl04.checkpoint.json": "b0c98e6169f8dd4192acd50fd32324db9a1233e619abdeea20e20bedf4ea648e",
+    "final-legacy-cfl02.json": "112afdda776042ffcfee2352b8531a44f6b6f1c882b7d74c1766dc003971824f",
+    "final-legacy-cfl02.primary.json.gz": "ddb47dca538a7078864526a038fa249ce6375788a56d6bd6d8e420ea07bdf060",
+    "final-legacy-cfl02.checkpoint.json": "6fa4de6e79797237c4c18e4966e831b542079a5c43d89fc8f945420b5d7096f7",
+    "final-streaming-cfl02.json": "19823c6d9068c064b7ea88ace4ffdae32a5c952e891f0fabd1e7ca0f6f32fe73",
+    "final-streaming-cfl02.primary.json.gz": "ddb47dca538a7078864526a038fa249ce6375788a56d6bd6d8e420ea07bdf060",
+    "final-streaming-cfl02.checkpoint.json": "6fa4de6e79797237c4c18e4966e831b542079a5c43d89fc8f945420b5d7096f7",
+    "final-legacy-cfl01.json": "539adc0b1a4d55f89652e0c2ac5a120860ebc585d13241aa49d1a2515cad4b1b",
+    "final-legacy-cfl01.primary.json.gz": "eadeb5b3c9841ffbd51caaa92be35056a8b07b71c8cbc438f45150f4f8941092",
+    "final-legacy-cfl01.checkpoint.json": "12932d270ebe2d0befca247b8873a69bb8950dc2e43ffe8ff4b6537e1859918c",
+    "final-streaming-cfl01.json": "ef6d6fee2f1611aa29ccb45bf2a0f136b42273e6d4f41e43237c47a1b3d5a374",
+    "final-streaming-cfl01.primary.json.gz": "eadeb5b3c9841ffbd51caaa92be35056a8b07b71c8cbc438f45150f4f8941092",
+    "final-streaming-cfl01.checkpoint.json": "12932d270ebe2d0befca247b8873a69bb8950dc2e43ffe8ff4b6537e1859918c",
+    "final-legacy-cfl04.summary.json": "f2a6405bb595d11f446aaf4a6c4b563cb99e5bd24ad289d80076d066861cf470",
+    "final-streaming-cfl04.summary.json": "863473bd91d5570d2aabccae951c357c984a2c295079a4c99ffaa62dc1b8e90e",
+    "final-legacy-cfl02.summary.json": "df1e5bbe8db9509b14480f9f1c98b49066a659dde4f1d0b7488a68dbdf48c7bd",
+    "final-streaming-cfl02.summary.json": "5e14ef885b3f1ed07d5811f7e55b1879e9d16a6f9cded86ee60e19ade90f4d68",
+    "final-legacy-cfl01.summary.json": "79304acb18f1a6196e19fde5d2cd6d2a0d8595e9b46e99b434709ac5d2e9695a",
+    "final-streaming-cfl01.summary.json": "452971469d84b8f288611aa6bdef68a41c580748e4dc698a3ce381fd6a742437"
+  }
+}

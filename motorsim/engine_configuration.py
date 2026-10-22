@@ -28,6 +28,7 @@ UNITS = {"length": "SI; native geometry fields ending _mm are millimetres",
          "speed": "rpm", "energy": "J", "power": "W", "torque": "N*m",
          "species_mass": "kg", "afr": "kg_air/kg_fuel", "load": "dimensionless"}
 _IMPLEMENTATION_MODULES = (
+    "motorsim._trajectory_store", "motorsim._evidence_io",
     "motorsim.crankcase", "motorsim.coupling", "motorsim.fuel_combustion",
     "motorsim.gas1d.boundary", "motorsim.gas1d.eos", "motorsim.gas1d.mesh",
     "motorsim.gas1d.open_end_plenum_v2", "motorsim.gas1d.riemann",

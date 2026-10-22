@@ -44,7 +44,8 @@ from .reed import ReedState
 from .reed_coupling import HingedFlapGeometryV1
 from .thermal import ThermalSystem
 from .two_stroke_ports import TwoStrokePortSet
-from ._trajectory_store import TrajectorySpool
+from ._trajectory_store import TrajectorySpool, EvidenceList, EvidencePrefix
+from ._evidence_io import canonical_digest
 
 _USE_ACTIVE_P7_EVENT = object()
 _USE_ACTIVE_FUEL_EVENT = object()
@@ -59,6 +60,8 @@ def _evidence_sha256(value) -> str:
     # The JSON encoder already serializes tuples as arrays.  Avoid recursively
     # rebuilding large trajectory trees solely to compute their canonical
     # digest; this preserves the exact canonical bytes used by _jsonify.
+    if isinstance(value, dict):
+        return canonical_digest(value)
     digest = hashlib.sha256()
     if isinstance(value, (list, tuple)):
         # A trajectory is a sequence of independently encoded stage records.
@@ -99,6 +102,7 @@ def _solver_dependency_hashes() -> dict[str, str]:
     modules = {
         __name__: sys.modules[__name__],
         TrajectorySpool.__module__: sys.modules[TrajectorySpool.__module__],
+        canonical_digest.__module__: sys.modules[canonical_digest.__module__],
         CrankcaseGeometry.__module__: sys.modules[CrankcaseGeometry.__module__],
         ChamberState.__module__: sys.modules[ChamberState.__module__],
         Boundary.__module__: sys.modules[Boundary.__module__],
@@ -2465,7 +2469,7 @@ class IntegratedEngine2T:
             raise
         self.trace = spool
 
-    def snapshot(self):
+    def snapshot(self, *, streaming=False):
         self._assert_configuration_unchanged(check_identity=True)
         if self.accepted_steps != len(self.trace):
             raise ValueError(
@@ -2489,7 +2493,8 @@ class IntegratedEngine2T:
                                          snapshot_event(self.p7_event)),
                        "completed_events": deepcopy(self.p7_events)},
                 "initial_inventory": _jsonify(self.initial_inventory),
-                "trace": _jsonify(self.trace)}
+                "trace": (self.trace.freeze(normalize=False) if streaming and
+                          isinstance(self.trace, TrajectorySpool) else _jsonify(self.trace))}
         if self.fuel_coupled_combustion is not None:
             result["fuel_combustion"] = {
                 "active_event": (None if self.fuel_combustion_event is None else
@@ -2751,7 +2756,7 @@ class IntegratedEngine2T:
                 raise ValueError("integrated engine checkpoint trace geometry is invalid")
             for stage_index, angle in enumerate((angle0, angle1)):
                 expected_geometry = vars(self._geometry(angle, rpm))
-                if geometries[stage_index] != _jsonify(expected_geometry):
+                if not _json_evidence_equal(geometries[stage_index], expected_geometry):
                     raise ValueError("integrated engine checkpoint trace geometry mismatch")
                 expected_volumes = (expected_geometry["crankcase_volume_m3"],
                                     expected_geometry["cylinder_volume_m3"])
@@ -3656,7 +3661,8 @@ def make_integrated_cycle_primary(engine: IntegratedEngine2T,
                 binding.node.id: {"kind": binding.node.kind,
                                   "volume_m3": binding.node.volume_m3}
                 for binding in engine.network_volumes},
-            "trajectory": deepcopy(trajectory),
+            "trajectory": (trajectory if isinstance(trajectory, EvidenceList)
+                           else deepcopy(trajectory)),
             "terminal_diagnostic": _jsonify(terminal_diagnostic),
             "observables": observables,
             "cycle_ledgers": recomputed,
@@ -3783,7 +3789,8 @@ def audit_integrated_cycle_primary(cycle_record: dict, *,
         "rejected_steps": binding.get("end_rejected_steps"),
         "time_s": binding.get("end_time_s"),
         "initial_inventory": binding.get("initial_inventory"),
-        "trace": [None] * start_index + trajectory,
+        "trace": (EvidencePrefix(start_index, trajectory)
+                  if isinstance(trajectory, EvidenceList) else [None] * start_index + trajectory),
         "state": cycle_record["terminal_state"],
         "ledger": binding["end_ledger"],
         "p7": binding["end_p7"],
@@ -3824,6 +3831,10 @@ def audit_integrated_cycle_primary(cycle_record: dict, *,
     if replay.fuel_coupled_combustion is not None:
         replay_snapshot["fuel_combustion"] = binding["start_fuel_combustion"]
     replay.restore(replay_snapshot)
+    # Replay still recomputes every numerical operation independently. Its
+    # historical stages do not need to remain as Python trees after comparison.
+    if isinstance(trajectory, EvidenceList):
+        replay.enable_trajectory_spooling()
     scheduled_angles = _integrated_scheduled_angles(replay, end_angle)
     rejected_by_angle: dict[float, list[dict]] = {}
     for rejected in rejection_records:
@@ -4113,11 +4124,11 @@ def make_integrated_engineering_output(cycle_record: dict, *,
             stage["heat_w"] for stage in row["stage_p7_source_rates"])
         if "fuel_coupled_combustion" in cycle_record.get("observables", {}):
             fuel_stages = row.get("stage_fuel_combustion_source_rates")
-            if not isinstance(fuel_stages, list) or len(fuel_stages) != 2:
+            if not isinstance(fuel_stages, (tuple, list)) or len(fuel_stages) != 2:
                 raise ValueError("fuel-coupled output lacks both accepted SSPRK source stages")
             for stage in fuel_stages:
                 if (not isinstance(stage, dict) or
-                        not isinstance(stage.get("species_kg_s"), list) or
+                        not isinstance(stage.get("species_kg_s"), (tuple, list)) or
                         len(stage["species_kg_s"]) != 4):
                     raise ValueError("fuel-coupled output source stage is malformed")
             fuel_combustion_heat_J += .5 * dt * sum(

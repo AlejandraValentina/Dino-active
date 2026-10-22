@@ -18,6 +18,7 @@ import shutil
 import tempfile
 import time
 import zlib
+from copy import deepcopy
 from typing import Any
 
 from .engine_configuration import (canonical_json, implementation_source_hashes,
@@ -26,6 +27,7 @@ from .integrated_2t import (IntegratedEngine2T, audit_integrated_cycle_primary,
                             make_integrated_cycle_primary,
                             make_integrated_engineering_output)
 from .mechanical import MechanicalLossModel
+from ._evidence_io import read_primary, write_primary_atomic
 from .reference_harness.convergence import (CONTRACT as CYCLE_PRIMARY_CONTRACT,
                                            CONTRACT_V2 as PERIODICITY_CONTRACT_V2,
                                            THRESHOLDS as PERIODICITY_THRESHOLDS_V2,
@@ -138,6 +140,12 @@ def _prepare_engineering_output_record(primary: dict,
     if periodicity_evidence is not None:
         primary["periodicity_evidence"] = periodicity_evidence
     return primary
+
+
+def _copy_primary_for_analysis(primary: dict) -> dict:
+    """Isolate mutable metadata while sharing the sealed read-only trajectory."""
+    return {key: value if key == 'trajectory' else deepcopy(value)
+            for key, value in primary.items()}
 
 
 def _periodicity_comparison_index(records: list[dict]) -> list[dict]:
@@ -383,10 +391,7 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
         # Reconstruct every persisted primary before trusting history.
         for row in records:
             path = output / row["artifact"]
-            payload = gzip.decompress(path.read_bytes())
-            if _sha(payload) != row["primary_sha256"]:
-                raise ValueError("resume rejected: primary artifact hash mismatch")
-            primary = json.loads(payload)
+            primary = read_primary(path, expected_sha256=row["primary_sha256"])
             if audit_integrated_cycle_primary(
                     primary, preserve_precycle_p7_baseline=True).get("recomputed") is not True:
                 raise ValueError("resume rejected: primary independent audit failed")
@@ -409,7 +414,7 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
     loss = MechanicalLossModel.from_dict(effective["mechanical_loss_model"])
     interrupted = False; interruption_kind = None; failure = None; failure_kind = None
     for cycle in range(first_cycle, max_cycles + 1):
-        cycle_start = engine.snapshot()
+        cycle_start = engine.snapshot(streaming=True)
         try:
             rejected = _advance_cycle(engine, cycle, deadline=deadline,
                 cancel_event=cancel_event, progress=progress, memory_limit_mib=memory_limit_mib)
@@ -421,7 +426,7 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
             engine.restore(cycle_start); failure = f"{type(exc).__name__}: {exc}"
             failure_kind = "RESOURCE_LIMIT_EXCEEDED" if isinstance(exc, MemoryError) else "NUMERICAL_INVALID"
             break
-        end = engine.snapshot()
+        end = engine.snapshot(streaming=True)
         primary = make_integrated_cycle_primary(engine, cycle_start, end, cycle,
             rejected_trials=rejected, runner_sha256=_sha(Path(__file__).read_bytes()))
         audit = audit_integrated_cycle_primary(
@@ -434,15 +439,17 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
             "configuration_hash": primary["configuration_hash"],
             "contract": CYCLE_PRIMARY_CONTRACT,
             "observables": primary["observables"]})
-        primary_payload = _json_bytes(primary)
-        primary_sha = _sha(primary_payload)
         artifact_rel = f"cycle-{cycle:04d}.json.gz"
-        compressed_primary=gzip.compress(primary_payload,compresslevel=6,mtime=0)
         committed_bytes=sum(path.stat().st_size for path in output.rglob("*") if path.is_file())
-        if committed_bytes+len(compressed_primary)>MAX_RUN_ARTIFACT_BYTES:
+        try:
+            persisted = write_primary_atomic(output / artifact_rel, primary,
+                maximum_bytes=MAX_RUN_ARTIFACT_BYTES-committed_bytes)
+        except OSError as exc:
+            if 'artifact budget exceeded' not in str(exc):
+                raise
             failure="ARTIFACT_BUDGET_EXCEEDED";failure_kind="ARTIFACT_BUDGET_EXCEEDED"
             break
-        _atomic_write(output / artifact_rel,compressed_primary)
+        primary_sha = persisted['primary_sha256']
         # Keep terminal cycle record for output derivation, but store only the
         # replay-baselined compact state for the following cycle's checkpoint.
         periodicity_evidence = None
@@ -694,22 +701,17 @@ def import_exploratory_runs(paths: list[str | Path]) -> dict:
             if cycle.get("cycle")!=index:
                 raise ValueError("exploratory cycle sequence is duplicated or missing")
             primary_path=child(cycle.get("artifact"),"primary")
-            packed=primary_path.read_bytes()
             try:
-                primary_payload=gzip.decompress(packed)
-                primary=json.loads(primary_payload)
-            except (OSError,EOFError,zlib.error,json.JSONDecodeError) as exc:
-                raise ValueError("exploratory cycle primary is corrupt") from exc
-            if (_sha(primary_payload)!=cycle.get("primary_sha256") or
-                    primary_payload!=_json_bytes(primary)):
-                raise ValueError("exploratory cycle primary canonical hash mismatch")
+                primary=read_primary(primary_path,expected_sha256=cycle.get("primary_sha256"))
+            except (OSError,EOFError,zlib.error,ValueError) as exc:
+                raise ValueError("exploratory cycle primary is corrupt or canonical hash mismatch") from exc
             if (primary.get("cycle_index")!=index or
                     primary.get("configuration_hash")!=effective.get("solver_configuration_sha256")):
                 raise ValueError("exploratory cycle primary identity mismatch")
             # The independent auditor may materialize replay baselines in its
             # input structure. Keep the persisted primary pristine for output
             # reconstruction so replay is deterministic and byte-bound.
-            audit_primary=json.loads(_json_bytes(primary))
+            audit_primary=_copy_primary_for_analysis(primary)
             audit=audit_integrated_cycle_primary(
                 audit_primary,preserve_precycle_p7_baseline=True)
             recorded_audit=cycle.get("audit")
@@ -728,7 +730,7 @@ def import_exploratory_runs(paths: list[str | Path]) -> dict:
                         cycle.get("periodicity") !=
                         (periodicity_detector.classification or "NOT_EVALUATED")):
                     raise ValueError("exploratory periodicity update differs from canonical replay")
-            analysis_primary=json.loads(_json_bytes(primary))
+            analysis_primary=_copy_primary_for_analysis(primary)
             periodicity=cycle.get("periodicity") or "NOT_EVALUATED"
             if cycle.get("periodicity_evidence") is not None:
                 analysis_primary={**primary,"periodicity_evidence":cycle["periodicity_evidence"]}
