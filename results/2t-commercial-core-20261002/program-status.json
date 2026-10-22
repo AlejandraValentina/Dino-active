@@ -6819,6 +6819,32 @@
       ],
       "evidence_level": "L1",
       "qualification": "Exploratory only: 30 cycles, MAX_CYCLES_NONCONVERGED; 190.516s/1800s; no independent audit or predictive claim. Positive indicated work, low fresh filling. Native checkpoints restore exactly. Scientific gate unchanged REVIEW."
+    },
+    {
+      "id": "ISV1-STANDARD-CONTROLLED-CONTINUATION",
+      "description": "Owner-authorized species/flow diagnosis and option A only: exact resume 30 to at most 50 cycles, 300s, unchanged physics and criteria.",
+      "dependencies": [
+        "ISV1-STANDARD-9000-EXECUTION"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/integrated-solver-verification-v1/standard-v1-controlled-continuation-plan.md",
+        "results/integrated-solver-verification-v1/standard-v1-continuation-preflight.json"
+      ],
+      "next_action": "Run only cycles 31-50 within 300s/512MiB, preserve parent.",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "implementation",
+      "write_scope": [
+        "scripts/run_standard_exploratory_point.py",
+        "tests/test_standard_exploratory_point.py",
+        "results/integrated-solver-verification-v1/standard-v1-controlled-continuation-plan.md",
+        "results/integrated-solver-verification-v1/standard-v1-continuation-preflight.json",
+        "results/integrated-solver-verification-v1/standard-v1-controlled-continuation-report.md",
+        "results/integrated-solver-verification-v1/standard-v1-controlled-continuation-receipt.json"
+      ],
+      "evidence_level": "L1"
     }
   ],
   "audit_remediation_mode": false,
@@ -9627,6 +9653,12 @@
       "task": "ISV1-STANDARD-9000-EXECUTION",
       "kind": "task",
       "summary": "9000RPM CLOSED: 30 cycles, MAX_CYCLES_NONCONVERGED, 190.516s, 110.57MiB. Last W=29.099J/Q=63.837J/AFR=8.470; 57/413 V2 metrics fail in exhaust transient. Internal conservation <5e-15; 30 checkpoints restore without solver. 22 tests, OpenSpec/status PASS. No replay/audit, retuning, extension, sweep or push. Gate REVIEW unchanged."
+    },
+    {
+      "at": "2026-10-22T14:54:12+00:00",
+      "task": "ISV1-STANDARD-CONTROLLED-CONTINUATION",
+      "kind": "task",
+      "summary": "Existing-volume species balances close; 54/57 failures in exhaust, worst error decays 19.44 to 13.81x in cycles21-30. Select authorized option A only, cycles31-50/300s/512MiB. Exact zero-step parent restore passes; 24 tests PASS including canonical next-step equivalence and tamper rejection. No solver/configuration/threshold changes."
     }
   ],
   "legacy_gate_status": {

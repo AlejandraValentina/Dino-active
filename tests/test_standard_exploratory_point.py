@@ -76,8 +76,48 @@ def test_capture_does_not_change_step():
 def test_exhausted_deadline_stops_without_physical_step(tmp_path):
     args = runner.parser().parse_args(["--config",str(ROOT/"configs/reference_cases/standard_v1_125cc_blair_cartwright.json"),
         "--output",str(tmp_path/"point"),"--rpm","9000","--wall-seconds","0.001",
-        "--mechanical-loss","undefined"])
+        "--mechanical-loss","undefined","--memory-mib","128"])
     assert runner.run(args) == 0
     result=json.loads((tmp_path/"point/manifest.json").read_text())
     assert result["status"] == "TIME_LIMIT_NONCONVERGED"
     assert result["terminal_angle_deg"] == 0
+
+
+def test_explicit_resume_binds_parent_and_restores_without_steps(tmp_path,monkeypatch):
+    e=engine(); cfg=e.configuration_dict()
+    config=tmp_path/"configuration.json"; config.write_bytes(runner.encode(cfg))
+    producer=tmp_path/"old-runner.py";producer.write_bytes(b"frozen parent")
+    bindings=dict(configuration_canonical_sha256=runner.digest(cfg),
+        configuration_file_sha256=runner.hashlib.sha256(config.read_bytes()).hexdigest(),
+        native_configuration_identity=e.configuration_identity,rpm=9000,
+        solver_sha256=runner.hashlib.sha256((ROOT/"motorsim/integrated_2t.py").read_bytes()).hexdigest(),
+        runner_sha256=runner.hashlib.sha256(producer.read_bytes()).hexdigest())
+    cp=dict(bindings=bindings,next_cycle=1,periodicity_history=[],engine_snapshot=e.snapshot())
+    cp_hash=runner.atomic(tmp_path/"checkpoint.json",cp)
+    parent=dict(schema="DINO_MINIMAL_EXPLORATORY_POINT_V1",status="MAX_CYCLES_NONCONVERGED",
+        bindings=bindings,checkpoint_artifact="checkpoint.json",checkpoint_sha256=cp_hash,cycles=[])
+    runner.atomic(tmp_path/"manifest.json",parent)
+    args=runner.parser().parse_args(["--config",str(config),"--output",str(tmp_path/"new"),
+        "--rpm","9000","--mechanical-loss","undefined","--resume-manifest",str(tmp_path/"manifest.json"),
+        "--parent-runner",str(producer)])
+    monkeypatch.setattr(e,"step",lambda *a,**k:pytest.fail("restore must not execute solver"))
+    _,history,streak,receipt=runner.restore_parent(e,cfg,args)
+    assert not history and streak==0 and receipt["exact_state_restore"]
+    (tmp_path/"checkpoint.json").write_bytes(b"tampered")
+    with pytest.raises(ValueError,match="integrity"):
+        runner.restore_parent(e,cfg,args)
+    parent["bindings"]["rpm"]=3100
+    runner.atomic(tmp_path/"manifest.json",parent)
+    with pytest.raises(ValueError,match="identity"):
+        runner.restore_parent(e,cfg,args)
+
+
+def test_compacted_restore_preserves_next_physical_step():
+    a=engine();a.step(.01/(6*9000),.01);a.compact_cycle_trace()
+    b=engine();b.restore(a.snapshot())
+    ra=a.step(.01/(6*9000),.01);rb=b.step(.01/(6*9000),.01)
+    # Restore normalizes JSON lists/tuples; require exact canonical numbers,
+    # not the producer's incidental in-memory sequence container type.
+    assert runner.encode(ra)==runner.encode(rb)
+    assert runner.encode(a.state)==runner.encode(b.state)
+    assert runner.encode(a.ledger)==runner.encode(b.ledger)

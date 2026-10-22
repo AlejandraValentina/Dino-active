@@ -112,6 +112,7 @@ class Diagnostics:
         self.areas_max = Counter()
         self.heat_wall_by_location = Counter()
         self.positive_cylinder_work = self.negative_cylinder_work = 0.0
+        self.combustion = Counter()
 
     def consume(self, engine, row):
         dt = row["dt_s"]
@@ -119,6 +120,17 @@ class Diagnostics:
         self.cfl = max(self.cfl, *row["stage_cfl"])
         for stage in range(2):
             weight = .5*dt
+            source = row.get("stage_fuel_combustion_source_rates", ({},{}))[stage]
+            for key in ("requested_fuel_rate_kg_s", "burned_fuel_rate_kg_s"):
+                self.combustion[key.replace("_rate_kg_s", "_kg")] += weight*source.get(key,0.0)
+            requested = source.get("requested_fuel_rate_kg_s",0.0)
+            burned = source.get("burned_fuel_rate_kg_s",0.0)
+            if requested > 0:
+                self.combustion["active_stage_time_s"] += weight
+                if burned < requested*(1-1e-10):
+                    self.combustion["stage_availability_limited_time_s"] += weight
+                    if math.isclose(burned, source.get("oxygen_limited_fuel_rate_kg_s", -1),rel_tol=1e-9,abs_tol=1e-20):
+                        self.combustion["oxygen_stage_limited_time_s"] += weight
             state = row["stage_states"][stage]
             faces = row["stage_face_fluxes"][stage]
             g = row["stage_geometry"][stage]
@@ -178,6 +190,55 @@ def closure_events(engine, rpm):
     return {duct.role: max(ports.duct_closing_angles(duct.id)) for duct in ports.ducts if duct.role in ("transfer","exhaust")}
 
 
+def restore_parent(engine, config, args):
+    """Explicit append-only continuation; never rewrite/relabel the producer."""
+    path = args.resume_manifest.resolve()
+    raw = path.read_bytes()
+    parent = json.loads(raw)
+    if parent.get("schema") != "DINO_MINIMAL_EXPLORATORY_POINT_V1" or parent.get("status") != "MAX_CYCLES_NONCONVERGED":
+        raise ValueError("resume requires a complete-cycle nonconverged parent")
+    bindings = parent["bindings"]
+    if (bindings["configuration_canonical_sha256"] != digest(config) or
+            bindings["configuration_file_sha256"] != hashlib.sha256(args.config.read_bytes()).hexdigest() or
+            bindings["native_configuration_identity"] != engine.configuration_identity or
+            bindings["rpm"] != args.rpm or
+            bindings["solver_sha256"] != hashlib.sha256((ROOT/"motorsim/integrated_2t.py").read_bytes()).hexdigest()):
+        raise ValueError("parent configuration/solver/RPM identity mismatch")
+    frozen = args.parent_runner.read_bytes()
+    if hashlib.sha256(frozen).hexdigest() != bindings["runner_sha256"]:
+        raise ValueError("parent producer hash mismatch")
+    cp_name = parent["checkpoint_artifact"]
+    if Path(cp_name).name != cp_name:
+        raise ValueError("unsafe parent checkpoint path")
+    cp_raw = (path.parent/cp_name).read_bytes()
+    if hashlib.sha256(cp_raw).hexdigest() != parent["checkpoint_sha256"]:
+        raise ValueError("parent checkpoint integrity mismatch")
+    cp = json.loads(cp_raw)
+    if cp["bindings"] != bindings or cp["next_cycle"] != len(parent["cycles"])+1:
+        raise ValueError("parent checkpoint binding/sequence mismatch")
+    if [c["cycle"] for c in parent["cycles"]] != list(range(1,cp["next_cycle"])):
+        raise ValueError("noncontiguous parent cycles")
+    history = cp["periodicity_history"]
+    if len(history) != len(parent["cycles"]) or any(
+            h["cycle_index"] != i+1 or h["configuration_hash"] != digest(config)
+            or h["contract"] != CONTRACT or h["observables"] != parent["cycles"][i]["observables"]
+            for i,h in enumerate(history)):
+        raise ValueError("parent detector history mismatch")
+    engine.restore(cp["engine_snapshot"])
+    if engine.snapshot() != cp["engine_snapshot"] or engine.crank_angle_unwrapped_deg != len(history)*360:
+        raise ValueError("parent state did not restore exactly")
+    streak = 0
+    for a,b in zip(history,history[1:]):
+        comparison = compare_cycles_v2(a,b)
+        if comparison["status"] == "INVALID":
+            raise ValueError("invalid parent periodicity history")
+        streak = streak+1 if comparison["status"] == "PASS" else 0
+    return parent,history,streak,dict(manifest_sha256=hashlib.sha256(raw).hexdigest(),
+        checkpoint_sha256=hashlib.sha256(cp_raw).hexdigest(),producer_sha256=bindings["runner_sha256"],
+        source_directory=str(path.parent),cycles_preserved=len(history),exact_state_restore=True,
+        physical_steps_during_restore=0)
+
+
 def run(args):
     start = time.perf_counter()
     output = args.output.resolve()
@@ -196,6 +257,14 @@ def run(args):
     if engine.configuration_dict() != config:
         raise ValueError("configuration roundtrip mismatch")
     loss = standard_fmep_model_v1() if args.mechanical_loss == "standard-v1" else None
+    parent = None
+    history, streak, continuation = [], 0, None
+    if args.resume_manifest:
+        if not args.parent_runner or args.smoke_degrees:
+            raise ValueError("resume needs frozen parent runner and no smoke")
+        parent,history,streak,continuation = restore_parent(engine,config,args)
+        if parent["bindings"]["mechanical_loss"] != (None if loss is None else loss.to_dict()):
+            raise ValueError("parent mechanical postprocessing model mismatch")
     bindings = dict(configuration_file_sha256=hashlib.sha256(config_bytes).hexdigest(),
         configuration_canonical_sha256=digest(config), runner_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         native_configuration_identity=engine.configuration_identity,
@@ -205,23 +274,27 @@ def run(args):
         python=sys.version, platform=platform.platform())
     atomic(output/"configuration.json", config)
     manifest = dict(schema="DINO_MINIMAL_EXPLORATORY_POINT_V1", bindings=bindings,
-        limits=vars(args)|{"config":str(args.config),"output":str(output)},
+        limits=vars(args)|{"config":str(args.config),"output":str(output),
+            "resume_manifest":None if args.resume_manifest is None else str(args.resume_manifest),
+            "parent_runner":None if args.parent_runner is None else str(args.parent_runner)},
         audit="NOT_PERFORMED_NO_REPLAY", predictive_validity="NOT_CLAIMED",
-        cycles=[], status="RUNNING", periodicity="NOT_EVALUATED")
+        cycles=[] if parent is None else deepcopy(parent["cycles"]),
+        continuation=continuation, status="RUNNING", periodicity="NOT_EVALUATED")
     atomic(output/"manifest.json",manifest)
     deadline = start+args.wall_seconds-3.0
     process = psutil.Process()
     peak = process.memory_info().rss
     compute_seconds = processing_seconds = 0.0
     rejects = Counter()
-    history = []
-    streak = 0
+    first_cycle = len(history)+1
+    if first_cycle > args.max_cycles:
+        raise ValueError("resume has no authorized cycles left")
     closures = closure_events(engine,args.rpm)
     terminal = "MAX_CYCLES_NONCONVERGED"
     failure = None
     current = None
     try:
-        for cycle in range(1,args.max_cycles+1):
+        for cycle in range(first_cycle,args.max_cycles+1):
             cycle_start = time.perf_counter()
             baseline = deepcopy(engine.ledger)
             initial = engine.inventory()
@@ -306,6 +379,8 @@ def run(args):
                 imep_Pa=work/vd, indicated_power_W=work*args.rpm/60,
                 indicated_torque_Nm=work/(2*math.pi), mechanical_estimate=performance,
                 thermal_heat_by_surface_J=dict(diag.heat_wall_by_location),
+                combustion_stage_diagnostics=dict(diag.combustion),
+                ignition_event=None if engine.fuel_combustion_event is None else engine.fuel_combustion_event.to_dict(),
                 dt_min_max_s=diag.dt, max_accepted_cfl=diag.cfl,
                 comparison= comparison, periodicity_streak=streak,
                 wall_s=time.perf_counter()-cycle_start,peak_rss_mib=peak/1024**2,
@@ -343,6 +418,7 @@ def run(args):
     manifest.update(status=terminal,failure=failure,cycles_completed=len(manifest["cycles"]),
         terminal_angle_deg=engine.crank_angle_unwrapped_deg,
         wall_s=time.perf_counter()-start,solver_step_wall_s=compute_seconds,
+        cycles_computed_this_invocation=len(manifest["cycles"])-(first_cycle-1),
         trace_dictionary_capture_wall_s=engine.trace_capture_seconds,
         solver_step_excluding_trace_dictionary_wall_s=compute_seconds-engine.trace_capture_seconds,
         processing_wall_s=processing_seconds,other_wall_s=time.perf_counter()-start-compute_seconds-processing_seconds,
@@ -368,6 +444,8 @@ def parser():
     p.add_argument("--memory-mib",type=int,default=3072)
     p.add_argument("--mechanical-loss",choices=("undefined","standard-v1"),required=True)
     p.add_argument("--smoke-degrees",type=float,default=0)
+    p.add_argument("--resume-manifest",type=Path)
+    p.add_argument("--parent-runner",type=Path)
     return p
 
 
