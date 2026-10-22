@@ -1,0 +1,173 @@
+{
+  "schema": "DINO_SALVAGE_48CELL_EXECUTION_V1",
+  "recorded_utc": "2026-10-22T10:31:36.215610+00:00",
+  "decision": "PROCEED_TO_PERIODIC_POINT",
+  "execution_head": "9f6a8af059404ff8f8ba96cfa2732d4b14f84766",
+  "driver_sha256": "ccd8c394571dfaf1d8141bffbca290e4ff01298e7eaeb72a7c45e863b10390b9",
+  "source_hashes": {
+    "motorsim._evidence_io": "422f7981eaa53769ad2a9610cb8c07cb5c2e6351eba1fb820ef9a47a5b0ba5b1",
+    "motorsim._trajectory_store": "9a4a7c1b9fc01218e0b4d53ee2c26e6ac5a459c68bada0a556437294c04923e8",
+    "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+    "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+    "motorsim.engine_configuration": "2fddbde685f8d2004c3643f787e8fcd271d175e0d831ff8fe75065821915a618",
+    "motorsim.engine_variants": "ad21a71bc2528f55ad8becbe7fc019b63c27211b0939f5a284ef3a508f3856fa",
+    "motorsim.engineering_outputs": "c01c3c7195f28a67c3fb866df704d15a595d079d32be71057ab2d2c5095f5424",
+    "motorsim.exploratory_workflow": "da959c5011eff76d855bf313872329f6007667a26bfc72dbb73915f5afcd3ed4",
+    "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+    "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+    "motorsim.gas1d.eos": "72ec337f941b1259ab23c04f70ec75593870bdcc4b065d481b38834430221186",
+    "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+    "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+    "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+    "motorsim.integrated_2t": "4cfce1ff4ceb84496f8c85eb170d40d0ab9fc6392786d47e3dfdb49cc42e79c5",
+    "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+    "motorsim.mechanical": "de71d3bacb18e7661de0ff15cbac50f1a252fc01970c7ef9aa04c8a3424d0fff",
+    "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+    "motorsim.p6_species": "7ed60395642eecb6b5b9f15bbe095489468da7b562f72d0b53b13527a97e2dab",
+    "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+    "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+    "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+    "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+    "motorsim.reference_harness.convergence": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+    "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+    "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095"
+  },
+  "native_configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+  "solver_configuration_sha256": "b472cce9d24e6fe659cc9be9de4d87f9f9fd059cdfcdc191f18e0a690c8fa4ee",
+  "scope": "One new independent transient cycle at 3000 RPM, 48 cells, CFL 0.4; exact historical native T1-A configuration; not an A3b continuation",
+  "authorization": "Owner SALVAGE decisive viability prompt; user reports RAM increased; original authorization had zero solver invocations",
+  "limits": {
+    "wall_s": 600,
+    "worker_mib": 3072,
+    "aggregate_mib": 4096
+  },
+  "cycles_completed": 1,
+  "accepted_steps": 2627,
+  "rejected_trials": 3084,
+  "dt_s": {
+    "min": 9.843175309719577e-07,
+    "max": 1.0416666666666666e-05,
+    "sum": 0.019999999999999362
+  },
+  "phase_seconds": {
+    "audit": 53.875,
+    "checkpoint_write_restore": 0.18799999996554106,
+    "end_snapshot": 0.0779999999795109,
+    "engineering": 2.375,
+    "integration": 21.70400000002701,
+    "primary": 19.92200000002049,
+    "primary_persistence": 10.844000000040978,
+    "primary_reload": 10.65700000000652,
+    "reaudit": 55.84400000004098,
+    "start_snapshot": 0.015000000013969839
+  },
+  "worker_wall_s": 179.76599999994505,
+  "supervisor_wall_s": 180.2970000000205,
+  "complete_launcher_wall_s": 184.625,
+  "cpu_s": 175.015625,
+  "phase_peak_rss_mib": {
+    "audit": 86.48828125,
+    "checkpoint_write_restore": 221.83203125,
+    "end_snapshot": 79.09765625,
+    "engineering": 260.58203125,
+    "integration": 78.1875,
+    "primary": 82.67578125,
+    "primary_persistence": 85.98046875,
+    "primary_reload": 86.0,
+    "reaudit": 89.40625,
+    "setup": 39.76953125,
+    "start_snapshot": 39.8359375
+  },
+  "worker_peak_mib_20ms": 260.58203125,
+  "supervisor_worker_peak_mib_100ms": 298.5390625,
+  "memory_notes": "Sampled RSS, not an OS hard allocation cap. Aggregate monitors supervisor and worker tree, excludes lightweight run_logged wrapper. Integration progress rose from 39.12 to 77.63 MiB; no constant-memory or multi-cycle scaling claim. Peak occurred during engineering outputs.",
+  "io_delta": {
+    "other_bytes": 803142,
+    "other_count": 4151,
+    "read_bytes": 944391288,
+    "read_count": 114958,
+    "write_bytes": 179175869,
+    "write_count": 11570
+  },
+  "io_notes": "Windows process IO counters; include cached IO, not physical disk throughput",
+  "conservation": {
+    "energy_residual_J": 5.492828414332962e-14,
+    "mass_residual_kg": 6.708500942254059e-19,
+    "species_residual_kg": [
+      6.522153693858113e-19,
+      -1.0058516248644817e-21,
+      -1.0841849812415103e-19,
+      8.451636214537294e-76
+    ]
+  },
+  "audit": {
+    "status": "PASS",
+    "recomputed": true,
+    "reaudit_status": "PASS",
+    "reaudit_recomputed": true,
+    "trajectory_sha256": "9d25de718e82a0014cb18370c3a64da1c99400d772db3bbea8820c05a3222e89"
+  },
+  "primary": {
+    "compressed_bytes": 29067991,
+    "primary_sha256": "efb9ab2d80bea2735767f6c6915ce9409da1a8e40edb45aa45a5290f708a87fb"
+  },
+  "checkpoint_sha256": "a4c3dfaed3f8f86bf8d1135e82f1442f8ce9075e284fed9426857ea4e6c1189f",
+  "checkpoint_restore": "EXACT_CANONICAL_MATCH",
+  "sequence": "0 to 360 degrees; contiguous accepted angles; no missing or duplicate steps",
+  "artifact_files": {
+    "binding.json": {
+      "sha256": "7c2ee40b2337e8f49ceb6414839d96ed4905acc9b6fa2761f2bac8d8dd44bedb",
+      "bytes": 2905
+    },
+    "checkpoint.json": {
+      "sha256": "a4c3dfaed3f8f86bf8d1135e82f1442f8ce9075e284fed9426857ea4e6c1189f",
+      "bytes": 87493
+    },
+    "configuration.json": {
+      "sha256": "837b9e00feb5d8889daaca691e6ddfe5714116387389ad0072a8a1e32bee49f9",
+      "bytes": 141383
+    },
+    "cycle-0001.json.gz": {
+      "sha256": "c50473c47f84da7a9af8ff1b993c9a2b3920585cbea7789b3c16c4c14e2daeca",
+      "bytes": 29067991
+    },
+    "engineering.json": {
+      "sha256": "3a57e70389b1a81a1d9623c48df46bc3e3529ca36a01eb195236e0fdd1833fd7",
+      "bytes": 18008255
+    },
+    "preflight.json": {
+      "sha256": "0be83d35d5635c34fcd32a7fb07265313c8b2fe515d269d1bd8668340e319dd8",
+      "bytes": 1265
+    },
+    "progress.json": {
+      "sha256": "466ca0907505402cc86ffc4b36b73055d9a473336863a726888515bc78fa2b61",
+      "bytes": 67
+    },
+    "result.json": {
+      "sha256": "a736645b1d0f4b089ef769dab3d03198450f7231af85353845989d471b0a0503",
+      "bytes": 17015
+    },
+    "supervisor.json": {
+      "sha256": "b804aa56770d900b67f45d84fc51ada948953773f423d74db9e0fd9a5df94c02",
+      "bytes": 3065
+    },
+    "worker.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  },
+  "artifact_root": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\salvage-viability-48cell\\representative-once-20261022",
+  "verification": "19 integrity tests and 6 real no-solver supervisor tests PASS; OpenSpec strict 56/56; no additional solver invocation",
+  "scientific_limits": {
+    "periodicity": "NOT_EVALUATED",
+    "spatial_convergence": "NOT_DEMONSTRATED",
+    "predictive_validation": "NOT_CLAIMED",
+    "power_torque": "NOT_ACCEPTED_FROM_SINGLE_TRANSIENT_CYCLE"
+  },
+  "a3b": {
+    "executed": false,
+    "consumed_s": 783.376,
+    "remaining_s": 3536.624
+  },
+  "next_step": "Separately authorize one stabilized 3000 RPM point with the tested pipeline and an explicit inclusive budget. No further memory optimization or automatic cycle authorized."
+}

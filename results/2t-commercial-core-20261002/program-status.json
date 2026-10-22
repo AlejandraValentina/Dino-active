@@ -9526,6 +9526,12 @@
       "task": "ISV1-PIPELINE-MEMORY-FINALIZATION",
       "kind": "task",
       "summary": "Owner reports increased RAM. Zero-step T1-A reference preflight PASS: 48 cells/3000RPM/CFL0.4, unchanged scientific configuration. Prepare one isolated 600s diagnostic using existing advance/auditor and bounded V4 subprocess supervisor; no A3b invocation, no retry or new campaign protocol."
+    },
+    {
+      "at": "2026-10-22T10:31:46+00:00",
+      "task": "ISV1-PIPELINE-MEMORY-FINALIZATION",
+      "kind": "task",
+      "summary": "PROCEED_TO_PERIODIC_POINT: isolated 48-cell/3000RPM/CFL0.4 cycle PASS; 184.625s/600, worker 260.58 MiB, aggregate 298.54 MiB. Audit+reaudit recomputed PASS, exact checkpoint restore, 2627 accepted/3084 rejected. No periodicity/power claim or A3b charge. 25 tests PASS, OpenSpec 56/56. Receipt: salvage-viability-48cell-execution-receipt.json. No further solver run."
     }
   ],
   "legacy_gate_status": {
