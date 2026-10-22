@@ -668,6 +668,13 @@ class IntegratedEngine2T:
         if not isinstance(geometry_identity, dict) or not geometry_identity:
             raise ValueError("stable geometry_identity is required for restart/replay")
         self._source_geometry_identity = deepcopy(geometry_identity)
+        from .gas_exchange_v2 import validate as validate_exchange
+        exchange = validate_exchange(geometry_identity.get("gas_exchange_model"))
+        self.gas_exchange_model = None if exchange is None else MappingProxyType(exchange)
+        if exchange is not None and exchange["intake_control"] == "reed" and not reed_petals:
+            raise ValueError("GAS_EXCHANGE_V2 reed intake requires explicit petals")
+        if exchange is not None and exchange["intake_control"] == "piston_port" and reed_petals:
+            raise ValueError("GAS_EXCHANGE_V2 piston intake cannot also enable reeds")
         try:
             encoded_geometry = json.dumps(geometry_identity, sort_keys=True,
                                           separators=(",", ":"), allow_nan=False)
@@ -1058,6 +1065,7 @@ class IntegratedEngine2T:
                 (None if self.fuel_coupled_combustion is None else
                  self.fuel_coupled_combustion.to_dict()),
                 self.geometry_sha256, id(self.configuration_identity),
+                None if self.gas_exchange_model is None else tuple(sorted(self.gas_exchange_model.items())),
                 tuple(id(petal) for petal in self.reed_petals),
                 id(self.port_binding),
                 id(self.dynamic_reed_binding),
@@ -1389,6 +1397,9 @@ class IntegratedEngine2T:
                 # variable for its power-valve map. Keep stage RPM for slider
                 # kinematics while resolving the map against the exact input.
                 powervalve_rpm=self.reference_rpm)
+            if self.gas_exchange_model is not None and self.gas_exchange_model["intake_control"] == "reed":
+                # Reed block is connected independently of piston-window timing.
+                intake = next(p.mesh.areas[-1] for p in self.ducts if p.role == "intake")
             result = EngineGeometry2T(result.crankcase_volume_m3,
                                       result.cylinder_volume_m3,
                                       result.crankcase_volume_rate_m3_s,
@@ -1432,6 +1443,11 @@ class IntegratedEngine2T:
             raise ValueError("inadmissible 0D chamber state")
         pressure = (self.eos.gamma - 1.0) * energy / volume
         fresh_fraction = fsum(self._fractions(species, mass)[:2])
+        if self.gas_exchange_model is not None:
+            # Legacy passive fresh proxy only: actual extensive species still
+            # pass validate_species unchanged. Avoid sum(round(x/m)) > 1 at a
+            # pure-fresh boundary; never alter conservative masses or EOS.
+            fresh_fraction = fsum(max(0.,x) for x in species[:2])/fsum(max(0.,x) for x in species)
         return ChamberState(mass, energy, mass * fresh_fraction, volume)
 
     def _primitive(self, q):
@@ -1679,6 +1695,8 @@ class IntegratedEngine2T:
                 port_area = g.transfer_areas_m2[index]
                 left_area = min(port_area, path.mesh.areas[0])
                 right_area = min(port_area, path.mesh.areas[-1])
+                if self.gas_exchange_model is not None:
+                    left_area = path.mesh.areas[0]
                 left_exchange = interface_flux(cc, primitives[0], left_area, -1,
                                                eos=self.eos) if left_area else None
                 right_exchange = interface_flux(cy, primitives[-1], right_area, 1,
@@ -1762,6 +1780,12 @@ class IntegratedEngine2T:
                     self._face_species_flux(left_face[0], species_chambers["cylinder"],
                                             chambers["cylinder"][0], ss[0],
                                             qs[0][0]*path.mesh.volumes[0]))
+                if (self.gas_exchange_model is not None and left_face[0] > 0
+                        and any(a > 0 for a in g.transfer_areas_m2)):
+                    from .gas_exchange_v2 import outlet_species_rate
+                    left_species = outlet_species_rate(left_face[0],
+                        species_chambers["cylinder"],dt_s,
+                        self.gas_exchange_model["mixed_outflow_fraction"])
                 if left_exchange is not None:
                     fresh_short_circuit_rate += _gross_fresh_short_circuit_rate(
                         g.exhaust_area_m2, g.transfer_areas_m2, left_species)
@@ -2008,8 +2032,11 @@ class IntegratedEngine2T:
                 raise ValueError(f"{name} state is inadmissible")
             pressure = (self.eos.gamma - 1.0) * energy / volume
             fractions = self._fractions(comp, mass)
+            fresh_proxy = fsum(fractions[:2])
+            if self.gas_exchange_model is not None:
+                fresh_proxy = fsum(max(0.,x) for x in comp[:2])/fsum(max(0.,x) for x in comp)
             self.eos.validate((mass/volume, 0.0, pressure,
-                               fsum(fractions[:2])))
+                               fresh_proxy))
         for path in self.ducts:
             for i, q in enumerate(state["ducts"][path.id]):
                 volume = self._duct_cell_volume(path, i, state)

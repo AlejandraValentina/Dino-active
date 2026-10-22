@@ -6850,6 +6850,36 @@
       ],
       "evidence_level": "L1",
       "qualification": "Option A only COMPLETE: exactly cycles31-50; MAX_CYCLES_NONCONVERGED, no retuning. Low filling persists; event oxygen eligibility explains rich trapped AFR; 53/55 failures in exhaust. Scientific gate unchanged REVIEW."
+    },
+    {
+      "id": "ISV1-FUNCTIONAL-DESKTOP-STAGE1",
+      "description": "Owner-directed delivery1: corrected gas exchange and coupled conservative scavenging, efficient point execution through existing Desktop; STANDARD investigation closed.",
+      "dependencies": [],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "docs/gasdynamic/functional_engine_desktop_v1.md"
+      ],
+      "next_action": "Complete focal runtime/UI checks and persist functional result; no RPM curve in this delivery.",
+      "objective": "INTEGRATED_SOLVER_VERIFICATION_V1",
+      "owner_role": "implementation",
+      "write_scope": [
+        "motorsim/integrated_2t.py",
+        "motorsim/gas_exchange_v2.py",
+        "motorsim/engineering_point.py",
+        "motorsim/engineering_workflow.py",
+        "motorsim/engine_configuration.py",
+        "motorsim/exploratory_workflow.py",
+        "motorsim/desktop/",
+        "tests/test_functional_gas_exchange.py",
+        "tests/test_engineering_desktop_result.py",
+        "configs/reference_cases/functional_reed_125cc_v1.dino.json",
+        "docs/gasdynamic/functional_engine_desktop_v1.md",
+        "openspec/changes/functional-engine-desktop-v1/",
+        "results/functional-engine-desktop-v1/"
+      ],
+      "evidence_level": "L1"
     }
   ],
   "audit_remediation_mode": false,
@@ -9670,6 +9700,12 @@
       "task": "ISV1-STANDARD-CONTROLLED-CONTINUATION",
       "kind": "task",
       "summary": "Option A CLOSED at50: only31-50 computed,129.894s new/320.410s total,120.34MiB. W29.048J, trapped AFR8.474; 55 V2 failures(53 exhaust). Filling unchanged vs30. Species balances close; event oxygen eligibility dominates, stage clamp only0.0036%. Parent evidence unchanged;20 native restores/24 tests PASS. No B/sweep/push; gate REVIEW."
+    },
+    {
+      "at": "2026-10-22T15:43:28+00:00",
+      "task": "ISV1-FUNCTIONAL-DESKTOP-STAGE1",
+      "kind": "task",
+      "summary": "Owner redirects to functional Desktop delivery1. GAS_EXCHANGE_V2 corrects reed/transfer topology and couples bounded partial-mixing species outflow. Legacy modes retained. Actual UI ran10 cycles and resumed11-12, with physical cards/history/checkpoints; no periodicity or predictive claim. Cancelled stiffness preparations untouched."
     }
   ],
   "legacy_gate_status": {
