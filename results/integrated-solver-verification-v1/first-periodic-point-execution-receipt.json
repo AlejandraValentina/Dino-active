@@ -1,0 +1,654 @@
+{
+  "schema": "DINO_FIRST_PERIODIC_POINT_EXECUTION_CLOSURE_V1",
+  "recorded_utc": "2026-10-22T11:51:19.979107+00:00",
+  "classification": "PARTIAL_RESOURCE_OR_TIME",
+  "attempt_closed": true,
+  "automatic_retry": false,
+  "execution_head": "ea82f7bc092c0f396a821f3386d40e064b75d946",
+  "definition_sha256": "62b7df90dc114387d2930e9b89725c0c4f4382f29aba02c56eab2070da28bec0",
+  "authorization_sha256": "67c7b86c6361c04ab37bcac7db64f4496ccb5fc1aafe3486ea0c2cf9a17a164d",
+  "scientific_sources": {
+    "motorsim._evidence_io": "422f7981eaa53769ad2a9610cb8c07cb5c2e6351eba1fb820ef9a47a5b0ba5b1",
+    "motorsim._trajectory_store": "9a4a7c1b9fc01218e0b4d53ee2c26e6ac5a459c68bada0a556437294c04923e8",
+    "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+    "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+    "motorsim.engine_configuration": "2fddbde685f8d2004c3643f787e8fcd271d175e0d831ff8fe75065821915a618",
+    "motorsim.engine_variants": "ad21a71bc2528f55ad8becbe7fc019b63c27211b0939f5a284ef3a508f3856fa",
+    "motorsim.engineering_outputs": "c01c3c7195f28a67c3fb866df704d15a595d079d32be71057ab2d2c5095f5424",
+    "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+    "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+    "motorsim.gas1d.eos": "72ec337f941b1259ab23c04f70ec75593870bdcc4b065d481b38834430221186",
+    "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+    "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+    "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+    "motorsim.integrated_2t": "4cfce1ff4ceb84496f8c85eb170d40d0ab9fc6392786d47e3dfdb49cc42e79c5",
+    "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+    "motorsim.mechanical": "de71d3bacb18e7661de0ff15cbac50f1a252fc01970c7ef9aa04c8a3424d0fff",
+    "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+    "motorsim.p6_species": "7ed60395642eecb6b5b9f15bbe095489468da7b562f72d0b53b13527a97e2dab",
+    "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+    "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+    "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+    "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+    "motorsim.reference_harness.convergence": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+    "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+    "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095"
+  },
+  "operational_sources": {
+    "executor": "997d97aa22c9b3ecba48ed84b9442761287f8c9db098a830421b8c3641172e98",
+    "supervisor": "3a4c69e820e5d93ad55c32f02c26104fb79590f85ec9babd0305dfd3163b7d79",
+    "workflow": "f591678e80f6c1b4ab141d7869ff4e24ee3c83b9a74c66d2433ee017822b3ea3"
+  },
+  "native_configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+  "operating_identity_sha256": "c2ceac784b7fd9d7f3efd506d31f84d9f25e042cf3590558344e22c5a193f781",
+  "scope": {
+    "rpm": 3000,
+    "cells": 48,
+    "cfl": 0.4,
+    "max_cycles": 10,
+    "independent_of_A3b": true
+  },
+  "cycles_completed": 5,
+  "cycles_not_started": [
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "periodicity": "NOT_IDENTIFIED_IN_FIVE_OBSERVED_CYCLES",
+  "horizon_completed": false,
+  "no_nonconvergence_forever_claim": true,
+  "budget": {
+    "global_seconds": 3000,
+    "per_invocation_seconds": 600,
+    "conservatively_charged_seconds": 1628.2960000000894,
+    "remaining_seconds": 1371.7039999999106,
+    "actual_launcher_wall_seconds": 1588.672,
+    "summed_invocation_wall_seconds": 1588.2960000000894,
+    "sum_new_cycle_wall_seconds": 650.0780000000959,
+    "non_new_cycle_time_seconds": 938.2179999999935,
+    "non_new_cycle_time_note": "Includes startup, complete-history resume audits/reconstruction and finalization; not a separately profiled pure audit phase.",
+    "last_invocation_new_cycles": 0,
+    "last_invocation_wall_seconds": 388.125
+  },
+  "memory": {
+    "worker_peak_mib": 398.4921875,
+    "supervisor_worker_peak_mib": 424.35546875,
+    "worker_limit_mib": 3072,
+    "aggregate_limit_mib": 4096,
+    "measurement": "100 ms sampled peaks; cycle rows report RSS at commit, not per-cycle peaks. Aggregate excludes outer logger."
+  },
+  "invocations": [
+    {
+      "charged_seconds": 394.469000000041,
+      "cycles_after": 3,
+      "cycles_before": 0,
+      "elapsed_seconds": 384.469000000041,
+      "number": 1,
+      "outcome": {
+        "aggregate_peak_bytes": 444968960,
+        "exit_code": 0,
+        "stop_reason": null,
+        "worker_peak_bytes": 417849344
+      },
+      "reservation_seconds": 600,
+      "started_unix": 1792668010.08673,
+      "state": "CLOSED",
+      "supervisor_created": 1792668009.873211,
+      "supervisor_pid": 39144,
+      "worker_created": 1792668010.101416,
+      "worker_pid": 33604
+    },
+    {
+      "charged_seconds": 373.85900000005495,
+      "cycles_after": 4,
+      "cycles_before": 3,
+      "elapsed_seconds": 363.85900000005495,
+      "number": 2,
+      "outcome": {
+        "aggregate_peak_bytes": 309600256,
+        "exit_code": 0,
+        "stop_reason": null,
+        "worker_peak_bytes": 282853376
+      },
+      "reservation_seconds": 600,
+      "started_unix": 1792668394.5737011,
+      "state": "CLOSED",
+      "supervisor_created": 1792668009.873211,
+      "supervisor_pid": 39144,
+      "worker_created": 1792668394.590128,
+      "worker_pid": 308
+    },
+    {
+      "charged_seconds": 461.8429999999935,
+      "cycles_after": 5,
+      "cycles_before": 4,
+      "elapsed_seconds": 451.8429999999935,
+      "number": 3,
+      "outcome": {
+        "aggregate_peak_bytes": 311402496,
+        "exit_code": 0,
+        "stop_reason": null,
+        "worker_peak_bytes": 284618752
+      },
+      "reservation_seconds": 600,
+      "started_unix": 1792668758.4423409,
+      "state": "CLOSED",
+      "supervisor_created": 1792668009.873211,
+      "supervisor_pid": 39144,
+      "worker_created": 1792668758.4606123,
+      "worker_pid": 39436
+    },
+    {
+      "charged_seconds": 398.125,
+      "cycles_after": 5,
+      "cycles_before": 5,
+      "elapsed_seconds": 388.125,
+      "number": 4,
+      "outcome": {
+        "aggregate_peak_bytes": 70860800,
+        "exit_code": 0,
+        "stop_reason": null,
+        "worker_peak_bytes": 43651072
+      },
+      "reservation_seconds": 600,
+      "started_unix": 1792669211.502247,
+      "state": "CLOSED",
+      "supervisor_created": 1792668009.873211,
+      "supervisor_pid": 39144,
+      "worker_created": 1792669211.5133293,
+      "worker_pid": 19116
+    }
+  ],
+  "cycles": [
+    {
+      "cycle": 1,
+      "new_cycle_wall_seconds": 109.71900000004098,
+      "rss_at_cycle_commit_mib": 209.1875,
+      "cylinder_indicated_work_J_TRANSIENT": -40.70524299402547,
+      "cylinder_end_state": {
+        "mass_kg": 0.0001253925861513928,
+        "pressure_Pa": 2106370.240241866,
+        "temperature_K": 1029.7193020365567,
+        "total_energy_J": 105.87771635974418
+      },
+      "crankcase_end_state": {
+        "mass_kg": 0.00013131089654361416,
+        "pressure_Pa": 49303.47602416347,
+        "temperature_K": 265.7740816709778,
+        "total_energy_J": 28.617207012662888
+      },
+      "global_species_kg": [
+        0.0007451769635667084,
+        4.4482434776637596e-07,
+        0.0002425869973774598,
+        1.1283557064418452e-05
+      ],
+      "fresh_delivery_kg": 1.7460283144461557e-05,
+      "fresh_short_circuit_kg": 1.774643450668593e-05,
+      "periodicity_lag1": "INSUFFICIENT_HISTORY",
+      "failed_lag1_metrics": 0,
+      "worst_lag1": null,
+      "lag1_streak": 0,
+      "lag2_branch": null,
+      "lag2_status": "INSUFFICIENT_HISTORY",
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "accepted_steps": 2627,
+      "rejected_trials": 3084,
+      "dt_min_s": 9.843175309719577e-07,
+      "dt_max_s": 1.0416666666666666e-05,
+      "physical_cycle_duration_s": 0.019999999999999362,
+      "conservation": {
+        "energy_residual_J": 5.492828414332962e-14,
+        "mass_residual_kg": 6.708500942254059e-19,
+        "species_residual_kg": [
+          6.522153693858113e-19,
+          -1.0058516248644817e-21,
+          -1.0841849812415103e-19,
+          8.451636214537294e-76
+        ]
+      },
+      "audit": {
+        "status": "PASS",
+        "recomputed": true
+      },
+      "primary_sha256": "4abd78ef60a75a68cf4c737bd01c6363afc0795e6bfdf129dd24d0c72b6d0c8a"
+    },
+    {
+      "cycle": 2,
+      "new_cycle_wall_seconds": 134.51500000001397,
+      "rss_at_cycle_commit_mib": 301.1015625,
+      "cylinder_indicated_work_J_TRANSIENT": 16.35278020354244,
+      "cylinder_end_state": {
+        "mass_kg": 9.72237038450551e-05,
+        "pressure_Pa": 1414779.7747978345,
+        "temperature_K": 892.0160807267656,
+        "total_energy_J": 71.11458795123676
+      },
+      "crankcase_end_state": {
+        "mass_kg": 0.00012209117828639772,
+        "pressure_Pa": 46425.187447586926,
+        "temperature_K": 269.1567244012375,
+        "total_energy_J": 26.946562533200524
+      },
+      "global_species_kg": [
+        0.0006768354681161763,
+        6.637557484421233e-07,
+        0.00024258699737726266,
+        1.1788864706172223e-05
+      ],
+      "fresh_delivery_kg": 4.711814983019201e-06,
+      "fresh_short_circuit_kg": 1.3118090667624218e-05,
+      "periodicity_lag1": "FAIL",
+      "failed_lag1_metrics": 212,
+      "worst_lag1": {
+        "metric": "work_J",
+        "value": 1.4017364595008712,
+        "threshold": 0.005,
+        "ratio": 280.34729190017424
+      },
+      "lag1_streak": 0,
+      "lag2_branch": null,
+      "lag2_status": "INSUFFICIENT_HISTORY",
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "accepted_steps": 2882,
+      "rejected_trials": 3596,
+      "dt_min_s": 9.843175309735368e-07,
+      "dt_max_s": 8.934977102879e-06,
+      "physical_cycle_duration_s": 0.019999999999999258,
+      "conservation": {
+        "energy_residual_J": -4.605205106145149e-13,
+        "mass_residual_kg": 4.0657581468206416e-19,
+        "species_residual_kg": [
+          -4.352161162111002e-19,
+          1.3234889800848443e-23,
+          -2.5169284734661905e-19,
+          -3.200960704581979e-21
+        ]
+      },
+      "audit": {
+        "status": "PASS",
+        "recomputed": true
+      },
+      "primary_sha256": "0832a896938d2243e9980ff9d0f8b9847cbc49a70efa03ae3402c872998527e9"
+    },
+    {
+      "cycle": 3,
+      "new_cycle_wall_seconds": 138.06200000003446,
+      "rss_at_cycle_commit_mib": 347.65625,
+      "cylinder_indicated_work_J_TRANSIENT": 0.6068108098514022,
+      "cylinder_end_state": {
+        "mass_kg": 9.799753959001384e-05,
+        "pressure_Pa": 1380425.00803938,
+        "temperature_K": 863.4827169367851,
+        "total_energy_J": 69.38772902541034
+      },
+      "crankcase_end_state": {
+        "mass_kg": 0.0001141496882694704,
+        "pressure_Pa": 43938.394789365026,
+        "temperature_K": 272.46160486268786,
+        "total_energy_J": 25.503153953589855
+      },
+      "global_species_kg": [
+        0.0006592275616958993,
+        8.887490257856395e-07,
+        0.00024258699736200208,
+        1.2565810133038955e-05
+      ],
+      "fresh_delivery_kg": 5.661355783424546e-06,
+      "fresh_short_circuit_kg": 4.577550838106587e-06,
+      "periodicity_lag1": "FAIL",
+      "failed_lag1_metrics": 199,
+      "worst_lag1": {
+        "metric": "work_J",
+        "value": 0.9628924988718461,
+        "threshold": 0.005,
+        "ratio": 192.57849977436922
+      },
+      "lag1_streak": 0,
+      "lag2_branch": "A",
+      "lag2_status": "FAIL",
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "accepted_steps": 2882,
+      "rejected_trials": 3596,
+      "dt_min_s": 9.843175309735368e-07,
+      "dt_max_s": 8.934977102879e-06,
+      "physical_cycle_duration_s": 0.019999999999999254,
+      "conservation": {
+        "energy_residual_J": 1.8784973576657649e-13,
+        "mass_residual_kg": -4.0996394647108136e-19,
+        "species_residual_kg": [
+          -2.2054620364133845e-19,
+          -3.705769144237564e-22,
+          -4.345422201676272e-19,
+          1.4264803508502188e-21
+        ]
+      },
+      "audit": {
+        "status": "PASS",
+        "recomputed": true
+      },
+      "primary_sha256": "b8bc4367a3f89bab323c67e593fbe3eeaeb096c78989c45c937be5340b0cfed7"
+    },
+    {
+      "cycle": 4,
+      "new_cycle_wall_seconds": 134.75,
+      "rss_at_cycle_commit_mib": 229.0078125,
+      "cylinder_indicated_work_J_TRANSIENT": -0.21396491595853603,
+      "cylinder_end_state": {
+        "mass_kg": 9.851298790929439e-05,
+        "pressure_Pa": 1393167.9962929685,
+        "temperature_K": 866.8940074597289,
+        "total_energy_J": 70.0282614779264
+      },
+      "crankcase_end_state": {
+        "mass_kg": 0.00011061769074847907,
+        "pressure_Pa": 43485.89083128596,
+        "temperature_K": 278.2656742831334,
+        "total_energy_J": 25.240507169090293
+      },
+      "global_species_kg": [
+        0.0006469847666921658,
+        1.101297242825858e-06,
+        0.00024258699709497138,
+        1.374703880688166e-05
+      ],
+      "fresh_delivery_kg": 7.0049382054704735e-06,
+      "fresh_short_circuit_kg": 3.843063374563965e-06,
+      "periodicity_lag1": "FAIL",
+      "failed_lag1_metrics": 140,
+      "worst_lag1": {
+        "metric": "work_J",
+        "value": 0.8207757258099383,
+        "threshold": 0.005,
+        "ratio": 164.15514516198766
+      },
+      "lag1_streak": 0,
+      "lag2_branch": "B",
+      "lag2_status": "FAIL",
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "accepted_steps": 2882,
+      "rejected_trials": 3596,
+      "dt_min_s": 9.843175309672209e-07,
+      "dt_max_s": 8.934977102879e-06,
+      "physical_cycle_duration_s": 0.019999999999999272,
+      "conservation": {
+        "energy_residual_J": 5.150602166992257e-13,
+        "mass_residual_kg": -1.2891841457210451e-18,
+        "species_residual_kg": [
+          -1.1983398621280214e-18,
+          1.733770563911146e-21,
+          3.3213428166104855e-19,
+          1.001344569727229e-20
+        ]
+      },
+      "audit": {
+        "status": "PASS",
+        "recomputed": true
+      },
+      "primary_sha256": "fb8652fc88f823e13eca1c57fd3c614bf8e8038968a22da06bb52044b470a585"
+    },
+    {
+      "cycle": 5,
+      "new_cycle_wall_seconds": 133.03200000000652,
+      "rss_at_cycle_commit_mib": 230.8203125,
+      "cylinder_indicated_work_J_TRANSIENT": -0.0759509016862663,
+      "cylinder_end_state": {
+        "mass_kg": 9.783033226901383e-05,
+        "pressure_Pa": 1413425.1641648184,
+        "temperature_K": 885.6360647177949,
+        "total_energy_J": 71.04649779422623
+      },
+      "crankcase_end_state": {
+        "mass_kg": 0.0001083710527624705,
+        "pressure_Pa": 43488.81572813366,
+        "temperature_K": 284.053498435712,
+        "total_energy_J": 25.24220486639951
+      },
+      "global_species_kg": [
+        0.0006340712278322314,
+        1.291714387688085e-06,
+        0.00024258699386766846,
+        1.5329860343684714e-05
+      ],
+      "fresh_delivery_kg": 8.496113811519343e-06,
+      "fresh_short_circuit_kg": 3.943357319822735e-06,
+      "periodicity_lag1": "FAIL",
+      "failed_lag1_metrics": 117,
+      "worst_lag1": {
+        "metric": "ducts.exhaust[14].species.fresh_air",
+        "value": 0.08673121433674502,
+        "threshold": 0.002,
+        "ratio": 43.36560716837251
+      },
+      "lag1_streak": 0,
+      "lag2_branch": "A",
+      "lag2_status": "FAIL",
+      "branch_streaks": {
+        "A": 0,
+        "B": 0
+      },
+      "accepted_steps": 2882,
+      "rejected_trials": 3596,
+      "dt_min_s": 9.843175309672209e-07,
+      "dt_max_s": 8.934977102879e-06,
+      "physical_cycle_duration_s": 0.019999999999999272,
+      "conservation": {
+        "energy_residual_J": 3.1240288134171124e-13,
+        "mass_residual_kg": -2.541098841762901e-19,
+        "species_residual_kg": [
+          2.4161614820428917e-19,
+          1.257314531080602e-21,
+          9.688303406781683e-20,
+          3.186176217364486e-21
+        ]
+      },
+      "audit": {
+        "status": "PASS",
+        "recomputed": true
+      },
+      "primary_sha256": "db01feb818216e602aab28b551e36950ee20589a815c261fd9a2d00931df4764"
+    }
+  ],
+  "stop_cause": {
+    "workflow_failure_message": "invocation yielded at complete-cycle boundary",
+    "workflow_status": "INTERRUPTED_CHECKPOINTED",
+    "mechanism": "Invocation 4 revalidated five primaries, then frozen cycle_admission returned false. No new cycle completed, so executor terminal guard stopped rather than repeating an invocation.",
+    "admission_required_seconds": 237.0930000000517,
+    "worker_budget_seconds": 580,
+    "workflow_elapsed_seconds": 384.35999999998603,
+    "approx_window_after_revalidation_seconds": 195.64000000001397,
+    "not_global_budget_exhaustion": true,
+    "not_memory_exhaustion": true,
+    "no_numerical_terminal_failure_observed": true,
+    "no_proof_next_cycle_cannot_fit": "The conservative frozen admission estimate, not a measured failed cycle 6, prevented launch."
+  },
+  "interpretation": "Observed transient changes shrink in some indicators but are not monotone. Work changes sign and remains near zero; every lag-1 comparison fails, and period-2 branch streaks remain zero. Five cycles cannot establish steady performance or rule out eventual periodicity.",
+  "engineering_metrics": {
+    "bmep_pa": {
+      "definition_version": "MOTORSIM_2T_V1_OUTPUT_METRIC_1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "UNKNOWN",
+      "reason": "Performance requires an accepted periodic cycle.",
+      "source": "integrated cycle evidence; required inputs unavailable",
+      "status": "UNDEFINED",
+      "unit": "Pa",
+      "value": null
+    },
+    "brake_power_w": {
+      "definition_version": "MOTORSIM_2T_V1_OUTPUT_METRIC_1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "UNKNOWN",
+      "reason": "Performance requires an accepted periodic cycle.",
+      "source": "integrated cycle evidence; required inputs unavailable",
+      "status": "UNDEFINED",
+      "unit": "W",
+      "value": null
+    },
+    "brake_torque_nm": {
+      "definition_version": "MOTORSIM_2T_V1_OUTPUT_METRIC_1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "UNKNOWN",
+      "reason": "Performance requires an accepted periodic cycle.",
+      "source": "integrated cycle evidence; required inputs unavailable",
+      "status": "UNDEFINED",
+      "unit": "N*m",
+      "value": null
+    },
+    "bsfc_g_kwh": {
+      "definition_version": "MOTORSIM_2T_V1_OUTPUT_METRIC_1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "UNKNOWN",
+      "reason": "Performance requires an accepted periodic cycle.",
+      "source": "integrated cycle evidence; required inputs unavailable",
+      "status": "UNDEFINED",
+      "unit": "g/kWh",
+      "value": null
+    },
+    "fmep_pa": {
+      "definition_version": "MOTORSIM_2T_V1_OUTPUT_METRIC_1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "UNKNOWN",
+      "reason": "Performance requires an accepted periodic cycle.",
+      "source": "integrated cycle evidence; required inputs unavailable",
+      "status": "UNDEFINED",
+      "unit": "Pa",
+      "value": null
+    },
+    "imep_pa": {
+      "definition_version": "MOTORSIM_2T_V1_OUTPUT_METRIC_1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "UNKNOWN",
+      "reason": "Performance requires an accepted periodic cycle.",
+      "source": "integrated cycle evidence; required inputs unavailable",
+      "status": "UNDEFINED",
+      "unit": "Pa",
+      "value": null
+    },
+    "indicated_power_w": {
+      "definition_version": "MOTORSIM_2T_V1_OUTPUT_METRIC_1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "UNKNOWN",
+      "reason": "Performance requires an accepted periodic cycle.",
+      "source": "integrated cycle evidence; required inputs unavailable",
+      "status": "UNDEFINED",
+      "unit": "W",
+      "value": null
+    },
+    "indicated_torque_nm": {
+      "definition_version": "MOTORSIM_2T_V1_OUTPUT_METRIC_1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "UNKNOWN",
+      "reason": "Performance requires an accepted periodic cycle.",
+      "source": "integrated cycle evidence; required inputs unavailable",
+      "status": "UNDEFINED",
+      "unit": "N*m",
+      "value": null
+    },
+    "isfc_g_kwh": {
+      "definition_version": "MOTORSIM_2T_V1_OUTPUT_METRIC_1",
+      "periodicity_dependency": "REQUIRED",
+      "provenance": "UNKNOWN",
+      "reason": "Performance requires an accepted periodic cycle.",
+      "source": "integrated cycle evidence; required inputs unavailable",
+      "status": "UNDEFINED",
+      "unit": "g/kWh",
+      "value": null
+    }
+  },
+  "power_kw_hp": "UNDEFINED; no accepted periodic cycle, no conversion or estimate fabricated",
+  "integrity": {
+    "primary_integrity": [
+      {
+        "cycle": 1,
+        "file": "cycle-0001.json.gz",
+        "raw_sha256": "4abd78ef60a75a68cf4c737bd01c6363afc0795e6bfdf129dd24d0c72b6d0c8a",
+        "gzip_sha256": "31dc7091f937285ed682d309d37d32af0ec3c22d6893a2e7e8c7c94c267ecf87",
+        "compressed_bytes": 29067988
+      },
+      {
+        "cycle": 2,
+        "file": "cycle-0002.json.gz",
+        "raw_sha256": "0832a896938d2243e9980ff9d0f8b9847cbc49a70efa03ae3402c872998527e9",
+        "gzip_sha256": "3957a5172e3b53446bfadf016cf0d9152c371af3324862df0184abe7a5c97e40",
+        "compressed_bytes": 50003598
+      },
+      {
+        "cycle": 3,
+        "file": "cycle-0003.json.gz",
+        "raw_sha256": "b8bc4367a3f89bab323c67e593fbe3eeaeb096c78989c45c937be5340b0cfed7",
+        "gzip_sha256": "c1fdce2a55b56f52f7afa969d5d56aca3d89e9e7793417aa6ace1eae07c18bcf",
+        "compressed_bytes": 50091001
+      },
+      {
+        "cycle": 4,
+        "file": "cycle-0004.json.gz",
+        "raw_sha256": "fb8652fc88f823e13eca1c57fd3c614bf8e8038968a22da06bb52044b470a585",
+        "gzip_sha256": "7fa24d3570bdb1a19d0bb5bb1b6b2c3c958f3709f1d46a99fe23312c663be9e3",
+        "compressed_bytes": 50244212
+      },
+      {
+        "cycle": 5,
+        "file": "cycle-0005.json.gz",
+        "raw_sha256": "db01feb818216e602aab28b551e36950ee20589a815c261fd9a2d00931df4764",
+        "gzip_sha256": "e30a716d8503816413c25329b5162507b35fe65b86bd7c8b29e6c6bcc722f1f3",
+        "compressed_bytes": 50166458
+      }
+    ],
+    "checkpoint_sha256": "5dc673a3cb5941c2fa2496dfa2145a46c41978574ec71b165c58cbee5ceff1b0",
+    "checkpoint_next_cycle": 6,
+    "checkpoint_canonical_restore": "PASS",
+    "detector_snapshot_sha256": "1f99c602b686063f8e20ccfa1d0113330e4e435426d326e1dcbabac8c5689a0f",
+    "detector_classification": null,
+    "detector_lag1_streak": 0,
+    "branch_streaks": {
+      "A": 0,
+      "B": 0
+    },
+    "result_sha256": "c187f4af2bab4029146c1a9bf3ad918bc8c085c012c2c4b65d19521ccea06d3c",
+    "all_workers_stopped": true,
+    "source_identity": "EXACT_FROZEN_MATCH",
+    "partial_or_orphan_primaries": false
+  },
+  "artifact_root": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\periodic-point-3000-prepared-v1",
+  "artifact_metadata_sha256": {
+    "prepared.json": "62b7df90dc114387d2930e9b89725c0c4f4382f29aba02c56eab2070da28bec0",
+    "document.json": "887b1cd6b606be50faab5b4f6614c804be3c8ef663ea03aaade488477ad85741",
+    "authorization.json": "67c7b86c6361c04ab37bcac7db64f4496ccb5fc1aafe3486ea0c2cf9a17a164d",
+    "ledger.json": "a9f145832be7549984c6a1bde0f8b395389b31319e59a201c035a99b55434574",
+    "closure-integrity.json": "b22f1a3d4beed240bd3e000a1c2fd3da13343d9c836e2cbb1f321b847c2bb2ad",
+    "cycle-timing.json": "15b416bb5f63b03e30c6122d0bd9ab1844e967a02131360f733ec11981e6bee6",
+    "observed-cycle-stats.json": "08b66f56c44ee4539ae32f0817262c5a505bb9e02945832589adcc7987df9882",
+    "worker-result.json": "15e80ba4cefcb52ecc371dc30813536c4600e4788ef2a9561ef2d04bb12102c1",
+    "logs/periodic-point-authorized.summary.json": "5d268c02305953543b6bd753dd4a94700b668f3d38b494ca8cfe23a712a35ca0"
+  },
+  "checks": {
+    "frozen_identity": "PASS",
+    "preflight": "PASS zero solver steps before launch",
+    "primary_audits": "5/5 PASS/recomputed; complete history also reaudited on each normal resume",
+    "checkpoint_restore": "EXACT_CANONICAL_MATCH",
+    "code_changes_during_execution": false,
+    "openspec_strict": "56 passed, 0 failed",
+    "program_status": "CHECK OK; pre-existing two-READY warning preserved"
+  },
+  "a3b": {
+    "executed": false,
+    "consumed_seconds": 783.376,
+    "remaining_seconds": 3536.624
+  },
+  "next_decision": "Do not launch more cycles with this frozen execution scheme. Review the measured complete-history revalidation and admission cost before authorizing another point attempt; current evidence does not justify changing solver physics.",
+  "push": false
+}
