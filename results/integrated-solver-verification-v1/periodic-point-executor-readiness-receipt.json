@@ -1,0 +1,237 @@
+{
+  "schema": "DINO_PERIODIC_POINT_EXECUTOR_READINESS_V1",
+  "date_utc": "2026-10-22T11:05:57.545730+00:00",
+  "classification": "READY_FOR_PERIODIC_POINT_EXECUTION",
+  "review_kind": "SELF_REVIEW",
+  "implementation_commit": "6cd04af4c6eb1f5ca065b6c94bad7c4c51877780",
+  "definition_sha256": "62b7df90dc114387d2930e9b89725c0c4f4382f29aba02c56eab2070da28bec0",
+  "prepared_file_sha256": "62b7df90dc114387d2930e9b89725c0c4f4382f29aba02c56eab2070da28bec0",
+  "prepared_root": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\periodic-point-3000-prepared-v1",
+  "definition": {
+    "aggregate_mib": 4096,
+    "artifact_root": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\periodic-point-3000-prepared-v1",
+    "closure_reserve_seconds": 10,
+    "document_sha256": "887b1cd6b606be50faab5b4f6614c804be3c8ef663ea03aaade488477ad85741",
+    "global_seconds": 3000,
+    "horizon": 10,
+    "initial_state": "INDEPENDENT; historical standalone snapshot is not a workflow checkpoint",
+    "invocation_seconds": 600,
+    "operational_sources": {
+      "executor": "997d97aa22c9b3ecba48ed84b9442761287f8c9db098a830421b8c3641172e98",
+      "supervisor": "3a4c69e820e5d93ad55c32f02c26104fb79590f85ec9babd0305dfd3163b7d79",
+      "workflow": "f591678e80f6c1b4ab141d7869ff4e24ee3c83b9a74c66d2433ee017822b3ea3"
+    },
+    "preflight": {
+      "afr_kg_air_per_kg_fuel": 49.0,
+      "artifact_limit_bytes": 536870912,
+      "budget_seconds": 600.0,
+      "classification": "PREFLIGHT_ONLY_NO_SOLVER_STEPS",
+      "configuration_sha256": "5baa4cbdfe00963fe0a48fed01fe6da783d6d48a3ead769c4858ed247a73b203",
+      "cycle_primary_contract": "REFERENCE_PERIODIC_CONVERGENCE_V1",
+      "fuel_id": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+      "identity_sha256": "c2ceac784b7fd9d7f3efd506d31f84d9f25e042cf3590558344e22c5a193f781",
+      "max_cycles": 10,
+      "mechanical_loss_model_sha256": "18f4f692ae9716fbee21f16b4b0bf4fbeb17c4b21a08133dcc7bc36bf75cc76e",
+      "mechanical_loss_preflight": {
+        "compatible": true,
+        "friction_mep_pa": 1500.0,
+        "term_mep_pa_by_term": {
+          "synthetic-bearing-accessory": 500.0,
+          "synthetic-piston-ring": 1000.0
+        }
+      },
+      "memory_limit_mib": 3072,
+      "mode": "EXPLORATORY",
+      "periodicity_contract": "REFERENCE_PERIODIC_CONVERGENCE_V2",
+      "periodicity_initial": "NOT_EVALUATED",
+      "periodicity_source_sha256": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+      "periodicity_thresholds_sha256": "97049f91c7664b906fd743ec2a05991ad313f860df23b154b482a5c783f13b70",
+      "rpm": 3000.0,
+      "schema": "DINO_EXPLORATORY_PREFLIGHT_V1",
+      "solver_steps": 0,
+      "status": "PASS",
+      "total_finite_volume_cells": 48,
+      "verified_mode": "UNAVAILABLE_WITHOUT_PREREGISTRATION_AND_AUTHORIZATION",
+      "workers": 1
+    },
+    "rpm": 3000,
+    "schema": "DINO_SINGLE_PERIODIC_POINT_V1",
+    "scientific_execution_authorized": false,
+    "scientific_sources": {
+      "motorsim._evidence_io": "422f7981eaa53769ad2a9610cb8c07cb5c2e6351eba1fb820ef9a47a5b0ba5b1",
+      "motorsim._trajectory_store": "9a4a7c1b9fc01218e0b4d53ee2c26e6ac5a459c68bada0a556437294c04923e8",
+      "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+      "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+      "motorsim.engine_configuration": "2fddbde685f8d2004c3643f787e8fcd271d175e0d831ff8fe75065821915a618",
+      "motorsim.engine_variants": "ad21a71bc2528f55ad8becbe7fc019b63c27211b0939f5a284ef3a508f3856fa",
+      "motorsim.engineering_outputs": "c01c3c7195f28a67c3fb866df704d15a595d079d32be71057ab2d2c5095f5424",
+      "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+      "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+      "motorsim.gas1d.eos": "72ec337f941b1259ab23c04f70ec75593870bdcc4b065d481b38834430221186",
+      "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+      "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+      "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+      "motorsim.integrated_2t": "4cfce1ff4ceb84496f8c85eb170d40d0ab9fc6392786d47e3dfdb49cc42e79c5",
+      "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+      "motorsim.mechanical": "de71d3bacb18e7661de0ff15cbac50f1a252fc01970c7ef9aa04c8a3424d0fff",
+      "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+      "motorsim.p6_species": "7ed60395642eecb6b5b9f15bbe095489468da7b562f72d0b53b13527a97e2dab",
+      "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+      "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+      "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+      "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+      "motorsim.reference_harness.convergence": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+      "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+      "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095"
+    },
+    "worker_mib": 3072
+  },
+  "ledger": {
+    "charged_seconds": 0.0,
+    "definition_sha256": "62b7df90dc114387d2930e9b89725c0c4f4382f29aba02c56eab2070da28bec0",
+    "entries": [],
+    "schema": "DINO_POINT_BUDGET_V1",
+    "terminal": null
+  },
+  "authorization_pending": "Independent owner authorization for this exact definition. No execution authorization file created.",
+  "scientific_experiment_started": false,
+  "scientific_budget_consumed_seconds": 0,
+  "continuity_evidence": "Two-cycle real reduced integrated-engine run versus one-cycle boundary yield plus compatible resume: exact canonical primary digests, full engine checkpoint, detector snapshot and conservation equality. Every completed primary audited. Separate real subprocess worker tested on one reduced cycle. Synthetic period-1 and period-2 detector histories also match across restore.",
+  "checkpoint_format": "Existing DINO_EXPLORATORY_CHECKPOINT_V1 retained; detector reconstructed from audited historical primaries and required to match the complete stored snapshot. No new detector serializer or standalone-checkpoint migration.",
+  "budget_evidence": "27 final operational/supervision cases (overlap with 27 final continuity/detector cases): actual bounded subprocess time/resource/abrupt-parent guards; deterministic global exhaustion, conservative crash reservation, persistence failure, explicit authorization, corrupted ledger, and normal planned-invocation accumulation tests.",
+  "limitations": [
+    "RSS supervision is sampled, not an OS hard allocation ceiling; monitored aggregate excludes outer logging wrapper.",
+    "Recovery settles a dead invocation at its full reservation and remains terminal. It does not authorize retries, remove orphan evidence or silently resume an abruptly failed process.",
+    "The existing 512 MiB artifact cap and repeated full-history resume audits remain enforced; completing ten cycles within 3000 seconds is not guaranteed.",
+    "No periodicity, power, spatial independence or experimental prediction claim is made for the 48-cell reference by reduced fixture verification."
+  ],
+  "current_available_memory_mib": 3359.92578125,
+  "checks": {
+    "point-executor-tests": {
+      "exit_code": 1,
+      "duration_s": 330.718,
+      "tail": [
+        "        if (p['caps'] != CAPS or p['invocations'] != PLAN or",
+        "                p['invocation_caps'] != INVOCATION_CAPS or",
+        "                p['global_cap_seconds'] != GLOBAL_CAP or p['closure_seconds'] != CLOSURE or",
+        "                p['planning_overhead_per_invocation_seconds'] != INVOCATION_OVERHEAD):",
+        "            raise Refused('operational contract differs from this driver')",
+        "        for relative, expected in p['repository_inputs'].items():",
+        "            if sha(ROOT / relative) != expected:",
+        ">               raise Refused('repository dependency changed: ' + relative)",
+        "E               integrated_solver_verification_a3b_v4.Refused: repository dependency changed: motorsim/engine_configuration.py",
+        "",
+        "scripts\\diagnostics\\integrated_solver_verification_a3b_v4.py:89: Refused",
+        "=========================== short test summary info ===========================",
+        "ERROR tests/test_integrated_solver_verification_a3b_v4.py::test_budget_includes_inherited_and_supervisor_overhead",
+        "ERROR tests/test_integrated_solver_verification_a3b_v4.py::test_impossible_cycle_refused_before_solver[T1-B]",
+        "ERROR tests/test_integrated_solver_verification_a3b_v4.py::test_impossible_cycle_refused_before_solver[T1-C]",
+        "ERROR tests/test_integrated_solver_verification_a3b_v4.py::test_impossible_cycle_refused_before_solver[T1-D]",
+        "ERROR tests/test_integrated_solver_verification_a3b_v4.py::test_impossible_cycle_refused_before_solver[T1-E]",
+        "ERROR tests/test_integrated_solver_verification_a3b_v4.py::test_negative_nan_duplicate_and_forged_inherited_charge",
+        "ERROR tests/test_integrated_solver_verification_a3b_v4.py::test_duplicate_ledger_cycles_refused",
+        "ERROR tests/test_integrated_solver_verification_a3b_v4.py::test_v4_binding_and_real_zero_step_restore",
+        "ERROR tests/test_integrated_solver_verification_a3b_v4.py::test_reused_cycle_executor_resume_ledger_continuity_no_solver[None]",
+        "ERROR tests/test_integrated_solver_verification_a3b_v4.py::test_reused_cycle_executor_resume_ledger_continuity_no_solver[worker_cycle_2]",
+        "ERROR tests/test_integrated_solver_verification_a3b_v4.py::test_reused_cycle_executor_resume_ledger_continuity_no_solver[audit_cycle_2]",
+        "ERROR tests/test_integrated_solver_verification_a3b_v4.py::test_timeout_settlement_does_not_lose_reserved_work",
+        "ERROR tests/test_integrated_solver_verification_a3b_v4.py::test_recover_abrupt_supervisor_preserves_checkpoint_and_full_charge",
+        "ERROR tests/test_integrated_solver_verification_a3b_v4.py::test_frozen_identity_detects_source_and_driver_changes",
+        "ERROR tests/test_integrated_solver_verification_a3b_v4.py::test_resource_guard_can_be_inspected_without_authorizing_execution",
+        "ERROR tests/test_integrated_solver_verification_a3b_v4.py::test_supervisor_complete_lifecycle_and_budget_receipts_no_solver[None]",
+        "ERROR tests/test_integrated_solver_verification_a3b_v4.py::test_supervisor_complete_lifecycle_and_budget_receipts_no_solver[TIMEOUT]",
+        "54 passed, 17 errors in 328.45s (0:05:28)"
+      ],
+      "sha256": "1eca68ea217f75c54240705aa82ec185b4941d00ce4c33692027081f66acdae1",
+      "summary_path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\periodic-point-preparation-tests\\point-executor-tests.summary.json"
+    },
+    "point-operational-tests": {
+      "exit_code": 1,
+      "duration_s": 17.469,
+      "tail": [
+        "...........F...............                                              [100%]",
+        "================================== FAILURES ===================================",
+        "_______ test_detector_continuity_includes_accepted_period1_and_period2 ________",
+        "",
+        "    def test_detector_continuity_includes_accepted_period1_and_period2():",
+        "        from test_v1_closure_periodicity import _record",
+        "        for periodic in (1,2):",
+        "            continuous=PeriodicDetectorV2(); resumed=PeriodicDetectorV2()",
+        "            records=[_record(i,0.0 if periodic==1 or i%2 else 1.0) for i in range(1,9)]",
+        ">           for row in records: continuous.update(row)",
+        "                                ^^^^^^^^^^^^^^^^^^^^^^",
+        "",
+        "tests\\test_periodic_point_executor.py:208: ",
+        "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+        "",
+        "self = <motorsim.reference_harness.convergence.PeriodicDetectorV2 object at 0x00000208572AEE90>",
+        "record = {'configuration_hash': 'test-config', 'contract': 'REFERENCE_PERIODIC_CONVERGENCE_V1', 'cycle_index': 5, 'observables'...g': 0.1, 'pressure_Pa': 100000.0, 'species_mass_fractions': [1.0, 0.0, 0.0, 0.0], 'temperature_K': 300.0, ...}]}, ...}}",
+        "",
+        "    def update(self, record):",
+        "        if self.detected_period is not None:",
+        ">           raise ValueError(\"detector already converged\")",
+        "E           ValueError: detector already converged",
+        "",
+        "motorsim\\reference_harness\\convergence.py:268: ValueError",
+        "=========================== short test summary info ===========================",
+        "FAILED tests/test_periodic_point_executor.py::test_detector_continuity_includes_accepted_period1_and_period2",
+        "1 failed, 26 passed, 29 deselected in 16.84s"
+      ],
+      "sha256": "4d826128f5211e0d759ff2407f75369a37d17c07dc8582f0c1f1ff7ff0908047",
+      "summary_path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\periodic-point-preparation-tests\\point-operational-tests.summary.json"
+    },
+    "point-operational-final": {
+      "exit_code": 0,
+      "duration_s": 16.844,
+      "tail": [
+        "...........................                                              [100%]",
+        "27 passed, 29 deselected in 16.21s"
+      ],
+      "sha256": "2042d5c0d7613fde8330110ed2a819e6eda6244e00faf6aa9a6e3bb34057208d",
+      "summary_path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\periodic-point-preparation-tests\\point-operational-final.summary.json"
+    },
+    "point-final-continuity": {
+      "exit_code": 0,
+      "duration_s": 182.562,
+      "tail": [
+        "...........................                                              [100%]",
+        "27 passed in 181.29s (0:03:01)"
+      ],
+      "sha256": "a045e14f43444653fb5edbdea5e3f7c25006f4d495b1be3609abd91dbb3007ee",
+      "summary_path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\periodic-point-preparation-tests\\point-final-continuity.summary.json"
+    },
+    "point-operational-frozen": {
+      "exit_code": 0,
+      "duration_s": 16.906,
+      "tail": [
+        "...........................                                              [100%]",
+        "27 passed, 29 deselected in 16.37s"
+      ],
+      "sha256": "5b605549b0469bd4c1879361e57fdd15cae53b23a141a3b92b1f03ebb4a325b4",
+      "summary_path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\periodic-point-preparation-tests\\point-operational-frozen.summary.json"
+    }
+  },
+  "historical_v4_tests": "17 setup errors in broad exploratory run: frozen V4 rejects previously changed engine_configuration.py. Preserved fail-closed; no historical test or hash updated. Same run has 54 passing cases including workflow regressions.",
+  "final_checks": {
+    "openspec_strict": "56 passed, 0 failed",
+    "program_status": "CHECK OK; existing two-READY warning preserved"
+  },
+  "file_sha256": {
+    "motorsim/exploratory_workflow.py": "f591678e80f6c1b4ab141d7869ff4e24ee3c83b9a74c66d2433ee017822b3ea3",
+    "scripts/diagnostics/periodic_point_executor.py": "997d97aa22c9b3ecba48ed84b9442761287f8c9db098a830421b8c3641172e98",
+    "tests/test_periodic_point_executor.py": "767c43270023005715870689c4e29be53c16fed9ae03aaa22a9e490261bfad65",
+    "docs/gasdynamic/periodic_point_executor.md": "fe22cf62616e15b98cd2ab01d307c364333576da9279946f0c3ad83dc496743f",
+    "openspec/changes/integrated-solver-verification-v1/specs/integrated-solver-verification-v1/spec.md": "5259b011f3cf1f173c54058366ef436ecfbdbd5d1a1632c1f68dae847f2898fe"
+  },
+  "physical_source_changes_from_representative_trial": [],
+  "changed_bound_sources_from_trial": [
+    "motorsim.exploratory_workflow"
+  ],
+  "a3b": {
+    "executed": false,
+    "consumed_seconds": 783.376,
+    "remaining_seconds": 3536.624
+  },
+  "next_step": "Owner authorization binding definition_sha256; then launch only the independent prepared 3000 RPM point under existing guards.",
+  "push": false
+}
