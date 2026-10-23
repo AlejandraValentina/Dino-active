@@ -7039,51 +7039,68 @@
       "dependencies": [],
       "state": "DONE",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "ff12964",
+        "ea99b55"
+      ],
       "evidence": [
+        "results/periodicity-blocker-v1/report.md",
+        "results/periodicity-blocker-v1/receipt.json",
+        "results/periodicity-blocker-v1/evolution.png",
         "results/periodicity-blocker-v1/protocol.md"
       ],
-      "next_action": "Only the scoped A9000 discriminating continuation; no grid execution.",
+      "next_action": "Stop scoped investigation; no further point/grid execution authorized.",
       "objective": "DINO_PERIODICITY_BLOCKER_V1",
       "owner_role": "implementation",
       "write_scope": [],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "A9000 period1 observed within unchanged V2 tolerances atcycle104,102-104PASS. L1 unaudited; original Desktop curves remain exploratory.26focal+298P4-P8 PASS,3skip. No physical/solver/detector changes; one continuation only."
     },
     {
       "id": "PB1-CONTINUATION",
       "description": "Single conservative A9000 continuation, maximum110 totalcycles /600s newcompute /512MiB.",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [
-        "ff12964"
+        "ff12964",
+        "ea99b55"
       ],
       "evidence": [
+        "results/periodicity-blocker-v1/report.md",
+        "results/periodicity-blocker-v1/receipt.json",
+        "results/periodicity-blocker-v1/evolution.png",
         "results/periodicity-blocker-v1/protocol.md"
       ],
-      "next_action": "Only the scoped A9000 discriminating continuation; no grid execution.",
+      "next_action": "Stop scoped investigation; no further point/grid execution authorized.",
       "objective": "DINO_PERIODICITY_BLOCKER_V1",
       "owner_role": "implementation",
-      "write_scope": [
-        "results/periodicity-blocker-v1/"
-      ],
-      "evidence_level": "L1"
+      "write_scope": [],
+      "evidence_level": "L1",
+      "qualification": "A9000 period1 observed within unchanged V2 tolerances atcycle104,102-104PASS. L1 unaudited; original Desktop curves remain exploratory.26focal+298P4-P8 PASS,3skip. No physical/solver/detector changes; one continuation only."
     },
     {
       "id": "PB1-CONCLUSION",
       "description": "Interpret periodicity, transient differences, conservation and remaining physical limits.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "ff12964",
+        "ea99b55"
+      ],
       "evidence": [
+        "results/periodicity-blocker-v1/report.md",
+        "results/periodicity-blocker-v1/receipt.json",
+        "results/periodicity-blocker-v1/evolution.png",
         "results/periodicity-blocker-v1/protocol.md"
       ],
-      "next_action": "Only the scoped A9000 discriminating continuation; no grid execution.",
+      "next_action": "Stop scoped investigation; no further point/grid execution authorized.",
       "objective": "DINO_PERIODICITY_BLOCKER_V1",
       "owner_role": "implementation",
       "write_scope": [],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "A9000 period1 observed within unchanged V2 tolerances atcycle104,102-104PASS. L1 unaudited; original Desktop curves remain exploratory.26focal+298P4-P8 PASS,3skip. No physical/solver/detector changes; one continuation only."
     }
   ],
   "audit_remediation_mode": false,
@@ -7297,7 +7314,9 @@
       "PB1-CONTINUATION",
       "PB1-CONCLUSION"
     ],
-    "completion_criterion": "Identify cause using source/evidence and at most one bounded A9000 continuation; report observed periodicity or precise unresolved blocker; no curve campaign or tolerance relaxation."
+    "completion_criterion": "Identify cause using source/evidence and at most one bounded A9000 continuation; report observed periodicity or precise unresolved blocker; no curve campaign or tolerance relaxation.",
+    "functional_result": "FOCUSED_BLOCKER_RESOLVED",
+    "scientific_state": "A9000_PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED;HISTORICAL_CURVES_EXPLORATORY;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED"
   },
   "objectives": [
     {
@@ -8036,7 +8055,9 @@
         "PB1-CONTINUATION",
         "PB1-CONCLUSION"
       ],
-      "completion_criterion": "Identify cause using source/evidence and at most one bounded A9000 continuation; report observed periodicity or precise unresolved blocker; no curve campaign or tolerance relaxation."
+      "completion_criterion": "Identify cause using source/evidence and at most one bounded A9000 continuation; report observed periodicity or precise unresolved blocker; no curve campaign or tolerance relaxation.",
+      "functional_result": "FOCUSED_BLOCKER_RESOLVED",
+      "scientific_state": "A9000_PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED;HISTORICAL_CURVES_EXPLORATORY;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED"
     }
   ],
   "owner_decisions_pending": [
@@ -10108,6 +10129,12 @@
       "task": "PB1-DIAGNOSIS",
       "kind": "task",
       "summary": "Owner accepts delivery2B functional. Existing30cycles rechecked:57failures, species purge dominates; exhaust flux inventory residual<=2.44e-18kg; detector replay identical; exact zero-step restore,next31. Legacy blocked tasks remain unrelated and unauthorized. One bounded continuation protocol prepared."
+    },
+    {
+      "at": "2026-10-23T10:41:28.147407+00:00",
+      "task": "PB1-CONCLUSION",
+      "kind": "task",
+      "summary": "Single exact A9000 checkpoint continuation:74newcycles,490.325s,136.16MiB peak,zero CFL rejects; full unchangedV2 PASS102-104. Primary cause long initial exhaust purge; no solver/detector/model changes. Finalcpnext105 exactrestore;29source hashes unchanged;104diagnostics verified.26focal+298P4-P8PASS/3SKIP after configuring existing artifact store. Stop; curves remain exploratory; no other RPM/grid authorized."
     }
   ],
   "legacy_gate_status": {
@@ -10123,8 +10150,23 @@
   },
   "gate_status": {
     "objective": "DINO_PERIODICITY_BLOCKER_V1",
-    "state": "REVIEW",
-    "classification": "FOCUSED_DIAGNOSIS_IN_PROGRESS"
+    "state": "PASS",
+    "classification": "DINO_PERIODICITY_BLOCKER_V1_FOCUSED_RESOLVED",
+    "gate_tasks_total": 3,
+    "gate_tasks_done": 3,
+    "gate_task_states": {
+      "DONE": 3
+    },
+    "remaining": [],
+    "evidence": [
+      "results/periodicity-blocker-v1/report.md",
+      "results/periodicity-blocker-v1/receipt.json",
+      "results/periodicity-blocker-v1/evolution.png",
+      "results/periodicity-blocker-v1/protocol.md"
+    ],
+    "qualification": "Scoped technical closure, not a new scientific release or predictive validation.",
+    "scientific_state": "A9000_PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED;HISTORICAL_CURVES_EXPLORATORY;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED",
+    "further_campaign_authorized": false
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

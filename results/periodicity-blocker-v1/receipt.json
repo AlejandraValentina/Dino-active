@@ -1,0 +1,2523 @@
+{
+  "classification": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+  "primary_cause": "A_LONG_INITIAL_EXHAUST_PURGE_WITH_FINITE_VOLUME_TRANSPORT",
+  "code_or_tolerance_changes": false,
+  "additional_cycles": 74,
+  "cycles_total": 104,
+  "physical_elapsed_s": 0.6933333333333334,
+  "pass_cycles": [
+    102,
+    103,
+    104
+  ],
+  "budget": {
+    "additional_wall_cap_s": 600,
+    "additional_wall_consumed_s": 490.32545839995146,
+    "logged_invocation_wall_s": 490.953,
+    "total_producer_wall_s": 710.5992050999776,
+    "final_cycle_cap": 110,
+    "worker_cap_mib": 512
+  },
+  "evidence": {
+    "artifact_root": "DINO_ARTIFACT_ROOT/periodicity-blocker-v1-20261023",
+    "parent_manifest_sha256": "9293e20061d83be13f1701d3fa2ce249dd84b4f0bbb487eeaf845da0dc6d941e",
+    "parent_checkpoint_sha256": "1f06eacdc1bf87b5cb76c66e77067980647b26c90d24125e476f61de31fc5620",
+    "final_manifest_sha256": "f00028e10d46b008000208c763daac312d9816082ec2f5f66d77225f5bd3577e",
+    "final_checkpoint_sha256": "60d825868d73ca289cd305c9c59c40e750eecddfd6f9d1a85f554f91bcfc97b7",
+    "next_cycle": 105,
+    "all104_diagnostic_hashes_verified": true,
+    "all104_phase_grids_verified": true,
+    "detector_recomputed": true,
+    "independent_audit": "NOT_PERFORMED",
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_claim": "NOT_CLAIMED",
+    "source_hashes_unchanged": {
+      "motorsim._evidence_io": "422f7981eaa53769ad2a9610cb8c07cb5c2e6351eba1fb820ef9a47a5b0ba5b1",
+      "motorsim._trajectory_store": "9a4a7c1b9fc01218e0b4d53ee2c26e6ac5a459c68bada0a556437294c04923e8",
+      "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+      "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+      "motorsim.engine_configuration": "d1f8b88640fdfa3b703c2a8e87e8872a22f6fbbeac9b4400e7a4bd3e7b0fcfce",
+      "motorsim.engine_variants": "be3d8e7c723cc1627bc30900a1d8da0e049adbaa066c06dacfe946eea4fcdfa1",
+      "motorsim.engineering_outputs": "c01c3c7195f28a67c3fb866df704d15a595d079d32be71057ab2d2c5095f5424",
+      "motorsim.engineering_point": "1f5b8f94c0712f7a2bee7fbe738d64322848036f05c093500a6eae421898b4a1",
+      "motorsim.engineering_workflow": "6a7b07397e205928576864a828b2687d6d8210253b839686d8cb0a17c62c74e5",
+      "motorsim.exploratory_workflow": "b210192d6b339eccbdebaf1e3336b48f6e6d00ec1af761f357bfcad9549c6436",
+      "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+      "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+      "motorsim.gas1d.eos": "72ec337f941b1259ab23c04f70ec75593870bdcc4b065d481b38834430221186",
+      "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+      "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+      "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+      "motorsim.gas_exchange_v2": "401010e2043fc14b84343cbaa4aa979b9849c6a704629b3c45ddeb4a4ccb6bf7",
+      "motorsim.integrated_2t": "4c3efa10fa016c0a87b2fd861dd74712163241b58919d7c4db9d9f5d112267f8",
+      "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+      "motorsim.mechanical": "de71d3bacb18e7661de0ff15cbac50f1a252fc01970c7ef9aa04c8a3424d0fff",
+      "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+      "motorsim.p6_species": "7ed60395642eecb6b5b9f15bbe095489468da7b562f72d0b53b13527a97e2dab",
+      "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+      "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+      "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+      "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+      "motorsim.reference_harness.convergence": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+      "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+      "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095"
+    }
+  },
+  "numerical_verification": {
+    "max_abs_exhaust_species_balance_residual_kg": [
+      3.9641141931501256e-19,
+      7.189192139820874e-20,
+      2.168404344971009e-18,
+      1.8566962203814263e-18
+    ],
+    "max_abs_exhaust_mass_balance_residual_kg": 3.266159044612582e-18,
+    "max_abs_global_species_balance_residual_kg": 7.026985330421676e-18,
+    "max_abs_global_energy_balance_residual_J": 1.6441958905488718e-11
+  },
+  "final_state": {
+    "final_exact_restore": true,
+    "final_observables_exactly_reconstructed": true,
+    "physical_steps": 0,
+    "chamber_species_fraction_abs_changes": {
+      "cylinder": [
+        1.689837671514649e-06,
+        1.3250557756583348e-07,
+        8.544517259005724e-10,
+        1.8214887974599137e-06
+      ],
+      "crankcase": [
+        6.4806936483918776e-09,
+        4.012998683355917e-10,
+        7.848947812510395e-10,
+        6.097098972769155e-09
+      ]
+    },
+    "final_conservation": {
+      "cumulative": {
+        "energy": {
+          "external": -1510.3896921012768,
+          "final": 1361.3515764613148,
+          "fuel_combustion_heat_added": 7658.087624050185,
+          "initial": 1250.8761899716535,
+          "residual": 2.2282620193436742e-11,
+          "work": -3379.504556841464
+        },
+        "mass": {
+          "external": -0.00015280829635672222,
+          "final": 0.0027590906517995523,
+          "initial": 0.002911898948156277,
+          "residual": -2.4665599424045226e-18
+        },
+        "species": {
+          "burned": {
+            "external": -0.0015446263198080972,
+            "final": 0.0017475433680943493,
+            "fuel_combustion_source": 0.0032921696879024557,
+            "initial": 0.0,
+            "residual": -9.107298248878237e-18,
+            "source": 0.0
+          },
+          "fresh_air": {
+            "external": 0.0032914860733133343,
+            "final": 0.0008846241589379216,
+            "fuel_combustion_source": -0.003082646086697238,
+            "initial": 0.0006757841723218447,
+            "residual": -1.951563910473908e-17,
+            "source": 0.0
+          },
+          "fuel": {
+            "external": 0.0002593430301360617,
+            "final": 0.00010858327000232204,
+            "fuel_combustion_source": -0.0002095236012052029,
+            "initial": 5.876384107146472e-05,
+            "residual": -1.4907779871675686e-18,
+            "source": 0.0
+          },
+          "residual": {
+            "external": -0.0021590110799980244,
+            "final": 1.8339854764968107e-05,
+            "fuel_combustion_source": 0.0,
+            "initial": 0.0021773509347629673,
+            "residual": 2.5153490401663703e-17,
+            "source": 0.0
+          }
+        }
+      },
+      "independent_audit": "NOT_PERFORMED",
+      "relative": {
+        "energy": 2.9096846742074728e-15,
+        "mass": 8.470623419010714e-16,
+        "species": 8.638174211914224e-15
+      }
+    },
+    "new_wall_s": 490.32545839995146,
+    "total_wall_s": 710.5992050999776,
+    "new_cpu_s": 463.140625,
+    "timings": {
+      "solver_step_wall_s": 434.0194442925276,
+      "trace_dictionary_capture_wall_s": 2.363620791817084,
+      "processing_wall_s": 28.680038802092895,
+      "other_wall_s": 27.62597730534617
+    },
+    "memory_first_last_peak_mib": [
+      105.75,
+      136.16015625,
+      136.16015625
+    ],
+    "point_comparison": {
+      "cylinder_work_J": {
+        "cycle30": 34.06899097268638,
+        "cycle104": 34.193438651294855
+      },
+      "crankcase_work_J": {
+        "cycle30": -1.188682650281315,
+        "cycle104": -1.198840965731506
+      },
+      "chemical_heat_J": {
+        "cycle30": 73.45562606901376,
+        "cycle104": 73.7176720249663
+      },
+      "fuel_burned_kg": {
+        "cycle30": 2.009729851409439e-06,
+        "cycle104": 2.0168993714081874e-06
+      },
+      "imep_Pa": {
+        "cycle30": 273364.9431039867,
+        "cycle104": 274363.4943264019
+      },
+      "indicated_power_W": {
+        "cycle30": 5110.348645902956,
+        "cycle104": 5129.015797694228
+      },
+      "indicated_torque_Nm": {
+        "cycle30": 5.422248319456196,
+        "cycle104": 5.442054782663047
+      },
+      "afr_trapped": {
+        "cycle30": 7.603299081364257,
+        "cycle104": 7.6211801179943315
+      },
+      "afr_supplied": {
+        "cycle30": 11.5,
+        "cycle104": 11.5
+      },
+      "mechanical_estimate": {
+        "cycle30": {
+          "brake_mep_pa": 178827.11542592716,
+          "brake_power_positive": true,
+          "brake_power_w": 3343.0362239974106,
+          "brake_torque_nm": 3.5470715998963502,
+          "brake_work_j": 22.286908159982737,
+          "clipped": false,
+          "cycle_convention": "2T_360_DEG_ONE_CYCLE_PER_REV",
+          "displacement_m3": 0.00012462823720496853,
+          "friction_mep_pa": 85000.0,
+          "friction_mep_pa_by_term": {
+            "fmep_standard_v1": 85000.0
+          },
+          "load": 1.0,
+          "loss_work_j_by_term": {
+            "fmep_standard_v1": 10.593400162422325
+          },
+          "mechanical_loss_power_w": 1589.0100243633487,
+          "mechanical_loss_torque_nm": 1.6859920000000002,
+          "net_piston_gas_work_j": 32.880308322405064,
+          "net_piston_mep_pa": 263827.11542592716,
+          "net_piston_power_w": 4932.04624836076,
+          "net_piston_torque_nm": 5.233063599896351,
+          "rpm": 9000.0,
+          "schema": "MOTORSIM_MECHANICAL_LOSSES_2T_V2_NET_PISTON_WORK"
+        },
+        "cycle104": {
+          "brake_mep_pa": 179744.15770881143,
+          "brake_power_positive": true,
+          "brake_power_w": 3360.179628471153,
+          "brake_torque_nm": 3.5652613169858163,
+          "brake_work_j": 22.401197523141022,
+          "clipped": false,
+          "cycle_convention": "2T_360_DEG_ONE_CYCLE_PER_REV",
+          "displacement_m3": 0.00012462823720496853,
+          "friction_mep_pa": 85000.0,
+          "friction_mep_pa_by_term": {
+            "fmep_standard_v1": 85000.0
+          },
+          "load": 1.0,
+          "loss_work_j_by_term": {
+            "fmep_standard_v1": 10.593400162422325
+          },
+          "mechanical_loss_power_w": 1589.0100243633487,
+          "mechanical_loss_torque_nm": 1.6859920000000002,
+          "net_piston_gas_work_j": 32.99459768556335,
+          "net_piston_mep_pa": 264744.15770881146,
+          "net_piston_power_w": 4949.189652834502,
+          "net_piston_torque_nm": 5.251253316985816,
+          "rpm": 9000.0,
+          "schema": "MOTORSIM_MECHANICAL_LOSSES_2T_V2_NET_PISTON_WORK"
+        }
+      },
+      "pressure_min_max_Pa": {
+        "cycle30": {
+          "crankcase": [
+            90476.59149713616,
+            133294.07590260575
+          ],
+          "cylinder": [
+            104799.80950796358,
+            4724410.052921267
+          ],
+          "exhaust_entry": [
+            98204.10227796556,
+            110840.80916895164
+          ],
+          "exhaust_middle": [
+            104182.32987163043,
+            106556.85530941362
+          ]
+        },
+        "cycle104": {
+          "crankcase": [
+            90446.73494107238,
+            133294.34254073756
+          ],
+          "cylinder": [
+            104677.50018764187,
+            4723874.807548035
+          ],
+          "exhaust_entry": [
+            97991.20260186592,
+            110779.99293685272
+          ],
+          "exhaust_middle": [
+            103953.51418401579,
+            106347.0544581336
+          ]
+        }
+      }
+    },
+    "last5_work_range_J": 0.0007292760437849211,
+    "last5_trapped_air_range_kg": 5.232661441664332e-10,
+    "trapped_air_kg": {
+      "30": 2.9582366085226626e-05,
+      "104": 2.968747538265892e-05
+    },
+    "supplemental_last_cycle_deltas": {
+      "chemical_heat_J": 4.225983897714624e-06,
+      "fuel_burned_kg": 4.225983959183136e-06
+    },
+    "pressure_RMS_104_minus_30_Pa": {
+      "crankcase": 47.60679795016333,
+      "cylinder": 1411.00262284468,
+      "exhaust_entry": 240.58478560473512,
+      "exhaust_middle": 211.2408909441889
+    },
+    "pressure_RMS_104_minus_103_Pa": {
+      "crankcase": 0.028814283621322573,
+      "cylinder": 1.4988322647979402,
+      "exhaust_entry": 0.15515007268517597,
+      "exhaust_middle": 0.13816028791092702
+    }
+  },
+  "cycle_evolution": [
+    {
+      "cycle": 1,
+      "work_J": -52.51403355898726,
+      "trapped_air_kg": 5.082439209961952e-05,
+      "exhaust_mass_kg": 0.0021707341332414137,
+      "exhaust_energy_J": 1063.045315530222,
+      "exhaust_species_kg": [
+        2.2976625132561166e-05,
+        7.343419927222122e-07,
+        0.0021470231661161305,
+        0.0
+      ],
+      "failures": 0,
+      "worst_threshold_ratio": null,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.8709061913502688e-17,
+        "mass": 3.179806563041796e-16,
+        "species": 4.219310242745422e-16
+      }
+    },
+    {
+      "cycle": 2,
+      "work_J": 67.16563230722126,
+      "trapped_air_kg": 3.1837984158775125e-05,
+      "exhaust_mass_kg": 0.0022096003062383957,
+      "exhaust_energy_J": 1105.4671501700157,
+      "exhaust_species_kg": [
+        1.9690699664064874e-05,
+        1.5790717151343014e-06,
+        0.0021561619621733026,
+        3.2168572685893886e-05
+      ],
+      "failures": 241,
+      "worst_threshold_ratio": 356.3717388047019,
+      "streak": 0,
+      "conservation": {
+        "energy": 4.444224477064915e-16,
+        "mass": 9.164868985799902e-18,
+        "species": 5.344264227344568e-16
+      }
+    },
+    {
+      "cycle": 3,
+      "work_J": 35.82714034675635,
+      "trapped_air_kg": 3.065852941629305e-05,
+      "exhaust_mass_kg": 0.002204379765454328,
+      "exhaust_energy_J": 1109.237610316444,
+      "exhaust_species_kg": [
+        1.8785760946757625e-05,
+        2.362738921217504e-06,
+        0.002125659473054388,
+        5.75717925319655e-05
+      ],
+      "failures": 162,
+      "worst_threshold_ratio": 189.3724581831318,
+      "streak": 0,
+      "conservation": {
+        "energy": 7.39715661959247e-16,
+        "mass": 5.508667962143489e-17,
+        "species": 6.633354337747784e-16
+      }
+    },
+    {
+      "cycle": 4,
+      "work_J": 35.2229045537235,
+      "trapped_air_kg": 3.0263881586012766e-05,
+      "exhaust_mass_kg": 0.0021998538896147645,
+      "exhaust_energy_J": 1110.772584655155,
+      "exhaust_species_kg": [
+        2.3453871172523674e-05,
+        3.2062956427356403e-06,
+        0.0020870820372019894,
+        8.611168559751621e-05
+      ],
+      "failures": 85,
+      "worst_threshold_ratio": 99.63779212382445,
+      "streak": 0,
+      "conservation": {
+        "energy": 7.075168619985621e-16,
+        "mass": 1.2877716994657574e-16,
+        "species": 7.266711732699631e-16
+      }
+    },
+    {
+      "cycle": 5,
+      "work_J": 34.86934967405462,
+      "trapped_air_kg": 3.00632718581123e-05,
+      "exhaust_mass_kg": 0.0021946712330428685,
+      "exhaust_energy_J": 1111.345838140985,
+      "exhaust_species_kg": [
+        2.8258861423589337e-05,
+        4.0905066069606045e-06,
+        0.0020460869737706725,
+        0.00011623489124164461
+      ],
+      "failures": 80,
+      "worst_threshold_ratio": 85.38438708128437,
+      "streak": 0,
+      "conservation": {
+        "energy": 4.8875052264823e-16,
+        "mass": 3.5147936430264135e-16,
+        "species": 6.269008989529079e-16
+      }
+    },
+    {
+      "cycle": 6,
+      "work_J": 34.71152326094976,
+      "trapped_air_kg": 2.9946632449374732e-05,
+      "exhaust_mass_kg": 0.0021892650472769546,
+      "exhaust_energy_J": 1111.507510732818,
+      "exhaust_species_kg": [
+        3.3046959383340656e-05,
+        5.003253694012383e-06,
+        0.0020040155791172637,
+        0.00014719925508233786
+      ],
+      "failures": 76,
+      "worst_threshold_ratio": 74.41385411189702,
+      "streak": 0,
+      "conservation": {
+        "energy": 5.926416240463505e-16,
+        "mass": 7.935844035837385e-16,
+        "species": 3.0495819875706983e-16
+      }
+    },
+    {
+      "cycle": 7,
+      "work_J": 34.60083482030353,
+      "trapped_air_kg": 2.9877126728695292e-05,
+      "exhaust_mass_kg": 0.0021838273920462936,
+      "exhaust_energy_J": 1111.476573455725,
+      "exhaust_species_kg": [
+        3.78240112310126e-05,
+        5.935867452815009e-06,
+        0.0019614781893368995,
+        0.00017858932402556627
+      ],
+      "failures": 73,
+      "worst_threshold_ratio": 65.06915191099458,
+      "streak": 0,
+      "conservation": {
+        "energy": 6.6542794444625625e-16,
+        "mass": 7.555411267589529e-16,
+        "species": 5.558003691100344e-16
+      }
+    },
+    {
+      "cycle": 8,
+      "work_J": 34.52639629766,
+      "trapped_air_kg": 2.983069882919153e-05,
+      "exhaust_mass_kg": 0.002178456399102096,
+      "exhaust_energy_J": 1111.3637004771729,
+      "exhaust_species_kg": [
+        4.259475234372813e-05,
+        6.882388430753668e-06,
+        0.0019187852390324194,
+        0.0002101940192951944
+      ],
+      "failures": 71,
+      "worst_threshold_ratio": 56.65116599071104,
+      "streak": 0,
+      "conservation": {
+        "energy": 4.159278759833958e-17,
+        "mass": 4.680310645436331e-16,
+        "species": 4.0854788523089603e-16
+      }
+    },
+    {
+      "cycle": 9,
+      "work_J": 34.46975499414336,
+      "trapped_air_kg": 2.9795361372679727e-05,
+      "exhaust_mass_kg": 0.0021731912049111797,
+      "exhaust_energy_J": 1111.21790914965,
+      "exhaust_species_kg": [
+        4.736154795501633e-05,
+        7.838573364599582e-06,
+        0.0018760910131897068,
+        0.00024190007040185633
+      ],
+      "failures": 66,
+      "worst_threshold_ratio": 49.0385786006336,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.0399416213323736e-15,
+        "mass": 8.642661683174017e-16,
+        "species": 5.211626057457e-16
+      }
+    },
+    {
+      "cycle": 10,
+      "work_J": 34.42148272330263,
+      "trapped_air_kg": 2.9766147891682203e-05,
+      "exhaust_mass_kg": 0.0021680457417594,
+      "exhaust_energy_J": 1111.0604875592664,
+      "exhaust_species_kg": [
+        5.212563024212653e-05,
+        8.801405940022552e-06,
+        0.0018334720165801538,
+        0.00027364668899709674
+      ],
+      "failures": 63,
+      "worst_threshold_ratio": 44.3254305605455,
+      "streak": 0,
+      "conservation": {
+        "energy": 7.48854710130596e-16,
+        "mass": 6.146437941061003e-16,
+        "species": 9.680712478869388e-16
+      }
+    },
+    {
+      "cycle": 11,
+      "work_J": 34.378445279255004,
+      "trapped_air_kg": 2.974091226240892e-05,
+      "exhaust_mass_kg": 0.002163024163144802,
+      "exhaust_energy_J": 1110.9011715911406,
+      "exhaust_species_kg": [
+        5.6887689634348284e-05,
+        9.768764926451788e-06,
+        0.0017909654149781268,
+        0.00030540229360587467
+      ],
+      "failures": 60,
+      "worst_threshold_ratio": 39.37898723040539,
+      "streak": 0,
+      "conservation": {
+        "energy": 6.033234994547827e-16,
+        "mass": 8.028475493293122e-16,
+        "species": 9.494544931198822e-16
+      }
+    },
+    {
+      "cycle": 12,
+      "work_J": 34.339564922142756,
+      "trapped_air_kg": 2.971863597080679e-05,
+      "exhaust_mass_kg": 0.002158126437511728,
+      "exhaust_energy_J": 1110.744535125822,
+      "exhaust_species_kg": [
+        6.164814559850017e-05,
+        1.0739168903046023e-05,
+        0.0017485879523287894,
+        0.0003371511706813927
+      ],
+      "failures": 56,
+      "worst_threshold_ratio": 35.82040938628439,
+      "streak": 0,
+      "conservation": {
+        "energy": 3.74525210670436e-16,
+        "mass": 5.42212982590521e-16,
+        "species": 7.260534359152041e-16
+      }
+    },
+    {
+      "cycle": 13,
+      "work_J": 34.30432555761331,
+      "trapped_air_kg": 2.969880446729262e-05,
+      "exhaust_mass_kg": 0.002153350583642649,
+      "exhaust_energy_J": 1110.5926568606628,
+      "exhaust_species_kg": [
+        6.640725931205416e-05,
+        1.1711586455838934e-05,
+        0.0017063457255145583,
+        0.0003688860123601982
+      ],
+      "failures": 45,
+      "worst_threshold_ratio": 32.28229070240896,
+      "streak": 0,
+      "conservation": {
+        "energy": 5.410488142156517e-16,
+        "mass": 1.0471924556469289e-17,
+        "species": 2.420178119717347e-16
+      }
+    },
+    {
+      "cycle": 14,
+      "work_J": 34.27244112843283,
+      "trapped_air_kg": 2.968111643606561e-05,
+      "exhaust_mass_kg": 0.0021486937589979744,
+      "exhaust_energy_J": 1110.4463753531163,
+      "exhaust_species_kg": [
+        7.116516408935305e-05,
+        1.2685298487743397e-05,
+        0.0016642394441724214,
+        0.00040060385224845743
+      ],
+      "failures": 44,
+      "worst_threshold_ratio": 29.990344297983693,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.165476600396789e-15,
+        "mass": 8.144830210587226e-17,
+        "species": 3.3510158580701725e-16
+      }
+    },
+    {
+      "cycle": 15,
+      "work_J": 34.24368935459012,
+      "trapped_air_kg": 2.9665357298886368e-05,
+      "exhaust_mass_kg": 0.0021441528135615054,
+      "exhaust_energy_J": 1110.3058792904365,
+      "exhaust_species_kg": [
+        7.592184709041591e-05,
+        1.3659796874748572e-05,
+        0.0016222674040075318,
+        0.000432303765588809
+      ],
+      "failures": 42,
+      "worst_threshold_ratio": 27.29461297564878,
+      "streak": 0,
+      "conservation": {
+        "energy": 6.244346708915421e-16,
+        "mass": 9.541086818116464e-17,
+        "species": 3.1648483103996074e-16
+      }
+    },
+    {
+      "cycle": 16,
+      "work_J": 34.217852030759616,
+      "trapped_air_kg": 2.965135153554286e-05,
+      "exhaust_mass_kg": 0.002139724597921534,
+      "exhaust_energy_J": 1110.1709928409975,
+      "exhaust_species_kg": [
+        8.067709595043778e-05,
+        1.4634707989763001e-05,
+        0.0015804273146608166,
+        0.00046398547932051685
+      ],
+      "failures": 41,
+      "worst_threshold_ratio": 25.7004653443923,
+      "streak": 0,
+      "conservation": {
+        "energy": 5.828702107002789e-16,
+        "mass": 1.0937343425645702e-16,
+        "species": 2.9786807627290423e-16
+      }
+    },
+    {
+      "cycle": 17,
+      "work_J": 34.19471007991666,
+      "trapped_air_kg": 2.9638958898964816e-05,
+      "exhaust_mass_kg": 0.0021354061800089104,
+      "exhaust_energy_J": 1110.0413378735473,
+      "exhaust_species_kg": [
+        8.543042583042757e-05,
+        1.560973372637138e-05,
+        0.0015387175852617822,
+        0.0004956484351903297
+      ],
+      "failures": 41,
+      "worst_threshold_ratio": 24.073084137743116,
+      "streak": 0,
+      "conservation": {
+        "energy": 8.327600506659795e-16,
+        "mass": 4.049144161834792e-16,
+        "species": 3.7233509534113027e-16
+      }
+    },
+    {
+      "cycle": 18,
+      "work_J": 34.17407163347559,
+      "trapped_air_kg": 2.9628059505601694e-05,
+      "exhaust_mass_kg": 0.0021311950014865273,
+      "exhaust_energy_J": 1109.9164370004319,
+      "exhaust_species_kg": [
+        9.018099099982466e-05,
+        1.6584604199619182e-05,
+        0.0014971383556126759,
+        0.0005272910506744062
+      ],
+      "failures": 42,
+      "worst_threshold_ratio": 22.27846541440892,
+      "streak": 0,
+      "conservation": {
+        "energy": 3.3313794251756966e-16,
+        "mass": 2.5830747239290914e-16,
+        "species": 3.7233509534113027e-16
+      }
+    },
+    {
+      "cycle": 19,
+      "work_J": 34.15576118141905,
+      "trapped_air_kg": 2.9618546534063123e-05,
+      "exhaust_mass_kg": 0.002127088971917743,
+      "exhaust_energy_J": 1109.7957677348377,
+      "exhaust_species_kg": [
+        9.492749060783227e-05,
+        1.7559038395867817e-05,
+        0.0014556924094768625,
+        0.0005589100334371798
+      ],
+      "failures": 41,
+      "worst_threshold_ratio": 21.397718317206714,
+      "streak": 0,
+      "conservation": {
+        "energy": 2.435323998616372e-16,
+        "mass": 6.585676998846243e-16,
+        "species": 4.840356239434694e-16
+      }
+    },
+    {
+      "cycle": 20,
+      "work_J": 34.139616658121895,
+      "trapped_air_kg": 2.9610327200590013e-05,
+      "exhaust_mass_kg": 0.0021230865313383363,
+      "exhaust_energy_J": 1109.678800468502,
+      "exhaust_species_kg": [
+        9.966808035511264e-05,
+        1.853271122249265e-05,
+        0.0014143860194864547,
+        0.0005904997202742773
+      ],
+      "failures": 42,
+      "worst_threshold_ratio": 20.335429561348096,
+      "streak": 0,
+      "conservation": {
+        "energy": 3.4707248848042876e-16,
+        "mass": 6.702031716140345e-16,
+        "species": 2.234010572046782e-16
+      }
+    },
+    {
+      "cycle": 21,
+      "work_J": 34.12549449360006,
+      "trapped_air_kg": 2.9603313790669888e-05,
+      "exhaust_mass_kg": 0.0021191866771793346,
+      "exhaust_energy_J": 1109.5650267753167,
+      "exhaust_species_kg": [
+        0.00010440029792423441,
+        1.9505226152643877e-05,
+        0.0013732297068532867,
+        0.0006220514462491687
+      ],
+      "failures": 43,
+      "worst_threshold_ratio": 19.16154772276274,
+      "streak": 0,
+      "conservation": {
+        "energy": 7.34628807141283e-16,
+        "mass": 4.3283954833406395e-16,
+        "species": 1.4893403813645211e-16
+      }
+    },
+    {
+      "cycle": 22,
+      "work_J": 34.1132562634009,
+      "trapped_air_kg": 2.9597426248210005e-05,
+      "exhaust_mass_kg": 0.0021153889537702756,
+      "exhaust_energy_J": 1109.4539763076964,
+      "exhaust_species_kg": [
+        0.00010912101257603559,
+        2.0476093550564148e-05,
+        0.0013322388720184994,
+        0.0006535529756251761
+      ],
+      "failures": 48,
+      "worst_threshold_ratio": 18.350556493361758,
+      "streak": 0,
+      "conservation": {
+        "energy": 2.80526702690422e-16,
+        "mass": 8.517165305928356e-16,
+        "species": 2.9786807627290423e-16
+      }
+    },
+    {
+      "cycle": 23,
+      "work_J": 34.102773930896774,
+      "trapped_air_kg": 2.9592590822440594e-05,
+      "exhaust_mass_kg": 0.0021116934185865643,
+      "exhaust_energy_J": 1109.3452364408531,
+      "exhaust_species_kg": [
+        0.00011382640375774642,
+        2.144471503983782e-05,
+        0.0012914342525645233,
+        0.0006849880472244573
+      ],
+      "failures": 57,
+      "worst_threshold_ratio": 17.684012335882514,
+      "streak": 0,
+      "conservation": {
+        "energy": 0.0,
+        "mass": 3.723350953411303e-17,
+        "species": 3.3510158580701725e-16
+      }
+    },
+    {
+      "cycle": 24,
+      "work_J": 34.09392907570418,
+      "trapped_air_kg": 2.958873503842484e-05,
+      "exhaust_mass_kg": 0.0021081005754185022,
+      "exhaust_energy_J": 1109.2384646318394,
+      "exhaust_species_kg": [
+        0.00011851197115086034,
+        2.241037408859136e-05,
+        0.0012508421608273777,
+        0.0007163360693516731
+      ],
+      "failures": 59,
+      "worst_threshold_ratio": 16.927550734011753,
+      "streak": 0,
+      "conservation": {
+        "energy": 4.501118923475784e-16,
+        "mass": 1.047192455646929e-15,
+        "species": 3.3510158580701725e-16
+      }
+    },
+    {
+      "cycle": 25,
+      "work_J": 34.08660508814228,
+      "trapped_air_kg": 2.9585789911932887e-05,
+      "exhaust_mass_kg": 0.0021046112800908335,
+      "exhaust_energy_J": 1109.1333916146345,
+      "exhaust_species_kg": [
+        0.0001231725780425468,
+        2.3372233092216504e-05,
+        0.0012104944725319627,
+        0.0007475719964241081
+      ],
+      "failures": 60,
+      "worst_threshold_ratio": 16.1155434305843,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.8520858003595141e-16,
+        "mass": 1.0006505687292878e-15,
+        "species": 5.585026430116954e-16
+      }
+    },
+    {
+      "cycle": 26,
+      "work_J": 34.08069090648746,
+      "trapped_air_kg": 2.958368828072733e-05,
+      "exhaust_mass_kg": 0.0021012266379635196,
+      "exhaust_energy_J": 1109.0298266051932,
+      "exhaust_species_kg": [
+        0.00012780252359936134,
+        2.432933671733418e-05,
+        0.0011704283710075804,
+        0.0007786664066392437
+      ],
+      "failures": 59,
+      "worst_threshold_ratio": 15.684110627911085,
+      "streak": 0,
+      "conservation": {
+        "energy": 5.936776876655619e-17,
+        "mass": 8.098288323669584e-16,
+        "species": 6.702031716140345e-16
+      }
+    },
+    {
+      "cycle": 27,
+      "work_J": 34.076079408958435,
+      "trapped_air_kg": 2.9582361548265385e-05,
+      "exhaust_mass_kg": 0.0020979478912020186,
+      "exhaust_energy_J": 1108.9276566587203,
+      "exhaust_species_kg": [
+        0.00013239563907188124,
+        2.5280620932199343e-05,
+        0.0011306858557550842,
+        0.000809585775442854
+      ],
+      "failures": 57,
+      "worst_threshold_ratio": 15.243912873266874,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.1434899216365587e-16,
+        "mass": 1.1030427199480985e-15,
+        "species": 7.819037002163737e-16
+      }
+    },
+    {
+      "cycle": 28,
+      "work_J": 34.07266182738556,
+      "trapped_air_kg": 2.9581742687234086e-05,
+      "exhaust_mass_kg": 0.002094776301102332,
+      "exhaust_energy_J": 1108.8268380709023,
+      "exhaust_species_kg": [
+        0.00013694540320196977,
+        2.6224927089934544e-05,
+        0.001091313040652705,
+        0.0008402929301577227
+      ],
+      "failures": 57,
+      "worst_threshold_ratio": 14.743423071002459,
+      "streak": 0,
+      "conservation": {
+        "energy": 4.962382895996915e-16,
+        "mass": 8.470623419010714e-16,
+        "species": 1.265939324159843e-15
+      }
+    },
+    {
+      "cycle": 29,
+      "work_J": 34.07033290642414,
+      "trapped_air_kg": 2.9581766056538384e-05,
+      "exhaust_mass_kg": 0.0020917130388031307,
+      "exhaust_energy_J": 1108.7273874359096,
+      "exhaust_species_kg": [
+        0.0001414450688883451,
+        2.7161020046657825e-05,
+        0.001052359289036901,
+        0.0008707476608312268
+      ],
+      "failures": 57,
+      "worst_threshold_ratio": 14.20043977197205,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.703707343902333e-15,
+        "mass": 1.3217895884610126e-15,
+        "species": 1.5638074004327473e-15
+      }
+    },
+    {
+      "cycle": 30,
+      "work_J": 34.06899097268638,
+      "trapped_air_kg": 2.9582366085226626e-05,
+      "exhaust_mass_kg": 0.0020887590924482634,
+      "exhaust_energy_J": 1108.629374014879,
+      "exhaust_species_kg": [
+        0.00014588779433790354,
+        2.808760914912049e-05,
+        0.0010138762422105933,
+        0.0009009074467506462
+      ],
+      "failures": 57,
+      "worst_threshold_ratio": 13.992949791802877,
+      "streak": 0,
+      "conservation": {
+        "energy": 4.632324411915694e-16,
+        "mass": 7.074366811481475e-16,
+        "species": 1.1170052860233909e-15
+      }
+    },
+    {
+      "cycle": 31,
+      "work_J": 34.06853529831085,
+      "trapped_air_kg": 2.9583478908037875e-05,
+      "exhaust_mass_kg": 0.002085915184664176,
+      "exhaust_energy_J": 1108.532906854884,
+      "exhaust_species_kg": [
+        0.00015026677291115384,
+        2.900337096078955e-05,
+        0.0009759167831219323,
+        0.0009307282576703
+      ],
+      "failures": 55,
+      "worst_threshold_ratio": 13.745443089237863,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.195527048432416e-15,
+        "mass": 8.749874740516562e-16,
+        "species": 7.819037002163737e-16
+      }
+    },
+    {
+      "cycle": 32,
+      "work_J": 34.068868807258696,
+      "trapped_air_kg": 2.9585042135603328e-05,
+      "exhaust_mass_kg": 0.002083181710690329,
+      "exhaust_energy_J": 1108.4381241375993,
+      "exhaust_species_kg": [
+        0.000154575355738594,
+        2.9906972590394043e-05,
+        0.0009385339928160678,
+        0.0009601653895452727
+      ],
+      "failures": 60,
+      "worst_threshold_ratio": 13.443988150021902,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.640848187747799e-15,
+        "mass": 1.2007806824751452e-15,
+        "species": 1.0425382669551648e-15
+      }
+    },
+    {
+      "cycle": 33,
+      "work_J": 34.069897572664786,
+      "trapped_air_kg": 2.9586995562837696e-05,
+      "exhaust_mass_kg": 0.002080558694757307,
+      "exhaust_energy_J": 1108.345182582417,
+      "exhaust_species_kg": [
+        0.0001588071631803354,
+        3.079709460896064e-05,
+        0.0009017801423296599,
+        0.00098917429463835
+      ],
+      "failures": 61,
+      "worst_threshold_ratio": 13.099239619509762,
+      "streak": 0,
+      "conservation": {
+        "energy": 2.1528335420930192e-15,
+        "mass": 7.400160019904965e-16,
+        "species": 1.414873362296295e-15
+      }
+    },
+    {
+      "cycle": 34,
+      "work_J": 34.07153180847672,
+      "trapped_air_kg": 2.9589282095336396e-05,
+      "exhaust_mass_kg": 0.0020780457639176467,
+      "exhaust_energy_J": 1108.254247609962,
+      "exhaust_species_kg": [
+        0.00016295618214012738,
+        3.167245272248241e-05,
+        0.0008657057554523421,
+        0.0010177113736026956
+      ],
+      "failures": 61,
+      "worst_threshold_ratio": 12.951167094140791,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.6353653346670666e-15,
+        "mass": 2.024572080917396e-15,
+        "species": 9.680712478869388e-16
+      }
+    },
+    {
+      "cycle": 35,
+      "work_J": 34.073686912749054,
+      "trapped_air_kg": 2.9591848013303128e-05,
+      "exhaust_mass_kg": 0.0020756421383674156,
+      "exhaust_energy_J": 1108.1654849807373,
+      "exhaust_species_kg": [
+        0.0001670168474207059,
+        3.253181752920835e-05,
+        0.0008303587709804979,
+        0.0010457347024370033
+      ],
+      "failures": 60,
+      "worst_threshold_ratio": 12.819168945814585,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.1474103767297276e-15,
+        "mass": 1.8570212880138874e-15,
+        "species": 1.0425382669551648e-15
+      }
+    },
+    {
+      "cycle": 36,
+      "work_J": 34.076283851173685,
+      "trapped_air_kg": 2.959464302791733e-05,
+      "exhaust_mass_kg": 0.0020733466355950777,
+      "exhaust_energy_J": 1108.0790536099423,
+      "exhaust_species_kg": [
+        0.00017098410624443383,
+        3.33740318624297e-05,
+        0.0007957838232959162,
+        0.0010732046741922974
+      ],
+      "failures": 60,
+      "worst_threshold_ratio": 12.636527818242039,
+      "streak": 0,
+      "conservation": {
+        "energy": 3.389674792457993e-15,
+        "mass": 2.0152637035338677e-15,
+        "species": 5.957361525458085e-16
+      }
+    },
+    {
+      "cycle": 37,
+      "work_J": 34.079249060079746,
+      "trapped_air_kg": 2.959762056255719e-05,
+      "exhaust_mass_kg": 0.0020711576863132785,
+      "exhaust_energy_J": 1107.9950997151107,
+      "exhaust_species_kg": [
+        0.00017485346598301174,
+        3.4198025399349745e-05,
+        0.0007620216527647371,
+        0.00110008454216618
+      ],
+      "failures": 60,
+      "worst_threshold_ratio": 12.410409298908077,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.8369704683010297e-15,
+        "mass": 2.2247021946632535e-15,
+        "species": 5.957361525458085e-16
+      }
+    },
+    {
+      "cycle": 38,
+      "work_J": 34.08251476026658,
+      "trapped_air_kg": 2.9600737830741716e-05,
+      "exhaust_mass_kg": 0.0020690733600262994,
+      "exhaust_energy_J": 1107.9137525734243,
+      "exhaust_species_kg": [
+        0.0001786210258616571,
+        3.500282638041246e-05,
+        0.0007291086501816283,
+        0.0011263408576026015
+      ],
+      "failures": 59,
+      "worst_threshold_ratio": 12.357437863097898,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.8293458864550054e-15,
+        "mass": 2.2479731381220744e-15,
+        "species": 2.0850765339103297e-15
+      }
+    },
+    {
+      "cycle": 39,
+      "work_J": 34.08601894051981,
+      "trapped_air_kg": 2.960395602606603e-05,
+      "exhaust_mass_kg": 0.0020670913977562954,
+      "exhaust_energy_J": 1107.8351217064476,
+      "exhaust_species_kg": [
+        0.0001822834937814228,
+        3.57875704069092e-05,
+        0.0006970765333431352,
+        0.0011519438002248277
+      ],
+      "failures": 57,
+      "worst_threshold_ratio": 12.256028125864459,
+      "streak": 0,
+      "conservation": {
+        "energy": 7.922203762677598e-16,
+        "mass": 2.089730722602094e-15,
+        "species": 2.0850765339103297e-15
+      }
+    },
+    {
+      "cycle": 40,
+      "work_J": 34.08970542226734,
+      "trapped_air_kg": 2.960724045498026e-05,
+      "exhaust_mass_kg": 0.0020652092493525895,
+      "exhaust_energy_J": 1107.7592952418759,
+      "exhaust_species_kg": [
+        0.00018583818987248738,
+        3.6551506430441944e-05,
+        0.0006659521476005412,
+        0.0011768674054491188
+      ],
+      "failures": 57,
+      "worst_threshold_ratio": 12.109113537102866,
+      "streak": 0,
+      "conservation": {
+        "energy": 3.862179641407784e-16,
+        "mass": 2.168851930362084e-15,
+        "species": 2.2340105720467817e-15
+      }
+    },
+    {
+      "cycle": 41,
+      "work_J": 34.093524032544565,
+      "trapped_air_kg": 2.9610560341452328e-05,
+      "exhaust_mass_kg": 0.002063424113517157,
+      "exhaust_energy_J": 1107.6863393303986,
+      "exhaust_species_kg": [
+        0.00018928303863468543,
+        3.7294000122435095e-05,
+        0.0006357573795902579,
+        0.0012010896951697777
+      ],
+      "failures": 57,
+      "worst_threshold_ratio": 12.070521358472474,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.5072270683023576e-16,
+        "mass": 2.2898608363479514e-15,
+        "species": 2.2340105720467817e-15
+      }
+    },
+    {
+      "cycle": 42,
+      "work_J": 34.09743033811287,
+      "trapped_air_kg": 2.961388858024567e-05,
+      "exhaust_mass_kg": 0.002061732978884105,
+      "exhaust_energy_J": 1107.6162983804677,
+      "exhaust_species_kg": [
+        0.0001926165514058542,
+        3.801453485120332e-05,
+        0.0006065091719567839,
+        0.0012245927206702635
+      ],
+      "failures": 57,
+      "worst_threshold_ratio": 11.988758502348096,
+      "streak": 0,
+      "conservation": {
+        "energy": 8.092531353688193e-16,
+        "mass": 2.5784205352373273e-15,
+        "species": 2.978680762729042e-15
+      }
+    },
+    {
+      "cycle": 43,
+      "work_J": 34.10138508321097,
+      "trapped_air_kg": 2.9617201658814143e-05,
+      "exhaust_mass_kg": 0.002060132664464034,
+      "exhaust_energy_J": 1107.549195673715,
+      "exhaust_species_kg": [
+        0.0001958378009267259,
+        3.871271053602229e-05,
+        0.0005782196251329769,
+        0.0012473625278683086
+      ],
+      "failures": 57,
+      "worst_threshold_ratio": 11.93651484790964,
+      "streak": 0,
+      "conservation": {
+        "energy": 8.623046136524283e-16,
+        "mass": 2.820438347209062e-15,
+        "species": 2.45741162925146e-15
+      }
+    },
+    {
+      "cycle": 44,
+      "work_J": 34.10535419937037,
+      "trapped_air_kg": 2.962047938198518e-05,
+      "exhaust_mass_kg": 0.0020586198590072714,
+      "exhaust_energy_J": 1107.485034697236,
+      "exhaust_species_kg": [
+        0.00019894638969397026,
+        3.938824067860631e-05,
+        0.000550896172126548,
+        0.0012693890565081461
+      ],
+      "failures": 55,
+      "worst_threshold_ratio": 11.881635463123818,
+      "streak": 0,
+      "conservation": {
+        "energy": 8.427174668104979e-16,
+        "mass": 2.932138875811401e-15,
+        "species": 1.9361424957738776e-15
+      }
+    },
+    {
+      "cycle": 45,
+      "work_J": 34.109308215736746,
+      "trapped_air_kg": 2.962370474424342e-05,
+      "exhaust_mass_kg": 0.0020571911580404088,
+      "exhaust_energy_J": 1107.4238007099787,
+      "exhaust_species_kg": [
+        0.000201942413845328,
+        4.00409478982746e-05,
+        0.0005245418113112831,
+        0.001290665984985523
+      ],
+      "failures": 55,
+      "worst_threshold_ratio": 11.855886375327529,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.3046640928106308e-15,
+        "mass": 2.8018215924420057e-15,
+        "species": 2.382944610183234e-15
+      }
+    },
+    {
+      "cycle": 46,
+      "work_J": 34.11322218621467,
+      "trapped_air_kg": 2.9626863416018397e-05,
+      "exhaust_mass_kg": 0.002055843098046099,
+      "exhaust_energy_J": 1107.365462546757,
+      "exhaust_species_kg": [
+        0.00020482642391534702,
+        4.0670758265908107e-05,
+        0.0004991553835119188,
+        0.0013111905323529248
+      ],
+      "failures": 54,
+      "worst_threshold_ratio": 11.842233117736189,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.746530315109757e-15,
+        "mass": 2.6249624221549687e-15,
+        "species": 3.1276148008654947e-15
+      }
+    },
+    {
+      "cycle": 47,
+      "work_J": 34.117075022129484,
+      "trapped_air_kg": 2.9629943835685447e-05,
+      "exhaust_mass_kg": 0.0020545721878076975,
+      "exhaust_energy_J": 1107.3099746319929,
+      "exhaust_species_kg": [
+        0.00020759938396262,
+        4.1277694743976234e-05,
+        0.00047473188077635603,
+        0.0013309632283247453
+      ],
+      "failures": 54,
+      "worst_threshold_ratio": 11.821763351153203,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.7093774961450912e-15,
+        "mass": 2.922830498427873e-15,
+        "species": 2.82974672459259e-15
+      }
+    },
+    {
+      "cycle": 48,
+      "work_J": 34.12084943120976,
+      "trapped_air_kg": 2.9632936647772635e-05,
+      "exhaust_mass_kg": 0.00205337493607562,
+      "exhaust_energy_J": 1107.2572789133503,
+      "exhaust_species_kg": [
+        0.00021026262986200293,
+        4.186186996599197e-05,
+        0.0004512627757731221,
+        0.0013499876604745017
+      ],
+      "failures": 54,
+      "worst_threshold_ratio": 11.759486794356954,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.5450173515404447e-15,
+        "mass": 2.503953516169101e-15,
+        "species": 3.2020818199337205e-15
+      }
+    },
+    {
+      "cycle": 49,
+      "work_J": 34.124531090241135,
+      "trapped_air_kg": 2.9635834573686445e-05,
+      "exhaust_mass_kg": 0.0020522478757854204,
+      "exhaust_energy_J": 1107.2073065995166,
+      "exhaust_species_kg": [
+        0.00021281782773871854,
+        4.242347858552359e-05,
+        0.0004287363627611846,
+        0.0013682702066999928
+      ],
+      "failures": 53,
+      "worst_threshold_ratio": 11.654442550547095,
+      "streak": 0,
+      "conservation": {
+        "energy": 9.459288552946488e-16,
+        "mass": 3.006605894879627e-15,
+        "species": 3.872284991547755e-15
+      }
+    },
+    {
+      "cycle": 50,
+      "work_J": 34.12810872862951,
+      "trapped_air_kg": 2.9638632156725085e-05,
+      "exhaust_mass_kg": 0.0020511875854097843,
+      "exhaust_energy_J": 1107.159980129627,
+      "exhaust_species_kg": [
+        0.0002152669332267502,
+        4.296278939403154e-05,
+        0.0004071381023867192,
+        0.0013858197604022838
+      ],
+      "failures": 53,
+      "worst_threshold_ratio": 11.510797703146725,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.792216134656464e-15,
+        "mass": 3.146231555632551e-15,
+        "species": 4.4680211440935635e-15
+      }
+    },
+    {
+      "cycle": 51,
+      "work_J": 34.13157365208417,
+      "trapped_air_kg": 2.964132552350061e-05,
+      "exhaust_mass_kg": 0.002050190706994321,
+      "exhaust_energy_J": 1107.1152148902588,
+      "exhaust_species_kg": [
+        0.00021761215209928993,
+        4.348013737358973e-05,
+        0.00038645096334756707,
+        0.0014026474541738738
+      ],
+      "failures": 52,
+      "worst_threshold_ratio": 11.33274982916438,
+      "streak": 0,
+      "conservation": {
+        "energy": 2.4841304579250275e-15,
+        "mass": 3.0624561591807967e-15,
+        "species": 4.095686048752433e-15
+      }
+    },
+    {
+      "cycle": 52,
+      "work_J": 34.13491918209547,
+      "trapped_air_kg": 2.9643912211941476e-05,
+      "exhaust_mass_kg": 0.0020492539610544903,
+      "exhaust_energy_J": 1107.0729206894543,
+      "exhaust_species_kg": [
+        0.00021985590269454734,
+        4.397591583131694e-05,
+        0.00036665575529708114,
+        0.001418766387231546
+      ],
+      "failures": 52,
+      "worst_threshold_ratio": 11.124448476371173,
+      "streak": 0,
+      "conservation": {
+        "energy": 2.4957685325346982e-15,
+        "mass": 3.481333141439568e-15,
+        "species": 4.4680211440935635e-15
+      }
+    },
+    {
+      "cycle": 53,
+      "work_J": 34.13814070563217,
+      "trapped_air_kg": 2.9646390973417904e-05,
+      "exhaust_mass_kg": 0.002048374159005297,
+      "exhaust_energy_J": 1107.0330033189528,
+      "exhaust_species_kg": [
+        0.00022200078054894582,
+        4.445056875173414e-05,
+        0.00034773144829296996,
+        0.0014341913614116467
+      ],
+      "failures": 51,
+      "worst_threshold_ratio": 10.889924703582604,
+      "streak": 0,
+      "conservation": {
+        "energy": 2.3320587978862505e-15,
+        "mass": 2.178160307745612e-15,
+        "species": 4.4680211440935635e-15
+      }
+    },
+    {
+      "cycle": 54,
+      "work_J": 34.14123532063559,
+      "trapped_air_kg": 2.9648761532371988e-05,
+      "exhaust_mass_kg": 0.0020475482128779593,
+      "exhaust_energy_J": 1106.9953658431136,
+      "exhaust_species_kg": [
+        0.00022404952546372408,
+        4.490458346213586e-05,
+        0.00032965547512105745,
+        0.0014489386288310422
+      ],
+      "failures": 50,
+      "worst_threshold_ratio": 10.633041654879355,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.716640391769154e-16,
+        "mass": 1.9919927600750472e-15,
+        "species": 3.574416915274851e-15
+      }
+    },
+    {
+      "cycle": 55,
+      "work_J": 34.14420148832846,
+      "trapped_air_kg": 2.965102453775708e-05,
+      "exhaust_mass_kg": 0.0020467731428199564,
+      "exhaust_energy_J": 1106.9599097487228,
+      "exhaust_species_kg": [
+        0.00022600499110964035,
+        4.533848367539279e-05,
+        0.00031240401456311727,
+        0.0014630256534718057
+      ],
+      "failures": 50,
+      "worst_threshold_ratio": 10.357462407263846,
+      "streak": 0,
+      "conservation": {
+        "energy": 3.932630483605235e-16,
+        "mass": 1.8989089862397644e-15,
+        "species": 2.82974672459259e-15
+      }
+    },
+    {
+      "cycle": 56,
+      "work_J": 34.14703898767857,
+      "trapped_air_kg": 2.9653181339201517e-05,
+      "exhaust_mass_kg": 0.002046046082566646,
+      "exhaust_energy_J": 1106.926535976434,
+      "exhaust_species_kg": [
+        0.00022787011717844064,
+        4.575282295531351e-05,
+        0.0002959522543407985,
+        0.0014764708880920935
+      ],
+      "failures": 49,
+      "worst_threshold_ratio": 10.06662429760441,
+      "streak": 0,
+      "conservation": {
+        "energy": 4.965897915462584e-16,
+        "mass": 2.4108697423338187e-15,
+        "species": 3.648883934343077e-15
+      }
+    },
+    {
+      "cycle": 57,
+      "work_J": 34.149748583621204,
+      "trapped_air_kg": 2.965523388000888e-05,
+      "exhaust_mass_kg": 0.00204536428310509,
+      "exhaust_energy_J": 1106.8951457583707,
+      "exhaust_species_kg": [
+        0.00022964790408811647,
+        4.6148178637014895e-05,
+        0.00028027463293006844,
+        0.0014892935674498903
+      ],
+      "failures": 49,
+      "worst_threshold_ratio": 9.76372000475456,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.4636166253888811e-15,
+        "mass": 2.3270943458820645e-15,
+        "species": 4.765889220366468e-15
+      }
+    },
+    {
+      "cycle": 58,
+      "work_J": 34.152331913149055,
+      "trapped_air_kg": 2.9657184572840292e-05,
+      "exhaust_mass_kg": 0.0020447251148268254,
+      "exhaust_energy_J": 1106.8656413513845,
+      "exhaust_species_kg": [
+        0.00023134139020601955,
+        4.652514622464877e-05,
+        0.00026534505986280325,
+        0.0015015135185333537
+      ],
+      "failures": 48,
+      "worst_threshold_ratio": 9.451686455808767,
+      "streak": 0,
+      "conservation": {
+        "energy": 3.196365657216049e-16,
+        "mass": 3.04383940441374e-15,
+        "species": 4.319087105957112e-15
+      }
+    },
+    {
+      "cycle": 59,
+      "work_J": 34.15479129563005,
+      "trapped_air_kg": 2.9659036217673295e-05,
+      "exhaust_mass_kg": 0.0020441260683708674,
+      "exhaust_energy_J": 1106.8379266577167,
+      "exhaust_species_kg": [
+        0.00023295363151083938,
+        4.68843342755197e-05,
+        0.0002511371146542185,
+        0.0015131509879302899
+      ],
+      "failures": 46,
+      "worst_threshold_ratio": 9.1332012308325,
+      "streak": 0,
+      "conservation": {
+        "energy": 3.1421499524021896e-16,
+        "mass": 2.066459779143273e-15,
+        "species": 4.616955182230016e-15
+      }
+    },
+    {
+      "cycle": 60,
+      "work_J": 34.15712960384508,
+      "trapped_air_kg": 2.9660791912445403e-05,
+      "exhaust_mass_kg": 0.0020435647543052826,
+      "exhaust_energy_J": 1106.8119077252074,
+      "exhaust_species_kg": [
+        0.00023448768357445027,
+        4.7226359766715264e-05,
+        0.00023762422486948892,
+        0.0015242264860946281
+      ],
+      "failures": 45,
+      "worst_threshold_ratio": 8.810683659355611,
+      "streak": 0,
+      "conservation": {
+        "energy": 0.0,
+        "mass": 2.5132618935526294e-15,
+        "species": 5.5105594110487285e-15
+      }
+    },
+    {
+      "cycle": 61,
+      "work_J": 34.15935017015454,
+      "trapped_air_kg": 2.9662454972566703e-05,
+      "exhaust_mass_kg": 0.002043038901857689,
+      "exhaust_energy_J": 1106.787493153097,
+      "exhaust_species_kg": [
+        0.00023594658575706065,
+        4.7551843937414777e-05,
+        0.00022477982399687828,
+        0.001534760648166335
+      ],
+      "failures": 38,
+      "worst_threshold_ratio": 8.486298989887315,
+      "streak": 0,
+      "conservation": {
+        "energy": 3.5455535822710196e-16,
+        "mass": 2.531878648319686e-15,
+        "species": 6.404163639867441e-15
+      }
+    },
+    {
+      "cycle": 62,
+      "work_J": 34.16145668272975,
+      "trapped_air_kg": 2.9664028856206865e-05,
+      "exhaust_mass_kg": 0.00204254635695012,
+      "exhaust_energy_J": 1106.764594473866,
+      "exhaust_species_kg": [
+        0.00023733334748486299,
+        4.786140859222186e-05,
+        0.00021257749015391906,
+        0.0015447741107191169
+      ],
+      "failures": 36,
+      "worst_threshold_ratio": 8.161969443585965,
+      "streak": 0,
+      "conservation": {
+        "energy": 0.0,
+        "mass": 3.248623706851362e-15,
+        "species": 8.191372097504866e-15
+      }
+    },
+    {
+      "cycle": 63,
+      "work_J": 34.16345304811148,
+      "trapped_air_kg": 2.9665517121869083e-05,
+      "exhaust_mass_kg": 0.0020420850794673805,
+      "exhaust_energy_J": 1106.7431263608191,
+      "exhaust_species_kg": [
+        0.00023865093641975166,
+        4.815567283557791e-05,
+        0.00020099106689370024,
+        0.0015542874033183515
+      ],
+      "failures": 36,
+      "worst_threshold_ratio": 7.839387969077266,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.4712414302873953e-16,
+        "mass": 2.7273545733737794e-15,
+        "species": 9.904113536074067e-15
+      }
+    },
+    {
+      "cycle": 64,
+      "work_J": 34.165343354503875,
+      "trapped_air_kg": 2.9666923386070714e-05,
+      "exhaust_mass_kg": 0.0020416531399436626,
+      "exhaust_energy_J": 1106.723006714296,
+      "exhaust_species_kg": [
+        0.00023990226837180255,
+        4.843525021297616e-05,
+        0.00018999476736193064,
+        0.0015633208539969521
+      ],
+      "failures": 36,
+      "worst_threshold_ratio": 7.520030762399266,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.9309753639447797e-16,
+        "mass": 2.2247021946632535e-15,
+        "species": 8.265839116573092e-15
+      }
+    },
+    {
+      "cycle": 65,
+      "work_J": 34.167131831568895,
+      "trapped_air_kg": 2.966825127676906e-05,
+      "exhaust_mass_kg": 0.0020412487161017134,
+      "exhaust_energy_J": 1106.7041568637894,
+      "exhaust_species_kg": [
+        0.00024109019884081183,
+        4.870074623918561e-05,
+        0.00017956326310846797,
+        0.001571894507913249
+      ],
+      "failures": 36,
+      "worst_threshold_ratio": 7.205171054173231,
+      "streak": 0,
+      "conservation": {
+        "energy": 2.2339558077802153e-15,
+        "mass": 2.3177859684985363e-15,
+        "species": 1.0350915650483422e-14
+      }
+    },
+    {
+      "cycle": 66,
+      "work_J": 34.16882273809597,
+      "trapped_air_kg": 2.9669504407454017e-05,
+      "exhaust_mass_kg": 0.0020408700889522832,
+      "exhaust_energy_J": 1106.686501621412,
+      "exhaust_species_kg": [
+        0.0002422175160091322,
+        4.8952756281103194e-05,
+        0.0001696717586758654,
+        0.001580028057986183
+      ],
+      "failures": 35,
+      "worst_threshold_ratio": 6.895893604560527,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.2170621549422685e-15,
+        "mass": 2.2898608363479514e-15,
+        "species": 9.531778440732935e-15
+      }
+    },
+    {
+      "cycle": 67,
+      "work_J": 34.17042036558587,
+      "trapped_air_kg": 2.9670686347251503e-05,
+      "exhaust_mass_kg": 0.0020405156387350337,
+      "exhaust_energy_J": 1106.6699693333342,
+      "exhaust_species_kg": [
+        0.00024328693506563958,
+        4.919186377022316e-05,
+        0.00016029605323713078,
+        0.0015877407866620391
+      ],
+      "failures": 35,
+      "worst_threshold_ratio": 6.593110161299944,
+      "streak": 0,
+      "conservation": {
+        "energy": 3.0433063815519395e-15,
+        "mass": 2.4294864971008752e-15,
+        "species": 9.680712478869388e-15
+      }
+    },
+    {
+      "cycle": 68,
+      "work_J": 34.17192898750727,
+      "trapped_air_kg": 2.967180059804628e-05,
+      "exhaust_mass_kg": 0.002040183840687708,
+      "exhaust_energy_J": 1106.654491868253,
+      "exhaust_species_kg": [
+        0.00024430109371439306,
+        4.941863871412214e-05,
+        0.0001514125905572202,
+        0.0015950515177019728
+      ],
+      "failures": 34,
+      "worst_threshold_ratio": 6.297575711655526,
+      "streak": 0,
+      "conservation": {
+        "energy": 2.7259132272540465e-15,
+        "mass": 2.3736362327997056e-15,
+        "species": 1.0872184783961005e-14
+      }
+    },
+    {
+      "cycle": 69,
+      "work_J": 34.17335281124042,
+      "trapped_air_kg": 2.9672850574836675e-05,
+      "exhaust_mass_kg": 0.0020398732607304826,
+      "exhaust_energy_J": 1106.6400045675987,
+      "exhaust_species_kg": [
+        0.00024526254873322693,
+        4.9633636478229093e-05,
+        0.00014299849852217753,
+        0.0016019785769968485
+      ],
+      "failures": 34,
+      "worst_threshold_ratio": 6.009903311352524,
+      "streak": 0,
+      "conservation": {
+        "energy": 2.865455589995544e-15,
+        "mass": 2.9042137436608163e-15,
+        "species": 9.531778440732935e-15
+      }
+    },
+    {
+      "cycle": 70,
+      "work_J": 34.17469596166211,
+      "trapped_air_kg": 2.9673839589729685e-05,
+      "exhaust_mass_kg": 0.002039582551125878,
+      "exhaust_energy_J": 1106.626446170894,
+      "exhaust_species_kg": [
+        0.00024617377346879474,
+        4.983739681259916e-05,
+        0.00013503161930140012,
+        0.0016085397615430833
+      ],
+      "failures": 34,
+      "worst_threshold_ratio": 5.730577675430642,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.8535620850091296e-15,
+        "mass": 3.583725292658379e-15,
+        "species": 1.0276448631415196e-14
+      }
+    },
+    {
+      "cycle": 71,
+      "work_J": 34.1759624637798,
+      "trapped_air_kg": 2.9674770856384442e-05,
+      "exhaust_mass_kg": 0.0020393104462052246,
+      "exhaust_energy_J": 1106.6137587503013,
+      "exhaust_species_kg": [
+        0.000247037156165762,
+        5.00304430994347e-05,
+        0.00012749053120757897,
+        0.0016147523157324485
+      ],
+      "failures": 34,
+      "worst_threshold_ratio": 5.459969332379965,
+      "streak": 0,
+      "conservation": {
+        "energy": 2.74113969018985e-15,
+        "mass": 2.9507556305784577e-15,
+        "species": 1.1616854974643265e-14
+      }
+    },
+    {
+      "cycle": 72,
+      "work_J": 34.177156234009544,
+      "trapped_air_kg": 2.967564747247044e-05,
+      "exhaust_mass_kg": 0.0020390557581115845,
+      "exhaust_energy_J": 1106.6018876063013,
+      "exhaust_species_kg": [
+        0.0002478549990092354,
+        5.0213281794662564e-05,
+        0.00012035456325701696,
+        0.0016206329140506697
+      ],
+      "failures": 34,
+      "worst_threshold_ratio": 5.198347615272547,
+      "streak": 0,
+      "conservation": {
+        "energy": 3.089171730366701e-15,
+        "mass": 2.9042137436608163e-15,
+        "species": 1.2957261317871335e-14
+      }
+    },
+    {
+      "cycle": 73,
+      "work_J": 34.178281065202555,
+      "trapped_air_kg": 2.9676472411288804e-05,
+      "exhaust_mass_kg": 0.0020388173726488593,
+      "exhaust_energy_J": 1106.590781161592,
+      "exhaust_species_kg": [
+        0.0002486295177944811,
+        5.038640204214405e-05,
+        0.00011360380335341915,
+        0.0016261976494588144
+      ],
+      "failures": 33,
+      "worst_threshold_ratio": 4.945892583601119,
+      "streak": 0,
+      "conservation": {
+        "energy": 3.173756144178908e-15,
+        "mass": 2.0013011374585755e-15,
+        "species": 1.2957261317871335e-14
+      }
+    },
+    {
+      "cycle": 74,
+      "work_J": 34.179340605981,
+      "trapped_air_kg": 2.9677248526803372e-05,
+      "exhaust_mass_kg": 0.002038594245260798,
+      "exhaust_energy_J": 1106.580390858855,
+      "exhaust_species_kg": [
+        0.00024936284213929335,
+        5.055027543995986e-05,
+        0.00010721910091801813,
+        0.001631462026763527
+      ],
+      "failures": 32,
+      "worst_threshold_ratio": 4.702705859469358,
+      "streak": 0,
+      "conservation": {
+        "energy": 3.4647718959772296e-15,
+        "mass": 2.2991692137314797e-15,
+        "species": 1.2957261317871335e-14
+      }
+    },
+    {
+      "cycle": 75,
+      "work_J": 34.1803383747997,
+      "trapped_air_kg": 2.9677978541802388e-05,
+      "exhaust_mass_kg": 0.0020383853970458816,
+      "exhaust_energy_J": 1106.5706709909339,
+      "exhaust_species_kg": [
+        0.000250057016155107,
+        5.070535593822639e-05,
+        0.00010118206468854638,
+        0.0016364409602640016
+      ],
+      "failures": 32,
+      "worst_threshold_ratio": 4.468820603030443,
+      "streak": 0,
+      "conservation": {
+        "energy": 3.3773340716379893e-15,
+        "mass": 2.215393817279725e-15,
+        "species": 1.265939324159843e-14
+      }
+    },
+    {
+      "cycle": 76,
+      "work_J": 34.18127773096103,
+      "trapped_air_kg": 2.9678665056246503e-05,
+      "exhaust_mass_kg": 0.002038189910994107,
+      "exhaust_energy_J": 1106.5615785841812,
+      "exhaust_species_kg": [
+        0.0002507139995211348,
+        5.0852079853917546e-05,
+        9.54750564029929e-05,
+        0.001641148775216062
+      ],
+      "failures": 31,
+      "worst_threshold_ratio": 4.2442107683848125,
+      "streak": 0,
+      "conservation": {
+        "energy": 3.779931991632401e-15,
+        "mass": 2.2991692137314797e-15,
+        "species": 1.3106195356007787e-14
+      }
+    },
+    {
+      "cycle": 77,
+      "work_J": 34.18216189370969,
+      "trapped_air_kg": 2.9679310547662874e-05,
+      "exhaust_mass_kg": 0.0020380069283891977,
+      "exhaust_energy_J": 1106.5530732945456,
+      "exhaust_species_kg": [
+        0.00025133566889184913,
+        5.099086598536069e-05,
+        9.008118097917344e-05,
+        0.0016455992125328145
+      ],
+      "failures": 30,
+      "worst_threshold_ratio": 4.028799729667715,
+      "streak": 0,
+      "conservation": {
+        "energy": 3.08892863324316e-15,
+        "mass": 2.1502351755950276e-15,
+        "species": 1.1616854974643265e-14
+      }
+    },
+    {
+      "cycle": 78,
+      "work_J": 34.182993938352865,
+      "trapped_air_kg": 2.967991737025792e-05,
+      "exhaust_mass_kg": 0.0020378356453290025,
+      "exhaust_energy_J": 1106.5451172765693,
+      "exhaust_species_kg": [
+        0.0002519238195754171,
+        5.11221158104534e-05,
+        8.498427375991449e-05,
+        0.001649805436183218
+      ],
+      "failures": 30,
+      "worst_threshold_ratio": 3.822468079357544,
+      "streak": 0,
+      "conservation": {
+        "energy": 2.098855013156608e-15,
+        "mass": 1.489340381364521e-15,
+        "species": 9.82964651700584e-15
+      }
+    },
+    {
+      "cycle": 79,
+      "work_J": 34.18377679294281,
+      "trapped_air_kg": 2.9680487757678055e-05,
+      "exhaust_mass_kg": 0.0020376753093743726,
+      "exhaust_energy_J": 1106.5376750301398,
+      "exhaust_species_kg": [
+        0.0002524801674328057,
+        5.124621375536689e-05,
+        8.016888533458335e-05,
+        0.0016537800428516162
+      ],
+      "failures": 30,
+      "worst_threshold_ratio": 3.6250605436604286,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.4075697901654474e-15,
+        "mass": 1.6382744195009734e-15,
+        "species": 9.233910364460032e-15
+      }
+    },
+    {
+      "cycle": 80,
+      "work_J": 34.184513240785236,
+      "trapped_air_kg": 2.9681023830767735e-05,
+      "exhaust_mass_kg": 0.0020375252163970267,
+      "exhaust_energy_J": 1106.5307132758721,
+      "exhaust_species_kg": [
+        0.00025300635096049456,
+        5.13635275234198e-05,
+        7.562026439207046e-05,
+        0.001657535073521042
+      ],
+      "failures": 29,
+      "worst_threshold_ratio": 3.436392107185465,
+      "streak": 0,
+      "conservation": {
+        "energy": 2.0849311542324757e-15,
+        "mass": 1.9082173636232927e-15,
+        "species": 8.191372097504866e-15
+      }
+    },
+    {
+      "cycle": 81,
+      "work_J": 34.1852059313137,
+      "trapped_air_kg": 2.9681527597870275e-05,
+      "exhaust_mass_kg": 0.00203738470760592,
+      "exhaust_energy_J": 1106.5242008474918,
+      "exhaust_species_kg": [
+        0.00025350393351494197,
+        5.147440847316789e-05,
+        7.132433899472386e-05,
+        0.0016610820266230873
+      ],
+      "failures": 29,
+      "worst_threshold_ratio": 3.2562534629728828,
+      "streak": 0,
+      "conservation": {
+        "energy": 2.7455471617552166e-15,
+        "mass": 1.777900080253897e-15,
+        "species": 6.5530976780038935e-15
+      }
+    },
+    {
+      "cycle": 82,
+      "work_J": 34.1858573776758,
+      "trapped_air_kg": 2.968200095887186e-05,
+      "exhaust_mass_kg": 0.0020372531667039785,
+      "exhaust_energy_J": 1106.518108567104,
+      "exhaust_species_kg": [
+        0.0002539744056408589,
+        5.157919203546113e-05,
+        6.726769661527673e-05,
+        0.0016644318724123811
+      ],
+      "failures": 28,
+      "worst_threshold_ratio": 3.0844158542172386,
+      "streak": 0,
+      "conservation": {
+        "energy": 7.533401744140562e-16,
+        "mass": 7.167450585316758e-16,
+        "species": 6.255229601730989e-15
+      }
+    },
+    {
+      "cycle": 83,
+      "work_J": 34.186469963738546,
+      "trapped_air_kg": 2.9682445709619553e-05,
+      "exhaust_mass_kg": 0.002037130017212948,
+      "exhaust_energy_J": 1106.5124091334571,
+      "exhaust_species_kg": [
+        0.0002544191874769054,
+        5.167819816198044e-05,
+        6.343756324615123e-05,
+        0.0016675950683279102
+      ],
+      "failures": 28,
+      "worst_threshold_ratio": 2.92063534557202,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.339655156882971e-15,
+        "mass": 1.340406343228069e-15,
+        "species": 5.212691334775824e-15
+      }
+    },
+    {
+      "cycle": 84,
+      "work_J": 34.18704594301016,
+      "trapped_air_kg": 2.9682863545986567e-05,
+      "exhaust_mass_kg": 0.0020370147199345553,
+      "exhaust_energy_J": 1106.5070770045568,
+      "exhaust_species_kg": [
+        0.0002548396312102919,
+        5.1771731797475505e-05,
+        5.9821781845530235e-05,
+        0.0016705815750812582
+      ],
+      "failures": 28,
+      "worst_threshold_ratio": 2.7646565789562483,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.6178405031425112e-15,
+        "mass": 2.4294864971008752e-15,
+        "species": 5.65949344918518e-15
+      }
+    },
+    {
+      "cycle": 85,
+      "work_J": 34.18758744896195,
+      "trapped_air_kg": 2.9683256068881374e-05,
+      "exhaust_mass_kg": 0.0020369067705718795,
+      "exhaust_energy_J": 1106.502088294851,
+      "exhaust_species_kg": [
+        0.0002552370235607756,
+        5.1860083369853144e-05,
+        5.640879035389313e-05,
+        0.0016734008732873572
+      ],
+      "failures": 28,
+      "worst_threshold_ratio": 2.6162160562806096,
+      "streak": 0,
+      "conservation": {
+        "energy": 2.5435202893150647e-15,
+        "mass": 2.8483634793596467e-15,
+        "species": 5.361625372912276e-15
+      }
+    },
+    {
+      "cycle": 86,
+      "work_J": 34.18809649782952,
+      "trapped_air_kg": 2.9683624787828404e-05,
+      "exhaust_mass_kg": 0.0020368056974826233,
+      "exhaust_energy_J": 1106.4974206708757,
+      "exhaust_species_kg": [
+        0.000255612588272135,
+        5.1943529292052414e-05,
+        5.318759947961283e-05,
+        0.0016760619804388236
+      ],
+      "failures": 27,
+      "worst_threshold_ratio": 2.4750449815718265,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.867475192210679e-15,
+        "mass": 2.857671856743175e-15,
+        "species": 6.255229601730989e-15
+      }
+    },
+    {
+      "cycle": 87,
+      "work_J": 34.18857499537535,
+      "trapped_air_kg": 2.968397112610284e-05,
+      "exhaust_mass_kg": 0.0020367110595762056,
+      "exhaust_energy_J": 1106.493053257809,
+      "exhaust_species_kg": [
+        0.0002559674885967735,
+        5.202233247126614e-05,
+        5.014777042573303e-05,
+        0.0016785734680824327
+      ],
+      "failures": 27,
+      "worst_threshold_ratio": 2.3408717107262014,
+      "streak": 0,
+      "conservation": {
+        "energy": 9.93991485467215e-16,
+        "mass": 2.7925132150584774e-15,
+        "species": 7.297767868686154e-15
+      }
+    },
+    {
+      "cycle": 88,
+      "work_J": 34.189024739378056,
+      "trapped_air_kg": 2.9684296424722383e-05,
+      "exhaust_mass_kg": 0.0020366224443325023,
+      "exhaust_energy_J": 1106.488966546253,
+      "exhaust_species_kg": [
+        0.0002563028297578736,
+        5.2096742821048606e-05,
+        4.727939270298649e-05,
+        0.0016809434790505944
+      ],
+      "failures": 26,
+      "worst_threshold_ratio": 2.213423861448148,
+      "streak": 0,
+      "conservation": {
+        "energy": 2.1057484080866796e-15,
+        "mass": 2.8762886115102315e-15,
+        "species": 8.042438059368414e-15
+      }
+    },
+    {
+      "cycle": 89,
+      "work_J": 34.18944742781332,
+      "trapped_air_kg": 2.9684601946248596e-05,
+      "exhaust_mass_kg": 0.002036539465941249,
+      "exhaust_energy_J": 1106.4851423021612,
+      "exhaust_species_kg": [
+        0.00025661966137821454,
+        5.216699777283763e-05,
+        4.457306215230312e-05,
+        0.0016831797446378936
+      ],
+      "failures": 26,
+      "worst_threshold_ratio": 2.0924300937814055,
+      "streak": 0,
+      "conservation": {
+        "energy": 3.539502037025006e-15,
+        "mass": 2.634270799538497e-15,
+        "species": 6.702031716140345e-15
+      }
+    },
+    {
+      "cycle": 90,
+      "work_J": 34.189844660339986,
+      "trapped_air_kg": 2.9684888879484312e-05,
+      "exhaust_mass_kg": 0.0020364617635655062,
+      "exhaust_energy_J": 1106.481563487229,
+      "exhaust_species_kg": [
+        0.0002569189798668112,
+        5.22333227841029e-05,
+        4.201985927980582e-05,
+        0.0016852896016347869
+      ],
+      "failures": 25,
+      "worst_threshold_ratio": 1.9776216086537026,
+      "streak": 0,
+      "conservation": {
+        "energy": 2.333418223586133e-15,
+        "mass": 3.0159142722631553e-15,
+        "species": 5.361625372912276e-15
+      }
+    },
+    {
+      "cycle": 91,
+      "work_J": 34.1902179457652,
+      "trapped_air_kg": 2.968515834380245e-05,
+      "exhaust_mass_kg": 0.002036388999712042,
+      "exhaust_energy_J": 1106.4782141818578,
+      "exhaust_species_kg": [
+        0.0002572017307543752,
+        5.229593184031946e-05,
+        3.961132798881814e-05,
+        0.0016872800091285289
+      ],
+      "failures": 25,
+      "worst_threshold_ratio": 1.8687334392758803,
+      "streak": 0,
+      "conservation": {
+        "energy": 9.502482615678744e-16,
+        "mass": 3.006605894879627e-15,
+        "species": 5.957361525458084e-15
+      }
+    },
+    {
+      "cycle": 92,
+      "work_J": 34.19056870702889,
+      "trapped_air_kg": 2.9685411392136175e-05,
+      "exhaust_mass_kg": 0.002036320858706335,
+      "exhaust_energy_J": 1106.4750795129482,
+      "exhaust_species_kg": [
+        0.00025746881097157457,
+        5.2355027948711775e-05,
+        3.733945478145398e-05,
+        0.0016891575650045943
+      ],
+      "failures": 25,
+      "worst_threshold_ratio": 1.7655055271288722,
+      "streak": 0,
+      "conservation": {
+        "energy": 6.713623122943322e-16,
+        "mass": 3.220698574700777e-15,
+        "species": 5.957361525458084e-15
+      }
+    },
+    {
+      "cycle": 93,
+      "work_J": 34.19089828370352,
+      "trapped_air_kg": 2.9685649015186593e-05,
+      "exhaust_mass_kg": 0.002036257045264276,
+      "exhaust_energy_J": 1106.4721455843542,
+      "exhaust_species_kg": [
+        0.00025772107106456144,
+        5.241080362190703e-05,
+        3.519664848719998e-05,
+        0.001690928522090608
+      ],
+      "failures": 23,
+      "worst_threshold_ratio": 1.6676835883311958,
+      "streak": 0,
+      "conservation": {
+        "energy": 7.305483243776344e-16,
+        "mass": 2.45741162925146e-15,
+        "species": 5.5105594110487285e-15
+      }
+    },
+    {
+      "cycle": 94,
+      "work_J": 34.191207937772106,
+      "trapped_air_kg": 2.9685872144598824e-05,
+      "exhaust_mass_kg": 0.0020361972831551057,
+      "exhaust_energy_J": 1106.4693994104657,
+      "exhaust_species_kg": [
+        0.00025795931734397774,
+        5.246344135009588e-05,
+        3.317572056274099e-05,
+        0.0016925988038982904
+      ],
+      "failures": 23,
+      "worst_threshold_ratio": 1.5750197992827688,
+      "streak": 0,
+      "conservation": {
+        "energy": 5.913551415670606e-16,
+        "mass": 2.1130016660609145e-15,
+        "species": 7.148833830549702e-15
+      }
+    },
+    {
+      "cycle": 95,
+      "work_J": 34.191498857514034,
+      "trapped_air_kg": 2.9686081656391227e-05,
+      "exhaust_mass_kg": 0.0020361413139575535,
+      "exhaust_energy_J": 1106.4668288578087,
+      "exhaust_species_kg": [
+        0.00025818431396543916,
+        5.251311406073742e-05,
+        3.126986599679622e-05,
+        0.001694174019934581
+      ],
+      "failures": 23,
+      "worst_threshold_ratio": 1.487273330958227,
+      "streak": 0,
+      "conservation": {
+        "energy": 0.0,
+        "mass": 2.168851930362084e-15,
+        "species": 6.255229601730989e-15
+      }
+    },
+    {
+      "cycle": 96,
+      "work_J": 34.19177216159551,
+      "trapped_air_kg": 2.9686278374339584e-05,
+      "exhaust_mass_kg": 0.002036088895897086,
+      "exhaust_energy_J": 1106.4644225899074,
+      "exhaust_species_kg": [
+        0.00025839678493889246,
+        5.2559985564797995e-05,
+        2.9472644843676908e-05,
+        0.0016956594805497193
+      ],
+      "failures": 21,
+      "worst_threshold_ratio": 1.4042107554659253,
+      "streak": 0,
+      "conservation": {
+        "energy": 3.860139508202879e-16,
+        "mass": 2.3457111006491207e-15,
+        "species": 6.5530976780038935e-15
+      }
+    },
+    {
+      "cycle": 97,
+      "work_J": 34.19202890308907,
+      "trapped_air_kg": 2.968646307280528e-05,
+      "exhaust_mass_kg": 0.0020360398027545537,
+      "exhaust_energy_J": 1106.4621700120183,
+      "exhaust_species_kg": [
+        0.00025859741606517445,
+        5.2604210988768604e-05,
+        2.7777964401823718e-05,
+        0.001697060211298787
+      ],
+      "failures": 20,
+      "worst_threshold_ratio": 1.3256063429631926,
+      "streak": 0,
+      "conservation": {
+        "energy": 1.4007759665918667e-15,
+        "mass": 1.7313581933362558e-15,
+        "species": 7.297767868686154e-15
+      }
+    },
+    {
+      "cycle": 98,
+      "work_J": 34.19227007305608,
+      "trapped_air_kg": 2.9686636479929796e-05,
+      "exhaust_mass_kg": 0.0020359938228505774,
+      "exhaust_energy_J": 1106.4600612220208,
+      "exhaust_species_kg": [
+        0.00025878685680032004,
+        5.2645937192216575e-05,
+        2.6180062047612884e-05,
+        0.0016983809668104286
+      ],
+      "failures": 17,
+      "worst_threshold_ratio": 1.251242263798351,
+      "streak": 0,
+      "conservation": {
+        "energy": 8.19275265999837e-16,
+        "mass": 1.852367099322123e-15,
+        "species": 6.255229601730989e-15
+      }
+    },
+    {
+      "cycle": 99,
+      "work_J": 34.19249660449577,
+      "trapped_air_kg": 2.9686799280104803e-05,
+      "exhaust_mass_kg": 0.00203595075809882,
+      "exhaust_energy_J": 1106.4580869658241,
+      "exhaust_species_kg": [
+        0.0002589657220473021,
+        5.2685303170515684e-05,
+        2.467348872848052e-05,
+        0.001699626244152522
+      ],
+      "failures": 11,
+      "worst_threshold_ratio": 1.1809087094873243,
+      "streak": 0,
+      "conservation": {
+        "energy": 9.357579861830366e-16,
+        "mass": 1.5265738908986342e-15,
+        "species": 8.340306135641319e-15
+      }
+    },
+    {
+      "cycle": 100,
+      "work_J": 34.19270937525107,
+      "trapped_air_kg": 2.9686952116514753e-05,
+      "exhaust_mass_kg": 0.002035910423119155,
+      "exhaust_energy_J": 1106.456238593657,
+      "exhaust_species_kg": [
+        0.0002591345938751909,
+        5.2722440442487164e-05,
+        2.32530931145854e-05,
+        0.0017008002956868916
+      ],
+      "failures": 9,
+      "worst_threshold_ratio": 1.1144039442264122,
+      "streak": 0,
+      "conservation": {
+        "energy": 5.558338303292967e-16,
+        "mass": 1.2566309467763147e-15,
+        "species": 6.702031716140345e-15
+      }
+    },
+    {
+      "cycle": 101,
+      "work_J": 34.192909210978996,
+      "trapped_air_kg": 2.9687095593713215e-05,
+      "exhaust_mass_kg": 0.0020358726444103608,
+      "exhaust_energy_J": 1106.4545080197968,
+      "exhaust_species_kg": [
+        0.00025929402316698106,
+        5.275747342299751e-05,
+        2.19140064045134e-05,
+        0.0017019071414158698
+      ],
+      "failures": 5,
+      "worst_threshold_ratio": 1.0515342969342616,
+      "streak": 0,
+      "conservation": {
+        "energy": 2.8739156485705706e-15,
+        "mass": 1.880292231472708e-15,
+        "species": 7.297767868686154e-15
+      }
+    },
+    {
+      "cycle": 102,
+      "work_J": 34.19309688876592,
+      "trapped_air_kg": 2.9687230279922307e-05,
+      "exhaust_mass_kg": 0.0020358372595784655,
+      "exhaust_energy_J": 1106.4528876855625,
+      "exhaust_species_kg": [
+        0.00025944453119721637,
+        5.279051978056741e-05,
+        2.0651627776918214e-05,
+        0.0017029505808237638
+      ],
+      "failures": 0,
+      "worst_threshold_ratio": 0.9921141031642121,
+      "streak": 1,
+      "conservation": {
+        "energy": 2.4824262817549716e-15,
+        "mass": 8.284455871340149e-16,
+        "species": 6.702031716140345e-15
+      }
+    },
+    {
+      "cycle": 103,
+      "work_J": 34.19327313975509,
+      "trapped_air_kg": 2.968735670898723e-05,
+      "exhaust_mass_kg": 0.002035804116615013,
+      "exhaust_energy_J": 1106.4513705239538,
+      "exhaust_species_kg": [
+        0.0002595866111406174,
+        5.282169078009443e-05,
+        1.946161047715491e-05,
+        0.0017039342042171463
+      ],
+      "failures": 0,
+      "worst_threshold_ratio": 0.9359656051165128,
+      "streak": 2,
+      "conservation": {
+        "energy": 3.357675299428394e-15,
+        "mass": 7.725953228328454e-16,
+        "species": 8.638174211914224e-15
+      }
+    },
+    {
+      "cycle": 104,
+      "work_J": 34.193438651294855,
+      "trapped_air_kg": 2.968747538265892e-05,
+      "exhaust_mass_kg": 0.0020357730732231067,
+      "exhaust_energy_J": 1106.4499499265444,
+      "exhaust_species_kg": [
+        0.0002597207295135233,
+        5.285109161093548e-05,
+        1.833984852572707e-05,
+        0.0017048614035729212
+      ],
+      "failures": 0,
+      "worst_threshold_ratio": 0.8829188169271508,
+      "streak": 3,
+      "conservation": {
+        "energy": 2.9096846742074728e-15,
+        "mass": 8.470623419010714e-16,
+        "species": 8.638174211914224e-15
+      }
+    }
+  ],
+  "scientific_campaign_points_other_than_A9000": 0,
+  "checks": {
+    "focal": "26 passed",
+    "p4_p8": "298 passed,3 skipped,4 preexisting NumPy deprecation warnings",
+    "initial_p4_p8_attempt": "295 passed,3 skipped,3 failures because DINO_ARTIFACT_ROOT unset; retained log; repeated with existing external store and all tests passed",
+    "openspec": "strict PASS",
+    "program_status": "check PASS;promote none;brief STOP_A_GATE_REACHED;historical unrelated READY/BLOCKED entries preserved",
+    "self_review": true,
+    "independent_review": false,
+    "log_summary_sha256": {
+      "a9000-continuation.summary.json": "d95e941a2920b0026855147c7bf2f2505d505fed5e25dbf93cac5f8f6f3f05cf",
+      "focal-tests.summary.json": "66667c2fcce61b4217719b7f02a4f0d1d7e5be772602164e0ecbd34fa1d409c5",
+      "p4-p8-regression.summary.json": "7be00bbb60b033965b9a914904baee90dd0236f5e6ac46f4bc6e46b532f721e3",
+      "p4-p8-regression-with-store.summary.json": "04b096ae8b99a04d8857c8903137101fc670e10521daaa418032e6804bef53cb"
+    }
+  },
+  "execution_head": "ea99b55131f1b68a35905eb9357085be3f27a256"
+}

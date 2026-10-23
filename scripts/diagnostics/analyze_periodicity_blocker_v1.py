@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import math
 from collections import Counter
 from pathlib import Path
 import sys
@@ -41,6 +42,7 @@ def analyze(path, parent_dir=None):
     cycles = manifest['cycles']
     integrity = []
     max_balance = [0., 0., 0., 0., 0., 0.]
+    max_energy_balance = 0.
     for n, c in enumerate(cycles):
         record = dict(cycle_index=n+1, configuration_hash=manifest['bindings']['configuration_canonical_sha256'],
                       contract=CONTRACT, observables=c['observables'])
@@ -49,6 +51,11 @@ def analyze(path, parent_dir=None):
             older = cycles[n-1]['observables']
             newer = c['observables']
             f = c['flow_integrals']
+            def energy(o):
+                return sum(x['total_energy_J'] for x in o['chambers'].values()) + sum(x['total_energy_J'] for cells in o['ducts'].values() for x in cells)
+            l = c['ledger_delta']
+            residual = energy(newer)-energy(older)-l['external_energy_J']-l['p7_heat_added_J']-l['fuel_combustion_heat_added_J']-l['crankcase_work_J']-l['cylinder_work_J']+l['heat_to_wall_J']+l.get('reed_dissipation_J',0.)
+            max_energy_balance = max(max_energy_balance,abs(residual))
             # Exhaust is source-free: exact stage-quadrature boundary fluxes.
             for i, name in enumerate(('air', 'fuel', 'residual', 'burned')):
                 delta = sum(x['mass_kg']*x['species_mass_fractions'][i] for x in newer['ducts']['exhaust']) - sum(x['mass_kg']*x['species_mass_fractions'][i] for x in older['ducts']['exhaust'])
@@ -67,6 +74,8 @@ def analyze(path, parent_dir=None):
         data = json.loads(artifact.read_bytes())
         assert len(data['samples']) == 720
         assert len({s['angle_deg'] for s in data['samples']}) == 720
+        assert all(math.isclose(s['angle_deg'],n*360+i*.5,abs_tol=1e-8,rel_tol=0)
+                   for i,s in enumerate(data['samples'])), 'missing/shifted phase sample'
         integrity.append(dict(cycle=n+1, sha256=sha(artifact)))
     cp_path = directory/manifest['checkpoint_artifact']
     assert sha(cp_path) == manifest['checkpoint_sha256']
@@ -83,6 +92,7 @@ def analyze(path, parent_dir=None):
         detector_recomputed=True, max_abs_exhaust_species_balance_residual_kg=max_balance[:4],
         max_abs_exhaust_mass_balance_residual_kg=max_balance[4],
         max_abs_global_species_balance_residual_kg=max_balance[5],
+        max_abs_global_energy_balance_residual_J=max_energy_balance,
         cycles=[reduce_cycle(c) for c in cycles])
 
 
