@@ -1,0 +1,102 @@
+{
+  "classification": "PHYSICAL_ASSESSMENT_COMPLETE_ACCURACY_UNDETERMINED",
+  "date": "2026-10-23",
+  "baseline_head": "3bdd3bc182d6aaa5330113f864107e6ad4a1d7a6",
+  "scientific_solver_steps": 0,
+  "experimental_comparison_executed": false,
+  "experimental_validation": "NOT_PERFORMED",
+  "predictive_accuracy": "UNDETERMINED",
+  "reference_blocker": "REFERENCE_INPUTS_INCOMPLETE_OR_NOT_ACCESSED",
+  "scientific_models_modified": false,
+  "historical_evidence_modified": false,
+  "self_review": true,
+  "independent_review": false,
+  "report_sha256": "01b3d4153cba3ebc192f0a40a819f37a714833e2126c347e5472394e73ace8fc",
+  "balance_sha256": "833e56bc9eeb7841bea93cbe46455f6be772ff63700f78c1f92650353c9499ba",
+  "sources_sha256": "95ebe1d6bd72d578d75e5647d0b057b8082f86c460b92b57d19357d8253655a8",
+  "checks": {
+    "offline-balance-tests": {
+      "exit_code": 0,
+      "duration_s": 0.687,
+      "summary_sha256": "52e7a5a80781ace1bd10b2c357b16a15163cbce501d789d44a4c20ea4b52dc44",
+      "tail": [
+        ".......                                                                  [100%]",
+        "7 passed in 0.20s"
+      ]
+    },
+    "p4-p8-regression": {
+      "exit_code": 0,
+      "duration_s": 179.75,
+      "summary_sha256": "a88187d2e5e4d7bd5871b65259f2e9fa9e05270c194b9eecc98d69658c4b2f20",
+      "tail": [
+        "....................s..............................s.s.................. [ 28%]",
+        "........................................................................ [ 57%]",
+        "........................................................................ [ 86%]",
+        "..................................                                       [100%]",
+        "============================== warnings summary ===============================",
+        "tests/test_p4_r10a.py::P4R10ATests::test_rhoE_formula",
+        "tests/test_p4_r10a.py::P4R10ATests::test_rhoE_formula",
+        "  E:\\dino\\Dino-active\\tests\\test_p4_r10a.py:155: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)",
+        "    self.assertNotAlmostEqual(float(rhoE_correct), float(rhoE_wrong))",
+        "",
+        "tests/test_p4_r10a.py::P4R10ATests::test_rhoE_formula",
+        "  E:\\dino\\Dino-active\\tests\\test_p4_r10a.py:157: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)",
+        "    self.assertAlmostEqual(float(rhoE_correct), 285714, delta=1000)",
+        "",
+        "tests/test_p4_r10a.py::P4R10ATests::test_rhoE_formula",
+        "  E:\\dino\\Dino-active\\tests\\test_p4_r10a.py:158: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)",
+        "    self.assertAlmostEqual(float(rhoE_wrong), 142857, delta=1000)",
+        "",
+        "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+        "247 passed, 3 skipped, 4 warnings in 179.17s (0:02:59)"
+      ]
+    },
+    "openspec-strict-powershell": {
+      "exit_code": 0,
+      "duration_s": 1.906,
+      "summary_sha256": "f47396fdf61abd0636d4cf41cf06433894b38b9346426a769946f5c841271a91",
+      "tail": [
+        "✓ change/implementacion-ui-cae-final",
+        "✓ change/integrated-solver-verification-v1",
+        "✓ change/kt100-reference-case",
+        "✓ change/motorsim-2t-commercial-core",
+        "✓ change/multicore-execution-v1",
+        "✓ change/p0-baseline-0d",
+        "✓ change/p1-contrato-gas1d",
+        "✓ change/p1-r1-contacto",
+        "✓ change/p1-r2-contacto",
+        "✓ change/p1-r3-fronteras",
+        "✓ change/p1-r4-cfl",
+        "✓ change/p2-nucleo-gas1d",
+        "✓ spec/p3-acoplamiento-conservativo",
+        "✓ change/p4-escape-1d",
+        "✓ change/p5-intake-transfer",
+        "✓ change/p7-prescribed-heat-burn",
+        "✓ change/p8-wide-rpm-performance",
+        "✓ change/p9-experimental-validation",
+        "✓ change/periodic-rpm-curves-v1",
+        "✓ change/periodicity-blocker-v1",
+        "✓ change/physical-accuracy-v1",
+        "✓ change/positividad-transporte-2t",
+        "✓ change/reference-engine-hybrid-harness",
+        "✓ change/refinamiento-ui-final",
+        "✓ change/rendimiento-indicado",
+        "✓ change/reorganizacion-ui-final",
+        "✓ change/simulacion-2t",
+        "✓ change/two-stroke-v1-closure",
+        "✓ change/two-stroke-v1-closure-r2",
+        "Totals: 62 passed, 0 failed (62 items)"
+      ]
+    }
+  },
+  "program_status": "CHECK_OK;PROMOTED_NONE;ASSESSMENT_GATE_PASS_NOT_PHYSICAL_VALIDATION",
+  "further_campaign_authorized": false,
+  "push_performed": false,
+  "external_artifact_root": "E:\\Dino-artifacts\\physical-accuracy-v1-20261023",
+  "preserved_preexisting_tracked_changes": [
+    ".gitignore",
+    "scripts/run_standard_exploratory_point.py",
+    "tests/test_standard_exploratory_point.py"
+  ],
+  "preexisting_untracked": "Ostacky and other historical/debug files preserved without stage"
+}

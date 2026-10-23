@@ -22,12 +22,12 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_PERIODIC_RPM_CURVES_V1
-change/spec:       openspec/changes/periodic-rpm-curves-v1/
-                   specs/periodic-rpm-curves-v1/spec.md
-completion:        Owner-scoped five conservative continuations from own30cycle
-                   checkpoints; reuse A9000periodic104. Existing coordinator and
-                   Desktop curves.3300s newglobal,600s/point,111cycles; no push.
+CURRENT_OBJECTIVE: DINO_PHYSICAL_ACCURACY_V1
+change/spec:       openspec/changes/physical-accuracy-v1/
+                   specs/physical-accuracy-v1/spec.md
+completion:        Scoped physical accuracy assessment of six existing periodic
+                   points and accessible experimental reference. No calibration,
+                   solver/UI changes or new campaign; no predictive claim.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

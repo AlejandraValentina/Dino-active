@@ -1,0 +1,82 @@
+{
+  "access_date": "2026-10-23",
+  "experimental_validation": "NOT_PERFORMED",
+  "selected_preferred_reference": "Honda RS125 SAE2004-01-3561 if original inputs become accessible",
+  "selected_open_candidate": "IAME X30, Ortenzi and Bossaglia, Energies2023; currently incomplete for an exact reproduction",
+  "sources": [
+    {
+      "id": "sae2004",
+      "title": "Validation of a Computer Simulation of a High Performance Two-Stroke Motorcycle Racing Engine",
+      "doi": "10.4271/2004-01-3561",
+      "url": "https://saemobilus.sae.org/papers/validation-a-computer-simulation-a-high-performance-two-stroke-motorcycle-racing-engine-2004-01-3561",
+      "access": "PUBLIC_ABSTRACT_ONLY; subsequent site robot challenge; no bypass attempted",
+      "adequacy": "FULL_ORIGINAL_DATA_NOT_ACCESSED"
+    },
+    {
+      "id": "qub2004",
+      "url": "https://pure.qub.ac.uk/en/publications/validation-of-a-computer-simulation-of-a-high-performance-two-str/",
+      "access": "BIBLIOGRAPHIC_RECORD; no accessible manuscript link identified"
+    },
+    {
+      "id": "mdpi2023",
+      "title": "A One-Dimensional Numerical Model for High-Performance Two-Stroke Engines",
+      "authors": [
+        "Fernando Ortenzi",
+        "Andrea Bossaglia"
+      ],
+      "doi": "10.3390/en16134947",
+      "url": "https://www.mdpi.com/1996-1073/16/13/4947",
+      "pdf_access": {
+        "id": "mdpi2023",
+        "url": "https://mdpi-res.com/d_attachment/energies/energies-16-04947/article_deploy/energies-16-04947.pdf",
+        "status": 200,
+        "pdf": true,
+        "bytes": 8059541,
+        "sha256": "c7d6f01fd0b11f5b4f3d69b0ab271fb568b3424416b512dc9ae68f10db9e5860"
+      },
+      "pages_visually_inspected": [
+        16,
+        17,
+        18
+      ],
+      "data_statement_page": 22,
+      "adequacy": "Published geometry and measured curve available; full tested-case inputs and calibration data not available. Data restrictions stated. No Dino experimental error calculated."
+    },
+    {
+      "id": "ijet2017",
+      "title": "Numerical Modelling of the Operation of a Novel Two Stroke V4 Engine",
+      "author": "Albert Boretti",
+      "pdf_access": {
+        "id": "ijet2017",
+        "url": "https://ojs.imeti.org/index.php/IJETI/article/download/385/390",
+        "status": 200,
+        "pdf": true,
+        "bytes": 620977,
+        "sha256": "87b48a980db31671ec3073dc3e26bc2ac2d53b34045c589b9ea0fc70c0201d44"
+      },
+      "use": "Discovery only for Honda; RS125 description secondary and V4 results are simulations. Not adopted as an experimental validation dataset."
+    },
+    {
+      "id": "gore2024",
+      "title": "Experimental Development of a High Power Density Generator Utilizing Renewable Fuel",
+      "url": "https://repository.lib.ncsu.edu/bitstreams/24433484-a6eb-4ad8-80f1-a18fa75c4ef6/download",
+      "access": "PUBLIC_ABSTRACT_AND_CONTENTS_INDEX; direct PDF request503; methods not inspected sufficiently",
+      "adequacy": "NOT_DETERMINED; no KT100 run or reproduction claim"
+    },
+    {
+      "id": "lujan2014",
+      "title": "Heat transfer modeling in exhaust systems of high-performance two-stroke engines",
+      "doi": "10.1016/j.applthermaleng.2014.04.045",
+      "access": "Publisher preview; institutional manuscript access challenge, not bypassed",
+      "adequacy": "NOT_ADOPTED_AS_DATASET"
+    }
+  ],
+  "missing_for_exact_single_point": [
+    "identical engine and hardware revision; complete geometry, port areas/timing, crankcase and connecting volumes",
+    "tested intake and exhaust with flow/discharge and reed characterization",
+    "operating boundary and fuel conditions, actual mixture, ignition and thermal state",
+    "identified scavenging/combustion and mechanical losses or experimental constraints to distinguish their errors",
+    "measured power/torque at one RPM, measurement plane/corrections and uncertainty; pressure traces where available"
+  ],
+  "research_stopped": "Bounded adequacy assessment complete. No full sweep or invented input values."
+}
