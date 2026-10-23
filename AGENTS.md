@@ -22,12 +22,12 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_EXPERIMENTAL_REFERENCE_V1
-change/spec:       openspec/changes/experimental-reference-v1/
-                   specs/experimental-reference-v1/spec.md
-completion:        Select one real single-cylinder reference with verified data,
-                   acquisition gaps and uncertainty-aware comparison criteria.
-                   No simulations, solver/coefficient changes or new features.
+CURRENT_OBJECTIVE: DINO_X30_PREPARATION_V1
+change/spec:       openspec/changes/x30-preparation-v1/
+                   specs/x30-preparation-v1/spec.md
+completion:        Unsent author request, qualified Figure10 digitization and
+                   revision-specific documented/derived/unknown X30 inventory.
+                   Decide minimal point eligibility; no simulations or features.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

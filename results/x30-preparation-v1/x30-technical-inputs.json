@@ -1,0 +1,243 @@
+{
+  "schema": "X30_TECHNICAL_INPUT_INVENTORY_V1",
+  "engine": "IAME X30 Senior",
+  "runnable_configuration": false,
+  "execution_allowed": false,
+  "identity": {
+    "manufacturer_revision": "254/V dated12/11/2020; downloaded filename identifies REV.05 AGG2021",
+    "manufacturer_pdf_sha256": "93eaa486afa6bedab4ea178252b5e7faa97ed4c939ee377f34a6ec07fea14f86",
+    "manufacturer_url": "https://www.iame-motorsport.com/files/noticeboard/254V_IAME-X30-125cc-LIMIT.-16000-giri-MOTORE-REV.05-AGG2021_21032024111116.pdf",
+    "experimental_paper_doi": "10.3390/en16134947",
+    "experimental_paper_sha256": "c7d6f01fd0b11f5b4f3d69b0ab271fb568b3424416b512dc9ae68f10db9e5860",
+    "same_specimen_revision_confirmed": false
+  },
+  "documented": {
+    "bore": {
+      "value": 54,
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 1,
+      "qualification": "NOMINAL_NOT_TEST_SPECIMEN_MEASUREMENT"
+    },
+    "stroke": {
+      "value": 54,
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 1,
+      "qualification": "NOMINAL_NOT_TEST_SPECIMEN_MEASUREMENT"
+    },
+    "rod_center_distance": {
+      "value": 102,
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 1,
+      "qualification": "NOMINAL_NOT_TEST_SPECIMEN_MEASUREMENT"
+    },
+    "bore_max": {
+      "value": 54.28,
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 1,
+      "qualification": "HOMOLOGATION_LIMIT"
+    },
+    "transfer_paths": {
+      "value": 3,
+      "unit": "count",
+      "source": "IAME254V",
+      "page": 1,
+      "qualification": "OFFICIAL_TOPOLOGY"
+    },
+    "intake_type": {
+      "value": "reed valve",
+      "unit": "type",
+      "source": "IAME254V",
+      "page": 1,
+      "qualification": "OFFICIAL_TOPOLOGY"
+    },
+    "carburetor": {
+      "value": "Tillotson HW-27A",
+      "unit": "model",
+      "source": "IAME254V",
+      "page": 1,
+      "qualification": "OFFICIAL_COMPONENT"
+    },
+    "venturi_max": {
+      "value": 27,
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 5,
+      "qualification": "HOMOLOGATION_LIMIT"
+    },
+    "exhaust_duration_max": {
+      "value": 177.5,
+      "unit": "deg",
+      "source": "IAME254V",
+      "page": 4,
+      "qualification": "HOMOLOGATION_LIMIT_NOT_INSTALLED_TIMING"
+    },
+    "transfer_durations": {
+      "value": [
+        126,
+        127
+      ],
+      "unit": "deg",
+      "source": "IAME254V",
+      "page": 4,
+      "qualification": "HOMOLOGATION_WITH_PLUS_MINUS2DEG_NOT_INSTALLED_TIMING"
+    },
+    "chamber_checking_volume_min": {
+      "value": 9.7,
+      "unit": "cm3",
+      "source": "IAME254V",
+      "page": 5,
+      "qualification": "CHECKING_INSERT_CONVENTION;NOT_AUTOMATICALLY_OPERATIONAL_VC"
+    },
+    "squish_min": {
+      "value": 0.9,
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 5,
+      "qualification": "HOMOLOGATION_LIMIT"
+    },
+    "petal_thickness_min_glass": {
+      "value": 0.3,
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 6,
+      "qualification": "MATERIAL_OPTION_NOT_IDENTIFIED_FOR_TEST"
+    },
+    "petal_thickness_min_carbon": {
+      "value": 0.24,
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 6,
+      "qualification": "MATERIAL_OPTION_NOT_IDENTIFIED_FOR_TEST"
+    },
+    "exhaust_plan_label_dimensions_mm": {
+      "value": {
+        "A1": 110,
+        "A2": 102,
+        "A3": 100,
+        "B1": 59,
+        "B2": 59,
+        "C": 219,
+        "D1": 89.5,
+        "D2": 109,
+        "E": 23,
+        "F": 36,
+        "G": 35,
+        "H": 132,
+        "I": 21,
+        "K": 170,
+        "L": 42.5,
+        "M": 435,
+        "N": 340,
+        "O": 21,
+        "P": 50,
+        "T": 690
+      },
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 9,
+      "qualification": "DRAWING_LABELS_ONLY;NOT_ORDERED_SOLVER_STATIONS;TOLERANCES_REMAIN_ON_SOURCE_DRAWING"
+    },
+    "optional_exhaust_spacer": {
+      "value": {
+        "thickness": 3,
+        "tolerance": 0.5
+      },
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 10,
+      "qualification": "OPTIONAL_VARIABLE_QUANTITY;ACTUAL_COUNT_UNKNOWN"
+    },
+    "published_simulation_settings": {
+      "lambda": 0.85,
+      "ignition_BTDC_deg": 22,
+      "source": "Ortenzi/Bossaglia2023 section3.1 p16",
+      "qualification": "SIMULATION_SETTINGS_NOT_CONFIRMED_EXPERIMENTAL_MEASUREMENTS"
+    }
+  },
+  "derived_geometrically": {
+    "nominal_displacement_cm3": {
+      "value": 123.67193640121579,
+      "formula": "pi/4*bore_mm^2*stroke_mm/1000",
+      "inputs": "documented nominal bore/stroke",
+      "qualification": "NO_SPECIMEN_TOLERANCE_ASSIGNED"
+    },
+    "piston_area_mm2": {
+      "value": 2290.221044466959,
+      "formula": "pi/4*bore_mm^2"
+    },
+    "crank_radius_mm": {
+      "value": 27,
+      "formula": "stroke/2"
+    },
+    "rod_crank_ratio": {
+      "value": 3.7777777777777777,
+      "formula": "rod/crank_radius"
+    },
+    "port_event_conversion": {
+      "formula": "If symmetric piston gating and duration D are verified: opening_ATDC=(360-D)/2; closing_ATDC=360-opening_ATDC.",
+      "adopted_numeric_events": null,
+      "reason": "Actual area-angle profile and convention must be confirmed; limits are not actual events."
+    }
+  },
+  "unknown": {
+    "clearance_volume_TDC_cm3": {
+      "value": null,
+      "classification": "FUNDAMENTAL_BLOCKER",
+      "reason": "Measure assembled chamber using documented plug/insert convention; do not treat checking minimum as operating clearance."
+    },
+    "crankcase_free_volume_at_known_angle_cm3": {
+      "value": null,
+      "classification": "FUNDAMENTAL_BLOCKER",
+      "reason": "Needed for primary compression and trapped fresh charge; cannot infer from partial view."
+    },
+    "actual_port_area_angle_and_transfer_passages": {
+      "value": null,
+      "classification": "FUNDAMENTAL_BLOCKER",
+      "reason": "Exact port heights/shapes and passage lengths/areas not identified by maximum widths or three durations."
+    },
+    "installed_intake_path_and_exhaust_spacer_count": {
+      "value": null,
+      "classification": "FUNDAMENTAL_BLOCKER",
+      "reason": "Needed to define wave travel lengths and installed flow path without mixing revisions."
+    },
+    "reed_force_lift_stop_and_discharge": {
+      "value": null,
+      "classification": "EXPLICIT_PRELIMINARY_HYPOTHESIS_POSSIBLE;MAJOR_FILLING_UNCERTAINTY",
+      "reason": "Geometry/thickness do not identify stiffness or effective discharge; preliminary component assumptions must be declared and never power-fitted. Not independently identified for the tested engine."
+    },
+    "thermal_wall_conditions": {
+      "value": null,
+      "classification": "EXPLICIT_PRELIMINARY_HYPOTHESIS_POSSIBLE",
+      "reason": "May use declared boundary estimates, without claiming measured thermal state or adjusting to power."
+    },
+    "fuel_properties_and_actual_AFR": {
+      "value": null,
+      "classification": "EXPLICIT_PRELIMINARY_HYPOTHESIS_POSSIBLE",
+      "reason": "Published lambda may define an approximate comparison; actual fuel and stoichiometry must remain declared and not fabricated."
+    },
+    "combustion_and_scavenging_closure": {
+      "value": null,
+      "classification": "EXPLICIT_PRELIMINARY_HYPOTHESIS_POSSIBLE",
+      "reason": "A fixed reduced closure may be tested as a hypothesis; no identification or predictive claim and no adjustment against curve."
+    },
+    "mechanical_losses_and_measurement_plane": {
+      "value": null,
+      "classification": "POWER_VALIDATION_BLOCKER;PRELIMINARY_INDICATED_RESULTS_POSSIBLE",
+      "reason": "Without loss/plane identification, indicated result cannot be called measured brake-power agreement."
+    },
+    "exact_test_conditions_and_raw_uncertainty": {
+      "value": null,
+      "classification": "QUANTITATIVE_VALIDATION_BLOCKER;PUBLIC_TRENDS_USABLE",
+      "reason": "Graph reading alone remains useful but is not a metrologically complete validation dataset."
+    },
+    "revision_match_to_experimental_engine": {
+      "value": null,
+      "classification": "QUANTITATIVE_VALIDATION_BLOCKER",
+      "reason": "Current254V drawing and article drawing have differences; do not hybridize silently."
+    }
+  }
+}
