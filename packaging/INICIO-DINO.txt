@@ -1,0 +1,25 @@
+DINO 2T — PAQUETE WINDOWS PORTABLE
+
+1. Extraer TODO el ZIP en una carpeta local. No ejecutar dentro del ZIP.
+2. Abrir MotorSim/Dino2T.exe. No requiere instalar Python ni un instalador.
+3. Abrir Ejemplos/Curvas-periodicas-125cc.dino.json desde Archivo > Abrir.
+4. En Resultados, seleccionar corridas del historial y pulsar Ver/Comparar.
+   Hay seis puntos periódicos A/B a 8000, 9000 y 10000 RPM.
+5. Usar Exportar tabla CSV o Exportar gráfico PNG para guardar resultados.
+6. En la barra de ejecución, Preparar permite fijar RPM, ciclos, presupuesto
+   y memoria. Para una comprobación breve usar 9000 RPM, 3 ciclos, 180 s,
+   512 MiB. Confirmar la ejecución exploratoria. Cancelar conserva el último
+   ciclo completo; desde el historial se puede reanudar una ejecución compatible.
+
+Los resultados nuevos se guardan en la raíz externa indicada en Simulación
+(por defecto AppData/Local/MotorSim/Artifacts). No se escriben en el repositorio.
+Conservar completa la carpeta de cada corrida y sus invocaciones.
+
+LIMITACIONES
+- TRIAL: construido con cambios locales preexistentes; no es release de árbol limpio.
+- Periodicidad observada no equivale a validación experimental/predictiva.
+- Los ejemplos son históricos. Se pueden consultar/exportar, pero no continuar
+  con un productor de código distinto: el rechazo por identidad es intencional.
+- Las simulaciones nuevas usan el integrador actual optimizado. No se prometen
+  tiempos de curva completa a partir del benchmark breve.
+- La validación experimental X30 permanece pendiente de geometría externa.

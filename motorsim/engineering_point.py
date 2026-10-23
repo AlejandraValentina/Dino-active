@@ -16,6 +16,7 @@ import math
 import os
 from pathlib import Path
 import platform
+import re
 import subprocess
 import sys
 import tempfile
@@ -29,6 +30,16 @@ from motorsim.integrated_2t import IntegratedEngine2T
 from motorsim.engine_physics_v1 import standard_fmep_model_v1
 from motorsim.reed import static_area
 from motorsim.reference_harness.convergence import CONTRACT, compare_cycles_v2
+
+
+def _producer_head():
+    """Frozen distributions bind their build commit without requiring Git."""
+    if getattr(sys, "frozen", False):
+        commit = json.loads((ROOT / "motorsim/build.json").read_text(encoding="utf-8"))["source_commit"]
+        if not isinstance(commit, str) or re.fullmatch(r"[0-9a-f]{40}", commit) is None:
+            raise ValueError("invalid packaged source commit")
+        return commit
+    return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
 
 
 def encode(value):
@@ -276,7 +287,7 @@ def run(args):
         native_configuration_identity=engine.configuration_identity,
         solver_sha256=hashlib.sha256((ROOT/"motorsim/integrated_2t.py").read_bytes()).hexdigest(),
         mechanical_loss=None if loss is None else loss.to_dict(), rpm=args.rpm,
-        head=subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip(),
+        head=_producer_head(),
         python=sys.version, platform=platform.platform())
     atomic(output/"configuration.json", config)
     manifest = dict(schema="DINO_MINIMAL_EXPLORATORY_POINT_V1", bindings=bindings,

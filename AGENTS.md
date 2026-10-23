@@ -22,12 +22,12 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_INTEGRATED_PERFORMANCE_V1
-change/spec:       openspec/changes/integrated-performance-v1/
-                   specs/integrated-performance-v1/spec.md
-completion:        Measured integrated profiling and justified optimization with
-                   before/after numerical/conservation equivalence. X30 frozen;
-                   no physics/tolerance changes, new curves or push.
+CURRENT_OBJECTIVE: DINO_WINDOWS_INTEGRATED_DELIVERY_V1
+change/spec:       openspec/changes/windows-integrated-delivery-v1/
+                   specs/windows-integrated-delivery-v1/spec.md
+completion:        Packaged current integrated Desktop, real periodic examples,
+                   EXE execution/resume, exports and measured short performance.
+                   X30 frozen; no physical changes, full campaign or push.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

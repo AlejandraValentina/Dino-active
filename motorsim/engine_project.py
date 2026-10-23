@@ -84,8 +84,14 @@ def save_project(path: str | Path, project: dict) -> str:
 
 
 def load_project(path: str | Path) -> dict:
-    project = json.loads(Path(path).read_text(encoding="utf-8"))
+    path = Path(path)
+    project = json.loads(path.read_text(encoding="utf-8"))
     validate_project(project)
+    # Explicit ./ references travel with packaged examples. Legacy relative
+    # paths retain their artifact-root semantics; evidence bytes are untouched.
+    for ref in project["result_references"]:
+        if ref["path"].startswith(("./", ".\\")):
+            ref["path"] = str((path.resolve().parent / ref["path"]).resolve())
     return project
 
 

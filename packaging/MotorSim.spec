@@ -15,7 +15,10 @@ gui_a.binaries=[item for item in gui_a.binaries if '/plugins/' not in item[0].re
     or Path(item[0]).name.lower() in ('qwindows.dll','qmodernwindowsstyle.dll')]
 gui_a.datas=[item for item in gui_a.datas if '/translations/' not in item[0].replace('\\','/')
     or Path(item[0]).name=='qtbase_es.qm']
-dino_a=Analysis([str(root/'packaging/dino_desktop_entry.py')],datas=[
+dino_a=Analysis([str(root/'packaging/dino_desktop_entry.py')],
+    # Source-backed package imports preserve __file__, inspect and producer
+    # checkpoint fingerprints. The same source bytes are shipped and executed.
+    module_collection_mode={'motorsim':'py'}, datas=[
     (str(generated/'build.json'),'motorsim'),
     (str(root/'results/2t-commercial-core-20261002/fixtures/v1-prime-mesh/fixture_a_prime-mesh-0.json'),
      'results/2t-commercial-core-20261002/fixtures/v1-prime-mesh'),

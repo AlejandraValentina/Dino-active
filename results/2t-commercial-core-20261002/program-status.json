@@ -7475,6 +7475,55 @@
       "evidence_level": "L0",
       "qualification": "Measured short integrated workload, exact numerical equivalence and conservation; full-curve improvement is projection only.",
       "review": "SELF_REVIEW"
+    },
+    {
+      "id": "WID1-INTEGRATION",
+      "description": "Verify current Desktop solver route and frozen runtime dependencies.",
+      "state": "DONE",
+      "dependencies": [],
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "tests/test_windows_integrated_delivery_v1.py",
+        "packaging/MotorSim.spec"
+      ],
+      "next_action": "Complete owner-authorized packaged delivery.",
+      "objective": "DINO_WINDOWS_INTEGRATED_DELIVERY_V1",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L1",
+      "qualification": "Current Desktop routes through run_exploratory -> engineering_workflow -> engineering_point -> IntegratedEngine2T. Frozen source collection and Git-free build identity; unchanged physics."
+    },
+    {
+      "id": "WID1-PACKAGE",
+      "description": "Build reproducible TRIAL bundle with portable real periodic examples and instructions.",
+      "state": "IN_PROGRESS",
+      "dependencies": [],
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Complete owner-authorized packaged delivery.",
+      "objective": "DINO_WINDOWS_INTEGRATED_DELIVERY_V1",
+      "owner_role": "implementation",
+      "write_scope": [
+        "packaging",
+        "results/windows-integrated-delivery-v1"
+      ],
+      "evidence_level": "L1"
+    },
+    {
+      "id": "WID1-ACCEPTANCE",
+      "description": "Exercise actual EXE, export, short execution/resume, source comparison and checks.",
+      "state": "READY",
+      "dependencies": [],
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Complete owner-authorized packaged delivery.",
+      "objective": "DINO_WINDOWS_INTEGRATED_DELIVERY_V1",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L1"
     }
   ],
   "audit_remediation_mode": false,
@@ -7676,20 +7725,19 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_INTEGRATED_PERFORMANCE_V1",
-    "state": "CLOSED",
+    "id": "DINO_WINDOWS_INTEGRATED_DELIVERY_V1",
+    "state": "OPEN",
     "owner_approved": true,
-    "summary": "Owner freezes blocked X30 and authorizes bounded real integrated profiling, measured optimizations and before/after equivalence without physical changes or curve campaigns.",
-    "change": "openspec/changes/integrated-performance-v1",
-    "spec": "openspec/changes/integrated-performance-v1/specs/integrated-performance-v1/spec.md",
-    "transitioned_from": "DINO_X30_PUBLIC_RECONSTRUCTION_V1",
+    "summary": "Consolidate current integrated Desktop in Windows package; real historical curves, comparison/export and bounded same-identity execution/resume. X30 remains frozen; no physics changes or push.",
+    "change": "openspec/changes/windows-integrated-delivery-v1",
+    "spec": "openspec/changes/windows-integrated-delivery-v1/specs/windows-integrated-delivery-v1/spec.md",
+    "transitioned_from": "DINO_INTEGRATED_PERFORMANCE_V1",
     "gate_tasks": [
-      "IP1-PROFILE",
-      "IP1-OPTIMIZE",
-      "IP1-EQUIVALENCE"
+      "WID1-INTEGRATION",
+      "WID1-PACKAGE",
+      "WID1-ACCEPTANCE"
     ],
-    "completion_criterion": "Actual CPU/end-to-end before/after measurements, justified optimization, preserved science/conservation/checkpoint histories and qualified curve cost projection. No X30 or new general infrastructure.",
-    "scientific_state": "PERFORMANCE_OPTIMIZATION_ONLY;EXPERIMENTAL_VALIDATION_NOT_PERFORMED;X30_FROZEN_AWAITING_EXTERNAL_GEOMETRY"
+    "completion_criterion": "Real packaged EXE loads periodic examples, compares/exports, runs and resumes a brief integrated point; package/source timing, preserved identities and honest limitations."
   },
   "objectives": [
     {
@@ -8637,6 +8685,21 @@
       ],
       "completion_criterion": "Actual CPU/end-to-end before/after measurements, justified optimization, preserved science/conservation/checkpoint histories and qualified curve cost projection. No X30 or new general infrastructure.",
       "scientific_state": "PERFORMANCE_OPTIMIZATION_ONLY;EXPERIMENTAL_VALIDATION_NOT_PERFORMED;X30_FROZEN_AWAITING_EXTERNAL_GEOMETRY"
+    },
+    {
+      "id": "DINO_WINDOWS_INTEGRATED_DELIVERY_V1",
+      "state": "OPEN",
+      "owner_approved": true,
+      "summary": "Consolidate current integrated Desktop in Windows package; real historical curves, comparison/export and bounded same-identity execution/resume. X30 remains frozen; no physics changes or push.",
+      "change": "openspec/changes/windows-integrated-delivery-v1",
+      "spec": "openspec/changes/windows-integrated-delivery-v1/specs/windows-integrated-delivery-v1/spec.md",
+      "transitioned_from": "DINO_INTEGRATED_PERFORMANCE_V1",
+      "gate_tasks": [
+        "WID1-INTEGRATION",
+        "WID1-PACKAGE",
+        "WID1-ACCEPTANCE"
+      ],
+      "completion_criterion": "Real packaged EXE loads periodic examples, compares/exports, runs and resumes a brief integrated point; package/source timing, preserved identities and honest limitations."
     }
   ],
   "owner_decisions_pending": [
@@ -10768,6 +10831,12 @@
       "task": "IP1-EQUIVALENCE",
       "kind": "task",
       "summary": "18 exact cycle comparisons; exact4-cycle restart and old-source fail-closed.123 focused+298 P4-P8 pass,3skip;OpenSpec66pass. Six-point cost49.2min projected, not remeasured; X30 frozen."
+    },
+    {
+      "at": "2026-10-23T15:07:41+00:00",
+      "task": "WID1-INTEGRATION",
+      "kind": "task",
+      "summary": "Current integrated Desktop route confirmed. Added pinned psutil, source-backed frozen imports, build-commit identity without Git, portable project-local evidence references. No physical changes; X30 remains frozen."
     }
   ],
   "legacy_gate_status": {
@@ -10782,20 +10851,9 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_INTEGRATED_PERFORMANCE_V1",
-    "state": "PASS",
-    "classification": "INTEGRATED_PERFORMANCE_MEASURED_OPTIMIZATION_COMPLETE",
-    "evidence": [
-      "results/integrated-performance-v1/receipt.json",
-      "results/integrated-performance-v1/report.md"
-    ],
-    "gate_tasks_total": 3,
-    "gate_tasks_done": 3,
-    "gate_task_states": {
-      "DONE": 3
-    },
-    "remaining": [],
-    "updated_at": "2026-10-23T14:51:30+00:00"
+    "objective": "DINO_WINDOWS_INTEGRATED_DELIVERY_V1",
+    "state": "REVIEW",
+    "classification": "WINDOWS_INTEGRATED_DELIVERY_IN_PROGRESS"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -11180,6 +11238,22 @@
       "qualification": "Scoped technical closure, not a new scientific release or predictive validation.",
       "scientific_state": "A9000_PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED;HISTORICAL_CURVES_EXPLORATORY;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED",
       "further_campaign_authorized": false
+    },
+    {
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V1",
+      "state": "PASS",
+      "classification": "INTEGRATED_PERFORMANCE_MEASURED_OPTIMIZATION_COMPLETE",
+      "evidence": [
+        "results/integrated-performance-v1/receipt.json",
+        "results/integrated-performance-v1/report.md"
+      ],
+      "gate_tasks_total": 3,
+      "gate_tasks_done": 3,
+      "gate_task_states": {
+        "DONE": 3
+      },
+      "remaining": [],
+      "updated_at": "2026-10-23T14:51:30+00:00"
     }
   ],
   "gate_status_archive_before_dino_desktop_v3_1": {

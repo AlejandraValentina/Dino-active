@@ -28,6 +28,8 @@ from motorsim.reference_results import MODEL_VERSION,FOUR_MODEL_VERSION
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--trial',action='store_true',help='Prueba de empaquetado con árbol no limpio, identificada como tal.')
+    parser.add_argument('--output-root',type=Path,help='Directorio de distribución externo opcional.')
+    parser.add_argument('--periodic-example',type=Path,help='Proyecto existente con seis referencias periódicas; copia sin recalcular.')
     args=parser.parse_args()
     if os.name!='nt' or struct.calcsize('P')!=8 or sys.version_info[:3]!=(3,11,0):
         raise RuntimeError('Se requiere Windows x64 y Python 3.11.0 para esta receta fijada.')
@@ -44,7 +46,7 @@ def main():
     if dirty and not args.trial:raise RuntimeError('El paquete final requiere Git limpio; registrá primero código y receta.')
     stamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
     name=f'MotorSim-{APP_VERSION}-windows-x64-{commit[:8]}'+('-trial-'+stamp if args.trial else '')
-    destination=ROOT/'dist'/name
+    destination=(args.output_root or ROOT/'dist')/name
     if destination.exists() or Path(str(destination)+'.zip').exists():raise RuntimeError('Destino existente; no se sobrescribe.')
     for name in ('LGPL-3.0-only.txt','GPL-3.0-only.txt','SOURCES.txt'):
         if not (ROOT/'packaging/licenses'/name).is_file():raise RuntimeError('Falta aviso requerido: '+name)
@@ -75,6 +77,25 @@ def main():
     exhaust_example=ROOT/'examples/projects/dino-2t-exhaust-comparison.dino2t.json'
     load_engine_project(exhaust_example)
     shutil.copy2(exhaust_example,examples/'desktop-dino-2t-exhaust-comparison.dino2t.json')
+    if args.periodic_example:
+        project=json.loads(args.periodic_example.read_text(encoding='utf-8'))
+        refs=[]
+        for ref in project['result_references']:
+            source=Path(ref['path'])
+            if not source.is_absolute():source=args.periodic_example.parent/source
+            result=json.loads(source.read_text(encoding='utf-8'))
+            if not result.get('periodicity','').startswith('PERIOD_1'):continue
+            if hashlib.sha256(source.read_bytes()).hexdigest()!=ref['artifact_sha256']:
+                raise RuntimeError('Referencia periódica alterada')
+            target=examples/'Datos'/source.parent.name
+            shutil.copytree(source.parent,target)
+            refs.append(dict(ref,path='./Datos/'+target.name+'/result.json'))
+        if len(refs)!=6:raise RuntimeError('Se requieren seis puntos periódicos existentes')
+        project['result_references']=refs
+        portable=examples/'Curvas-periodicas-125cc.dino.json'
+        portable.write_text(json.dumps(project,ensure_ascii=False,indent=2),encoding='utf-8')
+        load_engine_project(portable)
+        shutil.copy2(ROOT/'packaging/INICIO-DINO.txt',bundle/'INICIO-DINO.txt')
     licenses=bundle/'Licencias';shutil.copytree(ROOT/'packaging/licenses',licenses/'Qt')
     shutil.copy2(Path(sys.base_prefix)/'LICENSE.txt',licenses/'Python-LICENSE.txt')
     for name in ('PySide6','PySide6_Essentials','PySide6_Addons','shiboken6','pyinstaller'):
