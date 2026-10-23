@@ -62,7 +62,9 @@ class CommercialDesktopV3P0Tests(unittest.TestCase):
         self.assertTrue(window.run_progress.isVisible())
         self.assertTrue(window.strip_cancel.isEnabled())
         self.assertEqual(window.run_state.text(), "CORRIENDO")
-        self.assertIn("Ciclo 2", window.run_progress.format())
+        # Later integrated-run labels use lowercase; capitalization is not a
+        # progress contract. Still require the actual cycle number to be shown.
+        self.assertIn("ciclo 2", window.run_progress.format().lower())
         execution.task = None; execution.status_text = "LISTO"; execution.state_changed.emit(); APP.processEvents()
         window.close()
 

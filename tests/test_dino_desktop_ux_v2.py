@@ -147,13 +147,17 @@ class DesktopContextV2Tests(unittest.TestCase):
     def test_resume_from_history_requires_exact_engine_identity(self):
         context=DesktopContext(new_project("ux-resume-binding"));page=ExecutionPage(context)
         with tempfile.TemporaryDirectory(prefix="dino-ux-resume-") as artifact_root:
-            entry={"identity_sha256":identity(context.engine()),"run_id":"interrupted","artifact_root":artifact_root,
+            from motorsim.engine_configuration import resolve_for_operating_point
+            entry={"identity_sha256":resolve_for_operating_point(context.engine(),rpm=3100)["identity_sha256"],"run_id":"interrupted","artifact_root":artifact_root,
                 "rpm":3100,"details":{"cycles_requested":3}}
             with patch.object(page,"start_run") as start:
                 page.resume_from_entry(entry)
             start.assert_called_once_with(resume=True)
             with patch("motorsim.desktop.execution_page.QMessageBox.warning") as warning,patch.object(page,"start_run") as start:
                 page.resume_from_entry({**entry,"identity_sha256":"0"*64})
+            warning.assert_called_once();start.assert_not_called()
+            with patch("motorsim.desktop.execution_page.QMessageBox.warning") as warning,patch.object(page,"start_run") as start:
+                page.resume_from_entry({**entry,"rpm":3200})
             warning.assert_called_once();start.assert_not_called()
 
     def test_project_tree_and_splitter_fit_minimum_supported_window(self):

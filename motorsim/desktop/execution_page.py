@@ -14,7 +14,7 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushB
     QPlainTextEdit, QFileDialog, QMessageBox, QDoubleSpinBox, QSpinBox, QLineEdit,
     QFormLayout, QGroupBox, QComboBox, QDialog, QDialogButtonBox,QCheckBox)
 
-from ..engine_configuration import identity
+from ..engine_configuration import identity, resolve_for_operating_point
 from ..exploratory_workflow import preflight, run_exploratory
 from .services import run_background
 from .preferences import artifact_root, set_artifact_root, repository_root_containing, default_artifact_root
@@ -53,7 +53,7 @@ class ExecutionPage(QWidget):
         self.apply_budget_estimate=QPushButton("Aplicar presupuesto sugerido (máx. 600 s)");self.apply_budget_estimate.clicked.connect(self._apply_budget_estimate)
         form.addRow("",self.apply_budget_estimate)
         self.memory=QSpinBox(); self.memory.setRange(256,4096); self.memory.setValue(1024); self.memory.setSuffix(" MiB · RSS máximo supervisado")
-        self.mode=QLabel("EXPLORATORY · 1 worker · pipeline convencional + auditoría independiente")
+        self.mode=QLabel("EXPLORATORY · 1 worker · conservación; auditoría según modo de ejecución")
         form.addRow("Modo",self.mode)
         self.advanced_toggle=QPushButton("Configuración avanzada ▸");self.advanced_toggle.setCheckable(True);root.addWidget(self.advanced_toggle)
         self.advanced_panel=QWidget();advanced_layout=QVBoxLayout(self.advanced_panel);advanced_layout.setContentsMargins(8,4,8,4)
@@ -176,7 +176,8 @@ class ExecutionPage(QWidget):
         try:
             matches=[]
             for name,engine in [(None,self.context.project["base_engine"]),*self.context.project["variants"].items()]:
-                if identity(engine)==entry.get("identity_sha256"):matches.append(name)
+                effective=resolve_for_operating_point(engine,rpm=entry.get("rpm"))
+                if effective["identity_sha256"]==entry.get("identity_sha256"):matches.append(name)
             if len(matches)!=1:
                 raise ValueError("No hay una única variante del proyecto con la identidad exacta del checkpoint.")
             self.context.select_variant(matches[0])
