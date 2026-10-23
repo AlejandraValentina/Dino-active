@@ -1,0 +1,895 @@
+{
+  "baseline_head": "fc4603f7faa785f70efba498164c87f16533d9b2",
+  "artifact_directory_name": "integrated-performance-v1-20261023",
+  "runs": [
+    {
+      "run": "baseline-A1",
+      "variant": "A",
+      "mode": "baseline",
+      "cycles": 3,
+      "config_sha256": "743a00de51aa4ca214afb5c84b790c1d642c92a4887fa0074bad3d76aa2c1a9c",
+      "benchmark_wall_s": 20.135432100039907,
+      "benchmark_cpu_s": 18.71875,
+      "wall_s": 20.047866800101474,
+      "cpu_s": 19.015625,
+      "solver_step_wall_s": 17.713883798220195,
+      "solver_step_excluding_trace_dictionary_wall_s": 17.62183139543049,
+      "trace_dictionary_capture_wall_s": 0.0920524027897045,
+      "processing_wall_s": 1.063253999920562,
+      "other_wall_s": 1.2707318018656224,
+      "peak_rss_mib": 102.65234375,
+      "status": "MAX_CYCLES_NONCONVERGED",
+      "process_wall_including_startup_and_benchmark_bookkeeping_s": 20.641
+    },
+    {
+      "run": "baseline-A2",
+      "variant": "A",
+      "mode": "baseline",
+      "cycles": 3,
+      "config_sha256": "743a00de51aa4ca214afb5c84b790c1d642c92a4887fa0074bad3d76aa2c1a9c",
+      "benchmark_wall_s": 20.150902200024575,
+      "benchmark_cpu_s": 18.8125,
+      "wall_s": 20.07287599996198,
+      "cpu_s": 19.0,
+      "solver_step_wall_s": 17.87967330031097,
+      "solver_step_excluding_trace_dictionary_wall_s": 17.787155701429583,
+      "trace_dictionary_capture_wall_s": 0.09251759888138622,
+      "processing_wall_s": 1.064335901173763,
+      "other_wall_s": 1.1288681984879076,
+      "peak_rss_mib": 100.9765625,
+      "status": "MAX_CYCLES_NONCONVERGED",
+      "process_wall_including_startup_and_benchmark_bookkeeping_s": 20.453
+    },
+    {
+      "run": "baseline-A3",
+      "variant": "A",
+      "mode": "baseline",
+      "cycles": 3,
+      "config_sha256": "743a00de51aa4ca214afb5c84b790c1d642c92a4887fa0074bad3d76aa2c1a9c",
+      "benchmark_wall_s": 20.24251849995926,
+      "benchmark_cpu_s": 18.6875,
+      "wall_s": 20.16510590002872,
+      "cpu_s": 18.84375,
+      "solver_step_wall_s": 17.808559202007018,
+      "solver_step_excluding_trace_dictionary_wall_s": 17.715438202721998,
+      "trace_dictionary_capture_wall_s": 0.09312099928501993,
+      "processing_wall_s": 1.0753626002697274,
+      "other_wall_s": 1.2811856977641582,
+      "peak_rss_mib": 101.54296875,
+      "status": "MAX_CYCLES_NONCONVERGED",
+      "process_wall_including_startup_and_benchmark_bookkeeping_s": 20.563
+    },
+    {
+      "run": "baseline-B1",
+      "variant": "B",
+      "mode": "baseline",
+      "cycles": 3,
+      "config_sha256": "72e2ded3c4bc62ffde6eb39989f39140dd39a2d185d0ec00a88167bcbe602524",
+      "benchmark_wall_s": 19.756573499995284,
+      "benchmark_cpu_s": 18.34375,
+      "wall_s": 19.66090290003922,
+      "cpu_s": 18.46875,
+      "solver_step_wall_s": 17.487707000225782,
+      "solver_step_excluding_trace_dictionary_wall_s": 17.397505601402372,
+      "trace_dictionary_capture_wall_s": 0.09020139882341027,
+      "processing_wall_s": 1.0379093029769138,
+      "other_wall_s": 1.135290996870026,
+      "peak_rss_mib": 101.46484375,
+      "status": "MAX_CYCLES_NONCONVERGED",
+      "process_wall_including_startup_and_benchmark_bookkeeping_s": 20.046
+    },
+    {
+      "run": "baseline-B2",
+      "variant": "B",
+      "mode": "baseline",
+      "cycles": 3,
+      "config_sha256": "72e2ded3c4bc62ffde6eb39989f39140dd39a2d185d0ec00a88167bcbe602524",
+      "benchmark_wall_s": 19.943236600025557,
+      "benchmark_cpu_s": 18.53125,
+      "wall_s": 19.867376300040632,
+      "cpu_s": 18.671875,
+      "solver_step_wall_s": 17.641743098269217,
+      "solver_step_excluding_trace_dictionary_wall_s": 17.550078899948858,
+      "trace_dictionary_capture_wall_s": 0.09166419832035899,
+      "processing_wall_s": 1.045625199447386,
+      "other_wall_s": 1.1800098022213206,
+      "peak_rss_mib": 101.265625,
+      "status": "MAX_CYCLES_NONCONVERGED",
+      "process_wall_including_startup_and_benchmark_bookkeeping_s": 20.234
+    },
+    {
+      "run": "baseline-B3",
+      "variant": "B",
+      "mode": "baseline",
+      "cycles": 3,
+      "config_sha256": "72e2ded3c4bc62ffde6eb39989f39140dd39a2d185d0ec00a88167bcbe602524",
+      "benchmark_wall_s": 19.964924999978393,
+      "benchmark_cpu_s": 18.546875,
+      "wall_s": 19.869199799955823,
+      "cpu_s": 18.671875,
+      "solver_step_wall_s": 17.627841299166903,
+      "solver_step_excluding_trace_dictionary_wall_s": 17.53670439880807,
+      "trace_dictionary_capture_wall_s": 0.09113690035883337,
+      "processing_wall_s": 1.044553299085237,
+      "other_wall_s": 1.1968092017341405,
+      "peak_rss_mib": 101.2578125,
+      "status": "MAX_CYCLES_NONCONVERGED",
+      "process_wall_including_startup_and_benchmark_bookkeeping_s": 20.266
+    },
+    {
+      "run": "final-A1",
+      "variant": "A",
+      "mode": "final",
+      "cycles": 3,
+      "config_sha256": "743a00de51aa4ca214afb5c84b790c1d642c92a4887fa0074bad3d76aa2c1a9c",
+      "benchmark_wall_s": 13.604496300104074,
+      "benchmark_cpu_s": 12.203125,
+      "wall_s": 13.516177000012249,
+      "cpu_s": 12.34375,
+      "solver_step_wall_s": 11.377961801947095,
+      "solver_step_excluding_trace_dictionary_wall_s": 11.288071101880632,
+      "trace_dictionary_capture_wall_s": 0.08989070006646216,
+      "processing_wall_s": 1.0354137981776148,
+      "other_wall_s": 1.102805299917236,
+      "peak_rss_mib": 101.3984375,
+      "status": "MAX_CYCLES_NONCONVERGED",
+      "process_wall_including_startup_and_benchmark_bookkeeping_s": 13.89
+    },
+    {
+      "run": "final-A2",
+      "variant": "A",
+      "mode": "final",
+      "cycles": 3,
+      "config_sha256": "743a00de51aa4ca214afb5c84b790c1d642c92a4887fa0074bad3d76aa2c1a9c",
+      "benchmark_wall_s": 13.953957500052638,
+      "benchmark_cpu_s": 12.296875,
+      "wall_s": 13.880793699994683,
+      "cpu_s": 12.453125,
+      "solver_step_wall_s": 11.448317203787155,
+      "solver_step_excluding_trace_dictionary_wall_s": 11.356509206467308,
+      "trace_dictionary_capture_wall_s": 0.09180799731984735,
+      "processing_wall_s": 1.2637900033732876,
+      "other_wall_s": 1.1686905927490443,
+      "peak_rss_mib": 101.31640625,
+      "status": "MAX_CYCLES_NONCONVERGED",
+      "process_wall_including_startup_and_benchmark_bookkeeping_s": 14.25
+    },
+    {
+      "run": "final-A3",
+      "variant": "A",
+      "mode": "final",
+      "cycles": 3,
+      "config_sha256": "743a00de51aa4ca214afb5c84b790c1d642c92a4887fa0074bad3d76aa2c1a9c",
+      "benchmark_wall_s": 13.92246959998738,
+      "benchmark_cpu_s": 12.328125,
+      "wall_s": 13.8455109000206,
+      "cpu_s": 12.5,
+      "solver_step_wall_s": 11.437481201137416,
+      "solver_step_excluding_trace_dictionary_wall_s": 11.34586180606857,
+      "trace_dictionary_capture_wall_s": 0.09161939506884664,
+      "processing_wall_s": 1.1928714995738119,
+      "other_wall_s": 1.2151603993261233,
+      "peak_rss_mib": 101.44921875,
+      "status": "MAX_CYCLES_NONCONVERGED",
+      "process_wall_including_startup_and_benchmark_bookkeeping_s": 14.265
+    },
+    {
+      "run": "final-B1",
+      "variant": "B",
+      "mode": "final",
+      "cycles": 3,
+      "config_sha256": "72e2ded3c4bc62ffde6eb39989f39140dd39a2d185d0ec00a88167bcbe602524",
+      "benchmark_wall_s": 13.78234410006553,
+      "benchmark_cpu_s": 12.359375,
+      "wall_s": 13.701015800004825,
+      "cpu_s": 12.515625,
+      "solver_step_wall_s": 11.54806819872465,
+      "solver_step_excluding_trace_dictionary_wall_s": 11.456118697184138,
+      "trace_dictionary_capture_wall_s": 0.09194950154051185,
+      "processing_wall_s": 1.0534373007249087,
+      "other_wall_s": 1.0995121005689725,
+      "peak_rss_mib": 101.3984375,
+      "status": "MAX_CYCLES_NONCONVERGED",
+      "process_wall_including_startup_and_benchmark_bookkeeping_s": 14.078
+    },
+    {
+      "run": "final-B2",
+      "variant": "B",
+      "mode": "final",
+      "cycles": 3,
+      "config_sha256": "72e2ded3c4bc62ffde6eb39989f39140dd39a2d185d0ec00a88167bcbe602524",
+      "benchmark_wall_s": 13.707262200070545,
+      "benchmark_cpu_s": 12.25,
+      "wall_s": 13.630353900021873,
+      "cpu_s": 12.390625,
+      "solver_step_wall_s": 11.334056197898462,
+      "solver_step_excluding_trace_dictionary_wall_s": 11.244122796342708,
+      "trace_dictionary_capture_wall_s": 0.08993340155575424,
+      "processing_wall_s": 1.1320472976658493,
+      "other_wall_s": 1.164251804468222,
+      "peak_rss_mib": 101.421875,
+      "status": "MAX_CYCLES_NONCONVERGED",
+      "process_wall_including_startup_and_benchmark_bookkeeping_s": 13.984
+    },
+    {
+      "run": "final-B3",
+      "variant": "B",
+      "mode": "final",
+      "cycles": 3,
+      "config_sha256": "72e2ded3c4bc62ffde6eb39989f39140dd39a2d185d0ec00a88167bcbe602524",
+      "benchmark_wall_s": 13.710040699923411,
+      "benchmark_cpu_s": 12.28125,
+      "wall_s": 13.621329799992964,
+      "cpu_s": 12.40625,
+      "solver_step_wall_s": 11.367498101782985,
+      "solver_step_excluding_trace_dictionary_wall_s": 11.276727901538834,
+      "trace_dictionary_capture_wall_s": 0.09077020024415106,
+      "processing_wall_s": 1.0786713011329994,
+      "other_wall_s": 1.1751632970990613,
+      "peak_rss_mib": 101.609375,
+      "status": "MAX_CYCLES_NONCONVERGED",
+      "process_wall_including_startup_and_benchmark_bookkeeping_s": 14.016
+    }
+  ],
+  "summary": {
+    "A": {
+      "baseline_median_s": 20.150902200024575,
+      "optimized_median_s": 13.92246959998738,
+      "speedup": 1.4473655018821403,
+      "wall_reduction_percent": 30.908951560638307,
+      "baseline_range_s": [
+        20.135432100039907,
+        20.24251849995926
+      ],
+      "optimized_range_s": [
+        13.604496300104074,
+        13.953957500052638
+      ],
+      "baseline_process_wall_median_s": 20.563,
+      "final_process_wall_median_s": 14.25,
+      "process_speedup": 1.443017543859649
+    },
+    "B": {
+      "baseline_median_s": 19.943236600025557,
+      "optimized_median_s": 13.710040699923411,
+      "speedup": 1.4546445949016742,
+      "wall_reduction_percent": 31.254685611532874,
+      "baseline_range_s": [
+        19.756573499995284,
+        19.964924999978393
+      ],
+      "optimized_range_s": [
+        13.707262200070545,
+        13.78234410006553
+      ],
+      "baseline_process_wall_median_s": 20.234,
+      "final_process_wall_median_s": 14.016,
+      "process_speedup": 1.4436358447488586
+    }
+  },
+  "profiles": {
+    "baseline": {
+      "total_self_s": 27.52412389999997,
+      "exclusive_self_s_by_module": {
+        "thermal.py": 9.148111199999999,
+        "~": 6.161384300000002,
+        "p6_species.py": 2.1289806,
+        "integrated_2t.py": 3.4653525999999997,
+        "riemann.py": 1.2351231000000003,
+        "eos.py": 2.5126266999999998,
+        "copy.py": 0.7692786000000001,
+        "two_stroke_ports.py": 0.5124871999999998,
+        "engineering_point.py": 0.209699,
+        "kinematics.py": 0.1895675,
+        "reed.py": 0.2668244,
+        "open_end_plenum_v2.py": 0.21278220000000003,
+        "encoder.py": 0.0779373,
+        "crankcase.py": 0.15516470000000002,
+        "coupling.py": 0.0979639,
+        "powervalve.py": 0.14000049999999997,
+        "dataclasses.py": 0.040304900000000005,
+        "fuel_combustion.py": 0.1072963,
+        "mesh.py": 0.038438200000000006,
+        "ports.py": 0.0221453,
+        "combustion.py": 0.0109558,
+        "__init__.py": 0.004441,
+        "decoder.py": 0.0041079,
+        "intake.py": 0.0047769,
+        "gas_exchange_v2.py": 0.0033580000000000003,
+        "pathlib.py": 0.0016164999999999999,
+        "<frozen importlib._bootstrap>": 0.00038329999999999994,
+        "tempfile.py": 0.00038040000000000003,
+        "_pswindows.py": 0.0003026,
+        "_common.py": 0.0001281,
+        "subprocess.py": 0.0006899,
+        "platform.py": 0.0002714,
+        "<frozen ntpath>": 0.0002911,
+        "random.py": 0.000156,
+        "project.py": 7.19e-05,
+        "<frozen os>": 0.0001061,
+        "<frozen genericpath>": 5.5400000000000005e-05,
+        "<frozen importlib._bootstrap_external>": 0.0002081000000000001,
+        "contextlib.py": 0.0001346,
+        "<frozen abc>": 3.32e-05,
+        "cp1252.py": 2.8700000000000003e-05,
+        "engine_physics_v1.py": 1.59e-05,
+        "mechanical.py": 8.31e-05,
+        "threading.py": 1.36e-05,
+        "<frozen _collections_abc>": 3.29e-05,
+        "functools.py": 9.100000000000001e-06,
+        "<frozen codecs>": 2.1000000000000002e-06,
+        "<string>": 1.8000000000000001e-06
+      },
+      "top_cumulative": [
+        {
+          "file": "engineering_point.py",
+          "line": 246,
+          "name": "run",
+          "calls": 1,
+          "self_s": 0.018703900000000002,
+          "cumulative_s": 27.5777386
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 2162,
+          "name": "step",
+          "calls": 721,
+          "self_s": 0.22009540000000002,
+          "cumulative_s": 25.7882126
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 1581,
+          "name": "_assemble",
+          "calls": 1442,
+          "self_s": 1.0279545,
+          "cumulative_s": 20.4145706
+        },
+        {
+          "file": "thermal.py",
+          "line": 179,
+          "name": "heat_rate_w",
+          "calls": 50470,
+          "self_s": 0.15286550000000002,
+          "cumulative_s": 11.254280900000001
+        },
+        {
+          "file": "thermal.py",
+          "line": 152,
+          "name": "validate",
+          "calls": 50474,
+          "self_s": 0.6088978,
+          "cumulative_s": 10.645889100000002
+        },
+        {
+          "file": "thermal.py",
+          "line": 101,
+          "name": "validate",
+          "calls": 1817165,
+          "self_s": 3.8212309,
+          "cumulative_s": 9.1473034
+        },
+        {
+          "file": "thermal.py",
+          "line": 18,
+          "name": "_finite",
+          "calls": 5501965,
+          "self_s": 3.7678866,
+          "cumulative_s": 4.934322300000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method builtins.all>",
+          "calls": 987806,
+          "self_s": 0.9825480000000001,
+          "cumulative_s": 2.7463582
+        },
+        {
+          "file": "riemann.py",
+          "line": 29,
+          "name": "hllc_flux",
+          "calls": 63143,
+          "self_s": 0.7179230000000001,
+          "cumulative_s": 2.7353394
+        },
+        {
+          "file": "p6_species.py",
+          "line": 12,
+          "name": "validate_species",
+          "calls": 300263,
+          "self_s": 1.0720605,
+          "cumulative_s": 2.5565615000000004
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 1467,
+          "name": "_face_species_flux",
+          "calls": 66027,
+          "self_s": 0.09496220000000001,
+          "cumulative_s": 2.4328354
+        },
+        {
+          "file": "eos.py",
+          "line": 39,
+          "name": "primitive",
+          "calls": 274068,
+          "self_s": 0.4169352,
+          "cumulative_s": 2.3288082
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method math.isfinite>",
+          "calls": 18801293,
+          "self_s": 2.0503026,
+          "cumulative_s": 2.0503026
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 2011,
+          "name": "_validate",
+          "calls": 2164,
+          "self_s": 0.1884247,
+          "cumulative_s": 2.0427116
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method builtins.any>",
+          "calls": 385296,
+          "self_s": 0.6031438,
+          "cumulative_s": 2.0363085
+        },
+        {
+          "file": "eos.py",
+          "line": 25,
+          "name": "validate",
+          "calls": 486448,
+          "self_s": 0.6062039,
+          "cumulative_s": 2.0316158
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 1453,
+          "name": "_primitive",
+          "calls": 178852,
+          "self_s": 0.1204075,
+          "cumulative_s": 1.6569829
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 1456,
+          "name": "_fractions",
+          "calls": 139266,
+          "self_s": 0.3029219,
+          "cumulative_s": 1.6261246
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 2071,
+          "name": "_combine",
+          "calls": 721,
+          "self_s": 0.0543459,
+          "cumulative_s": 1.4212991000000001
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 1370,
+          "name": "_geometry",
+          "calls": 2885,
+          "self_s": 0.0347806,
+          "cumulative_s": 1.1700714
+        },
+        {
+          "file": "copy.py",
+          "line": 128,
+          "name": "deepcopy",
+          "calls": 397058,
+          "self_s": 0.4576914,
+          "cumulative_s": 0.9396207000000001
+        },
+        {
+          "file": "copy.py",
+          "line": 227,
+          "name": "_deepcopy_dict",
+          "calls": 6215,
+          "self_s": 0.0197411,
+          "cumulative_s": 0.9362044
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 1980,
+          "name": "_cfl",
+          "calls": 1442,
+          "self_s": 0.1994487,
+          "cumulative_s": 0.9263698
+        },
+        {
+          "file": "eos.py",
+          "line": 27,
+          "name": "<genexpr>",
+          "calls": 2432240,
+          "self_s": 0.6733559,
+          "cumulative_s": 0.8892708
+        },
+        {
+          "file": "copy.py",
+          "line": 201,
+          "name": "_deepcopy_list",
+          "calls": 7970,
+          "self_s": 0.0485292,
+          "cumulative_s": 0.8166299
+        }
+      ],
+      "atomic_serialization_and_write_s": 0.6344928000000001,
+      "scope": "one A9000 cycle; instrumented attribution only"
+    },
+    "final": {
+      "total_self_s": 16.84314799999999,
+      "exclusive_self_s_by_module": {
+        "p6_species.py": 2.145059,
+        "integrated_2t.py": 3.4612718000000005,
+        "~": 4.112589499999997,
+        "riemann.py": 1.2278381,
+        "eos.py": 2.4783492999999996,
+        "copy.py": 0.7771899000000001,
+        "thermal.py": 0.5602678000000001,
+        "two_stroke_ports.py": 0.5042684000000001,
+        "engineering_point.py": 0.20911629999999998,
+        "kinematics.py": 0.1844552,
+        "reed.py": 0.26481420000000006,
+        "open_end_plenum_v2.py": 0.2133945,
+        "encoder.py": 0.076603,
+        "crankcase.py": 0.15282560000000006,
+        "coupling.py": 0.0984618,
+        "powervalve.py": 0.13871750000000002,
+        "dataclasses.py": 0.0401419,
+        "fuel_combustion.py": 0.10746090000000003,
+        "mesh.py": 0.0386284,
+        "ports.py": 0.020955200000000004,
+        "combustion.py": 0.0106353,
+        "__init__.py": 0.004213199999999999,
+        "decoder.py": 0.0038895,
+        "intake.py": 0.0047393,
+        "gas_exchange_v2.py": 0.0033693,
+        "<frozen importlib._bootstrap>": 0.0004401999999999999,
+        "pathlib.py": 0.0008139000000000004,
+        "_common.py": 0.00014240000000000002,
+        "tempfile.py": 0.00029380000000000004,
+        "_pswindows.py": 0.00026670000000000003,
+        "subprocess.py": 0.0006166,
+        "project.py": 6.97e-05,
+        "<frozen ntpath>": 0.0002414,
+        "<frozen genericpath>": 6.0400000000000004e-05,
+        "platform.py": 0.00021859999999999997,
+        "random.py": 0.0001168,
+        "<frozen os>": 9.42e-05,
+        "<frozen importlib._bootstrap_external>": 0.00019780000000000004,
+        "cp1252.py": 3.8900000000000004e-05,
+        "contextlib.py": 0.00010260000000000001,
+        "<frozen abc>": 2.72e-05,
+        "mechanical.py": 8.190000000000004e-05,
+        "engine_physics_v1.py": 1.4400000000000001e-05,
+        "threading.py": 1.1700000000000001e-05,
+        "<frozen _collections_abc>": 3.13e-05,
+        "functools.py": 8.8e-06,
+        "<frozen codecs>": 1.7e-06,
+        "<string>": 2.1000000000000002e-06
+      },
+      "top_cumulative": [
+        {
+          "file": "engineering_point.py",
+          "line": 246,
+          "name": "run",
+          "calls": 1,
+          "self_s": 0.0189375,
+          "cumulative_s": 16.8958587
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 2185,
+          "name": "step",
+          "calls": 721,
+          "self_s": 0.20997980000000002,
+          "cumulative_s": 15.1944607
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 1595,
+          "name": "_assemble",
+          "calls": 1442,
+          "self_s": 0.9878342000000001,
+          "cumulative_s": 9.8295487
+        },
+        {
+          "file": "riemann.py",
+          "line": 29,
+          "name": "hllc_flux",
+          "calls": 63143,
+          "self_s": 0.7175424,
+          "cumulative_s": 2.7299416
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method builtins.all>",
+          "calls": 987806,
+          "self_s": 0.9723013,
+          "cumulative_s": 2.7077715
+        },
+        {
+          "file": "p6_species.py",
+          "line": 12,
+          "name": "validate_species",
+          "calls": 300263,
+          "self_s": 1.0888969000000002,
+          "cumulative_s": 2.5759802
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 1481,
+          "name": "_face_species_flux",
+          "calls": 66027,
+          "self_s": 0.09604320000000001,
+          "cumulative_s": 2.4440385
+        },
+        {
+          "file": "eos.py",
+          "line": 39,
+          "name": "primitive",
+          "calls": 274068,
+          "self_s": 0.40662040000000005,
+          "cumulative_s": 2.2907467
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 2034,
+          "name": "_validate",
+          "calls": 2164,
+          "self_s": 0.18873030000000002,
+          "cumulative_s": 2.0526094
+        },
+        {
+          "file": "eos.py",
+          "line": 25,
+          "name": "validate",
+          "calls": 486448,
+          "self_s": 0.6061791000000001,
+          "cumulative_s": 2.0136052
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 1470,
+          "name": "_fractions",
+          "calls": 139266,
+          "self_s": 0.30174700000000004,
+          "cumulative_s": 1.6293438
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 1467,
+          "name": "_primitive",
+          "calls": 178852,
+          "self_s": 0.1157938,
+          "cumulative_s": 1.6171998
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 2094,
+          "name": "_combine",
+          "calls": 721,
+          "self_s": 0.054096200000000004,
+          "cumulative_s": 1.4298615000000001
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 1384,
+          "name": "_geometry",
+          "calls": 2885,
+          "self_s": 0.0343407,
+          "cumulative_s": 1.1571007
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method builtins.any>",
+          "calls": 336268,
+          "self_s": 0.3470577,
+          "cumulative_s": 1.0473599
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method math.isfinite>",
+          "calls": 8505413,
+          "self_s": 0.9686476,
+          "cumulative_s": 0.9686476
+        },
+        {
+          "file": "copy.py",
+          "line": 128,
+          "name": "deepcopy",
+          "calls": 397058,
+          "self_s": 0.46185750000000003,
+          "cumulative_s": 0.9516588
+        },
+        {
+          "file": "copy.py",
+          "line": 227,
+          "name": "_deepcopy_dict",
+          "calls": 6215,
+          "self_s": 0.019742000000000003,
+          "cumulative_s": 0.9482691000000001
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 2003,
+          "name": "_cfl",
+          "calls": 1442,
+          "self_s": 0.1940077,
+          "cumulative_s": 0.9146033
+        },
+        {
+          "file": "eos.py",
+          "line": 27,
+          "name": "<genexpr>",
+          "calls": 2432240,
+          "self_s": 0.6563502,
+          "cumulative_s": 0.8742681000000001
+        },
+        {
+          "file": "copy.py",
+          "line": 201,
+          "name": "_deepcopy_list",
+          "calls": 7970,
+          "self_s": 0.0491872,
+          "cumulative_s": 0.8280721000000001
+        },
+        {
+          "file": "p6_species.py",
+          "line": 23,
+          "name": "donor_species",
+          "calls": 66027,
+          "self_s": 0.1532727,
+          "cumulative_s": 0.80876
+        },
+        {
+          "file": "integrated_2t.py",
+          "line": 538,
+          "name": "resolve",
+          "calls": 2885,
+          "self_s": 0.0412802,
+          "cumulative_s": 0.7959163
+        },
+        {
+          "file": "two_stroke_ports.py",
+          "line": 318,
+          "name": "area_at",
+          "calls": 25271,
+          "self_s": 0.0671704,
+          "cumulative_s": 0.6951383000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method math.fsum>",
+          "calls": 850332,
+          "self_s": 0.1899624,
+          "cumulative_s": 0.6890716
+        }
+      ],
+      "atomic_serialization_and_write_s": 0.5684505000000001,
+      "scope": "one A9000 cycle; instrumented attribution only"
+    }
+  },
+  "raw_working_source_changes": {
+    "motorsim\\integrated_2t.py": {
+      "before": "1688098ea58ec93d0532293802d72998d3abdbed525d1d015b3e0ed5deffe172",
+      "after": "a2ba838c28018bba93daf04443595fba455dbd52c2131ae1e4c40d8b0ced01ce"
+    }
+  },
+  "baseline_checkout_EOL_only_differences": [
+    "motorsim\\_evidence_io.py",
+    "motorsim\\_trajectory_store.py",
+    "motorsim\\artifact_store.py",
+    "motorsim\\desktop\\__init__.py",
+    "motorsim\\desktop\\engine_page.py",
+    "motorsim\\desktop\\execution_page.py",
+    "motorsim\\desktop\\exhaust_page.py",
+    "motorsim\\desktop\\performance_curves.py",
+    "motorsim\\desktop\\preferences.py",
+    "motorsim\\desktop\\project_page.py",
+    "motorsim\\desktop\\results_page.py",
+    "motorsim\\desktop\\run_history.py",
+    "motorsim\\desktop\\theme.py",
+    "motorsim\\desktop\\widgets\\context_bar.py",
+    "motorsim\\desktop\\widgets\\run_history.py",
+    "motorsim\\dino_desktop.py",
+    "motorsim\\engine_physics_v1_r2_semantics.py",
+    "motorsim\\engineering_workflow.py",
+    "motorsim\\exploratory_workflow.py",
+    "motorsim\\fast_recipe_v1.py",
+    "motorsim\\full_rpm_evidence_impl2.py",
+    "motorsim\\full_rpm_outputs_v1.py",
+    "motorsim\\full_rpm_sweep_v1.py",
+    "motorsim\\full_rpm_sweep_v1_impl2.py",
+    "motorsim\\gas_exchange_v2.py",
+    "motorsim\\mechanical_loss_binding_v1.py",
+    "motorsim\\mesh_study_v1.py",
+    "motorsim\\performance_geometry_cache_v1.py",
+    "motorsim\\power_curve.py",
+    "motorsim\\power_curve_sweep.py",
+    "motorsim\\window.py"
+  ],
+  "x30_frozen_files_verified": 14,
+  "exact_equivalence": {
+    "comparisons": [
+      {
+        "variant": "A",
+        "repetition": 1,
+        "cycles": 3,
+        "exact_state_ledger_samples_diagnostics_periodicity": true
+      },
+      {
+        "variant": "A",
+        "repetition": 2,
+        "cycles": 3,
+        "exact_state_ledger_samples_diagnostics_periodicity": true
+      },
+      {
+        "variant": "A",
+        "repetition": 3,
+        "cycles": 3,
+        "exact_state_ledger_samples_diagnostics_periodicity": true
+      },
+      {
+        "variant": "B",
+        "repetition": 1,
+        "cycles": 3,
+        "exact_state_ledger_samples_diagnostics_periodicity": true
+      },
+      {
+        "variant": "B",
+        "repetition": 2,
+        "cycles": 3,
+        "exact_state_ledger_samples_diagnostics_periodicity": true
+      },
+      {
+        "variant": "B",
+        "repetition": 3,
+        "cycles": 3,
+        "exact_state_ledger_samples_diagnostics_periodicity": true
+      }
+    ],
+    "excluded_diagnostic_fields": [
+      "summary.wall_s",
+      "summary.peak_rss_mib"
+    ],
+    "max_numeric_difference": 0.0
+  },
+  "restart": {
+    "exact_checkpoint_and_detector_history": true,
+    "exact_cycle4_diagnostics": true,
+    "old_source_checkpoint_rejected_before_steps": true,
+    "resume_cycles_preserved": 3,
+    "new_cycles": 1,
+    "wall_s": 23.37725389993284
+  },
+  "full_periodic_curve_measured": false,
+  "projection": {
+    "historical_s": 4281.862,
+    "projected_s": 2950.9628548470055,
+    "assumption": "Same speedup and unchanged cycle count; short transient benchmark, not a repeated full curve."
+  },
+  "diagnostic_budget": {
+    "declared_total_s": 1800,
+    "conservative_counted_s": 632.8580000000001,
+    "qualification": "Intentionally double-counts outer matrix wrappers and contained jobs; includes all profiling/prototype/final/restart runs, excludes regressions."
+  },
+  "conservation_relative_max": {
+    "mass": 6.10218900354857e-16,
+    "species": 6.633354337747784e-16,
+    "energy": 9.487715954035648e-16
+  }
+}

@@ -42,13 +42,27 @@ from .powervalve import PowerValve
 from .reed import ReedPetal, static_area
 from .reed import ReedState
 from .reed_coupling import HingedFlapGeometryV1
-from .thermal import ThermalSystem
+from .thermal import ThermalSystem, _finite as _thermal_finite
 from .two_stroke_ports import TwoStrokePortSet
 from ._trajectory_store import TrajectorySpool, EvidenceList, EvidencePrefix
 from ._evidence_io import canonical_digest
 
 _USE_ACTIVE_P7_EVENT = object()
 _USE_ACTIVE_FUEL_EVENT = object()
+
+
+def _thermal_heat_rate_v2(surface, gas_temperature_K, rpm, load):
+    """Caller must validate the complete system once for this immutable stage."""
+    temperature = _thermal_finite(gas_temperature_K, "gas_temperature_K")
+    if temperature <= 0:
+        raise ValueError("Gas temperature must be positive kelvin")
+    # Preserve the original order of all floating-point operations, including
+    # the original mapped/fixed wall-temperature validation and interpolation.
+    heat = surface.heat_transfer_w_m2k * surface.area_m2 * (
+        temperature - surface.wall_temperature(rpm, load))
+    if not isfinite(heat):
+        raise ValueError("Heat-transfer rate is outside the supported range")
+    return heat
 
 
 def _source_sha256(*objects) -> str:
@@ -1919,13 +1933,20 @@ class IntegratedEngine2T:
                 rhs_s["chambers"]["cylinder"][index] += rate
             rhs_q["chambers"]["cylinder"][1] += fuel_combustion_source["heat_w"]
         if self.thermal_system is not None:
+            # Every surface is still validated at every SSPRK stage. The old
+            # per-surface entry point rescanned all surfaces for each heat rate.
+            bulk_thermal_validation = type(self.thermal_system) is ThermalSystem
+            if bulk_thermal_validation:
+                self.thermal_system.validate()
             for surface in self.thermal_system.surfaces:
                 location = self.thermal_locations[surface.id]
                 if location in ("crankcase", "cylinder"):
                     mass, energy, volume = chambers[location]
                     gas_temperature = energy / (mass * self.eos.cv)
-                    heat = self.thermal_system.heat_rate_w(
-                        surface.id, gas_temperature, rpm, self.thermal_load)
+                    heat = (_thermal_heat_rate_v2(
+                        surface, gas_temperature, rpm, self.thermal_load)
+                        if bulk_thermal_validation else self.thermal_system.heat_rate_w(
+                            surface.id, gas_temperature, rpm, self.thermal_load))
                     rhs_q["chambers"][location][1] -= heat
                 else:
                     duct_id, cell_text = location.rsplit(":", 1)
@@ -1934,8 +1955,10 @@ class IntegratedEngine2T:
                     q = state["ducts"][duct_id][cell_index]
                     primitive = self._primitive(q)
                     gas_temperature = primitive[2] / (primitive[0] * self.eos.R)
-                    heat = self.thermal_system.heat_rate_w(
-                        surface.id, gas_temperature, rpm, self.thermal_load)
+                    heat = (_thermal_heat_rate_v2(
+                        surface, gas_temperature, rpm, self.thermal_load)
+                        if bulk_thermal_validation else self.thermal_system.heat_rate_w(
+                            surface.id, gas_temperature, rpm, self.thermal_load))
                     rhs_q["ducts"][duct_id][cell_index] = list(
                         rhs_q["ducts"][duct_id][cell_index])
                     rhs_q["ducts"][duct_id][cell_index][2] -= heat / path.mesh.volumes[cell_index]

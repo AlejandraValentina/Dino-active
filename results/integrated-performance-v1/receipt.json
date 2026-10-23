@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-23",
+  "baseline_head": "fc4603f7faa785f70efba498164c87f16533d9b2",
+  "classification": "INTEGRATED_PERFORMANCE_MEASURED_OPTIMIZATION_COMPLETE",
+  "scope": "Computational performance only; no experimental physical validation or new periodic curve.",
+  "review": "SELF_REVIEW",
+  "change": "Stage-local full thermal-system validation replaces repeated full scans; exact heat arithmetic preserved; custom-system fallback retained.",
+  "checks": {
+    "focused_tests": {
+      "passed": 123,
+      "duration_s": 244.313
+    },
+    "P4_P8": {
+      "passed": 298,
+      "skipped": 3,
+      "warnings": 4,
+      "warning_type": "Existing NumPy array-to-scalar deprecations",
+      "duration_s": 182.109
+    },
+    "initial_thermal_tests": {
+      "passed": 23
+    },
+    "exact_before_after": "18 cycle comparisons, A/B x 3 repeats x 3 cycles; full engine snapshots, ledgers, trace samples, physical summaries and periodicity histories identical",
+    "restart": "Cycle3 to4 checkpoint exactly identical to uninterrupted4-cycle run; old source rejected before physical steps",
+    "conservation": "Existing relative mass/species/energy residuals below 1e-15; independent full audit not run in benchmark",
+    "OpenSpec": "66 passed,0 failed; --all --strict",
+    "program_status": "CHECK_OK;PROMOTED_NONE;gate PASS 3/3;STOP_A_GATE_REACHED. Warning: two unrelated historical READY tasks remain; no new tasks added after scoped gate closure.",
+    "X30_frozen": "14 recorded historical files byte-identical; no email sent; no X30 solver steps"
+  },
+  "performance": {
+    "A_speedup": 1.4473655018821403,
+    "B_speedup": 1.4546445949016742,
+    "whole_process_speedup_approximately": 1.443,
+    "full_curve_projection_only_minutes": 49.18271424745,
+    "full_curve_measured": false
+  },
+  "historical_checkpoint_policy": "No migration, rebinding or reuse under changed solver source. Original artifacts and frozen baseline producer retained.",
+  "scientific_changes": false,
+  "numerical_tolerances_changed": false,
+  "new_features": false,
+  "push": false,
+  "evidence": [
+    "report.md",
+    "measurements.json",
+    "artifact-index.json",
+    "x30-freeze.json",
+    "protocol.md"
+  ]
+}

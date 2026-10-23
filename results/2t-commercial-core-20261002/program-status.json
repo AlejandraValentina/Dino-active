@@ -7413,6 +7413,68 @@
       "write_scope": [],
       "evidence_level": "L0",
       "qualification": "Nominal manual data and public derivations incorporated; precompression free volume cannot be derived from partial public projections. No borrowed primary ratio."
+    },
+    {
+      "id": "IP1-PROFILE",
+      "description": "Profile existing integrated A/B inputs; separate physical solver and processing/storage with frozen baseline.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/integrated-performance-v1/report.md",
+        "results/integrated-performance-v1/receipt.json",
+        "results/integrated-performance-v1/measurements.json"
+      ],
+      "next_action": "None within this bounded performance delivery.",
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V1",
+      "owner_role": "implementation",
+      "write_scope": [
+        "results/integrated-performance-v1"
+      ],
+      "evidence_level": "L0",
+      "qualification": "Measured short integrated workload, exact numerical equivalence and conservation; full-curve improvement is projection only.",
+      "review": "SELF_REVIEW"
+    },
+    {
+      "id": "IP1-OPTIMIZE",
+      "description": "Implement only measured hot-path optimization while retaining equations and all validation semantics.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/integrated-performance-v1/report.md",
+        "results/integrated-performance-v1/receipt.json",
+        "results/integrated-performance-v1/measurements.json"
+      ],
+      "next_action": "None within this bounded performance delivery.",
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V1",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0",
+      "qualification": "Measured short integrated workload, exact numerical equivalence and conservation; full-curve improvement is projection only.",
+      "review": "SELF_REVIEW"
+    },
+    {
+      "id": "IP1-EQUIVALENCE",
+      "description": "Compare reproducible before/after states, observables, conservation and timing; preserve old identities and frozen X30.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/integrated-performance-v1/report.md",
+        "results/integrated-performance-v1/receipt.json",
+        "results/integrated-performance-v1/measurements.json"
+      ],
+      "next_action": "None within this bounded performance delivery.",
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V1",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0",
+      "qualification": "Measured short integrated workload, exact numerical equivalence and conservation; full-curve improvement is projection only.",
+      "review": "SELF_REVIEW"
     }
   ],
   "audit_remediation_mode": false,
@@ -7614,20 +7676,20 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_X30_PUBLIC_RECONSTRUCTION_V1",
-    "state": "OPEN",
+    "id": "DINO_INTEGRATED_PERFORMANCE_V1",
+    "state": "CLOSED",
     "owner_approved": true,
-    "summary": "Bounded owner-directed MAN089/article/254V reconstruction check; mandatory executable-nominal or precise blocked decision, without simulations, solver changes or new features.",
-    "change": "openspec/changes/x30-public-reconstruction-v1",
-    "spec": "openspec/changes/x30-public-reconstruction-v1/specs/x30-public-reconstruction-v1/spec.md",
-    "transitioned_from": "DINO_X30_PREPARATION_V1",
+    "summary": "Owner freezes blocked X30 and authorizes bounded real integrated profiling, measured optimizations and before/after equivalence without physical changes or curve campaigns.",
+    "change": "openspec/changes/integrated-performance-v1",
+    "spec": "openspec/changes/integrated-performance-v1/specs/integrated-performance-v1/spec.md",
+    "transitioned_from": "DINO_X30_PUBLIC_RECONSTRUCTION_V1",
     "gate_tasks": [
-      "X30R-PUBLIC-DATA",
-      "X30R-DERIVATIONS",
-      "X30R-DECISION"
+      "IP1-PROFILE",
+      "IP1-OPTIMIZE",
+      "IP1-EQUIVALENCE"
     ],
-    "completion_criterion": "Resolve MAN089 nominal data and public geometric derivations; build statically checked nominal configuration only if defensible, otherwise close B with exact missing geometry and refined unsent request.",
-    "scientific_state": "B_CONFIGURATION_BLOCKED;PRECOMPRESSION_FREE_VOLUME_UNIDENTIFIED;EXPERIMENTAL_VALIDATION_NOT_PERFORMED"
+    "completion_criterion": "Actual CPU/end-to-end before/after measurements, justified optimization, preserved science/conservation/checkpoint histories and qualified curve cost projection. No X30 or new general infrastructure.",
+    "scientific_state": "PERFORMANCE_OPTIMIZATION_ONLY;EXPERIMENTAL_VALIDATION_NOT_PERFORMED;X30_FROZEN_AWAITING_EXTERNAL_GEOMETRY"
   },
   "objectives": [
     {
@@ -8530,7 +8592,7 @@
     },
     {
       "id": "DINO_X30_PUBLIC_RECONSTRUCTION_V1",
-      "state": "OPEN",
+      "state": "CLOSED",
       "owner_approved": true,
       "summary": "Bounded owner-directed MAN089/article/254V reconstruction check; mandatory executable-nominal or precise blocked decision, without simulations, solver changes or new features.",
       "change": "openspec/changes/x30-public-reconstruction-v1",
@@ -8542,7 +8604,39 @@
         "X30R-DECISION"
       ],
       "completion_criterion": "Resolve MAN089 nominal data and public geometric derivations; build statically checked nominal configuration only if defensible, otherwise close B with exact missing geometry and refined unsent request.",
-      "scientific_state": "B_CONFIGURATION_BLOCKED;PRECOMPRESSION_FREE_VOLUME_UNIDENTIFIED;EXPERIMENTAL_VALIDATION_NOT_PERFORMED"
+      "scientific_state": "B_CONFIGURATION_BLOCKED;PRECOMPRESSION_FREE_VOLUME_UNIDENTIFIED;EXPERIMENTAL_VALIDATION_NOT_PERFORMED",
+      "gate_at_owner_transition": {
+        "objective": "DINO_X30_PUBLIC_RECONSTRUCTION_V1",
+        "state": "PASS",
+        "classification": "X30_PUBLIC_RECONSTRUCTION_B_CONFIGURATION_BLOCKED",
+        "evidence": [
+          "results/x30-public-reconstruction-v1/decision.md",
+          "results/x30-public-reconstruction-v1/receipt.json"
+        ],
+        "gate_tasks_total": 3,
+        "gate_tasks_done": 3,
+        "gate_task_states": {
+          "DONE": 3
+        },
+        "remaining": [],
+        "updated_at": "2026-10-23T14:18:40+00:00"
+      }
+    },
+    {
+      "id": "DINO_INTEGRATED_PERFORMANCE_V1",
+      "state": "CLOSED",
+      "owner_approved": true,
+      "summary": "Owner freezes blocked X30 and authorizes bounded real integrated profiling, measured optimizations and before/after equivalence without physical changes or curve campaigns.",
+      "change": "openspec/changes/integrated-performance-v1",
+      "spec": "openspec/changes/integrated-performance-v1/specs/integrated-performance-v1/spec.md",
+      "transitioned_from": "DINO_X30_PUBLIC_RECONSTRUCTION_V1",
+      "gate_tasks": [
+        "IP1-PROFILE",
+        "IP1-OPTIMIZE",
+        "IP1-EQUIVALENCE"
+      ],
+      "completion_criterion": "Actual CPU/end-to-end before/after measurements, justified optimization, preserved science/conservation/checkpoint histories and qualified curve cost projection. No X30 or new general infrastructure.",
+      "scientific_state": "PERFORMANCE_OPTIMIZATION_ONLY;EXPERIMENTAL_VALIDATION_NOT_PERFORMED;X30_FROZEN_AWAITING_EXTERNAL_GEOMETRY"
     }
   ],
   "owner_decisions_pending": [
@@ -10656,6 +10750,24 @@
       "task": "X30R-DECISION",
       "kind": "task",
       "summary": "Mandatory decision B closed after MAN2018-89/article/254V review. Nominal10.15cm3,177.5±2deg,22deg and430–440mm setting incorporated; conditional event/arc bounds derived. Decisive geometric gap is precompression free volume or equivalent X30 primary ratio; no1.35borrowing. Existing request refined, not sent. No solver/features/calibration."
+    },
+    {
+      "at": "2026-10-23T14:51:29+00:00",
+      "task": "IP1-PROFILE",
+      "kind": "task",
+      "summary": "Frozen X30 and original source. Real integrated profile: thermal call tree40.9%, repeated35-surface validation dominates. Raw profiles/baseline retained externally."
+    },
+    {
+      "at": "2026-10-23T14:51:30+00:00",
+      "task": "IP1-OPTIMIZE",
+      "kind": "task",
+      "summary": "Stage-local thermal validation preserves arithmetic and guards. Final A/B3-cycle medians20.151/19.943s to13.922/13.710s;1.447/1.455x. Source identity changes intentionally; no historic rebinding."
+    },
+    {
+      "at": "2026-10-23T14:51:30+00:00",
+      "task": "IP1-EQUIVALENCE",
+      "kind": "task",
+      "summary": "18 exact cycle comparisons; exact4-cycle restart and old-source fail-closed.123 focused+298 P4-P8 pass,3skip;OpenSpec66pass. Six-point cost49.2min projected, not remeasured; X30 frozen."
     }
   ],
   "legacy_gate_status": {
@@ -10670,12 +10782,12 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_X30_PUBLIC_RECONSTRUCTION_V1",
+    "objective": "DINO_INTEGRATED_PERFORMANCE_V1",
     "state": "PASS",
-    "classification": "X30_PUBLIC_RECONSTRUCTION_B_CONFIGURATION_BLOCKED",
+    "classification": "INTEGRATED_PERFORMANCE_MEASURED_OPTIMIZATION_COMPLETE",
     "evidence": [
-      "results/x30-public-reconstruction-v1/decision.md",
-      "results/x30-public-reconstruction-v1/receipt.json"
+      "results/integrated-performance-v1/receipt.json",
+      "results/integrated-performance-v1/report.md"
     ],
     "gate_tasks_total": 3,
     "gate_tasks_done": 3,
@@ -10683,7 +10795,7 @@
       "DONE": 3
     },
     "remaining": [],
-    "updated_at": "2026-10-23T14:18:40+00:00"
+    "updated_at": "2026-10-23T14:51:30+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

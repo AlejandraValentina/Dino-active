@@ -22,12 +22,12 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_X30_PUBLIC_RECONSTRUCTION_V1
-change/spec:       openspec/changes/x30-public-reconstruction-v1/
-                   specs/x30-public-reconstruction-v1/spec.md
-completion:        Resolve public MAN089/article/254V nominal reconstruction.
-                   Mandatory A executable or B exact geometry gap; no solver
-                   changes, simulations, new features or other motor search.
+CURRENT_OBJECTIVE: DINO_INTEGRATED_PERFORMANCE_V1
+change/spec:       openspec/changes/integrated-performance-v1/
+                   specs/integrated-performance-v1/spec.md
+completion:        Measured integrated profiling and justified optimization with
+                   before/after numerical/conservation equivalence. X30 frozen;
+                   no physics/tolerance changes, new curves or push.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```
