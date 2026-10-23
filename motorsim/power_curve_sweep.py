@@ -1,6 +1,6 @@
 """Bounded, resumable orchestration for exploratory integrated RPM curves.
 
-Each RPM delegates to the existing independently audited single-point workflow.
+Each RPM delegates to the existing audited or explicit engineering workflow.
 This module adds only a serial coordinator and its own atomic sweep manifest.
 It does not change solver identity, periodicity, or result classification.
 """
@@ -206,7 +206,7 @@ def _reused_points(paths, prepared, *, continuation=False):
                 not horizon_ok):
             raise ValueError('reused point scientific identity/horizon mismatch')
         verified=import_desktop_runs([root])  # result, diagnostic manifest and selected samples
-        if periodic and not all(p.get('periodicity','').startswith('PERIOD_1') for p in verified['points']):
+        if periodic and (not verified.get('points') or not all(p.get('periodicity','').startswith('PERIOD_1') for p in verified['points'])):
             raise ValueError('reused periodic status differs from diagnostic evidence')
         points.append(dict(rpm=rpm,status='COMPLETE',classification=result['classification'],
             periodicity=result['periodicity'],cycles_completed=result['cycles_completed'],
@@ -276,7 +276,7 @@ def _run_power_curve_unlocked(document: dict, *, project_id: str, variant_label:
             for point in continued:
                 source=Path(point['run_directory'])
                 target=_run_directory(Path(prepared['artifact_root']),project_id,point['run_id'])
-                if source.resolve()==target.resolve() or target.exists():
+                if target.resolve().is_relative_to(source.resolve()) or target.exists():
                     raise ValueError('continuation requires an isolated unused destination')
                 shutil.copytree(source,target)
                 point.update(run_directory=str(target),status='INTERRUPTED_CHECKPOINTED',

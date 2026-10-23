@@ -65,5 +65,18 @@ def test_reference_horizon_extension_requires_explicit_continuation_or_periodic_
     r.update(classification='PERIODIC_EXPLORATORY',periodicity='PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED',cycles_completed=104)
     r['preflight']['max_cycles']=110;write()
     with pytest.raises(ValueError,match='diagnostic evidence'):sweep._reused_points([root],prepared)
+    monkeypatch.setattr('motorsim.engineering_workflow.import_desktop_runs',lambda paths:dict(points=[]))
+    with pytest.raises(ValueError,match='diagnostic evidence'):sweep._reused_points([root],prepared)
     monkeypatch.setattr('motorsim.engineering_workflow.import_desktop_runs',lambda paths:dict(points=[dict(periodicity='PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED')]))
     assert sweep._reused_points([root],prepared)[0]['cycles_completed']==104
+
+
+def test_continuation_rejects_destination_inside_source_before_copy(monkeypatch,tmp_path):
+    calls=_patch_sweep(monkeypatch,tmp_path,[])
+    source=tmp_path/'immutable';source.mkdir();(source/'evidence').write_text('preserve')
+    seed=dict(rpm=3000,run_directory=str(source),run_id='seed',result_artifact_sha256='hash')
+    monkeypatch.setattr(sweep,'_reused_points',lambda paths,prepared,**kw:[deepcopy(seed)] if paths else [])
+    kw=dict(_kwargs(tmp_path),artifact_root=source/'nested')
+    with pytest.raises(ValueError,match='isolated unused destination'):
+        sweep.run_power_curve({},**kw,continuation_runs=[source])
+    assert not calls and (source/'evidence').read_text()=='preserve'

@@ -1,0 +1,761 @@
+{
+  "classification": "ALL6_PERIODIC_OBSERVED",
+  "source_hashes": {
+    "motorsim.gas_exchange_v2": "401010e2043fc14b84343cbaa4aa979b9849c6a704629b3c45ddeb4a4ccb6bf7",
+    "motorsim.engineering_point": "1f5b8f94c0712f7a2bee7fbe738d64322848036f05c093500a6eae421898b4a1",
+    "motorsim.engineering_workflow": "6a7b07397e205928576864a828b2687d6d8210253b839686d8cb0a17c62c74e5",
+    "motorsim._trajectory_store": "9a4a7c1b9fc01218e0b4d53ee2c26e6ac5a459c68bada0a556437294c04923e8",
+    "motorsim._evidence_io": "422f7981eaa53769ad2a9610cb8c07cb5c2e6351eba1fb820ef9a47a5b0ba5b1",
+    "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+    "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+    "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+    "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+    "motorsim.gas1d.eos": "72ec337f941b1259ab23c04f70ec75593870bdcc4b065d481b38834430221186",
+    "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+    "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+    "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+    "motorsim.integrated_2t": "4c3efa10fa016c0a87b2fd861dd74712163241b58919d7c4db9d9f5d112267f8",
+    "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+    "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+    "motorsim.p6_species": "7ed60395642eecb6b5b9f15bbe095489468da7b562f72d0b53b13527a97e2dab",
+    "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+    "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+    "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+    "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+    "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+    "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095",
+    "motorsim.mechanical": "de71d3bacb18e7661de0ff15cbac50f1a252fc01970c7ef9aa04c8a3424d0fff",
+    "motorsim.engine_configuration": "d1f8b88640fdfa3b703c2a8e87e8872a22f6fbbeac9b4400e7a4bd3e7b0fcfce",
+    "motorsim.engine_variants": "be3d8e7c723cc1627bc30900a1d8da0e049adbaa066c06dacfe946eea4fcdfa1",
+    "motorsim.engineering_outputs": "c01c3c7195f28a67c3fb866df704d15a595d079d32be71057ab2d2c5095f5424",
+    "motorsim.reference_harness.convergence": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+    "motorsim.exploratory_workflow": "b210192d6b339eccbdebaf1e3336b48f6e6d00ec1af761f357bfcad9549c6436"
+  },
+  "points": [
+    {
+      "variant": "A_original",
+      "rpm": 8000,
+      "classification": "PERIODIC_EXPLORATORY",
+      "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+      "cycles": 105,
+      "new_cycles": 75,
+      "brake_W": 3069.204343651753,
+      "HP": 4.115870822318009,
+      "torque_Nm": 3.663592819884695,
+      "indicated_W": 4642.14295967413,
+      "work_J": 34.81607219755597,
+      "trapped_air_mg": 30.268697762630556,
+      "trapped_fresh_mg": 34.52586476302481,
+      "afr_trapped": 7.110056467088879,
+      "heat_J": 75.16107208295671,
+      "cycle30_brake_W": 3066.55009608368,
+      "cycle30_HP": 4.11231141769797,
+      "cycle30_torque_Nm": 3.6604245452298314,
+      "power_change_W": 2.6542475680730604,
+      "pass_cycles": [
+        103,
+        104,
+        105
+      ],
+      "final_worst_ratio": 0.8476893960859787,
+      "last5_work_range_J": 0.00029887542223150376,
+      "last5_air_range_mg": 0.0002237876751653143,
+      "new_producer_wall_s": 487.8206993000349,
+      "total_producer_wall_s": 708.983488600119,
+      "solver_wall_s": 432.19495549506973,
+      "processing_wall_s": 28.44874321320094,
+      "peak_rss_mib": 175.81640625,
+      "rejected_trials": {},
+      "conservation_max": {
+        "mass": 3.1927734425501922e-15,
+        "energy": 9.932519675639435e-15,
+        "species": 1.489340381364521e-14
+      },
+      "max_CFL": 0.3267266391438121,
+      "manifest_sha256": "3341ab4508d1bc4b3ccf44c7e4ff7970d5795a6e8eaffd55ef49390692a6b034",
+      "checkpoint_sha256": "f3717b16c44785698e9ba8a4cf3fc2af4ffefff328c8733fd77342a4b038e951",
+      "next_cycle": 106,
+      "exact_restore": true,
+      "diagnostics_hashes_verified": 105,
+      "result": "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-08bbe6f9b9694ff3970bfeb02edf4283-8000\\result.json",
+      "result_sha256": "d7efb675379b81d3ae2e8b290c737066e190e68b9d64b1632d5cce7d2f5bf456",
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          91040.18808464054,
+          134488.69284856843
+        ],
+        "cylinder": [
+          106924.59378325984,
+          4899318.913770366
+        ],
+        "exhaust_entry": [
+          97694.49202109168,
+          110359.191900914
+        ],
+        "exhaust_middle": [
+          103377.03810647978,
+          105800.429535937
+        ]
+      }
+    },
+    {
+      "variant": "A_original",
+      "rpm": 9000,
+      "classification": "PERIODIC_EXPLORATORY",
+      "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+      "cycles": 104,
+      "new_cycles": 74,
+      "brake_W": 3360.179628471153,
+      "HP": 4.50607510678703,
+      "torque_Nm": 3.5652613169858163,
+      "indicated_W": 5129.015797694228,
+      "work_J": 34.193438651294855,
+      "trapped_air_mg": 29.68747538265892,
+      "trapped_fresh_mg": 33.58286624378867,
+      "afr_trapped": 7.6211801179943315,
+      "heat_J": 73.7176720249663,
+      "cycle30_brake_W": 3343.0362239974106,
+      "cycle30_HP": 4.483085422696879,
+      "cycle30_torque_Nm": 3.5470715998963502,
+      "power_change_W": 17.14340447374252,
+      "pass_cycles": [
+        102,
+        103,
+        104
+      ],
+      "final_worst_ratio": 0.8829188169271508,
+      "last5_work_range_J": 0.0007292760437849211,
+      "last5_air_range_mg": 0.0005232661441664332,
+      "new_producer_wall_s": 490.32545839995146,
+      "total_producer_wall_s": 710.5992050999776,
+      "solver_wall_s": 434.0194442925276,
+      "processing_wall_s": 28.680038802092895,
+      "peak_rss_mib": 136.16015625,
+      "rejected_trials": {},
+      "conservation_max": {
+        "mass": 3.583725292658379e-15,
+        "energy": 3.779931991632401e-15,
+        "species": 1.3106195356007787e-14
+      },
+      "max_CFL": 0.2782345016609186,
+      "manifest_sha256": "f00028e10d46b008000208c763daac312d9816082ec2f5f66d77225f5bd3577e",
+      "checkpoint_sha256": "60d825868d73ca289cd305c9c59c40e750eecddfd6f9d1a85f554f91bcfc97b7",
+      "next_cycle": 105,
+      "exact_restore": true,
+      "diagnostics_hashes_verified": 104,
+      "result": "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\ab-A-9000\\result.json",
+      "result_sha256": "d3ee52ea453883d65ea77d846a89d4b321741a6d9062cfbebf07760b30f4fcf0",
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          90446.73494107238,
+          133294.34254073756
+        ],
+        "cylinder": [
+          104677.50018764187,
+          4723874.807548035
+        ],
+        "exhaust_entry": [
+          97991.20260186592,
+          110779.99293685272
+        ],
+        "exhaust_middle": [
+          103953.51418401579,
+          106347.0544581336
+        ]
+      }
+    },
+    {
+      "variant": "A_original",
+      "rpm": 10000,
+      "classification": "PERIODIC_EXPLORATORY",
+      "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+      "cycles": 104,
+      "new_cycles": 74,
+      "brake_W": 3523.7015766254817,
+      "HP": 4.725361651395597,
+      "torque_Nm": 3.364887143403903,
+      "indicated_W": 5487.817688829257,
+      "work_J": 32.926906132975546,
+      "trapped_air_mg": 28.92130347955175,
+      "trapped_fresh_mg": 32.47687017258161,
+      "afr_trapped": 8.134091124277736,
+      "heat_J": 71.81510229501782,
+      "cycle30_brake_W": 3503.3060401549874,
+      "cycle30_HP": 4.698010786459524,
+      "cycle30_torque_Nm": 3.345410840726162,
+      "power_change_W": 20.395536470494335,
+      "pass_cycles": [
+        102,
+        103,
+        104
+      ],
+      "final_worst_ratio": 0.887510753676702,
+      "last5_work_range_J": 0.0009029827979247784,
+      "last5_air_range_mg": 0.0006507906360652598,
+      "new_producer_wall_s": 485.2271783000324,
+      "total_producer_wall_s": 715.6344843000406,
+      "solver_wall_s": 428.5254343919223,
+      "processing_wall_s": 28.902211207780056,
+      "peak_rss_mib": 180.38671875,
+      "rejected_trials": {},
+      "conservation_max": {
+        "mass": 8.842958514351845e-15,
+        "energy": 5.780831096746244e-15,
+        "species": 1.3701931508553595e-14
+      },
+      "max_CFL": 0.2448023855298811,
+      "manifest_sha256": "50105816a5753a8b507a98aec3f7f6f29a70aa309eaa5bf18da0954d5587dd82",
+      "checkpoint_sha256": "b216a263735f9959a72ec9c958a3f0a6542beabc866232c3a755cfc7555152ed",
+      "next_cycle": 105,
+      "exact_restore": true,
+      "diagnostics_hashes_verified": 104,
+      "result": "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-08bbe6f9b9694ff3970bfeb02edf4283-10000\\result.json",
+      "result_sha256": "ca2987d9b7a003e0d34bf565dcaa9117f6602df3cd37d193599e2cd0beaa687d",
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89912.17152676865,
+          132159.799129877
+        ],
+        "cylinder": [
+          99665.24066276671,
+          4563113.456768167
+        ],
+        "exhaust_entry": [
+          96094.92922416261,
+          112705.77460631415
+        ],
+        "exhaust_middle": [
+          104390.93679099133,
+          107026.68920256369
+        ]
+      }
+    },
+    {
+      "variant": "B_header_plus20",
+      "rpm": 8000,
+      "classification": "PERIODIC_EXPLORATORY",
+      "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+      "cycles": 105,
+      "new_cycles": 75,
+      "brake_W": 3052.088167132913,
+      "HP": 4.092917651516838,
+      "torque_Nm": 3.643161889136144,
+      "indicated_W": 4624.528750241613,
+      "work_J": 34.683965626812096,
+      "trapped_air_mg": 30.154319218730905,
+      "trapped_fresh_mg": 34.408512252187556,
+      "afr_trapped": 7.088140801695057,
+      "heat_J": 74.87705066894705,
+      "cycle30_brake_W": 3047.775828064759,
+      "cycle30_HP": 4.08713470956862,
+      "cycle30_torque_Nm": 3.6380144135437567,
+      "power_change_W": 4.31233906815396,
+      "pass_cycles": [
+        103,
+        104,
+        105
+      ],
+      "final_worst_ratio": 0.8337546084340002,
+      "last5_work_range_J": 0.00031511368661085726,
+      "last5_air_range_mg": 0.00023286900326544512,
+      "new_producer_wall_s": 489.9539764999645,
+      "total_producer_wall_s": 730.2100163999712,
+      "solver_wall_s": 432.98481708648615,
+      "processing_wall_s": 29.024475903366692,
+      "peak_rss_mib": 180.38671875,
+      "rejected_trials": {},
+      "conservation_max": {
+        "mass": 2.7708368077775647e-15,
+        "energy": 8.862601540843963e-15,
+        "species": 1.453067596854589e-14
+      },
+      "max_CFL": 0.32770624459121395,
+      "manifest_sha256": "957c5b05d573ca32c32d8481dd52aa3834a3f28c5d0d274d5d834044288b37b3",
+      "checkpoint_sha256": "c4b4a8655382f2fb77f01f20caf411d26a6222b4ce2d63c941e13cbcfcd1e972",
+      "next_cycle": 106,
+      "exact_restore": true,
+      "diagnostics_hashes_verified": 105,
+      "result": "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-880b382c855e46d9970b069242b14479-8000\\result.json",
+      "result_sha256": "63f2c7c13cb78a9425023feee076cafecba9cb8ada36bdd83f46b79e19866e61",
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          91044.50898648097,
+          134482.1664704879
+        ],
+        "cylinder": [
+          107579.82291338147,
+          4875395.089339969
+        ],
+        "exhaust_entry": [
+          98299.84987549024,
+          110131.21275195898
+        ],
+        "exhaust_middle": [
+          103373.7618410332,
+          105707.35488474529
+        ]
+      }
+    },
+    {
+      "variant": "B_header_plus20",
+      "rpm": 9000,
+      "classification": "PERIODIC_EXPLORATORY",
+      "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+      "cycles": 104,
+      "new_cycles": 74,
+      "brake_W": 3339.3443962667056,
+      "HP": 4.4781346001590245,
+      "torque_Nm": 3.543154449013781,
+      "indicated_W": 5107.665912843777,
+      "work_J": 34.05110608562518,
+      "trapped_air_mg": 29.59000159138594,
+      "trapped_fresh_mg": 33.47526278343588,
+      "afr_trapped": 7.615961998110521,
+      "heat_J": 73.4756615704473,
+      "cycle30_brake_W": 3324.641718298484,
+      "cycle30_HP": 4.458417984227437,
+      "cycle30_torque_Nm": 3.5275544231782425,
+      "power_change_W": 14.702677968221451,
+      "pass_cycles": [
+        102,
+        103,
+        104
+      ],
+      "final_worst_ratio": 0.8593512893132587,
+      "last5_work_range_J": 0.0006440399388338847,
+      "last5_air_range_mg": 0.0004636428306067236,
+      "new_producer_wall_s": 487.3310112999752,
+      "total_producer_wall_s": 710.1466815000167,
+      "solver_wall_s": 430.4427218841156,
+      "processing_wall_s": 29.654443817213178,
+      "peak_rss_mib": 157.765625,
+      "rejected_trials": {},
+      "conservation_max": {
+        "mass": 4.281359883589414e-15,
+        "energy": 6.499467846587886e-15,
+        "species": 9.785965448204375e-15
+      },
+      "max_CFL": 0.27865577011756715,
+      "manifest_sha256": "7abae5aebe9675d4e928c4a2a2debcdc0dc6b96fe93d45bc3a687c098a8d5b89",
+      "checkpoint_sha256": "3edc997aac7d17d8da0129ad105356ed7bebf6e52ccb612e90df40adf1f37917",
+      "next_cycle": 105,
+      "exact_restore": true,
+      "diagnostics_hashes_verified": 104,
+      "result": "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\ab-B-9000\\result.json",
+      "result_sha256": "d3190617c5e1362475ae7d87083aead09478da2c2170139c41a158c28d76ca6b",
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          90456.81924232753,
+          133229.37237774525
+        ],
+        "cylinder": [
+          104475.07432221273,
+          4705147.428698328
+        ],
+        "exhaust_entry": [
+          98356.4822152105,
+          110023.83937749278
+        ],
+        "exhaust_middle": [
+          104086.31908450683,
+          106271.40369959363
+        ]
+      }
+    },
+    {
+      "variant": "B_header_plus20",
+      "rpm": 10000,
+      "classification": "PERIODIC_EXPLORATORY",
+      "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+      "cycles": 103,
+      "new_cycles": 73,
+      "brake_W": 3639.1068924519036,
+      "HP": 4.88012272917552,
+      "torque_Nm": 3.475091102241041,
+      "indicated_W": 5606.000836206097,
+      "work_J": 33.636005017236585,
+      "trapped_air_mg": 29.44745059593785,
+      "trapped_fresh_mg": 33.051206802795264,
+      "afr_trapped": 8.171321506128443,
+      "heat_J": 73.12161951972485,
+      "cycle30_brake_W": 3621.667255562981,
+      "cycle30_HP": 4.856735790872959,
+      "cycle30_torque_Nm": 3.4584374757414427,
+      "power_change_W": 17.43963688892245,
+      "pass_cycles": [
+        101,
+        102,
+        103
+      ],
+      "final_worst_ratio": 0.8617746565183059,
+      "last5_work_range_J": 0.0008305510486934509,
+      "last5_air_range_mg": 0.0006030302430770932,
+      "new_producer_wall_s": 478.75290720001794,
+      "total_producer_wall_s": 706.2878711000085,
+      "solver_wall_s": 423.3638582956046,
+      "processing_wall_s": 27.93471339775715,
+      "peak_rss_mib": 180.38671875,
+      "rejected_trials": {},
+      "conservation_max": {
+        "mass": 3.637302498503994e-15,
+        "energy": 4.293625026145336e-15,
+        "species": 8.748060021879669e-15
+      },
+      "max_CFL": 0.2450991919567758,
+      "manifest_sha256": "2bf02a40ffd4912db1466a16732644e61a4c45f702e5d03072be28aac1bdfe12",
+      "checkpoint_sha256": "8ef68ece3dd1ead808086e780d1db4ae90a8a49a7b45d6d7cec7b1d973d1c09b",
+      "next_cycle": 104,
+      "exact_restore": true,
+      "diagnostics_hashes_verified": 103,
+      "result": "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-880b382c855e46d9970b069242b14479-10000\\result.json",
+      "result_sha256": "573aff6b19ac35404932f4166076d346dba36bbeb6309a0db1d84a741dc664ee",
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89843.9617673481,
+          132142.2349734665
+        ],
+        "cylinder": [
+          98986.60348808081,
+          4599691.9743786575
+        ],
+        "exhaust_entry": [
+          95987.70362632273,
+          113251.15040795202
+        ],
+        "exhaust_middle": [
+          104342.8772441002,
+          107092.54019304036
+        ]
+      }
+    }
+  ],
+  "equal_RPM_comparisons": [
+    {
+      "rpm": 8000,
+      "both_periodic": true,
+      "B_minus_A_W": -17.116176518839893,
+      "B_minus_A_HP": -0.022953170801171652,
+      "B_minus_A_Nm": -0.02043093074855129,
+      "relative_power_percent": -0.5576747131302111,
+      "cycle30_B_minus_A_W": -18.774268018920793,
+      "B_minus_A_fresh_mg": -0.11735251083725728,
+      "B_minus_A_air_mg": -0.11437854389965096,
+      "pressure_RMS_difference_Pa": {
+        "crankcase": 52.603238586665455,
+        "cylinder": 7566.888932292023,
+        "exhaust_entry": 1193.7545385471321,
+        "exhaust_middle": 128.31837362759327
+      }
+    },
+    {
+      "rpm": 9000,
+      "both_periodic": true,
+      "B_minus_A_W": -20.835232204447493,
+      "B_minus_A_HP": -0.0279405066280054,
+      "B_minus_A_Nm": -0.022106867972035094,
+      "relative_power_percent": -0.6200630474605701,
+      "cycle30_B_minus_A_W": -18.394505698926423,
+      "B_minus_A_fresh_mg": -0.10760346035279156,
+      "B_minus_A_air_mg": -0.09747379127298217,
+      "pressure_RMS_difference_Pa": {
+        "crankcase": 29.470698685944082,
+        "cylinder": 5904.868775359682,
+        "exhaust_entry": 876.3966101963593,
+        "exhaust_middle": 93.93689309504221
+      }
+    },
+    {
+      "rpm": 10000,
+      "both_periodic": true,
+      "B_minus_A_W": 115.40531582642188,
+      "B_minus_A_HP": 0.15476107777992265,
+      "B_minus_A_Nm": 0.11020395883713796,
+      "relative_power_percent": 3.275116048191041,
+      "cycle30_B_minus_A_W": 118.36121540799377,
+      "B_minus_A_fresh_mg": 0.5743366302136508,
+      "B_minus_A_air_mg": 0.5261471163860989,
+      "pressure_RMS_difference_Pa": {
+        "crankcase": 104.32777349889645,
+        "cylinder": 11044.079777542793,
+        "exhaust_entry": 1158.7350695725333,
+        "exhaust_middle": 152.51454858991556
+      }
+    }
+  ],
+  "execution_receipt": {
+    "completed": [
+      {
+        "classification": "PERIODIC_EXPLORATORY",
+        "cycles": 104,
+        "new_wall_s": 487.3310112999752,
+        "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+        "result": "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\ab-B-9000\\result.json",
+        "rpm": 9000,
+        "sha256": "d3190617c5e1362475ae7d87083aead09478da2c2170139c41a158c28d76ca6b",
+        "total_point_wall_s": 710.1466815000167,
+        "variant": "B_header_plus20"
+      },
+      {
+        "classification": "PERIODIC_EXPLORATORY",
+        "cycles": 105,
+        "new_wall_s": 487.8206993000349,
+        "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+        "result": "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-08bbe6f9b9694ff3970bfeb02edf4283-8000\\result.json",
+        "rpm": 8000,
+        "sha256": "d7efb675379b81d3ae2e8b290c737066e190e68b9d64b1632d5cce7d2f5bf456",
+        "total_point_wall_s": 708.983488600119,
+        "variant": "A_original"
+      },
+      {
+        "classification": "PERIODIC_EXPLORATORY",
+        "cycles": 105,
+        "new_wall_s": 489.9539764999645,
+        "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+        "result": "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-880b382c855e46d9970b069242b14479-8000\\result.json",
+        "rpm": 8000,
+        "sha256": "63f2c7c13cb78a9425023feee076cafecba9cb8ada36bdd83f46b79e19866e61",
+        "total_point_wall_s": 730.2100163999712,
+        "variant": "B_header_plus20"
+      },
+      {
+        "classification": "PERIODIC_EXPLORATORY",
+        "cycles": 104,
+        "new_wall_s": 485.2271783000324,
+        "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+        "result": "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-08bbe6f9b9694ff3970bfeb02edf4283-10000\\result.json",
+        "rpm": 10000,
+        "sha256": "ca2987d9b7a003e0d34bf565dcaa9117f6602df3cd37d193599e2cd0beaa687d",
+        "total_point_wall_s": 715.6344843000406,
+        "variant": "A_original"
+      },
+      {
+        "classification": "PERIODIC_EXPLORATORY",
+        "cycles": 103,
+        "new_wall_s": 478.75290720001794,
+        "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+        "result": "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-880b382c855e46d9970b069242b14479-10000\\result.json",
+        "rpm": 10000,
+        "sha256": "573aff6b19ac35404932f4166076d346dba36bbeb6309a0db1d84a741dc664ee",
+        "total_point_wall_s": 706.2878711000085,
+        "variant": "B_header_plus20"
+      }
+    ],
+    "global_cap_s": 3300,
+    "new_wall_s": 2472.625,
+    "schema": "DINO_PERIODIC_RPM_CURVES_DEMO_V1",
+    "status": "AUTHORIZED_POINTS_FINISHED"
+  },
+  "new_global_execution_wall_s": 2472.625,
+  "new_five_producer_wall_s": 2429.085772600025,
+  "cumulative_all_six_producer_wall_s": 4281.861747000134,
+  "original_six_producer_wall_s": 1362.4505160001572,
+  "prior_A9000_continuation_wall_s": 490.32545839995146,
+  "scientific_qualification": "Period1 observed within existing V2 tolerances; independent audit/experimental validation NOT_PERFORMED; spatial independence NOT_DEMONSTRATED",
+  "original_sources_unchanged": true,
+  "original_checkpoints_unchanged": true,
+  "checks": {
+    "focal_tests": "21 PASS",
+    "openspec_strict": "PASS",
+    "program_status": "check PASS;promote none;brief STOP_A_GATE_REACHED",
+    "self_review": true,
+    "independent_review": false,
+    "logs": {
+      "authorized-five-continuations.summary.json": {
+        "sha256": "b34595d738266620183e09371568bd123068d772831bb1554711f769241debe2",
+        "exit_code": 0
+      },
+      "desktop-periodic-view-focused.summary.json": {
+        "sha256": "0b9cbf704f813d4487e7377085e6c1930f2c6607d6c3e9552f2dee9e1085f1dc",
+        "exit_code": 0
+      },
+      "desktop-periodic-view.summary.json": {
+        "sha256": "66f52ac12148109e0508ef5005c63f7e95583d2a85f10d9f6259f31b47b0f0b8",
+        "exit_code": 0
+      },
+      "focal-tests-final.summary.json": {
+        "sha256": "7b907af007e985d8289a38ede61b0d58f0b60278d65c045912ffab80c39e2389",
+        "exit_code": 0
+      },
+      "focal-tests.summary.json": {
+        "sha256": "f4f5ff3e0830dda7011be23fc194c79ef4fe9a6fb03dbc98dc2d7d624038131c",
+        "exit_code": 0
+      },
+      "zero-step-preparation.summary.json": {
+        "sha256": "917fecf89e64b9873739df1ec3514a9f0fe7501f26f86202cd680fd04aa81705",
+        "exit_code": 0
+      }
+    }
+  },
+  "desktop": {
+    "schema": "DINO_PERIODIC_CURVE_DESKTOP_VIEW_V1",
+    "solver_steps": 0,
+    "captures": [
+      "E:\\dino\\Dino-active\\results\\periodic-rpm-curves-v1\\captures\\01-periodic-power-torque.png",
+      "E:\\dino\\Dino-active\\results\\periodic-rpm-curves-v1\\captures\\02-periodic-point-table.png",
+      "E:\\dino\\Dino-active\\results\\periodic-rpm-curves-v1\\captures\\03-equal-rpm-comparison.png",
+      "E:\\dino\\Dino-active\\results\\periodic-rpm-curves-v1\\captures\\04-desktop-periodic-curves.png",
+      "E:\\dino\\Dino-active\\results\\periodic-rpm-curves-v1\\captures\\pressure-8000.png",
+      "E:\\dino\\Dino-active\\results\\periodic-rpm-curves-v1\\captures\\pressure-9000.png",
+      "E:\\dino\\Dino-active\\results\\periodic-rpm-curves-v1\\captures\\pressure-10000.png",
+      "E:\\dino\\Dino-active\\results\\periodic-rpm-curves-v1\\captures\\05-periodic-only.png",
+      "E:\\dino\\Dino-active\\results\\periodic-rpm-curves-v1\\captures\\06-original-exploratory-curves.png"
+    ],
+    "loads": [
+      {
+        "kind": "continued",
+        "runs": [
+          "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-880b382c855e46d9970b069242b14479-10000",
+          "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-08bbe6f9b9694ff3970bfeb02edf4283-10000",
+          "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-880b382c855e46d9970b069242b14479-8000",
+          "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-08bbe6f9b9694ff3970bfeb02edf4283-8000",
+          "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\ab-B-9000",
+          "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\ab-A-9000"
+        ]
+      },
+      {
+        "kind": "cycle30",
+        "runs": [
+          "E:\\Dino-artifacts\\desktop-rpm-curves-v1-20261022\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-880b382c855e46d9970b069242b14479-10000",
+          "E:\\Dino-artifacts\\desktop-rpm-curves-v1-20261022\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-880b382c855e46d9970b069242b14479-8000",
+          "E:\\Dino-artifacts\\desktop-rpm-curves-v1-20261022\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-08bbe6f9b9694ff3970bfeb02edf4283-10000",
+          "E:\\Dino-artifacts\\desktop-rpm-curves-v1-20261022\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-08bbe6f9b9694ff3970bfeb02edf4283-8000",
+          "E:\\Dino-artifacts\\functional-exhaust-comparison-v1-20261022\\exploratory-workflow-v1\\functional-reed-125cc-v1\\ab-B-9000",
+          "E:\\Dino-artifacts\\functional-exhaust-comparison-v1-20261022\\exploratory-workflow-v1\\functional-reed-125cc-v1\\ab-A-9000"
+        ]
+      },
+      {
+        "kind": "continued",
+        "runs": [
+          "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-880b382c855e46d9970b069242b14479-10000",
+          "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-08bbe6f9b9694ff3970bfeb02edf4283-10000",
+          "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-880b382c855e46d9970b069242b14479-8000",
+          "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\pc-08bbe6f9b9694ff3970bfeb02edf4283-8000",
+          "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\ab-B-9000",
+          "E:\\Dino-artifacts\\periodic-rpm-curves-v1-20261023\\exploratory-workflow-v1\\functional-reed-125cc-v1\\ab-A-9000"
+        ]
+      }
+    ],
+    "displayed_points": [
+      {
+        "variant": "A_original",
+        "rpm": 8000.0,
+        "power": 4.115870822318009,
+        "torque": 3.663592819884695,
+        "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+        "classification": "PERIODIC_EXPLORATORY",
+        "exploratory": false
+      },
+      {
+        "variant": "A_original",
+        "rpm": 9000.0,
+        "power": 4.50607510678703,
+        "torque": 3.5652613169858163,
+        "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+        "classification": "PERIODIC_EXPLORATORY",
+        "exploratory": false
+      },
+      {
+        "variant": "A_original",
+        "rpm": 10000.0,
+        "power": 4.725361651395597,
+        "torque": 3.364887143403903,
+        "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+        "classification": "PERIODIC_EXPLORATORY",
+        "exploratory": false
+      },
+      {
+        "variant": "B_header_plus20",
+        "rpm": 8000.0,
+        "power": 4.092917651516838,
+        "torque": 3.643161889136144,
+        "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+        "classification": "PERIODIC_EXPLORATORY",
+        "exploratory": false
+      },
+      {
+        "variant": "B_header_plus20",
+        "rpm": 9000.0,
+        "power": 4.4781346001590245,
+        "torque": 3.543154449013781,
+        "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+        "classification": "PERIODIC_EXPLORATORY",
+        "exploratory": false
+      },
+      {
+        "variant": "B_header_plus20",
+        "rpm": 10000.0,
+        "power": 4.88012272917552,
+        "torque": 3.475091102241041,
+        "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+        "classification": "PERIODIC_EXPLORATORY",
+        "exploratory": false
+      }
+    ],
+    "exploratory_history_preserved": true,
+    "saved_project_reopened": true,
+    "wall_s": 13.625
+  },
+  "captures_sha256": {
+    "01-periodic-power-torque.png": "fdc8b26f1e0cb81ec95565e3c5b4e205bc56143818021e1468b18145ad533f9e",
+    "02-periodic-point-table.png": "4848482ff87eb56fd8333be442be093ab5fe4ca8c6a3c238a0f8b63177c85baf",
+    "03-equal-rpm-comparison.png": "5a6c7e882a9853ff4e4bfb67dc89d3e5b050053c19f2295e18feff13fb3fc223",
+    "04-desktop-periodic-curves.png": "b64b2eda67c63bea4dcfe4c39880984faa0bf9eabca4b4be3b46023ac1bf3ad7",
+    "05-periodic-only.png": "fdc8b26f1e0cb81ec95565e3c5b4e205bc56143818021e1468b18145ad533f9e",
+    "06-original-exploratory-curves.png": "439bccd89e5065874129c76ec2502d37cc37de581edf190fd6b1be1cf6bac775",
+    "pressure-10000.png": "687f744220e3739025260f09cde1d42ea598459155c7a1d09ce4acb24b419f01",
+    "pressure-8000.png": "b40ce56ad9a852eca83e870fe8b0bc1151032c4abbb146efa52120c97eeb7e63",
+    "pressure-9000.png": "b07cdd698962d765c36282fe60ee4f1fbfb3114ef4290195fd504d32dc5c3a15"
+  },
+  "csv_sha256": {
+    "continued-power-torque.csv": "6767686d49a0abadf95ad632e31446e5eac5eb245e881978c145da7f9f6466d3",
+    "original-cycle30-power-torque.csv": "7c31c5a44c473279d916b1369482cdd3f53c04fcf3ba547af20d3c2b1f60c658"
+  },
+  "zero_step_preparation_wall_s": 10.937,
+  "logged_new_execution_wall_s": 2473.422,
+  "source_inputs": [
+    {
+      "variant": "A_original",
+      "rpm": 9000.0,
+      "result_sha256": "753f26a5a8fd81a4c03e1a441f371576e22e5a3142c94a057c105519eb8bbc24",
+      "checkpoint_sha256": "1f06eacdc1bf87b5cb76c66e77067980647b26c90d24125e476f61de31fc5620",
+      "elapsed_seconds": 220.2737467000261
+    },
+    {
+      "variant": "B_header_plus20",
+      "rpm": 9000.0,
+      "result_sha256": "8a04e4e3d6d3d910ffdf3b21ef29a63b3167067735b7d64534076295ebc9862f",
+      "checkpoint_sha256": "0ab34fb0a8ef710a30b8c8a10c0eeddec856e1255ce637d5c9fb45633f43078e",
+      "elapsed_seconds": 222.8156702000415
+    },
+    {
+      "variant": "A_original",
+      "rpm": 8000.0,
+      "result_sha256": "5e70d01e7d128984a994c446d111a7899eb5758bacfe5c081abecf94a590fe79",
+      "checkpoint_sha256": "46b2f89622b74e3ef829f63b4af3f323f0231fe14b821fbb0bde6ac17379c2fb",
+      "elapsed_seconds": 221.1627893000841
+    },
+    {
+      "variant": "A_original",
+      "rpm": 10000.0,
+      "result_sha256": "2549078d4d49ad2f94b72182c591c4c73212d4a49a0a770abe893d74bf987ceb",
+      "checkpoint_sha256": "b97e954b1031014ef9ab0f65e1ad7f3a48d3ccbf6c05cc6a0364b25a2eccf3c3",
+      "elapsed_seconds": 230.40730600000825
+    },
+    {
+      "variant": "B_header_plus20",
+      "rpm": 8000.0,
+      "result_sha256": "c0a12bd850d572fe01c74acce3f4499769106e7de4984869ec3bca856ce12a94",
+      "checkpoint_sha256": "0760feae0c6b5f5472fe3a0699d18e177ea1a071668beb85e7e96e20b2232096",
+      "elapsed_seconds": 240.25603990000673
+    },
+    {
+      "variant": "B_header_plus20",
+      "rpm": 10000.0,
+      "result_sha256": "882a18fff40332b2f57031c2674c4e01d0988251ebe42b2f0833bbd66143decc",
+      "checkpoint_sha256": "242ce333bc57c18b6f39c4984df0856a1179760ff3846f55aeb386f0af4c337c",
+      "elapsed_seconds": 227.53496389999054
+    }
+  ],
+  "scientific_compute_head": "cfc610b",
+  "orchestration_self_review": "After execution, final guards additionally reject empty periodic import results and nested continuation-copy destinations; covered by focal tests. No scientific sources changed."
+}

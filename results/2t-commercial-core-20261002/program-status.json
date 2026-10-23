@@ -7106,54 +7106,67 @@
       "id": "PRC1-CONTINUATION",
       "description": "Existing coordinator: B9000,A8000,B8000,A10000,B10000 from own checkpoints,600s additional each,111totalcycles,3300s global.",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [
-        "results/periodic-rpm-curves-v1/protocol.md"
+      "commits": [
+        "cfc610b"
       ],
-      "next_action": "Only the five owner-authorized continuations and existing Desktop views.",
+      "evidence": [
+        "results/periodic-rpm-curves-v1/report.md",
+        "results/periodic-rpm-curves-v1/receipt.json",
+        "results/periodic-rpm-curves-v1/captures/04-desktop-periodic-curves.png",
+        "results/periodic-rpm-curves-v1/captures/01-periodic-power-torque.png"
+      ],
+      "next_action": "Stop: all scoped points and Desktop views complete. No further campaign/objective authorized.",
       "objective": "DINO_PERIODIC_RPM_CURVES_V1",
       "owner_role": "implementation",
-      "write_scope": [
-        "motorsim/power_curve_sweep.py",
-        "scripts/diagnostics/demo_periodic_rpm_curves_v1.py",
-        "tests/test_periodic_curve_continuation.py",
-        "results/periodic-rpm-curves-v1/"
-      ],
-      "evidence_level": "L1"
+      "write_scope": [],
+      "evidence_level": "L1",
+      "qualification": "All6 PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED; A105/104/104,B105/104/103cycles.371newcycles,2472.625s coordinator,180.39MiB peak,zero CFL rejects.21focal PASS,realDesktop loaded6periodic+6original. No solver/models/UI changes; geometry/spatial/experimental limits remain."
     },
     {
       "id": "PRC1-DESKTOP",
       "description": "Existing Desktop curves, table, history and equal-RPM comparisons; preserve exploratory histories.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [
-        "results/periodic-rpm-curves-v1/protocol.md"
+      "commits": [
+        "cfc610b"
       ],
-      "next_action": "Only the five owner-authorized continuations and existing Desktop views.",
+      "evidence": [
+        "results/periodic-rpm-curves-v1/report.md",
+        "results/periodic-rpm-curves-v1/receipt.json",
+        "results/periodic-rpm-curves-v1/captures/04-desktop-periodic-curves.png",
+        "results/periodic-rpm-curves-v1/captures/01-periodic-power-torque.png"
+      ],
+      "next_action": "Stop: all scoped points and Desktop views complete. No further campaign/objective authorized.",
       "objective": "DINO_PERIODIC_RPM_CURVES_V1",
       "owner_role": "implementation",
       "write_scope": [],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "All6 PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED; A105/104/104,B105/104/103cycles.371newcycles,2472.625s coordinator,180.39MiB peak,zero CFL rejects.21focal PASS,realDesktop loaded6periodic+6original. No solver/models/UI changes; geometry/spatial/experimental limits remain."
     },
     {
       "id": "PRC1-INTERPRETATION",
       "description": "Interpret periodic outputs, trapped air, pressure waves, transient deltas and unresolved accuracy limits.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [
-        "results/periodic-rpm-curves-v1/protocol.md"
+      "commits": [
+        "cfc610b"
       ],
-      "next_action": "Only the five owner-authorized continuations and existing Desktop views.",
+      "evidence": [
+        "results/periodic-rpm-curves-v1/report.md",
+        "results/periodic-rpm-curves-v1/receipt.json",
+        "results/periodic-rpm-curves-v1/captures/04-desktop-periodic-curves.png",
+        "results/periodic-rpm-curves-v1/captures/01-periodic-power-torque.png"
+      ],
+      "next_action": "Stop: all scoped points and Desktop views complete. No further campaign/objective authorized.",
       "objective": "DINO_PERIODIC_RPM_CURVES_V1",
       "owner_role": "implementation",
       "write_scope": [],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "All6 PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED; A105/104/104,B105/104/103cycles.371newcycles,2472.625s coordinator,180.39MiB peak,zero CFL rejects.21focal PASS,realDesktop loaded6periodic+6original. No solver/models/UI changes; geometry/spatial/experimental limits remain."
     }
   ],
   "audit_remediation_mode": false,
@@ -7367,7 +7380,9 @@
       "PRC1-DESKTOP",
       "PRC1-INTERPRETATION"
     ],
-    "completion_criterion": "Reuse A9000periodic and all30cycle states; one bounded continuation per remaining point, then actual Desktop curves/history and physical comparison. Stop at budget/terminal conditions without automatic expansion."
+    "completion_criterion": "Reuse A9000periodic and all30cycle states; one bounded continuation per remaining point, then actual Desktop curves/history and physical comparison. Stop at budget/terminal conditions without automatic expansion.",
+    "functional_result": "ALL6_PERIODIC_CURVES_DESKTOP_DEMONSTRATED",
+    "scientific_state": "ALL6_PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED;EXPERIMENTAL_VALIDATION_NOT_PERFORMED"
   },
   "objectives": [
     {
@@ -8143,7 +8158,9 @@
         "PRC1-DESKTOP",
         "PRC1-INTERPRETATION"
       ],
-      "completion_criterion": "Reuse A9000periodic and all30cycle states; one bounded continuation per remaining point, then actual Desktop curves/history and physical comparison. Stop at budget/terminal conditions without automatic expansion."
+      "completion_criterion": "Reuse A9000periodic and all30cycle states; one bounded continuation per remaining point, then actual Desktop curves/history and physical comparison. Stop at budget/terminal conditions without automatic expansion.",
+      "functional_result": "ALL6_PERIODIC_CURVES_DESKTOP_DEMONSTRATED",
+      "scientific_state": "ALL6_PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED;EXPERIMENTAL_VALIDATION_NOT_PERFORMED"
     }
   ],
   "owner_decisions_pending": [
@@ -10227,6 +10244,12 @@
       "task": "PRC1-CONTINUATION",
       "kind": "task",
       "summary": "Owner accepts A9000period104 and authorizes remaining5continuations. Budget fixed3300s newglobal,600s newperpoint,max111totalcycles,512MiB serial. Preserve historical budgets separately; no solver/source-identity changes. Legacy blocked tasks remain unrelated/unauthorized.19coordinator/display focal tests pass."
+    },
+    {
+      "at": "2026-10-23T11:48:11.940967+00:00",
+      "task": "PRC1-INTERPRETATION",
+      "kind": "task",
+      "summary": "Five ordered own-checkpoint continuations complete, no restart or physics change:371newcycles/2472.625s of3300s. All6period1 observed(A105/104/104;B105/104/103). AHP4.116/4.506/4.725,B4.093/4.478/4.880. EqualRPM B-A -0.558%/-0.620%/+3.275%; spatial uncertainty unbounded,no validated design improvement. Real Desktop opened project,loaded6periodic+6historical,rendered/exported curves+escape waves;21focalPASS.625diagnostic hashes and6final exact restores;29scientific source hashes unchanged. Stop,no push or next campaign."
     }
   ],
   "legacy_gate_status": {
@@ -10242,8 +10265,23 @@
   },
   "gate_status": {
     "objective": "DINO_PERIODIC_RPM_CURVES_V1",
-    "state": "REVIEW",
-    "classification": "AUTHORIZED_CONTINUATIONS_PREPARING"
+    "state": "PASS",
+    "classification": "DINO_PERIODIC_RPM_CURVES_V1_PERIODIC_OBSERVED",
+    "gate_tasks_total": 3,
+    "gate_tasks_done": 3,
+    "gate_task_states": {
+      "DONE": 3
+    },
+    "remaining": [],
+    "evidence": [
+      "results/periodic-rpm-curves-v1/report.md",
+      "results/periodic-rpm-curves-v1/receipt.json",
+      "results/periodic-rpm-curves-v1/captures/04-desktop-periodic-curves.png",
+      "results/periodic-rpm-curves-v1/captures/01-periodic-power-torque.png"
+    ],
+    "qualification": "L1 functional periodic curves under existing V2 tolerances; unaudited, not an experimental/predictive validation gate.",
+    "scientific_state": "ALL6_PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED;EXPERIMENTAL_VALIDATION_NOT_PERFORMED",
+    "further_campaign_authorized": false
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
