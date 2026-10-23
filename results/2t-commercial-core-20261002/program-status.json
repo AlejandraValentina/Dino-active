@@ -7543,6 +7543,102 @@
       "evidence_level": "L1",
       "qualification": "Actual EXE acceptance; TRIAL dirty-tree distribution, no predictive validation or full curve rerun.",
       "review": "SELF_REVIEW"
+    },
+    {
+      "id": "CRV1-PRODUCT-GAP-MAP",
+      "description": "Classify only current Desktop capabilities for the requested new-design journey and identify reusable systems.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "openspec/changes/dino-commercial-readiness-v1/product-gap-map.md"
+      ],
+      "next_action": "Use the gap map to implement only the missing from-empty journey.",
+      "objective": "DINO_COMMERCIAL_READINESS_V1",
+      "owner_role": "orchestrator",
+      "evidence_level": "L0",
+      "write_scope": [
+        "openspec/changes/dino-commercial-readiness-v1/product-gap-map.md"
+      ]
+    },
+    {
+      "id": "CRV1-EMPTY-ENGINE",
+      "description": "Create a new-project flow that starts without historical run data and guides a user to a supported, explicitly assumption-labeled engine configuration.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "motorsim/desktop/new_engine_dialog.py",
+        "motorsim/desktop/services.py",
+        "motorsim/desktop/templates/single_cylinder_2t_starter_v1.json",
+        "results/dino-commercial-readiness-v1/regression/crv1-desktop-regression.summary.json"
+      ],
+      "next_action": "Proceed with the geometry and exhaust editor path; existing project format and old projects remain supported.",
+      "objective": "DINO_COMMERCIAL_READINESS_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/app.py",
+        "motorsim/desktop/services.py",
+        "motorsim/desktop/new_engine_dialog.py"
+      ]
+    },
+    {
+      "id": "CRV1-ENGINE-EDITORS",
+      "description": "Connect the visible geometry, distribution, provenance and exhaust inputs needed to complete the guided design using existing adapters.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Inspect supported fields and add only controls that affect the integrated engine configuration.",
+      "objective": "DINO_COMMERCIAL_READINESS_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/engine_page.py",
+        "motorsim/desktop/exhaust_page.py"
+      ]
+    },
+    {
+      "id": "CRV1-SIMULATION-ANALYSIS",
+      "description": "Complete the ordinary run and same-RPM multi-variant analysis path, reusing the current coordinator and stored physical samples.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Verify a new design can run a bounded point, create a variant, and compare available solver outputs with provenance/status intact.",
+      "objective": "DINO_COMMERCIAL_READINESS_V1",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/desktop/execution_page.py",
+        "motorsim/desktop/results_page.py"
+      ]
+    },
+    {
+      "id": "CRV1-WINDOWS-ACCEPTANCE",
+      "description": "Build and demonstrate the packaged Windows acceptance journey from a new project through solver execution, exhaust variant comparison and project recovery.",
+      "dependencies": [
+        "CRV1-EMPTY-ENGINE",
+        "CRV1-ENGINE-EDITORS",
+        "CRV1-SIMULATION-ANALYSIS"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Run real packaged EXE acceptance only after all three UI paths are implemented.",
+      "objective": "DINO_COMMERCIAL_READINESS_V1",
+      "owner_role": "verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/build_windows_trial.py",
+        "results/dino-commercial-readiness-v1/"
+      ]
     }
   ],
   "audit_remediation_mode": false,
@@ -7744,20 +7840,20 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_WINDOWS_INTEGRATED_DELIVERY_V1",
-    "state": "CLOSED",
+    "id": "DINO_COMMERCIAL_READINESS_V1",
+    "state": "OPEN",
     "owner_approved": true,
-    "summary": "Consolidate current integrated Desktop in Windows package; real historical curves, comparison/export and bounded same-identity execution/resume. X30 remains frozen; no physics changes or push.",
-    "change": "openspec/changes/windows-integrated-delivery-v1",
-    "spec": "openspec/changes/windows-integrated-delivery-v1/specs/windows-integrated-delivery-v1/spec.md",
-    "transitioned_from": "DINO_INTEGRATED_PERFORMANCE_V1",
+    "summary": "Owner-requested from-empty Windows design workflow using the integrated solver; create, configure, run, modify exhaust, compare, save and recover. Synthetic assumptions labeled; no experimental validation claim.",
+    "change": "openspec/changes/dino-commercial-readiness-v1",
+    "spec": "openspec/changes/dino-commercial-readiness-v1/specs/dino-commercial-readiness-v1/spec.md",
+    "completion_criterion": "Packaged Windows EXE completes the user-visible new design, bounded integrated exploratory point, exhaust variant comparison and save/reopen journey without manual file or script edits.",
     "gate_tasks": [
-      "WID1-INTEGRATION",
-      "WID1-PACKAGE",
-      "WID1-ACCEPTANCE"
+      "CRV1-EMPTY-ENGINE",
+      "CRV1-ENGINE-EDITORS",
+      "CRV1-SIMULATION-ANALYSIS",
+      "CRV1-WINDOWS-ACCEPTANCE"
     ],
-    "completion_criterion": "Real packaged EXE loads periodic examples, compares/exports, runs and resumes a brief integrated point; package/source timing, preserved identities and honest limitations.",
-    "scientific_state": "PRODUCT_TRIAL_FUNCTIONAL_ACCEPTANCE_ONLY;X30_FROZEN;EXPERIMENTAL_VALIDATION_NOT_PERFORMED"
+    "scientific_state": "FUNCTIONAL_TRIAL_ONLY;SYNTHETIC_ASSUMPTIONS_DISCLOSED;EXPERIMENTAL_VALIDATION_NOT_PERFORMED;X30_FROZEN"
   },
   "objectives": [
     {
@@ -8721,6 +8817,22 @@
       ],
       "completion_criterion": "Real packaged EXE loads periodic examples, compares/exports, runs and resumes a brief integrated point; package/source timing, preserved identities and honest limitations.",
       "scientific_state": "PRODUCT_TRIAL_FUNCTIONAL_ACCEPTANCE_ONLY;X30_FROZEN;EXPERIMENTAL_VALIDATION_NOT_PERFORMED"
+    },
+    {
+      "id": "DINO_COMMERCIAL_READINESS_V1",
+      "state": "OPEN",
+      "owner_approved": true,
+      "summary": "Owner-requested from-empty Windows design workflow using the integrated solver; create, configure, run, modify exhaust, compare, save and recover. Synthetic assumptions labeled; no experimental validation claim.",
+      "change": "openspec/changes/dino-commercial-readiness-v1",
+      "spec": "openspec/changes/dino-commercial-readiness-v1/specs/dino-commercial-readiness-v1/spec.md",
+      "completion_criterion": "Packaged Windows EXE completes the user-visible new design, bounded integrated exploratory point, exhaust variant comparison and save/reopen journey without manual file or script edits.",
+      "gate_tasks": [
+        "CRV1-EMPTY-ENGINE",
+        "CRV1-ENGINE-EDITORS",
+        "CRV1-SIMULATION-ANALYSIS",
+        "CRV1-WINDOWS-ACCEPTANCE"
+      ],
+      "scientific_state": "FUNCTIONAL_TRIAL_ONLY;SYNTHETIC_ASSUMPTIONS_DISCLOSED;EXPERIMENTAL_VALIDATION_NOT_PERFORMED;X30_FROZEN"
     }
   ],
   "owner_decisions_pending": [
@@ -10876,6 +10988,18 @@
       "task": "WID1-ACCEPTANCE",
       "kind": "task",
       "summary": "Real final EXE:6periodic curves,9000A/B pressure comparison,CSV;3cycles13.491s vs13.382s source,exact. Cancel1+resume2 viahistory gives identical checkpoint.83UI+298regression PASS;OpenSpec67PASS;clean close."
+    },
+    {
+      "at": "2026-10-23T16:00:00+00:00",
+      "task": "CRV1-PRODUCT-GAP-MAP",
+      "kind": "task",
+      "summary": "Inspected existing Desktop and adapters. New-project startup loaded fixture-backed data; existing editors, coordinator and analysis are reusable. Added a concise gap map and opened the explicitly requested commercial-readiness objective."
+    },
+    {
+      "at": "2026-10-23T16:00:00+00:00",
+      "task": "CRV1-EMPTY-ENGINE",
+      "kind": "task",
+      "summary": "Added a guided new-engine form with provenance choices, derived displacement/chamber/primary ratio, reed or piston intake selection, an assumption-labeled template with no run references, and packaged template data. Focused and existing UI regression: 26 passed, 1 skipped; OpenSpec strict valid."
     }
   ],
   "legacy_gate_status": {
@@ -10890,20 +11014,23 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_WINDOWS_INTEGRATED_DELIVERY_V1",
-    "state": "PASS",
-    "classification": "WINDOWS_INTEGRATED_DELIVERY_TRIAL_FUNCTIONAL_PASS",
-    "evidence": [
-      "results/windows-integrated-delivery-v1/receipt.json",
-      "results/windows-integrated-delivery-v1/report.md"
-    ],
-    "gate_tasks_total": 3,
-    "gate_tasks_done": 3,
+    "objective": "DINO_COMMERCIAL_READINESS_V1",
+    "state": "OPEN",
+    "classification": null,
+    "evidence": [],
+    "gate_tasks_total": 4,
+    "gate_tasks_done": 1,
     "gate_task_states": {
-      "DONE": 3
+      "DONE": 1,
+      "READY": 2,
+      "WAITING": 1
     },
-    "remaining": [],
-    "updated_at": "2026-10-23T15:38:56+00:00"
+    "remaining": [
+      "CRV1-ENGINE-EDITORS",
+      "CRV1-SIMULATION-ANALYSIS",
+      "CRV1-WINDOWS-ACCEPTANCE"
+    ],
+    "updated_at": "2026-10-23T16:00:22+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -10966,7 +11093,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-21T12:47:00+00:00",
+  "updated_at": "2026-10-23T16:00:00+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -11304,6 +11431,22 @@
       },
       "remaining": [],
       "updated_at": "2026-10-23T14:51:30+00:00"
+    },
+    {
+      "objective": "DINO_WINDOWS_INTEGRATED_DELIVERY_V1",
+      "state": "PASS",
+      "classification": "WINDOWS_INTEGRATED_DELIVERY_TRIAL_FUNCTIONAL_PASS",
+      "evidence": [
+        "results/windows-integrated-delivery-v1/receipt.json",
+        "results/windows-integrated-delivery-v1/report.md"
+      ],
+      "gate_tasks_total": 3,
+      "gate_tasks_done": 3,
+      "gate_task_states": {
+        "DONE": 3
+      },
+      "remaining": [],
+      "updated_at": "2026-10-23T15:38:56+00:00"
     }
   ],
   "gate_status_archive_before_dino_desktop_v3_1": {

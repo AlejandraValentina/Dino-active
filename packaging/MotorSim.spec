@@ -22,6 +22,8 @@ dino_a=Analysis([str(root/'packaging/dino_desktop_entry.py')],
     (str(generated/'build.json'),'motorsim'),
     (str(root/'results/2t-commercial-core-20261002/fixtures/v1-prime-mesh/fixture_a_prime-mesh-0.json'),
      'results/2t-commercial-core-20261002/fixtures/v1-prime-mesh'),
+    (str(root/'motorsim/desktop/templates/single_cylinder_2t_starter_v1.json'),
+     'motorsim/desktop/templates'),
     # Read-only provenance auditing uses inspect.getsource() for exact producer
     # and solver dependency fingerprints. PyInstaller stores bytecode in PYZ;
     # retain the matching sources as data so frozen replay can perform the same

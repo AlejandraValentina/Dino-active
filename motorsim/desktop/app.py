@@ -10,7 +10,8 @@ from PySide6.QtWidgets import (QMainWindow,QWidget,QHBoxLayout,QVBoxLayout,QList
     QGroupBox,QFormLayout,QTreeWidget,QTreeWidgetItem,QDockWidget,QDoubleSpinBox,QSpinBox,QPushButton,QPlainTextEdit,QTabBar,QProgressBar,QTableWidget,QDialog,QTabWidget,QButtonGroup)
 from ..engine_configuration import validate
 from ..engine_project import load_project,save_project
-from .services import new_project
+from .services import new_design_project
+from .new_engine_dialog import NewEngineDialog
 from .context import DesktopContext
 from .engine_page import EnginePage
 from .exhaust_page import ExhaustPage
@@ -25,7 +26,7 @@ PAGES=(('Motor',EnginePage),('Escape',ExhaustPage),('Proyecto',ProjectPage),('Si
 
 class DinoDesktopWindow(QMainWindow):
     def __init__(self,project=None):
-        super().__init__();self.settings=settings();self.context=DesktopContext(project or new_project())
+        super().__init__();self.settings=settings();self.context=DesktopContext(project or new_design_project())
         self.setWindowTitle('Dino 2T')
         screen=QApplication.primaryScreen();available=screen.availableGeometry() if screen else None
         width=min(1360,available.width()) if available else 1360
@@ -332,7 +333,9 @@ class DinoDesktopWindow(QMainWindow):
         return True
     def new_file(self):
         if not self._confirm_discard():return
-        self.context.replace_project(new_project(f"dino-{Path.cwd().name.lower()}"),None);self.statusBar().showMessage('Proyecto nuevo basado en fixture sintético',5000)
+        dialog=NewEngineDialog(self)
+        if dialog.exec()!=QDialog.DialogCode.Accepted or dialog.project is None:return
+        self.context.replace_project(dialog.project,None);self.statusBar().showMessage('Diseño nuevo creado · valores de plantilla identificados como supuestos',6000)
     def open_file(self):
         if not self._confirm_discard():return
         path,_=QFileDialog.getOpenFileName(self,'Abrir proyecto',str(Path.home()),'Dino 2T (*.dino2t.json *.json)')

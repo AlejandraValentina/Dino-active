@@ -1,0 +1,25 @@
+{
+  "name": "crv1-desktop-regression",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_dino_commercial_readiness_v1.py",
+    "tests/test_dino_desktop.py",
+    "tests/test_dino_commercial_desktop_v3.py",
+    "-q"
+  ],
+  "started_at": "2026-10-23T15:58:02+00:00",
+  "finished_at": "2026-10-23T15:59:33+00:00",
+  "duration_s": 91.25,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\dino-commercial-readiness-v1\\regression\\crv1-desktop-regression.log",
+  "log_lines": 2,
+  "log_bytes": 121,
+  "error_lines": [],
+  "tail": [
+    ".............s.............                                              [100%]",
+    "26 passed, 1 skipped in 90.60s (0:01:30)"
+  ]
+}

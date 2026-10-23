@@ -1,0 +1,12 @@
+# Desktop product-gap map (2026-10-23)
+
+This is a short implementation baseline for the requested journey, not a new solver audit. Existing screens, service adapters and the accepted Windows package were inspected.
+
+| Classification | Current capability and consequence for the requested journey |
+|---|---|
+| Functional and usable | Project save/open, base engine and named variants; duplicate/rename; supported engine geometry and port editing; shared-station exhaust editor with section lengths/diameters and an existing geometry adapter; integrated point and bounded RPM sweep using the existing coordinator; progress, cancel, checkpoint and resume; sampled results, physical metric availability/reasons, periodicity status, exports and stored-run comparison. Reuse these. |
+| Implemented, but difficult to use | Engine creation starts from a synthetic historical fixture and requires understanding its assumptions. Provenance is present in technical metadata but is not entered or reviewed field by field in the design flow. Available engine controls expose crankcase volume and compression ratio, but do not present a straightforward new-engine path for chamber volume and intake-control selection. The execution surface includes artifact roots and run IDs that should remain behind ordinary project workflow. |
+| Incomplete or disconnected | `Nuevo proyecto` calls `new_project()`, which loads fixture A and labels the project synthetic; the new-project action therefore is not an empty design. Current comparison can show stored same-RPM run differences and geometry, but no acceptance has yet exercised both runs from an engine created in the UI. The default startup also opens that fixture-backed project. |
+| Not implemented for this workflow | A guided from-empty engine creation flow with visible provenance classification and an acceptance path that starts at the packaged EXE, creates the design, runs, modifies exhaust, compares, closes and reopens it. No evidence here supports uncalculated outputs such as trapped AFR, fuel burned, pumping/thermal losses, or shaft estimates beyond declared model outputs; those remain conditional on available solver fields. |
+
+Evidence inspected: `motorsim/desktop/app.py` (`new_file` and startup), `services.py` (`new_project`), `engine_page.py`, `exhaust_page.py`, `execution_page.py`, `results_page.py`, plus the accepted WID1 receipt and existing Desktop V3 specifications. This map intentionally does not reopen historical physics or periodicity contracts.
