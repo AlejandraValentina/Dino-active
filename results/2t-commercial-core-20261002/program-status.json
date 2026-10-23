@@ -7227,6 +7227,66 @@
       "write_scope": [],
       "evidence_level": "L0",
       "qualification": "Offline reduction plus primary-source access assessment. No new physical simulation, calibration or independent audit."
+    },
+    {
+      "id": "ER1-SOURCES",
+      "description": "Bounded review of original experimental and manufacturer sources.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/experimental-reference-v1/report.md",
+        "results/experimental-reference-v1/sources.json",
+        "results/experimental-reference-v1/selection.json",
+        "results/experimental-reference-v1/receipt.json"
+      ],
+      "next_action": "Bounded selection complete. Data acquisition required; no simulations or external contact authorized.",
+      "objective": "DINO_EXPERIMENTAL_REFERENCE_V1",
+      "owner_role": "physics/numerics",
+      "write_scope": [],
+      "evidence_level": "L0",
+      "qualification": "X30 selected, no measured/specimen input fabrication; comparison not yet eligible."
+    },
+    {
+      "id": "ER1-SELECTION",
+      "description": "Select one physically compatible engine, distinguishing nominal limits from tested geometry.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/experimental-reference-v1/report.md",
+        "results/experimental-reference-v1/sources.json",
+        "results/experimental-reference-v1/selection.json",
+        "results/experimental-reference-v1/receipt.json"
+      ],
+      "next_action": "Bounded selection complete. Data acquisition required; no simulations or external contact authorized.",
+      "objective": "DINO_EXPERIMENTAL_REFERENCE_V1",
+      "owner_role": "physics/numerics",
+      "write_scope": [],
+      "evidence_level": "L0",
+      "qualification": "X30 selected, no measured/specimen input fabrication; comparison not yet eligible."
+    },
+    {
+      "id": "ER1-COMPARISON",
+      "description": "Define minimum independent data acquisition and objective uncertainty-aware comparison criteria.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/experimental-reference-v1/report.md",
+        "results/experimental-reference-v1/sources.json",
+        "results/experimental-reference-v1/selection.json",
+        "results/experimental-reference-v1/receipt.json"
+      ],
+      "next_action": "Bounded selection complete. Data acquisition required; no simulations or external contact authorized.",
+      "objective": "DINO_EXPERIMENTAL_REFERENCE_V1",
+      "owner_role": "physics/numerics",
+      "write_scope": [],
+      "evidence_level": "L0",
+      "qualification": "X30 selected, no measured/specimen input fabrication; comparison not yet eligible."
     }
   ],
   "audit_remediation_mode": false,
@@ -7428,21 +7488,21 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_PHYSICAL_ACCURACY_V1",
+    "id": "DINO_EXPERIMENTAL_REFERENCE_V1",
     "state": "OPEN",
     "owner_approved": true,
-    "summary": "Owner-scoped first physical accuracy assessment: existing six periodic balances and accessible experimental reference; one real point only if adequate inputs exist. No calibration, general campaign, UI or solver changes.",
-    "change": "openspec/changes/physical-accuracy-v1",
-    "spec": "openspec/changes/physical-accuracy-v1/specs/physical-accuracy-v1/spec.md",
-    "transitioned_from": "DINO_PERIODIC_RPM_CURVES_V1",
+    "summary": "Select one documented real single-cylinder reference and a bounded independent measurement comparison criterion; no simulation, code or coefficient changes.",
+    "change": "openspec/changes/experimental-reference-v1",
+    "spec": "openspec/changes/experimental-reference-v1/specs/experimental-reference-v1/spec.md",
+    "transitioned_from": "DINO_PHYSICAL_ACCURACY_V1",
     "gate_tasks": [
-      "PA1-BALANCE",
-      "PA1-REFERENCE",
-      "PA1-CONCLUSION"
+      "ER1-SOURCES",
+      "ER1-SELECTION",
+      "ER1-COMPARISON"
     ],
-    "completion_criterion": "Quantitative existing-result diagnosis, reference adequacy decision and bounded technical conclusion; assessment completion does not establish predictive validity.",
-    "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_UNDETERMINED;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED",
-    "functional_result": "PHYSICAL_BALANCE_EXPLAINED_REFERENCE_INPUTS_INCOMPLETE"
+    "completion_criterion": "Deliver a single candidate with verified sources, known/bounded/unknown inputs, representability, minimum acquisition package and uncertainty-aware comparison decision. No simulation authorized.",
+    "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;REFERENCE_TEST_INPUTS_INCOMPLETE",
+    "selected_reference": "IAME X30 Senior"
   },
   "objectives": [
     {
@@ -8244,7 +8304,7 @@
     },
     {
       "id": "DINO_PHYSICAL_ACCURACY_V1",
-      "state": "OPEN",
+      "state": "CLOSED",
       "owner_approved": true,
       "summary": "Owner-scoped first physical accuracy assessment: existing six periodic balances and accessible experimental reference; one real point only if adequate inputs exist. No calibration, general campaign, UI or solver changes.",
       "change": "openspec/changes/physical-accuracy-v1",
@@ -8257,7 +8317,42 @@
       ],
       "completion_criterion": "Quantitative existing-result diagnosis, reference adequacy decision and bounded technical conclusion; assessment completion does not establish predictive validity.",
       "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_UNDETERMINED;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED",
-      "functional_result": "PHYSICAL_BALANCE_EXPLAINED_REFERENCE_INPUTS_INCOMPLETE"
+      "functional_result": "PHYSICAL_BALANCE_EXPLAINED_REFERENCE_INPUTS_INCOMPLETE",
+      "gate_at_owner_transition": {
+        "objective": "DINO_PHYSICAL_ACCURACY_V1",
+        "state": "PASS",
+        "classification": "PHYSICAL_ASSESSMENT_COMPLETE_ACCURACY_UNDETERMINED",
+        "evidence": [
+          "results/physical-accuracy-v1/report.md",
+          "results/physical-accuracy-v1/balance.json",
+          "results/physical-accuracy-v1/sources.json",
+          "results/physical-accuracy-v1/receipt.json"
+        ],
+        "gate_tasks_total": 3,
+        "gate_tasks_done": 3,
+        "gate_task_states": {
+          "DONE": 3
+        },
+        "remaining": [],
+        "updated_at": "2026-10-23T12:24:16+00:00"
+      }
+    },
+    {
+      "id": "DINO_EXPERIMENTAL_REFERENCE_V1",
+      "state": "OPEN",
+      "owner_approved": true,
+      "summary": "Select one documented real single-cylinder reference and a bounded independent measurement comparison criterion; no simulation, code or coefficient changes.",
+      "change": "openspec/changes/experimental-reference-v1",
+      "spec": "openspec/changes/experimental-reference-v1/specs/experimental-reference-v1/spec.md",
+      "transitioned_from": "DINO_PHYSICAL_ACCURACY_V1",
+      "gate_tasks": [
+        "ER1-SOURCES",
+        "ER1-SELECTION",
+        "ER1-COMPARISON"
+      ],
+      "completion_criterion": "Deliver a single candidate with verified sources, known/bounded/unknown inputs, representability, minimum acquisition package and uncertainty-aware comparison decision. No simulation authorized.",
+      "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;REFERENCE_TEST_INPUTS_INCOMPLETE",
+      "selected_reference": "IAME X30 Senior"
     }
   ],
   "owner_decisions_pending": [
@@ -10353,6 +10448,12 @@
       "task": "PA1-CONCLUSION",
       "kind": "task",
       "summary": "Owner-scoped assessment complete: six periodic balances identify low fresh charge, oxygen-limited burn, thermal and friction costs; RS125 original data inaccessible, X30 open candidate incomplete. Zero new scientific runs/calibration. Accuracy undetermined; stop scoped research."
+    },
+    {
+      "at": "2026-10-23T12:56:19+00:00",
+      "task": "ER1-COMPARISON",
+      "kind": "task",
+      "summary": "Four-candidate bounded primary-source selection closed: X30 Senior selected with official254V drawings and measured-publication provenance. Nominal vs specimen inputs separated; finite ENEA/IAME data request and uncertainty-aware held-out comparison defined. No simulations, code changes, coefficient tuning or external contact. Validation not yet eligible."
     }
   ],
   "legacy_gate_status": {
@@ -10367,14 +10468,13 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_PHYSICAL_ACCURACY_V1",
+    "objective": "DINO_EXPERIMENTAL_REFERENCE_V1",
     "state": "PASS",
-    "classification": "PHYSICAL_ASSESSMENT_COMPLETE_ACCURACY_UNDETERMINED",
+    "classification": "REFERENCE_SELECTED_DATA_ACQUISITION_REQUIRED",
     "evidence": [
-      "results/physical-accuracy-v1/report.md",
-      "results/physical-accuracy-v1/balance.json",
-      "results/physical-accuracy-v1/sources.json",
-      "results/physical-accuracy-v1/receipt.json"
+      "results/experimental-reference-v1/report.md",
+      "results/experimental-reference-v1/selection.json",
+      "results/experimental-reference-v1/receipt.json"
     ],
     "gate_tasks_total": 3,
     "gate_tasks_done": 3,
@@ -10382,7 +10482,7 @@
       "DONE": 3
     },
     "remaining": [],
-    "updated_at": "2026-10-23T12:24:16+00:00"
+    "updated_at": "2026-10-23T12:56:19+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

@@ -22,12 +22,12 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_PHYSICAL_ACCURACY_V1
-change/spec:       openspec/changes/physical-accuracy-v1/
-                   specs/physical-accuracy-v1/spec.md
-completion:        Scoped physical accuracy assessment of six existing periodic
-                   points and accessible experimental reference. No calibration,
-                   solver/UI changes or new campaign; no predictive claim.
+CURRENT_OBJECTIVE: DINO_EXPERIMENTAL_REFERENCE_V1
+change/spec:       openspec/changes/experimental-reference-v1/
+                   specs/experimental-reference-v1/spec.md
+completion:        Select one real single-cylinder reference with verified data,
+                   acquisition gaps and uncertainty-aware comparison criteria.
+                   No simulations, solver/coefficient changes or new features.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```

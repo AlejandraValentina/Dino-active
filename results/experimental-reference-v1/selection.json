@@ -1,0 +1,65 @@
+{
+  "schema": "DINO_EXPERIMENTAL_REFERENCE_SELECTION_V1",
+  "engine": "IAME X30 Senior",
+  "physical_representation": "SINGLE_CYLINDER_CRANKCASE_REED_TWO_STROKE",
+  "selection": "SELECTED",
+  "runtime_configuration_created": false,
+  "quantitative_validation_ready": false,
+  "scientific_execution_authorized": false,
+  "target_acquisition_point": {
+    "rpm": 9000,
+    "load": "WOT",
+    "qualification": "Acquisition target only; confirm actual recorded RPM without interpolation."
+  },
+  "published_nominal_inputs": {
+    "bore_mm": 54,
+    "stroke_mm": 54,
+    "rod_length_mm": 102,
+    "displacement_cm3": 123.67
+  },
+  "homologation_limits_not_actual_test_inputs": {
+    "exhaust_duration_max_deg": 177.5,
+    "transfer_duration_deg": [
+      126,
+      127
+    ],
+    "transfer_duration_tolerance_deg": 2,
+    "checking_chamber_volume_min_cm3": 9.7,
+    "checking_volume_warning": "Includes stated verification insert convention; not automatically operational assembled TDC clearance."
+  },
+  "tested_case_unknown_inputs": [
+    "actual bore/clearance/chamber and crankcase free volumes",
+    "actual port area-angle profiles and duct lengths/areas",
+    "installed intake/reed material/force-lift/discharge and airbox",
+    "installed exhaust revision and dimensions including header joints and muffler",
+    "test atmospheric/thermal/fuel/mixture/ignition conditions",
+    "raw torque/RPM or power, measurement plane/corrections and uncertainty"
+  ],
+  "published_simulation_not_measurement": {
+    "lambda": 0.85,
+    "ignition_BTDC_deg": 22,
+    "exhaust_length_variations": "NUMERICAL_NOT_CONFIRMED_EXPERIMENTAL_AB_TEST"
+  },
+  "model_parameters_not_identified": [
+    "scavenging closure",
+    "combustion and thermal parameters for held-out operating point",
+    "mechanical losses in matched power plane"
+  ],
+  "minimum_acquisition_route": "Single request to original ENEA/IAME authors for tested X30 package; if unavailable, metrology and one stabilized dynamometer condition of identified X30. No contact or experiment performed.",
+  "comparison": {
+    "freeze_before_prediction": true,
+    "held_out_target": true,
+    "independent_calibration_required": true,
+    "power_error": "predicted - measured",
+    "expanded_uncertainty": "coverage justified from measured/propagated contributions and covariances; no invented distributions",
+    "engineering_target_relative_error_plus_U95_max": 0.05,
+    "U95_relative_max": 0.02,
+    "qualification": "Proposed local engineering criterion, not SAE requirement or current accuracy claim. No physical gate or solver tolerance changed.",
+    "missing_numerical_or_measurement_uncertainty_result": "INDETERMINATE"
+  },
+  "rejected_alternatives": [
+    "Honda RS125: original full tested inputs not accessed",
+    "KT100 Gore2024: full methods unavailable in bounded access attempt",
+    "VanNiekerk2002 V2: not single-cylinder original hardware; rescaled absolute power comparison"
+  ]
+}

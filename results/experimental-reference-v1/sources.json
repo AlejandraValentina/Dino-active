@@ -1,0 +1,81 @@
+{
+  "date": "2026-10-23",
+  "selected_engine": "IAME X30 Senior 125cc, original engine-bed test of Ortenzi/Bossaglia2023; actual hardware revision to confirm",
+  "decision": "REFERENCE_SELECTED_DATA_ACQUISITION_REQUIRED_BEFORE_QUANTITATIVE_VALIDATION",
+  "scientific_simulations": 0,
+  "sources": [
+    {
+      "id": "iame-x30-254v.pdf",
+      "url": "https://www.iame-motorsport.com/files/noticeboard/254V_IAME-X30-125cc-LIMIT.-16000-giri-MOTORE-REV.05-AGG2021_21032024111116.pdf",
+      "access": "DOWNLOADED_ORIGINAL_PDF",
+      "sha256": "93eaa486afa6bedab4ea178252b5e7faa97ed4c939ee377f34a6ec07fea14f86",
+      "bytes": 9273249,
+      "external_file": "E:\\Dino-artifacts\\experimental-reference-v1-20261023\\iame-x30-254v.pdf"
+    },
+    {
+      "id": "pretoria-complete.pdf",
+      "url": "https://repository.up.ac.za/bitstream/handle/2263/29152/Complete.pdf?sequence=3",
+      "access": "DOWNLOADED_ORIGINAL_PDF",
+      "sha256": "9699ecce748064bab2ec51564ceab6bc234155c14d09a437ea34a5f8f1056b45",
+      "bytes": 2759881,
+      "external_file": "E:\\Dino-artifacts\\experimental-reference-v1-20261023\\pretoria-complete.pdf"
+    },
+    {
+      "id": "Ortenzi-Bossaglia-2023",
+      "url": "https://www.mdpi.com/1996-1073/16/13/4947",
+      "download_url": "https://mdpi-res.com/d_attachment/energies/energies-16-04947/article_deploy/energies-16-04947.pdf",
+      "access": "ORIGINAL_PDF_REUSED_FROM_PREVIOUS_ASSESSMENT",
+      "sha256": "c7d6f01fd0b11f5b4f3d69b0ab271fb568b3424416b512dc9ae68f10db9e5860",
+      "external_file": "E:\\Dino-artifacts\\physical-accuracy-v1-20261023\\sources\\mdpi2023.pdf",
+      "pages_used": [
+        1,
+        16,
+        17,
+        18,
+        19,
+        20,
+        22
+      ]
+    },
+    {
+      "id": "Honda-RS125-2004",
+      "url": "https://pure.qub.ac.uk/en/publications/validation-of-a-computer-simulation-of-a-high-performance-two-str/",
+      "doi": "10.4271/2004-01-3561",
+      "access": "BIBLIOGRAPHIC_RECORD_VERIFIED; original full data not accessed; not proof of nonexistence"
+    },
+    {
+      "id": "Yamaha-KT100-Gore2024",
+      "url": "https://repository.lib.ncsu.edu/bitstreams/24433484-a6eb-4ad8-80f1-a18fa75c4ef6/download",
+      "access": "PUBLIC_INDEX; current direct download HTTP503; no full-method adequacy claim"
+    },
+    {
+      "id": "NIST-uncertainty",
+      "url": "https://www.nist.gov/pml/nist-technical-note-1297/nist-tn-1297-5-combined-standard-uncertainty",
+      "expanded_url": "https://www.nist.gov/pml/nist-technical-note-1297/nist-tn-1297-6-expanded-uncertainty",
+      "access": "ORIGINAL_PUBLIC_GUIDANCE_READ"
+    }
+  ],
+  "bounded_search": "Four candidate datasets; stop after selecting X30 and defining finite missing-data package. No emails sent.",
+  "visual_inspection": {
+    "iame-x30-254v.pdf": [
+      4,
+      5,
+      6,
+      9
+    ],
+    "pretoria-complete.pdf": [
+      59
+    ],
+    "Ortenzi-Bossaglia-2023": [
+      16,
+      17,
+      18
+    ]
+  },
+  "architecture_mapping_reviewed": [
+    "motorsim/two_stroke_ports.py",
+    "motorsim/reed.py",
+    "motorsim/gas_exchange_v2.py",
+    "docs/gasdynamic/functional_engine_desktop_v1.md"
+  ]
+}
