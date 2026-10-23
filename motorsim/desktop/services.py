@@ -103,11 +103,17 @@ def new_design_project(project_id="dino-2t-nuevo", inputs=None, input_sources=No
     } for key in ("bore_mm","stroke_mm","rod_length_mm","volume_bdc_cm3","cylinder_compression_ratio","reference_rpm")}
     engine["provenance"]["design_inputs"].update({
         key:{"classification":"SYNTHETIC_ASSUMPTION","rationale":"Valor inicial supuesto de plantilla; se puede editar en las pantallas Motor y Escape."}
-        for key in ("port_dimensions","exhaust_sections","fuel_model")
+        for key in ("port_dimensions","intake_control","exhaust_sections","fuel_model")
     })
     engine["display_name"]="Motor nuevo · diseño editable"
     validate(engine)
     return create_project(project_id,engine,scientific_validation_status="SYNTHETIC_UNVALIDATED")
+
+
+def starter_reed_petals():
+    """Return the declared starter reed geometry when switching controls in UI."""
+    template=json.loads(STARTER_TEMPLATE.read_text(encoding="utf-8"))
+    return deepcopy(template["native_configuration"].get("reed_petals",[]))
 
 
 def load_results(path: str | Path):

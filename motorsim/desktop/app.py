@@ -19,7 +19,7 @@ from .project_page import ProjectPage
 from .results_page import ResultsPage
 from .execution_page import ExecutionPage
 from .widgets.context_bar import ContextBar
-from .preferences import settings
+from .preferences import settings, repository_root_containing
 from .theme import stylesheet
 
 PAGES=(('Motor',EnginePage),('Escape',ExhaustPage),('Proyecto',ProjectPage),('Simulación',ExecutionPage),('Resultados',ResultsPage))
@@ -40,6 +40,7 @@ class DinoDesktopWindow(QMainWindow):
         self._build_ui();self._build_actions();self.toolbar.hide();self.context.changed.connect(self._state_changed)
         self.context.variant_changed.connect(self._variant_changed)
         self._restore_settings();self._state_changed();self._select_baseline(self.context_bar.baseline.currentData())
+        if project is None:self._ensure_safe_artifact_root_for_new_project()
     def _build_ui(self):
         shell=QWidget();layout=QVBoxLayout(shell);layout.setContentsMargins(0,0,0,0);layout.setSpacing(0)
         self.context_bar=ContextBar();self.context_bar.setObjectName("contextBar")
@@ -257,6 +258,11 @@ class DinoDesktopWindow(QMainWindow):
         if index>=0 and index!=self.context_bar.baseline.currentIndex():self.context_bar.baseline.setCurrentIndex(index)
     def _artifact_root_changed(self,path):
         self.analysis_history.artifact_root=path;self.analysis_history.refresh()
+    def _ensure_safe_artifact_root_for_new_project(self):
+        execution=self.pages[3]
+        if repository_root_containing(execution.artifact_root) is None:return
+        path=execution.use_safe_default_root()
+        self.statusBar().showMessage(f"Las nuevas corridas se guardarán en {path}. Los artifacts existentes siguen en su carpeta anterior.",9000)
     def _action(self,label,callback,shortcut=None):
         action=QAction(label,self)
         if shortcut:action.setShortcut(shortcut)
@@ -335,7 +341,7 @@ class DinoDesktopWindow(QMainWindow):
         if not self._confirm_discard():return
         dialog=NewEngineDialog(self)
         if dialog.exec()!=QDialog.DialogCode.Accepted or dialog.project is None:return
-        self.context.replace_project(dialog.project,None);self.statusBar().showMessage('Diseño nuevo creado · valores de plantilla identificados como supuestos',6000)
+        self.context.replace_project(dialog.project,None);self._ensure_safe_artifact_root_for_new_project();self.statusBar().showMessage('Diseño nuevo creado · valores de plantilla identificados como supuestos',6000)
     def open_file(self):
         if not self._confirm_discard():return
         path,_=QFileDialog.getOpenFileName(self,'Abrir proyecto',str(Path.home()),'Dino 2T (*.dino2t.json *.json)')

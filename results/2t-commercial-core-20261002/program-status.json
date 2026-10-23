@@ -7589,11 +7589,17 @@
       "id": "CRV1-ENGINE-EDITORS",
       "description": "Connect the visible geometry, distribution, provenance and exhaust inputs needed to complete the guided design using existing adapters.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Inspect supported fields and add only controls that affect the integrated engine configuration.",
+      "evidence": [
+        "motorsim/desktop/engine_page.py",
+        "motorsim/desktop/services.py",
+        "results/dino-commercial-readiness-v1/editor-regression/crv1-editor-regression.summary.json",
+        "results/dino-commercial-readiness-v1/captures/04-new-engine-configured.png",
+        "results/dino-commercial-readiness-v1/captures/07-exhaust-edited.png"
+      ],
+      "next_action": "Reuse the existing editors in the full Windows journey.",
       "objective": "DINO_COMMERCIAL_READINESS_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
@@ -7609,8 +7615,11 @@
       "state": "READY",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Verify a new design can run a bounded point, create a variant, and compare available solver outputs with provenance/status intact.",
+      "evidence": [
+        "results/dino-commercial-readiness-v1/acceptance/report.md",
+        "results/dino-commercial-readiness-v1/acceptance/receipt.json"
+      ],
+      "next_action": "Fix new-run checkpoint/identity after variant changes and make packaged periodic references load into analysis history; then verify same-RPM comparison.",
       "objective": "DINO_COMMERCIAL_READINESS_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
@@ -7630,14 +7639,35 @@
       "state": "WAITING",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Run real packaged EXE acceptance only after all three UI paths are implemented.",
+      "evidence": [
+        "results/dino-commercial-readiness-v1/acceptance/report.md",
+        "results/dino-commercial-readiness-v1/acceptance/receipt.json"
+      ],
+      "next_action": "After simulation analysis is DONE, rerun Windows acceptance for base/variant compare and periodic example comparison.",
       "objective": "DINO_COMMERCIAL_READINESS_V1",
       "owner_role": "verification",
       "evidence_level": "L1",
       "write_scope": [
         "scripts/build_windows_trial.py",
         "results/dino-commercial-readiness-v1/"
+      ]
+    },
+    {
+      "id": "CRV1-RUN-IDENTITY-REPRODUCER",
+      "description": "Create a minimal UI-level regression that reproduces the stale Run ID/checkpoint after switching from base to an exhaust variant, and capture the required behavior for a fresh bounded point.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/dino-commercial-readiness-v1/acceptance/receipt.json"
+      ],
+      "next_action": "Reproduce run preparation after the project is saved and the active variant changes; isolate whether prepare resets identity/checkpoint before assigning code changes.",
+      "objective": "DINO_COMMERCIAL_READINESS_V1",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "tests/test_dino_commercial_run_identity_v1.py"
       ]
     }
   ],
@@ -11000,6 +11030,18 @@
       "task": "CRV1-EMPTY-ENGINE",
       "kind": "task",
       "summary": "Added a guided new-engine form with provenance choices, derived displacement/chamber/primary ratio, reed or piston intake selection, an assumption-labeled template with no run references, and packaged template data. Focused and existing UI regression: 26 passed, 1 skipped; OpenSpec strict valid."
+    },
+    {
+      "at": "2026-10-23T16:27:56+00:00",
+      "task": "CRV1-ENGINE-EDITORS",
+      "kind": "task",
+      "summary": "Engine geometry/provenance/intake and escape editing integrated; focused regression and actual EXE editing demonstrate solver-bound inputs."
+    },
+    {
+      "at": "2026-10-23T16:27:56+00:00",
+      "task": "CRV1-SIMULATION-ANALYSIS",
+      "kind": "task",
+      "summary": "One EXE exploratory point completed and persisted. Variant retry reused old checkpoint/run ID; packaged periodic project loaded without importing its six result references. Recorded as remaining product work; comparison is not accepted."
     }
   ],
   "legacy_gate_status": {
@@ -11019,18 +11061,17 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 4,
-    "gate_tasks_done": 1,
+    "gate_tasks_done": 2,
     "gate_task_states": {
-      "DONE": 1,
-      "READY": 2,
+      "DONE": 2,
+      "READY": 1,
       "WAITING": 1
     },
     "remaining": [
-      "CRV1-ENGINE-EDITORS",
       "CRV1-SIMULATION-ANALYSIS",
       "CRV1-WINDOWS-ACCEPTANCE"
     ],
-    "updated_at": "2026-10-23T16:00:22+00:00"
+    "updated_at": "2026-10-23T16:28:18+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

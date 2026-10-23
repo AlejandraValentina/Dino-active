@@ -170,6 +170,15 @@ class ExecutionPage(QWidget):
             self.artifact_root=set_artifact_root(path);self.root_label.setText(path)
             self.history.artifact_root=self.artifact_root;self.artifact_root_changed.emit(self.artifact_root);self.refresh()
 
+    def use_safe_default_root(self):
+        """Redirect new-project output away from a stale repository-local setting."""
+        self.artifact_root=set_artifact_root(default_artifact_root())
+        self.root_label.setText(str(self.artifact_root))
+        self.history.artifact_root=self.artifact_root
+        self.artifact_root_changed.emit(self.artifact_root)
+        self.refresh()
+        return self.artifact_root
+
     def resume_from_entry(self,entry):
         """Populate the existing guarded resume path from a read-only index row."""
         if self.task is not None:return

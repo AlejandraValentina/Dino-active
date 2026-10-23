@@ -67,6 +67,11 @@ class EnginePage(QWidget):
             self.controls[key]=spin
             (advanced_form if key in {"reference_rpm","load","afr"} else form).addRow(f"{label} ({unit})",spin)
             spin.valueChanged.connect(lambda _v:self._mark_component(0,"modificado"))
+        self.intake_control=QComboBox();self.intake_control.setObjectName("engine_intake_control")
+        self.intake_control.addItem("Láminas (reed)","reed");self.intake_control.addItem("Controlado por pistón","piston_port")
+        self.intake_control.setToolTip("Selecciona uno de los dos controles declarados por GAS_EXCHANGE_V2.")
+        form.addRow("Control de admisión",self.intake_control)
+        self.intake_control.currentIndexChanged.connect(lambda *_:self._mark_component(0,"modificado"))
         self.controls["load"].setToolTip(
             "Sólo selecciona pérdidas si el modelo mecánico declara un mapa dependiente de carga; "
             "no controla mariposa, admisión ni la carga del flujo de gas.")
@@ -75,6 +80,8 @@ class EnginePage(QWidget):
             "El AFR de operación se conserva como metadata. La entrega de aire/combustible "
             "la determina el estado de especies del modelo; este campo no modifica el solver.")
         afr_note=QLabel("AFR guardado como metadata; no es una consigna de mezcla.");afr_note.setWordWrap(True);advanced_form.addRow(afr_note)
+        self.provenance_label=QLabel();self.provenance_label.setWordWrap(True);self.provenance_label.setObjectName("notice");form.addRow("Origen de los datos",self.provenance_label)
+        self.provenance_button=QPushButton("Clasificar datos…");self.provenance_button.clicked.connect(self.edit_provenance);form.addRow("",self.provenance_button)
         form.addRow(self.advanced_operation_toggle);form.addRow(self.advanced_operation)
         self.port_group=QGroupBox("Lumbreras y distribución");v=QVBoxLayout(self.port_group)
         v.addWidget(QLabel("Lumbreras · dimensiones y eventos derivados"))
@@ -122,7 +129,17 @@ class EnginePage(QWidget):
         try:
             doc=self.context.engine();n=doc["native_configuration"];slider=n["slider_crank"];cc=slider["crankcase"];cond=doc["operating_conditions"]
             values={"bore_mm":cc["bore_mm"],"stroke_mm":cc["stroke_mm"],"rod_length_mm":cc["rod_length_mm"],"volume_bdc_cm3":cc["volume_bdc_cm3"],"cylinder_compression_ratio":slider["cylinder_compression_ratio"],"reference_rpm":cond["reference_rpm"],"load":cond["load"],"afr":cond["afr"]}
+            self._loaded_design_inputs={key:float(values[key]) for key in ("bore_mm","stroke_mm","rod_length_mm","volume_bdc_cm3","cylinder_compression_ratio","reference_rpm")}
             for key,value in values.items():self.controls[key].setValue(float(value))
+            exchange=n["geometry_identity"].get("gas_exchange_model")
+            self.intake_control.blockSignals(True)
+            control=(exchange or {}).get("intake_control","piston_port")
+            self.intake_control.setCurrentIndex(max(0,self.intake_control.findData(control)))
+            self._loaded_intake_control=control
+            self.intake_control.setEnabled(exchange is not None)
+            self.intake_control.blockSignals(False)
+            if exchange is None:self.intake_control.setToolTip("Este proyecto anterior no declara GAS_EXCHANGE_V2; no se habilita un control que no tenga efecto físico.")
+            self._refresh_provenance(doc)
             self.cylinder_diagram.set_geometry(cc["bore_mm"],cc["stroke_mm"],cc["rod_length_mm"])
             combustion=n.get("fuel_coupled_combustion") or {};component=(combustion.get("components") or [{}])[0]
             for key,value in (("combustion_efficiency",combustion.get("combustion_efficiency",0.0)),("ignition_timing_deg",combustion.get("ignition_timing_deg",0.0)),("duration_deg",component.get("duration_deg",0.0)),("shape_a",component.get("shape_a",1.0)),("shape_m",component.get("shape_m",1.0))):self.comb[key].setValue(float(value))
@@ -158,7 +175,10 @@ class EnginePage(QWidget):
                 if profile.event_angles_deg:
                     profile_rows.append(f"{profile.port_id}: " + ", ".join(f"{angle:g}°" for angle in profile.event_angles_deg))
             ratio=stroke/bore;rod_ratio=cc["rod_length_mm"]/stroke;mean_speed=2*stroke/1000*cond["reference_rpm"]/60
-            self.derived.setText(f"Cilindrada {swept:.1f} cm³ · S/D {ratio:.2f} · biela/carrera {rod_ratio:.2f} · Vm pistón {mean_speed:.2f} m/s")
+            compression=float(slider["cylinder_compression_ratio"])
+            clearance=swept/(compression-1.0)
+            primary=1.0+swept/float(cc["volume_bdc_cm3"])
+            self.derived.setText(f"Cilindrada {swept:.1f} cm³ · cámara derivada {clearance:.2f} cm³ · compresión primaria {primary:.2f}:1 · S/D {ratio:.2f} · biela/carrera {rod_ratio:.2f} · Vm pistón {mean_speed:.2f} m/s")
             self.derived.setToolTip("Distribución calculada por transiciones de área efectiva del backend; no son controles inversos.")
             timing_rows=[];area_series=[];area_rows=[]
             for port in port_set.ports:
@@ -191,7 +211,7 @@ class EnginePage(QWidget):
                     if j!=2 or term["mep_pa"] is None:item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
                     self.losses.setItem(i,j,item)
             self.losses.blockSignals(False)
-            self.validation.setText(f"{doc['validation_state']} · Fixture sintético; validación física experimental no realizada.")
+            self.validation.setText(f"{doc['validation_state']} · Configuración de ingeniería; validación física experimental no realizada.")
             self.apply_button.setEnabled(True)
             for i,name in enumerate(self.component_names):self.component_tabs.setTabText(i,f"{name} · válido")
         except Exception as exc:
@@ -216,6 +236,38 @@ class EnginePage(QWidget):
         visible=self.ports.isColumnHidden(4)
         for column in (4,5,6):self.ports.setColumnHidden(column,not visible)
         self.port_advanced_toggle.setText("Más dimensiones ▾" if visible else "Más dimensiones ▸")
+
+    def _refresh_provenance(self,doc):
+        inputs=doc.get("provenance",{}).get("design_inputs",{})
+        labels={"MEASURED":"medido","ESTIMATED":"estimado","SYNTHETIC_ASSUMPTION":"supuesto","UNKNOWN":"sin clasificar","DOCUMENTED":"documentado","DERIVED_FROM_DOCUMENTED":"derivado de documentación"}
+        names=("bore_mm","stroke_mm","rod_length_mm","volume_bdc_cm3","cylinder_compression_ratio","reference_rpm","port_dimensions","intake_control","exhaust_sections","fuel_model")
+        parts=[f"{name}: {labels.get(inputs.get(name,{}).get('classification','UNKNOWN'),'sin clasificar')}" for name in names]
+        self.provenance_label.setText(" · ".join(parts))
+
+    def edit_provenance(self):
+        doc=deepcopy(self.context.engine());current=doc.setdefault("provenance",{}).setdefault("design_inputs",{})
+        dialog=QDialog(self);dialog.setWindowTitle("Origen de los datos del motor");layout=QVBoxLayout(dialog)
+        layout.addWidget(QLabel("Clasificá cada dato según su fuente. Los cambios se guardan en la provenance del motor."))
+        form=QFormLayout();layout.addLayout(form)
+        names=(("bore_mm","Diámetro"),("stroke_mm","Carrera"),("rod_length_mm","Biela"),("volume_bdc_cm3","Volumen del cárter"),("cylinder_compression_ratio","Compresión geométrica"),("reference_rpm","RPM"),("port_dimensions","Lumbreras y distribución"),("intake_control","Control de admisión"),("exhaust_sections","Secciones del escape"),("fuel_model","Combustible y combustión"))
+        choices=(("Medido","MEASURED"),("Estimado","ESTIMATED"),("Supuesto","SYNTHETIC_ASSUMPTION"),("Sin clasificar","UNKNOWN"))
+        selectors={}
+        for key,label in names:
+            combo=QComboBox()
+            for text,value in choices:combo.addItem(text,value)
+            classification=current.get(key,{}).get("classification","UNKNOWN")
+            index=combo.findData(classification);combo.setCurrentIndex(index if index>=0 else combo.findData("UNKNOWN"))
+            selectors[key]=combo;form.addRow(label,combo)
+        buttons=QDialogButtonBox(QDialogButtonBox.StandardButton.Cancel|QDialogButtonBox.StandardButton.Save)
+        buttons.accepted.connect(dialog.accept);buttons.rejected.connect(dialog.reject);layout.addWidget(buttons)
+        if dialog.exec()!=QDialog.DialogCode.Accepted:return
+        for key,combo in selectors.items():
+            previous=current.get(key,{})
+            current[key]={"classification":combo.currentData(),"rationale":previous.get("rationale","Clasificado en el editor de motor." )}
+        try:
+            from ..engine_configuration import validate
+            validate(doc);self.context.replace_engine(doc)
+        except Exception as exc:QMessageBox.warning(self,"No se pudo guardar provenance",str(exc))
 
     def _edit_loss_map(self,row,_column):
         if row>=len(self.loss_model_draft["terms"]):return
@@ -258,8 +310,28 @@ class EnginePage(QWidget):
     def apply(self):
         try:
             doc=deepcopy(self.context.engine());native=doc["native_configuration"];slider=native["slider_crank"];cc=slider["crankcase"]
+            design_inputs=doc.setdefault("provenance",{}).setdefault("design_inputs",{})
+            source_fields=("bore_mm","stroke_mm","rod_length_mm","volume_bdc_cm3","cylinder_compression_ratio","reference_rpm")
+            current_values={key:self.controls[key].value() for key in source_fields}
+            for key,value in current_values.items():
+                if value!=self._loaded_design_inputs.get(key,value):
+                    design_inputs[key]={"classification":"UNKNOWN","rationale":"El valor cambió en el editor; reclasificá su fuente en Clasificar datos."}
             cc.update({key:self.controls[key].value() for key in ("bore_mm","stroke_mm","rod_length_mm","volume_bdc_cm3")})
             slider["cylinder_compression_ratio"]=self.controls["cylinder_compression_ratio"].value()
+            exchange=native["geometry_identity"].get("gas_exchange_model")
+            if exchange is not None:
+                selected=self.intake_control.currentData()
+                if selected!=exchange.get("intake_control"):
+                    design_inputs["intake_control"]={"classification":"UNKNOWN","rationale":"El control de admisión cambió; reclasificá su fuente en Clasificar datos."}
+                exchange["intake_control"]=selected
+                if selected=="piston_port":
+                    native["reed_petals"]=[];native["dynamic_reed_binding"]=None
+                elif selected=="reed" and not native.get("reed_petals"):
+                    from .services import starter_reed_petals
+                    petals=starter_reed_petals()
+                    if not petals:raise ValueError("La plantilla no declara una geometría de láminas compatible.")
+                    native["reed_petals"]=petals
+                    native["dynamic_reed_binding"]=None
             self._edited_ports(native)
             doc["mechanical_loss_model"]=deepcopy(self.loss_model_draft)
             for i,term in enumerate(doc["mechanical_loss_model"]["terms"]):

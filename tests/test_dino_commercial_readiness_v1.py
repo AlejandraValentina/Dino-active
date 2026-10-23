@@ -10,7 +10,11 @@ from pathlib import Path
 import desktop_qsettings_isolation  # noqa: F401
 from PySide6.QtWidgets import QApplication
 
+from motorsim.desktop.app import DinoDesktopWindow
 from motorsim.desktop.new_engine_dialog import NewEngineDialog
+from motorsim.desktop.context import DesktopContext
+from motorsim.desktop.engine_page import EnginePage
+from motorsim.desktop.preferences import repository_root_containing, settings
 from motorsim.desktop.services import new_design_project
 from motorsim.engine_configuration import identity, validate
 from motorsim.engine_project import load_project, save_project, validate_project
@@ -57,6 +61,29 @@ class CommercialReadinessV1Tests(unittest.TestCase):
             validate_project(recovered)
         self.assertEqual(recovered,dialog.project)
         self.assertEqual(identity(recovered["base_engine"]),identity(engine))
+
+    def test_engine_page_recalculates_derived_geometry_and_applies_intake_choice(self):
+        project=new_design_project("editor-engine")
+        page=EnginePage(DesktopContext(project))
+        self.assertIn("cámara derivada",page.derived.text())
+        self.assertIn("compresión primaria",page.derived.text())
+        page.intake_control.setCurrentIndex(page.intake_control.findData("piston_port"))
+        page.apply()
+        native=page.context.engine()["native_configuration"]
+        self.assertEqual(native["geometry_identity"]["gas_exchange_model"]["intake_control"],"piston_port")
+        self.assertEqual(native["reed_petals"],[])
+        page.intake_control.setCurrentIndex(page.intake_control.findData("reed"))
+        page.apply()
+        native=page.context.engine()["native_configuration"]
+        self.assertEqual(native["geometry_identity"]["gas_exchange_model"]["intake_control"],"reed")
+        self.assertTrue(native["reed_petals"])
+
+    def test_new_project_redirects_stale_repository_artifact_setting(self):
+        settings().setValue("artifact_root",str(Path.cwd()))
+        window=DinoDesktopWindow()
+        self.assertIsNone(repository_root_containing(window.pages[3].artifact_root))
+        self.assertFalse(window.context.project["result_references"])
+        window.close()
 
 
 if __name__=="__main__":unittest.main()

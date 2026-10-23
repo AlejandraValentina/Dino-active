@@ -1,0 +1,54 @@
+{
+  "schema": "DINO_COMMERCIAL_READINESS_ACCEPTANCE_PARTIAL_V1",
+  "date": "2026-10-23",
+  "completion": "PARTIAL_BLOCKED_ON_PRODUCT_GAPS",
+  "package": {
+    "zip": "E:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc7-windows-x64-7c79016f-trial-20261023T160920Z.zip",
+    "sha256": "d2992cc184d71e91ed0b22eb89bb3a9e4f2f9f4afe7cf856b442d4cd45ec2020",
+    "exe": "E:\\Dino-Commercial-Readiness-TRIAL-v1-final\\MotorSim\\Dino2T.exe"
+  },
+  "project": {
+    "path": "E:\\Dino-artifacts\\Dino-Commercial-Readiness-V1\\Designs\\demo-dino-2t.dino2t.json",
+    "identity_sha256": "27f28f6b66c0eff96dd1c80c90feebc0d8d73e6a8ada89ec350216d6970918c0",
+    "reopened_after_process_restart": true,
+    "variant_count_after_reopen": 1,
+    "result_references": 0
+  },
+  "run": {
+    "artifact_directory": "C:\\Users\\ageribon.MIDES\\AppData\\Local\\MotorSim\\Artifacts\\exploratory-workflow-v1\\demo-dino-2t\\ccc3083e2c2a4d2a9b0d1562fe5cd151",
+    "run_id": "ccc3083e2c2a4d2a9b0d1562fe5cd151",
+    "mode": "ENGINEERING_EXPLORATORY",
+    "rpm": 3000,
+    "cycles_completed": 1,
+    "elapsed_seconds": 9.77612290007528,
+    "classification": "MAX_CYCLES_NONCONVERGED",
+    "periodicity": "INSUFFICIENT_CYCLES",
+    "available_cycle_values": {
+      "indicated_power_W": -1431.3048992580473,
+      "indicated_torque_Nm": -4.555984995771309,
+      "imep_Pa": -229691.91113632882,
+      "afr_supplied": 11.5,
+      "afr_trapped": 11.500000000000014,
+      "fuel_burned_kg": 6.23203506183894e-7
+    },
+    "interpretation": "One-cycle transient only; not periodic and not experimentally validated."
+  },
+  "exhaust_variant": {
+    "name": "Escape 20 mm mas largo",
+    "first_section_length_mm": 103.0,
+    "baseline_first_section_length_mm": 83.0,
+    "saved_in_project": true
+  },
+  "comparison": {
+    "same_project_base_and_variant_runs": false,
+    "periodic_example_loaded": true,
+    "periodic_example_history_records_visible": 0,
+    "complete": false,
+    "blocker": "Second variant run retained the previous checkpoint and Run ID; packaged periodic project references did not populate analysis history."
+  },
+  "claims": {
+    "commercial_validation": false,
+    "experimental_validation": false,
+    "x30_changed": false
+  }
+}
