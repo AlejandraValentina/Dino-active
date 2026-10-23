@@ -7032,6 +7032,54 @@
       "write_scope": [],
       "evidence_level": "L1",
       "qualification": "Functional exploratory curves demonstrated through existing Desktop.4newpoints120cycles,2reused9000 unchanged; all6 NOT_CONVERGED. No predictive/periodic scientific acceptance.25focal pass,43Desktop pass+1skip;finalGUIclean;6zero-step restores and completed-resume without workers."
+    },
+    {
+      "id": "PB1-DIAGNOSIS",
+      "description": "Read-only exhaust inventory, boundary and detector diagnosis; exact checkpoint restore.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/periodicity-blocker-v1/protocol.md"
+      ],
+      "next_action": "Only the scoped A9000 discriminating continuation; no grid execution.",
+      "objective": "DINO_PERIODICITY_BLOCKER_V1",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L1"
+    },
+    {
+      "id": "PB1-CONTINUATION",
+      "description": "Single conservative A9000 continuation, maximum110 totalcycles /600s newcompute /512MiB.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/periodicity-blocker-v1/protocol.md"
+      ],
+      "next_action": "Only the scoped A9000 discriminating continuation; no grid execution.",
+      "objective": "DINO_PERIODICITY_BLOCKER_V1",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L1"
+    },
+    {
+      "id": "PB1-CONCLUSION",
+      "description": "Interpret periodicity, transient differences, conservation and remaining physical limits.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/periodicity-blocker-v1/protocol.md"
+      ],
+      "next_action": "Only the scoped A9000 discriminating continuation; no grid execution.",
+      "objective": "DINO_PERIODICITY_BLOCKER_V1",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L1"
     }
   ],
   "audit_remediation_mode": false,
@@ -7233,22 +7281,19 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_DESKTOP_RPM_CURVES_V1",
+    "id": "DINO_PERIODICITY_BLOCKER_V1",
     "state": "OPEN",
     "owner_approved": true,
-    "summary": "Owner-authorized delivery2B: integrated exploratory A/B8000/9000/10000RPM curves with explicit transient distinction and existing9000 reuse.",
-    "change": "openspec/changes/desktop-rpm-curves-v1",
-    "spec": "openspec/changes/desktop-rpm-curves-v1/specs/desktop-rpm-curves-v1/spec.md",
-    "authorization_source": "Owner delivery2B message authorizes4newpoints and reuse2historical9000; no physics/detector change.",
-    "transitioned_from": "DINO_FUNCTIONAL_EXHAUST_COMPARISON_V1",
+    "summary": "Owner-authorized focused closure of exhaust periodicity blocker using existing A9000 evidence and one bounded discriminating continuation.",
+    "change": "openspec/changes/periodicity-blocker-v1",
+    "spec": "openspec/changes/periodicity-blocker-v1/specs/periodicity-blocker-v1/spec.md",
+    "transitioned_from": "DINO_DESKTOP_RPM_CURVES_V1",
     "gate_tasks": [
-      "RC2B-INTEGRATION",
-      "RC2B-DEMONSTRATION",
-      "RC2B-RESULTS"
+      "PB1-DIAGNOSIS",
+      "PB1-CONTINUATION",
+      "PB1-CONCLUSION"
     ],
-    "completion_criterion": "Existing Desktop executes A/B small grid, reuses9000 without steps, supports checkpoints/resume, plots honest exploratory power/torque with gaps/status and exact RPM deltas; records periodicity limitation and bounded next solution.",
-    "functional_result": "FUNCTIONAL_EXPLORATORY_PASS",
-    "scientific_state": "REVIEW;ALL6_NOT_CONVERGED"
+    "completion_criterion": "Identify cause using source/evidence and at most one bounded A9000 continuation; report observed periodicity or precise unresolved blocker; no curve campaign or tolerance relaxation."
   },
   "objectives": [
     {
@@ -7938,7 +7983,7 @@
     },
     {
       "id": "DINO_DESKTOP_RPM_CURVES_V1",
-      "state": "OPEN",
+      "state": "CLOSED",
       "owner_approved": true,
       "summary": "Owner-authorized delivery2B: integrated exploratory A/B8000/9000/10000RPM curves with explicit transient distinction and existing9000 reuse.",
       "change": "openspec/changes/desktop-rpm-curves-v1",
@@ -7952,7 +7997,42 @@
       ],
       "completion_criterion": "Existing Desktop executes A/B small grid, reuses9000 without steps, supports checkpoints/resume, plots honest exploratory power/torque with gaps/status and exact RPM deltas; records periodicity limitation and bounded next solution.",
       "functional_result": "FUNCTIONAL_EXPLORATORY_PASS",
-      "scientific_state": "REVIEW;ALL6_NOT_CONVERGED"
+      "scientific_state": "REVIEW;ALL6_NOT_CONVERGED",
+      "gate_at_owner_transition": {
+        "objective": "DINO_DESKTOP_RPM_CURVES_V1",
+        "state": "PASS",
+        "classification": "DINO_DESKTOP_RPM_CURVES_V1_FUNCTIONAL_EXPLORATORY_PASS",
+        "gate_tasks_total": 3,
+        "gate_tasks_done": 3,
+        "gate_task_states": {
+          "DONE": 3
+        },
+        "remaining": [],
+        "evidence": [
+          "results/desktop-rpm-curves-v1/report.md",
+          "results/desktop-rpm-curves-v1/receipt.json",
+          "results/desktop-rpm-curves-v1/01-power-torque-curves.png",
+          "configs/reference_cases/functional_exhaust_rpm_grid_v1.json"
+        ],
+        "qualification": "Functional L1 acceptance only: actual exploratory RPM curves, not periodic scientific outputs or predictive validation.",
+        "scientific_state": "REVIEW;ALL6_NONPERIODIC;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED",
+        "further_campaign_authorized": false
+      }
+    },
+    {
+      "id": "DINO_PERIODICITY_BLOCKER_V1",
+      "state": "OPEN",
+      "owner_approved": true,
+      "summary": "Owner-authorized focused closure of exhaust periodicity blocker using existing A9000 evidence and one bounded discriminating continuation.",
+      "change": "openspec/changes/periodicity-blocker-v1",
+      "spec": "openspec/changes/periodicity-blocker-v1/specs/periodicity-blocker-v1/spec.md",
+      "transitioned_from": "DINO_DESKTOP_RPM_CURVES_V1",
+      "gate_tasks": [
+        "PB1-DIAGNOSIS",
+        "PB1-CONTINUATION",
+        "PB1-CONCLUSION"
+      ],
+      "completion_criterion": "Identify cause using source/evidence and at most one bounded A9000 continuation; report observed periodicity or precise unresolved blocker; no curve campaign or tolerance relaxation."
     }
   ],
   "owner_decisions_pending": [
@@ -10018,6 +10098,12 @@
       "task": "RC2B-RESULTS",
       "kind": "task",
       "summary": "Final focal25PASS/14deselected includes hollow/dotted rendering+CSV, matched RPM deltas, strict9000 reuse, endpoint-policy guard, nested progress and no reset of exhausted point cap. Final read-only Desktop view exit0,no errors; no further solver steps."
+    },
+    {
+      "at": "2026-10-23T10:25:18.796566+00:00",
+      "task": "PB1-DIAGNOSIS",
+      "kind": "task",
+      "summary": "Owner accepts delivery2B functional. Existing30cycles rechecked:57failures, species purge dominates; exhaust flux inventory residual<=2.44e-18kg; detector replay identical; exact zero-step restore,next31. Legacy blocked tasks remain unrelated and unauthorized. One bounded continuation protocol prepared."
     }
   ],
   "legacy_gate_status": {
@@ -10032,24 +10118,9 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_DESKTOP_RPM_CURVES_V1",
-    "state": "PASS",
-    "classification": "DINO_DESKTOP_RPM_CURVES_V1_FUNCTIONAL_EXPLORATORY_PASS",
-    "gate_tasks_total": 3,
-    "gate_tasks_done": 3,
-    "gate_task_states": {
-      "DONE": 3
-    },
-    "remaining": [],
-    "evidence": [
-      "results/desktop-rpm-curves-v1/report.md",
-      "results/desktop-rpm-curves-v1/receipt.json",
-      "results/desktop-rpm-curves-v1/01-power-torque-curves.png",
-      "configs/reference_cases/functional_exhaust_rpm_grid_v1.json"
-    ],
-    "qualification": "Functional L1 acceptance only: actual exploratory RPM curves, not periodic scientific outputs or predictive validation.",
-    "scientific_state": "REVIEW;ALL6_NONPERIODIC;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED",
-    "further_campaign_authorized": false
+    "objective": "DINO_PERIODICITY_BLOCKER_V1",
+    "state": "REVIEW",
+    "classification": "FOCUSED_DIAGNOSIS_IN_PROGRESS"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -10394,6 +10465,26 @@
       },
       "remaining": [],
       "updated_at": "2026-10-16T14:53:06+00:00"
+    },
+    {
+      "objective": "DINO_DESKTOP_RPM_CURVES_V1",
+      "state": "PASS",
+      "classification": "DINO_DESKTOP_RPM_CURVES_V1_FUNCTIONAL_EXPLORATORY_PASS",
+      "gate_tasks_total": 3,
+      "gate_tasks_done": 3,
+      "gate_task_states": {
+        "DONE": 3
+      },
+      "remaining": [],
+      "evidence": [
+        "results/desktop-rpm-curves-v1/report.md",
+        "results/desktop-rpm-curves-v1/receipt.json",
+        "results/desktop-rpm-curves-v1/01-power-torque-curves.png",
+        "configs/reference_cases/functional_exhaust_rpm_grid_v1.json"
+      ],
+      "qualification": "Functional L1 acceptance only: actual exploratory RPM curves, not periodic scientific outputs or predictive validation.",
+      "scientific_state": "REVIEW;ALL6_NONPERIODIC;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED",
+      "further_campaign_authorized": false
     }
   ],
   "gate_status_archive_before_dino_desktop_v3_1": {

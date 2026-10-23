@@ -22,13 +22,12 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_DESKTOP_RPM_CURVES_V1
-change/spec:       openspec/changes/desktop-rpm-curves-v1/
-                   specs/desktop-rpm-curves-v1/spec.md
-completion:        Owner-authorized delivery2B: existing Desktop/coordinator for
-                   A/B8000/9000/10000RPM; reuse existing9000, four new points only.
-                   Explicit exploratory curves, gaps, periodicity and stability.
-                   No physics/detector change or predictive claim; no push.
+CURRENT_OBJECTIVE: DINO_PERIODICITY_BLOCKER_V1
+change/spec:       openspec/changes/periodicity-blocker-v1/
+                   specs/periodicity-blocker-v1/spec.md
+completion:        Owner-scoped diagnosis using existing A9000 evidence and one
+                   bounded conservative continuation; unchanged physics/detector.
+                   Report complete periodicity or precise blocker; no grid/push.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```
