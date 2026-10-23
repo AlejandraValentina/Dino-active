@@ -7353,6 +7353,66 @@
       "write_scope": [],
       "evidence_level": "L0",
       "qualification": "20 approximate published measured-line readouts; digitization bound only, unknown experimental uncertainty. Non-runnable input inventory retains nulls."
+    },
+    {
+      "id": "X30R-PUBLIC-DATA",
+      "description": "Check MAN2018-89, article and254V source identities and nominal vs measured interpretation.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/x30-public-reconstruction-v1/decision.md",
+        "results/x30-public-reconstruction-v1/x30-technical-inputs-v2.json",
+        "results/x30-public-reconstruction-v1/email-draft-refined.md",
+        "results/x30-public-reconstruction-v1/receipt.json"
+      ],
+      "next_action": "Mandatory bounded decision B complete. Await geometric data, no new research/configuration/execution authorized.",
+      "objective": "DINO_X30_PUBLIC_RECONSTRUCTION_V1",
+      "owner_role": "physics/numerics",
+      "write_scope": [],
+      "evidence_level": "L0",
+      "qualification": "Nominal manual data and public derivations incorporated; precompression free volume cannot be derived from partial public projections. No borrowed primary ratio."
+    },
+    {
+      "id": "X30R-DERIVATIONS",
+      "description": "Derive nominal kinematics and assess volume/duct identifiability without fabricated inputs.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/x30-public-reconstruction-v1/decision.md",
+        "results/x30-public-reconstruction-v1/x30-technical-inputs-v2.json",
+        "results/x30-public-reconstruction-v1/email-draft-refined.md",
+        "results/x30-public-reconstruction-v1/receipt.json"
+      ],
+      "next_action": "Mandatory bounded decision B complete. Await geometric data, no new research/configuration/execution authorized.",
+      "objective": "DINO_X30_PUBLIC_RECONSTRUCTION_V1",
+      "owner_role": "physics/numerics",
+      "write_scope": [],
+      "evidence_level": "L0",
+      "qualification": "Nominal manual data and public derivations incorporated; precompression free volume cannot be derived from partial public projections. No borrowed primary ratio."
+    },
+    {
+      "id": "X30R-DECISION",
+      "description": "Close mandatory A/B decision and refine existing unsent author request.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/x30-public-reconstruction-v1/decision.md",
+        "results/x30-public-reconstruction-v1/x30-technical-inputs-v2.json",
+        "results/x30-public-reconstruction-v1/email-draft-refined.md",
+        "results/x30-public-reconstruction-v1/receipt.json"
+      ],
+      "next_action": "Mandatory bounded decision B complete. Await geometric data, no new research/configuration/execution authorized.",
+      "objective": "DINO_X30_PUBLIC_RECONSTRUCTION_V1",
+      "owner_role": "physics/numerics",
+      "write_scope": [],
+      "evidence_level": "L0",
+      "qualification": "Nominal manual data and public derivations incorporated; precompression free volume cannot be derived from partial public projections. No borrowed primary ratio."
     }
   ],
   "audit_remediation_mode": false,
@@ -7554,20 +7614,20 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_X30_PREPARATION_V1",
+    "id": "DINO_X30_PUBLIC_RECONSTRUCTION_V1",
     "state": "OPEN",
     "owner_approved": true,
-    "summary": "Owner accepts X30: prepare unsent author email, digitize published measured curve, classify revision-specific technical inputs and decide minimal single-point eligibility. No simulations or features.",
-    "change": "openspec/changes/x30-preparation-v1",
-    "spec": "openspec/changes/x30-preparation-v1/specs/x30-preparation-v1/spec.md",
-    "transitioned_from": "DINO_EXPERIMENTAL_REFERENCE_V1",
+    "summary": "Bounded owner-directed MAN089/article/254V reconstruction check; mandatory executable-nominal or precise blocked decision, without simulations, solver changes or new features.",
+    "change": "openspec/changes/x30-public-reconstruction-v1",
+    "spec": "openspec/changes/x30-public-reconstruction-v1/specs/x30-public-reconstruction-v1/spec.md",
+    "transitioned_from": "DINO_X30_PREPARATION_V1",
     "gate_tasks": [
-      "X30P-REQUEST",
-      "X30P-PUBLISHED-DATA",
-      "X30P-INPUTS-DECISION"
+      "X30R-PUBLIC-DATA",
+      "X30R-DERIVATIONS",
+      "X30R-DECISION"
     ],
-    "completion_criterion": "Deliver unsent concise email, qualified Figure10 readout with digitization bounds, documented/derived/unknown input inventory and finite next-test decision. No scientific execution.",
-    "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;APPROXIMATE_PUBLIC_CURVE_AVAILABLE;REPRESENTATIVE_POINT_GEOMETRY_INCOMPLETE"
+    "completion_criterion": "Resolve MAN089 nominal data and public geometric derivations; build statically checked nominal configuration only if defensible, otherwise close B with exact missing geometry and refined unsent request.",
+    "scientific_state": "B_CONFIGURATION_BLOCKED;PRECOMPRESSION_FREE_VOLUME_UNIDENTIFIED;EXPERIMENTAL_VALIDATION_NOT_PERFORMED"
   },
   "objectives": [
     {
@@ -8438,7 +8498,7 @@
     },
     {
       "id": "DINO_X30_PREPARATION_V1",
-      "state": "OPEN",
+      "state": "CLOSED",
       "owner_approved": true,
       "summary": "Owner accepts X30: prepare unsent author email, digitize published measured curve, classify revision-specific technical inputs and decide minimal single-point eligibility. No simulations or features.",
       "change": "openspec/changes/x30-preparation-v1",
@@ -8450,7 +8510,39 @@
         "X30P-INPUTS-DECISION"
       ],
       "completion_criterion": "Deliver unsent concise email, qualified Figure10 readout with digitization bounds, documented/derived/unknown input inventory and finite next-test decision. No scientific execution.",
-      "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;APPROXIMATE_PUBLIC_CURVE_AVAILABLE;REPRESENTATIVE_POINT_GEOMETRY_INCOMPLETE"
+      "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;APPROXIMATE_PUBLIC_CURVE_AVAILABLE;REPRESENTATIVE_POINT_GEOMETRY_INCOMPLETE",
+      "gate_at_owner_transition": {
+        "objective": "DINO_X30_PREPARATION_V1",
+        "state": "PASS",
+        "classification": "X30_PREPARATION_COMPLETE_GEOMETRY_GAPS_REMAIN",
+        "evidence": [
+          "results/x30-preparation-v1/next-point.md",
+          "results/x30-preparation-v1/receipt.json"
+        ],
+        "gate_tasks_total": 3,
+        "gate_tasks_done": 3,
+        "gate_task_states": {
+          "DONE": 3
+        },
+        "remaining": [],
+        "updated_at": "2026-10-23T13:18:03+00:00"
+      }
+    },
+    {
+      "id": "DINO_X30_PUBLIC_RECONSTRUCTION_V1",
+      "state": "OPEN",
+      "owner_approved": true,
+      "summary": "Bounded owner-directed MAN089/article/254V reconstruction check; mandatory executable-nominal or precise blocked decision, without simulations, solver changes or new features.",
+      "change": "openspec/changes/x30-public-reconstruction-v1",
+      "spec": "openspec/changes/x30-public-reconstruction-v1/specs/x30-public-reconstruction-v1/spec.md",
+      "transitioned_from": "DINO_X30_PREPARATION_V1",
+      "gate_tasks": [
+        "X30R-PUBLIC-DATA",
+        "X30R-DERIVATIONS",
+        "X30R-DECISION"
+      ],
+      "completion_criterion": "Resolve MAN089 nominal data and public geometric derivations; build statically checked nominal configuration only if defensible, otherwise close B with exact missing geometry and refined unsent request.",
+      "scientific_state": "B_CONFIGURATION_BLOCKED;PRECOMPRESSION_FREE_VOLUME_UNIDENTIFIED;EXPERIMENTAL_VALIDATION_NOT_PERFORMED"
     }
   ],
   "owner_decisions_pending": [
@@ -10558,6 +10650,12 @@
       "task": "X30P-INPUTS-DECISION",
       "kind": "task",
       "summary": "X30 preparation closed: unsent professional author email;20 orange Figure10 measured-line readouts,9000=15.1kW with±0.3kW digitization-only bound; official254V documented/derived/unknown inventory without defaults. Single point remains blocked by operational volumes, transfer geometry and installed paths. No simulations, features, coefficient changes or email delivery."
+    },
+    {
+      "at": "2026-10-23T14:18:40+00:00",
+      "task": "X30R-DECISION",
+      "kind": "task",
+      "summary": "Mandatory decision B closed after MAN2018-89/article/254V review. Nominal10.15cm3,177.5±2deg,22deg and430–440mm setting incorporated; conditional event/arc bounds derived. Decisive geometric gap is precompression free volume or equivalent X30 primary ratio; no1.35borrowing. Existing request refined, not sent. No solver/features/calibration."
     }
   ],
   "legacy_gate_status": {
@@ -10572,12 +10670,12 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_X30_PREPARATION_V1",
+    "objective": "DINO_X30_PUBLIC_RECONSTRUCTION_V1",
     "state": "PASS",
-    "classification": "X30_PREPARATION_COMPLETE_GEOMETRY_GAPS_REMAIN",
+    "classification": "X30_PUBLIC_RECONSTRUCTION_B_CONFIGURATION_BLOCKED",
     "evidence": [
-      "results/x30-preparation-v1/next-point.md",
-      "results/x30-preparation-v1/receipt.json"
+      "results/x30-public-reconstruction-v1/decision.md",
+      "results/x30-public-reconstruction-v1/receipt.json"
     ],
     "gate_tasks_total": 3,
     "gate_tasks_done": 3,
@@ -10585,7 +10683,7 @@
       "DONE": 3
     },
     "remaining": [],
-    "updated_at": "2026-10-23T13:18:03+00:00"
+    "updated_at": "2026-10-23T14:18:40+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

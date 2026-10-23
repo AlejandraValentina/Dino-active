@@ -1,0 +1,453 @@
+{
+  "schema": "X30_TECHNICAL_INPUT_INVENTORY_V2",
+  "engine": "IAME X30 Senior",
+  "runnable_configuration": false,
+  "execution_allowed": false,
+  "identity": {
+    "manufacturer_revision": "254/V dated12/11/2020; downloaded filename identifies REV.05 AGG2021",
+    "manufacturer_pdf_sha256": "93eaa486afa6bedab4ea178252b5e7faa97ed4c939ee377f34a6ec07fea14f86",
+    "manufacturer_url": "https://www.iame-motorsport.com/files/noticeboard/254V_IAME-X30-125cc-LIMIT.-16000-giri-MOTORE-REV.05-AGG2021_21032024111116.pdf",
+    "experimental_paper_doi": "10.3390/en16134947",
+    "experimental_paper_sha256": "c7d6f01fd0b11f5b4f3d69b0ab271fb568b3424416b512dc9ae68f10db9e5860",
+    "same_specimen_revision_confirmed": false,
+    "additional_manual": {
+      "id": "MAN-089",
+      "printed_revision": "MAN2018-89; X30 125cc Spec.EU",
+      "pdf_creation_date": "2018-06-01",
+      "creation_date_qualification": "PDF metadata, not proof of experimental hardware revision",
+      "source_url": "https://www.kartcompany.ch/images/iame/manual/E/MAN-089-ENG-X30-125cc-Spec-EU.pdf",
+      "sha256": "36b0038af6fc5dfcdb5afef9bf31c7075ef43be8a114d7f99680ba650915f2ae",
+      "retrieved": "2026-10-23",
+      "bytes": 9478048
+    },
+    "revision_combination": "MAN2018-89 plus254/V(2020/2021) cross-check, not asserted to describe the identical tested specimen. Conflicts remain explicit."
+  },
+  "documented": {
+    "bore": {
+      "value": 54,
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 1,
+      "qualification": "NOMINAL_NOT_TEST_SPECIMEN_MEASUREMENT"
+    },
+    "stroke": {
+      "value": 54,
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 1,
+      "qualification": "NOMINAL_NOT_TEST_SPECIMEN_MEASUREMENT"
+    },
+    "rod_center_distance": {
+      "value": 102,
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 1,
+      "qualification": "NOMINAL_NOT_TEST_SPECIMEN_MEASUREMENT"
+    },
+    "bore_max": {
+      "value": 54.28,
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 1,
+      "qualification": "HOMOLOGATION_LIMIT"
+    },
+    "transfer_paths": {
+      "value": 3,
+      "unit": "count",
+      "source": "IAME254V",
+      "page": 1,
+      "qualification": "OFFICIAL_TOPOLOGY"
+    },
+    "intake_type": {
+      "value": "reed valve",
+      "unit": "type",
+      "source": "IAME254V",
+      "page": 1,
+      "qualification": "OFFICIAL_TOPOLOGY"
+    },
+    "carburetor": {
+      "value": "Tillotson HW-27A",
+      "unit": "model",
+      "source": "IAME254V",
+      "page": 1,
+      "qualification": "OFFICIAL_COMPONENT"
+    },
+    "venturi_max": {
+      "value": 27,
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 5,
+      "qualification": "HOMOLOGATION_LIMIT"
+    },
+    "exhaust_duration_max": {
+      "value": 177.5,
+      "unit": "deg",
+      "source": "IAME254V",
+      "page": 4,
+      "qualification": "HOMOLOGATION_LIMIT_NOT_INSTALLED_TIMING"
+    },
+    "transfer_durations": {
+      "value": [
+        126,
+        127
+      ],
+      "unit": "deg",
+      "source": "IAME254V",
+      "page": 4,
+      "qualification": "HOMOLOGATION_WITH_PLUS_MINUS2DEG_NOT_INSTALLED_TIMING"
+    },
+    "chamber_checking_volume_min": {
+      "value": 9.7,
+      "unit": "cm3",
+      "source": "IAME254V",
+      "page": 5,
+      "qualification": "CHECKING_INSERT_CONVENTION;NOT_AUTOMATICALLY_OPERATIONAL_VC"
+    },
+    "squish_min": {
+      "value": 0.9,
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 5,
+      "qualification": "HOMOLOGATION_LIMIT"
+    },
+    "petal_thickness_min_glass": {
+      "value": 0.3,
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 6,
+      "qualification": "MATERIAL_OPTION_NOT_IDENTIFIED_FOR_TEST"
+    },
+    "petal_thickness_min_carbon": {
+      "value": 0.24,
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 6,
+      "qualification": "MATERIAL_OPTION_NOT_IDENTIFIED_FOR_TEST"
+    },
+    "exhaust_plan_label_dimensions_mm": {
+      "value": {
+        "A1": 110,
+        "A2": 102,
+        "A3": 100,
+        "B1": 59,
+        "B2": 59,
+        "C": 219,
+        "D1": 89.5,
+        "D2": 109,
+        "E": 23,
+        "F": 36,
+        "G": 35,
+        "H": 132,
+        "I": 21,
+        "K": 170,
+        "L": 42.5,
+        "M": 435,
+        "N": 340,
+        "O": 21,
+        "P": 50,
+        "T": 690
+      },
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 9,
+      "qualification": "DRAWING_LABELS_ONLY;NOT_ORDERED_SOLVER_STATIONS;TOLERANCES_REMAIN_ON_SOURCE_DRAWING"
+    },
+    "optional_exhaust_spacer": {
+      "value": {
+        "thickness": 3,
+        "tolerance": 0.5
+      },
+      "unit": "mm",
+      "source": "IAME254V",
+      "page": 10,
+      "qualification": "OPTIONAL_VARIABLE_QUANTITY;ACTUAL_COUNT_UNKNOWN"
+    },
+    "published_simulation_settings": {
+      "lambda": 0.85,
+      "ignition_BTDC_deg": 22,
+      "source": "Ortenzi/Bossaglia2023 section3.1 p16",
+      "qualification": "SIMULATION_SETTINGS_NOT_CONFIRMED_EXPERIMENTAL_MEASUREMENTS"
+    },
+    "manual_nominal_combustion_chamber_volume": {
+      "value": 10.15,
+      "unit": "cm3",
+      "source": "MAN2018-89",
+      "pdf_page": 19,
+      "printed_page": 18,
+      "qualification": "PUBLISHED_NOMINAL_CHAMBER_VOLUME;CHECKING/OPERATING_CONVENTION_NOT_EXPLICITLY_RESOLVED"
+    },
+    "manual_exhaust_duration": {
+      "value": {
+        "nominal": 177.5,
+        "tolerance": 2
+      },
+      "unit": "deg",
+      "source": "MAN2018-89",
+      "pdf_page": 19,
+      "printed_page": 18,
+      "qualification": "NOMINAL_TIMING_REFERENCE_WITH0.2x5MM_FEELER;NOT_ACTUAL_TESTED_PORT_TRACE"
+    },
+    "manual_ignition_advance": {
+      "value": 22,
+      "unit": "deg_BTDC",
+      "source": "MAN2018-89",
+      "pdf_page": 4,
+      "printed_page": 3,
+      "qualification": "FIXED_ADVANCE;ALSO_SUMMARY_P19"
+    },
+    "manual_exhaust_setting_length": {
+      "value": {
+        "min": 430,
+        "max": 440
+      },
+      "unit": "mm",
+      "source": "MAN2018-89",
+      "pdf_page": 7,
+      "printed_page": 6,
+      "qualification": "FLANGE_ON_HEADER_TO_FIRST_WELD_OF_FIRST_MUFFLER_CONE;NOT_ENTIRE_EXHAUST"
+    },
+    "manual_closed_flexible_length": {
+      "value": {
+        "min": 50,
+        "max": 60
+      },
+      "unit": "mm",
+      "source": "MAN2018-89",
+      "pdf_page": 7,
+      "printed_page": 6,
+      "qualification": "COMPLETELY_CLOSED_FLEXIBLE;NOT_TOTAL_EXHAUST_LENGTH"
+    },
+    "manual_cooling_operation": {
+      "value": {
+        "min": 45,
+        "max": 65
+      },
+      "unit": "degC",
+      "source": "MAN2018-89",
+      "pdf_page": 3,
+      "printed_page": 2,
+      "qualification": "COOLANT_OPERATING_RANGE;NOT_GAS_OR_METAL_WALL_TEMPERATURE"
+    },
+    "manual_fuel_grade": {
+      "value": "98 RON with minimum5percent oil",
+      "unit": "specification",
+      "source": "MAN2018-89",
+      "pdf_page": 2,
+      "printed_page": 1,
+      "qualification": "NOT_IDENTIFIED_LHV_OR_ELEMENTAL_COMPOSITION"
+    },
+    "manual_nominal_squish": {
+      "value": 1,
+      "unit": "mm",
+      "source": "MAN2018-89",
+      "pdf_page": 19,
+      "printed_page": 18,
+      "qualification": "NOMINAL;NOT_HOMOLOGATION_MINIMUM0.9MM"
+    }
+  },
+  "derived_geometrically": {
+    "nominal_displacement_cm3": {
+      "value": 123.67193640121579,
+      "formula": "pi/4*bore_mm^2*stroke_mm/1000",
+      "inputs": "documented nominal bore/stroke",
+      "qualification": "NO_SPECIMEN_TOLERANCE_ASSIGNED"
+    },
+    "piston_area_mm2": {
+      "value": 2290.221044466959,
+      "formula": "pi/4*bore_mm^2"
+    },
+    "crank_radius_mm": {
+      "value": 27,
+      "formula": "stroke/2"
+    },
+    "rod_crank_ratio": {
+      "value": 3.7777777777777777,
+      "formula": "rod/crank_radius"
+    },
+    "port_event_conversion": {
+      "formula": "If symmetric piston gating and duration D are verified: opening_ATDC=(360-D)/2; closing_ATDC=360-opening_ATDC.",
+      "adopted_numeric_events": null,
+      "reason": "Actual area-angle profile and convention must be confirmed; limits are not actual events."
+    },
+    "nominal_reference_events": [
+      {
+        "port": "exhaust",
+        "reference_duration_deg": 177.5,
+        "opening_ATDC_deg": 91.25,
+        "closing_ATDC_deg": 268.75,
+        "reference_piston_displacement_mm": 31.225660537308002,
+        "uncovered_height_upper_bound_at_BDC_mm": 22.774339462691998,
+        "chord_width_limit_mm": 36.5,
+        "cylindrical_arc_width_limit_mm": 40.079900298357146,
+        "qualification": "Conditional nominal symmetric piston gating; gauge/chamfer effects omitted. Height is an upper bound, not actual window height; widths remain homologation limits."
+      },
+      {
+        "port": "lateral_transfer",
+        "reference_duration_deg": 126,
+        "opening_ATDC_deg": 117.0,
+        "closing_ATDC_deg": 243.0,
+        "reference_piston_displacement_mm": 42.13533293138289,
+        "uncovered_height_upper_bound_at_BDC_mm": 11.86466706861711,
+        "chord_width_limit_mm": 30,
+        "cylindrical_arc_width_limit_mm": 31.807672391678793,
+        "qualification": "Conditional nominal symmetric piston gating; gauge/chamfer effects omitted. Height is an upper bound, not actual window height; widths remain homologation limits."
+      },
+      {
+        "port": "boost_transfer",
+        "reference_duration_deg": 127,
+        "opening_ATDC_deg": 116.5,
+        "closing_ATDC_deg": 243.5,
+        "reference_piston_displacement_mm": 41.95072938696383,
+        "uncovered_height_upper_bound_at_BDC_mm": 12.049270613036171,
+        "chord_width_limit_mm": 28.5,
+        "cylindrical_arc_width_limit_mm": 30.023036236109284,
+        "qualification": "Conditional nominal symmetric piston gating; gauge/chamfer effects omitted. Height is an upper bound, not actual window height; widths remain homologation limits."
+      }
+    ],
+    "venturi_area_upper_bound_mm2": {
+      "value": 572.5552611167398,
+      "formula": "pi/4*d_max^2",
+      "qualification": "Geometric area limit; not discharge area."
+    },
+    "compression_ratio_interpretations": {
+      "if10_15_is_operating_clearance": 13.184427231646875,
+      "if10_15_includes2cm3_not_present_in_operating_clearance": 16.174470724075555,
+      "qualification": "Conditional arithmetic only; source254V shows2cm3checking insert and minimum9.7total. Neither interpretation is asserted to be measured operating clearance; no automatic subtraction."
+    },
+    "crankcase_volume_family": {
+      "formula": "r_primary=(Vmin+Vd)/Vmin; Vd=123.67193640121579cm3",
+      "Vmin_cm3": null,
+      "primary_compression_ratio": null,
+      "qualification": "One independent free volume or same-engine primary compression ratio is required. No source equation closes Vmin."
+    }
+  },
+  "unknown": {
+    "clearance_volume_TDC_cm3": {
+      "value": null,
+      "classification": "NOMINAL_VALUE_FOUND;OPERATIONAL_CONVENTION_REQUIRES_DECLARATION",
+      "reason": "Manual documents nominal10.15cm3. Operational gauge/insert convention remains unresolved; an explicitly stated nominal interpretation can be a preliminary hypothesis and is not the sole hard blocker."
+    },
+    "crankcase_free_volume_at_known_angle_cm3": {
+      "value": null,
+      "classification": "DECISIVE_GEOMETRIC_BLOCKER",
+      "reason": "254V pp3,5,45,46 do not determine3Dconnected gas volume minus crank/rod/piston intrusion. A partial inside view and crankshaft width cannot close cavity volume. Need one assembled free volume at known angle or same-engine primary ratio with volume definition."
+    },
+    "actual_port_area_angle_and_transfer_passages": {
+      "value": null,
+      "classification": "NOMINAL_EVENTS_DERIVED;1D_GEOMETRY_REDUCTION_REQUIRED",
+      "reason": "254V p4 gives timing, width limits and a section; p44 gives checking profiles. Nominal piston opening and arc-width bounds are derivable. Rounded window shape and out-of-plane duct area/centreline are not uniquely dimensioned; a stated reduced1D approximation may be defensible preliminarily, not an exact measured transfer map."
+    },
+    "installed_intake_path_and_exhaust_spacer_count": {
+      "value": null,
+      "classification": "PARTLY_RESOLVED_BY_MANUAL;PRELIMINARY_NOMINAL_HYPOTHESIS_POSSIBLE",
+      "reason": "Manual gives specific430–440mm setting and50–60mmclosed flexible. A declared nominal length within the public range is permissible before prediction; it is not the tested assembly or entire pipe length. Carburetor and reed dimensions support a nominal intake reduction, not exact3Ddischarge."
+    },
+    "reed_force_lift_stop_and_discharge": {
+      "value": null,
+      "classification": "EXPLICIT_PRELIMINARY_HYPOTHESIS_POSSIBLE;MAJOR_FILLING_UNCERTAINTY",
+      "reason": "Geometry/thickness do not identify stiffness or effective discharge; preliminary component assumptions must be declared and never power-fitted. Not independently identified for the tested engine."
+    },
+    "thermal_wall_conditions": {
+      "value": null,
+      "classification": "EXPLICIT_PRELIMINARY_HYPOTHESIS_POSSIBLE",
+      "reason": "May use declared boundary estimates, without claiming measured thermal state or adjusting to power."
+    },
+    "fuel_properties_and_actual_AFR": {
+      "value": null,
+      "classification": "EXPLICIT_PRELIMINARY_HYPOTHESIS_POSSIBLE",
+      "reason": "Published lambda may define an approximate comparison; actual fuel and stoichiometry must remain declared and not fabricated."
+    },
+    "combustion_and_scavenging_closure": {
+      "value": null,
+      "classification": "EXPLICIT_PRELIMINARY_HYPOTHESIS_POSSIBLE",
+      "reason": "A fixed reduced closure may be tested as a hypothesis; no identification or predictive claim and no adjustment against curve."
+    },
+    "mechanical_losses_and_measurement_plane": {
+      "value": null,
+      "classification": "POWER_VALIDATION_BLOCKER;PRELIMINARY_INDICATED_RESULTS_POSSIBLE",
+      "reason": "Without loss/plane identification, indicated result cannot be called measured brake-power agreement."
+    },
+    "exact_test_conditions_and_raw_uncertainty": {
+      "value": null,
+      "classification": "QUANTITATIVE_VALIDATION_BLOCKER;PUBLIC_TRENDS_USABLE",
+      "reason": "Graph reading alone remains useful but is not a metrologically complete validation dataset."
+    },
+    "revision_match_to_experimental_engine": {
+      "value": null,
+      "classification": "QUANTITATIVE_VALIDATION_BLOCKER",
+      "reason": "Current254V drawing and article drawing have differences; do not hybridize silently."
+    }
+  },
+  "supersedes": "results/x30-preparation-v1/x30-technical-inputs.json",
+  "decision": "B_CONFIGURATION_BLOCKED",
+  "decision_scope": "Public nominal reconstruction, not experimental specimen reproduction",
+  "date": "2026-10-23",
+  "geometry_reconstruction_review": [
+    {
+      "component": "cylinder_ports",
+      "pages": "254V4,44",
+      "derivable": "Reference event angles/roof travel and chord-to-arc bounds from nominal kinematics.",
+      "not_derivable_exactly": "Complete window radii/floors and full3Darea-angle/duct map; gauge views are not full CAD."
+    },
+    {
+      "component": "transfer_paths",
+      "pages": "254V4,44",
+      "derivable": "Three-path topology and projected centreline estimate by calibrated section, if declared approximation.",
+      "not_derivable_exactly": "Out-of-plane length/sections and connected-volume accounting."
+    },
+    {
+      "component": "intake",
+      "pages": "254V5,6,7; MAN4",
+      "derivable": "Carburetor/venturi, reed-box layout and area limits; nominal1Dreduction possible.",
+      "not_derivable_exactly": "Effective reed stiffness/Cd from geometry alone; actual specimen airbox and fittings."
+    },
+    {
+      "component": "exhaust",
+      "pages": "254V9,10; MAN7",
+      "derivable": "Dimensioned shell/countercone/tail layout, explicit tuning length and nominal mounting range.",
+      "not_derivable_exactly": "Experimental revision/perforated muffler loss law; non-linear/curved profile needs stated reduction."
+    },
+    {
+      "component": "precompression_crankcase",
+      "pages": "254V3,5,45,46",
+      "derivable": "Some local widths/diameters and kinematic swept change Vd.",
+      "not_derivable_exactly": "Assembled connected gas free volume.40ml gear oil in MAN is not precompression volume."
+    }
+  ],
+  "minimum_external_geometry_request": [
+    "assembled precompression free gas volume at known crank angle, or equivalent same-engine primary ratio; state included/excluded inlet and transfer volumes",
+    "if available: representative transfer centreline lengths/sections; clarification whether10.15cm3manual volume includes checking insert"
+  ],
+  "excluded_reasons_for_blocking": [
+    "lack of private dyno raw files alone",
+    "unknown exact experimental specimen identity alone for a nominal model",
+    "unidentified h/Cd/combustion parameters if explicitly frozen as preliminary hypotheses",
+    "lack of spatial or predictive validation before constructing a nominal model"
+  ],
+  "revision_cross_checks": [
+    {
+      "field": "exhaust_duration",
+      "manual": "177.5plus/minus2deg",
+      "homologation254V": "177.5degmaximum",
+      "resolution": "Nominal177.5is shared; fullmanualtolerance not imported as254Vlegalrange. Different revision roles remain explicit."
+    },
+    {
+      "field": "chamber_volume",
+      "manual": "10.15nominal,9.7minimum",
+      "homologation254V": "9.7minimum checkingtotal with2cm3insert shown",
+      "resolution": "Numerical nominal/minimum not contradictory; operational volume convention not assumed."
+    },
+    {
+      "field": "squish",
+      "manual": "1.0nominal",
+      "homologation254V": "0.90minimum",
+      "resolution": "Compatible nominal and minimum, not actual measured test specimen."
+    },
+    {
+      "field": "exhaust_length",
+      "manual": "L430–440flange-to-firstweld",
+      "homologation254V": "Separate dimension labels for curved shell/installation",
+      "resolution": "No automatic identification of L with any similarly-valued M/N/T plan label."
+    }
+  ]
+}

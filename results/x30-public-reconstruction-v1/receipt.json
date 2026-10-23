@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-23",
+  "baseline_head": "01f5f1cf7f52e52640806e62fca0d7480c4c89e5",
+  "decision": "B_CONFIGURATION_BLOCKED",
+  "decisive_missing_quantity": "Assembled precompression connected free gas volume at known crank angle, or same-engine primary compression ratio with volume inclusion convention.",
+  "nominal_chamber_value_now_documented_cm3": 10.15,
+  "configuration_created": false,
+  "solver_steps": 0,
+  "solver_or_physical_coefficients_modified": false,
+  "new_features": false,
+  "new_motors_searched": false,
+  "experimental15_1kW_used_for_fitting": false,
+  "email_status": "REFINED_EXISTING_DRAFT_NOT_SENT",
+  "review": "SELF_REVIEW",
+  "checks": {
+    "three_frozen_PDF_sha256": "PASS",
+    "manual_values_and_source_revision": "PASS;19page original PDF;table visually inspected",
+    "nominal_event_pairs_and_chord_to_arc_derivations": "PASS;conditional assumptions explicit",
+    "missing_Vmin_remains_null_and_execution_disabled": "PASS",
+    "three_previous_preparation_Git_blobs": "PASS; untouched prior inventory/draft/digitization; initial rawGit-vs-workingcopy comparison replaced by proper Git-filtered blob comparison",
+    "P4_P8": "NOT_RERUN: owner forbids solver execution and no executable/model changes were made",
+    "openspec": "65 passed,0 failed (--all --strict)",
+    "program_status": "CHECK_OK;PROMOTED_NONE;bounded decision complete, model not executable"
+  },
+  "sources": {
+    "MAN089": {
+      "id": "MAN-089",
+      "printed_revision": "MAN2018-89; X30 125cc Spec.EU",
+      "pdf_creation_date": "2018-06-01",
+      "creation_date_qualification": "PDF metadata, not proof of experimental hardware revision",
+      "source_url": "https://www.kartcompany.ch/images/iame/manual/E/MAN-089-ENG-X30-125cc-Spec-EU.pdf",
+      "sha256": "36b0038af6fc5dfcdb5afef9bf31c7075ef43be8a114d7f99680ba650915f2ae",
+      "retrieved": "2026-10-23",
+      "bytes": 9478048
+    },
+    "homologation254V": {
+      "sha256": "93eaa486afa6bedab4ea178252b5e7faa97ed4c939ee377f34a6ec07fea14f86",
+      "pages_used": [
+        1,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        44,
+        45,
+        46
+      ]
+    },
+    "paper2023": {
+      "doi": "10.3390/en16134947",
+      "sha256": "c7d6f01fd0b11f5b4f3d69b0ab271fb568b3424416b512dc9ae68f10db9e5860",
+      "relevant_pages": [
+        3,
+        4,
+        16
+      ],
+      "case_volume_search": "Full PDF searched for crankcase/primary compression; model equations but no X30 free volume value found."
+    }
+  },
+  "evidence_hashes": {
+    "results\\x30-public-reconstruction-v1\\decision.md": "cb3f8601b39a76a6460c128a6c957ddf3860e9d84630d97c9985482938dd098a",
+    "results\\x30-public-reconstruction-v1\\email-draft-refined.md": "693b21fa2842700b70c11849b699759e138cefb0142a24912ea7e9ec7beacbd8",
+    "results\\x30-public-reconstruction-v1\\x30-technical-inputs-v2.json": "76cbd1a8b01eeb9e045c6bfbd9107427f2fcb9ca09f341489b6a13d0577c46fd"
+  },
+  "external_root": "E:\\Dino-artifacts\\x30-public-reconstruction-v1-20261023",
+  "historical_BLOCKED_LOCAL": "Reassessed as unrelated old packaged-interaction andSPV1tasks; existing unblock tasks retained, no resume.",
+  "push_performed": false
+}
