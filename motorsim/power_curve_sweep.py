@@ -173,7 +173,7 @@ def prepare_power_curve(document: dict, *, project_id: str, variant_label: str,
             "artifact_root": str(root), "point_preflights": checks,"control_policy":control_policy}
 
 
-def _reused_points(paths, prepared):
+def _reused_points(paths, prepared, *, continuation=False):
     """Explicit completed engineering references; never infer or migrate identity."""
     from .engineering_workflow import import_desktop_runs,SCHEMA
     from .desktop.preferences import repository_root_containing
@@ -190,12 +190,24 @@ def _reused_points(paths, prepared):
                 result['bindings'].get('variant_label')!=prepared['variant_label']):
             raise ValueError('reused point is not a complete authorized project/variant/grid point')
         expected=prepared['point_preflights'][prepared['rpms'].index(rpm)]
+        cycles=result.get('cycles_completed')
+        periodic=result.get('classification')=='PERIODIC_EXPLORATORY' and result.get('periodicity','').startswith('PERIOD_1')
+        horizon_ok=check.get('max_cycles')==prepared['max_cycles']
+        if periodic:
+            horizon_ok=(type(cycles) is int and cycles<=prepared['max_cycles'] and
+                        type(check.get('max_cycles')) is int and cycles<=check['max_cycles'])
+        if continuation:
+            horizon_ok=(result['classification']=='MAX_CYCLES_NONCONVERGED' and
+                        type(cycles) is int and 2<=cycles<prepared['max_cycles'] and
+                        type(check.get('max_cycles')) is int and cycles<=check['max_cycles'])
         if (result['bindings'].get('identity_sha256')!=expected['identity_sha256'] or
                 result['bindings'].get('configuration_sha256')!=expected['configuration_sha256'] or
                 check.get('mechanical_loss_model_sha256')!=expected['mechanical_loss_model_sha256'] or
-                check.get('max_cycles')!=prepared['max_cycles']):
+                not horizon_ok):
             raise ValueError('reused point scientific identity/horizon mismatch')
-        import_desktop_runs([root])  # result, diagnostic manifest and selected samples
+        verified=import_desktop_runs([root])  # result, diagnostic manifest and selected samples
+        if periodic and not all(p.get('periodicity','').startswith('PERIOD_1') for p in verified['points']):
+            raise ValueError('reused periodic status differs from diagnostic evidence')
         points.append(dict(rpm=rpm,status='COMPLETE',classification=result['classification'],
             periodicity=result['periodicity'],cycles_completed=result['cycles_completed'],
             identity_sha256=expected['identity_sha256'],configuration_sha256=expected['configuration_sha256'],
@@ -214,7 +226,8 @@ def _run_power_curve_unlocked(document: dict, *, project_id: str, variant_label:
                     point_budget_seconds: float = 600,
                     total_budget_seconds: float = 1800,
                     memory_limit_mib: int = 1024, sweep_id: str | None = None,
-                    resume: bool = False, cancel_event=None, progress=None, reuse_runs=(),control_policy=None,_invocation_started=None) -> dict:
+                    resume: bool = False, cancel_event=None, progress=None, reuse_runs=(),control_policy=None,
+                    continuation_runs=(),execution_order=None,_invocation_started=None) -> dict:
     """Run a bounded serial sweep; interruption leaves point and series checkpoints."""
     prepared = prepare_power_curve(document, project_id=project_id,
         variant_label=variant_label, artifact_root=artifact_root,
@@ -232,6 +245,15 @@ def _run_power_curve_unlocked(document: dict, *, project_id: str, variant_label:
     binding["document_sha256"] = _sha(_canonical(document))
     if control_policy is not None:binding['control_policy']=control_policy
     reused=_reused_points(reuse_runs,prepared)
+    order=list(prepared['rpms'] if execution_order is None else execution_order)
+    if len(order)!=len(prepared['rpms']) or set(order)!=set(prepared['rpms']):
+        raise ValueError('execution order must be an exact grid permutation')
+    if execution_order is not None:binding['execution_order']=order
+    continued=_reused_points(continuation_runs,prepared,continuation=True) if continuation_runs else []
+    if set(p['rpm'] for p in reused)&set(p['rpm'] for p in continued):
+        raise ValueError('point cannot be both reused and continued')
+    if continued:
+        binding['continuation_runs']=[dict(path=p['run_directory'],sha256=p['result_artifact_sha256']) for p in continued]
     if reused:
         binding['reuse_runs']=[dict(path=p['run_directory'],sha256=p['result_artifact_sha256']) for p in reused]
     if manifest_path.exists():
@@ -248,9 +270,22 @@ def _run_power_curve_unlocked(document: dict, *, project_id: str, variant_label:
                 child.name.startswith(".coordinator.lock.orphaned-") for child in root.iterdir()))
             if not quarantined:
                 raise FileNotFoundError("cannot resume: sweep manifest does not exist and the root is not an empty quarantined start")
+        if continued:
+            import shutil
+            from .exploratory_workflow import _run_directory
+            for point in continued:
+                source=Path(point['run_directory'])
+                target=_run_directory(Path(prepared['artifact_root']),project_id,point['run_id'])
+                if source.resolve()==target.resolve() or target.exists():
+                    raise ValueError('continuation requires an isolated unused destination')
+                shutil.copytree(source,target)
+                point.update(run_directory=str(target),status='INTERRUPTED_CHECKPOINTED',
+                    reused=False,continuation_elapsed_seconds=0.,
+                    historical_elapsed_seconds=point['elapsed_seconds'],
+                    continuation_source=dict(path=str(source),result_sha256=point['result_artifact_sha256'],checkpoint_sha256=point['checkpoint_sha256']))
         manifest = {"schema": "DINO_POWER_CURVE_SWEEP_V1", "status": "READY",
             "classification": "EXPLORATORY_CURVE_NOT_YET_AVAILABLE",
-            "bindings": binding, "points": reused, "created_unix": time.time(),
+            "bindings": binding, "points": sorted(reused+continued,key=lambda p:p['rpm']), "created_unix": time.time(),
             "elapsed_seconds": 0.0}
         _atomic_json(manifest_path, manifest)
     existing = {row["rpm"]: row for row in manifest.get("points", [])}
@@ -324,7 +359,8 @@ def _run_power_curve_unlocked(document: dict, *, project_id: str, variant_label:
     manifest["status"] = "RUNNING"
     manifest["classification"] = "EXPLORATORY_SWEEP_IN_PROGRESS"
     _atomic_json(manifest_path, manifest)
-    for index, rpm in enumerate(prepared["rpms"]):
+    for rpm in order:
+        index=prepared['rpms'].index(rpm)
         if rpm in existing and existing[rpm].get("status") == "COMPLETE":
             continue
         if cancel_event is not None and cancel_event.is_set():
@@ -358,7 +394,7 @@ def _run_power_curve_unlocked(document: dict, *, project_id: str, variant_label:
             for i, value in enumerate(prepared["rpms"])]
         _atomic_json(manifest_path, manifest)
         try:
-            point_remaining=point_budget_seconds-float(point.get('elapsed_seconds',0))
+            point_remaining=point_budget_seconds-float(point.get('continuation_elapsed_seconds',point.get('elapsed_seconds',0)))
             remaining = min(total_budget_seconds - elapsed_before - (time.monotonic() - started),point_remaining)
             if remaining < 1:
                 manifest["status"] = "INTERRUPTED_CHECKPOINTED"
@@ -394,6 +430,8 @@ def _run_power_curve_unlocked(document: dict, *, project_id: str, variant_label:
                 "identity_sha256": result.get("bindings", {}).get("identity_sha256", point["identity_sha256"])})
             point["configuration_sha256"] = result.get("bindings", {}).get("configuration_sha256", point["configuration_sha256"])
             point["source_hashes"] = result.get("source_hashes",result.get("bindings", {}).get("source_hashes"))
+            if 'historical_elapsed_seconds' in point:
+                point['continuation_elapsed_seconds']=float(result['elapsed_seconds'])-point['historical_elapsed_seconds']
         except Exception as exc:
             if 'timer' in locals(): timer.cancel()
             point.update({"status": "FAILED_CLOSED", "classification": "FAIL_CLOSED",
@@ -442,7 +480,8 @@ def run_power_curve(document: dict, *, project_id: str, variant_label: str,
                     point_budget_seconds: float = 600,
                     total_budget_seconds: float = 1800,
                     memory_limit_mib: int = 1024, sweep_id: str | None = None,
-                    resume: bool = False, cancel_event=None, progress=None,reuse_runs=(),control_policy=None) -> dict:
+                    resume: bool = False, cancel_event=None, progress=None,reuse_runs=(),control_policy=None,
+                    continuation_runs=(),execution_order=None) -> dict:
     """Lock one sweep coordinator identity and preserve single-writer manifests."""
     invocation_started=time.monotonic()
     sweep_id = sweep_id or uuid.uuid4().hex
@@ -460,4 +499,5 @@ def run_power_curve(document: dict, *, project_id: str, variant_label: str,
             start_rpm=start_rpm, stop_rpm=stop_rpm, step_rpm=step_rpm,
             max_cycles=max_cycles, point_budget_seconds=point_budget_seconds,
             total_budget_seconds=total_budget_seconds, memory_limit_mib=memory_limit_mib,
-            sweep_id=sweep_id, resume=resume, cancel_event=cancel_event, progress=progress,reuse_runs=reuse_runs,control_policy=control_policy,_invocation_started=invocation_started)
+            sweep_id=sweep_id, resume=resume, cancel_event=cancel_event, progress=progress,reuse_runs=reuse_runs,control_policy=control_policy,
+            continuation_runs=continuation_runs,execution_order=execution_order,_invocation_started=invocation_started)

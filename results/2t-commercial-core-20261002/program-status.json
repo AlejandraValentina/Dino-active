@@ -7101,6 +7101,59 @@
       "write_scope": [],
       "evidence_level": "L1",
       "qualification": "A9000 period1 observed within unchanged V2 tolerances atcycle104,102-104PASS. L1 unaudited; original Desktop curves remain exploratory.26focal+298P4-P8 PASS,3skip. No physical/solver/detector changes; one continuation only."
+    },
+    {
+      "id": "PRC1-CONTINUATION",
+      "description": "Existing coordinator: B9000,A8000,B8000,A10000,B10000 from own checkpoints,600s additional each,111totalcycles,3300s global.",
+      "dependencies": [],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/periodic-rpm-curves-v1/protocol.md"
+      ],
+      "next_action": "Only the five owner-authorized continuations and existing Desktop views.",
+      "objective": "DINO_PERIODIC_RPM_CURVES_V1",
+      "owner_role": "implementation",
+      "write_scope": [
+        "motorsim/power_curve_sweep.py",
+        "scripts/diagnostics/demo_periodic_rpm_curves_v1.py",
+        "tests/test_periodic_curve_continuation.py",
+        "results/periodic-rpm-curves-v1/"
+      ],
+      "evidence_level": "L1"
+    },
+    {
+      "id": "PRC1-DESKTOP",
+      "description": "Existing Desktop curves, table, history and equal-RPM comparisons; preserve exploratory histories.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/periodic-rpm-curves-v1/protocol.md"
+      ],
+      "next_action": "Only the five owner-authorized continuations and existing Desktop views.",
+      "objective": "DINO_PERIODIC_RPM_CURVES_V1",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L1"
+    },
+    {
+      "id": "PRC1-INTERPRETATION",
+      "description": "Interpret periodic outputs, trapped air, pressure waves, transient deltas and unresolved accuracy limits.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/periodic-rpm-curves-v1/protocol.md"
+      ],
+      "next_action": "Only the five owner-authorized continuations and existing Desktop views.",
+      "objective": "DINO_PERIODIC_RPM_CURVES_V1",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L1"
     }
   ],
   "audit_remediation_mode": false,
@@ -7302,21 +7355,19 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_PERIODICITY_BLOCKER_V1",
+    "id": "DINO_PERIODIC_RPM_CURVES_V1",
     "state": "OPEN",
     "owner_approved": true,
-    "summary": "Owner-authorized focused closure of exhaust periodicity blocker using existing A9000 evidence and one bounded discriminating continuation.",
-    "change": "openspec/changes/periodicity-blocker-v1",
-    "spec": "openspec/changes/periodicity-blocker-v1/specs/periodicity-blocker-v1/spec.md",
-    "transitioned_from": "DINO_DESKTOP_RPM_CURVES_V1",
+    "summary": "Owner-authorized five conservative checkpoint continuations to complete first A/B8000/9000/10000 periodic curves and existing Desktop visualization.",
+    "change": "openspec/changes/periodic-rpm-curves-v1",
+    "spec": "openspec/changes/periodic-rpm-curves-v1/specs/periodic-rpm-curves-v1/spec.md",
+    "transitioned_from": "DINO_PERIODICITY_BLOCKER_V1",
     "gate_tasks": [
-      "PB1-DIAGNOSIS",
-      "PB1-CONTINUATION",
-      "PB1-CONCLUSION"
+      "PRC1-CONTINUATION",
+      "PRC1-DESKTOP",
+      "PRC1-INTERPRETATION"
     ],
-    "completion_criterion": "Identify cause using source/evidence and at most one bounded A9000 continuation; report observed periodicity or precise unresolved blocker; no curve campaign or tolerance relaxation.",
-    "functional_result": "FOCUSED_BLOCKER_RESOLVED",
-    "scientific_state": "A9000_PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED;HISTORICAL_CURVES_EXPLORATORY;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED"
+    "completion_criterion": "Reuse A9000periodic and all30cycle states; one bounded continuation per remaining point, then actual Desktop curves/history and physical comparison. Stop at budget/terminal conditions without automatic expansion."
   },
   "objectives": [
     {
@@ -8044,7 +8095,7 @@
     },
     {
       "id": "DINO_PERIODICITY_BLOCKER_V1",
-      "state": "OPEN",
+      "state": "CLOSED",
       "owner_approved": true,
       "summary": "Owner-authorized focused closure of exhaust periodicity blocker using existing A9000 evidence and one bounded discriminating continuation.",
       "change": "openspec/changes/periodicity-blocker-v1",
@@ -8057,7 +8108,42 @@
       ],
       "completion_criterion": "Identify cause using source/evidence and at most one bounded A9000 continuation; report observed periodicity or precise unresolved blocker; no curve campaign or tolerance relaxation.",
       "functional_result": "FOCUSED_BLOCKER_RESOLVED",
-      "scientific_state": "A9000_PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED;HISTORICAL_CURVES_EXPLORATORY;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED"
+      "scientific_state": "A9000_PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED;HISTORICAL_CURVES_EXPLORATORY;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED",
+      "gate_at_owner_transition": {
+        "objective": "DINO_PERIODICITY_BLOCKER_V1",
+        "state": "PASS",
+        "classification": "DINO_PERIODICITY_BLOCKER_V1_FOCUSED_RESOLVED",
+        "gate_tasks_total": 3,
+        "gate_tasks_done": 3,
+        "gate_task_states": {
+          "DONE": 3
+        },
+        "remaining": [],
+        "evidence": [
+          "results/periodicity-blocker-v1/report.md",
+          "results/periodicity-blocker-v1/receipt.json",
+          "results/periodicity-blocker-v1/evolution.png",
+          "results/periodicity-blocker-v1/protocol.md"
+        ],
+        "qualification": "Scoped technical closure, not a new scientific release or predictive validation.",
+        "scientific_state": "A9000_PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED;HISTORICAL_CURVES_EXPLORATORY;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED",
+        "further_campaign_authorized": false
+      }
+    },
+    {
+      "id": "DINO_PERIODIC_RPM_CURVES_V1",
+      "state": "OPEN",
+      "owner_approved": true,
+      "summary": "Owner-authorized five conservative checkpoint continuations to complete first A/B8000/9000/10000 periodic curves and existing Desktop visualization.",
+      "change": "openspec/changes/periodic-rpm-curves-v1",
+      "spec": "openspec/changes/periodic-rpm-curves-v1/specs/periodic-rpm-curves-v1/spec.md",
+      "transitioned_from": "DINO_PERIODICITY_BLOCKER_V1",
+      "gate_tasks": [
+        "PRC1-CONTINUATION",
+        "PRC1-DESKTOP",
+        "PRC1-INTERPRETATION"
+      ],
+      "completion_criterion": "Reuse A9000periodic and all30cycle states; one bounded continuation per remaining point, then actual Desktop curves/history and physical comparison. Stop at budget/terminal conditions without automatic expansion."
     }
   ],
   "owner_decisions_pending": [
@@ -10135,6 +10221,12 @@
       "task": "PB1-CONCLUSION",
       "kind": "task",
       "summary": "Single exact A9000 checkpoint continuation:74newcycles,490.325s,136.16MiB peak,zero CFL rejects; full unchangedV2 PASS102-104. Primary cause long initial exhaust purge; no solver/detector/model changes. Finalcpnext105 exactrestore;29source hashes unchanged;104diagnostics verified.26focal+298P4-P8PASS/3SKIP after configuring existing artifact store. Stop; curves remain exploratory; no other RPM/grid authorized."
+    },
+    {
+      "at": "2026-10-23T10:58:35.789769+00:00",
+      "task": "PRC1-CONTINUATION",
+      "kind": "task",
+      "summary": "Owner accepts A9000period104 and authorizes remaining5continuations. Budget fixed3300s newglobal,600s newperpoint,max111totalcycles,512MiB serial. Preserve historical budgets separately; no solver/source-identity changes. Legacy blocked tasks remain unrelated/unauthorized.19coordinator/display focal tests pass."
     }
   ],
   "legacy_gate_status": {
@@ -10149,24 +10241,9 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_PERIODICITY_BLOCKER_V1",
-    "state": "PASS",
-    "classification": "DINO_PERIODICITY_BLOCKER_V1_FOCUSED_RESOLVED",
-    "gate_tasks_total": 3,
-    "gate_tasks_done": 3,
-    "gate_task_states": {
-      "DONE": 3
-    },
-    "remaining": [],
-    "evidence": [
-      "results/periodicity-blocker-v1/report.md",
-      "results/periodicity-blocker-v1/receipt.json",
-      "results/periodicity-blocker-v1/evolution.png",
-      "results/periodicity-blocker-v1/protocol.md"
-    ],
-    "qualification": "Scoped technical closure, not a new scientific release or predictive validation.",
-    "scientific_state": "A9000_PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED;HISTORICAL_CURVES_EXPLORATORY;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED",
-    "further_campaign_authorized": false
+    "objective": "DINO_PERIODIC_RPM_CURVES_V1",
+    "state": "REVIEW",
+    "classification": "AUTHORIZED_CONTINUATIONS_PREPARING"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -10530,6 +10607,26 @@
       ],
       "qualification": "Functional L1 acceptance only: actual exploratory RPM curves, not periodic scientific outputs or predictive validation.",
       "scientific_state": "REVIEW;ALL6_NONPERIODIC;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED",
+      "further_campaign_authorized": false
+    },
+    {
+      "objective": "DINO_PERIODICITY_BLOCKER_V1",
+      "state": "PASS",
+      "classification": "DINO_PERIODICITY_BLOCKER_V1_FOCUSED_RESOLVED",
+      "gate_tasks_total": 3,
+      "gate_tasks_done": 3,
+      "gate_task_states": {
+        "DONE": 3
+      },
+      "remaining": [],
+      "evidence": [
+        "results/periodicity-blocker-v1/report.md",
+        "results/periodicity-blocker-v1/receipt.json",
+        "results/periodicity-blocker-v1/evolution.png",
+        "results/periodicity-blocker-v1/protocol.md"
+      ],
+      "qualification": "Scoped technical closure, not a new scientific release or predictive validation.",
+      "scientific_state": "A9000_PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED;HISTORICAL_CURVES_EXPLORATORY;SPATIAL_INDEPENDENCE_NOT_DEMONSTRATED",
       "further_campaign_authorized": false
     }
   ],

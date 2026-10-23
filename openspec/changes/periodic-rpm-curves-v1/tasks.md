@@ -1,0 +1,3 @@
+- [ ] Complete bounded checkpoint continuations using the existing coordinator.
+- [ ] Demonstrate real Desktop periodic/transient curves and preserved history.
+- [ ] Report equal-RPM physical responses, costs and precision limitations.
