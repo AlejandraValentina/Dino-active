@@ -1,0 +1,3 @@
+- [x] Analyze existing inventories, boundaries, detector and checkpoint integrity.
+- [ ] Execute one preregistered bounded A9000 continuation.
+- [ ] Interpret full-system periodicity, physical limitations and costs; preserve history.

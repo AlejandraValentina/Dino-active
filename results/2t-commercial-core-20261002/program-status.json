@@ -7053,16 +7053,20 @@
       "id": "PB1-CONTINUATION",
       "description": "Single conservative A9000 continuation, maximum110 totalcycles /600s newcompute /512MiB.",
       "dependencies": [],
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "ff12964"
+      ],
       "evidence": [
         "results/periodicity-blocker-v1/protocol.md"
       ],
       "next_action": "Only the scoped A9000 discriminating continuation; no grid execution.",
       "objective": "DINO_PERIODICITY_BLOCKER_V1",
       "owner_role": "implementation",
-      "write_scope": [],
+      "write_scope": [
+        "results/periodicity-blocker-v1/"
+      ],
       "evidence_level": "L1"
     },
     {
