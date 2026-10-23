@@ -5084,14 +5084,16 @@
       "dependencies": [
         "DWT-F4-ENGINEERING-VIEWS"
       ],
-      "state": "BLOCKED_LOCAL",
-      "blocker": "The Windows session is locked/non-interactive for real packaged UI automation; source captures render placeholder glyphs. App startup is confirmed, but selection/loading/comparison of real runs and valid visual evidence from the current TRIAL package cannot be verified in this environment.",
+      "state": "DONE",
+      "blocker": null,
       "commits": [],
       "evidence": [
         "docs/dino_tuning_workbench_v1/implementation-receipt.md",
-        "dist/MotorSim-0.1.0-rc6-windows-x64-24a559d1-trial-20261014T175750Z.zip"
+        "dist/MotorSim-0.1.0-rc6-windows-x64-24a559d1-trial-20261014T175750Z.zip",
+        "results/windows-integrated-delivery-v1/report.md",
+        "results/windows-integrated-delivery-v1/receipt.json"
       ],
-      "next_action": "Wait for an interactive unlocked Windows desktop, then exercise example/history/results/comparison from this package and capture real data-visible screens; do not start a solver.",
+      "next_action": "Superseded by current rc7 packaged acceptance.",
       "objective": "DINO_TUNING_WORKBENCH_V1",
       "owner_role": "verification / release",
       "write_scope": [
@@ -5104,26 +5106,32 @@
       "unblock_tasks": [
         "DWT-PACKAGED-INTERACTION-UNLOCKED"
       ],
-      "no_local_unblock_reason": null
+      "no_local_unblock_reason": null,
+      "resolution": "SUPERSEDED_BY_LATER_CAPABILITY",
+      "qualification": "Old local interaction blocker superseded by visible rc7 EXE load, comparison, export, integrated execution and history restart; historical package itself not relabeled."
     },
     {
       "id": "DWT-PACKAGED-INTERACTION-UNLOCKED",
       "description": "When the Windows desktop session is interactive and unlocked, use the current dirty-tree TRIAL Dino2T.exe to open the example, select and compare existing artifacts from history, verify result/evidence data, and capture usable 1360x900 and 980x680 screenshots; do not run a solver.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "docs/dino_tuning_workbench_v1/implementation-receipt.md"
+        "docs/dino_tuning_workbench_v1/implementation-receipt.md",
+        "results/windows-integrated-delivery-v1/report.md",
+        "results/windows-integrated-delivery-v1/receipt.json"
       ],
-      "next_action": "Run the real packaged workflow when an unlocked interactive Windows desktop is available.",
+      "next_action": "Superseded by current rc7 packaged acceptance.",
       "objective": "DINO_TUNING_WORKBENCH_V1",
       "owner_role": "verification / release",
       "write_scope": [
         "docs/dino_tuning_workbench_v1",
         "results/dino-tuning-workbench-v1"
       ],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "resolution": "SUPERSEDED_BY_LATER_CAPABILITY",
+      "qualification": "Old local interaction blocker superseded by visible rc7 EXE load, comparison, export, integrated execution and history restart; historical package itself not relabeled."
     },
     {
       "id": "DVC3-P0",
@@ -7484,46 +7492,57 @@
       "blocker": null,
       "commits": [],
       "evidence": [
-        "tests/test_windows_integrated_delivery_v1.py",
-        "packaging/MotorSim.spec"
+        "results/windows-integrated-delivery-v1/report.md",
+        "results/windows-integrated-delivery-v1/receipt.json"
       ],
-      "next_action": "Complete owner-authorized packaged delivery.",
+      "next_action": "None: bounded Windows product delivery complete.",
       "objective": "DINO_WINDOWS_INTEGRATED_DELIVERY_V1",
       "owner_role": "implementation",
       "write_scope": [],
       "evidence_level": "L1",
-      "qualification": "Current Desktop routes through run_exploratory -> engineering_workflow -> engineering_point -> IntegratedEngine2T. Frozen source collection and Git-free build identity; unchanged physics."
+      "qualification": "Actual EXE acceptance; TRIAL dirty-tree distribution, no predictive validation or full curve rerun.",
+      "review": "SELF_REVIEW"
     },
     {
       "id": "WID1-PACKAGE",
       "description": "Build reproducible TRIAL bundle with portable real periodic examples and instructions.",
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "dependencies": [],
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Complete owner-authorized packaged delivery.",
+      "evidence": [
+        "results/windows-integrated-delivery-v1/report.md",
+        "results/windows-integrated-delivery-v1/receipt.json"
+      ],
+      "next_action": "None: bounded Windows product delivery complete.",
       "objective": "DINO_WINDOWS_INTEGRATED_DELIVERY_V1",
       "owner_role": "implementation",
       "write_scope": [
         "packaging",
         "results/windows-integrated-delivery-v1"
       ],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "Actual EXE acceptance; TRIAL dirty-tree distribution, no predictive validation or full curve rerun.",
+      "review": "SELF_REVIEW"
     },
     {
       "id": "WID1-ACCEPTANCE",
       "description": "Exercise actual EXE, export, short execution/resume, source comparison and checks.",
-      "state": "READY",
+      "state": "DONE",
       "dependencies": [],
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Complete owner-authorized packaged delivery.",
+      "evidence": [
+        "results/windows-integrated-delivery-v1/report.md",
+        "results/windows-integrated-delivery-v1/receipt.json"
+      ],
+      "next_action": "None: bounded Windows product delivery complete.",
       "objective": "DINO_WINDOWS_INTEGRATED_DELIVERY_V1",
       "owner_role": "implementation",
       "write_scope": [],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "Actual EXE acceptance; TRIAL dirty-tree distribution, no predictive validation or full curve rerun.",
+      "review": "SELF_REVIEW"
     }
   ],
   "audit_remediation_mode": false,
@@ -7726,7 +7745,7 @@
   ],
   "current_objective": {
     "id": "DINO_WINDOWS_INTEGRATED_DELIVERY_V1",
-    "state": "OPEN",
+    "state": "CLOSED",
     "owner_approved": true,
     "summary": "Consolidate current integrated Desktop in Windows package; real historical curves, comparison/export and bounded same-identity execution/resume. X30 remains frozen; no physics changes or push.",
     "change": "openspec/changes/windows-integrated-delivery-v1",
@@ -7737,7 +7756,8 @@
       "WID1-PACKAGE",
       "WID1-ACCEPTANCE"
     ],
-    "completion_criterion": "Real packaged EXE loads periodic examples, compares/exports, runs and resumes a brief integrated point; package/source timing, preserved identities and honest limitations."
+    "completion_criterion": "Real packaged EXE loads periodic examples, compares/exports, runs and resumes a brief integrated point; package/source timing, preserved identities and honest limitations.",
+    "scientific_state": "PRODUCT_TRIAL_FUNCTIONAL_ACCEPTANCE_ONLY;X30_FROZEN;EXPERIMENTAL_VALIDATION_NOT_PERFORMED"
   },
   "objectives": [
     {
@@ -8688,7 +8708,7 @@
     },
     {
       "id": "DINO_WINDOWS_INTEGRATED_DELIVERY_V1",
-      "state": "OPEN",
+      "state": "CLOSED",
       "owner_approved": true,
       "summary": "Consolidate current integrated Desktop in Windows package; real historical curves, comparison/export and bounded same-identity execution/resume. X30 remains frozen; no physics changes or push.",
       "change": "openspec/changes/windows-integrated-delivery-v1",
@@ -8699,7 +8719,8 @@
         "WID1-PACKAGE",
         "WID1-ACCEPTANCE"
       ],
-      "completion_criterion": "Real packaged EXE loads periodic examples, compares/exports, runs and resumes a brief integrated point; package/source timing, preserved identities and honest limitations."
+      "completion_criterion": "Real packaged EXE loads periodic examples, compares/exports, runs and resumes a brief integrated point; package/source timing, preserved identities and honest limitations.",
+      "scientific_state": "PRODUCT_TRIAL_FUNCTIONAL_ACCEPTANCE_ONLY;X30_FROZEN;EXPERIMENTAL_VALIDATION_NOT_PERFORMED"
     }
   ],
   "owner_decisions_pending": [
@@ -10843,6 +10864,18 @@
       "task": "WID1-PACKAGE",
       "kind": "task",
       "summary": "Packaged real EXE loaded6periodic points, pressure/power/torque and exported CSV.3cycles13.523s vs source13.382s, exact state/diagnostics. Actual history restart exposed project-vs-effective identity bug; fixing strict comparison, no bypass."
+    },
+    {
+      "at": "2026-10-23T15:38:55+00:00",
+      "task": "WID1-PACKAGE",
+      "kind": "task",
+      "summary": "rc7 TRIAL ZIP from da501c72 verified/extracted outside repo.29workflow module hashes and1322copied historical files match. Standalone EXE starts without Git/Python PATH. No history overwritten."
+    },
+    {
+      "at": "2026-10-23T15:38:56+00:00",
+      "task": "WID1-ACCEPTANCE",
+      "kind": "task",
+      "summary": "Real final EXE:6periodic curves,9000A/B pressure comparison,CSV;3cycles13.491s vs13.382s source,exact. Cancel1+resume2 viahistory gives identical checkpoint.83UI+298regression PASS;OpenSpec67PASS;clean close."
     }
   ],
   "legacy_gate_status": {
@@ -10858,8 +10891,19 @@
   },
   "gate_status": {
     "objective": "DINO_WINDOWS_INTEGRATED_DELIVERY_V1",
-    "state": "REVIEW",
-    "classification": "WINDOWS_INTEGRATED_DELIVERY_IN_PROGRESS"
+    "state": "PASS",
+    "classification": "WINDOWS_INTEGRATED_DELIVERY_TRIAL_FUNCTIONAL_PASS",
+    "evidence": [
+      "results/windows-integrated-delivery-v1/receipt.json",
+      "results/windows-integrated-delivery-v1/report.md"
+    ],
+    "gate_tasks_total": 3,
+    "gate_tasks_done": 3,
+    "gate_task_states": {
+      "DONE": 3
+    },
+    "remaining": [],
+    "updated_at": "2026-10-23T15:38:56+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
