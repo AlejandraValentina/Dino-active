@@ -3070,15 +3070,15 @@
       "dependencies": [
         "FRPM-PILOT-PROJECTION"
       ],
-      "state": "REVIEW",
+      "state": "BLOCKED_LOCAL",
       "objective": "FULL_RPM_SWEEP_V1",
       "owner_role": "implementation",
       "evidence_level": "L1",
       "write_scope": [
         "results/full-rpm-sweep-v1 campaign artifacts at external DINO_ARTIFACT_ROOT"
       ],
-      "blocker": "Three preregistered points are NUMERICAL_INVALID; preserve those classifications and keep the campaign scientific gate PARTIAL/REVIEW.",
-      "no_local_unblock_reason": null,
+      "blocker": "Deferred by current owner decision: the full RPM campaign is not the current priority and has no current execution authorization. Preserve prior partial results and all three NUMERICAL_INVALID classifications.",
+      "no_local_unblock_reason": "No local technical change can grant authorization. Any continuation requires a future prioritized objective and explicit new authorization; do not start a campaign.",
       "evidence": [
         "results/full-rpm-sweep-v1/pilot-analysis.json",
         "results/full-rpm-sweep-v1/campaign-receipt.json",
@@ -3107,10 +3107,9 @@
         "results/full-rpm-sweep-v1/implementation-v2-review.json",
         "results/full-rpm-sweep-v1/fast-evidence-review.json"
       ],
-      "unblock_tasks": [
-        "FRPM-V2-RESTORE-INDEPENDENT-REVIEW",
-        "FRPM-V2-FAST-EVIDENCE-ACCEPTANCE"
-      ]
+      "unblock_tasks": [],
+      "next_action": "Keep PARTIAL/REVIEW and preserve the evidence. Do not execute additional points.",
+      "operational_decision": "DEFERRED_NOT_CURRENT_PRIORITY_NO_ACTIVE_AUTHORIZATION"
     },
     {
       "id": "FRPM-CHECKPOINT-RESUME-VERIFY",
@@ -7640,12 +7639,19 @@
       ],
       "state": "DONE",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "7c79016",
+        "eb143f6",
+        "fc27542155840cdadbcc2b591ae5cd8e99031899",
+        "d048ab4",
+        "82002e5"
+      ],
       "evidence": [
         "results/dino-commercial-readiness-v1/acceptance/report.md",
         "results/dino-commercial-readiness-v1/acceptance/receipt.json",
         "results/dino-commercial-readiness-v1/captures/17-transient-compatible-v4.png",
-        "results/dino-commercial-readiness-v1/captures/18-project-reopened-v4.png"
+        "results/dino-commercial-readiness-v1/captures/18-project-reopened-v4.png",
+        "docs/releases/dino-commercial-readiness-v1-baseline.md"
       ],
       "next_action": "Packaged EXE run/compare/export/reopen journey verified; no Python required to run the user application; prior TRIAL package retained.",
       "objective": "DINO_COMMERCIAL_READINESS_V1",
@@ -7654,7 +7660,17 @@
       "write_scope": [
         "scripts/build_windows_trial.py",
         "results/dino-commercial-readiness-v1/"
-      ]
+      ],
+      "accepted_baseline": {
+        "version": "0.1.0-rc7",
+        "channel": "Windows x64 TRIAL",
+        "accepted": "2026-10-26",
+        "source_commit": "fc27542155840cdadbcc2b591ae5cd8e99031899",
+        "package": "C:/Dino-artifacts/Windows/MotorSim-0.1.0-rc7-windows-x64-fc275421-trial-20261026T104414Z.zip",
+        "sha256": "2bd3419d4fc710d751515ccccbbe098c61609d16aae68c1492e353dccc83755a",
+        "functional_regression": "28 focused tests PASS",
+        "limitations": "TRIAL functional acceptance only; transient short runs; no stationary-performance, experimental, predictive, scientific or commercial validation claim."
+      }
     },
     {
       "id": "CRV1-RUN-IDENTITY-REPRODUCER",
@@ -7792,22 +7808,24 @@
       "dependencies": [
         "X30M-REQUEST-PACKAGE"
       ],
-      "state": "READY",
-      "blocker": null,
+      "state": "BLOCKED_LOCAL",
+      "blocker": "Deferred: X30 is not the current operational priority; the approved request remains unsent. Do not initiate X30 preparation while this objective is deferred.",
       "unblock_tasks": [],
       "commits": [],
       "evidence": [
         "results/x30-minimum-point-v1/request-approved.md",
         "results/x30-minimum-point-v1/receipt.json"
       ],
-      "next_action": "Send the approved body; then update receipt delivery_status to SENT with date and channel. Agent has no email tool.",
+      "next_action": "Deferred. Revisit only after the required geometry is available and the objective is reprioritized; do not run simulations.",
       "objective": "DINO_X30_MINIMUM_POINT_V1",
       "owner_role": "owner",
       "evidence_level": "L0",
       "write_scope": [
         "results/x30-minimum-point-v1/receipt.json"
       ],
-      "qualification": "Owner action only; no agent delivery claim."
+      "qualification": "Owner action only; no agent delivery claim.",
+      "no_local_unblock_reason": "Requires primary geometry data from the owner or manufacturer and reprioritization of this objective. No legitimate local evidence can replace or justify inventing that geometry.",
+      "operational_decision": "DEFERRED_PENDING_EXTERNAL_GEOMETRY_AND_REPRIORITIZATION"
     },
     {
       "id": "X30M-INPUTS",
@@ -7815,19 +7833,21 @@
       "dependencies": [
         "X30M-OWNER-SEND"
       ],
-      "state": "WAITING",
-      "blocker": null,
+      "state": "BLOCKED_LOCAL",
+      "blocker": "Deferred: the indispensable measured crankcase free volume is unavailable, including reference angle, boundaries and inclusions. Do not substitute arbitrary assumptions.",
       "unblock_tasks": [],
       "commits": [],
       "evidence": [],
-      "next_action": "On reply, create input-intake.json with volume, angle, boundary A/B, inclusions, uncertainty and source; no configuration work before this.",
+      "next_action": "Deferred. Revisit only after the required geometry is available and the objective is reprioritized; do not run simulations.",
       "objective": "DINO_X30_MINIMUM_POINT_V1",
       "owner_role": "physics/numerics",
       "evidence_level": "L1",
       "write_scope": [
         "results/x30-minimum-point-v1/input-intake.json"
       ],
-      "qualification": "External data dependency; no value may be invented."
+      "qualification": "External data dependency; no value may be invented.",
+      "no_local_unblock_reason": "Requires primary geometry data from the owner or manufacturer and reprioritization of this objective. No legitimate local evidence can replace or justify inventing that geometry.",
+      "operational_decision": "DEFERRED_PENDING_EXTERNAL_GEOMETRY_AND_REPRIORITIZATION"
     },
     {
       "id": "X30M-CONFIG-FREEZE",
@@ -7835,12 +7855,12 @@
       "dependencies": [
         "X30M-INPUTS"
       ],
-      "state": "WAITING",
-      "blocker": null,
+      "state": "BLOCKED_LOCAL",
+      "blocker": "Deferred: the indispensable measured crankcase free volume is unavailable, including reference angle, boundaries and inclusions. Do not substitute arbitrary assumptions.",
       "unblock_tasks": [],
       "commits": [],
       "evidence": [],
-      "next_action": "Create the frozen config only after input-intake.json is valid; declare assumptions and do not fit to the published power curve.",
+      "next_action": "Deferred. Revisit only after the required geometry is available and the objective is reprioritized; do not run simulations.",
       "objective": "DINO_X30_MINIMUM_POINT_V1",
       "owner_role": "physics/numerics",
       "evidence_level": "L1",
@@ -7848,7 +7868,9 @@
         "configs/reference_cases/",
         "results/x30-minimum-point-v1/"
       ],
-      "qualification": "Blocked until a boundary-defined volume exists; no STANDARD_V1 substitution."
+      "qualification": "Blocked until a boundary-defined volume exists; no STANDARD_V1 substitution.",
+      "no_local_unblock_reason": "Requires primary geometry data from the owner or manufacturer and reprioritization of this objective. No legitimate local evidence can replace or justify inventing that geometry.",
+      "operational_decision": "DEFERRED_PENDING_EXTERNAL_GEOMETRY_AND_REPRIORITIZATION"
     },
     {
       "id": "X30M-POINT-EXEC",
@@ -7856,19 +7878,21 @@
       "dependencies": [
         "X30M-CONFIG-FREEZE"
       ],
-      "state": "WAITING",
-      "blocker": null,
+      "state": "BLOCKED_LOCAL",
+      "blocker": "Deferred: the indispensable measured crankcase free volume is unavailable, including reference angle, boundaries and inclusions. Do not substitute arbitrary assumptions.",
       "unblock_tasks": [],
       "commits": [],
       "evidence": [],
-      "next_action": "Present the exact frozen config and budget for owner authorization; one point only, no sweep or new model.",
+      "next_action": "Deferred. Revisit only after the required geometry is available and the objective is reprioritized; do not run simulations.",
       "objective": "DINO_X30_MINIMUM_POINT_V1",
       "owner_role": "physics/numerics",
       "evidence_level": "L2",
       "write_scope": [
         "results/x30-minimum-point-v1/"
       ],
-      "qualification": "Execution not authorized until the config freeze; a non-periodic result is transient."
+      "qualification": "Execution not authorized until the config freeze; a non-periodic result is transient.",
+      "no_local_unblock_reason": "Requires primary geometry data from the owner or manufacturer and reprioritization of this objective. No legitimate local evidence can replace or justify inventing that geometry.",
+      "operational_decision": "DEFERRED_PENDING_EXTERNAL_GEOMETRY_AND_REPRIORITIZATION"
     },
     {
       "id": "X30M-RESULT-VERIFY",
@@ -7876,19 +7900,21 @@
       "dependencies": [
         "X30M-POINT-EXEC"
       ],
-      "state": "WAITING",
-      "blocker": null,
+      "state": "BLOCKED_LOCAL",
+      "blocker": "Deferred: the indispensable measured crankcase free volume is unavailable, including reference angle, boundaries and inclusions. Do not substitute arbitrary assumptions.",
       "unblock_tasks": [],
       "commits": [],
       "evidence": [],
-      "next_action": "Report the single-point result with explicit unknowns; no 5% validation claim or component attribution without evidence.",
+      "next_action": "Deferred. Revisit only after the required geometry is available and the objective is reprioritized; do not run simulations.",
       "objective": "DINO_X30_MINIMUM_POINT_V1",
       "owner_role": "verification",
       "evidence_level": "L2",
       "write_scope": [
         "results/x30-minimum-point-v1/"
       ],
-      "qualification": "Comparison is exploratory; digitization bound is not experimental U95."
+      "qualification": "Comparison is exploratory; digitization bound is not experimental U95.",
+      "no_local_unblock_reason": "Requires primary geometry data from the owner or manufacturer and reprioritization of this objective. No legitimate local evidence can replace or justify inventing that geometry.",
+      "operational_decision": "DEFERRED_PENDING_EXTERNAL_GEOMETRY_AND_REPRIORITIZATION"
     }
   ],
   "audit_remediation_mode": false,
@@ -8091,9 +8117,9 @@
   ],
   "current_objective": {
     "id": "DINO_X30_MINIMUM_POINT_V1",
-    "state": "OPEN",
+    "state": "BLOCKED_LOCAL",
     "owner_approved": true,
-    "summary": "Owner authorized delivery of the refined X30 data request and, only after a boundary-defined precompression volume arrives, one 9000 RPM WOT comparative point. Decision B is preserved: no fabricated geometry, solver change, power fit, sweep or validation claim.",
+    "summary": "Aplazado por ausencia de geometría primaria del cárter y por prioridad operativa posterior a rendimiento práctico. La autorización histórica fue condicional a recibir el volumen acotado; no autoriza rellenar geometría ni ejecutar ahora.",
     "change": "openspec/changes/x30-minimum-point-v1",
     "spec": "openspec/changes/x30-minimum-point-v1/specs/x30-minimum-point-v1/spec.md",
     "transitioned_from": "DINO_COMMERCIAL_READINESS_V1",
@@ -8105,7 +8131,8 @@
       "X30M-RESULT-VERIFY"
     ],
     "completion_criterion": "Deliver an owner-approved send-ready request, a boundary-defined precompression volume or an explicit external block, one frozen X30 configuration with dated assumptions, at most one 9000 RPM WOT point, and an uncertainty-aware exploratory comparison against 15.1 +/- 0.3 kW without a 5% validation claim.",
-    "scientific_state": "X30_REQUEST_APPROVED_NOT_SENT;PRECOMPRESSION_FREE_VOLUME_UNIDENTIFIED;NO_SIMULATION_AUTHORIZED_UNTIL_INPUTS"
+    "scientific_state": "PRECOMPRESSION_FREE_VOLUME_UNIDENTIFIED;NO_SIMULATION_AUTHORIZED;DEFERRED",
+    "operational_decision": "DEFERRED_PENDING_EXTERNAL_GEOMETRY_AND_REPRIORITIZATION"
   },
   "objectives": [
     {
@@ -11376,6 +11403,24 @@
       "task": "CRV1-REED-SENSITIVITY-PROTOCOL",
       "kind": "freeze",
       "summary": "Deferred the not-started sensitivity protocol because the owner froze the accepted CRV1 baseline; no solver run or successor task created."
+    },
+    {
+      "at": "2026-10-26T11:23:59+00:00",
+      "task": "DINO_X30_MINIMUM_POINT_V1",
+      "kind": "task",
+      "summary": "Deferred: measured crankcase geometry is unavailable; X30 tasks are BLOCKED_LOCAL and execution is not authorized."
+    },
+    {
+      "at": "2026-10-26T11:23:59+00:00",
+      "task": "FRPM-FULL-CAMPAIGN-EXECUTION",
+      "kind": "task",
+      "summary": "Full RPM campaign deferred; no active execution or current authorization. Preserve PARTIAL/REVIEW, results and three NUMERICAL_INVALID classifications."
+    },
+    {
+      "at": "2026-10-26T11:23:59+00:00",
+      "task": "CRV1-WINDOWS-ACCEPTANCE",
+      "kind": "task",
+      "summary": "Recorded accepted rc7 TRIAL baseline, commits, receipt, package and SHA-256; acceptance was not repeated."
     }
   ],
   "legacy_gate_status": {
@@ -11392,7 +11437,7 @@
   "gate_status": {
     "objective": "DINO_X30_MINIMUM_POINT_V1",
     "state": "OPEN",
-    "classification": "X30_MINIMUM_POINT_OPEN",
+    "classification": "X30_MINIMUM_POINT_BLOCKED_EXTERNAL_GEOMETRY_AND_PRIORITY",
     "evidence": [
       "results/x30-minimum-point-v1/request-approved.md",
       "results/x30-minimum-point-v1/receipt.json",
@@ -11403,7 +11448,7 @@
     "gate_tasks_done": 1,
     "gate_task_states": {
       "DONE": 1,
-      "WAITING": 4
+      "BLOCKED_LOCAL": 4
     },
     "remaining": [
       "X30M-INPUTS",
@@ -11411,7 +11456,8 @@
       "X30M-POINT-EXEC",
       "X30M-RESULT-VERIFY"
     ],
-    "updated_at": "2026-10-26T11:08:37+00:00"
+    "updated_at": "2026-10-26T11:24:50+00:00",
+    "operational_decision": "DEFERRED_PENDING_EXTERNAL_GEOMETRY_AND_REPRIORITIZATION"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -11474,7 +11520,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-26T10:54:06+00:00",
+  "updated_at": "2026-10-26T11:24:50+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",

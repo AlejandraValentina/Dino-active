@@ -32,6 +32,7 @@ completion:        Owner-approved X30 request delivered and, only after a
                    solver change, power fit or validation claim.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
+operational status: BLOCKED_LOCAL pending measured crankcase geometry; no X30 point execution. Full RPM campaign is deferred and has no current execution authorization.
 ```
 
 The machine-readable value lives in `program-status.json → current_objective`; if it differs from this block, the JSON prevails and this file is corrected in the same commit.
