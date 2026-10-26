@@ -45,6 +45,8 @@ def run(output,model,step_degrees):
     config = json.loads(source.read_text(encoding='utf-8'))
     if model=='nozzle':
         config['geometry_identity']['port_connection_model']=SCHEMA
+        config['base_configuration_schema']=config['schema']
+        config['schema']='MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V7'
     e = IntegratedEngine2T.from_configuration_dict(config)
     output.mkdir(parents=True)
     write(output/'configuration.json',e.configuration_dict())

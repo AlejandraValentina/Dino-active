@@ -1,0 +1,27 @@
+{
+  "name": "port-v7-configuration-guards",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_integrated_port_connection_v2.py",
+    "tests/test_integrated_2t.py",
+    "-k",
+    "configuration or restart or serialized or schema or checkpoint or selection",
+    "--tb=short"
+  ],
+  "started_at": "2026-10-26T14:59:08+00:00",
+  "finished_at": "2026-10-26T14:59:57+00:00",
+  "duration_s": 48.64,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\port-v7-configuration-guards.log",
+  "log_lines": 2,
+  "log_bytes": 115,
+  "error_lines": [],
+  "tail": [
+    ".................                                                        [100%]",
+    "17 passed, 72 deselected in 48.17s"
+  ]
+}

@@ -116,6 +116,15 @@ nuevas: **352 PASS**. Suite del motor integrado más referencias transónicas:
 **309 PASS** antes del último endurecimiento, complementada por las pruebas
 focalizadas y el replay completo posterior. No sumar conteos como casos únicos.
 
-Pendiente antes de cerrar la selección: endurecer la versión de configuración
-para que lectores anteriores no puedan ignorar el selector nuevo. Los resultados
-numéricos anteriores permanecen ligados al código productor que realmente se usó.
+Se cerró la protección de configuración con `CONFIG_V7`, conservando los campos
+del esquema base y el descriptor explícito. Un ensayo carga el código real de rc7
+desde Git en un módulo aislado y comprueba que rechaza V7; no se modifica ese código
+ni se construye otro paquete. Los lectores actuales rechazan el selector nuevo en
+V1–V6 y verifican roundtrip/reinicio de V7. Los resultados numéricos anteriores
+siguen ligados a su productor real, `a4557f9`; no se cambiaron bindings históricos
+para hacerlos pasar por ejecuciones de una versión posterior.
+
+Decisión: **candidato seleccionable verificado numéricamente**, no sustituto
+predeterminado ni modelo identificado experimentalmente de pérdidas de lumbrera.
+Queda habilitada la etapa dependiente de discretización espacial. Esta decisión
+no cierra el objetivo global de confiabilidad predictiva ni habilita un claim L3.

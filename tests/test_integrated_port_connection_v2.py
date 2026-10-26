@@ -80,7 +80,38 @@ def test_model_selection_survives_supported_configuration_roundtrip():
         pytest.skip('external historical native configuration is unavailable')
     config = json.loads(path.read_text(encoding='utf-8'))
     config['geometry_identity']['port_connection_model'] = SCHEMA
+    with pytest.raises(ValueError,match='requires configuration schema V7'):
+        IntegratedEngine2T.from_configuration_dict(config)
+    config['base_configuration_schema']=config['schema']
+    config['schema']='MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V7'
     engine = IntegratedEngine2T.from_configuration_dict(config)
     restored = IntegratedEngine2T.from_configuration_dict(engine.configuration_dict())
     assert restored.port_connection_model == SCHEMA
     assert restored.configuration_json() == engine.configuration_json()
+    assert restored.configuration_dict()['schema']==config['schema']
+    engine.step(1e-8,.00054)
+    restored.restore(json.loads(json.dumps(engine.snapshot())))
+    engine.step(1e-8,.00054)
+    restored.step(1e-8,.00054)
+    assert engine.snapshot()==restored.snapshot()
+
+
+def test_frozen_rc7_reader_rejects_v7_instead_of_ignoring_new_physics(tmp_path):
+    import importlib.util
+    import subprocess
+    import sys
+    source=subprocess.run(['git','show','fc27542155840cdadbcc2b591ae5cd8e99031899:motorsim/integrated_2t.py'],
+        check=True,capture_output=True,encoding='utf-8').stdout
+    path=tmp_path/'rc7_integrated_reference.py'
+    path.write_text(source,encoding='utf-8')
+    name='motorsim._rc7_readonly_reference'
+    spec=importlib.util.spec_from_file_location(name,path)
+    module=importlib.util.module_from_spec(spec)
+    sys.modules[name]=module
+    try:
+        spec.loader.exec_module(module)
+        with pytest.raises(ValueError,match='configuration schema is invalid'):
+            module.IntegratedEngine2T.from_configuration_dict({
+                'schema':'MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V7'})
+    finally:
+        del sys.modules[name]

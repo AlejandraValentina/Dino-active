@@ -8365,14 +8365,18 @@
       "dependencies": [
         "PRED-RESTRICTION"
       ],
-      "state": "BLOCKED_LOCAL",
-      "blocker": "Candidate V1 lacks causal transonic/supersonic regime selection in 37/1008 inputs; owner authorized resolution on 2026-10-26. Historical checkpoint survey cannot reconstruct blowdown endpoints.",
+      "state": "DONE",
+      "blocker": null,
       "commits": [],
       "evidence": [
-        "results/predictive-reliability-v1/connection-domain-receipt.json",
-        "results/predictive-reliability-v1/report.md"
+        "results/predictive-reliability-v1/connection-v2-engineering-note.md",
+        "results/predictive-reliability-v1/transonic-v2-receipt.json",
+        "results/predictive-reliability-v1/integrated-port-v2-comparison.json",
+        "results/predictive-reliability-v1/nozzle-cycle2-replay-audit.json",
+        "results/predictive-reliability-v1/runlogs/transonic-p4-p8.summary.json",
+        "results/predictive-reliability-v1/runlogs/port-v7-configuration-guards.summary.json"
       ],
-      "next_action": "Complete and verify transonic model before selectable integration or dependent spatial work.",
+      "next_action": "Continue preregistered spatial reconstruction; do not replace legacy default or claim predictive validation.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "orchestrator/physics/verification",
       "write_scope": [
@@ -8387,7 +8391,8 @@
         "PRED-CONNECTION-IDENTITY",
         "PRED-CONNECTION-FIXTURE",
         "PRED-CONNECTION-SKEPTIC"
-      ]
+      ],
+      "qualification": "Equivalent ideal-nozzle candidate, explicitly different from V1 separated expansion; opt-in only, legacy default preserved. L0/L1 numerical gates and cycle-2 source-bound replay/offline audit PASS; SELF_REVIEW, no real-port loss identification or experimental claim."
     },
     {
       "id": "PRED-SPATIAL",
@@ -8395,7 +8400,7 @@
       "dependencies": [
         "PRED-CONNECTION"
       ],
-      "state": "WAITING",
+      "state": "READY",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -8612,23 +8617,26 @@
         "PRED-TRANSONIC-WAVE-DESIGN",
         "PRED-TRANSONIC-REFERENCE"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
         "results/predictive-reliability-v1/connection-v2-engineering-note.md",
+        "results/predictive-reliability-v1/transonic-v2-receipt.json",
         "results/predictive-reliability-v1/integrated-port-v2-comparison.json",
         "results/predictive-reliability-v1/nozzle-cycle2-replay-audit.json",
-        "tests/test_integrated_port_connection_v2.py"
+        "results/predictive-reliability-v1/runlogs/transonic-p4-p8.summary.json",
+        "results/predictive-reliability-v1/runlogs/port-v7-configuration-guards.summary.json"
       ],
-      "next_action": "Finish configuration capability version guard so older readers reject the new model rather than silently ignore its geometry descriptor.",
+      "next_action": "Continue preregistered spatial reconstruction; do not replace legacy default or claim predictive validation.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/implementation/verification",
       "write_scope": [
         "motorsim/integrated_2t.py",
         "tests/test_integrated_port_connection_v2.py"
       ],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "qualification": "Equivalent ideal-nozzle candidate, explicitly different from V1 separated expansion; opt-in only, legacy default preserved. L0/L1 numerical gates and cycle-2 source-bound replay/offline audit PASS; SELF_REVIEW, no real-port loss identification or experimental claim."
     },
     {
       "id": "PRED-CONNECTION-FIXTURE",
@@ -8682,11 +8690,13 @@
       "dependencies": [
         "PRED-TRANSONIC-REFERENCE"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Preparatory work only; spatial implementation waits for PRED-CONNECTION gate.",
+      "evidence": [
+        "openspec/changes/predictive-reliability-v1/spatial-contract-v1.md"
+      ],
+      "next_action": "Implement after coupling gate; quantify actual errors against analytic references before integrated use.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -12410,6 +12420,12 @@
       "task": "PRED-CONNECTION-IDENTITY",
       "kind": "task",
       "summary": "Integrated nozzle conservation/restart and 0.5/0.25-deg time gate PASS (max state 0.0591%); cycle-2 exact replay/offline audit PASS, 728 accepted steps plus actual retries. P4-P8 301 PASS/3 SKIP. Configuration reader version guard remains before spatial implementation."
+    },
+    {
+      "at": "2026-10-26T15:00:35+00:00",
+      "task": "PRED-CONNECTION",
+      "kind": "task",
+      "summary": "Equivalent-nozzle coupling stage numerically verified; legacy remains default. CONFIG_V7 prevents older readers silently ignoring physics; actual rc7 reader rejection, roundtrip/restart and 17 configuration regressions PASS. Continue spatial gate; real port loss model remains unvalidated."
     }
   ],
   "legacy_gate_status": {
@@ -12433,20 +12449,19 @@
       "results/predictive-reliability-v1/connection-domain-receipt.json"
     ],
     "gate_tasks_total": 7,
-    "gate_tasks_done": 2,
+    "gate_tasks_done": 3,
     "gate_task_states": {
-      "DONE": 2,
-      "BLOCKED_LOCAL": 1,
-      "WAITING": 4
+      "DONE": 3,
+      "READY": 1,
+      "WAITING": 3
     },
     "remaining": [
-      "PRED-CONNECTION",
       "PRED-SPATIAL",
       "PRED-INTEGRATED",
       "PRED-IDENTIFICATION",
       "PRED-VALIDATION"
     ],
-    "updated_at": "2026-10-26T14:13:52+00:00"
+    "updated_at": "2026-10-26T15:00:35+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

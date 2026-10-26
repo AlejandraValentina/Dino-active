@@ -1061,6 +1061,11 @@ class IntegratedEngine2T:
             result["external_boundary_model"] = self.configuration_boundary_model
             result["external_boundary_provenance"] = self.external_boundary_provenance
             result["fuel_coupled_combustion"] = self.fuel_coupled_combustion.to_dict()
+        if self.port_connection_model is not None:
+            # Older readers accept arbitrary geometry annotations. A new
+            # schema is necessary so they cannot silently ignore new physics.
+            result['base_configuration_schema'] = result['schema']
+            result['schema'] = 'MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V7'
         return result
 
     def configuration_dict(self) -> dict:
@@ -1142,6 +1147,21 @@ class IntegratedEngine2T:
     @classmethod
     def from_configuration_dict(cls, value: dict) -> "IntegratedEngine2T":
         """Rebuild a supported engine without caller code or geometry callbacks."""
+        versioned_port = False
+        if isinstance(value, dict) and value.get('schema') == 'MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V7':
+            if value.get('base_configuration_schema') not in {
+                    f'MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V{i}' for i in range(1,7)}:
+                raise ValueError('invalid V7 base configuration schema')
+            value = deepcopy(value)
+            value['schema'] = value.pop('base_configuration_schema')
+            versioned_port = True
+        if isinstance(value, dict):
+            identity = value.get('geometry_identity', {})
+            model = identity.get('port_connection_model') if isinstance(identity, dict) else None
+            if versioned_port and model != PORT_CONNECTION_V2:
+                raise ValueError('V7 requires its explicit supported port model')
+            if not versioned_port and model is not None:
+                raise ValueError('new port model requires configuration schema V7')
         common_fields = {"schema", "geometry_contract", "initial_chambers", "ducts",
                   "resolved_topology", "initial_duct_states", "duct_species",
                   "eos", "atmosphere",
@@ -1334,6 +1354,9 @@ class IntegratedEngine2T:
         canonical_input["schema"] = engine.configuration_schema
         canonical_input["outlet_species"] = list(
             value.get("outlet_species", value["atmosphere_species"]))
+        if versioned_port:
+            canonical_input['base_configuration_schema'] = canonical_input['schema']
+            canonical_input['schema'] = 'MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V7'
         if engine.configuration_dict() != canonical_input:
             raise ValueError("integrated engine resolved topology/configuration mismatch")
         return engine
