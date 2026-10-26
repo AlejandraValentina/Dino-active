@@ -1,0 +1,32 @@
+{
+  "objective": "DINO_X30_MINIMUM_POINT_V1",
+  "change": "openspec/changes/x30-minimum-point-v1",
+  "date": "2026-10-26",
+  "owner_authorization": "segui adelante con la propuesta planteada",
+  "delivery_status": "APPROVED_NOT_SENT",
+  "delivery_channel": "external owner mail client; agent has no email tool",
+  "recipients": [
+    "Fernando Ortenzi <fernando.ortenzi@enea.it>",
+    "Andrea Bossaglia <a.bossaglia@iamekarting.com>"
+  ],
+  "subject": "X30 Senior - remaining geometric input for a 1D comparison",
+  "request_file": "results/x30-minimum-point-v1/request-approved.md",
+  "request_body_file": "results/x30-minimum-point-v1/request-body.txt",
+  "source_evidence": {
+    "results/x30-public-reconstruction-v1/decision.md": "CB3F8601B39A76A6460C128A6C957DDF3860E9D84630D97C9985482938DD098A",
+    "results/x30-public-reconstruction-v1/email-draft-refined.md": "693B21FA2842700B70C11849B699759E138CEFB0142A24912EA7E9EC7BEACBD8",
+    "results/x30-public-reconstruction-v1/x30-technical-inputs-v2.json": "76CBD1A8B01EEB9E045C6BFBD9107427F2FCB9CA09F341489B6A13D0577C46FD"
+  },
+  "missing_inputs": [
+    "assembled pre-compression crankcase free gas volume at a specified crank angle",
+    "boundary definition: inlet/transfer volumes included or excluded, with sealing plane",
+    "representative transfer passage lengths and sections (if readily available)",
+    "whether 10.15 cm3 chamber volume includes the checking insert (if readily available)"
+  ],
+  "scientific_simulations": 0,
+  "solver_changes": false,
+  "geometry_fabricated": false,
+  "power_fitted": false,
+  "push_performed": false,
+  "next_action": "Owner sends the approved body from an external mail client, then records delivery confirmation before the status can become SENT."
+}

@@ -7739,6 +7739,154 @@
         "tests/test_standard_exploratory_point.py",
         "results/reed-sensitivity-v1/"
       ]
+    },
+    {
+      "id": "X30M-REQUEST-PACKAGE",
+      "description": "Record owner authorization, prepare the exact recipients/subject/body, source hashes and send-ready receipt; keep delivery external and APPROVED_NOT_SENT.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "unblock_tasks": [],
+      "commits": [],
+      "evidence": [
+        "results/x30-minimum-point-v1/request-approved.md",
+        "results/x30-minimum-point-v1/request-body.txt",
+        "results/x30-minimum-point-v1/receipt.json",
+        "openspec/changes/x30-minimum-point-v1/"
+      ],
+      "next_action": "Owner sends the approved body from an external mail client; do not mark SENT until the owner confirms delivery.",
+      "objective": "DINO_X30_MINIMUM_POINT_V1",
+      "owner_role": "physics/numerics",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/x30-minimum-point-v1/",
+        "openspec/changes/x30-minimum-point-v1/"
+      ],
+      "qualification": "Owner authorization recorded; delivery not claimed. Source hashes frozen."
+    },
+    {
+      "id": "X30M-VOLUME-PROCEDURE",
+      "description": "Prepare a boundary-explicit volumetric measurement procedure for an assembled X30 as a local fallback if the manufacturer/author value is unavailable.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "unblock_tasks": [],
+      "commits": [],
+      "evidence": [
+        "results/x30-minimum-point-v1/volume-measurement-procedure.md"
+      ],
+      "next_action": "Use only if the external value remains unavailable; no measurement was executed and no value was fabricated.",
+      "objective": "DINO_X30_MINIMUM_POINT_V1",
+      "owner_role": "physics/numerics",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/x30-minimum-point-v1/volume-measurement-procedure.md"
+      ],
+      "qualification": "Procedure only; Boundary A/B, crank angle, uncertainty and acceptance fields are explicit."
+    },
+    {
+      "id": "X30M-OWNER-SEND",
+      "description": "Owner sends the approved X30 request from an external mail client and records the delivery confirmation.",
+      "dependencies": [
+        "X30M-REQUEST-PACKAGE"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "unblock_tasks": [],
+      "commits": [],
+      "evidence": [
+        "results/x30-minimum-point-v1/request-approved.md",
+        "results/x30-minimum-point-v1/receipt.json"
+      ],
+      "next_action": "Send the approved body; then update receipt delivery_status to SENT with date and channel. Agent has no email tool.",
+      "objective": "DINO_X30_MINIMUM_POINT_V1",
+      "owner_role": "owner",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/x30-minimum-point-v1/receipt.json"
+      ],
+      "qualification": "Owner action only; no agent delivery claim."
+    },
+    {
+      "id": "X30M-INPUTS",
+      "description": "Accept one precompression free gas volume with crank angle, boundary definition and source; reject borrowed primary ratios and undefined values.",
+      "dependencies": [
+        "X30M-OWNER-SEND"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "unblock_tasks": [],
+      "commits": [],
+      "evidence": [],
+      "next_action": "On reply, create input-intake.json with volume, angle, boundary A/B, inclusions, uncertainty and source; no configuration work before this.",
+      "objective": "DINO_X30_MINIMUM_POINT_V1",
+      "owner_role": "physics/numerics",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/x30-minimum-point-v1/input-intake.json"
+      ],
+      "qualification": "External data dependency; no value may be invented."
+    },
+    {
+      "id": "X30M-CONFIG-FREEZE",
+      "description": "Freeze one revision-coherent X30 configuration after the volume and boundary are accepted, with every non-measured quantity as a dated explicit assumption.",
+      "dependencies": [
+        "X30M-INPUTS"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "unblock_tasks": [],
+      "commits": [],
+      "evidence": [],
+      "next_action": "Create the frozen config only after input-intake.json is valid; declare assumptions and do not fit to the published power curve.",
+      "objective": "DINO_X30_MINIMUM_POINT_V1",
+      "owner_role": "physics/numerics",
+      "evidence_level": "L1",
+      "write_scope": [
+        "configs/reference_cases/",
+        "results/x30-minimum-point-v1/"
+      ],
+      "qualification": "Blocked until a boundary-defined volume exists; no STANDARD_V1 substitution."
+    },
+    {
+      "id": "X30M-POINT-EXEC",
+      "description": "Fix time/cycle limits and execute at most one 9000 RPM WOT point with the existing integrated runner after explicit owner authorization.",
+      "dependencies": [
+        "X30M-CONFIG-FREEZE"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "unblock_tasks": [],
+      "commits": [],
+      "evidence": [],
+      "next_action": "Present the exact frozen config and budget for owner authorization; one point only, no sweep or new model.",
+      "objective": "DINO_X30_MINIMUM_POINT_V1",
+      "owner_role": "physics/numerics",
+      "evidence_level": "L2",
+      "write_scope": [
+        "results/x30-minimum-point-v1/"
+      ],
+      "qualification": "Execution not authorized until the config freeze; a non-periodic result is transient."
+    },
+    {
+      "id": "X30M-RESULT-VERIFY",
+      "description": "Classify periodic/transient, verify conservation and provenance, separate indicated and shaft power, and compare exploratorily with 15.1 +/- 0.3 kW.",
+      "dependencies": [
+        "X30M-POINT-EXEC"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "unblock_tasks": [],
+      "commits": [],
+      "evidence": [],
+      "next_action": "Report the single-point result with explicit unknowns; no 5% validation claim or component attribution without evidence.",
+      "objective": "DINO_X30_MINIMUM_POINT_V1",
+      "owner_role": "verification",
+      "evidence_level": "L2",
+      "write_scope": [
+        "results/x30-minimum-point-v1/"
+      ],
+      "qualification": "Comparison is exploratory; digitization bound is not experimental U95."
     }
   ],
   "audit_remediation_mode": false,
@@ -7940,20 +8088,22 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_COMMERCIAL_READINESS_V1",
+    "id": "DINO_X30_MINIMUM_POINT_V1",
     "state": "OPEN",
     "owner_approved": true,
-    "summary": "Owner-requested from-empty Windows design workflow using the integrated solver; create, configure, run, modify exhaust, compare, save and recover. Synthetic assumptions labeled; no experimental validation claim.",
-    "change": "openspec/changes/dino-commercial-readiness-v1",
-    "spec": "openspec/changes/dino-commercial-readiness-v1/specs/dino-commercial-readiness-v1/spec.md",
-    "completion_criterion": "Packaged Windows EXE completes the user-visible new design, bounded integrated exploratory point, exhaust variant comparison and save/reopen journey without manual file or script edits.",
+    "summary": "Owner authorized delivery of the refined X30 data request and, only after a boundary-defined precompression volume arrives, one 9000 RPM WOT comparative point. Decision B is preserved: no fabricated geometry, solver change, power fit, sweep or validation claim.",
+    "change": "openspec/changes/x30-minimum-point-v1",
+    "spec": "openspec/changes/x30-minimum-point-v1/specs/x30-minimum-point-v1/spec.md",
+    "transitioned_from": "DINO_COMMERCIAL_READINESS_V1",
     "gate_tasks": [
-      "CRV1-EMPTY-ENGINE",
-      "CRV1-ENGINE-EDITORS",
-      "CRV1-SIMULATION-ANALYSIS",
-      "CRV1-WINDOWS-ACCEPTANCE"
+      "X30M-REQUEST-PACKAGE",
+      "X30M-INPUTS",
+      "X30M-CONFIG-FREEZE",
+      "X30M-POINT-EXEC",
+      "X30M-RESULT-VERIFY"
     ],
-    "scientific_state": "FUNCTIONAL_TRIAL_ONLY;SYNTHETIC_ASSUMPTIONS_DISCLOSED;EXPERIMENTAL_VALIDATION_NOT_PERFORMED;X30_FROZEN"
+    "completion_criterion": "Deliver an owner-approved send-ready request, a boundary-defined precompression volume or an explicit external block, one frozen X30 configuration with dated assumptions, at most one 9000 RPM WOT point, and an uncertainty-aware exploratory comparison against 15.1 +/- 0.3 kW without a 5% validation claim.",
+    "scientific_state": "X30_REQUEST_APPROVED_NOT_SENT;PRECOMPRESSION_FREE_VOLUME_UNIDENTIFIED;NO_SIMULATION_AUTHORIZED_UNTIL_INPUTS"
   },
   "objectives": [
     {
@@ -8920,7 +9070,7 @@
     },
     {
       "id": "DINO_COMMERCIAL_READINESS_V1",
-      "state": "OPEN",
+      "state": "CLOSED",
       "owner_approved": true,
       "summary": "Owner-requested from-empty Windows design workflow using the integrated solver; create, configure, run, modify exhaust, compare, save and recover. Synthetic assumptions labeled; no experimental validation claim.",
       "change": "openspec/changes/dino-commercial-readiness-v1",
@@ -8932,7 +9082,41 @@
         "CRV1-SIMULATION-ANALYSIS",
         "CRV1-WINDOWS-ACCEPTANCE"
       ],
-      "scientific_state": "FUNCTIONAL_TRIAL_ONLY;SYNTHETIC_ASSUMPTIONS_DISCLOSED;EXPERIMENTAL_VALIDATION_NOT_PERFORMED;X30_FROZEN"
+      "scientific_state": "FUNCTIONAL_TRIAL_ONLY;SYNTHETIC_ASSUMPTIONS_DISCLOSED;EXPERIMENTAL_VALIDATION_NOT_PERFORMED;X30_FROZEN",
+      "gate_at_owner_transition": {
+        "objective": "DINO_COMMERCIAL_READINESS_V1",
+        "state": "PASS",
+        "classification": "DINO_COMMERCIAL_READINESS_V1_FUNCTIONAL_TRIAL_PASS",
+        "evidence": [
+          "results/dino-commercial-readiness-v1/acceptance/report.md",
+          "results/dino-commercial-readiness-v1/acceptance/receipt.json"
+        ],
+        "gate_tasks_total": 4,
+        "gate_tasks_done": 4,
+        "gate_task_states": {
+          "DONE": 4
+        },
+        "remaining": [],
+        "updated_at": "2026-10-26T10:54:06+00:00"
+      }
+    },
+    {
+      "id": "DINO_X30_MINIMUM_POINT_V1",
+      "state": "OPEN",
+      "owner_approved": true,
+      "summary": "Owner authorized delivery of the refined X30 data request and, only after a boundary-defined precompression volume arrives, one 9000 RPM WOT comparative point. Decision B is preserved: no fabricated geometry, solver change, power fit, sweep or validation claim.",
+      "change": "openspec/changes/x30-minimum-point-v1",
+      "spec": "openspec/changes/x30-minimum-point-v1/specs/x30-minimum-point-v1/spec.md",
+      "transitioned_from": "DINO_COMMERCIAL_READINESS_V1",
+      "gate_tasks": [
+        "X30M-REQUEST-PACKAGE",
+        "X30M-INPUTS",
+        "X30M-CONFIG-FREEZE",
+        "X30M-POINT-EXEC",
+        "X30M-RESULT-VERIFY"
+      ],
+      "completion_criterion": "Deliver an owner-approved send-ready request, a boundary-defined precompression volume or an explicit external block, one frozen X30 configuration with dated assumptions, at most one 9000 RPM WOT point, and an uncertainty-aware exploratory comparison against 15.1 +/- 0.3 kW without a 5% validation claim.",
+      "scientific_state": "X30_REQUEST_APPROVED_NOT_SENT;PRECOMPRESSION_FREE_VOLUME_UNIDENTIFIED;NO_SIMULATION_AUTHORIZED_UNTIL_INPUTS"
     }
   ],
   "owner_decisions_pending": [
@@ -11160,6 +11344,24 @@
       "task": "CRV1-REED-SENSITIVITY-PROTOCOL",
       "kind": "task",
       "summary": "Added READY protocol task for the bounded 1000->500 N/m reed sensitivity at 9000 RPM; execution remains gated on explicit owner authorization; no solver run."
+    },
+    {
+      "at": "2026-10-26T11:08:37+00:00",
+      "task": "X30M-REQUEST-PACKAGE",
+      "kind": "task",
+      "summary": "Owner authorized delivery of the refined X30 request. Prepared recipients, body, source hashes and receipt; delivery remains APPROVED_NOT_SENT because the agent has no email channel."
+    },
+    {
+      "at": "2026-10-26T11:08:37+00:00",
+      "task": "X30M-VOLUME-PROCEDURE",
+      "kind": "task",
+      "summary": "Prepared a boundary-explicit crankcase free-volume measurement procedure as a local fallback; no measurement executed and no volume fabricated."
+    },
+    {
+      "at": "2026-10-26T11:08:37+00:00",
+      "task": "DINO_X30_MINIMUM_POINT_V1",
+      "kind": "objective",
+      "summary": "Opened the X30 minimum-point objective after the commercial-readiness gate PASS. Gate is open at 1/5; external geometry and explicit execution authorization remain required."
     }
   ],
   "legacy_gate_status": {
@@ -11174,20 +11376,28 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_COMMERCIAL_READINESS_V1",
-    "state": "PASS",
-    "classification": "DINO_COMMERCIAL_READINESS_V1_FUNCTIONAL_TRIAL_PASS",
+    "objective": "DINO_X30_MINIMUM_POINT_V1",
+    "state": "OPEN",
+    "classification": "X30_MINIMUM_POINT_OPEN",
     "evidence": [
-      "results/dino-commercial-readiness-v1/acceptance/report.md",
-      "results/dino-commercial-readiness-v1/acceptance/receipt.json"
+      "results/x30-minimum-point-v1/request-approved.md",
+      "results/x30-minimum-point-v1/receipt.json",
+      "results/x30-minimum-point-v1/volume-measurement-procedure.md",
+      "openspec/changes/x30-minimum-point-v1/"
     ],
-    "gate_tasks_total": 4,
-    "gate_tasks_done": 4,
+    "gate_tasks_total": 5,
+    "gate_tasks_done": 1,
     "gate_task_states": {
-      "DONE": 4
+      "DONE": 1,
+      "WAITING": 4
     },
-    "remaining": [],
-    "updated_at": "2026-10-26T10:54:06+00:00"
+    "remaining": [
+      "X30M-INPUTS",
+      "X30M-CONFIG-FREEZE",
+      "X30M-POINT-EXEC",
+      "X30M-RESULT-VERIFY"
+    ],
+    "updated_at": "2026-10-26T11:08:37+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
