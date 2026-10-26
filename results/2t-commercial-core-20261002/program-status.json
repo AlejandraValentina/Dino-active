@@ -8100,7 +8100,8 @@
       "state": "DONE",
       "blocker": null,
       "commits": [
-        "9c60db2"
+        "9c60db2",
+        "ff32967"
       ],
       "evidence": [
         "motorsim/periodic_initialization_v1.py",
@@ -8127,7 +8128,8 @@
       "state": "DONE",
       "blocker": null,
       "commits": [
-        "9c60db2"
+        "9c60db2",
+        "ff32967"
       ],
       "evidence": [
         "tests/test_periodic_initialization_v1.py"
@@ -8176,8 +8178,13 @@
       ],
       "state": "IN_PROGRESS",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
+      "commits": [
+        "ff32967"
+      ],
+      "evidence": [
+        "results/integrated-performance-v3/pilot-contract-v2.json",
+        "${DINO_ARTIFACT_ROOT}/integrated-performance-v3/logs/perfv3-a9000-to-a10000-warm-pilot.log"
+      ],
       "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
       "owner_role": "verification",
       "evidence_level": "L0",
@@ -8185,7 +8192,7 @@
         "${DINO_ARTIFACT_ROOT}/integrated-performance-v3/"
       ],
       "unblock_tasks": [],
-      "next_action": "Stop at either existing periodicity acceptance or the fixed hard cap; do not resume beyond the cap."
+      "next_action": "One pre-solver provenance binding failure was corrected; final pilot has not yet taken a solver step. Repeat storage preflight and perform the single bounded pilot."
     },
     {
       "id": "PERFV3-DECISION",
