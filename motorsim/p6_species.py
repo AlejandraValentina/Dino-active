@@ -10,10 +10,22 @@ SPECIES = ("fresh_air", "fuel", "residual", "burned")
 
 
 def validate_species(values, mass, *, tol=1e-14):
-    values = tuple(float(x) for x in values)
+    # Integrated solver stages already carry immutable four-float tuples.
+    # Reuse those tuples instead of allocating and converting them at every
+    # face; retain the general conversion path for public list/int inputs.
+    fast_tuple = (type(values) is tuple and len(values) == 4 and
+                  type(values[0]) is float and type(values[1]) is float and
+                  type(values[2]) is float and type(values[3]) is float)
+    if not fast_tuple:
+        values = tuple(float(x) for x in values)
     if len(values) != 4 or not isfinite(mass) or mass < 0:
         raise ValueError("invalid species state")
-    if any(not isfinite(x) or x < -tol for x in values):
+    if fast_tuple:
+        a, b, c, d = values
+        if (not isfinite(a) or a < -tol or not isfinite(b) or b < -tol or
+                not isfinite(c) or c < -tol or not isfinite(d) or d < -tol):
+            raise ValueError("inadmissible species mass")
+    elif any(not isfinite(x) or x < -tol for x in values):
         raise ValueError("inadmissible species mass")
     if abs(fsum(values) - mass) > tol * max(1.0, mass):
         raise ValueError("species masses do not sum to total mass")

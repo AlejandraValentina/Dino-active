@@ -2,7 +2,7 @@
 
 import pytest
 
-from motorsim.p6_species import donor_species
+from motorsim.p6_species import donor_species, validate_species
 from test_integrated_2t import _case
 
 
@@ -36,3 +36,20 @@ def test_positive_flux_uses_left_donor_and_negative_flux_uses_right_donor():
                                     engine._fractions(right, 1.0))
     assert reverse == donor_species(-0.25, engine._fractions(left, 1.0),
                                      engine._fractions(right, 1.0))
+
+
+def test_species_validation_fast_tuple_and_general_conversion_agree():
+    expected = (0.5, 0.2, 0.2, 0.1)
+
+    assert validate_species(expected, 1.0) == expected
+    assert validate_species([0, 0.5, 0.2, 0.2, 0.1][1:], 1) == expected
+
+
+@pytest.mark.parametrize("values", [
+    (float("nan"), 0.0, 0.0, 0.0),
+    (float("inf"), 0.0, 0.0, 0.0),
+    (-1e-6, 0.5, 0.5, 0.0),
+])
+def test_species_validation_fast_tuple_keeps_fail_closed_checks(values):
+    with pytest.raises(ValueError):
+        validate_species(values, sum(values))
