@@ -1,0 +1,26 @@
+{
+  "name": "thermal-integrated-regression",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_moving_cell_thermal_reference_v1.py",
+    "tests/test_integrated_2t.py",
+    "-k",
+    "thermal or dynamic_reed",
+    "-q"
+  ],
+  "started_at": "2026-10-26T15:39:40+00:00",
+  "finished_at": "2026-10-26T15:39:54+00:00",
+  "duration_s": 14.047,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\thermal-integrated-regression.log",
+  "log_lines": 2,
+  "log_bytes": 115,
+  "error_lines": [],
+  "tail": [
+    "...............                                                          [100%]",
+    "15 passed, 76 deselected in 13.48s"
+  ]
+}

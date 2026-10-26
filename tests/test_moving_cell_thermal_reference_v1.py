@@ -60,3 +60,15 @@ def test_ssprk_heat_ledger_conservation_and_checkpoint_restart(wall_temperature)
     b.restore(deepcopy(a.snapshot()))
     a.step(1e-7,.0006);b.step(1e-7,.0006)
     assert a.snapshot()==b.snapshot()
+
+
+def test_static_case_native_checkpoint_retains_configuration_compatibility():
+    import json
+    from pathlib import Path
+    from motorsim.integrated_2t import IntegratedEngine2T
+    root=Path('results/predictive-reliability-v1/spatial-muscl-coarse')
+    config=json.loads((root/'configuration.json').read_text(encoding='utf-8'))
+    checkpoint=json.loads((root/'terminal-checkpoint.json').read_text(encoding='utf-8'))
+    engine=IntegratedEngine2T.from_configuration_dict(config)
+    engine.restore(checkpoint)
+    assert engine.snapshot()==checkpoint

@@ -8455,16 +8455,18 @@
       "dependencies": [
         "PRED-INTEGRATED"
       ],
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [],
-      "next_action": "Verify closures including moving-cell heat and identify data needs",
+      "next_action": "Await bounded P4-P8 regression, complete closure-data assessment; no measured values synthesized.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "orchestrator/physics/verification",
       "write_scope": [
-        "openspec/changes/predictive-reliability-v1/",
-        "results/predictive-reliability-v1/"
+        "motorsim/integrated_2t.py",
+        "tests/test_moving_cell_thermal_reference_v1.py",
+        "results/predictive-reliability-v1/moving-cell-heat-note-v1.md",
+        "results/predictive-reliability-v1/moving-cell-heat-receipt-v1.json"
       ],
       "evidence_level": "L0"
     },
@@ -8840,17 +8842,20 @@
       "dependencies": [
         "PRED-BASELINE"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Independent preparation only; model correction/validation waits for integrated numerical gates.",
+      "evidence": [
+        "results/predictive-reliability-v1/measured-data-inventory.json"
+      ],
+      "next_action": "Preserve existing data-acquisition dependency; no synthetic substitute for validation.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "results/predictive-reliability-v1/measured-data-inventory.json"
       ],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "qualification": "Read-only inspection of nine hash-bound manifests and 14 numeric candidates. Reference assumptions separated from measured inputs; no complete matched-engine test package established. X30 not reopened."
     }
   ],
   "audit_remediation_mode": false,
@@ -12598,6 +12603,12 @@
       "task": "PRED-INTEGRATED",
       "kind": "task",
       "summary": "Single 44->88-cell two-cycle mesh diagnostic COMPLETE in 66.51s; normalized residuals <1e-15, restart and cross-mesh rejection PASS. Transient cylinder work changes 3.12%; no mesh independence/predictive claim. Moving-cell thermal defect independently reproduced (6 FAIL/2 controls PASS)."
+    },
+    {
+      "at": "2026-10-26T15:44:56+00:00",
+      "task": "PRED-IDENTIFICATION",
+      "kind": "task",
+      "summary": "Moving-cell heat uses actual stage volume: 6 prior failures resolved, 391 combined candidate checks PASS; four-step energy residual ~5e-15 J vs ~1e-7 J before. Native checkpoints bind configuration, primary audits additionally bind source. Matched measured engine inputs remain unavailable; no calibration/data synthesis."
     }
   ],
   "legacy_gate_status": {

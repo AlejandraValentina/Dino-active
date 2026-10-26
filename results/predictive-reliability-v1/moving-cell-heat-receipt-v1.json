@@ -1,0 +1,177 @@
+{
+  "schema": "DINO_MOVING_CELL_HEAT_CORRECTION_V1",
+  "review": "SELF_REVIEW",
+  "reference": "d(Etotal)/dt = -h*A*(Tgas-Twall); density source uses actual stage volume",
+  "before_source_commit": "e583198",
+  "source_checks": [
+    {
+      "lift_m": 0.0,
+      "wall_temperature_K": 250.0,
+      "reference_volume_m3": 1.0000000000000002e-06,
+      "actual_volume_m3": 1.0000000000000002e-06,
+      "heat_to_wall_W": 2.5003730662731503,
+      "old_extensive_heat_factor": 1.0,
+      "corrected_extensive_source_W": -2.5003730662731503
+    },
+    {
+      "lift_m": 0.0,
+      "wall_temperature_K": 400.0,
+      "reference_volume_m3": 1.0000000000000002e-06,
+      "actual_volume_m3": 1.0000000000000002e-06,
+      "heat_to_wall_W": -4.999626933726851,
+      "old_extensive_heat_factor": 1.0,
+      "corrected_extensive_source_W": 4.999626933726851
+    },
+    {
+      "lift_m": 0.0005,
+      "wall_temperature_K": 250.0,
+      "reference_volume_m3": 1.0000000000000002e-06,
+      "actual_volume_m3": 1.0500000000000001e-06,
+      "heat_to_wall_W": 2.5003730662731503,
+      "old_extensive_heat_factor": 1.05,
+      "corrected_extensive_source_W": -2.5003730662731503
+    },
+    {
+      "lift_m": 0.0005,
+      "wall_temperature_K": 400.0,
+      "reference_volume_m3": 1.0000000000000002e-06,
+      "actual_volume_m3": 1.0500000000000001e-06,
+      "heat_to_wall_W": -4.999626933726851,
+      "old_extensive_heat_factor": 1.05,
+      "corrected_extensive_source_W": 4.999626933726851
+    },
+    {
+      "lift_m": 0.0015,
+      "wall_temperature_K": 250.0,
+      "reference_volume_m3": 1.0000000000000002e-06,
+      "actual_volume_m3": 1.1500000000000002e-06,
+      "heat_to_wall_W": 2.5003730662731503,
+      "old_extensive_heat_factor": 1.15,
+      "corrected_extensive_source_W": -2.5003730662731503
+    },
+    {
+      "lift_m": 0.0015,
+      "wall_temperature_K": 400.0,
+      "reference_volume_m3": 1.0000000000000002e-06,
+      "actual_volume_m3": 1.1500000000000002e-06,
+      "heat_to_wall_W": -4.999626933726851,
+      "old_extensive_heat_factor": 1.15,
+      "corrected_extensive_source_W": 4.999626933726851
+    }
+  ],
+  "ssprk_checks": [
+    {
+      "wall_temperature_K": 250.0,
+      "steps": 4,
+      "dt_s": 1e-07,
+      "conservation": {
+        "mass": {
+          "initial": 0.00040011199999999983,
+          "final": 0.0004001120000000395,
+          "external": 3.965443988807713e-17,
+          "residual": 2.7359624892329936e-20
+        },
+        "energy": {
+          "initial": 98.43000500000001,
+          "final": 98.43000399987336,
+          "external": 1.3169566997573437e-11,
+          "work": 0.0,
+          "residual": -4.729715271525139e-15,
+          "reed_dissipation": 2.205001101864455e-20
+        },
+        "species": {
+          "fresh_air": {
+            "initial": 0.00022370968000000004,
+            "final": 0.00022370968000003967,
+            "external": 3.965443988807713e-17,
+            "source": 0.0,
+            "residual": -2.6850483731945285e-20
+          },
+          "fuel": {
+            "initial": 0.0,
+            "final": 0.0,
+            "external": 0.0,
+            "source": 0.0,
+            "residual": 0.0
+          },
+          "residual": {
+            "initial": 0.00017640232,
+            "final": 0.00017640232,
+            "external": 0.0,
+            "source": 0.0,
+            "residual": 0.0
+          },
+          "burned": {
+            "initial": 0.0,
+            "final": 0.0,
+            "external": 0.0,
+            "source": 0.0,
+            "residual": 0.0
+          }
+        }
+      }
+    },
+    {
+      "wall_temperature_K": 400.0,
+      "steps": 4,
+      "dt_s": 1e-07,
+      "conservation": {
+        "mass": {
+          "initial": 0.00040011199999999983,
+          "final": 0.0004001119999999205,
+          "external": -7.929316033607118e-17,
+          "residual": -1.62285812434726e-20
+        },
+        "energy": {
+          "initial": 98.43000500000001,
+          "final": 98.43000699980561,
+          "external": -2.633391357440258e-11,
+          "work": 0.0,
+          "residual": -4.861348788465969e-15,
+          "reed_dissipation": 2.1899996479709663e-20
+        },
+        "species": {
+          "fresh_air": {
+            "initial": 0.00022370968000000004,
+            "final": 0.00022370967999992076,
+            "external": -7.929316033607118e-17,
+            "source": 0.0,
+            "residual": 1.0876473068665012e-20
+          },
+          "fuel": {
+            "initial": 0.0,
+            "final": 0.0,
+            "external": 0.0,
+            "source": 0.0,
+            "residual": 0.0
+          },
+          "residual": {
+            "initial": 0.00017640232,
+            "final": 0.00017640232,
+            "external": 0.0,
+            "source": 0.0,
+            "residual": 0.0
+          },
+          "burned": {
+            "initial": 0.0,
+            "final": 0.0,
+            "external": 0.0,
+            "source": 0.0,
+            "residual": 0.0
+          }
+        }
+      }
+    }
+  ],
+  "hashes": {
+    "motorsim/integrated_2t.py": "7b56f0fef8a5b70cc0fdc0dde563707301fb96ee2e8227505af91d44626ca9dd",
+    "tests/test_moving_cell_thermal_reference_v1.py": "9ce4ba8d167a7ac1aa17e371105e8081c763421d26b4b48198b4a89fea5935c9",
+    "results/predictive-reliability-v1/runlogs/moving-heat-before-correction.summary.json": "3932d5592ff9d7fbd44ff1f77ace425c978647e05ea077f2d382ebe882a4fce6",
+    "results/predictive-reliability-v1/runlogs/moving-heat-after-correction.summary.json": "fd6750419fba17f93f521c255f1e387c78dafc268279c5f5b842826ea6275807",
+    "results/predictive-reliability-v1/runlogs/moving-heat-final-regression-corrected.summary.json": "8d3f89dfffe90705f3074cbc9ab65fab71723c837086342ad851aba8c27e5f0c"
+  },
+  "historical_results_modified": false,
+  "predictive_validation": false,
+  "final_combined_tests_passed": 391,
+  "native_checkpoint_semantics": "Configuration-bound, not source-bound; unchanged static native checkpoint restorable. Primary audited rows remain source-bound."
+}

@@ -2061,7 +2061,11 @@ class IntegratedEngine2T:
                             surface.id, gas_temperature, rpm, self.thermal_load))
                     rhs_q["ducts"][duct_id][cell_index] = list(
                         rhs_q["ducts"][duct_id][cell_index])
-                    rhs_q["ducts"][duct_id][cell_index][2] -= heat / path.mesh.volumes[cell_index]
+                    # A moving reed endpoint stores energy density in its
+                    # actual stage volume. Using the reference mesh volume
+                    # would apply heat * Vstage / Vreference extensively.
+                    rhs_q["ducts"][duct_id][cell_index][2] -= heat / self._duct_cell_volume(
+                        path, cell_index, state)
                     rhs_q["ducts"][duct_id][cell_index] = tuple(
                         rhs_q["ducts"][duct_id][cell_index])
                 thermal_rates[surface.id] = heat

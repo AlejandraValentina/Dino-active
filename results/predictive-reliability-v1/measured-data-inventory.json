@@ -1,0 +1,181 @@
+{
+  "schema": "DINO_MEASURED_INPUT_INVENTORY_V1",
+  "review": "SELF_REVIEW",
+  "scope": "Existing nonignored configs/docs/results enumerated with rg --files; selected explicit provenance manifests; no claim about all external archives or Internet",
+  "source_hashes": {
+    "results/predictive-reliability-v1/spatial-muscl-coarse/configuration.json": "1225f10e55f8c04d855a3c8386d802e435c79a2b08254bd5513cdba28ece983e",
+    "configs/reference_cases/standard_v1_125cc_blair_cartwright.json": "301ded4ca6df997a3207e99aef37ee5a2702c782d15aacd50cfec32993d0ed08",
+    "configs/reference_cases/functional_reed_125cc_v1.dino.json": "ba5f23fcaf0873ed77a6789e130001c1f8cae6b3a5845cc7b5d58bc49c0e2140",
+    "configs/reference_cases/honda_cr250r_2007_partial_v1.json": "cbf01ae36231c279f612f47b51be0e7ba409ac0b0d952b604abf29d9e54c7e53",
+    "configs/reference/kt100_reference_v1_provenance.json": "4c06eab9b5ca559e41587e6e0614efc917adfdf697d76053640623021c9fc02d",
+    "results/experimental-reference-v1/selection.json": "9f46cc7ddc488eafb1ed60ecfd03a3ced260cf9bae314e70c5cf17ff8a8d6f42",
+    "results/experimental-reference-v1/receipt.json": "d0e5c65aa0689347ffe9263e76807b336e455796a98aa416e3b1e778779fbacd",
+    "results/p9-readiness-20261001/preregistration.json": "784d101601c01187e8631ec5c475bcd79367c8c022217d307bf24ac383601b71",
+    "docs/gasdynamic/p9_experimental_dataset_search_20261001.md": "9fe35e68e94fccc4b774c270e2ec41d1b6b7bbb7efc788f7114f91a5042a0586"
+  },
+  "reference_case": "A9000 functional Blair/Cartwright derivative; not measured same-engine validation",
+  "closure_inventory": [
+    {
+      "component": "port connection",
+      "status": "NUMERICALLY_VERIFIED_CANDIDATE_NOT_IDENTIFIED",
+      "model": "EQUIVALENT_IDEAL_NOZZLE_CONNECTION_CANDIDATE_V2",
+      "needed": "geometry-matched Cd/pressure-flow component measurements including direction and reference model; ideal equivalent nozzle is not proved a real-port separation model"
+    },
+    {
+      "component": "scavenging",
+      "status": "SYNTHETIC_ASSUMPTION",
+      "parameters": {
+        "intake_control": "reed",
+        "mixed_outflow_fraction": 0.5,
+        "provenance": "SYNTHETIC_ASSUMPTION",
+        "schema": "GAS_EXCHANGE_V2",
+        "transfer_crankcase_connection": "open_duct_face"
+      },
+      "needed": "independent retention/trapping or species/flow evidence, not fitted brake power"
+    },
+    {
+      "component": "reed",
+      "status": "SYNTHETIC_ASSUMPTION_QUASISTATIC_NOT_IDENTIFIED",
+      "parameters": {
+        "damping_n_s_m": 0.5,
+        "discharge_coefficient": 0.8,
+        "effective_width_m": 0.0227,
+        "id": "reed-1",
+        "lift_stop_m": 0.013,
+        "mass_kg": 0.00069,
+        "pressure_area_m2": 0.0008626,
+        "provenance": "SYNTHETIC_ASSUMPTION",
+        "restitution": 0.0,
+        "stiffness_n_m": 1000.0
+      },
+      "dynamic_reed_enabled": false,
+      "needed": "force/lift, discharge, dynamic response in corresponding assembly"
+    },
+    {
+      "component": "thermal",
+      "status": "SYNTHETIC_ASSUMPTION",
+      "surface_count": 35,
+      "prescriptions": [
+        [
+          50.0,
+          353.0
+        ],
+        [
+          50.0,
+          623.0
+        ],
+        [
+          500.0,
+          473.0
+        ]
+      ],
+      "needed": "wall/gas temperatures and heat-rate constraints; actual moving-cell implementation bug corrected separately"
+    },
+    {
+      "component": "combustion",
+      "status": "SYNTHETIC_ASSUMPTION",
+      "parameters": {
+        "combustion_efficiency": 0.85,
+        "components": [
+          {
+            "delay_deg": 12.0,
+            "duration_deg": 41.0,
+            "shape_a": 5.25,
+            "shape_m": 1.25,
+            "weight": 1.0
+          }
+        ],
+        "fuel_sha256": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+        "fuel_snapshot": {
+          "composition_mass_fraction": {
+            "C": 0.86,
+            "H": 0.14,
+            "O": 0.0
+          },
+          "fresh_air_oxygen_mass_fraction": 0.232,
+          "lower_heating_value_j_kg": 43000000.0,
+          "oxygen_required_kg_per_kg_fuel": 3.413333333333333,
+          "provenance": "SYNTHETIC_ASSUMPTION",
+          "schema": "SYNTHETIC_FUEL_SURROGATE_V1",
+          "sha256": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+          "stoichiometric_afr": 14.712643678160918,
+          "version": "1.0.0"
+        },
+        "ignition_timing_deg": 340.0,
+        "provenance": "SYNTHETIC_ASSUMPTION",
+        "schema": "FUEL_COUPLED_COMBUSTION_V1"
+      },
+      "needed": "fuel and heat-release/pressure data independent of held-out validation point"
+    },
+    {
+      "component": "gas properties",
+      "status": "CALORICALLY_PERFECT_COMMON_GAS_ASSUMPTION",
+      "parameters": {
+        "R": 287.0,
+        "gamma": 1.35
+      },
+      "needed": "justify approximation over actual temperature/composition domain before adding a new caloric model"
+    },
+    {
+      "component": "mechanical losses",
+      "status": "SYNTHETIC_FMEP_85000_PA_IN_REFERENCE_IDENTITY",
+      "needed": "measured losses/measurement plane; no arbitrary wheel-to-shaft multiplier"
+    }
+  ],
+  "existing_real_engine_references": [
+    {
+      "case": "Honda CR250R 2007",
+      "state": "DOCUMENTED_PARTIAL_NOT_SIMULATION_READY",
+      "missing": [
+        "connecting_rod_center_length_mm",
+        "crankcase_bdc_volume_cm3",
+        "port_dimensions_and_timing",
+        "transfer_duct_geometry",
+        "exhaust_chamber_geometry",
+        "fuel_and_heat_release_parameters",
+        "operating_points"
+      ]
+    },
+    {
+      "case": "KT100",
+      "state": "HISTORICAL_REFERENCE_CONTAINS_ASSUMPTIONS_NOT_REOPENED"
+    },
+    {
+      "case": "IAME X30 Senior",
+      "state": "PREVIOUSLY_SELECTED_DATA_PENDING_NOT_REOPENED",
+      "missing": [
+        "actual bore/clearance/chamber and crankcase free volumes",
+        "actual port area-angle profiles and duct lengths/areas",
+        "installed intake/reed material/force-lift/discharge and airbox",
+        "installed exhaust revision and dimensions including header joints and muffler",
+        "test atmospheric/thermal/fuel/mixture/ignition conditions",
+        "raw torque/RPM or power, measurement plane/corrections and uncertainty"
+      ],
+      "quantitative_validation_ready": false
+    }
+  ],
+  "numeric_candidate_files": [
+    "results/desktop-rpm-curves-v1/exploratory-power-torque.csv",
+    "results/p0-baseline-0d-20260917/artifacts/table.csv",
+    "results/windows-integrated-delivery-v1/example-export.csv",
+    "results/integrated-solver-verification-v1/standard-v1-controlled-species-balances.csv",
+    "results/integrated-solver-verification-v1/standard-v1-9000-cycles.csv",
+    "results/p8-wide-rpm-trajectory-bound-20260930/p8-wide-rpm.csv",
+    "results/p8-wide-rpm-20260927/p8-wide-rpm.csv",
+    "results/p8-wide-rpm-replay-r3-20260929-r3/p8-wide-rpm.csv",
+    "results/p8-audit-20260928/p8-wide-rpm.csv",
+    "results/p8-wide-rpm-replay-r3-20260929-r2/p8-wide-rpm.csv",
+    "results/p8-wide-rpm-replay-r3-20260929/p8-wide-rpm.csv",
+    "results/p8-wide-rpm-auditable-r4-20260930/p8-wide-rpm.csv",
+    "results/p8-wide-rpm-auditable-r4-final-20260930/p8-wide-rpm.csv",
+    "results/dino-commercial-readiness-v1/exports/transient-compatible-v4.csv"
+  ],
+  "numeric_candidate_classification": "Located CSVs are existing numerical runs/Desktop exports; no complete geometry/conditions/raw measured-engine package established in inspected evidence. PDFs/bibliography do not by themselves supply that package.",
+  "historical_P9": "PREREGISTERED_AWAITING_EXPERIMENTAL_DATA; contract untouched",
+  "validation_blocker": "Complete matched-engine input, independent measured outputs and defensible uncertainty unavailable in inspected evidence",
+  "local_substitute_for_measurements": false,
+  "experimental_validation_performed": false,
+  "predictive_accuracy_claimed": false,
+  "numerical_limit": "44->88-cell bounded transient changes cylinder work 3.12%; mesh uncertainty not established; do not calibrate to that transient",
+  "next_requirement": "Obtain existing selected reference specimen/test package, without reopening X30 execution or filling geometry by assumptions; no contacts, experiments or simulations initiated by this inventory"
+}
