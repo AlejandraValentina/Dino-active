@@ -22,17 +22,15 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_X30_MINIMUM_POINT_V1
-change/spec:       openspec/changes/x30-minimum-point-v1/
-                   specs/x30-minimum-point-v1/spec.md
-completion:        Owner-approved X30 request delivered and, only after a
-                   boundary-defined precompression volume arrives, one frozen
-                   configuration and at most one 9000 RPM WOT point compared
-                   exploratorily with 15.1 +/- 0.3 kW; no fabricated geometry,
-                   solver change, power fit or validation claim.
+CURRENT_OBJECTIVE: DINO_INTEGRATED_PERFORMANCE_V2
+change/spec:       openspec/changes/integrated-performance-v2/
+                   specs/integrated-performance-v2/spec.md
+completion:        Two short representative A/B profiles; implement one measured
+                   high-impact low-risk optimization; verify physical outputs,
+                   conservation, memory and checkpoint restart. No full curve,
+                   campaign, X30 or physical-model changes.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
-                   → current_objective, queue, gate_status, progress_log
-operational status: BLOCKED_LOCAL pending measured crankcase geometry; no X30 point execution. Full RPM campaign is deferred and has no current execution authorization.
+                   -> current_objective, queue, gate_status, progress_log
 ```
 
 The machine-readable value lives in `program-status.json → current_objective`; if it differs from this block, the JSON prevails and this file is corrected in the same commit.

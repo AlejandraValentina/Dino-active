@@ -7915,6 +7915,109 @@
       "qualification": "Comparison is exploratory; digitization bound is not experimental U95.",
       "no_local_unblock_reason": "Requires primary geometry data from the owner or manufacturer and reprioritization of this objective. No legitimate local evidence can replace or justify inventing that geometry.",
       "operational_decision": "DEFERRED_PENDING_EXTERNAL_GEOMETRY_AND_REPRIORITIZATION"
+    },
+    {
+      "id": "PERFV2-PROFILE-A-B",
+      "description": "Profile the current IntegratedEngine2T on the existing A/B 9000 RPM configurations with short bounded runs; separate solver CPU from processing and persistence.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/integrated-performance-v1/measurements.json",
+        "results/integrated-performance-v1/report.md"
+      ],
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V2",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "${DINO_ARTIFACT_ROOT}/integrated-performance-v2/profiles/"
+      ],
+      "unblock_tasks": [],
+      "next_action": "Run bounded, sequential cProfile and unprofiled measurements for A and B after storage preflight; never run complete curves."
+    },
+    {
+      "id": "PERFV2-HOTPATH-ANALYSIS",
+      "description": "Rank residual solver, diagnostics, allocation, checkpoint and persistence costs using existing V1 evidence and source call paths.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/integrated-performance-v1/report.md",
+        "results/integrated-performance-v1/measurements.json"
+      ],
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V2",
+      "owner_role": "architecture",
+      "evidence_level": "L0",
+      "write_scope": [
+        "openspec/changes/integrated-performance-v2/hotpath-analysis.md"
+      ],
+      "unblock_tasks": [],
+      "next_action": "Produce a source-linked ranked hotspot assessment; profiling values that overlap must not be summed."
+    },
+    {
+      "id": "PERFV2-EQUIVALENCE-PLAN",
+      "description": "Bind the optimization verification to current state, species, conservation, physical output, memory and checkpoint contracts.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "openspec/changes/integrated-performance-v2/specs/integrated-performance-v2/spec.md",
+        "tests/test_integrated_performance_v1.py"
+      ],
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V2",
+      "owner_role": "contract/regression guardian",
+      "evidence_level": "L0",
+      "write_scope": [
+        "openspec/changes/integrated-performance-v2/equivalence-plan.md"
+      ],
+      "unblock_tasks": [],
+      "next_action": "Document exact versus tolerant fields and the focused regression commands before changing solver code."
+    },
+    {
+      "id": "PERFV2-OPTIMIZE",
+      "description": "Implement only the most impactful low-risk optimization supported by the current two-configuration profile.",
+      "dependencies": [
+        "PERFV2-PROFILE-A-B",
+        "PERFV2-HOTPATH-ANALYSIS",
+        "PERFV2-EQUIVALENCE-PLAN"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V2",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/integrated_2t.py",
+        "motorsim/thermal.py",
+        "motorsim/gas1d/",
+        "tests/"
+      ],
+      "unblock_tasks": [],
+      "next_action": "Wait for the measured profile and equivalence plan; optimize one hotspot only."
+    },
+    {
+      "id": "PERFV2-VERIFY",
+      "description": "Verify two-config before/after wall/CPU, physical equivalence, conservation, memory, checkpoint restart and regressions.",
+      "dependencies": [
+        "PERFV2-OPTIMIZE"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V2",
+      "owner_role": "verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/integrated-performance-v2/"
+      ],
+      "unblock_tasks": [],
+      "next_action": "Run bounded paired measurements and focused tests; report full-curve effect as projection only."
     }
   ],
   "audit_remediation_mode": false,
@@ -8116,23 +8219,22 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_X30_MINIMUM_POINT_V1",
-    "state": "BLOCKED_LOCAL",
+    "id": "DINO_INTEGRATED_PERFORMANCE_V2",
+    "state": "OPEN",
     "owner_approved": true,
-    "summary": "Aplazado por ausencia de geometría primaria del cárter y por prioridad operativa posterior a rendimiento práctico. La autorización histórica fue condicional a recibir el volumen acotado; no autoriza rellenar geometría ni ejecutar ahora.",
-    "change": "openspec/changes/x30-minimum-point-v1",
-    "spec": "openspec/changes/x30-minimum-point-v1/specs/x30-minimum-point-v1/spec.md",
-    "transitioned_from": "DINO_COMMERCIAL_READINESS_V1",
+    "summary": "Owner authorized focused measured optimization to reduce time to periodic power/torque curves while preserving physical equations and numerical stability. No full curve, campaign, X30, Desktop feature, or physical-model change.",
+    "change": "openspec/changes/integrated-performance-v2",
+    "spec": "openspec/changes/integrated-performance-v2/specs/integrated-performance-v2/spec.md",
+    "transitioned_from": "DINO_X30_MINIMUM_POINT_V1",
     "gate_tasks": [
-      "X30M-REQUEST-PACKAGE",
-      "X30M-INPUTS",
-      "X30M-CONFIG-FREEZE",
-      "X30M-POINT-EXEC",
-      "X30M-RESULT-VERIFY"
+      "PERFV2-PROFILE-A-B",
+      "PERFV2-HOTPATH-ANALYSIS",
+      "PERFV2-EQUIVALENCE-PLAN",
+      "PERFV2-OPTIMIZE",
+      "PERFV2-VERIFY"
     ],
-    "completion_criterion": "Deliver an owner-approved send-ready request, a boundary-defined precompression volume or an explicit external block, one frozen X30 configuration with dated assumptions, at most one 9000 RPM WOT point, and an uncertainty-aware exploratory comparison against 15.1 +/- 0.3 kW without a 5% validation claim.",
-    "scientific_state": "PRECOMPRESSION_FREE_VOLUME_UNIDENTIFIED;NO_SIMULATION_AUTHORIZED;DEFERRED",
-    "operational_decision": "DEFERRED_PENDING_EXTERNAL_GEOMETRY_AND_REPRIORITIZATION"
+    "completion_criterion": "Two representative short A/B profiles; implement one high-impact low-risk residual optimization; demonstrate measured before/after speed and preserved physical outputs, conservation, memory, checkpoint restart and existing tolerances. No six-point curve rerun.",
+    "scientific_state": "PERFORMANCE_ONLY;PHYSICAL_EQUATIONS_FROZEN;NO_NEW_PERIODIC_OR_VALIDATION_CLAIM"
   },
   "objectives": [
     {
@@ -9146,6 +9248,24 @@
       ],
       "completion_criterion": "Deliver an owner-approved send-ready request, a boundary-defined precompression volume or an explicit external block, one frozen X30 configuration with dated assumptions, at most one 9000 RPM WOT point, and an uncertainty-aware exploratory comparison against 15.1 +/- 0.3 kW without a 5% validation claim.",
       "scientific_state": "X30_REQUEST_APPROVED_NOT_SENT;PRECOMPRESSION_FREE_VOLUME_UNIDENTIFIED;NO_SIMULATION_AUTHORIZED_UNTIL_INPUTS"
+    },
+    {
+      "id": "DINO_INTEGRATED_PERFORMANCE_V2",
+      "state": "OPEN",
+      "owner_approved": true,
+      "summary": "Owner authorized focused measured optimization to reduce time to periodic power/torque curves while preserving physical equations and numerical stability. No full curve, campaign, X30, Desktop feature, or physical-model change.",
+      "change": "openspec/changes/integrated-performance-v2",
+      "spec": "openspec/changes/integrated-performance-v2/specs/integrated-performance-v2/spec.md",
+      "transitioned_from": "DINO_X30_MINIMUM_POINT_V1",
+      "gate_tasks": [
+        "PERFV2-PROFILE-A-B",
+        "PERFV2-HOTPATH-ANALYSIS",
+        "PERFV2-EQUIVALENCE-PLAN",
+        "PERFV2-OPTIMIZE",
+        "PERFV2-VERIFY"
+      ],
+      "completion_criterion": "Two representative short A/B profiles; implement one high-impact low-risk residual optimization; demonstrate measured before/after speed and preserved physical outputs, conservation, memory, checkpoint restart and existing tolerances. No six-point curve rerun.",
+      "scientific_state": "PERFORMANCE_ONLY;PHYSICAL_EQUATIONS_FROZEN;NO_NEW_PERIODIC_OR_VALIDATION_CLAIM"
     }
   ],
   "owner_decisions_pending": [
@@ -11435,29 +11555,27 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_X30_MINIMUM_POINT_V1",
+    "objective": "DINO_INTEGRATED_PERFORMANCE_V2",
     "state": "OPEN",
-    "classification": "X30_MINIMUM_POINT_BLOCKED_EXTERNAL_GEOMETRY_AND_PRIORITY",
+    "classification": "INTEGRATED_PERFORMANCE_V2_OPEN",
     "evidence": [
-      "results/x30-minimum-point-v1/request-approved.md",
-      "results/x30-minimum-point-v1/receipt.json",
-      "results/x30-minimum-point-v1/volume-measurement-procedure.md",
-      "openspec/changes/x30-minimum-point-v1/"
+      "openspec/changes/integrated-performance-v2/",
+      "results/integrated-performance-v1/report.md"
     ],
     "gate_tasks_total": 5,
-    "gate_tasks_done": 1,
+    "gate_tasks_done": 0,
     "gate_task_states": {
-      "DONE": 1,
-      "BLOCKED_LOCAL": 4
+      "READY": 3,
+      "WAITING": 2
     },
     "remaining": [
-      "X30M-INPUTS",
-      "X30M-CONFIG-FREEZE",
-      "X30M-POINT-EXEC",
-      "X30M-RESULT-VERIFY"
+      "PERFV2-PROFILE-A-B",
+      "PERFV2-HOTPATH-ANALYSIS",
+      "PERFV2-EQUIVALENCE-PLAN",
+      "PERFV2-OPTIMIZE",
+      "PERFV2-VERIFY"
     ],
-    "updated_at": "2026-10-26T11:24:50+00:00",
-    "operational_decision": "DEFERRED_PENDING_EXTERNAL_GEOMETRY_AND_REPRIORITIZATION"
+    "updated_at": "2026-10-26T11:29:56+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -11520,7 +11638,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-26T11:24:50+00:00",
+  "updated_at": "2026-10-26T11:29:56+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -11957,5 +12075,30 @@
     "receipt_sha256": "528009ec4512519dd4465127cb84d98a9f56cd3d7dada056ae6e98505052258f",
     "representative_B_C_verified": false,
     "scientific_execution_authorized": false
+  },
+  "gate_status_archive_before_dino_integrated_performance_v2": {
+    "objective": "DINO_X30_MINIMUM_POINT_V1",
+    "state": "OPEN",
+    "classification": "X30_MINIMUM_POINT_BLOCKED_EXTERNAL_GEOMETRY_AND_PRIORITY",
+    "evidence": [
+      "results/x30-minimum-point-v1/request-approved.md",
+      "results/x30-minimum-point-v1/receipt.json",
+      "results/x30-minimum-point-v1/volume-measurement-procedure.md",
+      "openspec/changes/x30-minimum-point-v1/"
+    ],
+    "gate_tasks_total": 5,
+    "gate_tasks_done": 1,
+    "gate_task_states": {
+      "DONE": 1,
+      "BLOCKED_LOCAL": 4
+    },
+    "remaining": [
+      "X30M-INPUTS",
+      "X30M-CONFIG-FREEZE",
+      "X30M-POINT-EXEC",
+      "X30M-RESULT-VERIFY"
+    ],
+    "updated_at": "2026-10-26T11:24:50+00:00",
+    "operational_decision": "DEFERRED_PENDING_EXTERNAL_GEOMETRY_AND_REPRIORITIZATION"
   }
 }

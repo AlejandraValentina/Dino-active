@@ -1,8 +1,8 @@
 # Prioridades posteriores a CRV1
 
-Commercial Readiness V1 permanece congelada como la baseline funcional TRIAL rc7 aceptada el 2026-10-26. Este orden es una recomendación para planificación; **no autoriza ni inicia automáticamente** ninguno de los trabajos siguientes.
+Commercial Readiness V1 permanece congelada como la baseline funcional TRIAL rc7 aceptada el 2026-10-26. El orden conserva la prioridad acordada. Performance V2 fue autorizado explícitamente después de esta nota y queda registrado como objetivo vigente; las prioridades posteriores no se inician automáticamente.
 
-1. **Rendimiento práctico (prioridad recomendada).** Reducir el tiempo necesario para obtener curvas periódicas con medición y perfiles reproducibles, sin cambiar ecuaciones físicas ni degradar precisión, CFL, tolerancias o criterios de aceptación. Empezar por diagnóstico de cuellos de botella y objetivos de rendimiento acotados; optimizar solo preservando equivalencia numérica demostrable.
+1. **Rendimiento práctico (objetivo autorizado: Performance V2).** Reducir el tiempo necesario para obtener curvas periódicas con medición y perfiles reproducibles, sin cambiar ecuaciones físicas ni degradar precisión, CFL, tolerancias o criterios de aceptación. Empezar por diagnóstico de cuellos de botella y objetivos de rendimiento acotados; optimizar solo preservando equivalencia numérica demostrable.
 2. **Precisión física (condicional).** Reanudar la calibración/validación del IAME X30 únicamente al recibir los parámetros geométricos indispensables del cárter: volumen libre con ángulo de referencia y fronteras/inclusiones claramente definidas, con fuente y trazabilidad. No sustituirlos por supuestos arbitrarios ni ejecutar el punto X30 antes de aceptar esos datos y reactivar el objetivo.
 3. **Madurez comercial (según evidencia de uso).** Abordar problemas funcionales demostrados por usuarios de Dino Desktop, de manera acotada y sin reconstruir CRV1. No abrir mejoras de interfaz por anticipado.
 
