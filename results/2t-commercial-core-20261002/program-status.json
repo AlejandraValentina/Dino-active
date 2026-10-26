@@ -8271,6 +8271,173 @@
       ],
       "unblock_tasks": [],
       "next_action": "Code path preserves last complete-cycle checkpoint on time limit; actual pilot completed normally with checkpoint next_cycle=16; forced deadline path was not exercised."
+    },
+    {
+      "id": "PRED-CONTRACT",
+      "description": "Preregister ordered model corrections, reference source and restriction acceptance",
+      "dependencies": [],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Preregister ordered model corrections, reference source and restriction acceptance",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "orchestrator/physics/verification",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/",
+        "results/predictive-reliability-v1/"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-BASELINE",
+      "description": "Verify preserved CRV1 reference and source identities without rebuilding",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Verify preserved CRV1 reference and source identities without rebuilding",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "orchestrator/physics/verification",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/",
+        "results/predictive-reliability-v1/"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-REFERENCE",
+      "description": "Recover independent mathematical reference and small diagnostic evidence",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Recover independent mathematical reference and small diagnostic evidence",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "orchestrator/physics/verification",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/",
+        "results/predictive-reliability-v1/"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-RESTRICTION",
+      "description": "Implement and verify isolated versioned reversible restriction",
+      "dependencies": [
+        "PRED-CONTRACT",
+        "PRED-REFERENCE"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Implement and verify isolated versioned reversible restriction",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "orchestrator/physics/verification",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/",
+        "results/predictive-reliability-v1/"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-CONNECTION",
+      "description": "Solve and verify complete throat-to-duct compatible port connection",
+      "dependencies": [
+        "PRED-RESTRICTION"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Solve and verify complete throat-to-duct compatible port connection",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "orchestrator/physics/verification",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/",
+        "results/predictive-reliability-v1/"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-SPATIAL",
+      "description": "Version spatial reconstruction and quantify acoustic/shock/species error",
+      "dependencies": [
+        "PRED-CONNECTION"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Version spatial reconstruction and quantify acoustic/shock/species error",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "orchestrator/physics/verification",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/",
+        "results/predictive-reliability-v1/"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-INTEGRATED",
+      "description": "Preregister and execute bounded integrated conservation/mesh/restart diagnostics",
+      "dependencies": [
+        "PRED-SPATIAL",
+        "PRED-BASELINE"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Preregister and execute bounded integrated conservation/mesh/restart diagnostics",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "orchestrator/physics/verification",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/",
+        "results/predictive-reliability-v1/"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-IDENTIFICATION",
+      "description": "Verify closures including moving-cell heat and identify data needs",
+      "dependencies": [
+        "PRED-INTEGRATED"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Verify closures including moving-cell heat and identify data needs",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "orchestrator/physics/verification",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/",
+        "results/predictive-reliability-v1/"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-VALIDATION",
+      "description": "Blind prediction with measured complete-engine input and uncertainty",
+      "dependencies": [
+        "PRED-IDENTIFICATION"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Blind prediction with measured complete-engine input and uncertainty",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "orchestrator/physics/verification",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/",
+        "results/predictive-reliability-v1/"
+      ],
+      "evidence_level": "L0"
     }
   ],
   "audit_remediation_mode": false,
@@ -8472,26 +8639,24 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_INTEGRATED_PERFORMANCE_V3",
-    "state": "FAIL_TERMINAL",
+    "id": "DINO_PREDICTIVE_RELIABILITY_V1",
+    "state": "OPEN",
     "owner_approved": true,
-    "summary": "Bounded warm-start pilot reached existing period-1 gate in 15 cycles and 61.59 s, but cross-run observables fail equivalence thresholds in exhaust state; not integrated into RPM coordinator. Scope closed without additional runs.",
-    "change": "openspec/changes/integrated-performance-v3",
-    "spec": "openspec/changes/integrated-performance-v3/specs/integrated-performance-v3/spec.md",
-    "transitioned_from": "DINO_INTEGRATED_PERFORMANCE_V2",
+    "summary": "Owner authorizes progressive versioned physical corrections, subsystem verification and eventual measured-motor validation; no target power increase.",
+    "change": "openspec/changes/predictive-reliability-v1",
+    "spec": "openspec/changes/predictive-reliability-v1/specs/predictive-reliability-v1/spec.md",
+    "transitioned_from": "DINO_INTEGRATED_PERFORMANCE_V3",
     "gate_tasks": [
-      "PERFV3-TRANSFER-IMPLEMENT",
-      "PERFV3-TRANSFER-TESTS",
-      "PERFV3-A10000-PILOT",
-      "PERFV3-DECISION"
+      "PRED-CONTRACT",
+      "PRED-RESTRICTION",
+      "PRED-CONNECTION",
+      "PRED-SPATIAL",
+      "PRED-INTEGRATED",
+      "PRED-IDENTIFICATION",
+      "PRED-VALIDATION"
     ],
-    "completion_criterion": "A9000 periodic state safely initializes a distinct A10000 run with verified provenance; at most 40 new cycles and 240 s; adopt into coordinator only if it reaches periodicity, matches the historical periodic result within justified tolerances, and materially reduces cycle/time.",
-    "scientific_state": "PERFORMANCE_INITIALIZATION_ONLY;PHYSICAL_EQUATIONS_AND_PERIODICITY_CONTRACT_FROZEN;NO_EXPERIMENTAL_VALIDATION_CLAIM",
-    "source_evidence": [
-      "results/periodic-rpm-curves-v1/report.md",
-      "results/periodic-rpm-curves-v1/receipt.json",
-      "results/desktop-rpm-curves-v1/report.md"
-    ]
+    "completion_criterion": "Versioned physical connection, spatial and subsystem verification followed by preregistered validation against complete measured engine data, or a documented fundamental inconsistency presented before dependent work.",
+    "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED"
   },
   "objectives": [
     {
@@ -9541,6 +9706,26 @@
       ],
       "completion_criterion": "A9000 periodic state safely initializes a distinct A10000 run with verified provenance; at most 40 new cycles and 240 s; adopt into coordinator only if it reaches periodicity, matches the historical periodic result within justified tolerances, and materially reduces cycle/time.",
       "scientific_state": "PERFORMANCE_INITIALIZATION_ONLY;PHYSICAL_EQUATIONS_AND_PERIODICITY_CONTRACT_FROZEN;NO_EXPERIMENTAL_VALIDATION_CLAIM"
+    },
+    {
+      "id": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "state": "OPEN",
+      "owner_approved": true,
+      "summary": "Owner authorizes progressive versioned physical corrections, subsystem verification and eventual measured-motor validation; no target power increase.",
+      "change": "openspec/changes/predictive-reliability-v1",
+      "spec": "openspec/changes/predictive-reliability-v1/specs/predictive-reliability-v1/spec.md",
+      "transitioned_from": "DINO_INTEGRATED_PERFORMANCE_V3",
+      "gate_tasks": [
+        "PRED-CONTRACT",
+        "PRED-RESTRICTION",
+        "PRED-CONNECTION",
+        "PRED-SPATIAL",
+        "PRED-INTEGRATED",
+        "PRED-IDENTIFICATION",
+        "PRED-VALIDATION"
+      ],
+      "completion_criterion": "Versioned physical connection, spatial and subsystem verification followed by preregistered validation against complete measured engine data, or a documented fundamental inconsistency presented before dependent work.",
+      "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED"
     }
   ],
   "owner_decisions_pending": [
@@ -11907,6 +12092,11 @@
       "task": "PERFV3-FINAL-EQUIVALENCE",
       "kind": "task",
       "summary": "Completed the single authorized continuation from the cycle-15 checkpoint: 40 cycles through cycle 55 in 172.30 s, periodic detector streak 43, 51/413 cross-run metrics still fail; final decision B (equivalence not demonstrated), V3 frozen with independent initialization retained."
+    },
+    {
+      "timestamp": "2026-10-26T13:53:28.398547+00:00",
+      "task": "PRED-CONTRACT",
+      "summary": "Owner authorized progressive physical corrections; archived V3 gate unchanged, preregistered restriction tests and dependency-ordered verification. Existing unrelated blockers and SPV1 READY preserved."
     }
   ],
   "legacy_gate_status": {
@@ -11921,22 +12111,23 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
-    "state": "FAIL_TERMINAL",
-    "classification": "DINO_INTEGRATED_PERFORMANCE_V3_PARTIAL_SPEEDUP_EQUIVALENCE_FAIL",
-    "evidence": [
-      "results/integrated-performance-v3/report.md",
-      "results/integrated-performance-v3/pilot-summary.json",
-      "results/integrated-performance-v3/pilot-comparison.json",
-      "results/integrated-performance-v3/pilot-contract-v2.json"
+    "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+    "state": "OPEN",
+    "gate_tasks_total": 7,
+    "gate_tasks_done": 0,
+    "remaining": [
+      "PRED-CONTRACT",
+      "PRED-RESTRICTION",
+      "PRED-CONNECTION",
+      "PRED-SPATIAL",
+      "PRED-INTEGRATED",
+      "PRED-IDENTIFICATION",
+      "PRED-VALIDATION"
     ],
-    "gate_tasks_total": 4,
-    "gate_tasks_done": 4,
-    "gate_task_states": {
-      "DONE": 4
-    },
-    "remaining": [],
-    "updated_at": "2026-10-26T12:33:51+00:00"
+    "evidence": [
+      "openspec/changes/predictive-reliability-v1/specs/predictive-reliability-v1/spec.md"
+    ],
+    "updated_at": "2026-10-26T13:53:28.398547+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -11999,7 +12190,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-26T12:02:37+00:00",
+  "updated_at": "2026-10-26T13:53:28.398547+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -12353,6 +12544,24 @@
       },
       "remaining": [],
       "updated_at": "2026-10-23T15:38:56+00:00"
+    },
+    {
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
+      "state": "FAIL_TERMINAL",
+      "classification": "DINO_INTEGRATED_PERFORMANCE_V3_PARTIAL_SPEEDUP_EQUIVALENCE_FAIL",
+      "evidence": [
+        "results/integrated-performance-v3/report.md",
+        "results/integrated-performance-v3/pilot-summary.json",
+        "results/integrated-performance-v3/pilot-comparison.json",
+        "results/integrated-performance-v3/pilot-contract-v2.json"
+      ],
+      "gate_tasks_total": 4,
+      "gate_tasks_done": 4,
+      "gate_task_states": {
+        "DONE": 4
+      },
+      "remaining": [],
+      "updated_at": "2026-10-26T12:33:51+00:00"
     }
   ],
   "gate_status_archive_before_dino_desktop_v3_1": {

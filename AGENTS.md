@@ -22,13 +22,13 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_INTEGRATED_PERFORMANCE_V3
-change/spec:       openspec/changes/integrated-performance-v3/
-                   specs/integrated-performance-v3/spec.md
-completion:        Validate conservative same-engine periodic-state initialization
-                   from A9000 into a new A10000 run; one pilot capped at 40 new
-                   cycles/240 s; compare against historical periodic A10000.
-                   No campaign or physical-model/periodicity changes.
+CURRENT_OBJECTIVE: DINO_PREDICTIVE_RELIABILITY_V1
+change/spec:       openspec/changes/predictive-reliability-v1/
+                   specs/predictive-reliability-v1/spec.md
+completion:        Versioned restriction/connection verification, spatial accuracy,
+                   bounded integrated diagnostics, closure identification and
+                   blind measured-engine validation. No target power increase.
+                   Preserve CRV1 and historical evidence; V3 frozen; no push.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    -> current_objective, queue, gate_status, progress_log
 ```
