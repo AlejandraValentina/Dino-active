@@ -8365,7 +8365,7 @@
       "dependencies": [
         "PRED-RESTRICTION"
       ],
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -8373,8 +8373,8 @@
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "orchestrator/physics/verification",
       "write_scope": [
-        "openspec/changes/predictive-reliability-v1/",
-        "results/predictive-reliability-v1/"
+        "motorsim/port_connection_v1.py",
+        "tests/test_port_connection_v1.py"
       ],
       "evidence_level": "L0"
     },
@@ -8452,6 +8452,65 @@
       "write_scope": [
         "openspec/changes/predictive-reliability-v1/",
         "results/predictive-reliability-v1/"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-CONNECTION-SPEC",
+      "description": "Preregister full port station, momentum, entropy and sonic-continuity criteria",
+      "dependencies": [
+        "PRED-RESTRICTION"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "openspec/changes/predictive-reliability-v1/connection-contract.md"
+      ],
+      "next_action": "Preregister full port station, momentum, entropy and sonic-continuity criteria",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "motorsim/port_connection_v1.py",
+        "tests/test_port_connection_v1.py"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-CONNECTION-REFERENCE",
+      "description": "Prepare independent conservation and limiting-state fixtures for the port candidate",
+      "dependencies": [
+        "PRED-RESTRICTION"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Prepare independent conservation and limiting-state fixtures for the port candidate",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "motorsim/port_connection_v1.py",
+        "tests/test_port_connection_v1.py"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-CONNECTION-REGRESSION",
+      "description": "Identify preserved core regression and checkpoint contracts before integration",
+      "dependencies": [
+        "PRED-RESTRICTION"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Identify preserved core regression and checkpoint contracts before integration",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "motorsim/port_connection_v1.py",
+        "tests/test_port_connection_v1.py"
       ],
       "evidence_level": "L0"
     }
