@@ -1480,6 +1480,17 @@ class IntegratedEngine2T:
 
     def _face_species_flux(self, mass_flux, left_species, left_mass,
                            right_species, right_mass):
+        # step() validates every species state at the SSPRK stage boundary
+        # before _assemble reaches a face. The signed mass flux selects one
+        # donor, so normalizing the receiver here repeats a full species check
+        # that cannot affect this flux. Keep donor_species' own guard and keep
+        # the zero-flow path validating both sides as before.
+        if mass_flux > 0.0:
+            donor = self._fractions(left_species, left_mass)
+            return donor_species(mass_flux, donor, donor)
+        if mass_flux < 0.0:
+            donor = self._fractions(right_species, right_mass)
+            return donor_species(mass_flux, donor, donor)
         donor_left = self._fractions(left_species, left_mass)
         donor_right = self._fractions(right_species, right_mass)
         return donor_species(mass_flux, donor_left, donor_right)

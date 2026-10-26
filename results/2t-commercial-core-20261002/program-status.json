@@ -7920,12 +7920,15 @@
       "id": "PERFV2-PROFILE-A-B",
       "description": "Profile the current IntegratedEngine2T on the existing A/B 9000 RPM configurations with short bounded runs; separate solver CPU from processing and persistence.",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
         "results/integrated-performance-v1/measurements.json",
-        "results/integrated-performance-v1/report.md"
+        "results/integrated-performance-v1/report.md",
+        "${DINO_ARTIFACT_ROOT}/integrated-performance-v2/runs/A/benchmark.json",
+        "${DINO_ARTIFACT_ROOT}/integrated-performance-v2/runs/B/benchmark.json",
+        "openspec/changes/integrated-performance-v2/hotpath-analysis.md"
       ],
       "objective": "DINO_INTEGRATED_PERFORMANCE_V2",
       "owner_role": "verification",
@@ -7934,19 +7937,21 @@
         "${DINO_ARTIFACT_ROOT}/integrated-performance-v2/profiles/"
       ],
       "unblock_tasks": [],
-      "next_action": "Run bounded, sequential cProfile and unprofiled measurements for A and B after storage preflight; never run complete curves.",
-      "started_at": "2026-10-26T11:30:29+00:00"
+      "next_action": "Baseline profile complete: A/B CPU attribution and unprofiled timings recorded; do not use profiled time as speedup.",
+      "started_at": "2026-10-26T11:30:29+00:00",
+      "completed_at": "2026-10-26T11:35:20+00:00"
     },
     {
       "id": "PERFV2-HOTPATH-ANALYSIS",
       "description": "Rank residual solver, diagnostics, allocation, checkpoint and persistence costs using existing V1 evidence and source call paths.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
         "results/integrated-performance-v1/report.md",
-        "results/integrated-performance-v1/measurements.json"
+        "results/integrated-performance-v1/measurements.json",
+        "openspec/changes/integrated-performance-v2/hotpath-analysis.md"
       ],
       "objective": "DINO_INTEGRATED_PERFORMANCE_V2",
       "owner_role": "architecture",
@@ -7955,18 +7960,20 @@
         "openspec/changes/integrated-performance-v2/hotpath-analysis.md"
       ],
       "unblock_tasks": [],
-      "next_action": "Produce a source-linked ranked hotspot assessment; profiling values that overlap must not be summed."
+      "next_action": "The duplicate left/right donor normalization is the selected bounded candidate; measured before/after decides whether it is worth retaining.",
+      "completed_at": "2026-10-26T11:35:20+00:00"
     },
     {
       "id": "PERFV2-EQUIVALENCE-PLAN",
       "description": "Bind the optimization verification to current state, species, conservation, physical output, memory and checkpoint contracts.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
         "openspec/changes/integrated-performance-v2/specs/integrated-performance-v2/spec.md",
-        "tests/test_integrated_performance_v1.py"
+        "tests/test_integrated_performance_v1.py",
+        "openspec/changes/integrated-performance-v2/equivalence-plan.md"
       ],
       "objective": "DINO_INTEGRATED_PERFORMANCE_V2",
       "owner_role": "contract/regression guardian",
@@ -7975,7 +7982,8 @@
         "openspec/changes/integrated-performance-v2/equivalence-plan.md"
       ],
       "unblock_tasks": [],
-      "next_action": "Document exact versus tolerant fields and the focused regression commands before changing solver code."
+      "next_action": "Equivalence and existing validation contracts are frozen in equivalence-plan.md.",
+      "completed_at": "2026-10-26T11:35:20+00:00"
     },
     {
       "id": "PERFV2-OPTIMIZE",
@@ -7985,7 +7993,7 @@
         "PERFV2-HOTPATH-ANALYSIS",
         "PERFV2-EQUIVALENCE-PLAN"
       ],
-      "state": "WAITING",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -7999,7 +8007,8 @@
         "tests/"
       ],
       "unblock_tasks": [],
-      "next_action": "Wait for the measured profile and equivalence plan; optimize one hotspot only."
+      "next_action": "Wait for the measured profile and equivalence plan; optimize one hotspot only.",
+      "started_at": "2026-10-26T11:35:51+00:00"
     },
     {
       "id": "PERFV2-VERIFY",
@@ -8235,7 +8244,26 @@
       "PERFV2-VERIFY"
     ],
     "completion_criterion": "Two representative short A/B profiles; implement one high-impact low-risk residual optimization; demonstrate measured before/after speed and preserved physical outputs, conservation, memory, checkpoint restart and existing tolerances. No six-point curve rerun.",
-    "scientific_state": "PERFORMANCE_ONLY;PHYSICAL_EQUATIONS_FROZEN;NO_NEW_PERIODIC_OR_VALIDATION_CLAIM"
+    "scientific_state": "PERFORMANCE_ONLY;PHYSICAL_EQUATIONS_FROZEN;NO_NEW_PERIODIC_OR_VALIDATION_CLAIM",
+    "baseline_measurements": {
+      "A": {
+        "configuration_sha256": "743a00de51aa4ca214afb5c84b790c1d642c92a4887fa0074bad3d76aa2c1a9c",
+        "cycles": 3,
+        "wall_s": 12.408570199972019,
+        "cpu_s": 12.25,
+        "status": "MAX_CYCLES_NONCONVERGED",
+        "peak_rss_mib": 101.4921875
+      },
+      "B": {
+        "configuration_sha256": "72e2ded3c4bc62ffde6eb39989f39140dd39a2d185d0ec00a88167bcbe602524",
+        "cycles": 3,
+        "wall_s": 12.264189899899065,
+        "cpu_s": 11.96875,
+        "status": "MAX_CYCLES_NONCONVERGED",
+        "peak_rss_mib": 102.328125
+      },
+      "measurement_note": "Unprofiled three-cycle engineering diagnostics before V2 code changes; not periodic curve measurements."
+    }
   },
   "objectives": [
     {
@@ -11548,6 +11576,30 @@
       "task": "PERFV2-PROFILE-A-B",
       "kind": "task",
       "summary": "Comienza el perfil corto CPU A/B9000 del integrador actual; entradas históricas verificadas por hash y almacenamiento C: aprobado por preflight."
+    },
+    {
+      "at": "2026-10-26T11:35:20+00:00",
+      "task": "PERFV2-PROFILE-A-B",
+      "kind": "task",
+      "summary": "Current A/B9000 profiles and unprofiled baselines complete; both bounded three-cycle diagnostics are MAX_CYCLES_NONCONVERGED, not periodic results."
+    },
+    {
+      "at": "2026-10-26T11:35:20+00:00",
+      "task": "PERFV2-HOTPATH-ANALYSIS",
+      "kind": "task",
+      "summary": "Profile ranks repeated species validation, stage assembly, finite/EOS checks and HLLC above diagnostics/persistence; selected donor-side-only normalization for measurement."
+    },
+    {
+      "at": "2026-10-26T11:35:20+00:00",
+      "task": "PERFV2-EQUIVALENCE-PLAN",
+      "kind": "task",
+      "summary": "Bounded exact-output, conservation, memory, and restart checks documented before the optimization."
+    },
+    {
+      "at": "2026-10-26T11:35:52+00:00",
+      "task": "PERFV2-OPTIMIZE",
+      "kind": "task",
+      "summary": "Implemented donor-side-only normalization at integrated faces, retaining stage-boundary validation, donor_species guard and zero-flux validation; focused exact-formula tests added."
     }
   ],
   "legacy_gate_status": {
@@ -11570,20 +11622,17 @@
       "results/integrated-performance-v1/report.md"
     ],
     "gate_tasks_total": 5,
-    "gate_tasks_done": 0,
+    "gate_tasks_done": 3,
     "gate_task_states": {
+      "DONE": 3,
       "IN_PROGRESS": 1,
-      "READY": 2,
-      "WAITING": 2
+      "WAITING": 1
     },
     "remaining": [
-      "PERFV2-PROFILE-A-B",
-      "PERFV2-HOTPATH-ANALYSIS",
-      "PERFV2-EQUIVALENCE-PLAN",
       "PERFV2-OPTIMIZE",
       "PERFV2-VERIFY"
     ],
-    "updated_at": "2026-10-26T11:29:56+00:00"
+    "updated_at": "2026-10-26T11:35:51+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -11646,7 +11695,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-26T11:30:29+00:00",
+  "updated_at": "2026-10-26T11:35:51+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
