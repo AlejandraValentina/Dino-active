@@ -3,6 +3,24 @@
 2026-10-26. Estado científico: **PARTIAL**. Candidatos numéricos verificados;
 precisión predictiva no demostrada. Revisión **SELF_REVIEW**, sin claim de release.
 
+## Actualización tras la continuación autorizada
+
+Se añadió únicamente un diagnóstico de 176 celdas, dos revoluciones independientes,
+184.42 s de cálculo. La secuencia de trabajo transitorio 44/88/176 es
+28.5676/29.4581/30.2026 J: convergencia lenta, todavía no independencia de malla.
+Conservación normalizada <1.33e-15 y checkpoints PASS. Los estados de ciclos 1/2
+no cumplen periodicidad en ninguna malla con el comparador existente, sin nuevos
+pasos para esa comprobación. No se amplió automáticamente el presupuesto.
+
+Nuevas comprobaciones de diagnósticos: 41 PASS. Nueva regresión P4–P8:
+301 PASS, 3 SKIP. No se repitió la suite general ni se presenta como aprobada.
+
+El inventario público complementario reconoce los 20 puntos X30 ya digitalizados
+y conserva sus faltantes. Encontró una referencia parcial de oscilaciones de
+admisión con volumen de cárter documentado; no se adoptó un nuevo motor completo.
+Detalles y fuentes primarias en `public-dataset-survey-v2/report.md`; resultados
+numéricos en `mesh-three-level-note-v1.md`. El plan y la validación siguen abiertos.
+
 ## Implementado y comprobado
 
 1. **Acoplamiento seleccionable**, conservando el camino anterior. La formulación

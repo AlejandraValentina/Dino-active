@@ -1,0 +1,48 @@
+{
+  "schema": "DINO_PUBLIC_2T_DATA_SURVEY_V2",
+  "review": "SELF_REVIEW",
+  "date": "2026-10-26",
+  "owner_scope": "Primary-source public alternatives authorized; no new private measurements available; no arbitrary missing input completion",
+  "existing_partial_evidence_hashes": {
+    "results/x30-preparation-v1/figure10-digitized.json": "e65d0f80753d41b4df3926f456a64fb4a8aed27b4d9d9dc80c8275bb6e2fa612",
+    "results/x30-public-reconstruction-v1/x30-technical-inputs-v2.json": "76cbd1a8b01eeb9e045c6bfbd9107427f2fcb9ca09f341489b6a13d0577c46fd",
+    "results/x30-public-reconstruction-v1/decision.md": "cb3f8601b39a76a6460c128a6c957ddf3860e9d84630d97c9985482938dd098a",
+    "results/predictive-reliability-v1/measured-data-inventory.json": "f09806bfaaae3493ab830dcac1bc13fe535ad80d8709b0b7cc5b41d44bd1e3f9"
+  },
+  "x30": {
+    "digitized_points": 20,
+    "digitization_bound_kW": 0.3,
+    "horizontal_bound_rpm": 20,
+    "classification": "PUBLISHED_MEASURED_LINE_DIGITIZATION_NOT_ORIGINAL_SAMPLES",
+    "bench_uncertainty_known": false,
+    "crankcase_free_volume_known": false,
+    "adopted_for_quantitative_validation": false
+  },
+  "downloaded_sources": [
+    {
+      "file": "zhang1995.pdf",
+      "cache_path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\public-2t-data-survey-v2-20261026\\zhang1995.pdf",
+      "bytes": 2903651,
+      "sha256": "2fabe39246dc5eb61a7f5f7a8b79746dd24b03af51b3dc2363e3d2c41bf19f68"
+    },
+    {
+      "file": "ohigashi1971.pdf",
+      "cache_path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\public-2t-data-survey-v2-20261026\\ohigashi1971.pdf",
+      "bytes": 1195424,
+      "sha256": "4c0da836fdb9e68a39552aacab53e71ebeb8db6a91da28c7edb68f9939256ec1"
+    }
+  ],
+  "contacts_sent": false,
+  "engine_configurations_created": false,
+  "new_engine_solver_steps": 0,
+  "validation_reference_adopted": false,
+  "full_matched_public_engine_package_established": false,
+  "report_sha256": "22fa83acaac7f81273d8a25993b41f1fefcdd3e0927759f6bcf8c62f37dbe95a",
+  "subsystem_candidate_sha256": "b8f4c970442a26a01df9870ca0e8062c3c8def1843fd7fa1e293b7c3b1781eaf",
+  "checks": {
+    "existing_and_downloaded_source_hashes": "PASS",
+    "measured_vs_author_calculated_period_columns_separate": "PASS",
+    "unknown_uncertainty_and_no_adoption_preserved": "PASS",
+    "source_visual_review": "Zhang PDF120 table5.1, Ohigashi PDF1-6 tables1/2 figures1/4 and methods"
+  }
+}

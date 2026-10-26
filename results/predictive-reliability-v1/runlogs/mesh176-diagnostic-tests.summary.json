@@ -1,0 +1,25 @@
+{
+  "name": "mesh176-diagnostic-tests",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_integrated_mesh_refinement_v1.py",
+    "tests/test_mesh_three_level_analysis_v1.py",
+    "tests/test_checkpoint_periodicity_indicators_v1.py",
+    "-q"
+  ],
+  "started_at": "2026-10-26T16:23:07+00:00",
+  "finished_at": "2026-10-26T16:23:09+00:00",
+  "duration_s": 2.375,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\mesh176-diagnostic-tests.log",
+  "log_lines": 2,
+  "log_bytes": 99,
+  "error_lines": [],
+  "tail": [
+    "........................................                                 [100%]",
+    "40 passed in 1.73s"
+  ]
+}

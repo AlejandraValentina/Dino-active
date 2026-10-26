@@ -131,6 +131,11 @@ def read_bound_reference(source):
     if (not _json_evidence_equal(checkpoint['state'],reference['final_state']) or
             not _json_evidence_equal(checkpoint['ledger'],reference['final_ledger'])):
         raise ValueError('source summary does not match its bound checkpoint')
+    # Hashes inside one receipt do not establish physical compatibility by
+    # themselves. Validate the native state against its actual constructor.
+    validator=IntegratedEngine2T.from_configuration_dict(json.loads(
+        config_path.read_text(encoding='utf-8')))
+    validator.restore(checkpoint)
     return reference,config_path,checkpoint
 
 
@@ -144,8 +149,6 @@ def run(source,output):
     config=refined_configuration(coarse_config,sha(config_path))
     coarse=IntegratedEngine2T.from_configuration_dict(coarse_config)
     engine=IntegratedEngine2T.from_configuration_dict(config)
-    validator=IntegratedEngine2T.from_configuration_dict(coarse_config)
-    validator.restore(parent_checkpoint)
     initial_a,initial_b=coarse.inventory(),engine.inventory()
     pairs=[(initial_a['mass_kg'],initial_b['mass_kg']),
            (initial_a['energy_J'],initial_b['energy_J'])]+list(zip(initial_a['species_kg'],initial_b['species_kg']))

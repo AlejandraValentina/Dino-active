@@ -1,0 +1,57 @@
+{
+  "schema": "PUBLISHED_MEASURED_SUBSYSTEM_CANDIDATE_V1",
+  "candidate": "OHIGASHI_1971_ENGINE_A_INLET",
+  "url": "https://www.jstage.jst.go.jp/article/jsme1958/14/71/14_71_470/_article",
+  "pdf_url": "https://www.jstage.jst.go.jp/article/jsme1958/14/71/14_71_470/_pdf",
+  "doi": "10.1299/jsme1958.14.470",
+  "pdf_sha256": "4c0da836fdb9e68a39552aacab53e71ebeb8db6a91da28c7edb68f9939256ec1",
+  "source_pages": {
+    "engine_table": "PDF1/printed470 Table1",
+    "period_table": "PDF4/printed473 Table2",
+    "probe": "PDF3/printed472 Figure4a"
+  },
+  "geometry": {
+    "bore_mm": 56.0,
+    "stroke_mm": 54.0,
+    "published_displacement_cm3": 133.0,
+    "crankcase_volume_at_TDC_cm3": 295.0,
+    "intake_pipe_diameter_mm": 22.6
+  },
+  "condition": {
+    "mode": "MOTORING",
+    "rpm": 840.0,
+    "throttling_ratio": 1.0,
+    "probe_distance_from_cylinder_wall_mm": 90.0
+  },
+  "observations": [
+    {
+      "pipe_length_mm": 426.0,
+      "measured_period_ms": 10.7,
+      "paper_calculated_period_ms": 10.59
+    },
+    {
+      "pipe_length_mm": 326.0,
+      "measured_period_ms": 9.4,
+      "paper_calculated_period_ms": 9.32
+    },
+    {
+      "pipe_length_mm": 226.0,
+      "measured_period_ms": 8.0,
+      "paper_calculated_period_ms": 7.85
+    },
+    {
+      "pipe_length_mm": 126.0,
+      "measured_period_ms": 6.2,
+      "paper_calculated_period_ms": 6.03
+    }
+  ],
+  "uncertainty": null,
+  "measurement_traceability": "Printed table of spark-method mean-velocity oscillations; original per-cycle files not established",
+  "missing_for_adoption": [
+    "same-case full boundary/thermal conditions",
+    "connecting-rod and remaining gas-path geometry completeness",
+    "defensible uncertainty and digitization provenance for traces"
+  ],
+  "decision": "PROMISING_SUBSYSTEM_CANDIDATE_NOT_ADOPTED",
+  "complete_engine_power_validation": false
+}

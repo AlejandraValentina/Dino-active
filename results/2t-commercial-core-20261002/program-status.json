@@ -8499,11 +8499,11 @@
       ],
       "evidence_level": "L0",
       "unblock_tasks": [
-        "PRED-MESH-176-PROTOCOL",
-        "PRED-MESH-THREE-LEVEL-ANALYSIS",
-        "PRED-MESH-INPUT-COMPATIBILITY"
+        "PRED-BOUNDARY-TRUNCATION-REFERENCE",
+        "PRED-INLET-REFERENCE-COMPLETENESS",
+        "PRED-PERIODICITY-BOUNDED-PROTOCOL"
       ],
-      "qualification": "Owner reauthorized continuation: resolve numerical uncertainty locally first; actual matched measured engine package remains an independent external prerequisite."
+      "qualification": "Third-grid diagnosis and public survey completed. Measured whole-engine inputs still unavailable; existing X30 digitization acknowledged. Cheap local truncation/subsystem-completeness checks remain; no reference adopted or predictive claim."
     },
     {
       "id": "PRED-CONNECTION-SPEC",
@@ -8971,34 +8971,44 @@
       "dependencies": [
         "PRED-MESH-176-EXECUTION"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Compare work, inventories and projected fields on three levels, report unresolved time/spatial sensitivity without validation claim",
+      "evidence": [
+        "results/predictive-reliability-v1/mesh-three-level-note-v1.md",
+        "results/predictive-reliability-v1/mesh-three-level-analysis-v1.json",
+        "results/predictive-reliability-v1/runlogs/mesh176-p4-p8.summary.json"
+      ],
+      "next_action": "Isolate boundary/area/front truncation on cheap analytic fixtures before another engine refinement or physical change.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/numerics/verification",
       "write_scope": [
         "results/predictive-reliability-v1/mesh-three-level-analysis-v1.json",
         "results/predictive-reliability-v1/mesh-three-level-note-v1.md"
       ],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "qualification": "Assessment COMPLETE, numerical accuracy gate NOT passed: slow work convergence, mixed field trends, unseparated time error. No certified uncertainty or additional automatic mesh run."
     },
     {
       "id": "PRED-PUBLIC-DATASET-SURVEY-V2",
       "description": "Bounded primary-source survey of more complete public 2T validation data; incorporate existing partial X30 digitization without assuming missing geometry",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Inspect primary data/geometry/conditions/uncertainty/access before recommending any reference; no adoption or measured claims from synthetic data.",
+      "evidence": [
+        "results/predictive-reliability-v1/public-dataset-survey-v2/report.md",
+        "results/predictive-reliability-v1/public-dataset-survey-v2/receipt.json",
+        "results/predictive-reliability-v1/public-dataset-survey-v2/ohigashi1971-inlet-candidate.json"
+      ],
+      "next_action": "Check Ohigashi Engine A subsystem completeness before any adoption. Do not assume absent values or substitute simulated data.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/evidence",
       "write_scope": [
         "results/predictive-reliability-v1/public-dataset-survey-v2/"
       ],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "qualification": "Existing X30 20-point digitization recognized; six alternative/source classes assessed without adoption. New measured inlet component candidate includes explicit crankcase volume; full conditions/geometry/uncertainty not established. Source hashes and printed tables checked."
     },
     {
       "id": "PRED-CHECKPOINT-PERIODICITY-INDICATORS",
@@ -9006,17 +9016,71 @@
       "dependencies": [
         "PRED-MESH-176-EXECUTION"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Reconstruct only checkpoint-supported cycle integrals/observations; distinguish transient detector result from primary audit evidence.",
+      "evidence": [
+        "scripts/diagnostics/checkpoint_periodicity_indicators_v1.py",
+        "tests/test_checkpoint_periodicity_indicators_v1.py",
+        "results/predictive-reliability-v1/checkpoint-periodicity-indicators-v1.json"
+      ],
+      "next_action": "Use bounded preregistration for future same-configuration periodicity checks; no warm start or campaign.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "scripts/diagnostics/checkpoint_periodicity_indicators_v1.py",
         "tests/test_checkpoint_periodicity_indicators_v1.py",
         "results/predictive-reliability-v1/checkpoint-periodicity-indicators-v1.json"
+      ],
+      "evidence_level": "L0",
+      "qualification": "Zero solver steps. Unchanged comparator: 280/413, 540/809, 1007/1601 cycle-1/2 checks fail. L1 native-checkpoint-derived observations, not audited primaries. No periodicity claimed."
+    },
+    {
+      "id": "PRED-BOUNDARY-TRUNCATION-REFERENCE",
+      "description": "Isolate port/open-boundary and variable-area truncation using cheap analytic steady/smooth fixtures before changing reconstruction",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Isolate port/open-boundary and variable-area truncation using cheap analytic steady/smooth fixtures before changing reconstruction",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "scripts/diagnostics/boundary_truncation_reference_v1.py",
+        "tests/test_boundary_truncation_reference_v1.py"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-INLET-REFERENCE-COMPLETENESS",
+      "description": "Establish geometry/thermal/boundary/uncertainty completeness of Ohigashi 1971 Engine A inlet candidate; no solver input by assumptions",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Establish geometry/thermal/boundary/uncertainty completeness of Ohigashi 1971 Engine A inlet candidate; no solver input by assumptions",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "results/predictive-reliability-v1/public-dataset-survey-v2/inlet-completeness.md"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-PERIODICITY-BOUNDED-PROTOCOL",
+      "description": "Prepare finite same-configuration independent-initialization periodicity/stability protocol and measured runtime/storage budget; no automatic execution",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Prepare finite same-configuration independent-initialization periodicity/stability protocol and measured runtime/storage budget; no automatic execution",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/periodicity-stability-protocol-v1.md"
       ],
       "evidence_level": "L0"
     }
@@ -12796,6 +12860,12 @@
       "task": "PRED-MESH-176-EXECUTION",
       "kind": "task",
       "summary": "176-cell independent 2-revolution diagnostic COMPLETE: 184.42s, 3869 steps, conservation <1.33e-15, checkpoints PASS. Work 28.57/29.46/30.20J on 44/88/176 grids; only 245/366 common-volume field differences shrink. No mesh independence or extra run. Add offline checkpoint periodicity indicators."
+    },
+    {
+      "at": "2026-10-26T16:29:10+00:00",
+      "task": "PRED-MESH-THREE-LEVEL-DECISION",
+      "kind": "task",
+      "summary": "Three-grid accuracy remains unresolved: work fitted order 0.258, only 245/366 field differences shrink; no extrapolated power claim. Offline native cycle comparison shows all cases transient. 41 diagnostic tests and 301 P4-P8 PASS/3 SKIP. X30 digitization recognized; public inlet candidate retained without adoption. Replan next cheap diagnostics; no physics change."
     }
   ],
   "legacy_gate_status": {
@@ -12827,7 +12897,7 @@
     "remaining": [
       "PRED-VALIDATION"
     ],
-    "updated_at": "2026-10-26T16:19:34+00:00"
+    "updated_at": "2026-10-26T16:29:10+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -13372,11 +13442,11 @@
     "operational_decision": "DEFERRED_PENDING_EXTERNAL_GEOMETRY_AND_REPRIORITIZATION"
   },
   "predictive_reliability_v1_status": {
-    "state": "PARTIAL_NUMERICAL_CANDIDATES_VERIFIED",
+    "state": "PARTIAL_THREE_GRID_VERIFICATION_TRANSIENT",
     "predictive_validation": "NOT_PERFORMED",
     "experimental_accuracy": "NOT_CLAIMED",
-    "summary": "Physical candidates, reconstruction, bounded diagnostics and moving-cell heat defect verified; measured-input availability and mesh uncertainty prevent predictive acceptance.",
-    "replanning_review": "All nine BLOCKED_LOCAL reevaluated. Eight historical/deferred blockers unchanged: no superseding capability or new measured crankcase data. PRED-VALIDATION has three new local numerical preparation tasks; SPV1 stays untouched.",
+    "summary": "176-cell bounded diagnostic conserves but three-level work converges slowly and fields are mixed; all two-cycle cases remain transient. 41 new diagnostic tests and 301 P4-P8 tests PASS. Public component candidate retained, no complete validation package adopted.",
+    "replanning_review": "Numerical and public-source continuation performed as authorized. Next local work isolates boundary/area truncation, checks inlet experimental completeness and prepares bounded periodicity protocol. Historical SPV1/X30/CRV1 entries preserved untouched.",
     "next_requirement": "Complete independently measured specimen/test package and defensible numerical uncertainty, not assumed input completion."
   }
 }

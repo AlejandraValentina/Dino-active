@@ -1,0 +1,25 @@
+{
+  "name": "mesh176-reference-identity-guards",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_integrated_mesh_refinement_v1.py",
+    "tests/test_mesh_three_level_analysis_v1.py",
+    "tests/test_checkpoint_periodicity_indicators_v1.py",
+    "-q"
+  ],
+  "started_at": "2026-10-26T16:28:21+00:00",
+  "finished_at": "2026-10-26T16:28:24+00:00",
+  "duration_s": 3.063,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\mesh176-reference-identity-guards.log",
+  "log_lines": 2,
+  "log_bytes": 99,
+  "error_lines": [],
+  "tail": [
+    ".........................................                                [100%]",
+    "41 passed in 2.50s"
+  ]
+}

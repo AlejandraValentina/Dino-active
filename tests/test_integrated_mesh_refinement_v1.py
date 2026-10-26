@@ -89,7 +89,7 @@ def test_hash_bound_native_reference_accepts_both_existing_formats(name):
     assert sha(c)==r['configuration_sha256']
 
 
-@pytest.mark.parametrize('fault',['config_hash','checkpoint_hash','phase','fast','gate','summary','schema'])
+@pytest.mark.parametrize('fault',['config_hash','checkpoint_hash','phase','fast','gate','summary','schema','identity'])
 def test_reference_loader_fails_closed_before_writing_or_stepping(tmp_path,fault):
     source=Path('results/predictive-reliability-v1/mesh-refined-v1')
     for name in ('configuration.json','terminal-state.json','receipt.json'):
@@ -106,6 +106,10 @@ def test_reference_loader_fails_closed_before_writing_or_stepping(tmp_path,fault
     elif fault=='gate':r['execution_gate']=1
     elif fault=='summary':r['final_state']['chambers']['cylinder'][0]*=2.
     elif fault=='schema':r['schema']='unknown'
+    elif fault=='identity':
+        s['configuration_identity']['configuration_sha256']='0'*64
+        write(tmp_path/'terminal-state.json',s)
+        r['terminal_state_sha256']=sha(tmp_path/'terminal-state.json')
     write(tmp_path/'receipt.json',r)
     with pytest.raises(ValueError):read_bound_reference(tmp_path)
 
