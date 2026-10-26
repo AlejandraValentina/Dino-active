@@ -173,3 +173,24 @@ tarea de desbloqueo; nunca reducir precisión, CFL ni umbrales para cumplirlo.
 - Órdenes anteriores: [docs/history/agents_orders_historicas.md](docs/history/agents_orders_historicas.md).
 - Modo autónomo V1 y su "estado vivo": [docs/history/autonomous_engineering_mode_v1.md](docs/history/autonomous_engineering_mode_v1.md).
 - Auditoría externa `ab92aee..8cdf66e`: [docs/gasdynamic/audit_8cdf66e.md](docs/gasdynamic/audit_8cdf66e.md).
+
+## 11. Almacenamiento y baseline Desktop
+
+- `DINO_COMMERCIAL_READINESS_V1` queda congelado como baseline funcional TRIAL:
+  commit de implementación `fc27542155840cdadbcc2b591ae5cd8e99031899`, cierre
+  local `d048ab4`, paquete rc7 limpio con SHA-256 registrado en
+  `results/dino-commercial-readiness-v1/acceptance/receipt.json`. No reabrir
+  aceptación ni cambiar solver, salvo que un objetivo posterior lo requiera.
+- Antes de generar paquetes o iniciar una campaña RPM, calcular la estimación
+  más el margen con `python scripts/agents/storage_preflight.py`. Los runners
+  de Windows y FULL_RPM_SWEEP integran este mismo control y deben detenerse
+  antes de crear directorios de salida si no hay espacio.
+- `DINO_ARTIFACT_ROOT` selecciona la raíz durable de resultados. Sin override,
+  se usa `~/Dino-artifacts`; `DINO_BUILD_WORK_ROOT` elige temporales de build,
+  cuyo default es el directorio temporal del sistema. No codificar letras de
+  unidad. La reserva predeterminada es 2 GiB por volumen y se ajusta mediante
+  `DINO_STORAGE_RESERVE_GIB`.
+- No eliminar paquetes, proyectos, configs, resultados, checkpoints ni
+  temporales antiguos automáticamente. Revisar primero
+  `docs/storage_and_artifact_policy.md` y obtener autorización antes de
+  limpiar cualquier candidato histórico.

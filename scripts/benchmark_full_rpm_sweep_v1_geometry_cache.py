@@ -27,6 +27,7 @@ from scripts.full_rpm_sweep_v1_campaign import (
     _projection,
     _read_json,
 )
+from scripts.agents.storage_preflight import check_storage_requirements
 from motorsim.integrated_2t import (
     IntegratedEngine2T,
     _solver_dependency_hashes,
@@ -236,6 +237,7 @@ def main() -> int:
     parser.add_argument("--repeats", type=int, default=3)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    check_storage_requirements([(args.output, 64 * 1024 * 1024)])
     report = benchmark(args.variant, args.rpm, args.repeats)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2, sort_keys=True,

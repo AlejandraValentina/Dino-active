@@ -29,6 +29,7 @@ from motorsim.integrated_2t import (  # noqa: E402
 from scripts.full_rpm_sweep_v1_campaign import (  # noqa: E402
     PREREGISTRATION, _configuration_for, _parallel_worker_plan, _read_json,
 )
+from scripts.agents.storage_preflight import GIB, check_storage_requirements, default_artifact_root  # noqa: E402
 
 RESERVE_PER_WORKER = 512 * 1024 * 1024
 
@@ -314,10 +315,12 @@ def main() -> int:
     parser.add_argument("--timeout-seconds", type=int, default=600)
     parser.add_argument("--output-root", type=Path)
     args = parser.parse_args()
-    root = args.output_root or Path(os.environ.get("DINO_ARTIFACT_ROOT", r"E:\Dino-artifacts")) / "engine-physics-v1/fast-recipe-v1/diagnostics"
+    root = args.output_root or default_artifact_root() / "engine-physics-v1/fast-recipe-v1/diagnostics"
     root = root.resolve() / f"benchmark-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}-{uuid.uuid4().hex[:8]}"
     if root.is_relative_to(ROOT.resolve()):
         parser.error("diagnostic artifacts must stay outside the repository")
+    print(json.dumps({"storage_preflight": check_storage_requirements(
+        [(root, GIB)])}, sort_keys=True))
     prereg = _read_json(ROOT / PREREGISTRATION)
     variants = {r["variant_id"]: r for r in prereg["variants"]}
     runner_sha = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()

@@ -57,11 +57,15 @@ from motorsim.reference_harness.convergence import (  # noqa: E402
     CONTRACT_V2,
     PeriodicDetectorV2,
 )
+from scripts.agents.storage_preflight import (
+    GIB, InsufficientStorageError, check_storage_requirements, default_artifact_root,
+)
 
 
 PROGRAM_STATUS = ROOT / "results/2t-commercial-core-20261002/program-status.json"
 MAX_INVOCATION_SECONDS = 3600
 IMPLEMENTATION_VERSION = "FULL_RPM_SWEEP_V1_IMPL2"
+RPM_CAMPAIGN_ESTIMATED_TOTAL_BYTES = 9 * GIB
 
 
 def _canonical_bytes(value: Any) -> bytes:
@@ -1033,7 +1037,7 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
     if out == ROOT or out.is_relative_to(ROOT):
         raise ValueError("sweep outputs must be outside the Git repository")
     if implementation == "impl2":
-        artifact_base = Path(os.environ.get("DINO_ARTIFACT_ROOT", "E:/Dino-artifacts")).resolve() / \
+        artifact_base = default_artifact_root().resolve() / \
             "engine-physics-v1/full-rpm-sweep-v1-impl2"
         if not out.is_relative_to(artifact_base):
             raise ValueError("IMPL2 output root must remain inside its isolated artifact root")
@@ -1080,6 +1084,9 @@ def execute_campaign(*, output_root: str | Path, resume: bool = False,
         auth_sha = None
         prior_elapsed = 0.0
         global_budget = None
+    storage_report = check_storage_requirements(
+        [(out, RPM_CAMPAIGN_ESTIMATED_TOTAL_BYTES)])
+    print(json.dumps({"storage_preflight": storage_report}, sort_keys=True))
     _ensure_campaign_provenance(out, prereg, prereg_sha, authorization_path)
     selected_points = _selected_points(prereg, pilot=pilot,
                                       point_ids=selected_point_ids)
@@ -1390,23 +1397,25 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("--point subset selection is available only for an explicitly authorized IMPL2 campaign")
     output_root = args.output_root
     if output_root is None:
-        artifact_root = os.environ.get("DINO_ARTIFACT_ROOT")
-        if not artifact_root:
-            parser.error("--execute requires --output-root or DINO_ARTIFACT_ROOT")
-        output_root = Path(artifact_root) / "engine-physics-v1/full-rpm-sweep-v1-impl2"
-    impl2_root = Path(os.environ.get("DINO_ARTIFACT_ROOT", "E:/Dino-artifacts")).resolve() / \
+        output_root = default_artifact_root() / "engine-physics-v1/full-rpm-sweep-v1-impl2"
+    impl2_root = default_artifact_root().resolve() / \
         "engine-physics-v1/full-rpm-sweep-v1-impl2"
     if args.implementation == "impl2" and not output_root.resolve().is_relative_to(impl2_root):
         parser.error("IMPL2 requires an output directory inside its isolated artifact root")
     if output_root.resolve().is_relative_to(ROOT.resolve()):
         parser.error("campaign artifact output must remain outside the repository")
-    result = execute_campaign(output_root=output_root, resume=args.resume,
-                              pilot=args.pilot,
-                              budget_seconds=args.budget_seconds,
-                              workers=args.workers,
-                              memory_budget_mib=args.memory_budget_mib,
-                              implementation=args.implementation,
-                              selected_point_ids=args.point_ids)
+    try:
+        result = execute_campaign(output_root=output_root, resume=args.resume,
+                                  pilot=args.pilot,
+                                  budget_seconds=args.budget_seconds,
+                                  workers=args.workers,
+                                  memory_budget_mib=args.memory_budget_mib,
+                                  implementation=args.implementation,
+                                  selected_point_ids=args.point_ids)
+    except InsufficientStorageError as exc:
+        print(json.dumps({"campaign_status": "BLOCKED_INSUFFICIENT_SPACE",
+                          "storage_preflight": exc.report}, sort_keys=True))
+        return 2
     print(json.dumps({"campaign_status": result["campaign_status"],
                       "points": len(result["completed_or_checkpointed_points"]),
                       "campaigns_started": result["campaigns_started"]}, sort_keys=True))

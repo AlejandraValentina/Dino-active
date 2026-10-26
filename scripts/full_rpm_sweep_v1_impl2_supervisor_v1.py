@@ -77,7 +77,7 @@ def _parse_execution_args(argv: list[str]) -> argparse.Namespace:
 
 
 def _authorized_remaining_budget(args: argparse.Namespace) -> tuple[float, int, Path]:
-    artifact_root = Path(os.environ.get("DINO_ARTIFACT_ROOT", "E:/Dino-artifacts")).resolve()
+    artifact_root = campaign.default_artifact_root().resolve()
     artifact_base = artifact_root / "engine-physics-v1/full-rpm-sweep-v1-impl2"
     authorization_path = campaign.ROOT / (
         "results/full-rpm-sweep-v1/implementation-v2-campaign-authorization.json"

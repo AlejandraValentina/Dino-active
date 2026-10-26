@@ -11,6 +11,7 @@ import shutil
 import struct
 import subprocess
 import sys
+import tempfile
 import uuid
 import zipfile
 
@@ -23,13 +24,16 @@ from motorsim.engine_project import load_project as load_engine_project
 from motorsim.engine_configuration import implementation_source_hashes
 from motorsim.project_case import execution_errors
 from motorsim.reference_results import MODEL_VERSION,FOUR_MODEL_VERSION
+from scripts.agents.storage_preflight import (
+    GIB, check_storage_requirements, default_artifact_root,
+)
 
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--trial',action='store_true',help='Prueba de empaquetado con árbol no limpio, identificada como tal.')
-    parser.add_argument('--output-root',type=Path,help='Directorio de distribución externo opcional.')
-    parser.add_argument('--work-root',type=Path,help='Directorio temporal de PyInstaller; útil cuando el repositorio tiene poco espacio libre.')
+    parser.add_argument('--output-root',type=Path,help='Directorio externo de distribución (por defecto DINO_ARTIFACT_ROOT/Windows o ~/Dino-artifacts/Windows).')
+    parser.add_argument('--work-root',type=Path,help='Directorio temporal de PyInstaller (por defecto DINO_BUILD_WORK_ROOT o el temporal del sistema).')
     parser.add_argument('--periodic-example',type=Path,help='Proyecto existente con seis referencias periódicas; copia sin recalcular.')
     args=parser.parse_args()
     if os.name!='nt' or struct.calcsize('P')!=8 or sys.version_info[:3]!=(3,11,0):
@@ -47,11 +51,16 @@ def main():
     if dirty and not args.trial:raise RuntimeError('El paquete final requiere Git limpio; registrá primero código y receta.')
     stamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
     name=f'MotorSim-{APP_VERSION}-windows-x64-{commit[:8]}'+('-trial-'+stamp if args.trial else '')
-    destination=(args.output_root or ROOT/'dist')/name
+    output_root = args.output_root or (default_artifact_root()/'Windows')
+    destination=output_root/name
     if destination.exists() or Path(str(destination)+'.zip').exists():raise RuntimeError('Destino existente; no se sobrescribe.')
+    work_base = args.work_root or Path(os.environ.get(
+        'DINO_BUILD_WORK_ROOT', str(Path(tempfile.gettempdir())/'Dino-build-work'))).expanduser()
+    storage_report=check_storage_requirements(
+        [(output_root, int(1.5*GIB)), (work_base, GIB)])
+    print(json.dumps(dict(storage_preflight=storage_report),ensure_ascii=False))
     for name in ('LGPL-3.0-only.txt','GPL-3.0-only.txt','SOURCES.txt'):
         if not (ROOT/'packaging/licenses'/name).is_file():raise RuntimeError('Falta aviso requerido: '+name)
-    work_base=args.work_root or ROOT/'build/windows'
     work=work_base/uuid.uuid4().hex;generated=work/'inputs';generated.mkdir(parents=True)
     info=dict(app_version=APP_VERSION,source_commit=commit,source_dirty=dirty,trial=args.trial,
         built_utc=stamp,python=sys.version,platform=platform.platform(),architecture=platform.machine(),

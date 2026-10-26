@@ -39,6 +39,7 @@ from scripts.full_rpm_sweep_v1_campaign import (  # noqa: E402
     PREREGISTRATION,
     _read_json,
 )
+from scripts.agents.storage_preflight import GIB, check_storage_requirements  # noqa: E402
 
 
 def _atomic_json(path: Path, value: Any) -> None:
@@ -295,10 +296,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output-root", type=Path)
     args = parser.parse_args(argv)
     artifact_root = (args.output_root or Path(os.environ.get(
-        "DINO_ARTIFACT_ROOT", r"E:\Dino-artifacts")) /
+        "DINO_ARTIFACT_ROOT", str(Path.home() / "Dino-artifacts"))) /
         "engine-physics-v1/full-rpm-sweep-v1-impl2/diagnostics/fast-evidence-multiprocess")
     if artifact_root.resolve().is_relative_to(ROOT.resolve()):
         parser.error("diagnostic artifacts must remain outside the repository")
+    print(json.dumps({"storage_preflight": check_storage_requirements(
+        [(artifact_root, GIB)])}, sort_keys=True))
     prereg = _read_json(ROOT / PREREGISTRATION)
     variants = {row["variant_id"]: row for row in prereg["variants"]}
     selected = [("A_PRIME_MESH_0", 4000), ("B_PRIME_MESH_0", 4000)]

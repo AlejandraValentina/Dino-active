@@ -71,7 +71,7 @@ def _atomic_write(path: Path, payload: dict) -> None:
 
 
 def _artifact_base() -> Path:
-    return Path(os.environ.get("DINO_ARTIFACT_ROOT", "E:/Dino-artifacts")).resolve() / \
+    return campaign.default_artifact_root().resolve() / \
         "engine-physics-v1/full-rpm-sweep-v1-impl2"
 
 
