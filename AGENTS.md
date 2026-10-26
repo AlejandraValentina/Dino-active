@@ -22,13 +22,14 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_COMMERCIAL_READINESS_V1
-change/spec:       openspec/changes/dino-commercial-readiness-v1/
-                   specs/dino-commercial-readiness-v1/spec.md
-completion:        Packaged Windows EXE completes the user-visible new design,
-                   bounded integrated exploratory point, exhaust variant
-                   comparison and save/reopen journey without manual file edits.
-                   Synthetic assumptions disclosed; no experimental claim.
+CURRENT_OBJECTIVE: DINO_X30_MINIMUM_POINT_V1
+change/spec:       openspec/changes/x30-minimum-point-v1/
+                   specs/x30-minimum-point-v1/spec.md
+completion:        Owner-approved X30 request delivered and, only after a
+                   boundary-defined precompression volume arrives, one frozen
+                   configuration and at most one 9000 RPM WOT point compared
+                   exploratorily with 15.1 +/- 0.3 kW; no fabricated geometry,
+                   solver change, power fit or validation claim.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    → current_objective, queue, gate_status, progress_log
 ```
