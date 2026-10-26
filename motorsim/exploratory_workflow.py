@@ -328,7 +328,7 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
                     max_cycles: int = 1, budget_seconds: float = 60.0,
                     memory_limit_mib: int = 1024, resume: bool = False,
                     cancel_event=None, progress=None, cycle_admission=None, cycle_complete=None,
-                    variant_label: str = "base") -> dict:
+                    variant_label: str = "base", initial_state_provenance=None) -> dict:
     """Run one user configuration; no campaign runner, campaign manifest, or FAST path."""
     check = preflight(document, rpm=rpm, max_cycles=max_cycles,
                       budget_seconds=budget_seconds, memory_limit_mib=memory_limit_mib)
@@ -355,6 +355,11 @@ def _run_exploratory_unlocked(document: dict, *, project_id: str, run_id: str,
                         "workflow_source_sha256": _sha(Path(__file__).read_bytes()),
                         "project_id": project_id, "variant_label": variant_label,
                         "run_id": run_id}
+    if initial_state_provenance is not None:
+        declared = document.get("provenance", {}).get("periodic_state_initialization")
+        if declared != initial_state_provenance:
+            raise ValueError("periodic warm-start provenance does not match the target document")
+        expected_binding["initial_state_provenance"] = initial_state_provenance
     configuration_sha = _sha(_json_bytes(effective))
     if output.exists():
         if not resume or not manifest_path.is_file():
@@ -588,7 +593,7 @@ def run_exploratory(document: dict, *, project_id: str, run_id: str,
                     max_cycles: int = 1, budget_seconds: float = 60.0,
                     memory_limit_mib: int = 1024, resume: bool = False,
                     cancel_event=None, progress=None, cycle_admission=None, cycle_complete=None,
-                    variant_label: str = "base") -> dict:
+                    variant_label: str = "base", initial_state_provenance=None) -> dict:
     """Serialize concurrent access to one project/run identity with an exclusive lock."""
     target=_run_directory(Path(artifact_root),project_id,run_id)
     target.parent.mkdir(parents=True,exist_ok=True)
@@ -607,13 +612,14 @@ def run_exploratory(document: dict, *, project_id: str, run_id: str,
             return run(document,project_id=project_id,run_id=run_id,artifact_root=artifact_root,
                 rpm=rpm,max_cycles=max_cycles,budget_seconds=budget_seconds,
                 memory_limit_mib=memory_limit_mib,resume=resume,cancel_event=cancel_event,
-                progress=progress,variant_label=variant_label)
+                progress=progress,variant_label=variant_label,
+                initial_state_provenance=initial_state_provenance)
         return _run_exploratory_unlocked(document,project_id=project_id,run_id=run_id,
             artifact_root=artifact_root,rpm=rpm,max_cycles=max_cycles,
             budget_seconds=budget_seconds,memory_limit_mib=memory_limit_mib,
             resume=resume,cancel_event=cancel_event,progress=progress,
             cycle_admission=cycle_admission,cycle_complete=cycle_complete,
-            variant_label=variant_label)
+            variant_label=variant_label,initial_state_provenance=initial_state_provenance)
     finally:
         try:lock.unlink(missing_ok=True)
         except OSError:pass

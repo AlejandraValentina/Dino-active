@@ -1,7 +1,7 @@
 {
   "schema": "MOTORSIM_PROGRAM_STATUS_V2",
   "program": "MOTORSIM_2T_COMMERCIAL_CORE",
-  "recorded_at": "2026-10-06",
+  "recorded_at": "2026-10-26T12:02:37+00:00",
   "continuation_baseline": "401d8d70a3c06a85c75328ed3e83af3d39c7c88c",
   "status_capture_head": "f2c6926",
   "overall": "MOTORSIM_2T_COMMERCIAL_CORE_PARTIAL",
@@ -8048,6 +8048,150 @@
       "unblock_tasks": [],
       "next_action": "Acceptance complete: two-config medians, exact physical equivalence, restart, 130 focused regressions, and qualified curve projection recorded.",
       "completed_at": "2026-10-26T11:50:32+00:00"
+    },
+    {
+      "id": "PERFV3-SOURCE-FORENSICS",
+      "description": "Verify A9000/A10000 periodic source hashes, contracts, phase-zero conservative-state admissibility, and reset-sensitive internal state.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/periodic-rpm-curves-v1/report.md",
+        "results/periodic-rpm-curves-v1/receipt.json",
+        "E:/Dino-artifacts/periodic-rpm-curves-v1-20261023/exploratory-workflow-v1/functional-reed-125cc-v1/ab-A-9000/checkpoint.json"
+      ],
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
+      "owner_role": "evidence/release reviewer",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/periodic-rpm-curves-v1/receipt.json",
+        "openspec/changes/integrated-performance-v3/design.md"
+      ],
+      "unblock_tasks": [],
+      "next_action": "Verified periodic source identity/hash and phase; source state validates under the target engine with identical total mass, energy and species inventories."
+    },
+    {
+      "id": "PERFV3-TRANSFER-DESIGN",
+      "description": "Freeze transfer whitelist, conserved-state mapping, new-run identity and reset semantics before implementation.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "openspec/changes/integrated-performance-v3/design.md"
+      ],
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
+      "owner_role": "architecture",
+      "evidence_level": "L0",
+      "write_scope": [
+        "openspec/changes/integrated-performance-v3/design.md"
+      ],
+      "unblock_tasks": [],
+      "next_action": "Only reference RPM and the already-defined RPM-dependent valve map differ; never call restore across RPM."
+    },
+    {
+      "id": "PERFV3-TRANSFER-IMPLEMENT",
+      "description": "Implement a fail-closed periodic-state initializer for a distinct target run.",
+      "dependencies": [
+        "PERFV3-SOURCE-FORENSICS",
+        "PERFV3-TRANSFER-DESIGN"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
+      "owner_role": "implementation",
+      "evidence_level": "L0",
+      "write_scope": [
+        "motorsim/periodic_initialization_v1.py",
+        "motorsim/exploratory_workflow.py"
+      ],
+      "unblock_tasks": [],
+      "next_action": "Transform only compatible conservative state into the target configuration and bind source provenance."
+    },
+    {
+      "id": "PERFV3-TRANSFER-TESTS",
+      "description": "Verify incompatibility refusal, conservative inventory preservation, clean clocks/ledger/events/detector and identity provenance.",
+      "dependencies": [
+        "PERFV3-SOURCE-FORENSICS",
+        "PERFV3-TRANSFER-DESIGN"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "tests/test_periodic_initialization_v1.py"
+      ],
+      "unblock_tasks": [],
+      "next_action": "Add no-step contract tests against the immutable A9000/A10000 source fixtures."
+    },
+    {
+      "id": "PERFV3-PILOT-PREFLIGHT",
+      "description": "Verify the source pair, target run setup, artifact budget and hard-stop/checkpoint behavior without solver steps.",
+      "dependencies": [
+        "PERFV3-SOURCE-FORENSICS"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/periodic-rpm-curves-v1/protocol.md"
+      ],
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
+      "owner_role": "contract/regression guardian",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/integrated-performance-v3/",
+        "scripts/diagnostics/"
+      ],
+      "unblock_tasks": [],
+      "next_action": "Freeze one pilot identity, output path, source hashes and 40-cycle/240-second limits."
+    },
+    {
+      "id": "PERFV3-A10000-PILOT",
+      "description": "Run exactly one new A10000 point initialized from periodic A9000, capped at 40 cycles and 240 seconds.",
+      "dependencies": [
+        "PERFV3-TRANSFER-IMPLEMENT",
+        "PERFV3-TRANSFER-TESTS",
+        "PERFV3-PILOT-PREFLIGHT"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
+      "owner_role": "verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "${DINO_ARTIFACT_ROOT}/integrated-performance-v3/"
+      ],
+      "unblock_tasks": [],
+      "next_action": "Stop at either existing periodicity acceptance or the fixed hard cap; do not resume beyond the cap."
+    },
+    {
+      "id": "PERFV3-DECISION",
+      "description": "Compare pilot periodicity, physical outputs, cycles/time, and conservation to historical A10000; adopt only if substantial and equivalent.",
+      "dependencies": [
+        "PERFV3-A10000-PILOT"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
+      "owner_role": "evidence/release reviewer",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/integrated-performance-v3/"
+      ],
+      "unblock_tasks": [],
+      "next_action": "Integrate into the RPM coordinator only after the acceptance condition passes; otherwise reject or classify inconclusive."
     }
   ],
   "audit_remediation_mode": false,
@@ -8249,45 +8393,25 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_INTEGRATED_PERFORMANCE_V2",
-    "state": "PASS",
+    "id": "DINO_INTEGRATED_PERFORMANCE_V3",
+    "state": "OPEN",
     "owner_approved": true,
-    "summary": "Performance V2 PASS: the measured two-configuration short-run speedup is 8.36% A and 7.50% B with exact physical-output equivalence, unchanged conservation controls, flat RSS and exact checkpoint restart. Six-point curve effect remains projected only.",
-    "change": "openspec/changes/integrated-performance-v2",
-    "spec": "openspec/changes/integrated-performance-v2/specs/integrated-performance-v2/spec.md",
-    "transitioned_from": "DINO_X30_MINIMUM_POINT_V1",
+    "summary": "Owner authorizes one bounded same-engine RPM warm-initialization pilot A9000 → A10000, preserving physical state and existing periodicity criteria; no full campaign or solver physics changes.",
+    "change": "openspec/changes/integrated-performance-v3",
+    "spec": "openspec/changes/integrated-performance-v3/specs/integrated-performance-v3/spec.md",
+    "transitioned_from": "DINO_INTEGRATED_PERFORMANCE_V2",
     "gate_tasks": [
-      "PERFV2-PROFILE-A-B",
-      "PERFV2-HOTPATH-ANALYSIS",
-      "PERFV2-EQUIVALENCE-PLAN",
-      "PERFV2-OPTIMIZE",
-      "PERFV2-VERIFY"
+      "PERFV3-TRANSFER-IMPLEMENT",
+      "PERFV3-TRANSFER-TESTS",
+      "PERFV3-A10000-PILOT",
+      "PERFV3-DECISION"
     ],
-    "completion_criterion": "Two representative short A/B profiles; implement one high-impact low-risk residual optimization; demonstrate measured before/after speed and preserved physical outputs, conservation, memory, checkpoint restart and existing tolerances. No six-point curve rerun.",
-    "scientific_state": "PERFORMANCE_ONLY;PHYSICAL_EQUATIONS_FROZEN;NO_NEW_PERIODIC_OR_VALIDATION_CLAIM",
-    "baseline_measurements": {
-      "A": {
-        "configuration_sha256": "743a00de51aa4ca214afb5c84b790c1d642c92a4887fa0074bad3d76aa2c1a9c",
-        "cycles": 3,
-        "wall_s": 12.408570199972019,
-        "cpu_s": 12.25,
-        "status": "MAX_CYCLES_NONCONVERGED",
-        "peak_rss_mib": 101.4921875
-      },
-      "B": {
-        "configuration_sha256": "72e2ded3c4bc62ffde6eb39989f39140dd39a2d185d0ec00a88167bcbe602524",
-        "cycles": 3,
-        "wall_s": 12.264189899899065,
-        "cpu_s": 11.96875,
-        "status": "MAX_CYCLES_NONCONVERGED",
-        "peak_rss_mib": 102.328125
-      },
-      "measurement_note": "Unprofiled three-cycle engineering diagnostics before V2 code changes; not periodic curve measurements."
-    },
-    "result": "results/integrated-performance-v2/receipt.json",
-    "source_commits": [
-      "db928a4",
-      "f803c27"
+    "completion_criterion": "A9000 periodic state safely initializes a distinct A10000 run with verified provenance; at most 40 new cycles and 240 s; adopt into coordinator only if it reaches periodicity, matches the historical periodic result within justified tolerances, and materially reduces cycle/time.",
+    "scientific_state": "PERFORMANCE_INITIALIZATION_ONLY;PHYSICAL_EQUATIONS_AND_PERIODICITY_CONTRACT_FROZEN;NO_EXPERIMENTAL_VALIDATION_CLAIM",
+    "source_evidence": [
+      "results/periodic-rpm-curves-v1/report.md",
+      "results/periodic-rpm-curves-v1/receipt.json",
+      "results/desktop-rpm-curves-v1/report.md"
     ]
   },
   "objectives": [
@@ -9321,6 +9445,23 @@
       "completion_criterion": "Two representative short A/B profiles; implement one high-impact low-risk residual optimization; demonstrate measured before/after speed and preserved physical outputs, conservation, memory, checkpoint restart and existing tolerances. No six-point curve rerun.",
       "scientific_state": "PERFORMANCE_ONLY;PHYSICAL_EQUATIONS_FROZEN;NO_NEW_PERIODIC_OR_VALIDATION_CLAIM",
       "result": "results/integrated-performance-v2/receipt.json"
+    },
+    {
+      "id": "DINO_INTEGRATED_PERFORMANCE_V3",
+      "state": "OPEN",
+      "owner_approved": true,
+      "summary": "Owner authorizes one bounded same-engine RPM warm-initialization pilot A9000 → A10000, preserving physical state and existing periodicity criteria; no full campaign or solver physics changes.",
+      "change": "openspec/changes/integrated-performance-v3",
+      "spec": "openspec/changes/integrated-performance-v3/specs/integrated-performance-v3/spec.md",
+      "transitioned_from": "DINO_INTEGRATED_PERFORMANCE_V2",
+      "gate_tasks": [
+        "PERFV3-TRANSFER-IMPLEMENT",
+        "PERFV3-TRANSFER-TESTS",
+        "PERFV3-A10000-PILOT",
+        "PERFV3-DECISION"
+      ],
+      "completion_criterion": "A9000 periodic state safely initializes a distinct A10000 run with verified provenance; at most 40 new cycles and 240 s; adopt into coordinator only if it reaches periodicity, matches the historical periodic result within justified tolerances, and materially reduces cycle/time.",
+      "scientific_state": "PERFORMANCE_INITIALIZATION_ONLY;PHYSICAL_EQUATIONS_AND_PERIODICITY_CONTRACT_FROZEN;NO_EXPERIMENTAL_VALIDATION_CLAIM"
     }
   ],
   "owner_decisions_pending": [
@@ -11638,6 +11779,18 @@
       "task": "PERFV2-VERIFY",
       "kind": "task",
       "summary": "A/B three-repeat validation passed: 8.36%/7.50% wall reduction, exact physical diagnostics and checkpoints, exact A cycle-4 restart, 130 focused tests PASS; curve remains projected."
+    },
+    {
+      "at": "2026-10-26T12:02:51+00:00",
+      "task": "PERFV3-SOURCE-FORENSICS",
+      "kind": "completed",
+      "summary": "A9000/A10000 periodic manifests and checkpoint hashes verified; same mesh/topology/geometry/EOS/species/boundaries/CFL, phase zero, and source conservative state is admissible under target A10000 with identical mass, energy and species inventories. Full restart is invalid across RPM; event history and detector must reset."
+    },
+    {
+      "at": "2026-10-26T12:22:02+00:00",
+      "task": "PERFV3-TRANSFER-IMPLEMENT",
+      "kind": "task",
+      "summary": "Implemented hash-anchored conservative periodic-state initialization as a distinct RPM run; source A9000 validates against target A10000 without solver steps and exact total mass/energy/species inventory is preserved."
     }
   ],
   "legacy_gate_status": {
@@ -11652,22 +11805,25 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_INTEGRATED_PERFORMANCE_V2",
-    "state": "PASS",
-    "classification": "INTEGRATED_PERFORMANCE_V2_PASS",
+    "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
+    "state": "OPEN",
+    "classification": "INTEGRATED_PERFORMANCE_V3_PILOT_PENDING",
     "evidence": [
-      "results/integrated-performance-v2/report.md",
-      "results/integrated-performance-v2/receipt.json",
-      "results/integrated-performance-v2/measurements.json",
-      "results/integrated-performance-v2/artifact-index.json"
+      "openspec/changes/integrated-performance-v3/specs/integrated-performance-v3/spec.md"
     ],
-    "gate_tasks_total": 5,
-    "gate_tasks_done": 5,
+    "gate_tasks_total": 4,
+    "gate_tasks_done": 0,
     "gate_task_states": {
-      "DONE": 5
+      "READY": 2,
+      "WAITING": 2
     },
-    "remaining": [],
-    "updated_at": "2026-10-26T11:50:32+00:00"
+    "remaining": [
+      "PERFV3-TRANSFER-IMPLEMENT",
+      "PERFV3-TRANSFER-TESTS",
+      "PERFV3-A10000-PILOT",
+      "PERFV3-DECISION"
+    ],
+    "updated_at": "2026-10-26T12:02:37+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -11730,7 +11886,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-26T11:50:32+00:00",
+  "updated_at": "2026-10-26T12:02:37+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",

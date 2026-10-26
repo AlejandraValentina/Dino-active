@@ -1,0 +1,225 @@
+{
+  "schema": "DINO_PERFV3_A10000_HISTORICAL_PERIODIC_ENVELOPE_V1",
+  "source_receipt": "results/periodic-rpm-curves-v1/receipt.json",
+  "source_result_sha256": "ca2987d9b7a003e0d34bf565dcaa9117f6602df3cd37d193599e2cd0beaa687d",
+  "source_checkpoint_sha256": "b216a263735f9959a72ec9c958a3f0a6542beabc866232c3a755cfc7555152ed",
+  "source_invocation_manifest_sha256": "50105816a5753a8b507a98aec3f7f6f29a70aa309eaa5bf18da0954d5587dd82",
+  "diagnostic_manifest_sha256": "50105816a5753a8b507a98aec3f7f6f29a70aa309eaa5bf18da0954d5587dd82",
+  "selection": "last 3 cycles of recorded detector pass streak, cycles 102-104",
+  "cycles": [
+    {
+      "cycle": 102,
+      "work_J": 32.92648237060848,
+      "brake_power_W": 3523.6332563629157,
+      "brake_torque_Nm": 3.3648219023588983,
+      "indicated_power_W": 5487.74706176808,
+      "indicated_torque_Nm": 5.2404124279104884,
+      "trapped_air_mg": 28.920998206302393,
+      "trapped_fresh_mg": 32.476542670637635,
+      "afr_trapped": 8.134056118943683,
+      "chemical_heat_J": 71.81430188693139,
+      "fuel_burned_mg": 1.9648235810379184,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89912.22984097528,
+          132159.80915293246
+        ],
+        "cylinder": [
+          99665.35822331157,
+          4563108.869549567
+        ],
+        "exhaust_entry": [
+          96095.31811561545,
+          112706.01483679694
+        ],
+        "exhaust_middle": [
+          104391.40382222671,
+          107027.12679251071
+        ]
+      },
+      "relative_conservation": {
+        "energy": 3.5401735569728463e-15,
+        "mass": 8.731257985749506e-15,
+        "species": 3.723350953411303e-15
+      },
+      "periodicity_streak": 1
+    },
+    {
+      "cycle": 103,
+      "work_J": 32.92670077037974,
+      "brake_power_W": 3523.668465125804,
+      "brake_torque_Nm": 3.3648555242508214,
+      "indicated_power_W": 5487.783461729956,
+      "indicated_torque_Nm": 5.240447187313654,
+      "trapped_air_mg": 28.92115557022286,
+      "trapped_fresh_mg": 32.47671148799398,
+      "afr_trapped": 8.134074175481611,
+      "chemical_heat_J": 71.81471447808781,
+      "fuel_burned_mg": 1.964834869441534,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89912.19974951398,
+          132159.803984032
+        ],
+        "cylinder": [
+          99665.29751451565,
+          4563111.221988353
+        ],
+        "exhaust_entry": [
+          96095.11740458105,
+          112705.89074403944
+        ],
+        "exhaust_middle": [
+          104391.16277323243,
+          107026.90093186389
+        ]
+      },
+      "relative_conservation": {
+        "energy": 3.075252456519418e-15,
+        "mass": 8.842958514351845e-15,
+        "species": 4.91482325850292e-15
+      },
+      "periodicity_streak": 2
+    },
+    {
+      "cycle": 104,
+      "work_J": 32.926906132975546,
+      "brake_power_W": 3523.7015766254817,
+      "brake_torque_Nm": 3.364887143403903,
+      "indicated_power_W": 5487.817688829257,
+      "indicated_torque_Nm": 5.240479871785903,
+      "trapped_air_mg": 28.92130347955175,
+      "trapped_fresh_mg": 32.47687017258161,
+      "afr_trapped": 8.134091124277736,
+      "chemical_heat_J": 71.81510229501782,
+      "fuel_burned_mg": 1.9648454800276471,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89912.17152676865,
+          132159.799129877
+        ],
+        "cylinder": [
+          99665.24066276671,
+          4563113.456768167
+        ],
+        "exhaust_entry": [
+          96094.92922416261,
+          112705.77460631415
+        ],
+        "exhaust_middle": [
+          104390.93679099133,
+          107026.68920256369
+        ]
+      },
+      "relative_conservation": {
+        "energy": 1.4010080452719484e-15,
+        "mass": 8.4333899094766e-15,
+        "species": 5.5105594110487285e-15
+      },
+      "periodicity_streak": 3
+    }
+  ],
+  "observed_envelope": {
+    "work_J": {
+      "min": 32.92648237060848,
+      "max": 32.926906132975546,
+      "relative_span": 1.2869789993385683e-05
+    },
+    "brake_power_W": {
+      "min": 3523.6332563629157,
+      "max": 3523.7015766254817,
+      "relative_span": 1.938877656927003e-05
+    },
+    "brake_torque_Nm": {
+      "min": 3.3648219023588983,
+      "max": 3.364887143403903,
+      "relative_span": 1.938877656937026e-05
+    },
+    "indicated_power_W": {
+      "min": 5487.74706176808,
+      "max": 5487.817688829257,
+      "relative_span": 1.2869789993385685e-05
+    },
+    "indicated_torque_Nm": {
+      "min": 5.2404124279104884,
+      "max": 5.240479871785903,
+      "relative_span": 1.2869789993346024e-05
+    },
+    "trapped_air_mg": {
+      "min": 28.920998206302393,
+      "max": 28.92130347955175,
+      "relative_span": 1.0555307424933744e-05
+    },
+    "trapped_fresh_mg": {
+      "min": 32.476542670637635,
+      "max": 32.47687017258161,
+      "relative_span": 1.0084159656949921e-05
+    },
+    "afr_trapped": {
+      "min": 8.134056118943683,
+      "max": 8.134091124277736,
+      "relative_span": 4.303533550192279e-06
+    },
+    "chemical_heat_J": {
+      "min": 71.81430188693139,
+      "max": 71.81510229501782,
+      "relative_span": 1.1145400630995392e-05
+    },
+    "fuel_burned_mg": {
+      "min": 1.9648235810379184,
+      "max": 1.9648454800276471,
+      "relative_span": 1.1145400465994881e-05
+    },
+    "pressure_min_max_Pa": {
+      "crankcase": {
+        "min": {
+          "min": 89912.17152676865,
+          "max": 89912.22984097528,
+          "relative_span": 6.485681284376965e-07
+        },
+        "max": {
+          "min": 132159.799129877,
+          "max": 132159.80915293246,
+          "relative_span": 7.584042014635591e-08
+        }
+      },
+      "cylinder": {
+        "min": {
+          "min": 99665.24066276671,
+          "max": 99665.35822331157,
+          "relative_span": 1.1795527248568095e-06
+        },
+        "max": {
+          "min": 4563108.869549567,
+          "max": 4563113.456768167,
+          "relative_span": 1.0052826088558823e-06
+        }
+      },
+      "exhaust_entry": {
+        "min": {
+          "min": 96094.92922416261,
+          "max": 96095.31811561545,
+          "relative_span": 4.046934444487894e-06
+        },
+        "max": {
+          "min": 112705.77460631415,
+          "max": 112706.01483679694,
+          "relative_span": 2.1314788135535254e-06
+        }
+      },
+      "exhaust_middle": {
+        "min": {
+          "min": 104390.93679099133,
+          "max": 104391.40382222671,
+          "relative_span": 4.473847637684507e-06
+        },
+        "max": {
+          "min": 107026.68920256369,
+          "max": 107027.12679251071,
+          "relative_span": 4.08858912812057e-06
+        }
+      }
+    }
+  },
+  "interpretation": "Observed final-streak envelope is descriptive evidence, not a statistical confidence interval. Use it together with unchanged periodicity-v2 checks and report any out-of-envelope values; do not weaken tolerances or claim bitwise identity."
+}

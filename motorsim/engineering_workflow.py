@@ -16,10 +16,17 @@ SCHEMA="DINO_ENGINEERING_RUN_V1"
 
 
 def run(document, *, project_id,run_id,artifact_root,rpm,max_cycles,budget_seconds,
-        memory_limit_mib,resume=False,cancel_event=None,progress=None,variant_label="base",**unused):
+        memory_limit_mib,resume=False,cancel_event=None,progress=None,variant_label="base",
+        initial_state_provenance=None,**unused):
     from .exploratory_workflow import _run_directory,preflight
     check=preflight(document,rpm=rpm,max_cycles=max_cycles,budget_seconds=budget_seconds,memory_limit_mib=memory_limit_mib)
     effective=resolve_for_operating_point(document,rpm=rpm)
+    if initial_state_provenance is not None:
+        provenance=document.get("provenance",{}).get("periodic_state_initialization")
+        if (not isinstance(provenance,dict) or provenance.get("schema")!=
+                "DINO_PERIODIC_STATE_INITIALIZATION_V1" or
+                provenance != initial_state_provenance):
+            raise ValueError("periodic warm-start provenance does not match the target document")
     root=_run_directory(Path(artifact_root),project_id,run_id)
     if root.is_relative_to(point.ROOT):
         raise ValueError("artifact root must be external")
@@ -56,12 +63,15 @@ def run(document, *, project_id,run_id,artifact_root,rpm,max_cycles,budget_secon
         scientific_validation="NOT_CLAIMED",audit="NOT_PERFORMED",failure=diagnostic["failure"],
         bindings=dict(identity_sha256=effective["identity_sha256"],variant_label=variant_label,
             configuration_sha256=effective["native_configuration_sha256"],project_id=project_id,run_id=run_id),
+        initial_state_provenance=initial_state_provenance,
         preflight=check,attempt=attempt,invocations=number,
         diagnostic_manifest_sha256=hashlib.sha256(raw).hexdigest(),
         cycles_completed=diagnostic["cycles_completed"],periodicity=(diagnostic["periodicity"] if diagnostic["periodicity"].startswith("PERIOD_") else "NOT_CONVERGED" if diagnostic["cycles_completed"]>=2 else "INSUFFICIENT_CYCLES"),
         elapsed_seconds=diagnostic["wall_s"]+(previous.get("elapsed_seconds",0) if previous else 0),
         artifact_directory=str(root),checkpoint_artifact=None,
         cycles=diagnostic["cycles"],source_hashes=effective["source_hashes"])
+    if initial_state_provenance is not None:
+        result["initial_state_provenance"] = initial_state_provenance
     if diagnostic.get("checkpoint_artifact"):
         cp=root/attempt/diagnostic["checkpoint_artifact"]
         shutil.copyfile(cp,root/"checkpoint.json")

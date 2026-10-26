@@ -22,13 +22,13 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_INTEGRATED_PERFORMANCE_V2
-change/spec:       openspec/changes/integrated-performance-v2/
-                   specs/integrated-performance-v2/spec.md
-completion:        Two short representative A/B profiles; implement one measured
-                   high-impact low-risk optimization; verify physical outputs,
-                   conservation, memory and checkpoint restart. No full curve,
-                   campaign, X30 or physical-model changes.
+CURRENT_OBJECTIVE: DINO_INTEGRATED_PERFORMANCE_V3
+change/spec:       openspec/changes/integrated-performance-v3/
+                   specs/integrated-performance-v3/spec.md
+completion:        Validate conservative same-engine periodic-state initialization
+                   from A9000 into a new A10000 run; one pilot capped at 40 new
+                   cycles/240 s; compare against historical periodic A10000.
+                   No campaign or physical-model/periodicity changes.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    -> current_objective, queue, gate_status, progress_log
 ```
