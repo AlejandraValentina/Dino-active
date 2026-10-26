@@ -11849,6 +11849,12 @@
       "task": "PERFV3-A10000-PILOT",
       "kind": "task",
       "summary": "Pilot contract is frozen and storage preflight passes; starting the single A9000-to-A10000 run under the committed 40-cycle/240-second hard caps."
+    },
+    {
+      "at": "2026-10-26T12:26:43+00:00",
+      "task": "PERFV3-A10000-PILOT",
+      "kind": "task",
+      "summary": "Pre-solver binding check rejected diagnostics/provenance object mismatch; no run/result/checkpoint or solver steps were created. Separated canonical provenance from transfer diagnostics, reran no-step binding and four unit tests; freezing contract v2 before launch."
     }
   ],
   "legacy_gate_status": {

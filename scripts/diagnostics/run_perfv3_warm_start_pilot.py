@@ -55,9 +55,10 @@ def main() -> int:
     target = _operating_document(
         base, TARGET_RPM,
         {"schema": "POWERVALVE_OPEN_ENDPOINT_HOLD_V1", "maximum_rpm": TARGET_RPM})
-    target_document, provenance = initialize_from_periodic_run(
+    target_document, initialization = initialize_from_periodic_run(
         target, source_run, expected_source=expected, target_rpm=TARGET_RPM,
         target_variant_label=VARIANT)
+    provenance = initialization["provenance"]
     effective = resolve_for_operating_point(target_document, rpm=TARGET_RPM)
     if effective["native_configuration_sha256"] != sha256(target_document["native_configuration"]):
         raise RuntimeError("target configuration digest did not survive operating-point resolution")
@@ -91,6 +92,13 @@ def main() -> int:
         "checkpoint_artifact": result.get("checkpoint_artifact"),
         "checkpoint_sha256": result.get("checkpoint_sha256"),
         "initial_state_provenance": result.get("initial_state_provenance"),
+        "initialization_inventory_check": {
+            "inventory_equal": initialization["inventory_equal"],
+            "source_inventory": initialization["source_inventory"],
+            "target_initial_inventory": initialization["target_initial_inventory"],
+            "source_total_cycle": initialization["source_total_cycle"],
+            "new_run_start_cycle": initialization["new_run_start_cycle"],
+        },
         "target_configuration_sha256": effective["native_configuration_sha256"],
     }
     print(json.dumps(compact, sort_keys=True, ensure_ascii=False))

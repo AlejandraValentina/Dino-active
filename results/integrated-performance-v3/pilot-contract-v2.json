@@ -1,0 +1,118 @@
+{
+  "schema": "DINO_PERFORMANCE_V3_PILOT_CONTRACT_V2",
+  "status": "FROZEN_BEFORE_SOLVER_PILOT",
+  "objective": "One new A10000 exploratory run initialized conservatively from the accepted periodic A9000 state.",
+  "pilot": {
+    "run_id": "perfv3-warm-A10000-from-A9000-20261026",
+    "project_id": "functional-reed-125cc-v1",
+    "variant": "A_original",
+    "source_rpm": 9000,
+    "target_rpm": 10000,
+    "max_new_cycles": 40,
+    "wall_budget_seconds": 240,
+    "memory_limit_mib": 512,
+    "resume": false,
+    "automatic_extension": false
+  },
+  "source": {
+    "receipt": "results/periodic-rpm-curves-v1/receipt.json",
+    "run_id": "ab-A-9000",
+    "result_sha256": "d3ee52ea453883d65ea77d846a89d4b321741a6d9062cfbebf07760b30f4fcf0",
+    "checkpoint_sha256": "60d825868d73ca289cd305c9c59c40e750eecddfd6f9d1a85f554f91bcfc97b7",
+    "invocation_manifest_sha256": "f00028e10d46b008000208c763daac312d9816082ec2f5f66d77225f5bd3577e",
+    "cycles_completed": 104,
+    "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED"
+  },
+  "historical_target_reference": {
+    "run_id": "pc-08bbe6f9b9694ff3970bfeb02edf4283-10000",
+    "result_sha256": "ca2987d9b7a003e0d34bf565dcaa9117f6602df3cd37d193599e2cd0beaa687d",
+    "checkpoint_sha256": "b216a263735f9959a72ec9c958a3f0a6542beabc866232c3a755cfc7555152ed",
+    "invocation_manifest_sha256": "50105816a5753a8b507a98aec3f7f6f29a70aa309eaa5bf18da0954d5587dd82",
+    "cycles_completed": 104,
+    "cumulative_wall_seconds": 715.6344843000406,
+    "solver_wall_seconds": 428.5254343919223,
+    "brake_power_W": 3523.7015766254817,
+    "brake_torque_Nm": 3.364887143403903,
+    "indicated_power_W": 5487.817688829257,
+    "work_J": 32.926906132975546,
+    "trapped_air_mg": 28.92130347955175,
+    "trapped_fresh_mg": 32.47687017258161,
+    "afr_trapped": 8.134091124277736,
+    "chemical_heat_J": 71.81510229501782,
+    "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+    "conservation_max": {
+      "mass": 8.842958514351845e-15,
+      "energy": 5.780831096746244e-15,
+      "species": 1.3701931508553595e-14
+    },
+    "pressure_min_max_Pa": {
+      "crankcase": [
+        89912.17152676865,
+        132159.799129877
+      ],
+      "cylinder": [
+        99665.24066276671,
+        4563113.456768167
+      ],
+      "exhaust_entry": [
+        96094.92922416261,
+        112705.77460631415
+      ],
+      "exhaust_middle": [
+        104390.93679099133,
+        107026.68920256369
+      ]
+    },
+    "comparison_envelope": "results/integrated-performance-v3/historical-reference-envelope.json"
+  },
+  "output": "${DINO_ARTIFACT_ROOT}/exploratory-workflow-v1/functional-reed-125cc-v1/perfv3-warm-A10000-from-A9000-20261026",
+  "storage_preflight": {
+    "status": "PASS",
+    "volume": "E:",
+    "free_bytes_before_pilot": 7370223616,
+    "estimated_write_bytes": 1073741824,
+    "reserve_bytes": 2147483648,
+    "headroom_after_estimate_bytes": 6296481792
+  },
+  "no_step_transfer_check": {
+    "status": "PASS",
+    "source_cycle": 104,
+    "new_run_start_cycle": 0,
+    "inventory_exact_equal": true,
+    "mass_kg": 0.0027590906517995523,
+    "energy_J": 1361.3515764613148,
+    "species_kg": [
+      0.0008846241589379216,
+      0.00010858327000232204,
+      1.8339854764968107e-05,
+      0.0017475433680943493
+    ],
+    "target_configuration_sha256": "2330ee190c318a2cb72500cdf3e9c84c9bf892eb0c317a367cb2ac4fb15601ea",
+    "target_solver_identity_sha256": "b548e31ae4d00fa843205bec338eff1021584799329415ec04f2580a71e37d5e",
+    "solver_steps": 0
+  },
+  "comparisons": {
+    "periodicity": "Must satisfy unchanged REFERENCE_PERIODIC_CONVERGENCE_V2 contract; exploratory remains unaudited.",
+    "physical_outputs": "Compare cycle-level work, brake power/torque, indicated power/torque, trapped air and fresh mass, AFR, chemical heat, burned fuel, chamber/duct pressure extrema and conservation against the historical result and the observed 102-104 final detector-streak envelope recorded in historical-reference-envelope.json. The envelope is descriptive, not a confidence interval. Report each delta and whether it lies inside; do not reinterpret an out-of-envelope result as equivalent without independent numerical justification. No bitwise equality claim.",
+    "adoption": "Only if periodicity is reached within cap, all comparisons are within evidence-justified tolerance, and cycle/time reduction is material; otherwise reject or mark inconclusive, no coordinator integration.",
+    "material_gain": "The frozen cap requires periodicity by <=40 cycles and <=240 s, versus historical 104 cycles and 715.63 s; meeting both caps would represent at least 61.5% fewer cycles and 66.5% less wall time than the historical point."
+  },
+  "implementation_sha256": {
+    "motorsim/periodic_initialization_v1.py": "b11291b03be5334bbc87eac88b9de822d057893838c871f54b9f16a34fddb3fb",
+    "motorsim/engineering_workflow.py": "786e61889d7dcf7bd93dbcb995e25aaa1fc9e216dac6adae45e50d4df23f4478",
+    "motorsim/exploratory_workflow.py": "9e640a9f97c4c175a945e8d17d1266e536fb9c055c5e5fd637f2458b9b94a878",
+    "scripts/diagnostics/run_perfv3_warm_start_pilot.py": "0d1b9e8d78006da0934075af0e3a800c7a86d7a731f06056d3ada2be10f0d828"
+  },
+  "supersedes": "results/integrated-performance-v3/pilot-contract.json",
+  "pre_solver_validation_attempt": {
+    "log": "${DINO_ARTIFACT_ROOT}/integrated-performance-v3/logs/perfv3-a9000-to-a10000-warm-pilot.log",
+    "result": "REJECTED_BEFORE_SOLVER_STEPS",
+    "reason": "workflow received transfer diagnostics where it requires the document-declared provenance object",
+    "run_json_created": false,
+    "result_json_created": false,
+    "checkpoint_created": false,
+    "solver_steps": 0
+  },
+  "fix": "Pilot harness now passes only the document-declared provenance while recording conservation diagnostics separately; the initializer return object exposes provenance and transfer checks as distinct fields.",
+  "final_preflight_evidence": "${DINO_ARTIFACT_ROOT}/integrated-performance-v3/logs/perfv3-a9000-to-a10000-warm-pilot-preflight-v2.json"
+}

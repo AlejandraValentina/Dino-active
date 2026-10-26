@@ -301,7 +301,7 @@ def initialize_from_periodic_run(target_document: dict, source_run: str | Path, 
         raise ValueError("warm initialization failed to create a distinct target identity")
     initialized_engine = IntegratedEngine2T.from_configuration_dict(target_native)
     return target_document_out, {
-        **provenance,
+        "provenance": provenance,
         "source_inventory": source_inventory,
         "target_initial_inventory": target_inventory,
         "inventory_equal": source_inventory == target_inventory,
