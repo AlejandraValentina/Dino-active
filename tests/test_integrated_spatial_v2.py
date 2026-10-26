@@ -51,7 +51,7 @@ def test_new_model_is_serialized_and_old_reader_rejects_it(tmp_path):
     c['geometry_identity']['spatial_reconstruction_model']=V2
     e=IntegratedEngine2T.from_configuration_dict(c)
     assert e.configuration_dict()==c
-    source=subprocess.run(['git','show','a4f7ceb:motorsim/integrated_2t.py'],capture_output=True,text=True,check=True).stdout
+    source=subprocess.run(['git','show','a4f7ceb:motorsim/integrated_2t.py'],capture_output=True,encoding='utf-8',check=True).stdout
     path=tmp_path/'old_integrated.py';path.write_text(source,encoding='utf-8')
     name='motorsim._boundary_v1_reader_reference'
     spec=importlib.util.spec_from_file_location(name,path);module=importlib.util.module_from_spec(spec)
@@ -95,9 +95,10 @@ def test_closed_port_has_zero_mass_energy_and_species_flux():
 
 
 @pytest.mark.parametrize('spatial',[None,V1])
-def test_existing_physical_path_is_bit_identical_to_pre_boundary_source(tmp_path,monkeypatch,spatial):
-    new,_=reference.fixture(8,spatial)
-    source=subprocess.run(['git','show','a4f7ceb:motorsim/integrated_2t.py'],capture_output=True,text=True,check=True).stdout
+@pytest.mark.parametrize('port',[None,PORT])
+def test_existing_physical_path_is_bit_identical_to_pre_boundary_source(tmp_path,monkeypatch,spatial,port):
+    new,_=reference.fixture(8,spatial,port)
+    source=subprocess.run(['git','show','a4f7ceb:motorsim/integrated_2t.py'],capture_output=True,encoding='utf-8',check=True).stdout
     path=tmp_path/'old_integrated.py';path.write_text(source,encoding='utf-8')
     name='motorsim._pre_boundary_physical_reference'
     spec=importlib.util.spec_from_file_location(name,path);module=importlib.util.module_from_spec(spec)
@@ -107,7 +108,7 @@ def test_existing_physical_path_is_bit_identical_to_pre_boundary_source(tmp_path
         with monkeypatch.context() as m:
             for attr in ('IntegratedEngine2T','EngineGeometry2T','DuctPath2T'):
                 m.setattr(reference,attr,getattr(module,attr))
-            old,_=reference.fixture(8,spatial)
+            old,_=reference.fixture(8,spatial,port)
         for _ in range(3):
             new.step(1e-8,.00006);old.step(1e-8,.00006)
             assert new.state==old.state and new.ledger==old.ledger

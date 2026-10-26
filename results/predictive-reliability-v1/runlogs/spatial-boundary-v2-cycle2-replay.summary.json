@@ -1,0 +1,23 @@
+{
+  "name": "spatial-boundary-v2-cycle2-replay",
+  "command": [
+    "python",
+    "scripts/diagnostics/replay_integrated_port_v2.py",
+    "--directory",
+    "results/predictive-reliability-v1/spatial-boundary-v2-engine",
+    "--output",
+    "results/predictive-reliability-v1/spatial-boundary-v2-cycle2-replay-audit.json"
+  ],
+  "started_at": "2026-10-26T16:42:12+00:00",
+  "finished_at": "2026-10-26T16:43:30+00:00",
+  "duration_s": 77.421,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\spatial-boundary-v2-cycle2-replay.log",
+  "log_lines": 1,
+  "log_bytes": 80,
+  "error_lines": [],
+  "tail": [
+    "{\"status\": \"PASS\", \"replayed_accepted_steps\": 722, \"wall_s\": 76.87135839997791}"
+  ]
+}

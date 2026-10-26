@@ -1,0 +1,29 @@
+{
+  "name": "boundary-v2-integrated-regression",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_integrated_2t.py",
+    "tests/test_integrated_spatial_v1.py",
+    "tests/test_integrated_spatial_v2.py",
+    "tests/test_integrated_port_connection_v2.py",
+    "tests/test_spatial_reconstruction_v2.py",
+    "tests/test_moving_cell_thermal_reference_v1.py",
+    "-q"
+  ],
+  "started_at": "2026-10-26T16:44:28+00:00",
+  "finished_at": "2026-10-26T16:47:58+00:00",
+  "duration_s": 209.14,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\boundary-v2-integrated-regression.log",
+  "log_lines": 3,
+  "log_bytes": 192,
+  "error_lines": [],
+  "tail": [
+    "........................................................................ [ 58%]",
+    "....................................................                     [100%]",
+    "124 passed in 208.60s (0:03:28)"
+  ]
+}

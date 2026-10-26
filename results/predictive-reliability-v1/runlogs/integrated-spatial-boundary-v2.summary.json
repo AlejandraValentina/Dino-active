@@ -1,0 +1,40 @@
+{
+  "name": "integrated-spatial-boundary-v2",
+  "command": [
+    "python",
+    "scripts/diagnostics/diagnose_integrated_port_v2.py",
+    "--output",
+    "results/predictive-reliability-v1/spatial-boundary-v2-engine",
+    "--model",
+    "nozzle",
+    "--step-degrees",
+    "0.5",
+    "--spatial-model",
+    "boundary-v2"
+  ],
+  "started_at": "2026-10-26T16:40:48+00:00",
+  "finished_at": "2026-10-26T16:41:22+00:00",
+  "duration_s": 33.75,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\integrated-spatial-boundary-v2.log",
+  "log_lines": 14,
+  "log_bytes": 337,
+  "error_lines": [],
+  "tail": [
+    "{",
+    "  \"status\": \"COMPLETE\",",
+    "  \"error\": null,",
+    "  \"terminal_angle_deg\": 720.0,",
+    "  \"accepted_steps\": 1444,",
+    "  \"wall_s\": 33.22549180011265,",
+    "  \"compute_s\": 27.857374398969114,",
+    "  \"normalized_residuals\": {",
+    "    \"mass\": 2.5190678792783213e-16,",
+    "    \"energy\": 2.0905210679344177e-16,",
+    "    \"species\": 4.212923867068916e-16",
+    "  },",
+    "  \"numerical_gate\": true",
+    "}"
+  ]
+}

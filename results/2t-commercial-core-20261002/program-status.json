@@ -8488,9 +8488,11 @@
       "evidence": [
         "results/predictive-reliability-v1/measured-data-inventory.json",
         "results/predictive-reliability-v1/mesh-engineering-note-v1.md",
-        "results/experimental-reference-v1/selection.json"
+        "results/experimental-reference-v1/selection.json",
+        "results/predictive-reliability-v1/provided-reference-review-v1/report.md",
+        "results/predictive-reliability-v1/boundary-v2-self-review.md"
       ],
-      "next_action": "Await actual measured package; do not synthesize validation, run X30, resume V3 or expand mesh/RPM campaigns automatically.",
+      "next_action": "Inspect provided reference completeness and separate remaining numerical spatial/time uncertainty; do not execute incomplete real-engine configuration.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "orchestrator/physics/verification",
       "write_scope": [
@@ -8499,11 +8501,11 @@
       ],
       "evidence_level": "L0",
       "unblock_tasks": [
-        "PRED-BOUNDARY-TRUNCATION-REFERENCE",
-        "PRED-INLET-REFERENCE-COMPLETENESS",
-        "PRED-PERIODICITY-BOUNDED-PROTOCOL"
+        "PRED-FLECK-COMPLETENESS",
+        "PRED-TEMPORAL-OPERATOR-REFERENCE",
+        "PRED-ENDPOINT-ACCURACY-PROTOCOL"
       ],
-      "qualification": "Third-grid diagnosis and public survey completed. Measured whole-engine inputs still unavailable; existing X30 digitization acknowledged. Cheap local truncation/subsystem-completeness checks remain; no reference adopted or predictive claim."
+      "qualification": "Five user-provided partial reference bundles examined without altering originals. No complete matched-engine package established by that inspection; bounded local source/numerical work remains. Old X30/SPV1/V3 state unchanged."
     },
     {
       "id": "PRED-CONNECTION-SPEC",
@@ -9062,33 +9064,39 @@
       "id": "PRED-INLET-REFERENCE-COMPLETENESS",
       "description": "Establish geometry/thermal/boundary/uncertainty completeness of Ohigashi 1971 Engine A inlet candidate; no solver input by assumptions",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "results/predictive-reliability-v1/public-dataset-survey-v2/inlet-completeness.md"
+      ],
       "next_action": "Establish geometry/thermal/boundary/uncertainty completeness of Ohigashi 1971 Engine A inlet candidate; no solver input by assumptions",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "results/predictive-reliability-v1/public-dataset-survey-v2/inlet-completeness.md"
       ],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "qualification": "Bounded Engine A component assessment complete, not adopted. Matched thermal/pressure conditions, actuator/rod history, volume inclusions, full gas paths and uncertainty not established; no absent input fitted."
     },
     {
       "id": "PRED-PERIODICITY-BOUNDED-PROTOCOL",
       "description": "Prepare finite same-configuration independent-initialization periodicity/stability protocol and measured runtime/storage budget; no automatic execution",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Prepare finite same-configuration independent-initialization periodicity/stability protocol and measured runtime/storage budget; no automatic execution",
+      "evidence": [
+        "openspec/changes/predictive-reliability-v1/periodicity-stability-protocol-v1.md"
+      ],
+      "next_action": "Close endpoint candidate and assess spatial/time accuracy before deciding whether this finite continuation is useful.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "openspec/changes/predictive-reliability-v1/periodicity-stability-protocol-v1.md"
       ],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "qualification": "Preparation only. Proposed exact same-configuration native-cycle2 continuation, max10 added cycles/240s, source guard, full-domain detector; checkpoint-derived candidate cannot bypass primary audit. No run launched."
     },
     {
       "id": "PRED-SPATIAL-BOUNDARY-V2",
@@ -9096,15 +9104,21 @@
       "dependencies": [
         "PRED-BOUNDARY-TRUNCATION-REFERENCE"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
         "openspec/changes/predictive-reliability-v1/spatial-boundary-contract-v2.md",
         "results/predictive-reliability-v1/runlogs/spatial-boundary-v2-contract-tests.summary.json",
-        "results/predictive-reliability-v1/boundary-truncation-reference-v2-final.json"
+        "results/predictive-reliability-v1/boundary-truncation-reference-v2-final.json",
+        "results/predictive-reliability-v1/spatial-boundary-v2-engine/receipt.json",
+        "results/predictive-reliability-v1/spatial-boundary-v2-cycle2-replay-audit.json",
+        "results/predictive-reliability-v1/runlogs/boundary-v2-integrated-regression.summary.json",
+        "results/predictive-reliability-v1/runlogs/boundary-v2-p4-p8.summary.json",
+        "results/predictive-reliability-v1/runlogs/boundary-v2-final-focused.summary.json",
+        "results/predictive-reliability-v1/boundary-v2-self-review.md"
       ],
-      "next_action": "Verify isolated endpoint order/positivity before integrating any new boundary trace.",
+      "next_action": "Completed within stated scope; dependent accuracy assessment remains separate.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/implementation/verification",
       "write_scope": [
@@ -9113,8 +9127,124 @@
         "tests/test_spatial_reconstruction_v2.py",
         "tests/test_integrated_spatial_v2.py"
       ],
+      "evidence_level": "L2",
+      "qualification": "Selectable candidate verified: analytic order near 2, bounded 2-cycle cold integration, 722-step source-bound replay PASS, exact restart and preserved old controls. 124 broad PASS, 301 frozen PASS/3 SKIP, 25 overlapping final-focused PASS. No periodicity/mesh independence/predictive claim."
+    },
+    {
+      "id": "PRED-ENDPOINT-ACCURACY-PROTOCOL",
+      "description": "Prepare a finite spatial/time accuracy assessment for verified endpoint V2 before any same-run periodicity continuation",
+      "dependencies": [
+        "PRED-SPATIAL-BOUNDARY-V2"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Use demonstrated boundary correction and measured runtime to select bounded error-separation checks; no automatic refinement/campaign.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/endpoint-accuracy-protocol-v1.md"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-BOUNDARY-ADVERSARIAL-REVIEW",
+      "description": "Adversarial endpoint positivity, near-zero species and nonuniform-cell checks plus reconstructed network donor verification",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "tests/test_spatial_boundary_v2_adversarial.py",
+        "results/predictive-reliability-v1/boundary-v2-self-review.md",
+        "results/predictive-reliability-v1/runlogs/boundary-v2-final-focused.summary.json"
+      ],
+      "next_action": "Completed within stated scope; dependent accuracy assessment remains separate.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "tests/test_spatial_boundary_v2_adversarial.py",
+        "results/predictive-reliability-v1/boundary-v2-self-review.md"
+      ],
       "evidence_level": "L0",
-      "qualification": "Prototype 51 focused checks PASS. Whole-duct steady-reference orders mass1.963/energy1.960 vs original~1; old/V1 control physical state+ledger bit-identical. Integrated A9000 and L2 replay still pending, no numerical gate closed."
+      "qualification": "SELF_REVIEW: nonuniform/near-vacuum/simplex and opposite-sign nonconstant network donor tests PASS; not an independent review."
+    },
+    {
+      "id": "PRED-BOUNDARY-REVERSE-REFERENCE",
+      "description": "Verify mirrored steady-duct inflow at the right 0D boundary, separate endpoint order from port algebra without time integration",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/boundary-truncation-reverse-v1.json",
+        "tests/test_boundary_truncation_reverse_v1.py"
+      ],
+      "next_action": "Completed within stated scope; dependent accuracy assessment remains separate.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "scripts/diagnostics/boundary_truncation_reverse_v1.py",
+        "tests/test_boundary_truncation_reverse_v1.py",
+        "results/predictive-reliability-v1/boundary-truncation-reverse-v1.json"
+      ],
+      "evidence_level": "L0",
+      "qualification": "Zero-step mirrored reservoir reference restores mass/momentum/energy order ~2.04 vs V1 ~1. Does not certify full-engine order."
+    },
+    {
+      "id": "PRED-PROVIDED-REFERENCE-REVIEW",
+      "description": "Read-only inventory and primary-source assessment of five examples supplied by owner",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/provided-reference-review-v1/receipt.json",
+        "results/predictive-reliability-v1/provided-reference-review-v1/report.md"
+      ],
+      "next_action": "Read-only inventory and primary-source assessment of five examples supplied by owner",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "results/predictive-reliability-v1/provided-reference-review-v1/"
+      ],
+      "evidence_level": "L0",
+      "qualification": "10 files hashed, 29 CSV/JSON parameter values agree. Five partial candidates, no raw traces/native complete configuration; source access limits recorded. No reference adopted or new solver steps."
+    },
+    {
+      "id": "PRED-FLECK-COMPLETENESS",
+      "description": "Bounded official-source/full-text completeness assessment for Honda RS125 reference; no guessed engine or paywall bypass",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Bounded official-source/full-text completeness assessment for Honda RS125 reference; no guessed engine or paywall bypass",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "results/predictive-reliability-v1/fleck-completeness-v1/"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-TEMPORAL-OPERATOR-REFERENCE",
+      "description": "Verify SSPRK2 smooth fixed-grid temporal convergence with analytical reference before interpreting integrated refinement",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Verify SSPRK2 smooth fixed-grid temporal convergence with analytical reference before interpreting integrated refinement",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "scripts/diagnostics/temporal_operator_reference_v1.py",
+        "tests/test_temporal_operator_reference_v1.py",
+        "results/predictive-reliability-v1/temporal-operator-reference-v1.json"
+      ],
+      "evidence_level": "L0"
     }
   ],
   "audit_remediation_mode": false,
@@ -12910,6 +13040,42 @@
       "task": "PRED-SPATIAL-BOUNDARY-V2",
       "kind": "task",
       "summary": "Opt-in endpoint V2 prototype integrated with consistent port/external/network gas and donor traces; V1/default preserved. 51 focused checks PASS incl. Sod, conservation, reverse donor, dynamic heat, restart, frozen-reader rejection and bit-identical old controls. Smooth global residual order restored to ~1.96. Preregister bounded engine/replay before execution."
+    },
+    {
+      "at": "2026-10-26T17:00:23.639612+00:00",
+      "task": "PRED-SPATIAL-BOUNDARY-V2",
+      "kind": "task",
+      "summary": "Selectable candidate verified: analytic order near 2, bounded 2-cycle cold integration, 722-step source-bound replay PASS, exact restart and preserved old controls. 124 broad PASS, 301 frozen PASS/3 SKIP, 25 overlapping final-focused PASS. No periodicity/mesh independence/predictive claim."
+    },
+    {
+      "at": "2026-10-26T17:00:23.639612+00:00",
+      "task": "PRED-BOUNDARY-ADVERSARIAL-REVIEW",
+      "kind": "task",
+      "summary": "SELF_REVIEW: nonuniform/near-vacuum/simplex and opposite-sign nonconstant network donor tests PASS; not an independent review."
+    },
+    {
+      "at": "2026-10-26T17:00:23.639612+00:00",
+      "task": "PRED-BOUNDARY-REVERSE-REFERENCE",
+      "kind": "task",
+      "summary": "Zero-step mirrored reservoir reference restores mass/momentum/energy order ~2.04 vs V1 ~1. Does not certify full-engine order."
+    },
+    {
+      "at": "2026-10-26T17:00:23.639612+00:00",
+      "task": "PRED-PROVIDED-REFERENCE-REVIEW",
+      "kind": "task",
+      "summary": "10 files hashed, 29 CSV/JSON parameter values agree. Five partial candidates, no raw traces/native complete configuration; source access limits recorded. No reference adopted or new solver steps."
+    },
+    {
+      "at": "2026-10-26T17:00:44.869088+00:00",
+      "task": "PRED-INLET-REFERENCE-COMPLETENESS",
+      "kind": "task",
+      "summary": "Read-only inlet benchmark completeness assessed; partial subsystem candidate retained, no executable validation adopted."
+    },
+    {
+      "at": "2026-10-26T17:00:44.869088+00:00",
+      "task": "PRED-PERIODICITY-BOUNDED-PROTOCOL",
+      "kind": "task",
+      "summary": "Prepared only: same-run checkpoint continuation max10 cycles/240s with spatial/time prerequisite; no continuation executed, V3/SPV1 untouched."
     }
   ],
   "legacy_gate_status": {
@@ -12941,7 +13107,7 @@
     "remaining": [
       "PRED-VALIDATION"
     ],
-    "updated_at": "2026-10-26T16:29:10+00:00"
+    "updated_at": "2026-10-26T17:00:23.639612+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

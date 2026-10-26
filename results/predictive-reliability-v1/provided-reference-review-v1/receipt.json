@@ -1,0 +1,79 @@
+{
+  "schema": "DINO_PROVIDED_REFERENCE_BUNDLE_REVIEW_V1",
+  "review": "SELF_REVIEW",
+  "inspected_at": "2026-10-26T16:59:30.361617+00:00",
+  "source_directory_name": "referencias verificadas",
+  "files": [
+    {
+      "name": "andwari_2019.json",
+      "bytes": 5551,
+      "sha256": "ac3abd4202eca9a4c89fcf272ff8741e026e0e986d9db59c3f51f42b68674a44"
+    },
+    {
+      "name": "andwari_2019_condiciones_tabla2.csv",
+      "bytes": 380,
+      "sha256": "93be86a46cf0383816736ff9e381f157f04a8bc1d388b8c0e5398a7ecbd56ad3"
+    },
+    {
+      "name": "AUDITORIA_DE_FUENTES.md",
+      "bytes": 2887,
+      "sha256": "e10486fa9de7c4c434204f81e80d96e7a1faa08002c28356b33fbcbda9fdbc93"
+    },
+    {
+      "name": "cahoon_1971.json",
+      "bytes": 2137,
+      "sha256": "cd8bb02852817b88e9d5ffec8925223eb0586af964ea44f6f65e16aa2e0401e6"
+    },
+    {
+      "name": "fleck_2004.json",
+      "bytes": 2582,
+      "sha256": "9e0088ce25603b3cec32f72fcaac1251cf7847cf6f10e346391e6cf2cfea2dbe"
+    },
+    {
+      "name": "fq170_2026.json",
+      "bytes": 4349,
+      "sha256": "20415216cebc4855dde45753a15697c7027f85ac656273b5f0547729056a0712"
+    },
+    {
+      "name": "fuentes.json",
+      "bytes": 2221,
+      "sha256": "33cdcb6ee7d109a311cc1cecf2e952623207949afb28b6b573c34cabb8575c09"
+    },
+    {
+      "name": "gimelli_2008.json",
+      "bytes": 2150,
+      "sha256": "db1b7c1d198b84fd63e23d982f258651735f61e77d4e638d6af267b25eb6495e"
+    },
+    {
+      "name": "parametros_verificados.csv",
+      "bytes": 4578,
+      "sha256": "a383ca8e4b20dcd802bef9afef15921e89216ba9be63b7f10e98872a46950423"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1506,
+      "sha256": "11b529c8ad38e7e634a33ed6954616bac2893ea82c3ab469148dbc1649be5340"
+    }
+  ],
+  "case_count": 5,
+  "parameter_rows": 29,
+  "parameter_value_mismatches": [],
+  "condition_rows": 3,
+  "csv_classification": "PUBLISHED_TEST_CONDITIONS_NOT_RAW_TRACES",
+  "derived_displacement_cm3": {
+    "ANDWARI_2019": 149.0014198698652,
+    "FQ170_2026_total": 171.17156068643203
+  },
+  "raw_trace_files_found": [],
+  "native_dino_configurations_found": [],
+  "adopted_as_experimental_validation": false,
+  "user_source_files_modified": false,
+  "solver_steps_executed_for_review": 0,
+  "primary_verification": {
+    "FLECK_2004": "SAE indexed abstract inspected; full paper not inspected",
+    "GIMELLI_2008": "SAE indexed abstract inspected; full paper not inspected",
+    "CAHOON_1971": "QUB institutional abstract inspected; full PDF access not established",
+    "ANDWARI_2019": "MDPI indexed article and Brunel author-repository PDF indexed Table 2 inspected; no full-PDF visual review this task",
+    "FQ170_2026": "Nature indexed accepted-manuscript instrument/bore/stroke extract inspected; PMC challenge and Nature redirects prevent full independent table/data/license confirmation this task"
+  }
+}

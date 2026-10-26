@@ -1,0 +1,26 @@
+{
+  "name": "boundary-v2-final-focused",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_spatial_reconstruction_v2.py",
+    "tests/test_integrated_spatial_v2.py",
+    "tests/test_spatial_boundary_v2_adversarial.py",
+    "tests/test_boundary_truncation_reverse_v1.py",
+    "-q"
+  ],
+  "started_at": "2026-10-26T16:54:07+00:00",
+  "finished_at": "2026-10-26T16:54:12+00:00",
+  "duration_s": 4.453,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\boundary-v2-final-focused.log",
+  "log_lines": 2,
+  "log_bytes": 99,
+  "error_lines": [],
+  "tail": [
+    ".........................                                                [100%]",
+    "25 passed in 3.90s"
+  ]
+}
