@@ -25,6 +25,23 @@ def _state_label(value):
         "EXPLORATORY":"Exploratoria · no validada"}.get(value,value)
 
 
+def _referenced_curve_rpms(project,data):
+    """Return a saved RPM grid only for results referenced by this project.
+
+    A recipe must not add NOT_STARTED points to unrelated local history runs;
+    that made a valid same-RPM exploratory pair look incompatible at empty RPMs.
+    """
+    recipe=project.get("simulation_recipes",{}).get("rpm_curve_v1",{})
+    rpms=recipe.get("rpms")
+    if not isinstance(rpms,list) or not rpms:return None
+    referenced={ref.get("artifact_sha256") for ref in project.get("result_references",[])
+                if isinstance(ref,dict) and isinstance(ref.get("artifact_sha256"),str)}
+    imported={row.get("result_sha256") for row in data.get("points",[])
+              if isinstance(row,dict)}
+    if not imported or None in imported or not imported.issubset(referenced):return None
+    return list(rpms)
+
+
 class DiscreteAngleCellMap(QWidget):
     """QImage view of exact cell/angle observations; each pixel band holds one sample."""
     def __init__(self,parent=None):
@@ -82,6 +99,7 @@ class ResultsPage(QWidget):
     evidence_updated=Signal()
     def __init__(self,context):
         super().__init__();self.context=context;self.dataset=None;self.source=None;self.loading=False
+        self._project_reference_signature=None
         root=QVBoxLayout(self);root.setContentsMargins(12,10,12,10);root.setSpacing(6)
         title=QLabel("Análisis");title.setObjectName('title');root.addWidget(title)
         self.source_notice=QLabel("No hay una corrida seleccionada. Elegila desde el historial o abrí datos importados; todavía no se cargó evidencia histórica.")
@@ -130,6 +148,14 @@ class ResultsPage(QWidget):
         self.context.changed.connect(self._project_context_changed);self._project_context_changed()
 
     def _project_context_changed(self,*_):
+        refs=self.context.project.get("result_references",[])
+        signature=(self.context.project.get("project_id"),tuple(
+            (str(ref.get("path","")),ref.get("artifact_sha256"),ref.get("identity_sha256"))
+            for ref in refs))
+        if signature!=self._project_reference_signature:
+            self._project_reference_signature=signature
+            paths=[Path(ref["path"]) for ref in refs if ref.get("path") and Path(ref["path"]).is_file()]
+            if paths:self.open_runs(paths)
         names={"base",*self.context.project["variants"]}
         data_names=set()
         if self.dataset:
@@ -336,8 +362,8 @@ class ResultsPage(QWidget):
             from ..power_curve import import_curve_runs
             run_background(import_curve_runs,paths,on_done=self._loaded_exploratory,on_error=self._exploratory_failed)
     def _loaded_exploratory(self,data):
-        recipe=self.context.project.get('simulation_recipes',{}).get('rpm_curve_v1',{})
-        if recipe.get('rpms'):data['requested_rpms']=list(recipe['rpms'])
+        requested_rpms=_referenced_curve_rpms(self.context.project,data)
+        if requested_rpms:data['requested_rpms']=requested_rpms
         self.dataset=data;self.source=None;self.source_kind="EXPLORATORY";self.path_label.setText(f"{len(data['points'])} ciclos EXPLORATORY · provisional · no interpolación · no validación experimental")
         runs=sorted({str(r.get("run_id")) for r in data["points"] if r.get("run_id")})
         variants_shown=sorted({str(r.get("variant_id")) for r in data["points"]})

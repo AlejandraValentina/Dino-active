@@ -29,6 +29,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--trial',action='store_true',help='Prueba de empaquetado con árbol no limpio, identificada como tal.')
     parser.add_argument('--output-root',type=Path,help='Directorio de distribución externo opcional.')
+    parser.add_argument('--work-root',type=Path,help='Directorio temporal de PyInstaller; útil cuando el repositorio tiene poco espacio libre.')
     parser.add_argument('--periodic-example',type=Path,help='Proyecto existente con seis referencias periódicas; copia sin recalcular.')
     args=parser.parse_args()
     if os.name!='nt' or struct.calcsize('P')!=8 or sys.version_info[:3]!=(3,11,0):
@@ -50,7 +51,8 @@ def main():
     if destination.exists() or Path(str(destination)+'.zip').exists():raise RuntimeError('Destino existente; no se sobrescribe.')
     for name in ('LGPL-3.0-only.txt','GPL-3.0-only.txt','SOURCES.txt'):
         if not (ROOT/'packaging/licenses'/name).is_file():raise RuntimeError('Falta aviso requerido: '+name)
-    work=ROOT/'build/windows'/uuid.uuid4().hex;generated=work/'inputs';generated.mkdir(parents=True)
+    work_base=args.work_root or ROOT/'build/windows'
+    work=work_base/uuid.uuid4().hex;generated=work/'inputs';generated.mkdir(parents=True)
     info=dict(app_version=APP_VERSION,source_commit=commit,source_dirty=dirty,trial=args.trial,
         built_utc=stamp,python=sys.version,platform=platform.platform(),architecture=platform.machine(),
         project_format=6,result_formats=dict(two_stroke=[1,2,3],four_stroke=4),

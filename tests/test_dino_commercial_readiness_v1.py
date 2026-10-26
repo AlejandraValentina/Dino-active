@@ -6,6 +6,7 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import desktop_qsettings_isolation  # noqa: F401
 from PySide6.QtWidgets import QApplication
@@ -14,6 +15,8 @@ from motorsim.desktop.app import DinoDesktopWindow
 from motorsim.desktop.new_engine_dialog import NewEngineDialog
 from motorsim.desktop.context import DesktopContext
 from motorsim.desktop.engine_page import EnginePage
+from motorsim.desktop.execution_page import ExecutionPage
+from motorsim.desktop.results_page import ResultsPage
 from motorsim.desktop.preferences import repository_root_containing, settings
 from motorsim.desktop.services import new_design_project
 from motorsim.engine_configuration import identity, validate
@@ -77,6 +80,36 @@ class CommercialReadinessV1Tests(unittest.TestCase):
         native=page.context.engine()["native_configuration"]
         self.assertEqual(native["geometry_identity"]["gas_exchange_model"]["intake_control"],"reed")
         self.assertTrue(native["reed_petals"])
+
+
+    def test_new_exploratory_run_uses_a_fresh_id_even_after_prior_run(self):
+        page=ExecutionPage(DesktopContext(new_design_project("fresh-run-id")))
+        with tempfile.TemporaryDirectory() as folder:
+            page.artifact_root=Path(folder)
+            page.run_id.setText("old-run-id")
+            page._preflight=lambda: {"rpm":3000.0}
+            seen=[]
+            page._confirm_run=lambda run_id,resume: seen.append((run_id,resume)) or False
+            with patch("motorsim.exploratory_workflow._run_directory"):
+                page.start_run(resume=False)
+        self.assertEqual(len(seen),1)
+        self.assertFalse(seen[0][1])
+        self.assertNotEqual(seen[0][0],"old-run-id")
+        self.assertEqual(page.run_id.text(),seen[0][0])
+
+    def test_project_result_references_are_imported_into_analysis(self):
+        project=new_design_project("periodic-reference")
+        with tempfile.TemporaryDirectory() as folder:
+            result=Path(folder)/"result.json";result.write_text("{}",encoding="utf-8")
+            project["result_references"]=[{
+                "path":str(result),"identity_sha256":"a"*64,
+                "artifact_sha256":"b"*64,"classification":"PERIODIC_EXPLORATORY"
+            }]
+            context=DesktopContext(project)
+            with patch.object(ResultsPage,"open_runs",autospec=True) as open_runs:
+                ResultsPage(context)
+            open_runs.assert_called_once()
+            self.assertEqual(open_runs.call_args.args[1],[result])
 
     def test_new_project_redirects_stale_repository_artifact_setting(self):
         settings().setValue("artifact_root",str(Path.cwd()))

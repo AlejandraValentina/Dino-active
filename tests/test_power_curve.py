@@ -8,6 +8,7 @@ from PySide6.QtWidgets import QApplication
 from motorsim.power_curve import (build_curve_series, exact_rpm_differences,
     peak_points, plan_rpm_range)
 from motorsim.desktop.performance_curves import PowerCurvePanel
+from motorsim.desktop.results_page import _referenced_curve_rpms
 
 
 APP = QApplication.instance() or QApplication([])
@@ -96,3 +97,31 @@ def test_curve_panel_table_peaks_units_and_csv_export(tmp_path):
         rows = list(csv.DictReader(stream))
     assert len(rows) == 2
     assert float(rows[0]["brake_power_CV"]) == pytest.approx(5.0 * 1000 / 735.49875)
+
+
+def test_unreferenced_same_rpm_exploratory_pair_is_not_filled_from_project_recipe():
+    project={"simulation_recipes":{"rpm_curve_v1":{"rpms":[8000,9000,10000]}},
+        "result_references":[{"artifact_sha256":"a"*64}]}
+    local={"points":[{"result_sha256":"b"*64},{"result_sha256":"c"*64}]}
+    assert _referenced_curve_rpms(project,local) is None
+    referenced={"points":[{"result_sha256":"a"*64}]}
+    assert _referenced_curve_rpms(project,referenced)==[8000,9000,10000]
+
+
+def test_same_rpm_transient_pair_is_compatible_but_remains_exploratory():
+    def transient(variant, power, torque, result_hash):
+        return _row(variant,3000,None,None,classification="MAX_CYCLES_NONCONVERGED",
+            periodicity="INSUFFICIENT_CYCLES",brake_power_status="UNDEFINED",
+            brake_torque_status="UNDEFINED",brake_power_reason="NO_PERIODICITY_TRANSIENT_ONLY",
+            brake_torque_reason="NO_PERIODICITY_TRANSIENT_ONLY",mode="ENGINEERING_EXPLORATORY",
+            result_sha256=result_hash,solver_identity_sha256="e"*64,
+            implementation_identity_sha256="b"*64,
+            transient_estimates={"brake_power":power,"brake_torque":torque})
+    data=_dataset([transient("base",-3.8028,-9.0265,"a"*64),
+                   transient("V2 exhaust test",-3.7992,-9.0178,"b"*64)])
+    panel=PowerCurvePanel();panel.exploratory_toggle.setChecked(True)
+    panel.set_dataset(data,{"base","V2 exhaust test"})
+    assert panel.comparison.rowCount()==1
+    assert panel.comparison.item(0,3).text()=="EXPLORATORIO"
+    assert "TRANSITORIO" in panel.comparison.item(0,4).text()
+    assert panel.comparison.item(0,1).text()!="—"

@@ -7612,14 +7612,16 @@
       "id": "CRV1-SIMULATION-ANALYSIS",
       "description": "Complete the ordinary run and same-RPM multi-variant analysis path, reusing the current coordinator and stored physical samples.",
       "dependencies": [],
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [
         "results/dino-commercial-readiness-v1/acceptance/report.md",
-        "results/dino-commercial-readiness-v1/acceptance/receipt.json"
+        "results/dino-commercial-readiness-v1/acceptance/receipt.json",
+        "Importing the two stored 3000-RPM runs retains matching solver/implementation identities, fuel id, mechanical-loss hash, periodicity contract and 44-cell inventory; exact-RPM comparison returns compatible with TRANSIENT_ESTIMATE.",
+        "Root cause isolated: ResultsPage copied the project curve recipe RPMs to every imported local-history selection, generating NOT_STARTED 8000/9000/10000 rows that appeared INCOMPATIBLE. Regression added for hash-bound recipe scoping."
       ],
-      "next_action": "Fix new-run checkpoint/identity after variant changes and make packaged periodic references load into analysis history; then verify same-RPM comparison.",
+      "next_action": "Build the corrected EXE and verify that selected local runs show one compatible exploratory 3000-RPM comparison, no recipe-generated incompatible rows, and preserved periodic reference imports.",
       "objective": "DINO_COMMERCIAL_READINESS_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
@@ -7656,18 +7658,54 @@
       "id": "CRV1-RUN-IDENTITY-REPRODUCER",
       "description": "Create a minimal UI-level regression that reproduces the stale Run ID/checkpoint after switching from base to an exhaust variant, and capture the required behavior for a fresh bounded point.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "results/dino-commercial-readiness-v1/acceptance/receipt.json"
+        "results/dino-commercial-readiness-v1/acceptance/receipt.json",
+        "tests/test_dino_commercial_readiness_v1.py::test_new_exploratory_run_uses_a_fresh_id_even_after_prior_run PASS; switching from a retained run ID now creates a fresh run ID for a new attempt.",
+        "Focused regression group: 28 passed in 80.34 s (tests/test_power_curve.py, tests/test_dino_commercial_readiness_v1.py, tests/test_dino_desktop_ux_v2.py)."
       ],
-      "next_action": "Reproduce run preparation after the project is saved and the active variant changes; isolate whether prepare resets identity/checkpoint before assigning code changes.",
+      "next_action": "Run identity reset regression is covered; package acceptance verifies the saved variant run.",
       "objective": "DINO_COMMERCIAL_READINESS_V1",
       "owner_role": "verification",
       "evidence_level": "L0",
       "write_scope": [
-        "tests/test_dino_commercial_run_identity_v1.py"
+        "tests/test_dino_commercial_readiness_v1.py"
+      ]
+    },
+    {
+      "id": "CRV1-EXPORT-VERIFY",
+      "description": "Verify a CSV exported from the packaged Desktop contains the selected result identities, RPM, exploratory status and transient estimates without altering source artifacts.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "unblock_tasks": [],
+      "commits": [],
+      "evidence": [],
+      "next_action": "Use the corrected trial EXE to export the same-RPM transient comparison and inspect the CSV values and provenance.",
+      "objective": "DINO_COMMERCIAL_READINESS_V1",
+      "owner_role": "verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/dino-commercial-readiness-v1/exports/"
+      ]
+    },
+    {
+      "id": "CRV1-PROJECT-RECOVERY-VERIFY",
+      "description": "Verify the saved engine project retains its edited exhaust variant and remains openable after closing and relaunching the packaged Desktop.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "unblock_tasks": [],
+      "commits": [],
+      "evidence": [],
+      "next_action": "Reopen the saved acceptance project from the packaged EXE and compare its project identity, variant count and exhaust edit with the pre-close record.",
+      "objective": "DINO_COMMERCIAL_READINESS_V1",
+      "owner_role": "verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "results/dino-commercial-readiness-v1/recovery/"
       ]
     }
   ],
@@ -11042,6 +11080,24 @@
       "task": "CRV1-SIMULATION-ANALYSIS",
       "kind": "task",
       "summary": "One EXE exploratory point completed and persisted. Variant retry reused old checkpoint/run ID; packaged periodic project loaded without importing its six result references. Recorded as remaining product work; comparison is not accepted."
+    },
+    {
+      "at": "2026-10-26T10:42:28+00:00",
+      "task": "CRV1-RUN-IDENTITY-REPRODUCER",
+      "kind": "task",
+      "summary": "A new exploratory run now always gets a fresh Run ID; focused regression passed with 28 tests, and the stale checkpoint/run identity cannot be reused across variant runs."
+    },
+    {
+      "at": "2026-10-26T10:42:28+00:00",
+      "task": "CRV1-SIMULATION-ANALYSIS",
+      "kind": "task",
+      "summary": "Root cause located: project recipe RPMs were added to unrelated selected local runs, producing NOT_STARTED rows reported as INCOMPATIBLE. Scoped grid injection to imported result hashes listed by the project; focused regression passed."
+    },
+    {
+      "at": "2026-10-26T10:42:59+00:00",
+      "task": "CRV1-SIMULATION-ANALYSIS",
+      "kind": "task",
+      "summary": "Queue replanned against DINO_COMMERCIAL_READINESS_V1 after gate work left fewer than three READY tasks; added independent EXE export and save/reopen verification tasks."
     }
   ],
   "legacy_gate_status": {
@@ -11064,14 +11120,14 @@
     "gate_tasks_done": 2,
     "gate_task_states": {
       "DONE": 2,
-      "READY": 1,
+      "IN_PROGRESS": 1,
       "WAITING": 1
     },
     "remaining": [
       "CRV1-SIMULATION-ANALYSIS",
       "CRV1-WINDOWS-ACCEPTANCE"
     ],
-    "updated_at": "2026-10-23T16:28:18+00:00"
+    "updated_at": "2026-10-26T10:42:28+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -11134,7 +11190,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-23T16:00:00+00:00",
+  "updated_at": "2026-10-26T10:42:59+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",

@@ -261,7 +261,10 @@ class ExecutionPage(QWidget):
             QMessageBox.warning(self,"Artifact root bloqueado","No se permiten ejecuciones ni reanudaciones que escriban dentro del repositorio. Elegí una raíz externa.");return
         run_id=self.run_id.text().strip()
         if not resume:
-            run_id=run_id or uuid.uuid4().hex
+            # A normal run is always a new attempt. The field retains the last
+            # generated ID for display/resume context; reusing it after changing
+            # a variant would otherwise attach a new design to an old checkpoint.
+            run_id=uuid.uuid4().hex
             self.run_id.setText(run_id)
         try:
             self._preflight()
