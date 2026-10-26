@@ -8430,16 +8430,17 @@
         "PRED-SPATIAL",
         "PRED-BASELINE"
       ],
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [],
-      "next_action": "Preregister and execute bounded integrated conservation/mesh/restart diagnostics",
+      "next_action": "Execute the single preregistered 44-to-88-cell diagnostic; quantify sensitivity, never claim independence from one refinement pair.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "orchestrator/physics/verification",
       "write_scope": [
-        "openspec/changes/predictive-reliability-v1/",
-        "results/predictive-reliability-v1/"
+        "scripts/diagnostics/diagnose_integrated_mesh_v1.py",
+        "tests/test_integrated_mesh_refinement_v1.py",
+        "results/predictive-reliability-v1/mesh-refined-v1/"
       ],
       "evidence_level": "L0"
     },
@@ -12570,6 +12571,12 @@
       "task": "PRED-SPATIAL",
       "kind": "task",
       "summary": "Spatial gate numerically verified: observed orders >2.12, bounded engine time difference 0.0893%, conservation/restart PASS, 722-step offline replay PASS. P4-P8 301 PASS/3 SKIP. Legacy physical state/ledger bit-identical; engine mesh independence remains unclaimed."
+    },
+    {
+      "at": "2026-10-26T15:33:46+00:00",
+      "task": "PRED-INTEGRATED",
+      "kind": "task",
+      "summary": "Mesh input preparation verifies exact frustum volume/moments, conservative species prolongation, full/trace-free physical equality and thermal wall area/h/T remapping (6 tests PASS). One 44-to-88-cell, two-revolution diagnostic, max 240 s/5 MiB; no automatic mesh extension."
     }
   ],
   "legacy_gate_status": {
