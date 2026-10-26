@@ -8498,8 +8498,12 @@
         "results/predictive-reliability-v1/"
       ],
       "evidence_level": "L0",
-      "unblock_tasks": [],
-      "no_local_unblock_reason": "Inventory and existing reference selection already identify the finite missing specimen/test package. Code, synthetic fixtures and assumed geometry cannot manufacture independent experimental evidence. External contacts, metrology or X30 execution are not authorized by this numerical intervention. No locally available matched package was established."
+      "unblock_tasks": [
+        "PRED-MESH-176-PROTOCOL",
+        "PRED-MESH-THREE-LEVEL-ANALYSIS",
+        "PRED-MESH-INPUT-COMPATIBILITY"
+      ],
+      "qualification": "Owner reauthorized continuation: resolve numerical uncertainty locally first; actual matched measured engine package remains an independent external prerequisite."
     },
     {
       "id": "PRED-CONNECTION-SPEC",
@@ -8868,6 +8872,130 @@
       ],
       "evidence_level": "L0",
       "qualification": "Read-only inspection of nine hash-bound manifests and 14 numeric candidates. Reference assumptions separated from measured inputs; no complete matched-engine test package established. X30 not reopened."
+    },
+    {
+      "id": "PRED-MESH-176-PROTOCOL",
+      "description": "Preregister bounded third-grid test and robust hash-bound reference loader",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "tests/test_integrated_mesh_refinement_v1.py",
+        "tests/test_mesh_three_level_analysis_v1.py",
+        "results/predictive-reliability-v1/mesh-176-input-check.json",
+        "openspec/changes/predictive-reliability-v1/mesh-three-level-protocol-v1.md"
+      ],
+      "next_action": "Preregister bounded third-grid test and robust hash-bound reference loader",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/numerics/verification",
+      "write_scope": [
+        "scripts/diagnostics/diagnose_integrated_mesh_v1.py",
+        "tests/test_integrated_mesh_refinement_v1.py",
+        "openspec/changes/predictive-reliability-v1/mesh-three-level-protocol-v1.md"
+      ],
+      "evidence_level": "L0",
+      "qualification": "35 preparation/reference tests PASS. All three initial inventories agree within 1.60e-15; phase/hash/native checks verified. No third-level steps yet."
+    },
+    {
+      "id": "PRED-MESH-THREE-LEVEL-ANALYSIS",
+      "description": "Implement noncircular three-level sensitivity classification and analytic reference tests",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "tests/test_integrated_mesh_refinement_v1.py",
+        "tests/test_mesh_three_level_analysis_v1.py",
+        "results/predictive-reliability-v1/mesh-176-input-check.json",
+        "openspec/changes/predictive-reliability-v1/mesh-three-level-protocol-v1.md"
+      ],
+      "next_action": "Implement noncircular three-level sensitivity classification and analytic reference tests",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/numerics/verification",
+      "write_scope": [
+        "scripts/diagnostics/compare_mesh_three_levels_v1.py",
+        "tests/test_mesh_three_level_analysis_v1.py"
+      ],
+      "evidence_level": "L0",
+      "qualification": "35 preparation/reference tests PASS. All three initial inventories agree within 1.60e-15; phase/hash/native checks verified. No third-level steps yet."
+    },
+    {
+      "id": "PRED-MESH-INPUT-COMPATIBILITY",
+      "description": "Verify nested initial inventories, thermal partitions, inactive thermal-fix compatibility and phase before executing",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "tests/test_integrated_mesh_refinement_v1.py",
+        "tests/test_mesh_three_level_analysis_v1.py",
+        "results/predictive-reliability-v1/mesh-176-input-check.json",
+        "openspec/changes/predictive-reliability-v1/mesh-three-level-protocol-v1.md"
+      ],
+      "next_action": "Verify nested initial inventories, thermal partitions, inactive thermal-fix compatibility and phase before executing",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/numerics/verification",
+      "write_scope": [
+        "results/predictive-reliability-v1/mesh-176-input-check.json"
+      ],
+      "evidence_level": "L0",
+      "qualification": "35 preparation/reference tests PASS. All three initial inventories agree within 1.60e-15; phase/hash/native checks verified. No third-level steps yet."
+    },
+    {
+      "id": "PRED-MESH-176-EXECUTION",
+      "description": "Execute one 88->176-cell independently initialized two-cycle diagnostic <=240s",
+      "dependencies": [
+        "PRED-MESH-176-PROTOCOL",
+        "PRED-MESH-THREE-LEVEL-ANALYSIS",
+        "PRED-MESH-INPUT-COMPATIBILITY"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Execute one 88->176-cell independently initialized two-cycle diagnostic <=240s",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/numerics/verification",
+      "write_scope": [
+        "results/predictive-reliability-v1/mesh-refined-176-v1/"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-MESH-THREE-LEVEL-DECISION",
+      "description": "Compare work, inventories and projected fields on three levels, report unresolved time/spatial sensitivity without validation claim",
+      "dependencies": [
+        "PRED-MESH-176-EXECUTION"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Compare work, inventories and projected fields on three levels, report unresolved time/spatial sensitivity without validation claim",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/numerics/verification",
+      "write_scope": [
+        "results/predictive-reliability-v1/mesh-three-level-analysis-v1.json",
+        "results/predictive-reliability-v1/mesh-three-level-note-v1.md"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-PUBLIC-DATASET-SURVEY-V2",
+      "description": "Bounded primary-source survey of more complete public 2T validation data; incorporate existing partial X30 digitization without assuming missing geometry",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Inspect primary data/geometry/conditions/uncertainty/access before recommending any reference; no adoption or measured claims from synthetic data.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/evidence",
+      "write_scope": [
+        "results/predictive-reliability-v1/public-dataset-survey-v2/"
+      ],
+      "evidence_level": "L0"
     }
   ],
   "audit_remediation_mode": false,
@@ -12627,6 +12755,18 @@
       "task": "PRED-IDENTIFICATION",
       "kind": "task",
       "summary": "P4-P8 final 301 PASS/3 SKIP in 178.55s; 391 candidate checks PASS. Assessment/thermal correction closed; predictive validation BLOCKED by unavailable matched measured package and unresolved mesh uncertainty. General suite attempt timed out with seven isolated unrelated-scope failures preserved; no repository-wide PASS. rc7/history/SPV1 intact."
+    },
+    {
+      "at": "2026-10-26T16:11:06+00:00",
+      "task": "PRED-MESH-176-PROTOCOL",
+      "kind": "task",
+      "summary": "Owner reauthorized plan continuation. Nine blockers reevaluated; historical/SPV1/X30 untouched. Replan adds third-grid numerical diagnosis with 240s bound plus offline analysis/input checks; measured validation remains blocked independently. No solver/model change or power tuning."
+    },
+    {
+      "at": "2026-10-26T16:13:39+00:00",
+      "task": "PRED-MESH-176-PROTOCOL",
+      "kind": "task",
+      "summary": "Third-level protocol and analytic trend/reference guards ready: 35 tests PASS; conservative 44/88/176 initial inventories agree <1.60e-15, native references/hash/phase verified, no solver steps. Owner confirms partial X30 digitization but missing crankcase volume; separately authorizes bounded alternative public-data survey."
     }
   ],
   "legacy_gate_status": {
@@ -12658,7 +12798,7 @@
     "remaining": [
       "PRED-VALIDATION"
     ],
-    "updated_at": "2026-10-26T15:49:21+00:00"
+    "updated_at": "2026-10-26T16:13:39+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -13207,7 +13347,7 @@
     "predictive_validation": "NOT_PERFORMED",
     "experimental_accuracy": "NOT_CLAIMED",
     "summary": "Physical candidates, reconstruction, bounded diagnostics and moving-cell heat defect verified; measured-input availability and mesh uncertainty prevent predictive acceptance.",
-    "replanning_review": "Only unrelated SPV1 READY remains and is preserved untouched by explicit owner instruction. Current-objective preparation, references and numerical checks completed; no artificial READY research tasks created to replace unavailable experimental data.",
+    "replanning_review": "All nine BLOCKED_LOCAL reevaluated. Eight historical/deferred blockers unchanged: no superseding capability or new measured crankcase data. PRED-VALIDATION has three new local numerical preparation tasks; SPV1 stays untouched.",
     "next_requirement": "Complete independently measured specimen/test package and defensible numerical uncertainty, not assumed input completion."
   }
 }

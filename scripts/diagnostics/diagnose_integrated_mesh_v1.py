@@ -11,7 +11,7 @@ import time
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
 from motorsim.integrated_2t import (IntegratedEngine2T,_integrated_scheduled_angles,
-    _integrated_nominal_step_end,_json_evidence_equal)
+    _integrated_nominal_step_end,_json_evidence_equal,_solver_dependency_hashes)
 from motorsim.gas1d.eos import IdealGas
 from motorsim.port_connection_v2 import NoAdmissiblePortState
 from scripts.agents.storage_preflight import check_storage_requirements
@@ -105,24 +105,47 @@ def restrict_state(state,fine_config,coarse_config):
     return result
 
 
-def run(source,output):
-    preflight=check_storage_requirements([(output,5*1024**2)])
-    if output.exists():raise FileExistsError('preserve earlier diagnostic outputs')
+def read_bound_reference(source):
+    """Read successful native reference evidence without restoring/stepping it."""
     reference=json.loads((source/'receipt.json').read_text(encoding='utf-8'))
+    schema=reference.get('schema')
+    if schema=='DINO_INTEGRATED_PORT_V2_DIAGNOSTIC':
+        checkpoint_name,hash_key,gate='terminal-checkpoint.json','terminal_checkpoint_sha256','numerical_gate'
+    elif schema in ('DINO_INTEGRATED_MESH_SENSITIVITY_V1','DINO_INTEGRATED_MESH_SENSITIVITY_V2'):
+        if reference.get('terminal_state_kind')!='NATIVE_CHECKPOINT':
+            raise ValueError('mesh reference requires native terminal checkpoint, not FAST state')
+        checkpoint_name,hash_key,gate='terminal-state.json','terminal_state_sha256','execution_gate'
+    else:raise ValueError('unsupported reference receipt schema')
+    if (reference.get('status')!='COMPLETE' or reference.get(gate) is not True or
+            reference.get('terminal_angle_deg')!=720.):
+        raise ValueError('reference must have passed and completed the same 720-degree phase')
     config_path=source/'configuration.json'
     if sha(config_path)!=reference['configuration_sha256']:
         raise ValueError('source configuration hash mismatch')
-    checkpoint_path=source/'terminal-checkpoint.json'
-    if sha(checkpoint_path)!=reference['terminal_checkpoint_sha256']:
+    checkpoint_path=source/checkpoint_name
+    if sha(checkpoint_path)!=reference[hash_key]:
         raise ValueError('source terminal checkpoint hash mismatch')
     checkpoint=json.loads(checkpoint_path.read_text(encoding='utf-8'))
+    if checkpoint.get('crank_angle_unwrapped_deg')!=720. or checkpoint.get('angle_deg')!=0.:
+        raise ValueError('reference checkpoint crank phase mismatch')
     if (not _json_evidence_equal(checkpoint['state'],reference['final_state']) or
             not _json_evidence_equal(checkpoint['ledger'],reference['final_ledger'])):
         raise ValueError('source summary does not match its bound checkpoint')
+    return reference,config_path,checkpoint
+
+
+def run(source,output):
+    preflight=check_storage_requirements([(output,5*1024**2)])
+    if output.exists():raise FileExistsError('preserve earlier diagnostic outputs')
+    reference,config_path,parent_checkpoint=read_bound_reference(source)
     coarse_config=json.loads(config_path.read_text(encoding='utf-8'))
+    if coarse_config.get('reference_rpm')!=9000.:
+        raise ValueError('this preregistered diagnostic requires exactly A9000')
     config=refined_configuration(coarse_config,sha(config_path))
     coarse=IntegratedEngine2T.from_configuration_dict(coarse_config)
     engine=IntegratedEngine2T.from_configuration_dict(config)
+    validator=IntegratedEngine2T.from_configuration_dict(coarse_config)
+    validator.restore(parent_checkpoint)
     initial_a,initial_b=coarse.inventory(),engine.inventory()
     pairs=[(initial_a['mass_kg'],initial_b['mass_kg']),
            (initial_a['energy_J'],initial_b['energy_J'])]+list(zip(initial_a['species_kg'],initial_b['species_kg']))
@@ -179,9 +202,12 @@ def run(source,output):
         species=max(abs(v['residual']) for v in report['species'].values())/mass_scale)
     projected=restrict_state(engine.state,config,coarse_config)
     errors=terminal_differences(reference['final_state'],projected,IdealGas(**config['eos'])) if status=='COMPLETE' else None
-    result=dict(schema='DINO_INTEGRATED_MESH_SENSITIVITY_V1',status=status,error=error,
+    result=dict(schema='DINO_INTEGRATED_MESH_SENSITIVITY_V2',status=status,error=error,
         evidence_level='L1_RECIPE_AND_NATIVE_CHECKPOINTS',review='SELF_REVIEW',
         runner_sha256=sha(Path(__file__)),source_directory=str(source.resolve()),
+        solver_dependency_sha256=_solver_dependency_hashes(),
+        parent_receipt_sha256=sha(source/'receipt.json'),
+        independent_initial_checkpoint_sha256=sha(output/'initial-checkpoint.json'),
         wall_s=time.perf_counter()-began,compute_s=compute,accepted_steps=len(recipe),
         coarse_cells=sum(len(p['mesh']['volumes']) for p in coarse_config['ducts']),
         fine_cells=sum(len(p['mesh']['volumes']) for p in config['ducts']),
