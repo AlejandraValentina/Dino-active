@@ -7993,10 +7993,18 @@
         "PERFV2-HOTPATH-ANALYSIS",
         "PERFV2-EQUIVALENCE-PLAN"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
+      "commits": [
+        "db928a4",
+        "f803c27"
+      ],
+      "evidence": [
+        "motorsim/integrated_2t.py",
+        "motorsim/p6_species.py",
+        "openspec/changes/integrated-performance-v2/hotpath-analysis.md",
+        "results/integrated-performance-v2/report.md"
+      ],
       "objective": "DINO_INTEGRATED_PERFORMANCE_V2",
       "owner_role": "implementation",
       "evidence_level": "L0",
@@ -8007,8 +8015,9 @@
         "tests/"
       ],
       "unblock_tasks": [],
-      "next_action": "Wait for the measured profile and equivalence plan; optimize one hotspot only.",
-      "started_at": "2026-10-26T11:35:51+00:00"
+      "next_action": "Two measured solver hot-path optimizations accepted; no more optimization without a new profile.",
+      "started_at": "2026-10-26T11:35:51+00:00",
+      "completed_at": "2026-10-26T11:50:31+00:00"
     },
     {
       "id": "PERFV2-VERIFY",
@@ -8016,10 +8025,20 @@
       "dependencies": [
         "PERFV2-OPTIMIZE"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
+      "commits": [
+        "db928a4",
+        "f803c27"
+      ],
+      "evidence": [
+        "results/integrated-performance-v2/report.md",
+        "results/integrated-performance-v2/measurements.json",
+        "results/integrated-performance-v2/artifact-index.json",
+        "results/integrated-performance-v2/receipt.json",
+        "${DINO_ARTIFACT_ROOT}/integrated-performance-v2/logs/regression/perf-v2-focused-regression.summary.json",
+        "${DINO_ARTIFACT_ROOT}/integrated-performance-v2/runs/restart-resumed-A4/manifest.json"
+      ],
       "objective": "DINO_INTEGRATED_PERFORMANCE_V2",
       "owner_role": "verification",
       "evidence_level": "L1",
@@ -8027,7 +8046,8 @@
         "results/integrated-performance-v2/"
       ],
       "unblock_tasks": [],
-      "next_action": "Run bounded paired measurements and focused tests; report full-curve effect as projection only."
+      "next_action": "Acceptance complete: two-config medians, exact physical equivalence, restart, 130 focused regressions, and qualified curve projection recorded.",
+      "completed_at": "2026-10-26T11:50:32+00:00"
     }
   ],
   "audit_remediation_mode": false,
@@ -8230,9 +8250,9 @@
   ],
   "current_objective": {
     "id": "DINO_INTEGRATED_PERFORMANCE_V2",
-    "state": "OPEN",
+    "state": "PASS",
     "owner_approved": true,
-    "summary": "Owner authorized focused measured optimization to reduce time to periodic power/torque curves while preserving physical equations and numerical stability. No full curve, campaign, X30, Desktop feature, or physical-model change.",
+    "summary": "Performance V2 PASS: the measured two-configuration short-run speedup is 8.36% A and 7.50% B with exact physical-output equivalence, unchanged conservation controls, flat RSS and exact checkpoint restart. Six-point curve effect remains projected only.",
     "change": "openspec/changes/integrated-performance-v2",
     "spec": "openspec/changes/integrated-performance-v2/specs/integrated-performance-v2/spec.md",
     "transitioned_from": "DINO_X30_MINIMUM_POINT_V1",
@@ -8263,7 +8283,12 @@
         "peak_rss_mib": 102.328125
       },
       "measurement_note": "Unprofiled three-cycle engineering diagnostics before V2 code changes; not periodic curve measurements."
-    }
+    },
+    "result": "results/integrated-performance-v2/receipt.json",
+    "source_commits": [
+      "db928a4",
+      "f803c27"
+    ]
   },
   "objectives": [
     {
@@ -9280,9 +9305,9 @@
     },
     {
       "id": "DINO_INTEGRATED_PERFORMANCE_V2",
-      "state": "OPEN",
+      "state": "PASS",
       "owner_approved": true,
-      "summary": "Owner authorized focused measured optimization to reduce time to periodic power/torque curves while preserving physical equations and numerical stability. No full curve, campaign, X30, Desktop feature, or physical-model change.",
+      "summary": "Performance V2 PASS: the measured two-configuration short-run speedup is 8.36% A and 7.50% B with exact physical-output equivalence, unchanged conservation controls, flat RSS and exact checkpoint restart. Six-point curve effect remains projected only.",
       "change": "openspec/changes/integrated-performance-v2",
       "spec": "openspec/changes/integrated-performance-v2/specs/integrated-performance-v2/spec.md",
       "transitioned_from": "DINO_X30_MINIMUM_POINT_V1",
@@ -9294,7 +9319,8 @@
         "PERFV2-VERIFY"
       ],
       "completion_criterion": "Two representative short A/B profiles; implement one high-impact low-risk residual optimization; demonstrate measured before/after speed and preserved physical outputs, conservation, memory, checkpoint restart and existing tolerances. No six-point curve rerun.",
-      "scientific_state": "PERFORMANCE_ONLY;PHYSICAL_EQUATIONS_FROZEN;NO_NEW_PERIODIC_OR_VALIDATION_CLAIM"
+      "scientific_state": "PERFORMANCE_ONLY;PHYSICAL_EQUATIONS_FROZEN;NO_NEW_PERIODIC_OR_VALIDATION_CLAIM",
+      "result": "results/integrated-performance-v2/receipt.json"
     }
   ],
   "owner_decisions_pending": [
@@ -11600,6 +11626,18 @@
       "task": "PERFV2-OPTIMIZE",
       "kind": "task",
       "summary": "Implemented donor-side-only normalization at integrated faces, retaining stage-boundary validation, donor_species guard and zero-flux validation; focused exact-formula tests added."
+    },
+    {
+      "at": "2026-10-26T11:50:32+00:00",
+      "task": "PERFV2-OPTIMIZE",
+      "kind": "task",
+      "summary": "Two profile-driven low-risk hot-path optimizations are implemented and measured; no physics or numerical-control changes."
+    },
+    {
+      "at": "2026-10-26T11:50:32+00:00",
+      "task": "PERFV2-VERIFY",
+      "kind": "task",
+      "summary": "A/B three-repeat validation passed: 8.36%/7.50% wall reduction, exact physical diagnostics and checkpoints, exact A cycle-4 restart, 130 focused tests PASS; curve remains projected."
     }
   ],
   "legacy_gate_status": {
@@ -11615,24 +11653,21 @@
   },
   "gate_status": {
     "objective": "DINO_INTEGRATED_PERFORMANCE_V2",
-    "state": "OPEN",
-    "classification": "INTEGRATED_PERFORMANCE_V2_OPEN",
+    "state": "PASS",
+    "classification": "INTEGRATED_PERFORMANCE_V2_PASS",
     "evidence": [
-      "openspec/changes/integrated-performance-v2/",
-      "results/integrated-performance-v1/report.md"
+      "results/integrated-performance-v2/report.md",
+      "results/integrated-performance-v2/receipt.json",
+      "results/integrated-performance-v2/measurements.json",
+      "results/integrated-performance-v2/artifact-index.json"
     ],
     "gate_tasks_total": 5,
-    "gate_tasks_done": 3,
+    "gate_tasks_done": 5,
     "gate_task_states": {
-      "DONE": 3,
-      "IN_PROGRESS": 1,
-      "WAITING": 1
+      "DONE": 5
     },
-    "remaining": [
-      "PERFV2-OPTIMIZE",
-      "PERFV2-VERIFY"
-    ],
-    "updated_at": "2026-10-26T11:35:51+00:00"
+    "remaining": [],
+    "updated_at": "2026-10-26T11:50:32+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -11695,7 +11730,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-26T11:35:51+00:00",
+  "updated_at": "2026-10-26T11:50:32+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",

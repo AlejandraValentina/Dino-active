@@ -1,0 +1,36 @@
+{
+  "schema": "DINO_INTEGRATED_PERFORMANCE_V2_RECEIPT",
+  "classification": "PASS_MEASURED_FOCUSED_PERFORMANCE_GAIN",
+  "source_before": "69b4011",
+  "source_after": "f803c27",
+  "commits": ["401dc1d", "69b4011", "db928a4", "f803c27"],
+  "configurations": {
+    "A9000": "743a00de51aa4ca214afb5c84b790c1d642c92a4887fa0074bad3d76aa2c1a9c",
+    "B9000": "72e2ded3c4bc62ffde6eb39989f39140dd39a2d185d0ec00a88167bcbe602524"
+  },
+  "profiled_cycles_per_configuration": 3,
+  "unprofiled_repetitions_per_configuration_before_after": 3,
+  "speedup": {"A9000": 1.091247961193633, "B9000": 1.0810787575239504},
+  "wall_reduction_percent": {"A9000": 8.361799007974668, "B9000": 7.499801190215704},
+  "exact_physical_equivalence_pairs": 6,
+  "checkpoint_restart": {
+    "variant": "A9000",
+    "restore_exact": true,
+    "physical_steps_during_restore": 0,
+    "cycle4_diagnostics_and_snapshot_equal_to_uninterrupted": true
+  },
+  "focused_regression": {"passed": 130, "duration_seconds": 201.829},
+  "peak_memory_regression": false,
+  "six_point_curve_measured": false,
+  "six_point_curve_projection_minutes": 45.28113918009962,
+  "all_cases_periodic": false,
+  "physical_equations_changed": false,
+  "CFL_or_periodicity_tolerances_changed": false,
+  "new_dependency_added": false,
+  "full_rpm_campaign_run": false,
+  "X30_run": false,
+  "desktop_feature_added": false,
+  "historical_results_or_checkpoints_modified": false,
+  "push_performed": false,
+  "evidence": ["report.md", "measurements.json", "artifact-index.json"]
+}

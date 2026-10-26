@@ -1,0 +1,942 @@
+{
+  "schema": "DINO_INTEGRATED_PERFORMANCE_V2_MEASUREMENTS",
+  "captured_utc": "2026-10-26T11:48:59+00:00",
+  "baseline_source_commit": "69b4011",
+  "optimized_source_commit": "f803c27",
+  "configurations": {
+    "A9000": {
+      "path": "E:/Dino-artifacts/integrated-performance-v1-20261023/A9000.json",
+      "sha256": "743a00de51aa4ca214afb5c84b790c1d642c92a4887fa0074bad3d76aa2c1a9c"
+    },
+    "B9000": {
+      "path": "E:/Dino-artifacts/integrated-performance-v1-20261023/B9000.json",
+      "sha256": "72e2ded3c4bc62ffde6eb39989f39140dd39a2d185d0ec00a88167bcbe602524"
+    }
+  },
+  "profiled_runs": {
+    "A": {
+      "process_wall_s": 50.501206800108775,
+      "process_cpu_s": 50.15625,
+      "profile_total_self_s": 50.32564360000007,
+      "cycles": 3,
+      "status": "MAX_CYCLES_NONCONVERGED",
+      "peak_rss_mib": 102.453125,
+      "top_exclusive_functions": [
+        {
+          "calls": 914237,
+          "cumulative_s": 8.0582673,
+          "file": "E:\\dino\\Dino-active\\motorsim\\p6_species.py",
+          "line": 12,
+          "name": "validate_species",
+          "self_s": 3.4211167000000002
+        },
+        {
+          "calls": 4326,
+          "cumulative_s": 31.2094461,
+          "file": "E:\\dino\\Dino-active\\motorsim\\integrated_2t.py",
+          "line": 1595,
+          "name": "_assemble",
+          "self_s": 3.1272695
+        },
+        {
+          "calls": 2956379,
+          "cumulative_s": 8.320019700000001,
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method builtins.all>",
+          "self_s": 3.0106896
+        },
+        {
+          "calls": 25438178,
+          "cumulative_s": 2.9238691,
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method math.isfinite>",
+          "self_s": 2.9238691
+        },
+        {
+          "calls": 189933,
+          "cumulative_s": 8.6029139,
+          "file": "E:\\dino\\Dino-active\\motorsim\\gas1d\\riemann.py",
+          "line": 29,
+          "name": "hllc_flux",
+          "self_s": 2.2877612000000003
+        },
+        {
+          "calls": 7345115,
+          "cumulative_s": 2.6931842,
+          "file": "E:\\dino\\Dino-active\\motorsim\\gas1d\\eos.py",
+          "line": 27,
+          "name": "<genexpr>",
+          "self_s": 2.0276209
+        },
+        {
+          "calls": 1469023,
+          "cumulative_s": 6.2410429,
+          "file": "E:\\dino\\Dino-active\\motorsim\\gas1d\\eos.py",
+          "line": 25,
+          "name": "validate",
+          "self_s": 1.8913256
+        },
+        {
+          "calls": 4571185,
+          "cumulative_s": 1.9392504000000002,
+          "file": "E:\\dino\\Dino-active\\motorsim\\p6_species.py",
+          "line": 16,
+          "name": "<genexpr>",
+          "self_s": 1.5174681
+        },
+        {
+          "calls": 1135653,
+          "cumulative_s": 2.8219873,
+          "file": "C:\\Users\\ageribon\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\copy.py",
+          "line": 128,
+          "name": "deepcopy",
+          "self_s": 1.3744622000000002
+        },
+        {
+          "calls": 822116,
+          "cumulative_s": 7.039830800000001,
+          "file": "E:\\dino\\Dino-active\\motorsim\\gas1d\\eos.py",
+          "line": 39,
+          "name": "primitive",
+          "self_s": 1.2538017000000001
+        },
+        {
+          "calls": 4110580,
+          "cumulative_s": 1.5227147,
+          "file": "E:\\dino\\Dino-active\\motorsim\\gas1d\\eos.py",
+          "line": 41,
+          "name": "<genexpr>",
+          "self_s": 1.1505605
+        },
+        {
+          "calls": 1028248,
+          "cumulative_s": 3.2610739000000004,
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method builtins.any>",
+          "self_s": 1.0918274000000001
+        },
+        {
+          "calls": 4571185,
+          "cumulative_s": 0.9680315,
+          "file": "E:\\dino\\Dino-active\\motorsim\\p6_species.py",
+          "line": 13,
+          "name": "<genexpr>",
+          "self_s": 0.9680315
+        },
+        {
+          "calls": 418802,
+          "cumulative_s": 5.0350554,
+          "file": "E:\\dino\\Dino-active\\motorsim\\integrated_2t.py",
+          "line": 1470,
+          "name": "_fractions",
+          "self_s": 0.9398249000000001
+        },
+        {
+          "calls": 189933,
+          "cumulative_s": 1.4128295000000002,
+          "file": "E:\\dino\\Dino-active\\motorsim\\gas1d\\riemann.py",
+          "line": 6,
+          "name": "estimate_wave_speeds",
+          "self_s": 0.8512401
+        },
+        {
+          "calls": 1060605,
+          "cumulative_s": 1.0380076,
+          "file": "E:\\dino\\Dino-active\\motorsim\\thermal.py",
+          "line": 18,
+          "name": "_finite",
+          "self_s": 0.8052514000000001
+        },
+        {
+          "calls": 303065,
+          "cumulative_s": 1.6926632000000001,
+          "file": "E:\\dino\\Dino-active\\motorsim\\thermal.py",
+          "line": 101,
+          "name": "validate",
+          "self_s": 0.7311835000000001
+        },
+        {
+          "calls": 1292091,
+          "cumulative_s": 0.8895763000000001,
+          "file": "E:\\dino\\Dino-active\\motorsim\\integrated_2t.py",
+          "line": 1436,
+          "name": "_duct_cell_volume",
+          "self_s": 0.7251559000000001
+        },
+        {
+          "calls": 2163,
+          "cumulative_s": 47.989397100000005,
+          "file": "E:\\dino\\Dino-active\\motorsim\\integrated_2t.py",
+          "line": 2185,
+          "name": "step",
+          "self_s": 0.6728389
+        },
+        {
+          "calls": 2619896,
+          "cumulative_s": 1.8804207000000002,
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method math.fsum>",
+          "self_s": 0.6291949
+        },
+        {
+          "calls": 2163,
+          "cumulative_s": 1.38815,
+          "file": "E:\\dino\\Dino-active\\motorsim\\engineering_point.py",
+          "line": 129,
+          "name": "consume",
+          "self_s": 0.6084321
+        },
+        {
+          "calls": 4326,
+          "cumulative_s": 2.8369818,
+          "file": "E:\\dino\\Dino-active\\motorsim\\integrated_2t.py",
+          "line": 2003,
+          "name": "_cfl",
+          "self_s": 0.6065282000000001
+        },
+        {
+          "calls": 71508,
+          "cumulative_s": 1.1588924,
+          "file": "E:\\dino\\Dino-active\\motorsim\\two_stroke_ports.py",
+          "line": 115,
+          "name": "validate",
+          "self_s": 0.5982291000000001
+        },
+        {
+          "calls": 6490,
+          "cumulative_s": 6.3505294,
+          "file": "E:\\dino\\Dino-active\\motorsim\\integrated_2t.py",
+          "line": 2034,
+          "name": "_validate",
+          "self_s": 0.5855684
+        },
+        {
+          "calls": 2272173,
+          "cumulative_s": 0.5083664,
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method builtins.max>",
+          "self_s": 0.5082862
+        },
+        {
+          "calls": 198585,
+          "cumulative_s": 2.610764,
+          "file": "E:\\dino\\Dino-active\\motorsim\\p6_species.py",
+          "line": 23,
+          "name": "donor_species",
+          "self_s": 0.4843157
+        },
+        {
+          "calls": 1491144,
+          "cumulative_s": 0.5629674,
+          "file": "E:\\dino\\Dino-active\\motorsim\\gas1d\\riemann.py",
+          "line": 51,
+          "name": "<genexpr>",
+          "self_s": 0.4371666
+        },
+        {
+          "calls": 494015,
+          "cumulative_s": 0.5183861000000001,
+          "file": "E:\\dino\\Dino-active\\motorsim\\two_stroke_ports.py",
+          "line": 33,
+          "name": "_finite",
+          "self_s": 0.4012756
+        },
+        {
+          "calls": 2094010,
+          "cumulative_s": 0.39187930000000004,
+          "file": "E:\\dino\\Dino-active\\motorsim\\integrated_2t.py",
+          "line": 1479,
+          "name": "<genexpr>",
+          "self_s": 0.39187930000000004
+        },
+        {
+          "calls": 467400,
+          "cumulative_s": 0.46376360000000005,
+          "file": "E:\\dino\\Dino-active\\motorsim\\reed.py",
+          "line": 21,
+          "name": "_finite",
+          "self_s": 0.35830330000000005
+        }
+      ]
+    },
+    "B": {
+      "process_wall_s": 49.15283090015873,
+      "process_cpu_s": 48.859375,
+      "profile_total_self_s": 48.988428600000084,
+      "cycles": 3,
+      "status": "MAX_CYCLES_NONCONVERGED",
+      "peak_rss_mib": 102.5,
+      "top_exclusive_functions": [
+        {
+          "calls": 914257,
+          "cumulative_s": 7.8898396,
+          "file": "E:\\dino\\Dino-active\\motorsim\\p6_species.py",
+          "line": 12,
+          "name": "validate_species",
+          "self_s": 3.3142361
+        },
+        {
+          "calls": 4326,
+          "cumulative_s": 30.405818000000004,
+          "file": "E:\\dino\\Dino-active\\motorsim\\integrated_2t.py",
+          "line": 1595,
+          "name": "_assemble",
+          "self_s": 3.0068781
+        },
+        {
+          "calls": 2956473,
+          "cumulative_s": 8.1619475,
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method builtins.all>",
+          "self_s": 2.9368932
+        },
+        {
+          "calls": 25438734,
+          "cumulative_s": 2.8684681000000003,
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method math.isfinite>",
+          "self_s": 2.8684681000000003
+        },
+        {
+          "calls": 189937,
+          "cumulative_s": 8.4361317,
+          "file": "E:\\dino\\Dino-active\\motorsim\\gas1d\\riemann.py",
+          "line": 29,
+          "name": "hllc_flux",
+          "self_s": 2.2409746
+        },
+        {
+          "calls": 7345415,
+          "cumulative_s": 2.6541488,
+          "file": "E:\\dino\\Dino-active\\motorsim\\gas1d\\eos.py",
+          "line": 27,
+          "name": "<genexpr>",
+          "self_s": 2.0078496
+        },
+        {
+          "calls": 1469083,
+          "cumulative_s": 6.116976200000001,
+          "file": "E:\\dino\\Dino-active\\motorsim\\gas1d\\eos.py",
+          "line": 25,
+          "name": "validate",
+          "self_s": 1.8455127
+        },
+        {
+          "calls": 4571285,
+          "cumulative_s": 1.9169603000000002,
+          "file": "E:\\dino\\Dino-active\\motorsim\\p6_species.py",
+          "line": 16,
+          "name": "<genexpr>",
+          "self_s": 1.5043105
+        },
+        {
+          "calls": 1135653,
+          "cumulative_s": 2.7673119,
+          "file": "C:\\Users\\ageribon\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\copy.py",
+          "line": 128,
+          "name": "deepcopy",
+          "self_s": 1.3491645
+        },
+        {
+          "calls": 822116,
+          "cumulative_s": 6.890569200000001,
+          "file": "E:\\dino\\Dino-active\\motorsim\\gas1d\\eos.py",
+          "line": 39,
+          "name": "primitive",
+          "self_s": 1.2157372000000002
+        },
+        {
+          "calls": 4110580,
+          "cumulative_s": 1.4967546,
+          "file": "E:\\dino\\Dino-active\\motorsim\\gas1d\\eos.py",
+          "line": 41,
+          "name": "<genexpr>",
+          "self_s": 1.1355405
+        },
+        {
+          "calls": 1028268,
+          "cumulative_s": 3.2096418,
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method builtins.any>",
+          "self_s": 1.0687589
+        },
+        {
+          "calls": 4571285,
+          "cumulative_s": 0.9553123000000001,
+          "file": "E:\\dino\\Dino-active\\motorsim\\p6_species.py",
+          "line": 13,
+          "name": "<genexpr>",
+          "self_s": 0.9553123000000001
+        },
+        {
+          "calls": 418810,
+          "cumulative_s": 4.936010700000001,
+          "file": "E:\\dino\\Dino-active\\motorsim\\integrated_2t.py",
+          "line": 1470,
+          "name": "_fractions",
+          "self_s": 0.9153846000000001
+        },
+        {
+          "calls": 189937,
+          "cumulative_s": 1.3855685,
+          "file": "E:\\dino\\Dino-active\\motorsim\\gas1d\\riemann.py",
+          "line": 6,
+          "name": "estimate_wave_speeds",
+          "self_s": 0.8382758
+        },
+        {
+          "calls": 1060605,
+          "cumulative_s": 0.9986892,
+          "file": "E:\\dino\\Dino-active\\motorsim\\thermal.py",
+          "line": 18,
+          "name": "_finite",
+          "self_s": 0.7665165
+        },
+        {
+          "calls": 1292095,
+          "cumulative_s": 0.8686828000000001,
+          "file": "E:\\dino\\Dino-active\\motorsim\\integrated_2t.py",
+          "line": 1436,
+          "name": "_duct_cell_volume",
+          "self_s": 0.7076583000000001
+        },
+        {
+          "calls": 303065,
+          "cumulative_s": 1.6324534000000002,
+          "file": "E:\\dino\\Dino-active\\motorsim\\thermal.py",
+          "line": 101,
+          "name": "validate",
+          "self_s": 0.7035079000000001
+        },
+        {
+          "calls": 2163,
+          "cumulative_s": 46.681632400000005,
+          "file": "E:\\dino\\Dino-active\\motorsim\\integrated_2t.py",
+          "line": 2185,
+          "name": "step",
+          "self_s": 0.6409828000000001
+        },
+        {
+          "calls": 2619984,
+          "cumulative_s": 1.8381535000000002,
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method math.fsum>",
+          "self_s": 0.6159467000000001
+        },
+        {
+          "calls": 4326,
+          "cumulative_s": 2.7740681,
+          "file": "E:\\dino\\Dino-active\\motorsim\\integrated_2t.py",
+          "line": 2003,
+          "name": "_cfl",
+          "self_s": 0.5944131
+        },
+        {
+          "calls": 71508,
+          "cumulative_s": 1.1307438,
+          "file": "E:\\dino\\Dino-active\\motorsim\\two_stroke_ports.py",
+          "line": 115,
+          "name": "validate",
+          "self_s": 0.5879798
+        },
+        {
+          "calls": 2163,
+          "cumulative_s": 1.340243,
+          "file": "E:\\dino\\Dino-active\\motorsim\\engineering_point.py",
+          "line": 129,
+          "name": "consume",
+          "self_s": 0.5781183000000001
+        },
+        {
+          "calls": 6490,
+          "cumulative_s": 6.211393500000001,
+          "file": "E:\\dino\\Dino-active\\motorsim\\integrated_2t.py",
+          "line": 2034,
+          "name": "_validate",
+          "self_s": 0.5765366000000001
+        },
+        {
+          "calls": 2272239,
+          "cumulative_s": 0.5009275000000001,
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method builtins.max>",
+          "self_s": 0.5008483
+        },
+        {
+          "calls": 198589,
+          "cumulative_s": 2.5542432,
+          "file": "E:\\dino\\Dino-active\\motorsim\\p6_species.py",
+          "line": 23,
+          "name": "donor_species",
+          "self_s": 0.4737236
+        },
+        {
+          "calls": 1491224,
+          "cumulative_s": 0.5562213,
+          "file": "E:\\dino\\Dino-active\\motorsim\\gas1d\\riemann.py",
+          "line": 51,
+          "name": "<genexpr>",
+          "self_s": 0.4338194
+        },
+        {
+          "calls": 2094050,
+          "cumulative_s": 0.38314030000000004,
+          "file": "E:\\dino\\Dino-active\\motorsim\\integrated_2t.py",
+          "line": 1479,
+          "name": "<genexpr>",
+          "self_s": 0.38314030000000004
+        },
+        {
+          "calls": 494015,
+          "cumulative_s": 0.49931030000000004,
+          "file": "E:\\dino\\Dino-active\\motorsim\\two_stroke_ports.py",
+          "line": 33,
+          "name": "_finite",
+          "self_s": 0.38234670000000004
+        },
+        {
+          "calls": 467400,
+          "cumulative_s": 0.451083,
+          "file": "E:\\dino\\Dino-active\\motorsim\\reed.py",
+          "line": 21,
+          "name": "_finite",
+          "self_s": 0.3468198
+        }
+      ]
+    }
+  },
+  "unprofiled_comparison": {
+    "A": {
+      "before_runs": [
+        {
+          "run": "before-A",
+          "source_commit": null,
+          "wall_s": 12.408570199972019,
+          "cpu_s": 12.25,
+          "solver_wall_s": 11.352582096122205,
+          "solver_step_excluding_trace_capture_s": 11.262210789136589,
+          "trace_capture_s": 0.09037130698561668,
+          "processing_wall_s": 0.6945091064553708,
+          "other_wall_s": 0.3514282973483205,
+          "peak_rss_mib": 101.4921875,
+          "cycles_completed": 3,
+          "accepted_steps_per_cycle": 721,
+          "rejected_trials_total": 0,
+          "cylinder_work_J": 35.82714034675635,
+          "chemical_heat_J": 78.69134969553343,
+          "cylinder_peak_pressure_Pa": 4749683.584261004,
+          "fuel_burned_kg": 2.152978103844964e-06,
+          "relative_conservation": {
+            "energy": 7.39715661959247e-16,
+            "mass": 5.508667962143489e-17,
+            "species": 6.633354337747784e-16
+          },
+          "status": "MAX_CYCLES_NONCONVERGED",
+          "configuration_sha256": "743a00de51aa4ca214afb5c84b790c1d642c92a4887fa0074bad3d76aa2c1a9c"
+        },
+        {
+          "run": "baseline-A2",
+          "source_commit": null,
+          "wall_s": 12.663983500096947,
+          "cpu_s": 12.453125,
+          "solver_wall_s": 11.584782211342826,
+          "solver_step_excluding_trace_capture_s": 11.49317681021057,
+          "trace_capture_s": 0.09160540113225579,
+          "processing_wall_s": 0.7098150008823723,
+          "other_wall_s": 0.3584294877946377,
+          "peak_rss_mib": 103.609375,
+          "cycles_completed": 3,
+          "accepted_steps_per_cycle": 721,
+          "rejected_trials_total": 0,
+          "cylinder_work_J": 35.82714034675635,
+          "chemical_heat_J": 78.69134969553343,
+          "cylinder_peak_pressure_Pa": 4749683.584261004,
+          "fuel_burned_kg": 2.152978103844964e-06,
+          "relative_conservation": {
+            "energy": 7.39715661959247e-16,
+            "mass": 5.508667962143489e-17,
+            "species": 6.633354337747784e-16
+          },
+          "status": "MAX_CYCLES_NONCONVERGED",
+          "configuration_sha256": "743a00de51aa4ca214afb5c84b790c1d642c92a4887fa0074bad3d76aa2c1a9c"
+        },
+        {
+          "run": "baseline-A3",
+          "source_commit": null,
+          "wall_s": 12.161274599842727,
+          "cpu_s": 11.9375,
+          "solver_wall_s": 11.094091202365234,
+          "solver_step_excluding_trace_capture_s": 11.00603899708949,
+          "trace_capture_s": 0.0880522052757442,
+          "processing_wall_s": 0.6875410967040807,
+          "other_wall_s": 0.3677327011246234,
+          "peak_rss_mib": 102.01171875,
+          "cycles_completed": 3,
+          "accepted_steps_per_cycle": 721,
+          "rejected_trials_total": 0,
+          "cylinder_work_J": 35.82714034675635,
+          "chemical_heat_J": 78.69134969553343,
+          "cylinder_peak_pressure_Pa": 4749683.584261004,
+          "fuel_burned_kg": 2.152978103844964e-06,
+          "relative_conservation": {
+            "energy": 7.39715661959247e-16,
+            "mass": 5.508667962143489e-17,
+            "species": 6.633354337747784e-16
+          },
+          "status": "MAX_CYCLES_NONCONVERGED",
+          "configuration_sha256": "743a00de51aa4ca214afb5c84b790c1d642c92a4887fa0074bad3d76aa2c1a9c"
+        }
+      ],
+      "after_runs": [
+        {
+          "run": "final-A",
+          "source_commit": null,
+          "wall_s": 11.468590900069103,
+          "cpu_s": 11.296875,
+          "solver_wall_s": 10.412621797760949,
+          "solver_step_excluding_trace_capture_s": 10.321144896093756,
+          "trace_capture_s": 0.09147690166719258,
+          "processing_wall_s": 0.7137519062962383,
+          "other_wall_s": 0.32861029589548707,
+          "peak_rss_mib": 101.75390625,
+          "cycles_completed": 3,
+          "accepted_steps_per_cycle": 721,
+          "rejected_trials_total": 0,
+          "cylinder_work_J": 35.82714034675635,
+          "chemical_heat_J": 78.69134969553343,
+          "cylinder_peak_pressure_Pa": 4749683.584261004,
+          "fuel_burned_kg": 2.152978103844964e-06,
+          "relative_conservation": {
+            "energy": 7.39715661959247e-16,
+            "mass": 5.508667962143489e-17,
+            "species": 6.633354337747784e-16
+          },
+          "status": "MAX_CYCLES_NONCONVERGED",
+          "configuration_sha256": "743a00de51aa4ca214afb5c84b790c1d642c92a4887fa0074bad3d76aa2c1a9c"
+        },
+        {
+          "run": "final-A2",
+          "source_commit": null,
+          "wall_s": 11.370990500086918,
+          "cpu_s": 11.0625,
+          "solver_wall_s": 10.214287703391165,
+          "solver_step_excluding_trace_capture_s": 10.125202503520995,
+          "trace_capture_s": 0.08908519987016916,
+          "processing_wall_s": 0.7680650954134762,
+          "other_wall_s": 0.3771992011461407,
+          "peak_rss_mib": 101.95703125,
+          "cycles_completed": 3,
+          "accepted_steps_per_cycle": 721,
+          "rejected_trials_total": 0,
+          "cylinder_work_J": 35.82714034675635,
+          "chemical_heat_J": 78.69134969553343,
+          "cylinder_peak_pressure_Pa": 4749683.584261004,
+          "fuel_burned_kg": 2.152978103844964e-06,
+          "relative_conservation": {
+            "energy": 7.39715661959247e-16,
+            "mass": 5.508667962143489e-17,
+            "species": 6.633354337747784e-16
+          },
+          "status": "MAX_CYCLES_NONCONVERGED",
+          "configuration_sha256": "743a00de51aa4ca214afb5c84b790c1d642c92a4887fa0074bad3d76aa2c1a9c"
+        },
+        {
+          "run": "final-A3",
+          "source_commit": null,
+          "wall_s": 11.326594399986789,
+          "cpu_s": 10.984375,
+          "solver_wall_s": 10.108137993142009,
+          "solver_step_excluding_trace_capture_s": 10.020089097553864,
+          "trace_capture_s": 0.08804889558814466,
+          "processing_wall_s": 0.7117811935022473,
+          "other_wall_s": 0.49423441337421536,
+          "peak_rss_mib": 101.9140625,
+          "cycles_completed": 3,
+          "accepted_steps_per_cycle": 721,
+          "rejected_trials_total": 0,
+          "cylinder_work_J": 35.82714034675635,
+          "chemical_heat_J": 78.69134969553343,
+          "cylinder_peak_pressure_Pa": 4749683.584261004,
+          "fuel_burned_kg": 2.152978103844964e-06,
+          "relative_conservation": {
+            "energy": 7.39715661959247e-16,
+            "mass": 5.508667962143489e-17,
+            "species": 6.633354337747784e-16
+          },
+          "status": "MAX_CYCLES_NONCONVERGED",
+          "configuration_sha256": "743a00de51aa4ca214afb5c84b790c1d642c92a4887fa0074bad3d76aa2c1a9c"
+        }
+      ],
+      "medians": {
+        "before_wall_s": 12.408570199972019,
+        "after_wall_s": 11.370990500086918,
+        "before_cpu_s": 12.25,
+        "after_cpu_s": 11.0625,
+        "before_solver_wall_s": 11.352582096122205,
+        "after_solver_wall_s": 10.214287703391165,
+        "before_processing_wall_s": 0.6945091064553708,
+        "after_processing_wall_s": 0.7137519062962383,
+        "before_peak_rss_mib": 102.01171875,
+        "after_peak_rss_mib": 101.9140625
+      },
+      "speedup": 1.091247961193633,
+      "wall_reduction_percent": 8.361799007974668,
+      "cpu_reduction_percent": 9.693877551020414,
+      "solver_seconds_per_accepted_step_before": 0.005248535411984376,
+      "solver_seconds_per_accepted_step_after": 0.004722278180023655,
+      "equivalence_pairs": [
+        {
+          "before_run": "before-A",
+          "after_run": "final-A",
+          "cycle_diagnostic_differences_excluding_timing_rss_hash": 0,
+          "engine_snapshot_differences": 0,
+          "periodicity_history_differences": 0
+        },
+        {
+          "before_run": "baseline-A2",
+          "after_run": "final-A2",
+          "cycle_diagnostic_differences_excluding_timing_rss_hash": 0,
+          "engine_snapshot_differences": 0,
+          "periodicity_history_differences": 0
+        },
+        {
+          "before_run": "baseline-A3",
+          "after_run": "final-A3",
+          "cycle_diagnostic_differences_excluding_timing_rss_hash": 0,
+          "engine_snapshot_differences": 0,
+          "periodicity_history_differences": 0
+        }
+      ]
+    },
+    "B": {
+      "before_runs": [
+        {
+          "run": "before-B",
+          "source_commit": null,
+          "wall_s": 12.264189899899065,
+          "cpu_s": 11.96875,
+          "solver_wall_s": 11.190314499428496,
+          "solver_step_excluding_trace_capture_s": 11.100204006070271,
+          "trace_capture_s": 0.09011049335822463,
+          "processing_wall_s": 0.699880296131596,
+          "other_wall_s": 0.3625857043080032,
+          "peak_rss_mib": 102.328125,
+          "cycles_completed": 3,
+          "accepted_steps_per_cycle": 721,
+          "rejected_trials_total": 0,
+          "cylinder_work_J": 33.25008221276184,
+          "chemical_heat_J": 76.50440067726737,
+          "cylinder_peak_pressure_Pa": 4635518.916269452,
+          "fuel_burned_kg": 2.0931436573807762e-06,
+          "relative_conservation": {
+            "energy": 9.487715954035648e-16,
+            "mass": 6.10218900354857e-16,
+            "species": 3.6110331931111394e-16
+          },
+          "status": "MAX_CYCLES_NONCONVERGED",
+          "configuration_sha256": "72e2ded3c4bc62ffde6eb39989f39140dd39a2d185d0ec00a88167bcbe602524"
+        },
+        {
+          "run": "baseline-B2",
+          "source_commit": null,
+          "wall_s": 12.178709500003606,
+          "cpu_s": 12.0,
+          "solver_wall_s": 11.096315000904724,
+          "solver_step_excluding_trace_capture_s": 11.00803229608573,
+          "trace_capture_s": 0.0882827048189938,
+          "processing_wall_s": 0.7007538988254964,
+          "other_wall_s": 0.37018420035019517,
+          "peak_rss_mib": 102.0234375,
+          "cycles_completed": 3,
+          "accepted_steps_per_cycle": 721,
+          "rejected_trials_total": 0,
+          "cylinder_work_J": 33.25008221276184,
+          "chemical_heat_J": 76.50440067726737,
+          "cylinder_peak_pressure_Pa": 4635518.916269452,
+          "fuel_burned_kg": 2.0931436573807762e-06,
+          "relative_conservation": {
+            "energy": 9.487715954035648e-16,
+            "mass": 6.10218900354857e-16,
+            "species": 3.6110331931111394e-16
+          },
+          "status": "MAX_CYCLES_NONCONVERGED",
+          "configuration_sha256": "72e2ded3c4bc62ffde6eb39989f39140dd39a2d185d0ec00a88167bcbe602524"
+        },
+        {
+          "run": "baseline-B3",
+          "source_commit": null,
+          "wall_s": 12.143512000096962,
+          "cpu_s": 11.90625,
+          "solver_wall_s": 11.070765608688816,
+          "solver_step_excluding_trace_capture_s": 10.979824206326157,
+          "trace_capture_s": 0.09094140236265957,
+          "processing_wall_s": 0.6875781051348895,
+          "other_wall_s": 0.37360578612424433,
+          "peak_rss_mib": 101.72265625,
+          "cycles_completed": 3,
+          "accepted_steps_per_cycle": 721,
+          "rejected_trials_total": 0,
+          "cylinder_work_J": 33.25008221276184,
+          "chemical_heat_J": 76.50440067726737,
+          "cylinder_peak_pressure_Pa": 4635518.916269452,
+          "fuel_burned_kg": 2.0931436573807762e-06,
+          "relative_conservation": {
+            "energy": 9.487715954035648e-16,
+            "mass": 6.10218900354857e-16,
+            "species": 3.6110331931111394e-16
+          },
+          "status": "MAX_CYCLES_NONCONVERGED",
+          "configuration_sha256": "72e2ded3c4bc62ffde6eb39989f39140dd39a2d185d0ec00a88167bcbe602524"
+        }
+      ],
+      "after_runs": [
+        {
+          "run": "final-B",
+          "source_commit": null,
+          "wall_s": 11.265330499969423,
+          "cpu_s": 11.046875,
+          "solver_wall_s": 10.188603898743168,
+          "solver_step_excluding_trace_capture_s": 10.099649799522012,
+          "trace_capture_s": 0.08895409922115505,
+          "processing_wall_s": 0.704149995232001,
+          "other_wall_s": 0.3573058061301708,
+          "peak_rss_mib": 101.98046875,
+          "cycles_completed": 3,
+          "accepted_steps_per_cycle": 721,
+          "rejected_trials_total": 0,
+          "cylinder_work_J": 33.25008221276184,
+          "chemical_heat_J": 76.50440067726737,
+          "cylinder_peak_pressure_Pa": 4635518.916269452,
+          "fuel_burned_kg": 2.0931436573807762e-06,
+          "relative_conservation": {
+            "energy": 9.487715954035648e-16,
+            "mass": 6.10218900354857e-16,
+            "species": 3.6110331931111394e-16
+          },
+          "status": "MAX_CYCLES_NONCONVERGED",
+          "configuration_sha256": "72e2ded3c4bc62ffde6eb39989f39140dd39a2d185d0ec00a88167bcbe602524"
+        },
+        {
+          "run": "final-B2",
+          "source_commit": null,
+          "wall_s": 11.391684099799022,
+          "cpu_s": 11.171875,
+          "solver_wall_s": 10.272851899266243,
+          "solver_step_excluding_trace_capture_s": 10.182243898976594,
+          "trace_capture_s": 0.09060800028964877,
+          "processing_wall_s": 0.7111077993176877,
+          "other_wall_s": 0.3947739014402032,
+          "peak_rss_mib": 102.08984375,
+          "cycles_completed": 3,
+          "accepted_steps_per_cycle": 721,
+          "rejected_trials_total": 0,
+          "cylinder_work_J": 33.25008221276184,
+          "chemical_heat_J": 76.50440067726737,
+          "cylinder_peak_pressure_Pa": 4635518.916269452,
+          "fuel_burned_kg": 2.0931436573807762e-06,
+          "relative_conservation": {
+            "energy": 9.487715954035648e-16,
+            "mass": 6.10218900354857e-16,
+            "species": 3.6110331931111394e-16
+          },
+          "status": "MAX_CYCLES_NONCONVERGED",
+          "configuration_sha256": "72e2ded3c4bc62ffde6eb39989f39140dd39a2d185d0ec00a88167bcbe602524"
+        },
+        {
+          "run": "final-B3",
+          "source_commit": null,
+          "wall_s": 11.211451499955729,
+          "cpu_s": 10.984375,
+          "solver_wall_s": 10.113559793448076,
+          "solver_step_excluding_trace_capture_s": 10.025058190105483,
+          "trace_capture_s": 0.08850160334259272,
+          "processing_wall_s": 0.7041938034817576,
+          "other_wall_s": 0.3801941031124443,
+          "peak_rss_mib": 101.9765625,
+          "cycles_completed": 3,
+          "accepted_steps_per_cycle": 721,
+          "rejected_trials_total": 0,
+          "cylinder_work_J": 33.25008221276184,
+          "chemical_heat_J": 76.50440067726737,
+          "cylinder_peak_pressure_Pa": 4635518.916269452,
+          "fuel_burned_kg": 2.0931436573807762e-06,
+          "relative_conservation": {
+            "energy": 9.487715954035648e-16,
+            "mass": 6.10218900354857e-16,
+            "species": 3.6110331931111394e-16
+          },
+          "status": "MAX_CYCLES_NONCONVERGED",
+          "configuration_sha256": "72e2ded3c4bc62ffde6eb39989f39140dd39a2d185d0ec00a88167bcbe602524"
+        }
+      ],
+      "medians": {
+        "before_wall_s": 12.178709500003606,
+        "after_wall_s": 11.265330499969423,
+        "before_cpu_s": 11.96875,
+        "after_cpu_s": 11.046875,
+        "before_solver_wall_s": 11.096315000904724,
+        "after_solver_wall_s": 10.188603898743168,
+        "before_processing_wall_s": 0.699880296131596,
+        "after_processing_wall_s": 0.7041938034817576,
+        "before_peak_rss_mib": 102.0234375,
+        "after_peak_rss_mib": 101.98046875
+      },
+      "speedup": 1.0810787575239504,
+      "wall_reduction_percent": 7.499801190215704,
+      "cpu_reduction_percent": 7.702349869451696,
+      "solver_seconds_per_accepted_step_before": 0.005130057790524606,
+      "solver_seconds_per_accepted_step_after": 0.004710404021610341,
+      "equivalence_pairs": [
+        {
+          "before_run": "before-B",
+          "after_run": "final-B",
+          "cycle_diagnostic_differences_excluding_timing_rss_hash": 0,
+          "engine_snapshot_differences": 0,
+          "periodicity_history_differences": 0
+        },
+        {
+          "before_run": "baseline-B2",
+          "after_run": "final-B2",
+          "cycle_diagnostic_differences_excluding_timing_rss_hash": 0,
+          "engine_snapshot_differences": 0,
+          "periodicity_history_differences": 0
+        },
+        {
+          "before_run": "baseline-B3",
+          "after_run": "final-B3",
+          "cycle_diagnostic_differences_excluding_timing_rss_hash": 0,
+          "engine_snapshot_differences": 0,
+          "periodicity_history_differences": 0
+        }
+      ]
+    }
+  },
+  "checkpoint_restart": {
+    "variant": "A9000",
+    "parent_cycles": 3,
+    "target_cycles": 4,
+    "uninterrupted_status": "MAX_CYCLES_NONCONVERGED",
+    "resumed_status": "MAX_CYCLES_NONCONVERGED",
+    "exact_state_restore": true,
+    "physical_steps_during_restore": 0,
+    "cycle4_diagnostic_differences_excluding_timing_rss_hash": 0,
+    "checkpoint_engine_state_differences": 0
+  },
+  "curve_projection": {
+    "prior_v1_projection_minutes": 49.18271424745,
+    "v2_speedup_factor_used": 1.0861633593587916,
+    "updated_projection_minutes": 45.28113918009962,
+    "measured_full_curve": false,
+    "qualification": "Conditional projection only; based on V1 historical curve estimate and mean A/B short-run speedup. No six-point periodic curve was run."
+  }
+}

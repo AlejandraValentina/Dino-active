@@ -25,3 +25,8 @@ The profiles total about 50 seconds while matching unprofiled executions take ab
 ## First candidate
 
 `_face_species_flux` currently normalizes and validates both left and right species states on every face even though the signed HLLC mass flux selects exactly one donor. `IntegratedEngine2T.step` validates the complete SSPRK stage state before each `_assemble`; boundary species are validated when configured. Reuse only the selected donor's normalized state, retaining the public `donor_species` guard and leaving zero-flow validation unchanged. This removes repeated validation/allocation work without changing the selected donor, normalization arithmetic, HLLC flux, SSPRK2, or species ledger. End-to-end benefit must be measured before accepting it.
+## Residual species-validation candidate
+
+The same current A/B profiles measured `validate_species` as the leading repeated validation function (~914k calls and 3.3-3.4 exclusive profiled seconds per three-cycle run). The solver's common state type is an immutable four-float tuple. `validate_species` now reuses that tuple and checks its four values directly; non-tuple, integer and list inputs retain the original float-conversion path. Every admissibility and sum check remains. Three before/after repetitions show an additional stable reduction on both A and B. Tests cover float tuple and general conversion inputs plus nonfinite/negative rejection.
+
+This combines with donor-only face normalization. Neither change alters normalized values, selected donor, public donor validation, zero-flux behavior, HLLC or SSPRK operations. Six paired outputs, snapshots, ledgers, and periodicity histories are equal after excluding timing, RSS and artifact hashes.
