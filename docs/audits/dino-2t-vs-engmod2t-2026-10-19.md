@@ -12,6 +12,10 @@
 
 ---
 
+> **Vigencia.** Este documento conserva el corte **2026-10-19** y su base `ea2ff2d`. La **sección I** agrega el delta verificado al **2026-10-26** (HEAD `d048ab4`, cierre de aceptación; EXE `fc275421`) y corrige el estado administrativo; no reescribe A–H ni convierte evidencia exploratoria en validación. Para conteos vivos de cola, ejecutar `python scripts/agents/program_status.py brief`.
+
+---
+
 ## A. Diagnóstico ejecutivo
 
 MotorSim es hoy **una plataforma de simulación 2T exploratoria bien instrumentada**: tiene un motor integrado (cilindro + cárter + puertos + escape 1D), contratos versionados, auditoría de conservación, checkpoints, campañas con hashes, una UI Windows funcional y un contrato de curvas de potencia. No es, todavía, **un simulador profesional comparable a EngMod2T**: no hay validación experimental, los resultados centrales son sintéticos, la verificación numérica cubre sobre todo rutas standalone, y no existe una curva de potencia utilizable.
@@ -196,6 +200,54 @@ En paralelo y sin bloquear: la UI/desktop y los contratos de comparación ya est
 | 7 | ¿Cuál es la ruta más corta y la recomendación? | **Etapa 1 → Etapa 2**, sin perseguir paridad de features con EngMod2T antes de arreglar verificación/periodicidad. Recomendación concreta: (i) cerrar la contradicción P2/README y fijar el dominio soportado; (ii) portar MUSCL/RK2 versionado y demostrar convergencia en el fixture; (iii) preregistrar y ejecutar el sweep autorizado con presupuesto global; (iv) recién entonces invertir en scavenging predictivo/two-zone/reed dinámico y en validación experimental. |
 
 **Riesgo principal a comunicar al dueño**: los receipts y el estado administrativo ya no describen con exactitud la evidencia (README P2_PASS desactualizado, `continuation_status` obsoleto, revisión externa no reproducible localmente). Antes de cualquier campaña nueva, conviene corregir esa deuda de provenance: es barata y evita decisiones sobre una imagen falsa del estado.
+
+---
+
+## I. Actualización 2026-10-26 — delta post-auditoría
+
+| Campo | 2026-10-19 (corte original) | 2026-10-26 (este delta) |
+|---|---|---|
+| HEAD inspeccionado | `ea2ff2d` | `d048ab4` (EXE `fc275421`) |
+| `current_objective` | `DINO_POWER_CURVE_V1` | `DINO_COMMERCIAL_READINESS_V1`, gate `PASS` 4/4 (objetivo `OPEN`; sin `next_objective` owner-approved) |
+| Gate del objetivo | `REVIEW`, 5/5 tasks | `PASS`, 4/4, `DINO_COMMERCIAL_READINESS_V1_FUNCTIONAL_TRIAL_PASS`, sin `remaining` |
+| Estado científico | infraestructura de curva; sin validación | `FUNCTIONAL_TRIAL_ONLY; SYNTHETIC_ASSUMPTIONS_DISCLOSED; EXPERIMENTAL_VALIDATION_NOT_PERFORMED; X30_FROZEN` |
+
+La foto A.1 queda como histórica. El estado vigente no es una curva de potencia comercial: es un **trial funcional de producto cerrado con PASS 4/4** sobre el solver integrado, con supuestos sintéticos declarados y sin validación experimental.
+
+### I.1 Evidencia nueva que cambia el diagnóstico
+
+1. **El solver no diverge; la robustez numérica es verificable.** Los seis puntos A/B a 8000/9000/10000 RPM alcanzaron `PERIOD_1` con tres comparaciones globales consecutivas, 0 rechazos CFL, residuos relativos máximos < 8,85e-15 (masa), 9,94e-15 (energía) y 1,49e-14 (especies), y checkpoints que restauran exactamente. Esto **no** demuestra independencia de malla ni validación experimental (`results/periodic-rpm-curves-v1/report.md`).
+
+2. **La baja potencia se explica dentro del modelo por llenado y dilución, no por un error obvio de integración.** En el punto periódico A@9000: 29,69 mg de aire atrapado, AFR atrapado 7,62, 53,4% de residual quemado, 2,017 mg de combustible quemado, 34,193 J indicados, 10,593 J de FMEP y 22,401 J al eje = **4,506 HP**. El informe separa niveles y no suma pérdidas dos veces. En STANDARD_V1 (otra configuración, 9000 RPM, ciclos 30→50): 25,682 mg, AFR 8,47, 1,745 mg quemados, 29,048 J indicados y 2,589 kW de freno; `MAX_CYCLES_NONCONVERGED`; 20 ciclos extra no recuperaron el llenado (`results/physical-accuracy-v1/report.md`; `results/integrated-solver-verification-v1/standard-v1-controlled-continuation-report.md`).
+
+3. **El costo computacional ya no es el bloqueo histórico, pero la cifra no es universal.** En la verificación empaquetada, 3 ciclos a 9000 RPM: 13,491 s en el EXE final vs 13,382 s en la fuente, con estado y diagnósticos exactos (`results/windows-integrated-delivery-v1/receipt.json`; `program-status.json`, progreso WID1). El punto de 3000 RPM que no completó 4 ciclos en 600 s sigue siendo evidencia histórica de otra ruta/configuración; no se generaliza. La mejora provino de la validación térmica stage-local, no de un cambio de física.
+
+4. **El trial Windows cerró con PASS funcional 4/4.** El EXE empaquetado creó y guardó un diseño, duplicó la variante y editó el escape de 83 a 103 mm; ejecutó dos puntos breves a 3000 RPM (9,620 s y 9,838 s), ambos `MAX_CYCLES_NONCONVERGED`/`INSUFFICIENT_CYCLES` y clasificados `TRANSIENT_ESTIMATE`; comparó el par como `EXPLORATORIO` sin filas ficticias; exportó CSV con hashes e identidades; y reabrió el proyecto tras cerrar/relanzar. Los dos bloqueos previos quedaron corregidos: fresh Run ID (`CRV1-RUN-IDENTITY-REPRODUCER`) y scoping del recipe RPM (`fc27542`), verificado en el EXE del commit `fc275421`; 28 regresiones PASS (`results/dino-commercial-readiness-v1/acceptance/report.md`).
+
+5. **X30 sigue congelado y no es una validación disponible.** La curva pública medida ronda 15,1 ± 0,3 kW a 9000 RPM (lectura gráfica), con máximo cercano a 21,3 kW entre 11500–12000; faltan volumen operativo PMS, volumen libre del cárter, geometría funcional de puertos/ductos y montaje de admisión/escape. No se autoriza una simulación X30 ni se rellenan esos faltantes con STANDARD_V1 (`results/x30-preparation-v1/next-point.md`).
+
+6. **La sensibilidad de láminas propuesta no se ejecutó.** El contraste 1000→500 N/m a 9000 RPM, manteniendo área, AFR, transferencias, combustión y válvula, sigue siendo la prueba acotada de mayor valor para separar si las láminas controlan la carga o si el límite se desplaza a transferencias/barrido. Es **sensibilidad**, no tuning ni una promesa de recuperar potencia; requiere protocolo congelado y autorización explícita (`results/integrated-solver-verification-v1/standard-v1-controlled-continuation-report.md`, §6).
+
+### I.2 Veredicto actualizado
+
+| Pregunta | Respuesta al 2026-10-26 |
+|---|---|
+| ¿Hay curva HP/torque utilizable? | No comercialmente. Hay seis puntos periódicos A/B exploratorios (`PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED`) y un trial funcional aprobado (PASS 4/4); no hay validación experimental ni independencia de malla. |
+| ¿El solver está roto? | No hay evidencia de divergencia ni de error de unidades. Es robusto y auditable; sigue sin ser predictivo. La brecha dominante es física (llenado, barrido, cierres) y de datos de referencia. |
+| ¿Dónde está el cuello de botella? | Producto: cerrado (gate PASS 4/4). Ciencia: obtener los datos X30 mínimos. Diagnóstico acotado: A/B de rigidez de láminas. |
+| ¿Qué no hacer? | No reconstruir HLLC/SSPRK2 por la potencia baja; no calibrar contra 15,1 kW; no presentar 4–5 HP como error de predicción de un motor real; no abrir X30 sin los tres faltantes. |
+
+### I.3 Plan de tres pasos y su estado en la cola
+
+| Paso | Acción | Tarea(s) de cola | Estado |
+|---|---|---|---|
+| 1 | Cerrar el loop de producto: EXE corregido, dos corridas al mismo RPM, seis referencias periódicas, CSV y save/reopen | `CRV1-SIMULATION-ANALYSIS`, `CRV1-EXPORT-VERIFY`, `CRV1-PROJECT-RECOVERY-VERIFY`, `CRV1-WINDOWS-ACCEPTANCE` (todas DONE) | **Completado**; gate PASS 4/4 |
+| 2 | Congelar el A/B de rigidez de láminas 1000→500 N/m a 9000 RPM; ejecutar sólo con autorización | `CRV1-REED-SENSITIVITY-PROTOCOL` (READY, nueva) | Agregada en la cola; la ejecución queda fuera hasta autorización |
+| 3 | Reunir el paquete mínimo X30 (volumen PMS, cárter libre, puertos/ductos y montaje) antes de simular | `X30P-*`/`X30R-*` (DONE, congelado) | Ya cubierto; no reabrir sin datos |
+
+**Orden recomendado:** el paso 1 ya cerró el objetivo comercial (PASS 4/4). Siguen, sin bloquearse entre sí, el paso 3 (adquisición de datos X30) y el paso 2 (protocolo de sensibilidad de láminas). Ninguno de los dos autoriza por sí solo una corrida del solver ni un claim predictivo.
+
+**No-claims:** este delta no declara validación experimental, precisión predictiva, paridad con EngMod2T ni una curva comercial. Las cifras de potencia son estimaciones exploratorias bajo supuestos sintéticos.
 
 ---
 
