@@ -8612,7 +8612,7 @@
         "PRED-TRANSONIC-WAVE-DESIGN",
         "PRED-TRANSONIC-REFERENCE"
       ],
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -8632,10 +8632,13 @@
         "PRED-TRANSONIC-WAVE-DESIGN",
         "PRED-TRANSONIC-REFERENCE"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "openspec/changes/predictive-reliability-v1/integrated-port-protocol-v2.md",
+        "scripts/diagnostics/diagnose_integrated_port_v2.py"
+      ],
       "next_action": "Preregister bounded legacy/nozzle integrated diagnostics with complete endpoint states",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/implementation/verification",
@@ -8643,7 +8646,8 @@
         "scripts/diagnostics/diagnose_integrated_port_v2.py",
         "openspec/changes/predictive-reliability-v1/integrated-port-protocol-v2.md"
       ],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "qualification": "Protocol only; decision calculations not yet executed."
     },
     {
       "id": "PRED-CONNECTION-SKEPTIC",
@@ -8652,17 +8656,20 @@
         "PRED-TRANSONIC-WAVE-DESIGN",
         "PRED-TRANSONIC-REFERENCE"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "tests/test_transonic_connection_v2_adversarial.py"
+      ],
       "next_action": "Adversarial causality/invalid-input and aperture limiting verification before adoption",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/implementation/verification",
       "write_scope": [
         "tests/test_transonic_connection_v2_adversarial.py"
       ],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "qualification": "116 adversarial checks PASS, declared SELF_REVIEW; no independent gate review claimed."
     }
   ],
   "audit_remediation_mode": false,
@@ -12350,6 +12357,12 @@
       "task": "PRED-TRANSONIC-WAVE-DESIGN",
       "kind": "task",
       "summary": "V2 equivalent ideal nozzle preregistered 3af641e: exact Euler wave selection, sonic throat, entropy-bounded internal shock and supersonic inlet/outlet. 221 tests PASS; 1008/1008 inputs supported, all 37 V1 failures resolved. Not a verified real-port loss model."
+    },
+    {
+      "at": "2026-10-26T14:39:16+00:00",
+      "task": "PRED-CONNECTION-FIXTURE",
+      "kind": "task",
+      "summary": "Preregistered A9000 independently initialized two-revolution legacy/nozzle diagnostics at 0.5 deg and nozzle time refinement 0.25 deg, 240 s/case; full primary stages, bounded storage, conservation and actual-versus-restored next-step equality. No periodic-power claim."
     }
   ],
   "legacy_gate_status": {
