@@ -8276,11 +8276,15 @@
       "id": "PRED-CONTRACT",
       "description": "Preregister ordered model corrections, reference source and restriction acceptance",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Preregister ordered model corrections, reference source and restriction acceptance",
+      "evidence": [
+        "openspec/changes/predictive-reliability-v1/specs/predictive-reliability-v1/spec.md",
+        "results/predictive-reliability-v1/baseline.json",
+        "results/predictive-reliability-v1/restriction-receipt.json"
+      ],
+      "next_action": "Reference gate complete; continue full duct connection, do not substitute mass flux alone.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "orchestrator/physics/verification",
       "write_scope": [
@@ -8293,11 +8297,15 @@
       "id": "PRED-BASELINE",
       "description": "Verify preserved CRV1 reference and source identities without rebuilding",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Verify preserved CRV1 reference and source identities without rebuilding",
+      "evidence": [
+        "openspec/changes/predictive-reliability-v1/specs/predictive-reliability-v1/spec.md",
+        "results/predictive-reliability-v1/baseline.json",
+        "results/predictive-reliability-v1/restriction-receipt.json"
+      ],
+      "next_action": "Reference gate complete; continue full duct connection, do not substitute mass flux alone.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "orchestrator/physics/verification",
       "write_scope": [
@@ -8310,11 +8318,15 @@
       "id": "PRED-REFERENCE",
       "description": "Recover independent mathematical reference and small diagnostic evidence",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Recover independent mathematical reference and small diagnostic evidence",
+      "evidence": [
+        "openspec/changes/predictive-reliability-v1/specs/predictive-reliability-v1/spec.md",
+        "results/predictive-reliability-v1/baseline.json",
+        "results/predictive-reliability-v1/restriction-receipt.json"
+      ],
+      "next_action": "Reference gate complete; continue full duct connection, do not substitute mass flux alone.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "orchestrator/physics/verification",
       "write_scope": [
@@ -8330,11 +8342,15 @@
         "PRED-CONTRACT",
         "PRED-REFERENCE"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Implement and verify isolated versioned reversible restriction",
+      "evidence": [
+        "openspec/changes/predictive-reliability-v1/specs/predictive-reliability-v1/spec.md",
+        "results/predictive-reliability-v1/baseline.json",
+        "results/predictive-reliability-v1/restriction-receipt.json"
+      ],
+      "next_action": "Reference gate complete; continue full duct connection, do not substitute mass flux alone.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "orchestrator/physics/verification",
       "write_scope": [
@@ -8349,7 +8365,7 @@
       "dependencies": [
         "PRED-RESTRICTION"
       ],
-      "state": "WAITING",
+      "state": "READY",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -12097,6 +12113,11 @@
       "timestamp": "2026-10-26T13:53:28.398547+00:00",
       "task": "PRED-CONTRACT",
       "summary": "Owner authorized progressive physical corrections; archived V3 gate unchanged, preregistered restriction tests and dependency-ordered verification. Existing unrelated blockers and SPV1 READY preserved."
+    },
+    {
+      "timestamp": "2026-10-26T13:57:39.855773+00:00",
+      "task": "PRED-RESTRICTION",
+      "summary": "Implemented isolated versioned quiescent-volume restriction; 1029 numerical tests pass, including independently computed Decimal/Mach flux, reverse donor, choking, Cd and near-equilibrium limits. Product path untouched; baseline receipt preserved."
     }
   ],
   "legacy_gate_status": {
@@ -12113,21 +12134,25 @@
   "gate_status": {
     "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
     "state": "OPEN",
+    "classification": null,
+    "evidence": [
+      "openspec/changes/predictive-reliability-v1/specs/predictive-reliability-v1/spec.md"
+    ],
     "gate_tasks_total": 7,
-    "gate_tasks_done": 0,
+    "gate_tasks_done": 2,
+    "gate_task_states": {
+      "DONE": 2,
+      "READY": 1,
+      "WAITING": 4
+    },
     "remaining": [
-      "PRED-CONTRACT",
-      "PRED-RESTRICTION",
       "PRED-CONNECTION",
       "PRED-SPATIAL",
       "PRED-INTEGRATED",
       "PRED-IDENTIFICATION",
       "PRED-VALIDATION"
     ],
-    "evidence": [
-      "openspec/changes/predictive-reliability-v1/specs/predictive-reliability-v1/spec.md"
-    ],
-    "updated_at": "2026-10-26T13:53:28.398547+00:00"
+    "updated_at": "2026-10-26T13:57:39+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -12190,7 +12215,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-26T13:53:28.398547+00:00",
+  "updated_at": "2026-10-26T13:57:39.855773+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",

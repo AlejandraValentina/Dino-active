@@ -1,0 +1,13 @@
+{
+  "schema": "DINO_RESTRICTION_REFERENCE_V1",
+  "status": "PASS_NUMERICAL_REFERENCE_ONLY",
+  "model": "QUIESCENT_VOLUME_RESTRICTION_STANDARD_V1",
+  "preimplementation_contract_commit": "69888c2",
+  "test_command": "python -m pytest tests/test_port_restriction_v1.py -q -p no:cacheprovider",
+  "tests_passed": 1029,
+  "test_wall_s": 1.77,
+  "reference": "80-digit Decimal EOS and Mach reconstruction from actual float pressures",
+  "integrated_engine_enabled": false,
+  "experimental_validation": "NOT_PERFORMED",
+  "scientific_scope": "quiescent-volume mass/enthalpy/species reference; no duct momentum or acoustic compatibility claim"
+}
