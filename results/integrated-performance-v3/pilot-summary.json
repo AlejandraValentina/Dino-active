@@ -1,0 +1,188 @@
+{
+  "schema": "DINO_PERFV3_A10000_WARM_PILOT_SUMMARY_V1",
+  "decision": "DO_NOT_INTEGRATE_WARM_START_INTO_RPM_COORDINATOR",
+  "acceptance": "PARTIAL",
+  "source": {
+    "run_id": "ab-A-9000",
+    "result_sha256": "d3ee52ea453883d65ea77d846a89d4b321741a6d9062cfbebf07760b30f4fcf0",
+    "checkpoint_sha256": "60d825868d73ca289cd305c9c59c40e750eecddfd6f9d1a85f554f91bcfc97b7",
+    "invocation_manifest_sha256": "f00028e10d46b008000208c763daac312d9816082ec2f5f66d77225f5bd3577e",
+    "state_sha256": "7790064d67790b2154174c2249f5e181ff3f670230256873e3077d1f15951fbd"
+  },
+  "target_reference": {
+    "run_id": "pc-08bbe6f9b9694ff3970bfeb02edf4283-10000",
+    "cycles": 104,
+    "workflow_total_wall_s": 715.6344843000406,
+    "result_sha256": "ca2987d9b7a003e0d34bf565dcaa9117f6602df3cd37d193599e2cd0beaa687d",
+    "checkpoint_sha256": "b216a263735f9959a72ec9c958a3f0a6542beabc866232c3a755cfc7555152ed",
+    "invocation_manifest_sha256": "50105816a5753a8b507a98aec3f7f6f29a70aa309eaa5bf18da0954d5587dd82"
+  },
+  "pilot": {
+    "run_id": "perfv3-warm-A10000-from-A9000-20261026",
+    "rpm": 10000,
+    "new_cycles": 15,
+    "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+    "classification": "PERIODIC_EXPLORATORY",
+    "validation": "EXPLORATORY_UNAUDITED",
+    "wall_s": 61.58825180004351,
+    "solver_step_wall_s": 53.493338003987446,
+    "processing_wall_s": 5.0032557907979935,
+    "run_logged_duration_s": 65.375,
+    "max_memory_mib": 108.0,
+    "limits": {
+      "max_new_cycles": 40,
+      "wall_budget_seconds": 240,
+      "memory_mib": 512
+    },
+    "cycle_reduction": 89,
+    "cycle_reduction_percent": 85.57692307692308,
+    "workflow_wall_reduction_s": 654.0462324999971,
+    "workflow_wall_reduction_percent": 91.39389546602372,
+    "initial_state_transfer": {
+      "inventory_exactly_equal": true,
+      "source_cycle": 104,
+      "new_start_cycle": 0,
+      "mass_kg": 0.0027590906517995523,
+      "energy_J": 1361.3515764613148,
+      "species_kg": [
+        0.0008846241589379216,
+        0.00010858327000232204,
+        1.8339854764968107e-05,
+        0.0017475433680943493
+      ],
+      "target_configuration_sha256": "2330ee190c318a2cb72500cdf3e9c84c9bf892eb0c317a367cb2ac4fb15601ea",
+      "new_initialization_identity_sha256": "b11291b03be5334bbc87eac88b9de822d057893838c871f54b9f16a34fddb3fb"
+    },
+    "conservation_relative": {
+      "energy": 4.963068515342754e-15,
+      "mass": 3.7822048011966204e-16,
+      "species": 6.876736002175674e-16
+    },
+    "max_cfl": 0.2391189557702704,
+    "metrics": {
+      "work_J": {
+        "pilot": 32.84919533699309,
+        "historical": 32.926906132975546,
+        "relative_delta_percent": -0.2360100146324686,
+        "within_historical_last3_envelope": false
+      },
+      "brake_power_W": {
+        "pilot": 3511.250158360448,
+        "historical": 3523.7015766254817,
+        "relative_delta_percent": -0.35336188364049664,
+        "within_historical_last3_envelope": false
+      },
+      "brake_torque_Nm": {
+        "pilot": 3.3529969148115937,
+        "historical": 3.364887143403903,
+        "relative_delta_percent": -0.3533618836405064,
+        "within_historical_last3_envelope": false
+      },
+      "trapped_air_mg": {
+        "pilot": 28.863367840773066,
+        "historical": 28.92130347955175,
+        "relative_delta_percent": -0.20032167229131312,
+        "within_historical_last3_envelope": false
+      },
+      "trapped_fresh_mg": {
+        "pilot": 32.41544843460451,
+        "historical": 32.47687017258161,
+        "relative_delta_percent": -0.18912456049709236,
+        "within_historical_last3_envelope": false
+      },
+      "afr_trapped": {
+        "pilot": 8.125763782189328,
+        "historical": 8.134091124277736,
+        "relative_delta_percent": -0.1023758150871233,
+        "within_historical_last3_envelope": false
+      },
+      "chemical_heat_J": {
+        "pilot": 71.66986690138776,
+        "historical": 71.81510229501782,
+        "relative_delta_percent": -0.20223516918966414,
+        "within_historical_last3_envelope": false
+      },
+      "fuel_burned_mg": {
+        "pilot": 1.9608718714469822,
+        "historical": 1.9648454800276471,
+        "relative_delta_percent": -0.20223516918027903,
+        "within_historical_last3_envelope": false
+      }
+    },
+    "pressure_min_max": {
+      "crankcase": {
+        "min": {
+          "pilot_Pa": 89924.33448540185,
+          "historical_Pa": 89912.17152676865,
+          "relative_delta_percent": 0.013527599686074905,
+          "within_historical_last3_envelope": false
+        },
+        "max": {
+          "pilot_Pa": 132159.46219505588,
+          "historical_Pa": 132159.799129877,
+          "relative_delta_percent": -0.0002549450160680862,
+          "within_historical_last3_envelope": false
+        }
+      },
+      "cylinder": {
+        "min": {
+          "pilot_Pa": 99658.66900363601,
+          "historical_Pa": 99665.24066276671,
+          "relative_delta_percent": -0.006593732265128801,
+          "within_historical_last3_envelope": false
+        },
+        "max": {
+          "pilot_Pa": 4562371.945804674,
+          "historical_Pa": 4563113.456768167,
+          "relative_delta_percent": -0.016250110160929532,
+          "within_historical_last3_envelope": false
+        }
+      },
+      "exhaust_entry": {
+        "min": {
+          "pilot_Pa": 96182.25547972173,
+          "historical_Pa": 96094.92922416261,
+          "relative_delta_percent": 0.09087498816447762,
+          "within_historical_last3_envelope": false
+        },
+        "max": {
+          "pilot_Pa": 112729.56632512933,
+          "historical_Pa": 112705.77460631415,
+          "relative_delta_percent": 0.0211095828037936,
+          "within_historical_last3_envelope": false
+        }
+      },
+      "exhaust_middle": {
+        "min": {
+          "pilot_Pa": 104488.39797188358,
+          "historical_Pa": 104390.93679099133,
+          "relative_delta_percent": 0.09336172649488068,
+          "within_historical_last3_envelope": false
+        },
+        "max": {
+          "pilot_Pa": 107125.19327117153,
+          "historical_Pa": 107026.68920256369,
+          "relative_delta_percent": 0.09203692026893348,
+          "within_historical_last3_envelope": false
+        }
+      }
+    },
+    "observable_comparison": {
+      "method": "Existing REFERENCE_PERIODIC_CONVERGENCE_V2 metric formulas and thresholds applied read-only to cycle 104 and cycle 15 observables. No full configuration hashes were altered; strict comparator was not called because configuration hashes correctly differ due to initial-state fields.",
+      "metric_count": 413,
+      "pass_count": 311,
+      "failed_count": 102,
+      "max_threshold_ratio": 16.785301196624523,
+      "largest_failure": "exhaust[30].species.burned",
+      "failure_pattern": "Exhaust duct species fractions and masses dominate; burned-species absolute differences reach 3.36 percentage points against 0.2 percentage-point threshold. Several exhaust cells and global species states remain outside equivalence thresholds despite local cycle periodicity."
+    }
+  },
+  "hashes": {
+    "result.json": "a3f72d4f28c039fefb0951d8c378ef60e49a23ccd02fcec40572551a7da886cc",
+    "run.json": "7b5e12fd0bf8ae9e2bb980ec5480dbef32f47160f0e4174f73eab0fe0c320ef7",
+    "invocation_manifest.json": "746349f48a2fbda6ac2ccc9c2346873b268a9b21e511f04c295b210918322458",
+    "checkpoint.json": "289291638acde062929bb275c9977db11f4e1142dcb9800713b1591bce2cc0de",
+    "pilot_comparison.json": "8d6271787f75a4d87e54fb0459a07ce662d36273b434cfb71999659bfec092e3"
+  },
+  "limitation": "One warm-start point established a large cycle/time reduction but its periodic terminal state does not match the historical A10000 exhaust composition/state within the existing observable thresholds. No additional cycles are authorized; no coordinator integration or full RPM projection is made."
+}

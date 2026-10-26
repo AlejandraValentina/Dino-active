@@ -8176,14 +8176,17 @@
         "PERFV3-TRANSFER-TESTS",
         "PERFV3-PILOT-PREFLIGHT"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [
         "ff32967"
       ],
       "evidence": [
         "results/integrated-performance-v3/pilot-contract-v2.json",
-        "${DINO_ARTIFACT_ROOT}/integrated-performance-v3/logs/perfv3-a9000-to-a10000-warm-pilot.log"
+        "results/integrated-performance-v3/pilot-summary.json",
+        "results/integrated-performance-v3/pilot-comparison.json",
+        "${DINO_ARTIFACT_ROOT}/integrated-performance-v3/logs/perfv3-a9000-to-a10000-warm-pilot-v2.summary.json",
+        "results/integrated-performance-v3/report.md"
       ],
       "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
       "owner_role": "verification",
@@ -8192,7 +8195,7 @@
         "${DINO_ARTIFACT_ROOT}/integrated-performance-v3/"
       ],
       "unblock_tasks": [],
-      "next_action": "One pre-solver provenance binding failure was corrected; final pilot has not yet taken a solver step. Repeat storage preflight and perform the single bounded pilot."
+      "next_action": "Single run reached period-1 at cycle 15 in 61.59 s; 40-cycle/240-s caps respected; complete checkpoint/hash and conservation verified."
     },
     {
       "id": "PERFV3-DECISION",
@@ -8200,10 +8203,14 @@
       "dependencies": [
         "PERFV3-A10000-PILOT"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "results/integrated-performance-v3/pilot-summary.json",
+        "results/integrated-performance-v3/pilot-comparison.json",
+        "results/integrated-performance-v3/report.md"
+      ],
       "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
       "owner_role": "evidence/release reviewer",
       "evidence_level": "L0",
@@ -8211,7 +8218,7 @@
         "results/integrated-performance-v3/"
       ],
       "unblock_tasks": [],
-      "next_action": "Integrate into the RPM coordinator only after the acceptance condition passes; otherwise reject or classify inconclusive."
+      "next_action": "Significant speed gain measured, but 102/413 cross-run observable metrics fail existing thresholds, mostly exhaust composition; no coordinator integration. No extra run authorized."
     },
     {
       "id": "PERFV3-TRANSFER-ADVERSARIAL-REVIEW",
@@ -8220,10 +8227,13 @@
         "PERFV3-TRANSFER-IMPLEMENT",
         "PERFV3-TRANSFER-TESTS"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "results/integrated-performance-v3/transfer-review.json",
+        "results/integrated-performance-v3/report.md"
+      ],
       "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
       "owner_role": "skeptic/adversarial review",
       "evidence_level": "L0",
@@ -8231,7 +8241,7 @@
         "results/integrated-performance-v3/transfer-review.json"
       ],
       "unblock_tasks": [],
-      "next_action": "Perform a read-only adversarial review; label it SELF_REVIEW unless another reviewer performs it."
+      "next_action": "SELF_REVIEW only; provenance, conservative mapping and fail-closed compatibility verified; residual cross-run mismatch noted."
     },
     {
       "id": "PERFV3-CHECKPOINT-STOP-REVIEW",
@@ -8239,10 +8249,13 @@
       "dependencies": [
         "PERFV3-TRANSFER-IMPLEMENT"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "results/integrated-performance-v3/checkpoint-stop-review.json",
+        "results/integrated-performance-v3/report.md"
+      ],
       "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
       "owner_role": "contract/regression guardian",
       "evidence_level": "L0",
@@ -8250,7 +8263,7 @@
         "results/integrated-performance-v3/checkpoint-stop-review.json"
       ],
       "unblock_tasks": [],
-      "next_action": "Inspect current bounded-run exception/checkpoint path; no solver steps."
+      "next_action": "Code path preserves last complete-cycle checkpoint on time limit; actual pilot completed normally with checkpoint next_cycle=16; forced deadline path was not exercised."
     }
   ],
   "audit_remediation_mode": false,
@@ -8453,9 +8466,9 @@
   ],
   "current_objective": {
     "id": "DINO_INTEGRATED_PERFORMANCE_V3",
-    "state": "OPEN",
+    "state": "FAIL_TERMINAL",
     "owner_approved": true,
-    "summary": "Owner authorizes one bounded same-engine RPM warm-initialization pilot A9000 → A10000, preserving physical state and existing periodicity criteria; no full campaign or solver physics changes.",
+    "summary": "Bounded warm-start pilot reached existing period-1 gate in 15 cycles and 61.59 s, but cross-run observables fail equivalence thresholds in exhaust state; not integrated into RPM coordinator. Scope closed without additional runs.",
     "change": "openspec/changes/integrated-performance-v3",
     "spec": "openspec/changes/integrated-performance-v3/specs/integrated-performance-v3/spec.md",
     "transitioned_from": "DINO_INTEGRATED_PERFORMANCE_V2",
@@ -11862,6 +11875,12 @@
       "task": "PERFV3-A10000-PILOT",
       "kind": "task",
       "summary": "Pre-solver binding check rejected diagnostics/provenance object mismatch; no run/result/checkpoint or solver steps were created. Separated canonical provenance from transfer diagnostics, reran no-step binding and four unit tests; freezing contract v2 before launch."
+    },
+    {
+      "at": "2026-10-26T12:33:50+00:00",
+      "task": "PERFV3-DECISION",
+      "kind": "task",
+      "summary": "Pilot reached period-1 in 15 cycles/61.59 s (85.6% fewer cycles) but 102/413 cross-run observables fail existing numeric thresholds, primarily exhaust species; no RPM-coordinator integration or extra run."
     }
   ],
   "legacy_gate_status": {
@@ -11877,23 +11896,21 @@
   },
   "gate_status": {
     "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
-    "state": "OPEN",
-    "classification": "INTEGRATED_PERFORMANCE_V3_PILOT_PENDING",
+    "state": "FAIL_TERMINAL",
+    "classification": "DINO_INTEGRATED_PERFORMANCE_V3_PARTIAL_SPEEDUP_EQUIVALENCE_FAIL",
     "evidence": [
-      "openspec/changes/integrated-performance-v3/specs/integrated-performance-v3/spec.md"
+      "results/integrated-performance-v3/report.md",
+      "results/integrated-performance-v3/pilot-summary.json",
+      "results/integrated-performance-v3/pilot-comparison.json",
+      "results/integrated-performance-v3/pilot-contract-v2.json"
     ],
     "gate_tasks_total": 4,
-    "gate_tasks_done": 2,
+    "gate_tasks_done": 4,
     "gate_task_states": {
-      "DONE": 2,
-      "READY": 1,
-      "WAITING": 1
+      "DONE": 4
     },
-    "remaining": [
-      "PERFV3-A10000-PILOT",
-      "PERFV3-DECISION"
-    ],
-    "updated_at": "2026-10-26T12:24:48+00:00"
+    "remaining": [],
+    "updated_at": "2026-10-26T12:33:51+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

@@ -1,0 +1,15 @@
+{
+  "schema": "DINO_PERFV3_CHECKPOINT_STOP_REVIEW_V1",
+  "review_type": "SELF_REVIEW_CODE_PATH_AND_PILOT_ARTIFACT",
+  "findings": {
+    "complete_cycle_checkpoint": "The engineering point atomically writes checkpoint-next-NNN.json after each completed cycle and updates the invocation manifest to bind that complete-cycle checkpoint. On a mid-cycle deadline it records a separate partial checkpoint while retaining the last complete-cycle checkpoint binding.",
+    "pilot_checkpoint": "The accepted pilot stopped normally at period-1 cycle 15. Root checkpoint.json hashes to 289291638acde062929bb275c9977db11f4e1142dcb9800713b1591bce2cc0de and declares next_cycle=16; run/result/diagnostic manifest hashes verify.",
+    "no_automatic_extension": "The one-shot harness fixes max_cycles=40, budget_seconds=240, resume=False and refuses an existing output directory. No resume or second solver invocation was performed.",
+    "deadline_test_limit": "The hard wall-time interruption path was code-reviewed, not triggered in this pilot because the periodicity gate completed in 61.59 seconds. A timeout/restart test was not run."
+  },
+  "evidence": [
+    "${DINO_ARTIFACT_ROOT}/integrated-performance-v3/logs/perfv3-a9000-to-a10000-warm-pilot-v2.summary.json",
+    "results/integrated-performance-v3/pilot-summary.json"
+  ],
+  "risk": "No OS-level memory kill or wall-clock forced termination was exercised; runtime enforces RSS/deadline at solver boundaries and writes completed-cycle checkpoints."
+}
