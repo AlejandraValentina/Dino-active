@@ -8760,17 +8760,21 @@
         "PRED-CONNECTION",
         "PRED-SPATIAL-REFERENCE"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "tests/test_integrated_spatial_v1.py",
+        "tests/test_integrated_port_connection_v2.py"
+      ],
       "next_action": "Prepare serialized numerical-model selection and integrated conservation/restart tests",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "tests/test_integrated_spatial_v1.py"
       ],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "qualification": "Opt-in CONFIG_V8, full-face donor transport, both-stage conservation and exact restart; frozen readers reject unsupported configuration. Bounded engine diagnostics still pending."
     },
     {
       "id": "PRED-SPATIAL-DIAGNOSTIC-PROTOCOL",
@@ -8779,16 +8783,55 @@
         "PRED-CONNECTION",
         "PRED-SPATIAL-REFERENCE"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "openspec/changes/predictive-reliability-v1/integrated-spatial-protocol-v1.md"
+      ],
       "next_action": "Preregister bounded independent-initialization comparison of first-order and MUSCL with identical nozzle coupling",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "openspec/changes/predictive-reliability-v1/integrated-spatial-protocol-v1.md",
         "scripts/diagnostics/diagnose_integrated_port_v2.py"
+      ],
+      "evidence_level": "L0",
+      "qualification": "Preregistered before three bounded independently initialized diagnostic cases."
+    },
+    {
+      "id": "PRED-HEAT-REFERENCE",
+      "description": "Prepare independent moving-cell heat conservation reference before closure correction",
+      "dependencies": [
+        "PRED-BASELINE"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Independent preparation only; model correction/validation waits for integrated numerical gates.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "tests/test_moving_cell_thermal_reference_v1.py"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-MEASURED-DATA-INVENTORY",
+      "description": "Read-only inventory of actually measured engine inputs and validation data; distinguish assumptions",
+      "dependencies": [
+        "PRED-BASELINE"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Independent preparation only; model correction/validation waits for integrated numerical gates.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "results/predictive-reliability-v1/measured-data-inventory.json"
       ],
       "evidence_level": "L0"
     }
@@ -12508,6 +12551,12 @@
       "task": "PRED-SPATIAL-REFERENCE",
       "kind": "task",
       "summary": "Isolated MUSCL candidate: 31 tests PASS; exact cell-average N40/80/160 observed orders rho 2.147, species 2.127, acoustic pressure 2.121 vs legacy ~0.99. Sod shock, positivity, passive independence and conservation pass. No engine integration or predictive claim yet."
+    },
+    {
+      "at": "2026-10-26T15:09:57+00:00",
+      "task": "PRED-SPATIAL",
+      "kind": "task",
+      "summary": "Integrated opt-in MUSCL behind CONFIG_V8; primitive and species reconstructions remain independent, share gas mass flux, preserve legacy default. 44 focused gas/species/shock/config/restart tests PASS. Three bounded A9000 cases preregistered before engine calculations."
     }
   ],
   "legacy_gate_status": {

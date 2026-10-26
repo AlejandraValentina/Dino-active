@@ -26,6 +26,8 @@ from .coupling import ChamberState, interface_flux
 from .port_connection_v2 import (PortExchangeV2, SCHEMA as PORT_CONNECTION_V2,
                                  port_connection_v2)
 from .gas1d.exact_riemann_reference_v1 import exact_riemann_v1
+from .gas1d.spatial_reconstruction_v1 import (SCHEMA as SPATIAL_RECONSTRUCTION_V1,
+                                             reconstruct_v1)
 from .gas1d.boundary import Boundary
 from .gas1d.eos import IdealGas
 from .gas1d.open_end_plenum_v2 import OpenEndPlenumV2Boundary
@@ -124,6 +126,7 @@ def _solver_dependency_hashes() -> dict[str, str]:
         ChamberState.__module__: sys.modules[ChamberState.__module__],
         port_connection_v2.__module__: sys.modules[port_connection_v2.__module__],
         exact_riemann_v1.__module__: sys.modules[exact_riemann_v1.__module__],
+        reconstruct_v1.__module__: sys.modules[reconstruct_v1.__module__],
         Boundary.__module__: sys.modules[Boundary.__module__],
         IdealGas.__module__: sys.modules[IdealGas.__module__],
         OpenEndPlenumV2Boundary.__module__: sys.modules[
@@ -695,6 +698,9 @@ class IntegratedEngine2T:
         self.port_connection_model = geometry_identity.get('port_connection_model')
         if self.port_connection_model not in (None, PORT_CONNECTION_V2):
             raise ValueError('unsupported explicit port_connection_model identity')
+        self.spatial_reconstruction_model = geometry_identity.get('spatial_reconstruction_model')
+        if self.spatial_reconstruction_model not in (None, SPATIAL_RECONSTRUCTION_V1):
+            raise ValueError('unsupported explicit spatial_reconstruction_model identity')
         from .gas_exchange_v2 import validate as validate_exchange
         exchange = validate_exchange(geometry_identity.get("gas_exchange_model"))
         self.gas_exchange_model = None if exchange is None else MappingProxyType(exchange)
@@ -1066,6 +1072,9 @@ class IntegratedEngine2T:
             # schema is necessary so they cannot silently ignore new physics.
             result['base_configuration_schema'] = result['schema']
             result['schema'] = 'MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V7'
+        if self.spatial_reconstruction_model is not None:
+            result['base_configuration_schema'] = result.get('base_configuration_schema',result['schema'])
+            result['schema'] = 'MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V8'
         return result
 
     def configuration_dict(self) -> dict:
@@ -1098,6 +1107,7 @@ class IntegratedEngine2T:
                  self.fuel_coupled_combustion.to_dict()),
                 self.geometry_sha256, id(self.configuration_identity),
                 self.port_connection_model,
+                self.spatial_reconstruction_model,
                 None if self.gas_exchange_model is None else tuple(sorted(self.gas_exchange_model.items())),
                 tuple(id(petal) for petal in self.reed_petals),
                 id(self.port_binding),
@@ -1148,13 +1158,18 @@ class IntegratedEngine2T:
     def from_configuration_dict(cls, value: dict) -> "IntegratedEngine2T":
         """Rebuild a supported engine without caller code or geometry callbacks."""
         versioned_port = False
-        if isinstance(value, dict) and value.get('schema') == 'MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V7':
+        versioned_spatial = False
+        if isinstance(value, dict) and value.get('schema') in (
+                'MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V7','MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V8'):
+            versioned_spatial=value['schema']=='MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V8'
             if value.get('base_configuration_schema') not in {
                     f'MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V{i}' for i in range(1,7)}:
-                raise ValueError('invalid V7 base configuration schema')
+                raise ValueError('invalid versioned base configuration schema')
             value = deepcopy(value)
             value['schema'] = value.pop('base_configuration_schema')
-            versioned_port = True
+            declared_identity=value.get('geometry_identity',{})
+            versioned_port = (not versioned_spatial or isinstance(declared_identity,dict) and
+                              declared_identity.get('port_connection_model') is not None)
         if isinstance(value, dict):
             identity = value.get('geometry_identity', {})
             model = identity.get('port_connection_model') if isinstance(identity, dict) else None
@@ -1162,6 +1177,11 @@ class IntegratedEngine2T:
                 raise ValueError('V7 requires its explicit supported port model')
             if not versioned_port and model is not None:
                 raise ValueError('new port model requires configuration schema V7')
+            spatial=identity.get('spatial_reconstruction_model') if isinstance(identity,dict) else None
+            if versioned_spatial and spatial!=SPATIAL_RECONSTRUCTION_V1:
+                raise ValueError('V8 requires its explicit supported reconstruction model')
+            if not versioned_spatial and spatial is not None:
+                raise ValueError('new reconstruction model requires configuration schema V8')
         common_fields = {"schema", "geometry_contract", "initial_chambers", "ducts",
                   "resolved_topology", "initial_duct_states", "duct_species",
                   "eos", "atmosphere",
@@ -1354,9 +1374,10 @@ class IntegratedEngine2T:
         canonical_input["schema"] = engine.configuration_schema
         canonical_input["outlet_species"] = list(
             value.get("outlet_species", value["atmosphere_species"]))
-        if versioned_port:
+        if versioned_port or versioned_spatial:
             canonical_input['base_configuration_schema'] = canonical_input['schema']
-            canonical_input['schema'] = 'MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V7'
+            canonical_input['schema'] = ('MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V8' if versioned_spatial else
+                                          'MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V7')
         if engine.configuration_dict() != canonical_input:
             raise ValueError("integrated engine resolved topology/configuration mismatch")
         return engine
@@ -1681,6 +1702,10 @@ class IntegratedEngine2T:
             qs = state["ducts"][path.id]
             ss = state["species"]["ducts"][path.id]
             primitives = [self._primitive(q) for q in qs]
+            reconstruction = None
+            if self.spatial_reconstruction_model == SPATIAL_RECONSTRUCTION_V1:
+                fractions = [tuple(v/fsum(values) for v in values) for values in ss]
+                reconstruction = reconstruct_v1(path.mesh,primitives,fractions,eos=self.eos)
             if path.role == "intake":
                 network = self._network_face(
                     state, path, "left", primitives[0], ss[0],
@@ -1895,6 +1920,8 @@ class IntegratedEngine2T:
             species_faces = [left_species]
             face_speeds = [speed_l]
             for i, (a, b) in enumerate(zip(primitives, primitives[1:])):
+                if reconstruction is not None:
+                    a,b = reconstruction.right[i],reconstruction.left[i+1]
                 flux, waves, _ = hllc_flux(a, b, self.eos)
                 area = path.mesh.areas[i + 1]
                 gas_face = tuple(area * value for value in flux[:3])
@@ -1904,8 +1931,12 @@ class IntegratedEngine2T:
                 # flow; preselecting here would reverse that decision twice.
                 left_mass = qs[i][0] * self._duct_cell_volume(path, i, state)
                 right_mass = qs[i + 1][0] * self._duct_cell_volume(path, i + 1, state)
-                sf = self._face_species_flux(mflux, ss[i], left_mass,
-                                             ss[i + 1], right_mass)
+                if reconstruction is None:
+                    sf = self._face_species_flux(mflux, ss[i], left_mass,
+                                                 ss[i + 1], right_mass)
+                else:
+                    sf = self._face_species_flux(mflux,reconstruction.species_right[i],1.,
+                                                 reconstruction.species_left[i+1],1.)
                 faces.append(gas_face); species_faces.append(sf)
                 face_speeds.append(max(abs(waves[0]), abs(waves[-1])))
             faces.append(right_face); species_faces.append(right_face_species)

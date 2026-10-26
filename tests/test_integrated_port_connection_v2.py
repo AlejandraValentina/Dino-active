@@ -96,11 +96,14 @@ def test_model_selection_survives_supported_configuration_roundtrip():
     assert engine.snapshot()==restored.snapshot()
 
 
-def test_frozen_rc7_reader_rejects_v7_instead_of_ignoring_new_physics(tmp_path):
+@pytest.mark.parametrize('commit,version',[
+    ('fc27542155840cdadbcc2b591ae5cd8e99031899',7),
+    ('fc27542155840cdadbcc2b591ae5cd8e99031899',8),('cd610b2',8)])
+def test_frozen_reader_rejects_new_config_instead_of_ignoring_physics(tmp_path,commit,version):
     import importlib.util
     import subprocess
     import sys
-    source=subprocess.run(['git','show','fc27542155840cdadbcc2b591ae5cd8e99031899:motorsim/integrated_2t.py'],
+    source=subprocess.run(['git','show',commit+':motorsim/integrated_2t.py'],
         check=True,capture_output=True,encoding='utf-8').stdout
     path=tmp_path/'rc7_integrated_reference.py'
     path.write_text(source,encoding='utf-8')
@@ -112,6 +115,6 @@ def test_frozen_rc7_reader_rejects_v7_instead_of_ignoring_new_physics(tmp_path):
         spec.loader.exec_module(module)
         with pytest.raises(ValueError,match='configuration schema is invalid'):
             module.IntegratedEngine2T.from_configuration_dict({
-                'schema':'MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V7'})
+                'schema':f'MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V{version}'})
     finally:
         del sys.modules[name]

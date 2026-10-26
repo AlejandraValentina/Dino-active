@@ -15,6 +15,7 @@ sys.path.insert(0,str(ROOT))
 from motorsim.integrated_2t import (IntegratedEngine2T, _integrated_scheduled_angles,
                                    _json_evidence_equal)
 from motorsim.port_connection_v2 import SCHEMA, NoAdmissiblePortState
+from motorsim.gas1d.spatial_reconstruction_v1 import SCHEMA as SPATIAL_SCHEMA
 from scripts.agents.storage_preflight import check_storage_requirements
 
 
@@ -26,7 +27,7 @@ def write(path,value):
     path.write_text(json.dumps(value,sort_keys=True,allow_nan=False)+'\n',encoding='utf-8')
 
 
-def run(output,model,step_degrees):
+def run(output,model,step_degrees,spatial_model='legacy'):
     preflight = check_storage_requirements([(output,100*1024**2)])
     if output.exists():
         raise FileExistsError('diagnostic output must be new; preserve earlier attempts')
@@ -47,6 +48,10 @@ def run(output,model,step_degrees):
         config['geometry_identity']['port_connection_model']=SCHEMA
         config['base_configuration_schema']=config['schema']
         config['schema']='MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V7'
+    if spatial_model=='muscl':
+        config['geometry_identity']['spatial_reconstruction_model']=SPATIAL_SCHEMA
+        config['base_configuration_schema']=config.get('base_configuration_schema',config['schema'])
+        config['schema']='MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V8'
     e = IntegratedEngine2T.from_configuration_dict(config)
     output.mkdir(parents=True)
     write(output/'configuration.json',e.configuration_dict())
@@ -142,7 +147,7 @@ def run(output,model,step_degrees):
         energy=abs(report['energy']['residual'])/scales['energy'],
         species=max(abs(r['residual']) for r in report['species'].values())/scales['mass'])
     result=dict(schema='DINO_INTEGRATED_PORT_V2_DIAGNOSTIC',status=status,error=error,
-        model=model,step_degrees=step_degrees,terminal_angle_deg=e.crank_angle_unwrapped_deg,
+        model=model,spatial_model=spatial_model,step_degrees=step_degrees,terminal_angle_deg=e.crank_angle_unwrapped_deg,
         accepted_steps=steps,rejections=dict(rejects),wall_s=time.perf_counter()-start,
         compute_s=compute_s,branches=dict(counts),maxima=maxima,
         mass_flux_integrals=dict(flux_integrals),cycles=samples,final_state=e.state,
@@ -165,5 +170,6 @@ if __name__=='__main__':
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--model',choices=['legacy','nozzle'],required=True)
     p.add_argument('--step-degrees',type=float,choices=[.5,.25],required=True)
+    p.add_argument('--spatial-model',choices=['legacy','muscl'],default='legacy')
     args=p.parse_args()
-    raise SystemExit(run(args.output,args.model,args.step_degrees))
+    raise SystemExit(run(args.output,args.model,args.step_degrees,args.spatial_model))
