@@ -28,6 +28,8 @@ from .port_connection_v2 import (PortExchangeV2, SCHEMA as PORT_CONNECTION_V2,
 from .gas1d.exact_riemann_reference_v1 import exact_riemann_v1
 from .gas1d.spatial_reconstruction_v1 import (SCHEMA as SPATIAL_RECONSTRUCTION_V1,
                                              reconstruct_v1)
+from .gas1d.spatial_reconstruction_v2 import (SCHEMA as SPATIAL_RECONSTRUCTION_V2,
+                                           reconstruct_v2)
 from .gas1d.boundary import Boundary
 from .gas1d.eos import IdealGas
 from .gas1d.open_end_plenum_v2 import OpenEndPlenumV2Boundary
@@ -127,6 +129,7 @@ def _solver_dependency_hashes() -> dict[str, str]:
         port_connection_v2.__module__: sys.modules[port_connection_v2.__module__],
         exact_riemann_v1.__module__: sys.modules[exact_riemann_v1.__module__],
         reconstruct_v1.__module__: sys.modules[reconstruct_v1.__module__],
+        reconstruct_v2.__module__: sys.modules[reconstruct_v2.__module__],
         Boundary.__module__: sys.modules[Boundary.__module__],
         IdealGas.__module__: sys.modules[IdealGas.__module__],
         OpenEndPlenumV2Boundary.__module__: sys.modules[
@@ -699,7 +702,8 @@ class IntegratedEngine2T:
         if self.port_connection_model not in (None, PORT_CONNECTION_V2):
             raise ValueError('unsupported explicit port_connection_model identity')
         self.spatial_reconstruction_model = geometry_identity.get('spatial_reconstruction_model')
-        if self.spatial_reconstruction_model not in (None, SPATIAL_RECONSTRUCTION_V1):
+        if self.spatial_reconstruction_model not in (None, SPATIAL_RECONSTRUCTION_V1,
+                                                     SPATIAL_RECONSTRUCTION_V2):
             raise ValueError('unsupported explicit spatial_reconstruction_model identity')
         from .gas_exchange_v2 import validate as validate_exchange
         exchange = validate_exchange(geometry_identity.get("gas_exchange_model"))
@@ -1178,7 +1182,8 @@ class IntegratedEngine2T:
             if not versioned_port and model is not None:
                 raise ValueError('new port model requires configuration schema V7')
             spatial=identity.get('spatial_reconstruction_model') if isinstance(identity,dict) else None
-            if versioned_spatial and spatial!=SPATIAL_RECONSTRUCTION_V1:
+            if versioned_spatial and spatial not in (SPATIAL_RECONSTRUCTION_V1,
+                                                     SPATIAL_RECONSTRUCTION_V2):
                 raise ValueError('V8 requires its explicit supported reconstruction model')
             if not versioned_spatial and spatial is not None:
                 raise ValueError('new reconstruction model requires configuration schema V8')
@@ -1603,11 +1608,11 @@ class IntegratedEngine2T:
         assembled["p7_limiter"] = limitation
         return limitation
 
-    def _external_face(self, state, path, side, boundary):
+    def _external_face(self, state, path, side, boundary, *, primitive=None, fractions=None):
         cells = state["ducts"][path.id]
         species = state["species"]["ducts"][path.id]
         index = 0 if side == "left" else -1
-        primitive = self._primitive(cells[index])
+        primitive = self._primitive(cells[index]) if primitive is None else primitive
         normal = -1 if side == "left" else 1
         area = path.mesh.areas[0 if side == "left" else -1]
         if isinstance(boundary, OpenEndPlenumV2Boundary):
@@ -1625,11 +1630,11 @@ class IntegratedEngine2T:
         if side == "left":
             left_comp = self.atmosphere_species
             left_mass = 1.0
-            right_comp = species[index]
-            right_mass = cells[index][0] * path.mesh.volumes[index]
+            right_comp = species[index] if fractions is None else fractions
+            right_mass = cells[index][0] * path.mesh.volumes[index] if fractions is None else 1.
         else:
-            left_comp = species[index]
-            left_mass = cells[index][0] * path.mesh.volumes[index]
+            left_comp = species[index] if fractions is None else fractions
+            left_mass = cells[index][0] * path.mesh.volumes[index] if fractions is None else 1.
             right_comp = self.outlet_species
             right_mass = 1.0
         species_flux = self._face_species_flux(face[0], left_comp, left_mass,
@@ -1703,16 +1708,29 @@ class IntegratedEngine2T:
             ss = state["species"]["ducts"][path.id]
             primitives = [self._primitive(q) for q in qs]
             reconstruction = None
-            if self.spatial_reconstruction_model == SPATIAL_RECONSTRUCTION_V1:
+            if self.spatial_reconstruction_model in (SPATIAL_RECONSTRUCTION_V1,SPATIAL_RECONSTRUCTION_V2):
                 fractions = [tuple(v/fsum(values) for v in values) for values in ss]
-                reconstruction = reconstruct_v1(path.mesh,primitives,fractions,eos=self.eos)
+                reconstruct=(reconstruct_v2 if self.spatial_reconstruction_model==SPATIAL_RECONSTRUCTION_V2
+                             else reconstruct_v1)
+                reconstruction = reconstruct(path.mesh,primitives,fractions,eos=self.eos)
+            wl,wr=primitives[0],primitives[-1]
+            sl,sr=ss[0],ss[-1]
+            ml,mr=qs[0][0]*path.mesh.volumes[0],qs[-1][0]*path.mesh.volumes[-1]
+            if path.role=='intake':
+                mr=qs[-1][0]*self._duct_cell_volume(path,len(qs)-1,state)
+            boundary_v2=self.spatial_reconstruction_model==SPATIAL_RECONSTRUCTION_V2
+            if boundary_v2:
+                wl,wr=reconstruction.left[0],reconstruction.right[-1]
+                sl,sr=reconstruction.species_left[0],reconstruction.species_right[-1]
+                ml=mr=1.
             if path.role == "intake":
                 network = self._network_face(
-                    state, path, "left", primitives[0], ss[0],
-                    qs[0][0] * path.mesh.volumes[0])
+                    state, path, "left", wl, sl,
+                    ml)
                 if network is None:
                     external_l, species_l, speed_l, pressure_reaction_l = self._external_face(
-                        state, path, "left", self.inlet_boundary)
+                        state, path, "left", self.inlet_boundary,
+                        primitive=wl if boundary_v2 else None, fractions=sl if boundary_v2 else None)
                 else:
                     (binding, exchange, external_l, species_l, speed_l,
                      blocked_area, blocked_traction, wall_reaction) = network
@@ -1742,7 +1760,7 @@ class IntegratedEngine2T:
                     intake_reed_area = min(
                         intake_reed_area,
                         static_area(self.reed_petals,
-                                    primitives[-1][2] -
+                                    wr[2] -
                                     cc.thermodynamics(self.eos)[1]))
                 if (self.dynamic_reed_binding is not None and
                         path.id == self.dynamic_reed_binding.duct_id):
@@ -1751,17 +1769,17 @@ class IntegratedEngine2T:
                         self.dynamic_reed_binding.geometry.flow_area_m2(
                             self._reed_lift(state)))
                 intake_area = min(intake_reed_area, path.mesh.areas[-1])
-                right_exchange = self._port_exchange(cc, primitives[-1], intake_area,
+                right_exchange = self._port_exchange(cc, wr, intake_area,
                                                       path.mesh.areas[-1], 1)
                 right_face = _port_face_flux(
-                    right_exchange, primitives[-1], path.mesh.areas[-1], intake_area)
-                speed_r = (max(abs(primitives[-1][1] - self.eos.sound_speed(primitives[-1])),
-                               abs(primitives[-1][1] + self.eos.sound_speed(primitives[-1])))
+                    right_exchange, wr, path.mesh.areas[-1], intake_area)
+                speed_r = (max(abs(wr[1] - self.eos.sound_speed(wr)),
+                               abs(wr[1] + self.eos.sound_speed(wr)))
                            if right_exchange is None else
                            max(abs(right_exchange.wave_speeds[0]),
                                abs(right_exchange.wave_speeds[-1])))
                 right_species = ((0.0,) * 4 if right_exchange is None else
-                    self._face_species_flux(right_face[0], ss[-1], qs[-1][0]*self._duct_cell_volume(path, len(qs)-1, state),
+                    self._face_species_flux(right_face[0], sr, mr,
                                             species_chambers["crankcase"], chambers["crankcase"][0]))
                 # A left face points in +x; it is an external inflow when positive.
                 if network is None:
@@ -1791,28 +1809,28 @@ class IntegratedEngine2T:
                 right_area = min(port_area, path.mesh.areas[-1])
                 if self.gas_exchange_model is not None:
                     left_area = path.mesh.areas[0]
-                left_exchange = self._port_exchange(cc, primitives[0], left_area,
+                left_exchange = self._port_exchange(cc, wl, left_area,
                                                      path.mesh.areas[0], -1)
-                right_exchange = self._port_exchange(cy, primitives[-1], right_area,
+                right_exchange = self._port_exchange(cy, wr, right_area,
                                                       path.mesh.areas[-1], 1)
                 left_face = _port_face_flux(
-                    left_exchange, primitives[0], path.mesh.areas[0], left_area)
+                    left_exchange, wl, path.mesh.areas[0], left_area)
                 right_face = _port_face_flux(
-                    right_exchange, primitives[-1], path.mesh.areas[-1], right_area)
-                speed_l = (max(abs(primitives[0][1] - self.eos.sound_speed(primitives[0])),
-                               abs(primitives[0][1] + self.eos.sound_speed(primitives[0])))
+                    right_exchange, wr, path.mesh.areas[-1], right_area)
+                speed_l = (max(abs(wl[1] - self.eos.sound_speed(wl)),
+                               abs(wl[1] + self.eos.sound_speed(wl)))
                            if left_exchange is None else
                            max(abs(left_exchange.wave_speeds[0]), abs(left_exchange.wave_speeds[-1])))
-                speed_r = (max(abs(primitives[-1][1] - self.eos.sound_speed(primitives[-1])),
-                               abs(primitives[-1][1] + self.eos.sound_speed(primitives[-1])))
+                speed_r = (max(abs(wr[1] - self.eos.sound_speed(wr)),
+                               abs(wr[1] + self.eos.sound_speed(wr)))
                            if right_exchange is None else
                            max(abs(right_exchange.wave_speeds[0]), abs(right_exchange.wave_speeds[-1])))
                 left_species = ((0.0,) * 4 if left_exchange is None else
                     self._face_species_flux(left_face[0], species_chambers["crankcase"],
-                                            chambers["crankcase"][0], ss[0],
-                                            qs[0][0]*path.mesh.volumes[0]))
+                                            chambers["crankcase"][0], sl,
+                                            ml))
                 right_species = ((0.0,) * 4 if right_exchange is None else
-                    self._face_species_flux(right_face[0], ss[-1], qs[-1][0]*path.mesh.volumes[-1],
+                    self._face_species_flux(right_face[0], sr, mr,
                                             species_chambers["cylinder"], chambers["cylinder"][0]))
                 if right_exchange is not None:
                     fresh_delivered_rate += max(0.0, right_species[0] + right_species[1])
@@ -1832,14 +1850,15 @@ class IntegratedEngine2T:
                                             "left_speed": speed_l, "right_speed": speed_r}
             else:
                 exhaust_area = min(g.exhaust_area_m2, path.mesh.areas[0])
-                left_exchange = self._port_exchange(cy, primitives[0], exhaust_area,
+                left_exchange = self._port_exchange(cy, wl, exhaust_area,
                                                      path.mesh.areas[0], -1)
                 network = self._network_face(
-                    state, path, "right", primitives[-1], ss[-1],
-                    qs[-1][0] * path.mesh.volumes[-1])
+                    state, path, "right", wr, sr,
+                    mr)
                 if network is None:
                     external_r, species_r, speed_r, pressure_reaction_r = self._external_face(
-                        state, path, "right", self.outlet_boundary)
+                        state, path, "right", self.outlet_boundary,
+                        primitive=wr if boundary_v2 else None, fractions=sr if boundary_v2 else None)
                 else:
                     (binding, exchange, external_r, species_r, speed_r,
                      blocked_area, blocked_traction, wall_reaction) = network
@@ -1865,15 +1884,15 @@ class IntegratedEngine2T:
                             "fallback_reason": exchange.fallback_reason}
                     pressure_reaction_r = None
                 left_face = _port_face_flux(
-                    left_exchange, primitives[0], path.mesh.areas[0], exhaust_area)
-                speed_l = (max(abs(primitives[0][1] - self.eos.sound_speed(primitives[0])),
-                               abs(primitives[0][1] + self.eos.sound_speed(primitives[0])))
+                    left_exchange, wl, path.mesh.areas[0], exhaust_area)
+                speed_l = (max(abs(wl[1] - self.eos.sound_speed(wl)),
+                               abs(wl[1] + self.eos.sound_speed(wl)))
                            if left_exchange is None else
                            max(abs(left_exchange.wave_speeds[0]), abs(left_exchange.wave_speeds[-1])))
                 left_species = ((0.0,) * 4 if left_exchange is None else
                     self._face_species_flux(left_face[0], species_chambers["cylinder"],
-                                            chambers["cylinder"][0], ss[0],
-                                            qs[0][0]*path.mesh.volumes[0]))
+                                            chambers["cylinder"][0], sl,
+                                            ml))
                 if (self.gas_exchange_model is not None and left_face[0] > 0
                         and any(a > 0 for a in g.transfer_areas_m2)):
                     from .gas_exchange_v2 import outlet_species_rate
@@ -1904,18 +1923,24 @@ class IntegratedEngine2T:
                     faces_trace[path.id]["right_external_pressure_reaction_n"] = pressure_reaction_r
             if capture_trace and self.port_connection_model == PORT_CONNECTION_V2:
                 if path.role == 'intake':
-                    ports = [('right', right_exchange, primitives[-1], cc, ss[-1])]
+                    ports = [('right', right_exchange, wr, cc, sr)]
                 elif path.role == 'transfer':
-                    ports = [('left', left_exchange, primitives[0], cc, ss[0]),
-                             ('right', right_exchange, primitives[-1], cy, ss[-1])]
+                    ports = [('left', left_exchange, wl, cc, sl),
+                             ('right', right_exchange, wr, cy, sr)]
                 else:
-                    ports = [('left', left_exchange, primitives[0], cy, ss[0])]
+                    ports = [('left', left_exchange, wl, cy, sl)]
                 faces_trace[path.id]['port_connection_states'] = {
                     side: {'interior_primitive': primitive,
                            'interior_species_masses_kg': species,
                            'chamber_thermodynamics': chamber.thermodynamics(self.eos),
                            'exchange': asdict(exchange)}
                     for side, exchange, primitive, chamber, species in ports}
+                if boundary_v2:
+                    for side, exchange, primitive, chamber, species in ports:
+                        data=faces_trace[path.id]['port_connection_states'][side]
+                        data['interior_species_masses_kg']=ss[0 if side=='left' else -1]
+                        data['boundary_species_mass_fractions']=sl if side=='left' else sr
+                        data['boundary_reconstruction_model']=SPATIAL_RECONSTRUCTION_V2
             faces = [left_face]
             species_faces = [left_species]
             face_speeds = [speed_l]

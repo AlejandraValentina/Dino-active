@@ -1,0 +1,27 @@
+{
+  "name": "spatial-boundary-v2-contract-tests",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_spatial_reconstruction_v2.py",
+    "tests/test_integrated_spatial_v2.py",
+    "tests/test_integrated_spatial_v1.py",
+    "tests/test_integrated_mesh_refinement_v1.py",
+    "tests/test_moving_cell_thermal_reference_v1.py",
+    "-q"
+  ],
+  "started_at": "2026-10-26T16:39:36+00:00",
+  "finished_at": "2026-10-26T16:39:42+00:00",
+  "duration_s": 5.969,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\spatial-boundary-v2-contract-tests.log",
+  "log_lines": 2,
+  "log_bytes": 99,
+  "error_lines": [],
+  "tail": [
+    "...................................................                      [100%]",
+    "51 passed in 5.39s"
+  ]
+}

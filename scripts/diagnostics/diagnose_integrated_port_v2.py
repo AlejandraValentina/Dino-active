@@ -16,6 +16,7 @@ from motorsim.integrated_2t import (IntegratedEngine2T, _integrated_scheduled_an
                                    _json_evidence_equal)
 from motorsim.port_connection_v2 import SCHEMA, NoAdmissiblePortState
 from motorsim.gas1d.spatial_reconstruction_v1 import SCHEMA as SPATIAL_SCHEMA
+from motorsim.gas1d.spatial_reconstruction_v2 import SCHEMA as SPATIAL_BOUNDARY_SCHEMA
 from scripts.agents.storage_preflight import check_storage_requirements
 
 
@@ -48,8 +49,9 @@ def run(output,model,step_degrees,spatial_model='legacy'):
         config['geometry_identity']['port_connection_model']=SCHEMA
         config['base_configuration_schema']=config['schema']
         config['schema']='MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V7'
-    if spatial_model=='muscl':
-        config['geometry_identity']['spatial_reconstruction_model']=SPATIAL_SCHEMA
+    if spatial_model in ('muscl','boundary-v2'):
+        config['geometry_identity']['spatial_reconstruction_model']=(
+            SPATIAL_BOUNDARY_SCHEMA if spatial_model=='boundary-v2' else SPATIAL_SCHEMA)
         config['base_configuration_schema']=config.get('base_configuration_schema',config['schema'])
         config['schema']='MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V8'
     e = IntegratedEngine2T.from_configuration_dict(config)
@@ -170,6 +172,6 @@ if __name__=='__main__':
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--model',choices=['legacy','nozzle'],required=True)
     p.add_argument('--step-degrees',type=float,choices=[.5,.25],required=True)
-    p.add_argument('--spatial-model',choices=['legacy','muscl'],default='legacy')
+    p.add_argument('--spatial-model',choices=['legacy','muscl','boundary-v2'],default='legacy')
     args=p.parse_args()
     raise SystemExit(run(args.output,args.model,args.step_degrees,args.spatial_model))

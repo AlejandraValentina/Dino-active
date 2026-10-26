@@ -13,11 +13,12 @@ import numpy as np
 
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
-from motorsim.integrated_2t import DuctPath2T,EngineGeometry2T,IntegratedEngine2T
+from motorsim.integrated_2t import DuctPath2T,EngineGeometry2T,IntegratedEngine2T,_solver_dependency_hashes
 from motorsim.gas1d.eos import IdealGas
 from motorsim.gas1d.mesh import segments_mesh,uniform_mesh
 from motorsim.gas1d.boundary import Boundary
 from motorsim.gas1d.spatial_reconstruction_v1 import SCHEMA as SPATIAL
+from motorsim.gas1d.spatial_reconstruction_v2 import SCHEMA as SPATIAL_V2
 from motorsim.port_connection_v2 import SCHEMA as PORT
 from scripts.agents.storage_preflight import check_storage_requirements
 from scripts.diagnostics.diagnose_integrated_mesh_v1 import write,sha
@@ -60,7 +61,7 @@ def cell_means(mesh,eos,quadrature_order=8):
     return means
 
 
-def fixture(n):
+def fixture(n,spatial=SPATIAL,port=PORT):
     eos=IdealGas(gamma=1.35)
     mesh=segments_mesh([dict(length=300.,start_diameter=30.,end_diameter=25.)],LENGTH/n)
     assert mesh.n==n
@@ -75,18 +76,19 @@ def fixture(n):
                    for w,v in zip(states[p.id],p.mesh.volumes)] for p in paths}
     species.update({name:tuple(reservoir[0]*volume*f for f in FRACTIONS)
                     for name,volume in [('crankcase',.00015),('cylinder',.00018)]})
+    geometry_type=EngineGeometry2T
     def geometry(angle):
-        return EngineGeometry2T(.00015,.00018,0.,0.,0.,(0.,),area(0.))
+        return geometry_type(.00015,.00018,0.,0.,0.,(0.,),area(0.))
     engine=IntegratedEngine2T(reservoir,reservoir,paths,states,geometry,eos=eos,
         species=species,atmosphere=(P0,T0),atmosphere_species=FRACTIONS,
         outlet_species=FRACTIONS,outlet_boundary=Boundary('fixed',state=reference(LENGTH,eos)),
         geometry_identity=dict(fixture='steady-nozzle-spatial-residual-v1',
-            port_connection_model=PORT,spatial_reconstruction_model=SPATIAL))
+            port_connection_model=port,spatial_reconstruction_model=spatial))
     return engine,mesh
 
 
-def diagnose(n):
-    engine,mesh=fixture(n);eos=engine.eos
+def diagnose(n,spatial=SPATIAL):
+    engine,mesh=fixture(n,spatial);eos=engine.eos
     assembled=engine._assemble(engine.state,0.,engine.reference_rpm)
     actual=assembled['q']['ducts']['exhaust']
     exact=[tuple(a*f for f in eos.flux(reference(x,eos))[:3]) for x,a in zip(mesh.faces,mesh.areas)]
@@ -122,23 +124,25 @@ def diagnose(n):
         analytical_energy_flux_spread=max(abs(f[2]-exact[0][2]) for f in exact)/abs(exact[0][2]))
 
 
-def sequence():
-    cases=[diagnose(n) for n in (20,40,80,160)]
+def sequence(spatial=SPATIAL):
+    cases=[diagnose(n,spatial) for n in (20,40,80,160)]
     orders={}
     for key in ('actual_normalized_L1','interior_normalized_L1','exact_all_face_flux_source_oracle_L1'):
         orders[key]=[[math.log(a[key][k]/b[key][k],2) if a[key][k]>1e-12 and b[key][k]>1e-12 else None
                       for k in range(3)] for a,b in zip(cases,cases[1:])]
     return dict(schema='DINO_STEADY_NOZZLE_TRUNCATION_REFERENCE_V1',review='SELF_REVIEW',
-        solver_steps=0,time_integrations=0,cases=cases,observed_residual_orders=orders,
+        solver_steps=0,time_integrations=0,spatial_model=spatial,cases=cases,observed_residual_orders=orders,
         components=['mass','momentum','energy'],runner_sha256=sha(Path(__file__)),
+        solver_dependency_sha256=_solver_dependency_hashes(),
         source='NASA isentropic area-Mach/mass/total-state relations; independent bisection and volume quadrature',
         scientific_scope='Instantaneous duct spatial operator with frozen reservoir; not a steady complete finite-volume engine or periodic motor.',
-        physical_solver_modified=False,experimental_validation=False)
+        physical_equations_modified=False,experimental_validation=False)
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--model',choices=['muscl-v1','boundary-v2'],default='muscl-v1')
     args=p.parse_args();check_storage_requirements([(args.output,1024**2)])
     if args.output.exists():raise FileExistsError('preserve previous reference')
-    r=sequence();write(args.output,r)
+    r=sequence(SPATIAL_V2 if args.model=='boundary-v2' else SPATIAL);write(args.output,r)
     print(json.dumps(r,indent=2))

@@ -9096,11 +9096,13 @@
       "dependencies": [
         "PRED-BOUNDARY-TRUNCATION-REFERENCE"
       ],
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "openspec/changes/predictive-reliability-v1/spatial-boundary-contract-v2.md"
+        "openspec/changes/predictive-reliability-v1/spatial-boundary-contract-v2.md",
+        "results/predictive-reliability-v1/runlogs/spatial-boundary-v2-contract-tests.summary.json",
+        "results/predictive-reliability-v1/boundary-truncation-reference-v2-final.json"
       ],
       "next_action": "Verify isolated endpoint order/positivity before integrating any new boundary trace.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
@@ -9111,7 +9113,8 @@
         "tests/test_spatial_reconstruction_v2.py",
         "tests/test_integrated_spatial_v2.py"
       ],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "qualification": "Prototype 51 focused checks PASS. Whole-duct steady-reference orders mass1.963/energy1.960 vs original~1; old/V1 control physical state+ledger bit-identical. Integrated A9000 and L2 replay still pending, no numerical gate closed."
     }
   ],
   "audit_remediation_mode": false,
@@ -12901,6 +12904,12 @@
       "task": "PRED-BOUNDARY-TRUNCATION-REFERENCE",
       "kind": "task",
       "summary": "Zero-step steady-nozzle diagnosis isolates first-order endpoint sampling: global residual order ~1, interior mass/energy ~2; exact face state makes existing connection flux exact. Geometry-source oracle is second order. Four reference tests PASS. Preregister opt-in endpoint V2 before implementation; no claim that it explains all motor mesh error."
+    },
+    {
+      "at": "2026-10-26T16:40:38+00:00",
+      "task": "PRED-SPATIAL-BOUNDARY-V2",
+      "kind": "task",
+      "summary": "Opt-in endpoint V2 prototype integrated with consistent port/external/network gas and donor traces; V1/default preserved. 51 focused checks PASS incl. Sod, conservation, reverse donor, dynamic heat, restart, frozen-reader rejection and bit-identical old controls. Smooth global residual order restored to ~1.96. Preregister bounded engine/replay before execution."
     }
   ],
   "legacy_gate_status": {
