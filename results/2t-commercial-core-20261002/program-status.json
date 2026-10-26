@@ -8179,7 +8179,8 @@
       "state": "DONE",
       "blocker": null,
       "commits": [
-        "ff32967"
+        "ff32967",
+        "8549df5"
       ],
       "evidence": [
         "results/integrated-performance-v3/pilot-contract-v2.json",
@@ -8205,7 +8206,9 @@
       ],
       "state": "DONE",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "8549df5"
+      ],
       "evidence": [
         "results/integrated-performance-v3/pilot-summary.json",
         "results/integrated-performance-v3/pilot-comparison.json",
@@ -8229,7 +8232,9 @@
       ],
       "state": "DONE",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "8549df5"
+      ],
       "evidence": [
         "results/integrated-performance-v3/transfer-review.json",
         "results/integrated-performance-v3/report.md"
@@ -8251,7 +8256,9 @@
       ],
       "state": "DONE",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "8549df5"
+      ],
       "evidence": [
         "results/integrated-performance-v3/checkpoint-stop-review.json",
         "results/integrated-performance-v3/report.md"
@@ -11881,6 +11888,13 @@
       "task": "PERFV3-DECISION",
       "kind": "task",
       "summary": "Pilot reached period-1 in 15 cycles/61.59 s (85.6% fewer cycles) but 102/413 cross-run observables fail existing numeric thresholds, primarily exhaust species; no RPM-coordinator integration or extra run."
+    },
+    {
+      "at": "2026-10-26T12:34:34+00:00",
+      "task": "PERFV3-DECISION",
+      "kind": "task",
+      "summary": "Closed V3 as FAIL_TERMINAL/PARTIAL: 15-cycle periodic warm run materially faster, but exhaust-state comparison fails 102/413 observables; coordinator integration withheld. Results, review and checkpoint evidence committed locally.",
+      "commit": "8549df5"
     }
   ],
   "legacy_gate_status": {
