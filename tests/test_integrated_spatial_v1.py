@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from motorsim.gas1d.mesh import uniform_mesh
+from motorsim.gas1d.mesh import uniform_mesh,smooth_mesh
 from motorsim.gas1d.spatial_reconstruction_v1 import SCHEMA
 from motorsim.integrated_2t import IntegratedEngine2T
 from motorsim.port_connection_v2 import SCHEMA as PORT_SCHEMA
@@ -54,6 +54,20 @@ def test_spatial_selection_is_immutable_and_unknown_model_is_not_ignored():
         e.step(1e-8,.00006)
     with pytest.raises(ValueError,match='spatial_reconstruction_model'):
         _case(geometry_identity={'spatial_reconstruction_model':'unsupported'})
+
+
+def test_variable_area_pressure_source_preserves_quiescent_equilibrium():
+    e=_case(geometry_identity={'fixture':'variable-area-rest-v1',
+        'port_connection_model':PORT_SCHEMA,'spatial_reconstruction_model':SCHEMA},
+        exhaust_mesh=smooth_mesh(12),exhaust_area=0.,transfer_area=0.,
+        crankcase_pressure=101325.)
+    before=[e._primitive(q) for q in e.state['ducts']['exhaust']]
+    e.step(1e-8,.00006)
+    after=[e._primitive(q) for q in e.state['ducts']['exhaust']]
+    for a,b in zip(before,after):
+        assert a[0]==pytest.approx(b[0],rel=1e-12)
+        assert a[2]==pytest.approx(b[2],rel=1e-12)
+        assert abs(b[1])<1e-12
 
 
 @pytest.mark.parametrize('with_port',[False,True])

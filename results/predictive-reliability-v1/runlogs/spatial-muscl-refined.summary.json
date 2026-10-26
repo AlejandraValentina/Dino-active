@@ -1,0 +1,40 @@
+{
+  "name": "spatial-muscl-refined",
+  "command": [
+    "python",
+    "scripts/diagnostics/diagnose_integrated_port_v2.py",
+    "--output",
+    "results/predictive-reliability-v1/spatial-muscl-refined",
+    "--model",
+    "nozzle",
+    "--spatial-model",
+    "muscl",
+    "--step-degrees",
+    "0.25"
+  ],
+  "started_at": "2026-10-26T15:12:28+00:00",
+  "finished_at": "2026-10-26T15:13:29+00:00",
+  "duration_s": 61.328,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\spatial-muscl-refined.log",
+  "log_lines": 14,
+  "log_bytes": 335,
+  "error_lines": [],
+  "tail": [
+    "{",
+    "  \"status\": \"COMPLETE\",",
+    "  \"error\": null,",
+    "  \"terminal_angle_deg\": 720.0,",
+    "  \"accepted_steps\": 2884,",
+    "  \"wall_s\": 60.77159349992871,",
+    "  \"compute_s\": 51.34570610220544,",
+    "  \"normalized_residuals\": {",
+    "    \"mass\": 8.711435245899034e-17,",
+    "    \"energy\": 3.2987732406661604e-17,",
+    "    \"species\": 4.551724915982245e-16",
+    "  },",
+    "  \"numerical_gate\": true",
+    "}"
+  ]
+}
