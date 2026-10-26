@@ -1,0 +1,160 @@
+{
+  "schema": "DINO_INTEGRATED_PORT_V2_COMPARISON",
+  "numerical_gate": true,
+  "temporal_gate": true,
+  "maximum_normalized_time_difference": 0.0005911383783244739,
+  "largest_time_differences": [
+    [
+      0.0005911383783244739,
+      "exhaust/4/fraction/3"
+    ],
+    [
+      0.0004974678851395464,
+      "exhaust/3/fraction/3"
+    ],
+    [
+      0.0004787250033164714,
+      "exhaust/5/fraction/3"
+    ],
+    [
+      0.00043099186337907075,
+      "exhaust/4/temperature"
+    ],
+    [
+      0.00042310355950827335,
+      "exhaust/4/density"
+    ],
+    [
+      0.0004074373021515646,
+      "exhaust/5/temperature"
+    ],
+    [
+      0.0004013525633002013,
+      "exhaust/5/density"
+    ],
+    [
+      0.00039801619900925456,
+      "exhaust/3/fraction/2"
+    ],
+    [
+      0.0003377345959186262,
+      "exhaust/4/fraction/2"
+    ],
+    [
+      0.0003229191036264248,
+      "exhaust/2/fraction/2"
+    ],
+    [
+      0.0003160363956764709,
+      "exhaust/3/temperature"
+    ],
+    [
+      0.0003059006083259132,
+      "exhaust/3/density"
+    ]
+  ],
+  "physical_comparison": {
+    "legacy": {
+      "cylinder_work_out_J": 14.651610760370776,
+      "crankcase_work_out_J": -3.0004848189750124,
+      "net_indicated_work_out_J": 11.651125941395764,
+      "fuel_combustion_heat_J": 136.099040778872,
+      "cylinder_species_kg": [
+        2.7854763897503878e-05,
+        3.074457732173797e-06,
+        1.224077057670326e-05,
+        2.6181413715523793e-05
+      ],
+      "maximum_pressures_pa": {
+        "crankcase_pressure_pa": 137795.03600666067,
+        "cylinder_pressure_pa": 5980575.641889721,
+        "exhaust_pressure_pa": 125854.41749166402
+      },
+      "mass_flux_integrals": {
+        "boost:left:mass_kg": 2.3984796275793738e-05,
+        "boost:right:mass_kg": 2.538496124081018e-05,
+        "exhaust:left:mass_kg": 3.946985014490022e-05,
+        "intake:right:mass_kg": 4.850120698573079e-05,
+        "primary:left:mass_kg": 3.52717592291084e-05,
+        "primary:right:mass_kg": 3.7330825354132644e-05,
+        "secondary:left:mass_kg": 3.52717592291084e-05,
+        "secondary:right:mass_kg": 3.7330825354132644e-05
+      },
+      "compute_s": 6.882571200374514,
+      "wall_s": 10.86957379989326,
+      "steps": 1444
+    },
+    "nozzle_coarse": {
+      "cylinder_work_out_J": 31.87701136217472,
+      "crankcase_work_out_J": -5.799219154789136,
+      "net_indicated_work_out_J": 26.077792207385585,
+      "fuel_combustion_heat_J": 159.54757702352222,
+      "cylinder_species_kg": [
+        6.406580045808856e-05,
+        6.015478115594993e-06,
+        3.091212486568313e-23,
+        9.784063783199344e-06
+      ],
+      "maximum_pressures_pa": {
+        "crankcase_pressure_pa": 137809.52537770598,
+        "cylinder_pressure_pa": 5018792.332539484,
+        "exhaust_pressure_pa": 147927.68811086533
+      },
+      "mass_flux_integrals": {
+        "boost:left:mass_kg": 6.336148579291951e-05,
+        "boost:right:mass_kg": 6.388127054497036e-05,
+        "exhaust:left:mass_kg": 0.0001806766621439646,
+        "intake:right:mass_kg": 0.00023877379818411726,
+        "primary:left:mass_kg": 9.317865557782321e-05,
+        "primary:right:mass_kg": 9.394304491907397e-05,
+        "secondary:left:mass_kg": 9.317865557782321e-05,
+        "secondary:right:mass_kg": 9.394304491907397e-05
+      },
+      "compute_s": 23.27497720066458,
+      "wall_s": 28.366920799948275,
+      "steps": 1450
+    },
+    "nozzle_refined": {
+      "cylinder_work_out_J": 31.936442546601995,
+      "crankcase_work_out_J": -5.799362842078632,
+      "net_indicated_work_out_J": 26.137079704523362,
+      "fuel_combustion_heat_J": 159.69039344122973,
+      "cylinder_species_kg": [
+        6.408063301200356e-05,
+        6.017091192003161e-06,
+        3.356605646161094e-31,
+        9.782893234294306e-06
+      ],
+      "maximum_pressures_pa": {
+        "crankcase_pressure_pa": 137808.2892746943,
+        "cylinder_pressure_pa": 5020300.203872864,
+        "exhaust_pressure_pa": 147948.80065050637
+      },
+      "mass_flux_integrals": {
+        "boost:left:mass_kg": 6.337000178465012e-05,
+        "boost:right:mass_kg": 6.389039487752659e-05,
+        "exhaust:left:mass_kg": 0.00018069734766732728,
+        "intake:right:mass_kg": 0.00023880715382087683,
+        "primary:left:mass_kg": 9.319117909507373e-05,
+        "primary:right:mass_kg": 9.395646305518619e-05,
+        "secondary:left:mass_kg": 9.319117909507373e-05,
+        "secondary:right:mass_kg": 9.395646305518619e-05
+      },
+      "compute_s": 44.48222029628232,
+      "wall_s": 53.88724009995349,
+      "steps": 2886
+    }
+  },
+  "source_receipts": {
+    "results\\predictive-reliability-v1\\integrated-legacy-observer-fixed\\receipt.json": "d14e9c53e90291b97811651501f1378153b4ef01a19b671c390abd1f94fa03c4",
+    "results\\predictive-reliability-v1\\integrated-nozzle-final\\receipt.json": "5aab3905256a5b158c1889283b70307c95a5b5a9cdbe333319081c9e18ffbb46",
+    "results\\predictive-reliability-v1\\integrated-nozzle-refined\\receipt.json": "b052eef97604ac13455711e86c3d41291841b4955bad3d480e678b584e86c6b8"
+  },
+  "phase_deg": 0.0,
+  "terminal_angle_deg": 720.0,
+  "independently_initialized": true,
+  "scientific_state": "TRANSIENT_NOT_PERIODIC_POWER",
+  "review": "SELF_REVIEW",
+  "unchanged_CFL_and_periodicity_tolerances": true,
+  "experimental_validation": false
+}

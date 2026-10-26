@@ -1,0 +1,38 @@
+{
+  "name": "port-v2-nozzle-refined",
+  "command": [
+    "python",
+    "scripts/diagnostics/diagnose_integrated_port_v2.py",
+    "--output",
+    "results/predictive-reliability-v1/integrated-nozzle-refined",
+    "--model",
+    "nozzle",
+    "--step-degrees",
+    "0.25"
+  ],
+  "started_at": "2026-10-26T14:45:47+00:00",
+  "finished_at": "2026-10-26T14:46:41+00:00",
+  "duration_s": 54.438,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\port-v2-nozzle-refined.log",
+  "log_lines": 14,
+  "log_bytes": 335,
+  "error_lines": [],
+  "tail": [
+    "{",
+    "  \"status\": \"COMPLETE\",",
+    "  \"error\": null,",
+    "  \"terminal_angle_deg\": 720.0,",
+    "  \"accepted_steps\": 2886,",
+    "  \"wall_s\": 53.88724009995349,",
+    "  \"compute_s\": 44.48222029628232,",
+    "  \"normalized_residuals\": {",
+    "    \"mass\": 8.719065286901138e-17,",
+    "    \"energy\": 8.042509472094194e-16,",
+    "    \"species\": 3.1170658400671567e-16",
+    "  },",
+    "  \"numerical_gate\": true",
+    "}"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "name": "port-v2-nozzle",
+  "command": [
+    "python",
+    "scripts/diagnostics/diagnose_integrated_port_v2.py",
+    "--output",
+    "results/predictive-reliability-v1/integrated-nozzle",
+    "--model",
+    "nozzle",
+    "--step-degrees",
+    "0.5"
+  ],
+  "started_at": "2026-10-26T14:40:14+00:00",
+  "finished_at": "2026-10-26T14:40:21+00:00",
+  "duration_s": 6.734,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\port-v2-nozzle.log",
+  "log_lines": 14,
+  "log_bytes": 392,
+  "error_lines": [],
+  "tail": [
+    "{",
+    "  \"status\": \"STOPPED\",",
+    "  \"error\": \"NoAdmissiblePortState: no bracket for admissible nozzle branch\",",
+    "  \"terminal_angle_deg\": 193.0,",
+    "  \"accepted_steps\": 387,",
+    "  \"wall_s\": 6.225970299914479,",
+    "  \"compute_s\": 4.121586499270052,",
+    "  \"normalized_residuals\": {",
+    "    \"mass\": 9.561062232572791e-17,",
+    "    \"energy\": 8.083617117271509e-16,",
+    "    \"species\": 5.76172149521088e-16",
+    "  },",
+    "  \"numerical_gate\": false",
+    "}"
+  ]
+}

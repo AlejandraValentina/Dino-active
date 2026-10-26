@@ -9,7 +9,7 @@ Euler vector is regenerated as total mass density.
 from __future__ import annotations
 
 from copy import deepcopy
-from dataclasses import dataclass, replace
+from dataclasses import asdict, dataclass, replace
 import hashlib
 import inspect
 import json
@@ -23,6 +23,9 @@ from urllib.parse import quote
 
 from .crankcase import CrankcaseGeometry
 from .coupling import ChamberState, interface_flux
+from .port_connection_v2 import (PortExchangeV2, SCHEMA as PORT_CONNECTION_V2,
+                                 port_connection_v2)
+from .gas1d.exact_riemann_reference_v1 import exact_riemann_v1
 from .gas1d.boundary import Boundary
 from .gas1d.eos import IdealGas
 from .gas1d.open_end_plenum_v2 import OpenEndPlenumV2Boundary
@@ -119,6 +122,8 @@ def _solver_dependency_hashes() -> dict[str, str]:
         canonical_digest.__module__: sys.modules[canonical_digest.__module__],
         CrankcaseGeometry.__module__: sys.modules[CrankcaseGeometry.__module__],
         ChamberState.__module__: sys.modules[ChamberState.__module__],
+        port_connection_v2.__module__: sys.modules[port_connection_v2.__module__],
+        exact_riemann_v1.__module__: sys.modules[exact_riemann_v1.__module__],
         Boundary.__module__: sys.modules[Boundary.__module__],
         IdealGas.__module__: sys.modules[IdealGas.__module__],
         OpenEndPlenumV2Boundary.__module__: sys.modules[
@@ -317,6 +322,11 @@ def _port_face_flux(exchange, duct_primitive, geometric_area, effective_area):
     remaining geometric area is a stationary wall and carries the local duct
     pressure traction, but no mass, energy, or species exchange.
     """
+    if isinstance(exchange, PortExchangeV2):
+        if (exchange.duct_area_m2 != geometric_area or
+                exchange.effective_area_m2 != effective_area):
+            raise ValueError('nozzle connection area differs from integrated face')
+        return tuple(exchange.flux_x[:3])
     blocked_area = geometric_area - effective_area
     if blocked_area < -1e-15 * max(1.0, geometric_area):
         raise ValueError("effective port area exceeds the duct face")
@@ -682,6 +692,9 @@ class IntegratedEngine2T:
         if not isinstance(geometry_identity, dict) or not geometry_identity:
             raise ValueError("stable geometry_identity is required for restart/replay")
         self._source_geometry_identity = deepcopy(geometry_identity)
+        self.port_connection_model = geometry_identity.get('port_connection_model')
+        if self.port_connection_model not in (None, PORT_CONNECTION_V2):
+            raise ValueError('unsupported explicit port_connection_model identity')
         from .gas_exchange_v2 import validate as validate_exchange
         exchange = validate_exchange(geometry_identity.get("gas_exchange_model"))
         self.gas_exchange_model = None if exchange is None else MappingProxyType(exchange)
@@ -1079,6 +1092,7 @@ class IntegratedEngine2T:
                 (None if self.fuel_coupled_combustion is None else
                  self.fuel_coupled_combustion.to_dict()),
                 self.geometry_sha256, id(self.configuration_identity),
+                self.port_connection_model,
                 None if self.gas_exchange_model is None else tuple(sorted(self.gas_exchange_model.items())),
                 tuple(id(petal) for petal in self.reed_petals),
                 id(self.port_binding),
@@ -1478,6 +1492,13 @@ class IntegratedEngine2T:
         # by accepted floating-point roundoff.
         return tuple(value / total for value in values)
 
+    def _port_exchange(self, chamber, primitive, area, pipe_area, normal):
+        if self.port_connection_model == PORT_CONNECTION_V2:
+            return port_connection_v2(chamber, primitive, area, pipe_area,
+                                      normal, eos=self.eos)
+        return (interface_flux(chamber, primitive, area, normal, eos=self.eos)
+                if area else None)
+
     def _face_species_flux(self, mass_flux, left_species, left_mass,
                            right_species, right_mass):
         # step() validates every species state at the SSPRK stage boundary
@@ -1682,8 +1703,8 @@ class IntegratedEngine2T:
                         self.dynamic_reed_binding.geometry.flow_area_m2(
                             self._reed_lift(state)))
                 intake_area = min(intake_reed_area, path.mesh.areas[-1])
-                right_exchange = interface_flux(cc, primitives[-1], intake_area, 1,
-                                                eos=self.eos) if intake_area else None
+                right_exchange = self._port_exchange(cc, primitives[-1], intake_area,
+                                                      path.mesh.areas[-1], 1)
                 right_face = _port_face_flux(
                     right_exchange, primitives[-1], path.mesh.areas[-1], intake_area)
                 speed_r = (max(abs(primitives[-1][1] - self.eos.sound_speed(primitives[-1])),
@@ -1722,10 +1743,10 @@ class IntegratedEngine2T:
                 right_area = min(port_area, path.mesh.areas[-1])
                 if self.gas_exchange_model is not None:
                     left_area = path.mesh.areas[0]
-                left_exchange = interface_flux(cc, primitives[0], left_area, -1,
-                                               eos=self.eos) if left_area else None
-                right_exchange = interface_flux(cy, primitives[-1], right_area, 1,
-                                                eos=self.eos) if right_area else None
+                left_exchange = self._port_exchange(cc, primitives[0], left_area,
+                                                     path.mesh.areas[0], -1)
+                right_exchange = self._port_exchange(cy, primitives[-1], right_area,
+                                                      path.mesh.areas[-1], 1)
                 left_face = _port_face_flux(
                     left_exchange, primitives[0], path.mesh.areas[0], left_area)
                 right_face = _port_face_flux(
@@ -1763,8 +1784,8 @@ class IntegratedEngine2T:
                                             "left_speed": speed_l, "right_speed": speed_r}
             else:
                 exhaust_area = min(g.exhaust_area_m2, path.mesh.areas[0])
-                left_exchange = interface_flux(cy, primitives[0], exhaust_area, -1,
-                                               eos=self.eos) if exhaust_area else None
+                left_exchange = self._port_exchange(cy, primitives[0], exhaust_area,
+                                                     path.mesh.areas[0], -1)
                 network = self._network_face(
                     state, path, "right", primitives[-1], ss[-1],
                     qs[-1][0] * path.mesh.volumes[-1])
@@ -1833,6 +1854,20 @@ class IntegratedEngine2T:
                                             "right_species": species_r,
                                             "left_speed": speed_l, "right_speed": speed_r}
                     faces_trace[path.id]["right_external_pressure_reaction_n"] = pressure_reaction_r
+            if capture_trace and self.port_connection_model == PORT_CONNECTION_V2:
+                if path.role == 'intake':
+                    ports = [('right', right_exchange, primitives[-1], cc, ss[-1])]
+                elif path.role == 'transfer':
+                    ports = [('left', left_exchange, primitives[0], cc, ss[0]),
+                             ('right', right_exchange, primitives[-1], cy, ss[-1])]
+                else:
+                    ports = [('left', left_exchange, primitives[0], cy, ss[0])]
+                faces_trace[path.id]['port_connection_states'] = {
+                    side: {'interior_primitive': primitive,
+                           'interior_species_masses_kg': species,
+                           'chamber_thermodynamics': chamber.thermodynamics(self.eos),
+                           'exchange': asdict(exchange)}
+                    for side, exchange, primitive, chamber, species in ports}
             faces = [left_face]
             species_faces = [left_species]
             face_speeds = [speed_l]

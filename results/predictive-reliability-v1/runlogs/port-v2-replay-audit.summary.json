@@ -1,0 +1,35 @@
+{
+  "name": "port-v2-replay-audit",
+  "command": [
+    "python",
+    "scripts/diagnostics/replay_integrated_port_v2.py",
+    "--directory",
+    "results/predictive-reliability-v1/integrated-nozzle-final",
+    "--output",
+    "results/predictive-reliability-v1/nozzle-cycle2-replay-audit.json"
+  ],
+  "started_at": "2026-10-26T14:51:36+00:00",
+  "finished_at": "2026-10-26T14:52:19+00:00",
+  "duration_s": 43.031,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\port-v2-replay-audit.log",
+  "log_lines": 9,
+  "log_bytes": 603,
+  "error_lines": [
+    "1: Traceback (most recent call last):",
+    "8:     raise ValueError(",
+    "9: ValueError: offline accepted step omits a rejection or does not match its nominal/retry step at 591 degrees"
+  ],
+  "tail": [
+    "Traceback (most recent call last):",
+    "  File \"E:\\dino\\Dino-active\\scripts\\diagnostics\\replay_integrated_port_v2.py\", line 78, in <module>",
+    "    replay(args.directory,args.output)",
+    "  File \"E:\\dino\\Dino-active\\scripts\\diagnostics\\replay_integrated_port_v2.py\", line 59, in replay",
+    "    audit=audit_integrated_cycle_primary(primary)",
+    "          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"E:\\dino\\Dino-active\\motorsim\\integrated_2t.py\", line 3972, in audit_integrated_cycle_primary",
+    "    raise ValueError(",
+    "ValueError: offline accepted step omits a rejection or does not match its nominal/retry step at 591 degrees"
+  ]
+}

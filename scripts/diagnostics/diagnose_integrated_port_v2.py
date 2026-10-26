@@ -12,7 +12,8 @@ import time
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
-from motorsim.integrated_2t import IntegratedEngine2T, _integrated_scheduled_angles
+from motorsim.integrated_2t import (IntegratedEngine2T, _integrated_scheduled_angles,
+                                   _json_evidence_equal)
 from motorsim.port_connection_v2 import SCHEMA, NoAdmissiblePortState
 from scripts.agents.storage_preflight import check_storage_requirements
 
@@ -117,7 +118,8 @@ def run(output,model,step_degrees):
                     checkpoint_hashes.append(dict(path=path.name,sha256=sha(path)))
                     restored=IntegratedEngine2T.from_configuration_dict(config)
                     restored.restore(json.loads(path.read_text(encoding='utf-8')))
-                    if restored.state!=e.state or restored.ledger!=e.ledger:
+                    if (not _json_evidence_equal(restored.state,e.state) or
+                            not _json_evidence_equal(restored.ledger,e.ledger)):
                         raise AssertionError('checkpoint state/ledger mismatch')
     except Exception as exc:
         status,error='STOPPED',f'{type(exc).__name__}: {exc}'

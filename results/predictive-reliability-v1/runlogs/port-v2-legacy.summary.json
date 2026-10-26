@@ -1,0 +1,40 @@
+{
+  "name": "port-v2-legacy",
+  "command": [
+    "python",
+    "scripts/diagnostics/diagnose_integrated_port_v2.py",
+    "--output",
+    "results/predictive-reliability-v1/integrated-legacy",
+    "--model",
+    "legacy",
+    "--step-degrees",
+    "0.5"
+  ],
+  "started_at": "2026-10-26T14:39:18+00:00",
+  "finished_at": "2026-10-26T14:39:24+00:00",
+  "duration_s": 5.719,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\port-v2-legacy.log",
+  "log_lines": 14,
+  "log_bytes": 381,
+  "error_lines": [
+    "3:   \"error\": \"AssertionError: checkpoint state/ledger mismatch\","
+  ],
+  "tail": [
+    "{",
+    "  \"status\": \"STOPPED\",",
+    "  \"error\": \"AssertionError: checkpoint state/ledger mismatch\",",
+    "  \"terminal_angle_deg\": 360.0,",
+    "  \"accepted_steps\": 722,",
+    "  \"wall_s\": 5.234838000033051,",
+    "  \"compute_s\": 3.4714564993046224,",
+    "  \"normalized_residuals\": {",
+    "    \"mass\": 1.3940456300907758e-16,",
+    "    \"energy\": 3.848020113162286e-16,",
+    "    \"species\": 4.267014539366827e-16",
+    "  },",
+    "  \"numerical_gate\": false",
+    "}"
+  ]
+}

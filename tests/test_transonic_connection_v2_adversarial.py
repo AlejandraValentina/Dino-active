@@ -39,3 +39,19 @@ def test_invalid_geometry_has_no_legacy_fallback(area,pipe,normal):
     c = ChamberState(1.,1e5/.35,0.,1.)
     with pytest.raises(InvalidState):
         port_connection_v2(c,(1.,0.,1e5,.4),area,pipe,normal)
+
+
+def test_integrated_193_degree_low_speed_full_area_regression():
+    # Captured second SSPRK stage, A9000 independently initialized. Inverting
+    # p0-p near rest formerly lost digits and destroyed a valid root bracket.
+    e = IdealGas()
+    c = ChamberState(.00046320914870755936,117.98853459569021,
+        .00046320914870755936,.00035741160955481)
+    w = (1.3044164075696116,1.951047695790397,116601.82597380888,1.)
+    ap = .0003657411646588864
+    x = port_connection_v2(c,w,ap,ap,-1,eos=e)
+    pc = c.thermodynamics(e)[1]
+    assert x.branch=='OUTFLOW_SUBSONIC'
+    assert x.boundary_state[2] == pytest.approx(pc,rel=1e-14)
+    assert x.outward[0]>0
+    assert x.acoustic_velocity_residual_m_s==pytest.approx(0.,abs=1e-11)

@@ -8615,8 +8615,13 @@
       "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Integrate verified equivalent nozzle behind explicit hashed physical model selection",
+      "evidence": [
+        "results/predictive-reliability-v1/connection-v2-engineering-note.md",
+        "results/predictive-reliability-v1/integrated-port-v2-comparison.json",
+        "results/predictive-reliability-v1/nozzle-cycle2-replay-audit.json",
+        "tests/test_integrated_port_connection_v2.py"
+      ],
+      "next_action": "Finish configuration capability version guard so older readers reject the new model rather than silently ignore its geometry descriptor.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/implementation/verification",
       "write_scope": [
@@ -8670,6 +8675,42 @@
       ],
       "evidence_level": "L0",
       "qualification": "116 adversarial checks PASS, declared SELF_REVIEW; no independent gate review claimed."
+    },
+    {
+      "id": "PRED-SPATIAL-PROTOCOL",
+      "description": "Prepare preregistered spatial accuracy/positivity/transport acceptance after coupling verification",
+      "dependencies": [
+        "PRED-TRANSONIC-REFERENCE"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Preparatory work only; spatial implementation waits for PRED-CONNECTION gate.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/spatial-contract-v1.md"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-SPATIAL-REFERENCE",
+      "description": "Derive exact cell-average entropy/acoustic/species reference fixtures for spatial verification",
+      "dependencies": [
+        "PRED-TRANSONIC-REFERENCE"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Preparatory work only; spatial implementation waits for PRED-CONNECTION gate.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "tests/test_spatial_reconstruction_v1.py"
+      ],
+      "evidence_level": "L0"
     }
   ],
   "audit_remediation_mode": false,
@@ -12363,6 +12404,12 @@
       "task": "PRED-CONNECTION-FIXTURE",
       "kind": "task",
       "summary": "Preregistered A9000 independently initialized two-revolution legacy/nozzle diagnostics at 0.5 deg and nozzle time refinement 0.25 deg, 240 s/case; full primary stages, bounded storage, conservation and actual-versus-restored next-step equality. No periodic-power claim."
+    },
+    {
+      "at": "2026-10-26T14:57:43+00:00",
+      "task": "PRED-CONNECTION-IDENTITY",
+      "kind": "task",
+      "summary": "Integrated nozzle conservation/restart and 0.5/0.25-deg time gate PASS (max state 0.0591%); cycle-2 exact replay/offline audit PASS, 728 accepted steps plus actual retries. P4-P8 301 PASS/3 SKIP. Configuration reader version guard remains before spatial implementation."
     }
   ],
   "legacy_gate_status": {

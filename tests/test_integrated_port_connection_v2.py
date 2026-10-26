@@ -1,0 +1,86 @@
+from copy import deepcopy
+import json
+
+import pytest
+
+from motorsim.integrated_2t import IntegratedEngine2T, _port_face_flux, _solver_dependency_hashes
+from motorsim.port_connection_v2 import SCHEMA
+from test_integrated_2t import _case
+
+
+def case(**kwargs):
+    return _case(geometry_identity={'fixture':'three-transfer-static-volume-v1',
+        'port_connection_model':SCHEMA},**kwargs)
+
+
+def test_selection_is_explicit_hashed_and_immutable():
+    old = _case()
+    new = case()
+    assert old.port_connection_model is None
+    assert new.geometry_sha256 != old.geometry_sha256
+    assert new.configuration_identity != old.configuration_identity
+    new.port_connection_model = None
+    with pytest.raises(ValueError,match='changed after construction'):
+        new.step(1e-8,.0001)
+    with pytest.raises(ValueError,match='port_connection_model'):
+        _case(geometry_identity={'port_connection_model':'not-a-valid-model'})
+    assert 'motorsim.port_connection_v2' in _solver_dependency_hashes()
+    assert 'motorsim.gas1d.exact_riemann_reference_v1' in _solver_dependency_hashes()
+
+
+def test_all_eight_ports_have_complete_stage_evidence_and_shared_conservation():
+    e = case(exhaust_area=1e-5,intake_area=1e-5,cylinder_pressure=2e5)
+    trace = e.step(1e-8,.00006)
+    assert trace
+    # The engine trace keeps both SSPRK stage dictionaries; locate actual
+    # endpoint evidence without relying on a derived cycle summary.
+    encoded = json.dumps(trace)
+    assert encoded.count('port_connection_states') == 10
+    assert encoded.count('chamber_thermodynamics') == 16
+    report = e.conservation_report()
+    assert abs(report['mass']['residual']) < 1e-15
+    assert abs(report['energy']['residual']) < 1e-10
+    for r in report['species'].values():
+        assert abs(r['residual']) < 1e-15
+
+
+def test_full_face_pressure_is_not_counted_twice():
+    e = case(exhaust_area=1e-5)
+    c = e._chamber_state(e.state['chambers']['cylinder'],
+                         e.state['species']['chambers']['cylinder'])
+    w = e._primitive(e.state['ducts']['exhaust'][0])
+    exchange = e._port_exchange(c,w,1e-5,1e-4,-1)
+    assert _port_face_flux(exchange,w,1e-4,1e-5) == exchange.flux_x[:3]
+    with pytest.raises(ValueError,match='area differs'):
+        _port_face_flux(exchange,w,2e-4,1e-5)
+
+
+def test_checkpoint_replay_and_cross_model_rejection():
+    a,b = case(exhaust_area=1e-5),case(exhaust_area=1e-5)
+    a.step(1e-8,.00006)
+    saved = json.loads(json.dumps(a.snapshot()))
+    b.restore(deepcopy(saved))
+    a.step(1e-8,.00006)
+    b.step(1e-8,.00006)
+    assert a.state == b.state
+    assert a.conservation_report() == b.conservation_report()
+    assert a.snapshot() == b.snapshot()
+    old = _case(exhaust_area=1e-5)
+    with pytest.raises(ValueError):
+        old.restore(saved)
+
+
+def test_model_selection_survives_supported_configuration_roundtrip():
+    # Use a real serialized geometric contract: anonymous test callbacks are
+    # deliberately not eligible for configuration re-creation.
+    from pathlib import Path
+    receipt = json.loads(Path('results/periodic-rpm-curves-v1/receipt.json').read_text(encoding='utf-8'))
+    path = Path(receipt['points'][0]['result']).parent/'native-configuration.json'
+    if not path.exists():
+        pytest.skip('external historical native configuration is unavailable')
+    config = json.loads(path.read_text(encoding='utf-8'))
+    config['geometry_identity']['port_connection_model'] = SCHEMA
+    engine = IntegratedEngine2T.from_configuration_dict(config)
+    restored = IntegratedEngine2T.from_configuration_dict(engine.configuration_dict())
+    assert restored.port_connection_model == SCHEMA
+    assert restored.configuration_json() == engine.configuration_json()

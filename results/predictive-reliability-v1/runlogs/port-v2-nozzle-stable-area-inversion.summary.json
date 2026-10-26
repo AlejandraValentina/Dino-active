@@ -1,0 +1,38 @@
+{
+  "name": "port-v2-nozzle-stable-area-inversion",
+  "command": [
+    "python",
+    "scripts/diagnostics/diagnose_integrated_port_v2.py",
+    "--output",
+    "results/predictive-reliability-v1/integrated-nozzle-stable-area-inversion",
+    "--model",
+    "nozzle",
+    "--step-degrees",
+    "0.5"
+  ],
+  "started_at": "2026-10-26T14:43:14+00:00",
+  "finished_at": "2026-10-26T14:43:42+00:00",
+  "duration_s": 27.922,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\port-v2-nozzle-stable-area-inversion.log",
+  "log_lines": 14,
+  "log_bytes": 339,
+  "error_lines": [],
+  "tail": [
+    "{",
+    "  \"status\": \"COMPLETE\",",
+    "  \"error\": null,",
+    "  \"terminal_angle_deg\": 720.0,",
+    "  \"accepted_steps\": 1450,",
+    "  \"wall_s\": 27.451314199948683,",
+    "  \"compute_s\": 22.607612297404557,",
+    "  \"normalized_residuals\": {",
+    "    \"mass\": 2.4413457882672786e-16,",
+    "    \"energy\": 1.4427189048288867e-15,",
+    "    \"species\": 6.0815667404158095e-16",
+    "  },",
+    "  \"numerical_gate\": true",
+    "}"
+  ]
+}

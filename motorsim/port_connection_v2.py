@@ -5,12 +5,10 @@ See transonic-contract-v2.md. Neither model is experimental validation.
 """
 from dataclasses import dataclass
 from functools import lru_cache
-from math import isfinite, log, sqrt, ulp
+from math import exp, isfinite, log, log1p, sqrt, ulp
 
 from .gas1d.eos import IdealGas, InvalidState
 from .gas1d.exact_riemann_reference_v1 import exact_riemann_v1, pressure_wave
-from .port_restriction_v1 import (QuiescentVolumeStateV1, RestrictionGeometryV1,
-                                  reservoir_restriction_v1)
 
 SCHEMA = 'EQUIVALENT_IDEAL_NOZZLE_CONNECTION_CANDIDATE_V2'
 
@@ -19,7 +17,7 @@ class NoAdmissiblePortState(InvalidState):
     """No positive quasi-steady state in this explicit model; never a fallback."""
 
 
-def root(f, lo, hi):
+def root(f, lo, hi, *, nonpositive_endpoint=False):
     a, b = f(lo), f(hi)
     if a == 0:
         return lo
@@ -40,6 +38,8 @@ def root(f, lo, hi):
             lo, a = mid, value
         else:
             hi = mid
+    if nonpositive_endpoint:
+        return lo if f(lo)<=0 else hi
     return (lo+hi)/2
 
 
@@ -130,7 +130,7 @@ def port_connection_v2(chamber, interior, effective_area_m2, duct_area_m2,
         return wi-f, rho
 
     def finish(state, branch, mt=0., pt=None, shock_area=None, causal=None,
-               acoustic=True):
+               acoustic=True, wave_signals=()):
         rho, w, p, marker = eos.validate(state)
         physical = (rho, normal*w, p, marker)
         flux = tuple(ap*x for x in eos.flux(physical))
@@ -138,8 +138,17 @@ def port_connection_v2(chamber, interior, effective_area_m2, duct_area_m2,
             raise NoAdmissiblePortState('nonfinite nozzle flux')
         a = eos.sound_speed(state)
         p0, _ = total_state(state, eos)
+        # Include waves traversing the *interior* gas as well as face-state
+        # characteristics. A hot interior shocked by colder donor gas can
+        # have a faster signal than |u_face|+a_face alone.
+        signals = [physical[1]-a,physical[1]+a,ui-ai,ui+ai]
+        if acoustic:
+            left_speed = (wi-ai*sqrt((g+1)/(2*g)*p/pi+(g-1)/(2*g))
+                          if p>pi else wi-ai)
+            signals.append(normal*left_speed)
+        signals.extend(normal*v for v in wave_signals)
         return PortExchangeV2(flux, tuple(normal*x for x in flux),
-            (physical[1]-a, physical[1], physical[1]+a), physical, branch,
+            (min(signals), physical[1], max(signals)), physical, branch,
             mt, pt, ap, at, wave(p)[0]-w if acoustic else None, p0,
             shock_area, causal)
 
@@ -162,56 +171,74 @@ def port_connection_v2(chamber, interior, effective_area_m2, duct_area_m2,
         return finish((rhoi, 0., pi, yi), 'EQUILIBRIUM')
 
     if wave(pc)[0] > 0:
-        # Pipe donor: subsonic face, or an upstream-moving unstart shock.
+        # Invert area-Mach and pressure relations, not the tiny stagnation-
+        # pressure difference. The latter loses digits as velocity tends to
+        # zero and spuriously destroys the outflow bracket at full pipe area.
+        msub, _ = nozzle_mach_roots(ap/at,g)
+
+        def pipe(p):
+            w,rho = wave(p)
+            if p==p_zero:
+                w=0.  # The analytic zero-velocity endpoint, not a deadband.
+            return rho,w,p,yi
+
+        def mach(state):
+            return state[1]/eos.sound_speed(state)
+
+        def throat(p, critical=False):
+            state = pipe(p)
+            mb = mach(state)
+            if critical:
+                mt = 1.
+            elif mb == 0:
+                mt = 0.
+            elif at == ap:
+                mt = mb
+            else:
+                ratio = area_mach(msub,g)/area_mach(mb,g)
+                if ratio > 1:
+                    if ratio-1 > 64*ulp(1.):
+                        raise NoAdmissiblePortState('outflow exceeds contraction capacity')
+                    mt = 1.  # ULP-only inversion of the critical endpoint.
+                else:
+                    mt = root(lambda m: 1/area_mach(m,g)-ratio,.1*ratio,1.)
+            pt = p if at==ap else p*exp(g/(g-1)*(
+                log1p((g-1)*mb*mb/2)-log1p((g-1)*mt*mt/2)))
+            return state,mt,pt
+
+        pcritical = None
         if wi >= ai:
-            lower = max(pc, normal_shock(inside, eos)[2])
+            lower = normal_shock(inside, eos)[2]
+            if mach(pipe(lower)) > msub:
+                pcritical = root(lambda p: mach(pipe(p))-msub,lower,p_zero,
+                                 nonpositive_endpoint=True)
+            elif pc <= throat(lower)[2]:
+                # A stationary or downstream-moving shock lies beyond the
+                # pipe, so chamber data cannot change its supersonic face.
+                p0,t0 = total_state(inside,eos)
+                astar = ap/area_mach(wi/ai,g)
+                if at < astar*(1-1e-12):
+                    raise NoAdmissiblePortState('supersonic contraction has insufficient throat area')
+                _,mt = nozzle_mach_roots(at/astar,g)
+                pt = p0*(1+(g-1)*mt*mt/2)**(-g/(g-1))
+                return finish(inside,'OUTFLOW_SUPERSONIC_TRANSMITTED',mt,pt,acoustic=False)
         else:
             a_sonic = (wi+2*ai/(g-1))*(g-1)/(g+1)
             if a_sonic <= 0:
                 raise NoAdmissiblePortState('no positive outgoing sonic state')
             p_sonic = pi*(a_sonic/ai)**(2*g/(g-1))
-            lower = max(pc, p_sonic)
-
-        def out_state(p):
-            w, rho = wave(p)
-            state = (rho, w, p, yi)
-            p0, t0 = total_state(state, eos)
-            restriction = reservoir_restriction_v1(
-                QuiescentVolumeStateV1(p0, t0, (1.,0.,0.,0.)),
-                QuiescentVolumeStateV1(pc, tc, (1.,0.,0.,0.)),
-                RestrictionGeometryV1(at, 1., 1.), eos=eos)
-            return state, restriction
-
-        def residual(p):
-            state, restriction = out_state(p)
-            return ap*state[0]*state[1]-restriction.mass_rate_kg_s
-
-        if wi >= ai and residual(lower) <= 0:
-            # No shock can propagate upstream through this supersonic outflow.
-            # The contraction and/or a downstream shock are outside the pipe.
-            p0, t0 = total_state(inside, eos)
-            q = ap*rhoi*wi
-            tcrit = t0*2/(g+1)
-            pcrit = p0*(2/(g+1))**(g/(g-1))
-            astar = q/(pcrit/(gas_r*tcrit)*sqrt(g*gas_r*tcrit))
-            if at < astar*(1-1e-12):
-                raise NoAdmissiblePortState('supersonic contraction has insufficient throat area')
-            _, mt = nozzle_mach_roots(max(1., at/astar), g)
-            pt = p0*(1+(g-1)*mt*mt/2)**(-g/(g-1))
-            return finish(inside, 'OUTFLOW_SUPERSONIC_TRANSMITTED', mt, pt,
-                          acoustic=False)
-        if p_zero is None or lower > p_zero:
-            raise NoAdmissiblePortState('no admissible upstream outflow shock')
-        rlow = residual(lower)
-        scale = max(ap*wave(lower)[1]*abs(wave(lower)[0]), 1e-300)
-        if abs(rlow) <= 1e-13*scale:
-            p = lower
-        else:
-            p = root(residual, lower, p_zero)
-        state, restriction = out_state(p)
-        branch = ('OUTFLOW_UNSTART_SHOCK_' if wi >= ai else 'OUTFLOW_')+restriction.branch
-        return finish(state, branch, restriction.throat_mach,
-                      restriction.throat_pressure_pa)
+            lower = pcritical = (p_sonic if at==ap else root(
+                lambda p: mach(pipe(p))-msub,p_sonic,p_zero,
+                nonpositive_endpoint=True))
+        prefix = 'OUTFLOW_UNSTART_SHOCK_' if wi>=ai else 'OUTFLOW_'
+        if pcritical is not None:
+            state,mt,pt = throat(pcritical,critical=True)
+            if pc <= pt:
+                return finish(state,prefix+'CHOKED',mt,pt)
+            lower = pcritical
+        p = root(lambda p: throat(p)[2]-pc,lower,p_zero)
+        state,mt,pt = throat(p)
+        return finish(state,prefix+'SUBSONIC',mt,pt)
 
     # Chamber donor. The ideal nozzle's subsonic exit branch has no entropy loss.
     msub, msup = nozzle_mach_roots(ap/at, g)
@@ -297,4 +324,5 @@ def port_connection_v2(chamber, interior, effective_area_m2, duct_area_m2,
     if speed > 1e-10*max(ai, eos.sound_speed(jet)):
         raise NoAdmissiblePortState('supersonic nozzle exit incompatible with downstream waves')
     return finish(jet, 'INFLOW_CHOKED_SUPERSONIC' if msup > 1 else 'INFLOW_CHOKED_SONIC',
-                  1., throat_p, causal=speed, acoustic=False)
+                  1., throat_p, causal=speed, acoustic=False,
+                  wave_signals=(*rp.left_speeds,rp.velocity,*rp.right_speeds))

@@ -1,0 +1,32 @@
+{
+  "name": "port-v2-replay-audit-with-retries",
+  "command": [
+    "python",
+    "scripts/diagnostics/replay_integrated_port_v2.py",
+    "--directory",
+    "results/predictive-reliability-v1/integrated-nozzle-final",
+    "--output",
+    "results/predictive-reliability-v1/nozzle-cycle2-replay-audit.json"
+  ],
+  "started_at": "2026-10-26T14:52:38+00:00",
+  "finished_at": "2026-10-26T14:52:49+00:00",
+  "duration_s": 11.297,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\port-v2-replay-audit-with-retries.log",
+  "log_lines": 6,
+  "log_bytes": 399,
+  "error_lines": [
+    "1: Traceback (most recent call last):",
+    "5:     raise AssertionError(f'replay mismatch at {row[\"angle_start_deg\"]}')",
+    "6: AssertionError: replay mismatch at 591.0742797851562"
+  ],
+  "tail": [
+    "Traceback (most recent call last):",
+    "  File \"E:\\dino\\Dino-active\\scripts\\diagnostics\\replay_integrated_port_v2.py\", line 103, in <module>",
+    "    replay(args.directory,args.output)",
+    "  File \"E:\\dino\\Dino-active\\scripts\\diagnostics\\replay_integrated_port_v2.py\", line 74, in replay",
+    "    raise AssertionError(f'replay mismatch at {row[\"angle_start_deg\"]}')",
+    "AssertionError: replay mismatch at 591.0742797851562"
+  ]
+}
