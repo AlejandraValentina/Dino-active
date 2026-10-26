@@ -1,0 +1,37 @@
+{
+  "name": "mesh-refined-config-fixed",
+  "command": [
+    "python",
+    "scripts/diagnostics/diagnose_integrated_mesh_v1.py",
+    "--source",
+    "results/predictive-reliability-v1/spatial-muscl-coarse",
+    "--output",
+    "results/predictive-reliability-v1/mesh-refined-v1"
+  ],
+  "started_at": "2026-10-26T15:37:04+00:00",
+  "finished_at": "2026-10-26T15:38:12+00:00",
+  "duration_s": 67.313,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\mesh-refined-config-fixed.log",
+  "log_lines": 15,
+  "log_bytes": 378,
+  "error_lines": [],
+  "tail": [
+    "{",
+    "  \"status\": \"COMPLETE\",",
+    "  \"error\": null,",
+    "  \"execution_gate\": true,",
+    "  \"coarse_cells\": 44,",
+    "  \"fine_cells\": 88,",
+    "  \"wall_s\": 66.81589079997502,",
+    "  \"compute_s\": 66.5121281943284,",
+    "  \"maximum_projected_mesh_difference\": 0.11042234384078368,",
+    "  \"normalized_residuals\": {",
+    "    \"mass\": 9.788667445809962e-16,",
+    "    \"energy\": 3.650720041815784e-16,",
+    "    \"species\": 6.063776293864577e-16",
+    "  }",
+    "}"
+  ]
+}

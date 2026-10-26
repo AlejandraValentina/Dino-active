@@ -8430,11 +8430,15 @@
         "PRED-SPATIAL",
         "PRED-BASELINE"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Execute the single preregistered 44-to-88-cell diagnostic; quantify sensitivity, never claim independence from one refinement pair.",
+      "evidence": [
+        "results/predictive-reliability-v1/mesh-refined-v1/receipt.json",
+        "results/predictive-reliability-v1/integrated-spatial-comparison-v1.json",
+        "tests/test_integrated_mesh_refinement_v1.py"
+      ],
+      "next_action": "Fix independently demonstrated moving-cell thermal denominator, inventory measured inputs; no calibration to transient results.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "orchestrator/physics/verification",
       "write_scope": [
@@ -8442,7 +8446,8 @@
         "tests/test_integrated_mesh_refinement_v1.py",
         "results/predictive-reliability-v1/mesh-refined-v1/"
       ],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "qualification": "Bounded numerical diagnostic gate only, SELF_REVIEW. Mesh refinement 44->88 conserves inventories and checkpoints but changes transient cylinder work 3.12%; no mesh independence or predictive validation claimed."
     },
     {
       "id": "PRED-IDENTIFICATION",
@@ -8450,7 +8455,7 @@
       "dependencies": [
         "PRED-INTEGRATED"
       ],
-      "state": "WAITING",
+      "state": "READY",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -8813,17 +8818,21 @@
       "dependencies": [
         "PRED-BASELINE"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Independent preparation only; model correction/validation waits for integrated numerical gates.",
+      "evidence": [
+        "tests/test_moving_cell_thermal_reference_v1.py",
+        "results/predictive-reliability-v1/runlogs/moving-heat-before-correction.summary.json"
+      ],
+      "next_action": "Correct under PRED-IDENTIFICATION after integrated diagnostic gate.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "tests/test_moving_cell_thermal_reference_v1.py"
       ],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "qualification": "Independent first-law reference: zero-lift controls PASS, four moving-cell source checks and two SSPRK conservation checks fail before correction, as predicted by Vdynamic/Vbase."
     },
     {
       "id": "PRED-MEASURED-DATA-INVENTORY",
@@ -12583,6 +12592,12 @@
       "task": "PRED-INTEGRATED",
       "kind": "task",
       "summary": "Mesh diagnostic stopped before stepping: tuple/list configuration mismatch; preserve values as JSON lists and add native roundtrip regression (7 PASS). No physical change."
+    },
+    {
+      "at": "2026-10-26T15:39:02+00:00",
+      "task": "PRED-INTEGRATED",
+      "kind": "task",
+      "summary": "Single 44->88-cell two-cycle mesh diagnostic COMPLETE in 66.51s; normalized residuals <1e-15, restart and cross-mesh rejection PASS. Transient cylinder work changes 3.12%; no mesh independence/predictive claim. Moving-cell thermal defect independently reproduced (6 FAIL/2 controls PASS)."
     }
   ],
   "legacy_gate_status": {
@@ -12606,18 +12621,17 @@
       "results/predictive-reliability-v1/connection-domain-receipt.json"
     ],
     "gate_tasks_total": 7,
-    "gate_tasks_done": 4,
+    "gate_tasks_done": 5,
     "gate_task_states": {
-      "DONE": 4,
+      "DONE": 5,
       "READY": 1,
-      "WAITING": 2
+      "WAITING": 1
     },
     "remaining": [
-      "PRED-INTEGRATED",
       "PRED-IDENTIFICATION",
       "PRED-VALIDATION"
     ],
-    "updated_at": "2026-10-26T15:20:59+00:00"
+    "updated_at": "2026-10-26T15:39:03+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
