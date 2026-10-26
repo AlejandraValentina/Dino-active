@@ -1,0 +1,171 @@
+{
+  "schema": "DINO_SPATIAL_RECONSTRUCTION_V1_VERIFICATION",
+  "passed": true,
+  "cases": [
+    {
+      "n": 40,
+      "kind": "entropy",
+      "model": "legacy",
+      "steps": 47,
+      "rho_L1": 0.006119299228409889,
+      "species_L1": 0.0023597574476102875,
+      "pressure_L1": 3.830269434956789e-16,
+      "conservation_abs": 1.1102230246251565e-16
+    },
+    {
+      "n": 80,
+      "kind": "entropy",
+      "model": "legacy",
+      "steps": 93,
+      "rho_L1": 0.003101668726653451,
+      "species_L1": 0.0011984378216717529,
+      "pressure_L1": 5.093148125467907e-16,
+      "conservation_abs": 5.551115123125783e-17
+    },
+    {
+      "n": 160,
+      "kind": "entropy",
+      "model": "legacy",
+      "steps": 186,
+      "rho_L1": 0.0015609572997419502,
+      "species_L1": 0.0006038183939305948,
+      "pressure_L1": 5.814793091474266e-16,
+      "conservation_abs": 5.551115123125783e-17
+    },
+    {
+      "n": 40,
+      "kind": "entropy",
+      "model": "muscl",
+      "steps": 47,
+      "rho_L1": 0.0006391510677331151,
+      "species_L1": 0.00027025381086190857,
+      "pressure_L1": 4.8017145815038e-16,
+      "conservation_abs": 0.0
+    },
+    {
+      "n": 80,
+      "kind": "entropy",
+      "model": "muscl",
+      "steps": 93,
+      "rho_L1": 0.0001499114975759136,
+      "species_L1": 6.403343180907111e-05,
+      "pressure_L1": 5.093148125467901e-16,
+      "conservation_abs": 4.440892098500626e-16
+    },
+    {
+      "n": 160,
+      "kind": "entropy",
+      "model": "muscl",
+      "steps": 186,
+      "rho_L1": 3.3852513304385285e-05,
+      "species_L1": 1.4655018403051143e-05,
+      "pressure_L1": 6.848688283156442e-16,
+      "conservation_abs": 1.1102230246251565e-16
+    },
+    {
+      "n": 40,
+      "kind": "acoustic",
+      "model": "legacy",
+      "steps": 24,
+      "rho_L1": 0.0,
+      "species_L1": 0.0,
+      "pressure_L1": 5.0533572348854255e-08,
+      "conservation_abs": 0.0
+    },
+    {
+      "n": 80,
+      "kind": "acoustic",
+      "model": "legacy",
+      "steps": 48,
+      "rho_L1": 0.0,
+      "species_L1": 0.0,
+      "pressure_L1": 2.5638232160896107e-08,
+      "conservation_abs": 5.551115123125783e-17
+    },
+    {
+      "n": 160,
+      "kind": "acoustic",
+      "model": "legacy",
+      "steps": 95,
+      "rho_L1": 0.0,
+      "species_L1": 0.0,
+      "pressure_L1": 1.2914750902037753e-08,
+      "conservation_abs": 4.440892098500626e-16
+    },
+    {
+      "n": 40,
+      "kind": "acoustic",
+      "model": "muscl",
+      "steps": 24,
+      "rho_L1": 0.0,
+      "species_L1": 0.0,
+      "pressure_L1": 4.907547590526917e-09,
+      "conservation_abs": 5.551115123125783e-17
+    },
+    {
+      "n": 80,
+      "kind": "acoustic",
+      "model": "muscl",
+      "steps": 48,
+      "rho_L1": 0.0,
+      "species_L1": 0.0,
+      "pressure_L1": 1.2447229538747885e-09,
+      "conservation_abs": 4.440892098500626e-16
+    },
+    {
+      "n": 160,
+      "kind": "acoustic",
+      "model": "muscl",
+      "steps": 95,
+      "rho_L1": 0.0,
+      "species_L1": 0.0,
+      "pressure_L1": 2.860992394382311e-10,
+      "conservation_abs": 1.1102230246251565e-16
+    }
+  ],
+  "observed_final_orders": {
+    "entropy:legacy:rho_L1": 0.9906135350535977,
+    "entropy:muscl:rho_L1": 2.146776183552223,
+    "entropy:legacy:species_L1": 0.9889684488475599,
+    "entropy:muscl:species_L1": 2.1274305521692347,
+    "acoustic:legacy:pressure_L1": 0.9892769696746383,
+    "acoustic:muscl:pressure_L1": 2.121237100416208
+  },
+  "wall_s": 7.0650283000431955,
+  "cfl": 0.2,
+  "gas_gamma": 1.4,
+  "physical_time": 0.1,
+  "initialization": "EXACT_CELL_AVERAGES",
+  "acoustic_reference": "LINEARIZED_AMPLITUDE_1E-6_NONLINEAR_ERROR_O_EPSILON_SQUARED",
+  "engine_steps": 0,
+  "review": "SELF_REVIEW",
+  "experimental_validation": false,
+  "storage_preflight": {
+    "schema": "DINO_STORAGE_PREFLIGHT_V1",
+    "status": "PASS",
+    "targets": [
+      "E:\\dino\\Dino-active\\results\\predictive-reliability-v1"
+    ],
+    "volumes": [
+      {
+        "volume": "E:\\",
+        "free_bytes": 7110848512,
+        "reserve_bytes": 2147483648,
+        "estimated_write_bytes": 1048576,
+        "targets": [
+          {
+            "path": "E:\\dino\\Dino-active\\results\\predictive-reliability-v1",
+            "estimated_write_bytes": 1048576
+          }
+        ],
+        "required_free_bytes": 2148532224,
+        "headroom_after_estimate_bytes": 7109799936,
+        "status": "PASS"
+      }
+    ]
+  },
+  "source_sha256": {
+    "motorsim/gas1d/spatial_reconstruction_v1.py": "9d8661ce019e71a788a86d2f1574cc03e5edabdcb50a6ebed12f566353ade954",
+    "scripts/diagnostics/verify_spatial_reconstruction_v1.py": "1d41b5de206ce3c6f4fa050ee3624150f4fe2647d2d3fd69826d60641bd94a49"
+  }
+}
