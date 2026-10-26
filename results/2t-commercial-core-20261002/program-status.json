@@ -8097,10 +8097,16 @@
         "PERFV3-SOURCE-FORENSICS",
         "PERFV3-TRANSFER-DESIGN"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
+      "commits": [
+        "9c60db2"
+      ],
+      "evidence": [
+        "motorsim/periodic_initialization_v1.py",
+        "motorsim/engineering_workflow.py",
+        "motorsim/exploratory_workflow.py"
+      ],
       "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
       "owner_role": "implementation",
       "evidence_level": "L0",
@@ -8109,7 +8115,7 @@
         "motorsim/exploratory_workflow.py"
       ],
       "unblock_tasks": [],
-      "next_action": "Transform only compatible conservative state into the target configuration and bind source provenance."
+      "next_action": "Fail-closed conservative-state transfer implemented as a distinct run; source hashes and state provenance bound. Commit 9c60db2."
     },
     {
       "id": "PERFV3-TRANSFER-TESTS",
@@ -8118,10 +8124,14 @@
         "PERFV3-SOURCE-FORENSICS",
         "PERFV3-TRANSFER-DESIGN"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
+      "commits": [
+        "9c60db2"
+      ],
+      "evidence": [
+        "tests/test_periodic_initialization_v1.py"
+      ],
       "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
       "owner_role": "verification",
       "evidence_level": "L0",
@@ -8129,7 +8139,7 @@
         "tests/test_periodic_initialization_v1.py"
       ],
       "unblock_tasks": [],
-      "next_action": "Add no-step contract tests against the immutable A9000/A10000 source fixtures."
+      "next_action": "4 no-step tests PASS; unrelated CFL and power-valve map changes are rejected; conserved inventories and reset state verified. Commit 9c60db2."
     },
     {
       "id": "PERFV3-PILOT-PREFLIGHT",
@@ -8137,11 +8147,14 @@
       "dependencies": [
         "PERFV3-SOURCE-FORENSICS"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "9c60db2"
+      ],
       "evidence": [
-        "results/periodic-rpm-curves-v1/protocol.md"
+        "results/integrated-performance-v3/pilot-contract.json",
+        "results/integrated-performance-v3/historical-reference-envelope.json"
       ],
       "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
       "owner_role": "contract/regression guardian",
@@ -8151,7 +8164,7 @@
         "scripts/diagnostics/"
       ],
       "unblock_tasks": [],
-      "next_action": "Freeze one pilot identity, output path, source hashes and 40-cycle/240-second limits."
+      "next_action": "Actual source A9000 checkpoint validated at target A10000 with zero solver steps; storage preflight PASS, 1 GiB estimate, 2 GiB reserve, E: headroom 5.86 GiB after estimate. One-shot run and 40-cycle/240-second limits frozen. Commit 9c60db2."
     },
     {
       "id": "PERFV3-A10000-PILOT",
@@ -8161,7 +8174,7 @@
         "PERFV3-TRANSFER-TESTS",
         "PERFV3-PILOT-PREFLIGHT"
       ],
-      "state": "WAITING",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -8192,6 +8205,45 @@
       ],
       "unblock_tasks": [],
       "next_action": "Integrate into the RPM coordinator only after the acceptance condition passes; otherwise reject or classify inconclusive."
+    },
+    {
+      "id": "PERFV3-TRANSFER-ADVERSARIAL-REVIEW",
+      "description": "Review initializer compatibility whitelist, provenance binding, and fail-closed behavior before the pilot.",
+      "dependencies": [
+        "PERFV3-TRANSFER-IMPLEMENT",
+        "PERFV3-TRANSFER-TESTS"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
+      "owner_role": "skeptic/adversarial review",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/integrated-performance-v3/transfer-review.json"
+      ],
+      "unblock_tasks": [],
+      "next_action": "Perform a read-only adversarial review; label it SELF_REVIEW unless another reviewer performs it."
+    },
+    {
+      "id": "PERFV3-CHECKPOINT-STOP-REVIEW",
+      "description": "Verify from the existing runner that wall-budget interruption preserves the last complete-cycle checkpoint and cannot resume past the fixed pilot cap.",
+      "dependencies": [
+        "PERFV3-TRANSFER-IMPLEMENT"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "objective": "DINO_INTEGRATED_PERFORMANCE_V3",
+      "owner_role": "contract/regression guardian",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/integrated-performance-v3/checkpoint-stop-review.json"
+      ],
+      "unblock_tasks": [],
+      "next_action": "Inspect current bounded-run exception/checkpoint path; no solver steps."
     }
   ],
   "audit_remediation_mode": false,
@@ -11791,6 +11843,12 @@
       "task": "PERFV3-TRANSFER-IMPLEMENT",
       "kind": "task",
       "summary": "Implemented hash-anchored conservative periodic-state initialization as a distinct RPM run; source A9000 validates against target A10000 without solver steps and exact total mass/energy/species inventory is preserved."
+    },
+    {
+      "at": "2026-10-26T12:24:58+00:00",
+      "task": "PERFV3-A10000-PILOT",
+      "kind": "task",
+      "summary": "Pilot contract is frozen and storage preflight passes; starting the single A9000-to-A10000 run under the committed 40-cycle/240-second hard caps."
     }
   ],
   "legacy_gate_status": {
@@ -11812,18 +11870,17 @@
       "openspec/changes/integrated-performance-v3/specs/integrated-performance-v3/spec.md"
     ],
     "gate_tasks_total": 4,
-    "gate_tasks_done": 0,
+    "gate_tasks_done": 2,
     "gate_task_states": {
-      "READY": 2,
-      "WAITING": 2
+      "DONE": 2,
+      "READY": 1,
+      "WAITING": 1
     },
     "remaining": [
-      "PERFV3-TRANSFER-IMPLEMENT",
-      "PERFV3-TRANSFER-TESTS",
       "PERFV3-A10000-PILOT",
       "PERFV3-DECISION"
     ],
-    "updated_at": "2026-10-26T12:02:37+00:00"
+    "updated_at": "2026-10-26T12:24:48+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
