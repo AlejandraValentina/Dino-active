@@ -1,0 +1,27 @@
+{
+  "name": "predictive-reliability-p4-p8-artifact-recheck",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_p4_g2_v2_recovery.py::test_new_durable_acquisition_reaudits_without_producer_pass",
+    "tests/test_p4_g2_v2_recovery.py::test_reacquired_terminal_states_match_historical_run_exactly",
+    "tests/test_p4_g2_v2_recovery.py::test_r2_real_closing_checkpoint_false_dt_cannot_pass_after_hash_update",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "started_at": "2026-10-26T14:10:38+00:00",
+  "finished_at": "2026-10-26T14:12:03+00:00",
+  "duration_s": 85.328,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\p4-p8-artifact-recheck\\predictive-reliability-p4-p8-artifact-recheck.log",
+  "log_lines": 2,
+  "log_bytes": 109,
+  "error_lines": [],
+  "tail": [
+    "...                                                                      [100%]",
+    "3 passed in 84.68s (0:01:24)"
+  ]
+}

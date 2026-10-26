@@ -8365,18 +8365,26 @@
       "dependencies": [
         "PRED-RESTRICTION"
       ],
-      "state": "IN_PROGRESS",
-      "blocker": null,
+      "state": "BLOCKED_LOCAL",
+      "blocker": "New candidate lacks the transonic/supersonic duct-face regime required by 37/1008 admissible subsonic-interior input states. Analytic counterexample demands 0.0576073893 kg/s versus 0.0505520173 kg/s compatible subsonic capacity. Owner requested evidence before dependent implementation on fundamental strategy findings.",
       "commits": [],
-      "evidence": [],
-      "next_action": "Solve and verify complete throat-to-duct compatible port connection",
+      "evidence": [
+        "results/predictive-reliability-v1/connection-domain-receipt.json",
+        "results/predictive-reliability-v1/report.md"
+      ],
+      "next_action": "Present domain failure before adopting the connection; retain the model as an unintegrated candidate. Derive and independently verify complete transonic regime selection.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "orchestrator/physics/verification",
       "write_scope": [
         "motorsim/port_connection_v1.py",
         "tests/test_port_connection_v1.py"
       ],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "unblock_tasks": [
+        "PRED-TRANSONIC-WAVE-DESIGN",
+        "PRED-TRANSONIC-REFERENCE",
+        "PRED-PORT-DOMAIN-SURVEY"
+      ]
     },
     {
       "id": "PRED-SPATIAL",
@@ -8482,11 +8490,14 @@
       "dependencies": [
         "PRED-RESTRICTION"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Prepare independent conservation and limiting-state fixtures for the port candidate",
+      "evidence": [
+        "tests/test_port_connection_v1.py",
+        "results/predictive-reliability-v1/connection-domain-receipt.json"
+      ],
+      "next_action": "Manufactured-state tests pass; do not equate this with full domain adoption.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -8501,18 +8512,84 @@
       "dependencies": [
         "PRED-RESTRICTION"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Identify preserved core regression and checkpoint contracts before integration",
+      "evidence": [
+        "results/predictive-reliability-v1/verification.json"
+      ],
+      "next_action": "301 historical tests PASS across original run and targeted root-configuration recheck; 3 existing optional-artifact skips retained. Core files unchanged.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
-        "motorsim/port_connection_v1.py",
-        "tests/test_port_connection_v1.py"
+        "results/predictive-reliability-v1/p4-p8-regression/",
+        "results/predictive-reliability-v1/p4-p8-artifact-recheck/",
+        "results/predictive-reliability-v1/verification.json"
       ],
       "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-TRANSONIC-WAVE-DESIGN",
+      "description": "Derive characteristic-count and shock/expansion selection for the missing transonic port regime before integration",
+      "dependencies": [
+        "PRED-RESTRICTION"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/connection-domain-receipt.json"
+      ],
+      "next_action": "Pending presentation of the owner-requested fundamental finding; no dependent production adoption.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/",
+        "results/predictive-reliability-v1/"
+      ],
+      "evidence_level": "L2"
+    },
+    {
+      "id": "PRED-TRANSONIC-REFERENCE",
+      "description": "Construct independent sonic-transition and underexpanded-jet reference states; preserve the counterexample and existing acceptance limits",
+      "dependencies": [
+        "PRED-RESTRICTION"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/connection-domain-receipt.json"
+      ],
+      "next_action": "Pending presentation of the owner-requested fundamental finding; no dependent production adoption.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/",
+        "results/predictive-reliability-v1/"
+      ],
+      "evidence_level": "L2"
+    },
+    {
+      "id": "PRED-PORT-DOMAIN-SURVEY",
+      "description": "Read-only inventory of historical port states to establish encountered regimes without new engine simulation",
+      "dependencies": [
+        "PRED-RESTRICTION"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/connection-domain-receipt.json"
+      ],
+      "next_action": "Pending presentation of the owner-requested fundamental finding; no dependent production adoption.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/",
+        "results/predictive-reliability-v1/"
+      ],
+      "evidence_level": "L2"
     }
   ],
   "audit_remediation_mode": false,
@@ -8731,7 +8808,8 @@
       "PRED-VALIDATION"
     ],
     "completion_criterion": "Versioned physical connection, spatial and subsystem verification followed by preregistered validation against complete measured engine data, or a documented fundamental inconsistency presented before dependent work.",
-    "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED"
+    "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
+    "qualification": "Progressive work remains OPEN. Owner-requested fundamental-finding report due before connection adoption or dependent spatial/integrated work. No global hard stop."
   },
   "objectives": [
     {
@@ -12177,6 +12255,16 @@
       "timestamp": "2026-10-26T13:57:39.855773+00:00",
       "task": "PRED-RESTRICTION",
       "summary": "Implemented isolated versioned quiescent-volume restriction; 1029 numerical tests pass, including independently computed Decimal/Mach flux, reverse donor, choking, Cd and near-equilibrium limits. Product path untouched; baseline receipt preserved."
+    },
+    {
+      "timestamp": "2026-10-26T14:11:47.998676+00:00",
+      "task": "PRED-CONNECTION",
+      "summary": "Candidate manufactured-state verification passes, but 37/1008 domain states require a missing transonic branch. Independent analytic capacity bound reproduced. No product integration or engine runs; stop affected branch and present evidence per owner instruction."
+    },
+    {
+      "timestamp": "2026-10-26T14:13:52.259492+00:00",
+      "task": "PRED-CONNECTION-REGRESSION",
+      "summary": "1187 focused tests PASS. P4-P8: 298 PASS/3 SKIP plus 3 artifact-root failures; configured existing verified external store and all three rechecks PASS. Combined 301 PASS/3 SKIP. No original test/solver changes; candidate adoption remains blocked on transonic regime."
     }
   ],
   "legacy_gate_status": {
@@ -12193,15 +12281,17 @@
   "gate_status": {
     "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
     "state": "OPEN",
-    "classification": null,
+    "classification": "PROGRESS_REFERENCE_PASS_CONNECTION_DOMAIN_BLOCKED",
     "evidence": [
-      "openspec/changes/predictive-reliability-v1/specs/predictive-reliability-v1/spec.md"
+      "results/predictive-reliability-v1/report.md",
+      "results/predictive-reliability-v1/verification.json",
+      "results/predictive-reliability-v1/connection-domain-receipt.json"
     ],
     "gate_tasks_total": 7,
     "gate_tasks_done": 2,
     "gate_task_states": {
       "DONE": 2,
-      "READY": 1,
+      "BLOCKED_LOCAL": 1,
       "WAITING": 4
     },
     "remaining": [
@@ -12211,7 +12301,7 @@
       "PRED-IDENTIFICATION",
       "PRED-VALIDATION"
     ],
-    "updated_at": "2026-10-26T13:57:39+00:00"
+    "updated_at": "2026-10-26T14:13:52+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -12274,7 +12364,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-26T13:57:39.855773+00:00",
+  "updated_at": "2026-10-26T14:13:52.259492+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",

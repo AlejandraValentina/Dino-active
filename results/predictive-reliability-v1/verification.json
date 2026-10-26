@@ -1,0 +1,41 @@
+{
+  "schema": "DINO_PREDICTIVE_VERIFICATION_V1",
+  "focused": {
+    "passed": 1187,
+    "failed": 0,
+    "wall_s": 2.37,
+    "command": "python -m pytest tests/test_port_restriction_v1.py tests/test_port_connection_v1.py tests/test_coupling_riemann.py tests/test_open_end_plenum_v2.py tests/test_p6_species.py -q -p no:cacheprovider"
+  },
+  "historical_regression": {
+    "unique_passed": 301,
+    "skipped": 3,
+    "unresolved_failures": 0,
+    "first_attempt": {
+      "passed": 298,
+      "failed": 3,
+      "skipped": 3,
+      "wall_s": 102.05,
+      "summary": "p4-p8-regression/predictive-reliability-p4-p8-reference.summary.json"
+    },
+    "targeted_recheck": {
+      "passed": 3,
+      "failed": 0,
+      "wall_s": 84.68,
+      "summary": "p4-p8-artifact-recheck/predictive-reliability-p4-p8-artifact-recheck.summary.json",
+      "resolution": "DINO_ARTIFACT_ROOT configured to the existing verified external store; no artifact or test modification"
+    }
+  },
+  "core_unchanged_from_reference": true,
+  "candidate_adoption": "BLOCKED_DOMAIN",
+  "review": "SELF_REVIEW",
+  "engine_simulations": 0,
+  "experimental_validation": "NOT_PERFORMED",
+  "sha256": {
+    "motorsim/port_restriction_v1.py": "a3e03a39d3b714872f493aa6f53a5ca2ba585f3fad2e0a7ea05a133c7a07faa1",
+    "motorsim/port_connection_v1.py": "964004da45c8da675cc7556163a739b8b5f6a4c3a51750e926314c671d5c6897",
+    "tests/test_port_restriction_v1.py": "ff74f7ba1b60cba62fa083a91ae2b1b536da3de060deca3da4b4246733174349",
+    "tests/test_port_connection_v1.py": "c1bed41965eacb7b9d8d4237c1cca2747ad6529e010238cb422be38a9cdff83b",
+    "scripts/diagnostics/verify_port_connection_v1.py": "4b113e4ca01c5fbc2bcf81c8c15011ab4cece35a54b7de98b8d0526333bbe903",
+    "results/predictive-reliability-v1/connection-domain-receipt.json": "08a658af6ce108c559a1f92789833e5cba7e1613e190983228c3bfac96e606c3"
+  }
+}

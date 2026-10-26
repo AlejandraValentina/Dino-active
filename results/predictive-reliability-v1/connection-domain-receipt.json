@@ -1,0 +1,399 @@
+{
+  "branches": {
+    "EQUILIBRIUM": 48,
+    "INFLOW_CHOKED": 324,
+    "INFLOW_CHOKED_SONIC_FACE": 50,
+    "INFLOW_SUBSONIC": 213,
+    "OUTFLOW_CHOKED": 160,
+    "OUTFLOW_SUBSONIC": 176
+  },
+  "configurations": 1008,
+  "counterexample": {
+    "chamber_pressure_pa": 500000.0,
+    "chamber_temperature_k": 300.0,
+    "compatible_subsonic_pipe_max_mass_kg_s": 0.05055201730208571,
+    "demand_capacity_ratio": 1.1395665756857345,
+    "effective_area_ratio": 0.5,
+    "explanation": "Sonic-throat demand exceeds every subsonic pipe state on the candidate acoustic/energy branch",
+    "gamma": 1.35,
+    "pipe_interior_outward_mach": -0.8,
+    "pipe_pressure_pa": 100000.0,
+    "pipe_temperature_k": 300.0,
+    "sonic_limit_pipe_pressure_pa": 117775.30814040123,
+    "throat_required_mass_kg_s": 0.05760738925094381,
+    "unconstrained_bulk_mach": 1.0610389906875963
+  },
+  "engine_simulations": 0,
+  "integrated_model_enabled": false,
+  "max_relative_energy_residual_supported": 4.440892098500626e-16,
+  "max_relative_mass_residual_supported": 1.0191847366058937e-13,
+  "qualification": "Numerical candidate only; domain failures are not waived by passing unit tests",
+  "schema": "DINO_PORT_CONNECTION_DOMAIN_V1",
+  "source_sha256": {
+    "motorsim/port_connection_v1.py": "964004da45c8da675cc7556163a739b8b5f6a4c3a51750e926314c671d5c6897",
+    "motorsim/port_restriction_v1.py": "a3e03a39d3b714872f493aa6f53a5ca2ba585f3fad2e0a7ea05a133c7a07faa1",
+    "scripts/diagnostics/verify_port_connection_v1.py": "4b113e4ca01c5fbc2bcf81c8c15011ab4cece35a54b7de98b8d0526333bbe903"
+  },
+  "status": "ADOPTION_BLOCKED_DOMAIN",
+  "storage_preflight": {
+    "schema": "DINO_STORAGE_PREFLIGHT_V1",
+    "status": "PASS",
+    "targets": [
+      "E:\\dino\\Dino-active\\results\\predictive-reliability-v1"
+    ],
+    "volumes": [
+      {
+        "estimated_write_bytes": 5242880,
+        "free_bytes": 7285207040,
+        "headroom_after_estimate_bytes": 7279964160,
+        "required_free_bytes": 2152726528,
+        "reserve_bytes": 2147483648,
+        "status": "PASS",
+        "targets": [
+          {
+            "estimated_write_bytes": 5242880,
+            "path": "E:\\dino\\Dino-active\\results\\predictive-reliability-v1"
+          }
+        ],
+        "volume": "E:\\"
+      }
+    ]
+  },
+  "supported": 971,
+  "unsupported": 37,
+  "unsupported_states": [
+    {
+      "chamber_pipe_pressure_ratio": 5.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.2,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 300.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 5.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.2,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 5.0,
+      "chamber_temperature_k": 900.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.2,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.1,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.2,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.2,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 300.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.2,
+      "interior_outward_mach": 0.0,
+      "pipe_temperature_k": 300.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.2,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.2,
+      "interior_outward_mach": 0.0,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.2,
+      "interior_outward_mach": 0.8,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 900.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.2,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 300.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 900.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.2,
+      "interior_outward_mach": 0.0,
+      "pipe_temperature_k": 300.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 900.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.2,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 900.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.2,
+      "interior_outward_mach": 0.0,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 5.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.35,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 300.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 5.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.35,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 5.0,
+      "chamber_temperature_k": 900.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.35,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.1,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.35,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.35,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 300.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.35,
+      "interior_outward_mach": 0.0,
+      "pipe_temperature_k": 300.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.35,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.35,
+      "interior_outward_mach": 0.0,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.35,
+      "interior_outward_mach": 0.8,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 900.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.35,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 300.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 900.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.35,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 900.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.35,
+      "interior_outward_mach": 0.0,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 5.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.4,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 300.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 5.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.4,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 5.0,
+      "chamber_temperature_k": 900.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.4,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.1,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.4,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.4,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 300.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.4,
+      "interior_outward_mach": 0.0,
+      "pipe_temperature_k": 300.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.4,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.4,
+      "interior_outward_mach": 0.0,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 300.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.4,
+      "interior_outward_mach": 0.8,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 900.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.4,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 300.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 900.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.4,
+      "interior_outward_mach": -0.8,
+      "pipe_temperature_k": 900.0
+    },
+    {
+      "chamber_pipe_pressure_ratio": 20.0,
+      "chamber_temperature_k": 900.0,
+      "effective_area_ratio": 0.5,
+      "error": "choked throat requires unsupported supersonic duct face",
+      "gamma": 1.4,
+      "interior_outward_mach": 0.0,
+      "pipe_temperature_k": 900.0
+    }
+  ]
+}
