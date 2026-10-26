@@ -8400,7 +8400,7 @@
       "dependencies": [
         "PRED-CONNECTION"
       ],
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -8408,8 +8408,11 @@
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "orchestrator/physics/verification",
       "write_scope": [
-        "openspec/changes/predictive-reliability-v1/",
-        "results/predictive-reliability-v1/"
+        "motorsim/gas1d/spatial_reconstruction_v1.py",
+        "motorsim/integrated_2t.py",
+        "tests/test_spatial_reconstruction_v1.py",
+        "tests/test_integrated_spatial_v1.py",
+        "scripts/diagnostics/verify_spatial_reconstruction_v1.py"
       ],
       "evidence_level": "L0"
     },
@@ -8719,6 +8722,24 @@
       "owner_role": "physics/verification",
       "write_scope": [
         "tests/test_spatial_reconstruction_v1.py"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-SPATIAL-SHOCK-REFERENCE",
+      "description": "Prepare entropy-admissible shock/contact/conservation reference checks for spatial reconstruction",
+      "dependencies": [
+        "PRED-TRANSONIC-REFERENCE"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Use existing exact Euler reference without changing frozen HLLC or prior thresholds.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "tests/test_spatial_shocks_v1.py"
       ],
       "evidence_level": "L0"
     }
@@ -12426,6 +12447,12 @@
       "task": "PRED-CONNECTION",
       "kind": "task",
       "summary": "Equivalent-nozzle coupling stage numerically verified; legacy remains default. CONFIG_V7 prevents older readers silently ignoring physics; actual rc7 reader rejection, roundtrip/restart and 17 configuration regressions PASS. Continue spatial gate; real port loss model remains unvalidated."
+    },
+    {
+      "at": "2026-10-26T15:02:53+00:00",
+      "task": "PRED-SPATIAL",
+      "kind": "task",
+      "summary": "Before implementation, clarify separate gas/species reconstruction bounds so passive composition cannot alter gas flux; choose dominant dependent species slope to preserve absent species. All preregistered numerical acceptance thresholds unchanged."
     }
   ],
   "legacy_gate_status": {
