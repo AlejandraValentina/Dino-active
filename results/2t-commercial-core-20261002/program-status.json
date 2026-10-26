@@ -7612,16 +7612,16 @@
       "id": "CRV1-SIMULATION-ANALYSIS",
       "description": "Complete the ordinary run and same-RPM multi-variant analysis path, reusing the current coordinator and stored physical samples.",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
         "results/dino-commercial-readiness-v1/acceptance/report.md",
         "results/dino-commercial-readiness-v1/acceptance/receipt.json",
-        "Importing the two stored 3000-RPM runs retains matching solver/implementation identities, fuel id, mechanical-loss hash, periodicity contract and 44-cell inventory; exact-RPM comparison returns compatible with TRANSIENT_ESTIMATE.",
-        "Root cause isolated: ResultsPage copied the project curve recipe RPMs to every imported local-history selection, generating NOT_STARTED 8000/9000/10000 rows that appeared INCOMPATIBLE. Regression added for hash-bound recipe scoping."
+        "results/dino-commercial-readiness-v1/captures/17-transient-compatible-v4.png",
+        "Same-RPM imported run pair is compatible at 3000 RPM; source identities agree and the UI preserves EXPLORATORIO / TRANSITORIO."
       ],
-      "next_action": "Build the corrected EXE and verify that selected local runs show one compatible exploratory 3000-RPM comparison, no recipe-generated incompatible rows, and preserved periodic reference imports.",
+      "next_action": "Comparison root cause fixed in fc27542; focused EXE comparison and transient status verified.",
       "objective": "DINO_COMMERCIAL_READINESS_V1",
       "owner_role": "implementation",
       "evidence_level": "L0",
@@ -7638,14 +7638,16 @@
         "CRV1-ENGINE-EDITORS",
         "CRV1-SIMULATION-ANALYSIS"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
         "results/dino-commercial-readiness-v1/acceptance/report.md",
-        "results/dino-commercial-readiness-v1/acceptance/receipt.json"
+        "results/dino-commercial-readiness-v1/acceptance/receipt.json",
+        "results/dino-commercial-readiness-v1/captures/17-transient-compatible-v4.png",
+        "results/dino-commercial-readiness-v1/captures/18-project-reopened-v4.png"
       ],
-      "next_action": "After simulation analysis is DONE, rerun Windows acceptance for base/variant compare and periodic example comparison.",
+      "next_action": "Packaged EXE run/compare/export/reopen journey verified; no Python required to run the user application; prior TRIAL package retained.",
       "objective": "DINO_COMMERCIAL_READINESS_V1",
       "owner_role": "verification",
       "evidence_level": "L1",
@@ -7678,12 +7680,15 @@
       "id": "CRV1-EXPORT-VERIFY",
       "description": "Verify a CSV exported from the packaged Desktop contains the selected result identities, RPM, exploratory status and transient estimates without altering source artifacts.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "unblock_tasks": [],
       "commits": [],
-      "evidence": [],
-      "next_action": "Use the corrected trial EXE to export the same-RPM transient comparison and inspect the CSV values and provenance.",
+      "evidence": [
+        "results/dino-commercial-readiness-v1/exports/transient-compatible-v4.csv",
+        "results/dino-commercial-readiness-v1/acceptance/receipt.json"
+      ],
+      "next_action": "EXE-exported CSV contains both run identities, 3000 RPM, transient estimates, classification, periodicity and provenance hashes; SHA-256 matches the archived copy.",
       "objective": "DINO_COMMERCIAL_READINESS_V1",
       "owner_role": "verification",
       "evidence_level": "L1",
@@ -7695,17 +7700,44 @@
       "id": "CRV1-PROJECT-RECOVERY-VERIFY",
       "description": "Verify the saved engine project retains its edited exhaust variant and remains openable after closing and relaunching the packaged Desktop.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "unblock_tasks": [],
       "commits": [],
-      "evidence": [],
-      "next_action": "Reopen the saved acceptance project from the packaged EXE and compare its project identity, variant count and exhaust edit with the pre-close record.",
+      "evidence": [
+        "results/dino-commercial-readiness-v1/acceptance/recovery.json",
+        "results/dino-commercial-readiness-v1/captures/18-project-reopened-v4.png"
+      ],
+      "next_action": "Closed and relaunched packaged EXE; reopened saved project with its one edited 20 mm longer exhaust variant intact.",
       "objective": "DINO_COMMERCIAL_READINESS_V1",
       "owner_role": "verification",
       "evidence_level": "L1",
       "write_scope": [
         "results/dino-commercial-readiness-v1/recovery/"
+      ]
+    },
+    {
+      "id": "CRV1-REED-SENSITIVITY-PROTOCOL",
+      "description": "Freeze the bounded one-parameter reed-stiffness sensitivity (1000->500 N/m, all else fixed) at 9000 RPM on STANDARD_V1, with observables, hashes, budget and a no-tuning rule; request explicit owner authorization before any solver run.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "unblock_tasks": [],
+      "commits": [],
+      "evidence": [
+        "results/integrated-solver-verification-v1/standard-v1-controlled-continuation-report.md section 6",
+        "configs/reference_cases/standard_v1_125cc_blair_cartwright.json",
+        "results/physical-accuracy-v1/report.md: reed stiffness is a synthetic closure; the cancelled A/B was not executed"
+      ],
+      "next_action": "Commit the k=500 variant builder/config and reed diagnostics; freeze the two-point protocol (same 9000 RPM point, identical fields except the six stiffness entries), define observables and budget, then present the exact owner authorization request. Do not invoke the solver before authorization.",
+      "objective": "DINO_COMMERCIAL_READINESS_V1",
+      "owner_role": "physics/numerics",
+      "evidence_level": "L1",
+      "write_scope": [
+        "configs/reference_cases/",
+        "scripts/build_standard_reed_sensitivity.py",
+        "tests/test_standard_exploratory_point.py",
+        "results/reed-sensitivity-v1/"
       ]
     }
   ],
@@ -11098,6 +11130,36 @@
       "task": "CRV1-SIMULATION-ANALYSIS",
       "kind": "task",
       "summary": "Queue replanned against DINO_COMMERCIAL_READINESS_V1 after gate work left fewer than three READY tasks; added independent EXE export and save/reopen verification tasks."
+    },
+    {
+      "at": "2026-10-26T10:53:55+00:00",
+      "task": "CRV1-SIMULATION-ANALYSIS",
+      "kind": "task",
+      "summary": "Fixed recipe RPM leakage that created false INCOMPATIBLE rows; packaged EXE compares the compatible 3000 RPM transient pair as EXPLORATORIO with explicit transient warning."
+    },
+    {
+      "at": "2026-10-26T10:53:55+00:00",
+      "task": "CRV1-EXPORT-VERIFY",
+      "kind": "task",
+      "summary": "Exported and checked two-row transient comparison CSV from packaged EXE; result/configuration and solver provenance hashes preserved."
+    },
+    {
+      "at": "2026-10-26T10:53:55+00:00",
+      "task": "CRV1-PROJECT-RECOVERY-VERIFY",
+      "kind": "task",
+      "summary": "Closed/relaunched packaged EXE and reopened saved project; edited 20 mm exhaust variant persisted."
+    },
+    {
+      "at": "2026-10-26T10:53:55+00:00",
+      "task": "CRV1-WINDOWS-ACCEPTANCE",
+      "kind": "task",
+      "summary": "Commercial Readiness V1 functional TRIAL journey passed on package fc275421; comparison, export, project recovery and 28 focused regressions recorded."
+    },
+    {
+      "at": "2026-10-26T10:54:06+00:00",
+      "task": "CRV1-REED-SENSITIVITY-PROTOCOL",
+      "kind": "task",
+      "summary": "Added READY protocol task for the bounded 1000->500 N/m reed sensitivity at 9000 RPM; execution remains gated on explicit owner authorization; no solver run."
     }
   ],
   "legacy_gate_status": {
@@ -11113,21 +11175,19 @@
   },
   "gate_status": {
     "objective": "DINO_COMMERCIAL_READINESS_V1",
-    "state": "OPEN",
-    "classification": null,
-    "evidence": [],
-    "gate_tasks_total": 4,
-    "gate_tasks_done": 2,
-    "gate_task_states": {
-      "DONE": 2,
-      "IN_PROGRESS": 1,
-      "WAITING": 1
-    },
-    "remaining": [
-      "CRV1-SIMULATION-ANALYSIS",
-      "CRV1-WINDOWS-ACCEPTANCE"
+    "state": "PASS",
+    "classification": "DINO_COMMERCIAL_READINESS_V1_FUNCTIONAL_TRIAL_PASS",
+    "evidence": [
+      "results/dino-commercial-readiness-v1/acceptance/report.md",
+      "results/dino-commercial-readiness-v1/acceptance/receipt.json"
     ],
-    "updated_at": "2026-10-26T10:42:28+00:00"
+    "gate_tasks_total": 4,
+    "gate_tasks_done": 4,
+    "gate_task_states": {
+      "DONE": 4
+    },
+    "remaining": [],
+    "updated_at": "2026-10-26T10:54:06+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -11190,7 +11250,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-26T10:42:59+00:00",
+  "updated_at": "2026-10-26T10:54:06+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",

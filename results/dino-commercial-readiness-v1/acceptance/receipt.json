@@ -1,54 +1,101 @@
 {
-  "schema": "DINO_COMMERCIAL_READINESS_ACCEPTANCE_PARTIAL_V1",
-  "date": "2026-10-23",
-  "completion": "PARTIAL_BLOCKED_ON_PRODUCT_GAPS",
-  "package": {
-    "zip": "E:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc7-windows-x64-7c79016f-trial-20261023T160920Z.zip",
-    "sha256": "d2992cc184d71e91ed0b22eb89bb3a9e4f2f9f4afe7cf856b442d4cd45ec2020",
-    "exe": "E:\\Dino-Commercial-Readiness-TRIAL-v1-final\\MotorSim\\Dino2T.exe"
+  "schema": "DINO_COMMERCIAL_READINESS_ACCEPTANCE_V1",
+  "date": "2026-10-26",
+  "completion": "PASS_FUNCTIONAL_TRIAL",
+  "scientific_scope": "Synthetic engineering only; transient results are not periodic performance, experimental validation, or commercial validation. X30 unchanged.",
+  "source": {
+    "commit": "fc27542155840cdadbcc2b591ae5cd8e99031899",
+    "dirty": false
   },
-  "project": {
+  "package": {
+    "zip": "C:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc7-windows-x64-fc275421-trial-20261026T104414Z.zip",
+    "zip_sha256": "2bd3419d4fc710d751515ccccbbe098c61609d16aae68c1492e353dccc83755a",
+    "zip_bytes": 289290113,
+    "zip_test": null,
+    "zip_entries": 1636,
+    "exe": "C:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc7-windows-x64-fc275421-trial-20261026T104414Z\\MotorSim\\Dino2T.exe",
+    "exe_bytes": 1861282,
+    "version": "0.1.0-rc7",
+    "trial": true,
+    "built_utc": "20261026T104414Z",
+    "python_runtime_required_for_user": false,
+    "previous_package_retained": true
+  },
+  "workflow": {
+    "created_and_saved_engine_from_desktop": true,
+    "edited_variant": "Escape 20 mm mas largo",
+    "base_exhaust_length_m": 1.079,
+    "variant_exhaust_length_m": 1.099,
+    "variant_delta_mm": 20.0,
+    "two_fresh_runs_same_rpm": true,
+    "rpm": 3000,
+    "run_ids": [
+      "24611ea9027c46838552ef35aa11be56",
+      "ba79fc1abbb244d394ceb46dae18f7cb"
+    ],
+    "comparison_state": "EXPLORATORIO",
+    "compatibility": "COMPATIBLE exact common RPM; no NOT_STARTED recipe rows; no INCOMPATIBLE",
+    "transient_warning": "TRANSITORIO: diferencia de estimaciones, no ganancia estacionaria",
+    "history_records_visible": 8,
+    "reopened_after_process_restart": true
+  },
+  "comparison_cause": {
+    "actual_pair_metadata": "Both runs carry matching solver/implementation identities, fuel id, mechanical-loss identity and periodicity contract; RPM=3000 and same 44-cell inventory. Per-run configuration/result hashes differ as expected for the exhaust variant.",
+    "false_incompatible_root_cause": "ResultsPage applied project recipe RPMs (8000/9000/10000) to arbitrary selected local runs, creating NOT_STARTED placeholders which appeared INCOMPATIBLE. Recipe RPMs are now attached only when result hashes are references in that project.",
+    "historical_periodic_curve_note": "The older 9000/10000 RPM periodic reference points predate the current identity metadata and remain distinct from the two comparable local transient results."
+  },
+  "export": {
+    "path": "results/dino-commercial-readiness-v1/exports/transient-compatible-v4.csv",
+    "sha256": "82dba4d2430ec2eb8fff3e4545c0605609200381be11b2008897c5647fef40d2",
+    "rows": 2,
+    "run_names": [
+      "V2 exhaust test",
+      "base"
+    ],
+    "rpm": [
+      3000.0,
+      3000.0
+    ],
+    "classification": [
+      "MAX_CYCLES_NONCONVERGED",
+      "MAX_CYCLES_NONCONVERGED"
+    ],
+    "periodicity": [
+      "INSUFFICIENT_CYCLES",
+      "INSUFFICIENT_CYCLES"
+    ],
+    "metrics_are_transient_estimates": true
+  },
+  "project_recovery": {
     "path": "E:\\Dino-artifacts\\Dino-Commercial-Readiness-V1\\Designs\\demo-dino-2t.dino2t.json",
-    "identity_sha256": "27f28f6b66c0eff96dd1c80c90feebc0d8d73e6a8ada89ec350216d6970918c0",
-    "reopened_after_process_restart": true,
-    "variant_count_after_reopen": 1,
+    "project_id": "demo-dino-2t",
+    "sha256": "64681e0158d5abc2c34e5e66ded00f8edcf625bb47dafca1310058b04cb6a311",
+    "variant_count": 1,
+    "variant_name": "Escape 20 mm mas largo",
+    "reopened_after_closing_and_relaunching_packaged_exe": true,
     "result_references": 0
   },
-  "run": {
-    "artifact_directory": "C:\\Users\\ageribon.MIDES\\AppData\\Local\\MotorSim\\Artifacts\\exploratory-workflow-v1\\demo-dino-2t\\ccc3083e2c2a4d2a9b0d1562fe5cd151",
-    "run_id": "ccc3083e2c2a4d2a9b0d1562fe5cd151",
-    "mode": "ENGINEERING_EXPLORATORY",
-    "rpm": 3000,
-    "cycles_completed": 1,
-    "elapsed_seconds": 9.77612290007528,
-    "classification": "MAX_CYCLES_NONCONVERGED",
-    "periodicity": "INSUFFICIENT_CYCLES",
-    "available_cycle_values": {
-      "indicated_power_W": -1431.3048992580473,
-      "indicated_torque_Nm": -4.555984995771309,
-      "imep_Pa": -229691.91113632882,
-      "afr_supplied": 11.5,
-      "afr_trapped": 11.500000000000014,
-      "fuel_burned_kg": 6.23203506183894e-7
-    },
-    "interpretation": "One-cycle transient only; not periodic and not experimentally validated."
+  "short_run_performance_seconds": {
+    "base": 9.619537699967623,
+    "exhaust_variant": 9.838055199943483
   },
-  "exhaust_variant": {
-    "name": "Escape 20 mm mas largo",
-    "first_section_length_mm": 103.0,
-    "baseline_first_section_length_mm": 83.0,
-    "saved_in_project": true
+  "regression": {
+    "command": "python -B -m pytest -q tests/test_power_curve.py tests/test_dino_commercial_readiness_v1.py tests/test_dino_desktop_ux_v2.py",
+    "passed": 28,
+    "failed": 0,
+    "skipped": 0,
+    "elapsed_seconds": 80.34
   },
-  "comparison": {
-    "same_project_base_and_variant_runs": false,
-    "periodic_example_loaded": true,
-    "periodic_example_history_records_visible": 0,
-    "complete": false,
-    "blocker": "Second variant run retained the previous checkpoint and Run ID; packaged periodic project references did not populate analysis history."
-  },
+  "evidence": [
+    "results/dino-commercial-readiness-v1/captures/17-transient-compatible-v4.png",
+    "results/dino-commercial-readiness-v1/captures/18-project-reopened-v4.png",
+    "results/dino-commercial-readiness-v1/exports/transient-compatible-v4.csv",
+    "results/dino-commercial-readiness-v1/acceptance/recovery.json"
+  ],
   "claims": {
-    "commercial_validation": false,
     "experimental_validation": false,
+    "commercial_validation": false,
+    "stationary_performance_claim": false,
     "x30_changed": false
   }
 }

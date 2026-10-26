@@ -1,34 +1,36 @@
-# DINO Commercial Readiness V1 — aceptación parcial
+# DINO Commercial Readiness V1 — aceptación funcional
 
-Fecha: 2026-10-23. Ejecución de aceptación en Windows 11 desde el ZIP TRIAL y el EXE extraídos fuera del repositorio. La precisión experimental no se evalúa ni se afirma.
+Fecha: 2026-10-26. Resultado: **PASS funcional TRIAL** para el recorrido Desktop solicitado. La evaluación cubre uso desde el EXE empaquetado. Los resultados de una vuelta son transitorios; no se afirman periodicidad, validación experimental ni validación comercial.
 
-## Implementado
+## Recorrido comprobado
 
-- El proyecto nuevo guiado parte de una plantilla técnica sin resultados; permite cambiar bore, stroke, admission control y clasificación de procedencia. Diámetros y carrera aparecen como medido y estimado; el resto de la plantilla conserva la etiqueta de supuesto.
-- La pantalla muestra magnitudes derivadas (cilindrada, cámara y compresión primaria) y expone la geometría de lumbreras existente. La entrada de control de admisión modifica la configuración nativa.
-- El editor de escape muestra el perfil y edita longitudes/diámetros por tramo. La variante de aceptación cambió el primer tramo de 83 a 103 mm y presentó delta respecto de la baseline.
-- Un punto integrado EXPLORATORY de 3000 rpm y un ciclo se ejecutó desde el EXE. Corrió 9.776 s; generó un ciclo y quedó `MAX_CYCLES_NONCONVERGED` / `INSUFFICIENT_CYCLES`, correctamente transitorio. Valores disponibles en el ciclo: potencia indicada −1.431 kW, torque indicado −4.556 Nm, IMEP −229.692 kPa, AFR suministrado 11.5, AFR atrapado 11.500000000000014 y combustible quemado 6.2320e−7 kg. Estos son valores de una única evolución transitoria; no son curva periódica ni resultado validado.
-- El proyecto se guardó en `E:\Dino-artifacts\Dino-Commercial-Readiness-V1\Designs\demo-dino-2t.dino2t.json`, se cerró y se volvió a abrir en el EXE. Al recuperar se vieron el motor base `Motor Demo 54` y una variante.
-- Tras la primera corrida, el EXE mostró un registro local. En el segundo intento, el coordinador recuperó el checkpoint previo con el mismo Run ID y no creó un segundo resultado para la variante. La comparación de dos ejecuciones de este diseño no pasó.
+- Se creó y guardó un diseño desde Dino Desktop, se duplicó la variante y se editó el escape: el primer tramo cambió de 83 mm a 103 mm.
+- El EXE ejecutó dos puntos integrados breves a 3000 RPM: base en 9.620 s y variante en 9.838 s. Ambos quedaron `MAX_CYCLES_NONCONVERGED` / `INSUFFICIENT_CYCLES`, correctamente identificados como `TRANSIENT_ESTIMATE`.
+- Se recuperaron ambas corridas en Análisis y se compararon en el EXE. Se obtuvo una fila común a 3000 RPM, estado `EXPLORATORIO` y advertencia `TRANSITORIO: diferencia de estimaciones, no ganancia estacionaria`. No aparecieron filas ficticias ni `INCOMPATIBLE` para este par.
+- El CSV exportado desde el EXE contiene dos filas con sus hashes, identidades de solver/implementación, RPM, clasificación, periodicidad y estimaciones transitorias. Se verificó su hash tras copiarlo a la carpeta de evidencia.
+- Se cerró y relanzó el EXE empaquetado, se reabrió el proyecto guardado y se comprobó que conserva una variante de escape, con longitud 1.099 m frente a 1.079 m de la base.
+- Las seis referencias periódicas existentes se reutilizaron para revisar la vista de curvas históricas. No se repitieron campañas ni barridos.
 
-## Pendiente para aceptación
+## Causa y corrección de `INCOMPATIBLE`
 
-- El EXE cargó `Curvas-periodicas-125cc.dino.json` desde `Ejemplos`, pero no materializó las seis referencias en su historial local. La pantalla de análisis mostró cero registros y ninguna corrida seleccionada; por lo tanto, no se pudo verificar visualmente la comparación A/B del ejemplo dentro de esta sesión.
-- Hay que resolver en el producto la importación de referencias del ejemplo o proveer una acción de carga que las haga disponibles, y permitir iniciar una corrida nueva con identidad/checkpoint nuevo tras cambiar de variante. Luego repetir dos corridas al mismo RPM y completar una comparación con fuentes identificables.
-- La demostración no satisface todavía el criterio final completo. No convertir el estado transitorio ni las curvas históricas en claim de validación comercial o experimental.
+Los dos resultados de 3000 RPM sí tienen identidades compatibles: mismo solver, implementación, combustible, modelo de pérdidas, contrato de periodicidad e inventario de 44 celdas. Sus hashes de configuración y de resultado difieren porque representan dos configuraciones de escape distintas.
 
-## Paquete
+El error visible provenía de `ResultsPage`: al seleccionar corridas locales inyectaba en la comparación el grid RPM del recipe del proyecto (8000/9000/10000), creando puntos `NOT_STARTED` que el comparador mostraba como `INCOMPATIBLE`. Se corrigió el origen: el recipe RPM sólo se aplica cuando los hashes importados pertenecen a las referencias guardadas de ese proyecto. La regresión también comprueba que transitorios compatibles siguen siendo comparables y permanecen explícitamente exploratorios.
 
-- ZIP: `E:\Dino-artifacts\Windows\MotorSim-0.1.0-rc7-windows-x64-7c79016f-trial-20261023T160920Z.zip`
-- EXE extraído: `E:\Dino-Commercial-Readiness-TRIAL-v1-final\MotorSim\Dino2T.exe`
-- SHA-256 ZIP: `d2992cc184d71e91ed0b22eb89bb3a9e4f2f9f4afe7cf856b442d4cd45ec2020`
-- Las nuevas corridas se dirigieron a `%LOCALAPPDATA%\MotorSim\Artifacts`; la carpeta antigua no se modificó.
+Los puntos periódicos históricos que carecen de identidades antiguas siguen separados de este par local; no se les inventaron hashes ni se relajaron las reglas de compatibilidad.
 
-## Capturas
+## Regresión y paquete
 
-- `../captures/02-exe-new-project.png` — nuevo proyecto con ejecución habilitada.
-- `../captures/03-new-engine-dialog.png`, `../captures/04-new-engine-configured.png` — creación y configuración desde UI.
-- `../captures/06-exhaust-editor.png`, `../captures/07-exhaust-edited.png` — perfil y dimensión de escape editada.
-- `../captures/08-reopened-project.png`, `../captures/11-recovered-demo-project.png` — proyecto y variante después de reiniciar/abrir.
-- `../captures/12-reopened-analysis.png` — análisis recuperado con el único registro disponible y sin selección.
-- `../captures/13-periodic-example-analysis.png` — análisis vacío al abrir el proyecto periódico empaquetado; evidencia del límite actual.
+- Regresión focalizada: **28 PASS** en `test_power_curve.py`, `test_dino_commercial_readiness_v1.py` y `test_dino_desktop_ux_v2.py`.
+- EXE TRIAL construido desde commit `fc27542155840cdadbcc2b591ae5cd8e99031899`, `source_dirty=false`; el ZIP pasó `testzip` (1.636 entradas).
+- SHA-256 ZIP: `2bd3419d4fc710d751515ccccbbe098c61609d16aae68c1492e353dccc83755a`.
+- La aplicación se abrió y usó directamente desde el paquete Windows sin ejecutar Python para el usuario. El paquete anterior se conservó.
+
+## Evidencia
+
+- `../captures/17-transient-compatible-v4.png` — comparación compatible del par transitorio dentro del EXE.
+- `../captures/18-project-reopened-v4.png` — proyecto persistido después de cerrar y relanzar el EXE.
+- `../exports/transient-compatible-v4.csv` — exportación de dos resultados con metadatos.
+- `recovery.json` y `receipt.json` — identidades, longitudes, hashes y resumen reproducible.
+
+La aceptación es funcional de producto TRIAL. No es una afirmación de rendimiento estacionario ni de validación física/experimental.
