@@ -4,7 +4,7 @@ Pressure-wave curves, Rankine-Hugoniot shocks and self-similar fans. Vacuum is
 reported explicitly: this reference never substitutes a pressure floor.
 """
 from dataclasses import dataclass
-from math import expm1, isfinite, log, sqrt
+from math import expm1, isfinite, log1p, sqrt
 
 from .eos import IdealGas, InvalidState
 
@@ -23,7 +23,7 @@ def pressure_wave(pressure, state, eos):
         return -2*eos.sound_speed(state)/(g-1), 0.
     ratio = pressure/p
     if pressure <= p:
-        f = 2*eos.sound_speed(state)/(g-1)*expm1((g-1)/(2*g)*log(ratio))
+        f = 2*eos.sound_speed(state)/(g-1)*expm1((g-1)/(2*g)*log1p((pressure-p)/p))
         r = rho*ratio**(1/g)
     else:
         b = (g-1)/(g+1)

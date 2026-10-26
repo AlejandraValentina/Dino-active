@@ -8383,7 +8383,10 @@
       "unblock_tasks": [
         "PRED-TRANSONIC-WAVE-DESIGN",
         "PRED-TRANSONIC-REFERENCE",
-        "PRED-PORT-DOMAIN-SURVEY"
+        "PRED-PORT-DOMAIN-SURVEY",
+        "PRED-CONNECTION-IDENTITY",
+        "PRED-CONNECTION-FIXTURE",
+        "PRED-CONNECTION-SKEPTIC"
       ]
     },
     {
@@ -8534,13 +8537,15 @@
       "dependencies": [
         "PRED-RESTRICTION"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "results/predictive-reliability-v1/connection-domain-receipt.json"
+        "openspec/changes/predictive-reliability-v1/transonic-contract-v2.md",
+        "results/predictive-reliability-v1/transonic-v2-receipt.json",
+        "tests/test_transonic_connection_v2.py"
       ],
-      "next_action": "Pending presentation of the owner-requested fundamental finding; no dependent production adoption.",
+      "next_action": "Verify guarded selectable integrated use; preserve legacy default and source bindings.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -8549,7 +8554,8 @@
         "tests/test_transonic_connection_v2.py",
         "openspec/changes/predictive-reliability-v1/transonic-contract-v2.md"
       ],
-      "evidence_level": "L2"
+      "evidence_level": "L2",
+      "qualification": "L0 equivalent ideal-nozzle closure, explicitly different from V1 separated expansion; not real-port predictive validation."
     },
     {
       "id": "PRED-TRANSONIC-REFERENCE",
@@ -8557,20 +8563,23 @@
       "dependencies": [
         "PRED-RESTRICTION"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "results/predictive-reliability-v1/connection-domain-receipt.json"
+        "openspec/changes/predictive-reliability-v1/transonic-contract-v2.md",
+        "results/predictive-reliability-v1/transonic-v2-receipt.json",
+        "tests/test_transonic_connection_v2.py"
       ],
-      "next_action": "Pending presentation of the owner-requested fundamental finding; no dependent production adoption.",
+      "next_action": "Verify guarded selectable integrated use; preserve legacy default and source bindings.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "openspec/changes/predictive-reliability-v1/",
         "results/predictive-reliability-v1/"
       ],
-      "evidence_level": "L2"
+      "evidence_level": "L2",
+      "qualification": "L0 equivalent ideal-nozzle closure, explicitly different from V1 separated expansion; not real-port predictive validation."
     },
     {
       "id": "PRED-PORT-DOMAIN-SURVEY",
@@ -8595,6 +8604,65 @@
       ],
       "evidence_level": "L2",
       "qualification": "48 checkpoint faces, 24 open, no unsupported V1 cases at phase zero. Blowdown coverage indeterminate: historical diagnostics omit endpoint primitives. No solver steps."
+    },
+    {
+      "id": "PRED-CONNECTION-IDENTITY",
+      "description": "Integrate verified equivalent nozzle behind explicit hashed physical model selection",
+      "dependencies": [
+        "PRED-TRANSONIC-WAVE-DESIGN",
+        "PRED-TRANSONIC-REFERENCE"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Integrate verified equivalent nozzle behind explicit hashed physical model selection",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/implementation/verification",
+      "write_scope": [
+        "motorsim/integrated_2t.py",
+        "tests/test_integrated_port_connection_v2.py"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-CONNECTION-FIXTURE",
+      "description": "Preregister bounded legacy/nozzle integrated diagnostics with complete endpoint states",
+      "dependencies": [
+        "PRED-TRANSONIC-WAVE-DESIGN",
+        "PRED-TRANSONIC-REFERENCE"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Preregister bounded legacy/nozzle integrated diagnostics with complete endpoint states",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/implementation/verification",
+      "write_scope": [
+        "scripts/diagnostics/diagnose_integrated_port_v2.py",
+        "openspec/changes/predictive-reliability-v1/integrated-port-protocol-v2.md"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PRED-CONNECTION-SKEPTIC",
+      "description": "Adversarial causality/invalid-input and aperture limiting verification before adoption",
+      "dependencies": [
+        "PRED-TRANSONIC-WAVE-DESIGN",
+        "PRED-TRANSONIC-REFERENCE"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Adversarial causality/invalid-input and aperture limiting verification before adoption",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/implementation/verification",
+      "write_scope": [
+        "tests/test_transonic_connection_v2_adversarial.py"
+      ],
+      "evidence_level": "L0"
     }
   ],
   "audit_remediation_mode": false,
@@ -12276,6 +12344,12 @@
       "task": "PRED-PORT-DOMAIN-SURVEY",
       "kind": "task",
       "summary": "Hash-verified six historical points: 48 faces, 24 open, no V1 failures at cycle boundaries; within-cycle blowdown remains indeterminate because endpoint rho/u/T were not recorded. Seven survey tests pass; zero solver steps."
+    },
+    {
+      "at": "2026-10-26T14:34:31+00:00",
+      "task": "PRED-TRANSONIC-WAVE-DESIGN",
+      "kind": "task",
+      "summary": "V2 equivalent ideal nozzle preregistered 3af641e: exact Euler wave selection, sonic throat, entropy-bounded internal shock and supersonic inlet/outlet. 221 tests PASS; 1008/1008 inputs supported, all 37 V1 failures resolved. Not a verified real-port loss model."
     }
   ],
   "legacy_gate_status": {
