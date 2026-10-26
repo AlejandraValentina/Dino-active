@@ -1,3 +1,5 @@
+> **Estado actualizado:** la prueba de continuación fue ejecutada después de este dictamen inicial. La decisión vigente es **B — EQUIVALENCIA NO DEMOSTRADA**; ver [continuation-final.md](continuation-final.md) y su evidencia ciclo a ciclo. El resto de este archivo conserva el análisis previo al ensayo de continuación.
+
 # Performance V3 — decisión final de inicialización acelerada
 
 **Decisión: KEEP EXPERIMENTAL.** Se conserva el warm start únicamente como candidato de investigación, deshabilitado para uso ordinario. El único método aceptado para producir puntos periódicos y curvas RPM sigue siendo la inicialización independiente. No se integra en Desktop ni en el coordinador RPM.

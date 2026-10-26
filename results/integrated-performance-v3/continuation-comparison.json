@@ -1,0 +1,2326 @@
+{
+  "schema": "DINO_PERFV3_A10000_CONTINUATION_COMPARISON_V1",
+  "decision": "EQUIVALENCE_NOT_DEMONSTRATED",
+  "reference": {
+    "run_id": "pc-08bbe6f9b9694ff3970bfeb02edf4283-10000",
+    "cycle": 104,
+    "phase_deg_ca": 0,
+    "result_sha256": "ca2987d9b7a003e0d34bf565dcaa9117f6602df3cd37d193599e2cd0beaa687d",
+    "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+    "status": "COMPLETE",
+    "checkpoint_sha256": "b216a263735f9959a72ec9c958a3f0a6542beabc866232c3a755cfc7555152ed",
+    "invocation_manifest_sha256": "50105816a5753a8b507a98aec3f7f6f29a70aa309eaa5bf18da0954d5587dd82",
+    "cycles": 104,
+    "geometry_identity_match": true
+  },
+  "warm_run": {
+    "run_id": "perfv3-warm-A10000-from-A9000-20261026",
+    "starting_checkpoint_cycle": 15,
+    "checkpoint_sha256": "289291638acde062929bb275c9977db11f4e1142dcb9800713b1591bce2cc0de",
+    "continuation_invocation": "invocation-002",
+    "total_cycles": 55,
+    "new_cycles": 40,
+    "periodicity": "PERIOD_1_OBSERVED_EXPLORATORY_UNAUDITED",
+    "classification": "PERIODIC_EXPLORATORY",
+    "elapsed_seconds_this_invocation": 172.297237199964,
+    "elapsed_seconds_cumulative": 233.8854890000075,
+    "comparison_phase_deg_ca": 0,
+    "solver_step_wall_seconds": 141.2147454181686,
+    "processing_wall_seconds": 16.85978468763642,
+    "cycles_computed_this_invocation": 40,
+    "final_checkpoint_sha256": "ea500a0ef3a8869220e439a15847043e37752a94bfda34617d0932798f476391",
+    "final_checkpoint_artifact": "checkpoint-next-056.json",
+    "continuation_runner_sha256": "cf2814147a8ae4864c241e37bb8a93fc26a5e801a0dd1819d91f487de6d28861",
+    "conservation_final": {
+      "energy": 2.3114344185528293e-15,
+      "mass": 2.9152448694937587e-15,
+      "species": 5.0298411901627786e-15
+    },
+    "max_rss_mib": 128.92578125,
+    "target_rpm": 10000.0,
+    "terminal_angle_deg": 19800.0,
+    "initial_checkpoint_preserved_sha256": "289291638acde062929bb275c9977db11f4e1142dcb9800713b1591bce2cc0de",
+    "continuation_manifest_sha256": "616db487a61bf5d5f68f0cf8b861c162eee4f877ca9eb184d270fb3c1b8cac8c",
+    "root_run_json_sha256": "ebed702b2b8083e9e4ea6fef73491d25a3dfd2c28e6bf6b5e54735c53498e36e",
+    "root_result_sha256": "ef154ce110cb9088f62e34a9a70656d969d54af4775a03a22deec790bf068b18",
+    "invocation_wall_seconds": 172.297237199964,
+    "solver_wall_seconds": 141.2147454181686,
+    "run_logged_wall_seconds": 176.75,
+    "conservation_max_relative": 5.0298411901627786e-15
+  },
+  "comparison_contract": "REFERENCE_PERIODIC_CONVERGENCE_V2 existing metric formulas and thresholds; comparison ignores cross-run identity equality but requires same physical configuration except initialized state arrays; no hashes rewritten. Cycle-15 reproduction matched saved pilot comparison exactly.",
+  "metric_count": 413,
+  "cycle15_reproduction": {
+    "failed_count": 102,
+    "max_threshold_ratio": 16.785301196624523,
+    "mismatched_metrics": []
+  },
+  "final": {
+    "cycle": 55,
+    "phase_deg_ca": 0,
+    "metric_count": 413,
+    "failed_count": 51,
+    "exhaust_failed_count": 49,
+    "global_species_failed_count": 2,
+    "max_threshold_ratio": 14.738245822378037,
+    "worst_metric": "exhaust[30].species.burned",
+    "exhaust30_burned_fraction_abs_delta": 0.029476491644756075,
+    "exhaust30_burned_threshold_ratio": 14.738245822378037,
+    "max_exhaust_mass_relative": 0.0027008601972255642,
+    "max_exhaust_energy_relative": 0.00016824768446053432,
+    "max_exhaust_pressure_relative": 0.00016723143018595175,
+    "max_exhaust_temperature_relative": 0.0025493733150810513,
+    "max_exhaust_species_abs_delta": 0.029476491644756075,
+    "max_exhaust_velocity_abs_delta": 0.00016978092824192215,
+    "global_species_max_normalized_delta": 0.007965898783236036,
+    "work_J": 32.914113445074236,
+    "indicated_power_W": 5485.685574179039,
+    "brake_power_W": 3521.6308478672004,
+    "brake_torque_Nm": 3.3629097430978048,
+    "trapped_air_mg": 28.912196743404355,
+    "trapped_fresh_mg": 32.46708235509334,
+    "afr_trapped": 8.13308778441051,
+    "fuel_burned_mg": 1.9641920071081265,
+    "chemical_heat_J": 71.79121785980215,
+    "pressure_min_max_Pa": {
+      "crankcase": [
+        89913.80003579741,
+        132160.097608954
+      ],
+      "cylinder": [
+        99668.44598701512,
+        4562933.2022699695
+      ],
+      "exhaust_entry": [
+        96105.6857130619,
+        112712.06990863984
+      ],
+      "exhaust_middle": [
+        104403.79686676963,
+        107038.69639066461
+      ]
+    },
+    "conservation_relative": {
+      "energy": 2.3114344185528293e-15,
+      "mass": 2.9152448694937587e-15,
+      "species": 5.0298411901627786e-15
+    },
+    "periodicity_streak": 43,
+    "wall_s": 3.807982200058177
+  },
+  "equivalence_demonstrated": false,
+  "trend": {
+    "failed_count": {
+      "cycle16": 102.0,
+      "cycle55": 51.0,
+      "delta": -51.0,
+      "relative_change_percent": -50.0,
+      "linear_slope_per_cycle": -1.3177298311444652,
+      "adjacent_decreases": 26,
+      "adjacent_increases": 1,
+      "adjacent_equal": 12
+    },
+    "max_threshold_ratio": {
+      "cycle16": 17.064526208206974,
+      "cycle55": 14.738245822378037,
+      "delta": -2.3262803858289374,
+      "relative_change_percent": -13.632258859376602,
+      "linear_slope_per_cycle": -0.08973377005978728,
+      "adjacent_decreases": 29,
+      "adjacent_increases": 10,
+      "adjacent_equal": 0
+    },
+    "exhaust30_burned_fraction_abs_delta": {
+      "cycle16": 0.03412905241641395,
+      "cycle55": 0.029476491644756075,
+      "delta": -0.0046525607716578765,
+      "relative_change_percent": -13.632258859376606,
+      "linear_slope_per_cycle": -0.00017946754011957458,
+      "adjacent_decreases": 29,
+      "adjacent_increases": 10,
+      "adjacent_equal": 0
+    },
+    "max_exhaust_species_abs_delta": {
+      "cycle16": 0.03412905241641395,
+      "cycle55": 0.029476491644756075,
+      "delta": -0.0046525607716578765,
+      "relative_change_percent": -13.632258859376606,
+      "linear_slope_per_cycle": -0.00017946754011957458,
+      "adjacent_decreases": 29,
+      "adjacent_increases": 10,
+      "adjacent_equal": 0
+    },
+    "max_exhaust_mass_relative": {
+      "cycle16": 0.018193098164110237,
+      "cycle55": 0.0027008601972255642,
+      "delta": -0.015492237966884672,
+      "relative_change_percent": -85.15447906199073,
+      "linear_slope_per_cycle": -0.0004136766211570916,
+      "adjacent_decreases": 39,
+      "adjacent_increases": 0,
+      "adjacent_equal": 0
+    },
+    "max_exhaust_temperature_relative": {
+      "cycle16": 0.017174955586822475,
+      "cycle55": 0.0025493733150810513,
+      "delta": -0.014625582271741423,
+      "relative_change_percent": -85.1564488641993,
+      "linear_slope_per_cycle": -0.00039053453585710586,
+      "adjacent_decreases": 39,
+      "adjacent_increases": 0,
+      "adjacent_equal": 0
+    },
+    "global_species_max_normalized_delta": {
+      "cycle16": 0.01986445796672321,
+      "cycle55": 0.007965898783236036,
+      "delta": -0.011898559183487175,
+      "relative_change_percent": -59.898735739075036,
+      "linear_slope_per_cycle": -0.0003088817670036587,
+      "adjacent_decreases": 39,
+      "adjacent_increases": 0,
+      "adjacent_equal": 0
+    }
+  },
+  "per_cycle": [
+    {
+      "cycle": 16,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 102,
+      "exhaust_failed_count": 99,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 17.064526208206974,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03412905241641395,
+      "exhaust30_burned_threshold_ratio": 17.064526208206974,
+      "max_exhaust_mass_relative": 0.018193098164110237,
+      "max_exhaust_energy_relative": 0.0014916845907560789,
+      "max_exhaust_pressure_relative": 0.0014825411521429258,
+      "max_exhaust_temperature_relative": 0.017174955586822475,
+      "max_exhaust_species_abs_delta": 0.03412905241641395,
+      "max_exhaust_velocity_abs_delta": 0.0014562828242965231,
+      "global_species_max_normalized_delta": 0.01986445796672321,
+      "work_J": 32.85012433531705,
+      "indicated_power_W": 5475.020722552841,
+      "brake_power_W": 3511.3888959737887,
+      "brake_torque_Nm": 3.3531293994733296,
+      "trapped_air_mg": 28.864168814279353,
+      "trapped_fresh_mg": 32.41607528344648,
+      "afr_trapped": 8.126387635721612,
+      "fuel_burned_mg": 1.9609250530829503,
+      "chemical_heat_J": 71.67181069018284,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89924.00976915807,
+          132159.6576991064
+        ],
+        "cylinder": [
+          99661.3864892257,
+          4562340.00701323
+        ],
+        "exhaust_entry": [
+          96178.94187130172,
+          112729.70498926833
+        ],
+        "exhaust_middle": [
+          104485.75302156455,
+          107121.91689790449
+        ]
+      },
+      "conservation_relative": {
+        "energy": 5.6305095331175745e-15,
+        "mass": 3.929563429814671e-17,
+        "species": 8.252083202610809e-16
+      },
+      "periodicity_streak": 4,
+      "wall_s": 3.7758359001018107
+    },
+    {
+      "cycle": 17,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 101,
+      "exhaust_failed_count": 98,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 17.319020619299963,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.034638041238599926,
+      "exhaust30_burned_threshold_ratio": 17.319020619299963,
+      "max_exhaust_mass_relative": 0.01775432599609376,
+      "max_exhaust_energy_relative": 0.0014340065871301614,
+      "max_exhaust_pressure_relative": 0.0014252229670959793,
+      "max_exhaust_temperature_relative": 0.016773534667377788,
+      "max_exhaust_species_abs_delta": 0.034638041238599926,
+      "max_exhaust_velocity_abs_delta": 0.0014022342913156544,
+      "global_species_max_normalized_delta": 0.01941677261243,
+      "work_J": 32.85110673383076,
+      "indicated_power_W": 5475.18445563846,
+      "brake_power_W": 3511.5371917425464,
+      "brake_torque_Nm": 3.3532710115011537,
+      "trapped_air_mg": 28.86501854164823,
+      "trapped_fresh_mg": 32.41682878599185,
+      "afr_trapped": 8.126847031768326,
+      "fuel_burned_mg": 1.9609798841650212,
+      "chemical_heat_J": 71.67381476623086,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89923.6936385433,
+          132159.83291134847
+        ],
+        "cylinder": [
+          99663.78703291241,
+          4562313.848297373
+        ],
+        "exhaust_entry": [
+          96175.86526940433,
+          112729.8823272722
+        ],
+        "exhaust_middle": [
+          104483.15719601246,
+          107118.80218167037
+        ]
+      },
+      "conservation_relative": {
+        "energy": 6.0894345523714855e-15,
+        "mass": 1.8911024005983102e-16,
+        "species": 5.894345144722007e-16
+      },
+      "periodicity_streak": 5,
+      "wall_s": 3.8389972001314163
+    },
+    {
+      "cycle": 18,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 102,
+      "exhaust_failed_count": 99,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 17.547826430692414,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03509565286138483,
+      "exhaust30_burned_threshold_ratio": 17.547826430692414,
+      "max_exhaust_mass_relative": 0.017265344292264836,
+      "max_exhaust_energy_relative": 0.00137880931421974,
+      "max_exhaust_pressure_relative": 0.0013703700714042609,
+      "max_exhaust_temperature_relative": 0.01632014281010523,
+      "max_exhaust_species_abs_delta": 0.03509565286138483,
+      "max_exhaust_velocity_abs_delta": 0.0013504290617794568,
+      "global_species_max_normalized_delta": 0.01896964230868802,
+      "work_J": 32.8521725050814,
+      "indicated_power_W": 5475.362084180233,
+      "brake_power_W": 3511.699908936676,
+      "brake_torque_Nm": 3.3534263949757843,
+      "trapped_air_mg": 28.865925288165776,
+      "trapped_fresh_mg": 32.4176930029141,
+      "afr_trapped": 8.127199638732913,
+      "fuel_burned_mg": 1.9610380977688129,
+      "chemical_heat_J": 71.67594247344937,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89923.38328769125,
+          132159.98922742257
+        ],
+        "cylinder": [
+          99665.90070935762,
+          4562294.0398863545
+        ],
+        "exhaust_entry": [
+          96172.98670354486,
+          112730.08854646145
+        ],
+        "exhaust_middle": [
+          104480.60213181227,
+          107115.80590179324
+        ]
+      },
+      "conservation_relative": {
+        "energy": 4.713161836784214e-15,
+        "mass": 1.817423086289285e-16,
+        "species": 9.823908574536677e-16
+      },
+      "periodicity_streak": 6,
+      "wall_s": 3.7665085999760777
+    },
+    {
+      "cycle": 19,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 101,
+      "exhaust_failed_count": 98,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 17.74988168286268,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.035499763365725356,
+      "exhaust30_burned_threshold_ratio": 17.74988168286268,
+      "max_exhaust_mass_relative": 0.016828994083007018,
+      "max_exhaust_energy_relative": 0.0013258627369325505,
+      "max_exhaust_pressure_relative": 0.0013177537446731173,
+      "max_exhaust_temperature_relative": 0.01587427427791465,
+      "max_exhaust_species_abs_delta": 0.035499763365725356,
+      "max_exhaust_velocity_abs_delta": 0.0013006456332226718,
+      "global_species_max_normalized_delta": 0.01852360287718408,
+      "work_J": 32.85332912116621,
+      "indicated_power_W": 5475.554853527702,
+      "brake_power_W": 3511.8782066367253,
+      "brake_torque_Nm": 3.353596656737613,
+      "trapped_air_mg": 28.86688986982378,
+      "trapped_fresh_mg": 32.418652447229455,
+      "afr_trapped": 8.127482972386378,
+      "fuel_burned_mg": 1.9611001920758107,
+      "chemical_heat_J": 71.67821202037021,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89923.07711763278,
+          132160.12797752532
+        ],
+        "cylinder": [
+          99667.75514255404,
+          4562280.349079327
+        ],
+        "exhaust_entry": [
+          96170.27482941866,
+          112730.30780971184
+        ],
+        "exhaust_middle": [
+          104478.08180185234,
+          107112.91062674164
+        ]
+      },
+      "conservation_relative": {
+        "energy": 4.296161532427382e-15,
+        "mass": 5.206671544504439e-16,
+        "species": 9.037995888573743e-16
+      },
+      "periodicity_streak": 7,
+      "wall_s": 3.7472107999492437
+    },
+    {
+      "cycle": 20,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 100,
+      "exhaust_failed_count": 97,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 17.92418843298099,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.035848376865961984,
+      "exhaust30_burned_threshold_ratio": 17.92418843298099,
+      "max_exhaust_mass_relative": 0.016421536701182793,
+      "max_exhaust_energy_relative": 0.0012749103737887668,
+      "max_exhaust_pressure_relative": 0.0012671189636006266,
+      "max_exhaust_temperature_relative": 0.015502106950214449,
+      "max_exhaust_species_abs_delta": 0.035848376865961984,
+      "max_exhaust_velocity_abs_delta": 0.0012526459331969053,
+      "global_species_max_normalized_delta": 0.018079267281697804,
+      "work_J": 32.85457580949412,
+      "indicated_power_W": 5475.762634915687,
+      "brake_power_W": 3512.0718858716245,
+      "brake_torque_Nm": 3.353781606783264,
+      "trapped_air_mg": 28.867911195092518,
+      "trapped_fresh_mg": 32.41969513553963,
+      "afr_trapped": 8.12772164048315,
+      "fuel_burned_mg": 1.9611662063022717,
+      "chemical_heat_J": 71.68062484034704,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89922.77392076301,
+          132160.25040131333
+        ],
+        "cylinder": [
+          99669.37435826774,
+          4562272.239011144
+        ],
+        "exhaust_entry": [
+          96167.70108636514,
+          112730.52199210701
+        ],
+        "exhaust_middle": [
+          104475.58997776743,
+          107110.09993180503
+        ]
+      },
+      "conservation_relative": {
+        "energy": 5.2298278427969525e-15,
+        "mass": 4.789155430086629e-16,
+        "species": 1.2967559318388414e-15
+      },
+      "periodicity_streak": 8,
+      "wall_s": 3.727978900074959
+    },
+    {
+      "cycle": 21,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 99,
+      "exhaust_failed_count": 96,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 18.069966009574443,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03613993201914889,
+      "exhaust30_burned_threshold_ratio": 18.069966009574443,
+      "max_exhaust_mass_relative": 0.01597724818585734,
+      "max_exhaust_energy_relative": 0.0012257034025293016,
+      "max_exhaust_pressure_relative": 0.0012182183386221627,
+      "max_exhaust_temperature_relative": 0.015091822386439096,
+      "max_exhaust_species_abs_delta": 0.03613993201914889,
+      "max_exhaust_velocity_abs_delta": 0.0012061961159254703,
+      "global_species_max_normalized_delta": 0.017637325869398146,
+      "work_J": 32.855910179353145,
+      "indicated_power_W": 5475.985029892191,
+      "brake_power_W": 3512.280485600827,
+      "brake_torque_Nm": 3.353980804851445,
+      "trapped_air_mg": 28.868987868940128,
+      "trapped_fresh_mg": 32.42081240326339,
+      "afr_trapped": 8.127931881195977,
+      "fuel_burned_mg": 1.9612360637110224,
+      "chemical_heat_J": 71.6831781286387,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89922.47263199124,
+          132160.35762240348
+        ],
+        "cylinder": [
+          99670.77935958539,
+          4562269.113556657
+        ],
+        "exhaust_entry": [
+          96165.23951941285,
+          112730.79598233064
+        ],
+        "exhaust_middle": [
+          104473.11923973571,
+          107107.35790984856
+        ]
+      },
+      "conservation_relative": {
+        "energy": 5.853356805607062e-15,
+        "mass": 5.759266401822127e-16,
+        "species": 1.5325297376277216e-15
+      },
+      "periodicity_streak": 9,
+      "wall_s": 3.8552873998414725
+    },
+    {
+      "cycle": 22,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 99,
+      "exhaust_failed_count": 96,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 18.18677158099069,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03637354316198138,
+      "exhaust30_burned_threshold_ratio": 18.18677158099069,
+      "max_exhaust_mass_relative": 0.015523840968781132,
+      "max_exhaust_energy_relative": 0.0011780083278740555,
+      "max_exhaust_pressure_relative": 0.001170819739025668,
+      "max_exhaust_temperature_relative": 0.014647236919962408,
+      "max_exhaust_species_abs_delta": 0.03637354316198138,
+      "max_exhaust_velocity_abs_delta": 0.0011610743020671055,
+      "global_species_max_normalized_delta": 0.017198540776360544,
+      "work_J": 32.85732934989244,
+      "indicated_power_W": 5476.221558315407,
+      "brake_power_W": 3512.5034654163346,
+      "brake_torque_Nm": 3.3541937348905315,
+      "trapped_air_mg": 28.870119224670376,
+      "trapped_fresh_mg": 32.42199877157817,
+      "afr_trapped": 8.128124516442067,
+      "fuel_burned_mg": 1.9613096757199735,
+      "chemical_heat_J": 71.68586864756412,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89922.17220135826,
+          132160.45059740424
+        ],
+        "cylinder": [
+          99671.98766495334,
+          4562270.378397995
+        ],
+        "exhaust_entry": [
+          96162.86632180752,
+          112731.03000039168
+        ],
+        "exhaust_middle": [
+          104470.661686212,
+          107104.66967760214
+        ]
+      },
+      "conservation_relative": {
+        "energy": 8.269618395135827e-15,
+        "mass": 8.362602174074346e-16,
+        "species": 1.3753472004351348e-15
+      },
+      "periodicity_streak": 10,
+      "wall_s": 4.16045180009678
+    },
+    {
+      "cycle": 23,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 99,
+      "exhaust_failed_count": 96,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 18.274578380066796,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.036549156760133594,
+      "exhaust30_burned_threshold_ratio": 18.274578380066796,
+      "max_exhaust_mass_relative": 0.01512768431050314,
+      "max_exhaust_energy_relative": 0.001131614390085674,
+      "max_exhaust_pressure_relative": 0.0011247136522286878,
+      "max_exhaust_temperature_relative": 0.014267099508760948,
+      "max_exhaust_species_abs_delta": 0.036549156760133594,
+      "max_exhaust_velocity_abs_delta": 0.0011170787305395113,
+      "global_species_max_normalized_delta": 0.01676373453219989,
+      "work_J": 32.858831424625805,
+      "indicated_power_W": 5476.471904104301,
+      "brake_power_W": 3512.740453078546,
+      "brake_torque_Nm": 3.354420041437888,
+      "trapped_air_mg": 28.87130496636055,
+      "trapped_fresh_mg": 32.42325074366031,
+      "afr_trapped": 8.128306786346533,
+      "fuel_burned_mg": 1.9613870001878744,
+      "chemical_heat_J": 71.6886948568665,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89921.87163642475,
+          132160.53018807512
+        ],
+        "cylinder": [
+          99673.01442795918,
+          4562275.516938724
+        ],
+        "exhaust_entry": [
+          96160.56036802102,
+          112731.20040525128
+        ],
+        "exhaust_middle": [
+          104468.20958404543,
+          107102.02205019031
+        ]
+      },
+      "conservation_relative": {
+        "energy": 8.670932783129123e-15,
+        "mass": 9.087115431446426e-16,
+        "species": 1.8075991777147486e-15
+      },
+      "periodicity_streak": 11,
+      "wall_s": 3.871611300157383
+    },
+    {
+      "cycle": 24,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 98,
+      "exhaust_failed_count": 95,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 18.3338097896123,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.0366676195792246,
+      "exhaust30_burned_threshold_ratio": 18.3338097896123,
+      "max_exhaust_mass_relative": 0.014702129416082234,
+      "max_exhaust_energy_relative": 0.0010863531385142745,
+      "max_exhaust_pressure_relative": 0.0010797326755680918,
+      "max_exhaust_temperature_relative": 0.01387495363080356,
+      "max_exhaust_species_abs_delta": 0.0366676195792246,
+      "max_exhaust_velocity_abs_delta": 0.0010740409994701716,
+      "global_species_max_normalized_delta": 0.016333773560843017,
+      "work_J": 32.860414836264795,
+      "indicated_power_W": 5476.735806044133,
+      "brake_power_W": 3512.991138029137,
+      "brake_torque_Nm": 3.35465942793216,
+      "trapped_air_mg": 28.872544699794013,
+      "trapped_fresh_mg": 32.42456576309264,
+      "afr_trapped": 8.128483526778751,
+      "fuel_burned_mg": 1.9614680161745928,
+      "chemical_heat_J": 71.69165599117946,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89921.57007721128,
+          132160.59717772546
+        ],
+        "cylinder": [
+          99673.87304635983,
+          4562284.080813645
+        ],
+        "exhaust_entry": [
+          96158.30370663894,
+          112731.2952414632
+        ],
+        "exhaust_middle": [
+          104465.75607382471,
+          107099.40396875457
+        ]
+      },
+      "conservation_relative": {
+        "energy": 1.0101958525694957e-14,
+        "mass": 1.0057226403181924e-15,
+        "species": 1.6897122748203085e-15
+      },
+      "periodicity_streak": 12,
+      "wall_s": 3.992325200000778
+    },
+    {
+      "cycle": 25,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 97,
+      "exhaust_failed_count": 94,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 18.365333460860665,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03673066692172133,
+      "exhaust30_burned_threshold_ratio": 18.365333460860665,
+      "max_exhaust_mass_relative": 0.014250231831407072,
+      "max_exhaust_energy_relative": 0.0010420895038261663,
+      "max_exhaust_pressure_relative": 0.001035742603894842,
+      "max_exhaust_temperature_relative": 0.01345574090607663,
+      "max_exhaust_species_abs_delta": 0.03673066692172133,
+      "max_exhaust_velocity_abs_delta": 0.0010318248115437634,
+      "global_species_max_normalized_delta": 0.015909548092675564,
+      "work_J": 32.86207774808247,
+      "indicated_power_W": 5477.0129580137445,
+      "brake_power_W": 3513.255173533514,
+      "brake_torque_Nm": 3.3549115632662003,
+      "trapped_air_mg": 28.873837548140667,
+      "trapped_fresh_mg": 32.42594144816421,
+      "afr_trapped": 8.128657933668357,
+      "fuel_burned_mg": 1.9615526927939264,
+      "chemical_heat_J": 71.69475092161701,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89921.26685245954,
+          132160.65230079272
+        ],
+        "cylinder": [
+          99674.57567821555,
+          4562295.679354455
+        ],
+        "exhaust_entry": [
+          96156.08175347613,
+          112731.30555584158
+        ],
+        "exhaust_middle": [
+          104463.29586612438,
+          107096.80689054591
+        ]
+      },
+      "conservation_relative": {
+        "energy": 1.0333464132129367e-14,
+        "mass": 2.072844709227239e-15,
+        "species": 1.7683035434166019e-15
+      },
+      "periodicity_streak": 13,
+      "wall_s": 3.8675014001782984
+    },
+    {
+      "cycle": 26,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 95,
+      "exhaust_failed_count": 92,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 18.37042336629685,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.0367408467325937,
+      "exhaust30_burned_threshold_ratio": 18.37042336629685,
+      "max_exhaust_mass_relative": 0.013827933719040245,
+      "max_exhaust_energy_relative": 0.0009987188925407718,
+      "max_exhaust_pressure_relative": 0.0009926395236544558,
+      "max_exhaust_temperature_relative": 0.013027772353195712,
+      "max_exhaust_species_abs_delta": 0.0367408467325937,
+      "max_exhaust_velocity_abs_delta": 0.0009903263241894528,
+      "global_species_max_normalized_delta": 0.015491950510647126,
+      "work_J": 32.86381756356104,
+      "indicated_power_W": 5477.302927260173,
+      "brake_power_W": 3513.532097236435,
+      "brake_torque_Nm": 3.3551760059232754,
+      "trapped_air_mg": 28.87518171198769,
+      "trapped_fresh_mg": 32.42737488530106,
+      "afr_trapped": 8.128832049146082,
+      "fuel_burned_mg": 1.9616409626305773,
+      "chemical_heat_J": 71.6979771841468,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89920.96154302891,
+          132160.69627315408
+        ],
+        "cylinder": [
+          99675.133790111,
+          4562309.968876085
+        ],
+        "exhaust_entry": [
+          96153.88342227947,
+          112731.2255101658
+        ],
+        "exhaust_middle": [
+          104460.8255176776,
+          107094.22494601076
+        ]
+      },
+      "conservation_relative": {
+        "energy": 1.2325327580575378e-14,
+        "mass": 2.5222885265122918e-15,
+        "species": 2.0040773492054823e-15
+      },
+      "periodicity_streak": 14,
+      "wall_s": 3.915791400009766
+    },
+    {
+      "cycle": 27,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 95,
+      "exhaust_failed_count": 92,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 18.350699354668986,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03670139870933797,
+      "exhaust30_burned_threshold_ratio": 18.350699354668986,
+      "max_exhaust_mass_relative": 0.013403046081201835,
+      "max_exhaust_energy_relative": 0.000956170399160348,
+      "max_exhaust_pressure_relative": 0.000950353012594646,
+      "max_exhaust_temperature_relative": 0.012636395893370756,
+      "max_exhaust_species_abs_delta": 0.03670139870933797,
+      "max_exhaust_velocity_abs_delta": 0.0009494760364564814,
+      "global_species_max_normalized_delta": 0.015081853675994948,
+      "work_J": 32.865630429581415,
+      "indicated_power_W": 5477.605071596902,
+      "brake_power_W": 3513.821249173083,
+      "brake_torque_Nm": 3.355452125683408,
+      "trapped_air_mg": 28.876574243788088,
+      "trapped_fresh_mg": 32.42886223377202,
+      "afr_trapped": 8.12900708647744,
+      "fuel_burned_mg": 1.9617326936730983,
+      "chemical_heat_J": 71.7013299537507,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89920.65400906923,
+          132160.72981796262
+        ],
+        "cylinder": [
+          99675.55851276239,
+          4562326.636234705
+        ],
+        "exhaust_entry": [
+          96151.70104579565,
+          112731.0522428836
+        ],
+        "exhaust_middle": [
+          104458.34362857895,
+          107091.65488449074
+        ]
+      },
+      "conservation_relative": {
+        "energy": 1.1748332146551724e-14,
+        "mass": 2.787534058024782e-15,
+        "species": 1.8861904463110418e-15
+      },
+      "periodicity_streak": 15,
+      "wall_s": 3.9852069998160005
+    },
+    {
+      "cycle": 28,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 95,
+      "exhaust_failed_count": 92,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 18.308053642847543,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03661610728569509,
+      "exhaust30_burned_threshold_ratio": 18.308053642847543,
+      "max_exhaust_mass_relative": 0.012957715571169115,
+      "max_exhaust_energy_relative": 0.0009144049482191642,
+      "max_exhaust_pressure_relative": 0.0009088442907773456,
+      "max_exhaust_temperature_relative": 0.012223976605752947,
+      "max_exhaust_species_abs_delta": 0.03661610728569509,
+      "max_exhaust_velocity_abs_delta": 0.0009092370618287438,
+      "global_species_max_normalized_delta": 0.014680090576162333,
+      "work_J": 32.86751097941578,
+      "indicated_power_W": 5477.9184965692975,
+      "brake_power_W": 3514.1217285465877,
+      "brake_torque_Nm": 3.3557390623489503,
+      "trapped_air_mg": 28.87801102575113,
+      "trapped_fresh_mg": 32.43039860107133,
+      "afr_trapped": 8.12918365844362,
+      "fuel_burned_mg": 1.9618276757198554,
+      "chemical_heat_J": 71.70480154755933,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89920.3443841142,
+          132160.75367614944
+        ],
+        "cylinder": [
+          99675.86085590205,
+          4562345.387512242
+        ],
+        "exhaust_entry": [
+          96149.53009901222,
+          112730.78582500838
+        ],
+        "exhaust_middle": [
+          104455.85092820466,
+          107089.09584403835
+        ]
+      },
+      "conservation_relative": {
+        "energy": 1.2521844455231491e-14,
+        "mass": 2.6647352008430735e-15,
+        "species": 2.0826686178017754e-15
+      },
+      "periodicity_streak": 16,
+      "wall_s": 3.9154376999940723
+    },
+    {
+      "cycle": 29,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 93,
+      "exhaust_failed_count": 90,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 18.24457254098738,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03648914508197476,
+      "exhaust30_burned_threshold_ratio": 18.24457254098738,
+      "max_exhaust_mass_relative": 0.01249540736789681,
+      "max_exhaust_energy_relative": 0.0008734097773215443,
+      "max_exhaust_pressure_relative": 0.0008681007278310418,
+      "max_exhaust_temperature_relative": 0.011793997992155202,
+      "max_exhaust_species_abs_delta": 0.03648914508197476,
+      "max_exhaust_velocity_abs_delta": 0.0008696008447149212,
+      "global_species_max_normalized_delta": 0.0142874365506448,
+      "work_J": 32.86945236365216,
+      "indicated_power_W": 5478.2420606086935,
+      "brake_power_W": 3514.4323981898774,
+      "brake_torque_Nm": 3.356035730005339,
+      "trapped_air_mg": 28.879486812171812,
+      "trapped_fresh_mg": 32.43197802087422,
+      "afr_trapped": 8.129361936611373,
+      "fuel_burned_mg": 1.9619256194254169,
+      "chemical_heat_J": 71.7083813899983,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89920.03306034295,
+          132160.76860874958
+        ],
+        "cylinder": [
+          99676.05174879954,
+          4562365.944414635
+        ],
+        "exhaust_entry": [
+          96147.36893413306,
+          112730.4289171675
+        ],
+        "exhaust_middle": [
+          104453.35012948267,
+          107086.54920830634
+        ]
+      },
+      "conservation_relative": {
+        "energy": 1.208787870940928e-14,
+        "mass": 1.1592212117953278e-15,
+        "species": 1.846894812012895e-15
+      },
+      "periodicity_streak": 17,
+      "wall_s": 3.8577614000532776
+    },
+    {
+      "cycle": 30,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 93,
+      "exhaust_failed_count": 90,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 18.1624599808885,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.036324919961777,
+      "exhaust30_burned_threshold_ratio": 18.1624599808885,
+      "max_exhaust_mass_relative": 0.012050486894437783,
+      "max_exhaust_energy_relative": 0.0008331949538196618,
+      "max_exhaust_pressure_relative": 0.0008281323850559248,
+      "max_exhaust_temperature_relative": 0.011350107437660753,
+      "max_exhaust_species_abs_delta": 0.036324919961777,
+      "max_exhaust_velocity_abs_delta": 0.0008305830955194077,
+      "global_species_max_normalized_delta": 0.013904594808536168,
+      "work_J": 32.87144636070434,
+      "indicated_power_W": 5478.574393450723,
+      "brake_power_W": 3514.751901730154,
+      "brake_torque_Nm": 3.3563408334119615,
+      "trapped_air_mg": 28.880995364712525,
+      "trapped_fresh_mg": 32.433593553644954,
+      "afr_trapped": 8.129541768806504,
+      "fuel_burned_mg": 1.9620261599664583,
+      "chemical_heat_J": 71.7120561467741,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89919.72065906637,
+          132160.77539080248
+        ],
+        "cylinder": [
+          99676.14199992099,
+          4562388.040316635
+        ],
+        "exhaust_entry": [
+          96145.21806931881,
+          112729.98619920001
+        ],
+        "exhaust_middle": [
+          104450.84569201783,
+          107084.01810592426
+        ]
+      },
+      "conservation_relative": {
+        "energy": 1.173606939028604e-14,
+        "mass": 1.682344343389406e-15,
+        "species": 2.4363293264850957e-15
+      },
+      "periodicity_streak": 18,
+      "wall_s": 4.455106799956411
+    },
+    {
+      "cycle": 31,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 92,
+      "exhaust_failed_count": 89,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 18.063967509332144,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03612793501866429,
+      "exhaust30_burned_threshold_ratio": 18.063967509332144,
+      "max_exhaust_mass_relative": 0.01160179386669855,
+      "max_exhaust_energy_relative": 0.0007937879115400511,
+      "max_exhaust_pressure_relative": 0.0007889665800495272,
+      "max_exhaust_temperature_relative": 0.010931473114910505,
+      "max_exhaust_species_abs_delta": 0.03612793501866429,
+      "max_exhaust_velocity_abs_delta": 0.0007922185337723847,
+      "global_species_max_normalized_delta": 0.013532185450987002,
+      "work_J": 32.87348359895577,
+      "indicated_power_W": 5478.913933159295,
+      "brake_power_W": 3515.0786987747283,
+      "brake_torque_Nm": 3.3566529016021525,
+      "trapped_air_mg": 28.88252966205344,
+      "trapped_fresh_mg": 32.43523748247386,
+      "afr_trapped": 8.1297227697817,
+      "fuel_burned_mg": 1.9621288668649253,
+      "chemical_heat_J": 71.71581008391513,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89919.40798410893,
+          132160.7748116178
+        ],
+        "cylinder": [
+          99676.14233014287,
+          4562411.417929699
+        ],
+        "exhaust_entry": [
+          96143.07992752218,
+          112729.46413977093
+        ],
+        "exhaust_middle": [
+          104448.3434977455,
+          107081.50707220647
+        ]
+      },
+      "conservation_relative": {
+        "energy": 1.1509812435848402e-14,
+        "mass": 1.3999069718714765e-15,
+        "species": 2.0040773492054823e-15
+      },
+      "periodicity_streak": 19,
+      "wall_s": 4.230436900164932
+    },
+    {
+      "cycle": 32,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 92,
+      "exhaust_failed_count": 89,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 17.95133363540541,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03590266727081082,
+      "exhaust30_burned_threshold_ratio": 17.95133363540541,
+      "max_exhaust_mass_relative": 0.011142716061861556,
+      "max_exhaust_energy_relative": 0.0007552292219548622,
+      "max_exhaust_pressure_relative": 0.0007506436836267266,
+      "max_exhaust_temperature_relative": 0.010504634629518391,
+      "max_exhaust_species_abs_delta": 0.03590266727081082,
+      "max_exhaust_velocity_abs_delta": 0.0007545563360034785,
+      "global_species_max_normalized_delta": 0.01317073820152371,
+      "work_J": 32.87555384658958,
+      "indicated_power_W": 5479.2589744315965,
+      "brake_power_W": 3515.4111112739506,
+      "brake_torque_Nm": 3.3569703321565334,
+      "trapped_air_mg": 28.88408215781322,
+      "trapped_fresh_mg": 32.4369015704528,
+      "afr_trapped": 8.12990439509948,
+      "fuel_burned_mg": 1.9622332586418931,
+      "chemical_heat_J": 71.71962560336124,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89919.0959732243,
+          132160.76766564016
+        ],
+        "cylinder": [
+          99676.063273755,
+          4562435.828975881
+        ],
+        "exhaust_entry": [
+          96140.95833417207,
+          112728.87046130115
+        ],
+        "exhaust_middle": [
+          104445.85049133241,
+          107079.02167271746
+        ]
+      },
+      "conservation_relative": {
+        "energy": 1.0700506089029756e-14,
+        "mass": 1.7339198634057236e-15,
+        "species": 1.846894812012895e-15
+      },
+      "periodicity_streak": 20,
+      "wall_s": 3.9855311000719666
+    },
+    {
+      "cycle": 33,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 91,
+      "exhaust_failed_count": 88,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 17.826733929833082,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.035653467859666166,
+      "exhaust30_burned_threshold_ratio": 17.826733929833082,
+      "max_exhaust_mass_relative": 0.010676651242148982,
+      "max_exhaust_energy_relative": 0.0007175683456077181,
+      "max_exhaust_pressure_relative": 0.0007132128960745026,
+      "max_exhaust_temperature_relative": 0.010070076184859517,
+      "max_exhaust_species_abs_delta": 0.035653467859666166,
+      "max_exhaust_velocity_abs_delta": 0.0007176555890233971,
+      "global_species_max_normalized_delta": 0.012820688535084623,
+      "work_J": 32.877646353251066,
+      "indicated_power_W": 5479.607725541845,
+      "brake_power_W": 3515.7473785143857,
+      "brake_torque_Nm": 3.357291443717624,
+      "trapped_air_mg": 28.885645039946464,
+      "trapped_fresh_mg": 32.438577326184884,
+      "afr_trapped": 8.130086000183379,
+      "fuel_burned_mg": 1.9623388203525314,
+      "chemical_heat_J": 71.72348388388491,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89918.78564810481,
+          132160.75474012265
+        ],
+        "cylinder": [
+          99675.91504252676,
+          4562461.036065919
+        ],
+        "exhaust_entry": [
+          96138.85808252908,
+          112728.21378624327
+        ],
+        "exhaust_middle": [
+          104443.37431730046,
+          107076.56809218242
+        ]
+      },
+      "conservation_relative": {
+        "energy": 9.988711287464092e-15,
+        "mass": 7.908246402502025e-16,
+        "species": 2.5149205950813893e-15
+      },
+      "periodicity_streak": 21,
+      "wall_s": 4.116310400189832
+    },
+    {
+      "cycle": 34,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 90,
+      "exhaust_failed_count": 87,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 17.692242135330826,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.035384484270661654,
+      "exhaust30_burned_threshold_ratio": 17.692242135330826,
+      "max_exhaust_mass_relative": 0.010206882809358877,
+      "max_exhaust_energy_relative": 0.0006808551752131778,
+      "max_exhaust_pressure_relative": 0.0006767238406364343,
+      "max_exhaust_temperature_relative": 0.009631041461536241,
+      "max_exhaust_species_abs_delta": 0.035384484270661654,
+      "max_exhaust_velocity_abs_delta": 0.0006815772754927146,
+      "global_species_max_normalized_delta": 0.012482376885110716,
+      "work_J": 32.87975023244576,
+      "indicated_power_W": 5479.958372074293,
+      "brake_power_W": 3516.0857192950807,
+      "brake_torque_Nm": 3.357614535363807,
+      "trapped_air_mg": 28.887210417791632,
+      "trapped_fresh_mg": 32.44025619555716,
+      "afr_trapped": 8.130266882167353,
+      "fuel_burned_mg": 1.9624450205939492,
+      "chemical_heat_J": 71.72736550270747,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89918.4780729303,
+          132160.73681359406
+        ],
+        "cylinder": [
+          99675.70756765702,
+          4562486.815260897
+        ],
+        "exhaust_entry": [
+          96136.78457790815,
+          112727.50325755119
+        ],
+        "exhaust_middle": [
+          104440.92296419102,
+          107074.15276641662
+        ]
+      },
+      "conservation_relative": {
+        "energy": 1.0349196586334727e-14,
+        "mass": 1.1371174175026203e-15,
+        "species": 2.3577380578888026e-15
+      },
+      "periodicity_streak": 22,
+      "wall_s": 3.9769469001330435
+    },
+    {
+      "cycle": 35,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 90,
+      "exhaust_failed_count": 87,
+      "global_species_failed_count": 3,
+      "max_threshold_ratio": 17.549801758227236,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03509960351645447,
+      "exhaust30_burned_threshold_ratio": 17.549801758227236,
+      "max_exhaust_mass_relative": 0.009738622111048839,
+      "max_exhaust_energy_relative": 0.0006451405122580761,
+      "max_exhaust_pressure_relative": 0.000641227037440654,
+      "max_exhaust_temperature_relative": 0.00919058599134776,
+      "max_exhaust_species_abs_delta": 0.03509960351645447,
+      "max_exhaust_velocity_abs_delta": 0.0006463837535978234,
+      "global_species_max_normalized_delta": 0.012156050467641248,
+      "work_J": 32.88185462197839,
+      "indicated_power_W": 5480.309103663065,
+      "brake_power_W": 3516.4243568118095,
+      "brake_torque_Nm": 3.3579379103720295,
+      "trapped_air_mg": 28.888770607348356,
+      "trapped_fresh_mg": 32.44192986198663,
+      "afr_trapped": 8.13044632593857,
+      "fuel_burned_mg": 1.9625513250479854,
+      "chemical_heat_J": 71.73125093050385,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89918.17430851638,
+          132160.7146227005
+        ],
+        "cylinder": [
+          99675.45013156661,
+          4562512.953256087
+        ],
+        "exhaust_entry": [
+          96134.74343146777,
+          112726.74810886153
+        ],
+        "exhaust_middle": [
+          104438.50436826756,
+          107071.7820932467
+        ]
+      },
+      "conservation_relative": {
+        "energy": 9.688305216101844e-15,
+        "mass": 1.5030580119041116e-15,
+        "species": 2.829285669466563e-15
+      },
+      "periodicity_streak": 23,
+      "wall_s": 4.080064400099218
+    },
+    {
+      "cycle": 36,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 88,
+      "exhaust_failed_count": 86,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 17.401207066092883,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.034802414132185766,
+      "exhaust30_burned_threshold_ratio": 17.401207066092883,
+      "max_exhaust_mass_relative": 0.009283944795206816,
+      "max_exhaust_energy_relative": 0.000610473254235488,
+      "max_exhaust_pressure_relative": 0.0006067711122088046,
+      "max_exhaust_temperature_relative": 0.008751526796313643,
+      "max_exhaust_species_abs_delta": 0.034802414132185766,
+      "max_exhaust_velocity_abs_delta": 0.0006121353229537191,
+      "global_species_max_normalized_delta": 0.011841867247919769,
+      "work_J": 32.88394910450461,
+      "indicated_power_W": 5480.658184084101,
+      "brake_power_W": 3516.76158742789,
+      "brake_torque_Nm": 3.3582599418890964,
+      "trapped_air_mg": 28.89031828599228,
+      "trapped_fresh_mg": 32.443590408461816,
+      "afr_trapped": 8.130623630906545,
+      "fuel_burned_mg": 1.9626572147523522,
+      "chemical_heat_J": 71.73512119920042,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89917.8753771169,
+          132160.68887116565
+        ],
+        "cylinder": [
+          99675.15145740111,
+          4562539.254521963
+        ],
+        "exhaust_entry": [
+          96132.74021763938,
+          112725.95747561524
+        ],
+        "exhaust_middle": [
+          104436.12621626032,
+          107069.46221782808
+        ]
+      },
+      "conservation_relative": {
+        "energy": 7.0303406845568886e-15,
+        "mass": 2.1956435664089475e-15,
+        "species": 2.4363293264850957e-15
+      },
+      "periodicity_streak": 24,
+      "wall_s": 3.986156899947673
+    },
+    {
+      "cycle": 37,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 87,
+      "exhaust_failed_count": 85,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 17.248092167241825,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03449618433448365,
+      "exhaust30_burned_threshold_ratio": 17.248092167241825,
+      "max_exhaust_mass_relative": 0.008832043333431105,
+      "max_exhaust_energy_relative": 0.0005768973141940806,
+      "max_exhaust_pressure_relative": 0.0005733997308391377,
+      "max_exhaust_temperature_relative": 0.008316409463170766,
+      "max_exhaust_species_abs_delta": 0.03449618433448365,
+      "max_exhaust_velocity_abs_delta": 0.0005788873289450241,
+      "global_species_max_normalized_delta": 0.011539901502236515,
+      "work_J": 32.88602385469335,
+      "indicated_power_W": 5481.003975782225,
+      "brake_power_W": 3517.0958041437557,
+      "brake_torque_Nm": 3.3585790953434604,
+      "trapped_air_mg": 28.891846646254052,
+      "trapped_fresh_mg": 32.44523047991471,
+      "afr_trapped": 8.1307981346023,
+      "fuel_burned_mg": 1.9627621966036894,
+      "chemical_heat_J": 71.73895828586092,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89917.58223549588,
+          132160.66021564085
+        ],
+        "cylinder": [
+          99674.81957999126,
+          4562565.540176866
+        ],
+        "exhaust_entry": [
+          96130.78026693764,
+          112725.14016150203
+        ],
+        "exhaust_middle": [
+          104433.79571983674,
+          107067.19882003314
+        ]
+      },
+      "conservation_relative": {
+        "energy": 6.624430693652659e-15,
+        "mass": 1.7167280234002843e-15,
+        "species": 1.4932341033295749e-15
+      },
+      "periodicity_streak": 25,
+      "wall_s": 3.888634600210935
+    },
+    {
+      "cycle": 38,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 86,
+      "exhaust_failed_count": 84,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 17.091926772072664,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.034183853544145326,
+      "exhaust30_burned_threshold_ratio": 17.091926772072664,
+      "max_exhaust_mass_relative": 0.008385342049667944,
+      "max_exhaust_energy_relative": 0.0005444504938247625,
+      "max_exhaust_pressure_relative": 0.0005411504829443219,
+      "max_exhaust_temperature_relative": 0.007897722754727662,
+      "max_exhaust_species_abs_delta": 0.034183853544145326,
+      "max_exhaust_velocity_abs_delta": 0.0005466885405019939,
+      "global_species_max_normalized_delta": 0.01125015053631599,
+      "work_J": 32.888069849489966,
+      "indicated_power_W": 5481.344974914994,
+      "brake_power_W": 3517.4255308114284,
+      "brake_torque_Nm": 3.358893961117636,
+      "trapped_air_mg": 28.893349496276727,
+      "trapped_fresh_mg": 32.44684338917129,
+      "afr_trapped": 8.130969228356005,
+      "fuel_burned_mg": 1.9628658133509789,
+      "chemical_heat_J": 71.74274547797768,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89917.29575333586,
+          132160.6292651776
+        ],
+        "cylinder": [
+          99674.46185880445,
+          4562591.650284119
+        ],
+        "exhaust_entry": [
+          96128.86848999487,
+          112724.30447872325
+        ],
+        "exhaust_middle": [
+          104431.51945005394,
+          107064.99698850443
+        ]
+      },
+      "conservation_relative": {
+        "energy": 6.700634250190174e-15,
+        "mass": 1.6283128462294542e-15,
+        "species": 1.8075991777147486e-15
+      },
+      "periodicity_streak": 26,
+      "wall_s": 3.7904478998389095
+    },
+    {
+      "cycle": 39,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 86,
+      "exhaust_failed_count": 84,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 16.934017220828434,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03386803444165687,
+      "exhaust30_burned_threshold_ratio": 16.934017220828434,
+      "max_exhaust_mass_relative": 0.007945980687071735,
+      "max_exhaust_energy_relative": 0.0005131634277200217,
+      "max_exhaust_pressure_relative": 0.0005100538328734886,
+      "max_exhaust_temperature_relative": 0.007486202540933883,
+      "max_exhaust_species_abs_delta": 0.03386803444165687,
+      "max_exhaust_velocity_abs_delta": 0.0005155799349860768,
+      "global_species_max_normalized_delta": 0.010972542121180793,
+      "work_J": 32.8900789643435,
+      "indicated_power_W": 5481.679827390584,
+      "brake_power_W": 3517.749437560535,
+      "brake_torque_Nm": 3.3592032692789635,
+      "trapped_air_mg": 28.894821344292684,
+      "trapped_fresh_mg": 32.44842320645943,
+      "afr_trapped": 8.131136369529752,
+      "fuel_burned_mg": 1.9629676502855482,
+      "chemical_heat_J": 71.74646761793701,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89917.01669773161,
+          132160.5965742963
+        ],
+        "cylinder": [
+          99674.08492188242,
+          4562617.443269575
+        ],
+        "exhaust_entry": [
+          96127.00922303348,
+          112723.45812330508
+        ],
+        "exhaust_middle": [
+          104429.30322563606,
+          107062.86112826332
+        ]
+      },
+      "conservation_relative": {
+        "energy": 5.140879437242498e-15,
+        "mass": 2.3896657607560467e-15,
+        "species": 1.5718253719258682e-15
+      },
+      "periodicity_streak": 27,
+      "wall_s": 4.202021199977025
+    },
+    {
+      "cycle": 40,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 85,
+      "exhaust_failed_count": 83,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 16.77551149342349,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03355102298684698,
+      "exhaust30_burned_threshold_ratio": 16.77551149342349,
+      "max_exhaust_mass_relative": 0.007515809351252028,
+      "max_exhaust_energy_relative": 0.00048305884363487325,
+      "max_exhaust_pressure_relative": 0.0004801323835316728,
+      "max_exhaust_temperature_relative": 0.007082836129231319,
+      "max_exhaust_species_abs_delta": 0.03355102298684698,
+      "max_exhaust_velocity_abs_delta": 0.00048559395362841873,
+      "global_species_max_normalized_delta": 0.010706942300641184,
+      "work_J": 32.89204406518661,
+      "indicated_power_W": 5482.007344197768,
+      "brake_power_W": 3518.066355902152,
+      "brake_torque_Nm": 3.3595059040027118,
+      "trapped_air_mg": 28.896257418247853,
+      "trapped_fresh_mg": 32.449964779279206,
+      "afr_trapped": 8.131299086445214,
+      "fuel_burned_mg": 1.9630673404279604,
+      "chemical_heat_J": 71.75011129264294,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89916.74572760962,
+          132160.56264247658
+        ],
+        "cylinder": [
+          99673.69467286298,
+          4562642.796813354
+        ],
+        "exhaust_entry": [
+          96125.20621116356,
+          112722.60809171273
+        ],
+        "exhaust_middle": [
+          104427.15204073717,
+          107060.79491692403
+        ]
+      },
+      "conservation_relative": {
+        "energy": 4.932271588364368e-15,
+        "mass": 1.7781274519911386e-15,
+        "species": 8.645039545592275e-16
+      },
+      "periodicity_streak": 28,
+      "wall_s": 3.9895420998800546
+    },
+    {
+      "cycle": 41,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 84,
+      "exhaust_failed_count": 82,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 16.61740709577303,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03323481419154606,
+      "exhaust30_burned_threshold_ratio": 16.61740709577303,
+      "max_exhaust_mass_relative": 0.007096392922936576,
+      "max_exhaust_energy_relative": 0.0004541513563629758,
+      "max_exhaust_pressure_relative": 0.00045140067174020894,
+      "max_exhaust_temperature_relative": 0.006689174584804655,
+      "max_exhaust_species_abs_delta": 0.03323481419154606,
+      "max_exhaust_velocity_abs_delta": 0.00045675422946553357,
+      "global_species_max_normalized_delta": 0.010453163272675208,
+      "work_J": 32.89395902001252,
+      "indicated_power_W": 5482.32650333542,
+      "brake_power_W": 3518.37528046205,
+      "brake_torque_Nm": 3.3598009052272135,
+      "trapped_air_mg": 28.897653680836637,
+      "trapped_fresh_mg": 32.45146374784453,
+      "afr_trapped": 8.13145698165205,
+      "fuel_burned_mg": 1.9631645658226065,
+      "chemical_heat_J": 71.753664880815,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89916.48338931707,
+          132160.52791401805
+        ],
+        "cylinder": [
+          99673.29630849925,
+          4562667.60662793
+        ],
+        "exhaust_entry": [
+          96123.46254652087,
+          112721.76063064203
+        ],
+        "exhaust_middle": [
+          104425.07004097351,
+          107058.80128739895
+        ]
+      },
+      "conservation_relative": {
+        "energy": 3.841423290288492e-15,
+        "mass": 1.9819735549127748e-15,
+        "species": 1.1002777603481078e-15
+      },
+      "periodicity_streak": 29,
+      "wall_s": 3.866095099831
+    },
+    {
+      "cycle": 42,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 84,
+      "exhaust_failed_count": 82,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 16.460560886699838,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.032921121773399675,
+      "exhaust30_burned_threshold_ratio": 16.460560886699838,
+      "max_exhaust_mass_relative": 0.006689022841325308,
+      "max_exhaust_energy_relative": 0.0004264480012292849,
+      "max_exhaust_pressure_relative": 0.0004238657009205628,
+      "max_exhaust_temperature_relative": 0.006306502033011525,
+      "max_exhaust_species_abs_delta": 0.032921121773399675,
+      "max_exhaust_velocity_abs_delta": 0.0004290758739070588,
+      "global_species_max_normalized_delta": 0.0102109711247717,
+      "work_J": 32.89581869918243,
+      "indicated_power_W": 5482.636449863739,
+      "brake_power_W": 3518.6753690859614,
+      "brake_torque_Nm": 3.3600874687543807,
+      "trapped_air_mg": 28.89900681042016,
+      "trapped_fresh_mg": 32.45291652399016,
+      "afr_trapped": 8.131609731129135,
+      "fuel_burned_mg": 1.9632590582686464,
+      "chemical_heat_J": 71.75711857972328,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89916.23011845592,
+          132160.49277949074
+        ],
+        "cylinder": [
+          99672.89435022998,
+          4562691.785773819
+        ],
+        "exhaust_entry": [
+          96121.78067399214,
+          112720.92123235774
+        ],
+        "exhaust_middle": [
+          104423.06052267148,
+          107056.88241802964
+        ]
+      },
+      "conservation_relative": {
+        "energy": 3.1057217943304164e-15,
+        "mass": 1.9967094177745798e-15,
+        "species": 1.1788690289444013e-15
+      },
+      "periodicity_streak": 30,
+      "wall_s": 3.8939656000584364
+    },
+    {
+      "cycle": 43,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 82,
+      "exhaust_failed_count": 80,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 16.30570008207982,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03261140016415964,
+      "exhaust30_burned_threshold_ratio": 16.30570008207982,
+      "max_exhaust_mass_relative": 0.006294733395037924,
+      "max_exhaust_energy_relative": 0.00039994831202848455,
+      "max_exhaust_pressure_relative": 0.00039752701723358674,
+      "max_exhaust_temperature_relative": 0.005935851927771889,
+      "max_exhaust_species_abs_delta": 0.03261140016415964,
+      "max_exhaust_velocity_abs_delta": 0.00040256569634869455,
+      "global_species_max_normalized_delta": 0.009980093238089151,
+      "work_J": 32.8976189374298,
+      "indicated_power_W": 5482.936489571633,
+      "brake_power_W": 3518.9659366116844,
+      "brake_torque_Nm": 3.360364940302505,
+      "trapped_air_mg": 28.900314174522475,
+      "trapped_fresh_mg": 32.45432026229495,
+      "afr_trapped": 8.13175708222723,
+      "fuel_burned_mg": 1.9633505979613832,
+      "chemical_heat_J": 71.76046435548596,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89915.98624332857,
+          132160.45757741324
+        ],
+        "cylinder": [
+          99672.49267782959,
+          4562715.263401314
+        ],
+        "exhaust_entry": [
+          96120.1624019959,
+          112720.0946465877
+        ],
+        "exhaust_middle": [
+          104421.12596164437,
+          107055.03978480658
+        ]
+      },
+      "conservation_relative": {
+        "energy": 2.4413618391722585e-15,
+        "mass": 2.2889706978670456e-15,
+        "species": 8.645039545592275e-16
+      },
+      "periodicity_streak": 31,
+      "wall_s": 3.792491499800235
+    },
+    {
+      "cycle": 44,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 80,
+      "exhaust_failed_count": 78,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 16.1534338139237,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.0323068676278474,
+      "exhaust30_burned_threshold_ratio": 16.1534338139237,
+      "max_exhaust_mass_relative": 0.005914321360437873,
+      "max_exhaust_energy_relative": 0.00037464481273187376,
+      "max_exhaust_pressure_relative": 0.0003723771987057107,
+      "max_exhaust_temperature_relative": 0.005578026322694298,
+      "max_exhaust_species_abs_delta": 0.0323068676278474,
+      "max_exhaust_velocity_abs_delta": 0.0003772227079039958,
+      "global_species_max_normalized_delta": 0.009760225244300999,
+      "work_J": 32.899356492704555,
+      "indicated_power_W": 5483.226082117426,
+      "brake_power_W": 3519.2464482172772,
+      "brake_torque_Nm": 3.3606328091542537,
+      "trapped_air_mg": 28.90157378784002,
+      "trapped_fresh_mg": 32.45567281462378,
+      "afr_trapped": 8.131898849761123,
+      "fuel_burned_mg": 1.9634390115586544,
+      "chemical_heat_J": 71.7636958724679,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89915.75199093345,
+          132160.42259725294
+        ],
+        "cylinder": [
+          99672.09457267095,
+          4562737.983750668
+        ],
+        "exhaust_entry": [
+          96118.6089324102,
+          112719.28489779944
+        ],
+        "exhaust_middle": [
+          104419.26805782045,
+          107053.27422114083
+        ]
+      },
+      "conservation_relative": {
+        "energy": 1.951901396666048e-15,
+        "mass": 2.335634263596095e-15,
+        "species": 4.715476115777604e-16
+      },
+      "periodicity_streak": 32,
+      "wall_s": 3.84202290000394
+    },
+    {
+      "cycle": 45,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 79,
+      "exhaust_failed_count": 77,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 16.004264762536245,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03200852952507249,
+      "exhaust30_burned_threshold_ratio": 16.004264762536245,
+      "max_exhaust_mass_relative": 0.005548367647941545,
+      "max_exhaust_energy_relative": 0.00035052373379740483,
+      "max_exhaust_pressure_relative": 0.00034840256690901603,
+      "max_exhaust_temperature_relative": 0.005233616941864296,
+      "max_exhaust_species_abs_delta": 0.03200852952507249,
+      "max_exhaust_velocity_abs_delta": 0.0003530388774199006,
+      "global_species_max_normalized_delta": 0.00955103744748448,
+      "work_J": 32.901028974971496,
+      "indicated_power_W": 5483.504829161916,
+      "brake_power_W": 3519.51650785182,
+      "brake_torque_Nm": 3.360890697108856,
+      "trapped_air_mg": 28.902784258512565,
+      "trapped_fresh_mg": 32.4569726721454,
+      "afr_trapped": 8.1320349106001,
+      "fuel_burned_mg": 1.963524169229527,
+      "chemical_heat_J": 71.76680838533912,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89915.52749538893,
+          132160.38808331653
+        ],
+        "cylinder": [
+          99671.70277373481,
+          4562759.904627497
+        ],
+        "exhaust_entry": [
+          96117.12090360388,
+          112718.49533897845
+        ],
+        "exhaust_middle": [
+          104417.48779481412,
+          107051.5859445909
+        ]
+      },
+      "conservation_relative": {
+        "energy": 2.120396132301127e-16,
+        "mass": 2.0114452806363848e-15,
+        "species": 1.4146428347332815e-15
+      },
+      "periodicity_streak": 33,
+      "wall_s": 3.8020868999883533
+    },
+    {
+      "cycle": 46,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 68,
+      "exhaust_failed_count": 66,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 15.858600519235322,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.031717201038470644,
+      "exhaust30_burned_threshold_ratio": 15.858600519235322,
+      "max_exhaust_mass_relative": 0.005197259728045563,
+      "max_exhaust_energy_relative": 0.00032756568206245983,
+      "max_exhaust_pressure_relative": 0.00032558385334210743,
+      "max_exhaust_temperature_relative": 0.004903027053154491,
+      "max_exhaust_species_abs_delta": 0.031717201038470644,
+      "max_exhaust_velocity_abs_delta": 0.0003299998345908939,
+      "global_species_max_normalized_delta": 0.009352180671724055,
+      "work_J": 32.90263477592521,
+      "indicated_power_W": 5483.772462654201,
+      "brake_power_W": 3519.7758468404327,
+      "brake_torque_Nm": 3.361138347600701,
+      "trapped_air_mg": 28.90394472950495,
+      "trapped_fresh_mg": 32.4582189021178,
+      "afr_trapped": 8.132165197671513,
+      "fuel_burned_mg": 1.9636059809616258,
+      "chemical_heat_J": 71.76979860415031,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89915.31280688352,
+          132160.35423874174
+        ],
+        "cylinder": [
+          99671.31953106674,
+          4562780.9961350355
+        ],
+        "exhaust_entry": [
+          96115.69844379184,
+          112717.72869397364
+        ],
+        "exhaust_middle": [
+          104415.7855063648,
+          107049.97463747466
+        ]
+      },
+      "conservation_relative": {
+        "energy": 8.987865022267605e-16,
+        "mass": 2.6622792236994394e-15,
+        "species": 1.336051566136988e-15
+      },
+      "periodicity_streak": 34,
+      "wall_s": 3.7947766999714077
+    },
+    {
+      "cycle": 47,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 66,
+      "exhaust_failed_count": 64,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 15.716764441709884,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03143352888341977,
+      "exhaust30_burned_threshold_ratio": 15.716764441709884,
+      "max_exhaust_mass_relative": 0.0048612141478334946,
+      "max_exhaust_energy_relative": 0.0003057465087075308,
+      "max_exhaust_pressure_relative": 0.0003038970621457669,
+      "max_exhaust_temperature_relative": 0.004586493262483497,
+      "max_exhaust_species_abs_delta": 0.03143352888341977,
+      "max_exhaust_velocity_abs_delta": 0.00030808572569278325,
+      "global_species_max_normalized_delta": 0.009163291510191554,
+      "work_J": 32.90417298292209,
+      "indicated_power_W": 5484.0288304870155,
+      "brake_power_W": 3520.024309843137,
+      "brake_torque_Nm": 3.361375612291036,
+      "trapped_air_mg": 28.90505482570535,
+      "trapped_fresh_mg": 32.4594110908964,
+      "afr_trapped": 8.132289694418587,
+      "fuel_burned_mg": 1.963684392627973,
+      "chemical_heat_J": 71.77266455055269,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89915.10790033452,
+          132160.321228428
+        ],
+        "cylinder": [
+          99670.94664548397,
+          4562801.238948875
+        ],
+        "exhaust_entry": [
+          96114.3412243885,
+          112716.98710455811
+        ],
+        "exhaust_middle": [
+          104414.16094527964,
+          107048.43949887053
+        ]
+      },
+      "conservation_relative": {
+        "energy": 1.0825728264282441e-15,
+        "mass": 2.637719452263098e-15,
+        "species": 1.9647817149073353e-15
+      },
+      "periodicity_streak": 35,
+      "wall_s": 3.846170400036499
+    },
+    {
+      "cycle": 48,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 65,
+      "exhaust_failed_count": 63,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 15.579005842623117,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.031158011685246234,
+      "exhaust30_burned_threshold_ratio": 15.579005842623117,
+      "max_exhaust_mass_relative": 0.004540298346405617,
+      "max_exhaust_energy_relative": 0.000285037846864072,
+      "max_exhaust_pressure_relative": 0.00028331400443823424,
+      "max_exhaust_temperature_relative": 0.004284106871695343,
+      "max_exhaust_species_abs_delta": 0.031158011685246234,
+      "max_exhaust_velocity_abs_delta": 0.00028727190565294713,
+      "global_species_max_normalized_delta": 0.008983996986950727,
+      "work_J": 32.90564330621328,
+      "indicated_power_W": 5484.27388436888,
+      "brake_power_W": 3520.2618430818025,
+      "brake_torque_Nm": 3.3616024398255293,
+      "trapped_air_mg": 28.906114592267205,
+      "trapped_fresh_mg": 32.46054927753337,
+      "afr_trapped": 8.132408428290658,
+      "fuel_burned_mg": 1.9637593823177102,
+      "chemical_heat_J": 71.77540542371253,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89914.91268520297,
+          132160.28918377595
+        ],
+        "cylinder": [
+          99670.58552685367,
+          4562820.623268044
+        ],
+        "exhaust_entry": [
+          96113.04851590011,
+          112716.27219638269
+        ],
+        "exhaust_middle": [
+          104412.61335662175,
+          107046.97932697005
+        ]
+      },
+      "conservation_relative": {
+        "energy": 4.637211802660318e-16,
+        "mass": 1.5276177833404532e-15,
+        "species": 1.9647817149073353e-15
+      },
+      "periodicity_streak": 36,
+      "wall_s": 3.755523400148377
+    },
+    {
+      "cycle": 49,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 64,
+      "exhaust_failed_count": 62,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 15.445509421670112,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.030891018843340223,
+      "exhaust30_burned_threshold_ratio": 15.445509421670112,
+      "max_exhaust_mass_relative": 0.004234451742026561,
+      "max_exhaust_energy_relative": 0.00026540810992753085,
+      "max_exhaust_pressure_relative": 0.00026380329146132606,
+      "max_exhaust_temperature_relative": 0.003995834117550235,
+      "max_exhaust_species_abs_delta": 0.030891018843340223,
+      "max_exhaust_velocity_abs_delta": 0.00026752981634750594,
+      "global_species_max_normalized_delta": 0.008813918791442646,
+      "work_J": 32.90704570617049,
+      "indicated_power_W": 5484.507617695082,
+      "brake_power_W": 3520.4884326663428,
+      "brake_torque_Nm": 3.3618188169401257,
+      "trapped_air_mg": 28.907127383781052,
+      "trapped_fresh_mg": 32.461637061224955,
+      "afr_trapped": 8.132521784149025,
+      "fuel_burned_mg": 1.963830981240505,
+      "chemical_heat_J": 71.778022364339,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89914.72701860963,
+          132160.258206008
+        ],
+        "cylinder": [
+          99670.23723815179,
+          4562839.147407738
+        ],
+        "exhaust_entry": [
+          96111.81926934131,
+          112715.58512598858
+        ],
+        "exhaust_middle": [
+          104411.14154733015,
+          107045.5925443312
+        ]
+      },
+      "conservation_relative": {
+        "energy": 5.191110472761895e-16,
+        "mass": 2.129332183530825e-15,
+        "species": 2.9864682066591497e-15
+      },
+      "periodicity_streak": 37,
+      "wall_s": 3.828058199957013
+    },
+    {
+      "cycle": 50,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 61,
+      "exhaust_failed_count": 59,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 15.316403895581809,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03063280779116362,
+      "exhaust30_burned_threshold_ratio": 15.316403895581809,
+      "max_exhaust_mass_relative": 0.003943506948159957,
+      "max_exhaust_energy_relative": 0.00024682578542674875,
+      "max_exhaust_pressure_relative": 0.00024533360588320995,
+      "max_exhaust_temperature_relative": 0.0037215343417823206,
+      "max_exhaust_species_abs_delta": 0.03063280779116362,
+      "max_exhaust_velocity_abs_delta": 0.00024883082696441905,
+      "global_species_max_normalized_delta": 0.008652677159512562,
+      "work_J": 32.908385746052545,
+      "indicated_power_W": 5484.730957675424,
+      "brake_power_W": 3520.7049945120693,
+      "brake_torque_Nm": 3.3620256182695205,
+      "trapped_air_mg": 28.908089490291818,
+      "trapped_fresh_mg": 32.46267043492626,
+      "afr_trapped": 8.132629398671563,
+      "fuel_burned_mg": 1.9638993572267744,
+      "chemical_heat_J": 71.78052150663916,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89914.55065540984,
+          132160.22852224685
+        ],
+        "cylinder": [
+          99669.90330419969,
+          4562856.985805013
+        ],
+        "exhaust_entry": [
+          96110.65218896884,
+          112714.92761075681
+        ],
+        "exhaust_middle": [
+          104409.74395491714,
+          107044.2775337567
+        ]
+      },
+      "conservation_relative": {
+        "energy": 9.53794695864357e-16,
+        "mass": 2.090036549232678e-15,
+        "species": 3.3008332810443235e-15
+      },
+      "periodicity_streak": 38,
+      "wall_s": 3.8545854999683797
+    },
+    {
+      "cycle": 51,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 52,
+      "exhaust_failed_count": 50,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 15.191769821582545,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03038353964316509,
+      "exhaust30_burned_threshold_ratio": 15.191769821582545,
+      "max_exhaust_mass_relative": 0.003667201307825163,
+      "max_exhaust_energy_relative": 0.0002292505676884973,
+      "max_exhaust_pressure_relative": 0.00022786488804612938,
+      "max_exhaust_temperature_relative": 0.0034609798021534017,
+      "max_exhaust_species_abs_delta": 0.03038353964316509,
+      "max_exhaust_velocity_abs_delta": 0.0002311743050641274,
+      "global_species_max_normalized_delta": 0.008499891999655357,
+      "work_J": 32.90965777311703,
+      "indicated_power_W": 5484.942962186173,
+      "brake_power_W": 3520.9105788849356,
+      "brake_torque_Nm": 3.3622219368845054,
+      "trapped_air_mg": 28.90900245207963,
+      "trapped_fresh_mg": 32.46365105691274,
+      "afr_trapped": 8.132731435893055,
+      "fuel_burned_mg": 1.9639643028753921,
+      "chemical_heat_J": 71.7828952700961,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89914.38341774786,
+          132160.1999078963
+        ],
+        "cylinder": [
+          99669.58310581853,
+          4562873.895553048
+        ],
+        "exhaust_entry": [
+          96109.54561471376,
+          112714.29875883822
+        ],
+        "exhaust_middle": [
+          104408.41887521901,
+          107043.03197739394
+        ]
+      },
+      "conservation_relative": {
+        "energy": 9.973595290783048e-16,
+        "mass": 2.1661718406853374e-15,
+        "species": 3.5366070868332037e-15
+      },
+      "periodicity_streak": 39,
+      "wall_s": 3.8140261999797076
+    },
+    {
+      "cycle": 52,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 52,
+      "exhaust_failed_count": 50,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 15.07164661976762,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.03014329323953524,
+      "exhaust30_burned_threshold_ratio": 15.07164661976762,
+      "max_exhaust_mass_relative": 0.003405200268017209,
+      "max_exhaust_energy_relative": 0.00021264423627610432,
+      "max_exhaust_pressure_relative": 0.00021135915825874323,
+      "max_exhaust_temperature_relative": 0.003213868945373226,
+      "max_exhaust_species_abs_delta": 0.03014329323953524,
+      "max_exhaust_velocity_abs_delta": 0.00021447842435366737,
+      "global_species_max_normalized_delta": 0.008355187458781057,
+      "work_J": 32.910864131903736,
+      "indicated_power_W": 5485.144021983956,
+      "brake_power_W": 3521.105565041838,
+      "brake_torque_Nm": 3.3624081349487387,
+      "trapped_air_mg": 28.909868084640806,
+      "trapped_fresh_mg": 32.46458087472099,
+      "afr_trapped": 8.132828105076998,
+      "fuel_burned_mg": 1.9640259251699665,
+      "chemical_heat_J": 71.78514756496133,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89914.22504196626,
+          132160.17247450456
+        ],
+        "cylinder": [
+          99669.27720927476,
+          4562889.926673792
+        ],
+        "exhaust_entry": [
+          96108.49771102938,
+          112713.69867209197
+        ],
+        "exhaust_middle": [
+          104407.16403200944,
+          107041.85352760671
+        ]
+      },
+      "conservation_relative": {
+        "energy": 1.1003740549580153e-15,
+        "mass": 2.3577380578888026e-15,
+        "species": 3.69378962402579e-15
+      },
+      "periodicity_streak": 40,
+      "wall_s": 3.8489045999012887
+    },
+    {
+      "cycle": 53,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 52,
+      "exhaust_failed_count": 50,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 14.956038827447559,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.02991207765489512,
+      "exhaust30_burned_threshold_ratio": 14.956038827447559,
+      "max_exhaust_mass_relative": 0.0031571096950764126,
+      "max_exhaust_energy_relative": 0.00019696800236086663,
+      "max_exhaust_pressure_relative": 0.00019577786726341902,
+      "max_exhaust_temperature_relative": 0.0029798412556193018,
+      "max_exhaust_species_abs_delta": 0.02991207765489512,
+      "max_exhaust_velocity_abs_delta": 0.00019870560922087555,
+      "global_species_max_normalized_delta": 0.008218193735008763,
+      "work_J": 32.91200739872784,
+      "indicated_power_W": 5485.33456645464,
+      "brake_power_W": 3521.2903697466704,
+      "brake_torque_Nm": 3.362584610442423,
+      "trapped_air_mg": 28.910687968642513,
+      "trapped_fresh_mg": 32.465461581018765,
+      "afr_trapped": 8.132919595213457,
+      "fuel_burned_mg": 1.9640843454547439,
+      "chemical_heat_J": 71.78728282637167,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89914.0752288227,
+          132160.14627607842
+        ],
+        "cylinder": [
+          99668.98577348837,
+          4562905.132357605
+        ],
+        "exhaust_entry": [
+          96107.5064837804,
+          112713.1273937586
+        ],
+        "exhaust_middle": [
+          104405.97706448122,
+          107040.73978483723
+        ]
+      },
+      "conservation_relative": {
+        "energy": 1.0195637729081472e-15,
+        "mass": 2.4658010522087058e-15,
+        "species": 3.8509721612183775e-15
+      },
+      "periodicity_streak": 41,
+      "wall_s": 3.796755600022152
+    },
+    {
+      "cycle": 54,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 51,
+      "exhaust_failed_count": 49,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 14.844921644341646,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.029689843288683293,
+      "exhaust30_burned_threshold_ratio": 14.844921644341646,
+      "max_exhaust_mass_relative": 0.0029224885195789055,
+      "max_exhaust_energy_relative": 0.00018218240678838976,
+      "max_exhaust_pressure_relative": 0.00018108179831548965,
+      "max_exhaust_temperature_relative": 0.0027584899908985085,
+      "max_exhaust_species_abs_delta": 0.029689843288683293,
+      "max_exhaust_velocity_abs_delta": 0.00018381899107905442,
+      "global_species_max_normalized_delta": 0.008088548603255755,
+      "work_J": 32.91308978944426,
+      "indicated_power_W": 5485.5149649073755,
+      "brake_power_W": 3521.465349458597,
+      "brake_torque_Nm": 3.362751703758986,
+      "trapped_air_mg": 28.911463653811424,
+      "trapped_fresh_mg": 32.46629483525022,
+      "afr_trapped": 8.133006091757558,
+      "fuel_burned_mg": 1.964139670854008,
+      "chemical_heat_J": 71.78930496971316,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89913.93366737163,
+          132160.1213236753
+        ],
+        "cylinder": [
+          99668.70875792099,
+          4562919.548069604
+        ],
+        "exhaust_entry": [
+          96106.56986336186,
+          112712.58464502866
+        ],
+        "exhaust_middle": [
+          104404.85552401053,
+          107039.68826183364
+        ]
+      },
+      "conservation_relative": {
+        "energy": 1.3537749176828102e-15,
+        "mass": 2.9127888923501247e-15,
+        "species": 4.8726586529701915e-15
+      },
+      "periodicity_streak": 42,
+      "wall_s": 3.7857079999521375
+    },
+    {
+      "cycle": 55,
+      "phase_deg_ca": 0,
+      "metric_count": 413,
+      "failed_count": 51,
+      "exhaust_failed_count": 49,
+      "global_species_failed_count": 2,
+      "max_threshold_ratio": 14.738245822378037,
+      "worst_metric": "exhaust[30].species.burned",
+      "exhaust30_burned_fraction_abs_delta": 0.029476491644756075,
+      "exhaust30_burned_threshold_ratio": 14.738245822378037,
+      "max_exhaust_mass_relative": 0.0027008601972255642,
+      "max_exhaust_energy_relative": 0.00016824768446053432,
+      "max_exhaust_pressure_relative": 0.00016723143018595175,
+      "max_exhaust_temperature_relative": 0.0025493733150810513,
+      "max_exhaust_species_abs_delta": 0.029476491644756075,
+      "max_exhaust_velocity_abs_delta": 0.00016978092824192215,
+      "global_species_max_normalized_delta": 0.007965898783236036,
+      "work_J": 32.914113445074236,
+      "indicated_power_W": 5485.685574179039,
+      "brake_power_W": 3521.6308478672004,
+      "brake_torque_Nm": 3.3629097430978048,
+      "trapped_air_mg": 28.912196743404355,
+      "trapped_fresh_mg": 32.46708235509334,
+      "afr_trapped": 8.13308778441051,
+      "fuel_burned_mg": 1.9641920071081265,
+      "chemical_heat_J": 71.79121785980215,
+      "pressure_min_max_Pa": {
+        "crankcase": [
+          89913.80003579741,
+          132160.097608954
+        ],
+        "cylinder": [
+          99668.44598701512,
+          4562933.2022699695
+        ],
+        "exhaust_entry": [
+          96105.6857130619,
+          112712.06990863984
+        ],
+        "exhaust_middle": [
+          104403.79686676963,
+          107038.69639066461
+        ]
+      },
+      "conservation_relative": {
+        "energy": 2.3114344185528293e-15,
+        "mass": 2.9152448694937587e-15,
+        "species": 5.0298411901627786e-15
+      },
+      "periodicity_streak": 43,
+      "wall_s": 3.807982200058177
+    }
+  ],
+  "integrity_checks": {
+    "cycle15_parent_checkpoint_sha256": "289291638acde062929bb275c9977db11f4e1142dcb9800713b1591bce2cc0de",
+    "expected_cycle15_checkpoint_sha256": "289291638acde062929bb275c9977db11f4e1142dcb9800713b1591bce2cc0de",
+    "historical_result_sha256": "ca2987d9b7a003e0d34bf565dcaa9117f6602df3cd37d193599e2cd0beaa687d",
+    "expected_historical_result_sha256": "ca2987d9b7a003e0d34bf565dcaa9117f6602df3cd37d193599e2cd0beaa687d",
+    "historical_checkpoint_sha256": "b216a263735f9959a72ec9c958a3f0a6542beabc866232c3a755cfc7555152ed",
+    "expected_historical_checkpoint_sha256": "b216a263735f9959a72ec9c958a3f0a6542beabc866232c3a755cfc7555152ed",
+    "continuation_checkpoint_sha256": "ea500a0ef3a8869220e439a15847043e37752a94bfda34617d0932798f476391",
+    "manifest_checkpoint_sha256": "ea500a0ef3a8869220e439a15847043e37752a94bfda34617d0932798f476391",
+    "continuation_manifest_sha256": "616db487a61bf5d5f68f0cf8b861c162eee4f877ca9eb184d270fb3c1b8cac8c",
+    "continuation_result_sha256_field": "ef154ce110cb9088f62e34a9a70656d969d54af4775a03a22deec790bf068b18",
+    "continuation_run_json_sha256": "ebed702b2b8083e9e4ea6fef73491d25a3dfd2c28e6bf6b5e54735c53498e36e",
+    "continuation_runner_file_sha256": "cf2814147a8ae4864c241e37bb8a93fc26a5e801a0dd1819d91f487de6d28861",
+    "manifest_runner_sha256": "cf2814147a8ae4864c241e37bb8a93fc26a5e801a0dd1819d91f487de6d28861",
+    "all_anchor_checks_pass": true,
+    "historical_invocation_manifest_sha256": "50105816a5753a8b507a98aec3f7f6f29a70aa309eaa5bf18da0954d5587dd82",
+    "expected_historical_invocation_manifest_sha256": "50105816a5753a8b507a98aec3f7f6f29a70aa309eaa5bf18da0954d5587dd82",
+    "historical_invocation_manifest_matches_receipt": true,
+    "continuation_result_sha256_matches_run_json": true
+  }
+}
