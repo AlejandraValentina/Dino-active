@@ -1,11 +1,21 @@
 from copy import deepcopy
 import math
+import json
+from pathlib import Path
 
 import pytest
 
 from motorsim.gas1d.mesh import segments_mesh,uniform_mesh
 from scripts.diagnostics.diagnose_integrated_mesh_v1 import bisect_frustum_mesh,refined_configuration,restrict_state
 from test_integrated_spatial_v1 import case
+
+
+def test_refined_native_configuration_roundtrips_without_format_coercion():
+    from motorsim.integrated_2t import IntegratedEngine2T
+    original=json.loads(Path('results/predictive-reliability-v1/spatial-muscl-coarse/configuration.json').read_text(encoding='utf-8'))
+    fine=refined_configuration(original,'a'*64)
+    restored=IntegratedEngine2T.from_configuration_dict(fine)
+    assert restored.configuration_dict()==fine
 
 
 def test_trace_free_and_full_trace_preserve_identical_muscl_physical_steps():

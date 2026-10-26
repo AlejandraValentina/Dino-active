@@ -12577,6 +12577,12 @@
       "task": "PRED-INTEGRATED",
       "kind": "task",
       "summary": "Mesh input preparation verifies exact frustum volume/moments, conservative species prolongation, full/trace-free physical equality and thermal wall area/h/T remapping (6 tests PASS). One 44-to-88-cell, two-revolution diagnostic, max 240 s/5 MiB; no automatic mesh extension."
+    },
+    {
+      "at": "2026-10-26T15:37:00+00:00",
+      "task": "PRED-INTEGRATED",
+      "kind": "task",
+      "summary": "Mesh diagnostic stopped before stepping: tuple/list configuration mismatch; preserve values as JSON lists and add native roundtrip regression (7 PASS). No physical change."
     }
   ],
   "legacy_gate_status": {

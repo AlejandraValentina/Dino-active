@@ -1,0 +1,36 @@
+{
+  "name": "mesh-refined-v1",
+  "command": [
+    "python",
+    "scripts/diagnostics/diagnose_integrated_mesh_v1.py",
+    "--source",
+    "results/predictive-reliability-v1/spatial-muscl-coarse",
+    "--output",
+    "results/predictive-reliability-v1/mesh-refined-v1"
+  ],
+  "started_at": "2026-10-26T15:33:48+00:00",
+  "finished_at": "2026-10-26T15:33:48+00:00",
+  "duration_s": 0.453,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\mesh-refined-v1.log",
+  "log_lines": 10,
+  "log_bytes": 709,
+  "error_lines": [
+    "1: Traceback (most recent call last):",
+    "9:     raise ValueError(\"integrated engine resolved topology/configuration mismatch\")",
+    "10: ValueError: integrated engine resolved topology/configuration mismatch"
+  ],
+  "tail": [
+    "Traceback (most recent call last):",
+    "  File \"E:\\dino\\Dino-active\\scripts\\diagnostics\\diagnose_integrated_mesh_v1.py\", line 211, in <module>",
+    "    raise SystemExit(run(args.source,args.output))",
+    "                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"E:\\dino\\Dino-active\\scripts\\diagnostics\\diagnose_integrated_mesh_v1.py\", line 125, in run",
+    "    engine=IntegratedEngine2T.from_configuration_dict(config)",
+    "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"E:\\dino\\Dino-active\\motorsim\\integrated_2t.py\", line 1382, in from_configuration_dict",
+    "    raise ValueError(\"integrated engine resolved topology/configuration mismatch\")",
+    "ValueError: integrated engine resolved topology/configuration mismatch"
+  ]
+}

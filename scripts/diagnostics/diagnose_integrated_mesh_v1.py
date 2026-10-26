@@ -59,8 +59,8 @@ def refined_configuration(config,parent_sha256):
         original_states=result['initial_duct_states'][name]
         original_species=result['duct_species'][name]
         result['initial_duct_states'][name]=[deepcopy(w) for w in original_states for _ in range(2)]
-        result['duct_species'][name]=[tuple(value*fine['volumes'][j]/original['volumes'][j//2]
-            for value in original_species[j//2]) for j in range(len(fine['volumes']))]
+        result['duct_species'][name]=[[value*fine['volumes'][j]/original['volumes'][j//2]
+            for value in original_species[j//2]] for j in range(len(fine['volumes']))]
         path['mesh']=fine
     if result.get('thermal_system') is not None:
         meshes={p['id']:p['mesh'] for p in config['ducts']}
