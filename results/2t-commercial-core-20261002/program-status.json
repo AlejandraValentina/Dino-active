@@ -8366,13 +8366,13 @@
         "PRED-RESTRICTION"
       ],
       "state": "BLOCKED_LOCAL",
-      "blocker": "New candidate lacks the transonic/supersonic duct-face regime required by 37/1008 admissible subsonic-interior input states. Analytic counterexample demands 0.0576073893 kg/s versus 0.0505520173 kg/s compatible subsonic capacity. Owner requested evidence before dependent implementation on fundamental strategy findings.",
+      "blocker": "Candidate V1 lacks causal transonic/supersonic regime selection in 37/1008 inputs; owner authorized resolution on 2026-10-26. Historical checkpoint survey cannot reconstruct blowdown endpoints.",
       "commits": [],
       "evidence": [
         "results/predictive-reliability-v1/connection-domain-receipt.json",
         "results/predictive-reliability-v1/report.md"
       ],
-      "next_action": "Present domain failure before adopting the connection; retain the model as an unintegrated candidate. Derive and independently verify complete transonic regime selection.",
+      "next_action": "Complete and verify transonic model before selectable integration or dependent spatial work.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "orchestrator/physics/verification",
       "write_scope": [
@@ -8534,7 +8534,7 @@
       "dependencies": [
         "PRED-RESTRICTION"
       ],
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [
@@ -8544,8 +8544,10 @@
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
-        "openspec/changes/predictive-reliability-v1/",
-        "results/predictive-reliability-v1/"
+        "motorsim/port_connection_v2.py",
+        "motorsim/gas1d/exact_riemann_reference_v1.py",
+        "tests/test_transonic_connection_v2.py",
+        "openspec/changes/predictive-reliability-v1/transonic-contract-v2.md"
       ],
       "evidence_level": "L2"
     },
@@ -8576,20 +8578,23 @@
       "dependencies": [
         "PRED-RESTRICTION"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "results/predictive-reliability-v1/connection-domain-receipt.json"
+        "results/predictive-reliability-v1/historical-port-survey.json",
+        "scripts/diagnostics/survey_historical_port_states_v1.py",
+        "tests/test_historical_port_survey_v1.py"
       ],
-      "next_action": "Pending presentation of the owner-requested fundamental finding; no dependent production adoption.",
+      "next_action": "Capture full endpoint primitives in bounded new-model diagnostics; do not infer historical within-cycle absence.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "openspec/changes/predictive-reliability-v1/",
         "results/predictive-reliability-v1/"
       ],
-      "evidence_level": "L2"
+      "evidence_level": "L2",
+      "qualification": "48 checkpoint faces, 24 open, no unsupported V1 cases at phase zero. Blowdown coverage indeterminate: historical diagnostics omit endpoint primitives. No solver steps."
     }
   ],
   "audit_remediation_mode": false,
@@ -12265,6 +12270,12 @@
       "timestamp": "2026-10-26T14:13:52.259492+00:00",
       "task": "PRED-CONNECTION-REGRESSION",
       "summary": "1187 focused tests PASS. P4-P8: 298 PASS/3 SKIP plus 3 artifact-root failures; configured existing verified external store and all three rechecks PASS. Combined 301 PASS/3 SKIP. No original test/solver changes; candidate adoption remains blocked on transonic regime."
+    },
+    {
+      "at": "2026-10-26T14:27:40+00:00",
+      "task": "PRED-PORT-DOMAIN-SURVEY",
+      "kind": "task",
+      "summary": "Hash-verified six historical points: 48 faces, 24 open, no V1 failures at cycle boundaries; within-cycle blowdown remains indeterminate because endpoint rho/u/T were not recorded. Seven survey tests pass; zero solver steps."
     }
   ],
   "legacy_gate_status": {
