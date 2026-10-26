@@ -7920,7 +7920,7 @@
       "id": "PERFV2-PROFILE-A-B",
       "description": "Profile the current IntegratedEngine2T on the existing A/B 9000 RPM configurations with short bounded runs; separate solver CPU from processing and persistence.",
       "dependencies": [],
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [
@@ -7934,7 +7934,8 @@
         "${DINO_ARTIFACT_ROOT}/integrated-performance-v2/profiles/"
       ],
       "unblock_tasks": [],
-      "next_action": "Run bounded, sequential cProfile and unprofiled measurements for A and B after storage preflight; never run complete curves."
+      "next_action": "Run bounded, sequential cProfile and unprofiled measurements for A and B after storage preflight; never run complete curves.",
+      "started_at": "2026-10-26T11:30:29+00:00"
     },
     {
       "id": "PERFV2-HOTPATH-ANALYSIS",
@@ -11541,6 +11542,12 @@
       "task": "CRV1-WINDOWS-ACCEPTANCE",
       "kind": "task",
       "summary": "Recorded accepted rc7 TRIAL baseline, commits, receipt, package and SHA-256; acceptance was not repeated."
+    },
+    {
+      "at": "2026-10-26T11:30:29+00:00",
+      "task": "PERFV2-PROFILE-A-B",
+      "kind": "task",
+      "summary": "Comienza el perfil corto CPU A/B9000 del integrador actual; entradas históricas verificadas por hash y almacenamiento C: aprobado por preflight."
     }
   ],
   "legacy_gate_status": {
@@ -11565,7 +11572,8 @@
     "gate_tasks_total": 5,
     "gate_tasks_done": 0,
     "gate_task_states": {
-      "READY": 3,
+      "IN_PROGRESS": 1,
+      "READY": 2,
       "WAITING": 2
     },
     "remaining": [
@@ -11638,7 +11646,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-26T11:29:56+00:00",
+  "updated_at": "2026-10-26T11:30:29+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
