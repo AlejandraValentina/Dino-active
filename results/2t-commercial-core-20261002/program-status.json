@@ -7720,8 +7720,8 @@
       "id": "CRV1-REED-SENSITIVITY-PROTOCOL",
       "description": "Freeze the bounded one-parameter reed-stiffness sensitivity (1000->500 N/m, all else fixed) at 9000 RPM on STANDARD_V1, with observables, hashes, budget and a no-tuning rule; request explicit owner authorization before any solver run.",
       "dependencies": [],
-      "state": "READY",
-      "blocker": null,
+      "state": "BLOCKED_LOCAL",
+      "blocker": "Commercial Readiness V1 is frozen after owner-accepted PASS; reed sensitivity is outside the accepted functional baseline.",
       "unblock_tasks": [],
       "commits": [],
       "evidence": [
@@ -7729,7 +7729,7 @@
         "configs/reference_cases/standard_v1_125cc_blair_cartwright.json",
         "results/physical-accuracy-v1/report.md: reed stiffness is a synthetic closure; the cancelled A/B was not executed"
       ],
-      "next_action": "Commit the k=500 variant builder/config and reed diagnostics; freeze the two-point protocol (same 9000 RPM point, identical fields except the six stiffness entries), define observables and budget, then present the exact owner authorization request. Do not invoke the solver before authorization.",
+      "next_action": "Remain deferred; preserve the accepted rc7 baseline.",
       "objective": "DINO_COMMERCIAL_READINESS_V1",
       "owner_role": "physics/numerics",
       "evidence_level": "L1",
@@ -7738,7 +7738,9 @@
         "scripts/build_standard_reed_sensitivity.py",
         "tests/test_standard_exploratory_point.py",
         "results/reed-sensitivity-v1/"
-      ]
+      ],
+      "no_local_unblock_reason": "Owner explicitly froze Commercial Readiness V1 for this closeout. Revisit only under a separately scoped and approved successor objective; do not execute this protocol as part of the frozen baseline.",
+      "classification": "POST_DINO_COMMERCIAL_READINESS_V1_BACKLOG"
     },
     {
       "id": "X30M-REQUEST-PACKAGE",
@@ -11368,6 +11370,12 @@
       "task": "CRV1-WINDOWS-ACCEPTANCE",
       "kind": "closeout",
       "summary": "Owner froze rc7 functional TRIAL baseline; recorded retention inventory and added fail-closed preflight for builds/RPM campaigns with configurable artifact/work roots. No cleanup, build or simulation performed."
+    },
+    {
+      "at": "2026-10-26T11:14:31+00:00",
+      "task": "CRV1-REED-SENSITIVITY-PROTOCOL",
+      "kind": "freeze",
+      "summary": "Deferred the not-started sensitivity protocol because the owner froze the accepted CRV1 baseline; no solver run or successor task created."
     }
   ],
   "legacy_gate_status": {
