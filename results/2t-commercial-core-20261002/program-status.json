@@ -9343,19 +9343,21 @@
       "dependencies": [
         "PRED-PULSATING-OUTLET-CONTROL"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "results\\predictive-reliability-v1\\bounded-periodicity-pilot-v1\\receipt.json"
+        "results\\predictive-reliability-v1\\bounded-periodicity-pilot-v1\\receipt.json",
+        "openspec/changes/predictive-reliability-v1/periodic-convergence-costed-design-v1.md"
       ],
-      "next_action": "Plan only; quantify cost and missing evidence before authorizing new execution. Do not automatically extend pilot.",
+      "next_action": "After352 decision, prepare at most4 original-checkpoint25 cycles/90s, only with progress and unchanged detector; no campaign launched.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "openspec/changes/predictive-reliability-v1/periodic-convergence-costed-design-v1.md"
       ],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "Conditional costed protocol only: no periodic execution authorized automatically; spatial control352 must be assessed first."
     },
     {
       "id": "PRED-PERIODICITY-TREND-EXTENSION",
@@ -13422,6 +13424,12 @@
       "task": "PRED-MATERIAL-FRONT-352-CONTROL",
       "kind": "task",
       "summary": "Preregister one352 cycle with matched176 halfstep reference; projection validated through third bisection; no physics/default changes. Prior evidence byte hashes now preserved by scoped Git attributes (all staged blobs verified), old sources archived6d9c20f."
+    },
+    {
+      "at": "2026-10-27T12:30:34.424023+00:00",
+      "task": "PRED-PERIODIC-CONVERGENCE-COSTED-DESIGN",
+      "kind": "task",
+      "summary": "Costed preparation only: original44 14.1s/cycle,88~40.1,176~108.7 instrumented; explicit10/40/80-cycle scenarios and L2/storage uncertainty. Four-cycle90s conditional continuation designed, not launched. No unwarranted performance trigger or periodic/GCI claim."
     }
   ],
   "legacy_gate_status": {
