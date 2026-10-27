@@ -50,7 +50,7 @@ def initialize(config,checkpoint,refine,parent_hash,checkpoint_hash):
         qualification='Same piecewise-constant physical field; subcell slopes are not supplied. Initial subcell/reconstruction adjustment is not separable from spatial evolution.')
 
 
-def run(root,out,refine,step):
+def run(root,out,refine,step,*,initializer=initialize,budget_seconds=120):
     preflight=check_storage_requirements([(out,16*1024**2)])
     if out.exists():raise FileExistsError('preserve earlier diagnostic')
     source=root/'exhaust-composition-plateau-v1/relaxation-check';config_path=root/'spatial-boundary-v2-engine/configuration.json'
@@ -59,7 +59,7 @@ def run(root,out,refine,step):
     if receipt['solver_dependency_sha256']!=_solver_dependency_hashes() or receipt['configuration_sha256']!=sha(config_path):raise ValueError('source/config mismatch')
     manifest=load(source.parent/'manifest.json');hashes={k.replace('\\','/'):v for k,v in manifest['files'].items()}
     if sha(cp_path)!=hashes['relaxation-check/checkpoint-025.json']:raise ValueError('checkpoint hash mismatch')
-    cp=load(cp_path);e,config,remap=initialize(load(config_path),cp,refine,sha(config_path),sha(cp_path))
+    cp=load(cp_path);e,config,remap=initializer(load(config_path),cp,refine,sha(config_path),sha(cp_path))
     out.mkdir(parents=True);write(out/'configuration.json',config);write(out/'initial-checkpoint.json',e.snapshot())
     initial_inventory=e.inventory();stages=[];original=e._assemble
     def observer(*args,**kwargs):
@@ -73,7 +73,7 @@ def run(root,out,refine,step):
     try:
         for target in range(9030,9361,30):
             while e.crank_angle_unwrapped_deg<target-1e-9:
-                if time.perf_counter()-start>=120:raise TimeoutError('120-second case budget')
+                if time.perf_counter()-start>=budget_seconds:raise TimeoutError(f'{budget_seconds}-second case budget')
                 angle=e.crank_angle_unwrapped_deg
                 delta=min(target,_integrated_nominal_step_end(e,angle,9360.,schedule),(math.floor((angle+1e-9)/step)+1)*step)-angle
                 rejected=[]
@@ -94,6 +94,13 @@ def run(root,out,refine,step):
                             t['positive_mass' if m>=0 else 'negative_mass']+=.5*delta/(6*9000.)*m
                 recipe.append(dict(**row,rejected_proposals=rejected))
             frames.append(dict(angle=float(target),state=deepcopy(e.state),ledger=deepcopy(e.ledger)))
+            # Durable FAST state + exact accepted recipe, never labelled native.
+            write(out/'progress-fast.json',e.fast_recipe_terminal_state())
+            write(out/'recipe.json',recipe)
+            write(out/'progress.json',dict(angle=float(target),wall_s=time.perf_counter()-start,
+                state_kind='FAST_RECIPE_TERMINAL_STATE',accepted_steps=len(recipe)))
+            frames[-1]['interfaces']={name:{side:{key:(v.tolist() if isinstance(v,np.ndarray) else v)
+                for key,v in values.items()} for side,values in ends.items()} for name,ends in totals.items()}
     except Exception as exc:status='STOPPED';error=f'{type(exc).__name__}: {exc}'
     for ends in totals.values():
         for t in ends.values():

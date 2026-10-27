@@ -9455,17 +9455,21 @@
       "dependencies": [
         "PRED-CHECKPOINT25-MESH-TIME-DIAGNOSTIC"
       ],
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [
         "openspec/changes/predictive-reliability-v1/post-checkpoint25-convergence-design-v1.md"
       ],
-      "next_action": "Plan conservative P0/limited-linear initialization validation and actual matched-step convergence; no campaign or production solver change automatically.",
+      "next_action": "Run preregistered four bounded cases after 11 passing initialization/harness tests; reuse existing P0-88.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
-        "results/predictive-reliability-v1/remap-uncertainty-v1/"
+        "scripts/diagnostics/remap_representation_v1.py",
+        "scripts/diagnostics/checkpoint_mesh_sensitivity_v1.py",
+        "tests/test_remap_representation_v1.py",
+        "results/predictive-reliability-v1/remap-uncertainty-v1/",
+        "openspec/changes/predictive-reliability-v1/remap-representation-protocol-v1.md"
       ],
       "evidence_level": "L1"
     }
@@ -13365,6 +13369,12 @@
       "task": "PRED-CHECKPOINT25-MESH-TIME-DIAGNOSTIC",
       "kind": "task",
       "summary": "Five one-cycle cases from25, remap integrals<1e-14 and native guards preserved. Full burned L1time44=2.7e-5,space=.0125,cycle=.00134; tail space=.000142 vs cycle=.00191. Outlet flux spatial12.4%,work.023%. CFL collapsed finecap contrast resolved with.125actualsteps. Field spatial/remap uncertainty not separated; no periodic extension. Historical blockers reevaluated unchanged."
+    },
+    {
+      "at": "2026-10-27T12:09:18.652926+00:00",
+      "task": "PRED-REMAPPING-UNCERTAINTY-DESIGN",
+      "kind": "task",
+      "summary": "Conservative P0/P1 root-cell initial fields verified (11 tests); direct 44/88/176 projections, preserved native identity/fuel event. Four one-cycle cases preregistered, 720s total, no production solver change. All historical blockers reevaluated, no new measured data or local resolution."
     }
   ],
   "legacy_gate_status": {
