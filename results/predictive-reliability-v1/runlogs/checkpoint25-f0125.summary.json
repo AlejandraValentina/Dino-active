@@ -1,0 +1,26 @@
+{
+  "name": "checkpoint25-f0125",
+  "command": [
+    "python",
+    "scripts/diagnostics/checkpoint_mesh_sensitivity_v1.py",
+    "--root",
+    "results/predictive-reliability-v1",
+    "--output",
+    "results/predictive-reliability-v1/checkpoint25-sensitivity-v1/fine0125",
+    "--step",
+    "0.125",
+    "--refine"
+  ],
+  "started_at": "2026-10-27T11:56:55+00:00",
+  "finished_at": "2026-10-27T11:58:13+00:00",
+  "duration_s": 78.094,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\checkpoint25-f0125.log",
+  "log_lines": 1,
+  "log_bytes": 459,
+  "error_lines": [],
+  "tail": [
+    "{\"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 76.71638239989989, \"work_J\": 131.0535164729863, \"initialization\": {\"kind\": \"NEW_DIAGNOSTIC_CONSERVATIVE_INITIALIZATION\", \"inventory_max_relative_error\": 9.217347437188027e-16, \"restriction_max_relative_error\": 1.1542150604318145e-15, \"qualification\": \""
+  ]
+}

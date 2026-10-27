@@ -1,0 +1,25 @@
+{
+  "name": "checkpoint25-c025",
+  "command": [
+    "python",
+    "scripts/diagnostics/checkpoint_mesh_sensitivity_v1.py",
+    "--root",
+    "results/predictive-reliability-v1",
+    "--output",
+    "results/predictive-reliability-v1/checkpoint25-sensitivity-v1/coarse025",
+    "--step",
+    "0.25"
+  ],
+  "started_at": "2026-10-27T11:53:14+00:00",
+  "finished_at": "2026-10-27T11:53:46+00:00",
+  "duration_s": 31.609,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\checkpoint25-c025.log",
+  "log_lines": 1,
+  "log_bytes": 151,
+  "error_lines": [],
+  "tail": [
+    "{\"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 31.149848999921232, \"work_J\": 131.0941843131127, \"initialization\": {\"kind\": \"SAME_SIMULATION_RESUME\"}}"
+  ]
+}
