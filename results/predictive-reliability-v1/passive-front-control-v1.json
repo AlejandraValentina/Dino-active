@@ -1,0 +1,50 @@
+{
+  "schema": "PASSIVE_FRONT_CONTROL_V1",
+  "results": [
+    {
+      "model": "first_order",
+      "n": 32,
+      "L1_fraction_error": 0.07401651137713157,
+      "total_species0": 0.24999999999999997,
+      "max_density_error": 0.0
+    },
+    {
+      "model": "first_order",
+      "n": 64,
+      "L1_fraction_error": 0.049893528910839015,
+      "total_species0": 0.24999999999999992,
+      "max_density_error": 0.0
+    },
+    {
+      "model": "first_order",
+      "n": 128,
+      "L1_fraction_error": 0.041380098145397795,
+      "total_species0": 0.24999999999999997,
+      "max_density_error": 0.0
+    },
+    {
+      "model": "muscl",
+      "n": 32,
+      "L1_fraction_error": 0.035542046268223625,
+      "total_species0": 0.25,
+      "max_density_error": 0.0
+    },
+    {
+      "model": "muscl",
+      "n": 64,
+      "L1_fraction_error": 0.018754327834133933,
+      "total_species0": 0.25000000000000006,
+      "max_density_error": 0.0
+    },
+    {
+      "model": "muscl",
+      "n": 128,
+      "L1_fraction_error": 0.01445193011521956,
+      "total_species0": 0.25000000000000006,
+      "max_density_error": 0.0
+    }
+  ],
+  "wall_s": 2.119425700046122,
+  "scope": "Periodic uniform passive top-hat; no engine geometry or port boundary; exact cell-average advection reference; MUSCL V2 periodic branch is V1.",
+  "experimental_validation": false
+}

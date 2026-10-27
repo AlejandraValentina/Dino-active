@@ -1,0 +1,23 @@
+{
+  "name": "mesh-phase88-v1",
+  "command": [
+    "python",
+    "scripts/diagnostics/mesh_phase_probe_v1.py",
+    "--source",
+    "results/predictive-reliability-v1/endpoint-mesh88-v2",
+    "--output",
+    "results/predictive-reliability-v1/mesh-phase88-v1"
+  ],
+  "started_at": "2026-10-27T10:30:45+00:00",
+  "finished_at": "2026-10-27T10:31:25+00:00",
+  "duration_s": 40.671,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\mesh-phase88-v1.log",
+  "log_lines": 1,
+  "log_bytes": 91,
+  "error_lines": [],
+  "tail": [
+    "{\"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 40.0746547000017, \"terminal_phase\": 720.0}"
+  ]
+}

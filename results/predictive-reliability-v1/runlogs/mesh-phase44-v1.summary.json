@@ -1,0 +1,23 @@
+{
+  "name": "mesh-phase44-v1",
+  "command": [
+    "python",
+    "scripts/diagnostics/mesh_phase_probe_v1.py",
+    "--source",
+    "results/predictive-reliability-v1/spatial-boundary-v2-engine",
+    "--output",
+    "results/predictive-reliability-v1/mesh-phase44-v1"
+  ],
+  "started_at": "2026-10-27T10:30:45+00:00",
+  "finished_at": "2026-10-27T10:31:01+00:00",
+  "duration_s": 15.828,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\mesh-phase44-v1.log",
+  "log_lines": 1,
+  "log_bytes": 92,
+  "error_lines": [],
+  "tail": [
+    "{\"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 15.46009900001809, \"terminal_phase\": 720.0}"
+  ]
+}

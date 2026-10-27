@@ -9288,6 +9288,25 @@
       "qualification": "Access attempted: HTTP403 and unavailable browser; full thesis inspection still pending, indexed values not adopted.",
       "unblock_tasks": [],
       "no_local_unblock_reason": "Full PDF unavailable here; owner explicitly directs no repeated retrieval attempts. New official URL retained for later access."
+    },
+    {
+      "id": "PRED-MESH-OUTLET-FRONT-CONTROL",
+      "description": "Isolate near-exit compositional-front transport versus physical outlet characteristic interaction, using measured phase-probe states and fixed numerical controls",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/mesh-sensitivity-diagnosis-v1.md"
+      ],
+      "next_action": "Bounded uniform-duct reference with equivalent front and with/without outlet; no full engine campaign or physics correction without isolated defect.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "scripts/diagnostics/outlet_front_control_v1.py",
+        "results/predictive-reliability-v1/outlet-front-control-v1/"
+      ],
+      "evidence_level": "L1"
     }
   ],
   "audit_remediation_mode": false,
@@ -13137,6 +13156,12 @@
       "task": "PRED-ENDPOINT-SENSITIVITY-EXECUTION",
       "kind": "task",
       "summary": "Offline localization: max .12266 is interior exhaust cell4 density at720deg, .19612 residual fraction at360deg outlet. Exact conservative geometry projection checked, 8 tests PASS. Preregister two finite cycle2 phase probes; Cahoon externally deferred by owner."
+    },
+    {
+      "at": "2026-10-27T10:33:05.354186+00:00",
+      "task": "PRED-MESH-OUTLET-FRONT-CONTROL",
+      "kind": "task",
+      "summary": "Localization and two cycle2 probes COMPLETE: phase630 residual fraction differs .609, phase570 density .382 near outlet; original terminal trajectories exact. Geometry/projection controls PASS, passive-front test retains mesh sensitivity without boundaries. Causal split transport/outlet pending, no solver correction justified; finite refinement/periodicity protocol recorded."
     }
   ],
   "legacy_gate_status": {
