@@ -21,7 +21,8 @@ def run(source,config_source,out):
     start=time.perf_counter();timing=dict(solver=0.,serialization=0.,detector=0.,restoration=0.,audit=0.)
     manifest=json.loads((source.parent/'manifest.json').read_text());prior=json.loads((source/'receipt.json').read_text())
     for name in ('checkpoint-017.json','detector.json'):
-        if sha(source/name)!=manifest['files']['run/'+name]:raise ValueError('source hash mismatch')
+        hashes={key.replace('\\','/'):value for key,value in manifest['files'].items()}
+        if sha(source/name)!=hashes['run/'+name]:raise ValueError('source hash mismatch')
     if prior['solver_dependency_sha256']!=_solver_dependency_hashes():raise ValueError('solver source mismatch')
     if sha(config_source/'configuration.json')!=prior['configuration_sha256']:raise ValueError('configuration mismatch')
     config=json.loads((config_source/'configuration.json').read_text());engine=IntegratedEngine2T.from_configuration_dict(config)

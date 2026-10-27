@@ -9379,6 +9379,48 @@
       ],
       "evidence_level": "L1",
       "qualification": "Native restart state/ledger and detector verified. Last maximum ratio15.09,p90 4.10,151failed. Solver13.45s/cycle dominates; no solver change."
+    },
+    {
+      "id": "PRED-PERIODICITY-EXTENSION-23",
+      "description": "Owner-authorized same-configuration cycles18–23 and tracking of30previously worsening metrics",
+      "dependencies": [
+        "PRED-PERIODICITY-TREND-EXTENSION"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/periodicity-extension-v2/report.md",
+        "results/predictive-reliability-v1/periodicity-extension-v2/assessment.json",
+        "results/predictive-reliability-v1/periodicity-extension-v2/run/receipt.json"
+      ],
+      "next_action": "Stop extensions at23. Diagnose plateau in fresh/burned composition before any further physical execution. No period or spatial-independence claim.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "results/predictive-reliability-v1/periodicity-extension-v2/"
+      ],
+      "evidence_level": "L1"
+    },
+    {
+      "id": "PRED-EXHAUST-COMPOSITION-PLATEAU",
+      "description": "Read-only source/storage/transport attribution of fresh/burned composition plateau near cycle23",
+      "dependencies": [
+        "PRED-PERIODICITY-EXTENSION-23"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/periodicity-extension-v2/species-budgets.csv"
+      ],
+      "next_action": "Use existing source ledgers and spatial checkpoint profiles first; identify any need for one finite trajectory replay before scheduling it. No more cycle extension by default.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "results/predictive-reliability-v1/exhaust-composition-plateau-v1/"
+      ],
+      "evidence_level": "L1"
     }
   ],
   "audit_remediation_mode": false,
@@ -13258,6 +13300,12 @@
       "task": "PRED-PERIODICITY-TREND-EXTENSION",
       "kind": "task",
       "summary": "Prior trends mixed; one6cycle extension completed12–17 in82.66s. Max ratio113->15.09,p90 24.19->4.10; no period1/2,151failed.40degree deterministic replay matches historical state/ledger; detector restored without historical physical reruns. No automatic extension. Preserved pre-existing unstaged planning/status changes."
+    },
+    {
+      "at": "2026-10-27T11:29:19.519383+00:00",
+      "task": "PRED-PERIODICITY-EXTENSION-23",
+      "kind": "task",
+      "summary": "Sixcycles18–23 COMPLETE84.985s, checkpoint/detector restored, no model change. Max ratio15.09->3.635 but plateaus20–23;47fail. Prior30:29improve,28pass,cell16fresh still worsens. Residual purge continues but fresh/burned tail changes not pure translation. Stop extensions; source/storage attribution next. Historical blockers reevaluated unchanged."
     }
   ],
   "legacy_gate_status": {

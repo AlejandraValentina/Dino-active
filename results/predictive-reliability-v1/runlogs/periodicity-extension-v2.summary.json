@@ -1,0 +1,36 @@
+{
+  "name": "periodicity-extension-v2",
+  "command": [
+    "python",
+    "scripts/diagnostics/periodicity_extension_v2.py",
+    "--source",
+    "results/predictive-reliability-v1/periodicity-extension-v1/run",
+    "--configuration-source",
+    "results/predictive-reliability-v1/spatial-boundary-v2-engine",
+    "--output",
+    "results/predictive-reliability-v1/periodicity-extension-v2/run"
+  ],
+  "started_at": "2026-10-27T11:25:52+00:00",
+  "finished_at": "2026-10-27T11:25:53+00:00",
+  "duration_s": 0.406,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\periodicity-extension-v2.log",
+  "log_lines": 8,
+  "log_bytes": 552,
+  "error_lines": [
+    "1: Traceback (most recent call last):",
+    "6:     if sha(source/name)!=manifest['files']['run/'+name]:raise ValueError('source hash mismatch')",
+    "8: KeyError: 'run/checkpoint-017.json'"
+  ],
+  "tail": [
+    "Traceback (most recent call last):",
+    "  File \"E:\\dino\\Dino-active\\scripts\\diagnostics\\periodicity_extension_v2.py\", line 82, in <module>",
+    "    raise SystemExit(run(a.source,a.configuration_source,a.output))",
+    "                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"E:\\dino\\Dino-active\\scripts\\diagnostics\\periodicity_extension_v2.py\", line 24, in run",
+    "    if sha(source/name)!=manifest['files']['run/'+name]:raise ValueError('source hash mismatch')",
+    "                         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^",
+    "KeyError: 'run/checkpoint-017.json'"
+  ]
+}

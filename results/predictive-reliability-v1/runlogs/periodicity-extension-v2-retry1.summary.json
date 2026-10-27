@@ -1,0 +1,25 @@
+{
+  "name": "periodicity-extension-v2-retry1",
+  "command": [
+    "python",
+    "scripts/diagnostics/periodicity_extension_v2.py",
+    "--source",
+    "results/predictive-reliability-v1/periodicity-extension-v1/run",
+    "--configuration-source",
+    "results/predictive-reliability-v1/spatial-boundary-v2-engine",
+    "--output",
+    "results/predictive-reliability-v1/periodicity-extension-v2/run"
+  ],
+  "started_at": "2026-10-27T11:25:58+00:00",
+  "finished_at": "2026-10-27T11:27:23+00:00",
+  "duration_s": 84.985,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\periodicity-extension-v2-retry1.log",
+  "log_lines": 1,
+  "log_bytes": 835,
+  "error_lines": [],
+  "tail": [
+    "{\"schema\": \"DINO_PERIODICITY_EXTENSION_V2\", \"status\": \"TRANSIENT_AT_BUDGET\", \"error\": null, \"completed_new_cycles\": 6, \"terminal_angle\": 8280.0, \"timing_seconds\": {\"solver\": 83.71439260803163, \"serialization\": 0.21989290020428598, \"detector\": 0.022632999811321497, \"restoration\": 0.23576180008240044,"
+  ]
+}
