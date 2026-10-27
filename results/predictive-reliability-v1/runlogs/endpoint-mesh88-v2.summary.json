@@ -1,0 +1,37 @@
+{
+  "name": "endpoint-mesh88-v2",
+  "command": [
+    "python",
+    "scripts/diagnostics/diagnose_integrated_mesh_v1.py",
+    "--source",
+    "results/predictive-reliability-v1/spatial-boundary-v2-engine",
+    "--output",
+    "results/predictive-reliability-v1/endpoint-mesh88-v2"
+  ],
+  "started_at": "2026-10-27T10:18:10+00:00",
+  "finished_at": "2026-10-27T10:19:21+00:00",
+  "duration_s": 71.235,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\endpoint-mesh88-v2.log",
+  "log_lines": 15,
+  "log_bytes": 380,
+  "error_lines": [],
+  "tail": [
+    "{",
+    "  \"status\": \"COMPLETE\",",
+    "  \"error\": null,",
+    "  \"execution_gate\": true,",
+    "  \"coarse_cells\": 44,",
+    "  \"fine_cells\": 88,",
+    "  \"wall_s\": 70.6605829000473,",
+    "  \"compute_s\": 70.30589299905114,",
+    "  \"maximum_projected_mesh_difference\": 0.12265579102255894,",
+    "  \"normalized_residuals\": {",
+    "    \"mass\": 2.593582913689248e-17,",
+    "    \"energy\": 1.6811958689546782e-16,",
+    "    \"species\": 1.7506684667402423e-16",
+    "  }",
+    "}"
+  ]
+}

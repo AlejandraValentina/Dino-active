@@ -1,0 +1,40 @@
+{
+  "name": "endpoint-time-v2",
+  "command": [
+    "python",
+    "scripts/diagnostics/diagnose_integrated_port_v2.py",
+    "--output",
+    "results/predictive-reliability-v1/endpoint-time-v2",
+    "--model",
+    "nozzle",
+    "--step-degrees",
+    "0.25",
+    "--spatial-model",
+    "boundary-v2"
+  ],
+  "started_at": "2026-10-27T10:17:59+00:00",
+  "finished_at": "2026-10-27T10:19:06+00:00",
+  "duration_s": 66.485,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\endpoint-time-v2.log",
+  "log_lines": 14,
+  "log_bytes": 333,
+  "error_lines": [],
+  "tail": [
+    "{",
+    "  \"status\": \"COMPLETE\",",
+    "  \"error\": null,",
+    "  \"terminal_angle_deg\": 720.0,",
+    "  \"accepted_steps\": 2884,",
+    "  \"wall_s\": 65.17871820018627,",
+    "  \"compute_s\": 55.17265939852223,",
+    "  \"normalized_residuals\": {",
+    "    \"mass\": 3.73505692047286e-16,",
+    "    \"energy\": 6.622757964160342e-16,",
+    "    \"species\": 5.776308958405702e-16",
+    "  },",
+    "  \"numerical_gate\": true",
+    "}"
+  ]
+}

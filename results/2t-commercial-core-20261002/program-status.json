@@ -9252,10 +9252,12 @@
       "id": "PRED-ENDPOINT-SENSITIVITY-EXECUTION",
       "description": "Run preregistered independent V2 time and mesh diagnostics",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "results/predictive-reliability-v1/endpoint-sensitivity-v2.json"
+      ],
       "next_action": "Run preregistered independent V2 time and mesh diagnostics",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "verification",
@@ -9263,7 +9265,8 @@
         "results/predictive-reliability-v1/endpoint-time-v2/",
         "results/predictive-reliability-v1/endpoint-mesh88-v2/"
       ],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "Spatial sensitivity remains material; quantify grid error before predictive claim."
     },
     {
       "id": "PRED-CAHOON-FULLTEXT-ACCESS",
@@ -9272,14 +9275,17 @@
       "state": "READY",
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "results/predictive-reliability-v1/cahoon-access-v1/report.md"
+      ],
       "next_action": "Recover readable full thesis through ordinary public or owner-provided PDF access",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "verification",
       "write_scope": [
         "results/predictive-reliability-v1/cahoon-access-v1/"
       ],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "Access attempted: HTTP403 and unavailable browser; full thesis inspection still pending, indexed values not adopted."
     }
   ],
   "audit_remediation_mode": false,
@@ -13117,6 +13123,12 @@
       "task": "PRED-ENDPOINT-ACCURACY-PROTOCOL",
       "kind": "task",
       "summary": "Preregister two bounded V2 time/mesh checks. Cahoon PDF access fails HTTP403; indexed page11 candidate values retained unverified, no engine reconstructed. Historical blockers reevaluated: unchanged; no current execution or new measured input resolves them."
+    },
+    {
+      "at": "2026-10-27T10:19:33.513165+00:00",
+      "task": "PRED-ENDPOINT-SENSITIVITY-EXECUTION",
+      "kind": "task",
+      "summary": "Two bounded V2 diagnostics PASS conservation. Maximum temporal difference .000945 versus projected mesh .12266; remains transient, no mesh independence. Cahoon full-text access fails403, documented without fabricated reconstruction."
     }
   ],
   "legacy_gate_status": {
