@@ -9485,17 +9485,20 @@
       "dependencies": [
         "PRED-REMAPPING-UNCERTAINTY-DESIGN"
       ],
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [
         "results/predictive-reliability-v1/remap-uncertainty-v1/report.md"
       ],
-      "next_action": "Preregister one352 P0 cycle with .0625deg matched to existing176 halfstep; <=420s; no further grid or periodic campaign automatically.",
+      "next_action": "Run exactly one352/P0/.0625 cycle <=420s following preregistration, then common-volume analysis; no more refinements automatically.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
-        "results/predictive-reliability-v1/remap-refinement352-v1/"
+        "results/predictive-reliability-v1/remap-refinement352-v1/",
+        "scripts/diagnostics/remap_representation_v1.py",
+        "tests/test_remap_representation_v1.py",
+        "openspec/changes/predictive-reliability-v1/remap-refinement352-protocol-v1.md"
       ],
       "evidence_level": "L1"
     }
@@ -13413,6 +13416,12 @@
       "task": "PRED-REMAPPING-UNCERTAINTY-DESIGN",
       "kind": "task",
       "summary": "Five new one-cycle cases568.75s <=720s, reused88;16 tests PASS. P0/P1 outlet .027/.022%, time176 .000775%, spatial88/1764.92%. Pressure L1 halves but burned L1 .01250->.01267 on common44. Material-label retained-marker residual decreases; all native restores exact and duct balances<3e-18kg. No solver change/periodicity. One352 bounded follow-up prepared, no unlimited refinement."
+    },
+    {
+      "at": "2026-10-27T12:24:56.985705+00:00",
+      "task": "PRED-MATERIAL-FRONT-352-CONTROL",
+      "kind": "task",
+      "summary": "Preregister one352 cycle with matched176 halfstep reference; projection validated through third bisection; no physics/default changes. Prior evidence byte hashes now preserved by scoped Git attributes (all staged blobs verified), old sources archived6d9c20f."
     }
   ],
   "legacy_gate_status": {

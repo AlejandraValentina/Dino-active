@@ -64,7 +64,7 @@ def project(state,coarse,fine,family):
 
 def initialize(config,checkpoint,level,family,checkpoint_hash):
     if checkpoint['trace'] or checkpoint['accepted_steps']!=0:raise ValueError('native compact checkpoint required')
-    if level not in (0,1,2):raise ValueError('only three declared grids')
+    if level not in (0,1,2,3):raise ValueError('only four declared grids')
     if level==0:
         engine=IntegratedEngine2T.from_configuration_dict(config);engine.restore(checkpoint)
         return engine,config,dict(kind='SAME_SIMULATION_RESUME',representation=family,level=0)
@@ -91,7 +91,7 @@ def initialize(config,checkpoint,level,family,checkpoint_hash):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
-    p.add_argument('--level',type=int,choices=(0,1,2),required=True);p.add_argument('--family',choices=('P0','P1'),required=True)
+    p.add_argument('--level',type=int,choices=(0,1,2,3),required=True);p.add_argument('--family',choices=('P0','P1'),required=True)
     p.add_argument('--step',type=float,choices=(.125,.0625),default=.125);p.add_argument('--budget',type=float,default=240)
     a=p.parse_args()
     def initializer(config,checkpoint,unused,parent_hash,cp_hash):return initialize(config,checkpoint,a.level,a.family,cp_hash)

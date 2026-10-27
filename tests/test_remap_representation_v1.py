@@ -8,7 +8,7 @@ from motorsim.integrated_2t import _json_evidence_equal
 
 
 @pytest.mark.parametrize('family',['P0','P1'])
-@pytest.mark.parametrize('level',[1,2])
+@pytest.mark.parametrize('level',[1,2,3])
 def test_conservative_admissible_nested_initialization(family,level):
     c,cp,ch,ph=fixture();saved=deepcopy(cp)
     e,f,info=initialize(c,cp,level,family,ph)
