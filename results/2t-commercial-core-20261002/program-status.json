@@ -9744,19 +9744,43 @@
         "PRED-PERIODIC88-WINDOW3",
         "PRED-PERIODIC88-FRONT-FLUX-DIAGNOSIS"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "results/predictive-reliability-v1/periodic88-window3-v1/report.md"
+        "results/predictive-reliability-v1/periodic88-window3-v1/report.md",
+        "results/predictive-reliability-v1/periodic88-material-labels-v1/report.md"
       ],
-      "next_action": "Use native38/39 and measured gross/net fluxes; derive safely retained material interval despite reversals, compare exact cell averages by original position; no new simulations.",
+      "next_action": "Before any new simulation, test dependence of material-marker residual on admissible conservative P0 vs linear initial diagnostic representation.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "scripts/diagnostics/periodic88_material_labels_v1.py",
         "tests/test_periodic88_material_labels_v1.py",
         "results/predictive-reliability-v1/periodic88-material-labels-v1/"
+      ],
+      "evidence_level": "L1",
+      "qualification": "Retained88.21%; strong initial-upstream marker changes vs material reference, smaller central. Includes subcell representation and approximate gas dynamics; not a demonstrated solver bug."
+    },
+    {
+      "id": "PRED-PERIODIC88-MATERIAL-REFERENCE-SENSITIVITY",
+      "description": "Read-only conservative bounded linear vs P0 initial-marker reference to qualify material-coordinate residual",
+      "dependencies": [
+        "PRED-PERIODIC88-MATERIAL-LABEL-LOCALIZATION"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/periodic88-material-labels-v1/report.md"
+      ],
+      "next_action": "Algebraic reconstruction of initial passive marker with identical mass means, positivity and closure. Compare exact material cell averages, no simulations.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "scripts/diagnostics/periodic88_material_reference_v1.py",
+        "tests/test_periodic88_material_reference_v1.py",
+        "results/predictive-reliability-v1/periodic88-material-reference-v1/"
       ],
       "evidence_level": "L1"
     }
@@ -13782,6 +13806,12 @@
       "task": "PRED-PERIODIC88-WINDOW3",
       "kind": "task",
       "summary": "Window3 stops by preregistered resource rule after40 only46.253s;max2.408,p90.800,71fail (54 fresh/burned+17 mass). Front maxx.666m; burned L1/L2 slightly decrease despite failed-count rise. Work136.024J, pressures/energy/global inventories pass own thresholds; no periodicity. No41; localize retained marker changes using existing39 fluxes."
+    },
+    {
+      "at": "2026-10-27T16:07:24.828362+00:00",
+      "task": "PRED-PERIODIC88-MATERIAL-LABEL-LOCALIZATION",
+      "kind": "task",
+      "summary": "Read-only retained-material39 proof handles both-end reversal, retains88.21%. Burned L1 exact initial-P0 cell-average reference: all.02183, initial0-.2m.1580/.2-.4m.0630/.4-.8m.000624. Central displacement vs upstream numerical/representation uncertainty; no solver defect proved.4 new tests PASS; zero simulations; investigate reference subcell sensitivity first."
     }
   ],
   "legacy_gate_status": {
