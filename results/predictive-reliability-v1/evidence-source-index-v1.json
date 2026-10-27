@@ -1,0 +1,56 @@
+{
+  "schema": "EVIDENCE_SOURCE_ARCHIVE_INDEX_V1",
+  "sources": {
+    "remap-uncertainty-v1": {
+      "scripts/diagnostics/checkpoint_mesh_sensitivity_v1.py": {
+        "commit": "6d9c20f",
+        "sha256": "a983b0c20c3862235da3c97bbd77890741fb31f4596156a524a5f005e7f5b870"
+      },
+      "scripts/diagnostics/remap_representation_v1.py": {
+        "commit": "6d9c20f",
+        "sha256": "7e7d01779c89ca09c0bb6e4f00a9355b917a453b85756e99c9e646d22ab063ac"
+      },
+      "scripts/diagnostics/compare_remap_representation_v1.py": {
+        "commit": "6d9c20f",
+        "sha256": "57f58719c8e9c60214f9c4eaa51d2823ba5d2bcda9f4fa09ef53b3605c2044ae"
+      },
+      "scripts/diagnostics/material_species_diagnostic_v1.py": {
+        "commit": "6d9c20f",
+        "sha256": "7eaa5ab2942ee3ff37b8fc69be54314abef76e8fe333fc6d24b3d41ee492fdd3"
+      }
+    },
+    "remap-refinement352-v1": {
+      "scripts/diagnostics/remap_representation_v1.py": {
+        "commit": "42d6022",
+        "sha256": "a56079165a20337e05486f0dd5bda851a4fc7b30f2a620840f96a8bc8486f5d4"
+      },
+      "scripts/diagnostics/checkpoint_mesh_sensitivity_v1.py": {
+        "commit": "42d6022",
+        "sha256": "a983b0c20c3862235da3c97bbd77890741fb31f4596156a524a5f005e7f5b870"
+      },
+      "scripts/diagnostics/compare_refinement352_v1.py": {
+        "commit": "42d6022",
+        "sha256": "8f52b7bd6057254ff10a6dc62e20061c11aa9d18de0b189e88f2d980f60191ad"
+      },
+      "scripts/diagnostics/compare_remap_representation_v1.py": {
+        "commit": "42d6022",
+        "sha256": "3f72b4e9076b6ef644cd7cb0f54a4f7f66dd638829cf0b3acc6089f6303227cb"
+      }
+    },
+    "periodicity-extension-v4": {
+      "scripts/diagnostics/periodicity_extension_v4.py": {
+        "commit": "42d6022",
+        "sha256": "9e03f6e405621b1d332973269fec5d4e45faf84a0ed1c93cc5298675b4a09696"
+      },
+      "scripts/diagnostics/checkpoint_periodicity_indicators_v1.py": {
+        "commit": "42d6022",
+        "sha256": "3623de7a9389f24a04614ef6b3896d531ead1b6cdb0ca69008b4bdf264d1d66e"
+      },
+      "scripts/diagnostics/periodicity_trends_v1.py": {
+        "commit": "42d6022",
+        "sha256": "1bb3779c0cfaafdf0b948b5bc5f663afdbdab2354284a2d86027afebf7f27610"
+      }
+    }
+  },
+  "qualification": "THIS_COMMIT identifies the commit containing this index; preserved source bytes, no physical code changes."
+}
