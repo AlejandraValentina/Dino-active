@@ -23,7 +23,7 @@ def gaussian_average(a,b,center,sigma=.07):
     return sigma*math.sqrt(math.pi/2)*(f(b)-f(a))/(b-a)
 
 
-def acoustic(n,scale,deadline):
+def acoustic(n,scale,deadline,t_end=.8):
     e=IdealGas(gamma=1.4,R=1.);sound=math.sqrt(1.4);eps=1e-5
     mesh=uniform_mesh(n,1.,1.);out=OpenEndPlenumV2Boundary(p0=1.,T0=1.)
     g=np.array([gaussian_average(a,b,.35) for a,b in zip(mesh.faces,mesh.faces[1:])])
@@ -44,9 +44,9 @@ def acoustic(n,scale,deadline):
             flux.append((*f,*(f[0]*v/sum(donor) for v in donor)))
         flux=np.array(flux);d=-(flux[1:]-flux[:-1])*n
         return d[:,:3],d[:,3:],flux[0]-flux[-1],flux[-1]
-    while t<.8-1e-14:
+    while t<t_end-1e-14:
         if time.perf_counter()>deadline:raise TimeoutError('bounded acoustic budget')
-        dt=min(scale*.15/(n*(sound+eps)),.8-t)
+        dt=min(scale*.15/(n*(sound+eps)),t_end-t)
         dq,ds,b0,f0=rhs(q,s);q1=q+dt*dq;s1=s+dt*ds
         dq,ds,b1,f1=rhs(q1,s1)
         q=.5*(q+q1+dt*dq);s=.5*(s+s1+dt*ds)
@@ -56,11 +56,11 @@ def acoustic(n,scale,deadline):
     reflected=np.array([gaussian_average(a,b,2-.35-sound*t) for a,b in zip(mesh.faces,mesh.faces[1:])])
     pressure=np.array([e.primitive((*r,r[0]))[2] for r in q]);velocity=q[:,1]/q[:,0]
     perturb=(pressure-1)/eps;target=incident-reflected
-    weight=np.maximum(0,-perturb);centroid=float(np.dot(mesh.centers,weight)/sum(weight))
+    weight=np.maximum(0,-perturb);centroid=float(np.dot(mesh.centers,weight)/sum(weight)) if sum(weight)>0 else None
     return dict(n=n,time_scale=scale,steps=steps,pressure_error=norms(perturb,target),
         velocity_error=norms(velocity/(eps/sound),incident+reflected),
         reflected_amplitude=float(-min(perturb)),reflected_centroid=centroid,
-        exact_centroid=2-.35-sound*.8,centroid_phase_error_s=(centroid-(2-.35-sound*.8))/sound,
+        exact_centroid=2-.35-sound*t_end,centroid_phase_error_s=(centroid-(2-.35-sound*t_end))/sound if centroid is not None else None,
         conservation_residual=(np.r_[q.sum(axis=0),s.sum(axis=0)]/n-initial-ledger).tolist(),
         net_boundary_transfer=ledger.tolist(),absolute_boundary_transfer=absolute.tolist(),
         outlet_history=history,pressure_profile=pressure.tolist(),species=s.tolist())

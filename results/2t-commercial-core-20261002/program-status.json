@@ -9318,13 +9318,16 @@
       "dependencies": [
         "PRED-MESH-OUTLET-FRONT-CONTROL"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "results\\predictive-reliability-v1\\outlet-front-control-v1\\report.md"
+        "results\\predictive-reliability-v1\\pulsating-outlet-control-v1\\report.md",
+        "results\\predictive-reliability-v1\\pulsating-outlet-control-v1\\receipt.json",
+        "results\\predictive-reliability-v1\\bounded-periodicity-pilot-v1\\receipt.json",
+        "results\\predictive-reliability-v1\\bounded-periodicity-pilot-v1\\manifest.json"
       ],
-      "next_action": "Preregister bounded compressible pulse/reversal control with wave and species budgets; no simultaneous model changes.",
+      "next_action": "No extension of closed pilot. Preregister costed matched-cycle temporal/spatial study before further integrated execution.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -9332,7 +9335,27 @@
         "results/predictive-reliability-v1/pulsating-outlet-control-v1/"
       ],
       "evidence_level": "L1",
-      "qualification": "Acoustic and algebraic reversal controls completed; bounded same-source integrated pilot now admitted by those engineering checks."
+      "qualification": "Weak-wave propagation/reflection and donor checks PASS in tested domain. Integrated pilot TRANSIENT_AT_BUDGET:9additional complete cycles, no periodicity or mesh-independent claim."
+    },
+    {
+      "id": "PRED-PERIODIC-CONVERGENCE-COSTED-DESIGN",
+      "description": "Design matched-cycle spatial/temporal uncertainty study and realistic periodicity/replay cost after bounded transient pilot",
+      "dependencies": [
+        "PRED-PULSATING-OUTLET-CONTROL"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results\\predictive-reliability-v1\\bounded-periodicity-pilot-v1\\receipt.json"
+      ],
+      "next_action": "Plan only; quantify cost and missing evidence before authorizing new execution. Do not automatically extend pilot.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/periodic-convergence-costed-design-v1.md"
+      ],
+      "evidence_level": "L1"
     }
   ],
   "audit_remediation_mode": false,
@@ -13200,6 +13223,12 @@
       "task": "PRED-PULSATING-OUTLET-CONTROL",
       "kind": "task",
       "summary": "Three-grid weak-pulse reflection converges in L1 with correct sign; mass/energy/species balances <2.2e-15, direct inflow h0 error<1.4e-15. Conditional bounded same-run cycle2 continuation preregistered; no mesh/predictive claim."
+    },
+    {
+      "at": "2026-10-27T10:52:59.470367+00:00",
+      "task": "PRED-PULSATING-OUTLET-CONTROL",
+      "kind": "task",
+      "summary": "Wave L1 improves .0405->.00430 on3grids, correct reflection sign; direct reversals h0/donors PASS, conservation2.2e-15. Absolute flux error confirms convergence with significant final cancellation. Pilot stops150s/9newcycles, last210failedobservables, no period, checkpoints/detector verified. No product change; source rc7 preserved."
     }
   ],
   "legacy_gate_status": {

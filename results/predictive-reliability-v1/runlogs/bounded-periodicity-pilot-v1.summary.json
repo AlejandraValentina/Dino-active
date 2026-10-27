@@ -1,0 +1,23 @@
+{
+  "name": "bounded-periodicity-pilot-v1",
+  "command": [
+    "python",
+    "scripts/diagnostics/bounded_periodicity_pilot_v1.py",
+    "--source",
+    "results/predictive-reliability-v1/spatial-boundary-v2-engine",
+    "--output",
+    "results/predictive-reliability-v1/bounded-periodicity-pilot-v1"
+  ],
+  "started_at": "2026-10-27T10:48:59+00:00",
+  "finished_at": "2026-10-27T10:51:30+00:00",
+  "duration_s": 150.953,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\bounded-periodicity-pilot-v1.log",
+  "log_lines": 1,
+  "log_bytes": 167,
+  "error_lines": [],
+  "tail": [
+    "{\"status\": \"TRANSIENT_AT_BUDGET\", \"error\": \"150-second numerical admission budget\", \"wall_s\": 150.04652620013803, \"terminal_angle\": 4000.0, \"completed_new_cycles\": 9}"
+  ]
+}

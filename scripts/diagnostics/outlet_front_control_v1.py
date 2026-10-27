@@ -45,11 +45,11 @@ def crossing(y,level):
     return None
 
 
-def run_case(n,periodic,contact,model,scale,deadline):
+def run_case(n,periodic,contact,model,scale,deadline,*,flux_audit=False):
     mesh=uniform_mesh(n,1.,1.);e=IdealGas(gamma=1.4,R=1.)
     outlet=Boundary('reservoir',p0=1.,T0=1.)
     q,s=exact(n,0.,periodic,contact);initial=np.r_[q.sum(axis=0),s.sum(axis=0)]/n
-    budget=np.zeros(7);t=0.;steps=0
+    budget=np.zeros(7);t=0.;steps=0;flux_history=[];absolute_flux_error=0.
     def rhs(q,s):
         w=[e.primitive((*r,r[0])) for r in q]
         y=[tuple(r/math.fsum(r)) for r in s]
@@ -76,7 +76,15 @@ def run_case(n,periodic,contact,model,scale,deadline):
         dq,ds,f0=rhs(q,s);q1=q+dt*dq;s1=s+dt*ds
         dq1,ds1,f1=rhs(q1,s1)
         q=.5*(q+q1+dt*dq1);s=.5*(s+s1+dt*ds1)
-        budget+=.5*dt*(f0+f1);t+=dt;steps+=1
+        budget+=.5*dt*(f0+f1)
+        if flux_audit:
+            if periodic:raise ValueError('flux audit requires nonperiodic single outgoing front')
+            density=1.2 if contact else 1.
+            outgoing=lambda time:density*(.25-max(0.,min(1.,.75+time)-max(0.,.5+time)))
+            numerical_flux=-.5*(f0[3]+f1[3]);exact_flux=(outgoing(t+dt)-outgoing(t))/dt
+            absolute_flux_error+=dt*abs(numerical_flux-exact_flux)
+            flux_history.append([t+dt,float(numerical_flux),float(exact_flux),float(-budget[3]-outgoing(t+dt))])
+        t+=dt;steps+=1
     eq,es=exact(n,.35,periodic,contact);y=s[:,0]/s.sum(axis=1);ey=es[:,0]/es.sum(axis=1)
     crosses=[crossing(y,v) for v in (.1,.5,.9)]
     residual=np.r_[q.sum(axis=0),s.sum(axis=0)]/n-initial-budget
@@ -85,7 +93,8 @@ def run_case(n,periodic,contact,model,scale,deadline):
         front_position_50=crosses[1],front_width_10_90=(crosses[2]-crosses[0]) if all(v is not None for v in crosses) else None,
         amplitude=[float(min(y)),float(max(y))],conservation_residual=residual.tolist(),
         boundary_transfer=budget.tolist(),profile_species=s.tolist(),profile_gas=q.tolist(),
-        max_pressure_error=max(abs(e.primitive((*r,r[0]))[2]-1) for r in q))
+        max_pressure_error=max(abs(e.primitive((*r,r[0]))[2]-1) for r in q),
+        flux_history=flux_history,absolute_integrated_flux_error=absolute_flux_error if flux_audit else None)
 
 
 def run():
