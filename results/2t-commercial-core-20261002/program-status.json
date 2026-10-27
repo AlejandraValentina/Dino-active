@@ -9461,7 +9461,7 @@
       "evidence": [
         "openspec/changes/predictive-reliability-v1/post-checkpoint25-convergence-design-v1.md"
       ],
-      "next_action": "Run preregistered four bounded cases after 11 passing initialization/harness tests; reuse existing P0-88.",
+      "next_action": "Complete P1-176 then one preregistered temporal176 halving, total <=720s. Analyze common44 volumes; no periodic campaign.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -9469,7 +9469,10 @@
         "scripts/diagnostics/checkpoint_mesh_sensitivity_v1.py",
         "tests/test_remap_representation_v1.py",
         "results/predictive-reliability-v1/remap-uncertainty-v1/",
-        "openspec/changes/predictive-reliability-v1/remap-representation-protocol-v1.md"
+        "openspec/changes/predictive-reliability-v1/remap-representation-protocol-v1.md",
+        "scripts/diagnostics/compare_remap_representation_v1.py",
+        "tests/test_compare_remap_representation_v1.py",
+        "openspec/changes/predictive-reliability-v1/remap-representation-amendment-v1.md"
       ],
       "evidence_level": "L1"
     }
@@ -13375,6 +13378,12 @@
       "task": "PRED-REMAPPING-UNCERTAINTY-DESIGN",
       "kind": "task",
       "summary": "Conservative P0/P1 root-cell initial fields verified (11 tests); direct 44/88/176 projections, preserved native identity/fuel event. Four one-cycle cases preregistered, 720s total, no production solver change. All historical blockers reevaluated, no new measured data or local resolution."
+    },
+    {
+      "at": "2026-10-27T12:15:05.478338+00:00",
+      "task": "PRED-REMAPPING-UNCERTAINTY-DESIGN",
+      "kind": "task",
+      "summary": "P0 44/88/176 outlet180.97/203.46/213.48mg, common44 burned L1 not decreasing; work nonmonotone. 176 actual cap .125 confirmed. Preregister one176 temporal halving <=240s within aggregate720s; preserve all unfavorable results. No solver changes."
     }
   ],
   "legacy_gate_status": {

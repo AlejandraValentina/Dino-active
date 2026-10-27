@@ -21,6 +21,10 @@ def test_conservative_admissible_nested_initialization(family,level):
         for q,s in zip(rows,e.state['species']['ducts'][name]):
             assert e._primitive(q)[2]>0
             assert min(s)>=0
+    chain=configurations(c,level);restricted=e.state
+    for k in range(level,0,-1):restricted=restrict_state(restricted,chain[k],chain[k-1])
+    for name in cp['state']['ducts']:
+        np.testing.assert_allclose(restricted['species']['ducts'][name],cp['state']['species']['ducts'][name],rtol=2e-14,atol=1e-25)
     with pytest.raises(ValueError,match='configuration mismatch'):e.restore(cp)
 
 
