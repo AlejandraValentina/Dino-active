@@ -9721,17 +9721,42 @@
       "dependencies": [
         "PRED-PERIODIC88-NEXT-WINDOW-DESIGN"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "openspec/changes/predictive-reliability-v1/periodic88-window3-protocol-v1.md"
+        "openspec/changes/predictive-reliability-v1/periodic88-window3-protocol-v1.md",
+        "results/predictive-reliability-v1/periodic88-window3-v1/report.md"
       ],
-      "next_action": "One window <=4 cycles/210s solver, retain prior resource history and unchanged detector; analyze before any further expenditure.",
+      "next_action": "No41 or automatic extension: follow saved material labels to distinguish advected changes from marker mixing/representation.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "results/predictive-reliability-v1/periodic88-window3-v1/"
+      ],
+      "evidence_level": "L1",
+      "qualification": "STOP_NO_SUFFICIENT_PROGRESS after one cycle40 under preregistered resource rule; periodicity not demonstrated."
+    },
+    {
+      "id": "PRED-PERIODIC88-MATERIAL-LABEL-LOCALIZATION",
+      "description": "Read-only mass-label retained-marker analysis of exact39 replay, accounting for both-boundary reversal",
+      "dependencies": [
+        "PRED-PERIODIC88-WINDOW3",
+        "PRED-PERIODIC88-FRONT-FLUX-DIAGNOSIS"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/periodic88-window3-v1/report.md"
+      ],
+      "next_action": "Use native38/39 and measured gross/net fluxes; derive safely retained material interval despite reversals, compare exact cell averages by original position; no new simulations.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "scripts/diagnostics/periodic88_material_labels_v1.py",
+        "tests/test_periodic88_material_labels_v1.py",
+        "results/predictive-reliability-v1/periodic88-material-labels-v1/"
       ],
       "evidence_level": "L1"
     }
@@ -13751,6 +13776,12 @@
       "task": "PRED-PERIODIC88-NEXT-WINDOW-DESIGN",
       "kind": "task",
       "summary": "Native39 checkpoint/full detector9/last physical observation restore exact without integration; compatible exact39 flux replay PASS.10 focused resume tests PASS (3 new); protocol40-43 <=210s solver/230s admission/240s watchdog, existing prior-history stagnation rule. No solver/physics change."
+    },
+    {
+      "at": "2026-10-27T16:03:55.766427+00:00",
+      "task": "PRED-PERIODIC88-WINDOW3",
+      "kind": "task",
+      "summary": "Window3 stops by preregistered resource rule after40 only46.253s;max2.408,p90.800,71fail (54 fresh/burned+17 mass). Front maxx.666m; burned L1/L2 slightly decrease despite failed-count rise. Work136.024J, pressures/energy/global inventories pass own thresholds; no periodicity. No41; localize retained marker changes using existing39 fluxes."
     }
   ],
   "legacy_gate_status": {
