@@ -106,10 +106,10 @@ def run(root,out,refine,step):
         wall_s=time.perf_counter()-start,initialization=remap,interfaces=totals,initial_inventory=initial_inventory,final_inventory=e.inventory(),
         work_J=work,imep_bar=work/e.slider_crank.crankcase.displacement_m3/1e5,conservation=e.conservation_report(),
         source_checkpoint_sha256=sha(cp_path),configuration_sha256=sha(out/'configuration.json'),solver_dependency_sha256=_solver_dependency_hashes(),
-        periodicity_demonstrated=False,experimental_validation=False,storage_preflight=preflight,review='SELF_REVIEW')
+        periodicity_demonstrated=False,experimental_validation=False,storage_preflight=preflight,review='SELF_REVIEW',runner_sha256=sha(Path(__file__)))
     write(out/'receipt.json',result);print(json.dumps({k:result[k] for k in ('status','error','wall_s','work_J','initialization')}))
     return 0 if status=='COMPLETE' else 1
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--refine',action='store_true');p.add_argument('--step',type=float,choices=(.5,.25),required=True);a=p.parse_args();raise SystemExit(run(a.root,a.output,a.refine,a.step))
+    p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--refine',action='store_true');p.add_argument('--step',type=float,choices=(.5,.25,.125),required=True);a=p.parse_args();raise SystemExit(run(a.root,a.output,a.refine,a.step))
