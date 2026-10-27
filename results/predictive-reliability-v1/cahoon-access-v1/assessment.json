@@ -1,0 +1,72 @@
+{
+  "schema": "CAHOON_ACCESS_ASSESSMENT_V1",
+  "date": "2026-10-27",
+  "status": "PARCIAL",
+  "full_pdf_downloaded": false,
+  "full_thesis_reviewed": false,
+  "attempts": [
+    {
+      "method": "Python requests HTTPS original URL",
+      "http_status": 403,
+      "response_bytes": 5947,
+      "content_type": "text/html; charset=UTF-8"
+    },
+    {
+      "method": "web open original PDF",
+      "http_status": 403
+    },
+    {
+      "method": "normal browser runtime",
+      "result": "No browser is available"
+    }
+  ],
+  "indexed_excerpt_only": {
+    "printed_page_candidate": 11,
+    "visually_verified": false,
+    "per_configuration": {
+      "MK1": {
+        "bore_mm": 82,
+        "stroke_mm": 72,
+        "rod_centres_mm": 139.7,
+        "trapped_compression_ratio": 6.57,
+        "crankcase_compression_ratio": 1.6,
+        "exhaust_open_atdc_deg": 96,
+        "inlet_open_btdc_deg": 76,
+        "transfer_open_atdc_deg": 115
+      },
+      "MK2": {
+        "bore_mm": 82,
+        "stroke_mm": 72,
+        "rod_centres_mm": 139.7,
+        "trapped_compression_ratio": 8.3,
+        "crankcase_compression_ratio": 1.6,
+        "exhaust_open_atdc_deg": 96,
+        "inlet_open_btdc_deg": 78,
+        "transfer_open_atdc_deg": 111
+      },
+      "MK3": {
+        "bore_mm": 82,
+        "stroke_mm": 72,
+        "rod_centres_mm": 139.7,
+        "trapped_compression_ratio": 7.75,
+        "crankcase_compression_ratio": 1.6,
+        "exhaust_open_atdc_deg": 89,
+        "inlet_open_btdc_deg": 78,
+        "transfer_open_atdc_deg": 111
+      }
+    }
+  },
+  "adopted_as_simulation_input": false,
+  "digitized_curves": 0,
+  "predictive_validation_readiness": "NOT_ESTABLISHED",
+  "missing_verification": [
+    "original page images and page numbering",
+    "volume ratio conventions and connected volume inclusions",
+    "piston/port profiles and area laws",
+    "duct segment diagram-to-table mapping including units",
+    "test conditions and matching sensor traces",
+    "measured versus THROUGH FLOW legend",
+    "measurement and digitization uncertainty"
+  ],
+  "source_url": "https://pure.qub.ac.uk/files/612264914/Unsteady_gas_flow_through_a_naturally_aspirated_two_stroke_internal_combustion_engine..pdf"
+}
