@@ -54,6 +54,7 @@ def run(root,out,*,source_preparer=None,first_absolute=31,last_absolute=36,solve
     origin=provenance['origin_absolute_cycle']
     if engine.crank_angle_unwrapped_deg!=360.*(first_absolute-1) or len(detector.history)!=first_absolute-1-origin:raise ValueError('source phase/detector origin differs')
     prefix=[];expected_partial=None;prefix_index=0;replayed=True;prior_cycles=[]
+    for path in provenance.get('source_previous_cycles_paths',[]):prior_cycles.extend(load(Path(path)))
     if 'source_partial_path' in provenance:
         partial_path=Path(provenance['source_partial_path']);recipe_path=Path(provenance['source_partial_recipe_path'])
         if sha(partial_path)!=provenance['source_partial_sha256'] or sha(recipe_path)!=provenance['source_partial_recipe_sha256']:raise ValueError('partial source changed')

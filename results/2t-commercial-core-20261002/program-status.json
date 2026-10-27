@@ -9696,13 +9696,15 @@
       "dependencies": [
         "PRED-PERIODIC88-FRONT-FLUX-DIAGNOSIS"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "results/predictive-reliability-v1/periodic88-front-flux-v1/report.md"
+        "results/predictive-reliability-v1/periodic88-front-flux-v1/report.md",
+        "openspec/changes/predictive-reliability-v1/periodic88-window3-protocol-v1.md",
+        "results/predictive-reliability-v1/periodic88-window3-preparation-v1.json"
       ],
-      "next_action": "Prepare source-bound native39 resume, keep original model/detector criteria, establish <=4-cycle budget and physical progress checks before any execution.",
+      "next_action": "Execute only preregistered native39 window40-43 with210s solver/230s admission/240s watchdog, no automatic next window.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -9710,6 +9712,26 @@
         "tests/test_periodicity_native88_window_v1.py",
         "openspec/changes/predictive-reliability-v1/periodic88-window3-protocol-v1.md",
         "results/predictive-reliability-v1/periodic88-window3-preparation-v1.json"
+      ],
+      "evidence_level": "L1"
+    },
+    {
+      "id": "PRED-PERIODIC88-WINDOW3",
+      "description": "One bounded native39 continuation40-43 after resolved front/flux diagnosis",
+      "dependencies": [
+        "PRED-PERIODIC88-NEXT-WINDOW-DESIGN"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "openspec/changes/predictive-reliability-v1/periodic88-window3-protocol-v1.md"
+      ],
+      "next_action": "One window <=4 cycles/210s solver, retain prior resource history and unchanged detector; analyze before any further expenditure.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "results/predictive-reliability-v1/periodic88-window3-v1/"
       ],
       "evidence_level": "L1"
     }
@@ -13723,6 +13745,12 @@
       "task": "PRED-PERIODIC88-FRONT-FLUX-DIAGNOSIS",
       "kind": "task",
       "summary": "Existing39 exact native replay49.719s:1440 accepted/718 rejected, max subsystem mass/energy/species residual3.305e-14. Exhaust +1.779mg, burned -1.004mg exactly measured transport; gross outlet190.354mg/reverse.799mg; contact-like discrepancy moves.505->.632m with decreasing Linf while pressure settles. No new cycles or solver changes; prepare bounded next window."
+    },
+    {
+      "at": "2026-10-27T16:00:00.958025+00:00",
+      "task": "PRED-PERIODIC88-NEXT-WINDOW-DESIGN",
+      "kind": "task",
+      "summary": "Native39 checkpoint/full detector9/last physical observation restore exact without integration; compatible exact39 flux replay PASS.10 focused resume tests PASS (3 new); protocol40-43 <=210s solver/230s admission/240s watchdog, existing prior-history stagnation rule. No solver/physics change."
     }
   ],
   "legacy_gate_status": {
