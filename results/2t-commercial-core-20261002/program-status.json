@@ -9647,18 +9647,21 @@
       "dependencies": [
         "PRED-PERIODIC88-BOUNDED-PILOT"
       ],
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "results/predictive-reliability-v1/periodic88-pilot-v1/report.md"
+        "results/predictive-reliability-v1/periodic88-pilot-v1/report.md",
+        "openspec/changes/predictive-reliability-v1/periodic88-window2-protocol-v1.md"
       ],
-      "next_action": "Verify native35+detector5 and replay prefix36 exactly to FAST12814; preregister at most cycles36-39/250s including replay. No recomputation31-35, no fake native FAST or new mesh.",
+      "next_action": "One same88 window36-39 <=250s including exact856-step partial replay; each source rejection/accepted step and FAST must match before novel continuation. No31-35 recomputation or new grid.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "scripts/diagnostics/periodicity_refined_resume_v1.py",
-        "results/predictive-reliability-v1/periodic88-window2-v1/"
+        "results/predictive-reliability-v1/periodic88-window2-v1/",
+        "scripts/diagnostics/periodicity_refined_mesh_pilot_v1.py",
+        "tests/test_periodicity_refined_resume_v1.py"
       ],
       "evidence_level": "L1"
     }
@@ -13654,6 +13657,12 @@
       "task": "PRED-PERIODIC88-BOUNDED-PILOT",
       "kind": "task",
       "summary": "88 pilot261.02s<300, solver260 cap: completed5 absolute31-35 plus FAST12814 partial36. Max19.85->3.03,p90 .896,77/809fail,416improve/148worsen. Work135.14J vs44 130.92 (+3.22%, transient), trapped air and heat increase consistently.39 tests PASS, balances pass, no model changes. Next requires exact partial recovery and separately bounded same88 window, no176."
+    },
+    {
+      "at": "2026-10-27T15:42:55.436798+00:00",
+      "task": "PRED-PERIODIC88-WINDOW2-RECOVERY",
+      "kind": "task",
+      "summary": "Preregister same88 window36-39,220s solver/240s admission/250s watchdog incl necessary partial replay. Native35/detector5 restore verified, first saved partial step exact; full prefix856 steps and FAST12814 will be verified before novel continuation.42 full focused tests PASS plus4 resume tests after added exact-step regression (43 unique tests). No physics/numerical criteria changed; work/filling drift tracked."
     }
   ],
   "legacy_gate_status": {
