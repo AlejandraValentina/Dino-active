@@ -1,0 +1,25 @@
+{
+  "name": "periodic25-29",
+  "command": [
+    "python",
+    "scripts/diagnostics/periodicity_extension_v4.py",
+    "--source",
+    "results/predictive-reliability-v1/exhaust-composition-plateau-v1/relaxation-check",
+    "--configuration-source",
+    "results/predictive-reliability-v1/spatial-boundary-v2-engine",
+    "--output",
+    "results/predictive-reliability-v1/periodicity-extension-v4/run"
+  ],
+  "started_at": "2026-10-27T12:34:34+00:00",
+  "finished_at": "2026-10-27T12:35:28+00:00",
+  "duration_s": 54.032,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\periodicity-extension-v4\\runlogs\\periodic25-29.log",
+  "log_lines": 1,
+  "log_bytes": 320,
+  "error_lines": [],
+  "tail": [
+    "{\"status\": \"TRANSIENT_AT_BUDGET\", \"error\": null, \"completed_new_cycles\": 4, \"terminal_angle\": 10440.0, \"wall_s\": 53.7101048999466, \"timing_seconds\": {\"solver\": 53.135537799447775, \"serialization\": 0.11972269997932017, \"detector\": 0.01068420009687543, \"restoration\": 0.23334220005199313, \"audit\": 0.00"
+  ]
+}

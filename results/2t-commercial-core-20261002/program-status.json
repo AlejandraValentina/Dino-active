@@ -9514,19 +9514,42 @@
         "PRED-MATERIAL-FRONT-352-CONTROL",
         "PRED-PERIODIC-CONVERGENCE-COSTED-DESIGN"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "openspec/changes/predictive-reliability-v1/periodicity-extension-v4-protocol.md"
+        "openspec/changes/predictive-reliability-v1/periodicity-extension-v4-protocol.md",
+        "results/predictive-reliability-v1/periodicity-extension-v4/report.md",
+        "results/predictive-reliability-v1/periodicity-extension-v4/manifest.json"
       ],
-      "next_action": "Run exactly one original-checkpoint25 continuation <=4 cycles/90s, preserving detector and model; stop on stagnation, no repeated extensions automatically.",
+      "next_action": "Preregister exactly one30 cycle/25s from native29 + detector29; no automatic further extension; if candidate, prepare audit.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "scripts/diagnostics/periodicity_extension_v4.py",
         "tests/test_periodicity_extension_v4.py",
         "results/predictive-reliability-v1/periodicity-extension-v4/"
+      ],
+      "evidence_level": "L1",
+      "qualification": "All413 pass cycles28/29, detector streak2 only. No periodicity claim or further automatic extension."
+    },
+    {
+      "id": "PRED-PERIODIC-CYCLE30-STREAK-CONTROL",
+      "description": "One final cycle to complete or reject existing two-pass periodic streak",
+      "dependencies": [
+        "PRED-PERIODIC-25-29-CONTROL"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/periodicity-extension-v4/report.md"
+      ],
+      "next_action": "Preregister exactly one30 cycle/25s from native29 + detector29; no automatic further extension; if candidate, prepare audit.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "results/predictive-reliability-v1/periodicity-cycle30-control-v1/"
       ],
       "evidence_level": "L1"
     }
@@ -13468,6 +13491,12 @@
       "task": "PRED-PERIODIC-25-29-CONTROL",
       "kind": "task",
       "summary": "Separate25->29 single-invocation protocol preregistered after352 spatial contraction.24 focused tests PASS, exact native+detector observation restore verified without stepping. <=4cycles/90s, original model and scheduling, no campaign or automatic further extension."
+    },
+    {
+      "at": "2026-10-27T12:37:17.745787+00:00",
+      "task": "PRED-PERIODIC-25-29-CONTROL",
+      "kind": "task",
+      "summary": "Original25->29 completed53.71s<=90s, exact source/detector restoration. Max3.3475->.4831, p90 .8392->.1789, failed37->0 (28 and29). Streak2, no period yet; lag2FAIL. Balances pass. One final30 cycle/25s recommended with preregistration; no automatic extension if it fails."
     }
   ],
   "legacy_gate_status": {
