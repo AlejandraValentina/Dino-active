@@ -46,13 +46,16 @@ def restrict_to(state,source,target):
 
 def analyze(root,reference):
     paths={n:root/n for n in ('p0-44','p1-88','p0-176','p1-176')};paths['p0-88']=reference
+    if (root/'p0-176-timehalf/receipt.json').exists():paths['p0-176-timehalf']=root/'p0-176-timehalf'
     configs={n:load(p/'configuration.json') for n,p in paths.items()}
     receipts={n:load(p/'receipt.json') for n,p in paths.items()};frames={n:load(p/'frames.json') for n,p in paths.items()}
     if any(r['status']!='COMPLETE' for r in receipts.values()):raise ValueError('incomplete diagnostic')
     source=receipts['p0-44']
     if any(r['source_checkpoint_sha256']!=source['source_checkpoint_sha256'] or r['solver_dependency_sha256']!=source['solver_dependency_sha256'] for r in receipts.values()):raise ValueError('source mismatch')
     comparisons={}
-    for a,b in [('p0-44','p0-88'),('p0-88','p0-176'),('p0-44','p1-88'),('p1-88','p1-176'),('p0-88','p1-88'),('p0-176','p1-176')]:
+    pairs=[('p0-44','p0-88'),('p0-88','p0-176'),('p0-44','p1-88'),('p1-88','p1-176'),('p0-88','p1-88'),('p0-176','p1-176')]
+    if 'p0-176-timehalf' in paths:pairs.append(('p0-176','p0-176-timehalf'))
+    for a,b in pairs:
         phases=[]
         for fa,fb in zip(frames[a],frames[b]):
             if fa['angle']!=fb['angle']:raise ValueError('phase mismatch')

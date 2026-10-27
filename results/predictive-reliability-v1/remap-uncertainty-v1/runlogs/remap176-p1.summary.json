@@ -1,0 +1,29 @@
+{
+  "name": "remap176-p1",
+  "command": [
+    "python",
+    "scripts/diagnostics/remap_representation_v1.py",
+    "--root",
+    "results/predictive-reliability-v1",
+    "--output",
+    "results/predictive-reliability-v1/remap-uncertainty-v1/p1-176",
+    "--level",
+    "2",
+    "--family",
+    "P1",
+    "--budget",
+    "240"
+  ],
+  "started_at": "2026-10-27T12:13:42+00:00",
+  "finished_at": "2026-10-27T12:15:28+00:00",
+  "duration_s": 106.187,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\remap-uncertainty-v1\\runlogs\\remap176-p1.log",
+  "log_lines": 1,
+  "log_bytes": 450,
+  "error_lines": [],
+  "tail": [
+    "{\"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 105.62988150003366, \"work_J\": 131.18591873636478, \"initialization\": {\"kind\": \"NEW_DIAGNOSTIC_INITIAL_FIELD\", \"representation\": \"P1\", \"level\": 2, \"inventory_max_relative_error\": 1.2198083102437108e-15, \"restriction_max_relative_error\": 1.67923029023141e"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "remap44-p0",
+  "command": [
+    "python",
+    "scripts/diagnostics/remap_representation_v1.py",
+    "--root",
+    "results/predictive-reliability-v1",
+    "--output",
+    "results/predictive-reliability-v1/remap-uncertainty-v1/p0-44",
+    "--level",
+    "0",
+    "--family",
+    "P0",
+    "--budget",
+    "120"
+  ],
+  "started_at": "2026-10-27T12:09:26+00:00",
+  "finished_at": "2026-10-27T12:10:23+00:00",
+  "duration_s": 57.968,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\remap-uncertainty-v1\\runlogs\\remap44-p0.log",
+  "log_lines": 1,
+  "log_bytes": 188,
+  "error_lines": [],
+  "tail": [
+    "{\"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 57.503857700154185, \"work_J\": 131.08965918717377, \"initialization\": {\"kind\": \"SAME_SIMULATION_RESUME\", \"representation\": \"P0\", \"level\": 0}}"
+  ]
+}

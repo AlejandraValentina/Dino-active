@@ -9455,13 +9455,15 @@
       "dependencies": [
         "PRED-CHECKPOINT25-MESH-TIME-DIAGNOSTIC"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "openspec/changes/predictive-reliability-v1/post-checkpoint25-convergence-design-v1.md"
+        "openspec/changes/predictive-reliability-v1/post-checkpoint25-convergence-design-v1.md",
+        "results/predictive-reliability-v1/remap-uncertainty-v1/report.md",
+        "results/predictive-reliability-v1/remap-uncertainty-v1/manifest.json"
       ],
-      "next_action": "Complete P1-176 then one preregistered temporal176 halving, total <=720s. Analyze common44 volumes; no periodic campaign.",
+      "next_action": "One bounded352 control with matched176 time reference, separately preregistered.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -9473,6 +9475,27 @@
         "scripts/diagnostics/compare_remap_representation_v1.py",
         "tests/test_compare_remap_representation_v1.py",
         "openspec/changes/predictive-reliability-v1/remap-representation-amendment-v1.md"
+      ],
+      "evidence_level": "L1",
+      "qualification": "Spatial evolution dominates tested initialization and time contrasts; no demonstrated solver defect, composition not mesh-independent."
+    },
+    {
+      "id": "PRED-MATERIAL-FRONT-352-CONTROL",
+      "description": "One additional bounded grid resolves whether nonlinear material layers begin spatial contraction",
+      "dependencies": [
+        "PRED-REMAPPING-UNCERTAINTY-DESIGN"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/remap-uncertainty-v1/report.md"
+      ],
+      "next_action": "Preregister one352 P0 cycle with .0625deg matched to existing176 halfstep; <=420s; no further grid or periodic campaign automatically.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "results/predictive-reliability-v1/remap-refinement352-v1/"
       ],
       "evidence_level": "L1"
     }
@@ -13384,6 +13407,12 @@
       "task": "PRED-REMAPPING-UNCERTAINTY-DESIGN",
       "kind": "task",
       "summary": "P0 44/88/176 outlet180.97/203.46/213.48mg, common44 burned L1 not decreasing; work nonmonotone. 176 actual cap .125 confirmed. Preregister one176 temporal halving <=240s within aggregate720s; preserve all unfavorable results. No solver changes."
+    },
+    {
+      "at": "2026-10-27T12:23:19.326593+00:00",
+      "task": "PRED-REMAPPING-UNCERTAINTY-DESIGN",
+      "kind": "task",
+      "summary": "Five new one-cycle cases568.75s <=720s, reused88;16 tests PASS. P0/P1 outlet .027/.022%, time176 .000775%, spatial88/1764.92%. Pressure L1 halves but burned L1 .01250->.01267 on common44. Material-label retained-marker residual decreases; all native restores exact and duct balances<3e-18kg. No solver change/periodicity. One352 bounded follow-up prepared, no unlimited refinement."
     }
   ],
   "legacy_gate_status": {
