@@ -9571,15 +9571,17 @@
       "commits": [],
       "evidence": [
         "results/predictive-reliability-v1/periodicity-cycle30-control-v1/report.md",
-        "openspec/changes/predictive-reliability-v1/periodic-primary-audit-protocol-v1.md"
+        "openspec/changes/predictive-reliability-v1/periodic-primary-audit-protocol-v1.md",
+        "openspec/changes/predictive-reliability-v1/periodic-primary-contract-recovery-v1.md"
       ],
-      "next_action": "Replay exactly27-30 with external canonical primaries, existing offline auditor and original detector;480s watchdog, no solver fixes on failure.",
+      "next_action": "Reconstruct decision read-only from four hash-bound audited primaries; fix only incorrect wrapper V2 data tag, preserve original STOPPED evidence; no numerical replay.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "verification",
       "write_scope": [
         "results/predictive-reliability-v1/periodic-primary-audit-v1/",
         "scripts/diagnostics/periodic_primary_audit_v1.py",
-        "tests/test_periodic_primary_audit_v1.py"
+        "tests/test_periodic_primary_audit_v1.py",
+        "scripts/diagnostics/reconstruct_audited_periodicity_v1.py"
       ],
       "evidence_level": "L2"
     },
@@ -13599,6 +13601,12 @@
       "task": "PRED-REFINED-DETECTOR-CLOCK-PREPARATION",
       "kind": "task",
       "summary": "33 focused tests PASS. Actual native30 P0->88 initialization conserves inventory/parents, preserves10800deg clock and ongoing fuel history, primitive children exact. New diagnostic relative-cycle mapping tested incl detector restart, no solver steps. Bounded88 preparation waits for primary audit PASS; source archive index and original byte preservation verified."
+    },
+    {
+      "at": "2026-10-27T15:18:19.739496+00:00",
+      "task": "PRED-PERIODIC-27-30-PRIMARY-AUDIT",
+      "kind": "task",
+      "summary": "Four stage audits PASS in292.62s; original wrapper decision INVALID because it supplied V2 detector tag for V1 primary-data contract. Defect isolated to new diagnostic wrapper, no physical mismatch.34 tests PASS incl reproducer. Preserve original STOPPED manifest; recover from canonical hash-bound saved primaries, zero solver steps,120s watchdog."
     }
   ],
   "legacy_gate_status": {

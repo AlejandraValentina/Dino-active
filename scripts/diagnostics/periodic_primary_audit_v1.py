@@ -8,13 +8,21 @@ import tempfile
 import time
 ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT))
 from motorsim.integrated_2t import IntegratedEngine2T,_solver_dependency_hashes,_json_evidence_equal,make_integrated_cycle_primary,audit_integrated_cycle_primary
-from motorsim.reference_harness.convergence import PeriodicDetectorV2,CONTRACT_V2
+from motorsim.reference_harness.convergence import PeriodicDetectorV2,CONTRACT
 from motorsim._evidence_io import write_primary_atomic
 from scripts.agents.storage_preflight import check_storage_requirements,default_artifact_root
 from scripts.diagnostics.diagnose_integrated_mesh_v1 import sha,write
 
 
 def load(path):return json.loads(path.read_text(encoding='utf-8'))
+
+
+def primary_observation_record(primary):
+    # V2 versions detector semantics; cycle-data records retain V1 identity.
+    # Preserve the source contract, never relabel a record to bypass checking.
+    if primary.get('contract')!=CONTRACT:raise ValueError('unsupported primary data contract')
+    return dict(contract=primary['contract'],cycle_index=primary['cycle_index'],
+        configuration_hash=primary['configuration_hash'],observables=primary['observables'])
 
 
 def bound_file(directory,name):
@@ -74,7 +82,7 @@ def run(root,out,artifacts):
             exported=write_primary_atomic(path,primary,maximum_bytes=128*1024**2)
             audit=audit_integrated_cycle_primary(primary,preserve_precycle_p7_baseline=True)
             if audit['status']!='PASS':raise ValueError('primary audit failed')
-            record=dict(contract=CONTRACT_V2,cycle_index=cycle,configuration_hash=primary['configuration_hash'],observables=primary['observables'])
+            record=primary_observation_record(primary)
             outcome=detector.update(record)
             entry=dict(cycle=cycle,status='PASS',wall_s=time.perf_counter()-began,accepted_steps=len(recipe),source=binding,
                 artifact_name=path.name,compressed_sha256=sha(path),**exported,audit=audit,periodicity_outcome=outcome,conservation=primary['conservation'])

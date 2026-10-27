@@ -17,3 +17,14 @@ def test_existing_cycles_bound_without_solver_steps(cycle,monkeypatch):
 
 def test_no_new_cycle_allowed():
     with pytest.raises(ValueError,match='only existing'):module.read_bound_cycle(ROOT,31)
+
+
+def test_v2_detector_requires_v1_cycle_data_contract():
+    from copy import deepcopy
+    from motorsim.reference_harness.convergence import compare_cycles_v2,CONTRACT_V2
+    history=module.load(ROOT/'periodicity-cycle30-control-v1/run/detector.json')['history']
+    a=module.primary_observation_record(history[27]);b=module.primary_observation_record(history[28])
+    assert compare_cycles_v2(a,b)['status']=='PASS'
+    wrong=deepcopy(b);wrong['contract']=CONTRACT_V2
+    assert compare_cycles_v2(a,wrong)['reason']=='contract identity mismatch'
+    with pytest.raises(ValueError,match='data contract'):module.primary_observation_record(wrong)

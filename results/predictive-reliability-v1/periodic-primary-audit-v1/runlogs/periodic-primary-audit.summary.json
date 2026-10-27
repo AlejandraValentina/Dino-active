@@ -1,0 +1,25 @@
+{
+  "name": "periodic-primary-audit",
+  "command": [
+    "python",
+    "scripts/diagnostics/periodic_primary_audit_v1.py",
+    "--root",
+    "results/predictive-reliability-v1",
+    "--output",
+    "results/predictive-reliability-v1/periodic-primary-audit-v1/run"
+  ],
+  "started_at": "2026-10-27T12:43:45+00:00",
+  "finished_at": "2026-10-27T12:48:38+00:00",
+  "duration_s": 293.094,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\periodic-primary-audit-v1\\runlogs\\periodic-primary-audit.log",
+  "log_lines": 1,
+  "log_bytes": 168,
+  "error_lines": [
+    "1: {\"status\": \"STOPPED\", \"error\": \"ValueError: primary detector decision differs\", \"wall_s\": 292.62144030001946, \"cycles\": [27, 28, 29, 30], \"periodicity_audited\": false}"
+  ],
+  "tail": [
+    "{\"status\": \"STOPPED\", \"error\": \"ValueError: primary detector decision differs\", \"wall_s\": 292.62144030001946, \"cycles\": [27, 28, 29, 30], \"periodicity_audited\": false}"
+  ]
+}
