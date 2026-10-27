@@ -9318,7 +9318,7 @@
       "dependencies": [
         "PRED-MESH-OUTLET-FRONT-CONTROL"
       ],
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [
@@ -9331,7 +9331,8 @@
         "scripts/diagnostics/pulsating_outlet_control_v1.py",
         "results/predictive-reliability-v1/pulsating-outlet-control-v1/"
       ],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "Acoustic and algebraic reversal controls completed; bounded same-source integrated pilot now admitted by those engineering checks."
     }
   ],
   "audit_remediation_mode": false,
@@ -13193,6 +13194,12 @@
       "task": "PRED-MESH-OUTLET-FRONT-CONTROL",
       "kind": "task",
       "summary": "21 isolated cases: three grids, temporal halving, periodic vs reservoir vs actual plenum. L1/L2 and width improve, Linf nonmonotonic expected at discontinuities. Conservation ~1e-14, flux error .12 mass reference falls1.16% to.00018%. No solver defect; pulsating integrated uncertainty remains. Historical blockers unchanged; Cahoon deferred."
+    },
+    {
+      "at": "2026-10-27T10:48:57.013300+00:00",
+      "task": "PRED-PULSATING-OUTLET-CONTROL",
+      "kind": "task",
+      "summary": "Three-grid weak-pulse reflection converges in L1 with correct sign; mass/energy/species balances <2.2e-15, direct inflow h0 error<1.4e-15. Conditional bounded same-run cycle2 continuation preregistered; no mesh/predictive claim."
     }
   ],
   "legacy_gate_status": {

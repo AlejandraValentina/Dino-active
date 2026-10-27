@@ -1,0 +1,21 @@
+{
+  "name": "pulsating-outlet-control-v1",
+  "command": [
+    "python",
+    "scripts/diagnostics/pulsating_outlet_control_v1.py",
+    "--output",
+    "results/predictive-reliability-v1/pulsating-outlet-control-v1/receipt.json"
+  ],
+  "started_at": "2026-10-27T10:47:46+00:00",
+  "finished_at": "2026-10-27T10:48:29+00:00",
+  "duration_s": 43.0,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\pulsating-outlet-control-v1.log",
+  "log_lines": 1,
+  "log_bytes": 462,
+  "error_lines": [],
+  "tail": [
+    "{\"wall_s\": 40.395091499900445, \"cases\": [{\"n\": 32, \"L1\": 0.04053823708219731, \"amplitude\": 0.7337585323230477, \"phase\": -0.0006859336124113114}, {\"n\": 64, \"L1\": 0.014985915168310479, \"amplitude\": 0.8955479482875005, \"phase\": 0.0001872565536723301}, {\"n\": 128, \"L1\": 0.004304550161477357, \"amplitude\":"
+  ]
+}
