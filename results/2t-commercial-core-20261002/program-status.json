@@ -9356,6 +9356,29 @@
         "openspec/changes/predictive-reliability-v1/periodic-convergence-costed-design-v1.md"
       ],
       "evidence_level": "L1"
+    },
+    {
+      "id": "PRED-PERIODICITY-TREND-EXTENSION",
+      "description": "Analyze native-cycle distributions and execute one costed same-run continuation with stagnation stop rule",
+      "dependencies": [
+        "PRED-PULSATING-OUTLET-CONTROL"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/periodicity-extension-v1/report.md",
+        "results/predictive-reliability-v1/periodicity-extension-v1/restart-verification.json",
+        "results/predictive-reliability-v1/periodicity-extension-v1/run/receipt.json"
+      ],
+      "next_action": "Closed at6additionalcycles. No automatic extension; periodicity not demonstrated, use checkpoint17 only under a new bounded costed study.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "results/predictive-reliability-v1/periodicity-extension-v1/"
+      ],
+      "evidence_level": "L1",
+      "qualification": "Native restart state/ledger and detector verified. Last maximum ratio15.09,p90 4.10,151failed. Solver13.45s/cycle dominates; no solver change."
     }
   ],
   "audit_remediation_mode": false,
@@ -13229,6 +13252,12 @@
       "task": "PRED-PULSATING-OUTLET-CONTROL",
       "kind": "task",
       "summary": "Wave L1 improves .0405->.00430 on3grids, correct reflection sign; direct reversals h0/donors PASS, conservation2.2e-15. Absolute flux error confirms convergence with significant final cancellation. Pilot stops150s/9newcycles, last210failedobservables, no period, checkpoints/detector verified. No product change; source rc7 preserved."
+    },
+    {
+      "at": "2026-10-27T11:21:56.267809+00:00",
+      "task": "PRED-PERIODICITY-TREND-EXTENSION",
+      "kind": "task",
+      "summary": "Prior trends mixed; one6cycle extension completed12–17 in82.66s. Max ratio113->15.09,p90 24.19->4.10; no period1/2,151failed.40degree deterministic replay matches historical state/ledger; detector restored without historical physical reruns. No automatic extension. Preserved pre-existing unstaged planning/status changes."
     }
   ],
   "legacy_gate_status": {
