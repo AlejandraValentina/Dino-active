@@ -9672,19 +9672,44 @@
       "dependencies": [
         "PRED-PERIODIC88-WINDOW2-RECOVERY"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "openspec/changes/predictive-reliability-v1/periodic88-front-replay-protocol-v1.md"
+        "openspec/changes/predictive-reliability-v1/periodic88-front-replay-protocol-v1.md",
+        "results/predictive-reliability-v1/periodic88-front-flux-v1/report.md"
       ],
-      "next_action": "Read-only saved states then at most120s exact39 replay, watchdog150s; no new cycles.",
+      "next_action": "No solver correction justified; prepare another explicitly bounded native88 window, preserving detector and tracking advected front alongside inventory/pressure/work.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "scripts/diagnostics/periodic88_front_flux_v1.py",
         "tests/test_periodic88_front_flux_v1.py",
         "results/predictive-reliability-v1/periodic88-front-flux-v1/"
+      ],
+      "evidence_level": "L1",
+      "qualification": "Active relaxation of the discretized state; physical vs numerical contributions not fully separable. Exact existing39 replay only, no new cycles."
+    },
+    {
+      "id": "PRED-PERIODIC88-NEXT-WINDOW-DESIGN",
+      "description": "Prepare native39 recovery and next bounded88 window with contact/inventory-aware stopping",
+      "dependencies": [
+        "PRED-PERIODIC88-FRONT-FLUX-DIAGNOSIS"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/periodic88-front-flux-v1/report.md"
+      ],
+      "next_action": "Prepare source-bound native39 resume, keep original model/detector criteria, establish <=4-cycle budget and physical progress checks before any execution.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "scripts/diagnostics/periodicity_native88_window_v1.py",
+        "tests/test_periodicity_native88_window_v1.py",
+        "openspec/changes/predictive-reliability-v1/periodic88-window3-protocol-v1.md",
+        "results/predictive-reliability-v1/periodic88-window3-preparation-v1.json"
       ],
       "evidence_level": "L1"
     }
@@ -13692,6 +13717,12 @@
       "task": "PRED-PERIODIC88-WINDOW2-RECOVERY",
       "kind": "task",
       "summary": "Second88 window completed36-39 in184.445s incl exact856-step partial replay26.503s. Last27/809 fail,max2.343,p90.429; pressure/work settling but composition L1 rebounds with moving front. No new cycles; preregister existing39 flux replay <=120s. Baseline/solver unchanged."
+    },
+    {
+      "at": "2026-10-27T15:58:15.626542+00:00",
+      "task": "PRED-PERIODIC88-FRONT-FLUX-DIAGNOSIS",
+      "kind": "task",
+      "summary": "Existing39 exact native replay49.719s:1440 accepted/718 rejected, max subsystem mass/energy/species residual3.305e-14. Exhaust +1.779mg, burned -1.004mg exactly measured transport; gross outlet190.354mg/reverse.799mg; contact-like discrepancy moves.505->.632m with decreasing Linf while pressure settles. No new cycles or solver changes; prepare bounded next window."
     }
   ],
   "legacy_gate_status": {

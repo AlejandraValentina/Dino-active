@@ -1,0 +1,23 @@
+{
+  "name": "periodic88-existing39-flux",
+  "command": [
+    "python",
+    "scripts/diagnostics/periodic88_front_flux_v1.py",
+    "--root",
+    "results/predictive-reliability-v1",
+    "--output",
+    "results/predictive-reliability-v1/periodic88-front-flux-v1/run"
+  ],
+  "started_at": "2026-10-27T15:55:12+00:00",
+  "finished_at": "2026-10-27T15:56:02+00:00",
+  "duration_s": 50.047,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\periodic88-front-flux-v1\\runlogs\\periodic88-existing39-flux.log",
+  "log_lines": 1,
+  "log_bytes": 237,
+  "error_lines": [],
+  "tail": [
+    "{\"status\": \"PASS\", \"wall_s\": 49.71922589978203, \"maximum_normalized_balance_residual\": 3.304548772216596e-14, \"replayed_accepted_steps\": 1440, \"exhaust_gross_out_kg\": 0.00019035368642071645, \"exhaust_gross_in_kg\": 7.994645285968047e-07}"
+  ]
+}
