@@ -9506,6 +9506,29 @@
       ],
       "evidence_level": "L1",
       "qualification": "Spatial contraction observed in pressure/composition, not mesh independence or periodicity. One case335.97s<420s, no further refinement automatically."
+    },
+    {
+      "id": "PRED-PERIODIC-25-29-CONTROL",
+      "description": "One bounded original-grid continuation after spatial uncertainty characterization",
+      "dependencies": [
+        "PRED-MATERIAL-FRONT-352-CONTROL",
+        "PRED-PERIODIC-CONVERGENCE-COSTED-DESIGN"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "openspec/changes/predictive-reliability-v1/periodicity-extension-v4-protocol.md"
+      ],
+      "next_action": "Run exactly one original-checkpoint25 continuation <=4 cycles/90s, preserving detector and model; stop on stagnation, no repeated extensions automatically.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "scripts/diagnostics/periodicity_extension_v4.py",
+        "tests/test_periodicity_extension_v4.py",
+        "results/predictive-reliability-v1/periodicity-extension-v4/"
+      ],
+      "evidence_level": "L1"
     }
   ],
   "audit_remediation_mode": false,
@@ -13439,6 +13462,12 @@
       "task": "PRED-MATERIAL-FRONT-352-CONTROL",
       "kind": "task",
       "summary": "352 control complete335.97s<420s. Matched176 halfstep: common44 pressure L1 .004223 and burned .005730 (prior .009984/.012669); outlet +1.67%, work +.1397%. Material marker L1 decreases; balances<3e-18kg, native restore exact.21 tests PASS. No defect or asymptotic/periodic claim. Refinements closed, bounded original25 continuation scientifically justified as next separate protocol."
+    },
+    {
+      "at": "2026-10-27T12:34:32.134419+00:00",
+      "task": "PRED-PERIODIC-25-29-CONTROL",
+      "kind": "task",
+      "summary": "Separate25->29 single-invocation protocol preregistered after352 spatial contraction.24 focused tests PASS, exact native+detector observation restore verified without stepping. <=4cycles/90s, original model and scheduling, no campaign or automatic further extension."
     }
   ],
   "legacy_gate_status": {
