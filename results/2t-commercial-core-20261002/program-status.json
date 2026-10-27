@@ -9566,15 +9566,17 @@
       "dependencies": [
         "PRED-PERIODIC-CYCLE30-STREAK-CONTROL"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
         "results/predictive-reliability-v1/periodicity-cycle30-control-v1/report.md",
         "openspec/changes/predictive-reliability-v1/periodic-primary-audit-protocol-v1.md",
-        "openspec/changes/predictive-reliability-v1/periodic-primary-contract-recovery-v1.md"
+        "openspec/changes/predictive-reliability-v1/periodic-primary-contract-recovery-v1.md",
+        "results/predictive-reliability-v1/periodic-primary-audit-v1/report.md",
+        "results/predictive-reliability-v1/periodic-primary-audit-v1/manifest.json"
       ],
-      "next_action": "Reconstruct decision read-only from four hash-bound audited primaries; fix only incorrect wrapper V2 data tag, preserve original STOPPED evidence; no numerical replay.",
+      "next_action": "First bounded88 initialization/pilot, independently periodic, <=6 cycles/300s; preregister before execution.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "verification",
       "write_scope": [
@@ -9583,7 +9585,8 @@
         "tests/test_periodic_primary_audit_v1.py",
         "scripts/diagnostics/reconstruct_audited_periodicity_v1.py"
       ],
-      "evidence_level": "L2"
+      "evidence_level": "L2",
+      "qualification": "L2/SELF_REVIEW period1 at30 from four audited primaries; original wrapper tag defect/failure preserved, corrected read-only. No spatial or experimental claim."
     },
     {
       "id": "PRED-REFINED-DETECTOR-CLOCK-PREPARATION",
@@ -13607,6 +13610,12 @@
       "task": "PRED-PERIODIC-27-30-PRIMARY-AUDIT",
       "kind": "task",
       "summary": "Four stage audits PASS in292.62s; original wrapper decision INVALID because it supplied V2 detector tag for V1 primary-data contract. Defect isolated to new diagnostic wrapper, no physical mismatch.34 tests PASS incl reproducer. Preserve original STOPPED manifest; recover from canonical hash-bound saved primaries, zero solver steps,120s watchdog."
+    },
+    {
+      "at": "2026-10-27T15:22:12.747347+00:00",
+      "task": "PRED-PERIODIC-27-30-PRIMARY-AUDIT",
+      "kind": "task",
+      "summary": "Four stage audits PASS292.62s<480s, ~61.94MB external primaries. Corrected wrapper reconstruction24.85s, zero solver steps: PERIOD_1 at30, all413 PASS28/29/30, max .8795/.4831/.4588. L2 period44 verified, no mesh/experimental claim. Original STOPPED and source retained; no cycle31. Next bounded88 pilot can be prepared."
     }
   ],
   "legacy_gate_status": {

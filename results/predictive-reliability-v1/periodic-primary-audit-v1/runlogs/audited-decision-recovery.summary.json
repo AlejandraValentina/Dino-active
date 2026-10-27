@@ -1,0 +1,23 @@
+{
+  "name": "audited-decision-recovery",
+  "command": [
+    "python",
+    "scripts/diagnostics/reconstruct_audited_periodicity_v1.py",
+    "--root",
+    "results/predictive-reliability-v1",
+    "--output",
+    "results/predictive-reliability-v1/periodic-primary-audit-v1/reconstruction"
+  ],
+  "started_at": "2026-10-27T15:18:35+00:00",
+  "finished_at": "2026-10-27T15:19:03+00:00",
+  "duration_s": 28.157,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\periodic-primary-audit-v1\\runlogs\\audited-decision-recovery.log",
+  "log_lines": 1,
+  "log_bytes": 97,
+  "error_lines": [],
+  "tail": [
+    "{'status': 'PASS', 'wall_s': 24.853057200089097, 'periodicity_audited': True, 'solver_steps': 0}"
+  ]
+}
