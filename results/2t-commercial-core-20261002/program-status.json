@@ -9293,18 +9293,43 @@
       "id": "PRED-MESH-OUTLET-FRONT-CONTROL",
       "description": "Isolate near-exit compositional-front transport versus physical outlet characteristic interaction, using measured phase-probe states and fixed numerical controls",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "results/predictive-reliability-v1/mesh-sensitivity-diagnosis-v1.md"
+        "results\\predictive-reliability-v1\\outlet-front-control-v1\\report.md",
+        "results\\predictive-reliability-v1\\outlet-front-control-v1\\receipt.json",
+        "results\\predictive-reliability-v1\\outlet-front-control-v1\\plenum-v2.json",
+        "results\\predictive-reliability-v1\\outlet-front-control-v1\\checks.json"
       ],
-      "next_action": "Bounded uniform-duct reference with equivalent front and with/without outlet; no full engine campaign or physics correction without isolated defect.",
+      "next_action": "Prepare pulsating compressible outlet control, without changing physics or launching periodic campaign.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "scripts/diagnostics/outlet_front_control_v1.py",
         "results/predictive-reliability-v1/outlet-front-control-v1/"
+      ],
+      "evidence_level": "L1",
+      "qualification": "Expected integral convergence of isolated fronts, with actual plenum matching constant-pressure reservoir in outgoing regime. Coupled pulsating engine uncertainty remains."
+    },
+    {
+      "id": "PRED-PULSATING-OUTLET-CONTROL",
+      "description": "Verify actual outlet under acoustic pulses and reversal separately from cold-engine mesh transient",
+      "dependencies": [
+        "PRED-MESH-OUTLET-FRONT-CONTROL"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results\\predictive-reliability-v1\\outlet-front-control-v1\\report.md"
+      ],
+      "next_action": "Preregister bounded compressible pulse/reversal control with wave and species budgets; no simultaneous model changes.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "scripts/diagnostics/pulsating_outlet_control_v1.py",
+        "results/predictive-reliability-v1/pulsating-outlet-control-v1/"
       ],
       "evidence_level": "L1"
     }
@@ -13162,6 +13187,12 @@
       "task": "PRED-MESH-OUTLET-FRONT-CONTROL",
       "kind": "task",
       "summary": "Localization and two cycle2 probes COMPLETE: phase630 residual fraction differs .609, phase570 density .382 near outlet; original terminal trajectories exact. Geometry/projection controls PASS, passive-front test retains mesh sensitivity without boundaries. Causal split transport/outlet pending, no solver correction justified; finite refinement/periodicity protocol recorded."
+    },
+    {
+      "at": "2026-10-27T10:39:51.039650+00:00",
+      "task": "PRED-MESH-OUTLET-FRONT-CONTROL",
+      "kind": "task",
+      "summary": "21 isolated cases: three grids, temporal halving, periodic vs reservoir vs actual plenum. L1/L2 and width improve, Linf nonmonotonic expected at discontinuities. Conservation ~1e-14, flux error .12 mass reference falls1.16% to.00018%. No solver defect; pulsating integrated uncertainty remains. Historical blockers unchanged; Cahoon deferred."
     }
   ],
   "legacy_gate_status": {
