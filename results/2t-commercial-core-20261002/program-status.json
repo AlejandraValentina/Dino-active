@@ -9539,14 +9539,16 @@
       "dependencies": [
         "PRED-PERIODIC-25-29-CONTROL"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
         "results/predictive-reliability-v1/periodicity-extension-v4/report.md",
-        "openspec/changes/predictive-reliability-v1/periodicity-cycle30-control-protocol-v1.md"
+        "openspec/changes/predictive-reliability-v1/periodicity-cycle30-control-protocol-v1.md",
+        "results/predictive-reliability-v1/periodicity-cycle30-control-v1/report.md",
+        "results/predictive-reliability-v1/periodicity-cycle30-control-v1/manifest.json"
       ],
-      "next_action": "Exactly one30 cycle <=25s from validated29; candidate only, no cycle31 automatically.",
+      "next_action": "Preregister bounded audit27-30 with external primaries and preflight; no new trajectory/cycle, fail closed on mismatch.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -9555,7 +9557,28 @@
         "scripts/diagnostics/periodicity_cycle30_control_v1.py",
         "tests/test_periodicity_extension_v4.py"
       ],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "Original detector PERIOD_1 at30, streak3; L1 candidate requiring primary audit, no mesh/experimental claim."
+    },
+    {
+      "id": "PRED-PERIODIC-27-30-PRIMARY-AUDIT",
+      "description": "Audit four existing cycles and reconstruct original three-comparison periodic decision from primaries",
+      "dependencies": [
+        "PRED-PERIODIC-CYCLE30-STREAK-CONTROL"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/periodicity-cycle30-control-v1/report.md"
+      ],
+      "next_action": "Preregister bounded audit27-30 with external primaries and preflight; no new trajectory/cycle, fail closed on mismatch.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "verification",
+      "write_scope": [
+        "results/predictive-reliability-v1/periodic-primary-audit-v1/"
+      ],
+      "evidence_level": "L2"
     }
   ],
   "audit_remediation_mode": false,
@@ -13507,6 +13530,12 @@
       "task": "PRED-PERIODIC-CYCLE30-STREAK-CONTROL",
       "kind": "task",
       "summary": "Preregister single30 cycle/25s because two existing complete413-pass comparisons28/29 and declining errors.26 tests PASS incl exact29/streak2 restoration and hard cycle-count bounds. Reused native loop, no solver/detector change; no extension if fails. Exact original input bytes preserved in Git without changing recorded scientific hashes."
+    },
+    {
+      "at": "2026-10-27T12:41:11.388673+00:00",
+      "task": "PRED-PERIODIC-CYCLE30-STREAK-CONTROL",
+      "kind": "task",
+      "summary": "Single30 cycle13.698s<25s,413/413PASS, max .458796, original detector PERIOD_1/streak3 at30. No cycle31. Native candidate only; prepare audited primary reconstruction27-30 before L2 periodic claim."
     }
   ],
   "legacy_gate_status": {
