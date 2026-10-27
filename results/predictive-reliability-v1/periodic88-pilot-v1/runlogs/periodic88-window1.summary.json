@@ -1,0 +1,23 @@
+{
+  "name": "periodic88-window1",
+  "command": [
+    "python",
+    "scripts/diagnostics/periodicity_refined_mesh_pilot_v1.py",
+    "--root",
+    "results/predictive-reliability-v1",
+    "--output",
+    "results/predictive-reliability-v1/periodic88-pilot-v1/run"
+  ],
+  "started_at": "2026-10-27T15:24:47+00:00",
+  "finished_at": "2026-10-27T15:29:08+00:00",
+  "duration_s": 261.485,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\periodic88-pilot-v1\\runlogs\\periodic88-window1.log",
+  "log_lines": 1,
+  "log_bytes": 182,
+  "error_lines": [],
+  "tail": [
+    "{'status': 'TRANSIENT_AT_BUDGET', 'error': '260s solver/290s admission,300s invocation', 'completed_new_cycles': 5, 'wall_s': 261.02281470014714, 'absolute_terminal_angle': 12814.0}"
+  ]
+}

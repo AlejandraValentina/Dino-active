@@ -9621,20 +9621,44 @@
         "PRED-PERIODIC-27-30-PRIMARY-AUDIT",
         "PRED-REFINED-DETECTOR-CLOCK-PREPARATION"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
         "openspec/changes/predictive-reliability-v1/periodic-refined-initialization-design-v1.md",
-        "openspec/changes/predictive-reliability-v1/periodic88-pilot-protocol-v1.md"
+        "openspec/changes/predictive-reliability-v1/periodic88-pilot-protocol-v1.md",
+        "results/predictive-reliability-v1/periodic88-pilot-v1/report.md",
+        "results/predictive-reliability-v1/periodic88-pilot-v1/manifest.json"
       ],
-      "next_action": "One88 window <=6 relative cycles/300s from audited30, new identity/detector with preserved physical clock; stop on stagnation/budget/candidate, no further grid automatically.",
+      "next_action": "Verify native35+detector5 and replay prefix36 exactly to FAST12814; preregister at most cycles36-39/250s including replay. No recomputation31-35, no fake native FAST or new mesh.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "scripts/diagnostics/periodicity_refined_mesh_pilot_v1.py",
         "results/predictive-reliability-v1/periodic88-pilot-v1/",
         "tests/test_periodicity_refined_mesh_pilot_v1.py"
+      ],
+      "evidence_level": "L1",
+      "qualification": "Partial finite pilot:5 complete+partial6, max19.85->3.03 but77/809 fail and work+3.22% vs periodic44. No periodic88/mesh claim; budget honored."
+    },
+    {
+      "id": "PRED-PERIODIC88-WINDOW2-RECOVERY",
+      "description": "Recover exact existing partial36 then one further bounded same-grid periodic window",
+      "dependencies": [
+        "PRED-PERIODIC88-BOUNDED-PILOT"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/periodic88-pilot-v1/report.md"
+      ],
+      "next_action": "Verify native35+detector5 and replay prefix36 exactly to FAST12814; preregister at most cycles36-39/250s including replay. No recomputation31-35, no fake native FAST or new mesh.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "scripts/diagnostics/periodicity_refined_resume_v1.py",
+        "results/predictive-reliability-v1/periodic88-window2-v1/"
       ],
       "evidence_level": "L1"
     }
@@ -13624,6 +13648,12 @@
       "task": "PRED-PERIODIC88-BOUNDED-PILOT",
       "kind": "task",
       "summary": "37 focused tests PASS incl audited-source eligibility, conservative actual30->88 initialization and empty detector, no invented first-cycle PASS. Preregister first88 pilot <=6cycles/300s, same physics/CFL/adaptive schedule, native checkpoints and30deg samples without altering time steps. Stage audit44 PASS is source; no176/campaign automatically."
+    },
+    {
+      "at": "2026-10-27T15:38:35.804819+00:00",
+      "task": "PRED-PERIODIC88-BOUNDED-PILOT",
+      "kind": "task",
+      "summary": "88 pilot261.02s<300, solver260 cap: completed5 absolute31-35 plus FAST12814 partial36. Max19.85->3.03,p90 .896,77/809fail,416improve/148worsen. Work135.14J vs44 130.92 (+3.22%, transient), trapped air and heat increase consistently.39 tests PASS, balances pass, no model changes. Next requires exact partial recovery and separately bounded same88 window, no176."
     }
   ],
   "legacy_gate_status": {
