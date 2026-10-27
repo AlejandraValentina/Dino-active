@@ -1,0 +1,23 @@
+{
+  "name": "species-interface-audit-v1",
+  "command": [
+    "python",
+    "scripts/diagnostics/audit_species_interfaces_v1.py",
+    "--root",
+    "results/predictive-reliability-v1",
+    "--output",
+    "results/predictive-reliability-v1/exhaust-composition-plateau-v1/interface-audit.json"
+  ],
+  "started_at": "2026-10-27T11:44:40+00:00",
+  "finished_at": "2026-10-27T11:44:57+00:00",
+  "duration_s": 16.469,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\species-interface-audit-v1.log",
+  "log_lines": 1,
+  "log_bytes": 135,
+  "error_lines": [],
+  "tail": [
+    "{\"wall_s\": 15.960133399814367, \"max_subsystem_species_residual\": 9.486769009248164e-19, \"exact\": true, \"turnover\": 11.185444389505394}"
+  ]
+}

@@ -9408,19 +9408,22 @@
       "dependencies": [
         "PRED-PERIODICITY-EXTENSION-23"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "results/predictive-reliability-v1/periodicity-extension-v2/species-budgets.csv"
+        "results/predictive-reliability-v1/exhaust-composition-plateau-v1/report.md",
+        "results/predictive-reliability-v1/exhaust-composition-plateau-v1/interface-audit.json",
+        "results/predictive-reliability-v1/exhaust-composition-plateau-v1/relaxation-check/receipt.json"
       ],
-      "next_action": "Use existing source ledgers and spatial checkpoint profiles first; identify any need for one finite trajectory replay before scheduling it. No more cycle extension by default.",
+      "next_action": "No automatic cycles. Preregister a finite temporal/spatial replay of existing state to separate remaining transport sensitivity.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "results/predictive-reliability-v1/exhaust-composition-plateau-v1/"
       ],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "No demonstrated accounting defect. Remaining physical versus numerical relaxation unresolved; frozen-grid native checkpoint25 available."
     }
   ],
   "audit_remediation_mode": false,
@@ -13306,6 +13309,12 @@
       "task": "PRED-PERIODICITY-EXTENSION-23",
       "kind": "task",
       "summary": "Sixcycles18–23 COMPLETE84.985s, checkpoint/detector restored, no model change. Max ratio15.09->3.635 but plateaus20–23;47fail. Prior30:29improve,28pass,cell16fresh still worsens. Residual purge continues but fresh/burned tail changes not pure translation. Stop extensions; source/storage attribution next. Historical blockers reevaluated unchanged."
+    },
+    {
+      "at": "2026-10-27T11:48:19.113657+00:00",
+      "task": "PRED-EXHAUST-COMPOSITION-PLATEAU",
+      "kind": "task",
+      "summary": "Inventories17–23/failed47 audited. One recorded-cycle23 replay gives exact terminal state and subsystem/species closure<9.5e-19kg including gross reverse flux. Turnover11.2cycles is not fitted relaxation time; absolute composition thresholds not nearzero artifact. Conditional2cycle check24–25 completes27.86s,37failed,max3.35; no period. No more automatic extensions; physical-vs-numerical relaxation unresolved."
     }
   ],
   "legacy_gate_status": {

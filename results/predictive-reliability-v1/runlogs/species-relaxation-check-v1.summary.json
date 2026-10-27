@@ -1,0 +1,25 @@
+{
+  "name": "species-relaxation-check-v1",
+  "command": [
+    "python",
+    "scripts/diagnostics/periodicity_extension_v3.py",
+    "--source",
+    "results/predictive-reliability-v1/periodicity-extension-v2/run",
+    "--configuration-source",
+    "results/predictive-reliability-v1/spatial-boundary-v2-engine",
+    "--output",
+    "results/predictive-reliability-v1/exhaust-composition-plateau-v1/relaxation-check"
+  ],
+  "started_at": "2026-10-27T11:46:08+00:00",
+  "finished_at": "2026-10-27T11:46:36+00:00",
+  "duration_s": 27.86,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\runlogs\\species-relaxation-check-v1.log",
+  "log_lines": 1,
+  "log_bytes": 837,
+  "error_lines": [],
+  "tail": [
+    "{\"schema\": \"DINO_PERIODICITY_EXTENSION_V3\", \"status\": \"TRANSIENT_AT_BUDGET\", \"error\": null, \"completed_new_cycles\": 2, \"terminal_angle\": 9000.0, \"timing_seconds\": {\"solver\": 27.16089720185846, \"serialization\": 0.06407420034520328, \"detector\": 0.0054628001525998116, \"restoration\": 0.2011883999221027,"
+  ]
+}
