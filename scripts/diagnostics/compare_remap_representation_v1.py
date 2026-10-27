@@ -36,9 +36,11 @@ def profile_metrics(state,config):
 def restrict_to(state,source,target):
     ns=len(source['ducts'][-1]['mesh']['volumes']);nt=len(target['ducts'][-1]['mesh']['volumes'])
     if ns==nt:return state
+    ratio=ns//nt
+    if ns!=nt*ratio or ratio<1 or ratio&(ratio-1):raise ValueError('nested power-of-two meshes required')
     # Actual stored intermediate configuration avoids assuming equal volumes.
     from scripts.diagnostics.remap_representation_v1 import configurations
-    chain=configurations(target,2 if ns==nt*4 else 1)
+    chain=configurations(target,ratio.bit_length()-1)
     result=state
     for k in range(len(chain)-1,0,-1):result=restrict_state(result,chain[k],chain[k-1])
     return result

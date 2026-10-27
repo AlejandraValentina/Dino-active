@@ -9487,13 +9487,15 @@
       "dependencies": [
         "PRED-REMAPPING-UNCERTAINTY-DESIGN"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "results/predictive-reliability-v1/remap-uncertainty-v1/report.md"
+        "results/predictive-reliability-v1/remap-uncertainty-v1/report.md",
+        "results/predictive-reliability-v1/remap-refinement352-v1/report.md",
+        "results/predictive-reliability-v1/remap-refinement352-v1/manifest.json"
       ],
-      "next_action": "Run exactly one352/P0/.0625 cycle <=420s following preregistration, then common-volume analysis; no more refinements automatically.",
+      "next_action": "Prepare separately preregistered original checkpoint25 continuation at most4 cycles/90s; no multi-grid campaign.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -9502,7 +9504,8 @@
         "tests/test_remap_representation_v1.py",
         "openspec/changes/predictive-reliability-v1/remap-refinement352-protocol-v1.md"
       ],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "Spatial contraction observed in pressure/composition, not mesh independence or periodicity. One case335.97s<420s, no further refinement automatically."
     }
   ],
   "audit_remediation_mode": false,
@@ -13430,6 +13433,12 @@
       "task": "PRED-PERIODIC-CONVERGENCE-COSTED-DESIGN",
       "kind": "task",
       "summary": "Costed preparation only: original44 14.1s/cycle,88~40.1,176~108.7 instrumented; explicit10/40/80-cycle scenarios and L2/storage uncertainty. Four-cycle90s conditional continuation designed, not launched. No unwarranted performance trigger or periodic/GCI claim."
+    },
+    {
+      "at": "2026-10-27T12:32:43.029618+00:00",
+      "task": "PRED-MATERIAL-FRONT-352-CONTROL",
+      "kind": "task",
+      "summary": "352 control complete335.97s<420s. Matched176 halfstep: common44 pressure L1 .004223 and burned .005730 (prior .009984/.012669); outlet +1.67%, work +.1397%. Material marker L1 decreases; balances<3e-18kg, native restore exact.21 tests PASS. No defect or asymptotic/periodic claim. Refinements closed, bounded original25 continuation scientifically justified as next separate protocol."
     }
   ],
   "legacy_gate_status": {

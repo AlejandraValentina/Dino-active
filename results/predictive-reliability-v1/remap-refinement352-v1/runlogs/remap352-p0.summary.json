@@ -1,0 +1,31 @@
+{
+  "name": "remap352-p0",
+  "command": [
+    "python",
+    "scripts/diagnostics/remap_representation_v1.py",
+    "--root",
+    "results/predictive-reliability-v1",
+    "--output",
+    "results/predictive-reliability-v1/remap-refinement352-v1/p0-352",
+    "--level",
+    "3",
+    "--family",
+    "P0",
+    "--step",
+    "0.0625",
+    "--budget",
+    "420"
+  ],
+  "started_at": "2026-10-27T12:24:59+00:00",
+  "finished_at": "2026-10-27T12:30:35+00:00",
+  "duration_s": 336.625,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\remap-refinement352-v1\\runlogs\\remap352-p0.log",
+  "log_lines": 1,
+  "log_bytes": 449,
+  "error_lines": [],
+  "tail": [
+    "{\"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 335.970038499916, \"work_J\": 131.3821839843872, \"initialization\": {\"kind\": \"NEW_DIAGNOSTIC_INITIAL_FIELD\", \"representation\": \"P0\", \"level\": 3, \"inventory_max_relative_error\": 2.0315922007936966e-15, \"restriction_max_relative_error\": 1.2696365664749826e-"
+  ]
+}

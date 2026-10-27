@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 from tests.test_checkpoint_mesh_sensitivity_v1 import fixture
 from scripts.diagnostics.compare_remap_representation_v1 import profile_metrics,restrict_to
 from scripts.diagnostics.remap_representation_v1 import initialize
@@ -13,8 +14,9 @@ def test_profile_inventories_and_empty_crossings_are_explicit():
     assert r['exhaust']['species']['burned']['max_gradient_per_m']>0
 
 
-def test_fourfold_common_volume_comparison_preserves_parent_means():
-    c,cp,_,ph=fixture();e,f,_=initialize(c,cp,2,'P1',ph)
+@pytest.mark.parametrize('level',[2,3])
+def test_common_volume_comparison_preserves_parent_means(level):
+    c,cp,_,ph=fixture();e,f,_=initialize(c,cp,level,'P1',ph)
     a=restrict_to(e.state,f,c)
     for name in a['ducts']:
         np.testing.assert_allclose(a['ducts'][name],cp['state']['ducts'][name],rtol=2e-14,atol=1e-14)
