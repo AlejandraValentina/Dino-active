@@ -1,0 +1,23 @@
+{
+  "name": "preopen-wave-transport",
+  "command": [
+    "python",
+    "scripts/diagnostics/run_preopen_wave_transport_v1.py",
+    "--root",
+    "results/predictive-reliability-v1",
+    "--output",
+    "results/predictive-reliability-v1/preopen-wave-transport-run-v1/run"
+  ],
+  "started_at": "2026-10-27T16:17:22+00:00",
+  "finished_at": "2026-10-27T16:20:40+00:00",
+  "duration_s": 198.437,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\preopen-wave-transport-run-v1\\runlogs\\preopen-wave-transport.log",
+  "log_lines": 1,
+  "log_bytes": 444,
+  "error_lines": [],
+  "tail": [
+    "{'status': 'COMPLETE', 'error': None, 'wall_s': 198.0555439000018, 'cases': [{'name': 'p0-88', 'status': 'COMPLETE', 'wall_s': 19.517808799864724}, {'name': 'p0-176', 'status': 'COMPLETE', 'wall_s': 31.236947499914095}, {'name': 'p0-352', 'status': 'COMPLETE', 'wall_s': 53.92832820001058}, {'name': "
+  ]
+}

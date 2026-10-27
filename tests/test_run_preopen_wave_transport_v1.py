@@ -1,4 +1,5 @@
 from pathlib import Path
+from copy import deepcopy
 import numpy as np
 import pytest
 from scripts.diagnostics import run_preopen_wave_transport_v1 as module
@@ -36,3 +37,15 @@ def test_cost_projection_uses_observed_grid_and_step_scaling():
 def test_unregistered_temporal_cap_is_rejected_before_writes(tmp_path):
     with pytest.raises(ValueError,match='unregistered'):module.run_case(ROOT,tmp_path/'out','p0-88',1.,float('inf'))
     assert not (tmp_path/'out').exists()
+
+
+def test_passive_exhaust_markers_do_not_drive_preopening_gas_rhs(monkeypatch):
+    monkeypatch.setattr(module.IntegratedEngine2T,'step',lambda *a,**k:pytest.fail('operator probe cannot integrate'))
+    e,initial,binding=module.prepared(ROOT,'p0-88');before=e.snapshot();modified=deepcopy(e.state)
+    path=next(p for p in e.ducts if p.id=='exhaust')
+    modified['species']['ducts']['exhaust']=[(0.,0.,0.,q[0]*v) for q,v in zip(modified['ducts']['exhaust'],path.mesh.volumes)]
+    kwargs=dict(angle=13680.,rpm=9000.,dt_s=.0625/(6*9000.),capture_trace=False)
+    a=e._assemble(e.state,**kwargs);b=e._assemble(modified,**kwargs)
+    assert module._json_evidence_equal(a['q'],b['q'])
+    assert not module._json_evidence_equal(a['species']['ducts']['exhaust'],b['species']['ducts']['exhaust'])
+    assert module._json_evidence_equal(e.snapshot(),before)

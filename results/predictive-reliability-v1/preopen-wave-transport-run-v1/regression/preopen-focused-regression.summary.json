@@ -1,0 +1,41 @@
+{
+  "name": "preopen-focused-regression",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_run_preopen_wave_transport_v1.py",
+    "tests/test_analyze_preopen_wave_transport_v1.py",
+    "tests/test_prepare_preopen_wave_transport_v1.py",
+    "tests/test_periodic88_material_reference_v1.py",
+    "tests/test_periodic88_material_labels_v1.py",
+    "tests/test_periodic88_front_flux_v1.py",
+    "tests/test_periodicity_native88_window_v1.py",
+    "tests/test_periodicity_refined_resume_v1.py",
+    "tests/test_analyze_periodic88_pilot_v1.py",
+    "tests/test_periodicity_refined_mesh_pilot_v1.py",
+    "tests/test_periodic_primary_audit_v1.py",
+    "tests/test_relative_cycle_observations_v1.py",
+    "tests/test_periodicity_extension_v4.py",
+    "tests/test_compare_refinement352_v1.py",
+    "tests/test_material_species_diagnostic_v1.py",
+    "tests/test_compare_remap_representation_v1.py",
+    "tests/test_remap_representation_v1.py",
+    "tests/test_checkpoint_mesh_sensitivity_v1.py",
+    "tests/test_compare_checkpoint25_sensitivity_v1.py"
+  ],
+  "started_at": "2026-10-27T16:29:00+00:00",
+  "finished_at": "2026-10-27T16:29:16+00:00",
+  "duration_s": 16.062,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\predictive-reliability-v1\\preopen-wave-transport-run-v1\\regression\\preopen-focused-regression.log",
+  "log_lines": 2,
+  "log_bytes": 100,
+  "error_lines": [],
+  "tail": [
+    "........................................................................ [100%]",
+    "72 passed in 15.42s"
+  ]
+}

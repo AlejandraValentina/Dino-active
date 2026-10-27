@@ -9817,20 +9817,48 @@
       "dependencies": [
         "PRED-PREOPEN-WAVE-TRANSPORT-PREPARATION"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
         "openspec/changes/predictive-reliability-v1/preopen-wave-transport-protocol-v1.md",
-        "results/predictive-reliability-v1/preopen-wave-transport-v1/manifest.json"
+        "results/predictive-reliability-v1/preopen-wave-transport-v1/manifest.json",
+        "results/predictive-reliability-v1/preopen-wave-transport-run-v1/report.md"
       ],
-      "next_action": "Implement/test source-bound observer runner, freeze it, run at most480s aggregate/180s case/540s watchdog; no41 or periodic extension. Compare fields/material labels with initial and temporal uncertainty separate.",
+      "next_action": "No periodic extensions: prepare bounded recorded39 post-opening90-150deg diagnosis with exact partial recovery and temporal/spatial control; no solver correction justified by0-60deg.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "scripts/diagnostics/run_preopen_wave_transport_v1.py",
         "tests/test_run_preopen_wave_transport_v1.py",
-        "results/predictive-reliability-v1/preopen-wave-transport-run-v1/"
+        "results/predictive-reliability-v1/preopen-wave-transport-run-v1/",
+        "scripts/diagnostics/analyze_preopen_wave_transport_v1.py",
+        "scripts/diagnostics/plot_preopen_wave_transport_v1.py",
+        "tests/test_analyze_preopen_wave_transport_v1.py"
+      ],
+      "evidence_level": "L1",
+      "qualification": "Five cases198.056s<480; common-field and outlet convergence0-60deg only. Native-cell material residual nonmonotone, weak/common-bin norms contract; no periodic mesh independence or predictive claim."
+    },
+    {
+      "id": "PRED-POSTOPEN-WAVE-TRANSPORT-DESIGN",
+      "description": "Cost and prepare recorded39 post-opening90-150deg wave/marker diagnosis after locating residual growth",
+      "dependencies": [
+        "PRED-PREOPEN-WAVE-TRANSPORT-EXECUTION"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/preopen-wave-transport-run-v1/report.md"
+      ],
+      "next_action": "Review saved39 phase/flux evidence first; design source-bound exact FAST+recipe recovery of existing diagnostic0-60deg and bounded comparison through phase150 only if cost/controls justified. No41 or periodic extension; retain original physics, detector, temporal and initial-field uncertainty.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/postopen-wave-transport-protocol-v1.md",
+        "scripts/diagnostics/prepare_postopen_wave_transport_v1.py",
+        "tests/test_prepare_postopen_wave_transport_v1.py",
+        "results/predictive-reliability-v1/postopen-wave-transport-preparation-v1/"
       ],
       "evidence_level": "L1"
     }
@@ -13880,6 +13908,12 @@
       "task": "PRED-PREOPEN-WAVE-TRANSPORT-EXECUTION",
       "kind": "task",
       "summary": "Prepared source and driver frozen before run.5 new unit tests PASS (source binding, cell mass/energy/species balances, species-defect detection, observed cost scaling, cap guard); 60 prior focal tests PASS.480s aggregate/180s case,540s watchdog,32MiB preflight; conditional P1 CPU rule explicit. No new periodic cycles or solver/model changes."
+    },
+    {
+      "at": "2026-10-27T16:31:54.831545+00:00",
+      "task": "PRED-PREOPEN-WAVE-TRANSPORT-EXECUTION",
+      "kind": "task",
+      "summary": "5 pre-opening cases198.056s<480, identical960 steps3 grids, timehalf1920, zero rejects/left transport. Outlet differences3.036%->1.043%; pressure L1 .002871->.001283, burned .000922->.000334, temporal far smaller. Common-material weak norms contract; original pointwise/own-cell metrics retained. Pressure nearoutletx1.0165m dominant. Saved39 localizes marker growth90-150deg.72 tests PASS15.42s. No solver changes, no41; next design READY. All10 BLOCKED_LOCAL reevaluated, no new external data/authorization resolves historical deferrals."
     }
   ],
   "legacy_gate_status": {
