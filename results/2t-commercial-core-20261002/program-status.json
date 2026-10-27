@@ -9768,19 +9768,44 @@
       "dependencies": [
         "PRED-PERIODIC88-MATERIAL-LABEL-LOCALIZATION"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "results/predictive-reliability-v1/periodic88-material-labels-v1/report.md"
+        "results/predictive-reliability-v1/periodic88-material-labels-v1/report.md",
+        "results/predictive-reliability-v1/periodic88-material-reference-v1/report.md"
       ],
-      "next_action": "Algebraic reconstruction of initial passive marker with identical mass means, positivity and closure. Compare exact material cell averages, no simulations.",
+      "next_action": "Prepare source38 pre-opening0-60deg controlled wave/marker refinement, no periodic extension.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "scripts/diagnostics/periodic88_material_reference_v1.py",
         "tests/test_periodic88_material_reference_v1.py",
         "results/predictive-reliability-v1/periodic88-material-reference-v1/"
+      ],
+      "evidence_level": "L1",
+      "qualification": "P0 vs admissible mass-linear P1: upstream burned L1 .1580/.1563 and .0630/.0645, signal persists; no exact error bound or demonstrated solver bug."
+    },
+    {
+      "id": "PRED-PREOPEN-WAVE-TRANSPORT-PREPARATION",
+      "description": "Prepare short recorded39 pre-opening wave/marker refinement88/176/352 with conservative source38 initialization",
+      "dependencies": [
+        "PRED-PERIODIC88-MATERIAL-REFERENCE-SENSITIVITY"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/periodic88-material-reference-v1/report.md"
+      ],
+      "next_action": "Validate source-bound0-60deg closed-exhaust geometry and zero-step conservative initial states; preregister <=480s diagnostic before execution. No41.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "scripts/diagnostics/prepare_preopen_wave_transport_v1.py",
+        "tests/test_prepare_preopen_wave_transport_v1.py",
+        "openspec/changes/predictive-reliability-v1/preopen-wave-transport-protocol-v1.md",
+        "results/predictive-reliability-v1/preopen-wave-transport-v1/"
       ],
       "evidence_level": "L1"
     }
@@ -13812,6 +13837,12 @@
       "task": "PRED-PERIODIC88-MATERIAL-LABEL-LOCALIZATION",
       "kind": "task",
       "summary": "Read-only retained-material39 proof handles both-end reversal, retains88.21%. Burned L1 exact initial-P0 cell-average reference: all.02183, initial0-.2m.1580/.2-.4m.0630/.4-.8m.000624. Central displacement vs upstream numerical/representation uncertainty; no solver defect proved.4 new tests PASS; zero simulations; investigate reference subcell sensitivity first."
+    },
+    {
+      "at": "2026-10-27T16:10:02.105990+00:00",
+      "task": "PRED-PERIODIC88-MATERIAL-REFERENCE-SENSITIVITY",
+      "kind": "task",
+      "summary": "Algebraic marker reference sensitivity: bounded closure-preserving P1 keeps identical initial mass means. Upstream burned material L1 remains.1563/.0645 vsP0.1580/.0630; no new simulations,3 tests PASS. Prepare pre-open0-60deg diagnostic from recorded38, not additional periodic cycles, to separate wave-driven numerical transport with3 grids and time control."
     }
   ],
   "legacy_gate_status": {
