@@ -6,6 +6,7 @@ import sys
 import numpy as np
 ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT))
 from motorsim._evidence_io import read_primary
+from motorsim.integrated_2t import _json_evidence_equal
 from scripts.diagnostics.diagnose_integrated_mesh_v1 import sha,write
 from scripts.diagnostics.periodicity_refined_mesh_pilot_v1 import load
 from scripts.diagnostics.compare_remap_representation_v1 import restrict_to,profile_metrics
@@ -31,10 +32,29 @@ def groups(comparison):
     return {name:dict(maximum=max(values),p90=float(np.quantile(values,.9)),failed=sum(x>1 for x in values),count=len(values)) for name,values in result.items()}
 
 
-def analyze(root):
+def joined_cycles(pilot,additional):
+    config=load(pilot/'configuration.json');items=[];segments=[];last=None
+    for path in [pilot]+list(additional):
+        receipt=load(path/'receipt.json')
+        if receipt['status']=='ERROR':raise ValueError('pilot execution error must be diagnosed first')
+        if load(path/'configuration.json')!=config:raise ValueError('additional segment configuration differs')
+        cycles=load(path/'cycles.json')
+        if last is not None and cycles:
+            initial=load(path/'initial-checkpoint.json')
+            if not _json_evidence_equal(initial,last):raise ValueError('segment native continuity differs')
+            if receipt.get('source_partial_replay_verified') is not True:raise ValueError('partial recovery not verified')
+        for cycle in cycles:
+            if cycle['cycle']!=len(items)+1 or cycle['absolute_cycle']!=30+cycle['cycle']:raise ValueError('segment cycle continuity differs')
+            items.append((cycle,path))
+        if cycles:last=load(path/f"checkpoint-absolute-{cycles[-1]['absolute_cycle']:03}.json")
+        segments.append(dict(path=path.as_posix(),status=receipt['status'],receipt_sha256=sha(path/'receipt.json')))
+    return items,segments
+
+
+def analyze(root,additional_segments=()):
     pilot=root/'periodic88-pilot-v1/run';audit=root/'periodic-primary-audit-v1'
-    receipt=load(pilot/'receipt.json');cycles=load(pilot/'cycles.json');fine=load(pilot/'configuration.json');coarse=load(root/'spatial-boundary-v2-engine/configuration.json')
-    if receipt['status']=='ERROR':raise ValueError('pilot execution error must be diagnosed first')
+    items,segments=joined_cycles(pilot,additional_segments);cycles=[c for c,p in items]
+    fine=load(pilot/'configuration.json');coarse=load(root/'spatial-boundary-v2-engine/configuration.json')
     manifest=load(audit/'manifest.json');entry=load(audit/'run/cycle-030-audit.json')
     if sha(audit/'run/cycle-030-audit.json')!=manifest['files']['run/cycle-030-audit.json']:raise ValueError('audit reference changed')
     source=load(audit/'run/receipt.json');path=Path(source['durable_artifact_root'])/entry['artifact_name']
@@ -42,8 +62,8 @@ def analyze(root):
     primary=read_primary(path,expected_sha256=entry['primary_sha256']);reference=phase_frames(primary)
     initial=load(pilot/'initial-checkpoint.json');source_cp=load(root/'periodicity-cycle30-control-v1/run/checkpoint-030.json')
     records=[];previous=None
-    for cycle in cycles:
-        frames=load(pilot/f"frames-absolute-{cycle['absolute_cycle']:03}.json");rows=[];lag=[]
+    for cycle,directory in items:
+        frames=load(directory/f"frames-absolute-{cycle['absolute_cycle']:03}.json");rows=[];lag=[]
         if len(frames)!=len(reference):raise ValueError('phase count differs')
         for i,(frame,ref) in enumerate(zip(frames,reference)):
             phase=frame['angle']-360.*(cycle['absolute_cycle']-1)
@@ -72,7 +92,7 @@ def analyze(root):
             values=[c['comparison']['metrics'][key]['value']/last['threshold'] for c in valid]
             change=(values[-1]-values[0])/max(values[0],1.)
             trends.append(dict(observable=key,first_ratio=values[0],last_ratio=values[-1],trend='improving' if change<-.05 else 'worsening' if change>.05 else 'stable'))
-    return dict(schema='PERIODIC88_PHASE_EVOLUTION_ANALYSIS_V1',pilot_status=receipt['status'],source_primary_sha256=entry['primary_sha256'],cycles=records,trends=trends,
+    return dict(schema='PERIODIC88_PHASE_EVOLUTION_ANALYSIS_V1',pilot_status=segments[-1]['status'],input_segments=segments,source_primary_sha256=entry['primary_sha256'],cycles=records,trends=trends,
         reference_phase_frames=reference,reference44_coupled_combustion=primary['observables']['fuel_coupled_combustion'],
         initial_transfer_common_volume_difference=compare_states(source_cp['state'],restrict_to(initial['state'],fine,coarse),coarse),
         coarse_periodic_reference_start_end_difference=compare_states(primary['start_state'],primary['terminal_state'],coarse),
@@ -80,6 +100,6 @@ def analyze(root):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--additional-segment',type=Path,action='append',default=[]);a=p.parse_args()
     if a.output.exists():raise FileExistsError('preserve analysis')
-    result=analyze(a.root);write(a.output,result);print({c['relative_cycle']:c['statistics'] for c in result['cycles']})
+    result=analyze(a.root,a.additional_segment);write(a.output,result);print({c['relative_cycle']:c['statistics'] for c in result['cycles']})

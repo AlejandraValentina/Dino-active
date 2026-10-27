@@ -9647,14 +9647,15 @@
       "dependencies": [
         "PRED-PERIODIC88-BOUNDED-PILOT"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
         "results/predictive-reliability-v1/periodic88-pilot-v1/report.md",
-        "openspec/changes/predictive-reliability-v1/periodic88-window2-protocol-v1.md"
+        "openspec/changes/predictive-reliability-v1/periodic88-window2-protocol-v1.md",
+        "results/predictive-reliability-v1/periodic88-window2-v1/report.md"
       ],
-      "next_action": "One same88 window36-39 <=250s including exact856-step partial replay; each source rejection/accepted step and FAST must match before novel continuation. No31-35 recomputation or new grid.",
+      "next_action": "No new cycles: localize advected composition/density discrepancies and measure existing39 signed fluxes before deciding further windows.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -9662,6 +9663,28 @@
         "results/predictive-reliability-v1/periodic88-window2-v1/",
         "scripts/diagnostics/periodicity_refined_mesh_pilot_v1.py",
         "tests/test_periodicity_refined_resume_v1.py"
+      ],
+      "evidence_level": "L1"
+    },
+    {
+      "id": "PRED-PERIODIC88-FRONT-FLUX-DIAGNOSIS",
+      "description": "Localize saved88 composition front and replay existing39 once for signed species/energy subsystem balances",
+      "dependencies": [
+        "PRED-PERIODIC88-WINDOW2-RECOVERY"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "openspec/changes/predictive-reliability-v1/periodic88-front-replay-protocol-v1.md"
+      ],
+      "next_action": "Read-only saved states then at most120s exact39 replay, watchdog150s; no new cycles.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "scripts/diagnostics/periodic88_front_flux_v1.py",
+        "tests/test_periodic88_front_flux_v1.py",
+        "results/predictive-reliability-v1/periodic88-front-flux-v1/"
       ],
       "evidence_level": "L1"
     }
@@ -13663,6 +13686,12 @@
       "task": "PRED-PERIODIC88-WINDOW2-RECOVERY",
       "kind": "task",
       "summary": "Preregister same88 window36-39,220s solver/240s admission/250s watchdog incl necessary partial replay. Native35/detector5 restore verified, first saved partial step exact; full prefix856 steps and FAST12814 will be verified before novel continuation.42 full focused tests PASS plus4 resume tests after added exact-step regression (43 unique tests). No physics/numerical criteria changed; work/filling drift tracked."
+    },
+    {
+      "at": "2026-10-27T15:54:05.652107+00:00",
+      "task": "PRED-PERIODIC88-WINDOW2-RECOVERY",
+      "kind": "task",
+      "summary": "Second88 window completed36-39 in184.445s incl exact856-step partial replay26.503s. Last27/809 fail,max2.343,p90.429; pressure/work settling but composition L1 rebounds with moving front. No new cycles; preregister existing39 flux replay <=120s. Baseline/solver unchanged."
     }
   ],
   "legacy_gate_status": {
