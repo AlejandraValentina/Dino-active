@@ -37,6 +37,11 @@ el primero. Escritura32MiB, preflight real y reserva2GiB. No reducir precisión.
 
 P1 sólo si, tras P0/temporal, es necesario para distinguir ajuste inicial y
 evolución espacial; registrar la decisión antes de admitirlo. Sin más casos.
+Decisión de CPU explícita: ejecutar P1 si su contraste inicial de quemados
+L1 es al menos10% de la señal espacial final y el control temporal proyectado
+en88 no supera esa señal. Este10% no es umbral de aceptación científica.
+Tras el primer caso, proyectar también coste por celdas y número de pasos;
+usar el mayor entre esa proyección y la estimación inicial, más20% de margen.
 Si domina temporal176, no atribuir diferencias a espacio ni reducir dt otra
 vez automáticamente. Registrar dt/rechazos reales: el CFL puede imponerlos.
 Muestras15/30/45/60° sin ajustar los pasos para muestrear.
