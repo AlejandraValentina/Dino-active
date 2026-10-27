@@ -9272,20 +9272,22 @@
       "id": "PRED-CAHOON-FULLTEXT-ACCESS",
       "description": "Recover readable full thesis through ordinary public or owner-provided PDF access",
       "dependencies": [],
-      "state": "READY",
-      "blocker": null,
+      "state": "BLOCKED_LOCAL",
+      "blocker": "Owner defers external experimental access; no repeated downloads.",
       "commits": [],
       "evidence": [
         "results/predictive-reliability-v1/cahoon-access-v1/report.md"
       ],
-      "next_action": "Recover readable full thesis through ordinary public or owner-provided PDF access",
+      "next_action": "Await accessible local original PDF or externally resolved access; continue numerical work.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "verification",
       "write_scope": [
         "results/predictive-reliability-v1/cahoon-access-v1/"
       ],
       "evidence_level": "L1",
-      "qualification": "Access attempted: HTTP403 and unavailable browser; full thesis inspection still pending, indexed values not adopted."
+      "qualification": "Access attempted: HTTP403 and unavailable browser; full thesis inspection still pending, indexed values not adopted.",
+      "unblock_tasks": [],
+      "no_local_unblock_reason": "Full PDF unavailable here; owner explicitly directs no repeated retrieval attempts. New official URL retained for later access."
     }
   ],
   "audit_remediation_mode": false,
@@ -13129,6 +13131,12 @@
       "task": "PRED-ENDPOINT-SENSITIVITY-EXECUTION",
       "kind": "task",
       "summary": "Two bounded V2 diagnostics PASS conservation. Maximum temporal difference .000945 versus projected mesh .12266; remains transient, no mesh independence. Cahoon full-text access fails403, documented without fabricated reconstruction."
+    },
+    {
+      "at": "2026-10-27T10:30:38.238602+00:00",
+      "task": "PRED-ENDPOINT-SENSITIVITY-EXECUTION",
+      "kind": "task",
+      "summary": "Offline localization: max .12266 is interior exhaust cell4 density at720deg, .19612 residual fraction at360deg outlet. Exact conservative geometry projection checked, 8 tests PASS. Preregister two finite cycle2 phase probes; Cahoon externally deferred by owner."
     }
   ],
   "legacy_gate_status": {

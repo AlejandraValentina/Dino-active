@@ -1,0 +1,1365 @@
+{
+  "schema": "DINO_MESH_LOCALIZATION_V1",
+  "solver_steps": 0,
+  "geometry_exact_bisection_verified": true,
+  "review": "SELF_REVIEW",
+  "phases": [
+    {
+      "unwrapped_angle_deg": 0.0,
+      "maximum_difference": 1.0053136599908016e-15,
+      "ranked": [
+        {
+          "metric": "exhaust/23/pressure",
+          "normalized_difference": 1.0053136599908016e-15,
+          "location": {
+            "parent_cell": 23,
+            "fine_children": [
+              46,
+              47
+            ],
+            "interval_m": [
+              0.7948333333333334,
+              0.829
+            ],
+            "centroid_m": 0.8088746731955533,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/23/density",
+          "normalized_difference": 9.434019483861434e-16,
+          "location": {
+            "parent_cell": 23,
+            "fine_children": [
+              46,
+              47
+            ],
+            "interval_m": [
+              0.7948333333333334,
+              0.829
+            ],
+            "centroid_m": 0.8088746731955533,
+            "endpoint_cell": false
+          },
+          "rho_coarse_kg_m3": 0.5884146341463414,
+          "rho_fine_projected_kg_m3": 0.5884146341463409,
+          "linearized_shift_m": null
+        },
+        {
+          "metric": "exhaust/4/density",
+          "normalized_difference": 3.7736077935445736e-16,
+          "location": {
+            "parent_cell": 4,
+            "fine_children": [
+              8,
+              9
+            ],
+            "interval_m": [
+              0.1208,
+              0.15860000000000002
+            ],
+            "centroid_m": 0.14003962359337996,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/3/density",
+          "normalized_difference": 3.7736077935445736e-16,
+          "location": {
+            "parent_cell": 3,
+            "fine_children": [
+              6,
+              7
+            ],
+            "interval_m": [
+              0.083,
+              0.1208
+            ],
+            "centroid_m": 0.10225897018400434,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/24/density",
+          "normalized_difference": 3.7736077935445736e-16,
+          "location": {
+            "parent_cell": 24,
+            "fine_children": [
+              48,
+              49
+            ],
+            "interval_m": [
+              0.829,
+              0.8647142857142857
+            ],
+            "centroid_m": 0.8468571428571428,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/11/density",
+          "normalized_difference": 3.7736077935445736e-16,
+          "location": {
+            "parent_cell": 11,
+            "fine_children": [
+              22,
+              23
+            ],
+            "interval_m": [
+              0.3765,
+              0.41133333333333333
+            ],
+            "centroid_m": 0.3945504891434942,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/6/density",
+          "normalized_difference": 3.773607793544572e-16,
+          "location": {
+            "parent_cell": 6,
+            "fine_children": [
+              12,
+              13
+            ],
+            "interval_m": [
+              0.1964,
+              0.23420000000000002
+            ],
+            "centroid_m": 0.2156065766443242,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/4/temperature",
+          "normalized_difference": 3.3802358254046103e-16,
+          "location": {
+            "parent_cell": 4,
+            "fine_children": [
+              8,
+              9
+            ],
+            "interval_m": [
+              0.1208,
+              0.15860000000000002
+            ],
+            "centroid_m": 0.14003962359337996,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/3/temperature",
+          "normalized_difference": 3.3802358254046103e-16,
+          "location": {
+            "parent_cell": 3,
+            "fine_children": [
+              6,
+              7
+            ],
+            "interval_m": [
+              0.083,
+              0.1208
+            ],
+            "centroid_m": 0.10225897018400434,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/18/temperature",
+          "normalized_difference": 3.3802358254046103e-16,
+          "location": {
+            "parent_cell": 18,
+            "fine_children": [
+              36,
+              37
+            ],
+            "interval_m": [
+              0.624,
+              0.6581666666666667
+            ],
+            "centroid_m": 0.6402506324604621,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/15/temperature",
+          "normalized_difference": 3.3802358254046103e-16,
+          "location": {
+            "parent_cell": 15,
+            "fine_children": [
+              30,
+              31
+            ],
+            "interval_m": [
+              0.5135,
+              0.546
+            ],
+            "centroid_m": 0.5301367403314917,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/24/pressure",
+          "normalized_difference": 2.8723247428308615e-16,
+          "location": {
+            "parent_cell": 24,
+            "fine_children": [
+              48,
+              49
+            ],
+            "interval_m": [
+              0.829,
+              0.8647142857142857
+            ],
+            "centroid_m": 0.8468571428571428,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/11/pressure",
+          "normalized_difference": 2.8723247428308615e-16,
+          "location": {
+            "parent_cell": 11,
+            "fine_children": [
+              22,
+              23
+            ],
+            "interval_m": [
+              0.3765,
+              0.41133333333333333
+            ],
+            "centroid_m": 0.3945504891434942,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/8/pressure",
+          "normalized_difference": 2.8723247428308605e-16,
+          "location": {
+            "parent_cell": 8,
+            "fine_children": [
+              16,
+              17
+            ],
+            "interval_m": [
+              0.272,
+              0.30683333333333335
+            ],
+            "centroid_m": 0.29035851012208497,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/6/pressure",
+          "normalized_difference": 2.8723247428308605e-16,
+          "location": {
+            "parent_cell": 6,
+            "fine_children": [
+              12,
+              13
+            ],
+            "interval_m": [
+              0.1964,
+              0.23420000000000002
+            ],
+            "centroid_m": 0.2156065766443242,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/30/pressure",
+          "normalized_difference": 2.8723247428308605e-16,
+          "location": {
+            "parent_cell": 30,
+            "fine_children": [
+              60,
+              61
+            ],
+            "interval_m": [
+              1.0432857142857141,
+              1.079
+            ],
+            "centroid_m": 1.061142857142857,
+            "endpoint_cell": true
+          }
+        },
+        {
+          "metric": "exhaust/28/pressure",
+          "normalized_difference": 2.8723247428308605e-16,
+          "location": {
+            "parent_cell": 28,
+            "fine_children": [
+              56,
+              57
+            ],
+            "interval_m": [
+              0.9718571428571428,
+              1.0075714285714286
+            ],
+            "centroid_m": 0.9897142857142857,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/27/pressure",
+          "normalized_difference": 2.8723247428308605e-16,
+          "location": {
+            "parent_cell": 27,
+            "fine_children": [
+              54,
+              55
+            ],
+            "interval_m": [
+              0.936142857142857,
+              0.9718571428571428
+            ],
+            "centroid_m": 0.954,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/26/pressure",
+          "normalized_difference": 2.8723247428308605e-16,
+          "location": {
+            "parent_cell": 26,
+            "fine_children": [
+              52,
+              53
+            ],
+            "interval_m": [
+              0.9004285714285714,
+              0.936142857142857
+            ],
+            "centroid_m": 0.9182857142857141,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/25/pressure",
+          "normalized_difference": 2.8723247428308605e-16,
+          "location": {
+            "parent_cell": 25,
+            "fine_children": [
+              50,
+              51
+            ],
+            "interval_m": [
+              0.8647142857142857,
+              0.9004285714285714
+            ],
+            "centroid_m": 0.8825714285714286,
+            "endpoint_cell": false
+          }
+        }
+      ],
+      "duct_inventories": {
+        "intake": {
+          "coarse_mass_kg": 0.00010677277314807884,
+          "fine_mass_kg": 0.00010677277314807884,
+          "coarse_energy_J": 26.26610219442739,
+          "fine_energy_J": 26.26610219442739
+        },
+        "primary": {
+          "coarse_mass_kg": 2.152074535950155e-05,
+          "fine_mass_kg": 2.1520745359501547e-05,
+          "coarse_energy_J": 5.294103358437381,
+          "fine_energy_J": 5.29410335843738
+        },
+        "secondary": {
+          "coarse_mass_kg": 2.152074535950155e-05,
+          "fine_mass_kg": 2.1520745359501547e-05,
+          "coarse_energy_J": 5.294103358437381,
+          "fine_energy_J": 5.29410335843738
+        },
+        "boost": {
+          "coarse_mass_kg": 1.4634106844461051e-05,
+          "fine_mass_kg": 1.4634106844461051e-05,
+          "coarse_energy_J": 3.599990283737418,
+          "fine_energy_J": 3.599990283737418
+        },
+        "exhaust": {
+          "coarse_mass_kg": 0.0021729636127041036,
+          "fine_mass_kg": 0.0021729636127041036,
+          "coarse_energy_J": 1069.098097450419,
+          "fine_energy_J": 1069.098097450419
+        }
+      },
+      "work_out_J": [
+        -0.0,
+        -0.0
+      ],
+      "endpoint_traces": {
+        "intake": [
+          {
+            "cell": 0,
+            "gas_trace_changed": false,
+            "pressure_trace_delta_pa": 0.0
+          },
+          {
+            "cell": 3,
+            "gas_trace_changed": false,
+            "pressure_trace_delta_pa": 0.0
+          }
+        ],
+        "primary": [
+          {
+            "cell": 0,
+            "gas_trace_changed": false,
+            "pressure_trace_delta_pa": 0.0
+          },
+          {
+            "cell": 2,
+            "gas_trace_changed": false,
+            "pressure_trace_delta_pa": 0.0
+          }
+        ],
+        "secondary": [
+          {
+            "cell": 0,
+            "gas_trace_changed": false,
+            "pressure_trace_delta_pa": 0.0
+          },
+          {
+            "cell": 2,
+            "gas_trace_changed": false,
+            "pressure_trace_delta_pa": 0.0
+          }
+        ],
+        "boost": [
+          {
+            "cell": 0,
+            "gas_trace_changed": false,
+            "pressure_trace_delta_pa": 0.0
+          },
+          {
+            "cell": 2,
+            "gas_trace_changed": false,
+            "pressure_trace_delta_pa": 0.0
+          }
+        ],
+        "exhaust": [
+          {
+            "cell": 0,
+            "gas_trace_changed": false,
+            "pressure_trace_delta_pa": 0.0
+          },
+          {
+            "cell": 30,
+            "gas_trace_changed": false,
+            "pressure_trace_delta_pa": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "unwrapped_angle_deg": 360.0,
+      "maximum_difference": 0.19612056399365652,
+      "ranked": [
+        {
+          "metric": "exhaust/30/fraction/2",
+          "normalized_difference": 0.19612056399365652,
+          "location": {
+            "parent_cell": 30,
+            "fine_children": [
+              60,
+              61
+            ],
+            "interval_m": [
+              1.0432857142857141,
+              1.079
+            ],
+            "centroid_m": 1.061142857142857,
+            "endpoint_cell": true
+          }
+        },
+        {
+          "metric": "exhaust/30/fraction/0",
+          "normalized_difference": 0.19612056399365652,
+          "location": {
+            "parent_cell": 30,
+            "fine_children": [
+              60,
+              61
+            ],
+            "interval_m": [
+              1.0432857142857141,
+              1.079
+            ],
+            "centroid_m": 1.061142857142857,
+            "endpoint_cell": true
+          }
+        },
+        {
+          "metric": "exhaust/29/fraction/2",
+          "normalized_difference": 0.15430813146143452,
+          "location": {
+            "parent_cell": 29,
+            "fine_children": [
+              58,
+              59
+            ],
+            "interval_m": [
+              1.0075714285714286,
+              1.0432857142857141
+            ],
+            "centroid_m": 1.0254285714285714,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/29/fraction/0",
+          "normalized_difference": 0.15430813146143435,
+          "location": {
+            "parent_cell": 29,
+            "fine_children": [
+              58,
+              59
+            ],
+            "interval_m": [
+              1.0075714285714286,
+              1.0432857142857141
+            ],
+            "centroid_m": 1.0254285714285714,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/30/density",
+          "normalized_difference": 0.12297269410496753,
+          "location": {
+            "parent_cell": 30,
+            "fine_children": [
+              60,
+              61
+            ],
+            "interval_m": [
+              1.0432857142857141,
+              1.079
+            ],
+            "centroid_m": 1.061142857142857,
+            "endpoint_cell": true
+          },
+          "rho_coarse_kg_m3": 0.9263522197890649,
+          "rho_fine_projected_kg_m3": 1.0562410241533984,
+          "linearized_shift_m": 0.02022959140481798
+        },
+        {
+          "metric": "exhaust/30/temperature",
+          "normalized_difference": 0.12166679839809645,
+          "location": {
+            "parent_cell": 30,
+            "fine_children": [
+              60,
+              61
+            ],
+            "interval_m": [
+              1.0432857142857141,
+              1.079
+            ],
+            "centroid_m": 1.061142857142857,
+            "endpoint_cell": true
+          }
+        },
+        {
+          "metric": "secondary/2/density",
+          "normalized_difference": 0.08123622397949162,
+          "location": {
+            "parent_cell": 2,
+            "fine_children": [
+              4,
+              5
+            ],
+            "interval_m": [
+              0.03333333333333333,
+              0.05000000000000001
+            ],
+            "centroid_m": 0.04166666666666667,
+            "endpoint_cell": true
+          }
+        },
+        {
+          "metric": "primary/2/density",
+          "normalized_difference": 0.08123622397949162,
+          "location": {
+            "parent_cell": 2,
+            "fine_children": [
+              4,
+              5
+            ],
+            "interval_m": [
+              0.03333333333333333,
+              0.05000000000000001
+            ],
+            "centroid_m": 0.04166666666666667,
+            "endpoint_cell": true
+          }
+        },
+        {
+          "metric": "boost/2/density",
+          "normalized_difference": 0.08123622397949097,
+          "location": {
+            "parent_cell": 2,
+            "fine_children": [
+              4,
+              5
+            ],
+            "interval_m": [
+              0.03333333333333333,
+              0.05000000000000001
+            ],
+            "centroid_m": 0.04166666666666667,
+            "endpoint_cell": true
+          }
+        },
+        {
+          "metric": "exhaust/29/temperature",
+          "normalized_difference": 0.07635928931006289,
+          "location": {
+            "parent_cell": 29,
+            "fine_children": [
+              58,
+              59
+            ],
+            "interval_m": [
+              1.0075714285714286,
+              1.0432857142857141
+            ],
+            "centroid_m": 1.0254285714285714,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/24/velocity_over_sound",
+          "normalized_difference": 0.07191349246913196,
+          "location": {
+            "parent_cell": 24,
+            "fine_children": [
+              48,
+              49
+            ],
+            "interval_m": [
+              0.829,
+              0.8647142857142857
+            ],
+            "centroid_m": 0.8468571428571428,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/29/density",
+          "normalized_difference": 0.06861420359515491,
+          "location": {
+            "parent_cell": 29,
+            "fine_children": [
+              58,
+              59
+            ],
+            "interval_m": [
+              1.0075714285714286,
+              1.0432857142857141
+            ],
+            "centroid_m": 1.0254285714285714,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/24/pressure",
+          "normalized_difference": 0.05995493075127291,
+          "location": {
+            "parent_cell": 24,
+            "fine_children": [
+              48,
+              49
+            ],
+            "interval_m": [
+              0.829,
+              0.8647142857142857
+            ],
+            "centroid_m": 0.8468571428571428,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/25/pressure",
+          "normalized_difference": 0.05635460124175895,
+          "location": {
+            "parent_cell": 25,
+            "fine_children": [
+              50,
+              51
+            ],
+            "interval_m": [
+              0.8647142857142857,
+              0.9004285714285714
+            ],
+            "centroid_m": 0.8825714285714286,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/25/velocity_over_sound",
+          "normalized_difference": 0.051952941582631106,
+          "location": {
+            "parent_cell": 25,
+            "fine_children": [
+              50,
+              51
+            ],
+            "interval_m": [
+              0.8647142857142857,
+              0.9004285714285714
+            ],
+            "centroid_m": 0.8825714285714286,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/26/pressure",
+          "normalized_difference": 0.05185920673249124,
+          "location": {
+            "parent_cell": 26,
+            "fine_children": [
+              52,
+              53
+            ],
+            "interval_m": [
+              0.9004285714285714,
+              0.936142857142857
+            ],
+            "centroid_m": 0.9182857142857141,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "boost/2/temperature",
+          "normalized_difference": 0.049166201014468856,
+          "location": {
+            "parent_cell": 2,
+            "fine_children": [
+              4,
+              5
+            ],
+            "interval_m": [
+              0.03333333333333333,
+              0.05000000000000001
+            ],
+            "centroid_m": 0.04166666666666667,
+            "endpoint_cell": true
+          }
+        },
+        {
+          "metric": "secondary/2/temperature",
+          "normalized_difference": 0.049166201014468815,
+          "location": {
+            "parent_cell": 2,
+            "fine_children": [
+              4,
+              5
+            ],
+            "interval_m": [
+              0.03333333333333333,
+              0.05000000000000001
+            ],
+            "centroid_m": 0.04166666666666667,
+            "endpoint_cell": true
+          }
+        },
+        {
+          "metric": "primary/2/temperature",
+          "normalized_difference": 0.049166201014468815,
+          "location": {
+            "parent_cell": 2,
+            "fine_children": [
+              4,
+              5
+            ],
+            "interval_m": [
+              0.03333333333333333,
+              0.05000000000000001
+            ],
+            "centroid_m": 0.04166666666666667,
+            "endpoint_cell": true
+          }
+        },
+        {
+          "metric": "exhaust/24/density",
+          "normalized_difference": 0.042674238700631854,
+          "location": {
+            "parent_cell": 24,
+            "fine_children": [
+              48,
+              49
+            ],
+            "interval_m": [
+              0.829,
+              0.8647142857142857
+            ],
+            "centroid_m": 0.8468571428571428,
+            "endpoint_cell": false
+          }
+        }
+      ],
+      "duct_inventories": {
+        "intake": {
+          "coarse_mass_kg": 0.00010648881799242536,
+          "fine_mass_kg": 0.00010675491555913849,
+          "coarse_energy_J": 26.280165577795138,
+          "fine_energy_J": 26.368564292750712
+        },
+        "primary": {
+          "coarse_mass_kg": 1.8786707223962616e-05,
+          "fine_mass_kg": 1.852739181124062e-05,
+          "coarse_energy_J": 5.01735956608287,
+          "fine_energy_J": 4.914770774129051
+        },
+        "secondary": {
+          "coarse_mass_kg": 1.8786707223962616e-05,
+          "fine_mass_kg": 1.852739181124062e-05,
+          "coarse_energy_J": 5.01735956608287,
+          "fine_energy_J": 4.914770774129051
+        },
+        "boost": {
+          "coarse_mass_kg": 1.2774960912294579e-05,
+          "fine_mass_kg": 1.2598626431643619e-05,
+          "coarse_energy_J": 3.4118045049363506,
+          "fine_energy_J": 3.342044126407754
+        },
+        "exhaust": {
+          "coarse_mass_kg": 0.002211574143330163,
+          "fine_mass_kg": 0.0022162301021421264,
+          "coarse_energy_J": 1083.015135946885,
+          "fine_energy_J": 1084.8223486927363
+        }
+      },
+      "work_out_J": [
+        -31.068430046122423,
+        -31.024157579894073
+      ],
+      "endpoint_traces": {
+        "intake": [
+          {
+            "cell": 0,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": -217.23326351978176
+          },
+          {
+            "cell": 3,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": 245.65382606543426
+          }
+        ],
+        "primary": [
+          {
+            "cell": 0,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": 158.57686063596338
+          },
+          {
+            "cell": 2,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": -51.16250726566068
+          }
+        ],
+        "secondary": [
+          {
+            "cell": 0,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": 158.57686063596338
+          },
+          {
+            "cell": 2,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": -51.16250726566068
+          }
+        ],
+        "boost": [
+          {
+            "cell": 0,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": 158.57686063597794
+          },
+          {
+            "cell": 2,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": -51.16250726567523
+          }
+        ],
+        "exhaust": [
+          {
+            "cell": 0,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": 0.0
+          },
+          {
+            "cell": 30,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": 1809.2166070481762
+          }
+        ]
+      }
+    },
+    {
+      "unwrapped_angle_deg": 720.0,
+      "maximum_difference": 0.12265579102255894,
+      "ranked": [
+        {
+          "metric": "exhaust/4/density",
+          "normalized_difference": 0.12265579102255894,
+          "location": {
+            "parent_cell": 4,
+            "fine_children": [
+              8,
+              9
+            ],
+            "interval_m": [
+              0.1208,
+              0.15860000000000002
+            ],
+            "centroid_m": 0.14003962359337996,
+            "endpoint_cell": false
+          },
+          "rho_coarse_kg_m3": 0.6062020156564353,
+          "rho_fine_projected_kg_m3": 0.5318478279066255,
+          "linearized_shift_m": 0.08815553916026918
+        },
+        {
+          "metric": "exhaust/30/velocity_over_sound",
+          "normalized_difference": 0.1217278068858451,
+          "location": {
+            "parent_cell": 30,
+            "fine_children": [
+              60,
+              61
+            ],
+            "interval_m": [
+              1.0432857142857141,
+              1.079
+            ],
+            "centroid_m": 1.061142857142857,
+            "endpoint_cell": true
+          }
+        },
+        {
+          "metric": "exhaust/29/velocity_over_sound",
+          "normalized_difference": 0.10714317176312392,
+          "location": {
+            "parent_cell": 29,
+            "fine_children": [
+              58,
+              59
+            ],
+            "interval_m": [
+              1.0075714285714286,
+              1.0432857142857141
+            ],
+            "centroid_m": 1.0254285714285714,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/4/temperature",
+          "normalized_difference": 0.10294981358819175,
+          "location": {
+            "parent_cell": 4,
+            "fine_children": [
+              8,
+              9
+            ],
+            "interval_m": [
+              0.1208,
+              0.15860000000000002
+            ],
+            "centroid_m": 0.14003962359337996,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/4/fraction/3",
+          "normalized_difference": 0.08393441911540961,
+          "location": {
+            "parent_cell": 4,
+            "fine_children": [
+              8,
+              9
+            ],
+            "interval_m": [
+              0.1208,
+              0.15860000000000002
+            ],
+            "centroid_m": 0.14003962359337996,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/26/pressure",
+          "normalized_difference": 0.08368230895660635,
+          "location": {
+            "parent_cell": 26,
+            "fine_children": [
+              52,
+              53
+            ],
+            "interval_m": [
+              0.9004285714285714,
+              0.936142857142857
+            ],
+            "centroid_m": 0.9182857142857141,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/25/pressure",
+          "normalized_difference": 0.08240897813444269,
+          "location": {
+            "parent_cell": 25,
+            "fine_children": [
+              50,
+              51
+            ],
+            "interval_m": [
+              0.8647142857142857,
+              0.9004285714285714
+            ],
+            "centroid_m": 0.8825714285714286,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/6/temperature",
+          "normalized_difference": 0.07986690214030644,
+          "location": {
+            "parent_cell": 6,
+            "fine_children": [
+              12,
+              13
+            ],
+            "interval_m": [
+              0.1964,
+              0.23420000000000002
+            ],
+            "centroid_m": 0.2156065766443242,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/6/fraction/0",
+          "normalized_difference": 0.0749372607141072,
+          "location": {
+            "parent_cell": 6,
+            "fine_children": [
+              12,
+              13
+            ],
+            "interval_m": [
+              0.1964,
+              0.23420000000000002
+            ],
+            "centroid_m": 0.2156065766443242,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/6/density",
+          "normalized_difference": 0.07166844076208143,
+          "location": {
+            "parent_cell": 6,
+            "fine_children": [
+              12,
+              13
+            ],
+            "interval_m": [
+              0.1964,
+              0.23420000000000002
+            ],
+            "centroid_m": 0.2156065766443242,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/25/velocity_over_sound",
+          "normalized_difference": 0.06866394937620521,
+          "location": {
+            "parent_cell": 25,
+            "fine_children": [
+              50,
+              51
+            ],
+            "interval_m": [
+              0.8647142857142857,
+              0.9004285714285714
+            ],
+            "centroid_m": 0.8825714285714286,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/3/fraction/3",
+          "normalized_difference": 0.06798863906765673,
+          "location": {
+            "parent_cell": 3,
+            "fine_children": [
+              6,
+              7
+            ],
+            "interval_m": [
+              0.083,
+              0.1208
+            ],
+            "centroid_m": 0.10225897018400434,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/4/fraction/0",
+          "normalized_difference": 0.06793051353172497,
+          "location": {
+            "parent_cell": 4,
+            "fine_children": [
+              8,
+              9
+            ],
+            "interval_m": [
+              0.1208,
+              0.15860000000000002
+            ],
+            "centroid_m": 0.14003962359337996,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/24/pressure",
+          "normalized_difference": 0.06745197499772032,
+          "location": {
+            "parent_cell": 24,
+            "fine_children": [
+              48,
+              49
+            ],
+            "interval_m": [
+              0.829,
+              0.8647142857142857
+            ],
+            "centroid_m": 0.8468571428571428,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/25/density",
+          "normalized_difference": 0.06663224353003024,
+          "location": {
+            "parent_cell": 25,
+            "fine_children": [
+              50,
+              51
+            ],
+            "interval_m": [
+              0.8647142857142857,
+              0.9004285714285714
+            ],
+            "centroid_m": 0.8825714285714286,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/26/density",
+          "normalized_difference": 0.06518224609859315,
+          "location": {
+            "parent_cell": 26,
+            "fine_children": [
+              52,
+              53
+            ],
+            "interval_m": [
+              0.9004285714285714,
+              0.936142857142857
+            ],
+            "centroid_m": 0.9182857142857141,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/3/fraction/0",
+          "normalized_difference": 0.061713786383732205,
+          "location": {
+            "parent_cell": 3,
+            "fine_children": [
+              6,
+              7
+            ],
+            "interval_m": [
+              0.083,
+              0.1208
+            ],
+            "centroid_m": 0.10225897018400434,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/6/fraction/2",
+          "normalized_difference": 0.060076417864026954,
+          "location": {
+            "parent_cell": 6,
+            "fine_children": [
+              12,
+              13
+            ],
+            "interval_m": [
+              0.1964,
+              0.23420000000000002
+            ],
+            "centroid_m": 0.2156065766443242,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/27/pressure",
+          "normalized_difference": 0.05847974706199951,
+          "location": {
+            "parent_cell": 27,
+            "fine_children": [
+              54,
+              55
+            ],
+            "interval_m": [
+              0.936142857142857,
+              0.9718571428571428
+            ],
+            "centroid_m": 0.954,
+            "endpoint_cell": false
+          }
+        },
+        {
+          "metric": "exhaust/28/velocity_over_sound",
+          "normalized_difference": 0.05757912726592965,
+          "location": {
+            "parent_cell": 28,
+            "fine_children": [
+              56,
+              57
+            ],
+            "interval_m": [
+              0.9718571428571428,
+              1.0075714285714286
+            ],
+            "centroid_m": 0.9897142857142857,
+            "endpoint_cell": false
+          }
+        }
+      ],
+      "duct_inventories": {
+        "intake": {
+          "coarse_mass_kg": 0.00010814576533630708,
+          "fine_mass_kg": 0.00010795518921198329,
+          "coarse_energy_J": 26.788270209777593,
+          "fine_energy_J": 26.723779930539624
+        },
+        "primary": {
+          "coarse_mass_kg": 2.138904957061229e-05,
+          "fine_mass_kg": 2.1903354521339545e-05,
+          "coarse_energy_J": 5.28380562445661,
+          "fine_energy_J": 5.469698242395257
+        },
+        "secondary": {
+          "coarse_mass_kg": 2.138904957061229e-05,
+          "fine_mass_kg": 2.1903354521339545e-05,
+          "coarse_energy_J": 5.28380562445661,
+          "fine_energy_J": 5.469698242395257
+        },
+        "boost": {
+          "coarse_mass_kg": 1.4544553708016353e-05,
+          "fine_mass_kg": 1.4894281074510882e-05,
+          "coarse_energy_J": 3.592987824630495,
+          "fine_energy_J": 3.7193948048287746
+        },
+        "exhaust": {
+          "coarse_mass_kg": 0.0023163604199362945,
+          "fine_mass_kg": 0.0023337748247755715,
+          "coarse_energy_J": 1151.9822709824928,
+          "fine_energy_J": 1162.3886987593269
+        }
+      },
+      "work_out_J": [
+        28.81010421598331,
+        29.76022133391169
+      ],
+      "endpoint_traces": {
+        "intake": [
+          {
+            "cell": 0,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": -648.510895427491
+          },
+          {
+            "cell": 3,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": 596.1396437112126
+          }
+        ],
+        "primary": [
+          {
+            "cell": 0,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": -6.74591420032084
+          },
+          {
+            "cell": 2,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": 25.611454728874378
+          }
+        ],
+        "secondary": [
+          {
+            "cell": 0,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": -6.74591420032084
+          },
+          {
+            "cell": 2,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": 25.611454728874378
+          }
+        ],
+        "boost": [
+          {
+            "cell": 0,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": -6.745914200335392
+          },
+          {
+            "cell": 2,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": 25.611454728874378
+          }
+        ],
+        "exhaust": [
+          {
+            "cell": 0,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": 425.11813124829496
+          },
+          {
+            "cell": 30,
+            "gas_trace_changed": true,
+            "pressure_trace_delta_pa": 507.9081017627177
+          }
+        ]
+      }
+    }
+  ],
+  "experimental_validation": false,
+  "source_files": {
+    "results\\predictive-reliability-v1\\spatial-boundary-v2-engine\\initial-checkpoint.json": "9bfaf89a6ccd020460bee6ec7f65b929998a15fd2bfe9baca803cebab1ee0c56",
+    "results\\predictive-reliability-v1\\endpoint-mesh88-v2\\initial-checkpoint.json": "223f4529dca0effa050be4458e8c59bdf0ebfd338edafdf8ea8462577c3e489f",
+    "results\\predictive-reliability-v1\\spatial-boundary-v2-engine\\checkpoint-360.json": "506648c6d40193d23ae7cf33e3243d20c00b146aab4a9c0a575f6d361c4b4916",
+    "results\\predictive-reliability-v1\\endpoint-mesh88-v2\\checkpoint-360.json": "4280cf384ea17160ce90923a69a2437f7010f753db205c40935aefb5a1b014c1",
+    "results\\predictive-reliability-v1\\spatial-boundary-v2-engine\\checkpoint-720.json": "2fc9c448f04322bb1778e4737f0012674566555a8f7bceabc743c7ccd0599eb6",
+    "results\\predictive-reliability-v1\\endpoint-mesh88-v2\\checkpoint-720.json": "e129b2572517f859f9a375d1633be8658a12b7549be2df85fd065b846fcbdf8e"
+  },
+  "projection": "Volume-weight conserved densities; sum extensive species; then recover primitives",
+  "interpretation_limits": [
+    "Only phases 0,360,720 available in both meshes; no intra-cycle localization established.",
+    "Relative positive-state differences, sound-normalized velocity and absolute species fractions use different normalizations.",
+    "A linearized spatial shift is a local diagnostic, not proof of pure wave displacement.",
+    "No grid-independent reference or periodic power established."
+  ]
+}
