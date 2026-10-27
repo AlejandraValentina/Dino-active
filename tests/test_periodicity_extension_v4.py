@@ -24,3 +24,15 @@ def test_modified_source_is_rejected(monkeypatch):
 def test_dependency_mismatch_is_rejected(monkeypatch):
     monkeypatch.setattr(module,'_solver_dependency_hashes',lambda:{'invalid':'hash'})
     with pytest.raises(ValueError,match='solver source mismatch'):module.load_source(SOURCE,CONFIG)
+
+
+def test_cycle29_restores_existing_streak_without_reintegrating(monkeypatch):
+    monkeypatch.setattr(module.IntegratedEngine2T,'step',lambda *a,**k:pytest.fail('no integration in restore'))
+    e,cp,d,base=module.load_native_source(ROOT/'periodicity-extension-v4/run',CONFIG,29,'run')
+    assert e.crank_angle_unwrapped_deg==10440.
+    assert d.lag1_streak==2 and d.detected_period is None
+
+
+def test_finite_execution_bounds_are_enforced(tmp_path):
+    with pytest.raises(ValueError,match='invalid finite execution bounds'):
+        module.run(SOURCE,CONFIG,tmp_path/'out',first_cycle=26,last_cycle=100)

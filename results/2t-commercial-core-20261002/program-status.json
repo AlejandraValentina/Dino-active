@@ -9539,17 +9539,21 @@
       "dependencies": [
         "PRED-PERIODIC-25-29-CONTROL"
       ],
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "results/predictive-reliability-v1/periodicity-extension-v4/report.md"
+        "results/predictive-reliability-v1/periodicity-extension-v4/report.md",
+        "openspec/changes/predictive-reliability-v1/periodicity-cycle30-control-protocol-v1.md"
       ],
-      "next_action": "Preregister exactly one30 cycle/25s from native29 + detector29; no automatic further extension; if candidate, prepare audit.",
+      "next_action": "Exactly one30 cycle <=25s from validated29; candidate only, no cycle31 automatically.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
-        "results/predictive-reliability-v1/periodicity-cycle30-control-v1/"
+        "results/predictive-reliability-v1/periodicity-cycle30-control-v1/",
+        "scripts/diagnostics/periodicity_extension_v4.py",
+        "scripts/diagnostics/periodicity_cycle30_control_v1.py",
+        "tests/test_periodicity_extension_v4.py"
       ],
       "evidence_level": "L1"
     }
@@ -13497,6 +13501,12 @@
       "task": "PRED-PERIODIC-25-29-CONTROL",
       "kind": "task",
       "summary": "Original25->29 completed53.71s<=90s, exact source/detector restoration. Max3.3475->.4831, p90 .8392->.1789, failed37->0 (28 and29). Streak2, no period yet; lag2FAIL. Balances pass. One final30 cycle/25s recommended with preregistration; no automatic extension if it fails."
+    },
+    {
+      "at": "2026-10-27T12:38:14.330899+00:00",
+      "task": "PRED-PERIODIC-CYCLE30-STREAK-CONTROL",
+      "kind": "task",
+      "summary": "Preregister single30 cycle/25s because two existing complete413-pass comparisons28/29 and declining errors.26 tests PASS incl exact29/streak2 restoration and hard cycle-count bounds. Reused native loop, no solver/detector change; no extension if fails. Exact original input bytes preserved in Git without changing recorded scientific hashes."
     }
   ],
   "legacy_gate_status": {

@@ -57,3 +57,13 @@ scripts/diagnostics/material_species_diagnostic_v1.py -text
 scripts/diagnostics/compare_refinement352_v1.py -text
 scripts/diagnostics/periodicity_extension_v4.py -text
 results/predictive-reliability-v1/periodicity-extension-v4/** -text
+scripts/diagnostics/periodicity_cycle30_control_v1.py -text
+results/predictive-reliability-v1/periodicity-cycle30-control-v1/** -text
+# Preserve original checkpoint25 inputs exactly as their manifests recorded.
+results/predictive-reliability-v1/spatial-boundary-v2-engine/configuration.json -text
+results/predictive-reliability-v1/exhaust-composition-plateau-v1/manifest.json -text
+results/predictive-reliability-v1/exhaust-composition-plateau-v1/relaxation-check/checkpoint-024.json -text
+results/predictive-reliability-v1/exhaust-composition-plateau-v1/relaxation-check/checkpoint-025.json -text
+results/predictive-reliability-v1/exhaust-composition-plateau-v1/relaxation-check/detector.json -text
+results/predictive-reliability-v1/exhaust-composition-plateau-v1/relaxation-check/receipt.json -text
+results/predictive-reliability-v1/exhaust-composition-plateau-v1/relaxation-check/cycles.json -text
