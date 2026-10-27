@@ -9621,18 +9621,20 @@
         "PRED-PERIODIC-27-30-PRIMARY-AUDIT",
         "PRED-REFINED-DETECTOR-CLOCK-PREPARATION"
       ],
-      "state": "WAITING",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "openspec/changes/predictive-reliability-v1/periodic-refined-initialization-design-v1.md"
+        "openspec/changes/predictive-reliability-v1/periodic-refined-initialization-design-v1.md",
+        "openspec/changes/predictive-reliability-v1/periodic88-pilot-protocol-v1.md"
       ],
-      "next_action": "Preregister at most6 cycles/300s on88 after primary audit PASS; preserve physical clock/new detector, stop on stagnation; no176 or campaign automatically.",
+      "next_action": "One88 window <=6 relative cycles/300s from audited30, new identity/detector with preserved physical clock; stop on stagnation/budget/candidate, no further grid automatically.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "scripts/diagnostics/periodicity_refined_mesh_pilot_v1.py",
-        "results/predictive-reliability-v1/periodic88-pilot-v1/"
+        "results/predictive-reliability-v1/periodic88-pilot-v1/",
+        "tests/test_periodicity_refined_mesh_pilot_v1.py"
       ],
       "evidence_level": "L1"
     }
@@ -13616,6 +13618,12 @@
       "task": "PRED-PERIODIC-27-30-PRIMARY-AUDIT",
       "kind": "task",
       "summary": "Four stage audits PASS292.62s<480s, ~61.94MB external primaries. Corrected wrapper reconstruction24.85s, zero solver steps: PERIOD_1 at30, all413 PASS28/29/30, max .8795/.4831/.4588. L2 period44 verified, no mesh/experimental claim. Original STOPPED and source retained; no cycle31. Next bounded88 pilot can be prepared."
+    },
+    {
+      "at": "2026-10-27T15:24:34.156770+00:00",
+      "task": "PRED-PERIODIC88-BOUNDED-PILOT",
+      "kind": "task",
+      "summary": "37 focused tests PASS incl audited-source eligibility, conservative actual30->88 initialization and empty detector, no invented first-cycle PASS. Preregister first88 pilot <=6cycles/300s, same physics/CFL/adaptive schedule, native checkpoints and30deg samples without altering time steps. Stage audit44 PASS is source; no176/campaign automatically."
     }
   ],
   "legacy_gate_status": {
