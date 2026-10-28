@@ -1,0 +1,106 @@
+{
+  "schema": "DINO_EXPERIMENTAL_REFERENCE_SELECTION_V1",
+  "date": "2026-10-28",
+  "decision": "SELECT_PRIMARY_PARTIAL_NO_COMPLETE_ENGINE_VERIFIED",
+  "candidates": [
+    {
+      "rank": 1,
+      "id": "GREEVES380_MK1_CAHOON1971",
+      "role": "PRIMARY",
+      "fitness": "PARTIAL",
+      "same_engine_variants": true,
+      "exhaust_only_AB": false,
+      "critical_missing": [
+        "crankcase_volume_domain_definition",
+        "full_intake_transfer_sections_and_port_profiles",
+        "matched_operating_point_ignition_ambient_and_sensor_coordinates",
+        "main_table_vs_appendix_input_identity"
+      ],
+      "measurements": [
+        "brake_performance",
+        "AFR",
+        "BSFC",
+        "volumetric_efficiency",
+        "cylinder_pressure",
+        "inlet_transfer_exhaust_pressure"
+      ],
+      "crankcase_pressure_measured": false,
+      "source": "CAHOON1971"
+    },
+    {
+      "rank": 2,
+      "id": "YAMAHA_MT110S_ZHANG1995",
+      "role": "ALTERNATIVE",
+      "fitness": "PARTIAL",
+      "exhaust_only_AB": true,
+      "exhaust_L3_mm": [
+        240,
+        330,
+        400,
+        480,
+        550
+      ],
+      "critical_missing": [
+        "crankcase_volume",
+        "intake_transfer_geometry",
+        "port_profiles_and_areas",
+        "displacement_and_compression_ratio_convention",
+        "matched_operating_conditions"
+      ],
+      "source": "ZHANG1995"
+    },
+    {
+      "rank": 3,
+      "id": "MORINI_AH50L_GIMELLI2021",
+      "role": "RESERVE",
+      "fitness": "PARTIAL",
+      "exhaust_only_AB": false,
+      "critical_missing": [
+        "rod_length",
+        "crankcase_volume",
+        "complete_duct_and_reed_geometry",
+        "published_phase_resolved_pressure_dataset"
+      ],
+      "same_hardware_2008_2021_proven": false,
+      "source": "GIMELLI2021"
+    },
+    {
+      "rank": 4,
+      "id": "IAME_X30_SENIOR_ORTENZI2023",
+      "role": "GENERALIZATION_CONDITIONAL",
+      "fitness": "PARTIAL_BLOCKED",
+      "exhaust_only_AB": false,
+      "critical_missing": [
+        "defined_free_crankcase_volume",
+        "specimen_geometry_revision_link",
+        "matched_bench_conditions"
+      ],
+      "source": "X30_2023"
+    },
+    {
+      "rank": 5,
+      "id": "HONDA_RS125_FLECK2004",
+      "role": "CONDITIONAL_AB_TARGET",
+      "fitness": "INSUFFICIENT_VERIFIED_ACCESS",
+      "exhaust_changes_measured_confirmed_by_abstract": true,
+      "critical_missing": [
+        "legitimate_full_text",
+        "verified_published_geometry_and_measurement_package"
+      ],
+      "source": "FLECK2004"
+    }
+  ],
+  "maximum_candidates": 5,
+  "configuration_generated": false,
+  "simulation_executed_for_selection": false,
+  "solver_modified": false,
+  "experimental_validation_performed": false,
+  "immediate_next_action": "Single targeted QUB archival data request for MK1; not sent. No automatic simulation or open-ended research.",
+  "conditional_calculations": {
+    "Greeves_Vd_cc": 380.2332420492798,
+    "crankcase_min_cc_if_r_is_Vmax_over_Vmin_and_deltaV_is_Vd": 633.722070082133,
+    "crankcase_max_cc_same_condition": 1013.9553121314128,
+    "MK1_clearance_cc_if_trapped_ratio_at_symmetric_exhaust_closure": 42.12371501176633,
+    "Zhang_Vd_cc_from_published_bore_stroke": 106.18583169133501
+  }
+}

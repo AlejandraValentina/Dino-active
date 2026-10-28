@@ -9272,22 +9272,23 @@
       "id": "PRED-CAHOON-FULLTEXT-ACCESS",
       "description": "Recover readable full thesis through ordinary public or owner-provided PDF access",
       "dependencies": [],
-      "state": "BLOCKED_LOCAL",
-      "blocker": "Owner defers external experimental access; no repeated downloads.",
+      "state": "DONE",
+      "blocker": null,
       "commits": [],
       "evidence": [
-        "results/predictive-reliability-v1/cahoon-access-v1/report.md"
+        "results/predictive-reliability-v1/cahoon-access-v1/report.md",
+        "results/experimental-reference-selection-v1/sources.json"
       ],
-      "next_action": "Await accessible local original PDF or externally resolved access; continue numerical work.",
+      "next_action": "Preserve prior failed-access evidence. No repeated download attempts; targeted archival request only if separately pursued.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "verification",
       "write_scope": [
         "results/predictive-reliability-v1/cahoon-access-v1/"
       ],
       "evidence_level": "L1",
-      "qualification": "Access attempted: HTTP403 and unavailable browser; full thesis inspection still pending, indexed values not adopted.",
+      "qualification": "QUB 264-page full thesis retrieved; SHA256 in results/experimental-reference-selection-v1/sources.json. Access resolved, geometry/test completeness remains partial.",
       "unblock_tasks": [],
-      "no_local_unblock_reason": "Full PDF unavailable here; owner explicitly directs no repeated retrieval attempts. New official URL retained for later access."
+      "resolution": "PUBLIC_INSTITUTIONAL_PDF_RETRIEVED_AND_INSPECTED"
     },
     {
       "id": "PRED-MESH-OUTLET-FRONT-CONTROL",
@@ -10000,6 +10001,27 @@
       ],
       "evidence_level": "L2",
       "qualification": "Same A44 config historically periodic30;measured13-14s/cycle,planning15.100cycles each+audits/tests/reserve fits5400. B cycle count uncertain. Power mesh uncertainty unquantified;no legacy power comparison. rc7/source/criteria intact."
+    },
+    {
+      "id": "PRED-EXPERIMENTAL-REFERENCE-SELECTION-V1",
+      "description": "Owner bounded selection of at most five measured public 2T engines; no model or synthetic configuration.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/experimental-reference-selection-v1/report.md",
+        "results/experimental-reference-selection-v1/selection.json",
+        "results/experimental-reference-selection-v1/sources.json"
+      ],
+      "next_action": "STOP selection. Cahoon MK1 primary PARTIAL; Zhang alternative; X30 conditional generalization. No complete engine verified. Targeted external acquisition not sent; no automatic simulations or stages.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "experimental-reference research",
+      "write_scope": [
+        "results/experimental-reference-selection-v1/"
+      ],
+      "evidence_level": "L1",
+      "qualification": "Full source indexing and relevant visual inspection; original PDFs cached externally, no new digitization/calibration/experimental validation. SELF_REVIEW."
     }
   ],
   "audit_remediation_mode": false,
@@ -14104,6 +14126,12 @@
       "task": "PRED-E2B-PERIODIC-AB-V1",
       "kind": "task",
       "summary": "Owner activates E2B only. Viability:exact A44 MUSCL V2 reference periodic30,measured13-14s/cycle. Freeze44/31exhaust independent A83/B103,9000RPM;5400s incl audits/tests. Existing detector/streak3,losses85000Pa unchanged. Periodic power uncertainty unquantified:exploratory only. No warm start,extra meshes or later stage."
+    },
+    {
+      "at": "2026-10-28T14:29:10+00:00",
+      "task": "PRED-EXPERIMENTAL-REFERENCE-SELECTION-V1",
+      "kind": "task",
+      "summary": "Five primary-source candidates ranked. Cahoon264p retrieved: MK1 primary PARTIAL, Zhang measured five-exhaust alternative, X30 conditional generalization. No complete matched engine; missing geometry/test conventions documented. No configurations, simulations or solver changes for selection; no external messages."
     }
   ],
   "legacy_gate_status": {
@@ -14692,7 +14720,7 @@
     "owner_decision_date": "2026-10-28",
     "activation": "E2B_PERIODIC_AB_ONLY_OWNER_AUTHORIZED",
     "next_deliverable": "E2B independent periodic A/B with explicit numerical power uncertainty qualification;5400s,decision then stop.",
-    "experimental_data_policy": "Acquire matched-engine geometry/conditions/uncertainties in parallel from start; prefer X30, accept a more complete independent reference without mixing engines; no repeated blocked downloads or unsolicited external messages.",
+    "experimental_data_policy": "Cahoon MK1 prioritized after full-text review; Zhang alternative for measured exhaust changes; X30 conditional generalization. No complete matched dataset verified, no mixing engines, no synthetic fill or unsolicited messages.",
     "historical_ready_policy": "READY history does not authorize reviving meshes, 90-150deg studies or old campaigns outside an explicitly activated roadmap deliverable. SPV1 READY task stays intact.",
     "stages": [
       {
@@ -14729,6 +14757,7 @@
     "predictive_validation": "NOT_PERFORMED",
     "predictive_capability": "NOT_CLAIMED",
     "baseline_rc7": "PRESERVED",
-    "qualification": "Old gate counts summarize existing technical tasks, not completion of the six scientific/product stages. New models are not automatically promoted."
+    "qualification": "Old gate counts summarize existing technical tasks, not completion of the six scientific/product stages. New models are not automatically promoted.",
+    "experimental_reference_selection": "results/experimental-reference-selection-v1/selection.json"
   }
 }
