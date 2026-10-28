@@ -1,0 +1,122 @@
+{
+  "schema": "DINO_POSTOPEN_WAVE_TRANSPORT_PREPARATION_V1",
+  "source_manifest": "results/predictive-reliability-v1/preopen-wave-transport-run-v1/manifest.json",
+  "source_manifest_sha256": "6baec6052d8436d27e77e0dab70dcf0fb5e9792328f92757957c3cc71947749b",
+  "cases": [
+    {
+      "name": "p0-88",
+      "source_phase_deg": [
+        0.0,
+        60.0
+      ],
+      "target_phase_deg": [
+        0.0,
+        150.0
+      ],
+      "accepted_source_steps": 960,
+      "source_wall_s": 19.517808799864724,
+      "projected_replay_plus_extension_s": 48.79452199966181,
+      "manifest_sha256": {
+        "run/p0-88/configuration.json": "a8a4351b3624567b9187114df6bf4e0fb9d46325ea8087cf9bae2dc4ec5a6bfd",
+        "run/p0-88/initial-checkpoint.json": "db410ff89975f174add4a353ce6cef576dfac323961060b3223f56d376d62b5a",
+        "run/p0-88/recipe.json": "46db5c78c0430eb705b0b52a28f513c0ee95bac4932fd8654501fcba4ca62d8c",
+        "run/p0-88/terminal-state.json": "c4db9245eb7ea57c33fe925462bf4574163c8d7f7a215e9bda061d45806f671b",
+        "run/p0-88/receipt.json": "bda0f91e336dc4fbadaba5249f7f3805bc734fe02d4a03070dffb168a2a5ee7b",
+        "run/p0-88/frames.json": "1c96bdc273e4eb7d3c1421276ed7c695d0da37b7e47dc521af20eecabd0145d6"
+      },
+      "recovery": "Recreate from initial-checkpoint.json; replay every accepted/rejected recipe row; compare each accepted row and FAST terminal before advancing."
+    },
+    {
+      "name": "p0-176",
+      "source_phase_deg": [
+        0.0,
+        60.0
+      ],
+      "target_phase_deg": [
+        0.0,
+        150.0
+      ],
+      "accepted_source_steps": 960,
+      "source_wall_s": 31.236947499914095,
+      "projected_replay_plus_extension_s": 78.09236874978524,
+      "manifest_sha256": {
+        "run/p0-176/configuration.json": "cb0413bd460267337a45b703b02e8dd9824508430a6a054f3f745a4870d04e82",
+        "run/p0-176/initial-checkpoint.json": "63e1eb70c25313289d6fbeb74edf723074b278e4245586097030f85e31193213",
+        "run/p0-176/recipe.json": "46db5c78c0430eb705b0b52a28f513c0ee95bac4932fd8654501fcba4ca62d8c",
+        "run/p0-176/terminal-state.json": "0c15c3cfcc32f07de5596f469593324b3f32531736148f32ca83fc52e4a207a1",
+        "run/p0-176/receipt.json": "fc8034d6f9bb6c3555238354aade113c067f16cce8eade50e5e179f7217937c1",
+        "run/p0-176/frames.json": "a389eea157d954d1378622b673eb97e8e7130db068221075df97652a369b5452"
+      },
+      "recovery": "Recreate from initial-checkpoint.json; replay every accepted/rejected recipe row; compare each accepted row and FAST terminal before advancing."
+    },
+    {
+      "name": "p0-352",
+      "source_phase_deg": [
+        0.0,
+        60.0
+      ],
+      "target_phase_deg": [
+        0.0,
+        150.0
+      ],
+      "accepted_source_steps": 960,
+      "source_wall_s": 53.92832820001058,
+      "projected_replay_plus_extension_s": 134.82082050002646,
+      "manifest_sha256": {
+        "run/p0-352/configuration.json": "36b005591c5f4b71cc23029969c577da23f503023694ecb05e528aeaa310690a",
+        "run/p0-352/initial-checkpoint.json": "c7b928220e5fd30f0958485cce69bb62e83e3e97ff798b952af898681746fb45",
+        "run/p0-352/recipe.json": "46db5c78c0430eb705b0b52a28f513c0ee95bac4932fd8654501fcba4ca62d8c",
+        "run/p0-352/terminal-state.json": "39c1ea4393815773f37e068abb11b0a4c7581a2e80c04492a017a5aaa4fe24b2",
+        "run/p0-352/receipt.json": "3de49f0091eda24c5a837233b5d56fd7c0e5c04fdd90a8cf3f7aaa3c40ece9b5",
+        "run/p0-352/frames.json": "a0e1b35398808034d2fd2cb8274352180fe29df5386dfd52dd5fb82a911217ba"
+      },
+      "recovery": "Recreate from initial-checkpoint.json; replay every accepted/rejected recipe row; compare each accepted row and FAST terminal before advancing."
+    },
+    {
+      "name": "p0-176-timehalf",
+      "source_phase_deg": [
+        0.0,
+        60.0
+      ],
+      "target_phase_deg": [
+        0.0,
+        150.0
+      ],
+      "accepted_source_steps": 1920,
+      "source_wall_s": 61.77904179994948,
+      "projected_replay_plus_extension_s": 154.4476044998737,
+      "manifest_sha256": {
+        "run/p0-176-timehalf/configuration.json": "cb0413bd460267337a45b703b02e8dd9824508430a6a054f3f745a4870d04e82",
+        "run/p0-176-timehalf/initial-checkpoint.json": "63e1eb70c25313289d6fbeb74edf723074b278e4245586097030f85e31193213",
+        "run/p0-176-timehalf/recipe.json": "6f36cc9e9c6ff4abda9da955d5caf30ee7a039e5727c828e2f6494440ebfcc6f",
+        "run/p0-176-timehalf/terminal-state.json": "e2278fe7e41f06bec2cc68cb8b860bb3720bbb756c7c193e2ab5535e6fe150d3",
+        "run/p0-176-timehalf/receipt.json": "6f8d0300d0dcac34434a40f622a0989753912b4879ad8183176d3fa46098638e",
+        "run/p0-176-timehalf/frames.json": "baadb8b63129d1e4e076b23430b545d16ebea2c21c752a9858a8048fc4195c5c"
+      },
+      "recovery": "Recreate from initial-checkpoint.json; replay every accepted/rejected recipe row; compare each accepted row and FAST terminal before advancing."
+    }
+  ],
+  "requested_observation_phases_deg": [
+    90.0,
+    120.0,
+    150.0
+  ],
+  "cost": {
+    "measured_source_cases_s": 166.46212629973888,
+    "linear_replay_plus_extension_projection_s": 416.1553157493472,
+    "projection_margin_fraction": 0.3,
+    "projection_with_margin_s": 541.0019104741514,
+    "proposed_total_admission_cap_s": 600.0,
+    "proposed_per_case_cap_s": 210.0,
+    "fits_proposed_caps": true
+  },
+  "planned_controls": [
+    "P0 spatial cases: 88/176/352 cells at the recorded 0.0625 degree cap.",
+    "P0 temporal control: 176 cells at the recorded 0.03125 degree cap.",
+    "No P1 case; no periodic extension; no changes to solver, closures, detector, CFL or rc7.",
+    "Compare pressure, density, species markers and face fluxes at common 90/120/150 degree phases; retain nonmonotone/local results without forcing GCI."
+  ],
+  "solver_steps_executed": 0,
+  "activation": "PREPARATION_ONLY_NOT_AUTHORIZED_FOR_SOLVER_EXECUTION",
+  "qualification": "Cost is a linear projection from recorded 0-60 degree case timings; the later arc may have different rejection/cost behavior. Recipe integrity must be reverified by an activated runner before any continuation."
+}

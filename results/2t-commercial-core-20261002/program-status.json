@@ -9852,13 +9852,16 @@
       "dependencies": [
         "PRED-PREOPEN-WAVE-TRANSPORT-EXECUTION"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "results/predictive-reliability-v1/preopen-wave-transport-run-v1/report.md"
+        "openspec/changes/predictive-reliability-v1/postopen-wave-transport-protocol-v1.md",
+        "scripts/diagnostics/prepare_postopen_wave_transport_v1.py",
+        "tests/test_prepare_postopen_wave_transport_v1.py",
+        "results/predictive-reliability-v1/postopen-wave-transport-preparation-v1/receipt.json"
       ],
-      "next_action": "Review saved39 phase/flux evidence first; design source-bound exact FAST+recipe recovery of existing diagnostic0-60deg and bounded comparison through phase150 only if cost/controls justified. No41 or periodic extension; retain original physics, detector, temporal and initial-field uncertainty.",
+      "next_action": "Preparation only; solver continuation requires separate activation and fresh source/cost checks.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -14189,6 +14192,12 @@
       "task": "PRED-TEMPORAL-OPERATOR-REFERENCE",
       "kind": "task",
       "summary": "Analytical smooth SSPRK2 decay reference passes asymptotic second-order check; integrated-engine temporal uncertainty remains open."
+    },
+    {
+      "at": "2026-10-28T15:05:26+00:00",
+      "task": "PRED-POSTOPEN-WAVE-TRANSPORT-DESIGN",
+      "kind": "task",
+      "summary": "Prepared source-bound post-opening diagnostic for recorded39: four FAST prefixes verified, projected 416.2s/541.0s with 30% margin, zero solver steps; execution not activated."
     }
   ],
   "legacy_gate_status": {
