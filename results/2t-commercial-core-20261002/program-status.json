@@ -9974,6 +9974,32 @@
       ],
       "evidence_level": "L1",
       "qualification": "ADOPTAR COMO CANDIDATO, P1 A/B DIFERENCIA DISTINGUIBLE.567.162s/600 incl tests/retry. P1 amplitude spatial sensitivity -62.13%, pulse L1 error7.09x lower, cost+21.3%. Downstream sensitivity and impulse worsen; no global grid-independence or reflection/power/experimental claim.32 focal PASS;301 distinct P4-P8 PASS,3SKIP after3 artifact-environment retries. SELF_REVIEW."
+    },
+    {
+      "id": "PRED-E2B-PERIODIC-AB-V1",
+      "description": "Owner E2B only: independent A83/B103 9000RPM MUSCL V2, frozen44 grid,5400s including verification and primary audits; classify uncertainty,then stop",
+      "dependencies": [
+        "PRED-E2-SPATIAL-WAVES-V1"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "docs/gasdynamic/e2b-periodic-ab-protocol-v1.md",
+        "results/e2b-periodic-ab-v1/manifest.json"
+      ],
+      "next_action": "Freeze before numerical execution. Run existing detector on independent configs; primary verify last accepted streak,exploratory power only.5400s global;no later stages.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "docs/gasdynamic/e2b-periodic-ab-protocol-v1.md",
+        "scripts/diagnostics/e2b_periodic_ab_v1.py",
+        "scripts/diagnostics/summarize_e2b_periodic_ab_v1.py",
+        "tests/test_e2b_periodic_ab_v1.py",
+        "results/e2b-periodic-ab-v1/"
+      ],
+      "evidence_level": "L2",
+      "qualification": "Same A44 config historically periodic30;measured13-14s/cycle,planning15.100cycles each+audits/tests/reserve fits5400. B cycle count uncertain. Power mesh uncertainty unquantified;no legacy power comparison. rc7/source/criteria intact."
     }
   ],
   "audit_remediation_mode": false,
@@ -10191,9 +10217,9 @@
       "PRED-IDENTIFICATION",
       "PRED-VALIDATION"
     ],
-    "completion_criterion": "Unified owner roadmap docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md: port-law verification, pressure waves and numerically distinguishable design effects, identifiable scavenging, evidence-led closures, independent measured curves and exhaust-change validation, then performance/product. Data acquisition parallel; X30 preferred, not exclusive. Current authorized delivery: bounded second-order waves on frozen E2A A/B within600s, then stop; no E2B or historical campaign. Periodicity/conservation do not establish predictive capability.",
+    "completion_criterion": "Unified owner roadmap docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md: port-law verification, pressure waves and numerically distinguishable design effects, identifiable scavenging, evidence-led closures, independent measured curves and exhaust-change validation, then performance/product. Data acquisition parallel; X30 preferred, not exclusive. Current authorized delivery: E2B independent periodic A/B9000RPM MUSCL V2 within5400s, then stop; no other RPM, refinement campaign or later stage. Periodicity/conservation do not establish predictive capability.",
     "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
-    "qualification": "Second-order wave deliverable closed: P1 A/B distinguishable, adopt experimental candidate only; downstream sensitivity unresolved. Owner-scoped stop; no E2B or historical campaign authorized.",
+    "qualification": "Owner authorizes only E2B independent A/B9000RPM MUSCL V2,5400s cumulative,then decision and stop. No automatic refinements or later stages.",
     "staged_plan": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md"
   },
   "objectives": [
@@ -14072,6 +14098,12 @@
       "task": "PRED-E2-SPATIAL-WAVES-V1",
       "kind": "task",
       "summary": "Closed second-order E2A: P1 DIFFERENCE DISTINGUISHABLE, ADOPT AS CANDIDATE. Spatial amplitude sensitivity -62.13%, pulse error7.09x lower,cost+21.3%;567.162s/600 incl32 focal and301 P4-P8 PASS(3 artifact-env retries),3SKIP. Downstream sensitivity/impulse worsen; no global/power/experimental claim. rc7/default intact;STOP,no E2B."
+    },
+    {
+      "at": "2026-10-28T13:40:43+00:00",
+      "task": "PRED-E2B-PERIODIC-AB-V1",
+      "kind": "task",
+      "summary": "Owner activates E2B only. Viability:exact A44 MUSCL V2 reference periodic30,measured13-14s/cycle. Freeze44/31exhaust independent A83/B103,9000RPM;5400s incl audits/tests. Existing detector/streak3,losses85000Pa unchanged. Periodic power uncertainty unquantified:exploratory only. No warm start,extra meshes or later stage."
     }
   ],
   "legacy_gate_status": {
@@ -14658,8 +14690,8 @@
   "roadmap_control": {
     "roadmap": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md",
     "owner_decision_date": "2026-10-28",
-    "activation": "E2_SPATIAL_WAVES_CLOSED_OWNER_SCOPED_STOP",
-    "next_deliverable": "None automatically: present candidate decision and downstream limits; no E2B activation.",
+    "activation": "E2B_PERIODIC_AB_ONLY_OWNER_AUTHORIZED",
+    "next_deliverable": "E2B independent periodic A/B with explicit numerical power uncertainty qualification;5400s,decision then stop.",
     "experimental_data_policy": "Acquire matched-engine geometry/conditions/uncertainties in parallel from start; prefer X30, accept a more complete independent reference without mixing engines; no repeated blocked downloads or unsolicited external messages.",
     "historical_ready_policy": "READY history does not authorize reviving meshes, 90-150deg studies or old campaigns outside an explicitly activated roadmap deliverable. SPV1 READY task stays intact.",
     "stages": [
@@ -14672,7 +14704,7 @@
       },
       {
         "id": "E2",
-        "state": "SECOND_ORDER_P1_CANDIDATE_CLOSED_E2B_NOT_STARTED",
+        "state": "E2B_IN_PROGRESS_FROZEN44_EXPLORATORY_SCOPE",
         "evidence": "results/e2-spatial-waves-v1/adoption.json",
         "adoption": "ADOPTAR_COMO_CANDIDATO",
         "qualification": "P1 only, transient A/B. Downstream sensitivity increases; reflection return and periodic power not qualified."
