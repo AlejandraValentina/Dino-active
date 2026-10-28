@@ -1,5 +1,17 @@
 # DINO_PREDICTIVE_RELIABILITY_V1
 
+## Current owner roadmap (2026-10-28)
+
+Execution priorities and stage activation are governed by
+[the unified roadmap](../../../../../docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md),
+referenced in program-status.json. This replaces previous scheduling, not the
+frozen acceptance thresholds or scientific evidence below. The current action
+adopts that plan and defines the next deliverable only; it does not activate
+new simulations, historical READY campaigns, or all future stages. Port-flow
+verification is closed with V2 remaining experimental; the next deliverable is
+a scoped A/B pressure-wave comparison protocol. Experimental data acquisition
+is a parallel workstream, X30 preferred but not exclusive.
+
 Owner authorization: 2026-10-26, progressive physical correction and verification
 in the order proposed by the engineering audit. This supersedes V3 as current
 work; V3 remains frozen and its results and queue history remain intact.

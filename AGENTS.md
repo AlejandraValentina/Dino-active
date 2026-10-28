@@ -25,10 +25,12 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 CURRENT_OBJECTIVE: DINO_PREDICTIVE_RELIABILITY_V1
 change/spec:       openspec/changes/predictive-reliability-v1/
                    specs/predictive-reliability-v1/spec.md
-completion:        Versioned restriction/connection verification, spatial accuracy,
-                   bounded integrated diagnostics, closure identification and
-                   blind measured-engine validation. No target power increase.
-                   Preserve CRV1 and historical evidence; V3 frozen; no push.
+roadmap:          docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md
+completion:        Port law, pressure waves/design distinction, identifiable
+                   scavenging, evidence-led closures, blind measured validation,
+                   then performance/product. Experimental data in parallel.
+                   Stages require recorded scope/activation; no automatic old
+                   campaigns. Preserve rc7; no predictive claim from periodicity.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    -> current_objective, queue, gate_status, progress_log
 ```

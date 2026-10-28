@@ -7809,7 +7809,7 @@
         "X30M-REQUEST-PACKAGE"
       ],
       "state": "BLOCKED_LOCAL",
-      "blocker": "Deferred: X30 is not the current operational priority; the approved request remains unsent. Do not initiate X30 preparation while this objective is deferred.",
+      "blocker": "X30 is the primary experimental reference under the unified roadmap; acquisition is now prioritized in parallel. The existing request remains unsent: this planning instruction does not authorize external transmission. Missing measured geometry still blocks executable X30 configuration, not evaluation of another complete reference.",
       "unblock_tasks": [],
       "commits": [],
       "evidence": [
@@ -9888,6 +9888,33 @@
       ],
       "evidence_level": "L2",
       "qualification": "SELF_REVIEW. 100 analytic matches <=6.64e-13, 4 finite conservative cases; two first-order integrated runs. Existing V2 reused, no production physics or Desktop changes. Real port losses and absolute power remain unvalidated."
+    },
+    {
+      "id": "PRED-UNIFIED-ROADMAP-V1",
+      "description": "Adopt owner six-stage unified predictive/product roadmap, reconcile port-law decision, define next bounded E2A deliverable without executing stages",
+      "dependencies": [
+        "ENGINE-PORT-FLOW-VERIFICATION-V1"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [
+        "2f16248"
+      ],
+      "evidence": [
+        "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md",
+        "results/port-flow-verification-v1/receipt.json"
+      ],
+      "next_action": "Planning closed. Next E2A protocol defined but no numerical stage activated by this instruction.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "orchestrator",
+      "write_scope": [
+        "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md",
+        "AGENTS.md",
+        "docs/roadmaps/dino-2t-product-roadmap-v2-20261028.md",
+        "openspec/changes/predictive-reliability-v1/specs/predictive-reliability-v1/spec.md"
+      ],
+      "evidence_level": "L0",
+      "qualification": "Documentation and operational references only; no physical code, simulations, builds or scientific claims changed."
     }
   ],
   "audit_remediation_mode": false,
@@ -10092,7 +10119,7 @@
     "id": "DINO_PREDICTIVE_RELIABILITY_V1",
     "state": "OPEN",
     "owner_approved": true,
-    "summary": "Owner authorizes progressive versioned physical corrections, subsystem verification and eventual measured-motor validation; no target power increase.",
+    "summary": "Owner unified six-stage roadmap: physical/predictive deliverables first; experimental data parallel; later performance and commercial maturity.",
     "change": "openspec/changes/predictive-reliability-v1",
     "spec": "openspec/changes/predictive-reliability-v1/specs/predictive-reliability-v1/spec.md",
     "transitioned_from": "DINO_INTEGRATED_PERFORMANCE_V3",
@@ -10105,9 +10132,10 @@
       "PRED-IDENTIFICATION",
       "PRED-VALIDATION"
     ],
-    "completion_criterion": "Versioned physical connection, spatial and subsystem verification followed by preregistered validation against complete measured engine data, or a documented fundamental inconsistency presented before dependent work.",
+    "completion_criterion": "Unified owner roadmap docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md: port-law verification, pressure waves and numerically distinguishable design effects, identifiable scavenging, evidence-led closures, independent measured curves and exhaust-change validation, then performance/product. Data acquisition parallel; X30 preferred, not exclusive. Current instruction adopts planning and defines next E2A protocol only: no automatic simulations or historical campaigns. Periodicity/conservation do not establish predictive capability.",
     "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
-    "qualification": "Progressive work remains OPEN. Owner-requested fundamental-finding report due before connection adoption or dependent spatial/integrated work. No global hard stop."
+    "qualification": "Roadmap adopted; E1 candidate verified but experimental. Next E2A protocol defined, not started. No automatic activation of old READY tasks or later stages; preserve rc7.",
+    "staged_plan": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md"
   },
   "objectives": [
     {
@@ -11162,7 +11190,7 @@
       "id": "DINO_PREDICTIVE_RELIABILITY_V1",
       "state": "OPEN",
       "owner_approved": true,
-      "summary": "Owner authorizes progressive versioned physical corrections, subsystem verification and eventual measured-motor validation; no target power increase.",
+      "summary": "Owner unified six-stage roadmap: physical/predictive deliverables first; experimental data parallel; later performance and commercial maturity.",
       "change": "openspec/changes/predictive-reliability-v1",
       "spec": "openspec/changes/predictive-reliability-v1/specs/predictive-reliability-v1/spec.md",
       "transitioned_from": "DINO_INTEGRATED_PERFORMANCE_V3",
@@ -11175,8 +11203,10 @@
         "PRED-IDENTIFICATION",
         "PRED-VALIDATION"
       ],
-      "completion_criterion": "Versioned physical connection, spatial and subsystem verification followed by preregistered validation against complete measured engine data, or a documented fundamental inconsistency presented before dependent work.",
-      "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED"
+      "completion_criterion": "Unified owner roadmap docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md: port-law verification, pressure waves and numerically distinguishable design effects, identifiable scavenging, evidence-led closures, independent measured curves and exhaust-change validation, then performance/product. Data acquisition parallel; X30 preferred, not exclusive. Current instruction adopts planning and defines next E2A protocol only: no automatic simulations or historical campaigns. Periodicity/conservation do not establish predictive capability.",
+      "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
+      "staged_plan": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md",
+      "qualification": "Roadmap adopted; E1 candidate verified but experimental. Next E2A protocol defined, not started. No automatic activation of old READY tasks or later stages; preserve rc7."
     }
   ],
   "owner_decisions_pending": [
@@ -13953,6 +13983,12 @@
       "task": "ENGINE-PORT-FLOW-VERIFICATION-V1",
       "kind": "task",
       "summary": "CLOSED CORREGIR: scaled Riemann fails nozzle limits, including exact Euler. Existing experimental V2 passes100 analytic cases and4 conservative/restart cases. Two first-order A9000 runs: transient impact,3.32x cost; no product/default changes.1514 focal PASS; P4-P8 301PASS3SKIP. Raw evidence external; user edits unstaged. No further campaign authorized."
+    },
+    {
+      "at": "2026-10-28T11:25:54+00:00",
+      "task": "PRED-UNIFIED-ROADMAP-V1",
+      "kind": "task",
+      "summary": "Owner six-stage roadmap adopted; active objective now references one plan. E1 CORREGIR remains experimental, not a validated port-loss law. Next E2A wave A/B protocol defined, not executed; X30/data work parallel, alternative complete engines allowed. All10 blockers reevaluated: missing data unchanged; SPV1 intact. No code, simulations, builds or automatic campaigns."
     }
   ],
   "legacy_gate_status": {
@@ -14535,5 +14571,46 @@
     "summary": "176-cell bounded diagnostic conserves but three-level work converges slowly and fields are mixed; all two-cycle cases remain transient. 41 new diagnostic tests and 301 P4-P8 tests PASS. Public component candidate retained, no complete validation package adopted.",
     "replanning_review": "Numerical and public-source continuation performed as authorized. Next local work isolates boundary/area truncation, checks inlet experimental completeness and prepares bounded periodicity protocol. Historical SPV1/X30/CRV1 entries preserved untouched.",
     "next_requirement": "Complete independently measured specimen/test package and defensible numerical uncertainty, not assumed input completion."
+  },
+  "roadmap_control": {
+    "roadmap": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md",
+    "owner_decision_date": "2026-10-28",
+    "activation": "PLANNING_ONLY_NO_NEW_STAGE_EXECUTION",
+    "next_deliverable": "E2A: frozen-model A/B pressure-wave comparison protocol, then bounded execution only when activated",
+    "experimental_data_policy": "Acquire matched-engine geometry/conditions/uncertainties in parallel from start; prefer X30, accept a more complete independent reference without mixing engines; no repeated blocked downloads or unsolicited external messages.",
+    "historical_ready_policy": "READY history does not authorize reviving meshes, 90-150deg studies or old campaigns outside an explicitly activated roadmap deliverable. SPV1 READY task stays intact.",
+    "stages": [
+      {
+        "id": "E1",
+        "state": "REFERENCE_VERIFICATION_CLOSED",
+        "adoption": "KEEP_EXPERIMENTAL",
+        "evidence": "results/port-flow-verification-v1/receipt.json",
+        "physical_losses_identified": false
+      },
+      {
+        "id": "E2",
+        "state": "NOT_STARTED_BY_THIS_PLAN"
+      },
+      {
+        "id": "E3",
+        "state": "NOT_STARTED_BY_THIS_PLAN"
+      },
+      {
+        "id": "E4",
+        "state": "NOT_STARTED_BY_THIS_PLAN"
+      },
+      {
+        "id": "E5",
+        "state": "NOT_STARTED_BY_THIS_PLAN"
+      },
+      {
+        "id": "E6",
+        "state": "NOT_STARTED_BY_THIS_PLAN"
+      }
+    ],
+    "predictive_validation": "NOT_PERFORMED",
+    "predictive_capability": "NOT_CLAIMED",
+    "baseline_rc7": "PRESERVED",
+    "qualification": "Old gate counts summarize existing technical tasks, not completion of the six scientific/product stages. New models are not automatically promoted."
   }
 }

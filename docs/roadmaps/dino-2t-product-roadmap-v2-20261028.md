@@ -1,5 +1,8 @@
 # Dino 2T — hoja de ruta de producto V2
 
+> Orden de prioridades reemplazado por la [hoja de ruta única adoptada](dino-2t-unified-roadmap-v1-20261028.md).
+> Se conserva este documento como inventario y antecedente, sin activar sus entregas.
+
 Fecha: 2026-10-28. Evaluación documental y de código sobre HEAD `5cf80cc` y
 evidencias existentes; no se ejecutaron simulaciones, builds ni tests nuevos.
 No se modificaron código de producto, configuraciones, tolerancias ni resultados.
