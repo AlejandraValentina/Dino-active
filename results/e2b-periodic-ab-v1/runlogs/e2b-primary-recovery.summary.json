@@ -1,0 +1,20 @@
+{
+  "name": "e2b-primary-recovery",
+  "command": [
+    "python",
+    "scripts/diagnostics/recover_e2b_output_v1.py"
+  ],
+  "started_at": "2026-10-28T14:23:40+00:00",
+  "finished_at": "2026-10-28T14:29:32+00:00",
+  "duration_s": 352.266,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\e2b-periodic-ab-v1\\runlogs\\e2b-primary-recovery.log",
+  "log_lines": 2,
+  "log_bytes": 196,
+  "error_lines": [],
+  "tail": [
+    "{\"variant\": \"B\", \"status\": \"PASS\", \"period\": 1, \"converged_cycle\": 32, \"wall_s\": 296.41888430016115}",
+    "{\"classification\": \"E2B_PERI\\u00d3DICO_EXPLORATORIO\", \"cumulative_wall_s\": 1725.4931405002717}"
+  ]
+}
