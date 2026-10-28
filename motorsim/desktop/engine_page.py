@@ -9,7 +9,7 @@ from ..engine_configuration import validate,identity,sha256
 from ..two_stroke_ports import TwoStrokePortSet,DuctBinding,PortDefinition
 from ..crankcase import CrankcaseGeometry
 from ..integrated_2t import SliderCrankChambers2T
-from ..gas1d.mesh import uniform_mesh
+from ..gas1d.mesh import Mesh
 
 
 class CylinderSketch(QWidget):
@@ -163,13 +163,21 @@ class EnginePage(QWidget):
             self.mixed_outflow.blockSignals(True);self.mixed_outflow.setValue(float((exchange or {}).get("mixed_outflow_fraction",0.0)));self.mixed_outflow.blockSignals(False)
             self.mixed_outflow.setEnabled(exchange is not None and "mixed_outflow_fraction" in exchange)
             ducts=n.get("ducts",[]);editable=[entry for entry in ducts if entry.get("role") in {"intake","transfer"}]
-            self.ducts.blockSignals(True);self.ducts.setRowCount(len(editable));self._duct_ids=[]
+            self.ducts.blockSignals(True);self.ducts.setRowCount(len(editable));self._duct_ids=[];self._editable_duct_ids=set()
             for row,entry in enumerate(editable):
                 mesh=entry["mesh"];area=sum(mesh["areas"])/len(mesh["areas"]);length=mesh["faces"][-1]-mesh["faces"][0]
-                diameter=math.sqrt(4*area/math.pi);self._duct_ids.append(entry["id"])
-                for col,value in enumerate((entry["id"],entry["role"],f"{length*1000:.6g}",f"{diameter*1000:.6g}")):
+                constant_area=all(math.isclose(value,mesh["areas"][0],rel_tol=1e-10,abs_tol=1e-14) for value in mesh["areas"])
+                self._duct_ids.append(entry["id"])
+                if constant_area:self._editable_duct_ids.add(entry["id"])
+                diameter=math.sqrt(4*area/math.pi)
+                shown_length=f"{length*1000:.6g}" if constant_area else "Sección variable · no editable"
+                shown_diameter=f"{diameter*1000:.6g}" if constant_area else "—"
+                for col,value in enumerate((entry["id"],entry["role"],shown_length,shown_diameter)):
                     item=QTableWidgetItem(str(value));item.setData(Qt.ItemDataRole.UserRole,entry["id"])
                     if col<2:item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+                    if col>=2 and not constant_area:
+                        item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+                        item.setToolTip("La malla representa una sección variable; esta pantalla sólo edita conductos de sección circular constante.")
                     self.ducts.setItem(row,col,item)
             self.ducts.blockSignals(False)
             petals=n.get("reed_petals",[]);self.reeds.blockSignals(True);self.reeds.setRowCount(len(petals))
@@ -377,12 +385,18 @@ class EnginePage(QWidget):
             changed_ducts=False
             by_id={entry["id"]:entry for entry in native.get("ducts",[])}
             for row,path_id in enumerate(getattr(self,"_duct_ids",[])):
+                if path_id not in getattr(self,"_editable_duct_ids",set()):continue
                 if path_id not in by_id:continue
                 entry=by_id[path_id];old=entry["mesh"]
                 try:length_mm=self._decimal(self.ducts.item(row,2).text());diameter_mm=self._decimal(self.ducts.item(row,3).text())
                 except (ValueError,AttributeError) as exc:raise ValueError(f"Conducto {path_id}: longitud y diámetro deben ser numéricos") from exc
                 if not all(math.isfinite(v) and v>0 for v in (length_mm,diameter_mm)):raise ValueError(f"Conducto {path_id}: longitud y diámetro deben ser positivos")
-                new=uniform_mesh(len(old["volumes"]),length_mm/1000,math.pi*(diameter_mm/1000)**2/4).as_dict()
+                length_m=length_mm/1000;area=math.pi*(diameter_mm/1000)**2/4
+                start,end=old["faces"][0],old["faces"][-1];span=end-start
+                faces=[length_m*(face-start)/span for face in old["faces"]]
+                volumes=[area*(right-left) for left,right in zip(faces,faces[1:])]
+                new=Mesh(tuple(faces),(area,)*(len(faces)),tuple(volumes),
+                         tuple((left+right)/2 for left,right in zip(faces,faces[1:]))).as_dict()
                 if new!=old:
                     species=native["duct_species"][path_id]
                     for cell,(before,after) in enumerate(zip(old["volumes"],new["volumes"])):

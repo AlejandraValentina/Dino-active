@@ -1,16 +1,21 @@
 from __future__ import annotations
 import csv,json
+import hashlib
 import math
 from pathlib import Path
+import uuid
 from PySide6.QtCore import Qt,Signal,QRect
 from PySide6.QtGui import QPixmap,QColor,QPainter,QPen,QImage
 from PySide6.QtWidgets import (QWidget,QVBoxLayout,QHBoxLayout,QLabel,QComboBox,QPushButton,
-    QFileDialog,QCheckBox,QGroupBox,QListWidget,QListWidgetItem,QTableWidget,QTableWidgetItem,QHeaderView,QMessageBox)
+    QFileDialog,QCheckBox,QGroupBox,QListWidget,QListWidgetItem,QTableWidget,QTableWidgetItem,QHeaderView,QMessageBox,
+    QDialog,QDialogButtonBox,QFormLayout,QLineEdit)
 from .plot import CurvePlot
 from .performance_curves import PowerCurvePanel
 from .services import load_results,run_background
 from .preferences import artifact_root,impl2_historical_report_candidate,settings
 from ..exploratory_workflow import import_exploratory_runs
+from .. import measurement_data
+from ..engine_project import validate_project
 
 METRICS={"Potencia de freno (kW)":"brake_power","Torque (N·m)":"brake_torque","IMEP (kPa)":"IMEP","FMEP (kPa)":"FMEP","BMEP (kPa)":"BMEP","BSFC (g/kWh)":"BSFC"}
 
@@ -118,6 +123,19 @@ class ResultsPage(QWidget):
         self.variants=QListWidget();self.variants.setMaximumHeight(80);self.variants.setFlow(QListWidget.Flow.LeftToRight);self.variants.setWrapping(True);root.addWidget(self.variants)
         baseline_row=QHBoxLayout();root.addLayout(baseline_row);baseline_row.addWidget(QLabel("Baseline del proyecto"));self.baseline_selector=QComboBox();baseline_row.addWidget(self.baseline_selector)
         self.baseline_notice=QLabel("La baseline identifica la referencia de comparación; las curvas usan sólo puntos realmente disponibles.");self.baseline_notice.setWordWrap(True);baseline_row.addWidget(self.baseline_notice,1)
+        measured=QGroupBox("Mediciones externas · contraste descriptivo");measured_layout=QVBoxLayout(measured)
+        measured_row=QHBoxLayout();measured_layout.addLayout(measured_row)
+        self.measurement_import_button=QPushButton("Importar CSV de banco…");self.measurement_import_button.clicked.connect(self.import_measurement);measured_row.addWidget(self.measurement_import_button)
+        self.measurement_selector=QComboBox();self.measurement_selector.currentIndexChanged.connect(self.compare_measurement);measured_row.addWidget(self.measurement_selector)
+        self.measurement_compare_button=QPushButton("Comparar RPM exactas");self.measurement_compare_button.clicked.connect(self.compare_measurement);measured_row.addWidget(self.measurement_compare_button)
+        self.measurement_export_button=QPushButton("Exportar contraste CSV");self.measurement_export_button.clicked.connect(self.export_measurement_comparison);measured_row.addWidget(self.measurement_export_button)
+        self.measurement_notice=QLabel("Las mediciones conservan unidades, origen e incertidumbre. Sin interpolación; no es validación experimental preregistrada.")
+        self.measurement_notice.setWordWrap(True);measured_layout.addWidget(self.measurement_notice)
+        self.measurement_plot=CurvePlot();self.measurement_plot.setObjectName("measuredRunOverlay");self.measurement_plot.setMinimumHeight(160);measured_layout.addWidget(self.measurement_plot)
+        self.measurement_table=QTableWidget(0,5);self.measurement_table.setObjectName("measuredRunComparison")
+        self.measurement_table.setHorizontalHeaderLabels(["RPM","Medido","Incertidumbre","Simulado","Simulado − medido"])
+        self.measurement_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.measurement_table.setMaximumHeight(170);measured_layout.addWidget(self.measurement_table)
+        root.addWidget(measured)
         self.condition_notice=QLabel();self.condition_notice.setWordWrap(True);self.condition_notice.setObjectName("notice");root.addWidget(self.condition_notice)
         self.plot=CurvePlot();root.addWidget(self.plot,2)
         self.power_curves=PowerCurvePanel();root.addWidget(self.power_curves)
@@ -169,6 +187,134 @@ class ResultsPage(QWidget):
         index=self.baseline_selector.findData(preferred)
         if index<0:index=self.baseline_selector.findData(self.context.selected_variant or "base")
         self.baseline_selector.setCurrentIndex(index if index>=0 else 0);self.baseline_selector.blockSignals(False)
+        self._reload_measurement_references()
+
+    def _reload_measurement_references(self):
+        loaded=[];errors=[]
+        for ref in self.context.project.get("measurement_references",[]):
+            try:
+                path=Path(ref["path"])
+                if not path.is_absolute() and self.context.path and ref["path"].startswith(("./", ".\\")):
+                    path=(Path(self.context.path).resolve().parent/ref["path"][2:]).resolve()
+                data=measurement_data.load_import(path)
+                meta_hash=hashlib.sha256(path.read_bytes()).hexdigest()
+                if (data["manifest"]["dataset_id"]!=ref["dataset_id"] or
+                        data["manifest"]["csv_sha256"]!=ref["csv_sha256"] or meta_hash!=ref["metadata_sha256"]):
+                    raise ValueError("La medición no coincide con los hashes guardados en el proyecto.")
+                loaded.append(data)
+            except Exception as exc:errors.append(f"{ref.get('path','medición')}: {exc}")
+        self.measurement_datasets=loaded;self.measurement_selector.blockSignals(True);self.measurement_selector.clear()
+        for data in loaded:
+            meta=data["metadata"];self.measurement_selector.addItem(f"{meta['kind']} · {meta['engine']} · {meta['provenance']}",data["manifest"]["dataset_id"])
+        self.measurement_selector.blockSignals(False)
+        self.measurement_import_button.setEnabled(bool(self.context.path))
+        if errors:self.measurement_notice.setText("No se pudieron recuperar algunas mediciones: "+"; ".join(errors))
+        elif loaded:self.measurement_notice.setText(f"{len(loaded)} conjunto(s) medido(s) ligado(s) al proyecto. Contraste exacto · no es validación experimental.")
+        self.compare_measurement()
+
+    def import_measurement(self):
+        if not self.context.path:
+            QMessageBox.information(self,"Guardar proyecto","Guardá primero el proyecto para ligar la medición a una ruta que pueda recuperarse al reabrirlo.");return False
+        csv_path,_=QFileDialog.getOpenFileName(self,"Importar medición de banco",str(Path(self.context.path).parent),"CSV (*.csv)")
+        if not csv_path:return False
+        dialog=QDialog(self);dialog.setWindowTitle("Declarar medición externa");form=QFormLayout(dialog)
+        kind=QComboBox();kind.addItem("Potencia de freno","dyno_power");kind.addItem("Torque","dyno_torque");kind.addItem("Presión de cilindro por ciclo","pressure_trace")
+        unit=QComboBox()
+        cycle_period=QComboBox();cycle_period.addItem("360°",360);cycle_period.addItem("720°",720)
+        def update_units():
+            choices={"dyno_power":("kW","W","hp"),"dyno_torque":("N*m","lb-ft"),"pressure_trace":("Pa","kPa","bar")}[kind.currentData()]
+            unit.clear();unit.addItems(choices);cycle_period.setEnabled(kind.currentData()=="pressure_trace")
+        kind.currentIndexChanged.connect(update_units);update_units()
+        provenance=QComboBox();provenance.addItem("Desconocido","UNKNOWN");provenance.addItem("Medido","MEASURED");provenance.addItem("Documentado","DOCUMENTED");provenance.addItem("Sintético de prueba","SYNTHETIC")
+        fields={key:QLineEdit() for key in ("engine","configuration","conditions","source","notes")}
+        form.addRow("Magnitud",kind);form.addRow("Unidad del CSV",unit);form.addRow("Clasificación",provenance)
+        form.addRow("Período de ciclo",cycle_period)
+        for key,label in (("engine","Motor"),("configuration","Configuración"),("conditions","Condiciones"),("source","Fuente"),("notes","Notas")):form.addRow(label,fields[key])
+        buttons=QDialogButtonBox(QDialogButtonBox.StandardButton.Cancel|QDialogButtonBox.StandardButton.Save);buttons.accepted.connect(dialog.accept);buttons.rejected.connect(dialog.reject);form.addRow(buttons)
+        if dialog.exec()!=QDialog.DialogCode.Accepted:return False
+        try:
+            period=cycle_period.currentData() if kind.currentData()=="pressure_trace" else None
+            meta=measurement_data.declarations(kind.currentData(),unit.currentText(),cycle_period_deg=period,provenance=provenance.currentData(),**{key:edit.text() for key,edit in fields.items()})
+            raw=Path(csv_path).read_bytes();prepared=measurement_data.prepare_import(raw,meta)
+            project_path=Path(self.context.path).resolve();root=project_path.parent/(project_path.stem+".measurements")
+            root.mkdir(parents=True,exist_ok=True)
+            imported=measurement_data.save_import(root/uuid.uuid4().hex,prepared);manifest_path=Path(imported["path"])
+            try:stored_path="./"+manifest_path.parent.relative_to(project_path.parent).as_posix()+"/metadata.json"
+            except ValueError:stored_path=str(manifest_path)
+            ref={"path":stored_path,"dataset_id":imported["manifest"]["dataset_id"],
+                 "metadata_sha256":hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+                 "csv_sha256":imported["manifest"]["csv_sha256"],"classification":meta["provenance"]}
+            project=self.context.project;project.setdefault("measurement_references",[]).append(ref);validate_project(project)
+            self.context.dirty=True;self.context.changed.emit();self.measurement_notice.setText("Medición importada y ligada al proyecto. Guardá el proyecto para persistir la referencia. Datos sintéticos de prueba no validan el solver.")
+            return True
+        except Exception as exc:
+            QMessageBox.warning(self,"No se pudo importar la medición",str(exc));return False
+
+    def compare_measurement(self,*_):
+        self.measurement_table.setRowCount(0)
+        if not getattr(self,"measurement_datasets",None) or self.measurement_selector.currentIndex()<0 or not self.dataset:return
+        external=self.measurement_datasets[self.measurement_selector.currentIndex()];meta=external["metadata"]
+        variant=self.baseline_selector.currentData() or "base";simulated=[]
+        if meta["kind"]=="pressure_trace":
+            rpm=self.trace_rpm.currentData()
+            if rpm is None:
+                self.measurement_notice.setText("Elegí una RPM de la corrida para contrastar la traza; no se mezclan condiciones ni ciclos.");return
+            traces=[trace for trace in self.dataset.get("traces",[]) if trace.get("variant_id")==variant and trace.get("rpm")==rpm]
+            for trace in traces:
+                channel=trace.get("channels",{}).get("cylinder_pressure_pa",{})
+                for angle,value in zip(trace.get("angles_deg",[]),channel.get("values",[])):
+                    if value is not None:simulated.append({"cycle":trace["cycle"],"x":angle,"value":value})
+            unit=meta["canonical_value_unit"]
+            if not simulated:
+                self.measurement_notice.setText("La corrida seleccionada no tiene trazas de presión del cilindro para esa RPM.");return
+        else:
+            metric="brake_power" if meta["kind"]=="dyno_power" else "brake_torque" if meta["kind"]=="dyno_torque" else None
+            if metric is None:return
+            for point in self.dataset.get("points",[]):
+                if point.get("variant_id")!=variant or point.get(metric+"_status")!="DEFINED":continue
+                value=point.get(metric)
+                if value is not None:simulated.append({"x":point["rpm"],"value":float(value)*(1000 if metric=="brake_power" else 1)})
+            unit=meta["canonical_value_unit"]
+        comparison=measurement_data.exploratory_overlay(external,simulated,simulated_unit=unit)
+        self.measurement_table.setHorizontalHeaderLabels(["Ciclo / ángulo (°CA)" if meta["kind"]=="pressure_trace" else "RPM",
+            "Medido", "Incertidumbre", "Simulado", "Simulado − medido"])
+        if meta["kind"]=="pressure_trace":
+            measured_points=[{"angle_deg":row["x"],"value":row["value"]} for row in external["rows"]]
+            simulated_points=[{"angle_deg":row["key"][1],"value":row["simulated"]} for row in comparison["rows"] if row["simulated"] is not None]
+            x_key="angle_deg";x_label="Ángulo de cigüeñal (°)"
+        else:
+            measured_points=[{"rpm":row["x"],"value":row["value"]} for row in external["rows"]]
+            simulated_points=[{"rpm":row["key"],"value":row["simulated"]} for row in comparison["rows"] if row["simulated"] is not None]
+            x_key="rpm";x_label="RPM"
+        self.measurement_plot.set_series([
+            {"name":"Medido · "+meta["provenance"],"unit":unit,"x_label":x_label,"x_key":x_key,"points":measured_points},
+            {"name":"Corrida · coordenadas coincidentes","unit":unit,"x_label":x_label,"x_key":x_key,"points":simulated_points}])
+        self.measurement_table.setRowCount(len(comparison["rows"]))
+        for row,data in enumerate(comparison["rows"]):
+            values=(data["key"],data["measured"],data["uncertainty"],data["simulated"],data["difference"])
+            for column,value in enumerate(values):
+                shown="—" if value is None else (str(value) if isinstance(value,tuple) else f"{value:g}")
+                item=QTableWidgetItem(shown);item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable);self.measurement_table.setItem(row,column,item)
+        self.measurement_notice.setText(f"{meta['kind']} · {meta['canonical_value_unit']} · {meta['provenance']} · {meta['engine']} · {meta['configuration']} · {meta['conditions']} · {comparison['metrics']['matched_count']} coincidencias exactas · sin interpolación. {comparison['notice']}")
+        run_ids=sorted({str(row.get("run_id")) for row in self.dataset.get("points",[]) if row.get("variant_id")==variant and row.get("run_id")})
+        self._measurement_export_metadata={"dataset_id":comparison["dataset_id"],"provenance":meta["provenance"],
+            "source":meta["source"],"engine":meta["engine"],"configuration":meta["configuration"],
+            "conditions":meta["conditions"],"variant":variant,"run_ids":";".join(run_ids),
+            "comparison_status":comparison["status"],"interpolation":comparison["interpolation"]}
+
+    def export_measurement_comparison(self):
+        if self.measurement_table.rowCount()==0:return False
+        path,_=QFileDialog.getSaveFileName(self,"Exportar contraste de mediciones",str(Path(self.context.path).parent if self.context.path else Path.cwd()),"CSV (*.csv)")
+        if not path:return False
+        try:
+            with Path(path).open("w",encoding="utf-8-sig",newline="") as stream:
+                writer=csv.writer(stream);metadata=self._measurement_export_metadata
+                context_fields=["dataset_id","provenance","source","engine","configuration","conditions","variant","run_ids","comparison_status","interpolation"]
+                writer.writerow(context_fields+[self.measurement_table.horizontalHeaderItem(c).text() for c in range(self.measurement_table.columnCount())])
+                for row in range(self.measurement_table.rowCount()):writer.writerow([metadata[key] for key in context_fields]+[self.measurement_table.item(row,c).text() for c in range(self.measurement_table.columnCount())])
+            return True
+        except OSError as exc:
+            QMessageBox.warning(self,"No se pudo exportar el contraste",str(exc));return False
 
     def _baseline_changed(self,*_):
         name=self.baseline_selector.currentData()
@@ -455,6 +601,7 @@ class ResultsPage(QWidget):
         self._update_condition_notice()
         self._update_engineering_compare()
         self.power_curves.set_dataset(self.dataset, selected)
+        self.compare_measurement()
     def redraw_trace(self,*_):
         if not self.dataset or self.dataset.get("schema") not in {"DINO_EXPLORATORY_COMPARISON_V1","DINO_DESKTOP_ENGINEERING_DATA_V1"}:
             self.trace_plot.set_series([]);self.trace_legend.setText("");return

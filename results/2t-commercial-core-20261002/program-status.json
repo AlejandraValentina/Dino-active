@@ -10400,13 +10400,18 @@
       "dependencies": [
         "DINO-DESKTOP-CUSTOM-ENGINE-P1"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "docs/roadmaps/dino-2t-product-roadmap-v2-20261028.md#p2"
+        "motorsim/measurement_data.py (existing import/overlay contract reused)",
+        "motorsim/engine_project.py (V1→V2 project migration and hash-bound measurement references)",
+        "motorsim/desktop/results_page.py (dyno power/torque and cylinder pressure import, exact-coordinate overlay and CSV export)",
+        "tests/test_dino_desktop.py::DinoDesktopTests::test_desktop_imports_measured_dynodata_persists_and_compares_exact_rpm",
+        "tests/test_dino_desktop.py::DinoDesktopTests::test_legacy_project_v1_migrates_without_changing_engine",
+        "Five focused Desktop GUI tests passed; test data classified UNKNOWN, no validation claim"
       ],
-      "next_action": "Implement bounded Desktop import and project persistence using existing measurement_data contracts; keep experimental validation blocked absent independent matched-engine data.",
+      "next_action": "Continue with the roadmap P1 practical design-comparison performance feasibility using existing independent-run coordinator; preserve solver physics and periodicity criteria.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "product/implementation/verification",
       "evidence_level": "L1",
@@ -10417,6 +10422,31 @@
         "tests/test_dino_desktop.py"
       ],
       "qualification": "P2 functional import can be developed with test-labeled data; it does not authorize or imply a predictive/experimental validation claim."
+    },
+    {
+      "id": "DINO-DESKTOP-COMPARISON-SPEED-P1",
+      "description": "Integrate or reject the existing independent-run coordinator for Desktop A/B comparison based on bounded end-to-end feasibility in two brief representative cases; no solver/periodicity changes.",
+      "dependencies": [
+        "DINO-DESKTOP-MEASURED-DATA-P2"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "docs/roadmaps/dino-2t-product-roadmap-v2-20261028.md#p1-tiempo-practico-para-comparar-diseños",
+        "results/integrated-performance-v2/report.md",
+        "results/integrated-performance-v4/report.md"
+      ],
+      "next_action": "Inspect existing coordinator API and Desktop dispatch, then run only the roadmap-approved brief end-to-end feasibility comparison if existing deterministic fixtures support it; stop if benefit/correctness cannot be measured without a periodicity campaign.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "product/implementation/verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "motorsim/desktop/execution_page.py",
+        "motorsim/desktop/services.py",
+        "tests/test_dino_desktop.py"
+      ],
+      "qualification": "V2/V4 solver performance pilots are closed and must not be repeated; only Desktop integration of independent runs is in scope. Full six-point acceptance remains unclaimed."
     }
   ],
   "audit_remediation_mode": false,
@@ -14665,6 +14695,12 @@
       "task": "DINO-DESKTOP-MEASURED-DATA-P2",
       "kind": "task",
       "summary": "Iniciada tarea funcional P2 autorizada: importación de mediciones Desktop, independiente de validación experimental bloqueada."
+    },
+    {
+      "at": "2026-10-28T16:30:37Z",
+      "task": "DINO-DESKTOP-MEASURED-DATA-P2",
+      "kind": "task",
+      "summary": "Desktop importa y compara potencia, torque y trazas de presión por coordenadas exactas; procedencia/hash unidos al proyecto, round-trip y export CSV comprobados con datos UNKNOWN de prueba."
     }
   ],
   "legacy_gate_status": {

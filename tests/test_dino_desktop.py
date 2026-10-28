@@ -11,7 +11,7 @@ from unittest.mock import patch
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 from copy import deepcopy
 from PySide6.QtCore import Qt,QTimer
-from PySide6.QtWidgets import QApplication,QDialog,QLabel,QMessageBox,QTableWidget
+from PySide6.QtWidgets import QApplication,QDialog,QLabel,QMessageBox,QTableWidget,QFileDialog,QComboBox
 from PySide6.QtTest import QTest
 import desktop_qsettings_isolation  # noqa: F401
 
@@ -213,6 +213,64 @@ class DinoDesktopTests(unittest.TestCase):
             roundtrip=load_project(path)
             self.assertAlmostEqual(roundtrip["variants"]["escape-var"]["native_configuration"]["ducts"][-1]["mesh"]["faces"][-1],
                                    reopened.engine("escape-var")["native_configuration"]["ducts"][-1]["mesh"]["faces"][-1])
+
+    def test_desktop_imports_measured_dynodata_persists_and_compares_exact_rpm(self):
+        context=DesktopContext(new_project("measurement-ui"))
+        with tempfile.TemporaryDirectory() as tmp:
+            project_path=Path(tmp)/"measurement-ui.dino2t.json";save_project(project_path,context.project);context.path=project_path
+            csv_path=Path(tmp)/"dyno.csv";csv_path.write_text("rpm,value,uncertainty\n5000,12.5,0.4\n6000,15,0.5\n",encoding="utf-8")
+            page=ResultsPage(context)
+            with patch("motorsim.desktop.results_page.QFileDialog.getOpenFileName",return_value=(str(csv_path),"CSV (*.csv)")), \
+                 patch.object(QDialog,"exec",return_value=QDialog.DialogCode.Accepted):
+                self.assertTrue(page.import_measurement())
+            self.assertEqual(len(context.project["measurement_references"]),1)
+            reference=context.project["measurement_references"][0]
+            self.assertEqual(reference["classification"],"UNKNOWN")
+            page.dataset={"points":[
+                {"variant_id":"base","rpm":5000,"brake_power_status":"DEFINED","brake_power":12.0,"run_id":"run-1"},
+                {"variant_id":"base","rpm":7000,"brake_power_status":"DEFINED","brake_power":16.0,"run_id":"run-1"}]}
+            page.compare_measurement()
+            self.assertEqual(page.measurement_table.rowCount(),2)
+            self.assertEqual(page.measurement_table.item(0,0).text(),"5000")
+            self.assertEqual(page.measurement_table.item(0,3).text(),"12000")
+            self.assertEqual(page.measurement_table.item(1,3).text(),"—")
+            self.assertIn("sin interpolación",page.measurement_notice.text().lower())
+            contrast_path=Path(tmp)/"contrast.csv"
+            with patch("motorsim.desktop.results_page.QFileDialog.getSaveFileName",return_value=(str(contrast_path),"CSV (*.csv)")):
+                self.assertTrue(page.export_measurement_comparison())
+            self.assertIn("run-1",contrast_path.read_text(encoding="utf-8-sig"))
+            pressure_path=Path(tmp)/"pressure.csv";pressure_path.write_text("cycle,crank_angle_deg,value,uncertainty\n1,0,100000,1000\n1,360,110000,1000\n",encoding="utf-8")
+            def accept_pressure(dialog):
+                choices=dialog.findChildren(QComboBox)
+                choices[0].setCurrentIndex(choices[0].findData("pressure_trace"))
+                choices[1].setCurrentText("Pa")
+                return QDialog.DialogCode.Accepted
+            with patch("motorsim.desktop.results_page.QFileDialog.getOpenFileName",return_value=(str(pressure_path),"CSV (*.csv)")), \
+                 patch.object(QDialog,"exec",new=accept_pressure):
+                self.assertTrue(page.import_measurement())
+            page.dataset["traces"]=[{"variant_id":"base","rpm":5000,"run_id":"run-1","cycle":1,
+                "angles_deg":[0.0,360.0],"channels":{"cylinder_pressure_pa":{"values":[101000,111000]}}}]
+            page.trace_rpm.clear();page.trace_rpm.addItem("5000 RPM",5000)
+            page.measurement_selector.setCurrentIndex(1);page.compare_measurement()
+            self.assertEqual(page.measurement_table.rowCount(),2)
+            self.assertEqual(page.measurement_table.item(0,0).text(),"(1, 0.0)")
+            self.assertEqual(page.measurement_table.item(0,3).text(),"101000")
+            self.assertEqual(page.measurement_plot.series[0]["x_key"],"angle_deg")
+            save_project(project_path,context.project)
+            reopened=DesktopContext(load_project(project_path))
+            reopened_page=ResultsPage(reopened)
+            self.assertEqual(len(reopened_page.measurement_datasets),2)
+            self.assertEqual(reopened_page.measurement_datasets[0]["metadata"]["provenance"],"UNKNOWN")
+
+    def test_legacy_project_v1_migrates_without_changing_engine(self):
+        project=new_project("legacy-v1");engine_hash=identity(project["base_engine"])
+        legacy=deepcopy(project);legacy["schema"]="MOTORSIM_ENGINE_PROJECT_V1";legacy.pop("measurement_references")
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/"legacy.dino2t.json";path.write_text(json.dumps(legacy),encoding="utf-8")
+            loaded=load_project(path)
+        self.assertEqual(loaded["schema"],"MOTORSIM_ENGINE_PROJECT_V2")
+        self.assertEqual(loaded["measurement_references"],[])
+        self.assertEqual(identity(loaded["base_engine"]),engine_hash)
 
     def test_real_impl2_import_keeps_invalid_points_as_gaps_and_exports_plot(self):
         report=impl2_historical_report_candidate()
