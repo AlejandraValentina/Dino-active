@@ -10404,14 +10404,14 @@
       "blocker": null,
       "commits": [],
       "evidence": [
-        "motorsim/measurement_data.py (existing import/overlay contract reused)",
-        "motorsim/engine_project.py (V1→V2 project migration and hash-bound measurement references)",
-        "motorsim/desktop/results_page.py (dyno power/torque and cylinder pressure import, exact-coordinate overlay and CSV export)",
+        "motorsim/measurement_data.py (existing contract reused)",
+        "motorsim/engine_project.py (V1→V2 migration and hash-bound measurement references)",
+        "motorsim/desktop/results_page.py (dyno power/torque and cylinder pressure import, exact-coordinate overlay, uncertainty/residual table and reproducible CSV export)",
         "tests/test_dino_desktop.py::DinoDesktopTests::test_desktop_imports_measured_dynodata_persists_and_compares_exact_rpm",
         "tests/test_dino_desktop.py::DinoDesktopTests::test_legacy_project_v1_migrates_without_changing_engine",
-        "Five focused Desktop GUI tests passed; test data classified UNKNOWN, no validation claim"
+        "Five focused Desktop tests passed; test datasets remain UNKNOWN and do not qualify validation"
       ],
-      "next_action": "Continue with the roadmap P1 practical design-comparison performance feasibility using existing independent-run coordinator; preserve solver physics and periodicity criteria.",
+      "next_action": "The roadmap P1 practical comparison-speed feasibility is now in progress. It is independent of missing external validation and should preserve solver physics and existing periodicity criteria.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "product/implementation/verification",
       "evidence_level": "L1",
@@ -14701,6 +14701,12 @@
       "task": "DINO-DESKTOP-MEASURED-DATA-P2",
       "kind": "task",
       "summary": "Desktop importa y compara potencia, torque y trazas de presión por coordenadas exactas; procedencia/hash unidos al proyecto, round-trip y export CSV comprobados con datos UNKNOWN de prueba."
+    },
+    {
+      "at": "2026-10-28T16:31:02Z",
+      "task": "DINO-DESKTOP-MEASURED-DATA-P2",
+      "kind": "task",
+      "summary": "Desktop conecta mediciones de banco y trazas de presión con importación hash-bound, conservación de provenance, overlay exacto, residuos y export reproducible; round-trip V1/V2 comprobado con datos UNKNOWN."
     }
   ],
   "legacy_gate_status": {
