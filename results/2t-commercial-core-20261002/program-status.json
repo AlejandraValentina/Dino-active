@@ -10030,6 +10030,31 @@
       ],
       "evidence_level": "L1",
       "qualification": "Full source indexing and relevant visual inspection; original PDFs cached externally, no new digitization/calibration/experimental validation. SELF_REVIEW."
+    },
+    {
+      "id": "PRED-EXPERIMENTAL-DATA-READINESS-V1",
+      "description": "Owner closed-source readiness check of Cahoon MK1 and Zhang MT110S only; no new engines, synthetic input, simulation or product changes.",
+      "dependencies": [
+        "PRED-EXPERIMENTAL-REFERENCE-SELECTION-V1"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/experimental-data-readiness-v1/report.md",
+        "results/experimental-data-readiness-v1/readiness.json",
+        "results/experimental-data-readiness-v1/cahoon-archive-request.md"
+      ],
+      "next_action": "STOP. Both full-engine cases BLOCKED on external geometry and matched records. QUB targeted request is drafted, not sent; no automatic data contact or numerical work.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "experimental-data readiness",
+      "write_scope": [
+        "results/experimental-data-readiness-v1/"
+      ],
+      "qualification": "Documentary result BLOCKED is not an unfinished engineering task. Cahoon6000RPM bank/cylinder;5960/5980 pressures separate. MK1 appendix explicitly identified but D1/D9/D2/D3 and L9 conflict. Zhang330mm3435RPM best record;330/480 measured curves, no same-RPM pressure pair. No complete full-engine case or predictive validation. SELF_REVIEW.",
+      "data_readiness": "BLOCKED",
+      "external_dependency_reason": "Original geometry conventions, correct MK1 exhaust revision, full duct/port sections and acquisition conditions are not recoverable uniquely from these PDFs. Synthetic fill prohibited; archive request prepared.",
+      "blocked_local_reevaluation": "Existing FRPM/SPV1/CRV1 tasks remain deferred or outside scope; X30 volume dependency remains. PRED-VALIDATION remains blocked: no complete matched dataset. No historical task revived."
     }
   ],
   "audit_remediation_mode": false,
@@ -14146,6 +14171,12 @@
       "task": "PRED-E2B-PERIODIC-AB-V1",
       "kind": "task",
       "summary": "E2B closed EXPLORATORIO: independent A30/B32 PERIOD1, final4 primary audits each PASS. Modeled brake17.5163/18.4038kW,+5.066%, power discretization uncertainty unquantified.1728.891s/5400. Export wrapper binding recovered with original attempt preserved;no fresh cycles or product changes. rc7 intact;stop after delivery."
+    },
+    {
+      "at": "2026-10-28T14:53:51+00:00",
+      "task": "PRED-EXPERIMENTAL-DATA-READINESS-V1",
+      "kind": "task",
+      "summary": "Closed documentary readiness: both full engines BLOCKED. Cahoon6000RPM bank/cylinder,5960/5980 channels separate;MK1 appendix explicitly named but L9=23in vs22 and diameters conflict. Zhang330mm3435RPM three pressures,AB curves330/480 usable after geometry recovery. QUB request drafted,not sent;no solver/config/simulation changes."
     }
   ],
   "legacy_gate_status": {
@@ -14739,7 +14770,7 @@
     "owner_decision_date": "2026-10-28",
     "activation": "AUTHORIZED_DELIVERABLES_CLOSED_STOP",
     "next_deliverable": "None activated. E2B exploratory and experimental reference selection delivered; no new meshes/cycles, E3 or data-acquisition messages automatically.",
-    "experimental_data_policy": "Cahoon MK1 prioritized after full-text review; Zhang alternative for measured exhaust changes; X30 conditional generalization. No complete matched dataset verified, no mixing engines, no synthetic fill or unsolicited messages.",
+    "experimental_data_policy": "Cahoon MK1 principal; Yamaha MT110S complementary exhaust-change reference. Selection closed. Both full-engine readiness BLOCKED; original geometry and matched records required, targeted QUB request drafted and unsent. No synthetic fill, new engine search, automatic simulation or external message.",
     "historical_ready_policy": "READY history does not authorize reviving meshes, 90-150deg studies or old campaigns outside an explicitly activated roadmap deliverable. SPV1 READY task stays intact.",
     "stages": [
       {
@@ -14777,6 +14808,7 @@
     "predictive_capability": "NOT_CLAIMED",
     "baseline_rc7": "PRESERVED",
     "qualification": "Old gate counts summarize existing technical tasks, not completion of the six scientific/product stages. New models are not automatically promoted.",
-    "experimental_reference_selection": "results/experimental-reference-selection-v1/selection.json"
+    "experimental_reference_selection": "results/experimental-reference-selection-v1/selection.json",
+    "experimental_data_readiness": "results/experimental-data-readiness-v1/readiness.json"
   }
 }

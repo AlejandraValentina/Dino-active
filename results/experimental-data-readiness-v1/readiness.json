@@ -1,0 +1,382 @@
+{
+  "schema": "DINO_EXPERIMENTAL_DATA_READINESS_V1",
+  "date": "2026-10-28",
+  "overall_decision": "BLOCKED",
+  "references": [
+    {
+      "id": "CAHOON_MK1",
+      "decision": "BLOCKED",
+      "reason": "Unresolved engine geometry/volume convention and matched experimental conditions; cannot generate a reproducible full-engine case without unverified inputs.",
+      "best_case": {
+        "engine": "Greeves 380 MK.1",
+        "rpm": 6000,
+        "source_pdf_page": 79,
+        "source_table": "4.1",
+        "values": {
+          "brake_power_bhp": 34.36,
+          "bmep_psi": 97.7,
+          "bsfc_lb_per_bhp_hr": 0.779,
+          "air_fuel_mass_ratio": 10.72,
+          "volumetric_efficiency": 0.775
+        },
+        "category": "MEASURED_PROCESSED",
+        "power_correction": "SOLN SAE atmospheric corrections; individual correction factors not published in inspected source",
+        "derived": {
+          "brake_power_kw": 25.622247587566807,
+          "torque_nm": 40.779073566856475,
+          "hypothesis": "bhp is mechanical horsepower; torque derived at labelled RPM, not independent measurement"
+        }
+      },
+      "pressure_acquisitions": [
+        {
+          "channel": "cylinder",
+          "rpm": 6000,
+          "pdf_page": 91,
+          "figure": "4.13"
+        },
+        {
+          "channel": "scavenge",
+          "rpm": 5960,
+          "pdf_page": 98,
+          "figure": "4.20"
+        },
+        {
+          "channel": "exhaust",
+          "rpm": 5960,
+          "pdf_page": 105,
+          "figure": "4.27"
+        },
+        {
+          "channel": "transfer",
+          "rpm": 5980,
+          "pdf_page": 119,
+          "figure": "4.41"
+        },
+        {
+          "channel": "inlet",
+          "rpm": 5980,
+          "pdf_page": 126,
+          "figure": "4.48"
+        }
+      ],
+      "same_acquisition_demonstrated": false,
+      "primary_compression": {
+        "category": "DOCUMENTED",
+        "ratio": 1.6,
+        "pdf_pages": [
+          19,
+          253
+        ],
+        "explicit_volume_definition_found": false,
+        "model_control_volume_boundaries_documented": true,
+        "boundary_figures": [
+          {
+            "figure": "3.16",
+            "pdf_page": 73
+          },
+          {
+            "figure": "A3.1",
+            "pdf_page": 260
+          }
+        ],
+        "derived_under_hypotheses": {
+          "hypotheses": [
+            "r=Vmax/Vmin",
+            "Vmax-Vmin=pi*bore^2*stroke/4",
+            "fluid-domain inclusions match the ratio definition"
+          ],
+          "Vd_cc": 380.2332420492798,
+          "Vmin_cc": 633.722070082133,
+          "Vmax_cc": 1013.9553121314128
+        },
+        "not_a_measured_absolute_volume": true
+      },
+      "geometry_conflicts": [
+        {
+          "parameter": "D1_in",
+          "main_table": 1.94,
+          "appendix": 1.95,
+          "pages": [
+            19,
+            254
+          ]
+        },
+        {
+          "parameter": "D9_in",
+          "main_table": 2.92,
+          "appendix": 2.94,
+          "pages": [
+            19,
+            254
+          ]
+        },
+        {
+          "parameter": "D2_D3_in",
+          "main_table": 3.75,
+          "appendix": 3.625,
+          "pages": [
+            19,
+            254
+          ]
+        },
+        {
+          "parameter": "L9_K9_in",
+          "main_table": 22,
+          "appendix": 23,
+          "pages": [
+            19,
+            255
+          ]
+        }
+      ],
+      "appendix_identity": {
+        "explicitly_MK1": true,
+        "rpm": 4400,
+        "statement_pdf_page": 249,
+        "inlet_data_present": {
+          "max_port_height_mm": 27,
+          "downdraft_deg": 18,
+          "K6_in": 2,
+          "K7_in": 5,
+          "pdf_pages": [
+            253,
+            256
+          ]
+        },
+        "matches_main_table_revision": false
+      },
+      "essential_missing": [
+        "defined crankcase gas volume/domain convention",
+        "actual MK1 exhaust revision resolving D1,D9,D2/D3,L9 conflicts",
+        "complete intake/transfer sections and port profiles",
+        "individual ignition/ambient/fuel/thermal settings and correction factors for the identified acquisitions",
+        "sensor coordinates and associated acquisition calibration"
+      ],
+      "crankcase_pressure_measured": false,
+      "crankcase_pressure_source_pdf_page": 234,
+      "external_request": "cahoon-archive-request.md"
+    },
+    {
+      "id": "ZHANG_MT110S",
+      "decision": "BLOCKED",
+      "reason": "A/B geometry change and measured curves established, but full-engine geometry and per-record conditions incomplete.",
+      "best_record": {
+        "engine": "Yamaha MT-110S",
+        "L3_mm": 330,
+        "rpm": 3435,
+        "pdf_page": 143,
+        "printed_page": 130,
+        "figure": "6.7",
+        "measured_channels": [
+          "cylinder_pressure",
+          "exhaust_port_pressure",
+          "transfer_port_pressure"
+        ],
+        "axes": {
+          "pressure_scale": "100 kPa",
+          "phase": "crank angle degrees"
+        },
+        "raw_torque_link": {
+          "described_pdf_page": 131,
+          "format": "ASCII acquisition file",
+          "public_file_located": false
+        }
+      },
+      "AB_candidate": {
+        "L3_A_mm": 330,
+        "L3_B_mm": 480,
+        "performance_figures": [
+          "6.2",
+          "6.4"
+        ],
+        "performance_pdf_pages": [
+          136,
+          138
+        ],
+        "same_engine_declared": true,
+        "WOT_declared": true,
+        "matched_pressure_rpm_pair_published": false,
+        "all_other_test_settings_verified_equal": false,
+        "exact_measured_AB_power_difference": null
+      },
+      "exhaust_segments": [
+        {
+          "segment": "L1",
+          "length_mm": 130,
+          "diameters_mm": [
+            30,
+            30
+          ],
+          "varied": false
+        },
+        {
+          "segment": "L2",
+          "length_mm": 281,
+          "diameters_mm": [
+            30,
+            99
+          ],
+          "varied": false
+        },
+        {
+          "segment": "L3",
+          "length_values_mm": [
+            240,
+            330,
+            400,
+            480,
+            550
+          ],
+          "diameters_mm": [
+            99,
+            99
+          ],
+          "varied": true
+        },
+        {
+          "segment": "L4",
+          "length_mm": 352,
+          "diameters_mm": [
+            99,
+            20
+          ],
+          "varied": false
+        },
+        {
+          "segment": "L5",
+          "length_mm": 152,
+          "diameters_mm": [
+            20,
+            20
+          ],
+          "varied": false
+        }
+      ],
+      "geometry_source": {
+        "table": "4.2",
+        "figure": "4.2",
+        "pdf_pages": [
+          105,
+          106
+        ]
+      },
+      "measurements_by_length": [
+        {
+          "L3_mm": 240,
+          "performance_pdf_page": 135,
+          "performance_figure": "6.1",
+          "pressure_rpm": []
+        },
+        {
+          "L3_mm": 330,
+          "performance_pdf_page": 136,
+          "performance_figure": "6.2",
+          "pressure_rpm": [
+            2900,
+            3435,
+            3741
+          ],
+          "pressure_pdf_pages": [
+            142,
+            143,
+            144
+          ]
+        },
+        {
+          "L3_mm": 400,
+          "performance_pdf_page": 137,
+          "performance_figure": "6.3",
+          "pressure_rpm": [
+            3328
+          ],
+          "pressure_pdf_pages": [
+            145
+          ]
+        },
+        {
+          "L3_mm": 480,
+          "performance_pdf_page": 138,
+          "performance_figure": "6.4",
+          "pressure_rpm": [
+            2550,
+            3250
+          ],
+          "pressure_pdf_pages": [
+            146,
+            147
+          ]
+        },
+        {
+          "L3_mm": 550,
+          "performance_pdf_page": 139,
+          "performance_figure": "6.5",
+          "pressure_rpm": [
+            3060
+          ],
+          "pressure_pdf_pages": [
+            148
+          ]
+        }
+      ],
+      "essential_missing": [
+        "crankcase free volume or defined primary ratio",
+        "complete intake/transfer sections and dimensions",
+        "port widths/profiles/radii/angles",
+        "clearance volume and compression-ratio convention",
+        "specimen bore/stroke/displacement reconciliation",
+        "ignition,AFR,fuel,ambient and thermal settings tied to acquisition files",
+        "measurement repeatability and uncertainty for the A/B pair"
+      ],
+      "geometry_conflict": {
+        "source_pdf_page": 120,
+        "reported_displacement_cc": 100,
+        "calculated_from_52x50_mm_cc": 106.18583169133501
+      },
+      "excluded_model_inputs": {
+        "Cd": "model assumptions PDF102",
+        "scavenging": "borrowed YAM6 PDF103",
+        "exhaust_temperature": "simplified350/450C PDF104",
+        "optimized_exhaust": "computed geometry PDF115",
+        "combustion_and_trapped_AFR": "assumed model inputs PDF140"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "CAHOON1971",
+      "url": "https://pureadmin.qub.ac.uk/ws/portalfiles/portal/612264914/Unsteady_gas_flow_through_a_naturally_aspirated_two_stroke_internal_combustion_engine..pdf",
+      "pages": 264,
+      "sha256": "4a30baa15a1bf80235c848da43202752d8792659c01febf9f817c36d8023118f",
+      "bytes": 23498890,
+      "cache_relative_path": "experimental-reference-selection-v1-20261028/cahoon1971.pdf"
+    },
+    {
+      "id": "ZHANG1995",
+      "url": "https://vuir.vu.edu.au/18232/1/ZHANG_1995compressed.pdf",
+      "pages": 169,
+      "sha256": "2fabe39246dc5eb61a7f5f7a8b79746dd24b03af51b3dc2363e3d2c41bf19f68",
+      "bytes": 2903651,
+      "cache_relative_path": "public-2t-data-survey-v2-20261026/zhang1995.pdf"
+    }
+  ],
+  "categories": {
+    "M": "MEASURED_PROCESSED",
+    "D": "DOCUMENTED",
+    "H": "DERIVABLE_UNDER_EXPLICIT_HYPOTHESES",
+    "A": "ABSENT_OR_NOT_IDENTIFIED_UNAMBIGUOUSLY"
+  },
+  "artifacts": {
+    "report": "report.md",
+    "request": "cahoon-archive-request.md"
+  },
+  "constraints": {
+    "solver_modified": false,
+    "simulation_executed": false,
+    "configuration_generated": false,
+    "curve_calibration": false,
+    "new_engines_searched": false,
+    "external_message_sent": false
+  },
+  "review": "SELF_REVIEW",
+  "next_action": "STOP. Targeted external records needed; no automatic simulations or broadened research."
+}
