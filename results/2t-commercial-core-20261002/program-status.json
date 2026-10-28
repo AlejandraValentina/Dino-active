@@ -9923,14 +9923,18 @@
         "PRED-UNIFIED-ROADMAP-V1",
         "ENGINE-PORT-FLOW-VERIFICATION-V1"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "999a95f"
+      ],
       "evidence": [
         "docs/gasdynamic/e2a-exhaust-waves-protocol-v1.md",
-        "results/e2a-exhaust-waves-v1/preparation/manifest.json"
+        "results/e2a-exhaust-waves-v1/report.md",
+        "results/e2a-exhaust-waves-v1/decision.json",
+        "results/e2a-exhaust-waves-v1/verification.json"
       ],
-      "next_action": "Execute once after freeze commit; 600s accumulated; no solver changes, no historical continuation, no E2B.",
+      "next_action": "STOP after E2A as explicitly requested by owner. DIFERENCIA NO RESUELTA. No E2B, extra grid/cycle, solver correction or further research activated.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -9939,7 +9943,8 @@
         "tests/test_e2a_exhaust_waves_v1.py",
         "results/e2a-exhaust-waves-v1/"
       ],
-      "evidence_level": "L1"
+      "evidence_level": "L1",
+      "qualification": "Six cases complete (one reused,five new);264.453s/600. Delta peak -7.408kPa vs empirical envelope22.665kPa; lag2.23048deg vs2.5deg. Reflection return not identified. Temporal cap refinement overlaps due CFL. No demonstrated solver defect; no predictive claim. SELF_REVIEW."
     }
   ],
   "audit_remediation_mode": false,
@@ -10159,7 +10164,7 @@
     ],
     "completion_criterion": "Unified owner roadmap docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md: port-law verification, pressure waves and numerically distinguishable design effects, identifiable scavenging, evidence-led closures, independent measured curves and exhaust-change validation, then performance/product. Data acquisition parallel; X30 preferred, not exclusive. Current authorized delivery: E2A frozen A/B wave comparison within600s, then stop; no other stage or historical campaign. Periodicity/conservation do not establish predictive capability.",
     "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
-    "qualification": "Owner authorizes only E2A: freeze protocol, execute comparison within600s and stop with decision. No other stage, old campaign or solver change.",
+    "qualification": "E2A completed DIFERENCIA NO RESUELTA within600s. Owner explicitly requests stop and decision presentation before further work; no E2B or old READY task execution authorized.",
     "staged_plan": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md"
   },
   "objectives": [
@@ -11231,7 +11236,7 @@
       "completion_criterion": "Unified owner roadmap docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md: port-law verification, pressure waves and numerically distinguishable design effects, identifiable scavenging, evidence-led closures, independent measured curves and exhaust-change validation, then performance/product. Data acquisition parallel; X30 preferred, not exclusive. Current authorized delivery: E2A frozen A/B wave comparison within600s, then stop; no other stage or historical campaign. Periodicity/conservation do not establish predictive capability.",
       "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
       "staged_plan": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md",
-      "qualification": "Owner authorizes only E2A: freeze protocol, execute comparison within600s and stop with decision. No other stage, old campaign or solver change."
+      "qualification": "E2A completed DIFERENCIA NO RESUELTA within600s. Owner explicitly requests stop and decision presentation before further work; no E2B or old READY task execution authorized."
     }
   ],
   "owner_decisions_pending": [
@@ -14020,6 +14025,12 @@
       "task": "PRED-E2A-EXHAUST-WAVES-V1",
       "kind": "task",
       "summary": "E2A frozen: A/B headers83/103mm,9000RPM,V2/OPEN_END_PLENUM_V2,first order44/88,dt.5/.25deg,common physical probes. Reuse E1 A44; five new runs max120s each/600s accumulated incl analysis.5 observer tests PASS,zero solver steps in preparation. All10 blockers reevaluated unchanged; SPV1 untouched. Stop after E2A; no other stage."
+    },
+    {
+      "at": "2026-10-28T12:14:52+00:00",
+      "task": "PRED-E2A-EXHAUST-WAVES-V1",
+      "kind": "task",
+      "summary": "E2A CLOSED DIFERENCIA NO RESUELTA:6 cases,1 reused/5new,264.453s<600. Peak delta-7.408kPa vs envelope22.665;lag2.23048deg vs2.5. Spatial sensitivity dominates tested changes; temporal cap not uniform actual-dt halving. Reflected return unidentified. Balances<=1.8e-15;checkpoints exact;20.2MB raw external. No solver changes. STOP per owner; no further stage."
     }
   ],
   "legacy_gate_status": {
@@ -14606,8 +14617,8 @@
   "roadmap_control": {
     "roadmap": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md",
     "owner_decision_date": "2026-10-28",
-    "activation": "E2A_EXECUTION_ONLY_AUTHORIZED_600_SECONDS_STOP_AFTER_DELIVERY",
-    "next_deliverable": "E2A pressure-wave A/B plots, numerical sensitivity envelopes and scoped decision; not periodic power",
+    "activation": "E2A_COMPLETE_OWNER_REQUESTED_STOP_NO_OTHER_WORK_AUTHORIZED",
+    "next_deliverable": "None automatically: present completed E2A decision to owner before any further work.",
     "experimental_data_policy": "Acquire matched-engine geometry/conditions/uncertainties in parallel from start; prefer X30, accept a more complete independent reference without mixing engines; no repeated blocked downloads or unsolicited external messages.",
     "historical_ready_policy": "READY history does not authorize reviving meshes, 90-150deg studies or old campaigns outside an explicitly activated roadmap deliverable. SPV1 READY task stays intact.",
     "stages": [
@@ -14620,7 +14631,8 @@
       },
       {
         "id": "E2",
-        "state": "E2A_ONLY_IN_PROGRESS_E2B_NOT_AUTHORIZED"
+        "state": "E2A_CLOSED_DIFFERENCE_NOT_RESOLVED_E2B_NOT_STARTED",
+        "evidence": "results/e2a-exhaust-waves-v1/decision.json"
       },
       {
         "id": "E3",

@@ -1,0 +1,20 @@
+{
+  "name": "e2a-analysis",
+  "command": [
+    "python",
+    "scripts/diagnostics/e2a_exhaust_waves_v1.py",
+    "analyze"
+  ],
+  "started_at": "2026-10-28T12:08:40+00:00",
+  "finished_at": "2026-10-28T12:08:43+00:00",
+  "duration_s": 2.969,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\e2a-exhaust-waves-v1\\runlogs\\e2a-analysis.log",
+  "log_lines": 1,
+  "log_bytes": 1058,
+  "error_lines": [],
+  "tail": [
+    "{\"decision\": \"DIFERENCIA NO RESUELTA\", \"total_comparison_wall_s\": 261.14246909995563, \"envelopes\": {\"amplitude_pa\": {\"delta\": -7408.20798378429, \"spatial_sensitivity_sum\": 10132.95310724221, \"temporal_sensitivity_sum\": 0.17781306224060245, \"safety_envelope\": 22665.294690267394, \"distinguishable\": fa"
+  ]
+}

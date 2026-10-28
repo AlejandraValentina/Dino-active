@@ -1,0 +1,217 @@
+{
+  "schema": "DINO_E2A_DECISION_V1",
+  "decision": "DIFERENCIA NO RESUELTA",
+  "metrics": {
+    "A44-d05": {
+      "amplitude_pa": 46068.0044146975,
+      "peak_phase_deg": 112.0,
+      "impulse_pa_s": 28.973260615125657,
+      "sampling_amplitude_pa": 957.0392859367712,
+      "sampling_impulse_pa_s": 0.0029409424642850013
+    },
+    "B44-d05": {
+      "amplitude_pa": 42107.66630209703,
+      "peak_phase_deg": 113.0,
+      "impulse_pa_s": 26.984517759045158,
+      "sampling_amplitude_pa": 856.6013409152656,
+      "sampling_impulse_pa_s": 0.002016364523399261
+    },
+    "A88-d05": {
+      "amplitude_pa": 52858.326997379394,
+      "peak_phase_deg": 111.0,
+      "impulse_pa_s": 28.63196700275304,
+      "sampling_amplitude_pa": 1260.124704818656,
+      "sampling_impulse_pa_s": 0.004582699426840975
+    },
+    "B88-d05": {
+      "amplitude_pa": 45450.296826657344,
+      "peak_phase_deg": 113.0,
+      "impulse_pa_s": 25.439394252642654,
+      "sampling_amplitude_pa": 1138.9035372211365,
+      "sampling_impulse_pa_s": 0.002548421301064252
+    },
+    "A88-d025": {
+      "amplitude_pa": 52858.44811951686,
+      "peak_phase_deg": 111.0,
+      "impulse_pa_s": 28.63233330333043,
+      "sampling_amplitude_pa": 1260.1296326131924,
+      "sampling_impulse_pa_s": 0.004581048469795235
+    },
+    "B88-d025": {
+      "amplitude_pa": 45450.24013573257,
+      "peak_phase_deg": 113.0,
+      "impulse_pa_s": 25.439005278425178,
+      "sampling_amplitude_pa": 1138.9032170452992,
+      "sampling_impulse_pa_s": 0.0025408930768833216
+    }
+  },
+  "pair_comparisons": [
+    {
+      "pair": [
+        "A44-d05",
+        "B44-d05"
+      ],
+      "delta_amplitude_pa": -3960.338112600468,
+      "delta_peak_phase_deg": 1.0,
+      "delta_impulse_pa_s": -1.9887428560804992,
+      "trace_L1_difference_pa": 1783.7865327648594,
+      "trace_L2_difference_pa": 2610.176764368166,
+      "trace_Linf_difference_pa": 8215.330585650838,
+      "phase_correlation": {
+        "lag_deg": 1.9478980135474926,
+        "correlation": 0.9974622891678424,
+        "valid": true
+      }
+    },
+    {
+      "pair": [
+        "A88-d05",
+        "B88-d05"
+      ],
+      "delta_amplitude_pa": -7408.03017072205,
+      "delta_peak_phase_deg": 2.0,
+      "delta_impulse_pa_s": -3.1925727501103864,
+      "trace_L1_difference_pa": 2918.952144989867,
+      "trace_L2_difference_pa": 4058.3003949271797,
+      "trace_Linf_difference_pa": 11310.3704298534,
+      "phase_correlation": {
+        "lag_deg": 2.2304345015372005,
+        "correlation": 0.9879662352547304,
+        "valid": true
+      }
+    },
+    {
+      "pair": [
+        "A88-d025",
+        "B88-d025"
+      ],
+      "delta_amplitude_pa": -7408.20798378429,
+      "delta_peak_phase_deg": 2.0,
+      "delta_impulse_pa_s": -3.1933280249052522,
+      "trace_L1_difference_pa": 2919.175966461681,
+      "trace_L2_difference_pa": 4058.388809332252,
+      "trace_Linf_difference_pa": 11310.294290119884,
+      "phase_correlation": {
+        "lag_deg": 2.2304778824299274,
+        "correlation": 0.9879656271315713,
+        "valid": true
+      }
+    }
+  ],
+  "numerical_envelopes": {
+    "amplitude_pa": {
+      "delta": -7408.20798378429,
+      "spatial_sensitivity_sum": 10132.95310724221,
+      "temporal_sensitivity_sum": 0.17781306224060245,
+      "safety_envelope": 22665.294690267394,
+      "distinguishable": false,
+      "qualification": "Empirical sensitivity envelope; no confidence level or rigorous error bound"
+    },
+    "peak_phase_deg": {
+      "delta": 2.0,
+      "spatial_sensitivity_sum": 1.0,
+      "temporal_sensitivity_sum": 0.0,
+      "safety_envelope": 2.5,
+      "distinguishable": false,
+      "qualification": "Empirical sensitivity envelope; no confidence level or rigorous error bound"
+    },
+    "impulse_pa_s": {
+      "delta": -3.1933280249052522,
+      "spatial_sensitivity_sum": 1.886417118775121,
+      "temporal_sensitivity_sum": 0.0007552747948658123,
+      "safety_envelope": 3.7814667286866523,
+      "distinguishable": false,
+      "qualification": "Empirical sensitivity envelope; no confidence level or rigorous error bound"
+    },
+    "correlation_lag_deg": {
+      "delta": 2.2304778824299274,
+      "safety_envelope": 2.5,
+      "distinguishable": false
+    }
+  },
+  "acoustic_qualification": {
+    "A44-d05": {
+      "reference_rho_u_p": [
+        0.6938099371964849,
+        -1.1936607310157248,
+        94122.17529870025
+      ],
+      "reference_sound_m_s": 427.9495797607365,
+      "valid_fraction_return": 0.0,
+      "return_phase_deg": null,
+      "candidate_upstream_peak_phase_deg": null,
+      "qualification": "Linear characteristic projections only where small-perturbation/entropy guards pass; a local upstream component is not a causally identified reflection"
+    },
+    "B44-d05": {
+      "reference_rho_u_p": [
+        0.667092356960305,
+        2.7467316613221504,
+        93427.22063638017
+      ],
+      "reference_sound_m_s": 434.8211060651454,
+      "valid_fraction_return": 0.0,
+      "return_phase_deg": null,
+      "candidate_upstream_peak_phase_deg": null,
+      "qualification": "Linear characteristic projections only where small-perturbation/entropy guards pass; a local upstream component is not a causally identified reflection"
+    },
+    "A88-d05": {
+      "reference_rho_u_p": [
+        0.6747339645561892,
+        -1.1811025601122467,
+        87745.29457804363
+      ],
+      "reference_sound_m_s": 418.9985464570577,
+      "valid_fraction_return": 0.0,
+      "return_phase_deg": null,
+      "candidate_upstream_peak_phase_deg": null,
+      "qualification": "Linear characteristic projections only where small-perturbation/entropy guards pass; a local upstream component is not a causally identified reflection"
+    },
+    "B88-d05": {
+      "reference_rho_u_p": [
+        0.6539973131929696,
+        5.406008650187886,
+        86682.83735394581
+      ],
+      "reference_sound_m_s": 423.00496159422676,
+      "valid_fraction_return": 0.0,
+      "return_phase_deg": null,
+      "candidate_upstream_peak_phase_deg": null,
+      "qualification": "Linear characteristic projections only where small-perturbation/entropy guards pass; a local upstream component is not a causally identified reflection"
+    },
+    "A88-d025": {
+      "reference_rho_u_p": [
+        0.6747376868113271,
+        -1.1807722676104313,
+        87745.44102241828
+      ],
+      "reference_sound_m_s": 418.9977403797931,
+      "valid_fraction_return": 0.0,
+      "return_phase_deg": null,
+      "candidate_upstream_peak_phase_deg": null,
+      "qualification": "Linear characteristic projections only where small-perturbation/entropy guards pass; a local upstream component is not a causally identified reflection"
+    },
+    "B88-d025": {
+      "reference_rho_u_p": [
+        0.6540014214932868,
+        5.406075785180729,
+        86683.07765745923
+      ],
+      "reference_sound_m_s": 423.0042193059635,
+      "valid_fraction_return": 0.0,
+      "return_phase_deg": null,
+      "candidate_upstream_peak_phase_deg": null,
+      "qualification": "Linear characteristic projections only where small-perturbation/entropy guards pass; a local upstream component is not a causally identified reflection"
+    }
+  },
+  "execution_wall_s": 259.252701099962,
+  "analysis_wall_s": 1.8897679999936372,
+  "total_comparison_wall_s": 261.14246909995563,
+  "budget_pass": true,
+  "complete": true,
+  "raw_artifact_root": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\e2a-exhaust-waves-v1-20261028",
+  "source_manifest_sha256": "a0aa199e35e8a353921c5ea2328029ebcb6b915c65034e67afe1c23cd0105b1f",
+  "execution_receipt_sha256": "bf03677c3240ae90d26f4126d03cae5fa0319817db61e0d91ed488985b281349",
+  "solver_unchanged": true,
+  "scientific_state": "TRANSIENT_SYNTHETIC_NOT_PERIODIC_NOT_EXPERIMENTAL_VALIDATION",
+  "review": "SELF_REVIEW"
+}

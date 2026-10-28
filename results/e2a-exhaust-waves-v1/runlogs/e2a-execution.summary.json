@@ -1,0 +1,26 @@
+{
+  "name": "e2a-execution",
+  "command": [
+    "python",
+    "scripts/diagnostics/e2a_exhaust_waves_v1.py",
+    "execute"
+  ],
+  "started_at": "2026-10-28T12:04:21+00:00",
+  "finished_at": "2026-10-28T12:08:40+00:00",
+  "duration_s": 259.735,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\e2a-exhaust-waves-v1\\runlogs\\e2a-execution.log",
+  "log_lines": 7,
+  "log_bytes": 1014,
+  "error_lines": [],
+  "tail": [
+    "{\"name\": \"A44-d05\", \"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 2.567906499840319, \"new_solver_s\": 0.0, \"peak_rss_mib\": 0.0, \"gate\": true}",
+    "{\"name\": \"B44-d05\", \"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 24.121405200101435, \"new_solver_s\": 23.801993500906974, \"peak_rss_mib\": 49.39453125, \"gate\": true}",
+    "{\"name\": \"A88-d05\", \"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 58.237383499974385, \"new_solver_s\": 57.744994796579704, \"peak_rss_mib\": 58.3984375, \"gate\": true}",
+    "{\"name\": \"B88-d05\", \"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 57.55317580001429, \"new_solver_s\": 57.14713569637388, \"peak_rss_mib\": 60.890625, \"gate\": true}",
+    "{\"name\": \"A88-d025\", \"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 56.903969399863854, \"new_solver_s\": 56.47023119707592, \"peak_rss_mib\": 61.16796875, \"gate\": true}",
+    "{\"name\": \"B88-d025\", \"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 58.90921440022066, \"new_solver_s\": 58.438254898646846, \"peak_rss_mib\": 61.45703125, \"gate\": true}",
+    "{\"complete\": true, \"wall_s\": 259.252701099962}"
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "schema": "DINO_E2A_VERIFICATION_V1",
+  "protocol_commit": "999a95f",
+  "hashes_pass": true,
+  "all_cases_complete": true,
+  "sampled_phases_identical": true,
+  "sampled_positive_states": true,
+  "checkpoint_restore_all_exact": true,
+  "max_normalized_conservation": {
+    "mass": 1.787208457637423e-15,
+    "energy": 1.4427189048288867e-15,
+    "species": 1.2799018902351338e-15
+  },
+  "steps": {
+    "B44-d05": {
+      "accepted": 1451,
+      "rejected_proposals": 28,
+      "dt_microseconds_min_median_p95_max": [
+        0.07233796296296297,
+        9.25925925925926,
+        9.25925925925926,
+        9.25925925925926
+      ],
+      "comparison_window_steps": 376,
+      "comparison_window_dt_microseconds_median_max": [
+        9.25925925925926,
+        9.25925925925926
+      ]
+    },
+    "A88-d05": {
+      "accepted": 2392,
+      "rejected_proposals": 949,
+      "dt_microseconds_min_median_p95_max": [
+        1.5688347783911587,
+        4.62962962962963,
+        9.25925925925926,
+        9.25925925925926
+      ],
+      "comparison_window_steps": 666,
+      "comparison_window_dt_microseconds_median_max": [
+        4.62962962962963,
+        9.25925925925926
+      ]
+    },
+    "B88-d05": {
+      "accepted": 2391,
+      "rejected_proposals": 950,
+      "dt_microseconds_min_median_p95_max": [
+        0.5787037037037037,
+        4.62962962962963,
+        9.25925925925926,
+        9.25925925925926
+      ],
+      "comparison_window_steps": 664,
+      "comparison_window_dt_microseconds_median_max": [
+        4.62962962962963,
+        9.25925925925926
+      ]
+    },
+    "A88-d025": {
+      "accepted": 2884,
+      "rejected_proposals": 0,
+      "dt_microseconds_min_median_p95_max": [
+        0.44470906097423585,
+        4.62962962962963,
+        4.62962962962963,
+        4.62962962962963
+      ],
+      "comparison_window_steps": 737,
+      "comparison_window_dt_microseconds_median_max": [
+        4.62962962962963,
+        4.62962962962963
+      ]
+    },
+    "B88-d025": {
+      "accepted": 2885,
+      "rejected_proposals": 1,
+      "dt_microseconds_min_median_p95_max": [
+        0.44470906097423585,
+        4.62962962962963,
+        4.62962962962963,
+        4.62962962962963
+      ],
+      "comparison_window_steps": 738,
+      "comparison_window_dt_microseconds_median_max": [
+        4.62962962962963,
+        4.62962962962963
+      ]
+    },
+    "A-temporal-grid-overlap": {
+      "shared_endpoints": 2390,
+      "fraction_base_endpoints_shared": 0.9991638795986622,
+      "qualification": "CFL makes this a tighter nominal cap, not uniform halving of every actual dt"
+    },
+    "B-temporal-grid-overlap": {
+      "shared_endpoints": 2388,
+      "fraction_base_endpoints_shared": 0.998745294855709,
+      "qualification": "CFL makes this a tighter nominal cap, not uniform halving of every actual dt"
+    }
+  },
+  "new_solver_s": 253.60261008958332,
+  "comparison_job_wall_s": 262.704,
+  "verification_wall_s": 1.7488212001044303,
+  "total_measured_computational_wall_s": 264.45282120010444,
+  "budget_s": 600,
+  "budget_pass": true,
+  "peak_new_run_rss_mib": 61.45703125,
+  "raw_bytes": 20214386,
+  "review": "SELF_REVIEW",
+  "qualification": "Empirical sensitivity envelopes, no rigorous error bound. Actual temporal refinement partly overlaps due CFL; no new simulations after frozen matrix."
+}
