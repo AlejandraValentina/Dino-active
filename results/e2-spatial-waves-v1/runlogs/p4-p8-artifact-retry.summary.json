@@ -1,0 +1,25 @@
+{
+  "name": "p4-p8-artifact-retry",
+  "command": [
+    "C:\\Users\\ageribon\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_p4_g2_v2_recovery.py::test_new_durable_acquisition_reaudits_without_producer_pass",
+    "tests/test_p4_g2_v2_recovery.py::test_reacquired_terminal_states_match_historical_run_exactly",
+    "tests/test_p4_g2_v2_recovery.py::test_r2_real_closing_checkpoint_false_dt_cannot_pass_after_hash_update"
+  ],
+  "started_at": "2026-10-28T13:00:01+00:00",
+  "finished_at": "2026-10-28T13:01:30+00:00",
+  "duration_s": 88.484,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\e2-spatial-waves-v1\\runlogs\\p4-p8-artifact-retry.log",
+  "log_lines": 2,
+  "log_bytes": 109,
+  "error_lines": [],
+  "tail": [
+    "...                                                                      [100%]",
+    "3 passed in 87.85s (0:01:27)"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "integrated",
+  "command": [
+    "python",
+    "scripts/diagnostics/e2_spatial_waves_v1.py",
+    "execute"
+  ],
+  "started_at": "2026-10-28T12:50:50+00:00",
+  "finished_at": "2026-10-28T12:56:31+00:00",
+  "duration_s": 340.907,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\e2-spatial-waves-v1\\runlogs\\integrated.log",
+  "log_lines": 7,
+  "log_bytes": 1032,
+  "error_lines": [],
+  "tail": [
+    "{\"name\": \"A44-d05\", \"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 26.757994999876246, \"new_solver_s\": 26.45576289994642, \"peak_rss_mib\": 47.64453125, \"gate\": true}",
+    "{\"name\": \"B44-d05\", \"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 27.11435390007682, \"new_solver_s\": 26.81764349900186, \"peak_rss_mib\": 50.7265625, \"gate\": true}",
+    "{\"name\": \"A88-d05\", \"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 72.06301319994964, \"new_solver_s\": 71.65200880402699, \"peak_rss_mib\": 58.3671875, \"gate\": true}",
+    "{\"name\": \"B88-d05\", \"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 71.14953509997576, \"new_solver_s\": 70.71839939872734, \"peak_rss_mib\": 60.58984375, \"gate\": true}",
+    "{\"name\": \"A88-d025\", \"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 73.10436680004932, \"new_solver_s\": 72.66210430022329, \"peak_rss_mib\": 60.73046875, \"gate\": true}",
+    "{\"name\": \"B88-d025\", \"status\": \"COMPLETE\", \"error\": null, \"wall_s\": 69.35611490020528, \"new_solver_s\": 68.92829169565812, \"peak_rss_mib\": 61.55078125, \"gate\": true}",
+    "{\"complete\": true, \"wall_s\": 340.517553600017}"
+  ]
+}

@@ -1,0 +1,205 @@
+{
+  "passed": true,
+  "pulse": {
+    "cases": [
+      {
+        "model": "legacy",
+        "n": 40,
+        "pressure_L1": 6.400351958979478e-08,
+        "amplitude": 9.412009880360728e-07,
+        "phase_position_error_m": -0.0058215956619923626,
+        "conservation_abs": 5.551115123125783e-17
+      },
+      {
+        "model": "legacy",
+        "n": 80,
+        "pressure_L1": 3.944914080677986e-08,
+        "amplitude": 1.1038391065643083e-06,
+        "phase_position_error_m": 0.00042840433800761524,
+        "conservation_abs": 5.551115123125783e-17
+      },
+      {
+        "model": "legacy",
+        "n": 160,
+        "pressure_L1": 2.2109586565732807e-08,
+        "amplitude": 1.2258977601931065e-06,
+        "phase_position_error_m": -0.002696595661992318,
+        "conservation_abs": 5.551115123125783e-17
+      },
+      {
+        "model": "muscl",
+        "n": 40,
+        "pressure_L1": 1.7062862411876267e-08,
+        "amplitude": 1.1942661779507091e-06,
+        "phase_position_error_m": -0.0058215956619923626,
+        "conservation_abs": 0.0
+      },
+      {
+        "model": "muscl",
+        "n": 80,
+        "pressure_L1": 5.563172471301225e-09,
+        "amplitude": 1.3175823323496871e-06,
+        "phase_position_error_m": -0.01207159566199234,
+        "conservation_abs": 0.0
+      },
+      {
+        "model": "muscl",
+        "n": 160,
+        "pressure_L1": 1.5511320394789862e-09,
+        "amplitude": 1.3698233927161851e-06,
+        "phase_position_error_m": -0.002696595661992318,
+        "conservation_abs": 0.0
+      }
+    ],
+    "order_80_160": 1.8425863327653813,
+    "error_reduction_n80": 7.091123097528686,
+    "passed": true,
+    "qualification": "Linear acoustic reference, amplitude1e-6; nonlinear/initial kinetic averaging error O(eps**2), phase sampled at cell centers"
+  },
+  "pytest_returncode": 0,
+  "numerical": {
+    "schema": "DINO_SPATIAL_RECONSTRUCTION_V1_VERIFICATION",
+    "passed": true,
+    "cases": [
+      {
+        "n": 40,
+        "kind": "entropy",
+        "model": "legacy",
+        "steps": 47,
+        "rho_L1": 0.006119299228409889,
+        "species_L1": 0.0023597574476102875,
+        "pressure_L1": 3.830269434956789e-16,
+        "conservation_abs": 1.1102230246251565e-16
+      },
+      {
+        "n": 80,
+        "kind": "entropy",
+        "model": "legacy",
+        "steps": 93,
+        "rho_L1": 0.003101668726653451,
+        "species_L1": 0.0011984378216717529,
+        "pressure_L1": 5.093148125467907e-16,
+        "conservation_abs": 5.551115123125783e-17
+      },
+      {
+        "n": 160,
+        "kind": "entropy",
+        "model": "legacy",
+        "steps": 186,
+        "rho_L1": 0.0015609572997419502,
+        "species_L1": 0.0006038183939305948,
+        "pressure_L1": 5.814793091474266e-16,
+        "conservation_abs": 5.551115123125783e-17
+      },
+      {
+        "n": 40,
+        "kind": "entropy",
+        "model": "muscl",
+        "steps": 47,
+        "rho_L1": 0.0006391510677331151,
+        "species_L1": 0.00027025381086190857,
+        "pressure_L1": 4.8017145815038e-16,
+        "conservation_abs": 0.0
+      },
+      {
+        "n": 80,
+        "kind": "entropy",
+        "model": "muscl",
+        "steps": 93,
+        "rho_L1": 0.0001499114975759136,
+        "species_L1": 6.403343180907111e-05,
+        "pressure_L1": 5.093148125467901e-16,
+        "conservation_abs": 4.440892098500626e-16
+      },
+      {
+        "n": 160,
+        "kind": "entropy",
+        "model": "muscl",
+        "steps": 186,
+        "rho_L1": 3.3852513304385285e-05,
+        "species_L1": 1.4655018403051143e-05,
+        "pressure_L1": 6.848688283156442e-16,
+        "conservation_abs": 1.1102230246251565e-16
+      },
+      {
+        "n": 40,
+        "kind": "acoustic",
+        "model": "legacy",
+        "steps": 24,
+        "rho_L1": 0.0,
+        "species_L1": 0.0,
+        "pressure_L1": 5.0533572348854255e-08,
+        "conservation_abs": 0.0
+      },
+      {
+        "n": 80,
+        "kind": "acoustic",
+        "model": "legacy",
+        "steps": 48,
+        "rho_L1": 0.0,
+        "species_L1": 0.0,
+        "pressure_L1": 2.5638232160896107e-08,
+        "conservation_abs": 5.551115123125783e-17
+      },
+      {
+        "n": 160,
+        "kind": "acoustic",
+        "model": "legacy",
+        "steps": 95,
+        "rho_L1": 0.0,
+        "species_L1": 0.0,
+        "pressure_L1": 1.2914750902037753e-08,
+        "conservation_abs": 4.440892098500626e-16
+      },
+      {
+        "n": 40,
+        "kind": "acoustic",
+        "model": "muscl",
+        "steps": 24,
+        "rho_L1": 0.0,
+        "species_L1": 0.0,
+        "pressure_L1": 4.907547590526917e-09,
+        "conservation_abs": 5.551115123125783e-17
+      },
+      {
+        "n": 80,
+        "kind": "acoustic",
+        "model": "muscl",
+        "steps": 48,
+        "rho_L1": 0.0,
+        "species_L1": 0.0,
+        "pressure_L1": 1.2447229538747885e-09,
+        "conservation_abs": 4.440892098500626e-16
+      },
+      {
+        "n": 160,
+        "kind": "acoustic",
+        "model": "muscl",
+        "steps": 95,
+        "rho_L1": 0.0,
+        "species_L1": 0.0,
+        "pressure_L1": 2.860992394382311e-10,
+        "conservation_abs": 1.1102230246251565e-16
+      }
+    ],
+    "observed_final_orders": {
+      "entropy:legacy:rho_L1": 0.9906135350535977,
+      "entropy:muscl:rho_L1": 2.146776183552223,
+      "entropy:legacy:species_L1": 0.9889684488475599,
+      "entropy:muscl:species_L1": 2.1274305521692347,
+      "acoustic:legacy:pressure_L1": 0.9892769696746383,
+      "acoustic:muscl:pressure_L1": 2.121237100416208
+    },
+    "wall_s": 7.40257679997012,
+    "cfl": 0.2,
+    "gas_gamma": 1.4,
+    "physical_time": 0.1,
+    "initialization": "EXACT_CELL_AVERAGES",
+    "acoustic_reference": "LINEARIZED_AMPLITUDE_1E-6_NONLINEAR_ERROR_O_EPSILON_SQUARED",
+    "engine_steps": 0,
+    "review": "SELF_REVIEW",
+    "experimental_validation": false
+  },
+  "wall_s": 17.232825599843636,
+  "qualification": "Periodic smooth references test V2 interiors; pytest covers endpoints, V2 ports, shock, species, restart and legacy"
+}

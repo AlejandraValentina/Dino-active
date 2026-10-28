@@ -1,0 +1,15 @@
+{
+  "cause": "Historical resolver requires explicit DINO_ARTIFACT_ROOT; process had no variable. Artifacts were present, not damaged.",
+  "root": "E:\\Dino-artifacts",
+  "verified_manifest": "artifacts\\p4-g2-v2-recovery.json",
+  "verified_files": 56,
+  "hashes_verified": true,
+  "mutation": "NONE; child environment only",
+  "charged_extra_io_s": 10,
+  "retry_timeout_s": 110,
+  "rerun_tests": [
+    "test_new_durable_acquisition_reaudits_without_producer_pass",
+    "test_reacquired_terminal_states_match_historical_run_exactly",
+    "test_r2_real_closing_checkpoint_false_dt_cannot_pass_after_hash_update"
+  ]
+}

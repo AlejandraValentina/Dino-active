@@ -1,0 +1,20 @@
+{
+  "name": "verification",
+  "command": [
+    "python",
+    "scripts/diagnostics/e2_spatial_waves_v1.py",
+    "verify"
+  ],
+  "started_at": "2026-10-28T12:50:27+00:00",
+  "finished_at": "2026-10-28T12:50:45+00:00",
+  "duration_s": 18.5,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\e2-spatial-waves-v1\\runlogs\\verification.log",
+  "log_lines": 1,
+  "log_bytes": 344,
+  "error_lines": [],
+  "tail": [
+    "{\"passed\": true, \"wall_s\": 17.232825599843636, \"orders\": {\"entropy:legacy:rho_L1\": 0.9906135350535977, \"entropy:muscl:rho_L1\": 2.146776183552223, \"entropy:legacy:species_L1\": 0.9889684488475599, \"entropy:muscl:species_L1\": 2.1274305521692347, \"acoustic:legacy:pressure_L1\": 0.9892769696746383, \"acous"
+  ]
+}
