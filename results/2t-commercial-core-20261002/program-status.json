@@ -10082,9 +10082,12 @@
         "results/predictive-reliability-v1/candidate-periodic-gci-v1/preflight-88-v2.json",
         "results/predictive-reliability-v1/candidate-periodic-gci-v1/continuation-88-preregistration-v1.json",
         "DINO_ARTIFACT_ROOT/predictive-reliability-v1/candidate-periodic-gci-v1/window-88-01/receipt.json",
-        "DINO_ARTIFACT_ROOT/runlogs/candidate-periodic-gci-88-cycles31-36/candidate-periodic-gci-88-cycles31-36.summary.json"
+        "DINO_ARTIFACT_ROOT/runlogs/candidate-periodic-gci-88-cycles31-36/candidate-periodic-gci-88-cycles31-36.summary.json",
+        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/candidate-periodic-gci-v1/window-88-01/receipt.json",
+        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/candidate-periodic-gci-v1/window-88-02/receipt.json",
+        "results/predictive-reliability-v1/candidate-periodic-gci-v1/preflight-176-v1.json"
       ],
-      "next_action": "Run only cycles 37-40 from the exact cycle-36 checkpoint and restored detector; review before any 176-cell window.",
+      "next_action": "Run the first independent 176-cell window, cycles31-38, then review periodicity, conservation and cost. GCI remains unavailable until 88 also reaches an audited period.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -10094,10 +10097,13 @@
         "results/predictive-reliability-v1/candidate-periodic-gci-v1/",
         "scripts/diagnostics/analyze_periodic_mesh_gci_v1.py",
         "tests/test_analyze_periodic_mesh_gci_v1.py",
-        "openspec/changes/predictive-reliability-v1/candidate-periodic-gci-88-window2-addendum-v1.md"
+        "openspec/changes/predictive-reliability-v1/candidate-periodic-gci-88-window2-addendum-v1.md",
+        "openspec/changes/predictive-reliability-v1/candidate-periodic-gci-176-first-window-addendum-v1.md",
+        "scripts/diagnostics/run_candidate_periodic_176_v1.py",
+        "tests/test_run_candidate_periodic_176_v1.py"
       ],
       "evidence_level": "L2",
-      "qualification": "88-cell window31-36 completed TRANSIENT_AT_BUDGET; max and p90 declined across the last three cycles. One four-cycle continuation is separately frozen and preflighted; no 176-cell run until review."
+      "qualification": "88 cells completed cycles31-40 without periodicity; no further 88 extension admitted. A separate 176-cell first window is frozen after reviewing that result; no GCI or promotion unless all required grids are audited periodic."
     },
     {
       "id": "PRED-CORE-PERIODIC-GCI-ANALYZER",
@@ -10336,9 +10342,9 @@
       "PRED-IDENTIFICATION",
       "PRED-VALIDATION"
     ],
-    "completion_criterion": "Unified owner roadmap; active E1.3 work is the 88-cell window and its single trend-qualified continuation through cycle 40. Review periodicity, conservation, cost and remap before any 176-cell window. V2/MUSCL remain experimental; no validation or predictive claim from periodicity.",
+    "completion_criterion": "Unified owner roadmap; 88-cell periodicity was not reached within the preregistered cycles31-40. The active independent diagnostic is a first 176-cell window through cycle38, then review. Continue the 44/88/176 gate only on evidence; V2/MUSCL remain experimental and periodicity alone is not prediction.",
     "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
-    "qualification": "Owner instruction 2026-10-28 activates roadmap continuation. 88-cell cycles31-40 only, within the preregistered 600 s stage allowance; review before 176. No candidate promotion.",
+    "qualification": "Owner instruction 2026-10-28 activates continuation of the roadmap within existing E1.3 limits. 176-cell window31-38 only, 1080 s cap after zero-step preflight. No further 88 extension; review before any more mesh run.",
     "staged_plan": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md"
   },
   "objectives": [
@@ -14265,6 +14271,12 @@
       "task": "PRED-CORE-PERIODIC-MESH-GCI",
       "kind": "task",
       "summary": "Window88 cycles31-36: TRANSIENT_AT_BUDGET 256.70s, six cycles, max error/tol 19.85→2.69 and p90 5.22→0.533, conservation passed. Preregistered cycles37-40 from exact cp36+detector, projection204.6/205s; no176 yet."
+    },
+    {
+      "at": "2026-10-28T15:24:27+00:00",
+      "task": "PRED-CORE-PERIODIC-MESH-GCI",
+      "kind": "task",
+      "summary": "Review: 88 cycles31-40 remained nonperiodic; window2 stopped NO_SUFFICIENT_PROGRESS after cycle40. No more 88 extension. Independent 176 P0 remap/storage preflight PASS (inventory/restriction errors <1.2e-15); preregistered first window cycles31-38 with 1043.8s projected incl20% margin."
     }
   ],
   "legacy_gate_status": {
