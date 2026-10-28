@@ -46,6 +46,12 @@ def file_sha(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _finite(value, label: str) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+        raise ValueError(f"{label} must be finite")
+    return float(value)
+
+
 def source_validation(source_root: Path) -> dict:
     source_root = Path(source_root)
     manifest_path = source_root / "manifest.json"
@@ -92,13 +98,17 @@ def admission_estimates(preparation: dict, factor: float = 1.0) -> list[dict]:
 
 
 def preflight(source_root: Path, output: Path, artifact_root: Path,
-              protocol_path: Path) -> dict:
+              protocol_path: Path, prior_spent_s: float = 0.0) -> dict:
     validation = source_validation(source_root)
     prep = prepare(source_root)
     if not prep["cost"]["fits_proposed_caps"]:
         raise ValueError("fresh source projection exceeds frozen activation caps")
     if prep["cost"]["proposed_total_admission_cap_s"] != TOTAL_CAP_S or prep["cost"]["proposed_per_case_cap_s"] != CASE_CAP_S:
         raise ValueError("prepared budget differs from activation caps")
+    prior_spent = _finite(prior_spent_s, "prior activation runtime")
+    remaining_cap = TOTAL_CAP_S - prior_spent
+    if remaining_cap <= 0 or prep["cost"]["projection_with_margin_s"] > remaining_cap:
+        raise ValueError("fresh source projection plus prior invocation exceeds activation cap")
     storage = check_storage_requirements([(Path(output), 1024**3)])
     return {
         "schema": "DINO_POSTOPEN_WAVE_TRANSPORT_PREFLIGHT_V1",
@@ -110,6 +120,8 @@ def preflight(source_root: Path, output: Path, artifact_root: Path,
         "storage_preflight": storage,
         "output": str(output),
         "total_admission_cap_s": TOTAL_CAP_S,
+        "prior_invocation_wall_s": prior_spent,
+        "remaining_total_admission_cap_s": remaining_cap,
         "per_case_admission_cap_s": CASE_CAP_S,
         "study_storage_cap_bytes": 1024**3,
         "solver_steps_executed": 0,
@@ -259,7 +271,8 @@ def run_case(source_root: Path, output: Path, name: str, deadline: float) -> dic
             flux_windows.append(dict(phase_start_deg=phase - 30.0, phase_end_deg=phase,
                                      integrated_face_fluxes=serial(window_totals),
                                      conservation=balance))
-            write(output / f"checkpoint-phase-{int(phase):03}.json", engine.snapshot())
+            write(output / f"fast-terminal-phase-{int(phase):03}.json",
+                  engine.fast_recipe_terminal_state())
             window_totals = empty_totals(duct_names)
             write(output / "frames.json", phases)
             write(output / "flux-windows.json", flux_windows)
@@ -311,6 +324,7 @@ def run(source_root: Path, output: Path, artifact_root: Path,
     if frozen.get("source_validation") != validation:
         raise ValueError("post-opening source changed after preregistration")
     preflight_storage = frozen["storage_preflight"]
+    global_cap_s = _finite(frozen.get("remaining_total_admission_cap_s"), "remaining total admission cap")
     if not preflight_storage.get("passed", preflight_storage.get("status") == "PASS"):
         raise ValueError("preflight storage reserve did not pass")
     if output.exists():
@@ -322,7 +336,7 @@ def run(source_root: Path, output: Path, artifact_root: Path,
     cost_factor = 1.0
     try:
         for index, estimate in enumerate(frozen["initial_admission_estimates"]):
-            remaining = TOTAL_CAP_S - (time.perf_counter() - start)
+            remaining = global_cap_s - (time.perf_counter() - start)
             projected = estimate["projected_s"] * cost_factor
             projected_margin = projected * MARGIN
             if projected_margin > CASE_CAP_S or projected_margin > remaining:
@@ -331,8 +345,13 @@ def run(source_root: Path, output: Path, artifact_root: Path,
                 break
             try:
                 result = run_case(source_root, output / estimate["name"], estimate["name"],
-                                  min(start + TOTAL_CAP_S, time.perf_counter() + CASE_CAP_S))
+                                  min(start + global_cap_s, time.perf_counter() + CASE_CAP_S))
             except TimeoutError as exc:
+                case_output = output / estimate["name"]
+                if case_output.exists() and not (case_output / "receipt.json").exists():
+                    write(case_output / "receipt.json", {"schema": "DINO_POSTOPEN_WAVE_TRANSPORT_CASE_V1",
+                                                          "status": "PARTIAL_AT_BUDGET", "error": str(exc),
+                                                          "preserve_partial": True})
                 status, error = "PARTIAL_AT_BUDGET", str(exc)
                 break
             except Exception as exc:
@@ -378,12 +397,14 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--artifact-root", type=Path)
     parser.add_argument("--preflight-only", action="store_true")
+    parser.add_argument("--prior-spent-seconds", type=float, default=0.0)
     args = parser.parse_args()
     artifact_root = args.artifact_root or default_artifact_root()
     if args.preflight_only:
         if args.output.exists():
             raise FileExistsError("preserve existing post-opening preflight")
-        result = preflight(args.source_root, args.output, artifact_root, args.protocol)
+        result = preflight(args.source_root, args.output, artifact_root, args.protocol,
+                           args.prior_spent_seconds)
         args.preflight.parent.mkdir(parents=True, exist_ok=True)
         write(args.preflight, result)
         print(json.dumps({"preflight": "PASS", "cases": len(CASES),

@@ -10186,9 +10186,13 @@
         "results/predictive-reliability-v1/postopen-wave-transport-preflight-v1.json",
         "results/predictive-reliability-v1/postopen-wave-transport-preflight-v2.json",
         "results/predictive-reliability-v1/postopen-wave-transport-preflight-v3.json",
-        "results/predictive-reliability-v1/postopen-wave-transport-preflight-history.md"
+        "results/predictive-reliability-v1/postopen-wave-transport-preflight-history.md",
+        "openspec/changes/predictive-reliability-v1/postopen-wave-transport-activation-v2.md",
+        "results/predictive-reliability-v1/postopen-wave-transport-preflight-v4.json",
+        "DINO_ARTIFACT_ROOT/runlogs/postopen-wave-transport-v1/postopen-wave-transport-v1.summary.json",
+        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/postopen-wave-transport-run-v1/p0-88/receipt.json"
       ],
-      "next_action": "Run the four bound cases once with run_logged under 600 s total/210 s per case; exact source replay, conservation <=1e-12 and 90/120/150 degree flux/field coverage; preserve any partial output.",
+      "next_action": "Run the corrected four-case campaign once from the v2 preflight, with 572.203 s remaining total activation cap and 210 s per case; exact replay, conservation and target phases required.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/implementation/verification",
       "evidence_level": "L1",
@@ -10200,9 +10204,12 @@
         "results/predictive-reliability-v1/postopen-wave-transport-preflight-v1.json",
         "results/predictive-reliability-v1/postopen-wave-transport-preflight-v2.json",
         "results/predictive-reliability-v1/postopen-wave-transport-preflight-v3.json",
-        "results/predictive-reliability-v1/postopen-wave-transport-preflight-history.md"
+        "results/predictive-reliability-v1/postopen-wave-transport-preflight-history.md",
+        "openspec/changes/predictive-reliability-v1/postopen-wave-transport-activation-v2.md",
+        "results/predictive-reliability-v1/postopen-wave-transport-preflight-v4.json",
+        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/postopen-wave-transport-run-v2/"
       ],
-      "qualification": "User activation preregistered. Fresh source/runner/protocol/storage preflight v3 PASS at 0 solver steps; projection 541.002 s with margin. Five runner tests PASS. Campaign not yet executed."
+      "qualification": "The first logged attempt replayed p0-88 exactly and extended through 90 degrees, then failed only when engine.snapshot() was used on FAST state. Partial output preserved; no case accepted. Corrected FAST terminal writer and activation v2 frozen; preflight v4 PASS, 572.203 s remaining, projection 541.002 s, five focused tests PASS."
     },
     {
       "id": "PRED-POSTOPEN-WAVE-TRANSPORT-ANALYZER",
@@ -14412,6 +14419,12 @@
       "task": "PRED-POSTOPEN-WAVE-TRANSPORT-EXECUTION",
       "kind": "task",
       "summary": "Versioned activation and source-bound runner prepared. Exact source runner hashes, four case manifests, current runner/protocol hashes and storage reserve PASS; 541.002s projection with30% margin under600s total and210s/case. Focused suite5 PASS; zero solver steps so far."
+    },
+    {
+      "at": "2026-10-28T15:54:59Z",
+      "task": "PRED-POSTOPEN-WAVE-TRANSPORT-EXECUTION",
+      "kind": "task",
+      "summary": "First run_logged attempt stopped after exact p0-88 source replay and 90deg extension because mid-arc FAST state cannot use native snapshot(); partial preserved. Runner now records FAST terminals. Activation v2/preflight v4 account for27.797s prior wall, leave572.203s of600; fresh source/storage PASS; 541.002s projection; 5 tests PASS."
     }
   ],
   "legacy_gate_status": {
@@ -14506,7 +14519,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-28T15:53:26Z",
+  "updated_at": "2026-10-28T15:54:59Z",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
