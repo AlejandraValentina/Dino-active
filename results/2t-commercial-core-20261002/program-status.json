@@ -10167,6 +10167,63 @@
         "results/predictive-reliability-v1/candidate-periodic-gci-v1/transient-review-history.md"
       ],
       "qualification": "Read-only endpoint and budget analysis complete. 88 last-three max/p90 did not strictly decrease; 176 did, but 230.17 s remained versus 364.12 s best-case minimum period detection. Five focused tests passed; no solver steps."
+    },
+    {
+      "id": "PRED-POSTOPEN-WAVE-TRANSPORT-EXECUTION",
+      "description": "Implement and execute the user-activated recorded39 post-opening 90/120/150 degree wave/marker transport diagnostic for the four prepared P0 grid/time cases, with exact source replay and no physics changes.",
+      "dependencies": [
+        "PRED-POSTOPEN-WAVE-TRANSPORT-DESIGN"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "openspec/changes/predictive-reliability-v1/postopen-wave-transport-protocol-v1.md",
+        "results/predictive-reliability-v1/postopen-wave-transport-preparation-v1/receipt.json",
+        "openspec/changes/predictive-reliability-v1/postopen-wave-transport-activation-v1.md",
+        "scripts/diagnostics/run_postopen_wave_transport_v1.py",
+        "tests/test_run_postopen_wave_transport_v1.py",
+        "results/predictive-reliability-v1/postopen-wave-transport-preflight-v1.json",
+        "results/predictive-reliability-v1/postopen-wave-transport-preflight-v2.json",
+        "results/predictive-reliability-v1/postopen-wave-transport-preflight-v3.json",
+        "results/predictive-reliability-v1/postopen-wave-transport-preflight-history.md"
+      ],
+      "next_action": "Run the four bound cases once with run_logged under 600 s total/210 s per case; exact source replay, conservation <=1e-12 and 90/120/150 degree flux/field coverage; preserve any partial output.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/implementation/verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/postopen-wave-transport-activation-v1.md",
+        "scripts/diagnostics/run_postopen_wave_transport_v1.py",
+        "tests/test_run_postopen_wave_transport_v1.py",
+        "results/predictive-reliability-v1/postopen-wave-transport-run-v1/",
+        "results/predictive-reliability-v1/postopen-wave-transport-preflight-v1.json",
+        "results/predictive-reliability-v1/postopen-wave-transport-preflight-v2.json",
+        "results/predictive-reliability-v1/postopen-wave-transport-preflight-v3.json",
+        "results/predictive-reliability-v1/postopen-wave-transport-preflight-history.md"
+      ],
+      "qualification": "User activation preregistered. Fresh source/runner/protocol/storage preflight v3 PASS at 0 solver steps; projection 541.002 s with margin. Five runner tests PASS. Campaign not yet executed."
+    },
+    {
+      "id": "PRED-POSTOPEN-WAVE-TRANSPORT-ANALYZER",
+      "description": "Implement a read-only common-phase analyzer for the activated post-opening 88/176/352 spatial cases and 176 time-half control; report pressure, density, species-marker and integrated face-flux differences without GCI or predictive claims.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "openspec/changes/predictive-reliability-v1/postopen-wave-transport-protocol-v1.md",
+        "openspec/changes/predictive-reliability-v1/postopen-wave-transport-activation-v1.md"
+      ],
+      "next_action": "Implement and test a fail-closed analyzer for four complete case receipts, matching phases, identities, source replay and conservation; retain nonmonotone local/spatial and temporal differences as diagnostics.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "implementation/verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/diagnostics/analyze_postopen_wave_transport_v1.py",
+        "tests/test_analyze_postopen_wave_transport_v1.py",
+        "results/predictive-reliability-v1/postopen-wave-transport-analysis-v1.json"
+      ]
     }
   ],
   "audit_remediation_mode": false,
@@ -14349,6 +14406,12 @@
       "task": "PRED-POSTOPEN-WAVE-TRANSPORT-EXECUTION",
       "kind": "task",
       "summary": "Activated as next independent roadmap deliverable under user instruction; existing preparation projects541.0s with30% margin within600s total and210s/case; exact replay/source hash recheck and activation preregistration required before one bounded run."
+    },
+    {
+      "at": "2026-10-28T15:53:26Z",
+      "task": "PRED-POSTOPEN-WAVE-TRANSPORT-EXECUTION",
+      "kind": "task",
+      "summary": "Versioned activation and source-bound runner prepared. Exact source runner hashes, four case manifests, current runner/protocol hashes and storage reserve PASS; 541.002s projection with30% margin under600s total and210s/case. Focused suite5 PASS; zero solver steps so far."
     }
   ],
   "legacy_gate_status": {
@@ -14443,7 +14506,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-28T15:49:14Z",
+  "updated_at": "2026-10-28T15:53:26Z",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
