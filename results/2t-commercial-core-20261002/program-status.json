@@ -10072,7 +10072,7 @@
         "PRED-PERIODIC-CONVERGENCE-COSTED-DESIGN"
       ],
       "state": "BLOCKED_LOCAL",
-      "blocker": "Neither 88 (cycles31-40) nor 176 (cycles31-37) demonstrated the preregistered period. The 176 window ended at its authorized cycle budget, with 71/1601 endpoint comparison metrics failing; extending the simulation is not yet justified by endpoint behavior. No mesh GCI is valid without periodic audited endpoints.",
+      "blocker": "Neither 88 (cycles31-40) nor 176 (cycles31-37) demonstrated the preregistered period. The 176 branch consumed 969.8315 s including its preserved 120.229 s failed attempt; only 230.1685 s remains in the 1200 s per-grid cap, while at least three future lag-1 comparisons (~364.115 s at measured mean cycle cost) are needed even on a best-case detector path. No periodic IMEP/power rows; GCI is inadmissible.",
       "commits": [],
       "evidence": [
         "results/e2b-periodic-ab-v1/decision.json",
@@ -10094,7 +10094,7 @@
         "DINO_ARTIFACT_ROOT/predictive-reliability-v1/candidate-periodic-gci-v1/window-176-02/cycles.json",
         "DINO_ARTIFACT_ROOT/predictive-reliability-v1/candidate-periodic-gci-v1/window-176-02/detector.json"
       ],
-      "next_action": "Resume only after PRED-CORE-PERIODIC-TRANSIENT-DIAG identifies whether saved 88/176 endpoints support a bounded preregistered continuation; do not infer periodicity or calculate GCI now.",
+      "next_action": "Do not run additional 176 cycles under this per-grid budget. A new versioned budget/authorization is required for further 176 work; continue independent roadmap tasks meanwhile.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -10111,10 +10111,8 @@
         "openspec/changes/predictive-reliability-v1/candidate-periodic-gci-176-first-window-addendum-v2.md"
       ],
       "evidence_level": "L2",
-      "qualification": "88 cycles31-40 and independent 176 cycles31-37 are transient under the frozen detector contract. No periodic IMEP/power rows; GCI withheld. 176 run conserved mass/energy/species and stayed within its preregistered time admission.",
-      "unblock_tasks": [
-        "PRED-CORE-PERIODIC-TRANSIENT-DIAG"
-      ]
+      "qualification": "88 cycles31-40 and independent 176 cycles31-37 remain transient. Saved 176 tail max/p90 strictly decrease, but remaining 230.17 s is below the best-case 364.12 s for the detector minimum streak. No additional 176 cycles or GCI within current authorization.",
+      "no_local_unblock_reason": "No local continuation can reach the PeriodicDetectorV2 minimum streak within the remaining approved per-grid solver budget. A larger 176 budget is a new compute authorization; do not bypass it with another mesh, changed detector thresholds, or altered physics."
     },
     {
       "id": "PRED-CORE-PERIODIC-GCI-ANALYZER",
@@ -10144,23 +10142,31 @@
       "id": "PRED-CORE-PERIODIC-TRANSIENT-DIAG",
       "description": "Diagnose saved 88/176 transient endpoints to identify dominant failed observables and whether a bounded continuation is supported; no solver run or threshold changes.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
         "DINO_ARTIFACT_ROOT/predictive-reliability-v1/candidate-periodic-gci-v1/window-88-02/cycles.json",
         "DINO_ARTIFACT_ROOT/predictive-reliability-v1/candidate-periodic-gci-v1/window-176-02/cycles.json",
-        "openspec/changes/predictive-reliability-v1/candidate-periodic-gci-protocol-v1.md"
+        "openspec/changes/predictive-reliability-v1/candidate-periodic-gci-protocol-v1.md",
+        "scripts/diagnostics/analyze_periodic_transient_endpoints_v1.py",
+        "tests/test_analyze_periodic_transient_endpoints_v1.py",
+        "results/predictive-reliability-v1/candidate-periodic-gci-v1/transient-review-v4.json"
       ],
-      "next_action": "Produce a durable read-only summary of endpoint normalized-error drivers and recent trend from the saved 88 and 176 cycle records; conclude whether current acceptance allows a preregistered continuation.",
+      "next_action": "No further periodic continuation fits current 176 per-grid budget. Reopen only after a versioned additional budget is approved; preserve all saved artifacts.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "evidence_level": "L1",
       "write_scope": [
         "scripts/diagnostics/analyze_periodic_transient_endpoints_v1.py",
         "tests/test_analyze_periodic_transient_endpoints_v1.py",
-        "results/predictive-reliability-v1/candidate-periodic-gci-v1/transient-review-v1.json"
-      ]
+        "results/predictive-reliability-v1/candidate-periodic-gci-v1/transient-review-v1.json",
+        "results/predictive-reliability-v1/candidate-periodic-gci-v1/transient-review-v4.json",
+        "results/predictive-reliability-v1/candidate-periodic-gci-v1/transient-review-v2.json",
+        "results/predictive-reliability-v1/candidate-periodic-gci-v1/transient-review-v3.json",
+        "results/predictive-reliability-v1/candidate-periodic-gci-v1/transient-review-history.md"
+      ],
+      "qualification": "Read-only endpoint and budget analysis complete. 88 last-three max/p90 did not strictly decrease; 176 did, but 230.17 s remained versus 364.12 s best-case minimum period detection. Five focused tests passed; no solver steps."
     }
   ],
   "audit_remediation_mode": false,
@@ -10378,9 +10384,9 @@
       "PRED-IDENTIFICATION",
       "PRED-VALIDATION"
     ],
-    "completion_criterion": "Unified owner roadmap; 88 cells remained nonperiodic through cycles31-40; 176 cells remained transient through cycles31-37. Run a read-only endpoint diagnosis before deciding any further periodic window. Continue 44/88/176 only on evidence; V2/MUSCL remain experimental.",
+    "completion_criterion": "Unified owner roadmap; 88 and 176 cells did not reach periodicity. The saved 176 endpoint trends improve, but the PeriodicDetectorV2 minimum streak requires ~364.1 s and only 230.2 s remains under the approved per-grid cap. No more 176 cycles in this budget; pursue independent post-opening transport diagnostic. V2/MUSCL remain experimental.",
     "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
-    "qualification": "Owner activated E1.3 execution. First bounded 176 window completed under the frozen 1080 s admission cap, but periodicity was not demonstrated; no GCI or promotion. Further cycles require review of existing transients first.",
+    "qualification": "E1.3 periodic GCI is BLOCKED_LOCAL: no audited periodic 88/176 endpoints; current 176 per-grid budget cannot fit the minimum detector streak. The solver cannot be continued within this authorization. User activated continuation of the independent prepared post-opening 90/120/150 deg diagnostic.",
     "staged_plan": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md"
   },
   "objectives": [
@@ -14331,6 +14337,18 @@
       "task": "PRED-CORE-PERIODIC-GCI-ANALYZER",
       "kind": "task",
       "summary": "Fail-closed 44/88/176 audited periodic GCI analyzer is implemented; focused suite: 5 PASS. Kept no-claim and no-promotion output contract."
+    },
+    {
+      "at": "2026-10-28T15:48:31Z",
+      "task": "PRED-CORE-PERIODIC-TRANSIENT-DIAG",
+      "kind": "task",
+      "summary": "Read-only endpoint review: 88 cycles8-10 max/p90 do not strictly decrease; 176 cycles35-37 both decrease. Detector needs ≥3 future lag-1 PASS comparisons but only230.17s remains of 1200s per-grid cap versus364.12s projected; no 176 continuation can reach periodic acceptance within this budget. Five focused tests PASS."
+    },
+    {
+      "at": "2026-10-28T15:48:31Z",
+      "task": "PRED-POSTOPEN-WAVE-TRANSPORT-EXECUTION",
+      "kind": "task",
+      "summary": "Activated as next independent roadmap deliverable under user instruction; existing preparation projects541.0s with30% margin within600s total and210s/case; exact replay/source hash recheck and activation preregistration required before one bounded run."
     }
   ],
   "legacy_gate_status": {
@@ -14425,7 +14443,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-28T15:43:12Z",
+  "updated_at": "2026-10-28T15:49:14Z",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",

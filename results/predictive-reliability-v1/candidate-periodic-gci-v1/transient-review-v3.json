@@ -1,0 +1,1733 @@
+{
+  "schema": "DINO_PERIODIC_TRANSIENT_ENDPOINT_REVIEW_V1",
+  "classification": "TRANSIENT_NO_GCI",
+  "windows": [
+    {
+      "label": "88",
+      "grid_total_cells": 88,
+      "source_artifact": {
+        "path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\predictive-reliability-v1\\candidate-periodic-gci-v1\\window-88-02\\cycles.json",
+        "sha256": "be280a869671e8aa4ae157e16e6e3d93cb853b8cdf6d630efec9df26f51ab4fb"
+      },
+      "cycle_count": 4,
+      "first_cycle": 7,
+      "last_cycle": 10,
+      "all_saved_cycles_conservation_residual_le_1e-12": true,
+      "last_three_maximum_strictly_decreasing": false,
+      "last_three_p90_strictly_decreasing": false,
+      "registered_six_cycle_no_progress_condition_met": false,
+      "endpoint": {
+        "cycle": 10,
+        "comparison_status": "FAIL",
+        "statistics": {
+          "maximum": 2.408105661272697,
+          "p90": 0.7996890972368207,
+          "median": 0.09554422794705698,
+          "failed": 71,
+          "count": 809
+        },
+        "work_J": 136.02436869048142,
+        "endpoint_failed_by_family": {
+          "ducts.exhaust[35]": 2,
+          "ducts.exhaust[36]": 3,
+          "ducts.exhaust[37]": 3,
+          "ducts.exhaust[38]": 3,
+          "ducts.exhaust[39]": 3,
+          "ducts.exhaust[40]": 3,
+          "ducts.exhaust[41]": 3,
+          "ducts.exhaust[42]": 3,
+          "ducts.exhaust[43]": 3,
+          "ducts.exhaust[44]": 3,
+          "ducts.exhaust[45]": 3,
+          "ducts.exhaust[46]": 3,
+          "ducts.exhaust[47]": 3,
+          "ducts.exhaust[48]": 3,
+          "ducts.exhaust[49]": 2,
+          "ducts.exhaust[50]": 2,
+          "ducts.exhaust[51]": 2,
+          "ducts.exhaust[52]": 2,
+          "ducts.exhaust[53]": 3,
+          "ducts.exhaust[54]": 3,
+          "ducts.exhaust[55]": 2,
+          "ducts.exhaust[56]": 2,
+          "ducts.exhaust[57]": 2,
+          "ducts.exhaust[58]": 2,
+          "ducts.exhaust[59]": 2,
+          "ducts.exhaust[60]": 3,
+          "ducts.exhaust[61]": 3
+        },
+        "top_endpoint_failures": [
+          {
+            "observable": "ducts.exhaust[38].species.burned",
+            "normalized_error_over_threshold": 2.408105661272697,
+            "value": 0.004816211322545394,
+            "threshold": 0.002
+          },
+          {
+            "observable": "ducts.exhaust[39].species.burned",
+            "normalized_error_over_threshold": 2.38657138948023,
+            "value": 0.00477314277896046,
+            "threshold": 0.002
+          },
+          {
+            "observable": "ducts.exhaust[37].species.burned",
+            "normalized_error_over_threshold": 2.301515765612494,
+            "value": 0.004603031531224988,
+            "threshold": 0.002
+          },
+          {
+            "observable": "ducts.exhaust[40].species.burned",
+            "normalized_error_over_threshold": 2.289330369678655,
+            "value": 0.00457866073935731,
+            "threshold": 0.002
+          },
+          {
+            "observable": "ducts.exhaust[38].species.fresh_air",
+            "normalized_error_over_threshold": 2.251683788718206,
+            "value": 0.004503367577436412,
+            "threshold": 0.002
+          },
+          {
+            "observable": "ducts.exhaust[39].species.fresh_air",
+            "normalized_error_over_threshold": 2.229122681976947,
+            "value": 0.004458245363953894,
+            "threshold": 0.002
+          },
+          {
+            "observable": "ducts.exhaust[41].species.burned",
+            "normalized_error_over_threshold": 2.156894337545179,
+            "value": 0.004313788675090358,
+            "threshold": 0.002
+          },
+          {
+            "observable": "ducts.exhaust[37].species.fresh_air",
+            "normalized_error_over_threshold": 2.155190223759179,
+            "value": 0.004310380447518358,
+            "threshold": 0.002
+          },
+          {
+            "observable": "ducts.exhaust[40].species.fresh_air",
+            "normalized_error_over_threshold": 2.1364541358450393,
+            "value": 0.004272908271690079,
+            "threshold": 0.002
+          },
+          {
+            "observable": "ducts.exhaust[42].species.burned",
+            "normalized_error_over_threshold": 2.0168845384210266,
+            "value": 0.004033769076842053,
+            "threshold": 0.002
+          }
+        ],
+        "maximum_conservation_residual": 2.1142060862505735e-14
+      },
+      "cycle_history": [
+        {
+          "cycle": 7,
+          "comparison_status": "FAIL",
+          "statistics": {
+            "maximum": 2.530424627186334,
+            "p90": 0.3689798881335317,
+            "median": 0.040278142240434675,
+            "failed": 19,
+            "count": 809
+          },
+          "work_J": 135.77618652022738,
+          "endpoint_failed_by_family": {
+            "ducts.exhaust[29]": 3,
+            "ducts.exhaust[30]": 3,
+            "ducts.exhaust[31]": 3,
+            "ducts.exhaust[32]": 3,
+            "ducts.exhaust[33]": 3,
+            "ducts.exhaust[34]": 3,
+            "ducts.exhaust[35]": 1
+          },
+          "top_endpoint_failures": [
+            {
+              "observable": "ducts.exhaust[31].species.burned",
+              "normalized_error_over_threshold": 2.530424627186334,
+              "value": 0.005060849254372668,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[32].species.burned",
+              "normalized_error_over_threshold": 2.405922700635388,
+              "value": 0.004811845401270776,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[31].species.fresh_air",
+              "normalized_error_over_threshold": 2.3681276935509366,
+              "value": 0.004736255387101873,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[30].species.burned",
+              "normalized_error_over_threshold": 2.2701123391334344,
+              "value": 0.004540224678266869,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[32].species.fresh_air",
+              "normalized_error_over_threshold": 2.247247397202806,
+              "value": 0.004494494794405612,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[30].species.fresh_air",
+              "normalized_error_over_threshold": 2.1286122068470967,
+              "value": 0.004257224413694194,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[33].species.burned",
+              "normalized_error_over_threshold": 1.9624132254478233,
+              "value": 0.0039248264508956465,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[33].species.fresh_air",
+              "normalized_error_over_threshold": 1.8289433040778735,
+              "value": 0.003657886608155747,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[32].mass_kg",
+              "normalized_error_over_threshold": 1.7040833640555684,
+              "value": 0.0034081667281111367,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[31].mass_kg",
+              "normalized_error_over_threshold": 1.618589639316064,
+              "value": 0.003237179278632128,
+              "threshold": 0.002
+            }
+          ],
+          "maximum_conservation_residual": 9.26553092796488e-15
+        },
+        {
+          "cycle": 8,
+          "comparison_status": "FAIL",
+          "statistics": {
+            "maximum": 2.3820510426970642,
+            "p90": 0.3265979392455876,
+            "median": 0.03274234521093433,
+            "failed": 19,
+            "count": 809
+          },
+          "work_J": 135.8357966946587,
+          "endpoint_failed_by_family": {
+            "ducts.exhaust[31]": 2,
+            "ducts.exhaust[32]": 3,
+            "ducts.exhaust[33]": 3,
+            "ducts.exhaust[34]": 3,
+            "ducts.exhaust[35]": 3,
+            "ducts.exhaust[36]": 3,
+            "ducts.exhaust[37]": 1,
+            "ducts.exhaust[38]": 1
+          },
+          "top_endpoint_failures": [
+            {
+              "observable": "ducts.exhaust[33].species.burned",
+              "normalized_error_over_threshold": 2.3820510426970642,
+              "value": 0.0047641020853941285,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[34].species.burned",
+              "normalized_error_over_threshold": 2.3230560925742716,
+              "value": 0.004646112185148543,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[33].species.fresh_air",
+              "normalized_error_over_threshold": 2.2288903211269693,
+              "value": 0.004457780642253939,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[34].species.fresh_air",
+              "normalized_error_over_threshold": 2.169688422712895,
+              "value": 0.004339376845425791,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[32].species.burned",
+              "normalized_error_over_threshold": 2.0592920897670175,
+              "value": 0.004118584179534035,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[35].species.burned",
+              "normalized_error_over_threshold": 1.9672122479204024,
+              "value": 0.003934424495840805,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[32].species.fresh_air",
+              "normalized_error_over_threshold": 1.9313580690885068,
+              "value": 0.0038627161381770136,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[35].species.fresh_air",
+              "normalized_error_over_threshold": 1.8334927788807576,
+              "value": 0.003666985557761515,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[31].species.burned",
+              "normalized_error_over_threshold": 1.4673326855088042,
+              "value": 0.0029346653710176085,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[35].mass_kg",
+              "normalized_error_over_threshold": 1.4563569244118442,
+              "value": 0.0029127138488236884,
+              "threshold": 0.002
+            }
+          ],
+          "maximum_conservation_residual": 3.860031738024084e-15
+        },
+        {
+          "cycle": 9,
+          "comparison_status": "FAIL",
+          "statistics": {
+            "maximum": 2.3433818022080555,
+            "p90": 0.4286575421415449,
+            "median": 0.06266121877236755,
+            "failed": 27,
+            "count": 809
+          },
+          "work_J": 135.92344621597476,
+          "endpoint_failed_by_family": {
+            "ducts.exhaust[33]": 2,
+            "ducts.exhaust[34]": 3,
+            "ducts.exhaust[35]": 3,
+            "ducts.exhaust[36]": 3,
+            "ducts.exhaust[37]": 3,
+            "ducts.exhaust[38]": 3,
+            "ducts.exhaust[39]": 3,
+            "ducts.exhaust[40]": 3,
+            "ducts.exhaust[41]": 1,
+            "ducts.exhaust[42]": 1,
+            "ducts.exhaust[43]": 1,
+            "ducts.exhaust[44]": 1
+          },
+          "top_endpoint_failures": [
+            {
+              "observable": "ducts.exhaust[36].species.burned",
+              "normalized_error_over_threshold": 2.3433818022080555,
+              "value": 0.004686763604416111,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[35].species.burned",
+              "normalized_error_over_threshold": 2.3393964901790576,
+              "value": 0.004678792980358115,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[36].species.fresh_air",
+              "normalized_error_over_threshold": 2.1888364709134187,
+              "value": 0.004377672941826838,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[35].species.fresh_air",
+              "normalized_error_over_threshold": 2.188477620989143,
+              "value": 0.0043769552419782864,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[37].species.burned",
+              "normalized_error_over_threshold": 2.1574241936297978,
+              "value": 0.0043148483872595955,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[34].species.burned",
+              "normalized_error_over_threshold": 2.0647617915578453,
+              "value": 0.004129523583115691,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[37].species.fresh_air",
+              "normalized_error_over_threshold": 2.0124636781103376,
+              "value": 0.0040249273562206755,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[34].species.fresh_air",
+              "normalized_error_over_threshold": 1.9363845401756397,
+              "value": 0.0038727690803512793,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[38].species.burned",
+              "normalized_error_over_threshold": 1.8566472379433208,
+              "value": 0.0037132944758866415,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[38].species.fresh_air",
+              "normalized_error_over_threshold": 1.7290314283684993,
+              "value": 0.0034580628567369986,
+              "threshold": 0.002
+            }
+          ],
+          "maximum_conservation_residual": 1.0188170150868878e-14
+        },
+        {
+          "cycle": 10,
+          "comparison_status": "FAIL",
+          "statistics": {
+            "maximum": 2.408105661272697,
+            "p90": 0.7996890972368207,
+            "median": 0.09554422794705698,
+            "failed": 71,
+            "count": 809
+          },
+          "work_J": 136.02436869048142,
+          "endpoint_failed_by_family": {
+            "ducts.exhaust[35]": 2,
+            "ducts.exhaust[36]": 3,
+            "ducts.exhaust[37]": 3,
+            "ducts.exhaust[38]": 3,
+            "ducts.exhaust[39]": 3,
+            "ducts.exhaust[40]": 3,
+            "ducts.exhaust[41]": 3,
+            "ducts.exhaust[42]": 3,
+            "ducts.exhaust[43]": 3,
+            "ducts.exhaust[44]": 3,
+            "ducts.exhaust[45]": 3,
+            "ducts.exhaust[46]": 3,
+            "ducts.exhaust[47]": 3,
+            "ducts.exhaust[48]": 3,
+            "ducts.exhaust[49]": 2,
+            "ducts.exhaust[50]": 2,
+            "ducts.exhaust[51]": 2,
+            "ducts.exhaust[52]": 2,
+            "ducts.exhaust[53]": 3,
+            "ducts.exhaust[54]": 3,
+            "ducts.exhaust[55]": 2,
+            "ducts.exhaust[56]": 2,
+            "ducts.exhaust[57]": 2,
+            "ducts.exhaust[58]": 2,
+            "ducts.exhaust[59]": 2,
+            "ducts.exhaust[60]": 3,
+            "ducts.exhaust[61]": 3
+          },
+          "top_endpoint_failures": [
+            {
+              "observable": "ducts.exhaust[38].species.burned",
+              "normalized_error_over_threshold": 2.408105661272697,
+              "value": 0.004816211322545394,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[39].species.burned",
+              "normalized_error_over_threshold": 2.38657138948023,
+              "value": 0.00477314277896046,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[37].species.burned",
+              "normalized_error_over_threshold": 2.301515765612494,
+              "value": 0.004603031531224988,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[40].species.burned",
+              "normalized_error_over_threshold": 2.289330369678655,
+              "value": 0.00457866073935731,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[38].species.fresh_air",
+              "normalized_error_over_threshold": 2.251683788718206,
+              "value": 0.004503367577436412,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[39].species.fresh_air",
+              "normalized_error_over_threshold": 2.229122681976947,
+              "value": 0.004458245363953894,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[41].species.burned",
+              "normalized_error_over_threshold": 2.156894337545179,
+              "value": 0.004313788675090358,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[37].species.fresh_air",
+              "normalized_error_over_threshold": 2.155190223759179,
+              "value": 0.004310380447518358,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[40].species.fresh_air",
+              "normalized_error_over_threshold": 2.1364541358450393,
+              "value": 0.004272908271690079,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[42].species.burned",
+              "normalized_error_over_threshold": 2.0168845384210266,
+              "value": 0.004033769076842053,
+              "threshold": 0.002
+            }
+          ],
+          "maximum_conservation_residual": 2.1142060862505735e-14
+        }
+      ]
+    },
+    {
+      "label": "176",
+      "grid_total_cells": 176,
+      "source_artifact": {
+        "path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\predictive-reliability-v1\\candidate-periodic-gci-v1\\window-176-02\\cycles.json",
+        "sha256": "08cdf22bf0ef84e64b64e89aa3dd57e7806cb98d63982f4250dd079a9e142423"
+      },
+      "cycle_count": 7,
+      "first_cycle": 31,
+      "last_cycle": 37,
+      "all_saved_cycles_conservation_residual_le_1e-12": true,
+      "last_three_maximum_strictly_decreasing": true,
+      "last_three_p90_strictly_decreasing": true,
+      "registered_six_cycle_no_progress_condition_met": false,
+      "endpoint": {
+        "cycle": 37,
+        "comparison_status": "FAIL",
+        "statistics": {
+          "maximum": 3.551817905854626,
+          "p90": 0.5387787631509533,
+          "median": 0.04814297758259922,
+          "failed": 71,
+          "count": 1601
+        },
+        "work_J": 137.98454363918881,
+        "endpoint_failed_by_family": {
+          "ducts.exhaust[46]": 1,
+          "ducts.exhaust[47]": 2,
+          "ducts.exhaust[48]": 3,
+          "ducts.exhaust[49]": 3,
+          "ducts.exhaust[50]": 3,
+          "ducts.exhaust[51]": 3,
+          "ducts.exhaust[56]": 1,
+          "ducts.exhaust[57]": 2,
+          "ducts.exhaust[58]": 2,
+          "ducts.exhaust[59]": 2,
+          "ducts.exhaust[60]": 2,
+          "ducts.exhaust[61]": 2,
+          "ducts.exhaust[62]": 3,
+          "ducts.exhaust[63]": 3,
+          "ducts.exhaust[64]": 4,
+          "ducts.exhaust[65]": 4,
+          "ducts.exhaust[66]": 4,
+          "ducts.exhaust[67]": 4,
+          "ducts.exhaust[68]": 3,
+          "ducts.exhaust[69]": 3,
+          "ducts.exhaust[70]": 1,
+          "ducts.exhaust[71]": 1,
+          "ducts.exhaust[72]": 1,
+          "ducts.exhaust[73]": 1,
+          "ducts.exhaust[74]": 1,
+          "ducts.exhaust[75]": 1,
+          "ducts.exhaust[76]": 1,
+          "ducts.exhaust[77]": 1,
+          "ducts.exhaust[99]": 1,
+          "ducts.exhaust[100]": 1,
+          "ducts.exhaust[101]": 2,
+          "ducts.exhaust[102]": 1,
+          "ducts.exhaust[103]": 2,
+          "ducts.exhaust[104]": 1,
+          "ducts.exhaust[105]": 1
+        },
+        "top_endpoint_failures": [
+          {
+            "observable": "ducts.exhaust[63].species.burned",
+            "normalized_error_over_threshold": 3.551817905854626,
+            "value": 0.007103635811709252,
+            "threshold": 0.002
+          },
+          {
+            "observable": "ducts.exhaust[64].species.burned",
+            "normalized_error_over_threshold": 3.5477359363751404,
+            "value": 0.007095471872750281,
+            "threshold": 0.002
+          },
+          {
+            "observable": "ducts.exhaust[63].species.fresh_air",
+            "normalized_error_over_threshold": 3.3193216466961273,
+            "value": 0.0066386432933922546,
+            "threshold": 0.002
+          },
+          {
+            "observable": "ducts.exhaust[62].species.burned",
+            "normalized_error_over_threshold": 3.3175698190496816,
+            "value": 0.006635139638099363,
+            "threshold": 0.002
+          },
+          {
+            "observable": "ducts.exhaust[64].species.fresh_air",
+            "normalized_error_over_threshold": 3.312622349458366,
+            "value": 0.006625244698916732,
+            "threshold": 0.002
+          },
+          {
+            "observable": "ducts.exhaust[65].species.burned",
+            "normalized_error_over_threshold": 3.23655810835094,
+            "value": 0.00647311621670188,
+            "threshold": 0.002
+          },
+          {
+            "observable": "ducts.exhaust[62].species.fresh_air",
+            "normalized_error_over_threshold": 3.1027811367447256,
+            "value": 0.006205562273489451,
+            "threshold": 0.002
+          },
+          {
+            "observable": "ducts.exhaust[65].species.fresh_air",
+            "normalized_error_over_threshold": 3.019170728671916,
+            "value": 0.006038341457343832,
+            "threshold": 0.002
+          },
+          {
+            "observable": "ducts.exhaust[65].mass_kg",
+            "normalized_error_over_threshold": 2.8081246060245064,
+            "value": 0.005616249212049013,
+            "threshold": 0.002
+          },
+          {
+            "observable": "ducts.exhaust[61].species.burned",
+            "normalized_error_over_threshold": 2.7340371397375773,
+            "value": 0.005468074279475155,
+            "threshold": 0.002
+          }
+        ],
+        "maximum_conservation_residual": 2.0314352383230688e-14
+      },
+      "cycle_history": [
+        {
+          "cycle": 31,
+          "comparison_status": "NOT_EVALUATED",
+          "statistics": null,
+          "work_J": 130.91966010024316,
+          "endpoint_failed_by_family": {},
+          "top_endpoint_failures": [],
+          "maximum_conservation_residual": 1.7591992232606775e-14
+        },
+        {
+          "cycle": 32,
+          "comparison_status": "FAIL",
+          "statistics": {
+            "maximum": 77.26473592482024,
+            "p90": 10.535802492684835,
+            "median": 0.4218037019553811,
+            "failed": 635,
+            "count": 1601
+          },
+          "work_J": 130.97045868903115,
+          "endpoint_failed_by_family": {
+            "cylinder": 3,
+            "ducts.boost[3]": 2,
+            "ducts.boost[4]": 2,
+            "ducts.boost[5]": 2,
+            "ducts.boost[6]": 2,
+            "ducts.boost[7]": 3,
+            "ducts.boost[8]": 1,
+            "ducts.boost[9]": 2,
+            "ducts.boost[10]": 2,
+            "ducts.boost[11]": 2,
+            "ducts.exhaust[0]": 5,
+            "ducts.exhaust[1]": 5,
+            "ducts.exhaust[2]": 5,
+            "ducts.exhaust[3]": 7,
+            "ducts.exhaust[4]": 6,
+            "ducts.exhaust[5]": 6,
+            "ducts.exhaust[6]": 8,
+            "ducts.exhaust[7]": 8,
+            "ducts.exhaust[8]": 8,
+            "ducts.exhaust[9]": 8,
+            "ducts.exhaust[10]": 8,
+            "ducts.exhaust[11]": 8,
+            "ducts.exhaust[12]": 7,
+            "ducts.exhaust[13]": 7,
+            "ducts.exhaust[14]": 7,
+            "ducts.exhaust[15]": 7,
+            "ducts.exhaust[16]": 7,
+            "ducts.exhaust[17]": 7,
+            "ducts.exhaust[18]": 7,
+            "ducts.exhaust[19]": 7,
+            "ducts.exhaust[20]": 5,
+            "ducts.exhaust[21]": 4,
+            "ducts.exhaust[22]": 3,
+            "ducts.exhaust[23]": 4,
+            "ducts.exhaust[24]": 7,
+            "ducts.exhaust[25]": 6,
+            "ducts.exhaust[26]": 7,
+            "ducts.exhaust[27]": 7,
+            "ducts.exhaust[28]": 8,
+            "ducts.exhaust[29]": 6,
+            "ducts.exhaust[30]": 8,
+            "ducts.exhaust[31]": 8,
+            "ducts.exhaust[32]": 7,
+            "ducts.exhaust[33]": 7,
+            "ducts.exhaust[34]": 8,
+            "ducts.exhaust[35]": 8,
+            "ducts.exhaust[36]": 8,
+            "ducts.exhaust[37]": 8,
+            "ducts.exhaust[38]": 8,
+            "ducts.exhaust[39]": 8,
+            "ducts.exhaust[40]": 8,
+            "ducts.exhaust[41]": 7,
+            "ducts.exhaust[42]": 7,
+            "ducts.exhaust[43]": 7,
+            "ducts.exhaust[44]": 6,
+            "ducts.exhaust[45]": 6,
+            "ducts.exhaust[46]": 6,
+            "ducts.exhaust[47]": 5,
+            "ducts.exhaust[48]": 6,
+            "ducts.exhaust[49]": 5,
+            "ducts.exhaust[50]": 5,
+            "ducts.exhaust[51]": 5,
+            "ducts.exhaust[52]": 4,
+            "ducts.exhaust[53]": 5,
+            "ducts.exhaust[54]": 5,
+            "ducts.exhaust[55]": 5,
+            "ducts.exhaust[56]": 3,
+            "ducts.exhaust[57]": 1,
+            "ducts.exhaust[58]": 1,
+            "ducts.exhaust[59]": 1,
+            "ducts.exhaust[60]": 2,
+            "ducts.exhaust[61]": 2,
+            "ducts.exhaust[62]": 3,
+            "ducts.exhaust[63]": 3,
+            "ducts.exhaust[64]": 3,
+            "ducts.exhaust[65]": 3,
+            "ducts.exhaust[66]": 4,
+            "ducts.exhaust[67]": 5,
+            "ducts.exhaust[68]": 5,
+            "ducts.exhaust[69]": 5,
+            "ducts.exhaust[70]": 5,
+            "ducts.exhaust[71]": 5,
+            "ducts.exhaust[72]": 3,
+            "ducts.exhaust[73]": 3,
+            "ducts.exhaust[74]": 3,
+            "ducts.exhaust[75]": 3,
+            "ducts.exhaust[76]": 3,
+            "ducts.exhaust[77]": 3,
+            "ducts.exhaust[78]": 3,
+            "ducts.exhaust[79]": 3,
+            "ducts.exhaust[80]": 3,
+            "ducts.exhaust[81]": 3,
+            "ducts.exhaust[82]": 3,
+            "ducts.exhaust[83]": 3,
+            "ducts.exhaust[84]": 3,
+            "ducts.exhaust[85]": 3,
+            "ducts.exhaust[86]": 4,
+            "ducts.exhaust[87]": 4,
+            "ducts.exhaust[88]": 4,
+            "ducts.exhaust[89]": 4,
+            "ducts.exhaust[90]": 4,
+            "ducts.exhaust[91]": 4,
+            "ducts.exhaust[92]": 4,
+            "ducts.exhaust[93]": 4,
+            "ducts.exhaust[94]": 4,
+            "ducts.exhaust[95]": 4,
+            "ducts.exhaust[96]": 2,
+            "ducts.exhaust[97]": 3,
+            "ducts.exhaust[98]": 4,
+            "ducts.exhaust[99]": 4,
+            "ducts.exhaust[100]": 4,
+            "ducts.exhaust[101]": 5,
+            "ducts.exhaust[102]": 4,
+            "ducts.exhaust[103]": 5,
+            "ducts.exhaust[104]": 5,
+            "ducts.exhaust[105]": 4,
+            "ducts.exhaust[106]": 4,
+            "ducts.exhaust[107]": 3,
+            "ducts.exhaust[108]": 3,
+            "ducts.exhaust[109]": 2,
+            "ducts.exhaust[110]": 2,
+            "ducts.exhaust[111]": 2,
+            "ducts.exhaust[112]": 2,
+            "ducts.exhaust[113]": 2,
+            "ducts.exhaust[114]": 2,
+            "ducts.exhaust[115]": 1,
+            "ducts.exhaust[116]": 2,
+            "ducts.exhaust[117]": 2,
+            "ducts.exhaust[118]": 2,
+            "ducts.exhaust[119]": 2,
+            "ducts.exhaust[120]": 2,
+            "ducts.exhaust[121]": 2,
+            "ducts.exhaust[122]": 2,
+            "ducts.exhaust[123]": 2,
+            "ducts.primary[3]": 2,
+            "ducts.primary[4]": 2,
+            "ducts.primary[5]": 2,
+            "ducts.primary[6]": 2,
+            "ducts.primary[7]": 3,
+            "ducts.primary[8]": 1,
+            "ducts.primary[9]": 2,
+            "ducts.primary[10]": 2,
+            "ducts.primary[11]": 2,
+            "ducts.secondary[3]": 2,
+            "ducts.secondary[4]": 2,
+            "ducts.secondary[5]": 2,
+            "ducts.secondary[6]": 2,
+            "ducts.secondary[7]": 3,
+            "ducts.secondary[8]": 1,
+            "ducts.secondary[9]": 2,
+            "ducts.secondary[10]": 2,
+            "ducts.secondary[11]": 2,
+            "global_species": 1
+          },
+          "top_endpoint_failures": [
+            {
+              "observable": "ducts.exhaust[39].species.burned",
+              "normalized_error_over_threshold": 77.26473592482024,
+              "value": 0.1545294718496405,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[40].species.burned",
+              "normalized_error_over_threshold": 72.8096824330648,
+              "value": 0.14561936486612959,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[38].species.burned",
+              "normalized_error_over_threshold": 72.48085414766808,
+              "value": 0.14496170829533617,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[39].species.fresh_air",
+              "normalized_error_over_threshold": 71.93055079002639,
+              "value": 0.14386110158005277,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[40].species.fresh_air",
+              "normalized_error_over_threshold": 68.06243256595138,
+              "value": 0.13612486513190278,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[38].species.fresh_air",
+              "normalized_error_over_threshold": 67.31347187625431,
+              "value": 0.13462694375250864,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[40].mass_kg",
+              "normalized_error_over_threshold": 53.44876158523183,
+              "value": 0.10689752317046367,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[35].mass_kg",
+              "normalized_error_over_threshold": 49.93500539856464,
+              "value": 0.09987001079712929,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[41].mass_kg",
+              "normalized_error_over_threshold": 49.46916801859486,
+              "value": 0.09893833603718971,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[37].species.burned",
+              "normalized_error_over_threshold": 49.324814348047916,
+              "value": 0.09864962869609584,
+              "threshold": 0.002
+            }
+          ],
+          "maximum_conservation_residual": 1.6701455473033153e-14
+        },
+        {
+          "cycle": 33,
+          "comparison_status": "FAIL",
+          "statistics": {
+            "maximum": 42.29528453225462,
+            "p90": 6.478077288189285,
+            "median": 0.43040080472992737,
+            "failed": 647,
+            "count": 1601
+          },
+          "work_J": 134.01112223561177,
+          "endpoint_failed_by_family": {
+            "cylinder": 3,
+            "ducts.boost[0]": 2,
+            "ducts.boost[1]": 4,
+            "ducts.boost[2]": 4,
+            "ducts.boost[3]": 5,
+            "ducts.boost[4]": 5,
+            "ducts.boost[5]": 5,
+            "ducts.boost[6]": 4,
+            "ducts.boost[7]": 4,
+            "ducts.boost[8]": 5,
+            "ducts.boost[9]": 2,
+            "ducts.boost[10]": 3,
+            "ducts.boost[11]": 3,
+            "ducts.exhaust[0]": 3,
+            "ducts.exhaust[1]": 3,
+            "ducts.exhaust[2]": 2,
+            "ducts.exhaust[3]": 4,
+            "ducts.exhaust[4]": 5,
+            "ducts.exhaust[5]": 6,
+            "ducts.exhaust[6]": 8,
+            "ducts.exhaust[7]": 7,
+            "ducts.exhaust[8]": 8,
+            "ducts.exhaust[9]": 8,
+            "ducts.exhaust[10]": 8,
+            "ducts.exhaust[11]": 7,
+            "ducts.exhaust[12]": 7,
+            "ducts.exhaust[13]": 6,
+            "ducts.exhaust[14]": 5,
+            "ducts.exhaust[15]": 5,
+            "ducts.exhaust[16]": 5,
+            "ducts.exhaust[17]": 6,
+            "ducts.exhaust[18]": 6,
+            "ducts.exhaust[19]": 5,
+            "ducts.exhaust[20]": 5,
+            "ducts.exhaust[21]": 5,
+            "ducts.exhaust[22]": 5,
+            "ducts.exhaust[23]": 5,
+            "ducts.exhaust[24]": 7,
+            "ducts.exhaust[25]": 6,
+            "ducts.exhaust[26]": 8,
+            "ducts.exhaust[27]": 8,
+            "ducts.exhaust[28]": 8,
+            "ducts.exhaust[29]": 8,
+            "ducts.exhaust[30]": 7,
+            "ducts.exhaust[31]": 7,
+            "ducts.exhaust[32]": 7,
+            "ducts.exhaust[33]": 7,
+            "ducts.exhaust[34]": 7,
+            "ducts.exhaust[35]": 8,
+            "ducts.exhaust[36]": 7,
+            "ducts.exhaust[37]": 7,
+            "ducts.exhaust[38]": 6,
+            "ducts.exhaust[39]": 6,
+            "ducts.exhaust[40]": 6,
+            "ducts.exhaust[41]": 6,
+            "ducts.exhaust[42]": 5,
+            "ducts.exhaust[43]": 5,
+            "ducts.exhaust[44]": 5,
+            "ducts.exhaust[45]": 5,
+            "ducts.exhaust[46]": 5,
+            "ducts.exhaust[47]": 6,
+            "ducts.exhaust[48]": 6,
+            "ducts.exhaust[49]": 5,
+            "ducts.exhaust[50]": 3,
+            "ducts.exhaust[51]": 6,
+            "ducts.exhaust[52]": 6,
+            "ducts.exhaust[53]": 5,
+            "ducts.exhaust[54]": 5,
+            "ducts.exhaust[55]": 4,
+            "ducts.exhaust[56]": 5,
+            "ducts.exhaust[57]": 3,
+            "ducts.exhaust[58]": 3,
+            "ducts.exhaust[59]": 3,
+            "ducts.exhaust[60]": 4,
+            "ducts.exhaust[61]": 3,
+            "ducts.exhaust[62]": 3,
+            "ducts.exhaust[63]": 1,
+            "ducts.exhaust[64]": 1,
+            "ducts.exhaust[65]": 4,
+            "ducts.exhaust[66]": 4,
+            "ducts.exhaust[67]": 5,
+            "ducts.exhaust[68]": 5,
+            "ducts.exhaust[69]": 5,
+            "ducts.exhaust[70]": 4,
+            "ducts.exhaust[72]": 2,
+            "ducts.exhaust[73]": 3,
+            "ducts.exhaust[74]": 3,
+            "ducts.exhaust[75]": 2,
+            "ducts.exhaust[76]": 1,
+            "ducts.exhaust[84]": 2,
+            "ducts.exhaust[85]": 2,
+            "ducts.exhaust[86]": 2,
+            "ducts.exhaust[87]": 3,
+            "ducts.exhaust[88]": 3,
+            "ducts.exhaust[89]": 3,
+            "ducts.exhaust[90]": 3,
+            "ducts.exhaust[91]": 3,
+            "ducts.exhaust[92]": 3,
+            "ducts.exhaust[93]": 3,
+            "ducts.exhaust[94]": 3,
+            "ducts.exhaust[95]": 2,
+            "ducts.exhaust[96]": 3,
+            "ducts.exhaust[97]": 4,
+            "ducts.exhaust[98]": 4,
+            "ducts.exhaust[99]": 5,
+            "ducts.exhaust[100]": 5,
+            "ducts.exhaust[101]": 5,
+            "ducts.exhaust[102]": 5,
+            "ducts.exhaust[103]": 5,
+            "ducts.exhaust[104]": 4,
+            "ducts.exhaust[105]": 4,
+            "ducts.exhaust[106]": 4,
+            "ducts.exhaust[107]": 4,
+            "ducts.exhaust[108]": 4,
+            "ducts.exhaust[109]": 4,
+            "ducts.exhaust[110]": 4,
+            "ducts.exhaust[111]": 4,
+            "ducts.exhaust[115]": 3,
+            "ducts.exhaust[116]": 4,
+            "ducts.exhaust[117]": 2,
+            "ducts.primary[0]": 2,
+            "ducts.primary[1]": 4,
+            "ducts.primary[2]": 4,
+            "ducts.primary[3]": 5,
+            "ducts.primary[4]": 5,
+            "ducts.primary[5]": 5,
+            "ducts.primary[6]": 4,
+            "ducts.primary[7]": 4,
+            "ducts.primary[8]": 5,
+            "ducts.primary[9]": 2,
+            "ducts.primary[10]": 3,
+            "ducts.primary[11]": 3,
+            "ducts.secondary[0]": 2,
+            "ducts.secondary[1]": 4,
+            "ducts.secondary[2]": 4,
+            "ducts.secondary[3]": 5,
+            "ducts.secondary[4]": 5,
+            "ducts.secondary[5]": 5,
+            "ducts.secondary[6]": 4,
+            "ducts.secondary[7]": 4,
+            "ducts.secondary[8]": 5,
+            "ducts.secondary[9]": 2,
+            "ducts.secondary[10]": 3,
+            "ducts.secondary[11]": 3,
+            "global_species": 1,
+            "work_J": 1
+          },
+          "top_endpoint_failures": [
+            {
+              "observable": "ducts.exhaust[28].species.burned",
+              "normalized_error_over_threshold": 42.29528453225462,
+              "value": 0.08459056906450924,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[28].species.fresh_air",
+              "normalized_error_over_threshold": 39.67939442733981,
+              "value": 0.07935878885467962,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[27].species.burned",
+              "normalized_error_over_threshold": 36.51614469396242,
+              "value": 0.07303228938792483,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[27].species.fresh_air",
+              "normalized_error_over_threshold": 34.08996813276437,
+              "value": 0.06817993626552873,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[29].mass_kg",
+              "normalized_error_over_threshold": 33.983979800527386,
+              "value": 0.06796795960105477,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[29].species.burned",
+              "normalized_error_over_threshold": 30.56226071435908,
+              "value": 0.06112452142871816,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[29].species.fresh_air",
+              "normalized_error_over_threshold": 28.788685828140537,
+              "value": 0.05757737165628107,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[28].mass_kg",
+              "normalized_error_over_threshold": 28.62909606757187,
+              "value": 0.057258192135143736,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[37].mass_kg",
+              "normalized_error_over_threshold": 28.62623660991353,
+              "value": 0.057252473219827064,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[35].species.burned",
+              "normalized_error_over_threshold": 28.556168260446295,
+              "value": 0.05711233652089259,
+              "threshold": 0.002
+            }
+          ],
+          "maximum_conservation_residual": 1.0747447263563261e-14
+        },
+        {
+          "cycle": 34,
+          "comparison_status": "FAIL",
+          "statistics": {
+            "maximum": 10.579041776126063,
+            "p90": 2.8711823001521566,
+            "median": 0.25750843921923394,
+            "failed": 383,
+            "count": 1601
+          },
+          "work_J": 135.62369073639684,
+          "endpoint_failed_by_family": {
+            "cylinder": 3,
+            "ducts.boost[3]": 2,
+            "ducts.boost[4]": 2,
+            "ducts.exhaust[0]": 3,
+            "ducts.exhaust[1]": 3,
+            "ducts.exhaust[2]": 3,
+            "ducts.exhaust[3]": 4,
+            "ducts.exhaust[4]": 3,
+            "ducts.exhaust[5]": 3,
+            "ducts.exhaust[6]": 3,
+            "ducts.exhaust[7]": 5,
+            "ducts.exhaust[8]": 4,
+            "ducts.exhaust[9]": 3,
+            "ducts.exhaust[10]": 3,
+            "ducts.exhaust[11]": 2,
+            "ducts.exhaust[12]": 3,
+            "ducts.exhaust[13]": 5,
+            "ducts.exhaust[14]": 5,
+            "ducts.exhaust[15]": 6,
+            "ducts.exhaust[16]": 6,
+            "ducts.exhaust[17]": 6,
+            "ducts.exhaust[18]": 5,
+            "ducts.exhaust[19]": 3,
+            "ducts.exhaust[20]": 3,
+            "ducts.exhaust[21]": 4,
+            "ducts.exhaust[22]": 4,
+            "ducts.exhaust[23]": 4,
+            "ducts.exhaust[24]": 3,
+            "ducts.exhaust[25]": 3,
+            "ducts.exhaust[26]": 5,
+            "ducts.exhaust[27]": 5,
+            "ducts.exhaust[28]": 5,
+            "ducts.exhaust[29]": 5,
+            "ducts.exhaust[30]": 4,
+            "ducts.exhaust[31]": 7,
+            "ducts.exhaust[32]": 6,
+            "ducts.exhaust[33]": 6,
+            "ducts.exhaust[34]": 5,
+            "ducts.exhaust[35]": 5,
+            "ducts.exhaust[36]": 6,
+            "ducts.exhaust[37]": 6,
+            "ducts.exhaust[38]": 3,
+            "ducts.exhaust[39]": 5,
+            "ducts.exhaust[40]": 5,
+            "ducts.exhaust[41]": 6,
+            "ducts.exhaust[42]": 6,
+            "ducts.exhaust[43]": 6,
+            "ducts.exhaust[44]": 5,
+            "ducts.exhaust[45]": 5,
+            "ducts.exhaust[46]": 5,
+            "ducts.exhaust[47]": 6,
+            "ducts.exhaust[48]": 6,
+            "ducts.exhaust[49]": 6,
+            "ducts.exhaust[50]": 5,
+            "ducts.exhaust[51]": 4,
+            "ducts.exhaust[52]": 2,
+            "ducts.exhaust[53]": 2,
+            "ducts.exhaust[54]": 2,
+            "ducts.exhaust[55]": 2,
+            "ducts.exhaust[56]": 4,
+            "ducts.exhaust[57]": 3,
+            "ducts.exhaust[58]": 3,
+            "ducts.exhaust[59]": 2,
+            "ducts.exhaust[60]": 1,
+            "ducts.exhaust[61]": 1,
+            "ducts.exhaust[62]": 1,
+            "ducts.exhaust[63]": 1,
+            "ducts.exhaust[64]": 1,
+            "ducts.exhaust[65]": 3,
+            "ducts.exhaust[66]": 4,
+            "ducts.exhaust[67]": 4,
+            "ducts.exhaust[68]": 4,
+            "ducts.exhaust[69]": 1,
+            "ducts.exhaust[72]": 1,
+            "ducts.exhaust[73]": 2,
+            "ducts.exhaust[74]": 2,
+            "ducts.exhaust[75]": 1,
+            "ducts.exhaust[76]": 1,
+            "ducts.exhaust[77]": 1,
+            "ducts.exhaust[78]": 1,
+            "ducts.exhaust[79]": 1,
+            "ducts.exhaust[80]": 1,
+            "ducts.exhaust[81]": 1,
+            "ducts.exhaust[82]": 1,
+            "ducts.exhaust[96]": 1,
+            "ducts.exhaust[97]": 3,
+            "ducts.exhaust[98]": 4,
+            "ducts.exhaust[99]": 5,
+            "ducts.exhaust[100]": 5,
+            "ducts.exhaust[101]": 4,
+            "ducts.exhaust[103]": 1,
+            "ducts.exhaust[104]": 3,
+            "ducts.exhaust[105]": 4,
+            "ducts.exhaust[106]": 4,
+            "ducts.exhaust[107]": 4,
+            "ducts.exhaust[108]": 4,
+            "ducts.exhaust[109]": 4,
+            "ducts.exhaust[110]": 4,
+            "ducts.exhaust[111]": 4,
+            "ducts.exhaust[112]": 4,
+            "ducts.exhaust[113]": 4,
+            "ducts.exhaust[114]": 4,
+            "ducts.exhaust[115]": 3,
+            "ducts.exhaust[117]": 1,
+            "ducts.exhaust[118]": 2,
+            "ducts.exhaust[119]": 2,
+            "ducts.exhaust[120]": 1,
+            "ducts.exhaust[121]": 1,
+            "ducts.primary[3]": 2,
+            "ducts.primary[4]": 2,
+            "ducts.secondary[3]": 2,
+            "ducts.secondary[4]": 2,
+            "work_J": 1
+          },
+          "top_endpoint_failures": [
+            {
+              "observable": "ducts.exhaust[47].species.burned",
+              "normalized_error_over_threshold": 10.579041776126063,
+              "value": 0.021158083552252127,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[48].mass_kg",
+              "normalized_error_over_threshold": 10.543641579219074,
+              "value": 0.021087283158438146,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[47].mass_kg",
+              "normalized_error_over_threshold": 10.05244017803869,
+              "value": 0.02010488035607738,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[47].species.fresh_air",
+              "normalized_error_over_threshold": 9.858878941333304,
+              "value": 0.01971775788266661,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[41].species.burned",
+              "normalized_error_over_threshold": 9.809821790777107,
+              "value": 0.019619643581554214,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[100].total_energy_J",
+              "normalized_error_over_threshold": 9.480347257370381,
+              "value": 0.018960694514740764,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[35].species.burned",
+              "normalized_error_over_threshold": 9.402301902660115,
+              "value": 0.01880460380532023,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[99].total_energy_J",
+              "normalized_error_over_threshold": 9.286752481759272,
+              "value": 0.018573504963518544,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[48].species.burned",
+              "normalized_error_over_threshold": 9.241500914512091,
+              "value": 0.01848300182902418,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[46].species.burned",
+              "normalized_error_over_threshold": 9.109581429592339,
+              "value": 0.01821916285918468,
+              "threshold": 0.002
+            }
+          ],
+          "maximum_conservation_residual": 1.3982807472494408e-14
+        },
+        {
+          "cycle": 35,
+          "comparison_status": "FAIL",
+          "statistics": {
+            "maximum": 7.033773206525484,
+            "p90": 1.3108495246807739,
+            "median": 0.18857875113652364,
+            "failed": 207,
+            "count": 1601
+          },
+          "work_J": 137.55590162419867,
+          "endpoint_failed_by_family": {
+            "cylinder": 1,
+            "ducts.boost[4]": 1,
+            "ducts.boost[5]": 1,
+            "ducts.exhaust[0]": 2,
+            "ducts.exhaust[1]": 2,
+            "ducts.exhaust[2]": 2,
+            "ducts.exhaust[3]": 2,
+            "ducts.exhaust[4]": 1,
+            "ducts.exhaust[5]": 3,
+            "ducts.exhaust[6]": 3,
+            "ducts.exhaust[7]": 3,
+            "ducts.exhaust[8]": 3,
+            "ducts.exhaust[9]": 3,
+            "ducts.exhaust[10]": 3,
+            "ducts.exhaust[11]": 3,
+            "ducts.exhaust[12]": 3,
+            "ducts.exhaust[13]": 3,
+            "ducts.exhaust[14]": 1,
+            "ducts.exhaust[15]": 1,
+            "ducts.exhaust[16]": 1,
+            "ducts.exhaust[17]": 1,
+            "ducts.exhaust[18]": 2,
+            "ducts.exhaust[19]": 2,
+            "ducts.exhaust[20]": 2,
+            "ducts.exhaust[21]": 2,
+            "ducts.exhaust[22]": 2,
+            "ducts.exhaust[23]": 2,
+            "ducts.exhaust[24]": 2,
+            "ducts.exhaust[25]": 2,
+            "ducts.exhaust[26]": 4,
+            "ducts.exhaust[27]": 3,
+            "ducts.exhaust[28]": 5,
+            "ducts.exhaust[29]": 5,
+            "ducts.exhaust[30]": 5,
+            "ducts.exhaust[31]": 5,
+            "ducts.exhaust[32]": 5,
+            "ducts.exhaust[33]": 3,
+            "ducts.exhaust[34]": 2,
+            "ducts.exhaust[35]": 2,
+            "ducts.exhaust[36]": 3,
+            "ducts.exhaust[37]": 4,
+            "ducts.exhaust[38]": 2,
+            "ducts.exhaust[39]": 1,
+            "ducts.exhaust[40]": 3,
+            "ducts.exhaust[41]": 3,
+            "ducts.exhaust[42]": 5,
+            "ducts.exhaust[43]": 3,
+            "ducts.exhaust[44]": 3,
+            "ducts.exhaust[45]": 4,
+            "ducts.exhaust[46]": 4,
+            "ducts.exhaust[47]": 4,
+            "ducts.exhaust[48]": 2,
+            "ducts.exhaust[49]": 1,
+            "ducts.exhaust[50]": 1,
+            "ducts.exhaust[51]": 3,
+            "ducts.exhaust[52]": 4,
+            "ducts.exhaust[53]": 5,
+            "ducts.exhaust[54]": 5,
+            "ducts.exhaust[55]": 5,
+            "ducts.exhaust[56]": 4,
+            "ducts.exhaust[57]": 4,
+            "ducts.exhaust[58]": 3,
+            "ducts.exhaust[59]": 3,
+            "ducts.exhaust[60]": 3,
+            "ducts.exhaust[61]": 3,
+            "ducts.exhaust[62]": 2,
+            "ducts.exhaust[63]": 1,
+            "ducts.exhaust[64]": 1,
+            "ducts.exhaust[65]": 1,
+            "ducts.exhaust[66]": 1,
+            "ducts.exhaust[67]": 1,
+            "ducts.exhaust[69]": 1,
+            "ducts.exhaust[83]": 1,
+            "ducts.exhaust[84]": 1,
+            "ducts.exhaust[85]": 1,
+            "ducts.exhaust[86]": 1,
+            "ducts.exhaust[87]": 1,
+            "ducts.exhaust[88]": 1,
+            "ducts.exhaust[102]": 1,
+            "ducts.exhaust[104]": 1,
+            "ducts.exhaust[105]": 1,
+            "ducts.exhaust[106]": 1,
+            "ducts.exhaust[115]": 1,
+            "ducts.primary[4]": 1,
+            "ducts.primary[5]": 1,
+            "ducts.secondary[4]": 1,
+            "ducts.secondary[5]": 1,
+            "work_J": 1
+          },
+          "top_endpoint_failures": [
+            {
+              "observable": "ducts.exhaust[28].species.burned",
+              "normalized_error_over_threshold": 7.033773206525484,
+              "value": 0.014067546413050969,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[29].species.burned",
+              "normalized_error_over_threshold": 6.946358165322603,
+              "value": 0.013892716330645205,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[28].species.fresh_air",
+              "normalized_error_over_threshold": 6.580762765046572,
+              "value": 0.013161525530093143,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[29].species.fresh_air",
+              "normalized_error_over_threshold": 6.5084399101949515,
+              "value": 0.013016879820389904,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[29].mass_kg",
+              "normalized_error_over_threshold": 5.8362989380732815,
+              "value": 0.011672597876146563,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[54].species.burned",
+              "normalized_error_over_threshold": 5.660033087991345,
+              "value": 0.01132006617598269,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[54].species.fresh_air",
+              "normalized_error_over_threshold": 5.275831974409672,
+              "value": 0.010551663948819345,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[30].mass_kg",
+              "normalized_error_over_threshold": 5.015951467067042,
+              "value": 0.010031902934134085,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[53].species.burned",
+              "normalized_error_over_threshold": 4.999766499925173,
+              "value": 0.009999532999850347,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[55].mass_kg",
+              "normalized_error_over_threshold": 4.999509053151251,
+              "value": 0.009999018106302503,
+              "threshold": 0.002
+            }
+          ],
+          "maximum_conservation_residual": 4.809080743578866e-15
+        },
+        {
+          "cycle": 36,
+          "comparison_status": "FAIL",
+          "statistics": {
+            "maximum": 4.108889174078422,
+            "p90": 0.8345856776974125,
+            "median": 0.09884856867850343,
+            "failed": 129,
+            "count": 1601
+          },
+          "work_J": 137.87545179101744,
+          "endpoint_failed_by_family": {
+            "ducts.boost[11]": 1,
+            "ducts.exhaust[5]": 2,
+            "ducts.exhaust[6]": 2,
+            "ducts.exhaust[7]": 2,
+            "ducts.exhaust[8]": 2,
+            "ducts.exhaust[9]": 2,
+            "ducts.exhaust[10]": 2,
+            "ducts.exhaust[11]": 2,
+            "ducts.exhaust[14]": 1,
+            "ducts.exhaust[15]": 1,
+            "ducts.exhaust[27]": 1,
+            "ducts.exhaust[28]": 3,
+            "ducts.exhaust[29]": 1,
+            "ducts.exhaust[33]": 2,
+            "ducts.exhaust[34]": 3,
+            "ducts.exhaust[35]": 3,
+            "ducts.exhaust[36]": 2,
+            "ducts.exhaust[37]": 1,
+            "ducts.exhaust[38]": 2,
+            "ducts.exhaust[39]": 2,
+            "ducts.exhaust[40]": 3,
+            "ducts.exhaust[41]": 3,
+            "ducts.exhaust[42]": 4,
+            "ducts.exhaust[43]": 4,
+            "ducts.exhaust[44]": 3,
+            "ducts.exhaust[45]": 2,
+            "ducts.exhaust[52]": 2,
+            "ducts.exhaust[53]": 2,
+            "ducts.exhaust[54]": 2,
+            "ducts.exhaust[55]": 2,
+            "ducts.exhaust[56]": 2,
+            "ducts.exhaust[57]": 3,
+            "ducts.exhaust[58]": 3,
+            "ducts.exhaust[59]": 4,
+            "ducts.exhaust[60]": 4,
+            "ducts.exhaust[61]": 4,
+            "ducts.exhaust[62]": 4,
+            "ducts.exhaust[63]": 4,
+            "ducts.exhaust[64]": 3,
+            "ducts.exhaust[65]": 2,
+            "ducts.exhaust[66]": 1,
+            "ducts.exhaust[67]": 1,
+            "ducts.exhaust[68]": 1,
+            "ducts.exhaust[69]": 1,
+            "ducts.exhaust[70]": 1,
+            "ducts.exhaust[71]": 1,
+            "ducts.exhaust[72]": 1,
+            "ducts.exhaust[100]": 2,
+            "ducts.exhaust[101]": 2,
+            "ducts.exhaust[102]": 2,
+            "ducts.exhaust[103]": 2,
+            "ducts.exhaust[104]": 2,
+            "ducts.exhaust[105]": 2,
+            "ducts.exhaust[106]": 2,
+            "ducts.exhaust[107]": 2,
+            "ducts.exhaust[108]": 2,
+            "ducts.exhaust[109]": 2,
+            "ducts.exhaust[110]": 2,
+            "ducts.exhaust[111]": 1,
+            "ducts.primary[11]": 1,
+            "ducts.secondary[11]": 1
+          },
+          "top_endpoint_failures": [
+            {
+              "observable": "ducts.exhaust[42].species.burned",
+              "normalized_error_over_threshold": 4.108889174078422,
+              "value": 0.008217778348156846,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[41].species.burned",
+              "normalized_error_over_threshold": 3.8784917262722485,
+              "value": 0.007756983452544497,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[60].species.burned",
+              "normalized_error_over_threshold": 3.819987525857993,
+              "value": 0.007639975051715986,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[42].species.fresh_air",
+              "normalized_error_over_threshold": 3.81765015309099,
+              "value": 0.00763530030618198,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[59].species.burned",
+              "normalized_error_over_threshold": 3.74065319264838,
+              "value": 0.00748130638529676,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[58].species.burned",
+              "normalized_error_over_threshold": 3.637516349034864,
+              "value": 0.007275032698069728,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[41].species.fresh_air",
+              "normalized_error_over_threshold": 3.580605669282005,
+              "value": 0.007161211338564011,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[60].species.fresh_air",
+              "normalized_error_over_threshold": 3.5671249947893666,
+              "value": 0.007134249989578734,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[61].species.burned",
+              "normalized_error_over_threshold": 3.5410041363043154,
+              "value": 0.007082008272608631,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[59].species.fresh_air",
+              "normalized_error_over_threshold": 3.4964002900542965,
+              "value": 0.0069928005801085935,
+              "threshold": 0.002
+            }
+          ],
+          "maximum_conservation_residual": 2.077998454244522e-14
+        },
+        {
+          "cycle": 37,
+          "comparison_status": "FAIL",
+          "statistics": {
+            "maximum": 3.551817905854626,
+            "p90": 0.5387787631509533,
+            "median": 0.04814297758259922,
+            "failed": 71,
+            "count": 1601
+          },
+          "work_J": 137.98454363918881,
+          "endpoint_failed_by_family": {
+            "ducts.exhaust[46]": 1,
+            "ducts.exhaust[47]": 2,
+            "ducts.exhaust[48]": 3,
+            "ducts.exhaust[49]": 3,
+            "ducts.exhaust[50]": 3,
+            "ducts.exhaust[51]": 3,
+            "ducts.exhaust[56]": 1,
+            "ducts.exhaust[57]": 2,
+            "ducts.exhaust[58]": 2,
+            "ducts.exhaust[59]": 2,
+            "ducts.exhaust[60]": 2,
+            "ducts.exhaust[61]": 2,
+            "ducts.exhaust[62]": 3,
+            "ducts.exhaust[63]": 3,
+            "ducts.exhaust[64]": 4,
+            "ducts.exhaust[65]": 4,
+            "ducts.exhaust[66]": 4,
+            "ducts.exhaust[67]": 4,
+            "ducts.exhaust[68]": 3,
+            "ducts.exhaust[69]": 3,
+            "ducts.exhaust[70]": 1,
+            "ducts.exhaust[71]": 1,
+            "ducts.exhaust[72]": 1,
+            "ducts.exhaust[73]": 1,
+            "ducts.exhaust[74]": 1,
+            "ducts.exhaust[75]": 1,
+            "ducts.exhaust[76]": 1,
+            "ducts.exhaust[77]": 1,
+            "ducts.exhaust[99]": 1,
+            "ducts.exhaust[100]": 1,
+            "ducts.exhaust[101]": 2,
+            "ducts.exhaust[102]": 1,
+            "ducts.exhaust[103]": 2,
+            "ducts.exhaust[104]": 1,
+            "ducts.exhaust[105]": 1
+          },
+          "top_endpoint_failures": [
+            {
+              "observable": "ducts.exhaust[63].species.burned",
+              "normalized_error_over_threshold": 3.551817905854626,
+              "value": 0.007103635811709252,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[64].species.burned",
+              "normalized_error_over_threshold": 3.5477359363751404,
+              "value": 0.007095471872750281,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[63].species.fresh_air",
+              "normalized_error_over_threshold": 3.3193216466961273,
+              "value": 0.0066386432933922546,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[62].species.burned",
+              "normalized_error_over_threshold": 3.3175698190496816,
+              "value": 0.006635139638099363,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[64].species.fresh_air",
+              "normalized_error_over_threshold": 3.312622349458366,
+              "value": 0.006625244698916732,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[65].species.burned",
+              "normalized_error_over_threshold": 3.23655810835094,
+              "value": 0.00647311621670188,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[62].species.fresh_air",
+              "normalized_error_over_threshold": 3.1027811367447256,
+              "value": 0.006205562273489451,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[65].species.fresh_air",
+              "normalized_error_over_threshold": 3.019170728671916,
+              "value": 0.006038341457343832,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[65].mass_kg",
+              "normalized_error_over_threshold": 2.8081246060245064,
+              "value": 0.005616249212049013,
+              "threshold": 0.002
+            },
+            {
+              "observable": "ducts.exhaust[61].species.burned",
+              "normalized_error_over_threshold": 2.7340371397375773,
+              "value": 0.005468074279475155,
+              "threshold": 0.002
+            }
+          ],
+          "maximum_conservation_residual": 2.0314352383230688e-14
+        }
+      ]
+    }
+  ],
+  "continuation_review": {
+    "176_trend_disposition": "TREND_SUPPORTS_SEPARATE_PREREGISTRATION_REVIEW",
+    "execution_authorized_by_this_review": false,
+    "requirements_before_any_new_solver_cycles": [
+      "separate versioned preregistration bound to the 176-cell native checkpoint, detector and runner",
+      "storage preflight against cumulative study use and reserve",
+      "remaining cumulative and per-grid runtime checked against the staged plan"
+    ],
+    "reason": "The last three 176 cycles strictly reduce both registered detector statistics, while the window remains transient. This supports preparing a bounded continuation for review; it does not demonstrate periodicity or authorize execution."
+  },
+  "176_budget_feasibility": {
+    "source_artifacts": [
+      {
+        "path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\predictive-reliability-v1\\candidate-periodic-gci-v1\\window-176-02\\detector.json",
+        "sha256": "2c4f19f9d6c1b8323cd0130eba8dd10f57bc798f01a569dc7f95ab068cfc481d"
+      },
+      {
+        "path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\predictive-reliability-v1\\candidate-periodic-gci-v1\\window-176-01\\receipt.json",
+        "sha256": "fe26a3553a4596af160485dc256bcab896addf564bd8f9dbaa761e2429505ec3"
+      },
+      {
+        "path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\predictive-reliability-v1\\candidate-periodic-gci-v1\\window-176-02\\receipt.json",
+        "sha256": "10da5a676e6874ff940cc210bb6d9cf726c38f390cbf7af6a29853dcc095fe4c"
+      }
+    ],
+    "per_grid_solver_budget_seconds": 1200.0,
+    "prior_failed_attempt_solver_seconds": 120.22897320147604,
+    "completed_window_solver_seconds": 849.6025346007664,
+    "solver_seconds_already_consumed": 969.8315078022424,
+    "solver_seconds_remaining": 230.1684921977576,
+    "detector_streak_required": 3,
+    "current_detector_lag1_streak": 0,
+    "current_detector_period2_branch_streaks": {
+      "A": 0,
+      "B": 0
+    },
+    "minimum_future_cycles_for_period_1_if_every_next_comparison_passes": 3,
+    "minimum_future_cycles_for_period_2_if_every_next_comparison_passes": 6,
+    "observed_mean_solver_seconds_per_cycle": 121.37179065725233,
+    "minimum_projected_solver_seconds_to_any_period": 364.115371971757,
+    "minimum_period_fits_remaining_per_grid_budget": false,
+    "classification": "CURRENT_PER_GRID_BUDGET_CANNOT_REACH_PERIODICITY",
+    "assumption": "Best-case detector path assumes every future comparison passes; runtime projection uses the completed 176 window mean and includes no extra margin."
+  },
+  "gci": null,
+  "predictive_claim": false,
+  "candidate_promotion": false,
+  "interpretation": "Failed comparison metrics are detector residuals, not physical-model errors. No thresholds, solver settings, or physical parameters were changed."
+}
