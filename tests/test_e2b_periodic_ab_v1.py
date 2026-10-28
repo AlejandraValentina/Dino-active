@@ -8,6 +8,23 @@ from motorsim.mechanical import MechanicalLossModel
 from scripts.diagnostics.e2b_periodic_ab_v1 import estimate,performance,load,OUT
 
 
+def test_output_binding_hashes_actual_detector_without_mutating_primary(monkeypatch):
+    import hashlib,json
+    import scripts.diagnostics.e2b_periodic_ab_v1 as driver
+    class Detector:
+        classification='PERIOD_1'
+        def snapshot(self):return {'history':[{'cycle_index':30}],'classification':'PERIOD_1'}
+    primary={'configuration_hash':'a'*64,'cycle_index':30,'trajectory':[]}
+    before=deepcopy(primary)
+    monkeypatch.setattr(driver,'make_integrated_engineering_output',lambda record,**kwargs:record)
+    record=driver.bound_periodic_output(primary,Detector(),None)
+    assert primary==before and record['trajectory'] is primary['trajectory']
+    evidence=record['periodicity_evidence']
+    assert evidence['terminal_cycle']==30 and evidence['configuration_hash']==primary['configuration_hash']
+    assert evidence['detector_sha256']==hashlib.sha256(json.dumps(Detector().snapshot(),
+        sort_keys=True,separators=(',',':'),allow_nan=False).encode()).hexdigest()
+
+
 def test_viability_counts_both_variants_audits_and_reserves():
     p=estimate([13.3,13.5,14.])
     assert p['nominal_AB_solver_s']==1350

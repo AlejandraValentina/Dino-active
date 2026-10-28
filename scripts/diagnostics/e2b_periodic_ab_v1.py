@@ -42,6 +42,20 @@ def write(p,d):
     temporary.replace(p)
 
 
+def bound_periodic_output(primary,detector,mechanical):
+    """Bind derived output to the actual detector; preserve scientific primary."""
+    if detector.classification not in ('PERIOD_1','PERIOD_2'):
+        raise ValueError('no accepted detector classification')
+    snapshot=detector.snapshot()
+    digest=hashlib.sha256(json.dumps(snapshot,sort_keys=True,separators=(',',':'),
+        allow_nan=False).encode()).hexdigest()
+    record=dict(primary,periodicity_evidence=dict(status=detector.classification,
+        configuration_hash=primary['configuration_hash'],terminal_cycle=primary['cycle_index'],
+        detector_sha256=digest))
+    return make_integrated_engineering_output(record,mechanical_loss_model=mechanical,
+        periodicity_status=detector.classification)
+
+
 def estimate(times,reference_cycles=30):
     rate=max(15.,max(times))
     return dict(rate_planning_s_per_cycle=rate,measured_s_per_cycle=times,
@@ -244,8 +258,7 @@ def audit_variant(v,simulation,m,raw,global_stop,audit_stop):
         if audit['status']!='PASS':raise ValueError('primary audit failed')
         outcome=detector.update(primary_observation_record(primary))
         if cycle>n-period:
-            output=make_integrated_engineering_output(primary,mechanical_loss_model=mechanical,
-                periodicity_status='PERIOD_'+str(period))
+            output=bound_periodic_output(primary,detector,mechanical)
             write(d/f'engineering-{cycle:03}.json',output)
             angle,species,role=_validated_last_port_close_species(primary,primary['port_closure_snapshots']['snapshots'])
             charge=dict(phase_deg=angle-360*(cycle-1),closure_role=role,fresh_air_kg=species[0],fuel_kg=species[1],
