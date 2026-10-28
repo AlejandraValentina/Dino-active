@@ -9915,6 +9915,31 @@
       ],
       "evidence_level": "L0",
       "qualification": "Documentation and operational references only; no physical code, simulations, builds or scientific claims changed."
+    },
+    {
+      "id": "PRED-E2A-EXHAUST-WAVES-V1",
+      "description": "Owner-authorized E2A only: freeze A/B V2 first-order, reuse A44, five new bounded controls, plots and final decision; stop after delivery",
+      "dependencies": [
+        "PRED-UNIFIED-ROADMAP-V1",
+        "ENGINE-PORT-FLOW-VERIFICATION-V1"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "docs/gasdynamic/e2a-exhaust-waves-protocol-v1.md",
+        "results/e2a-exhaust-waves-v1/preparation/manifest.json"
+      ],
+      "next_action": "Execute once after freeze commit; 600s accumulated; no solver changes, no historical continuation, no E2B.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "docs/gasdynamic/e2a-exhaust-waves-protocol-v1.md",
+        "scripts/diagnostics/e2a_exhaust_waves_v1.py",
+        "tests/test_e2a_exhaust_waves_v1.py",
+        "results/e2a-exhaust-waves-v1/"
+      ],
+      "evidence_level": "L1"
     }
   ],
   "audit_remediation_mode": false,
@@ -10132,9 +10157,9 @@
       "PRED-IDENTIFICATION",
       "PRED-VALIDATION"
     ],
-    "completion_criterion": "Unified owner roadmap docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md: port-law verification, pressure waves and numerically distinguishable design effects, identifiable scavenging, evidence-led closures, independent measured curves and exhaust-change validation, then performance/product. Data acquisition parallel; X30 preferred, not exclusive. Current instruction adopts planning and defines next E2A protocol only: no automatic simulations or historical campaigns. Periodicity/conservation do not establish predictive capability.",
+    "completion_criterion": "Unified owner roadmap docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md: port-law verification, pressure waves and numerically distinguishable design effects, identifiable scavenging, evidence-led closures, independent measured curves and exhaust-change validation, then performance/product. Data acquisition parallel; X30 preferred, not exclusive. Current authorized delivery: E2A frozen A/B wave comparison within600s, then stop; no other stage or historical campaign. Periodicity/conservation do not establish predictive capability.",
     "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
-    "qualification": "Roadmap adopted; E1 candidate verified but experimental. Next E2A protocol defined, not started. No automatic activation of old READY tasks or later stages; preserve rc7.",
+    "qualification": "Owner authorizes only E2A: freeze protocol, execute comparison within600s and stop with decision. No other stage, old campaign or solver change.",
     "staged_plan": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md"
   },
   "objectives": [
@@ -11203,10 +11228,10 @@
         "PRED-IDENTIFICATION",
         "PRED-VALIDATION"
       ],
-      "completion_criterion": "Unified owner roadmap docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md: port-law verification, pressure waves and numerically distinguishable design effects, identifiable scavenging, evidence-led closures, independent measured curves and exhaust-change validation, then performance/product. Data acquisition parallel; X30 preferred, not exclusive. Current instruction adopts planning and defines next E2A protocol only: no automatic simulations or historical campaigns. Periodicity/conservation do not establish predictive capability.",
+      "completion_criterion": "Unified owner roadmap docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md: port-law verification, pressure waves and numerically distinguishable design effects, identifiable scavenging, evidence-led closures, independent measured curves and exhaust-change validation, then performance/product. Data acquisition parallel; X30 preferred, not exclusive. Current authorized delivery: E2A frozen A/B wave comparison within600s, then stop; no other stage or historical campaign. Periodicity/conservation do not establish predictive capability.",
       "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
       "staged_plan": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md",
-      "qualification": "Roadmap adopted; E1 candidate verified but experimental. Next E2A protocol defined, not started. No automatic activation of old READY tasks or later stages; preserve rc7."
+      "qualification": "Owner authorizes only E2A: freeze protocol, execute comparison within600s and stop with decision. No other stage, old campaign or solver change."
     }
   ],
   "owner_decisions_pending": [
@@ -13989,6 +14014,12 @@
       "task": "PRED-UNIFIED-ROADMAP-V1",
       "kind": "task",
       "summary": "Owner six-stage roadmap adopted; active objective now references one plan. E1 CORREGIR remains experimental, not a validated port-loss law. Next E2A wave A/B protocol defined, not executed; X30/data work parallel, alternative complete engines allowed. All10 blockers reevaluated: missing data unchanged; SPV1 intact. No code, simulations, builds or automatic campaigns."
+    },
+    {
+      "at": "2026-10-28T12:03:56+00:00",
+      "task": "PRED-E2A-EXHAUST-WAVES-V1",
+      "kind": "task",
+      "summary": "E2A frozen: A/B headers83/103mm,9000RPM,V2/OPEN_END_PLENUM_V2,first order44/88,dt.5/.25deg,common physical probes. Reuse E1 A44; five new runs max120s each/600s accumulated incl analysis.5 observer tests PASS,zero solver steps in preparation. All10 blockers reevaluated unchanged; SPV1 untouched. Stop after E2A; no other stage."
     }
   ],
   "legacy_gate_status": {
@@ -14575,8 +14606,8 @@
   "roadmap_control": {
     "roadmap": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md",
     "owner_decision_date": "2026-10-28",
-    "activation": "PLANNING_ONLY_NO_NEW_STAGE_EXECUTION",
-    "next_deliverable": "E2A: frozen-model A/B pressure-wave comparison protocol, then bounded execution only when activated",
+    "activation": "E2A_EXECUTION_ONLY_AUTHORIZED_600_SECONDS_STOP_AFTER_DELIVERY",
+    "next_deliverable": "E2A pressure-wave A/B plots, numerical sensitivity envelopes and scoped decision; not periodic power",
     "experimental_data_policy": "Acquire matched-engine geometry/conditions/uncertainties in parallel from start; prefer X30, accept a more complete independent reference without mixing engines; no repeated blocked downloads or unsolicited external messages.",
     "historical_ready_policy": "READY history does not authorize reviving meshes, 90-150deg studies or old campaigns outside an explicitly activated roadmap deliverable. SPV1 READY task stays intact.",
     "stages": [
@@ -14589,7 +14620,7 @@
       },
       {
         "id": "E2",
-        "state": "NOT_STARTED_BY_THIS_PLAN"
+        "state": "E2A_ONLY_IN_PROGRESS_E2B_NOT_AUTHORIZED"
       },
       {
         "id": "E3",
