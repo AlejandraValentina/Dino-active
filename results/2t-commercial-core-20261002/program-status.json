@@ -9234,11 +9234,17 @@
       "id": "PRED-TEMPORAL-OPERATOR-REFERENCE",
       "description": "Verify SSPRK2 smooth fixed-grid temporal convergence with analytical reference before interpreting integrated refinement",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Verify SSPRK2 smooth fixed-grid temporal convergence with analytical reference before interpreting integrated refinement",
+      "commits": [
+        "93e6600"
+      ],
+      "evidence": [
+        "scripts/diagnostics/temporal_operator_reference_v1.py",
+        "tests/test_temporal_operator_reference_v1.py",
+        "results/predictive-reliability-v1/temporal-operator-reference-v1.json"
+      ],
+      "next_action": "Use as temporal-integrator reference only; integrated SSPRK2/coupling error remains unbounded.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -14177,6 +14183,12 @@
       "task": "PRED-EXPERIMENTAL-DATA-READINESS-V1",
       "kind": "task",
       "summary": "Closed documentary readiness: both full engines BLOCKED. Cahoon6000RPM bank/cylinder,5960/5980 channels separate;MK1 appendix explicitly named but L9=23in vs22 and diameters conflict. Zhang330mm3435RPM three pressures,AB curves330/480 usable after geometry recovery. QUB request drafted,not sent;no solver/config/simulation changes."
+    },
+    {
+      "at": "2026-10-28T15:02:24+00:00",
+      "task": "PRED-TEMPORAL-OPERATOR-REFERENCE",
+      "kind": "task",
+      "summary": "Analytical smooth SSPRK2 decay reference passes asymptotic second-order check; integrated-engine temporal uncertainty remains open."
     }
   ],
   "legacy_gate_status": {
