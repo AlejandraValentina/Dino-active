@@ -10064,6 +10064,55 @@
       "data_readiness": "BLOCKED",
       "external_dependency_reason": "Original geometry conventions, correct MK1 exhaust revision, full duct/port sections and acquisition conditions are not recoverable uniquely from these PDFs. Synthetic fill prohibited; archive request prepared.",
       "blocked_local_reevaluation": "Existing FRPM/SPV1/CRV1 tasks remain deferred or outside scope; X30 volume dependency remains. PRED-VALIDATION remains blocked: no complete matched dataset. No historical task revived."
+    },
+    {
+      "id": "PRED-CORE-PERIODIC-MESH-GCI",
+      "description": "Periodic-state 44/88/176 convergence and GCI for IMEP and power under explicit candidate identity; no promotion",
+      "dependencies": [
+        "PRED-PERIODIC-CONVERGENCE-COSTED-DESIGN"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "openspec/changes/predictive-reliability-v1/candidate-periodic-gci-protocol-v1.md",
+        "scripts/diagnostics/run_candidate_periodic_gci_v1.py",
+        "tests/test_run_candidate_periodic_gci_v1.py",
+        "results/predictive-reliability-v1/candidate-periodic-gci-v1/preflight-88-v2.json",
+        "results/e2b-periodic-ab-v1/decision.json"
+      ],
+      "next_action": "Execute the frozen 88-cell cycles 31-36 window; review before considering 176.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "openspec/changes/predictive-reliability-v1/candidate-periodic-gci-protocol-v1.md",
+        "scripts/diagnostics/run_candidate_periodic_gci_v1.py",
+        "tests/test_run_candidate_periodic_gci_v1.py",
+        "results/predictive-reliability-v1/candidate-periodic-gci-v1/"
+      ],
+      "evidence_level": "L2",
+      "qualification": "Owner instruction on 2026-10-28 activates only the preregistered 88-cell first window within E1.3 limits. Review it before any 176-cell window; no candidate adoption or predictive claim."
+    },
+    {
+      "id": "PRED-CORE-PERIODIC-GCI-ANALYZER",
+      "description": "Implement a read-only fail-closed analyzer for 44/88/176 audited periodic IMEP and modeled power; compute order/GCI only when identity, periodicity, replay, conservation and monotonicity support it.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "docs/planning/predictive-core-staged-plan-v1.md",
+        "openspec/changes/predictive-reliability-v1/candidate-periodic-gci-protocol-v1.md"
+      ],
+      "next_action": "Build and test normalized audited-case input validation and fail-closed observed-order/GCI calculation; no solver execution.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "implementation/verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "scripts/diagnostics/analyze_periodic_mesh_gci_v1.py",
+        "tests/test_analyze_periodic_mesh_gci_v1.py",
+        "results/predictive-reliability-v1/candidate-periodic-gci-v1/analysis/"
+      ]
     }
   ],
   "audit_remediation_mode": false,
@@ -10281,9 +10330,9 @@
       "PRED-IDENTIFICATION",
       "PRED-VALIDATION"
     ],
-    "completion_criterion": "Unified owner roadmap docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md: port-law verification, pressure waves and numerically distinguishable design effects, identifiable scavenging, evidence-led closures, independent measured curves and exhaust-change validation, then performance/product. Data acquisition parallel; X30 preferred, not exclusive. Current authorized delivery: E2B independent periodic A/B9000RPM MUSCL V2 within5400s, then stop; no other RPM, refinement campaign or later stage. Periodicity/conservation do not establish predictive capability.",
+    "completion_criterion": "Unified owner roadmap; current activation is the preregistered E1.3 first window at 88 cells. Review its periodicity, conservation, cost and remap before any 176-cell window. Keep V2/MUSCL experimental; no validation or predictive claim from periodicity.",
     "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
-    "qualification": "Owner authorizes only E2B independent A/B9000RPM MUSCL V2,5400s cumulative,then decision and stop. No automatic refinements or later stages.",
+    "qualification": "Owner instruction 2026-10-28 activates roadmap continuation. Solver scope currently limited to the preregistered 88-cell first window (six cycles maximum, 290 s). A 176-cell window follows only after review and a fresh zero-step preflight; no candidate promotion.",
     "staged_plan": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md"
   },
   "objectives": [
@@ -14198,6 +14247,12 @@
       "task": "PRED-POSTOPEN-WAVE-TRANSPORT-DESIGN",
       "kind": "task",
       "summary": "Prepared source-bound post-opening diagnostic for recorded39: four FAST prefixes verified, projected 416.2s/541.0s with 30% margin, zero solver steps; execution not activated."
+    },
+    {
+      "at": "2026-10-28T15:10:21+00:00",
+      "task": "PRED-CORE-PERIODIC-MESH-GCI",
+      "kind": "task",
+      "summary": "E1.3 preregistered at 88 cells only, bound to E2B A30 source; existing 352 control and audited 44 periodic result reused. No new solver steps yet; 176 conditional on review."
     }
   ],
   "legacy_gate_status": {
