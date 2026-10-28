@@ -148,6 +148,108 @@ def run_first_window(level: int, output: Path, *, repo_root: Path = ROOT,
                       schema=f"CANDIDATE_PERIODIC_GCI_LEVEL{level}_WINDOW_V1")
 
 
+def build_continuation_preregistration(source_output: Path, addendum_path: Path,
+                                       *, repo_root: Path = ROOT,
+                                       artifact_root: Path | None = None) -> dict:
+    """Freeze exact cycle-36 source and trend-based admission for cycles 37-40."""
+    source_output = Path(source_output)
+    artifact_root = Path(artifact_root) if artifact_root else default_artifact_root()
+    receipt = _load(source_output / "receipt.json")
+    cycles = _load(source_output / "cycles.json")
+    detector_state = _load(source_output / "detector.json")
+    if (receipt.get("status") != "TRANSIENT_AT_BUDGET" or
+            receipt.get("completed_new_cycles") != 6 or
+            receipt.get("absolute_terminal_angle") != 12960.0 or
+            len(cycles) != 6 or len(detector_state.get("history", [])) != 6):
+        raise ValueError("continuation requires the complete frozen cycle-36 window")
+    if receipt.get("source_solver_sha256") != _solver_dependency_hashes():
+        raise ValueError("continuation source solver identity differs")
+    trend = continuation_trend(cycles)
+    source_files = ("configuration.json", "checkpoint-absolute-036.json",
+                    "detector.json", "cycles.json", "receipt.json")
+    hashes = {name: sha(source_output / name) for name in source_files}
+    if _load(source_output / "checkpoint-absolute-036.json").get("cycle") != 36:
+        raise ValueError("source checkpoint is not absolute cycle 36")
+    preflight = check_storage_requirements([
+        (artifact_root / "predictive-reliability-v1" / "candidate-periodic-gci-v1", 1024**3)])
+    return {
+        "schema": "DINO_CANDIDATE_PERIODIC_GCI_88_CONTINUATION_PREREG_V1",
+        "protocol_addendum_sha256": sha(addendum_path),
+        "source_window": "DINO_ARTIFACT_ROOT/predictive-reliability-v1/candidate-periodic-gci-v1/window-88-01",
+        "source_files_sha256": hashes,
+        "source_solver_dependency_sha256": receipt["source_solver_sha256"],
+        "continuation_runner_sha256": sha(Path(__file__)),
+        "source_detector_history_cycles": 6,
+        "source_terminal_cycle": 36,
+        "next_absolute_cycles": [37, 38, 39, 40],
+        "trend_last_three": trend,
+        "projected_solver_seconds": receipt["timing_seconds"]["solver"] / 6.0 * 4.0,
+        "projected_with_20_percent_margin_seconds": receipt["timing_seconds"]["solver"] / 6.0 * 4.0 * 1.2,
+        "solver_budget_seconds": 180.0,
+        "admission_budget_seconds": 205.0,
+        "cumulative_grid_solver_budget_seconds": 600.0,
+        "storage_preflight": preflight,
+        "solver_steps_executed": 0,
+        "activation": "ONE_CONTINUATION_WINDOW_ONLY_REVIEW_AFTER_CYCLE_40",
+    }
+
+
+def continuation_trend(cycles: list[dict]) -> list[dict]:
+    """Return the last-three statistics only when both registered tails fall."""
+    if len(cycles) < 3:
+        raise ValueError("three completed cycles are required for trend review")
+    trend = [row.get("statistics") for row in cycles[-3:]]
+    if any(not isinstance(row, dict) for row in trend):
+        raise ValueError("last three detector statistics are incomplete")
+    if not all(a["maximum"] > b["maximum"] and a["p90"] > b["p90"]
+               for a, b in zip(trend, trend[1:])):
+        raise ValueError("last three maximum/p90 trends do not strictly improve")
+    return trend
+
+
+def run_continuation(source_output: Path, preregistration_path: Path,
+                     addendum_path: Path, output: Path, *,
+                     repo_root: Path = ROOT,
+                     artifact_root: Path | None = None) -> int:
+    artifact_root = Path(artifact_root) if artifact_root else default_artifact_root()
+    prereg = _load(preregistration_path)
+    if (prereg.get("schema") != "DINO_CANDIDATE_PERIODIC_GCI_88_CONTINUATION_PREREG_V1" or
+            prereg.get("protocol_addendum_sha256") != sha(addendum_path) or
+            prereg.get("solver_steps_executed") != 0 or
+            prereg.get("continuation_runner_sha256") != sha(Path(__file__)) or
+            prereg.get("source_solver_dependency_sha256") != _solver_dependency_hashes()):
+        raise ValueError("continuation preregistration/addendum binding mismatch")
+    source_output = Path(source_output)
+    for relative, expected in prereg["source_files_sha256"].items():
+        if sha(source_output / relative) != expected:
+            raise ValueError(f"continuation source changed: {relative}")
+
+    def prepare(unused_root):
+        config = _load(source_output / "configuration.json")
+        checkpoint = _load(source_output / "checkpoint-absolute-036.json")
+        detector_state = _load(source_output / "detector.json")
+        engine = IntegratedEngine2T.from_configuration_dict(config)
+        engine.restore(checkpoint)
+        detector = PeriodicDetectorV2(detector_state)
+        if engine.cycle != 36 or engine.crank_angle_unwrapped_deg != 12960.0:
+            raise ValueError("restored continuation state is not cycle 36")
+        return engine, config, detector, {
+            "source_type": "EXACT_NATIVE_CHECKPOINT_AND_DETECTOR_CONTINUATION",
+            "source_window_hashes": prereg["source_files_sha256"],
+            "origin_absolute_cycle": 30,
+            "physical_origin_crank_deg": 10800.0,
+            "first_detector_cycle_index": 7,
+            "detector_history_restored_exactly": True,
+        }
+
+    check_storage_requirements([(Path(output), 16 * 1024**2),
+                                (artifact_root, 1024**3)])
+    return run_window(artifact_root, Path(output), source_preparer=prepare,
+                      first_absolute=37, last_absolute=40,
+                      solver_budget=180, admission_budget=205,
+                      schema="CANDIDATE_PERIODIC_GCI_LEVEL1_WINDOW2_V1")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--level", type=int, choices=(1, 2), required=True)
@@ -156,8 +258,21 @@ def main() -> None:
     parser.add_argument("--preflight-only", action="store_true")
     parser.add_argument("--protocol", type=Path)
     parser.add_argument("--preflight-receipt", type=Path)
+    parser.add_argument("--continue-from", type=Path)
+    parser.add_argument("--protocol-addendum", type=Path)
     args = parser.parse_args()
     if args.preflight_only:
+        if args.continue_from:
+            if args.protocol_addendum is None or args.output.exists():
+                raise ValueError("continuation preflight requires an addendum, new output, and source")
+            result = build_continuation_preregistration(
+                args.continue_from, args.protocol_addendum,
+                artifact_root=args.artifact_root)
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+            print(json.dumps({"preflight": "PASS", "cycles": result["next_absolute_cycles"],
+                              "solver_steps": 0}))
+            return
         if args.protocol is None or args.output.exists():
             raise ValueError("preflight requires --protocol and a new --output path")
         result = build_preflight(args.level, args.protocol,
@@ -167,6 +282,12 @@ def main() -> None:
         print(json.dumps({"preflight": "PASS", "level": args.level,
                           "cells": result["total_cells"], "solver_steps": 0}))
         return
+    if args.continue_from:
+        if args.protocol_addendum is None or args.preflight_receipt is None:
+            raise ValueError("continuation execution requires its preflight and addendum")
+        raise SystemExit(run_continuation(
+            args.continue_from, args.preflight_receipt, args.protocol_addendum,
+            args.output, artifact_root=args.artifact_root))
     raise SystemExit(run_first_window(args.level, args.output, artifact_root=args.artifact_root,
                                      preflight_receipt=args.preflight_receipt,
                                      protocol_path=args.protocol))
