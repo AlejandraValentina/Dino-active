@@ -10371,6 +10371,52 @@
         "results/predictive-reliability-v1/port-law-evidence-matrix-v1.json"
       ],
       "qualification": "Documentation-only synthesis of frozen receipts; no solver run, no physical/default change, no experimental or predictive claim."
+    },
+    {
+      "id": "DINO-DESKTOP-CUSTOM-ENGINE-P1",
+      "description": "Complete Desktop custom-engine entry for currently implemented single-cylinder physics: cylinder/crankcase, port timing, intake/transfer geometry, active static reeds and exhaust variants.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "motorsim/desktop/engine_page.py",
+        "tests/test_dino_desktop.py::DinoDesktopTests::test_custom_engine_intake_transfer_reeds_persist_and_reach_solver",
+        "Focused Desktop GUI test: PASS; solver configuration construction PASS; save/reopen and exhaust variant round-trip PASS"
+      ],
+      "next_action": "Proceed to P2 Desktop measured-data import and exact-coordinate comparison; this is functional development, not experimental validation.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "product/implementation/verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "motorsim/desktop/engine_page.py",
+        "tests/test_dino_desktop.py"
+      ],
+      "qualification": "Only controls wired to effective solver inputs are exposed. Duct geometry is straight constant circular area and preserves cell count; static reed controls only. No solver physics or rc7 changes; V2/MUSCL remain experimental."
+    },
+    {
+      "id": "DINO-DESKTOP-MEASURED-DATA-P2",
+      "description": "Connect existing measurement-data import contracts to Desktop: import declared dyno CSV, persist its provenance with the project, compare exact compatible RPM coordinates against selected saved run, and show residuals without interpolation or validation claims.",
+      "dependencies": [
+        "DINO-DESKTOP-CUSTOM-ENGINE-P1"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "docs/roadmaps/dino-2t-product-roadmap-v2-20261028.md#p2"
+      ],
+      "next_action": "Implement bounded Desktop import and project persistence using existing measurement_data contracts; keep experimental validation blocked absent independent matched-engine data.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "product/implementation/verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "motorsim/desktop/results_page.py",
+        "motorsim/engine_project.py",
+        "motorsim/measurement_data.py",
+        "tests/test_dino_desktop.py"
+      ],
+      "qualification": "P2 functional import can be developed with test-labeled data; it does not authorize or imply a predictive/experimental validation claim."
     }
   ],
   "audit_remediation_mode": false,
@@ -14607,6 +14653,18 @@
       "task": "PRED-PORT-LAW-EVIDENCE-MATRIX",
       "kind": "task",
       "summary": "Completed E1.0 matrix from seven hashed existing receipts. V2 numerically supported only within idealized tested domain; measured real-port losses and complete engine validation remain absent. Preserve rc7, legacy default, V2 and MUSCL status."
+    },
+    {
+      "at": "2026-10-28T16:24:58Z",
+      "task": "DINO-DESKTOP-CUSTOM-ENGINE-P1",
+      "kind": "task",
+      "summary": "Desktop agrega inputs activos de admisión/transferencia y lámina estática; se verifican solver, persistencia y variante de escape."
+    },
+    {
+      "at": "2026-10-28T16:24:58Z",
+      "task": "DINO-DESKTOP-MEASURED-DATA-P2",
+      "kind": "task",
+      "summary": "Iniciada tarea funcional P2 autorizada: importación de mediciones Desktop, independiente de validación experimental bloqueada."
     }
   ],
   "legacy_gate_status": {

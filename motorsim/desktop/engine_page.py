@@ -9,6 +9,7 @@ from ..engine_configuration import validate,identity,sha256
 from ..two_stroke_ports import TwoStrokePortSet,DuctBinding,PortDefinition
 from ..crankcase import CrankcaseGeometry
 from ..integrated_2t import SliderCrankChambers2T
+from ..gas1d.mesh import uniform_mesh
 
 
 class CylinderSketch(QWidget):
@@ -96,6 +97,24 @@ class EnginePage(QWidget):
         self.area_plot=PortAreaPlot();self.area_plot.setObjectName("portAreaAnglePlot");self.area_plot.setMinimumHeight(130);self.area_plot.setMaximumHeight(165)
         self.port_areas=QTableWidget(0,3);self.port_areas.setHorizontalHeaderLabels(["Lumbrera","Evento existente (°)","Área efectiva (mm²)"])
         self.port_areas.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.port_areas.setMaximumHeight(350)
+        intake_page=QWidget();intake_layout=QVBoxLayout(intake_page)
+        intake_layout.addWidget(QLabel("Conductos rectos de sección circular constante. Se conserva la cantidad de volúmenes de la malla existente; el escape se edita en su pantalla."))
+        self.ducts=QTableWidget(0,4);self.ducts.setObjectName("editableIntakeTransferDucts")
+        self.ducts.setHorizontalHeaderLabels(["Conducto","Rol","Longitud (mm)","Diámetro (mm)"])
+        self.ducts.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        self.ducts.cellChanged.connect(lambda *_:self._mark_component(4,"modificado"));intake_layout.addWidget(self.ducts)
+        self.reed_group=QGroupBox("Láminas · modelo cuasiestático activo");reed_layout=QVBoxLayout(self.reed_group)
+        reed_layout.addWidget(QLabel("Masa, amortiguamiento y restitución no se editan: la configuración actual no usa el vínculo dinámico de láminas."))
+        self.reeds=QTableWidget(0,6);self.reeds.setObjectName("effectiveStaticReedParameters")
+        self.reeds.setHorizontalHeaderLabels(["ID","Área presión (cm²)","Ancho (mm)","Rigidez (N/m)","Tope (mm)","Cd"])
+        self.reeds.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        self.reeds.cellChanged.connect(lambda *_:self._mark_component(4,"modificado"));reed_layout.addWidget(self.reeds)
+        intake_layout.addWidget(self.reed_group)
+        mixed_form=QFormLayout();self.mixed_outflow=QDoubleSpinBox();self.mixed_outflow.setObjectName("mixedOutflowFraction")
+        self.mixed_outflow.setRange(0,1);self.mixed_outflow.setDecimals(4);self.mixed_outflow.setSingleStep(.05)
+        self.mixed_outflow.valueChanged.connect(lambda *_:self._mark_component(4,"modificado"))
+        mixed_form.addRow("Fracción de mezcla de salida (0–1)",self.mixed_outflow);intake_layout.addLayout(mixed_form)
+        intake_layout.addWidget(QLabel("Geometrías variables, curvas, rugosidad y condiciones de borde no representadas en esta edición no se infieren ni se muestran como controles."))
         self.loss_group=QGroupBox("Pérdidas mecánicas explícitas");loss_layout=QVBoxLayout(self.loss_group)
         loss_layout.addWidget(QLabel("Editá la MEP de cada término declarado. Se conserva modelo, fuente y provenance; no se insertan defaults."))
         self.losses=QTableWidget(0,4);self.losses.setHorizontalHeaderLabels(["Término","Fuente","MEP (Pa)","Provenance"])
@@ -118,6 +137,8 @@ class EnginePage(QWidget):
         event_page=QWidget();event_layout=QVBoxLayout(event_page);event_layout.addWidget(QLabel("Eventos y áreas efectivas reportados por el modelo existente. La edición habitual y sus grados de apertura/cierre están en Cilindro y distribución."));event_layout.addWidget(self.port_areas,1);self.component_tabs.addTab(event_page,self.component_names[1])
         for name,widget in ((self.component_names[2],self.loss_group),(self.component_names[3],self.combust_group)):
             pane=QWidget();layout=QVBoxLayout(pane);layout.addWidget(widget);layout.addStretch(1);self.component_tabs.addTab(pane,name)
+        self.component_names=(*self.component_names,"Admisión y conductos")
+        self.component_tabs.addTab(intake_page,self.component_names[4])
         self.validation=QLabel();self.validation.setWordWrap(True);self.validation.setObjectName("notice");root.addWidget(self.validation)
         buttons=QHBoxLayout();root.addLayout(buttons)
         self.apply_button=QPushButton("Validar y aplicar cambios");self.apply_button.setObjectName("primaryAction");self.apply_button.clicked.connect(self.apply);buttons.addWidget(self.apply_button)
@@ -139,6 +160,26 @@ class EnginePage(QWidget):
             self.intake_control.setEnabled(exchange is not None)
             self.intake_control.blockSignals(False)
             if exchange is None:self.intake_control.setToolTip("Este proyecto anterior no declara GAS_EXCHANGE_V2; no se habilita un control que no tenga efecto físico.")
+            self.mixed_outflow.blockSignals(True);self.mixed_outflow.setValue(float((exchange or {}).get("mixed_outflow_fraction",0.0)));self.mixed_outflow.blockSignals(False)
+            self.mixed_outflow.setEnabled(exchange is not None and "mixed_outflow_fraction" in exchange)
+            ducts=n.get("ducts",[]);editable=[entry for entry in ducts if entry.get("role") in {"intake","transfer"}]
+            self.ducts.blockSignals(True);self.ducts.setRowCount(len(editable));self._duct_ids=[]
+            for row,entry in enumerate(editable):
+                mesh=entry["mesh"];area=sum(mesh["areas"])/len(mesh["areas"]);length=mesh["faces"][-1]-mesh["faces"][0]
+                diameter=math.sqrt(4*area/math.pi);self._duct_ids.append(entry["id"])
+                for col,value in enumerate((entry["id"],entry["role"],f"{length*1000:.6g}",f"{diameter*1000:.6g}")):
+                    item=QTableWidgetItem(str(value));item.setData(Qt.ItemDataRole.UserRole,entry["id"])
+                    if col<2:item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+                    self.ducts.setItem(row,col,item)
+            self.ducts.blockSignals(False)
+            petals=n.get("reed_petals",[]);self.reeds.blockSignals(True);self.reeds.setRowCount(len(petals))
+            for row,petal in enumerate(petals):
+                values=(petal["id"],petal["pressure_area_m2"]*1e4,petal["effective_width_m"]*1000,petal["stiffness_n_m"],petal["lift_stop_m"]*1000,petal["discharge_coefficient"])
+                for col,value in enumerate(values):
+                    item=QTableWidgetItem(str(value));item.setData(Qt.ItemDataRole.UserRole,petal["id"])
+                    if col==0:item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+                    self.reeds.setItem(row,col,item)
+            self.reeds.blockSignals(False);self.reed_group.setEnabled(control=="reed" and n.get("dynamic_reed_binding") is None)
             self._refresh_provenance(doc)
             self.cylinder_diagram.set_geometry(cc["bore_mm"],cc["stroke_mm"],cc["rod_length_mm"])
             combustion=n.get("fuel_coupled_combustion") or {};component=(combustion.get("components") or [{}])[0]
@@ -240,7 +281,7 @@ class EnginePage(QWidget):
     def _refresh_provenance(self,doc):
         inputs=doc.get("provenance",{}).get("design_inputs",{})
         labels={"MEASURED":"medido","ESTIMATED":"estimado","SYNTHETIC_ASSUMPTION":"supuesto","UNKNOWN":"sin clasificar","DOCUMENTED":"documentado","DERIVED_FROM_DOCUMENTED":"derivado de documentación"}
-        names=("bore_mm","stroke_mm","rod_length_mm","volume_bdc_cm3","cylinder_compression_ratio","reference_rpm","port_dimensions","intake_control","exhaust_sections","fuel_model")
+        names=("bore_mm","stroke_mm","rod_length_mm","volume_bdc_cm3","cylinder_compression_ratio","reference_rpm","port_dimensions","intake_control","intake_transfer_geometry","reed_static_parameters","mixed_outflow_fraction","exhaust_sections","fuel_model")
         parts=[f"{name}: {labels.get(inputs.get(name,{}).get('classification','UNKNOWN'),'sin clasificar')}" for name in names]
         self.provenance_label.setText(" · ".join(parts))
 
@@ -249,7 +290,7 @@ class EnginePage(QWidget):
         dialog=QDialog(self);dialog.setWindowTitle("Origen de los datos del motor");layout=QVBoxLayout(dialog)
         layout.addWidget(QLabel("Clasificá cada dato según su fuente. Los cambios se guardan en la provenance del motor."))
         form=QFormLayout();layout.addLayout(form)
-        names=(("bore_mm","Diámetro"),("stroke_mm","Carrera"),("rod_length_mm","Biela"),("volume_bdc_cm3","Volumen del cárter"),("cylinder_compression_ratio","Compresión geométrica"),("reference_rpm","RPM"),("port_dimensions","Lumbreras y distribución"),("intake_control","Control de admisión"),("exhaust_sections","Secciones del escape"),("fuel_model","Combustible y combustión"))
+        names=(("bore_mm","Diámetro"),("stroke_mm","Carrera"),("rod_length_mm","Biela"),("volume_bdc_cm3","Volumen del cárter"),("cylinder_compression_ratio","Compresión geométrica"),("reference_rpm","RPM"),("port_dimensions","Lumbreras y distribución"),("intake_control","Control de admisión"),("intake_transfer_geometry","Conductos de admisión y transferencia"),("reed_static_parameters","Láminas estáticas"),("mixed_outflow_fraction","Fracción de mezcla"),("exhaust_sections","Secciones del escape"),("fuel_model","Combustible y combustión"))
         choices=(("Medido","MEASURED"),("Estimado","ESTIMATED"),("Supuesto","SYNTHETIC_ASSUMPTION"),("Sin clasificar","UNKNOWN"))
         selectors={}
         for key,label in names:
@@ -333,6 +374,37 @@ class EnginePage(QWidget):
                     native["reed_petals"]=petals
                     native["dynamic_reed_binding"]=None
             self._edited_ports(native)
+            changed_ducts=False
+            by_id={entry["id"]:entry for entry in native.get("ducts",[])}
+            for row,path_id in enumerate(getattr(self,"_duct_ids",[])):
+                if path_id not in by_id:continue
+                entry=by_id[path_id];old=entry["mesh"]
+                try:length_mm=self._decimal(self.ducts.item(row,2).text());diameter_mm=self._decimal(self.ducts.item(row,3).text())
+                except (ValueError,AttributeError) as exc:raise ValueError(f"Conducto {path_id}: longitud y diámetro deben ser numéricos") from exc
+                if not all(math.isfinite(v) and v>0 for v in (length_mm,diameter_mm)):raise ValueError(f"Conducto {path_id}: longitud y diámetro deben ser positivos")
+                new=uniform_mesh(len(old["volumes"]),length_mm/1000,math.pi*(diameter_mm/1000)**2/4).as_dict()
+                if new!=old:
+                    species=native["duct_species"][path_id]
+                    for cell,(before,after) in enumerate(zip(old["volumes"],new["volumes"])):
+                        species[cell]=[mass*after/before for mass in species[cell]]
+                    entry["mesh"]=new;changed_ducts=True
+            if changed_ducts:design_inputs["intake_transfer_geometry"]={"classification":"UNKNOWN","rationale":"Geometría editada en Desktop; clasificá la fuente antes de usarla como evidencia."}
+            exchange=native["geometry_identity"].get("gas_exchange_model")
+            if exchange is not None:
+                mix=self.mixed_outflow.value()
+                if mix!=exchange.get("mixed_outflow_fraction"):
+                    exchange["mixed_outflow_fraction"]=mix;design_inputs["mixed_outflow_fraction"]={"classification":"UNKNOWN","rationale":"Parámetro editado en Desktop; clasificá la fuente."}
+            for row in range(self.reeds.rowCount()):
+                petal=next((p for p in native.get("reed_petals",[]) if p["id"]==self.reeds.item(row,0).text()),None)
+                if petal is None:continue
+                fields=((1,"pressure_area_m2",1e-4),(2,"effective_width_m",1e-3),(3,"stiffness_n_m",1.0),(4,"lift_stop_m",1e-3),(5,"discharge_coefficient",1.0))
+                changed=False
+                for col,key,scale in fields:
+                    try:value=self._decimal(self.reeds.item(row,col).text())*scale
+                    except (ValueError,AttributeError) as exc:raise ValueError(f"Lámina {petal['id']}: parámetro debe ser numérico") from exc
+                    if not math.isfinite(value) or value<=0:raise ValueError(f"Lámina {petal['id']}: parámetros deben ser positivos")
+                    changed|=value!=petal[key];petal[key]=value
+                if changed:design_inputs["reed_static_parameters"]={"classification":"UNKNOWN","rationale":"Parámetros editados en Desktop; clasificá la fuente."}
             doc["mechanical_loss_model"]=deepcopy(self.loss_model_draft)
             for i,term in enumerate(doc["mechanical_loss_model"]["terms"]):
                 if term["mep_pa"] is None:continue

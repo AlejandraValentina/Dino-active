@@ -23,7 +23,7 @@ from motorsim.desktop.execution_page import ExecutionPage
 from motorsim.desktop.project_page import ProjectPage
 from motorsim.desktop.results_page import ResultsPage
 from motorsim.desktop.preferences import impl2_historical_report_candidate
-from motorsim.desktop.services import load_results, new_project, run_background
+from motorsim.desktop.services import load_results, new_project, new_design_project, run_background
 from motorsim.engine_configuration import identity,create,resolve_for_operating_point
 from motorsim.engine_project import create_project,load_project,save_project
 
@@ -170,6 +170,49 @@ class DinoDesktopTests(unittest.TestCase):
         self.assertEqual(mesh_meta["cells_per_section"][0],2)
         self.assertEqual(len(next(d for d in native["ducts"] if d["id"]=="exhaust")["mesh"]["volumes"]),6)
         self.assertIn("guardada", page.diff.text().lower())
+
+    def test_custom_engine_intake_transfer_reeds_persist_and_reach_solver(self):
+        context=DesktopContext(new_design_project("custom-engine"))
+        page=EnginePage(context)
+        self.assertEqual(page.ducts.rowCount(),4)
+        self.assertEqual(page.reeds.rowCount(),6)
+        self.assertIsNotNone(page.findChild(QTableWidget,"effectiveStaticReedParameters"))
+        # Dynamic-only reed parameters are deliberately absent from the editor.
+        self.assertNotIn("mass_kg",[page.reeds.horizontalHeaderItem(i).text() for i in range(page.reeds.columnCount())])
+        intake_row=next(i for i in range(page.ducts.rowCount()) if page.ducts.item(i,0).text()=="intake")
+        primary_row=next(i for i in range(page.ducts.rowCount()) if page.ducts.item(i,0).text()=="primary")
+        page.ducts.item(intake_row,2).setText("95")
+        page.ducts.item(intake_row,3).setText("42")
+        page.ducts.item(primary_row,2).setText("62")
+        page.reeds.item(0,1).setText("9.2")
+        page.mixed_outflow.setValue(.63)
+        page.apply()
+        engine=context.engine();effective=resolve_for_operating_point(engine);native=effective["native_configuration"]
+        self.assertIn("Validación correcta",page.validation.text())
+        intake=next(d for d in native["ducts"] if d["id"]=="intake")
+        primary=next(d for d in native["ducts"] if d["id"]=="primary")
+        self.assertAlmostEqual(intake["mesh"]["faces"][-1]*1000,95)
+        self.assertAlmostEqual((4*intake["mesh"]["areas"][0]/3.141592653589793)**.5*1000,42)
+        self.assertAlmostEqual(primary["mesh"]["faces"][-1]*1000,62)
+        self.assertAlmostEqual(native["reed_petals"][0]["pressure_area_m2"]*1e4,9.2)
+        self.assertEqual(native["geometry_identity"]["gas_exchange_model"]["mixed_outflow_fraction"],.63)
+        from motorsim.integrated_2t import IntegratedEngine2T
+        solver=IntegratedEngine2T.from_configuration_dict(native)
+        solver_intake=next(path for path in solver.ducts if path.id=="intake")
+        self.assertAlmostEqual(solver_intake.mesh.faces[-1]*1000,95)
+        self.assertAlmostEqual(solver.reed_petals[0].pressure_area_m2*1e4,9.2)
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/"custom.dino2t.json";save_project(path,context.project)
+            reopened=DesktopContext(load_project(path))
+            self.assertAlmostEqual(resolve_for_operating_point(reopened.engine())["native_configuration"]["ducts"][0]["mesh"]["faces"][-1]*1000,95)
+            reopened.duplicate_variant(None,"escape-var")
+            exhaust=ExhaustPage(reopened);original=float(exhaust.table.item(0,1).text())
+            exhaust.table.item(0,1).setText(str(original+3));self.assertTrue(exhaust.save_current())
+            self.assertNotEqual(identity(reopened.engine("escape-var")),identity(reopened.project["base_engine"]))
+            save_project(path,reopened.project)
+            roundtrip=load_project(path)
+            self.assertAlmostEqual(roundtrip["variants"]["escape-var"]["native_configuration"]["ducts"][-1]["mesh"]["faces"][-1],
+                                   reopened.engine("escape-var")["native_configuration"]["ducts"][-1]["mesh"]["faces"][-1])
 
     def test_real_impl2_import_keeps_invalid_points_as_gaps_and_exports_plot(self):
         report=impl2_historical_report_candidate()
