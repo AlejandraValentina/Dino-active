@@ -1,0 +1,68 @@
+{
+  "schema": "DINO_TEMPORAL_OPERATOR_REFERENCE_V1",
+  "equation": "dy/dt=-y",
+  "method": "SSPRK2 (Heun form)",
+  "fixed_spatial_grid": "not applicable; scalar semidiscrete reference",
+  "final_time": 1.0,
+  "initial_value": 1.0,
+  "analytical_value": 0.36787944117144233,
+  "refinements": [
+    {
+      "steps": 5,
+      "dt": 0.2,
+      "value": 0.37073984320000003,
+      "absolute_error": 0.002860402028557696
+    },
+    {
+      "steps": 10,
+      "dt": 0.1,
+      "value": 0.36854098483355185,
+      "absolute_error": 0.0006615436621095205
+    },
+    {
+      "steps": 20,
+      "dt": 0.05,
+      "value": 0.36803862167185697,
+      "absolute_error": 0.00015918050041463516
+    },
+    {
+      "steps": 40,
+      "dt": 0.025,
+      "value": 0.36791848971686025,
+      "absolute_error": 3.904854541791902e-05
+    },
+    {
+      "steps": 80,
+      "dt": 0.0125,
+      "value": 0.36788911175569067,
+      "absolute_error": 9.670584248333558e-06
+    },
+    {
+      "steps": 160,
+      "dt": 0.00625,
+      "value": 0.3678818474826133,
+      "absolute_error": 2.406311170988218e-06
+    }
+  ],
+  "observed_orders": [
+    2.0551727612179187,
+    2.0273229035853797,
+    2.0135938502333146,
+    2.006779836751161
+  ],
+  "all_pair_orders_including_coarsest": [
+    2.1123096484363177,
+    2.0551727612179187,
+    2.0273229035853797,
+    2.0135938502333146,
+    2.006779836751161
+  ],
+  "acceptance": {
+    "second_order_range": [
+      1.9,
+      2.1
+    ],
+    "all_orders_in_range": true
+  },
+  "qualification": "Verifies the time integrator on a smooth analytical reference only; does not establish temporal error for the integrated engine or its coupled operators."
+}
