@@ -1,0 +1,53 @@
+{
+  "schema": "DINO_PORT_LAW_EVIDENCE_MATRIX_V1",
+  "date": "2026-10-28",
+  "classification": "NUMERICALLY_SUPPORTED_CANDIDATE__PHYSICALLY_UNIDENTIFIED__KEEP_EXPERIMENTAL",
+  "decision_context": "E1.0 evidence matrix assembled from existing receipts only; no solver runs, no new measurements, no parameter fitting, no default or model promotion.",
+  "findings": [
+    {
+      "claim": "Legacy scaled Riemann is not a general chamber-throat-duct restriction law; the port-flow review decision is CORREGIR that use.",
+      "evidence": "Existing port-flow engineering decision and report; HLLC interior solver itself was not identified as defective, and no double-Cd defect was found.",
+      "limit": "This is a specific closure distinction, not an absolute engine-accuracy result."
+    },
+    {
+      "claim": "Equivalent ideal-nozzle V2 passes its frozen algebraic/numerical domain checks.",
+      "evidence": "1008 algebraic states across seven flow branches; separate engineering comparison recorded 100 compatible analytic states and four dynamic cases, maximum relative flux error 6.636728122871094e-13, with global conservation and replay checks in the existing receipt.",
+      "limit": "References are ideal-gas analytical/synthetic checks. They do not identify real-port discharge coefficient, separated-jet losses, pulsating response, or a real-engine configuration."
+    },
+    {
+      "claim": "Connection V1 is not an alternative for promotion.",
+      "evidence": "971/1008 states supported; 37 documented unsupported states; engine simulations 0; integrated model disabled; status ADOPTION_BLOCKED_DOMAIN.",
+      "limit": "Passing supported-state tests does not waive its documented domain failures."
+    },
+    {
+      "claim": "Restriction reference verifies only its stated quiescent-volume contract.",
+      "evidence": "1029 recorded tests; status PASS_NUMERICAL_REFERENCE_ONLY.",
+      "limit": "No duct momentum or acoustic-compatibility claim; no experimental validation."
+    },
+    {
+      "claim": "Current engine-level A/B and measured-data evidence do not upgrade V2.",
+      "evidence": "Existing E2A decision is DIFERENCIA NO RESUELTA; measured-data inventory says A9000 is a functional derivative, not same-engine measured validation, and records missing complete matched-engine inputs, independent outputs, and defensible uncertainty.",
+      "limit": "No measured matched-port flow/lift data or complete validation package is present in the cited evidence."
+    }
+  ],
+  "disposition": {
+    "port_law_v2": "KEEP_EXPERIMENTAL_OPT_IN",
+    "port_law_v1": "DO_NOT_PROMOTE_DOMAIN_BLOCKED",
+    "legacy_default": "PRESERVE",
+    "rc7": "PRESERVE_TRIAL_BASELINE",
+    "muscl": "KEEP_EXPERIMENTAL",
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_claim": "NOT_CLAIMED"
+  },
+  "next_required_evidence": "Same-geometry, measured restriction/port flow evidence covering direct and reverse flow and relevant opening/pressure conditions; engine-level claims additionally require the complete matched-engine package and independent measured outputs with defensible uncertainty. Existing X30 request/volume blockers remain external; no requests were sent.",
+  "source_sha256": {
+    "results/port-flow-verification-v1/receipt.json": "ed217b94536bd933bd11052597089f5386a49157f228c853eb69a28ea629eac3",
+    "results/port-flow-verification-v1/report.md": "d65c7c428ae0cf95eb1cb1048e194ebc3e34ade4fc22455f67a732d135086a97",
+    "results/predictive-reliability-v1/transonic-v2-receipt.json": "3728a2e0062be7e26fec87e075d4e76acc7bf57c1424d7ef858ae9585fecf39e",
+    "results/predictive-reliability-v1/connection-domain-receipt.json": "08a658af6ce108c559a1f92789833e5cba7e1613e190983228c3bfac96e606c3",
+    "results/predictive-reliability-v1/restriction-receipt.json": "7b4f90f7ded1df8687a02f8cc1042c1d65adff2d69e83966097c592e5a7427a7",
+    "results/predictive-reliability-v1/measured-data-inventory.json": "f09806bfaaae3493ab830dcac1bc13fe535ad80d8709b0b7cc5b41d44bd1e3f9",
+    "results/e2a-exhaust-waves-v1/decision.json": "fbdd31b956711560e232f956bf6edf852d221262ba5288f8f1c55dbea4d306c7"
+  },
+  "review": "SELF_REVIEW"
+}

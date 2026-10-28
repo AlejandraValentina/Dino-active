@@ -6036,8 +6036,8 @@
       "id": "SPV1-CHECKPOINT-INTERRUPTION-RECOVERY",
       "description": "Read-only recovery design and verification for the authorized point interrupted after an external timeout: determine a contract-compliant way to preserve the unmanifested primary, validate the last committed checkpoint, and restore accounting without weakening hash or audit checks. Do not execute solver or mutate existing artifacts.",
       "dependencies": [],
-      "state": "READY",
-      "blocker": null,
+      "state": "BLOCKED_LOCAL",
+      "blocker": "Pertenece a DINO_2T_SCIENTIFIC_POINT_V1, no al objetivo predictivo/producto vigente. El usuario pidió postergarlo; no ejecutar ni mutar checkpoints históricos en este objetivo.",
       "commits": [],
       "evidence": [
         "Execution receipt: results/dino-2t-scientific-point-v1/execution-receipt-01.json. Existing runner explicitly rejects the unmanifested cycle-0004 primary. Any future execution requires a compatible durable recovery path and remaining authorized budget."
@@ -6051,7 +6051,8 @@
         "tests/",
         "DINO_ARTIFACT_ROOT/dino-2t-scientific-point-v1/"
       ],
-      "unblock_tasks": []
+      "unblock_tasks": [],
+      "no_local_unblock_reason": "No existe una acción local compatible con el objetivo vigente; requiere que DINO_2T_SCIENTIFIC_POINT_V1 vuelva a ser objetivo activo."
     },
     {
       "id": "DPCV1-DATA-HISTORY",
@@ -9218,17 +9219,22 @@
       "id": "PRED-FLECK-COMPLETENESS",
       "description": "Bounded official-source/full-text completeness assessment for Honda RS125 reference; no guessed engine or paywall bypass",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Bounded official-source/full-text completeness assessment for Honda RS125 reference; no guessed engine or paywall bypass",
+      "evidence": [
+        "results/experimental-reference-v1/report.md",
+        "results/predictive-reliability-v1/provided-reference-review-v1/report.md",
+        "results/predictive-reliability-v1/fleck-completeness-v1/assessment.md"
+      ],
+      "next_action": "Do not repeat search. Reopen only if legitimate full text/data arrives; otherwise validation remains blocked.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "results/predictive-reliability-v1/fleck-completeness-v1/"
       ],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "qualification": "Bounded official access check completed 2026-10-28. Public SAE record exposes metadata/abstract; QUB record is bibliographic. No full text/data attachment accessible in inspected route; subscriber availability unknown. Candidate remains unusable as validation dataset until complete materials arrive. No further searches or external requests without changed evidence/authorization."
     },
     {
       "id": "PRED-TEMPORAL-OPERATOR-REFERENCE",
@@ -10306,7 +10312,7 @@
         "tests/test_match_postopen_gradient_peaks_v1.py",
         "results/predictive-reliability-v1/postopen-gradient-peak-matching-v1.json"
       ],
-      "next_action": "Use matched/unmatched extrema as descriptive evidence only; do not assign wave identities or physical causes without a versioned hypothesis and discriminating evidence.",
+      "next_action": "Preserve the completed descriptive report. Do not extend peak matching or related angular/grid diagnostics absent a demonstrated product requirement.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "evidence_level": "L1",
@@ -10323,8 +10329,8 @@
       "dependencies": [
         "PRED-POSTOPEN-GRADIENT-PEAK-MATCHING"
       ],
-      "state": "READY",
-      "blocker": null,
+      "state": "BLOCKED_LOCAL",
+      "blocker": "El usuario excluyó expresamente nuevas investigaciones de extremos/regiones angulares/refinamientos sin necesidad de producto demostrada.",
       "commits": [],
       "evidence": [
         "results/predictive-reliability-v1/postopen-gradient-peak-matching-v1.json",
@@ -10339,7 +10345,32 @@
         "scripts/diagnostics/contextualize_postopen_extrema_v1.py",
         "tests/test_contextualize_postopen_extrema_v1.py",
         "results/predictive-reliability-v1/postopen-extrema-conservation-context-v1.json"
-      ]
+      ],
+      "no_local_unblock_reason": "No hay necesidad de producto demostrada que justifique continuar este diagnóstico. No reactivar sin una decisión técnica concreta vinculada a una entrega de roadmap.",
+      "unblock_tasks": []
+    },
+    {
+      "id": "PRED-PORT-LAW-EVIDENCE-MATRIX",
+      "description": "Complete E1.0 evidence matrix from existing port-law receipts without new simulation; preserve V2 experimental and rc7/default.",
+      "dependencies": [
+        "ENGINE-PORT-FLOW-VERIFICATION-V1"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/port-law-evidence-matrix-v1.md",
+        "results/predictive-reliability-v1/port-law-evidence-matrix-v1.json"
+      ],
+      "next_action": "Use the matrix only to frame a later owner decision if measured port-loss evidence becomes available; do not promote V2 or reopen H1.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "evidence_level": "L0",
+      "write_scope": [
+        "results/predictive-reliability-v1/port-law-evidence-matrix-v1.md",
+        "results/predictive-reliability-v1/port-law-evidence-matrix-v1.json"
+      ],
+      "qualification": "Documentation-only synthesis of frozen receipts; no solver run, no physical/default change, no experimental or predictive claim."
     }
   ],
   "audit_remediation_mode": false,
@@ -10557,7 +10588,7 @@
       "PRED-IDENTIFICATION",
       "PRED-VALIDATION"
     ],
-    "completion_criterion": "E1.3 periodic GCI remains blocked by the approved detector/per-grid budget. The post-opening study shows growing exhaust spatial differences and grid-dependent switching of the strongest pressure-gradient location at90 degrees. Match saved multi-peak structure before selecting any numerical/physical change. External validation remains pending.",
+    "completion_criterion": "E2A/E2B, port-law diagnosis, and post-opening reports remain preserved. E1.3 periodic GCI is blocked by its approved budget; validation is blocked by missing complete same-engine geometry and independent measurements. E1.0 evidence matrix is recorded. Preserve rc7; V2/MUSCL remain experimental. Do not extend post-opening diagnostics without a demonstrated product need.",
     "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
     "qualification": "Post-opening finite-arc cases complete; saved gradients/field differences remain transient numerical diagnostics. No periodicity, GCI, experimental validation, predictive claim or candidate promotion. V2/MUSCL remain experimental; rc7 preserved.",
     "staged_plan": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md"
@@ -14564,6 +14595,18 @@
       "summary": "Compared every saved pressure, density and burned-marker gradient extremum across 88/176/352 meshes at 90/120/150deg; retained unmatched peaks without thresholds. Extra extrema increase with refinement, especially for burned fraction; no physical wave identity assigned. Two focused tests pass.",
       "at": "2026-10-28T16:20:00Z",
       "kind": "task"
+    },
+    {
+      "at": "2026-10-28T16:40:00Z",
+      "task": "PRED-FLECK-COMPLETENESS",
+      "kind": "task",
+      "summary": "Reconciled against prior reference review and current official SAE/QUB public records. No full text/dataset accessible through inspected public route; do not repeat searches unless legitimate access changes."
+    },
+    {
+      "at": "2026-10-28T16:40:00Z",
+      "task": "PRED-PORT-LAW-EVIDENCE-MATRIX",
+      "kind": "task",
+      "summary": "Completed E1.0 matrix from seven hashed existing receipts. V2 numerically supported only within idealized tested domain; measured real-port losses and complete engine validation remain absent. Preserve rc7, legacy default, V2 and MUSCL status."
     }
   ],
   "legacy_gate_status": {
