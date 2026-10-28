@@ -167,6 +167,10 @@ def finite_run(pc, pi, model):
     global_error = max(abs(conservation['mass']['residual'])/scales['mass_kg'],
         abs(conservation['energy']['residual'])/scales['energy_J'],
         *(abs(x['residual'])/scales['mass_kg'] for x in conservation['species'].values()))
+    # Retain the native recoverable state without embedding every stage trace
+    # in each compact receipt. This uses existing trace compaction, not a new
+    # checkpoint format or any change to physical fields.
+    e.compact_cycle_trace()
     snapshot = deepcopy(e.snapshot())
     restored = finite_fixture(pc,pi,model)
     restored.restore(deepcopy(snapshot))
@@ -212,8 +216,11 @@ def main():
             for q in (Path(__file__),ROOT/'motorsim/coupling.py',
                 ROOT/'motorsim/port_connection_v1.py',ROOT/'motorsim/port_connection_v2.py',
                 ROOT/'motorsim/integrated_2t.py')}, review='SELF_REVIEW')
+    encoded = (json.dumps(result,indent=2,allow_nan=False)+'\n').encode('utf-8')
+    if len(encoded) > 10*1024**2:
+        raise RuntimeError('compact diagnostic artifact exceeds preflight estimate')
     args.output.parent.mkdir(parents=True,exist_ok=True)
-    args.output.write_text(json.dumps(result,indent=2,allow_nan=False)+'\n',encoding='utf-8')
+    args.output.write_bytes(encoded)
     print(json.dumps(dict(gate=result['gate'],matched_cases=len(rows),
         max_candidate_relative_flux_error=maximum, finite_cases=len(finite),wall_s=result['wall_s'])))
     return 0 if result['gate'] else 1

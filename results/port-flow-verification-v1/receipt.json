@@ -1,0 +1,55 @@
+{
+  "schema": "DINO_PORT_FLOW_ENGINEERING_DECISION_V1",
+  "decision": "CORREGIR",
+  "qualification": "Legacy scaled Riemann is not a general chamber/throat/duct restriction law. Reuse existing opt-in equivalent ideal-nozzle V2; experimental losses and absolute power accuracy not validated.",
+  "protocol_commit": "bd635de",
+  "baseline_rc7_unchanged": true,
+  "production_files_changed": [],
+  "new_boundary_implementation_required": false,
+  "existing_candidate_reused": true,
+  "default_changed": false,
+  "desktop_changed": false,
+  "muscl_enabled": false,
+  "periodic_power_claim": false,
+  "experimental_validation": false,
+  "review": "SELF_REVIEW",
+  "isolated_matched_cases": 100,
+  "isolated_dynamic_cases": 4,
+  "isolated_max_relative_flux_error": 6.636728122871094e-13,
+  "observer_compaction_physical_equivalence": true,
+  "preliminary_observer_bytes": 25064940,
+  "compact_receipt_bytes": 333918,
+  "raw_artifact_index_sha256": "6ba05562c09f6853f2552117c199cb55534b74d6e36eb40dc7bd29465fae8347",
+  "source_sha256": {
+    "motorsim/coupling.py": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+    "motorsim/port_connection_v1.py": "964004da45c8da675cc7556163a739b8b5f6a4c3a51750e926314c671d5c6897",
+    "motorsim/port_connection_v2.py": "32d879e88844c85a4d199fc9e469a346c3426b7b4e3db6544c5c7c6e406d9d7d",
+    "motorsim/integrated_2t.py": "241e45d4f0e3c971797d15bb7e5e0e828457d4d1232f5d3b6ec94ed08ec65a50",
+    "motorsim/two_stroke_ports.py": "fe9f3c714ffbac824aa1c85621eb1204d0a47fd9e593c40ff5d55977a07b9e70",
+    "docs/gasdynamic/0d_1d_coupling_r1.md": "9d19d1542c841cc6b9f992cdddfbb91eb030f0c3d8b94f12f9666fc090dcce81",
+    "scripts/diagnostics/verify_port_flow_physics_v1.py": "3ad62fff8c6fe7b3d079f32ce934cc6a0fea1a2e72626c6373a8d7f0779d7c50",
+    "scripts/diagnostics/summarize_port_flow_impact_v1.py": "bcd7f83d37b8d74c3b3c77aac8f5520113f1a10c3e8df96355465e4d66595c90"
+  },
+  "tests": {
+    "focal": {
+      "passed": 1514,
+      "summary_sha256": "8646ec2c9805d1d4d3af482e16a5b6a0ff06a84b16d642cb2fcbf3e68eba7ec2"
+    },
+    "p4_p8": {
+      "passed": 301,
+      "skipped": 3,
+      "summary_sha256": "772cdda26a6593997ce48dd95d99e17e303f4fdb5a2c329f0d2b6f6e3755facf"
+    }
+  },
+  "evidence_sha256": {
+    "isolated-compact.json": "428c207d9cc02b2fb7b0a6f7f62d7918f917fa96c9305d4f4d392b71396e2b56",
+    "integrated-impact-verified.json": "cfdb9b3dbcff8f617711c01967b951f83e639f9093304e4201a86847939b9973",
+    "integrated-impact-verified.csv": "fa0e09f7761e808f9522f9120be40b073d7cbe381b613d0df1eb5c14e6c1077e",
+    "report.md": "d65c7c428ae0cf95eb1cb1048e194ebc3e34ade4fc22455f67a732d135086a97"
+  },
+  "storage_free_bytes": {
+    "repository_volume": 6204960768,
+    "artifact_volume": 19286667264
+  },
+  "stop": "OWNER_SCOPED_ENGINEERING_DECISION_COMPLETE_NO_FURTHER_CAMPAIGNS"
+}

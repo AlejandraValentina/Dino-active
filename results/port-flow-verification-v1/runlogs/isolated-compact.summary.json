@@ -1,0 +1,21 @@
+{
+  "name": "isolated-compact",
+  "command": [
+    "python",
+    "scripts/diagnostics/verify_port_flow_physics_v1.py",
+    "--output",
+    "results/port-flow-verification-v1/isolated-compact.json"
+  ],
+  "started_at": "2026-10-28T11:04:06+00:00",
+  "finished_at": "2026-10-28T11:04:08+00:00",
+  "duration_s": 1.5,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\port-flow-verification-v1\\runlogs\\isolated-compact.log",
+  "log_lines": 1,
+  "log_bytes": 146,
+  "error_lines": [],
+  "tail": [
+    "{\"gate\": true, \"matched_cases\": 100, \"max_candidate_relative_flux_error\": 6.636728122871094e-13, \"finite_cases\": 4, \"wall_s\": 1.2341378999408334}"
+  ]
+}

@@ -1,0 +1,362 @@
+{
+  "schema": "DINO_PORT_FLOW_INTEGRATED_IMPACT_V1",
+  "cases": [
+    {
+      "model": "legacy",
+      "compute_s": 7.339763200143352,
+      "wall_s": 11.691656099865213,
+      "accepted_steps": 1444,
+      "rejected_trials": 0,
+      "maxima": {
+        "boundary_port_mach": 0.0,
+        "crankcase_pressure_pa": 137795.03600666067,
+        "cylinder_pressure_pa": 5980575.641889721,
+        "exhaust_pressure_pa": 125854.41749166402,
+        "interior_port_mach": 0.0
+      },
+      "normalized_residuals": {
+        "energy": 9.098591052265095e-16,
+        "mass": 8.385855122622009e-16,
+        "species": 5.710858987195453e-16
+      },
+      "restore_next_step_equal": true,
+      "trapped_at_exhaust_closing": [
+        {
+          "angle_deg": 272.5,
+          "mass_kg": 8.513336842431069e-05,
+          "pressure_pa": 189562.94538301887,
+          "fresh_air_kg": 5.082439696421096e-05,
+          "fuel_kg": 4.419512779496604e-06,
+          "burned_fraction": 0.35108981629426295,
+          "initial_residual_fraction": 0.0,
+          "used_fraction": 0.35108981629426295
+        },
+        {
+          "angle_deg": 632.5,
+          "mass_kg": 6.935140592190482e-05,
+          "pressure_pa": 182805.97148128453,
+          "fresh_air_kg": 3.183798079148552e-05,
+          "fuel_kg": 3.345192005436612e-06,
+          "burned_fraction": 0.1765035677933817,
+          "initial_residual_fraction": 0.31617906308880606,
+          "used_fraction": 0.4926826308821878
+        }
+      ],
+      "face_integrals": {
+        "intake:left": {
+          "forward_kg": 5.137217665275678e-05,
+          "reverse_kg": 2.9429621882383065e-06,
+          "net_kg": 4.842921446451853e-05,
+          "energy_x_j": 16.08326932490843,
+          "species_x_kg": [
+            4.4554877307356984e-05,
+            3.874337157161477e-06,
+            0.0,
+            0.0
+          ]
+        },
+        "intake:right": {
+          "forward_kg": 4.850120698573079e-05,
+          "reverse_kg": 0.0,
+          "net_kg": 4.850120698573079e-05,
+          "energy_x_j": 16.07200337407172,
+          "species_x_kg": [
+            4.462111042687237e-05,
+            3.880096558858469e-06,
+            0.0,
+            0.0
+          ]
+        },
+        "primary:left": {
+          "forward_kg": 4.563126128144318e-05,
+          "reverse_kg": 1.0359502052334761e-05,
+          "net_kg": 3.52717592291084e-05,
+          "energy_x_j": 12.305833630370838,
+          "species_x_kg": [
+            3.245320442524614e-05,
+            2.822002617798158e-06,
+            -2.64940101179738e-09,
+            -7.984129240178673e-10
+          ]
+        },
+        "primary:right": {
+          "forward_kg": 3.819381920068844e-05,
+          "reverse_kg": 8.629938465558004e-07,
+          "net_kg": 3.7330825354132644e-05,
+          "energy_x_j": 12.851252901816451,
+          "species_x_kg": [
+            3.4454055846200784e-05,
+            2.9948446904532916e-06,
+            -5.903219577846964e-08,
+            -5.904298674299934e-08
+          ]
+        },
+        "secondary:left": {
+          "forward_kg": 4.563126128144318e-05,
+          "reverse_kg": 1.0359502052334761e-05,
+          "net_kg": 3.52717592291084e-05,
+          "energy_x_j": 12.305833630370838,
+          "species_x_kg": [
+            3.245320442524614e-05,
+            2.822002617798158e-06,
+            -2.64940101179738e-09,
+            -7.984129240178673e-10
+          ]
+        },
+        "secondary:right": {
+          "forward_kg": 3.819381920068844e-05,
+          "reverse_kg": 8.629938465558004e-07,
+          "net_kg": 3.7330825354132644e-05,
+          "energy_x_j": 12.851252901816451,
+          "species_x_kg": [
+            3.4454055846200784e-05,
+            2.9948446904532916e-06,
+            -5.903219577846964e-08,
+            -5.904298674299934e-08
+          ]
+        },
+        "boost:left": {
+          "forward_kg": 3.102925767138135e-05,
+          "reverse_kg": 7.044461395587623e-06,
+          "net_kg": 2.3984796275793738e-05,
+          "energy_x_j": 8.367966868652168,
+          "species_x_kg": [
+            2.206817900916733e-05,
+            1.9189617801027574e-06,
+            -1.8015926880222254e-09,
+            -5.429207883321512e-10
+          ]
+        },
+        "boost:right": {
+          "forward_kg": 2.5971797056468105e-05,
+          "reverse_kg": 5.868358156579439e-07,
+          "net_kg": 2.538496124081018e-05,
+          "energy_x_j": 8.738851973235208,
+          "species_x_kg": [
+            2.3428757975416543e-05,
+            2.0364943895082416e-06,
+            -4.014189312935938e-08,
+            -4.014923098523942e-08
+          ]
+        },
+        "exhaust:left": {
+          "forward_kg": 7.727424673965741e-05,
+          "reverse_kg": 3.780439659475721e-05,
+          "net_kg": 3.946985014490022e-05,
+          "energy_x_j": 37.706215992762175,
+          "species_x_kg": [
+            1.3733854050269142e-05,
+            1.5790718363600095e-06,
+            -8.011654802524758e-06,
+            3.2168579060795876e-05
+          ]
+        },
+        "exhaust:right": {
+          "forward_kg": 2.433354017958402e-05,
+          "reverse_kg": 2.1500389451068417e-05,
+          "net_kg": 2.833150728515614e-06,
+          "energy_x_j": 4.202042714168715,
+          "species_x_kg": [
+            -5.956843621707098e-06,
+            2.1180059072618114e-29,
+            8.789994350222724e-06,
+            7.066580270251368e-30
+          ]
+        }
+      },
+      "cylinder_work_j": 14.651610760370776,
+      "crankcase_work_j": -3.0004848189750124,
+      "scientific_state": "TRANSIENT_NOT_PERIODIC_NOT_VALIDATED",
+      "source_hashes": {
+        "configuration.json": "b7d48c08b56886d803aa4b200eafb589ebec088c22a8e0e5919263305e22e061",
+        "initial-checkpoint.json": "382ba65c9918e9a607be4abcbff65da6a0b513642c9a0c25d157cc918fb7a2b8",
+        "terminal-checkpoint.json": "74425c4b02068fc866b87b115e05e18d0588eb29bc414f767fef3ce75d86737b",
+        "receipt.json": "42930ed5f5e56d82fc54489a23ac08e1826e517649e92b5c7b00c11fdd6efc53",
+        "primary-stages.jsonl.gz": "9933126cf5e4788c60cb3bcedf93737b451bac3b2748734be470e1d8aa7021d0"
+      }
+    },
+    {
+      "model": "nozzle",
+      "compute_s": 24.37954200292006,
+      "wall_s": 29.888222200097516,
+      "accepted_steps": 1450,
+      "rejected_trials": 19,
+      "maxima": {
+        "boundary_port_mach": 0.26676924284009657,
+        "crankcase_pressure_pa": 137809.52537770598,
+        "cylinder_pressure_pa": 5018792.332539484,
+        "exhaust_pressure_pa": 147927.68811086533,
+        "interior_port_mach": 0.26218843696094746
+      },
+      "normalized_residuals": {
+        "energy": 1.4427189048288867e-15,
+        "mass": 2.4413457882672786e-16,
+        "species": 6.0815667404158095e-16
+      },
+      "restore_next_step_equal": true,
+      "trapped_at_exhaust_closing": [
+        {
+          "angle_deg": 272.5,
+          "mass_kg": 6.555839971514878e-05,
+          "pressure_pa": 114614.774508739,
+          "fresh_air_kg": 5.508701830534475e-05,
+          "fuel_kg": 4.7901755048125904e-06,
+          "burned_fraction": 0.08665870322759979,
+          "initial_residual_fraction": 0.0,
+          "used_fraction": 0.08665870322759979
+        },
+        {
+          "angle_deg": 632.5,
+          "mass_kg": 7.986534235688284e-05,
+          "pressure_pa": 135401.8687530521,
+          "fresh_air_kg": 7.322717693394457e-05,
+          "fuel_kg": 6.638165422938332e-06,
+          "burned_fraction": 3.8705305647536742e-19,
+          "initial_residual_fraction": 2.6349055421239187e-34,
+          "used_fraction": 3.870530564753677e-19
+        }
+      ],
+      "face_integrals": {
+        "intake:left": {
+          "forward_kg": 0.0002456435047538361,
+          "reverse_kg": 5.938153992185078e-06,
+          "net_kg": 0.00023970535076165103,
+          "energy_x_j": 79.60535650051685,
+          "species_x_kg": [
+            0.00022052892270071903,
+            1.9176428060932086e-05,
+            0.0,
+            0.0
+          ]
+        },
+        "intake:right": {
+          "forward_kg": 0.00023877379818411726,
+          "reverse_kg": 0.0,
+          "net_kg": 0.00023877379818411726,
+          "energy_x_j": 79.21897743960716,
+          "species_x_kg": [
+            0.00021967189432938784,
+            1.9101903854729365e-05,
+            0.0,
+            0.0
+          ]
+        },
+        "primary:left": {
+          "forward_kg": 0.00010202786513793578,
+          "reverse_kg": 8.849209560112648e-06,
+          "net_kg": 9.317865557782321e-05,
+          "energy_x_j": 32.6779752690619,
+          "species_x_kg": [
+            8.57261530492209e-05,
+            7.4544287202673525e-06,
+            -1.9261916651785534e-09,
+            -9.360807449443858e-36
+          ]
+        },
+        "primary:right": {
+          "forward_kg": 9.614512859163672e-05,
+          "reverse_kg": 2.2020836725626756e-06,
+          "net_kg": 9.394304491907397e-05,
+          "energy_x_j": 32.765255397888275,
+          "species_x_kg": [
+            8.643314144757561e-05,
+            7.512433862824927e-06,
+            -2.5303913266261233e-09,
+            -8.806457651917221e-34
+          ]
+        },
+        "secondary:left": {
+          "forward_kg": 0.00010202786513793578,
+          "reverse_kg": 8.849209560112648e-06,
+          "net_kg": 9.317865557782321e-05,
+          "energy_x_j": 32.6779752690619,
+          "species_x_kg": [
+            8.57261530492209e-05,
+            7.4544287202673525e-06,
+            -1.9261916651785534e-09,
+            -9.360807449443858e-36
+          ]
+        },
+        "secondary:right": {
+          "forward_kg": 9.614512859163672e-05,
+          "reverse_kg": 2.2020836725626756e-06,
+          "net_kg": 9.394304491907397e-05,
+          "energy_x_j": 32.765255397888275,
+          "species_x_kg": [
+            8.643314144757561e-05,
+            7.512433862824927e-06,
+            -2.5303913266261233e-09,
+            -8.806457651917221e-34
+          ]
+        },
+        "boost:left": {
+          "forward_kg": 6.937894829379613e-05,
+          "reverse_kg": 6.017462500876596e-06,
+          "net_kg": 6.336148579291951e-05,
+          "energy_x_j": 22.221023182962117,
+          "species_x_kg": [
+            5.829378407347026e-05,
+            5.0690115297818045e-06,
+            -1.3098103323214332e-09,
+            -6.365349065622037e-36
+          ]
+        },
+        "boost:right": {
+          "forward_kg": 6.537868744231299e-05,
+          "reverse_kg": 1.4974168973426221e-06,
+          "net_kg": 6.388127054497036e-05,
+          "energy_x_j": 22.28037367056402,
+          "species_x_kg": [
+            5.877453618435143e-05,
+            5.1084550267209635e-06,
+            -1.720666102106046e-09,
+            -5.988391203303958e-34
+          ]
+        },
+        "exhaust:left": {
+          "forward_kg": 0.0002186772311686828,
+          "reverse_kg": 3.800056902471785e-05,
+          "net_kg": 0.0001806766621439646,
+          "energy_x_j": 108.79062775692923,
+          "species_x_kg": [
+            0.00010738791714645865,
+            1.0103643615615716e-05,
+            4.380540610109441e-06,
+            5.880456077178115e-05
+          ]
+        },
+        "exhaust:right": {
+          "forward_kg": 5.46646326191604e-05,
+          "reverse_kg": 1.1761790034071334e-05,
+          "net_kg": 4.290284258508901e-05,
+          "energy_x_j": 28.962524138019937,
+          "species_x_kg": [
+            -7.20975987410353e-08,
+            3.5415978310760036e-22,
+            4.2974940183830134e-05,
+            1.9164381629637478e-23
+          ]
+        }
+      },
+      "cylinder_work_j": 31.87701136217472,
+      "crankcase_work_j": -5.799219154789136,
+      "scientific_state": "TRANSIENT_NOT_PERIODIC_NOT_VALIDATED",
+      "source_hashes": {
+        "configuration.json": "edf96dc1ca1409e427bece06e87433ee178c048eb4a35a22bf5f98f56d77d44c",
+        "initial-checkpoint.json": "a8657971ff0a8b26b9489094a22649a83893079e2ab5533f2d790010ff105a9c",
+        "terminal-checkpoint.json": "ccb1916b8222cbe3fb91b2f7a7d4817b022594461d2aa3e97de0e6d6fb6a12c0",
+        "receipt.json": "ad47cef8b2d4e9fa0f2b26e59fe62e5f945bcafd86592e07cfa03f96884bd0cb",
+        "primary-stages.jsonl.gz": "519c37474f2edbdfb5ad30f1bf2b8f1fb5610d87653723f386663a6f6902bc6c"
+      }
+    }
+  ],
+  "identical_physics_except_explicit_connection": true,
+  "identical_initial_fields": true,
+  "same_trapped_comparison_phases": true,
+  "spatial_order": "FIRST_ORDER_LEGACY",
+  "independent_initialization": true,
+  "review": "SELF_REVIEW",
+  "source_hashes": {
+    "scripts\\diagnostics\\summarize_port_flow_impact_v1.py": "2f8e0eac2c8097c0dc9e2565a8d50762e5bf0b65f4a606627c4b4d0849e54f2e"
+  }
+}

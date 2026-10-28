@@ -9866,22 +9866,28 @@
       "id": "ENGINE-PORT-FLOW-VERIFICATION-V1",
       "description": "Owner-scoped port-law decision using existing R1, V1/V2, analytic nozzle controls and two bounded first-order integrated runs; no other research",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [
-        "docs/gasdynamic/port_flow_verification_v1.md"
+      "commits": [
+        "bd635de"
       ],
-      "next_action": "Run fixed isolated matrix, then bounded legacy/V2 A9000 comparison if gates pass; decide CORREGIR/CONSERVAR/INDETERMINADO and close without further diagnostics",
+      "evidence": [
+        "docs/gasdynamic/port_flow_verification_v1.md",
+        "results/port-flow-verification-v1/report.md",
+        "results/port-flow-verification-v1/receipt.json"
+      ],
+      "next_action": "Closed by owner-scoped decision CORREGIR: reuse existing experimental V2, retain legacy/default/rc7. No automatic continuation of meshes, RPM or other diagnoses. Return to product roadmap only under its delivery scope.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
         "docs/gasdynamic/port_flow_verification_v1.md",
         "scripts/diagnostics/verify_port_flow_physics_v1.py",
         "tests/test_port_flow_physics_verification_v1.py",
-        "results/port-flow-verification-v1/"
+        "results/port-flow-verification-v1/",
+        "scripts/diagnostics/summarize_port_flow_impact_v1.py"
       ],
-      "evidence_level": "L2"
+      "evidence_level": "L2",
+      "qualification": "SELF_REVIEW. 100 analytic matches <=6.64e-13, 4 finite conservative cases; two first-order integrated runs. Existing V2 reused, no production physics or Desktop changes. Real port losses and absolute power remain unvalidated."
     }
   ],
   "audit_remediation_mode": false,
@@ -13941,6 +13947,12 @@
       "task": "ENGINE-PORT-FLOW-VERIFICATION-V1",
       "kind": "task",
       "summary": "Owner authorizes bounded port-law decision only. R1 contract excludes apertures; legacy scales Riemann flux by effective area; V2 already opt-in. Protocol fixed; diagnostic reference tests 11 PASS. All 10 BLOCKED_LOCAL reevaluated: external data and historical deferrals unchanged; no unrelated task started. Preserve user-local planning changes unstaged."
+    },
+    {
+      "at": "2026-10-28T11:08:17+00:00",
+      "task": "ENGINE-PORT-FLOW-VERIFICATION-V1",
+      "kind": "task",
+      "summary": "CLOSED CORREGIR: scaled Riemann fails nozzle limits, including exact Euler. Existing experimental V2 passes100 analytic cases and4 conservative/restart cases. Two first-order A9000 runs: transient impact,3.32x cost; no product/default changes.1514 focal PASS; P4-P8 301PASS3SKIP. Raw evidence external; user edits unstaged. No further campaign authorized."
     }
   ],
   "legacy_gate_status": {

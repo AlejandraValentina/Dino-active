@@ -1,0 +1,21 @@
+{
+  "name": "isolated",
+  "command": [
+    "python",
+    "scripts/diagnostics/verify_port_flow_physics_v1.py",
+    "--output",
+    "results/port-flow-verification-v1/isolated.json"
+  ],
+  "started_at": "2026-10-28T10:58:31+00:00",
+  "finished_at": "2026-10-28T10:58:37+00:00",
+  "duration_s": 5.437,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\port-flow-verification-v1\\runlogs\\isolated.log",
+  "log_lines": 1,
+  "log_bytes": 145,
+  "error_lines": [],
+  "tail": [
+    "{\"gate\": true, \"matched_cases\": 100, \"max_candidate_relative_flux_error\": 6.636728122871094e-13, \"finite_cases\": 4, \"wall_s\": 3.325928899925202}"
+  ]
+}

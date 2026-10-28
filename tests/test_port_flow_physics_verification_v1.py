@@ -1,9 +1,12 @@
 """Diagnostic reference checks; no change to frozen physics or thresholds."""
 import pytest
+from copy import deepcopy
 
 from scripts.diagnostics.verify_port_flow_physics_v1 import (
     matched_case, finite_run, solve_pipe_mach, mass_density)
 from motorsim.gas1d.eos import IdealGas
+from motorsim.port_connection_v2 import SCHEMA
+from scripts.diagnostics.summarize_port_flow_impact_v1 import assert_matched_configurations
 
 
 @pytest.mark.parametrize('direction', ['chamber_to_pipe','pipe_to_chamber'])
@@ -37,3 +40,29 @@ def test_finite_chamber_species_conservation_and_checkpoint(model,pc,pi):
     flux = result['signed_chamber_to_pipe_integrals']
     assert (flux[0]>0) == (pc>pi)
     assert sum(flux[2:]) == pytest.approx(flux[0],rel=1e-12)
+
+
+def comparison_configs():
+    a=dict(schema='MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V6',
+           geometry_identity={'fixture':'unchanged'},eos={'gamma':1.35})
+    b=deepcopy(a)
+    b.update(schema='MOTORSIM_INTEGRATED_ENGINE_2T_CONFIG_V7',base_configuration_schema=a['schema'])
+    b['geometry_identity']['port_connection_model']=SCHEMA
+    return a,b
+
+
+def test_only_versioned_boundary_change_is_permitted():
+    a,b=comparison_configs()
+    assert_matched_configurations(a,b)
+    assert b['geometry_identity']['port_connection_model']==SCHEMA
+    b['eos']['gamma']=1.4
+    with pytest.raises(AssertionError,match='additional physics'):
+        assert_matched_configurations(a,b)
+
+
+def test_muscl_is_rejected_even_if_both_inputs_enable_it():
+    a,b=comparison_configs()
+    for c in (a,b):
+        c['geometry_identity']['spatial_reconstruction_model']='muscl'
+    with pytest.raises(AssertionError):
+        assert_matched_configurations(a,b)
