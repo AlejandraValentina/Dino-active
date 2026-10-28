@@ -23,7 +23,7 @@ from motorsim.desktop.execution_page import ExecutionPage
 from motorsim.desktop.project_page import ProjectPage
 from motorsim.desktop.results_page import ResultsPage
 from motorsim.desktop.preferences import impl2_historical_report_candidate
-from motorsim.desktop.services import load_results, new_project, new_design_project, run_background
+from motorsim.desktop.services import load_results, new_project, new_design_project, run_background,run_parallel_curve_points
 from motorsim.engine_configuration import identity,create,resolve_for_operating_point
 from motorsim.engine_project import create_project,load_project,save_project
 
@@ -271,6 +271,60 @@ class DinoDesktopTests(unittest.TestCase):
         self.assertEqual(loaded["schema"],"MOTORSIM_ENGINE_PROJECT_V2")
         self.assertEqual(loaded["measurement_references"],[])
         self.assertEqual(identity(loaded["base_engine"]),engine_hash)
+
+    def test_execution_page_dispatches_ab_curve_as_independent_rpm_workers(self):
+        project=load_project(Path("configs/reference_cases/functional_exhaust_ab_125cc_v1.dino.json"))
+        context=DesktopContext(project);context.select_variant("A_original")
+        page=ExecutionPage(context)
+        calls={}
+        def accept_ab(dialog):
+            choice=dialog.findChild(QComboBox,"curveABParallelVariant")
+            choice.setCurrentIndex(choice.findData("B_header_plus20"))
+            return QDialog.DialogCode.Accepted
+        def prepare(document,**kwargs):
+            from motorsim.engine_configuration import identity as engine_identity
+            return {"identity_sha256":engine_identity(document),"point_preflights":[{"identity_sha256":engine_identity(document)} for _ in range(7)]}
+        def dispatch(function,*args,**kwargs):
+            calls.update(function=function,args=args,kwargs=kwargs);return object()
+        with tempfile.TemporaryDirectory() as tmp, \
+             patch.object(QDialog,"exec",new=accept_ab), \
+             patch("motorsim.power_curve_sweep.prepare_power_curve",side_effect=prepare), \
+             patch("motorsim.power_curve_sweep._reused_points",return_value=[]), \
+             patch("motorsim.storage_preflight.check_storage_requirements",return_value={"status":"PASS"}), \
+             patch("motorsim.desktop.execution_page.run_background",side_effect=dispatch), \
+             patch("motorsim.desktop.execution_page.QMessageBox.question",return_value=QMessageBox.StandardButton.Yes):
+            page.artifact_root=Path(tmp)
+            page.start_power_curve()
+        self.assertEqual(calls["function"].__name__,"run_parallel_curve_points")
+        specs=calls["args"][0]
+        self.assertEqual(len(specs),14)
+        self.assertEqual({spec["variant_label"] for spec in specs},{"A_original","B_header_plus20"})
+        self.assertEqual({spec["rpm"] for spec in specs},{3000,3500,4000,4500,5000,5500,6000})
+        self.assertEqual(len({spec["run_id"] for spec in specs}),len(specs))
+        self.assertGreaterEqual(calls["kwargs"]["max_workers"],2)
+        self.assertEqual(context.project["simulation_recipes"]["rpm_ab_parallel_v1"]["workers"],calls["kwargs"]["max_workers"])
+
+    def test_parallel_curve_point_coordinator_persists_each_solver_run_and_checkpoint(self):
+        project=load_project(Path("configs/reference_cases/functional_exhaust_ab_125cc_v1.dino.json"))
+        with tempfile.TemporaryDirectory() as tmp:
+            specs=[]
+            for label,engine in (("A_original",project["variants"]["A_original"]),
+                                 ("B_header_plus20",project["variants"]["B_header_plus20"])):
+                specs.append({"document":engine,"project_id":project["project_id"],"variant_label":label,
+                    "rpm":5000,"artifact_root":tmp,"run_id":f"parallel-check-{label}",
+                    "max_cycles":1,"point_budget_seconds":60,"memory_limit_mib":1024,
+                    "identity_sha256":identity(engine)})
+            result=run_parallel_curve_points(specs,max_workers=2,total_budget_seconds=60)
+            self.assertEqual(result["status"],"COMPLETE")
+            self.assertEqual(len(result["points"]),2)
+            for point in result["points"]:
+                self.assertEqual(point["cycles_completed"],1)
+                self.assertEqual(point["status"],"COMPLETE")
+                self.assertTrue(point["checkpoint_sha256"])
+                self.assertTrue(Path(point["run_directory"],"checkpoint.json").is_file())
+            manifest=json.loads(Path(result["parallel_manifest"]).read_text(encoding="utf-8"))
+            self.assertEqual(manifest["schema"],"DINO_PARALLEL_POINT_SWEEP_V1")
+            self.assertEqual(manifest["status"],"COMPLETE")
 
     def test_real_impl2_import_keeps_invalid_points_as_gaps_and_exports_plot(self):
         report=impl2_historical_report_candidate()

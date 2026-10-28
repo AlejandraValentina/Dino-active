@@ -16,7 +16,7 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushB
 
 from ..engine_configuration import identity, resolve_for_operating_point
 from ..exploratory_workflow import preflight, run_exploratory
-from .services import run_background
+from .services import run_background,run_parallel_curve_points
 from .preferences import artifact_root, set_artifact_root, repository_root_containing, default_artifact_root
 
 
@@ -309,6 +309,12 @@ class ExecutionPage(QWidget):
         hold.setObjectName('curveOpenEndpointHold')
         hold.setChecked(self.context.project['simulation_recipes'].get('rpm_control_policy',{}).get('schema')=='POWERVALVE_OPEN_ENDPOINT_HOLD_V1')
         form.addRow(hold)
+        parallel_variant=QComboBox();parallel_variant.setObjectName("curveABParallelVariant")
+        parallel_variant.addItem("Solo variante activa · serial",None)
+        active=self.context.selected_variant or "base"
+        for name in ["base",*self.context.project["variants"]]:
+            if name!=active:parallel_variant.addItem(f"A/B con {name} · puntos independientes",name)
+        form.addRow("Despacho A/B",parallel_variant)
         for label,widget in (("RPM inicial",start),("RPM final",stop),("Incremento",step),
             ("Horizonte máximo por punto",cycles),("Presupuesto por punto (s)",point_budget),
             ("Presupuesto total de esta invocación (s)",total_budget),("Memoria RSS máxima (MiB)",memory)):
@@ -317,6 +323,7 @@ class ExecutionPage(QWidget):
         buttons=QDialogButtonBox(QDialogButtonBox.StandardButton.Ok|QDialogButtonBox.StandardButton.Cancel)
         buttons.button(QDialogButtonBox.StandardButton.Ok).setText("Preflight y continuar…")
         buttons.accepted.connect(dialog.accept);buttons.rejected.connect(dialog.reject);form.addRow(buttons)
+        parallel_variant.currentIndexChanged.connect(lambda *_:reuse.setEnabled(parallel_variant.currentData() is None))
         if dialog.exec()!=QDialog.DialogCode.Accepted:return
         try:
             grid=plan_rpm_range(start.value(),stop.value(),step.value())
@@ -324,7 +331,19 @@ class ExecutionPage(QWidget):
             document=json.loads(json.dumps(self._engine(),allow_nan=False))
             project_id=self.context.project["project_id"];variant=self.context.selected_variant or "base"
             control_policy=dict(schema='POWERVALVE_OPEN_ENDPOINT_HOLD_V1',maximum_rpm=stop.value()) if hold.isChecked() else None
-            reused=[e['run_directory'] for e in self.history.entries if reuse.isChecked() and
+            selected_parallel=parallel_variant.currentData()
+            engines=[(variant,document)]
+            if selected_parallel is not None:
+                other=self.context.project["base_engine"] if selected_parallel=="base" else self.context.project["variants"][selected_parallel]
+                if identity(other)==identity(document):raise ValueError("La variante A/B debe tener una identidad de solver distinta.")
+                engines.append((selected_parallel,json.loads(json.dumps(other,allow_nan=False))))
+                import psutil
+                workers=min(3,psutil.cpu_count(logical=True) or 1,
+                    psutil.virtual_memory().available//(memory.value()*1024**2+128*1024**2))
+                if workers<2:raise ValueError("No hay memoria/CPU disponible para al menos dos workers seguros.")
+                from ..storage_preflight import check_storage_requirements
+                check_storage_requirements([(self.artifact_root,512*1024**2)])
+            reused=[] if selected_parallel else [e['run_directory'] for e in self.history.entries if reuse.isChecked() and
                     e.get('variant')==variant and e.get('rpm') in grid and e.get('status')=='COMPLETE']
             prepared=prepare_power_curve(document,project_id=project_id,variant_label=variant,
                 artifact_root=self.artifact_root,start_rpm=start.value(),stop_rpm=stop.value(),
@@ -332,11 +351,20 @@ class ExecutionPage(QWidget):
                 total_budget_seconds=total_budget.value(),memory_limit_mib=memory.value(),control_policy=control_policy)
             from ..power_curve_sweep import _reused_points
             verified_reuse=_reused_points(reused,prepared)
-            confirmation=(f"Preflight PASS · 0 pasos del solver\n\nVariante: {variant}\n"
-                f"RPM: {', '.join(map(str,grid))}\nPuntos: {len(grid)} · serial, 1 worker\n"
+            prepared_items=[prepared]
+            if selected_parallel:
+                prepared_items.append(prepare_power_curve(engines[1][1],project_id=project_id,variant_label=engines[1][0],
+                    artifact_root=self.artifact_root,start_rpm=start.value(),stop_rpm=stop.value(),step_rpm=step.value(),
+                    max_cycles=cycles.value(),point_budget_seconds=point_budget.value(),total_budget_seconds=total_budget.value(),
+                    memory_limit_mib=memory.value(),control_policy=control_policy))
+            worker_text=f"{workers} procesos · 1 run/checkpoint independiente por RPM" if selected_parallel else "serial, 1 worker"
+            reuse_text=("No se reutilizan puntos en despacho A/B paralelo." if selected_parallel else
+                        f"Reutilizar sin cálculo: {[p['rpm'] for p in verified_reuse]} RPM")
+            confirmation=(f"Preflight PASS · 0 pasos del solver\n\nVariantes: {', '.join(name for name,_ in engines)}\n"
+                f"RPM: {', '.join(map(str,grid))}\nPuntos: {len(grid)} por variante · {worker_text}\n"
                 f"Horizonte: hasta {cycles.value()} ciclos/punto\nPresupuesto: {total_budget.value()} s agregado; "
-                f"hasta {point_budget.value()} s/punto\nMemoria RSS: {memory.value()} MiB\n"
-                f"Reutilizar sin cálculo: {[p['rpm'] for p in verified_reuse]} RPM\n"
+                f"hasta {point_budget.value()} s/punto\nMemoria RSS: {memory.value()} MiB por worker\n"
+                f"{reuse_text}\n"
                 f"Política de control RPM: {control_policy or 'mapa original sin extensión'}\n"
                 f"Identidad: {prepared['identity_sha256']}\nArtifact root: {self.artifact_root}\n\n"
                 "EXPLORATORY; no implica periodicidad, convergencia ni aceptación científica.")
@@ -346,18 +374,34 @@ class ExecutionPage(QWidget):
         except Exception as exc:
             QMessageBox.warning(self,"Preflight de curva bloqueado",f"FAIL-CLOSED: {type(exc).__name__}: {exc}");return
         self.cancel_event=threading.Event();self.progress_latest=None
-        self.active_sweep_settings=prepared
+        self.active_sweep_settings=prepared_items if selected_parallel else prepared
         self.context.project['simulation_recipes']['rpm_curve_v1']=dict(rpms=grid,max_cycles=cycles.value(),
             point_budget_seconds=point_budget.value(),total_budget_seconds=total_budget.value(),memory_limit_mib=memory.value())
+        if selected_parallel:self.context.project['simulation_recipes']['rpm_ab_parallel_v1']={"variants":[name for name,_ in engines],"rpms":grid,"workers":workers,"max_cycles":cycles.value()}
         if control_policy is not None:self.context.project['simulation_recipes']['rpm_control_policy']=control_policy
         self.context.dirty=True
-        self.output.appendPlainText(f"Barrido EXPLORATORY iniciado · {len(grid)} RPM · sin autorización VERIFIED.")
-        self.task=run_background(run_power_curve,document,project_id=project_id,variant_label=variant,
-            artifact_root=self.artifact_root,start_rpm=start.value(),stop_rpm=stop.value(),step_rpm=step.value(),
-            max_cycles=cycles.value(),point_budget_seconds=point_budget.value(),
-            total_budget_seconds=total_budget.value(),memory_limit_mib=memory.value(),
-            cancel_event=self.cancel_event,progress=self.progress_signal.emit,reuse_runs=reused,control_policy=control_policy,
-            on_done=self._done,on_error=self._failed)
+        self.output.appendPlainText(f"Barrido EXPLORATORY iniciado · {len(grid)} RPM por variante · {worker_text} · sin autorización VERIFIED.")
+        if selected_parallel:
+            group=uuid.uuid4().hex;specs=[]
+            for variant_index,(label,engine_doc) in enumerate(engines):
+                source=prepared_items[variant_index]
+                for rpm_index,rpm in enumerate(grid):
+                    check=source['point_preflights'][rpm_index]
+                    specs.append({"document":engine_doc,"project_id":project_id,"variant_label":label,"rpm":rpm,
+                        "artifact_root":str(self.artifact_root),"run_id":f"ab-{group[:12]}-{variant_index}-{rpm}",
+                        "max_cycles":cycles.value(),"point_budget_seconds":point_budget.value(),
+                        "memory_limit_mib":memory.value(),"control_policy":control_policy,
+                        "identity_sha256":check["identity_sha256"]})
+            self.task=run_background(run_parallel_curve_points,specs,max_workers=workers,
+                total_budget_seconds=total_budget.value(),cancel_event=self.cancel_event,progress=self.progress_signal.emit,
+                on_done=self._done,on_error=self._failed)
+        else:
+            self.task=run_background(run_power_curve,document,project_id=project_id,variant_label=variant,
+                artifact_root=self.artifact_root,start_rpm=start.value(),stop_rpm=stop.value(),step_rpm=step.value(),
+                max_cycles=cycles.value(),point_budget_seconds=point_budget.value(),
+                total_budget_seconds=total_budget.value(),memory_limit_mib=memory.value(),
+                cancel_event=self.cancel_event,progress=self.progress_signal.emit,reuse_runs=reused,control_policy=control_policy,
+                on_done=self._done,on_error=self._failed)
         self.elapsed_timer.start();self.status_text="CORRIENDO BARRIDO";self.checkpoint_summary="manifiesto guardado por punto"
         self.cancel.setEnabled(True);self.start.setEnabled(False);self.resume.setEnabled(False);self.sweep.setEnabled(False)
         self.resume_sweep.setEnabled(False)

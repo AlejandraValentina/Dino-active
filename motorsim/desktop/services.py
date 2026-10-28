@@ -4,6 +4,12 @@ from __future__ import annotations
 import json
 import math
 import sys
+import concurrent.futures
+import multiprocessing
+import os
+import tempfile
+import time
+import uuid
 from copy import deepcopy
 from pathlib import Path
 from PySide6.QtCore import QObject, QRunnable, QThreadPool, Signal, Slot
@@ -173,3 +179,101 @@ def run_background(function, *args, on_done=None, on_error=None, **kwargs):
     if on_error: task.signals.failed.connect(on_error)
     QThreadPool.globalInstance().start(task)
     return task
+
+
+def _parallel_curve_point(spec, stop_event):
+    from ..exploratory_workflow import run_exploratory
+    from ..power_curve_sweep import _operating_document
+    result=run_exploratory(_operating_document(spec["document"],spec["rpm"],spec.get("control_policy")),
+        project_id=spec["project_id"],run_id=spec["run_id"],artifact_root=spec["artifact_root"],
+        rpm=spec["rpm"],max_cycles=spec["max_cycles"],budget_seconds=spec["point_budget_seconds"],
+        memory_limit_mib=spec["memory_limit_mib"],cancel_event=stop_event,variant_label=spec["variant_label"])
+    result_path=Path(result["artifact_directory"])/"result.json"
+    import hashlib
+    run_status=result.get("status")
+    execution_status=("COMPLETE" if run_status in {"COMPLETE","MAX_CYCLES_NONCONVERGED"}
+                      else "FAILED_CLOSED" if run_status in {"FAIL_CLOSED","FAILED_CLOSED"} else run_status)
+    return {"variant_id":spec["variant_label"],"rpm":spec["rpm"],"status":execution_status,"solver_status":run_status,
+        "classification":result.get("classification"),"cycles_completed":result.get("cycles_completed"),
+        "periodicity":result.get("periodicity"),"run_directory":result.get("artifact_directory"),
+        "identity_sha256":result.get("bindings",{}).get("identity_sha256"),
+        "result_sha256":result.get("result_sha256"),"result_artifact_sha256":hashlib.sha256(result_path.read_bytes()).hexdigest(),
+        "checkpoint_sha256":result.get("checkpoint_sha256"),"failure":result.get("failure")}
+
+
+def _atomic_json(path, data):
+    path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
+    fd,name=tempfile.mkstemp(prefix=path.name+".",suffix=".tmp",dir=path.parent)
+    try:
+        with os.fdopen(fd,"w",encoding="utf-8",newline="\n") as stream:
+            json.dump(data,stream,ensure_ascii=False,sort_keys=True,allow_nan=False);stream.write("\n");stream.flush();os.fsync(stream.fileno())
+        os.replace(name,path)
+    finally:
+        try:os.unlink(name)
+        except FileNotFoundError:pass
+
+
+def run_parallel_curve_points(specs, *, max_workers=3, total_budget_seconds=1800,
+                              cancel_event=None, progress=None):
+    """Bounded A/B curve coordinator; every worker owns one RPM run/checkpoint."""
+    if not isinstance(specs,(list,tuple)) or len(specs)<2 or type(max_workers) is not int or max_workers<2:
+        raise ValueError("parallel curve dispatch requires at least two points and two workers")
+    project_ids={spec["project_id"] for spec in specs};roots={str(Path(spec["artifact_root"]).resolve()) for spec in specs}
+    if len(project_ids)!=1 or len(roots)!=1:raise ValueError("parallel curve points must share one project and artifact root")
+    if len({spec["run_id"] for spec in specs})!=len(specs):raise ValueError("parallel curve point run IDs must be unique")
+    group_id=uuid.uuid4().hex;root=Path(specs[0]["artifact_root"])/"dino-parallel-point-sweep-v1"/specs[0]["project_id"]/group_id
+    manifest={"schema":"DINO_PARALLEL_POINT_SWEEP_V1","group_id":group_id,"project_id":specs[0]["project_id"],
+        "worker_count":max_workers,"status":"RUNNING","elapsed_seconds":0.0,
+        "points":[{"variant_id":spec["variant_label"],"rpm":spec["rpm"],"run_id":spec["run_id"],"status":"NOT_STARTED",
+                    "identity_sha256":spec.get("identity_sha256")} for spec in specs]}
+    manifest_path=root/"dispatch.json";_atomic_json(manifest_path,manifest)
+    started=time.monotonic();ctx=multiprocessing.get_context("spawn");rows={};last_progress={}
+    with ctx.Manager() as manager:
+        stops=[manager.Event() for _ in specs]
+        with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers,mp_context=ctx) as executor:
+            futures={executor.submit(_parallel_curve_point,spec,stop):i for i,(spec,stop) in enumerate(zip(specs,stops))}
+            try:
+                while not all(future.done() for future in futures):
+                    elapsed=time.monotonic()-started
+                    if elapsed>=total_budget_seconds or (cancel_event is not None and cancel_event.is_set()):
+                        for stop in stops:stop.set()
+                    if progress:
+                        for index,spec in enumerate(specs):
+                            run_dir=Path(spec["artifact_root"])/"exploratory-workflow-v1"/spec["project_id"]/spec["run_id"]
+                            try:run_doc=json.loads((run_dir/"run.json").read_text(encoding="utf-8"))
+                            except (OSError,ValueError):continue
+                            cycle_count=run_doc.get("cycles_completed",0)
+                            key=(index,cycle_count,run_doc.get("status"))
+                            if key!=last_progress.get(index):
+                                last_progress[index]=key
+                                progress({"point_index":index+1,"point_count":len(specs),"rpm":spec["rpm"],
+                                    "variant_label":spec["variant_label"],"point":{"classification":run_doc.get("classification"),
+                                    "cycles_completed":cycle_count,"status":run_doc.get("status")}})
+                    for future,index in futures.items():
+                        if future.done() and index not in rows:rows[index]=future.result()
+                    manifest["elapsed_seconds"]=elapsed
+                    manifest["points"]=[{**manifest["points"][i],**rows[i]} if i in rows else manifest["points"][i] for i in range(len(specs))]
+                    _atomic_json(manifest_path,manifest);time.sleep(.2)
+                for future,index in futures.items():
+                    if index not in rows:rows[index]=future.result()
+            except Exception as exc:
+                for stop in stops:stop.set()
+                manifest["status"]="FAILED"
+                manifest["failure"]={"type":type(exc).__name__,"message":str(exc)}
+                manifest["elapsed_seconds"]=time.monotonic()-started
+                manifest["points"]=[
+                    {**manifest["points"][i],**rows[i]} if i in rows else manifest["points"][i]
+                    for i in range(len(specs))
+                ]
+                _atomic_json(manifest_path,manifest)
+                raise
+    manifest["elapsed_seconds"]=time.monotonic()-started
+    manifest["points"]=[{**manifest["points"][i],**rows[i]} for i in range(len(specs))]
+    manifest["status"]="COMPLETE" if all(row.get("status")=="COMPLETE" for row in manifest["points"]) else "PARTIAL"
+    _atomic_json(manifest_path,manifest)
+    return {"schema":"DINO_PARALLEL_POINT_SWEEP_RESULT_V1","status":manifest["status"],
+        "classification":"EXPLORATORY_PARALLEL_POINT_SWEEP","mode":"EXPLORATORY",
+        "scientific_validation":"NOT_CLAIMED","periodicity":"NOT_EVALUATED",
+        "elapsed_seconds":manifest["elapsed_seconds"],"points":manifest["points"],
+        "parallel_manifest":str(manifest_path),"parallel_workers":max_workers,
+        "bindings":{"project_id":manifest["project_id"]},"curve_availability":"EXPLORATORY_CURVE_PARTIAL"}

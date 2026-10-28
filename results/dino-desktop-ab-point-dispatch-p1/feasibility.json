@@ -1,0 +1,188 @@
+{
+  "acceptance_2x_both_cases": true,
+  "artifact_root": "${DINO_ARTIFACT_ROOT}",
+  "cases": [
+    {
+      "all_checkpoints_equal": true,
+      "all_one_cycle": true,
+      "case_id": "low",
+      "parallel_wall_seconds": 13.018425799906254,
+      "points": [
+        {
+          "checkpoint_equal": true,
+          "cycles_equal": true,
+          "parallel_checkpoint_sha256": "ce554f44364e91e966030ea99b766ad1116fffeeb8d55934a515fd53f15f1d89",
+          "parallel_classification": "MAX_CYCLES_NONCONVERGED",
+          "parallel_status": "COMPLETE",
+          "rpm": 4500,
+          "serial_checkpoint_sha256": "ce554f44364e91e966030ea99b766ad1116fffeeb8d55934a515fd53f15f1d89",
+          "serial_classification": "MAX_CYCLES_NONCONVERGED",
+          "serial_status": "COMPLETE",
+          "variant": "A_original"
+        },
+        {
+          "checkpoint_equal": true,
+          "cycles_equal": true,
+          "parallel_checkpoint_sha256": "22391df3975dd0031f40fc3fc1d867c7f2b9cec6794622ade3951b846284e463",
+          "parallel_classification": "MAX_CYCLES_NONCONVERGED",
+          "parallel_status": "COMPLETE",
+          "rpm": 5000,
+          "serial_checkpoint_sha256": "22391df3975dd0031f40fc3fc1d867c7f2b9cec6794622ade3951b846284e463",
+          "serial_classification": "MAX_CYCLES_NONCONVERGED",
+          "serial_status": "COMPLETE",
+          "variant": "A_original"
+        },
+        {
+          "checkpoint_equal": true,
+          "cycles_equal": true,
+          "parallel_checkpoint_sha256": "d587e46ffdec5806f053f92579daaa98a9ca1c61e789627c55b8a89c4f31e0d1",
+          "parallel_classification": "MAX_CYCLES_NONCONVERGED",
+          "parallel_status": "COMPLETE",
+          "rpm": 5500,
+          "serial_checkpoint_sha256": "d587e46ffdec5806f053f92579daaa98a9ca1c61e789627c55b8a89c4f31e0d1",
+          "serial_classification": "MAX_CYCLES_NONCONVERGED",
+          "serial_status": "COMPLETE",
+          "variant": "A_original"
+        },
+        {
+          "checkpoint_equal": true,
+          "cycles_equal": true,
+          "parallel_checkpoint_sha256": "377c82eefe68efd253918ad0738063f606368f363741db5cf2b3c3c4f0642ed8",
+          "parallel_classification": "MAX_CYCLES_NONCONVERGED",
+          "parallel_status": "COMPLETE",
+          "rpm": 4500,
+          "serial_checkpoint_sha256": "377c82eefe68efd253918ad0738063f606368f363741db5cf2b3c3c4f0642ed8",
+          "serial_classification": "MAX_CYCLES_NONCONVERGED",
+          "serial_status": "COMPLETE",
+          "variant": "B_header_plus20"
+        },
+        {
+          "checkpoint_equal": true,
+          "cycles_equal": true,
+          "parallel_checkpoint_sha256": "a8f721233e6b9f4e5808876f20f61a2e7c279422bcc162e0670c23cbf22cf9f0",
+          "parallel_classification": "MAX_CYCLES_NONCONVERGED",
+          "parallel_status": "COMPLETE",
+          "rpm": 5000,
+          "serial_checkpoint_sha256": "a8f721233e6b9f4e5808876f20f61a2e7c279422bcc162e0670c23cbf22cf9f0",
+          "serial_classification": "MAX_CYCLES_NONCONVERGED",
+          "serial_status": "COMPLETE",
+          "variant": "B_header_plus20"
+        },
+        {
+          "checkpoint_equal": true,
+          "cycles_equal": true,
+          "parallel_checkpoint_sha256": "43c962863f7c0d6eca5d772566731638a4c6f408cae035dfb36598caa0ed4b6d",
+          "parallel_classification": "MAX_CYCLES_NONCONVERGED",
+          "parallel_status": "COMPLETE",
+          "rpm": 5500,
+          "serial_checkpoint_sha256": "43c962863f7c0d6eca5d772566731638a4c6f408cae035dfb36598caa0ed4b6d",
+          "serial_classification": "MAX_CYCLES_NONCONVERGED",
+          "serial_status": "COMPLETE",
+          "variant": "B_header_plus20"
+        }
+      ],
+      "rpms": [
+        4500,
+        5000,
+        5500
+      ],
+      "serial_wall_seconds": 35.41722290008329,
+      "speedup": 2.7205457437364147
+    },
+    {
+      "all_checkpoints_equal": true,
+      "all_one_cycle": true,
+      "case_id": "high",
+      "parallel_wall_seconds": 10.557100299978629,
+      "points": [
+        {
+          "checkpoint_equal": true,
+          "cycles_equal": true,
+          "parallel_checkpoint_sha256": "2f88f928c73e43c3fc8d0c6ec868da782266df64414b84276b151ce4a3e84073",
+          "parallel_classification": "MAX_CYCLES_NONCONVERGED",
+          "parallel_status": "COMPLETE",
+          "rpm": 7000,
+          "serial_checkpoint_sha256": "2f88f928c73e43c3fc8d0c6ec868da782266df64414b84276b151ce4a3e84073",
+          "serial_classification": "MAX_CYCLES_NONCONVERGED",
+          "serial_status": "COMPLETE",
+          "variant": "A_original"
+        },
+        {
+          "checkpoint_equal": true,
+          "cycles_equal": true,
+          "parallel_checkpoint_sha256": "81b2ab7766029a03bde53b93ef4bbbbfeefa2a2fc610f552b75993f75ebc3d3c",
+          "parallel_classification": "MAX_CYCLES_NONCONVERGED",
+          "parallel_status": "COMPLETE",
+          "rpm": 7500,
+          "serial_checkpoint_sha256": "81b2ab7766029a03bde53b93ef4bbbbfeefa2a2fc610f552b75993f75ebc3d3c",
+          "serial_classification": "MAX_CYCLES_NONCONVERGED",
+          "serial_status": "COMPLETE",
+          "variant": "A_original"
+        },
+        {
+          "checkpoint_equal": true,
+          "cycles_equal": true,
+          "parallel_checkpoint_sha256": "d16afee38608dce1edc26a9d8779264343a8d963d2bf0895652ee262384a27e8",
+          "parallel_classification": "MAX_CYCLES_NONCONVERGED",
+          "parallel_status": "COMPLETE",
+          "rpm": 8000,
+          "serial_checkpoint_sha256": "d16afee38608dce1edc26a9d8779264343a8d963d2bf0895652ee262384a27e8",
+          "serial_classification": "MAX_CYCLES_NONCONVERGED",
+          "serial_status": "COMPLETE",
+          "variant": "A_original"
+        },
+        {
+          "checkpoint_equal": true,
+          "cycles_equal": true,
+          "parallel_checkpoint_sha256": "0ce9794a3f27c8a622a55101987c46fbf77b82d8e0a18f6adf870624cafac009",
+          "parallel_classification": "MAX_CYCLES_NONCONVERGED",
+          "parallel_status": "COMPLETE",
+          "rpm": 7000,
+          "serial_checkpoint_sha256": "0ce9794a3f27c8a622a55101987c46fbf77b82d8e0a18f6adf870624cafac009",
+          "serial_classification": "MAX_CYCLES_NONCONVERGED",
+          "serial_status": "COMPLETE",
+          "variant": "B_header_plus20"
+        },
+        {
+          "checkpoint_equal": true,
+          "cycles_equal": true,
+          "parallel_checkpoint_sha256": "c0e0f1795a2cad8e0f5abead377cee806540031b1425500b3d0682bcd5d3cb63",
+          "parallel_classification": "MAX_CYCLES_NONCONVERGED",
+          "parallel_status": "COMPLETE",
+          "rpm": 7500,
+          "serial_checkpoint_sha256": "c0e0f1795a2cad8e0f5abead377cee806540031b1425500b3d0682bcd5d3cb63",
+          "serial_classification": "MAX_CYCLES_NONCONVERGED",
+          "serial_status": "COMPLETE",
+          "variant": "B_header_plus20"
+        },
+        {
+          "checkpoint_equal": true,
+          "cycles_equal": true,
+          "parallel_checkpoint_sha256": "c19ee6a2777be4016077ab57d8ae5a6a66d5218526d992a1b6fdc1f773f435cb",
+          "parallel_classification": "MAX_CYCLES_NONCONVERGED",
+          "parallel_status": "COMPLETE",
+          "rpm": 8000,
+          "serial_checkpoint_sha256": "c19ee6a2777be4016077ab57d8ae5a6a66d5218526d992a1b6fdc1f773f435cb",
+          "serial_classification": "MAX_CYCLES_NONCONVERGED",
+          "serial_status": "COMPLETE",
+          "variant": "B_header_plus20"
+        }
+      ],
+      "rpms": [
+        7000,
+        7500,
+        8000
+      ],
+      "serial_wall_seconds": 29.28012349992059,
+      "speedup": 2.773500551091654
+    }
+  ],
+  "interpretation": "Bounded dispatch feasibility only; one-cycle checkpoints are not periodic performance results.",
+  "max_cycles_per_point": 1,
+  "memory_limit_mib_per_worker": 1024,
+  "periodicity_evaluated": false,
+  "project": "functional-reed-125cc-v1",
+  "schema": "DINO_DESKTOP_AB_POINT_DISPATCH_FEASIBILITY_V1",
+  "state_equivalence": true,
+  "workers": 3
+}

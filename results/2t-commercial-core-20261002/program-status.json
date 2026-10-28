@@ -10450,6 +10450,38 @@
         "tests/test_dino_desktop.py"
       ],
       "qualification": "Bounded feasibility shows useful but sub-threshold acceleration for two isolated curves. Reject this alternative for the 2x P1 acceptance; no Desktop dispatch integration, solver changes, or periodicity/prediction claim."
+    },
+    {
+      "id": "DINO-DESKTOP-POINT-DISPATCH-P1",
+      "description": "Integrate independent per-RPM process dispatch for paired Desktop A/B curves after two bounded cases showed >=2x wall-time benefit with identical one-cycle checkpoints; preserve existing physics, periodicity gates, cancellation, persistence, memory/storage bounds and EXPLORATORY classification.",
+      "dependencies": [
+        "DINO-DESKTOP-COMPARISON-SPEED-P1"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "motorsim/desktop/execution_page.py",
+        "motorsim/desktop/services.py",
+        "motorsim/storage_preflight.py",
+        "tests/test_dino_desktop.py::DinoDesktopTests::test_execution_page_dispatches_ab_curve_as_independent_rpm_workers",
+        "tests/test_dino_desktop.py::DinoDesktopTests::test_parallel_curve_point_coordinator_persists_each_solver_run_and_checkpoint",
+        "results/dino-desktop-ab-point-dispatch-p1/report.md",
+        "results/dino-desktop-ab-point-dispatch-p1/feasibility.json",
+        "results/dino-desktop-ab-point-dispatch-p1/logs/dino-desktop-ab-point-dispatch-p1.summary.json"
+      ],
+      "next_action": "El umbral de uso práctico queda respaldado sólo para factibilidad de un ciclo; no afirmar aceptación periódica 2x ni ejecutar campañas de periodicidad automáticamente. P3 sigue WAITING por falta de datos medidos para interpretar diferencias. Siguiente paso: adquirir geometría completa y mediciones independientes del mismo motor; no reabrir diagnósticos históricos.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "product/implementation/verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "motorsim/desktop/execution_page.py",
+        "motorsim/desktop/services.py",
+        "motorsim/storage_preflight.py",
+        "scripts/agents/storage_preflight.py",
+        "tests/test_dino_desktop.py"
+      ],
+      "qualification": "Dos factibilidades de seis puntos A/B, tres workers, una vuelta por punto: 2.7205x y 2.7735x; los 12 checkpoints serial/paralelo coinciden por SHA-256. MAX_CYCLES_NONCONVERGED; periodicidad NOT_EVALUATED. No implica speedup periódico ni validación científica; rc7 conservado y V2/MUSCL experimentales."
     }
   ],
   "audit_remediation_mode": false,
@@ -14716,6 +14748,12 @@
       "task": "DINO-DESKTOP-COMPARISON-SPEED-P1",
       "kind": "decision",
       "summary": "Dos casos A/B acotados de una vuelta: despacho con 2 procesos 1.862×/1.887× y checkpoints idénticos; menor al objetivo 2×, sin claim de periodicidad. Se rechaza integrar esta alternativa como cierre P1."
+    },
+    {
+      "at": "2026-10-28T16:42:00Z",
+      "task": "DINO-DESKTOP-POINT-DISPATCH-P1",
+      "kind": "task",
+      "summary": "Desktop ofrece despacho A/B paralelo por RPM, con run/checkpoint por punto, presupuesto total, cancelación, preflight de memoria y almacenamiento, manifiesto durable y clasificación EXPLORATORY. Dos casos breves de una vuelta: 2.7205x y 2.7735x, checkpoints idénticos; periodicidad no evaluada."
     }
   ],
   "legacy_gate_status": {
@@ -14810,7 +14848,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-28T16:06:33Z",
+  "updated_at": "2026-10-28T16:42:00Z",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
