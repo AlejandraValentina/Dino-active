@@ -15,7 +15,7 @@ def test_176_preflight_is_bounded_and_zero_step(tmp_path):
 def test_protocol_fixes_first_window_and_does_not_claim_gci():
     from pathlib import Path
 
-    text = Path("openspec/changes/predictive-reliability-v1/candidate-periodic-gci-176-first-window-addendum-v1.md").read_text(encoding="utf-8")
-    assert "cycles 31–38" in text
+    text = Path("openspec/changes/predictive-reliability-v1/candidate-periodic-gci-176-first-window-addendum-v2.md").read_text(encoding="utf-8")
+    assert "cycles 31–37" in text
     assert "1080 s" in text
-    assert "No GCI is calculated until all three grids are independently periodic" in text
+    assert "No GCI" in text and "all three grids are periodic and audited" in text

@@ -63,11 +63,11 @@ def preflight(repo_root: Path, artifact_root: Path, protocol_path: Path) -> dict
                                        for p in config["ducts"]},
         "storage_preflight": storage,
         "solver_steps_executed": 0,
-        "window_cycles": [31, 38],
+        "window_cycles": [31, 37],
         "solver_budget_seconds": 900.0,
         "admission_budget_seconds": 1080.0,
-        "projected_solver_seconds": 8 * 108.73,
-        "projected_with_20_percent_margin_seconds": 8 * 108.73 * 1.2,
+        "projected_solver_seconds": 7 * 120.23,
+        "projected_with_20_percent_margin_seconds": 7 * 120.23 * 1.2,
         "qualification": "First independent 176-cell window only; review its detector trend before any continuation.",
     }
 
@@ -98,10 +98,10 @@ def run(repo_root: Path, artifact_root: Path, output: Path,
     recipe, cycles = [], []
     status, error = "TRANSIENT_AT_BUDGET", None
     last_complete_cycle = 30
-    end_angle = 360.0 * 38
+    end_angle = 360.0 * 37
     schedule = _integrated_scheduled_angles(engine, end_angle)
     try:
-        for absolute in range(31, 39):
+        for absolute in range(31, 38):
             frames = [dict(angle=engine.crank_angle_unwrapped_deg,
                            state=deepcopy(engine.state), ledger=deepcopy(engine.ledger))]
             while engine.crank_angle_unwrapped_deg < 360.0 * absolute - 1e-9:
@@ -139,7 +139,9 @@ def run(repo_root: Path, artifact_root: Path, output: Path,
                 raise ValueError("cycle phase sampling incomplete")
             engine.compact_fast_recipe_cycle()
             current = engine.snapshot()
-            outcome = detector.update(relative_observations(engine, previous, current, 30))
+            observation, observation_binding = relative_observations(
+                engine, previous, current, 30)
+            outcome = detector.update(observation)
             balance = engine.conservation_report()
             if not conserved(balance):
                 raise ValueError("global conservation check failed")
@@ -152,7 +154,8 @@ def run(repo_root: Path, artifact_root: Path, output: Path,
             stats = (dict(maximum=max(values), p90=float(__import__("numpy").quantile(values, .9)),
                           median=float(__import__("numpy").median(values)),
                           failed=sum(x > 1 for x in values), count=len(values)) if values else None)
-            cycles.append(dict(cycle=absolute, comparison=lag,
+            cycles.append(dict(cycle=absolute, observation_binding=observation_binding,
+                               comparison=lag,
                                detector_outcome=outcome, statistics=stats,
                                work_J=work, imep_bar=imep,
                                conservation=balance))

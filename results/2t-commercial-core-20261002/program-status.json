@@ -10085,9 +10085,12 @@
         "DINO_ARTIFACT_ROOT/runlogs/candidate-periodic-gci-88-cycles31-36/candidate-periodic-gci-88-cycles31-36.summary.json",
         "DINO_ARTIFACT_ROOT/predictive-reliability-v1/candidate-periodic-gci-v1/window-88-01/receipt.json",
         "DINO_ARTIFACT_ROOT/predictive-reliability-v1/candidate-periodic-gci-v1/window-88-02/receipt.json",
-        "results/predictive-reliability-v1/candidate-periodic-gci-v1/preflight-176-v1.json"
+        "results/predictive-reliability-v1/candidate-periodic-gci-v1/preflight-176-v1.json",
+        "results/predictive-reliability-v1/candidate-periodic-gci-v1/preflight-176-v2.json",
+        "DINO_ARTIFACT_ROOT/runlogs/candidate-periodic-gci-176-cycles31-38/candidate-periodic-gci-176-cycles31-38.summary.json",
+        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/candidate-periodic-gci-v1/window-176-01/receipt.json"
       ],
-      "next_action": "Run the first independent 176-cell window, cycles31-38, then review periodicity, conservation and cost. GCI remains unavailable until 88 also reaches an audited period.",
+      "next_action": "Repeat no cycles from the failed attempt; execute corrected preregistered 176 cycles31-37 under 1080 s, then review.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -10100,10 +10103,11 @@
         "openspec/changes/predictive-reliability-v1/candidate-periodic-gci-88-window2-addendum-v1.md",
         "openspec/changes/predictive-reliability-v1/candidate-periodic-gci-176-first-window-addendum-v1.md",
         "scripts/diagnostics/run_candidate_periodic_176_v1.py",
-        "tests/test_run_candidate_periodic_176_v1.py"
+        "tests/test_run_candidate_periodic_176_v1.py",
+        "openspec/changes/predictive-reliability-v1/candidate-periodic-gci-176-first-window-addendum-v2.md"
       ],
       "evidence_level": "L2",
-      "qualification": "88 cells completed cycles31-40 without periodicity; no further 88 extension admitted. A separate 176-cell first window is frozen after reviewing that result; no GCI or promotion unless all required grids are audited periodic."
+      "qualification": "First 176 invocation exited ERROR after 0 complete cycles due to a runner tuple-unpacking defect. Partial files retained. Corrected v2 addendum/source-bound preflight prepared; no scientific observation accepted."
     },
     {
       "id": "PRED-CORE-PERIODIC-GCI-ANALYZER",
@@ -10342,9 +10346,9 @@
       "PRED-IDENTIFICATION",
       "PRED-VALIDATION"
     ],
-    "completion_criterion": "Unified owner roadmap; 88-cell periodicity was not reached within the preregistered cycles31-40. The active independent diagnostic is a first 176-cell window through cycle38, then review. Continue the 44/88/176 gate only on evidence; V2/MUSCL remain experimental and periodicity alone is not prediction.",
+    "completion_criterion": "Unified owner roadmap; 88-cell periodicity was not reached within cycles31-40. The active independent diagnostic is a corrected first 176-cell window through cycle37, then review. Continue 44/88/176 only on evidence; V2/MUSCL remain experimental.",
     "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
-    "qualification": "Owner instruction 2026-10-28 activates continuation of the roadmap within existing E1.3 limits. 176-cell window31-38 only, 1080 s cap after zero-step preflight. No further 88 extension; review before any more mesh run.",
+    "qualification": "Owner instruction 2026-10-28 activates roadmap continuation within E1.3 limits. Corrected 176-cell window31-37 only, 1080 s cap, after zero-step preflight. No further 88 extension.",
     "staged_plan": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md"
   },
   "objectives": [
@@ -14277,6 +14281,12 @@
       "task": "PRED-CORE-PERIODIC-MESH-GCI",
       "kind": "task",
       "summary": "Review: 88 cycles31-40 remained nonperiodic; window2 stopped NO_SUFFICIENT_PROGRESS after cycle40. No more 88 extension. Independent 176 P0 remap/storage preflight PASS (inventory/restriction errors <1.2e-15); preregistered first window cycles31-38 with 1043.8s projected incl20% margin."
+    },
+    {
+      "at": "2026-10-28T15:27:29+00:00",
+      "task": "PRED-CORE-PERIODIC-MESH-GCI",
+      "kind": "task",
+      "summary": "176 first attempt ERROR after0 complete cycles; AttributeError came from not unpacking relative_observations tuple. Preserved partial and runlog. Fixed runner; new v2 addendum measures120.23s/cycle, caps cycles31-37, budget900/1080s, projection1009.9s incl20%; zero-step preflight PASS."
     }
   ],
   "legacy_gate_status": {
