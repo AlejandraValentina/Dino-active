@@ -10296,14 +10296,17 @@
       "id": "PRED-POSTOPEN-GRADIENT-PEAK-MATCHING",
       "description": "Resolve the demonstrated grid-dependent switching of the strongest post-opening exhaust pressure-gradient peak by matching all prominent saved pressure/density/marker gradients across grids and phases; no solver run.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
         "results/predictive-reliability-v1/postopen-exhaust-wavefront-v1.json",
-        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/postopen-wave-transport-run-v2/"
+        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/postopen-wave-transport-run-v2/",
+        "scripts/diagnostics/match_postopen_gradient_peaks_v1.py",
+        "tests/test_match_postopen_gradient_peaks_v1.py",
+        "results/predictive-reliability-v1/postopen-gradient-peak-matching-v1.json"
       ],
-      "next_action": "Using saved fields, report ordered local gradient extrema and nearest-position matches across88/176/352 at90/120/150deg; retain unmatched peaks and avoid threshold-defined front labels or wave-speed fits.",
+      "next_action": "Use matched/unmatched extrema as descriptive evidence only; do not assign wave identities or physical causes without a versioned hypothesis and discriminating evidence.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "evidence_level": "L1",
@@ -10311,6 +10314,31 @@
         "scripts/diagnostics/match_postopen_gradient_peaks_v1.py",
         "tests/test_match_postopen_gradient_peaks_v1.py",
         "results/predictive-reliability-v1/postopen-gradient-peak-matching-v1.json"
+      ],
+      "qualification": "All saved local extrema retained with greedy nearest-position pairing and no cutoff. Extra extrema increase with refinement, especially burned fraction; matching is descriptive, not physical identification, periodicity, GCI, validation, or prediction."
+    },
+    {
+      "id": "PRED-POSTOPEN-EXTREMA-CONSERVATION-CONTEXT",
+      "description": "Relate saved post-opening local extrema to phase-integrated conservation and per-duct field changes using completed transport artifacts; determine whether interpretation can be narrowed without solver changes.",
+      "dependencies": [
+        "PRED-POSTOPEN-GRADIENT-PEAK-MATCHING"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/postopen-gradient-peak-matching-v1.json",
+        "results/predictive-reliability-v1/postopen-wave-transport-analysis-v1.json",
+        "results/predictive-reliability-v1/postopen-wave-field-localization-v1.json"
+      ],
+      "next_action": "Read saved reports and case receipts; build a bounded read-only cross-reference only if artifacts expose compatible phase, duct and conservation quantities. If not, record the precise data limitation and stop without rerunning the solver.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/diagnostics/contextualize_postopen_extrema_v1.py",
+        "tests/test_contextualize_postopen_extrema_v1.py",
+        "results/predictive-reliability-v1/postopen-extrema-conservation-context-v1.json"
       ]
     }
   ],
@@ -14530,6 +14558,12 @@
       "task": "PRED-POSTOPEN-EXHAUST-WAVEFRONT",
       "kind": "task",
       "summary": "Tracked native-grid pressure/density/burned-marker gradients and total variation at60/90/120/150deg. At90deg the strongest pressure-gradient peak is near0.007m (88),0.0035m (176), but0.867m (352); peak identity switches with grid, so no single-front interpretation is supported."
+    },
+    {
+      "task": "PRED-POSTOPEN-GRADIENT-PEAK-MATCHING",
+      "summary": "Compared every saved pressure, density and burned-marker gradient extremum across 88/176/352 meshes at 90/120/150deg; retained unmatched peaks without thresholds. Extra extrema increase with refinement, especially for burned fraction; no physical wave identity assigned. Two focused tests pass.",
+      "at": "2026-10-28T16:20:00Z",
+      "kind": "task"
     }
   ],
   "legacy_gate_status": {
