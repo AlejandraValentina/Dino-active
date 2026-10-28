@@ -10271,14 +10271,17 @@
       "id": "PRED-POSTOPEN-EXHAUST-WAVEFRONT",
       "description": "Track the saved post-opening exhaust pressure and burned-marker front positions/amplitudes at60/90/120/150 degrees across 88/176/352 grids to distinguish front displacement from amplitude sensitivity; no solver run.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
         "results/predictive-reliability-v1/postopen-wave-field-localization-v1.json",
-        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/postopen-wave-transport-run-v2/"
+        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/postopen-wave-transport-run-v2/",
+        "scripts/diagnostics/track_postopen_exhaust_wavefront_v1.py",
+        "tests/test_track_postopen_exhaust_wavefront_v1.py",
+        "results/predictive-reliability-v1/postopen-exhaust-wavefront-v1.json"
       ],
-      "next_action": "Compute front location/width and phase-matched pressure-gradient profiles on the common material interval, with existing saved states; report grid spread and time-half control without fitting a wave speed or changing physics.",
+      "next_action": "Strongest-gradient locations are reported as descriptors only; at90deg pressure-gradient maxima differ markedly by grid, so do not infer a single wave-front location. Compare all local peaks and match them by position across meshes before changing the solver.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "evidence_level": "L1",
@@ -10286,6 +10289,28 @@
         "scripts/diagnostics/track_postopen_exhaust_wavefront_v1.py",
         "tests/test_track_postopen_exhaust_wavefront_v1.py",
         "results/predictive-reliability-v1/postopen-exhaust-wavefront-v1.json"
+      ],
+      "qualification": "Read-only native-grid gradients/total variation/centroid/width at60/90/120/150deg and 176 half-step control. Strongest pressure gradient at90deg: 88/176 near0.007/0.0035m; 352 at0.867m, showing peak switching/ambiguity. No thresholds, wave speed, cause, or physics change."
+    },
+    {
+      "id": "PRED-POSTOPEN-GRADIENT-PEAK-MATCHING",
+      "description": "Resolve the demonstrated grid-dependent switching of the strongest post-opening exhaust pressure-gradient peak by matching all prominent saved pressure/density/marker gradients across grids and phases; no solver run.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/postopen-exhaust-wavefront-v1.json",
+        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/postopen-wave-transport-run-v2/"
+      ],
+      "next_action": "Using saved fields, report ordered local gradient extrema and nearest-position matches across88/176/352 at90/120/150deg; retain unmatched peaks and avoid threshold-defined front labels or wave-speed fits.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/diagnostics/match_postopen_gradient_peaks_v1.py",
+        "tests/test_match_postopen_gradient_peaks_v1.py",
+        "results/predictive-reliability-v1/postopen-gradient-peak-matching-v1.json"
       ]
     }
   ],
@@ -10504,9 +10529,9 @@
       "PRED-IDENTIFICATION",
       "PRED-VALIDATION"
     ],
-    "completion_criterion": "E1.3 periodic GCI remains blocked by the approved detector/per-grid budget. The independent post-opening run is complete; phase-matched differences are localized predominantly to exhaust after120 degrees, with upstream duct changes also visible. Track saved wave-front position and amplitude before selecting any numerical/physical change. External validation remains pending.",
+    "completion_criterion": "E1.3 periodic GCI remains blocked by the approved detector/per-grid budget. The post-opening study shows growing exhaust spatial differences and grid-dependent switching of the strongest pressure-gradient location at90 degrees. Match saved multi-peak structure before selecting any numerical/physical change. External validation remains pending.",
     "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
-    "qualification": "Four post-opening cases complete and source replayed exactly; read-only field comparison/localization show transient spatial sensitivity, with 176 half-step sensitivity much smaller. No periodicity, GCI, experimental validation, predictive claim or candidate promotion. V2/MUSCL remain experimental; rc7 preserved.",
+    "qualification": "Post-opening finite-arc cases complete; saved gradients/field differences remain transient numerical diagnostics. No periodicity, GCI, experimental validation, predictive claim or candidate promotion. V2/MUSCL remain experimental; rc7 preserved.",
     "staged_plan": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md"
   },
   "objectives": [
@@ -14499,6 +14524,12 @@
       "task": "PRED-POSTOPEN-WAVE-FIELD-LOCALIZATION",
       "kind": "task",
       "summary": "Common-88 per-duct profiles localized growing spatial difference: exhaust burned-marker L1 88/176 rises0.0922% (60deg) to1.784% (150deg), 176/3520.0334% to0.7993%; upstream primary/secondary/boost differences become visible by120deg. No cause assigned."
+    },
+    {
+      "at": "2026-10-28T16:06:33Z",
+      "task": "PRED-POSTOPEN-EXHAUST-WAVEFRONT",
+      "kind": "task",
+      "summary": "Tracked native-grid pressure/density/burned-marker gradients and total variation at60/90/120/150deg. At90deg the strongest pressure-gradient peak is near0.007m (88),0.0035m (176), but0.867m (352); peak identity switches with grid, so no single-front interpretation is supported."
     }
   ],
   "legacy_gate_status": {
@@ -14593,7 +14624,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-28T16:05:25Z",
+  "updated_at": "2026-10-28T16:06:33Z",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
