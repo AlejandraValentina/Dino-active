@@ -9945,6 +9945,31 @@
       ],
       "evidence_level": "L1",
       "qualification": "Six cases complete (one reused,five new);264.453s/600. Delta peak -7.408kPa vs empirical envelope22.665kPa; lag2.23048deg vs2.5deg. Reflection return not identified. Temporal cap refinement overlaps due CFL. No demonstrated solver defect; no predictive claim. SELF_REVIEW."
+    },
+    {
+      "id": "PRED-E2-SPATIAL-WAVES-V1",
+      "description": "Owner bounded second-order wave resolution on frozen E2A A/B; reuse selectable MUSCL boundary V2;600s cumulative, no E2B",
+      "dependencies": [
+        "PRED-E2A-EXHAUST-WAVES-V1"
+      ],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "docs/gasdynamic/e2-spatial-waves-protocol-v1.md",
+        "results/e2-spatial-waves-v1/preparation/manifest.json"
+      ],
+      "next_action": "Commit protocol before numerical controls; then six bounded cases if verification passes; deliver decision and stop.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "docs/gasdynamic/e2-spatial-waves-protocol-v1.md",
+        "scripts/diagnostics/e2_spatial_waves_v1.py",
+        "tests/test_e2_spatial_waves_v1.py",
+        "results/e2-spatial-waves-v1/"
+      ],
+      "evidence_level": "L1",
+      "qualification": "Only spatial selector changes. Existing integrated MUSCL V2 preserves HLLC,SSPRK2,V2 ports and species. First order/rc7 intact; transient, no predictive claim."
     }
   ],
   "audit_remediation_mode": false,
@@ -10162,9 +10187,9 @@
       "PRED-IDENTIFICATION",
       "PRED-VALIDATION"
     ],
-    "completion_criterion": "Unified owner roadmap docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md: port-law verification, pressure waves and numerically distinguishable design effects, identifiable scavenging, evidence-led closures, independent measured curves and exhaust-change validation, then performance/product. Data acquisition parallel; X30 preferred, not exclusive. Current authorized delivery: E2A frozen A/B wave comparison within600s, then stop; no other stage or historical campaign. Periodicity/conservation do not establish predictive capability.",
+    "completion_criterion": "Unified owner roadmap docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md: port-law verification, pressure waves and numerically distinguishable design effects, identifiable scavenging, evidence-led closures, independent measured curves and exhaust-change validation, then performance/product. Data acquisition parallel; X30 preferred, not exclusive. Current authorized delivery: bounded second-order waves on frozen E2A A/B within600s, then stop; no E2B or historical campaign. Periodicity/conservation do not establish predictive capability.",
     "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
-    "qualification": "E2A completed DIFERENCIA NO RESUELTA within600s. Owner explicitly requests stop and decision presentation before further work; no E2B or old READY task execution authorized.",
+    "qualification": "Owner activates only second-order wave-resolution deliverable on E2A physical cases,600s incl verification; stop after decision; no E2B or historical campaigns.",
     "staged_plan": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md"
   },
   "objectives": [
@@ -14031,6 +14056,12 @@
       "task": "PRED-E2A-EXHAUST-WAVES-V1",
       "kind": "task",
       "summary": "E2A CLOSED DIFERENCIA NO RESUELTA:6 cases,1 reused/5new,264.453s<600. Peak delta-7.408kPa vs envelope22.665;lag2.23048deg vs2.5. Spatial sensitivity dominates tested changes; temporal cap not uniform actual-dt halving. Reflected return unidentified. Balances<=1.8e-15;checkpoints exact;20.2MB raw external. No solver changes. STOP per owner; no further stage."
+    },
+    {
+      "at": "2026-10-28T12:50:20+00:00",
+      "task": "PRED-E2-SPATIAL-WAVES-V1",
+      "kind": "task",
+      "summary": "Owner authorizes second-order waves only. Reuse existing integrated MUSCL boundary V2 with positivity/species; freeze E2A configurations and criteria before controls.600s includes verification; preserve rc7 and first order; no E2B."
     }
   ],
   "legacy_gate_status": {
@@ -14617,8 +14648,8 @@
   "roadmap_control": {
     "roadmap": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md",
     "owner_decision_date": "2026-10-28",
-    "activation": "E2A_COMPLETE_OWNER_REQUESTED_STOP_NO_OTHER_WORK_AUTHORIZED",
-    "next_deliverable": "None automatically: present completed E2A decision to owner before any further work.",
+    "activation": "E2_SPATIAL_WAVES_ONLY_OWNER_AUTHORIZED",
+    "next_deliverable": "Experimental second-order implementation reused and qualified A/B measurements;600s cumulative; decision then stop.",
     "experimental_data_policy": "Acquire matched-engine geometry/conditions/uncertainties in parallel from start; prefer X30, accept a more complete independent reference without mixing engines; no repeated blocked downloads or unsolicited external messages.",
     "historical_ready_policy": "READY history does not authorize reviving meshes, 90-150deg studies or old campaigns outside an explicitly activated roadmap deliverable. SPV1 READY task stays intact.",
     "stages": [
@@ -14631,7 +14662,7 @@
       },
       {
         "id": "E2",
-        "state": "E2A_CLOSED_DIFFERENCE_NOT_RESOLVED_E2B_NOT_STARTED",
+        "state": "E2_SPATIAL_WAVES_IN_PROGRESS_E2B_NOT_STARTED",
         "evidence": "results/e2a-exhaust-waves-v1/decision.json"
       },
       {
