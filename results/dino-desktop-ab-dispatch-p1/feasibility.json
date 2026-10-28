@@ -1,0 +1,134 @@
+{
+  "acceptance_2x_both_cases": false,
+  "artifact_root": "${DINO_ARTIFACT_ROOT}",
+  "cases": [
+    {
+      "all_checkpoints_equal": true,
+      "all_one_cycle": true,
+      "case_id": "low",
+      "parallel_wall_seconds": 13.781637699808925,
+      "points": [
+        {
+          "checkpoint_equal": true,
+          "parallel_checkpoint_sha256": "902c31dfabef0af1fe21ba22b41b23fa8acf27dcce776b66a1d5f776a7b214c6",
+          "parallel_cycles": 1,
+          "parallel_status": "COMPLETE",
+          "rpm": 5000,
+          "serial_checkpoint_sha256": "902c31dfabef0af1fe21ba22b41b23fa8acf27dcce776b66a1d5f776a7b214c6",
+          "serial_cycles": 1,
+          "serial_status": "COMPLETE",
+          "variant": "A_original"
+        },
+        {
+          "checkpoint_equal": true,
+          "parallel_checkpoint_sha256": "9a73a01057deae204c5e3cac53e35dd53488370a40353e28eb5175e273856ef7",
+          "parallel_cycles": 1,
+          "parallel_status": "COMPLETE",
+          "rpm": 6000,
+          "serial_checkpoint_sha256": "9a73a01057deae204c5e3cac53e35dd53488370a40353e28eb5175e273856ef7",
+          "serial_cycles": 1,
+          "serial_status": "COMPLETE",
+          "variant": "A_original"
+        },
+        {
+          "checkpoint_equal": true,
+          "parallel_checkpoint_sha256": "36d9b1519aad6088b8a9fca8d5643e6f4b1b8bce9794f3ad781a630556bbc3f3",
+          "parallel_cycles": 1,
+          "parallel_status": "COMPLETE",
+          "rpm": 5000,
+          "serial_checkpoint_sha256": "36d9b1519aad6088b8a9fca8d5643e6f4b1b8bce9794f3ad781a630556bbc3f3",
+          "serial_cycles": 1,
+          "serial_status": "COMPLETE",
+          "variant": "B_header_plus20"
+        },
+        {
+          "checkpoint_equal": true,
+          "parallel_checkpoint_sha256": "6a27103d84d690532c4f37ab93dc8bc86cdadaa7c25855c1ec2c0dec39ca866e",
+          "parallel_cycles": 1,
+          "parallel_status": "COMPLETE",
+          "rpm": 6000,
+          "serial_checkpoint_sha256": "6a27103d84d690532c4f37ab93dc8bc86cdadaa7c25855c1ec2c0dec39ca866e",
+          "serial_cycles": 1,
+          "serial_status": "COMPLETE",
+          "variant": "B_header_plus20"
+        }
+      ],
+      "rpms": [
+        5000,
+        6000
+      ],
+      "serial_wall_seconds": 25.65924770012498,
+      "speedup": 1.8618431465863254
+    },
+    {
+      "all_checkpoints_equal": true,
+      "all_one_cycle": true,
+      "case_id": "high",
+      "parallel_wall_seconds": 12.332246100064367,
+      "points": [
+        {
+          "checkpoint_equal": true,
+          "parallel_checkpoint_sha256": "535764968ec33477f4652d329fc24f930ee75516c7b457c2184a811f633e997a",
+          "parallel_cycles": 1,
+          "parallel_status": "COMPLETE",
+          "rpm": 7000,
+          "serial_checkpoint_sha256": "535764968ec33477f4652d329fc24f930ee75516c7b457c2184a811f633e997a",
+          "serial_cycles": 1,
+          "serial_status": "COMPLETE",
+          "variant": "A_original"
+        },
+        {
+          "checkpoint_equal": true,
+          "parallel_checkpoint_sha256": "513ff365f5c0be24538273342e0b28db780d3444ee44ca6bdcc23a62949b693c",
+          "parallel_cycles": 1,
+          "parallel_status": "COMPLETE",
+          "rpm": 8000,
+          "serial_checkpoint_sha256": "513ff365f5c0be24538273342e0b28db780d3444ee44ca6bdcc23a62949b693c",
+          "serial_cycles": 1,
+          "serial_status": "COMPLETE",
+          "variant": "A_original"
+        },
+        {
+          "checkpoint_equal": true,
+          "parallel_checkpoint_sha256": "08638e78a3f24c84307bdb858075a74770f8d84b9e42eac22367eb664a168c5d",
+          "parallel_cycles": 1,
+          "parallel_status": "COMPLETE",
+          "rpm": 7000,
+          "serial_checkpoint_sha256": "08638e78a3f24c84307bdb858075a74770f8d84b9e42eac22367eb664a168c5d",
+          "serial_cycles": 1,
+          "serial_status": "COMPLETE",
+          "variant": "B_header_plus20"
+        },
+        {
+          "checkpoint_equal": true,
+          "parallel_checkpoint_sha256": "e283ba64fa5c6cd56d018c6a05c1a51ec4e1106d6ace832e51627b6201c2874c",
+          "parallel_cycles": 1,
+          "parallel_status": "COMPLETE",
+          "rpm": 8000,
+          "serial_checkpoint_sha256": "e283ba64fa5c6cd56d018c6a05c1a51ec4e1106d6ace832e51627b6201c2874c",
+          "serial_cycles": 1,
+          "serial_status": "COMPLETE",
+          "variant": "B_header_plus20"
+        }
+      ],
+      "rpms": [
+        7000,
+        8000
+      ],
+      "serial_wall_seconds": 23.275046600028872,
+      "speedup": 1.8873323165280809
+    }
+  ],
+  "interpretation": "Bounded dispatch feasibility only; one-cycle checkpoints are not periodic performance results.",
+  "max_cycles_per_point": 1,
+  "per_worker_memory_limit_mib": 1024,
+  "periodicity_evaluated": false,
+  "project": "functional-reed-125cc-v1",
+  "schema": "DINO_DESKTOP_AB_DISPATCH_FEASIBILITY_V1",
+  "state_equivalence": true,
+  "variant_ids": [
+    "A_original",
+    "B_header_plus20"
+  ],
+  "worker_count": 2
+}

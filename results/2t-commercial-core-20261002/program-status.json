@@ -10429,15 +10429,18 @@
       "dependencies": [
         "DINO-DESKTOP-MEASURED-DATA-P2"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
-        "docs/roadmaps/dino-2t-product-roadmap-v2-20261028.md#p1-tiempo-practico-para-comparar-diseños",
-        "results/integrated-performance-v2/report.md",
-        "results/integrated-performance-v4/report.md"
+        "scripts/diagnostics/benchmark_dino_desktop_ab_dispatch_p1.py",
+        "results/dino-desktop-ab-dispatch-p1/report.md",
+        "results/dino-desktop-ab-dispatch-p1/feasibility.json",
+        "results/dino-desktop-ab-dispatch-p1/logs/dino-desktop-ab-dispatch-p1.summary.json",
+        "Two bounded one-cycle A/B cases: 1.862x and 1.887x end-to-end; all eight serial/parallel checkpoint pairs exactly equal",
+        "Storage preflight PASS; run_logged duration 75.859 s; periodicity not evaluated"
       ],
-      "next_action": "Inspect existing coordinator API and Desktop dispatch, then run only the roadmap-approved brief end-to-end feasibility comparison if existing deterministic fixtures support it; stop if benefit/correctness cannot be measured without a periodicity campaign.",
+      "next_action": "Do not ship the two-curve dispatcher as the 2x P1 performance deliverable. The six-point periodic-state acceptance is not demonstrated and no periodicity campaign is authorized in this task. P3 remains ineligible until practical time-to-compare and measured-result interpretation dependencies are met; continue only when a roadmap task is unlocked.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "product/implementation/verification",
       "evidence_level": "L1",
@@ -10446,7 +10449,7 @@
         "motorsim/desktop/services.py",
         "tests/test_dino_desktop.py"
       ],
-      "qualification": "V2/V4 solver performance pilots are closed and must not be repeated; only Desktop integration of independent runs is in scope. Full six-point acceptance remains unclaimed."
+      "qualification": "Bounded feasibility shows useful but sub-threshold acceleration for two isolated curves. Reject this alternative for the 2x P1 acceptance; no Desktop dispatch integration, solver changes, or periodicity/prediction claim."
     }
   ],
   "audit_remediation_mode": false,
@@ -14707,6 +14710,12 @@
       "task": "DINO-DESKTOP-MEASURED-DATA-P2",
       "kind": "task",
       "summary": "Desktop conecta mediciones de banco y trazas de presión con importación hash-bound, conservación de provenance, overlay exacto, residuos y export reproducible; round-trip V1/V2 comprobado con datos UNKNOWN."
+    },
+    {
+      "at": "2026-10-28T16:37:10Z",
+      "task": "DINO-DESKTOP-COMPARISON-SPEED-P1",
+      "kind": "decision",
+      "summary": "Dos casos A/B acotados de una vuelta: despacho con 2 procesos 1.862×/1.887× y checkpoints idénticos; menor al objetivo 2×, sin claim de periodicidad. Se rechaza integrar esta alternativa como cierre P1."
     }
   ],
   "legacy_gate_status": {
