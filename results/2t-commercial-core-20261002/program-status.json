@@ -9982,14 +9982,21 @@
       "dependencies": [
         "PRED-E2-SPATIAL-WAVES-V1"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "641d8cc",
+        "2d955f4"
+      ],
       "evidence": [
         "docs/gasdynamic/e2b-periodic-ab-protocol-v1.md",
-        "results/e2b-periodic-ab-v1/manifest.json"
+        "results/e2b-periodic-ab-v1/report.md",
+        "results/e2b-periodic-ab-v1/decision.json",
+        "results/e2b-periodic-ab-v1/artifact-index.json",
+        "results/e2b-periodic-ab-v1/verification.json",
+        "results/e2b-periodic-ab-v1/recovery-manifest.json"
       ],
-      "next_action": "Freeze before numerical execution. Run existing detector on independent configs; primary verify last accepted streak,exploratory power only.5400s global;no later stages.",
+      "next_action": "STOP E2B. No automatic refinement, other RPM or later stage. Periodic A/B on frozen44, power difference exploratory; selected experimental reference remains partial.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -9997,10 +10004,11 @@
         "scripts/diagnostics/e2b_periodic_ab_v1.py",
         "scripts/diagnostics/summarize_e2b_periodic_ab_v1.py",
         "tests/test_e2b_periodic_ab_v1.py",
-        "results/e2b-periodic-ab-v1/"
+        "results/e2b-periodic-ab-v1/",
+        "scripts/diagnostics/recover_e2b_output_v1.py"
       ],
       "evidence_level": "L2",
-      "qualification": "Same A44 config historically periodic30;measured13-14s/cycle,planning15.100cycles each+audits/tests/reserve fits5400. B cycle count uncertain. Power mesh uncertainty unquantified;no legacy power comparison. rc7/source/criteria intact."
+      "qualification": "E2B_PERIODICO_EXPLORATORIO: A PERIOD1 cycle30, B PERIOD1 cycle32, independent.17.5163/18.4038kW,delta+5.06648%, periodic power uncertainty unquantified.1728.891s/5400,151.05MiB. Full last4 primary audit each PASS. Diagnostic output binding fixed, original failure preserved; no solver/model/rc7 changes.301 P4-P8 PASS/3SKIP,28 focal+5 recovery PASS.SELF_REVIEW."
     },
     {
       "id": "PRED-EXPERIMENTAL-REFERENCE-SELECTION-V1",
@@ -14132,6 +14140,12 @@
       "task": "PRED-EXPERIMENTAL-REFERENCE-SELECTION-V1",
       "kind": "task",
       "summary": "Five primary-source candidates ranked. Cahoon264p retrieved: MK1 primary PARTIAL, Zhang measured five-exhaust alternative, X30 conditional generalization. No complete matched engine; missing geometry/test conventions documented. No configurations, simulations or solver changes for selection; no external messages."
+    },
+    {
+      "at": "2026-10-28T14:31:32+00:00",
+      "task": "PRED-E2B-PERIODIC-AB-V1",
+      "kind": "task",
+      "summary": "E2B closed EXPLORATORIO: independent A30/B32 PERIOD1, final4 primary audits each PASS. Modeled brake17.5163/18.4038kW,+5.066%, power discretization uncertainty unquantified.1728.891s/5400. Export wrapper binding recovered with original attempt preserved;no fresh cycles or product changes. rc7 intact;stop after delivery."
     }
   ],
   "legacy_gate_status": {
@@ -14713,13 +14727,18 @@
     "experimental_accuracy": "NOT_CLAIMED",
     "summary": "176-cell bounded diagnostic conserves but three-level work converges slowly and fields are mixed; all two-cycle cases remain transient. 41 new diagnostic tests and 301 P4-P8 tests PASS. Public component candidate retained, no complete validation package adopted.",
     "replanning_review": "Numerical and public-source continuation performed as authorized. Next local work isolates boundary/area truncation, checks inlet experimental completeness and prepares bounded periodicity protocol. Historical SPV1/X30/CRV1 entries preserved untouched.",
-    "next_requirement": "Complete independently measured specimen/test package and defensible numerical uncertainty, not assumed input completion."
+    "next_requirement": "Complete independently measured specimen/test package and defensible numerical uncertainty, not assumed input completion.",
+    "latest_e2b": {
+      "state": "E2B_PERIÓDICO_EXPLORATORIO",
+      "evidence": "results/e2b-periodic-ab-v1/decision.json",
+      "qualification": "Supersedes earlier transient-only description for these A/B44 cases, not a mesh-independence or experimental validation claim."
+    }
   },
   "roadmap_control": {
     "roadmap": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md",
     "owner_decision_date": "2026-10-28",
-    "activation": "E2B_PERIODIC_AB_ONLY_OWNER_AUTHORIZED",
-    "next_deliverable": "E2B independent periodic A/B with explicit numerical power uncertainty qualification;5400s,decision then stop.",
+    "activation": "AUTHORIZED_DELIVERABLES_CLOSED_STOP",
+    "next_deliverable": "None activated. E2B exploratory and experimental reference selection delivered; no new meshes/cycles, E3 or data-acquisition messages automatically.",
     "experimental_data_policy": "Cahoon MK1 prioritized after full-text review; Zhang alternative for measured exhaust changes; X30 conditional generalization. No complete matched dataset verified, no mixing engines, no synthetic fill or unsolicited messages.",
     "historical_ready_policy": "READY history does not authorize reviving meshes, 90-150deg studies or old campaigns outside an explicitly activated roadmap deliverable. SPV1 READY task stays intact.",
     "stages": [
@@ -14732,10 +14751,10 @@
       },
       {
         "id": "E2",
-        "state": "E2B_IN_PROGRESS_FROZEN44_EXPLORATORY_SCOPE",
-        "evidence": "results/e2-spatial-waves-v1/adoption.json",
+        "state": "E2B_PERIODIC_EXPLORATORY_CLOSED",
+        "evidence": "results/e2b-periodic-ab-v1/decision.json",
         "adoption": "ADOPTAR_COMO_CANDIDATO",
-        "qualification": "P1 only, transient A/B. Downstream sensitivity increases; reflection return and periodic power not qualified."
+        "qualification": "A30/B32 PERIOD1 on frozen44 MUSCL V2; +5.066% modeled brake power for B, numerical power uncertainty unquantified, no predictive claim."
       },
       {
         "id": "E3",

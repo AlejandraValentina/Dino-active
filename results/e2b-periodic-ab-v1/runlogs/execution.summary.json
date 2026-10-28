@@ -1,0 +1,24 @@
+{
+  "name": "execution",
+  "command": [
+    "python",
+    "scripts/diagnostics/e2b_periodic_ab_v1.py",
+    "execute"
+  ],
+  "started_at": "2026-10-28T13:44:24+00:00",
+  "finished_at": "2026-10-28T14:04:08+00:00",
+  "duration_s": 1184.328,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\e2b-periodic-ab-v1\\runlogs\\execution.log",
+  "log_lines": 3,
+  "log_bytes": 1010,
+  "error_lines": [
+    "3: {\"classification\": \"E2B_DEFECTO\", \"error\": \"ValueError: accepted periodicity output requires detector/config/terminal-bound evidence\", \"wall_s\": 1183.968922900036, \"cumulative_wall_s\": 1372.8904834999703}"
+  ],
+  "tail": [
+    "{\"variant\": \"A\", \"status\": \"PERIOD_DETECTED_REQUIRES_PRIMARY_VERIFICATION\", \"error\": null, \"completed_cycles\": 30, \"detected_period\": 1, \"converged_cycle\": 30, \"wall_s\": 414.7468403999228, \"solver_s\": 408.02110348804854, \"peak_rss_mib\": 54.28125, \"initialization\": \"INDEPENDENT_CONFIG_AT_ZERO;NO_WARM",
+    "{\"variant\": \"B\", \"status\": \"PERIOD_DETECTED_REQUIRES_PRIMARY_VERIFICATION\", \"error\": null, \"completed_cycles\": 32, \"detected_period\": 1, \"converged_cycle\": 32, \"wall_s\": 451.3651542000007, \"solver_s\": 443.89342349325307, \"peak_rss_mib\": 54.68359375, \"initialization\": \"INDEPENDENT_CONFIG_AT_ZERO;NO_W",
+    "{\"classification\": \"E2B_DEFECTO\", \"error\": \"ValueError: accepted periodicity output requires detector/config/terminal-bound evidence\", \"wall_s\": 1183.968922900036, \"cumulative_wall_s\": 1372.8904834999703}"
+  ]
+}
