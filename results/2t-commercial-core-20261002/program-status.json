@@ -10246,14 +10246,17 @@
       "id": "PRED-POSTOPEN-WAVE-FIELD-LOCALIZATION",
       "description": "Localize the post-opening spatial pressure/density/species discrepancy from saved 88/176/352 fields at90/120/150 degrees and identify the first duct/phase interval where it grows; no solver run or physics change.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
         "results/predictive-reliability-v1/postopen-wave-transport-analysis-v1.json",
-        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/postopen-wave-transport-run-v2/"
+        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/postopen-wave-transport-run-v2/",
+        "scripts/diagnostics/localize_postopen_wave_field_error_v1.py",
+        "tests/test_localize_postopen_wave_field_error_v1.py",
+        "results/predictive-reliability-v1/postopen-wave-field-localization-v1.json"
       ],
-      "next_action": "Produce a read-only per-duct/common-material-bin map of the saved spatial differences and phase growth, distinguish inlet/primary/secondary/exhaust, and report evidence only; do not infer causality or alter thresholds.",
+      "next_action": "Saved differences are localized; do not change physics or numerical settings from this transient result alone. Track exhaust wave-front displacement and pressure/marker amplitude at the same phases to distinguish propagation from amplitude error.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "evidence_level": "L1",
@@ -10261,6 +10264,28 @@
         "scripts/diagnostics/localize_postopen_wave_field_error_v1.py",
         "tests/test_localize_postopen_wave_field_error_v1.py",
         "results/predictive-reliability-v1/postopen-wave-field-localization-v1.json"
+      ],
+      "qualification": "Read-only localization mapped density/pressure/species differences by all five ducts and four exhaust quarters on a common 88-cell grid. Exhaust burned-marker L1 for 88/176 rises 0.0922% at60deg to1.784% at150deg; 176/352 rises0.0334% to0.7993%. Primary/secondary/boost changes also appear by120deg. No causal or predictive claim."
+    },
+    {
+      "id": "PRED-POSTOPEN-EXHAUST-WAVEFRONT",
+      "description": "Track the saved post-opening exhaust pressure and burned-marker front positions/amplitudes at60/90/120/150 degrees across 88/176/352 grids to distinguish front displacement from amplitude sensitivity; no solver run.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/postopen-wave-field-localization-v1.json",
+        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/postopen-wave-transport-run-v2/"
+      ],
+      "next_action": "Compute front location/width and phase-matched pressure-gradient profiles on the common material interval, with existing saved states; report grid spread and time-half control without fitting a wave speed or changing physics.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/diagnostics/track_postopen_exhaust_wavefront_v1.py",
+        "tests/test_track_postopen_exhaust_wavefront_v1.py",
+        "results/predictive-reliability-v1/postopen-exhaust-wavefront-v1.json"
       ]
     }
   ],
@@ -10479,9 +10504,9 @@
       "PRED-IDENTIFICATION",
       "PRED-VALIDATION"
     ],
-    "completion_criterion": "E1.3 periodic GCI is locally blocked: 88/176 stayed transient, and the approved 176 per-grid budget cannot fit the minimum detector streak. The independent recorded39 post-opening diagnostic is complete and shows spatial field differences growing from90 to150 degrees while 176 half-step differences remain much smaller. Localize the saved field differences before any further numerical/physical change; external experimental validation remains pending.",
+    "completion_criterion": "E1.3 periodic GCI remains blocked by the approved detector/per-grid budget. The independent post-opening run is complete; phase-matched differences are localized predominantly to exhaust after120 degrees, with upstream duct changes also visible. Track saved wave-front position and amplitude before selecting any numerical/physical change. External validation remains pending.",
     "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
-    "qualification": "Four source-bound post-opening cases completed under the activated budget. No periodicity, GCI, experimental validation, predictive claim or candidate promotion. V2/MUSCL remain experimental and rc7 preserved.",
+    "qualification": "Four post-opening cases complete and source replayed exactly; read-only field comparison/localization show transient spatial sensitivity, with 176 half-step sensitivity much smaller. No periodicity, GCI, experimental validation, predictive claim or candidate promotion. V2/MUSCL remain experimental; rc7 preserved.",
     "staged_plan": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md"
   },
   "objectives": [
@@ -14468,6 +14493,12 @@
       "task": "PRED-POSTOPEN-WAVE-TRANSPORT-ANALYZER",
       "kind": "task",
       "summary": "Common-phase report complete: spatial exhaust burned-marker L1 differences at150deg are1.784% (88/176),0.799% (176/352),2.473% (88/352); temporal 176 half-step is7.48e-6 absolute fraction. Spatial difference grows after opening; no GCI/claim."
+    },
+    {
+      "at": "2026-10-28T16:05:25Z",
+      "task": "PRED-POSTOPEN-WAVE-FIELD-LOCALIZATION",
+      "kind": "task",
+      "summary": "Common-88 per-duct profiles localized growing spatial difference: exhaust burned-marker L1 88/176 rises0.0922% (60deg) to1.784% (150deg), 176/3520.0334% to0.7993%; upstream primary/secondary/boost differences become visible by120deg. No cause assigned."
     }
   ],
   "legacy_gate_status": {
@@ -14562,7 +14593,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-28T16:04:04Z",
+  "updated_at": "2026-10-28T16:05:25Z",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
