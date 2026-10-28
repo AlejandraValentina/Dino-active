@@ -9861,6 +9861,27 @@
         "results/predictive-reliability-v1/postopen-wave-transport-preparation-v1/"
       ],
       "evidence_level": "L1"
+    },
+    {
+      "id": "ENGINE-PORT-FLOW-VERIFICATION-V1",
+      "description": "Owner-scoped port-law decision using existing R1, V1/V2, analytic nozzle controls and two bounded first-order integrated runs; no other research",
+      "dependencies": [],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "docs/gasdynamic/port_flow_verification_v1.md"
+      ],
+      "next_action": "Run fixed isolated matrix, then bounded legacy/V2 A9000 comparison if gates pass; decide CORREGIR/CONSERVAR/INDETERMINADO and close without further diagnostics",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "write_scope": [
+        "docs/gasdynamic/port_flow_verification_v1.md",
+        "scripts/diagnostics/verify_port_flow_physics_v1.py",
+        "tests/test_port_flow_physics_verification_v1.py",
+        "results/port-flow-verification-v1/"
+      ],
+      "evidence_level": "L2"
     }
   ],
   "audit_remediation_mode": false,
@@ -13914,6 +13935,12 @@
       "task": "PRED-PREOPEN-WAVE-TRANSPORT-EXECUTION",
       "kind": "task",
       "summary": "5 pre-opening cases198.056s<480, identical960 steps3 grids, timehalf1920, zero rejects/left transport. Outlet differences3.036%->1.043%; pressure L1 .002871->.001283, burned .000922->.000334, temporal far smaller. Common-material weak norms contract; original pointwise/own-cell metrics retained. Pressure nearoutletx1.0165m dominant. Saved39 localizes marker growth90-150deg.72 tests PASS15.42s. No solver changes, no41; next design READY. All10 BLOCKED_LOCAL reevaluated, no new external data/authorization resolves historical deferrals."
+    },
+    {
+      "at": "2026-10-28T10:58:08+00:00",
+      "task": "ENGINE-PORT-FLOW-VERIFICATION-V1",
+      "kind": "task",
+      "summary": "Owner authorizes bounded port-law decision only. R1 contract excludes apertures; legacy scales Riemann flux by effective area; V2 already opt-in. Protocol fixed; diagnostic reference tests 11 PASS. All 10 BLOCKED_LOCAL reevaluated: external data and historical deferrals unchanged; no unrelated task started. Preserve user-local planning changes unstaged."
     }
   ],
   "legacy_gate_status": {
