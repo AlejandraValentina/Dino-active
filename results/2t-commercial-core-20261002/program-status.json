@@ -10174,9 +10174,12 @@
       "dependencies": [
         "PRED-POSTOPEN-WAVE-TRANSPORT-DESIGN"
       ],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "2492bc6",
+        "ed9ac79"
+      ],
       "evidence": [
         "openspec/changes/predictive-reliability-v1/postopen-wave-transport-protocol-v1.md",
         "results/predictive-reliability-v1/postopen-wave-transport-preparation-v1/receipt.json",
@@ -10190,9 +10193,12 @@
         "openspec/changes/predictive-reliability-v1/postopen-wave-transport-activation-v2.md",
         "results/predictive-reliability-v1/postopen-wave-transport-preflight-v4.json",
         "DINO_ARTIFACT_ROOT/runlogs/postopen-wave-transport-v1/postopen-wave-transport-v1.summary.json",
-        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/postopen-wave-transport-run-v1/p0-88/receipt.json"
+        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/postopen-wave-transport-run-v1/p0-88/receipt.json",
+        "DINO_ARTIFACT_ROOT/runlogs/postopen-wave-transport-v2/postopen-wave-transport-v2.summary.json",
+        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/postopen-wave-transport-run-v2/receipt.json",
+        "results/predictive-reliability-v1/postopen-wave-transport-analysis-v1.json"
       ],
-      "next_action": "Run the corrected four-case campaign once from the v2 preflight, with 572.203 s remaining total activation cap and 210 s per case; exact replay, conservation and target phases required.",
+      "next_action": "Completed all four cases within the remaining activation cap; use the common-phase report and localize the post-opening spatial discrepancy before any further physical or numerical change.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/implementation/verification",
       "evidence_level": "L1",
@@ -10209,20 +10215,23 @@
         "results/predictive-reliability-v1/postopen-wave-transport-preflight-v4.json",
         "DINO_ARTIFACT_ROOT/predictive-reliability-v1/postopen-wave-transport-run-v2/"
       ],
-      "qualification": "The first logged attempt replayed p0-88 exactly and extended through 90 degrees, then failed only when engine.snapshot() was used on FAST state. Partial output preserved; no case accepted. Corrected FAST terminal writer and activation v2 frozen; preflight v4 PASS, 572.203 s remaining, projection 541.002 s, five focused tests PASS."
+      "qualification": "All four cases complete in 412.907s; including the preserved 27.797s failed software attempt, total activation use was 440.704s <600s. Source replay exact, phases60/90/120/150 present, normalized global residual maxima 1.03e-14 to2.51e-14. No periodicity or prediction claim."
     },
     {
       "id": "PRED-POSTOPEN-WAVE-TRANSPORT-ANALYZER",
       "description": "Implement a read-only common-phase analyzer for the activated post-opening 88/176/352 spatial cases and 176 time-half control; report pressure, density, species-marker and integrated face-flux differences without GCI or predictive claims.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
       "evidence": [
         "openspec/changes/predictive-reliability-v1/postopen-wave-transport-protocol-v1.md",
-        "openspec/changes/predictive-reliability-v1/postopen-wave-transport-activation-v1.md"
+        "openspec/changes/predictive-reliability-v1/postopen-wave-transport-activation-v1.md",
+        "scripts/diagnostics/analyze_postopen_wave_transport_v1.py",
+        "tests/test_analyze_postopen_wave_transport_v1.py",
+        "results/predictive-reliability-v1/postopen-wave-transport-analysis-v1.json"
       ],
-      "next_action": "Implement and test a fail-closed analyzer for four complete case receipts, matching phases, identities, source replay and conservation; retain nonmonotone local/spatial and temporal differences as diagnostics.",
+      "next_action": "Use common-phase report only as transient spatial/temporal diagnostic; next localize where exhaust pressure/density/species differences grow after opening.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "implementation/verification",
       "evidence_level": "L1",
@@ -10230,6 +10239,28 @@
         "scripts/diagnostics/analyze_postopen_wave_transport_v1.py",
         "tests/test_analyze_postopen_wave_transport_v1.py",
         "results/predictive-reliability-v1/postopen-wave-transport-analysis-v1.json"
+      ],
+      "qualification": "All four source-bound cases and three comparisons (88/176,176/352,88/352 plus 176 half-step control) analyzed at60/90/120/150 degrees. GCI, periodicity, adoption and prediction explicitly withheld."
+    },
+    {
+      "id": "PRED-POSTOPEN-WAVE-FIELD-LOCALIZATION",
+      "description": "Localize the post-opening spatial pressure/density/species discrepancy from saved 88/176/352 fields at90/120/150 degrees and identify the first duct/phase interval where it grows; no solver run or physics change.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/postopen-wave-transport-analysis-v1.json",
+        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/postopen-wave-transport-run-v2/"
+      ],
+      "next_action": "Produce a read-only per-duct/common-material-bin map of the saved spatial differences and phase growth, distinguish inlet/primary/secondary/exhaust, and report evidence only; do not infer causality or alter thresholds.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "physics/verification",
+      "evidence_level": "L1",
+      "write_scope": [
+        "scripts/diagnostics/localize_postopen_wave_field_error_v1.py",
+        "tests/test_localize_postopen_wave_field_error_v1.py",
+        "results/predictive-reliability-v1/postopen-wave-field-localization-v1.json"
       ]
     }
   ],
@@ -10448,9 +10479,9 @@
       "PRED-IDENTIFICATION",
       "PRED-VALIDATION"
     ],
-    "completion_criterion": "Unified owner roadmap; 88 and 176 cells did not reach periodicity. The saved 176 endpoint trends improve, but the PeriodicDetectorV2 minimum streak requires ~364.1 s and only 230.2 s remains under the approved per-grid cap. No more 176 cycles in this budget; pursue independent post-opening transport diagnostic. V2/MUSCL remain experimental.",
+    "completion_criterion": "E1.3 periodic GCI is locally blocked: 88/176 stayed transient, and the approved 176 per-grid budget cannot fit the minimum detector streak. The independent recorded39 post-opening diagnostic is complete and shows spatial field differences growing from90 to150 degrees while 176 half-step differences remain much smaller. Localize the saved field differences before any further numerical/physical change; external experimental validation remains pending.",
     "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
-    "qualification": "E1.3 periodic GCI is BLOCKED_LOCAL: no audited periodic 88/176 endpoints; current 176 per-grid budget cannot fit the minimum detector streak. The solver cannot be continued within this authorization. User activated continuation of the independent prepared post-opening 90/120/150 deg diagnostic.",
+    "qualification": "Four source-bound post-opening cases completed under the activated budget. No periodicity, GCI, experimental validation, predictive claim or candidate promotion. V2/MUSCL remain experimental and rc7 preserved.",
     "staged_plan": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md"
   },
   "objectives": [
@@ -14425,6 +14456,18 @@
       "task": "PRED-POSTOPEN-WAVE-TRANSPORT-EXECUTION",
       "kind": "task",
       "summary": "First run_logged attempt stopped after exact p0-88 source replay and 90deg extension because mid-arc FAST state cannot use native snapshot(); partial preserved. Runner now records FAST terminals. Activation v2/preflight v4 account for27.797s prior wall, leave572.203s of600; fresh source/storage PASS; 541.002s projection; 5 tests PASS."
+    },
+    {
+      "at": "2026-10-28T16:04:04Z",
+      "task": "PRED-POSTOPEN-WAVE-TRANSPORT-EXECUTION",
+      "kind": "task",
+      "summary": "Corrected source-bound run completed all four cases in412.907s. Including the27.797s preserved failed software attempt, total activation use440.704s <600s; every source replay exact, all phases60/90/120/150 recorded, global normalized conservation maxima1.03e-14..2.51e-14."
+    },
+    {
+      "at": "2026-10-28T16:04:04Z",
+      "task": "PRED-POSTOPEN-WAVE-TRANSPORT-ANALYZER",
+      "kind": "task",
+      "summary": "Common-phase report complete: spatial exhaust burned-marker L1 differences at150deg are1.784% (88/176),0.799% (176/352),2.473% (88/352); temporal 176 half-step is7.48e-6 absolute fraction. Spatial difference grows after opening; no GCI/claim."
     }
   ],
   "legacy_gate_status": {
@@ -14519,7 +14562,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-28T15:54:59Z",
+  "updated_at": "2026-10-28T16:04:04Z",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
