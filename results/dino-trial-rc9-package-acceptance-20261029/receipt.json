@@ -1,0 +1,253 @@
+{
+  "schema": "DINO_WINDOWS_RC9_PACKAGE_ACCEPTANCE_V1",
+  "classification": "READY_TRIAL",
+  "accepted_for_stable_release": false,
+  "package": {
+    "version": "0.1.0-rc9",
+    "trial": true,
+    "source_commit": "9ef35834f62a5482a5d302c053c03045ba2769d6",
+    "source_dirty": true,
+    "folder": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc9-windows-x64-9ef35834-trial-20261029T113419Z\\MotorSim",
+    "zip": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc9-windows-x64-9ef35834-trial-20261029T113419Z.zip",
+    "sha256": "3ca5caa395ee943783abfd876f7b852b8f3041190fc4a2989ddc1595ae180841",
+    "bytes": 46909015,
+    "folder_bytes": 113619126,
+    "zip_entries": 325,
+    "zip_test": null,
+    "built_utc": "20261029T113419Z",
+    "python": "3.11.0 (main, Oct 24 2022, 18:26:48) [MSC v.1933 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "architecture": "AMD64",
+    "dependencies": {
+      "altgraph": "0.17.5",
+      "packaging": "26.3",
+      "pefile": "2024.8.26",
+      "pip": "22.3",
+      "pyinstaller": "6.22.3",
+      "pyinstaller-hooks-contrib": "2026.7",
+      "PySide6": "6.11.2",
+      "PySide6_Addons": "6.11.2",
+      "PySide6_Essentials": "6.11.2",
+      "pywin32-ctypes": "0.2.3",
+      "setuptools": "65.5.0",
+      "shiboken6": "6.11.2",
+      "psutil": "7.0.0",
+      "pywinauto": "0.6.9",
+      "comtypes": "1.4.16",
+      "pywin32": "312",
+      "six": "1.17.0"
+    }
+  },
+  "prebuild": {
+    "storage_preflight": "PASS",
+    "artifact_estimate_gib": 1.5,
+    "build_work_estimate_gib": 1.0,
+    "reserve_gib": 2.0,
+    "headroom_after_estimate_bytes": 15280046080,
+    "focused_tests": {
+      "distribution": {
+        "command": "python -m pytest tests/test_distribution.py::DistributionTests::test_frozen_desktop_entry_dispatches_process_pool_before_gui_import tests/test_distribution.py::DistributionTests::test_source_command_absolute_and_cwd_independent tests/test_distribution.py::DistributionTests::test_frozen_worker_unicode_missing_and_found tests/test_distribution.py::DistributionTests::test_worker_imports_no_qt -q",
+        "result": "4 passed"
+      },
+      "parallel_dispatch": {
+        "command": "python -m pytest tests/test_dino_desktop.py::DinoDesktopTests::test_execution_page_dispatches_ab_curve_as_independent_rpm_workers tests/test_dino_desktop.py::DinoDesktopTests::test_parallel_curve_point_coordinator_persists_each_solver_run_and_checkpoint tests/test_dino_desktop.py::DinoDesktopTests::test_parallel_curve_point_cancel_and_fail_closed_states_are_durable tests/test_dino_desktop.py::DinoDesktopTests::test_history_resume_reuses_the_existing_guarded_single_point_recovery -q",
+        "result": "4 passed"
+      }
+    }
+  },
+  "packaged_executable_acceptance": {
+    "entrypoint": "packaging/dino_desktop_entry.py; spec GUI entry is packaging/dino_desktop_entry.py",
+    "freeze_support_order": "called immediately after importing multiprocessing and before motorsim.dino_desktop (which initializes PySide6)",
+    "source_order_test": "PASS",
+    "main_process_id": 21128,
+    "main_window_title": "Dino 2T — dino-2t-nuevo",
+    "main_visible_window_count": 1,
+    "spawn_child_processes_observed": [
+      {
+        "pid": 38336,
+        "parent": 21128,
+        "command_suffix": "--multiprocessing-fork",
+        "window_title": ""
+      },
+      {
+        "pid": 43104,
+        "parent": 21128,
+        "command_suffix": "--multiprocessing-fork",
+        "window_title": ""
+      },
+      {
+        "pid": 42164,
+        "parent": 21128,
+        "command_suffix": "--multiprocessing-fork",
+        "window_title": ""
+      }
+    ],
+    "worker_pool_limit": 2,
+    "interpretation": "The coordinator starts two ProcessPool workers and a multiprocessing Manager child; no spawn child opened a GUI window. All children exited after terminal state.",
+    "parallel_complete": {
+      "path": "C:\\Users\\ageribon.MIDES\\AppData\\Local\\MotorSim\\Artifacts\\dino-parallel-point-sweep-v1\\dino-2t-nuevo\\592d2201a474445fa1f1defb7a8e89b4\\dispatch.json",
+      "schema": "DINO_PARALLEL_POINT_SWEEP_V1",
+      "group_id": "592d2201a474445fa1f1defb7a8e89b4",
+      "status": "COMPLETE",
+      "elapsed_seconds": 14.702999999979511,
+      "worker_count": 2,
+      "points": [
+        {
+          "variant": "RC9 synthetic exhaust B",
+          "rpm": 4500,
+          "status": "COMPLETE",
+          "classification": "MAX_CYCLES_NONCONVERGED",
+          "periodicity": "INSUFFICIENT_CYCLES",
+          "cycles_completed": 1,
+          "checkpoint_sha256": "9e52a074c01fad48169fc880f12a699cfa3178c4c8140b6515b8d1320e4bfb5a",
+          "result_sha256": "26f107ae674b5227b7455bfb3110207661a3a7c3c3cf0b9ea9d9aa476106032a"
+        },
+        {
+          "variant": "RC9 synthetic exhaust B",
+          "rpm": 5000,
+          "status": "COMPLETE",
+          "classification": "MAX_CYCLES_NONCONVERGED",
+          "periodicity": "INSUFFICIENT_CYCLES",
+          "cycles_completed": 1,
+          "checkpoint_sha256": "2ab4baa440f988c575b4340242211143b8e560682dde31ef9f3b574af86518fa",
+          "result_sha256": "e2391086444043aad7dc6229290219969ab5d41965ada68a377c60f7150ebd27"
+        },
+        {
+          "variant": "base",
+          "rpm": 4500,
+          "status": "COMPLETE",
+          "classification": "MAX_CYCLES_NONCONVERGED",
+          "periodicity": "INSUFFICIENT_CYCLES",
+          "cycles_completed": 1,
+          "checkpoint_sha256": "9e52a074c01fad48169fc880f12a699cfa3178c4c8140b6515b8d1320e4bfb5a",
+          "result_sha256": "aae2d0b7535d5a3b1817253b3a7e1e7c3158a0f8443e9653d4ee27c633c807a0"
+        },
+        {
+          "variant": "base",
+          "rpm": 5000,
+          "status": "COMPLETE",
+          "classification": "MAX_CYCLES_NONCONVERGED",
+          "periodicity": "INSUFFICIENT_CYCLES",
+          "cycles_completed": 1,
+          "checkpoint_sha256": "2ab4baa440f988c575b4340242211143b8e560682dde31ef9f3b574af86518fa",
+          "result_sha256": "85738cfe94bbc1dcd7138c5da6ff4f95b87d4d5d0febb5eb6a366a4e14aee760"
+        }
+      ]
+    },
+    "parallel_cancel": {
+      "path": "C:\\Users\\ageribon.MIDES\\AppData\\Local\\MotorSim\\Artifacts\\dino-parallel-point-sweep-v1\\dino-2t-nuevo\\4de8c735665841c0989e784b36b3cf74\\dispatch.json",
+      "schema": "DINO_PARALLEL_POINT_SWEEP_V1",
+      "group_id": "4de8c735665841c0989e784b36b3cf74",
+      "status": "PARTIAL",
+      "elapsed_seconds": 4.0310000001918525,
+      "worker_count": 2,
+      "points": [
+        {
+          "variant": "RC9 synthetic exhaust B",
+          "rpm": 4500,
+          "status": "INTERRUPTED_CHECKPOINTED",
+          "classification": "CANCELLED_CHECKPOINTED",
+          "periodicity": "INSUFFICIENT_CYCLES",
+          "cycles_completed": 0,
+          "checkpoint_sha256": null,
+          "result_sha256": "d5b3b2cf0aa5a721134303c31565520d510f26a3f51c9a04d70677f2ef7e8721"
+        },
+        {
+          "variant": "RC9 synthetic exhaust B",
+          "rpm": 5000,
+          "status": "INTERRUPTED_CHECKPOINTED",
+          "classification": "CANCELLED_CHECKPOINTED",
+          "periodicity": "INSUFFICIENT_CYCLES",
+          "cycles_completed": 0,
+          "checkpoint_sha256": null,
+          "result_sha256": "abcabc0bff0f8e425467ce5b49090c9b0819bb3b50655ada5aaac9165d27248b"
+        },
+        {
+          "variant": "base",
+          "rpm": 4500,
+          "status": "INTERRUPTED_CHECKPOINTED",
+          "classification": "CANCELLED_CHECKPOINTED",
+          "periodicity": "INSUFFICIENT_CYCLES",
+          "cycles_completed": 0,
+          "checkpoint_sha256": null,
+          "result_sha256": "5766fa7c51010d4d289144ca91c60d9756603c3d5a5150970ae025c1b6530176"
+        },
+        {
+          "variant": "base",
+          "rpm": 5000,
+          "status": "INTERRUPTED_CHECKPOINTED",
+          "classification": "CANCELLED_CHECKPOINTED",
+          "periodicity": "INSUFFICIENT_CYCLES",
+          "cycles_completed": 0,
+          "checkpoint_sha256": null,
+          "result_sha256": "9c1a2d110f24aeac2497df28448828fcb380a0aed74e5e80ed04dd91514282ab"
+        }
+      ]
+    },
+    "valid_checkpoint_resume": {
+      "path": "C:\\Users\\ageribon.MIDES\\AppData\\Local\\MotorSim\\Artifacts\\exploratory-workflow-v1\\dino-2t-nuevo\\a7e171c6993340ebac7906f87618e33b",
+      "run_id": "a7e171c6993340ebac7906f87618e33b",
+      "status": "COMPLETE",
+      "classification": "MAX_CYCLES_NONCONVERGED",
+      "periodicity": "NOT_CONVERGED",
+      "cycles_completed": 2,
+      "elapsed_seconds": 19.29312380007468,
+      "invocations": 2,
+      "checkpoint_exists": true,
+      "checkpoint_bytes": 201197,
+      "checkpoint_sha256": "988a8e6d8ed6ea3e0ccea4d7d2a7e8a0b0e647c8ba5b7d6150c3128bbb985e53",
+      "result_sha256": "83f3f0974bea48874b4cab676b03a72983176e374f09ce78722845ba1f2bf990",
+      "preflight_memory_limit_mib": 1024,
+      "preflight_cycle_primary_contract": "REFERENCE_PERIODIC_CONVERGENCE_V1",
+      "configuration_sha256": "d76a2ca4edb77bb630c53a0c39a66246e84301cbc6ae4129ff095c4d31a92632",
+      "mechanical_loss_terms": {
+        "fmep_standard_v1": 85000.0
+      },
+      "spatial_reconstruction_source_hashes": [],
+      "port_connection_v2_source_hash_present": false,
+      "result_scientific_validation": "NOT_CLAIMED"
+    },
+    "invalid_checkpoint_rejection": {
+      "path": "C:\\Users\\ageribon.MIDES\\AppData\\Local\\MotorSim\\Artifacts\\exploratory-workflow-v1\\dino-2t-nuevo\\8c061528e4fc4a29876498fdc6363695",
+      "run_id": "8c061528e4fc4a29876498fdc6363695",
+      "status": "INTERRUPTED_CHECKPOINTED",
+      "classification": "CANCELLED_CHECKPOINTED",
+      "periodicity": "INSUFFICIENT_CYCLES",
+      "cycles_completed": 0,
+      "elapsed_seconds": 0.22850450011901557,
+      "invocations": 1,
+      "checkpoint_exists": false,
+      "checkpoint_bytes": 0,
+      "checkpoint_sha256": null,
+      "result_sha256": "721e65584a9837febffe1294e3eb0dbf6046f6847cecc068a8be259261489e79",
+      "preflight_memory_limit_mib": 1024,
+      "preflight_cycle_primary_contract": "REFERENCE_PERIODIC_CONVERGENCE_V1",
+      "configuration_sha256": "d76a2ca4edb77bb630c53a0c39a66246e84301cbc6ae4129ff095c4d31a92632",
+      "mechanical_loss_terms": {
+        "fmep_standard_v1": 85000.0
+      },
+      "spatial_reconstruction_source_hashes": [],
+      "port_connection_v2_source_hash_present": false,
+      "result_scientific_validation": "NOT_CLAIMED"
+    },
+    "invalid_checkpoint_ui": "Selected history row had no checkpoint.json (0 cycles); Reanudar checkpoint… was disabled.",
+    "serial_mode": "The packaged serial run continued from the cycle-1 checkpoint to cycle 2; terminal MAX_CYCLES_NONCONVERGED / NOT_CONVERGED; two invocations in same run record.",
+    "nonconvergence_label": "A/B one-cycle results are MAX_CYCLES_NONCONVERGED / INSUFFICIENT_CYCLES; two-cycle resumed serial result is MAX_CYCLES_NONCONVERGED / NOT_CONVERGED.",
+    "experimental_models": "The run explicitly records synthetic GAS_EXCHANGE_V2 geometry schema; no experimental ideal-nozzle port_connection_v2 selector/source was used, and no spatial_reconstruction or gas1d.second_order source hash/method selector is present. MUSCL remains opt-in; no silent selection observed.",
+    "synthetic_provenance": "Project and run are SYNTHETIC_UNVALIDATED / EXPLORATORY; scientific_validation NOT_CLAIMED.",
+    "postrun_process_cleanup": "PASS; only the main Dino2T process remained after dispatch/cancellation; no child processes remained."
+  },
+  "preserved_archives": {
+    "rc7_sha256": "2bd3419d4fc710d751515ccccbbe098c61609d16aae68c1492e353dccc83755a",
+    "rc8_failed_sha256": "1c183663c5ba4178732e65dbf64ddcc9a75fdabe7823e5d71eb21f7577da218d"
+  },
+  "evidence": {
+    "desktop_screenshot": "results/dino-trial-rc9-package-acceptance-20261029/desktop-no-checkpoint-resume-disabled.png",
+    "dino_artifact_root": "C:\\Users\\ageribon.MIDES\\AppData\\Local\\MotorSim\\Artifacts"
+  },
+  "remaining_limitations": [
+    "Synthetic Windows packaging/integration evidence only; no experimental validation, periodicity claim, predictive accuracy claim or stable promotion.",
+    "The main-project edits were deliberately discarded at close; result/checkpoint artifacts and this acceptance receipt remain durable."
+  ],
+  "next": "With Windows dispatch integration closed, return to DINO_PREDICTIVE_RELIABILITY_V1 roadmap. Experimental validation remains blocked by matched-engine geometry and independent measurements; periodic GCI remains blocked by its approved remaining budget."
+}
