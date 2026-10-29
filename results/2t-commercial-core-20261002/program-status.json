@@ -10591,6 +10591,53 @@
       ],
       "evidence_level": "L1",
       "qualification": "A/B five-cycle opt-in candidate replication preregistered at 6ddd952 before timing; tolerance and both replays passed. The original candidate was selected before its first protocol, and this deviation remains explicit."
+    },
+    {
+      "id": "PRED-CORE-STAGED-PLAN",
+      "description": "Register owner Option A and the versioned staged plan with quantitative PASS/PARTIAL/FAIL gates",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "docs/planning/predictive-core-staged-plan-v1.md",
+        "results/2t-commercial-core-20261002/program-status.json"
+      ],
+      "next_action": "E1.4 legacy-control comparison recorded from existing receipts. E1.3 remains blocked pending a 176-specific activation and viable recost.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "orchestrator/physics/verification",
+      "write_scope": [
+        "docs/planning/predictive-core-staged-plan-v1.md",
+        "results/2t-commercial-core-20261002/program-status.json"
+      ],
+      "evidence_level": "L0",
+      "qualification": "Plan and owner decision only; no solver run, no physics change, no candidate promotion."
+    },
+    {
+      "id": "PRED-E1.4-LEGACY-CONTROL-V1",
+      "description": "Produce the missing E1.4 legacy-control comparison with bit-identical legacy baseline and subsystem-attributed differences; no physical-equality requirement",
+      "dependencies": [
+        "PRED-CORE-STAGED-PLAN",
+        "PRED-BASELINE"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "docs/planning/predictive-core-staged-plan-v1.md",
+        "results/predictive-reliability-v1/baseline.json",
+        "results/predictive-reliability-v1/legacy-control-comparison-v1.md",
+        "results/predictive-reliability-v1/integrated-port-v2-comparison.json",
+        "results/predictive-reliability-v1/integrated-spatial-comparison-v1.json"
+      ],
+      "next_action": "No rerun or model promotion. Legacy remains control; numerical E1.3 stays blocked pending a viable, separately identified 176-cell execution.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "verification/contract",
+      "write_scope": [
+        "results/predictive-reliability-v1/legacy-control-comparison-v1.md"
+      ],
+      "evidence_level": "L1",
+      "qualification": "Existing 720-degree legacy observer-fixed control is numerically gated with exact checkpoint replay; inactive reconstruction bit-identical. Existing comparison attributes changes to connection and spatial subsystems. Prior failed legacy observer receipt preserved; transient only, no physical-equality or prediction claim."
     }
   ],
   "audit_remediation_mode": false,
@@ -14893,6 +14940,12 @@
       "task": "PRED-E2-LOCAL-CANDIDATE-V1",
       "kind": "task",
       "summary": "Prospectively frozen five-cycle candidate-only replication at commit 6ddd952: A44/B44 6.2551/6.2693 s/cycle, 2.218x/2.290x audited speedup; tolerance, conservation, source identity, RSS and all replays pass. 363 focal tests remain green. PASS for frozen cases; original selection limitation disclosed. E1.3 stays blocked; no 176 extrapolation/run."
+    },
+    {
+      "at": "2026-10-29T14:24:30Z",
+      "task": "PRED-E1.4-LEGACY-CONTROL-V1",
+      "kind": "task",
+      "summary": "Existing receipts reconciled: completed 720deg legacy observer-fixed control (1444 steps, exact replay, conservation PASS), inactive reconstruction bit-identical, and port/spatial subsystem effects compared from same-input transient receipts. Earlier observer mismatch preserved. No rerun or promotion."
     }
   ],
   "legacy_gate_status": {
@@ -14987,7 +15040,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-29T14:21:53Z",
+  "updated_at": "2026-10-29T14:24:30Z",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
