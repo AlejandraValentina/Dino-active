@@ -1,6 +1,7 @@
 """Arranque y distribución: dobles, sin integraciones numéricas."""
 import json
 import os
+import ast
 from pathlib import Path
 import subprocess
 import sys
@@ -19,6 +20,16 @@ from tests.test_reference_results import diagnostic as result_fixture
 
 
 class DistributionTests(unittest.TestCase):
+    def test_frozen_desktop_entry_dispatches_process_pool_before_gui_import(self):
+        entry=Path(__file__).resolve().parents[1]/'packaging'/'dino_desktop_entry.py'
+        tree=ast.parse(entry.read_text(encoding='utf-8'))
+        freeze_line=next(node.lineno for node in ast.walk(tree)
+            if isinstance(node,ast.Call) and isinstance(node.func,ast.Attribute)
+            and node.func.attr=='freeze_support')
+        gui_import_line=next(node.lineno for node in ast.walk(tree)
+            if isinstance(node,ast.ImportFrom) and node.module=='motorsim.dino_desktop')
+        self.assertLess(freeze_line,gui_import_line)
+
     def test_source_command_absolute_and_cwd_independent(self):
         executable,args,cwd=worker_command()
         self.assertTrue(Path(executable).is_absolute())

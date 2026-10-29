@@ -10473,9 +10473,12 @@
         "tests/test_dino_desktop.py::DinoDesktopTests::test_parallel_curve_point_coordinator_persists_each_solver_run_and_checkpoint",
         "results/dino-desktop-ab-point-dispatch-p1/report.md",
         "results/dino-desktop-ab-point-dispatch-p1/feasibility.json",
-        "results/dino-desktop-ab-point-dispatch-p1/logs/dino-desktop-ab-point-dispatch-p1.summary.json"
+        "results/dino-desktop-ab-point-dispatch-p1/logs/dino-desktop-ab-point-dispatch-p1.summary.json",
+        "results/dino-trial-rc8-package-acceptance-20261029/report.md",
+        "results/dino-trial-rc8-package-acceptance-20261029/receipt.json",
+        "Packaged rc8 Windows acceptance FAIL: serial curve passed, but frozen ProcessPoolExecutor child re-entered Dino2T.exe and opened a second GUI; A/B dispatch remained 4/4 NOT_STARTED. Source freeze_support fix committed; no rebuild per single-candidate limit."
       ],
-      "next_action": "El umbral de uso práctico queda respaldado sólo para factibilidad de un ciclo; no afirmar aceptación periódica 2x ni ejecutar campañas de periodicidad automáticamente. P3 sigue WAITING por falta de datos medidos para interpretar diferencias. Siguiente paso: adquirir geometría completa y mediciones independientes del mismo motor; no reabrir diagnósticos históricos.",
+      "next_action": "Source dispatcher path remains usable in Desktop and the frozen rc8 candidate failed Windows process spawning. The entry point now calls multiprocessing.freeze_support before GUI import. This acceptance intentionally produced one candidate only; no package containing the fix was built. Any subsequent candidate must be separately built and tested as a new version, without treating this failed artifact as READY_TRIAL.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "product/implementation/verification",
       "evidence_level": "L1",
@@ -14765,6 +14768,12 @@
       "task": "DINO-DESKTOP-CUSTOM-ENGINE-P1",
       "kind": "task",
       "summary": "Desktop E2E sintético probado: crear/editar motor, persistir/reabrir, duplicar y cambiar escape, ejecutar A/B paralelo de 4 puntos a 1 ciclo; parámetros resueltos por el solver y transitorios identificados. 12 pruebas focalizadas PASS; cancelación/fallo/recuperación verificadas. Sin build ni cambio de solver."
+    },
+    {
+      "at": "2026-10-29T11:35:00Z",
+      "task": "DINO-DESKTOP-POINT-DISPATCH-P1",
+      "kind": "decision",
+      "summary": "Único paquete rc8 TRIAL construido y probado: ZIP íntegro, flujo serial sintético correcto y no convergido; aceptación FAIL porque el proceso Windows --multiprocessing-fork reabrió la GUI y dejó 4 puntos A/B sin iniciar. Fix de freeze_support comprometido en el entrypoint; sin rebuild. rc7 intacto."
     }
   ],
   "legacy_gate_status": {
@@ -14859,7 +14868,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-29T11:10:00Z",
+  "updated_at": "2026-10-29T11:35:00Z",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",

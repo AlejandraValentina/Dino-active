@@ -1,0 +1,90 @@
+{
+  "schema": "DINO_WINDOWS_TRIAL_ACCEPTANCE_V1",
+  "date": "2026-10-29",
+  "classification": "FAIL",
+  "ready_trial": false,
+  "candidate": {
+    "version": "0.1.0-rc8",
+    "trial": true,
+    "source_commit": "08ce73dabe2957dce8dee4526b7449e294459657",
+    "source_dirty": true,
+    "built_utc": "20261029T110718Z",
+    "package": "DINO_ARTIFACT_ROOT/Windows/MotorSim-0.1.0-rc8-windows-x64-08ce73da-trial-20261029T110718Z.zip",
+    "sha256": "1c183663c5ba4178732e65dbf64ddcc9a75fdabe7823e5d71eb21f7577da218d",
+    "zip_bytes": 46906511,
+    "zip_entries": 325,
+    "zip_test": null,
+    "folder_bytes": 113619054,
+    "exe_sha256": "20e3decb3c990efca316d51fa702d03486e3f3d8a139357fb205d7456ab9a6e8",
+    "worker_sha256": "c2ec45013d420003676b8c38ea39b6dae7f700a7fa4306899299973a2496a7d1",
+    "rc7_baseline_sha256": "2bd3419d4fc710d751515ccccbbe098c61609d16aae68c1492e353dccc83755a",
+    "rc7_modified": false
+  },
+  "preflight": {
+    "storage": "PASS before build: 2.5 GiB estimate (1.5 GiB package + 1 GiB temporary) plus 2 GiB reserve on C:, 15.44 GiB headroom after estimate",
+    "environment": "PASS: Windows 10 x64, Python 3.11.0, PyInstaller 6.22.3, PySide6 6.11.2 and pinned build requirements",
+    "build_count": 1
+  },
+  "packaged_functional_checks": [
+    {
+      "name": "launch and create",
+      "status": "PASS",
+      "detail": "Dino2T.exe launched as a Windows process; Desktop created a synthetic engine and displayed rc8."
+    },
+    {
+      "name": "edit/save/reopen/duplicate/exhaust",
+      "status": "PASS",
+      "detail": "Bore 52.5 mm persisted; project closed and reopened; duplicated escape variant persisted with 4 mm longer total exhaust. Project scientific_validation_status=SYNTHETIC_UNVALIDATED."
+    },
+    {
+      "name": "serial curve",
+      "status": "PASS_TRANSIENT",
+      "detail": "Desktop serial base sweep at 4500/5000 RPM, 1 cycle per point; both completed and Results history displayed MAX_CYCLES_NONCONVERGED / INSUFFICIENT_CYCLES."
+    },
+    {
+      "name": "single run result",
+      "status": "PASS_TRANSIENT",
+      "detail": "Two-cycle engineering run completed and was listed as MAX_CYCLES_NONCONVERGED / NOT_CONVERGED."
+    },
+    {
+      "name": "cancel",
+      "status": "PASS_PARTIAL_PRESERVED",
+      "detail": "Serial sweep cancellation persisted CANCELLED_CHECKPOINTED, 0 cycles, 1 unstarted point; no valid cycle checkpoint existed."
+    },
+    {
+      "name": "recovery",
+      "status": "NOT_PASSED",
+      "detail": "Resume attempt from the zero-cycle cancellation failed closed; since that run had no complete cycle checkpoint, resumability was not established. No result data was overwritten."
+    },
+    {
+      "name": "parallel A/B dispatch",
+      "status": "FAIL",
+      "detail": "UI preflight passed for 3 workers and 4 points. Spawned Dino2T.exe --multiprocessing-fork opened a second default GUI instead of entering the worker. dispatch.json remained RUNNING with all 4 points NOT_STARTED; no parallel results were produced."
+    },
+    {
+      "name": "V2/MUSCL activation",
+      "status": "PASS_NO_SILENT_ACTIVATION",
+      "detail": "Synthetic project and run artifacts contain no MUSCL, spatial_reconstruction_v2, port_connection_v2 or transonic_connection_v2 identifiers."
+    }
+  ],
+  "blocking_defect": {
+    "location": "packaging/dino_desktop_entry.py",
+    "cause": "multiprocessing.freeze_support() was not called before importing/starting the Desktop GUI in the frozen Windows entry point.",
+    "source_fix": "Committed separately after this candidate build; candidate package cannot contain it because repeated builds were disallowed."
+  },
+  "scientific_limits": {
+    "synthetic_only": true,
+    "experimental_validation": "NOT_CLAIMED",
+    "predictive_claim": "NOT_CLAIMED",
+    "V2": "EXPERIMENTAL",
+    "MUSCL": "EXPERIMENTAL",
+    "solver_modified": false
+  },
+  "test_project": {
+    "path": "DINO_ARTIFACT_ROOT/acceptance-rc8-20261029/rc8-e2e-synthetic.dino2t.json",
+    "sha256": "12c66fc90bd01433932440963d7df6511442419b70ea3314f4838ac85423d898",
+    "bytes": 1524653
+  },
+  "parallel_dispatch_manifest": "DINO_ARTIFACT_ROOT/dino-parallel-point-sweep-v1/rc8-e2e-synthetic/0039bcf9056e4221addba0ffffae0eec/dispatch.json",
+  "build_json_source_dirty_note": "The repository had unrelated local modifications; motorsim and packaging build inputs were committed/clean at build time. build.json records source_dirty=true; no unrelated user edits were staged."
+}
