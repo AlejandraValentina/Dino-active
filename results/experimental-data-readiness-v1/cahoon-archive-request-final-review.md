@@ -1,6 +1,7 @@
 # Cahoon MK.1 — solicitud archivística final para revisión (NO ENVIADA)
 
-**Para:** McClay Library Customer Services — `mcclay.library@qub.ac.uk`  
+**Para:** McClay Library Customer Services — `mcclay.library@qub.ac.uk`
+
 **Asunto:** W. L. Cahoon (1971), Greeves 380 MK.1: volumen de cárter y registros del banco a 6000 RPM
 
 Contacto institucional comprobado en la página oficial de [McClay Library Contacts](https://www.qub.ac.uk/directorates/InformationServices/TheLibrary/contacts/McClayLibraryContacts/), que publica `mcclay.library@qub.ac.uk` para Customer Service Desk. La guía institucional de [búsqueda de tesis](https://libguides.qub.ac.uk/theses) indica que McClay conserva tesis doctorales de Queen's. No enviar sin revisión y autorización del remitente.
