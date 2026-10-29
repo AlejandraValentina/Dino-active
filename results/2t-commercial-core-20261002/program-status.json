@@ -8493,9 +8493,10 @@
         "results/predictive-reliability-v1/provided-reference-review-v1/report.md",
         "results/predictive-reliability-v1/boundary-v2-self-review.md",
         "results/predictive-reliability-v1/cahoon-mk1-dataset-v1/assessment.md",
-        "results/predictive-reliability-v1/cahoon-mk1-dataset-v1/performance.csv"
+        "results/predictive-reliability-v1/cahoon-mk1-dataset-v1/performance.csv",
+        "results/experimental-data-readiness-v1/cahoon-archive-request-ready-to-send.eml"
       ],
-      "next_action": "Do not configure or run MK.1 using either conflicting exhaust revision. Reuse the existing unsent QUB archive request for the exact as-tested geometry/volume convention and raw test/correction/uncertainty records; do not send without owner authorization. Validation remains blocked pending coherent inputs and numerical uncertainty.",
+      "next_action": "Do not configure/run MK.1 with conflicting geometry. The authorized archival email is prepared at results/experimental-data-readiness-v1/cahoon-archive-request-ready-to-send.eml, but no email connector is installed in this session and nothing was sent. Validation remains blocked pending coherent input data and numerical uncertainty.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "orchestrator/physics/verification",
       "write_scope": [
@@ -8505,7 +8506,7 @@
       "evidence_level": "L0",
       "unblock_tasks": [],
       "qualification": "New official QUB PDF endpoint succeeded 2026-10-29; 264-page source hash-bound outside Git. Ten visually legible MK.1 Table 4.1 points transcribed; a 6000-rpm cylinder pressure trace is identified but not digitized. BMEP recomputation residual <=0.064% from rounding is a source-table consistency check only, not a Dino validation. No solver run, parameter assumption, or external contact.",
-      "no_local_unblock_reason": "La vía pública institucional fue recuperada y revisada; el faltante restante es identidad/mediciones del ejemplar y banco, no resoluble localmente sin mezclar revisiones o asumir volúmenes/incertidumbres. El pedido archivístico ya está preparado y no puede enviarse sin autorización. No hay otra extracción local que habilite una comparación honesta."
+      "no_local_unblock_reason": "The public thesis has been exhausted and the remaining measured records are external. The authorized request is ready as an .eml, but no authenticated email connector is installed; no message can be sent from this session. No local assumptions can replace the missing data."
     },
     {
       "id": "PRED-CONNECTION-SPEC",
@@ -10077,7 +10078,7 @@
         "PRED-PERIODIC-CONVERGENCE-COSTED-DESIGN"
       ],
       "state": "BLOCKED_LOCAL",
-      "blocker": "The 176-cell E2 cap is exhausted (10/10 benchmarks). Existing cycle-37 checkpoint/config are preserved, but no paired bisection/Brent run is authorized. At measured bisection rate the minimum period-1 path is 364.64 s loop-wall (437.57 s with 20% margin), exceeding 230.17 s remaining before unmeasured setup/restore. A44/B44 Brent extrapolation is unverified at 176. 88 remains transient; GCI inadmissible.",
+      "blocker": "176-cell Brent scaling did not demonstrate the 2x E2 target: the only clean completed paired wall-time cycle (cycle 39) was 114.785 s bisection vs 87.168 s Brent (1.317x). Checkpoints 38/39 are numerically equivalent and conservation passes, but Brent stopped during cycle 40 at the authorized cumulative budget. Solver timing omitted rejected proposals; no complete three-cycle Brent result or reliable E1.3 cost. Existing 88/176 periodic states remain transient; GCI inadmissible.",
       "commits": [],
       "evidence": [
         "results/e2b-periodic-ab-v1/decision.json",
@@ -10100,9 +10101,14 @@
         "DINO_ARTIFACT_ROOT/predictive-reliability-v1/candidate-periodic-gci-v1/window-176-02/detector.json",
         "results/predictive-reliability-v1/e2-176-scaling-decision-v1.md",
         "scripts/diagnostics/e2b_local_candidate_v1.py",
-        "tests/test_e2b_local_candidate_v1.py"
+        "tests/test_e2b_local_candidate_v1.py",
+        "results/predictive-reliability-v1/e2b-brent-176-v1/decision.md",
+        "results/predictive-reliability-v1/e2b-brent-176-v1/preflight.json",
+        "results/predictive-reliability-v1/e2b-brent-176-v1/preflight-attempt-02.json",
+        "results/predictive-reliability-v1/e2b-brent-176-v1/preflight-attempt-03.json",
+        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/e2b-brent-176-v1/attempt-03/comparison.json"
       ],
-      "next_action": "Remain BLOCKED_LOCAL. E1.3 must not resume within demonstrated limits. Require additional E2 authorization for one same-cycle-37 bisection/Brent comparison that times initialization, restoration and writes; do not start E1.3 automatically. Even a 176 periodic state does not establish GCI while 88 and matched 44/88/176 periodic values are unresolved.",
+      "next_action": "Remain BLOCKED_LOCAL; do not resume E1.3. Keep Brent opt-in. No further 176 computation is authorized or recommended against the observed <2x wall-time benefit. Any renewed E2 scaling work requires new budget authorization. The pending independent unblock is experimental-data acquisition; QUB request is prepared but no email connector is installed.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -10119,8 +10125,8 @@
         "openspec/changes/predictive-reliability-v1/candidate-periodic-gci-176-first-window-addendum-v2.md"
       ],
       "evidence_level": "L2",
-      "qualification": "No new 176 solver run. Existing 176 window 2 is TRANSIENT_AT_BUDGET (cycles31-37), 230.1685 s remains; minimum period-1 detector path requires about 364.64 loop-wall seconds / 437.57 with 20% margin using measured bisection, excluding setup. Conditional A44/B44 Brent extrapolation is not validated at 176. 88 remains transient; no GCI or predictive claim.",
-      "no_local_unblock_reason": "E2 authorization is exhausted (10 benchmarks), and the measured bisection minimum path exceeds the remaining 176 solver budget. Brent speedup at 176 and its setup cost are unknown; a 176 comparison requires additional E2 authorization. No local work can resolve this without another solver computation, and E1.3 continuation is explicitly not authorized.",
+      "qualification": "Authorized 660 s cumulative comparison halted at the bound (actual measured attempt sum 659.059 s; conservative runner accounting reached 660.013 s). Bisection completed through cycle 40; Brent completed cycles 38-39 and stopped during 40. Cycle39 wall-time ratio 1.317x; cycle38 timing is contaminated by an interrupted runner. Snapshots cycles38-39 compare within frozen 1e-10+1e-10 relative/absolute tolerance; each saved checkpoint restores exactly and mass/energy/species conservation gates pass. Rejected-trial time is omitted by solver-only timer. No periodicity search, GCI, or E1.3 run.",
+      "no_local_unblock_reason": "The authorized 176 E2 budget is exhausted. The measured complete paired cycle is below the 2x target; solver-only cost cannot be reliably inferred because rejected proposals were not timed. E1.3's remaining 230.1685 s cannot be shown to fit its minimum three-cycle detector path with margin. No further computation is justified within current authority; another run would require new budget authorization.",
       "unblock_tasks": []
     },
     {
@@ -10521,9 +10527,10 @@
         "results/predictive-reliability-v1/e2b-local-candidate-v1/preregistered-replicate-v1/A/replay-A.json",
         "results/predictive-reliability-v1/e2b-local-candidate-v1/preregistered-replicate-v1/B/candidate-B.json",
         "results/predictive-reliability-v1/e2b-local-candidate-v1/preregistered-replicate-v1/B/comparison.json",
-        "results/predictive-reliability-v1/e2b-local-candidate-v1/preregistered-replicate-v1/B/replay-B.json"
+        "results/predictive-reliability-v1/e2b-local-candidate-v1/preregistered-replicate-v1/B/replay-B.json",
+        "results/predictive-reliability-v1/e2b-brent-176-v1/decision.md"
       ],
-      "next_action": "Keep Brent opt-in and bisection default. E1.3 remains blocked pending a separately identified 176-cell activation and affordable recost; no prediction claim.",
+      "next_action": "Keep Brent opt-in and bisection default: A44/B44 met 2x, but the bounded 176 paired cycle measured only 1.317x wall speedup and Brent stopped before cycle 40 at the approved cap. No E1.3 continuation or predictive claim.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "architecture/performance",
       "write_scope": [
@@ -10861,7 +10868,7 @@
       "PRED-IDENTIFICATION",
       "PRED-VALIDATION"
     ],
-    "completion_criterion": "E2A/E2B, port-law diagnosis, and post-opening reports remain preserved. E1.3 periodic GCI is blocked by its approved budget; validation is blocked by missing complete same-engine geometry and independent measurements. E1.0 evidence matrix is recorded. Preserve rc7; V2/MUSCL remain experimental. Do not extend post-opening diagnostics without a demonstrated product need.",
+    "completion_criterion": "Unified roadmap remains active. E2 A44/B44 achieved 2.218x/2.290x; the authorized 176-cell paired comparison produced only 1.317x on the clean paired cycle and hit its budget before Brent cycle 40. E1.3 remains blocked; validation awaits external records. Preserve rc7; V2/MUSCL and Brent remain opt-in. No periodicity or predictive claim.",
     "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
     "qualification": "Post-opening finite-arc cases complete; saved gradients/field differences remain transient numerical diagnostics. No periodicity, GCI, experimental validation, predictive claim or candidate promotion. V2/MUSCL remain experimental; rc7 preserved.",
     "staged_plan": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md"
@@ -14958,6 +14965,12 @@
       "task": "PRED-CORE-PERIODIC-MESH-GCI",
       "kind": "task",
       "summary": "E2 176 scaling decision recorded: no solver run because the 10-benchmark E2 cap is exhausted. Existing 176 bisection timing projects a 437.57 s minimum path with 20% margin vs 230.17 s remaining; unmeasured setup/restore increases cost. A44/B44 Brent extrapolation is conditional only. E1.3 remains blocked pending additional E2 authorization. Fixed relative-output-path reporting; 6 focused tests pass."
+    },
+    {
+      "at": "2026-10-29T14:58:54Z",
+      "task": "PRED-CORE-PERIODIC-MESH-GCI",
+      "kind": "task",
+      "summary": "Authorized E2 176 comparison completed only partially within 660 s: bisection cycles38-40; Brent cycles38-39, then hard stop at budget during cycle40. Cycle39 wall speedup 1.317x; checkpoints 38/39 equivalent within frozen tolerance and all completed-cycle conservation/restore checks pass. Solver-only timer omitted rejected proposals, so no E1.3 cost fit can be claimed; E1.3 stays blocked. QUB .eml prepared; Gmail connector absent, no send."
     }
   ],
   "legacy_gate_status": {
