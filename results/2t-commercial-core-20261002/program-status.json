@@ -8484,16 +8484,18 @@
         "PRED-IDENTIFICATION"
       ],
       "state": "BLOCKED_LOCAL",
-      "blocker": "No complete matched-engine geometry, operating conditions and independently measured outputs/uncertainty established in inspected evidence; numerical mesh uncertainty also unresolved. No held-out predictive comparison can be performed honestly.",
+      "blocker": "Cahoon MK.1 is now a source-verified partial dataset: measured/corrected brake rows and a pressure-trace candidate are available, but engine-details table and the 4400-rpm THROUGH FLOW sheet disagree on the tested exhaust geometry; absolute crankcase volume, matching test conditions, raw/correction records and uncertainties remain unestablished. No coherent blind Dino input or honest predictive comparison can be produced. Numerical mesh uncertainty also remains unresolved.",
       "commits": [],
       "evidence": [
         "results/predictive-reliability-v1/measured-data-inventory.json",
         "results/predictive-reliability-v1/mesh-engineering-note-v1.md",
         "results/experimental-reference-v1/selection.json",
         "results/predictive-reliability-v1/provided-reference-review-v1/report.md",
-        "results/predictive-reliability-v1/boundary-v2-self-review.md"
+        "results/predictive-reliability-v1/boundary-v2-self-review.md",
+        "results/predictive-reliability-v1/cahoon-mk1-dataset-v1/assessment.md",
+        "results/predictive-reliability-v1/cahoon-mk1-dataset-v1/performance.csv"
       ],
-      "next_action": "Inspect provided reference completeness and separate remaining numerical spatial/time uncertainty; do not execute incomplete real-engine configuration.",
+      "next_action": "Do not configure or run MK.1 using either conflicting exhaust revision. Reuse the existing unsent QUB archive request for the exact as-tested geometry/volume convention and raw test/correction/uncertainty records; do not send without owner authorization. Validation remains blocked pending coherent inputs and numerical uncertainty.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "orchestrator/physics/verification",
       "write_scope": [
@@ -8501,12 +8503,9 @@
         "results/predictive-reliability-v1/"
       ],
       "evidence_level": "L0",
-      "unblock_tasks": [
-        "PRED-FLECK-COMPLETENESS",
-        "PRED-TEMPORAL-OPERATOR-REFERENCE",
-        "PRED-ENDPOINT-ACCURACY-PROTOCOL"
-      ],
-      "qualification": "Five user-provided partial reference bundles examined without altering originals. No complete matched-engine package established by that inspection; bounded local source/numerical work remains. Old X30/SPV1/V3 state unchanged."
+      "unblock_tasks": [],
+      "qualification": "New official QUB PDF endpoint succeeded 2026-10-29; 264-page source hash-bound outside Git. Ten visually legible MK.1 Table 4.1 points transcribed; a 6000-rpm cylinder pressure trace is identified but not digitized. BMEP recomputation residual <=0.064% from rounding is a source-table consistency check only, not a Dino validation. No solver run, parameter assumption, or external contact.",
+      "no_local_unblock_reason": "La vía pública institucional fue recuperada y revisada; el faltante restante es identidad/mediciones del ejemplar y banco, no resoluble localmente sin mezclar revisiones o asumir volúmenes/uncertumbres. El pedido archivístico ya está preparado y no puede enviarse sin autorización. No hay otra extracción local que habilite una comparación honesta."
     },
     {
       "id": "PRED-CONNECTION-SPEC",
@@ -14774,6 +14773,12 @@
       "task": "DINO-DESKTOP-POINT-DISPATCH-P1",
       "kind": "decision",
       "summary": "Único paquete rc8 TRIAL construido y probado: ZIP íntegro, flujo serial sintético correcto y no convergido; aceptación FAIL porque el proceso Windows --multiprocessing-fork reabrió la GUI y dejó 4 puntos A/B sin iniciar. Fix de freeze_support comprometido en el entrypoint; sin rebuild. rc7 intacto."
+    },
+    {
+      "at": "2026-10-29T12:34:18+00:00",
+      "task": "PRED-VALIDATION",
+      "kind": "task",
+      "summary": "QUB Cahoon PDF: 264 páginas, hash verificado; 10 puntos de potencia MK.1 y traza a 6000 rpm identificados. BMEP cierra a <=0.064% por redondeo (consistencia tabular, no Dino). Escape contradictorio entre tabla y hoja de entrada; faltan volumen absoluto, condiciones e incertidumbre. Sin solver ni contacto externo."
     }
   ],
   "legacy_gate_status": {
