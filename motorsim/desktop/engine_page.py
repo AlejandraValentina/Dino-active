@@ -265,7 +265,9 @@ class EnginePage(QWidget):
             for i,name in enumerate(self.component_names):self.component_tabs.setTabText(i,f"{name} · válido")
         except Exception as exc:
             self.validation.setText(f"No se pudo presentar la configuración: {exc}");self.apply_button.setEnabled(False)
-        finally:self.loading=False
+        finally:
+            self.loading=False
+            self.component_state_changed.emit()
 
     def _port_changed(self,*_):
         if not self.loading:

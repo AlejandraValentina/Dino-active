@@ -10663,7 +10663,7 @@
         "results/desktop-product-maturity-v1/assessment.md",
         "results/desktop-product-maturity-v1/export-test.txt"
       ],
-      "next_action": "GUI acceptance pending unlocked Windows; no build. Exploratory CSV stays a table requiring original artifacts.",
+      "next_action": "GUI export now observed on the preserved 30-point historical dataset; service reopen exact. Remaining GUI reopen tracked separately.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "qualification": "Functional source UI test PASS: export/reopen, unit/status/identity preservation, protected companion and tamper rejection. No packaged GUI claim."
     },
@@ -10672,16 +10672,41 @@
       "description": "Owner practical rc9 product evaluation: ten real graphical scenarios, matrix and evidence",
       "dependencies": [],
       "state": "BLOCKED_LOCAL",
-      "blocker": "Windows session locked during Save As; native pointer input reports no active desktop. rc9 creation/dialog observed; remaining graphical workflows not certified.",
+      "blocker": "Windows again reports no active desktop after successful rc9 engine/project/A-B/cancel/resume and source intake/recovery/mesh/historical-export GUI checks. Only graphical reopening of exported historical CSV remains.",
       "commits": [],
       "evidence": [
         "results/desktop-product-maturity-v1/assessment.md",
-        "results/desktop-product-maturity-v1/captures/05-desktop-state.png"
+        "results/desktop-product-maturity-v1/captures/34-reopened-inputs.png",
+        "results/desktop-product-maturity-v1/captures/41-historical-curves.png",
+        "results/desktop-product-maturity-v1/historical-preservation.json"
       ],
-      "next_action": "Resume Save As and complete engine/exhaust/project/run/results/export scenarios when the Windows desktop is unlocked.",
+      "next_action": "With an unlocked interactive Windows session, reopen historical-gui-export.csv via Abrir datos and confirm historical label and 30 points. No new solver campaign or build.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "unblock_tasks": [],
-      "no_local_unblock_reason": "User interactive Windows session must be unlocked; offscreen tests are not an equivalent GUI evaluation. Independent export correction and official-document comparison completed."
+      "no_local_unblock_reason": "Interactive Windows desktop is unavailable; automated service roundtrip is verified but cannot substitute for the remaining real GUI action."
+    },
+    {
+      "id": "DESKTOP-PRODUCT-INTAKE-NAV-RECOVERY-V1",
+      "description": "Expose existing intake/reed/transfer editor in main Desktop navigation; restore validation state after discard and collapse advanced mesh controls",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "write_scope": [
+        "motorsim/desktop/app.py",
+        "motorsim/desktop/engine_page.py",
+        "motorsim/desktop/exhaust_page.py",
+        "tests/test_dino_desktop.py"
+      ],
+      "evidence": [
+        "results/desktop-product-maturity-v1/assessment.md",
+        "results/desktop-product-maturity-v1/navigation-tests.txt",
+        "results/desktop-product-maturity-v1/desktop-regression.txt",
+        "results/desktop-product-maturity-v1/solver-binding-test.txt"
+      ],
+      "qualification": "SELF_REVIEW; real source GUI edit/save/reopen, invalid-input discard recovery and mesh expand observed; focused tests PASS; full Desktop 24 PASS 1 SKIP. Not packaged acceptance.",
+      "next_action": "Complete remaining GUI CSV reopen when session unlocked; no physics/model/default/build changes."
     }
   ],
   "audit_remediation_mode": false,
@@ -15008,6 +15033,12 @@
       "task": "DESKTOP-PRODUCT-EXPORT-ROUNDTRIP-V1",
       "kind": "task",
       "summary": "Real rc9 launch and synthetic new-engine interaction captured; session locked during save dialog, GUI assessment partial. Official EngMod/MOTA comparison recorded. Fixed historical CSV+JSON export/reopen, preserved source labels/units/states/identities; functional roundtrip/tamper/protected companion test PASS. No build or solver change."
+    },
+    {
+      "at": "2026-10-29T16:06:04.244071+00:00",
+      "task": "DESKTOP-PRODUCT-INTAKE-NAV-RECOVERY-V1",
+      "kind": "task",
+      "summary": "rc9 real GUI: synthetic motor save/reopen/duplicate, exhaust edit, two bounded one-cycle A/B runs, cancel with 2 complete checkpoints then resume to 3 cycles, transient/traces/CSV. Fixed hidden intake navigation, stale discard state and advanced mesh panel; source real GUI and 24 PASS/1 SKIP. Historical GUI import/export preserves 30 points exactly; GUI CSV reopen blocked by locked desktop. No build or physics change."
     }
   ],
   "legacy_gate_status": {

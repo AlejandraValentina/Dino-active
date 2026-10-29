@@ -126,9 +126,11 @@ class ExhaustPage(QWidget):
         mesh_layout=QVBoxLayout(self.mesh_group)
         self.mesh_notice=QLabel("La independencia espacial NO está demostrada. La resolución cambia la discretización, no valida la geometría ni el desempeño.")
         self.mesh_notice.setWordWrap(True);self.mesh_notice.setObjectName("notice");mesh_layout.addWidget(self.mesh_notice)
-        self.mesh_table=QTableWidget(0,2);self.mesh_table.setHorizontalHeaderLabels(["Tramo","Celdas por tramo (1/2/4)"])
+        self.mesh_table=QTableWidget(0,2);self.mesh_table.setHorizontalHeaderLabels(["Tramo","Celdas por tramo"])
         self.mesh_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.mesh_table.setMaximumHeight(180)
         mesh_layout.addWidget(self.mesh_table);root.addWidget(self.mesh_group)
+        self.mesh_group.toggled.connect(self._toggle_mesh)
+        self._toggle_mesh(False)
 
         actions=QHBoxLayout();root.addLayout(actions)
         self.save_current_button=QPushButton("Guardar en variante actual");self.save_current_button.clicked.connect(self.save_current);actions.addWidget(self.save_current_button)
@@ -210,6 +212,10 @@ class ExhaustPage(QWidget):
         visible=not self.station_group.isVisible()
         self.station_group.setVisible(visible);self.station_toggle.setText("Estaciones ▾" if visible else "Estaciones avanzadas ▸")
 
+    def _toggle_mesh(self,expanded):
+        self.mesh_notice.setVisible(expanded);self.mesh_table.setVisible(expanded)
+        self.mesh_group.setMaximumHeight(16777215 if expanded else 50)
+
     def resizeEvent(self,event):
         super().resizeEvent(event)
         # The component stack may retain a wider child size than the window
@@ -230,7 +236,7 @@ class ExhaustPage(QWidget):
         self.diff_panel.setVisible(not compact)
         # Preserve a readable collapsed header at compact height; 38 px clipped
         # the group title in the packaged 980×680 view.
-        self.mesh_group.setMaximumHeight(50 if compact else 16777215)
+        self.mesh_group.setMaximumHeight(50 if compact and not self.mesh_group.isChecked() else 16777215)
         self.table.verticalHeader().setDefaultSectionSize(20 if compact else 30)
         if compact:
             for row in range(self.table.rowCount()):self.table.setRowHeight(row,20)

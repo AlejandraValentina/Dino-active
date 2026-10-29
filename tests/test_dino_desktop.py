@@ -62,6 +62,21 @@ class DinoDesktopTests(unittest.TestCase):
         self.assertFalse(window.results.isVisible())
         window.close()
 
+    def test_main_navigation_reaches_existing_intake_transfer_and_reed_editor(self):
+        window=DinoDesktopWindow(self.context.project);window.show();APP.processEvents()
+        nav=window.component_nav
+        QTest.mouseClick(nav,Qt.MouseButton.LeftButton,pos=nav.tabRect(6).center())
+        APP.processEvents()
+        self.assertEqual(window.pages[0].component_tabs.currentIndex(),4)
+        self.assertTrue(window.pages[0].ducts.isVisible())
+        self.assertTrue(window.pages[0].reeds.isVisible())
+        editor=window.pages[0]
+        editor.reeds.item(0,1).setText('not numeric');editor.apply()
+        self.assertIn('✕',nav.tabText(6))
+        editor.refresh();APP.processEvents()
+        self.assertNotIn('✕',nav.tabText(6))
+        window.context.dirty=False;window.close()
+
     def test_engine_edit_validates_then_updates_identity_and_dirty_state(self):
         page = EnginePage(self.context)
         original = identity(self.context.engine())
@@ -156,6 +171,17 @@ class DinoDesktopTests(unittest.TestCase):
             self.assertIn("Variante 1", loaded["variants"])
             self.assertEqual(loaded["base_identity_sha256"], base_hash)
             self.assertFalse(any(k in path.read_text(encoding="utf-8") for k in ("cycle_primaries", "checkpoint_payload")))
+
+    def test_advanced_exhaust_mesh_collapses_and_expands_without_changing_counts(self):
+        page=ExhaustPage(self.context)
+        counts=page._resolutions()
+        self.assertTrue(page.mesh_table.isHidden())
+        page.mesh_group.setChecked(True);page.set_compact_layout(True)
+        self.assertFalse(page.mesh_table.isHidden())
+        self.assertGreater(page.mesh_group.maximumHeight(),180)
+        page.mesh_group.setChecked(False)
+        self.assertTrue(page.mesh_table.isHidden())
+        self.assertEqual(page._resolutions(),counts)
 
     def test_exhaust_edit_changes_variant_using_backend_and_keeps_base(self):
         page = ExhaustPage(self.context)
