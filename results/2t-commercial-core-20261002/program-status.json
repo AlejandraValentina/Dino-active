@@ -10099,7 +10099,7 @@
         "DINO_ARTIFACT_ROOT/predictive-reliability-v1/candidate-periodic-gci-v1/window-176-02/cycles.json",
         "DINO_ARTIFACT_ROOT/predictive-reliability-v1/candidate-periodic-gci-v1/window-176-02/detector.json"
       ],
-      "next_action": "Do not run additional 176 cycles under this per-grid budget. A new versioned budget/authorization is required for further 176 work; continue independent roadmap tasks meanwhile.",
+      "next_action": "Remain BLOCKED_LOCAL. E2 candidate evidence is A44/B44 only and Brent is opt-in; require explicit versioned activation and a 176-specific preflight/recost before any E1.3 run. Current default-path remaining budget is insufficient.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -10116,7 +10116,7 @@
         "openspec/changes/predictive-reliability-v1/candidate-periodic-gci-176-first-window-addendum-v2.md"
       ],
       "evidence_level": "L2",
-      "qualification": "88 cycles31-40 and independent 176 cycles31-37 remain transient. Saved 176 tail max/p90 strictly decrease, but remaining 230.17 s is below the best-case 364.12 s for the detector minimum streak. No additional 176 cycles or GCI within current authorization.",
+      "qualification": "88 cycles31-40 and independent 176 cycles31-37 remain transient. Saved 176 tail max/p90 strictly decrease, but remaining 230.17 s is below the best-case 364.12 s for the detector minimum streak. No additional 176 cycles or GCI within current authorization. Local unblock path: PRED-E2-LOCAL-CANDIDATE-V1 (option C, 2-4x target); no 176 run until recost and equivalence. E2 local candidate measures 2.169x/2.231x only on A44/B44; no extrapolation to 176 and no periodic run.",
       "no_local_unblock_reason": "No local continuation can reach the PeriodicDetectorV2 minimum streak within the remaining approved per-grid solver budget. A larger 176 budget is a new compute authorization; do not bypass it with another mesh, changed detector thresholds, or altered physics."
     },
     {
@@ -10489,6 +10489,91 @@
         "tests/test_dino_desktop.py"
       ],
       "qualification": "Dos factibilidades de seis puntos A/B, tres workers, una vuelta por punto: 2.7205x y 2.7735x; los 12 checkpoints serial/paralelo coinciden por SHA-256. MAX_CYCLES_NONCONVERGED; periodicidad NOT_EVALUATED. No implica speedup periódico ni validación científica; rc7 conservado y V2/MUSCL experimentales."
+    },
+    {
+      "id": "PRED-E2-LOCAL-CANDIDATE-V1",
+      "description": "Owner E2 option C: one bounded local candidate for port-root/EOS/reconstruction, preregistered equivalence, target 2-4x versus 13.8755/14.3571 s/cycle; no physics, CFL, tolerance or default changes",
+      "dependencies": [
+        "PRED-E2B-STEP-PROFILE-V1"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/e2b-step-profile-v1.json",
+        "docs/planning/predictive-core-staged-plan-v1.md",
+        "docs/gasdynamic/e2b-local-candidate-v1.md",
+        "docs/gasdynamic/e2b-local-candidate-equivalence-v1.md",
+        "results/predictive-reliability-v1/e2b-local-candidate-v1/delivery-receipt.md",
+        "results/predictive-reliability-v1/e2b-local-candidate-v1/comparison-A.json",
+        "results/predictive-reliability-v1/e2b-local-candidate-v1/comparison-B.json",
+        "tests/test_e2b_local_candidate_v1.py"
+      ],
+      "next_action": "E2 result is >=2x against audited A44/B44 reference with equivalence; protocol qualification remains PARTIAL because preregistration followed exploratory selection. Keep Brent opt-in. Re-evaluate E1.3 only after case-specific activation/costing; no 176 run from this receipt.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "architecture/performance",
+      "write_scope": [
+        "motorsim/gas1d/eos.py",
+        "motorsim/gas1d/exact_riemann_reference_v1.py",
+        "motorsim/port_connection_v2.py",
+        "tests/test_gas1d.py",
+        "tests/test_integrated_port_connection_v2.py",
+        "scripts/diagnostics/e2b_local_candidate_v1.py",
+        "tests/test_e2b_local_candidate_v1.py",
+        "docs/gasdynamic/e2b-local-candidate-v1.md",
+        "results/predictive-reliability-v1/e2b-local-candidate-v1/"
+      ],
+      "evidence_level": "L1",
+      "qualification": "Measured speedup 2.169x/2.231x against audited A44/B44 references; equivalence, conservation and replay pass. PARTIAL protocol qualification: candidate selection preceded frozen protocol. Brent remains opt-in; no predictive claim."
+    },
+    {
+      "id": "PRED-E2B-STEP-PROFILE-V1",
+      "description": "Bounded A44/B44 step profile (plain and cProfile, 0-90 and 180-270 deg) to identify the E2 hot path without solver changes",
+      "dependencies": [
+        "PRED-E2B-PERIODIC-AB-V1"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/e2b-step-profile-v1.json",
+        "results/predictive-reliability-v1/e2b-step-profile-v1.md",
+        "scripts/diagnostics/e2b_step_profile_v1.py",
+        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/e2b-step-profile-v1-20261029T132349Z/profile-report.json"
+      ],
+      "next_action": "Profile informed the bounded local candidate; evidence remains diagnostic only.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "architecture/performance",
+      "write_scope": [
+        "scripts/diagnostics/e2b_step_profile_v1.py",
+        "tests/test_e2b_step_profile_v1.py",
+        "results/predictive-reliability-v1/e2b-step-profile-v1.json",
+        "results/predictive-reliability-v1/e2b-step-profile-v1.md"
+      ],
+      "evidence_level": "L1",
+      "qualification": "PROFILE_ONLY: A/B mid shares from cProfile are indicative; plain cost is 13.8755/14.3571 s/cycle. 69.2167 s and 0.4813 MiB. No solver optimization, equivalence, benchmark or promotion."
+    },
+    {
+      "id": "PRED-E2-EQUIVALENCE-PREREG-V1",
+      "description": "Preregister the E2 local-candidate benchmark matrix and numeric equivalence tolerance against the audited V2/MUSCL route before any candidate measurement",
+      "dependencies": [
+        "PRED-E2B-STEP-PROFILE-V1"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/predictive-reliability-v1/e2b-step-profile-v1.json",
+        "docs/planning/predictive-core-staged-plan-v1.md"
+      ],
+      "next_action": "Protocol was frozen and applied to the five-cycle A44/B44 confirmations; preserve the disclosed post-hoc limitation.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "owner_role": "verification/architecture",
+      "write_scope": [
+        "docs/gasdynamic/e2b-local-candidate-equivalence-v1.md"
+      ],
+      "evidence_level": "L1",
+      "qualification": "Protocol frozen and used for five-cycle confirmations, but after exploratory measurement and candidate selection. Not a clean prospective preregistration; deviation disclosed in delivery receipt."
     }
   ],
   "audit_remediation_mode": false,
@@ -14779,6 +14864,12 @@
       "task": "PRED-VALIDATION",
       "kind": "task",
       "summary": "QUB Cahoon PDF: 264 páginas, hash verificado; 10 puntos de potencia MK.1 y traza a 6000 rpm identificados. BMEP cierra a <=0.064% por redondeo (consistencia tabular, no Dino). Escape contradictorio entre tabla y hoja de entrada; faltan volumen absoluto, condiciones e incertidumbre. Sin solver ni contacto externo."
+    },
+    {
+      "at": "2026-10-29T14:18:32Z",
+      "task": "PRED-E2-LOCAL-CANDIDATE-V1",
+      "kind": "task",
+      "summary": "A44/B44 bounded 5-cycle opt-in Brent candidate: 6.396/6.436 s per cycle, 2.169x/2.231x versus audited references; equivalence, conservation and replay pass, 363 focal tests pass. Default bisection retained. Protocol preregistration followed exploratory selection, so qualification is PARTIAL. 176 not run: candidate is opt-in and not recosted at 176."
     }
   ],
   "legacy_gate_status": {
@@ -14873,7 +14964,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-29T11:35:00Z",
+  "updated_at": "2026-10-29T14:18:32Z",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",

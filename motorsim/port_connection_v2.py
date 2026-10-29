@@ -8,7 +8,10 @@ from functools import lru_cache
 from math import exp, isfinite, log, log1p, sqrt, ulp
 
 from .gas1d.eos import IdealGas, InvalidState
-from .gas1d.exact_riemann_reference_v1 import exact_riemann_v1, pressure_wave
+from .gas1d.exact_riemann_reference_v1 import (
+    _pressure_wave_prevalidated,
+    exact_riemann_v1,
+)
 
 SCHEMA = 'EQUIVALENT_IDEAL_NOZZLE_CONNECTION_CANDIDATE_V2'
 
@@ -18,6 +21,7 @@ class NoAdmissiblePortState(InvalidState):
 
 
 def root(f, lo, hi, *, nonpositive_endpoint=False):
+    """Deterministic 90-step bisection (default nozzle solver)."""
     a, b = f(lo), f(hi)
     if a == 0:
         return lo
@@ -39,8 +43,82 @@ def root(f, lo, hi, *, nonpositive_endpoint=False):
         else:
             hi = mid
     if nonpositive_endpoint:
-        return lo if f(lo)<=0 else hi
+        return lo if f(lo) <= 0 else hi
     return (lo+hi)/2
+
+
+def _brent_root(f, lo, hi, *, nonpositive_endpoint=False):
+    """Opt-in bracketed Brent root with the original endpoint contract.
+
+    Used only when ``port_connection_v2(..., root_solver='brent')`` is set by
+    the bounded E2 candidate harness. The default remains deterministic
+    bisection so no production path changes silently.
+    """
+    fa, fb = f(lo), f(hi)
+    if fa == 0:
+        return lo
+    if fb == 0:
+        return hi
+    if not isfinite(fa) or not isfinite(fb) or (fa > 0) == (fb > 0):
+        raise NoAdmissiblePortState('no bracket for admissible nozzle branch')
+    f_lo = fa
+    xlo, xhi = lo, hi
+    fxlo = fa
+    a, b = lo, hi
+    c, fc = a, fa
+    d = e = b-a
+    eps = 2.220446049250313e-16
+    for _ in range(100):
+        if (fb > 0 and fc > 0) or (fb < 0 and fc < 0):
+            c, fc = a, fa
+            d = e = b-a
+        if abs(fc) < abs(fb):
+            a, b, c = b, c, b
+            fa, fb, fc = fb, fc, fb
+        tol = 2*eps*abs(b)
+        m = 0.5*(c-b)
+        if abs(m) <= tol or fb == 0:
+            break
+        if abs(e) < tol or abs(fa) <= abs(fb):
+            d = e = m
+        else:
+            s = fb/fa
+            if a == c:
+                p = 2*m*s
+                q = 1-s
+            else:
+                q = fa/fc
+                r = fb/fc
+                p = s*(2*m*q*(q-r)-(b-a)*(r-1))
+                q = (q-1)*(r-1)*(s-1)
+            if p > 0:
+                q = -q
+            else:
+                p = -p
+            s = e
+            e = d
+            if 2*p < 3*m*q-abs(tol*q) and p < abs(0.5*s*q):
+                d = p/q
+            else:
+                d = e = m
+        a, fa = b, fb
+        if abs(d) > tol:
+            b += d
+        elif m > 0:
+            b += tol
+        else:
+            b -= tol
+        fb = f(b)
+        if not isfinite(fb):
+            raise NoAdmissiblePortState('nonfinite nozzle residual')
+        if xlo < b < xhi:
+            if (fb > 0) == (f_lo > 0):
+                xlo, fxlo = b, fb
+            else:
+                xhi = b
+    if nonpositive_endpoint:
+        return xlo if fxlo <= 0 else xhi
+    return b
 
 
 def area_mach(mach, gamma):
@@ -107,8 +185,11 @@ class PortExchangeV2:
 
 
 def port_connection_v2(chamber, interior, effective_area_m2, duct_area_m2,
-                       normal, *, eos=None):
+                       normal, *, eos=None, root_solver='bisection'):
     eos = eos or IdealGas()
+    if root_solver not in ('bisection', 'brent'):
+        raise InvalidState("root_solver must be 'bisection' or 'brent'")
+    solve = _brent_root if root_solver == 'brent' else root
     eos.validate(interior)
     _, pc, tc, yc = chamber.thermodynamics(eos)
     if type(normal) is not int or normal not in (-1, 1):
@@ -126,7 +207,7 @@ def port_connection_v2(chamber, interior, effective_area_m2, duct_area_m2,
     inside = (rhoi, wi, pi, yi)
 
     def wave(p):
-        f, rho = pressure_wave(p, inside, eos)
+        f, rho = _pressure_wave_prevalidated(p, inside, g, ai)
         return wi-f, rho
 
     def finish(state, branch, mt=0., pt=None, shock_area=None, causal=None,
@@ -163,7 +244,7 @@ def port_connection_v2(chamber, interior, effective_area_m2, duct_area_m2,
             upper *= 2
             if not isfinite(upper):
                 raise NoAdmissiblePortState('wall wave pressure exceeds finite range')
-        p_zero = root(lambda p: wave(p)[0], 0., upper)
+        p_zero = solve(lambda p: wave(p)[0], 0., upper)
     if at == 0:
         _, rho = wave(p_zero)
         return finish((rho, 0., p_zero, yi), 'CLOSED_REFLECTED_WALL')
@@ -175,6 +256,7 @@ def port_connection_v2(chamber, interior, effective_area_m2, duct_area_m2,
         # pressure difference. The latter loses digits as velocity tends to
         # zero and spuriously destroys the outflow bracket at full pipe area.
         msub, _ = nozzle_mach_roots(ap/at,g)
+        msub_area = area_mach(msub,g)
 
         def pipe(p):
             w,rho = wave(p)
@@ -195,13 +277,13 @@ def port_connection_v2(chamber, interior, effective_area_m2, duct_area_m2,
             elif at == ap:
                 mt = mb
             else:
-                ratio = area_mach(msub,g)/area_mach(mb,g)
+                ratio = msub_area/area_mach(mb,g)
                 if ratio > 1:
                     if ratio-1 > 64*ulp(1.):
                         raise NoAdmissiblePortState('outflow exceeds contraction capacity')
                     mt = 1.  # ULP-only inversion of the critical endpoint.
                 else:
-                    mt = root(lambda m: 1/area_mach(m,g)-ratio,.1*ratio,1.)
+                    mt = solve(lambda m: 1/area_mach(m,g)-ratio,.1*ratio,1.)
             pt = p if at==ap else p*exp(g/(g-1)*(
                 log1p((g-1)*mb*mb/2)-log1p((g-1)*mt*mt/2)))
             return state,mt,pt
@@ -210,8 +292,8 @@ def port_connection_v2(chamber, interior, effective_area_m2, duct_area_m2,
         if wi >= ai:
             lower = normal_shock(inside, eos)[2]
             if mach(pipe(lower)) > msub:
-                pcritical = root(lambda p: mach(pipe(p))-msub,lower,p_zero,
-                                 nonpositive_endpoint=True)
+                pcritical = solve(lambda p: mach(pipe(p))-msub,lower,p_zero,
+                                  nonpositive_endpoint=True)
             elif pc <= throat(lower)[2]:
                 # A stationary or downstream-moving shock lies beyond the
                 # pipe, so chamber data cannot change its supersonic face.
@@ -227,7 +309,7 @@ def port_connection_v2(chamber, interior, effective_area_m2, duct_area_m2,
             if a_sonic <= 0:
                 raise NoAdmissiblePortState('no positive outgoing sonic state')
             p_sonic = pi*(a_sonic/ai)**(2*g/(g-1))
-            lower = pcritical = (p_sonic if at==ap else root(
+            lower = pcritical = (p_sonic if at==ap else solve(
                 lambda p: mach(pipe(p))-msub,p_sonic,p_zero,
                 nonpositive_endpoint=True))
         prefix = 'OUTFLOW_UNSTART_SHOCK_' if wi>=ai else 'OUTFLOW_'
@@ -236,12 +318,13 @@ def port_connection_v2(chamber, interior, effective_area_m2, duct_area_m2,
             if pc <= pt:
                 return finish(state,prefix+'CHOKED',mt,pt)
             lower = pcritical
-        p = root(lambda p: throat(p)[2]-pc,lower,p_zero)
+        p = solve(lambda p: throat(p)[2]-pc,lower,p_zero)
         state,mt,pt = throat(p)
         return finish(state,prefix+'SUBSONIC',mt,pt)
 
     # Chamber donor. The ideal nozzle's subsonic exit branch has no entropy loss.
     msub, msup = nozzle_mach_roots(ap/at, g)
+    msub_area = area_mach(msub,g)
     sub = nozzle_state(pc, tc, msub, yc, eos)
     pmin = sub[2]
 
@@ -251,7 +334,7 @@ def port_connection_v2(chamber, interior, effective_area_m2, duct_area_m2,
         def residual(m):
             state = nozzle_state(pc,tc,m,yc,eos)
             return wave(state[2])[0]-state[1]
-        m = root(residual, 0., msub)
+        m = solve(residual, 0., msub)
         state = nozzle_state(pc,tc,m,yc,eos)
         q = -ap*state[0]*state[1]
         # Infer subsonic throat Mach from mass, not pipe Mach.
@@ -267,8 +350,8 @@ def port_connection_v2(chamber, interior, effective_area_m2, duct_area_m2,
         else:
             # Normalize to the same computed critical pipe endpoint. This
             # avoids an above-one quotient from independently rounded areas.
-            ratio = area_mach(msub,g)/area_mach(m,g)
-            mt = root(lambda mt: 1/area_mach(mt,g)-ratio, .1*ratio, 1.)
+            ratio = msub_area/area_mach(m,g)
+            mt = solve(lambda mt: 1/area_mach(mt,g)-ratio, .1*ratio, 1.)
         pt = pc*(1+(g-1)*mt*mt/2)**(-g/(g-1))
         return finish(state, 'INFLOW_ISENTROPIC_SUBSONIC', mt, pt)
 

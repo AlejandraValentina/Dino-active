@@ -694,6 +694,9 @@ class IntegratedEngine2T:
         initial_cylinder_primitive = tuple(cylinder_state)
         initial_duct_primitives = deepcopy(initial_duct_states)
         self.eos = eos or IdealGas()
+        # Explicit opt-in acceleration for the bounded E2 candidate. The
+        # default preserves the validated deterministic-bisection port path.
+        self.port_root_solver = "bisection"
         self.geometry = geometry
         if not isinstance(geometry_identity, dict) or not geometry_identity:
             raise ValueError("stable geometry_identity is required for restart/replay")
@@ -1543,8 +1546,9 @@ class IntegratedEngine2T:
 
     def _port_exchange(self, chamber, primitive, area, pipe_area, normal):
         if self.port_connection_model == PORT_CONNECTION_V2:
-            return port_connection_v2(chamber, primitive, area, pipe_area,
-                                      normal, eos=self.eos)
+            return port_connection_v2(
+                chamber, primitive, area, pipe_area, normal, eos=self.eos,
+                root_solver=getattr(self, "port_root_solver", "bisection"))
         return (interface_flux(chamber, primitive, area, normal, eos=self.eos)
                 if area else None)
 

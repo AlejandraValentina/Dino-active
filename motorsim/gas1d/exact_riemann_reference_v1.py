@@ -13,23 +13,36 @@ class VacuumRiemannError(InvalidState):
     pass
 
 
-def pressure_wave(pressure, state, eos):
-    """Return f(p), star density for a side state (Toro wave convention)."""
-    rho, _, p, _ = eos.validate(state)
+def _pressure_wave_prevalidated(pressure, state, gamma, sound_speed):
+    """Pressure-wave residual with state validation/sound speed hoisted.
+
+    The caller must have validated ``state`` and must pass the exact
+    ``sqrt(gamma*p/rho)`` value for that state. This is the same arithmetic as
+    ``pressure_wave``; it exists to avoid repeating EOS validation and a square
+    root at every root-search iteration.
+    """
+    rho, _, p, _ = state
     if not isfinite(pressure) or pressure < 0:
         raise InvalidState('wave pressure must be finite and nonnegative')
-    g = eos.gamma
+    g = gamma
     if pressure == 0:
-        return -2*eos.sound_speed(state)/(g-1), 0.
+        return -2*sound_speed/(g-1), 0.
     ratio = pressure/p
     if pressure <= p:
-        f = 2*eos.sound_speed(state)/(g-1)*expm1((g-1)/(2*g)*log1p((pressure-p)/p))
+        f = 2*sound_speed/(g-1)*expm1((g-1)/(2*g)*log1p((pressure-p)/p))
         r = rho*ratio**(1/g)
     else:
         b = (g-1)/(g+1)
         f = (pressure-p)*sqrt(2/((g+1)*rho)/(pressure+b*p))
         r = rho*(ratio+b)/(b*ratio+1)
     return f, r
+
+
+def pressure_wave(pressure, state, eos):
+    """Return f(p), star density for a side state (Toro wave convention)."""
+    eos.validate(state)
+    return _pressure_wave_prevalidated(
+        pressure, state, eos.gamma, eos.sound_speed(state))
 
 
 @dataclass(frozen=True)

@@ -24,7 +24,8 @@ class IdealGas:
 
     def validate(self, w):
         r,u,p,y=w
-        if not all(isfinite(v) for v in w) or r<=0 or p<=0 or not 0<=y<=1:
+        if (not isfinite(r) or not isfinite(u) or not isfinite(p) or not isfinite(y)
+                or r<=0 or p<=0 or not 0<=y<=1):
             raise InvalidState('rho/p/Y inadmissible')
         temperature=p/(r*self.R)
         if not isfinite(temperature) or temperature<=0: raise InvalidState('T inadmissible')
@@ -33,12 +34,15 @@ class IdealGas:
     def conservative(self, w):
         r,u,p,y=self.validate(w)
         q=(r,r*u,p/(self.gamma-1)+0.5*r*u*u,r*y)
-        if not all(isfinite(v) for v in q): raise InvalidState('Nonfinite conserved state')
+        if (not isfinite(q[0]) or not isfinite(q[1]) or not isfinite(q[2])
+                or not isfinite(q[3])):
+            raise InvalidState('Nonfinite conserved state')
         return q
 
     def primitive(self, q):
         r,m,e,z=q
-        if not all(isfinite(v) for v in q) or r<=0 or not 0<=z<=r:
+        if (not isfinite(r) or not isfinite(m) or not isfinite(e) or not isfinite(z)
+                or r<=0 or not 0<=z<=r):
             raise InvalidState('Conserved rho/species inadmissible')
         u=m/r;p=(self.gamma-1)*(e-0.5*m*u)
         return self.validate((r,u,p,z/r))
@@ -59,7 +63,8 @@ class IdealGas:
             r, m, energy, z = q
         except Exception as error:
             raise InvalidState("Conserved rho/species inadmissible") from error
-        if (not all(isfinite(value) for value in q) or r <= 0.0 or z < 0.0):
+        if (not isfinite(r) or not isfinite(m) or not isfinite(energy)
+                or not isfinite(z) or r <= 0.0 or z < 0.0):
             raise InvalidState("Conserved rho/species inadmissible")
         if z > r:
             tolerance = ulps * ulp(r)
