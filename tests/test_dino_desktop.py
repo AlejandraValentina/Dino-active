@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 import tempfile
 import unittest
@@ -20,9 +21,10 @@ from motorsim.desktop.context import DesktopContext
 from motorsim.desktop.engine_page import EnginePage
 from motorsim.desktop.exhaust_page import ExhaustPage
 from motorsim.desktop.execution_page import ExecutionPage
+from motorsim.desktop.new_engine_dialog import NewEngineDialog
 from motorsim.desktop.project_page import ProjectPage
 from motorsim.desktop.results_page import ResultsPage
-from motorsim.desktop.preferences import impl2_historical_report_candidate
+from motorsim.desktop.preferences import default_artifact_root,impl2_historical_report_candidate,set_artifact_root
 from motorsim.desktop.services import load_results, new_project, new_design_project, run_background,run_parallel_curve_points
 from motorsim.engine_configuration import identity,create,resolve_for_operating_point
 from motorsim.engine_project import create_project,load_project,save_project
@@ -214,6 +216,188 @@ class DinoDesktopTests(unittest.TestCase):
             self.assertAlmostEqual(roundtrip["variants"]["escape-var"]["native_configuration"]["ducts"][-1]["mesh"]["faces"][-1],
                                    reopened.engine("escape-var")["native_configuration"]["ducts"][-1]["mesh"]["faces"][-1])
 
+    def test_desktop_synthetic_custom_engine_ab_roundtrip_one_cycle(self):
+        """Exercise visible project creation through solver results and reopen."""
+        from PySide6.QtWidgets import QInputDialog, QSpinBox
+
+        with tempfile.TemporaryDirectory() as tmp:
+            set_artifact_root(Path(tmp)/"history-artifacts")
+            evidence_root=Path(os.environ["DINO_DESKTOP_CUSTOM_ENGINE_E2E_ROOT"]) if os.environ.get("DINO_DESKTOP_CUSTOM_ENGINE_E2E_ROOT") else None
+            if evidence_root is not None:
+                existing=set(child.name for child in evidence_root.iterdir()) if evidence_root.exists() else set()
+                self.assertLessEqual(existing,{"logs"},"refusing to overwrite existing E2E evidence")
+                self.assertFalse((evidence_root/"synthetic-user-engine.dino2t.json").exists(),"refusing to overwrite existing project")
+                self.assertFalse((evidence_root/"receipt.json").exists(),"refusing to overwrite existing receipt")
+                from motorsim.storage_preflight import check_storage_requirements
+                check_storage_requirements([(evidence_root,512*1024**2)])
+            output_root=evidence_root or Path(tmp)
+            project_path=output_root/"synthetic-user-engine.dino2t.json"
+            artifacts_root=(default_artifact_root()/"dino-desktop-custom-engine-e2e-20261029-v5"
+                            if evidence_root is not None else Path(tmp)/"artifacts")
+            if evidence_root is not None:
+                self.assertFalse(artifacts_root.exists(),"refusing to overwrite existing external E2E artifacts")
+                from motorsim.storage_preflight import check_storage_requirements
+                check_storage_requirements([(evidence_root,512*1024**2),(artifacts_root,512*1024**2)])
+            window=DinoDesktopWindow(new_project("desktop-shell"))
+            dialog=NewEngineDialog(window)
+            dialog.project_name.setText("synthetic-user-engine")
+            dialog.engine_name.setText("Synthetic 2T - E2E")
+            dialog.inputs["bore_mm"].setValue(56.5)
+            dialog.inputs["stroke_mm"].setValue(50.6)
+            dialog.inputs["volume_bdc_cm3"].setValue(360.0)
+            dialog.intake.setCurrentIndex(dialog.intake.findData("reed"))
+            dialog._create()
+            self.assertIsNotNone(dialog.project)
+            with patch("motorsim.desktop.app.NewEngineDialog",return_value=dialog), \
+                 patch.object(dialog,"exec",return_value=QDialog.DialogCode.Accepted):
+                window.new_file()
+
+            engine_page=window.pages[0]
+            engine_page.controls["bore_mm"].setValue(57.0)
+            engine_page.controls["volume_bdc_cm3"].setValue(365.0)
+            transfer_row=next(i for i in range(engine_page.ports.rowCount())
+                if engine_page.ports.item(i,1).text().lower()=="transfer")
+            old_port_height=float(engine_page.ports.item(transfer_row,3).text())
+            engine_page.ports.item(transfer_row,3).setText(str(old_port_height+0.5))
+            intake_row=next(i for i in range(engine_page.ducts.rowCount())
+                if engine_page.ducts.item(i,0).text()=="intake")
+            transfer_duct_row=next(i for i in range(engine_page.ducts.rowCount())
+                if engine_page.ducts.item(i,0).text()=="primary")
+            engine_page.ducts.item(intake_row,2).setText("96")
+            engine_page.ducts.item(intake_row,3).setText("43")
+            engine_page.ducts.item(transfer_duct_row,2).setText("63")
+            engine_page.reeds.item(0,1).setText("9.1")
+            engine_page.mixed_outflow.setValue(.61)
+            engine_page.apply()
+            self.assertIn("Validación correcta",engine_page.validation.text())
+            base_identity=identity(window.context.project["base_engine"])
+            self.assertEqual(window.context.project["scientific_validation_status"],"SYNTHETIC_UNVALIDATED")
+            self.assertEqual(window.context.project["base_engine"]["provenance"]["design_inputs"]["port_dimensions"]["classification"],"SYNTHETIC_ASSUMPTION")
+            self.assertEqual(window.context.project["base_engine"]["provenance"]["design_inputs"]["bore_mm"]["classification"],"UNKNOWN")
+            with patch("motorsim.desktop.app.QFileDialog.getSaveFileName",return_value=(str(project_path),"Dino 2T (*.dino2t.json)")):
+                self.assertTrue(window.save_as())
+            self.assertTrue(window.close())
+
+            reopened=DinoDesktopWindow(new_project("desktop-reopen-shell"))
+            reopened._open(project_path)
+            self.assertEqual(identity(reopened.context.project["base_engine"]),base_identity)
+            effective=resolve_for_operating_point(reopened.context.engine())
+            native=effective["native_configuration"]
+            solver_engine=__import__("motorsim.integrated_2t",fromlist=["IntegratedEngine2T"]).IntegratedEngine2T.from_configuration_dict(native)
+            self.assertEqual(solver_engine.slider_crank.crankcase.bore_mm,57.0)
+            self.assertAlmostEqual(next(d for d in native["ducts"] if d["id"]=="intake")["mesh"]["faces"][-1]*1000,96.0)
+            self.assertAlmostEqual(solver_engine.reed_petals[0].pressure_area_m2*1e4,9.1)
+
+            reopened.context.select_variant(None)
+            with patch("motorsim.desktop.project_page.QInputDialog.getText",return_value=("escape-candidate",True)):
+                reopened.pages[2].duplicate_variant()
+            reopened.context.select_variant("escape-candidate")
+            exhaust_page=reopened.pages[1]
+            original_diameter=float(exhaust_page.table.item(0,1).text())
+            exhaust_page.table.item(0,1).setText(str(original_diameter+3.0))
+            self.assertTrue(exhaust_page.save_current())
+            self.assertNotEqual(identity(reopened.context.engine("escape-candidate")),base_identity)
+            self.assertTrue(reopened.save_file())
+            self.assertTrue(reopened.close())
+
+            run_window=DinoDesktopWindow(new_project("desktop-run-shell"))
+            run_window._open(project_path)
+            run_window.context.select_variant("escape-candidate")
+            execution=run_window.pages[3]
+            with patch("motorsim.desktop.execution_page.QFileDialog.getExistingDirectory",return_value=str(artifacts_root)):
+                execution.choose_root()
+            execution.rpm.setValue(4500)
+            execution.cycles.setValue(1)
+            execution.budget.setValue(90)
+            execution.memory.setValue(1024)
+
+            def accept_curve(run_dialog):
+                run_dialog.findChild(QSpinBox,"curveStartRpm").setValue(4500)
+                run_dialog.findChild(QSpinBox,"curveStopRpm").setValue(5000)
+                run_dialog.findChild(QSpinBox,"curveCycles").setValue(1)
+                run_dialog.findChild(QSpinBox,"curvePointBudget").setValue(90)
+                run_dialog.findChild(QSpinBox,"curveTotalBudget").setValue(180)
+                run_dialog.findChild(QSpinBox,"curveMemory").setValue(1024)
+                selector=run_dialog.findChild(QComboBox,"curveABParallelVariant")
+                selector.setCurrentIndex(selector.findData("base"))
+                return QDialog.DialogCode.Accepted
+
+            preflight_warnings=[]
+            with patch.object(QDialog,"exec",new=accept_curve), \
+                 patch("motorsim.desktop.execution_page.QMessageBox.question",return_value=QMessageBox.StandardButton.Yes), \
+                 patch("motorsim.desktop.execution_page.QMessageBox.warning",side_effect=lambda *args:preflight_warnings.append(args)):
+                execution.start_power_curve()
+            self.assertFalse(preflight_warnings,preflight_warnings)
+            self.assertIsInstance(execution.active_sweep_settings,dict)
+            self.assertEqual(execution.active_sweep_settings["max_cycles"],1)
+            self.assertTrue(spin_until(lambda:execution.task is None,timeout_ms=60000),execution.output.toPlainText())
+            self.assertIn("MAX_CYCLES_NONCONVERGED",execution.output.toPlainText())
+            self.assertEqual(len(run_window.context.project["result_references"]),4)
+            self.assertIn("MAX_CYCLES_NONCONVERGED",execution.output.toPlainText())
+            self.assertTrue(run_window.save_file())
+            self.assertTrue(spin_until(lambda:run_window.results.dataset is not None,timeout_ms=30000))
+            classifications={point["classification"] for point in run_window.results.dataset["points"]}
+            self.assertEqual(classifications,{"MAX_CYCLES_NONCONVERGED"})
+            run_window.results.show_point(run_window.results.dataset["points"][0])
+            self.assertIn("no convergida",run_window.results.run_summary.text().lower())
+            self.assertNotIn("PERIOD_1",run_window.results.run_summary.text())
+            self.assertIn("base vs escape-candidate",run_window.results.compare_notice.text())
+            self.assertIn("TRANSITORIOS",run_window.results.compare_notice.text())
+            self.assertGreater(run_window.results.compare_table.rowCount(),0)
+            self.assertTrue(run_window.close())
+
+            final_window=DinoDesktopWindow(new_project("desktop-final-shell"))
+            final_window._open(project_path)
+            self.assertAlmostEqual(final_window.context.engine()["native_configuration"]["slider_crank"]["crankcase"]["bore_mm"],57.0)
+            self.assertIn("escape-candidate",final_window.context.project["variants"])
+            self.assertEqual(len(final_window.context.project["result_references"]),4)
+            self.assertEqual(final_window.context.project["scientific_validation_status"],"SYNTHETIC_UNVALIDATED")
+            final_window.close()
+            if evidence_root is not None:
+                records=[]
+                for point in run_window.results.dataset["points"]:
+                    records.append({key:point.get(key) for key in (
+                        "variant_id","rpm","classification","periodicity","cycles_completed",
+                        "checkpoint_sha256","result_sha256","point_configuration_sha256")})
+                package_spec=Path("packaging/MotorSim.spec").read_text(encoding="utf-8")
+                self.assertIn("module_collection_mode={'motorsim':'py'}",package_spec)
+                self.assertIn("(root/'motorsim').rglob('*.py')",package_spec)
+                relative_refs=[]
+                for ref in final_window.context.project["result_references"]:
+                    external_relative=Path(ref["path"]).resolve().relative_to(artifacts_root.resolve()).as_posix()
+                    relative_refs.append({**ref,"path":f"DINO_ARTIFACT_ROOT/{external_relative}"})
+                receipt={"schema":"DINO_DESKTOP_CUSTOM_ENGINE_E2E_V1","project_file":project_path.name,
+                    "project_id":final_window.context.project["project_id"],
+                    "project_sha256":hashlib.sha256(project_path.read_bytes()).hexdigest(),
+                    "scientific_validation_status":final_window.context.project["scientific_validation_status"],
+                    "experimental_validation":"NOT_CLAIMED",
+                    "base_engine_identity_sha256":identity(final_window.context.project["base_engine"]),
+                    "escape_variant_identity_sha256":identity(final_window.context.project["variants"]["escape-candidate"]),
+                    "result_references":relative_refs,"points":records,
+                    "comparison_notice":run_window.results.compare_notice.text(),
+                    "comparison_rows":run_window.results.compare_table.rowCount(),
+                    "parallel_dispatch":"DINO_PARALLEL_POINT_SWEEP_V1",
+                    "artifact_root":"DINO_ARTIFACT_ROOT/dino-desktop-custom-engine-e2e-20261029-v5",
+                    "parallel_manifest":run_window.context.project["simulation_recipes"]["rpm_ab_parallel_v1"],
+                    "cancel_error_recovery":"Covered by existing cancel event, fail-closed coordinator, hash-bound checkpoints, and per-point history resume paths; no interruption injected into the successful end-to-end run.",
+                    "windows_packaging_compatibility":{"verified":"STATIC_SPEC_SOURCE_BUNDLE",
+                        "source_backed_motorsim": "module_collection_mode={'motorsim':'py'}" in package_spec,
+                        "recursive_motorsim_sources":"(root/'motorsim').rglob('*.py')" in package_spec,
+                        "build_performed":False}}
+                evidence_root.mkdir(parents=True,exist_ok=True)
+                (evidence_root/"receipt.json").write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+                report=["# Desktop custom-engine A/B end-to-end proof","",
+                    "Configuración enteramente sintética; no es validación experimental ni predicción respaldada.","",
+                    "- Alta desde el diálogo Crear motor; cambios en cilindro, cárter, lumbreras, admisión, transferencia y láminas aplicados y resueltos por el solver.",
+                    "- Proyecto guardado, ventana cerrada y proyecto reabierto; identidad de motor preservada.",
+                    "- Variante duplicada desde Proyecto; geometría de escape editada, guardada y reabierta.",
+                    "- Curva A/B paralela desde Desktop en 4500 y 5000 rpm, un ciclo por punto; artifacts ligados por hash al proyecto.",
+                    "- Los cuatro puntos se muestran como MAX_CYCLES_NONCONVERGED; la comparación advierte TRANSITORIOS y no declara una mejora definitiva.",
+                    "- Compatibilidad Windows verificada leyendo el spec de PyInstaller: el bundle Dino incluye fuentes `motorsim`; no se hizo build.",
+                    "- La corrida de éxito no inyectó cancelación. Cancelación, fallos y recuperación individual conservan las rutas ya existentes y quedan listados en el recibo.","",
+                    "Ver métricas, hashes y referencias en `receipt.json`.",""]
+                (evidence_root/"report.md").write_text("\n".join(report),encoding="utf-8")
+
     def test_desktop_imports_measured_dynodata_persists_and_compares_exact_rpm(self):
         context=DesktopContext(new_project("measurement-ui"))
         with tempfile.TemporaryDirectory() as tmp:
@@ -326,6 +510,42 @@ class DinoDesktopTests(unittest.TestCase):
             self.assertEqual(manifest["schema"],"DINO_PARALLEL_POINT_SWEEP_V1")
             self.assertEqual(manifest["status"],"COMPLETE")
 
+    def test_parallel_curve_point_cancel_and_fail_closed_states_are_durable(self):
+        import threading
+        project=load_project(Path("configs/reference_cases/functional_exhaust_ab_125cc_v1.dino.json"))
+        with tempfile.TemporaryDirectory() as tmp:
+            specs=[]
+            for label,engine in (("A_original",project["variants"]["A_original"]),
+                                 ("B_header_plus20",project["variants"]["B_header_plus20"])):
+                specs.append({"document":engine,"project_id":project["project_id"],"variant_label":label,
+                    "rpm":5000,"artifact_root":tmp,"run_id":f"cancel-check-{label}",
+                    "max_cycles":1,"point_budget_seconds":30,"memory_limit_mib":1024,
+                    "identity_sha256":identity(engine)})
+            cancelled=threading.Event();cancelled.set()
+            partial=run_parallel_curve_points(specs,max_workers=2,total_budget_seconds=30,cancel_event=cancelled)
+            self.assertEqual(partial["status"],"PARTIAL")
+            self.assertTrue(all(point["status"]=="INTERRUPTED_CHECKPOINTED" for point in partial["points"]))
+            partial_manifest=json.loads(Path(partial["parallel_manifest"]).read_text(encoding="utf-8"))
+            self.assertEqual(partial_manifest["status"],"PARTIAL")
+
+            broken=[{**spec,"run_id":f"broken-{i}","document":{}} for i,spec in enumerate(specs)]
+            with self.assertRaises(Exception):run_parallel_curve_points(broken,max_workers=2,total_budget_seconds=30)
+            manifests=list((Path(tmp)/"dino-parallel-point-sweep-v1"/project["project_id"]).glob("*/dispatch.json"))
+            failed=json.loads(max(manifests,key=lambda path:path.stat().st_mtime).read_text(encoding="utf-8"))
+            self.assertEqual(failed["status"],"FAILED")
+            self.assertIn("failure",failed)
+
+    def test_history_resume_reuses_the_existing_guarded_single_point_recovery(self):
+        project=load_project(Path("configs/reference_cases/functional_exhaust_ab_125cc_v1.dino.json"))
+        context=DesktopContext(project);context.select_variant("A_original")
+        page=ExecutionPage(context)
+        point_identity=resolve_for_operating_point(context.engine(),rpm=5000)["identity_sha256"]
+        with tempfile.TemporaryDirectory() as tmp,patch.object(page,"start_run") as start:
+            page.resume_from_entry({"identity_sha256":point_identity,"artifact_root":tmp,
+                "run_id":"cancel-check-A_original","rpm":5000,"details":{"cycles_requested":1}})
+        start.assert_called_once_with(resume=True)
+        self.assertEqual(page.run_id.text(),"cancel-check-A_original")
+
     def test_real_impl2_import_keeps_invalid_points_as_gaps_and_exports_plot(self):
         report=impl2_historical_report_candidate()
         if not report.is_file():self.skipTest("external IMPL2 artifact root is not configured")
@@ -382,6 +602,27 @@ class DinoDesktopTests(unittest.TestCase):
         self.assertEqual(details["Periodicidad"],"NOT_EVALUATED")
         self.assertEqual(details["Auditoría primaria"],"PASS")
         self.assertEqual(details["Validación experimental"],"NOT_CLAIMED")
+
+    def test_ab_comparison_labels_max_cycles_as_transient_not_confirmed_gain(self):
+        self.context.duplicate_variant(None,"escape-candidate")
+        page=ResultsPage(self.context)
+        points=[]
+        for variant in ("base","escape-candidate"):
+            points.append({"variant_id":variant,"rpm":4500,
+                "classification":"MAX_CYCLES_NONCONVERGED","periodicity":"INSUFFICIENT_CYCLES",
+                "cycles_completed":1,"mode":"EXPLORATORY","experimental_validation":"NOT_CLAIMED",
+                "brake_power_status":"INSUFFICIENT_CYCLES","brake_power":None,
+                "brake_power_reason":"INSUFFICIENT_CYCLES","brake_torque_status":"INSUFFICIENT_CYCLES",
+                "BMEP_status":"INSUFFICIENT_CYCLES","IMEP_status":"INSUFFICIENT_CYCLES",
+                "FMEP_status":"INSUFFICIENT_CYCLES","transient_estimates":{"brake_power":12.0,"brake_torque":8.0}})
+        page._loaded_exploratory({"schema":"DINO_EXPLORATORY_COMPARISON_V1","points":points,
+            "traces":[],"experimental_validation":"NOT_CLAIMED","provenance":"EXPLORATORY"})
+        self.assertIn("TRANSITORIOS",page.compare_notice.text())
+        self.assertIn("no demuestra ganancia",page.compare_notice.text().lower())
+        states={page.compare_table.item(row,0).text():page.compare_table.item(row,4).text()
+            for row in range(page.compare_table.rowCount())}
+        self.assertIn("no convergido",states["Potencia transitoria"].lower())
+        self.assertEqual(page.compare_table.item(0,1).text(),"—")
 
     def test_execution_request_never_starts_and_is_atomic(self):
         page = ExecutionPage(self.context)

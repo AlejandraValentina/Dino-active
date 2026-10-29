@@ -1,0 +1,101 @@
+{
+  "schema": "DINO_DESKTOP_CUSTOM_ENGINE_E2E_V1",
+  "project_file": "synthetic-user-engine.dino2t.json",
+  "project_id": "synthetic-user-engine",
+  "project_sha256": "b8a10c1e19fb4abd31e6bec23fdd6a258fb9455ba1db89a457a0c60c3abef9e2",
+  "scientific_validation_status": "SYNTHETIC_UNVALIDATED",
+  "experimental_validation": "NOT_CLAIMED",
+  "base_engine_identity_sha256": "71fffa6ec5ad0ab6bd41f8f6069e9848f4f6a16f4d3b2a589e05826135de0b92",
+  "escape_variant_identity_sha256": "294e0bade33043ea4fbc8690ce4cd2a54f59dba008cc244df367c335f1697883",
+  "result_references": [
+    {
+      "artifact_sha256": "0134d9a1f8d19ab1a2a62886693c715e8c8e1528cfa3d0ff296729b18a6e2c83",
+      "classification": "MAX_CYCLES_NONCONVERGED",
+      "identity_sha256": "ab70a05e51951bdb704f37d9db43d3616c3c2575f29024b6ac7a0d73d2fcd146",
+      "path": "DINO_ARTIFACT_ROOT/exploratory-workflow-v1/synthetic-user-engine/ab-01d53b12e0a0-0-4500/result.json"
+    },
+    {
+      "artifact_sha256": "4d36379188d0348fd856685ce3991a402fb7f25838a8b9ca4eb790d93fab4651",
+      "classification": "MAX_CYCLES_NONCONVERGED",
+      "identity_sha256": "a6ca3f218417f484477b94fcdcc7373927995cc4c45234b6308c727974b084c9",
+      "path": "DINO_ARTIFACT_ROOT/exploratory-workflow-v1/synthetic-user-engine/ab-01d53b12e0a0-0-5000/result.json"
+    },
+    {
+      "artifact_sha256": "dd3e9d8745f37c151314a1c9584f4cdbfe5fab7b35b26f6e3f4e55a2ee1cba18",
+      "classification": "MAX_CYCLES_NONCONVERGED",
+      "identity_sha256": "bb3c37621589116b769147bdc254b8a66bc3c2374414951009ea0c99c118be67",
+      "path": "DINO_ARTIFACT_ROOT/exploratory-workflow-v1/synthetic-user-engine/ab-01d53b12e0a0-1-4500/result.json"
+    },
+    {
+      "artifact_sha256": "0e3400ce176ad1b71ea5cd9537e8c6b12c01e9e52be0e3816bd623e531f1c65a",
+      "classification": "MAX_CYCLES_NONCONVERGED",
+      "identity_sha256": "173a13dfdfdc2510106ccf10cf1cbe20bdcf44cb5c8fd11c6536f1b7450276cd",
+      "path": "DINO_ARTIFACT_ROOT/exploratory-workflow-v1/synthetic-user-engine/ab-01d53b12e0a0-1-5000/result.json"
+    }
+  ],
+  "points": [
+    {
+      "variant_id": "escape-candidate",
+      "rpm": 4500.0,
+      "classification": "MAX_CYCLES_NONCONVERGED",
+      "periodicity": "INSUFFICIENT_CYCLES",
+      "cycles_completed": 1,
+      "checkpoint_sha256": "91186541c82d313ca2cb126c3cf729bcf1dd7f4a293aab5cd090d83c9a81b6e1",
+      "result_sha256": "0134d9a1f8d19ab1a2a62886693c715e8c8e1528cfa3d0ff296729b18a6e2c83",
+      "point_configuration_sha256": "d1a482f4b9c5a2a10d6505ffa6fc2443169f6ae182393d242fecf37bdd3d68c9"
+    },
+    {
+      "variant_id": "escape-candidate",
+      "rpm": 5000.0,
+      "classification": "MAX_CYCLES_NONCONVERGED",
+      "periodicity": "INSUFFICIENT_CYCLES",
+      "cycles_completed": 1,
+      "checkpoint_sha256": "4b138f26cdd501f2b2597a585e1147cb29679ddcf262b81c3f087343de482b08",
+      "result_sha256": "4d36379188d0348fd856685ce3991a402fb7f25838a8b9ca4eb790d93fab4651",
+      "point_configuration_sha256": "3763512635c7e8b24007d9c8638313b0199a877764e75dc6ca11653cb962e2c7"
+    },
+    {
+      "variant_id": "base",
+      "rpm": 4500.0,
+      "classification": "MAX_CYCLES_NONCONVERGED",
+      "periodicity": "INSUFFICIENT_CYCLES",
+      "cycles_completed": 1,
+      "checkpoint_sha256": "f66fa6a33467d8add2c39fe20f03ee945cdfe22c117e55810adabb1aaf745d05",
+      "result_sha256": "dd3e9d8745f37c151314a1c9584f4cdbfe5fab7b35b26f6e3f4e55a2ee1cba18",
+      "point_configuration_sha256": "26b4825584790d061972f137ae65d3a3831fbddf0825a8c60145705534c1edd6"
+    },
+    {
+      "variant_id": "base",
+      "rpm": 5000.0,
+      "classification": "MAX_CYCLES_NONCONVERGED",
+      "periodicity": "INSUFFICIENT_CYCLES",
+      "cycles_completed": 1,
+      "checkpoint_sha256": "37c89367b2e544992d46bbd292893560cff28fdd5e2a8a2e25da35104a0efe75",
+      "result_sha256": "0e3400ce176ad1b71ea5cd9537e8c6b12c01e9e52be0e3816bd623e531f1c65a",
+      "point_configuration_sha256": "83b502a28457ec1d420630c2b06ce5f1c01178ff3c070b3ae2406b92c775ff01"
+    }
+  ],
+  "comparison_notice": "base vs escape-candidate · 4500 RPM · Mismo RPM; condiciones declaradas coinciden; TRANSITORIOS: no demuestra ganancia de potencia del escape. La identidad de configuración conserva las diferencias geométricas mostradas.",
+  "comparison_rows": 11,
+  "parallel_dispatch": "DINO_PARALLEL_POINT_SWEEP_V1",
+  "artifact_root": "DINO_ARTIFACT_ROOT/dino-desktop-custom-engine-e2e-20261029-v5",
+  "parallel_manifest": {
+    "variants": [
+      "escape-candidate",
+      "base"
+    ],
+    "rpms": [
+      4500,
+      5000
+    ],
+    "workers": 3,
+    "max_cycles": 1
+  },
+  "cancel_error_recovery": "Covered by existing cancel event, fail-closed coordinator, hash-bound checkpoints, and per-point history resume paths; no interruption injected into the successful end-to-end run.",
+  "windows_packaging_compatibility": {
+    "verified": "STATIC_SPEC_SOURCE_BUNDLE",
+    "source_backed_motorsim": true,
+    "recursive_motorsim_sources": true,
+    "build_performed": false
+  }
+}

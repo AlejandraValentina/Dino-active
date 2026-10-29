@@ -30,6 +30,14 @@ def _state_label(value):
         "EXPLORATORY":"Exploratoria · no validada"}.get(value,value)
 
 
+def _nonconverged(point):
+    """Treat both explicit non-convergence and too-short horizons as transient."""
+    return (point.get("classification") in {
+        "MAX_CYCLES_NONCONVERGED", "NOT_CONVERGED",
+        "EXPLORATORY_COMPLETE_PERIODICITY_NOT_IDENTIFIED",
+    } or point.get("periodicity") in {"NOT_CONVERGED", "INSUFFICIENT_CYCLES"})
+
+
 def _referenced_curve_rpms(project,data):
     """Return a saved RPM grid only for results referenced by this project.
 
@@ -414,7 +422,7 @@ class ResultsPage(QWidget):
                 for label,key,unit in (("Potencia transitoria","brake_power","kW"),("Torque transitorio","brake_torque","N·m")):
                     x=b['transient_estimates'].get(key);y=c['transient_estimates'].get(key)
                     if isinstance(x,(int,float)) and isinstance(y,(int,float)):
-                        rows.append((label,f"{x:.4g} {unit}",f"{y:.4g} {unit}",f"{y-x:+.4g} {unit}","NO CONVERGIDO; diferencia transitoria, no ganancia confirmada" if b.get('periodicity')=='NOT_CONVERGED' or c.get('periodicity')=='NOT_CONVERGED' else "Estimación de ingeniería"))
+                        rows.append((label,f"{x:.4g} {unit}",f"{y:.4g} {unit}",f"{y-x:+.4g} {unit}","NO CONVERGIDO; diferencia transitoria, no ganancia confirmada" if _nonconverged(b) or _nonconverged(c) else "Estimación de ingeniería"))
                 for label in ("Trabajo indicado (J/ciclo)","Aire atrapado al cierre (mg)","Calor de combustión (J/ciclo)"):
                     x=b.get('engineering_diagnostics',{}).get(label);y=c.get('engineering_diagnostics',{}).get(label)
                     if isinstance(x,(int,float)) and isinstance(y,(int,float)):
@@ -425,7 +433,7 @@ class ResultsPage(QWidget):
             condition="Mismo RPM; condiciones declaradas coinciden" if not mismatches else "Advertencia: difieren "+", ".join(mismatches)
             if not identity_known:condition+="; identidad del solver por punto no informada"
             elif not identity_matches:condition+="; identidad del solver distinta"
-            if b.get('periodicity')=='NOT_CONVERGED' or c.get('periodicity')=='NOT_CONVERGED':condition+="; TRANSITORIOS: no demuestra ganancia de potencia del escape"
+            if _nonconverged(b) or _nonconverged(c):condition+="; TRANSITORIOS: no demuestra ganancia de potencia del escape"
             self.compare_notice.setText(f"{baseline_name} vs {candidate_name} · {b.get('rpm'):g} RPM · {condition}. La identidad de configuración conserva las diferencias geométricas mostradas.")
         else:
             self.compare_notice.setText(f"{baseline_name} vs {candidate_name}: sin par de corridas a la misma RPM. Se muestra sólo el diff geométrico del proyecto; no se comparan métricas entre condiciones distintas.")

@@ -374,7 +374,9 @@ class ExecutionPage(QWidget):
         except Exception as exc:
             QMessageBox.warning(self,"Preflight de curva bloqueado",f"FAIL-CLOSED: {type(exc).__name__}: {exc}");return
         self.cancel_event=threading.Event();self.progress_latest=None
-        self.active_sweep_settings=prepared_items if selected_parallel else prepared
+        # The persistent application status strip consumes the sweep recipe as
+        # one mapping; keep it mapping-shaped for both serial and A/B dispatch.
+        self.active_sweep_settings=prepared
         self.context.project['simulation_recipes']['rpm_curve_v1']=dict(rpms=grid,max_cycles=cycles.value(),
             point_budget_seconds=point_budget.value(),total_budget_seconds=total_budget.value(),memory_limit_mib=memory.value())
         if selected_parallel:self.context.project['simulation_recipes']['rpm_ab_parallel_v1']={"variants":[name for name,_ in engines],"rpms":grid,"workers":workers,"max_cycles":cycles.value()}

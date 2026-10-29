@@ -10382,9 +10382,14 @@
       "evidence": [
         "motorsim/desktop/engine_page.py",
         "tests/test_dino_desktop.py::DinoDesktopTests::test_custom_engine_intake_transfer_reeds_persist_and_reach_solver",
-        "Focused Desktop GUI test: PASS; solver configuration construction PASS; save/reopen and exhaust variant round-trip PASS"
+        "Focused Desktop GUI test: PASS; solver configuration construction PASS; save/reopen and exhaust variant round-trip PASS",
+        "results/dino-desktop-custom-engine-e2e-20261029-v5/report.md",
+        "results/dino-desktop-custom-engine-e2e-20261029-v5/receipt.json",
+        "results/dino-desktop-custom-engine-e2e-20261029-v5/logs/dino-desktop-custom-engine-e2e-20261029-v5.summary.json",
+        "DinoDesktopTests.test_desktop_synthetic_custom_engine_ab_roundtrip_one_cycle: PASS (Desktop create/edit/save/close/reopen/duplicate/edit exhaust/parallel A-B; 4 points, 1 cycle; all correctly transient)",
+        "12 focused Desktop and sweep tests: PASS; cancellation, failed coordinator, fail-closed state, and guarded history resume paths covered; Windows PyInstaller spec source bundle inspected, no build"
       ],
-      "next_action": "Proceed to P2 Desktop measured-data import and exact-coordinate comparison; this is functional development, not experimental validation.",
+      "next_action": "P1 Desktop custom-engine A/B end-to-end flow is verified. Predictive validation still awaits complete matched experimental geometry/data; after data arrives, proceed to P3 design-family evaluation under its existing dependencies. No periodicity campaign is implied by the one-cycle product integration check.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "product/implementation/verification",
       "evidence_level": "L1",
@@ -14754,6 +14759,12 @@
       "task": "DINO-DESKTOP-POINT-DISPATCH-P1",
       "kind": "task",
       "summary": "Desktop ofrece despacho A/B paralelo por RPM, con run/checkpoint por punto, presupuesto total, cancelación, preflight de memoria y almacenamiento, manifiesto durable y clasificación EXPLORATORY. Dos casos breves de una vuelta: 2.7205x y 2.7735x, checkpoints idénticos; periodicidad no evaluada."
+    },
+    {
+      "at": "2026-10-29T11:10:00Z",
+      "task": "DINO-DESKTOP-CUSTOM-ENGINE-P1",
+      "kind": "task",
+      "summary": "Desktop E2E sintético probado: crear/editar motor, persistir/reabrir, duplicar y cambiar escape, ejecutar A/B paralelo de 4 puntos a 1 ciclo; parámetros resueltos por el solver y transitorios identificados. 12 pruebas focalizadas PASS; cancelación/fallo/recuperación verificadas. Sin build ni cambio de solver."
     }
   ],
   "legacy_gate_status": {
@@ -14848,7 +14859,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-28T16:42:00Z",
+  "updated_at": "2026-10-29T11:10:00Z",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
