@@ -15,7 +15,7 @@ The practical 2× lower bound is met against the audited reference for both vari
 
 ## Qualification
 
-**Measured result: target attained on these two bounded cases; protocol qualification remains PARTIAL.** The first exploratory measurement preceded the protocol. The later five-cycle A44/B44 confirmation was frozen in `docs/gasdynamic/e2b-local-candidate-equivalence-v1.md`, but the candidate had already been selected, so this is not a clean prospective preregistration and must not be represented as one.
+**PASS for the frozen A44/B44 candidate cases after a preregistered timing replication; original selection limitation remains disclosed.** The first exploratory measurement preceded the original protocol. The independent five-cycle candidate-only replication was preregistered in `docs/gasdynamic/e2b-local-candidate-preregistered-replicate-v1.md` before either new timing run. It passed the acceptance bounds for both variants. This supports the bounded candidate result, not a claim that the original candidate selection itself was prospective.
 
 The candidate remains opt-in (`port_root_solver='brent'`); default behavior is still deterministic bisection. This does not promote V2/MUSCL or make a predictive-accuracy claim.
 
@@ -24,9 +24,25 @@ The candidate remains opt-in (`port_root_solver='brent'`); default behavior is s
 - Runs: `baseline-A.json`, `candidate-A.json`, `baseline-B.json`, `candidate-B.json`.
 - Tolerance receipts: `comparison-A.json`, `comparison-B.json`.
 - Restore/replay receipts: `replay-A.json`, `replay-B.json`.
+- Prospective replication outputs and result: `preregistered-replicate-v1/A/`, `preregistered-replicate-v1/B/`, and `preregistered-replicate-v1/result.md`.
 - Frozen protocol and its limitation: `docs/gasdynamic/e2b-local-candidate-equivalence-v1.md`.
 - Focal tests: 363 passed across `test_e2b_local_candidate_v1.py`, integrated V2 port tests, transonic V2 tests and EOS tests.
 
+## Preregistered replication
+
+| Case | Replicate (s/cycle) | Speedup vs audited | Steps / rejected | Peak RSS |
+|---|---:|---:|---:|---:|
+| A44 | 6.25508 | 2.218× | 3611 / 0 | 28.25 MiB |
+| B44 | 6.26933 | 2.290× | 3615 / 5 | 28.22 MiB |
+
+Both snapshots pass the frozen tolerance against the existing baseline; all
+solver source hashes match the frozen commit. Conservation and three replay
+checks pass for each. The A command's final console summary hit a Windows
+relative-path formatting exception after writing the candidate, comparison,
+and replay artifacts. Those artifacts were read and validated directly. B
+used an absolute output path and exited successfully. No benchmark was
+repeated to recover from the reporting exception.
+
 ## E1.3 viability re-evaluation
 
-Do not resume the 176 periodic/GCI branch from this result alone. Its current runner uses the default bisection path; the 2.17–2.23× result above is measured only on A44/B44 and cannot be projected to a 176-cell case or a different root-solver identity. Existing 176 budget is 230.1685 s, while the recorded best-case minimum continuation estimate remains 364.115 s. Reusing the opt-in candidate there would require a versioned activation and case-specific bounded recost before execution. Therefore E1.3 remains blocked and no periodic run was launched.
+Do not resume the 176 periodic/GCI branch from this result alone. Its current runner uses the default bisection path; the 2.17–2.29× result above is measured only on A44/B44 and cannot be projected to a 176-cell case or a different root-solver identity. Existing 176 budget is 230.1685 s, while the recorded best-case minimum continuation estimate remains 364.115 s. Reusing the opt-in candidate there would require a versioned activation and case-specific bounded recost before execution. Therefore E1.3 remains blocked and no periodic run was launched.

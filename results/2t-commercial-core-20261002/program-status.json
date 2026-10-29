@@ -10499,7 +10499,8 @@
       "state": "DONE",
       "blocker": null,
       "commits": [
-        "d532239"
+        "d532239",
+        "6ddd952"
       ],
       "evidence": [
         "results/predictive-reliability-v1/e2b-step-profile-v1.json",
@@ -10509,9 +10510,16 @@
         "results/predictive-reliability-v1/e2b-local-candidate-v1/delivery-receipt.md",
         "results/predictive-reliability-v1/e2b-local-candidate-v1/comparison-A.json",
         "results/predictive-reliability-v1/e2b-local-candidate-v1/comparison-B.json",
-        "tests/test_e2b_local_candidate_v1.py"
+        "tests/test_e2b_local_candidate_v1.py",
+        "results/predictive-reliability-v1/e2b-local-candidate-v1/preregistered-replicate-v1/result.md",
+        "results/predictive-reliability-v1/e2b-local-candidate-v1/preregistered-replicate-v1/A/candidate-A.json",
+        "results/predictive-reliability-v1/e2b-local-candidate-v1/preregistered-replicate-v1/A/comparison.json",
+        "results/predictive-reliability-v1/e2b-local-candidate-v1/preregistered-replicate-v1/A/replay-A.json",
+        "results/predictive-reliability-v1/e2b-local-candidate-v1/preregistered-replicate-v1/B/candidate-B.json",
+        "results/predictive-reliability-v1/e2b-local-candidate-v1/preregistered-replicate-v1/B/comparison.json",
+        "results/predictive-reliability-v1/e2b-local-candidate-v1/preregistered-replicate-v1/B/replay-B.json"
       ],
-      "next_action": "E2 result is >=2x against audited A44/B44 reference with equivalence; protocol qualification remains PARTIAL because preregistration followed exploratory selection. Keep Brent opt-in. Re-evaluate E1.3 only after case-specific activation/costing; no 176 run from this receipt.",
+      "next_action": "Keep Brent opt-in and bisection default. E1.3 remains blocked pending a separately identified 176-cell activation and affordable recost; no prediction claim.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "architecture/performance",
       "write_scope": [
@@ -10526,7 +10534,7 @@
         "results/predictive-reliability-v1/e2b-local-candidate-v1/"
       ],
       "evidence_level": "L1",
-      "qualification": "Measured speedup 2.169x/2.231x against audited A44/B44 references; equivalence, conservation and replay pass. PARTIAL protocol qualification: candidate selection preceded frozen protocol. Brent remains opt-in; no predictive claim."
+      "qualification": "PASS for frozen A44/B44 performance/equivalence: preregistered replicate 2.218x/2.290x versus audited references, all numerical/replay/resource bounds pass. Original post-hoc candidate-selection limitation is disclosed; not extrapolated to 176 and no predictive claim."
     },
     {
       "id": "PRED-E2B-STEP-PROFILE-V1",
@@ -10566,20 +10574,23 @@
       "state": "DONE",
       "blocker": null,
       "commits": [
-        "d532239"
+        "d532239",
+        "6ddd952"
       ],
       "evidence": [
         "results/predictive-reliability-v1/e2b-step-profile-v1.json",
-        "docs/planning/predictive-core-staged-plan-v1.md"
+        "docs/planning/predictive-core-staged-plan-v1.md",
+        "docs/gasdynamic/e2b-local-candidate-preregistered-replicate-v1.md",
+        "results/predictive-reliability-v1/e2b-local-candidate-v1/preregistered-replicate-v1/result.md"
       ],
-      "next_action": "Protocol was frozen and applied to the five-cycle A44/B44 confirmations; preserve the disclosed post-hoc limitation.",
+      "next_action": "No further benchmark authorized under the ten-run E2 cap; preserve the disclosed original selection limitation.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "verification/architecture",
       "write_scope": [
         "docs/gasdynamic/e2b-local-candidate-equivalence-v1.md"
       ],
       "evidence_level": "L1",
-      "qualification": "Protocol frozen and used for five-cycle confirmations, but after exploratory measurement and candidate selection. Not a clean prospective preregistration; deviation disclosed in delivery receipt."
+      "qualification": "A/B five-cycle opt-in candidate replication preregistered at 6ddd952 before timing; tolerance and both replays passed. The original candidate was selected before its first protocol, and this deviation remains explicit."
     }
   ],
   "audit_remediation_mode": false,
@@ -14876,6 +14887,12 @@
       "task": "PRED-E2-LOCAL-CANDIDATE-V1",
       "kind": "task",
       "summary": "A44/B44 bounded 5-cycle opt-in Brent candidate: 6.396/6.436 s per cycle, 2.169x/2.231x versus audited references; equivalence, conservation and replay pass, 363 focal tests pass. Default bisection retained. Protocol preregistration followed exploratory selection, so qualification is PARTIAL. 176 not run: candidate is opt-in and not recosted at 176."
+    },
+    {
+      "at": "2026-10-29T14:21:53Z",
+      "task": "PRED-E2-LOCAL-CANDIDATE-V1",
+      "kind": "task",
+      "summary": "Prospectively frozen five-cycle candidate-only replication at commit 6ddd952: A44/B44 6.2551/6.2693 s/cycle, 2.218x/2.290x audited speedup; tolerance, conservation, source identity, RSS and all replays pass. 363 focal tests remain green. PASS for frozen cases; original selection limitation disclosed. E1.3 stays blocked; no 176 extrapolation/run."
     }
   ],
   "legacy_gate_status": {
@@ -14970,7 +14987,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-10-29T14:18:32Z",
+  "updated_at": "2026-10-29T14:21:53Z",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",

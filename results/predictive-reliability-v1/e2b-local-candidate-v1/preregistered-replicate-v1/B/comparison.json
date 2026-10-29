@@ -1,0 +1,15 @@
+{
+  "schema": "DINO_E2B_LOCAL_CANDIDATE_COMPARISON_V1",
+  "baseline": "results\\predictive-reliability-v1\\e2b-local-candidate-v1\\baseline-B.json",
+  "candidate": "results\\predictive-reliability-v1\\e2b-local-candidate-v1\\preregistered-replicate-v1\\B\\candidate-B.json",
+  "snapshot_exact": false,
+  "comparison_tolerance": "abs <= 1e-10 + 1e-10*max(|a|,|b|) for numeric fields",
+  "max_numeric_difference": {
+    "max_absolute": 7.566995918750763e-10,
+    "max_absolute_path": ".snapshot.state.ducts.exhaust[28][2]",
+    "max_relative": 7.531752999057062e-13,
+    "max_relative_path": ".conservation.energy.residual"
+  },
+  "max_differences": [],
+  "equivalent_at_tolerance": true
+}
