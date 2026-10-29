@@ -55,6 +55,15 @@ def _source_sha(path: Path) -> str:
     return _sha_bytes(path.read_bytes().replace(b"\r\n", b"\n"))
 
 
+def _display_path(path: Path) -> str:
+    """Format output paths whether ``--out`` was relative or absolute."""
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(ROOT).as_posix()
+    except ValueError:
+        return str(resolved)
+
+
 def _canonical(value) -> str:
     return json.dumps(value, allow_nan=False, sort_keys=True, separators=(",", ":"))
 
@@ -324,7 +333,7 @@ def main() -> None:
                 "fast_replay_exact": result["fast_replay_exact"],
                 "bisection_replay_exact": result["bisection_replay_exact"],
                 "fast_snapshot_sha256": result["fast_snapshot_sha256"],
-                "path": str(path.relative_to(ROOT)),
+                "path": _display_path(path),
             }, ensure_ascii=False))
             continue
         result = _run(variant, args.cycles, args.mode)
@@ -341,7 +350,7 @@ def main() -> None:
             "rejected_trials": result["rejected_trials"],
             "peak_rss_mib": result["peak_rss_mib"],
             "snapshot_sha256": result["snapshot_sha256"],
-            "path": str(path.relative_to(ROOT)),
+            "path": _display_path(path),
         }, ensure_ascii=False))
     print("PASS")
 

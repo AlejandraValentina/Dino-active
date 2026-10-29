@@ -10077,7 +10077,7 @@
         "PRED-PERIODIC-CONVERGENCE-COSTED-DESIGN"
       ],
       "state": "BLOCKED_LOCAL",
-      "blocker": "Neither 88 (cycles31-40) nor 176 (cycles31-37) demonstrated the preregistered period. The 176 branch consumed 969.8315 s including its preserved 120.229 s failed attempt; only 230.1685 s remains in the 1200 s per-grid cap, while at least three future lag-1 comparisons (~364.115 s at measured mean cycle cost) are needed even on a best-case detector path. No periodic IMEP/power rows; GCI is inadmissible.",
+      "blocker": "The 176-cell E2 cap is exhausted (10/10 benchmarks). Existing cycle-37 checkpoint/config are preserved, but no paired bisection/Brent run is authorized. At measured bisection rate the minimum period-1 path is 364.64 s loop-wall (437.57 s with 20% margin), exceeding 230.17 s remaining before unmeasured setup/restore. A44/B44 Brent extrapolation is unverified at 176. 88 remains transient; GCI inadmissible.",
       "commits": [],
       "evidence": [
         "results/e2b-periodic-ab-v1/decision.json",
@@ -10097,9 +10097,12 @@
         "DINO_ARTIFACT_ROOT/runlogs/candidate-periodic-gci-176-cycles31-37-v2/candidate-periodic-gci-176-cycles31-37-v2.summary.json",
         "DINO_ARTIFACT_ROOT/predictive-reliability-v1/candidate-periodic-gci-v1/window-176-02/progress.json",
         "DINO_ARTIFACT_ROOT/predictive-reliability-v1/candidate-periodic-gci-v1/window-176-02/cycles.json",
-        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/candidate-periodic-gci-v1/window-176-02/detector.json"
+        "DINO_ARTIFACT_ROOT/predictive-reliability-v1/candidate-periodic-gci-v1/window-176-02/detector.json",
+        "results/predictive-reliability-v1/e2-176-scaling-decision-v1.md",
+        "scripts/diagnostics/e2b_local_candidate_v1.py",
+        "tests/test_e2b_local_candidate_v1.py"
       ],
-      "next_action": "Remain BLOCKED_LOCAL. E2 candidate evidence is A44/B44 only and Brent is opt-in; require explicit versioned activation and a 176-specific preflight/recost before any E1.3 run. Current default-path remaining budget is insufficient.",
+      "next_action": "Remain BLOCKED_LOCAL. E1.3 must not resume within demonstrated limits. Require additional E2 authorization for one same-cycle-37 bisection/Brent comparison that times initialization, restoration and writes; do not start E1.3 automatically. Even a 176 periodic state does not establish GCI while 88 and matched 44/88/176 periodic values are unresolved.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "owner_role": "physics/verification",
       "write_scope": [
@@ -10116,8 +10119,9 @@
         "openspec/changes/predictive-reliability-v1/candidate-periodic-gci-176-first-window-addendum-v2.md"
       ],
       "evidence_level": "L2",
-      "qualification": "88 cycles31-40 and independent 176 cycles31-37 remain transient. Saved 176 tail max/p90 strictly decrease, but remaining 230.17 s is below the best-case 364.12 s for the detector minimum streak. No additional 176 cycles or GCI within current authorization. Local unblock path: PRED-E2-LOCAL-CANDIDATE-V1 (option C, 2-4x target); no 176 run until recost and equivalence. E2 local candidate measures 2.169x/2.231x only on A44/B44; no extrapolation to 176 and no periodic run.",
-      "no_local_unblock_reason": "No local continuation can reach the PeriodicDetectorV2 minimum streak within the remaining approved per-grid solver budget. A larger 176 budget is a new compute authorization; do not bypass it with another mesh, changed detector thresholds, or altered physics."
+      "qualification": "No new 176 solver run. Existing 176 window 2 is TRANSIENT_AT_BUDGET (cycles31-37), 230.1685 s remains; minimum period-1 detector path requires about 364.64 loop-wall seconds / 437.57 with 20% margin using measured bisection, excluding setup. Conditional A44/B44 Brent extrapolation is not validated at 176. 88 remains transient; no GCI or predictive claim.",
+      "no_local_unblock_reason": "E2 authorization is exhausted (10 benchmarks), and the measured bisection minimum path exceeds the remaining 176 solver budget. Brent speedup at 176 and its setup cost are unknown; a 176 comparison requires additional E2 authorization. No local work can resolve this without another solver computation, and E1.3 continuation is explicitly not authorized.",
+      "unblock_tasks": []
     },
     {
       "id": "PRED-CORE-PERIODIC-GCI-ANALYZER",
@@ -14948,6 +14952,12 @@
       "task": "PRED-E1.4-LEGACY-CONTROL-V1",
       "kind": "task",
       "summary": "Existing receipts reconciled: completed 720deg legacy observer-fixed control (1444 steps, exact replay, conservation PASS), inactive reconstruction bit-identical, and port/spatial subsystem effects compared from same-input transient receipts. Earlier observer mismatch preserved. No rerun or promotion."
+    },
+    {
+      "at": "2026-10-29T14:29:07Z",
+      "task": "PRED-CORE-PERIODIC-MESH-GCI",
+      "kind": "task",
+      "summary": "E2 176 scaling decision recorded: no solver run because the 10-benchmark E2 cap is exhausted. Existing 176 bisection timing projects a 437.57 s minimum path with 20% margin vs 230.17 s remaining; unmeasured setup/restore increases cost. A44/B44 Brent extrapolation is conditional only. E1.3 remains blocked pending additional E2 authorization. Fixed relative-output-path reporting; 6 focused tests pass."
     }
   ],
   "legacy_gate_status": {

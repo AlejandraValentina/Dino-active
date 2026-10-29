@@ -3,6 +3,7 @@ import math
 import pytest
 
 from motorsim.port_connection_v2 import _brent_root, root
+from scripts.diagnostics.e2b_local_candidate_v1 import ROOT, _display_path
 
 
 @pytest.mark.parametrize("zero", (0.125, 0.5, 0.875))
@@ -27,3 +28,10 @@ def test_brent_root_rejects_unbracketed_or_nonfinite_residuals():
     with pytest.raises(ValueError, match="no bracket"):
         _brent_root(lambda x: float("nan") if x in (0.0, 1.0) else x - 0.25,
                     0.0, 1.0)
+
+
+def test_output_path_display_accepts_relative_and_absolute_paths(tmp_path):
+    relative = _display_path(ROOT / "results" / "candidate" / "run.json")
+    absolute = _display_path(tmp_path / "run.json")
+    assert relative == "results/candidate/run.json"
+    assert absolute == str((tmp_path / "run.json").resolve())
