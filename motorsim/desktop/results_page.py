@@ -149,7 +149,7 @@ class ResultsPage(QWidget):
         self.power_curves=PowerCurvePanel();root.addWidget(self.power_curves)
         controls=QHBoxLayout();root.addLayout(controls)
         self.unit=QLabel();controls.addWidget(self.unit);controls.addStretch()
-        export_table=QPushButton("Exportar tabla CSV");export_table.clicked.connect(self.export_csv);controls.addWidget(export_table)
+        export_table=QPushButton("Exportar tabla CSV");export_table.setToolTip("Reportes históricos: CSV + JSON compañero para reabrir. Corridas exploratorias: tabla de consulta; conservar los artifacts originales.");export_table.clicked.connect(self.export_csv);controls.addWidget(export_table)
         export_plot=QPushButton("Exportar gráfico PNG");export_plot.clicked.connect(self.export_png);controls.addWidget(export_plot)
         self.point_table=QTableWidget(0,8);self.point_table.setHorizontalHeaderLabels(["Variante","RPM","Estado","Período","Auditoría","Ciclos","Balance","BMEP"]);self.point_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.point_table.horizontalHeader().setMinimumSectionSize(48);self.point_table.setMinimumHeight(125);self.point_table.setMaximumHeight(190);self.point_table.currentCellChanged.connect(self._point_row_selected);root.addWidget(self.point_table)
         self.trace_group=QGroupBox("Señales de presión, ondas y flujo EXPLORATORY")
@@ -556,9 +556,10 @@ class ResultsPage(QWidget):
         self.path_label.setText("Ejecución EXPLORATORY inválida");self.trace_group.hide();QMessageBox.warning(self,"Artifact exploratorio inválido",message)
     def load(self,path,*,historical=False):
         path=Path(path)
-        if path.suffix.lower()==".json":
+        if path.suffix.lower() in {".json",".csv"}:
             try:
-                raw=json.loads(path.read_text(encoding="utf-8"))
+                metadata=path.with_suffix('.json') if path.suffix.lower()=='.csv' else path
+                raw=json.loads(metadata.read_text(encoding="utf-8"))
                 historical=historical or raw.get("schema")=="FULL_RPM_SWEEP_V1_IMPL2_AGGREGATE_REPORT_V1"
             except (OSError,ValueError):pass
         self.loading=True;self.trace_group.hide();self.path_label.setText(f"Cargando {path}…")
@@ -739,11 +740,27 @@ class ResultsPage(QWidget):
         path,_=QFileDialog.getSaveFileName(self,"Exportar tabla","dino-resultados.csv","CSV (*.csv)")
         if not path:return
         try:
+            companion=Path(path).with_suffix('.json')
+            reusable=self.dataset.get('schema')=='MOTORSIM_IMPORTED_CURVE_DATASET_V1'
+            if reusable and companion.exists():
+                raise FileExistsError(f"Ya existe {companion.name}. Elegí otro nombre para conservar ese archivo.")
+            if reusable:json.dumps(self.dataset,allow_nan=False)
             keys=sorted(set().union(*(row.keys() for row in self.dataset['points'])))
             with open(path,'w',encoding='utf-8-sig',newline='') as stream:
                 writer=csv.DictWriter(stream,fieldnames=keys,extrasaction='ignore');writer.writeheader()
                 for row in self.dataset['points']:writer.writerow({k:json.dumps(row[k],ensure_ascii=False) if isinstance(row.get(k),(dict,list)) else row.get(k) for k in keys})
-        except OSError as exc:QMessageBox.warning(self,"Error de escritura",str(exc))
+            if reusable:
+                from ..engine_results import SCHEMA
+                report={"schema":SCHEMA,**self.dataset['identity'],
+                    "experimental_validation":"NOT_PERFORMED","units":self.dataset['units'],
+                    "points":self.dataset['points'],"campaign_status":self.dataset.get('campaign_status'),
+                    "csv":Path(path).name,"csv_sha256":hashlib.sha256(Path(path).read_bytes()).hexdigest()}
+                with companion.open('x',encoding='utf-8') as stream:
+                    json.dump(report,stream,ensure_ascii=False,allow_nan=False,indent=2)
+                self.path_label.setText(f"Exportado: {Path(path).name} + {companion.name}. Conservá ambos para reabrir los resultados.")
+            else:
+                self.path_label.setText("Tabla CSV exportada para consulta. Para reabrir corridas exploratorias, conservá result.json y sus artifacts originales.")
+        except (OSError,ValueError) as exc:QMessageBox.warning(self,"Error de escritura",str(exc))
     def export_png(self):
         path,_=QFileDialog.getSaveFileName(self,"Exportar gráfico","dino-curva.png","PNG (*.png)")
         if path:

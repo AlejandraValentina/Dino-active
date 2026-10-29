@@ -10651,6 +10651,37 @@
       ],
       "evidence_level": "L1",
       "qualification": "Existing 720-degree legacy observer-fixed control is numerically gated with exact checkpoint replay; inactive reconstruction bit-identical. Existing comparison attributes changes to connection and spatial subsystems. Prior failed legacy observer receipt preserved; transient only, no physical-equality or prediction claim."
+    },
+    {
+      "id": "DESKTOP-PRODUCT-EXPORT-ROUNDTRIP-V1",
+      "description": "Owner product maturity: reusable historical CSV export through the existing Desktop importer",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/desktop-product-maturity-v1/assessment.md",
+        "results/desktop-product-maturity-v1/export-test.txt"
+      ],
+      "next_action": "GUI acceptance pending unlocked Windows; no build. Exploratory CSV stays a table requiring original artifacts.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "qualification": "Functional source UI test PASS: export/reopen, unit/status/identity preservation, protected companion and tamper rejection. No packaged GUI claim."
+    },
+    {
+      "id": "DESKTOP-PRODUCT-GUI-REVIEW-V1",
+      "description": "Owner practical rc9 product evaluation: ten real graphical scenarios, matrix and evidence",
+      "dependencies": [],
+      "state": "BLOCKED_LOCAL",
+      "blocker": "Windows session locked during Save As; native pointer input reports no active desktop. rc9 creation/dialog observed; remaining graphical workflows not certified.",
+      "commits": [],
+      "evidence": [
+        "results/desktop-product-maturity-v1/assessment.md",
+        "results/desktop-product-maturity-v1/captures/05-desktop-state.png"
+      ],
+      "next_action": "Resume Save As and complete engine/exhaust/project/run/results/export scenarios when the Windows desktop is unlocked.",
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "unblock_tasks": [],
+      "no_local_unblock_reason": "User interactive Windows session must be unlocked; offscreen tests are not an equivalent GUI evaluation. Independent export correction and official-document comparison completed."
     }
   ],
   "audit_remediation_mode": false,
@@ -14971,6 +15002,12 @@
       "task": "PRED-CORE-PERIODIC-MESH-GCI",
       "kind": "task",
       "summary": "Authorized E2 176 comparison completed only partially within 660 s: bisection cycles38-40; Brent cycles38-39, then hard stop at budget during cycle40. Cycle39 wall speedup 1.317x; checkpoints 38/39 equivalent within frozen tolerance and all completed-cycle conservation/restore checks pass. Solver-only timer omitted rejected proposals, so no E1.3 cost fit can be claimed; E1.3 stays blocked. QUB .eml prepared; Gmail connector absent, no send."
+    },
+    {
+      "at": "2026-10-29T15:24:37+00:00",
+      "task": "DESKTOP-PRODUCT-EXPORT-ROUNDTRIP-V1",
+      "kind": "task",
+      "summary": "Real rc9 launch and synthetic new-engine interaction captured; session locked during save dialog, GUI assessment partial. Official EngMod/MOTA comparison recorded. Fixed historical CSV+JSON export/reopen, preserved source labels/units/states/identities; functional roundtrip/tamper/protected companion test PASS. No build or solver change."
     }
   ],
   "legacy_gate_status": {

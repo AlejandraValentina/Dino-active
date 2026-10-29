@@ -546,6 +546,38 @@ class DinoDesktopTests(unittest.TestCase):
         start.assert_called_once_with(resume=True)
         self.assertEqual(page.run_id.text(),"cancel-check-A_original")
 
+    def test_historical_csv_roundtrip_preserves_states_units_and_rejects_tampering(self):
+        from motorsim.engine_results import SERIES
+        row={"point_id":"synthetic-invalid","variant_id":"base","rpm":3000,
+             "classification":"NUMERICAL_INVALID","result_sha256":"a"*64,
+             "point_configuration_sha256":"b"*64}
+        for field,_ in SERIES.values():
+            row[field]=None;row[field+"_status"]="UNDEFINED"
+        dataset={"schema":"MOTORSIM_IMPORTED_CURVE_DATASET_V1",
+                 "identity":{key:"c"*64 for key in (
+                     "implementation_identity_sha256","preregistration_sha256","producer_sha256")},
+                 "units":dict(SERIES.values()),"points":[row]}
+        page=ResultsPage(self.context);page.dataset=dataset
+        with tempfile.TemporaryDirectory() as tmp:
+            csv_path=Path(tmp)/"export.csv"
+            with patch("motorsim.desktop.results_page.QFileDialog.getSaveFileName",return_value=(str(csv_path),"CSV")):
+                page.export_csv()
+            restored=load_results(csv_path)
+            self.assertEqual(restored['points'],dataset['points'])
+            self.assertEqual(restored['units'],dataset['units'])
+            self.assertEqual(restored['identity'],dataset['identity'])
+            reopened=ResultsPage(self.context);reopened.load(csv_path)
+            self.assertTrue(spin_until(lambda: reopened.dataset is not None))
+            self.assertEqual(reopened.source_kind,'HISTORICAL_IMPL2')
+            self.assertEqual(reopened.dataset['points'],dataset['points'])
+            before=csv_path.read_bytes()
+            with patch("motorsim.desktop.results_page.QFileDialog.getSaveFileName",return_value=(str(csv_path),"CSV")),patch("motorsim.desktop.results_page.QMessageBox.warning") as warning:
+                page.export_csv();warning.assert_called_once()
+            self.assertEqual(csv_path.read_bytes(),before)
+            csv_path.write_bytes(before+b'\n')
+            with self.assertRaisesRegex(ValueError,'hash mismatch'):
+                load_results(csv_path)
+
     def test_real_impl2_import_keeps_invalid_points_as_gaps_and_exports_plot(self):
         report=impl2_historical_report_candidate()
         if not report.is_file():self.skipTest("external IMPL2 artifact root is not configured")
