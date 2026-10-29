@@ -63,8 +63,9 @@ not claimed.
 1. The MK.1 details table and the THROUGH FLOW input sheet, Appendix 2,
    Fig. A2.2 (PDF pp.253–255), do not identify one coherent as-tested exhaust
    revision. The sheet is explicitly an MK.1 calculation input at 4400 rpm;
-   its D1/D9/D2/D3 are 1.95/2.94/3.625/3.625 in, versus
-   1.94/2.92/3.75/3.75 in in the engine-details table, and its K9 is 23 in versus L9 22 in.
+   its D1/D9/D2/D3 are 1.95/2.94/3.625/3.625 in, compared with
+   1.94/2.92/3.75/3.75 in in the engine-details table; K9 is 23 in versus
+   L9 at 22 in.
    The sheet's port widths agree with the engine-details table. The mismatch must not be
    resolved by choosing one or averaging them.
 2. Absolute crankcase clearance/free volume, measurement angle and included
