@@ -1,0 +1,46 @@
+...FF.F.                                                                 [100%]
+================================== FAILURES ===================================
+_ DinoDesktopTests.test_startup_has_real_pages_and_explicitly_confirmed_exploratory_mode _
+
+self = <tests.test_dino_desktop.DinoDesktopTests testMethod=test_startup_has_real_pages_and_explicitly_confirmed_exploratory_mode>
+
+    def test_startup_has_real_pages_and_explicitly_confirmed_exploratory_mode(self):
+        window = DinoDesktopWindow(new_project("startup-test"))
+>       self.assertEqual(window.mode_stack.count(), 2)
+E       AssertionError: 3 != 2
+
+tests\test_dino_desktop.py:52: AssertionError
+_ CommercialDesktopV3P0Tests.test_analysis_table_headers_fit_without_horizontal_scroll_at_1360 _
+
+self = <tests.test_dino_commercial_desktop_v3.CommercialDesktopV3P0Tests testMethod=test_analysis_table_headers_fit_without_horizontal_scroll_at_1360>
+
+    def test_analysis_table_headers_fit_without_horizontal_scroll_at_1360(self):
+        window=DinoDesktopWindow(new_project("v3-header-fit"));window.resize(1360,900);window.show();window.set_workspace_mode(1);APP.processEvents()
+        table=window.results.point_table
+>       self.assertEqual(table.horizontalScrollBar().maximum(),0)
+E       AssertionError: 1 != 0
+
+tests\test_dino_commercial_desktop_v3.py:126: AssertionError
+_ CommercialDesktopV3P0Tests.test_startup_forces_design_even_when_old_setting_points_to_results _
+
+self = <tests.test_dino_commercial_desktop_v3.CommercialDesktopV3P0Tests testMethod=test_startup_forces_design_even_when_old_setting_points_to_results>
+
+    def test_startup_forces_design_even_when_old_setting_points_to_results(self):
+        settings().setValue("last_page", 4)
+        window = DinoDesktopWindow(new_project("v3-startup"))
+        window.show(); APP.processEvents()
+        self.assertEqual(window.mode_stack.currentIndex(), 0)
+        self.assertEqual(window.component_nav.currentIndex(), 0)
+        self.assertFalse(window.results.isVisible())
+        self.assertTrue(window.strip_run.isEnabled())
+>       self.assertEqual(window.design_mode.text(), "Dise�o")
+E       AssertionError: 'MODELO' != 'Dise�o'
+E       - MODELO
+E       + Dise�o
+
+tests\test_dino_commercial_desktop_v3.py:32: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_dino_desktop.py::DinoDesktopTests::test_startup_has_real_pages_and_explicitly_confirmed_exploratory_mode
+FAILED tests/test_dino_commercial_desktop_v3.py::CommercialDesktopV3P0Tests::test_analysis_table_headers_fit_without_horizontal_scroll_at_1360
+FAILED tests/test_dino_commercial_desktop_v3.py::CommercialDesktopV3P0Tests::test_startup_forces_design_even_when_old_setting_points_to_results
+3 failed, 5 passed, 29 deselected in 36.05s

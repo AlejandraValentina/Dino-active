@@ -16,7 +16,7 @@ class ProjectPage(QWidget):
         self.table=QTableWidget(0,4);self.table.setHorizontalHeaderLabels(["Ruta","Unidad","Base","Variante"]);self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);root.addWidget(self.table,1)
         self.context.changed.connect(self.refresh);self.refresh()
     def refresh(self):
-        project=self.context.project;self.info.setText(f"Proyecto: {project['project_id']} · {len(project['variants'])} variantes\nBase: {project['base_engine']['display_name']}\nHash: {project['base_identity_sha256']}\nEstado científico: {project['scientific_validation_status']}")
+        project=self.context.project;self.info.setText(f"Proyecto: {project['project_id']} · {len(project['variants'])} variantes\nBase: {project['base_engine']['display_name']}\nEstado científico: {project['scientific_validation_status']} · identidades disponibles en Trazabilidad")
         current=self.context.selected_variant;self.selector.blockSignals(True);self.selector.clear();self.selector.addItem("Motor base",None)
         for name in sorted(project['variants']):self.selector.addItem(name,name)
         index=self.selector.findData(current);self.selector.setCurrentIndex(max(index,0));self.selector.blockSignals(False)

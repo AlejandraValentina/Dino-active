@@ -49,8 +49,8 @@ class DinoDesktopTests(unittest.TestCase):
 
     def test_startup_has_real_pages_and_explicitly_confirmed_exploratory_mode(self):
         window = DinoDesktopWindow(new_project("startup-test"))
-        self.assertEqual(window.mode_stack.count(), 2)
-        self.assertEqual(window.component_stack.count(), 4)
+        self.assertEqual(window.mode_stack.count(), 3)
+        self.assertEqual(window.component_stack.count(), 3)
         self.assertEqual(window.mode_stack.currentIndex(),0)
         self.assertEqual(window.component_nav.tabText(0),"✓ Cilindro y distribución")
         self.assertTrue(window.pages[3].start.isEnabled())
@@ -76,6 +76,32 @@ class DinoDesktopTests(unittest.TestCase):
         editor.refresh();APP.processEvents()
         self.assertNotIn('✕',nav.tabText(6))
         window.context.dirty=False;window.close()
+
+    def test_design_workbench_modes_reuse_editors_and_keep_traceability_accessible(self):
+        window=DinoDesktopWindow(self.context.project);window.resize(964,641);window.show();APP.processEvents()
+        original=identity(window.context.engine())
+        QTest.mouseClick(window.simulate_mode,Qt.MouseButton.LeftButton);APP.processEvents()
+        self.assertEqual(window.mode_stack.currentIndex(),2)
+        self.assertTrue(window.pages[3].isVisible())
+        self.assertFalse(window.execution_dialog.isVisible())
+        QTest.mouseClick(window.analysis_mode,Qt.MouseButton.LeftButton);APP.processEvents()
+        self.assertEqual(window.results.result_tabs.tabText(0),'Curvas')
+        self.assertTrue(window.results.power_curves.isVisible())
+        self.assertFalse(window.results.path_label.isVisible())
+        self.assertFalse(window.results.measurement_plot.isVisible())
+        window.results.dataset={'points':[{'classification':'MAX_CYCLES_NONCONVERGED'}]}
+        window.results._dataset_summary()
+        self.assertIn('no convergida',window.results.run_summary.text())
+        self.assertNotIn('Sin una corrida seleccionada',window.results.run_summary.text())
+        window.results.result_tabs.setCurrentIndex(5);APP.processEvents()
+        self.assertTrue(window.results.path_label.isVisible())
+        self.assertTrue(window.menuBar().isVisible())
+        window.explorer_button.click();APP.processEvents()
+        self.assertTrue(window.analysis_history.isVisible())
+        window.explorer_tabs.setCurrentIndex(1);APP.processEvents()
+        self.assertTrue(window.project_tree.isVisible())
+        self.assertEqual(identity(window.context.engine()),original)
+        window.close()
 
     def test_engine_edit_validates_then_updates_identity_and_dirty_state(self):
         page = EnginePage(self.context)

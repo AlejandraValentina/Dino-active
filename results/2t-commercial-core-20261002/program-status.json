@@ -10712,6 +10712,32 @@
       ],
       "qualification": "SELF_REVIEW; real source GUI edit/save/reopen, invalid-input discard recovery and mesh expand observed; focused tests PASS; full Desktop 24 PASS 1 SKIP. Not packaged acceptance.",
       "next_action": "Complete remaining GUI CSV reopen when session unlocked; no physics/model/default/build changes."
+    },
+    {
+      "id": "DESKTOP-DESIGN-WORKBENCH-V1",
+      "description": "Owner-approved first Desktop design-workbench vertical: MODEL/SIMULATE/RESULTS, integrated explorer and curve-first results",
+      "dependencies": [
+        "DESKTOP-PRODUCT-GUI-REVIEW-V1"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
+      "write_scope": [
+        "motorsim/desktop/app.py",
+        "motorsim/desktop/results_page.py",
+        "motorsim/desktop/project_page.py",
+        "motorsim/desktop/theme.py",
+        "tests/test_dino_desktop.py",
+        "tests/test_dino_commercial_desktop_v3.py"
+      ],
+      "evidence": [
+        "results/desktop-design-workbench-v1/acceptance.md",
+        "results/desktop-design-workbench-v1/receipt.json",
+        "results/desktop-design-workbench-v1/regression.txt"
+      ],
+      "qualification": "SELF_REVIEW; source vertical GUI acceptance, no packaged release or predictive claim. Existing core/data/experimental defaults preserved.",
+      "next_action": "Further product improvement: clarify grouped model sections and reduce simulation copy; any integrated Windows candidate remains separate from this source acceptance. No new campaigns or historical diagnostics."
     }
   ],
   "audit_remediation_mode": false,
@@ -15050,6 +15076,12 @@
       "task": "DESKTOP-PRODUCT-GUI-REVIEW-V1",
       "kind": "task",
       "summary": "Unlocked Windows: reopened the existing exported CSV via native Abrir datos; screenshot confirms 30 points, synthetic historical identity and NOT_PERFORMED. Inspected A/B power/torque curves, invalid-point gaps and incompatible-delta rejection. Source functional product acceptance completed; no new tests, calculations, builds or physics changes."
+    },
+    {
+      "at": "2026-10-30T11:19:05.989192+00:00",
+      "task": "DESKTOP-DESIGN-WORKBENCH-V1",
+      "kind": "task",
+      "summary": "Implemented three Desktop modes, persistent project actions, integrated variant/run/comparison explorer, curve-first result views and accessible traceability. Real GUI create/edit/save/reopen/exhaust variant, bounded one-cycle run, A/B parallel preflight canceled, historical 30-point export/reopen; 37 PASS/1 SKIP plus final focused checks. Existing science/data/budget blockers reviewed and unchanged; no builds, physics changes or campaigns."
     }
   ],
   "legacy_gate_status": {

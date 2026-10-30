@@ -1,0 +1,1083 @@
+{
+  "recorded_at": "2026-10-30T11:19:05.989192+00:00",
+  "decision": "PASS_SOURCE_VERTICAL",
+  "review": "SELF_REVIEW",
+  "method": "Real Windows mouse/keyboard interaction plus automated regression; no packaged build",
+  "historical_points": 30,
+  "invalid_points": 3,
+  "csv_roundtrip": "Exact points, units and identities; GUI native export/reopen",
+  "run_id": "e4f93bcd65bd4e7fbff6f9c952455d14",
+  "run_result_sha256": "0bb5be53ee7a4fff9d355a5645b01aed1004559c0b866ab4aa00ae4dfd82051d",
+  "run_result": {
+    "artifact_directory": "C:\\Users\\ageribon.MIDES\\AppData\\Local\\MotorSim\\Artifacts\\exploratory-workflow-v1\\synthetic-workbench-v1\\e4f93bcd65bd4e7fbff6f9c952455d14",
+    "attempt": "invocation-001",
+    "audit": "NOT_PERFORMED",
+    "bindings": {
+      "configuration_sha256": "20b6c0225b5ea57f0a5f7dc1c6993dea1c3e93b116b204a1d41321f50410af6e",
+      "identity_sha256": "36bb340f2cd298b1b08c943ce5cff0aa182949d87a94b5053af7d0b59736cbd3",
+      "project_id": "synthetic-workbench-v1",
+      "run_id": "e4f93bcd65bd4e7fbff6f9c952455d14",
+      "variant_label": "escape-plus20"
+    },
+    "checkpoint_artifact": "invocation-001/checkpoint-next-002.json",
+    "checkpoint_sha256": "e9a552deafd70579969542eba0d3baa23ff2a2416ba650cd744fe9ef4efafa99",
+    "classification": "MAX_CYCLES_NONCONVERGED",
+    "cycles": [
+      {
+        "accepted_steps": 1442,
+        "afr_supplied": 11.5,
+        "afr_trapped": 11.499999999999998,
+        "area_max_m2": {
+          "boost": 0.00017592399999999996,
+          "exhaust": 0.000701344,
+          "intake_actual": 0.0008481682726721577,
+          "intake_window": 0.0011341149479459152,
+          "primary": 0.00025876199999999995,
+          "reed": 0.0008481682726721577,
+          "secondary": 0.00025876199999999995
+        },
+        "chemical_heat_J": 22.829193573914083,
+        "closure_snapshots": {
+          "exhaust": {
+            "angle_deg": 265.0727835161464,
+            "cylinder_species_kg": [
+              7.347488067115442e-05,
+              6.3891200583612545e-06,
+              8.865782000428578e-06,
+              0.0
+            ]
+          },
+          "transfer": {
+            "angle_deg": 245.02393460154374,
+            "cylinder_species_kg": [
+              7.785060595081537e-05,
+              6.769617908766556e-06,
+              9.393775051507717e-06,
+              0.0
+            ]
+          }
+        },
+        "combustion_stage_diagnostics": {
+          "active_stage_time_s": 0.00043750000000000055,
+          "burned_fuel_kg": 6.246017393683742e-07,
+          "requested_fuel_kg": 6.246017393683742e-07
+        },
+        "comparison": null,
+        "conservation": {
+          "cumulative": {
+            "energy": {
+              "external": 22.457573302464112,
+              "final": 1351.375440619128,
+              "fuel_combustion_heat_added": 22.829193573914083,
+              "initial": 1259.092153573373,
+              "residual": -6.941669461468791e-13,
+              "work": 46.96106608380911
+            },
+            "mass": {
+              "external": 7.44214892247955e-05,
+              "final": 0.003006720982289412,
+              "initial": 0.0029322994930646128,
+              "residual": 3.916680348103885e-18
+            },
+            "species": {
+              "burned": {
+                "external": 0.0,
+                "final": 9.8141445714548e-06,
+                "fuel_combustion_source": 9.8141445714548e-06,
+                "initial": 0.0,
+                "residual": 0.0,
+                "source": 0.0
+              },
+              "fresh_air": {
+                "external": 7.456895672140928e-05,
+                "final": 0.0007479006488521323,
+                "fuel_combustion_source": -9.189542832086425e-06,
+                "initial": 0.0006825212349628101,
+                "residual": -6.725441601199145e-19,
+                "source": 0.0
+              },
+              "fuel": {
+                "external": 5.735817017080735e-06,
+                "final": 6.446088788317398e-05,
+                "fuel_combustion_source": -6.246017393683743e-07,
+                "initial": 5.934967260546175e-05,
+                "residual": -1.2694906296973826e-19,
+                "source": 0.0
+              },
+              "residual": {
+                "external": -5.883284513694661e-06,
+                "final": 0.002184545300982647,
+                "fuel_combustion_source": 0.0,
+                "initial": 0.002190428585496341,
+                "residual": 8.766791004082009e-19,
+                "source": 0.0
+              }
+            }
+          },
+          "independent_audit": "NOT_PERFORMED",
+          "relative": {
+            "energy": 5.136743833592602e-16,
+            "mass": 1.3026417719417386e-15,
+            "species": 2.9157314748263396e-16
+          }
+        },
+        "crankcase_work_J": -2.5777381913109796,
+        "cycle": 1,
+        "cylinder_negative_work_J": -49.754791523118705,
+        "cylinder_positive_work_J": 5.371463630620621,
+        "cylinder_work_J": -44.38332789249813,
+        "diagnostic_artifact_sha256": "120b71d2a6eb9b10f42eca15bd6982bb53129303d10322e1bfc1039ded0ce768",
+        "dt_min_max_s": [
+          1.3297000857635214e-06,
+          1.388888888888889e-05
+        ],
+        "flow_integrals": {
+          "boost.left.air.out_negative_kg": 2.06545160978505e-06,
+          "boost.left.air.out_positive_kg": 2.498715603773654e-05,
+          "boost.left.burned.out_negative_kg": 0.0,
+          "boost.left.burned.out_positive_kg": 0.0,
+          "boost.left.fuel.out_negative_kg": 1.7960448780739585e-07,
+          "boost.left.fuel.out_positive_kg": 2.172796177194482e-06,
+          "boost.left.negative_kg": 2.2451144457277907e-06,
+          "boost.left.net_kg": 2.4914837908033037e-05,
+          "boost.left.positive_kg": 2.7159952353760786e-05,
+          "boost.left.residual.out_negative_kg": 5.834813534338092e-11,
+          "boost.left.residual.out_positive_kg": 1.388297515092523e-13,
+          "boost.right.air.out_negative_kg": 1.6175764539627867e-07,
+          "boost.right.air.out_positive_kg": 2.3785814987415313e-05,
+          "boost.right.burned.out_negative_kg": 0.0,
+          "boost.right.burned.out_positive_kg": 0.0,
+          "boost.right.fuel.out_negative_kg": 1.406588220837207e-08,
+          "boost.right.fuel.out_positive_kg": 2.068331738036119e-06,
+          "boost.right.negative_kg": 1.9945309542586993e-07,
+          "boost.right.net_kg": 2.565469363002567e-05,
+          "boost.right.positive_kg": 2.5854146725451508e-05,
+          "boost.right.residual.out_negative_kg": 2.3629567821219315e-08,
+          "boost.right.residual.out_positive_kg": 0.0,
+          "exhaust.left.air.out_negative_kg": 8.861020264485456e-71,
+          "exhaust.left.air.out_positive_kg": 2.3754020826127613e-05,
+          "exhaust.left.burned.out_negative_kg": 0.0,
+          "exhaust.left.burned.out_positive_kg": 0.0,
+          "exhaust.left.fuel.out_negative_kg": 0.0,
+          "exhaust.left.fuel.out_positive_kg": 2.065567028358928e-06,
+          "exhaust.left.negative_kg": 3.9984820682998734e-05,
+          "exhaust.left.net_kg": 2.1327954848463478e-05,
+          "exhaust.left.positive_kg": 6.13127755314622e-05,
+          "exhaust.left.residual.out_negative_kg": 3.9984820682998734e-05,
+          "exhaust.left.residual.out_positive_kg": 3.549318767697565e-05,
+          "exhaust.right.air.out_negative_kg": 2.0991334578523398e-05,
+          "exhaust.right.air.out_positive_kg": 1.2384273553542435e-05,
+          "exhaust.right.burned.out_negative_kg": 0.0,
+          "exhaust.right.burned.out_positive_kg": 0.0,
+          "exhaust.right.fuel.out_negative_kg": 0.0,
+          "exhaust.right.fuel.out_positive_kg": 3.4895924113732284e-42,
+          "exhaust.right.negative_kg": 2.0991334578523398e-05,
+          "exhaust.right.net_kg": -2.723776511286351e-06,
+          "exhaust.right.positive_kg": 1.8267558067237082e-05,
+          "exhaust.right.residual.out_negative_kg": 0.0,
+          "exhaust.right.residual.out_positive_kg": 5.883284513694662e-06,
+          "intake.left.air.out_negative_kg": 0.0,
+          "intake.left.air.out_positive_kg": 6.596189569642838e-05,
+          "intake.left.burned.out_negative_kg": 0.0,
+          "intake.left.burned.out_positive_kg": 0.0,
+          "intake.left.fuel.out_negative_kg": 0.0,
+          "intake.left.fuel.out_positive_kg": 5.735817017080736e-06,
+          "intake.left.negative_kg": 0.0,
+          "intake.left.net_kg": 7.169771271350909e-05,
+          "intake.left.positive_kg": 7.169771271350909e-05,
+          "intake.left.residual.out_negative_kg": 0.0,
+          "intake.left.residual.out_positive_kg": 0.0,
+          "intake.right.air.out_negative_kg": 0.0,
+          "intake.right.air.out_positive_kg": 6.569567188704208e-05,
+          "intake.right.burned.out_negative_kg": 0.0,
+          "intake.right.burned.out_positive_kg": 0.0,
+          "intake.right.fuel.out_negative_kg": 0.0,
+          "intake.right.fuel.out_positive_kg": 5.712667120612358e-06,
+          "intake.right.negative_kg": 0.0,
+          "intake.right.net_kg": 7.140833900765447e-05,
+          "intake.right.positive_kg": 7.140833900765447e-05,
+          "intake.right.residual.out_negative_kg": 0.0,
+          "intake.right.residual.out_positive_kg": 0.0,
+          "primary.left.air.out_negative_kg": 3.0374871795894192e-06,
+          "primary.left.air.out_positive_kg": 3.6752060228783335e-05,
+          "primary.left.burned.out_negative_kg": 0.0,
+          "primary.left.burned.out_positive_kg": 0.0,
+          "primary.left.fuel.out_negative_kg": 2.6412931996429676e-07,
+          "primary.left.fuel.out_positive_kg": 3.1958313242420224e-06,
+          "primary.left.negative_kg": 3.3017023329985973e-06,
+          "primary.left.net_kg": 3.6646189424188325e-05,
+          "primary.left.positive_kg": 3.994789175718698e-05,
+          "primary.left.residual.out_negative_kg": 8.58334448837326e-11,
+          "primary.left.residual.out_positive_kg": 2.0416166451254592e-13,
+          "primary.right.air.out_negative_kg": 2.3792829185910069e-07,
+          "primary.right.air.out_positive_kg": 3.498539619792127e-05,
+          "primary.right.burned.out_negative_kg": 0.0,
+          "primary.right.burned.out_positive_kg": 0.0,
+          "primary.right.fuel.out_negative_kg": 2.0689416683400073e-08,
+          "primary.right.fuel.out_positive_kg": 3.042208365036638e-06,
+          "primary.right.negative_kg": 2.933742660914453e-07,
+          "primary.right.net_kg": 3.773423029686645e-05,
+          "primary.right.positive_kg": 3.802760456295788e-05,
+          "primary.right.residual.out_negative_kg": 3.475655754894461e-08,
+          "primary.right.residual.out_positive_kg": 0.0,
+          "secondary.left.air.out_negative_kg": 3.0374871795894192e-06,
+          "secondary.left.air.out_positive_kg": 3.6752060228783335e-05,
+          "secondary.left.burned.out_negative_kg": 0.0,
+          "secondary.left.burned.out_positive_kg": 0.0,
+          "secondary.left.fuel.out_negative_kg": 2.6412931996429676e-07,
+          "secondary.left.fuel.out_positive_kg": 3.1958313242420224e-06,
+          "secondary.left.negative_kg": 3.3017023329985973e-06,
+          "secondary.left.net_kg": 3.6646189424188325e-05,
+          "secondary.left.positive_kg": 3.994789175718698e-05,
+          "secondary.left.residual.out_negative_kg": 8.58334448837326e-11,
+          "secondary.left.residual.out_positive_kg": 2.0416166451254592e-13,
+          "secondary.right.air.out_negative_kg": 2.3792829185910069e-07,
+          "secondary.right.air.out_positive_kg": 3.498539619792127e-05,
+          "secondary.right.burned.out_negative_kg": 0.0,
+          "secondary.right.burned.out_positive_kg": 0.0,
+          "secondary.right.fuel.out_negative_kg": 2.0689416683400073e-08,
+          "secondary.right.fuel.out_positive_kg": 3.042208365036638e-06,
+          "secondary.right.negative_kg": 2.933742660914453e-07,
+          "secondary.right.net_kg": 3.773423029686645e-05,
+          "secondary.right.positive_kg": 3.802760456295788e-05,
+          "secondary.right.residual.out_negative_kg": 3.475655754894461e-08,
+          "secondary.right.residual.out_positive_kg": 0.0
+        },
+        "fuel_burned_kg": 6.246017393683743e-07,
+        "ignition_event": {
+          "fresh_air_at_ignition_kg": 7.347488067115442e-05,
+          "fuel_at_ignition_kg": 6.3891200583612545e-06,
+          "fuel_available_for_burn_kg": 4.993995795617528e-06,
+          "start_angle_deg": 340.0
+        },
+        "imep_Pa": -356125.7776558578,
+        "indicated_power_W": -2219.166394624907,
+        "indicated_torque_Nm": -7.0638260249594715,
+        "ledger_delta": {
+          "crankcase_work_J": 2.5777381913109796,
+          "cylinder_work_J": 44.38332789249813,
+          "external_energy_J": 22.457573302464112,
+          "external_mass_kg": 7.44214892247955e-05,
+          "external_species_kg": [
+            7.456895672140928e-05,
+            5.735817017080735e-06,
+            -5.883284513694661e-06,
+            0.0
+          ],
+          "fresh_delivered_kg": 0.00010190935585136712,
+          "fresh_short_circuit_kg": 2.1059148678633837e-05,
+          "fuel_combustion_heat_added_J": 22.829193573914083,
+          "fuel_combustion_source_species_kg": [
+            -9.189542832086425e-06,
+            -6.246017393683743e-07,
+            0.0,
+            9.8141445714548e-06
+          ],
+          "fuel_delivered_kg": 5.735817017080735e-06,
+          "fuel_short_circuited_kg": 1.6847318942907098e-06,
+          "heat_to_wall_J": -0.035454085568451144,
+          "p7_availability_limited_kg": 0.0,
+          "p7_heat_added_J": 0.0,
+          "p7_source_species_kg": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "max_accepted_cfl": 0.36210114924626274,
+        "mechanical_estimate": {
+          "brake_mep_pa": -461809.1977949996,
+          "brake_power_positive": false,
+          "brake_power_w": -2877.7233123115716,
+          "brake_torque_nm": -9.160077800103375,
+          "brake_work_j": -57.554466246231435,
+          "clipped": false,
+          "cycle_convention": "2T_360_DEG_ONE_CYCLE_PER_REV",
+          "displacement_m3": 0.00012462823720496853,
+          "friction_mep_pa": 85000.0,
+          "friction_mep_pa_by_term": {
+            "fmep_standard_v1": 85000.0
+          },
+          "load": 1.0,
+          "loss_work_j_by_term": {
+            "fmep_standard_v1": 10.593400162422325
+          },
+          "mechanical_loss_power_w": 529.6700081211162,
+          "mechanical_loss_torque_nm": 1.6859920000000002,
+          "net_piston_gas_work_j": -46.96106608380911,
+          "net_piston_mep_pa": -376809.1977949995,
+          "net_piston_power_w": -2348.0533041904555,
+          "net_piston_torque_nm": -7.474085800103375,
+          "rpm": 3000.0,
+          "schema": "MOTORSIM_MECHANICAL_LOSSES_2T_V2_NET_PISTON_WORK"
+        },
+        "observables": {
+          "chambers": {
+            "crankcase": {
+              "mass_kg": 0.0005461565466927995,
+              "pressure_Pa": 96210.44680124732,
+              "temperature_K": 298.8343835360812,
+              "total_energy_J": 133.83249105501287
+            },
+            "cylinder": {
+              "mass_kg": 8.872978272994439e-05,
+              "pressure_Pa": 4305424.952569001,
+              "temperature_K": 1283.587717206015,
+              "total_energy_J": 93.39181659526228
+            }
+          },
+          "cycle_start_total_energy_J": 1259.092153573373,
+          "cycle_start_total_mass_kg": 0.0029322994930646128,
+          "ducts": {
+            "boost": [
+              {
+                "mass_kg": 4.660321181057283e-06,
+                "pressure_Pa": 95898.37553849364,
+                "species_mass_fractions": [
+                  0.9199293378770625,
+                  0.07999385546757051,
+                  7.680665536701314e-05,
+                  0.0
+                ],
+                "temperature_K": 297.1961915721752,
+                "total_energy_J": 1.1357251403308946,
+                "velocity_over_sound_speed": 0.0017060837222496266
+              },
+              {
+                "mass_kg": 4.654127876802389e-06,
+                "pressure_Pa": 95896.28932898412,
+                "species_mass_fractions": [
+                  0.9194622605960026,
+                  0.07995324005182644,
+                  0.0005844993521709885,
+                  0.0
+                ],
+                "temperature_K": 297.5852002169681,
+                "total_energy_J": 1.1356999333009483,
+                "velocity_over_sound_speed": 0.001023261903480129
+              },
+              {
+                "mass_kg": 4.579742379386084e-06,
+                "pressure_Pa": 95938.99105634801,
+                "species_mass_fractions": [
+                  0.9158832545296838,
+                  0.07964202213301586,
+                  0.004474723337300367,
+                  0.0
+                ],
+                "temperature_K": 302.5533291443838,
+                "total_energy_J": 1.1362054910957922,
+                "velocity_over_sound_speed": 0.0006747720406906462
+              }
+            ],
+            "exhaust": [
+              {
+                "mass_kg": 2.8666439425897386e-05,
+                "pressure_Pa": 102097.71652815935,
+                "species_mass_fractions": [
+                  0.40797233323768944,
+                  0.03547585506414693,
+                  0.5565518116981636,
+                  0.0
+                ],
+                "temperature_K": 470.5749071046049,
+                "total_energy_J": 11.06156183605554,
+                "velocity_over_sound_speed": 0.000883262786668373
+              },
+              {
+                "mass_kg": 2.635845528854143e-05,
+                "pressure_Pa": 102155.23647544558,
+                "species_mass_fractions": [
+                  0.24483456142739127,
+                  0.02128996186325138,
+                  0.7338754767093574,
+                  0.0
+                ],
+                "temperature_K": 512.0674474742027,
+                "total_energy_J": 11.067795724089333,
+                "velocity_over_sound_speed": 0.0012446289634104094
+              },
+              {
+                "mass_kg": 2.435199735925556e-05,
+                "pressure_Pa": 102151.710961792,
+                "species_mass_fractions": [
+                  0.13572773192270143,
+                  0.011802411471539246,
+                  0.8524698566057594,
+                  0.0
+                ],
+                "temperature_K": 554.239593153831,
+                "total_energy_J": 11.06741923577555,
+                "velocity_over_sound_speed": 0.001908788027614953
+              },
+              {
+                "mass_kg": 2.6922233240123454e-05,
+                "pressure_Pa": 102137.44970163531,
+                "species_mass_fractions": [
+                  0.05765572142967173,
+                  0.005013540993884498,
+                  0.9373307375764438,
+                  0.0
+                ],
+                "temperature_K": 584.8787853320508,
+                "total_energy_J": 12.911936737313429,
+                "velocity_over_sound_speed": 0.002389358254514011
+              },
+              {
+                "mass_kg": 2.9380632338549035e-05,
+                "pressure_Pa": 102139.12534975975,
+                "species_mass_fractions": [
+                  0.01874699866723137,
+                  0.001630173797150557,
+                  0.979622827535618,
+                  0.0
+                ],
+                "temperature_K": 598.7648824974893,
+                "total_energy_J": 14.425539081154387,
+                "velocity_over_sound_speed": 0.0026849236473643952
+              },
+              {
+                "mass_kg": 3.2394633456723025e-05,
+                "pressure_Pa": 102142.74842102999,
+                "species_mass_fractions": [
+                  0.004777831772600264,
+                  0.00041546363240002403,
+                  0.9948067045949998,
+                  0.0
+                ],
+                "temperature_K": 603.206329188162,
+                "total_energy_J": 16.023363222142965,
+                "velocity_over_sound_speed": 0.0029036900248932637
+              },
+              {
+                "mass_kg": 3.573743286615499e-05,
+                "pressure_Pa": 102147.7098158696,
+                "species_mass_fractions": [
+                  0.0009770824800829539,
+                  8.496369392025678e-05,
+                  0.9989379538259968,
+                  0.0
+                ],
+                "temperature_K": 604.1818362919468,
+                "total_energy_J": 17.705403226934333,
+                "velocity_over_sound_speed": 0.0030464143146134172
+              },
+              {
+                "mass_kg": 3.929680772613614e-05,
+                "pressure_Pa": 102153.78182265369,
+                "species_mass_fractions": [
+                  0.0001627629316173175,
+                  1.4153298401505858e-05,
+                  0.9998230837699812,
+                  0.0
+                ],
+                "temperature_K": 604.2707905822461,
+                "total_energy_J": 19.47169330578626,
+                "velocity_over_sound_speed": 0.0031132607454467482
+              },
+              {
+                "mass_kg": 4.500013890943227e-05,
+                "pressure_Pa": 102108.87051196904,
+                "species_mass_fractions": [
+                  2.1468146883654764e-05,
+                  1.8667953811873715e-06,
+                  0.9999766650577352,
+                  0.0
+                ],
+                "temperature_K": 604.1420306868317,
+                "total_energy_J": 22.292949010242054,
+                "velocity_over_sound_speed": 0.002730364014007241
+              },
+              {
+                "mass_kg": 6.082595496247663e-05,
+                "pressure_Pa": 102123.35438484051,
+                "species_mass_fractions": [
+                  1.9393302288535553e-06,
+                  1.6863741120465696e-07,
+                  0.99999789203236,
+                  0.0
+                ],
+                "temperature_K": 603.8504923168664,
+                "total_energy_J": 30.118455867988978,
+                "velocity_over_sound_speed": 0.002183723432363945
+              },
+              {
+                "mass_kg": 7.905909358149865e-05,
+                "pressure_Pa": 102135.05228965751,
+                "species_mass_fractions": [
+                  1.235475700896284e-07,
+                  1.0743266964315527e-08,
+                  0.999999865709163,
+                  0.0
+                ],
+                "temperature_K": 603.4612267884504,
+                "total_energy_J": 39.12149001988949,
+                "velocity_over_sound_speed": 0.0018012365970461375
+              },
+              {
+                "mass_kg": 9.968551977077287e-05,
+                "pressure_Pa": 102145.12680368338,
+                "species_mass_fractions": [
+                  5.692405302129733e-09,
+                  4.94991765402587e-10,
+                  0.999999993812603,
+                  0.0
+                ],
+                "temperature_K": 603.1437546380215,
+                "total_energy_J": 49.30227958327709,
+                "velocity_over_sound_speed": 0.0015131191623546322
+              },
+              {
+                "mass_kg": 0.00012269710080957088,
+                "pressure_Pa": 102154.06970143621,
+                "species_mass_fractions": [
+                  1.933929324555356e-10,
+                  1.6816776735264012e-11,
+                  0.9999999997897904,
+                  0.0
+                ],
+                "temperature_K": 602.9219475567495,
+                "total_energy_J": 60.66097906378345,
+                "velocity_over_sound_speed": 0.0012827308065041622
+              },
+              {
+                "mass_kg": 0.00014809381995145837,
+                "pressure_Pa": 102162.06709152041,
+                "species_mass_fractions": [
+                  4.912707713921903e-12,
+                  4.271919751236423e-13,
+                  0.99999999999466,
+                  0.0
+                ],
+                "temperature_K": 602.7625313119621,
+                "total_energy_J": 73.19765328075435,
+                "velocity_over_sound_speed": 0.0010897564704149924
+              },
+              {
+                "mass_kg": 0.00016316756764149626,
+                "pressure_Pa": 102169.77976560684,
+                "species_mass_fractions": [
+                  1.0136122497889657e-13,
+                  8.814019563082513e-15,
+                  0.9999999999998899,
+                  0.0
+                ],
+                "temperature_K": 602.6438630097488,
+                "total_energy_J": 80.63220166189636,
+                "velocity_over_sound_speed": 0.0009270426430590079
+              },
+              {
+                "mass_kg": 0.00018926290191847374,
+                "pressure_Pa": 102175.67960295895,
+                "species_mass_fractions": [
+                  1.6045961926214057e-15,
+                  1.3953006134352484e-16,
+                  0.9999999999999983,
+                  0.0
+                ],
+                "temperature_K": 602.5513183726086,
+                "total_energy_J": 93.51331479929581,
+                "velocity_over_sound_speed": 0.0007881056293183254
+              },
+              {
+                "mass_kg": 0.00024356745647253832,
+                "pressure_Pa": 102187.41674546892,
+                "species_mass_fractions": [
+                  1.7611084728017927e-17,
+                  1.5249169530979065e-18,
+                  1.0,
+                  0.0
+                ],
+                "temperature_K": 602.5134271775263,
+                "total_energy_J": 120.33719800701822,
+                "velocity_over_sound_speed": 0.0007114381619368388
+              },
+              {
+                "mass_kg": 0.00024357673148924012,
+                "pressure_Pa": 102192.03910925206,
+                "species_mass_fractions": [
+                  1.780405030016065e-17,
+                  1.4864698006167018e-20,
+                  1.0,
+                  0.0
+                ],
+                "temperature_K": 602.5177375808594,
+                "total_energy_J": 120.34263964515903,
+                "velocity_over_sound_speed": 0.0006676712018677948
+              },
+              {
+                "mass_kg": 0.00018558897837321666,
+                "pressure_Pa": 102209.39814617578,
+                "species_mass_fractions": [
+                  5.442202926269011e-15,
+                  1.774446404355064e-22,
+                  0.9999999999999946,
+                  0.0
+                ],
+                "temperature_K": 602.6187919891455,
+                "total_energy_J": 91.70832378902809,
+                "velocity_over_sound_speed": 0.0007095143396956807
+              },
+              {
+                "mass_kg": 0.00013524783585930033,
+                "pressure_Pa": 102215.79778414576,
+                "species_mass_fractions": [
+                  1.9956937007406054e-12,
+                  2.706112919645942e-24,
+                  0.9999999999980043,
+                  0.0
+                ],
+                "temperature_K": 602.8314179111284,
+                "total_energy_J": 66.85596176470477,
+                "velocity_over_sound_speed": 0.0009122066667534383
+              },
+              {
+                "mass_kg": 9.286973809716072e-05,
+                "pressure_Pa": 102224.5757428858,
+                "species_mass_fractions": [
+                  5.775289044566685e-10,
+                  5.448833658182391e-26,
+                  0.9999999994224712,
+                  0.0
+                ],
+                "temperature_K": 603.1409472889147,
+                "total_energy_J": 45.93112144611042,
+                "velocity_over_sound_speed": 0.00125759084121241
+              },
+              {
+                "mass_kg": 5.845539172477306e-05,
+                "pressure_Pa": 102239.36984615441,
+                "species_mass_fractions": [
+                  8.647465843171462e-08,
+                  1.5581751618006863e-27,
+                  0.9999999135253416,
+                  0.0
+                ],
+                "temperature_K": 603.636462498102,
+                "total_energy_J": 28.93438585132979,
+                "velocity_over_sound_speed": 0.001913696437868954
+              },
+              {
+                "mass_kg": 3.2002166934180525e-05,
+                "pressure_Pa": 102273.30083055558,
+                "species_mass_fractions": [
+                  4.8139694288746314e-06,
+                  7.231040279736137e-29,
+                  0.9999951860305711,
+                  0.0
+                ],
+                "temperature_K": 604.6259100945165,
+                "total_energy_J": 15.866500953570652,
+                "velocity_over_sound_speed": 0.0033759547997690795
+              },
+              {
+                "mass_kg": 1.3525114017398582e-05,
+                "pressure_Pa": 102393.77444710002,
+                "species_mass_fractions": [
+                  8.301673643911612e-05,
+                  6.889007506153095e-30,
+                  0.9999169832635609,
+                  0.0
+                ],
+                "temperature_K": 606.6760898673284,
+                "total_energy_J": 6.72849112666631,
+                "velocity_over_sound_speed": 0.007658417298637081
+              },
+              {
+                "mass_kg": 7.211624421725807e-06,
+                "pressure_Pa": 101288.3424431087,
+                "species_mass_fractions": [
+                  0.00046602554338246604,
+                  1.0641485863598768e-30,
+                  0.9995339744566175,
+                  0.0
+                ],
+                "temperature_K": 605.3616519112456,
+                "total_energy_J": 3.5800334524282396,
+                "velocity_over_sound_speed": 0.01568009479852623
+              },
+              {
+                "mass_kg": 7.215766778225005e-06,
+                "pressure_Pa": 101299.48439667755,
+                "species_mass_fractions": [
+                  0.002462004543860659,
+                  1.5368909462362296e-31,
+                  0.9975379954561394,
+                  0.0
+                ],
+                "temperature_K": 605.0806848051993,
+                "total_energy_J": 3.580425028053117,
+                "velocity_over_sound_speed": 0.015595555179069295
+              },
+              {
+                "mass_kg": 7.241311189503034e-06,
+                "pressure_Pa": 101308.65589863421,
+                "species_mass_fractions": [
+                  0.010867211070769463,
+                  2.0767843770383655e-32,
+                  0.9891327889292306,
+                  0.0
+                ],
+                "temperature_K": 603.0007951995455,
+                "total_energy_J": 3.5807478178050984,
+                "velocity_over_sound_speed": 0.015543296808837205
+              },
+              {
+                "mass_kg": 7.334325891103645e-06,
+                "pressure_Pa": 101316.3529354751,
+                "species_mass_fractions": [
+                  0.04031223880063913,
+                  2.6219768987093702e-33,
+                  0.9596877611993608,
+                  0.0
+                ],
+                "temperature_K": 595.3987075694671,
+                "total_energy_J": 3.581020946042297,
+                "velocity_over_sound_speed": 0.015584195280798433
+              },
+              {
+                "mass_kg": 7.609017845288916e-06,
+                "pressure_Pa": 101323.9806461885,
+                "species_mass_fractions": [
+                  0.12193289166481779,
+                  3.0610649294846434e-34,
+                  0.8780671083351822,
+                  0.0
+                ],
+                "temperature_K": 573.9475196559517,
+                "total_energy_J": 3.581297842640591,
+                "velocity_over_sound_speed": 0.015858450145738535
+              },
+              {
+                "mass_kg": 8.254690557803115e-06,
+                "pressure_Pa": 101333.68935414685,
+                "species_mass_fractions": [
+                  0.288246147766624,
+                  3.250094312669002e-35,
+                  0.7117538522333761,
+                  0.0
+                ],
+                "temperature_K": 529.1046762942696,
+                "total_energy_J": 3.581661049808856,
+                "velocity_over_sound_speed": 0.016588859767211618
+              },
+              {
+                "mass_kg": 9.412146280751244e-06,
+                "pressure_Pa": 101346.82198261002,
+                "species_mass_fractions": [
+                  0.5209358835976996,
+                  3.13890469074836e-36,
+                  0.47906411640230034,
+                  0.0
+                ],
+                "temperature_K": 464.0983338101809,
+                "total_energy_J": 3.582164474758026,
+                "velocity_over_sound_speed": 0.017932432879321725
+              }
+            ],
+            "intake": [
+              {
+                "mass_kg": 2.6699249371687406e-05,
+                "pressure_Pa": 101356.42536616213,
+                "species_mass_fractions": [
+                  0.92,
+                  0.07999999999999995,
+                  0.0,
+                  0.0
+                ],
+                "temperature_K": 300.02497436225576,
+                "total_energy_J": 6.569125170499495,
+                "velocity_over_sound_speed": 0.019048162691554037
+              },
+              {
+                "mass_kg": 2.6721560122600978e-05,
+                "pressure_Pa": 101471.12309468501,
+                "species_mass_fractions": [
+                  0.9199999999999999,
+                  0.08,
+                  0.0,
+                  0.0
+                ],
+                "temperature_K": 300.1137062454803,
+                "total_energy_J": 6.5765567564161005,
+                "velocity_over_sound_speed": 0.019010659876120634
+              },
+              {
+                "mass_kg": 2.674381365618641e-05,
+                "pressure_Pa": 101585.55650748547,
+                "species_mass_fractions": [
+                  0.92,
+                  0.08000000000000004,
+                  0.0,
+                  0.0
+                ],
+                "temperature_K": 300.20215125583655,
+                "total_energy_J": 6.5839711038527815,
+                "velocity_over_sound_speed": 0.018971344166049953
+              },
+              {
+                "mass_kg": 2.68975237034588e-05,
+                "pressure_Pa": 102526.8514006037,
+                "species_mass_fractions": [
+                  0.9199999999999999,
+                  0.08000000000000002,
+                  0.0,
+                  0.0
+                ],
+                "temperature_K": 301.25238578607554,
+                "total_energy_J": 6.645384651609769,
+                "velocity_over_sound_speed": 0.024874169384736064
+              }
+            ],
+            "primary": [
+              {
+                "mass_kg": 6.853420875382352e-06,
+                "pressure_Pa": 95898.375542386,
+                "species_mass_fractions": [
+                  0.9199293182236917,
+                  0.07999385375858171,
+                  7.682801772665528e-05,
+                  0.0
+                ],
+                "temperature_K": 297.1962582730304,
+                "total_energy_J": 1.6701862017536044,
+                "velocity_over_sound_speed": 0.001706083494813606
+              },
+              {
+                "mass_kg": 6.844311085680982e-06,
+                "pressure_Pa": 95896.28933172162,
+                "species_mass_fractions": [
+                  0.9194621308819804,
+                  0.07995322877234617,
+                  0.0005846403456733739,
+                  0.0
+                ],
+                "temperature_K": 297.58535306983015,
+                "total_energy_J": 1.6701491325236033,
+                "velocity_over_sound_speed": 0.001023261523417314
+              },
+              {
+                "mass_kg": 6.7349127372963536e-06,
+                "pressure_Pa": 95938.99105961094,
+                "species_mass_fractions": [
+                  0.9158824264607724,
+                  0.07964195012702348,
+                  0.004475623412204013,
+                  0.0
+                ],
+                "temperature_K": 302.5538360720888,
+                "total_energy_J": 1.6708926008448732,
+                "velocity_over_sound_speed": 0.0006747714822800186
+              }
+            ],
+            "secondary": [
+              {
+                "mass_kg": 6.853420875382352e-06,
+                "pressure_Pa": 95898.375542386,
+                "species_mass_fractions": [
+                  0.9199293182236917,
+                  0.07999385375858171,
+                  7.682801772665528e-05,
+                  0.0
+                ],
+                "temperature_K": 297.1962582730304,
+                "total_energy_J": 1.6701862017536044,
+                "velocity_over_sound_speed": 0.001706083494813606
+              },
+              {
+                "mass_kg": 6.844311085680982e-06,
+                "pressure_Pa": 95896.28933172162,
+                "species_mass_fractions": [
+                  0.9194621308819804,
+                  0.07995322877234617,
+                  0.0005846403456733739,
+                  0.0
+                ],
+                "temperature_K": 297.58535306983015,
+                "total_energy_J": 1.6701491325236033,
+                "velocity_over_sound_speed": 0.001023261523417314
+              },
+              {
+                "mass_kg": 6.7349127372963536e-06,
+                "pressure_Pa": 95938.99105961094,
+                "species_mass_fractions": [
+                  0.9158824264607724,
+                  0.07964195012702348,
+                  0.004475623412204013,
+                  0.0
+                ],
+                "temperature_K": 302.5538360720888,
+                "total_energy_J": 1.6708926008448732,
+                "velocity_over_sound_speed": 0.0006747714822800186
+              }
+            ]
+          },
+          "fresh_delivery_kg": 0.00010190935585136712,
+          "fresh_short_circuit_kg": 2.1059148678633837e-05,
+          "global_species_kg": [
+            0.0007479006488521323,
+            6.446088788317398e-05,
+            0.002184545300982647,
+            9.8141445714548e-06
+          ],
+          "p7_burned_produced_kg": 0.0,
+          "p7_heat_J": 0.0,
+          "work_J": -44.38332789249813
+        },
+        "peak_pressure_angle_deg": 0.0,
+        "peak_rss_mib": 318.90234375,
+        "periodicity_streak": 0,
+        "pressure_min_max_Pa": {
+          "crankcase": [
+            92918.01551224235,
+            134944.81810491584
+          ],
+          "cylinder": [
+            12869.844574901348,
+            4304572.240338506
+          ],
+          "exhaust_entry": [
+            95873.632929051,
+            109235.13410616817
+          ],
+          "exhaust_middle": [
+            98193.31709494555,
+            102792.19604416093
+          ]
+        },
+        "rejected_trials": {
+          "CFL limit exceeded": 720
+        },
+        "restriction_integrals": {
+          "boost.cylinder_end_port_limited.time_s": 0.020000000000000885,
+          "intake.reed.time_s": 0.020000000000000885,
+          "intake.suction.reed.forward_kg": 7.140833900765447e-05,
+          "intake.suction.reed.time_s": 0.0056458333333334115,
+          "primary.cylinder_end_port_limited.time_s": 0.020000000000000885,
+          "secondary.cylinder_end_port_limited.time_s": 0.020000000000000885
+        },
+        "thermal_heat_by_surface_J": {
+          "crankcase-wall": -0.9021722087607663,
+          "cylinder-head": 1.090431316180861,
+          "cylinder-wall": 3.941130328482259,
+          "exhaust-wall-00": -0.2703113295325294,
+          "exhaust-wall-01": -0.20003759578719302,
+          "exhaust-wall-02": -0.13336094697339446,
+          "exhaust-wall-03": -0.12894023013253106,
+          "exhaust-wall-04": -0.11128245428457696,
+          "exhaust-wall-05": -0.10985695594800961,
+          "exhaust-wall-06": -0.11410115897452906,
+          "exhaust-wall-07": -0.11969483718774795,
+          "exhaust-wall-08": -0.12291126583819753,
+          "exhaust-wall-09": -0.14420251563569042,
+          "exhaust-wall-10": -0.16608794095717594,
+          "exhaust-wall-11": -0.18793803557750954,
+          "exhaust-wall-12": -0.20961729342486626,
+          "exhaust-wall-13": -0.23118978305639826,
+          "exhaust-wall-14": -0.2351067131201427,
+          "exhaust-wall-15": -0.25379145540943965,
+          "exhaust-wall-16": -0.31582764495989196,
+          "exhaust-wall-17": -0.3158409571933881,
+          "exhaust-wall-18": -0.2573390017491468,
+          "exhaust-wall-19": -0.2185593981086807,
+          "exhaust-wall-20": -0.17973160979763442,
+          "exhaust-wall-21": -0.1407735263856539,
+          "exhaust-wall-22": -0.10126480054037926,
+          "exhaust-wall-23": -0.061880255708978725,
+          "exhaust-wall-24": -0.0471267670452161,
+          "exhaust-wall-25": -0.048524190928355825,
+          "exhaust-wall-26": -0.054457937997188545,
+          "exhaust-wall-27": -0.07471041627580435,
+          "exhaust-wall-28": -0.1276119397443564,
+          "exhaust-wall-29": -0.225064892971447,
+          "exhaust-wall-30": -0.3481309864055951,
+          "piston-crown": 1.090431316180861
+        },
+        "wall_s": 8.358272599987686
+      }
+    ],
+    "cycles_completed": 1,
+    "diagnostic_manifest_sha256": "a2fb5712d4de19482bca0719440d0b6133ca0129e83c792bd7596ecf24b38347",
+    "elapsed_seconds": 8.793837999925017,
+    "failure": null,
+    "initial_state_provenance": null,
+    "invocations": 1,
+    "mode": "ENGINEERING_EXPLORATORY",
+    "periodicity": "INSUFFICIENT_CYCLES",
+    "preflight": {
+      "afr_kg_air_per_kg_fuel": 11.5,
+      "artifact_limit_bytes": 536870912,
+      "budget_seconds": 60.0,
+      "classification": "PREFLIGHT_ONLY_NO_SOLVER_STEPS",
+      "configuration_sha256": "20b6c0225b5ea57f0a5f7dc1c6993dea1c3e93b116b204a1d41321f50410af6e",
+      "cycle_primary_contract": "REFERENCE_PERIODIC_CONVERGENCE_V1",
+      "fuel_id": "23dbb59e043824251805e1d3fadd2ee6375e9c508fc20b73873ac147d18be451",
+      "identity_sha256": "36bb340f2cd298b1b08c943ce5cff0aa182949d87a94b5053af7d0b59736cbd3",
+      "max_cycles": 1,
+      "mechanical_loss_model_sha256": "e68395f263ac7a32df9fa725456bc066308315000a8a3bf60781030f34e22364",
+      "mechanical_loss_preflight": {
+        "compatible": true,
+        "friction_mep_pa": 85000.0,
+        "term_mep_pa_by_term": {
+          "fmep_standard_v1": 85000.0
+        }
+      },
+      "memory_limit_mib": 1024,
+      "mode": "EXPLORATORY",
+      "periodicity_contract": "REFERENCE_PERIODIC_CONVERGENCE_V2",
+      "periodicity_initial": "NOT_EVALUATED",
+      "periodicity_source_sha256": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+      "periodicity_thresholds_sha256": "97049f91c7664b906fd743ec2a05991ad313f860df23b154b482a5c783f13b70",
+      "rpm": 3000.0,
+      "schema": "DINO_EXPLORATORY_PREFLIGHT_V1",
+      "solver_steps": 0,
+      "status": "PASS",
+      "total_finite_volume_cells": 44,
+      "verified_mode": "UNAVAILABLE_WITHOUT_PREREGISTRATION_AND_AUTHORIZATION",
+      "workers": 1
+    },
+    "schema": "DINO_ENGINEERING_RUN_V1",
+    "scientific_validation": "NOT_CLAIMED",
+    "source_hashes": {
+      "motorsim._evidence_io": "422f7981eaa53769ad2a9610cb8c07cb5c2e6351eba1fb820ef9a47a5b0ba5b1",
+      "motorsim._trajectory_store": "9a4a7c1b9fc01218e0b4d53ee2c26e6ac5a459c68bada0a556437294c04923e8",
+      "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+      "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+      "motorsim.engine_configuration": "d1f8b88640fdfa3b703c2a8e87e8872a22f6fbbeac9b4400e7a4bd3e7b0fcfce",
+      "motorsim.engine_variants": "be3d8e7c723cc1627bc30900a1d8da0e049adbaa066c06dacfe946eea4fcdfa1",
+      "motorsim.engineering_outputs": "c01c3c7195f28a67c3fb866df704d15a595d079d32be71057ab2d2c5095f5424",
+      "motorsim.engineering_point": "bdb865673955a762233e5dc91edd9b5a8dc6224b83460b7043a0ee366822e82b",
+      "motorsim.engineering_workflow": "786e61889d7dcf7bd93dbcb995e25aaa1fc9e216dac6adae45e50d4df23f4478",
+      "motorsim.exploratory_workflow": "9e640a9f97c4c175a945e8d17d1266e536fb9c055c5e5fd637f2458b9b94a878",
+      "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+      "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+      "motorsim.gas1d.eos": "49a4f2189a3fe87e3514e66c5a03be70ec3e932405a6dea25b6e83c23ac62286",
+      "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+      "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+      "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+      "motorsim.gas_exchange_v2": "401010e2043fc14b84343cbaa4aa979b9849c6a704629b3c45ddeb4a4ccb6bf7",
+      "motorsim.integrated_2t": "940a01563da60682493440cc8ade9bc9df8ffec4f7d6132ff66e1d2551f95566",
+      "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+      "motorsim.mechanical": "de71d3bacb18e7661de0ff15cbac50f1a252fc01970c7ef9aa04c8a3424d0fff",
+      "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+      "motorsim.p6_species": "6ae1b154f2d02dc2ca2d984eff43032602a9c9f51901802093d5058d72a6bf72",
+      "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+      "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+      "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+      "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+      "motorsim.reference_harness.convergence": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+      "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+      "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095"
+    },
+    "status": "COMPLETE"
+  },
+  "regression": "37 PASS, 1 SKIP; final focused 9 PASS; final explorer 1 PASS",
+  "limitations": [
+    "No scientific gate or distribution release acceptance",
+    "No periodic campaign; synthetic historical outputs retain original meaning",
+    "No new physical capabilities or experimental promotion"
+  ],
+  "final_presentation_tests": "final-result-tests: 4 PASS; compact-result-tests: 4 PASS",
+  "visual_sizes": "Native 1225x850 px at Windows 125 percent, plus maximized; compact uses vertical scroll"
+}

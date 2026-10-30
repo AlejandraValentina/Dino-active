@@ -25,9 +25,9 @@ def stylesheet() -> str:
         QPushButton:hover {{background:#263a51;}} QPushButton:disabled {{color:#708296;}}
         QPushButton#primaryAction {{background:#1479ad;border-color:#219bd7;font-weight:600;}}
         QLabel#workspaceModeLabel {{color:#8fa8bf;font-size:9pt;font-weight:700;letter-spacing:1px;padding-right:6px;}}
-        QPushButton#modeDesign,QPushButton#modeAnalysis {{background:#172333;border:1px solid #435c75;border-radius:9px;padding:10px 22px;font-size:11pt;font-weight:600;}}
-        QPushButton#modeDesign:hover,QPushButton#modeAnalysis:hover {{background:#24364a;border-color:#6591b3;}}
-        QPushButton#modeDesign:checked,QPushButton#modeAnalysis:checked {{background:#145579;border:2px solid #43c5f5;color:#ffffff;}}
+        QPushButton#modeDesign,QPushButton#modeSimulate,QPushButton#modeAnalysis {{background:#172333;border:1px solid #435c75;border-radius:9px;padding:8px 16px;font-size:11pt;font-weight:600;}}
+        QPushButton#modeDesign:hover,QPushButton#modeSimulate:hover,QPushButton#modeAnalysis:hover {{background:#24364a;border-color:#6591b3;}}
+        QPushButton#modeDesign:checked,QPushButton#modeSimulate:checked,QPushButton#modeAnalysis:checked {{background:#145579;border:2px solid #43c5f5;color:#ffffff;}}
         QLineEdit,QDoubleSpinBox,QComboBox,QTableWidget,QPlainTextEdit,QListWidget {{background:{c['panel_deep']};border:1px solid #30435a;border-radius:4px;padding:5px;selection-background-color:#17638c;}}
         QHeaderView::section {{background:#26394d;color:#f0f6fc;font-weight:600;padding:7px 5px;border-right:1px solid #3b5067;}}
         QTableWidget {{alternate-background-color:#182536;color:{c['text']};gridline-color:#33465b;}}

@@ -8,7 +8,7 @@ from PySide6.QtCore import Qt,Signal,QRect
 from PySide6.QtGui import QPixmap,QColor,QPainter,QPen,QImage
 from PySide6.QtWidgets import (QWidget,QVBoxLayout,QHBoxLayout,QLabel,QComboBox,QPushButton,
     QFileDialog,QCheckBox,QGroupBox,QListWidget,QListWidgetItem,QTableWidget,QTableWidgetItem,QHeaderView,QMessageBox,
-    QDialog,QDialogButtonBox,QFormLayout,QLineEdit)
+    QDialog,QDialogButtonBox,QFormLayout,QLineEdit,QTabWidget,QScrollArea,QFrame)
 from .plot import CurvePlot
 from .performance_curves import PowerCurvePanel
 from .services import load_results,run_background
@@ -114,7 +114,7 @@ class ResultsPage(QWidget):
         super().__init__();self.context=context;self.dataset=None;self.source=None;self.loading=False
         self._project_reference_signature=None
         root=QVBoxLayout(self);root.setContentsMargins(12,10,12,10);root.setSpacing(6)
-        title=QLabel("Análisis");title.setObjectName('title');root.addWidget(title)
+        title=QLabel("Resultados");title.setObjectName('title');root.addWidget(title)
         self.source_notice=QLabel("No hay una corrida seleccionada. Elegila desde el historial o abrí datos importados; todavía no se cargó evidencia histórica.")
         self.source_notice.setWordWrap(True);self.source_notice.setObjectName("notice");root.addWidget(self.source_notice)
         self.run_summary=QLabel("Sin una corrida seleccionada · las métricas de desempeño no están definidas.");self.run_summary.setWordWrap(True);self.run_summary.setObjectName("notice");root.addWidget(self.run_summary)
@@ -168,9 +168,45 @@ class ResultsPage(QWidget):
         compare_layout=QVBoxLayout(self.compare_group);self.compare_notice=QLabel("Seleccioná dos variantes con corridas para comparar.");self.compare_notice.setWordWrap(True);compare_layout.addWidget(self.compare_notice)
         self.compare_table=QTableWidget(0,5);self.compare_table.setObjectName("engineeringComparisonTable");self.compare_table.setHorizontalHeaderLabels(["Elemento","Baseline","Variante","Δ","Estado"]);self.compare_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.compare_table.setMaximumHeight(220);compare_layout.addWidget(self.compare_table);root.addWidget(self.compare_group)
         self.details=QTableWidget(0,2);self.details.setHorizontalHeaderLabels(["Detalle del punto","Valor"]);self.details.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.details.setMaximumHeight(190);root.addWidget(self.details)
+        # Preserve all existing controls and contracts; organize presentation
+        # around the designer's question rather than one long audit document.
+        self.result_tabs=QTabWidget();self.result_tabs.setObjectName('resultViews')
+        self.view_layouts=[]
+        def view(label,widgets,layouts=()):
+            page=QWidget();box=QVBoxLayout(page);box.setContentsMargins(4,5,4,4)
+            for widget in widgets:
+                root.removeWidget(widget);box.addWidget(widget)
+            for section in layouts:
+                root.removeItem(section);box.addLayout(section)
+            scroll=QScrollArea();scroll.setWidgetResizable(True);scroll.setFrameShape(QFrame.Shape.NoFrame);scroll.setWidget(page)
+            self.result_tabs.addTab(scroll,label);self.view_layouts.append(box)
+            return box
+        view('Curvas',[self.power_curves])
+        view('Variables',[self.plot,self.point_table])
+        waves=view('Presiones y ondas',[self.trace_group])
+        wave_help=QLabel('Las señales se muestran cuando las corridas contienen primarios compatibles. Un reporte agregado de curvas no contiene trazas ni geometría adicional.');wave_help.setWordWrap(True);waves.insertWidget(0,wave_help)
+        view('Comparar',[self.compare_group])
+        view('Mediciones',[measured])
+        view('Trazabilidad',[self.source_notice,self.path_label,self.details])
+        # Source paths and identifiers stay available in Trazabilidad. Keep
+        # provenance and scientific status visible in the normal workspace.
+        bar.removeWidget(self.path_label)
+        self.source_notice.setWordWrap(True)
+        root.removeItem(cards)
+        self.view_layouts[5].addLayout(cards)
+        root.removeItem(bar)
+        self.view_layouts[1].insertLayout(0,bar)
+        root.removeItem(baseline_row)
+        self.view_layouts[3].insertLayout(0,baseline_row)
+        root.removeWidget(self.condition_notice);self.view_layouts[3].insertWidget(1,self.condition_notice)
+        title.hide();explanation.hide()
+        self.variants.setFixedHeight(36)
+        self.result_tabs.setMinimumHeight(240)
+        root.removeItem(controls)
+        root.addWidget(self.result_tabs,1);root.addLayout(controls)
+        self.power_curves.plot.setMinimumHeight(200)
         self.metric_selector.currentIndexChanged.connect(self.redraw);self.variants.itemChanged.connect(self.redraw);self.variants.itemChanged.connect(self._update_engineering_compare);self.plot.pointSelected.connect(self.show_point);self.power_curves.pointSelected.connect(self.show_point)
         self.baseline_selector.currentIndexChanged.connect(self._baseline_changed)
-        root.removeWidget(self.trace_group);root.insertWidget(root.indexOf(self.plot),self.trace_group)
         self.context.changed.connect(self._project_context_changed);self._project_context_changed()
 
     def _project_context_changed(self,*_):
@@ -521,7 +557,7 @@ class ResultsPage(QWidget):
         self.dataset=data;self.source=None;self.source_kind="EXPLORATORY";self.path_label.setText(f"{len(data['points'])} ciclos EXPLORATORY · provisional · no interpolación · no validación experimental")
         runs=sorted({str(r.get("run_id")) for r in data["points"] if r.get("run_id")})
         variants_shown=sorted({str(r.get("variant_id")) for r in data["points"]})
-        self.source_notice.setText(f"Proyecto abierto: {self.context.project['project_id']} · corridas EXPLORATORY importadas: {', '.join(runs) or 'sin identificador'} · variantes: {', '.join(variants_shown)}. Son artifacts de sólo lectura y no se asocian ni guardan automáticamente en el proyecto.")
+        self.source_notice.setText(f"Corridas exploratorias · variantes: {', '.join(variants_shown)} · sólo lectura, sin asociación automática al proyecto · sin validación experimental.")
         variants=sorted({r['variant_id'] for r in data['points']});self.variants.blockSignals(True);self.variants.clear()
         for name in variants:
             item=QListWidgetItem(name);item.setFlags(item.flags()|Qt.ItemFlag.ItemIsUserCheckable);item.setCheckState(Qt.CheckState.Checked);self.variants.addItem(item)
@@ -551,7 +587,7 @@ class ResultsPage(QWidget):
         if not traces or not options:
             reason="No hay trazas auditadas de presión/flujo disponibles." if not traces else "No hay canales de presión/flujo comunes para superponer."
             self.source_notice.setText(self.source_notice.text()+" "+reason)
-        self.redraw();self.redraw_trace();self._redraw_trace_map();self._update_condition_notice();self._update_engineering_compare();self.evidence_updated.emit()
+        self.redraw();self.redraw_trace();self._redraw_trace_map();self._update_condition_notice();self._update_engineering_compare();self._dataset_summary();self.evidence_updated.emit()
     def _exploratory_failed(self,message):
         self.path_label.setText("Ejecución EXPLORATORY inválida");self.trace_group.hide();QMessageBox.warning(self,"Artifact exploratorio inválido",message)
     def load(self,path,*,historical=False):
@@ -573,9 +609,19 @@ class ResultsPage(QWidget):
             variants=sorted({r['variant_id'] for r in data['points']});self.variants.blockSignals(True);self.variants.clear()
             for name in variants:
                 item=QListWidgetItem(name);item.setFlags(item.flags()|Qt.ItemFlag.ItemIsUserCheckable);item.setCheckState(Qt.CheckState.Checked);self.variants.addItem(item)
-            self.variants.blockSignals(False);self._project_context_changed();self.loading=False;self.redraw();self._baseline_changed();self.evidence_updated.emit()
+            self.variants.blockSignals(False);self._project_context_changed();self.loading=False;self.redraw();self._baseline_changed();self._dataset_summary();self.evidence_updated.emit()
         def fail(message):self.loading=False;self.path_label.setText("No se pudieron cargar los datos");QMessageBox.warning(self,"Reporte inválido",message)
         run_background(load_results,path,on_done=done,on_error=fail)
+
+    def _dataset_summary(self):
+        rows=self.dataset.get('points',[]) if self.dataset else []
+        states=sorted({_state_label(row.get('classification')) or 'Sin clasificación' for row in rows})
+        kind='Histórico sintético' if getattr(self,'source_kind',None)=='HISTORICAL_IMPL2' else 'Resultados exploratorios / importados'
+        self.run_summary.setText(f"{kind} · {len(rows)} puntos · {'; '.join(states)}")
+        for table in (self.point_table,self.power_curves.points):
+            table.setCurrentCell(-1,-1);table.clearSelection()
+        self.details.setRowCount(0)
+        for card,name in zip(self.metric_cards,('Potencia','Torque','BMEP','Auditoría')):card.setText(name+'\n—')
     def redraw(self,*_):
         if not self.dataset:return
         metric=METRICS[self.metric_selector.currentText()];unit=self.metric_selector.currentText().split('(')[-1].rstrip(')')

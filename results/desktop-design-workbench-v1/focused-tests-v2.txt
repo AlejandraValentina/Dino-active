@@ -1,0 +1,18 @@
+.F.......                                                                [100%]
+================================== FAILURES ===================================
+_ DinoDesktopTests.test_design_workbench_modes_reuse_editors_and_keep_traceability_accessible _
+
+self = <tests.test_dino_desktop.DinoDesktopTests testMethod=test_design_workbench_modes_reuse_editors_and_keep_traceability_accessible>
+
+    def test_design_workbench_modes_reuse_editors_and_keep_traceability_accessible(self):
+        window=DinoDesktopWindow(self.context.project);window.resize(964,641);window.show();APP.processEvents()
+        original=identity(window.context.engine())
+        QTest.mouseClick(window.simulate_mode,Qt.MouseButton.LeftButton);APP.processEvents()
+        self.assertEqual(window.mode_stack.currentIndex(),2)
+>       self.assertTrue(window.pages[3].isVisible())
+E       AssertionError: False is not true
+
+tests\test_dino_desktop.py:85: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_dino_desktop.py::DinoDesktopTests::test_design_workbench_modes_reuse_editors_and_keep_traceability_accessible
+1 failed, 8 passed, 29 deselected in 42.12s

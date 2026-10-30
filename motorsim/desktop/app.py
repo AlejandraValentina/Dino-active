@@ -47,12 +47,20 @@ class DinoDesktopWindow(QMainWindow):
         self.context_bar.variant_selected.connect(self.context.select_variant);layout.addWidget(self.context_bar)
         mode_row=QHBoxLayout();mode_row.setContentsMargins(18,9,18,10);mode_row.setSpacing(12)
         mode_label=QLabel("MODO DE TRABAJO");mode_label.setObjectName("workspaceModeLabel");mode_row.addWidget(mode_label)
-        self.design_mode=QPushButton("Diseño");self.design_mode.setCheckable(True);self.design_mode.setChecked(True);self.design_mode.setObjectName("modeDesign")
-        self.analysis_mode=QPushButton("Análisis");self.analysis_mode.setCheckable(True);self.analysis_mode.setObjectName("modeAnalysis")
-        for button in (self.design_mode,self.analysis_mode):
-            button.setProperty("class","workspaceModeButton");button.setMinimumSize(132,42)
+        self.design_mode=QPushButton("MODELO");self.design_mode.setCheckable(True);self.design_mode.setChecked(True);self.design_mode.setObjectName("modeDesign")
+        self.simulate_mode=QPushButton("SIMULAR");self.simulate_mode.setCheckable(True);self.simulate_mode.setObjectName("modeSimulate")
+        self.analysis_mode=QPushButton("RESULTADOS");self.analysis_mode.setCheckable(True);self.analysis_mode.setObjectName("modeAnalysis")
+        for button in (self.design_mode,self.simulate_mode,self.analysis_mode):
+            button.setProperty("class","workspaceModeButton");button.setMinimumSize(112,36)
         self.mode_group=QButtonGroup(self);self.mode_group.setExclusive(True);self.mode_group.addButton(self.design_mode,0);self.mode_group.addButton(self.analysis_mode,1)
-        mode_row.addWidget(self.design_mode);mode_row.addWidget(self.analysis_mode);mode_row.addStretch(1);layout.addLayout(mode_row)
+        self.mode_group.addButton(self.simulate_mode,2)
+        mode_row.addWidget(self.design_mode);mode_row.addWidget(self.simulate_mode);mode_row.addWidget(self.analysis_mode);mode_row.addStretch(1);layout.addLayout(mode_row)
+        project_actions=QHBoxLayout();project_actions.setContentsMargins(14,2,14,5)
+        for text,callback in (("Nuevo motor…",self.new_file),("Abrir proyecto…",self.open_file),("Guardar",self.save_file)):
+            button=QPushButton(text);button.clicked.connect(callback);project_actions.addWidget(button)
+        self.explorer_button=QPushButton("Variantes y corridas…");self.explorer_button.clicked.connect(self._toggle_explorer);project_actions.addWidget(self.explorer_button)
+        self.traceability_button=QPushButton("Trazabilidad…");self.traceability_button.clicked.connect(self._toggle_traceability);project_actions.addWidget(self.traceability_button)
+        project_actions.addStretch();layout.addLayout(project_actions)
         self.mode_stack=QStackedWidget();layout.addWidget(self.mode_stack,1)
         self.pages=[page_type(self.context) for _,page_type in PAGES]
         self.pages[0].component_state_changed.connect(self._refresh_component_states)
@@ -104,6 +112,24 @@ class DinoDesktopWindow(QMainWindow):
         self.history_toggle.hide()
         mode_row.addWidget(self.history_toggle)
         self.mode_stack.addWidget(self.analysis_workspace)
+        # Reuse the execution page as a first-class workspace, rather than
+        # moving it in and out of a modal preparation dialog.
+        self.simulation_workspace=QWidget();simulation_layout=QVBoxLayout(self.simulation_workspace)
+        simulation_layout.setContentsMargins(14,4,14,6)
+        simulation_layout.addWidget(self.execution_scroll)
+        self.execution_scroll.show()
+        self.mode_stack.addWidget(self.simulation_workspace)
+        self.explorer_dock=QDockWidget("Proyecto · variantes, corridas y comparaciones",self)
+        explorer=QWidget();explorer_layout=QVBoxLayout(explorer)
+        self.explorer_tabs=QTabWidget();explorer_layout.addWidget(self.explorer_tabs)
+        variants_page=QWidget();variants_layout=QVBoxLayout(variants_page)
+        variants_layout.addWidget(self.project_tree)
+        manage=QPushButton("Gestionar / duplicar variantes…");manage.clicked.connect(self._show_project);variants_layout.addWidget(manage)
+        self.analysis_history.setMaximumHeight(16777215);self.analysis_history.setMinimumHeight(160)
+        self.explorer_tabs.addTab(self.analysis_history,"Corridas y comparaciones")
+        self.explorer_tabs.addTab(variants_page,"Variantes")
+        self.explorer_dock.setWidget(explorer);self.addDockWidget(Qt.DockWidgetArea.BottomDockWidgetArea,self.explorer_dock);self.explorer_dock.hide()
+        self.history_toggle.hide()
         execution=self.pages[3];results=self.pages[4]
         execution.open_runs_requested.connect(self._open_indexed_runs)
         results.evidence_updated.connect(self._update_evidence)
@@ -123,6 +149,7 @@ class DinoDesktopWindow(QMainWindow):
         self.simulation_strip=QWidget();self.simulation_strip.setObjectName("simulationStatusStrip")
         strip=QHBoxLayout(self.simulation_strip);strip.setContentsMargins(12,5,12,5)
         self.run_state=QLabel("LISTO · sin corrida activa");self.run_state.setMinimumWidth(105);strip.addWidget(self.run_state)
+        self.run_state.setMaximumWidth(220);self.run_state.setWordWrap(True)
         self.run_progress=QProgressBar();self.run_progress.setRange(0,100);self.run_progress.setValue(0);self.run_progress.setMaximumWidth(160);self.run_progress.setFormat("Sin actividad");strip.addWidget(self.run_progress)
         self.run_clock=QLabel("—");strip.addWidget(self.run_clock)
         self.run_config_summary=QLabel();strip.addWidget(self.run_config_summary)
@@ -133,7 +160,7 @@ class DinoDesktopWindow(QMainWindow):
         execution.state_changed.connect(self._update_strip);execution.progress_signal.connect(self._update_progress)
         execution.progress_signal.connect(lambda *_: self._update_strip())
         execution.rpm.valueChanged.connect(self._update_strip);execution.cycles.valueChanged.connect(self._update_strip);execution.budget.valueChanged.connect(self._update_strip)
-        self.design_mode.clicked.connect(lambda:self.set_workspace_mode(0));self.analysis_mode.clicked.connect(lambda:self.set_workspace_mode(1))
+        self.design_mode.clicked.connect(lambda:self.set_workspace_mode(0));self.analysis_mode.clicked.connect(lambda:self.set_workspace_mode(1));self.simulate_mode.clicked.connect(lambda:self.set_workspace_mode(2))
         execution.cancel.hide()
         self.execution_dialog=QDialog(self);self.execution_dialog.setWindowTitle("Preparar prueba")
         screen=QApplication.primaryScreen();available=screen.availableGeometry() if screen else None
@@ -180,12 +207,26 @@ class DinoDesktopWindow(QMainWindow):
     def _update_progress(self,row):
         self._update_strip()
     def set_workspace_mode(self,index):
-        index=1 if index else 0
-        self.mode_stack.setCurrentIndex(index);self.design_mode.setChecked(index==0);self.analysis_mode.setChecked(index==1)
-        self.history_toggle.setVisible(index==1)
+        index=index if index in (0,1,2) else 0
+        self.mode_stack.setCurrentIndex(index);self.design_mode.setChecked(index==0);self.analysis_mode.setChecked(index==1);self.simulate_mode.setChecked(index==2)
+        self.history_toggle.hide()
         self.settings.setValue("workspace_mode",index)
         if index==1:self.analysis_history.activate()
         if index==0:self._component_selected(max(0,self.component_nav.currentIndex()))
+        if index==2:self.analysis_history.activate();self.pages[3].refresh()
+
+    def _show_project(self):
+        self.set_workspace_mode(0);self.component_nav.setCurrentIndex(5);self.explorer_dock.hide()
+
+    def _toggle_explorer(self):
+        visible=not self.explorer_dock.isVisible()
+        if visible:self.analysis_history.activate();self.analysis_history.refresh()
+        self.explorer_dock.setVisible(visible)
+        if visible:self.resizeDocks([self.explorer_dock],[260],Qt.Orientation.Vertical)
+
+    def _toggle_traceability(self):
+        self._update_evidence()
+        self.evidence_dock.setVisible(not self.evidence_dock.isVisible())
     def _component_selected(self,index):
         if index in (0,1,3,4,6):
             self.component_stack.setCurrentIndex(0)
@@ -194,14 +235,7 @@ class DinoDesktopWindow(QMainWindow):
         elif index==5:self.component_stack.setCurrentIndex(2)
 
     def _show_execution_panel(self):
-        if self.pages[3].parentWidget() is self.execution_scroll.viewport():
-            page=self.execution_scroll.takeWidget()
-            if page is not None:self.execution_dialog_scroll.setWidget(page)
-        if self.execution_dialog_tabs.indexOf(self.analysis_history)<0:
-            self.analysis_history.setMaximumHeight(16777215);self.execution_dialog_tabs.addTab(self.analysis_history,"Corridas")
-        self.analysis_history.activate();self.analysis_history.refresh()
-        self.pages[3].refresh()
-        self.execution_dialog.show();self.execution_dialog.raise_();self.execution_dialog.activateWindow()
+        self.set_workspace_mode(2)
 
     def _restore_execution_page(self,*_):
         if self.pages[3].parentWidget() is self.execution_dialog_scroll.viewport():
@@ -246,6 +280,7 @@ class DinoDesktopWindow(QMainWindow):
         execution.start_run(resume=False);self._update_strip()
     def _open_indexed_runs(self,paths):
         if self.execution_dialog.isVisible():self.execution_dialog.reject()
+        self.explorer_dock.hide()
         self.set_workspace_mode(1);self.pages[4].open_runs(paths)
     def _select_baseline(self,name):
         selector=self.results.baseline_selector;index=selector.findData(name)
@@ -319,14 +354,14 @@ class DinoDesktopWindow(QMainWindow):
         super().resizeEvent(event)
         if hasattr(self,"component_nav"):
             compact=self.width()<=1120
-            self.menuBar().setVisible(not compact)
+            self.menuBar().setVisible(True)
             if hasattr(self,"pages"):
                 self.pages[1].set_compact_layout(compact, self.width()<=1000)
             if compact:
                 self.checkpoint_state.hide();self.run_progress.setMaximumWidth(145);self.run_clock.setMinimumWidth(48)
             else:
                 self.checkpoint_state.show();self.run_progress.setMaximumWidth(220)
-            if hasattr(self,"history_toggle"):self.history_toggle.setVisible(self.mode_stack.currentIndex()==1)
+            if hasattr(self,"history_toggle"):self.history_toggle.hide()
             self._refresh_component_states()
     def _restore_settings(self):
         geometry=self.settings.value('window_geometry')

@@ -29,7 +29,7 @@ class CommercialDesktopV3P0Tests(unittest.TestCase):
         self.assertEqual(window.component_nav.currentIndex(), 0)
         self.assertFalse(window.results.isVisible())
         self.assertTrue(window.strip_run.isEnabled())
-        self.assertEqual(window.design_mode.text(), "Diseño")
+        self.assertEqual(window.design_mode.text(), "MODELO")
         window.close(); APP.processEvents()
 
     def test_design_analysis_switch_preserves_active_variant_and_baseline(self):
@@ -122,6 +122,7 @@ class CommercialDesktopV3P0Tests(unittest.TestCase):
 
     def test_analysis_table_headers_fit_without_horizontal_scroll_at_1360(self):
         window=DinoDesktopWindow(new_project("v3-header-fit"));window.resize(1360,900);window.show();window.set_workspace_mode(1);APP.processEvents()
+        window.results.result_tabs.setCurrentIndex(1);APP.processEvents()
         table=window.results.point_table
         self.assertEqual(table.horizontalScrollBar().maximum(),0)
         metrics=table.horizontalHeader().fontMetrics()
