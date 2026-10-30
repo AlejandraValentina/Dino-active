@@ -1,0 +1,23 @@
+{
+  "recorded_at": "2026-10-30T10:39:40.159265+00:00",
+  "decision": "PASS_SOURCE_GUI_CSV_ROUNDTRIP",
+  "method": "Real Windows mouse/keyboard; existing source Desktop process; native Abrir datos file dialog",
+  "points": 30,
+  "observed": [
+    "historical synthetic warning",
+    "NOT_PERFORMED experimental validation",
+    "A/B power and torque curves",
+    "NUMERICAL_INVALID point retains absent power/torque",
+    "incompatible historical deltas rejected"
+  ],
+  "scope": "Closes the outstanding CSV graphical verification only; no distribution/release/scientific acceptance",
+  "new_solver_runs": 0,
+  "new_builds": 0,
+  "files": {
+    "historical-gui-export.csv": "4f7c01a51191b73f51eb8594ae551d9a0a57de6757e6ca51e13aa03d91ddcdae",
+    "historical-gui-export.json": "3e8c1f1c95390dfc8fd543d075f8d7383d88002eed0b20dc52ac403afbced6b0",
+    "captures/43-csv-reopened-gui.png": "cbdb847abd175c725372795cf66051ab23315b053869ad30813105aa5d3a4e9c",
+    "captures/44-csv-reopened-curves.png": "cc68b9aa66de674744117dfde55717e30e4d39fc091f8c66070885ffb8a95fd0",
+    "captures/45-csv-invalid-points.png": "81c223f4ae07f8c8bbb0e5ab05c9e979af4f1437cf897eee050b2a98b791e496"
+  }
+}

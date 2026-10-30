@@ -10663,27 +10663,32 @@
         "results/desktop-product-maturity-v1/assessment.md",
         "results/desktop-product-maturity-v1/export-test.txt"
       ],
-      "next_action": "GUI export now observed on the preserved 30-point historical dataset; service reopen exact. Remaining GUI reopen tracked separately.",
+      "next_action": "Real source GUI export/reopen completed with the preserved 30-point historical dataset; keep CSV+JSON together.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
-      "qualification": "Functional source UI test PASS: export/reopen, unit/status/identity preservation, protected companion and tamper rejection. No packaged GUI claim."
+      "qualification": "Source functional test PASS and real Windows GUI export/reopen PASS. Units, states and identities preserved; no new packaged GUI claim."
     },
     {
       "id": "DESKTOP-PRODUCT-GUI-REVIEW-V1",
       "description": "Owner practical rc9 product evaluation: ten real graphical scenarios, matrix and evidence",
       "dependencies": [],
-      "state": "BLOCKED_LOCAL",
-      "blocker": "Windows again reports no active desktop after successful rc9 engine/project/A-B/cancel/resume and source intake/recovery/mesh/historical-export GUI checks. Only graphical reopening of exported historical CSV remains.",
+      "state": "DONE",
+      "blocker": null,
       "commits": [],
       "evidence": [
         "results/desktop-product-maturity-v1/assessment.md",
         "results/desktop-product-maturity-v1/captures/34-reopened-inputs.png",
         "results/desktop-product-maturity-v1/captures/41-historical-curves.png",
-        "results/desktop-product-maturity-v1/historical-preservation.json"
+        "results/desktop-product-maturity-v1/historical-preservation.json",
+        "results/desktop-product-maturity-v1/captures/43-csv-reopened-gui.png",
+        "results/desktop-product-maturity-v1/captures/44-csv-reopened-curves.png",
+        "results/desktop-product-maturity-v1/captures/45-csv-invalid-points.png",
+        "results/desktop-product-maturity-v1/csv-gui-acceptance.json"
       ],
-      "next_action": "With an unlocked interactive Windows session, reopen historical-gui-export.csv via Abrir datos and confirm historical label and 30 points. No new solver campaign or build.",
+      "next_action": "Consolidate source changes before any future integrated Windows candidate; no build launched. E1.3 and experimental-validation dependencies remain unchanged.",
       "objective": "DINO_PREDICTIVE_RELIABILITY_V1",
       "unblock_tasks": [],
-      "no_local_unblock_reason": "Interactive Windows desktop is unavailable; automated service roundtrip is verified but cannot substitute for the remaining real GUI action."
+      "resolution": "Real Windows mouse/keyboard CSV reopen completed; external interactive-session blocker resolved.",
+      "qualification": "Real rc9 product path and source intake/recovery/mesh/historical CSV export-reopen verified. SELF_REVIEW; functional source acceptance only, no new packaged release or predictive claim."
     },
     {
       "id": "DESKTOP-PRODUCT-INTAKE-NAV-RECOVERY-V1",
@@ -15039,6 +15044,12 @@
       "task": "DESKTOP-PRODUCT-INTAKE-NAV-RECOVERY-V1",
       "kind": "task",
       "summary": "rc9 real GUI: synthetic motor save/reopen/duplicate, exhaust edit, two bounded one-cycle A/B runs, cancel with 2 complete checkpoints then resume to 3 cycles, transient/traces/CSV. Fixed hidden intake navigation, stale discard state and advanced mesh panel; source real GUI and 24 PASS/1 SKIP. Historical GUI import/export preserves 30 points exactly; GUI CSV reopen blocked by locked desktop. No build or physics change."
+    },
+    {
+      "at": "2026-10-30T10:39:40.159265+00:00",
+      "task": "DESKTOP-PRODUCT-GUI-REVIEW-V1",
+      "kind": "task",
+      "summary": "Unlocked Windows: reopened the existing exported CSV via native Abrir datos; screenshot confirms 30 points, synthetic historical identity and NOT_PERFORMED. Inspected A/B power/torque curves, invalid-point gaps and incompatible-delta rejection. Source functional product acceptance completed; no new tests, calculations, builds or physics changes."
     }
   ],
   "legacy_gate_status": {

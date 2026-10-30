@@ -1,5 +1,15 @@
 # Evaluación funcional Desktop — recorrido y mejoras de producto
 
+## Cierre del paso pendiente — 2026-10-30
+
+Con la sesión Windows desbloqueada, se completó por mouse/teclado el paso que faltaba en Desktop de desarrollo: «Abrir datos» → seleccionar `historical-gui-export.csv` mediante el diálogo nativo → abrir. Se utilizó el CSV ya exportado y su JSON compañero, sin regenerarlos. La pantalla identifica la ruta CSV, **30 puntos**, `SYNTHETIC`, validación experimental `NOT_PERFORMED` y aviso de evidencia histórica ajena al proyecto actual (`captures/43-csv-reopened-gui.png`).
+
+Se recorrieron las curvas superpuestas A/B de potencia y torque (`44-csv-reopened-curves.png`) y la tabla de puntos (`45-csv-invalid-points.png`). El punto A de 1000 RPM conserva `NUMERICAL_INVALID` y potencia/torque ausentes. Las filas periódicas mantienen su clasificación histórica; los deltas A/B incompatibles siguen rechazados por identidades desconocidas. No se rellenaron huecos ni se atribuyó validación experimental a estas curvas.
+
+**Estado del primer conjunto de mejoras: aceptación funcional de fuente completada.** Este cierre resuelve el bloqueo gráfico del CSV. No es una aceptación de distribución nueva ni cierra el gate científico. Se conservan la regresión de 24 PASS/1 SKIP y las comprobaciones exactas de los 30 puntos ya realizadas; no se repitieron cálculos, campañas o tests. rc7 y rc9 intactas; sin build ni cambios de solver. Las secciones siguientes registran las etapas anteriores de la evaluación, incluyendo sus pendientes ya resueltos aquí.
+
+Siguiente decisión de producto: consolidar qué cambios de fuente entrarán en una eventual aceptación Windows integrada antes de autorizar un nuevo paquete. Permanecen como mejoras concretas posteriores las etiquetas de roles y la legibilidad/scroll indicadas abajo; no impiden el recorrido verificado. E1.3 sigue bloqueada por presupuesto y la validación predictiva por datos experimentales externos; este cierre de GUI no modifica esas decisiones.
+
 ## Actualización tras desbloquear Windows (2026-10-29)
 
 Esta sección sustituye el estado inicial de las secciones inferiores, conservadas como registro de la primera pasada. Se utilizó mouse/teclado Windows sobre rc9 y después sobre Desktop de desarrollo. No se modificó rc9 ni se generó un build. Las correcciones de desarrollo aún no tienen aceptación de distribución.
