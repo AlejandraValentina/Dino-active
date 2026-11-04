@@ -16,7 +16,7 @@ from pathlib import Path
 from .closures import ChenFlynnFriction, WoschniHeatTransfer
 from .combustion import Wiebe, burned_composition, premixed_charge
 from .duct import Duct, DuctWall
-from .engine import CombustionSpec, Connection, Cylinder, FourStrokeEngine, Reservoir
+from .engine import CombustionSpec, Connection, Cylinder, FourStrokeEngine, Plenum, Reservoir
 from .kinematics import SliderCrank
 from .thermo import Mixture
 from .valves import FlowCoefficients, HarmonicLift, TabulatedLift, Valve
@@ -111,10 +111,30 @@ def build(config: dict, *, overrides: dict | None = None):
     inlet = Reservoir("intake_ambient", mix, amb["intake_pressure_pa"], amb["intake_temperature_K"], charge, 0.0)
     outlet = Reservoir("exhaust_ambient", mix, amb["exhaust_pressure_pa"], amb.get("exhaust_temperature_K", 300.0),
                        burned, 1.0)
-    connections = [
-        Connection.open_end("intake_open_end", intake, "left", inlet,
-                            config["intake_duct"].get("open_end_cd_inflow", 1.0),
-                            config["intake_duct"].get("open_end_cd_outflow", 1.0)),
+    ducts = {"intake": intake, "exhaust": exhaust}
+    plenums = {}
+    plenum_cfg = config.get("intake_plenum")
+    if plenum_cfg is not None:
+        if plenum_cfg.get("provenance") not in PROVENANCE:
+            raise ConfigError("intake_plenum.provenance must be one of " + str(sorted(PROVENANCE)))
+        airbox = Plenum("airbox", mix, plenum_cfg["volume_cm3"] * 1e-6)
+        plenums["airbox"] = airbox
+        feed = duct("intake_feed", plenum_cfg["feed_duct"])
+        ducts["intake_feed"] = feed
+        connections = [
+            Connection.open_end("intake_open_end", feed, "left", inlet,
+                                plenum_cfg["feed_duct"].get("open_end_cd_inflow", 1.0),
+                                plenum_cfg["feed_duct"].get("open_end_cd_outflow", 1.0)),
+            Connection.open_end("airbox_feed", feed, "right", airbox),
+            Connection.open_end("airbox_runner", intake, "left", airbox),
+        ]
+    else:
+        connections = [
+            Connection.open_end("intake_open_end", intake, "left", inlet,
+                                config["intake_duct"].get("open_end_cd_inflow", 1.0),
+                                config["intake_duct"].get("open_end_cd_outflow", 1.0)),
+        ]
+    connections += [
         Connection.valve("intake_valve", intake, "right", cylinder, intake_valve, "intake"),
         Connection.valve("exhaust_valve", exhaust, "left", cylinder, exhaust_valve, "exhaust"),
         Connection.open_end("exhaust_open_end", exhaust, "right", outlet,
@@ -122,16 +142,20 @@ def build(config: dict, *, overrides: dict | None = None):
                             config["exhaust_duct"].get("open_end_cd_outflow", 1.0)),
     ]
     sensors = {"intake_port": ("intake", -1), "exhaust_port": ("exhaust", 0)}
-    engine = FourStrokeEngine(mix, cylinder, {"intake": intake, "exhaust": exhaust}, connections,
+    engine = FourStrokeEngine(mix, cylinder, ducts, connections,
                               config["operating_point"]["rpm"], cfl=num.get("cfl", 0.8),
-                              max_dtheta=num.get("max_dtheta_deg", 0.5), sensors=sensors)
+                              max_dtheta=num.get("max_dtheta_deg", 0.5), sensors=sensors,
+                              plenums=plenums, restriction_model=num.get("restriction_model", "V2"))
     init = config.get("initial_conditions", {})
     state = engine.initial_state(
         cylinder=dict(p=init.get("cylinder_pressure_pa", amb["exhaust_pressure_pa"]),
                       T=init.get("cylinder_temperature_K", 900.0), Y=burned, xb=1.0),
-        ducts={"intake": dict(p=amb["intake_pressure_pa"], T=amb["intake_temperature_K"], Y=charge, xb=0.0),
+        ducts={**{name: dict(p=amb["intake_pressure_pa"], T=amb["intake_temperature_K"], Y=charge, xb=0.0)
+                  for name in ducts if name.startswith("intake")},
                "exhaust": dict(p=amb["exhaust_pressure_pa"], T=init.get("exhaust_temperature_K", 700.0),
-                               Y=burned, xb=1.0)})
+                               Y=burned, xb=1.0)},
+        plenums={name: dict(p=amb["intake_pressure_pa"], T=amb["intake_temperature_K"], Y=charge, xb=0.0)
+                 for name in plenums})
     fr = config["friction"]
     friction = ChenFlynnFriction(fr["a_pa"], fr["b"], fr["c_pa_s_m"], fr["d_pa_s2_m2"])
     context = dict(mixture=mix, fuel=fuel, charge=charge, burned=burned, geometry=geometry,

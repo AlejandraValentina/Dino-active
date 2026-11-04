@@ -40,6 +40,40 @@ class Reservoir:
         self.gas = VolumeGas.from_mixture(mixture, p, T, Y, xb)
 
 
+class Plenum:
+    """Finite adiabatic 0D volume of fixed size (airbox, surge tank, test vessel).
+
+    State: species masses, tracer mass, internal energy -- exactly the cylinder layout."""
+    finite = True
+
+    def __init__(self, name: str, mixture: Mixture, volume_m3: float):
+        if not (math.isfinite(volume_m3) and volume_m3 > 0):
+            raise ValueError("plenum volume must be positive")
+        self.name, self.mix, self.volume = name, mixture, volume_m3
+        self._t_guess = 300.0
+
+    def state(self, p, T, Y, xb=0.0):
+        Y = np.asarray(Y, dtype=float)
+        m = p * self.volume / (float(self.mix.gas_constant(Y)) * T)
+        z = np.empty(self.mix.ns + 2)
+        z[:self.mix.ns] = m * Y
+        z[self.mix.ns] = m * xb
+        z[self.mix.ns + 1] = m * float(self.mix.internal_energy(Y, T))
+        return z
+
+    def gas(self, z):
+        ns = self.mix.ns
+        m = z[:ns].sum()
+        if not (m > 0 and np.all(z[:ns] >= -1e-12 * m)):
+            raise InadmissibleState(f"{self.name}: negative plenum mass/species")
+        Y = z[:ns] / m
+        T = self.mix.temperature_from_energy(Y, z[ns + 1] / m, self._t_guess)
+        self._t_guess = T
+        R = float(self.mix.gas_constant(Y))
+        return VolumeGas(m * R * T / self.volume, T, Y, z[ns] / m, float(z[ns + 1] / m + R * T), R,
+                         float(self.mix.cp(Y, T))), m
+
+
 @dataclass(frozen=True)
 class CombustionSpec:
     fuel: str
@@ -180,7 +214,12 @@ STROKES = (("intake", -360.0, -180.0), ("compression", -180.0, 0.0),
 class FourStrokeEngine:
     def __init__(self, mixture: Mixture, cylinder: Cylinder, ducts: dict, connections: list, rpm: float,
                  *, cfl: float = 0.8, max_dtheta: float = 0.5, theta_start: float = -360.0,
-                 sensors: dict | None = None):
+                 sensors: dict | None = None, plenums: dict | None = None,
+                 restriction_model: str = "V2"):
+        if restriction_model not in ("V1", "V2"):
+            raise ValueError("restriction_model must be V1 or V2")
+        self.plenums = plenums or {}
+        self.restriction_stagnation = restriction_model == "V2"
         if not (rpm > 0 and 0 < cfl <= 0.9 and max_dtheta > 0):
             raise ValueError("invalid rpm / CFL / max_dtheta")
         self.mix, self.cylinder, self.ducts, self.connections = mixture, cylinder, ducts, connections
@@ -206,20 +245,25 @@ class FourStrokeEngine:
                 raise ValueError("a valve is open during combustion; single-zone burn model requires a closed cylinder")
 
     # ----------------------------------------------------------------- state
-    def initial_state(self, *, cylinder: dict, ducts: dict):
+    def initial_state(self, *, cylinder: dict, ducts: dict, plenums: dict | None = None):
         q = {name: d.uniform(**ducts[name]) for name, d in self.ducts.items()}
         z = self.cylinder.state(theta=wrap(self.theta_start), **cylinder)
-        return {"ducts": q, "cyl": z}
+        plenums = plenums or {}
+        if set(plenums) != set(self.plenums):
+            raise ValueError("initial plenum states must match the plenums of the engine")
+        return {"ducts": q, "cyl": z, "plen": {k: self.plenums[k].state(**plenums[k]) for k in self.plenums}}
 
     @staticmethod
     def _axpy(state, deriv, dt):
         return {"ducts": {k: v + dt * deriv["ducts"][k] for k, v in state["ducts"].items()},
-                "cyl": state["cyl"] + dt * deriv["cyl"]}
+                "cyl": state["cyl"] + dt * deriv["cyl"],
+                "plen": {k: v + dt * deriv["plen"][k] for k, v in state["plen"].items()}}
 
     @staticmethod
     def _average(a, b):
         return {"ducts": {k: 0.5 * (v + b["ducts"][k]) for k, v in a["ducts"].items()},
-                "cyl": 0.5 * (a["cyl"] + b["cyl"])}
+                "cyl": 0.5 * (a["cyl"] + b["cyl"]),
+                "plen": {k: 0.5 * (v + b["plen"][k]) for k, v in a["plen"].items()}}
 
     def inventory(self, state):
         """System totals: species (ns), tracer, energy (momentum excluded)."""
@@ -229,6 +273,8 @@ class FourStrokeEngine:
             total[:self.ns + 1] += inv[:self.ns + 1]
             total[self.ns + 1] += inv[self.ns + 2]
         total += state["cyl"]
+        for z in state["plen"].values():
+            total += z
         return total
 
     # ------------------------------------------------------------------- RHS
@@ -237,6 +283,7 @@ class FourStrokeEngine:
         ns, nv = self.ns, self.ns + 3
         prim = {name: d.primitive(state["ducts"][name]) for name, d in self.ducts.items()}
         cgas, cmass, cvol = self.cylinder.gas(state["cyl"], theta)
+        pgas = {k: pl.gas(state["plen"][k]) for k, pl in self.plenums.items()}
         faces, speeds, fallbacks = {}, {}, 0
         for name, d in self.ducts.items():
             F = np.empty((d.n + 1, nv))
@@ -246,19 +293,24 @@ class FourStrokeEngine:
             fallbacks += nf
             faces[name], speeds[name] = F, s
         dz = np.zeros(ns + 2)
+        dplen = {k: np.zeros(ns + 2) for k in self.plenums}
         res_in = np.zeros(ns + 2)
         exchange = {}
         for c in self.connections:
             w = prim[c.duct.name]
             index = 0 if c.side == "left" else -1
             a_into, a_out = c.area(theta)
-            vol_gas = cgas if c.volume is self.cylinder else c.volume.gas
+            is_plenum = isinstance(c.volume, Plenum)
+            vol_gas = (cgas if c.volume is self.cylinder else pgas[c.volume.name][0] if is_plenum
+                       else c.volume.gas)
             r = restriction_flux(EndCell.from_primitive(w, index), c.side, c.pipe_area, a_into, a_out,
-                                 vol_gas, ns)
+                                 vol_gas, ns, stagnation=self.restriction_stagnation)
             faces[c.duct.name][index] = r.flux_x
             speeds[c.duct.name][index] = abs(w["u"][index]) + w["a"][index]
             if c.volume is self.cylinder:
                 dz += r.to_volume
+            elif is_plenum:
+                dplen[c.volume.name] += r.to_volume
             else:
                 res_in -= r.to_volume
             exchange[c.name] = r
@@ -287,10 +339,16 @@ class FourStrokeEngine:
                         if c.volume is self.cylinder)
         if mass_rate > 0:
             dt_limit = min(dt_limit, 0.2 * cmass / mass_rate / self.cfl)
-        deriv = {"ducts": dq, "cyl": dz}
+        for k in self.plenums:
+            rate = sum(abs(r.mdot_into_duct) for c, r in zip(self.connections, exchange.values())
+                       if c.volume is self.plenums[k])
+            if rate > 0:
+                dt_limit = min(dt_limit, 0.2 * pgas[k][1] / rate / self.cfl)
+        deriv = {"ducts": dq, "cyl": dz, "plen": dplen}
         rates = dict(reservoir_in=res_in, piston_power=piston_power, heat_loss=q_loss,
                      duct_heat=duct_heat, exchange=exchange, dt_limit=dt_limit, fallbacks=fallbacks,
-                     gas=cgas, mass=cmass, volume=cvol, h=h_coef, theta=theta, prim=prim)
+                     gas=cgas, mass=cmass, volume=cvol, h=h_coef, theta=theta, prim=prim,
+                     plenum_gas={k: v[0] for k, v in pgas.items()})
         return deriv, rates
 
     def burn_source(self, theta_a, theta_b, dt):
@@ -316,6 +374,8 @@ class FourStrokeEngine:
         for name, d in self.ducts.items():
             d.primitive(state["ducts"][name])
         self.cylinder.gas(state["cyl"], wrap(theta_abs))
+        for k, pl in self.plenums.items():
+            pl.gas(state["plen"][k])
 
     def next_event(self, theta_abs):
         theta = wrap(theta_abs)
@@ -324,14 +384,14 @@ class FourStrokeEngine:
         return theta_abs + gap
 
     def step(self, state, theta_abs, rates0, deriv0):
-        target = self.next_event(theta_abs)
+        target = min(self.next_event(theta_abs), getattr(self, "_theta_stop", math.inf))
         dtheta = min(self.max_dtheta, self.cfl * rates0["dt_limit"] * self.deg_per_s, target - theta_abs)
         rejected = 0
         for _ in range(16):
             theta_b = target if abs(theta_abs + dtheta - target) <= 1e-9 else theta_abs + dtheta
             dt = (theta_b - theta_abs) / self.deg_per_s
             src, dx = self.burn_source(theta_abs, theta_b, dt)
-            d0 = deriv0 if src is None else {"ducts": deriv0["ducts"], "cyl": deriv0["cyl"] + src}
+            d0 = deriv0 if src is None else dict(deriv0, cyl=deriv0["cyl"] + src)
             try:
                 with np.errstate(over="raise", divide="raise", invalid="raise", under="ignore"):
                     s1 = self._axpy(state, d0, dt)
@@ -339,7 +399,7 @@ class FourStrokeEngine:
                     if dt > self.cfl * rates1["dt_limit"] * 1.25:
                         raise InadmissibleState("stage CFL")
                     if src is not None:
-                        d1 = {"ducts": d1["ducts"], "cyl": d1["cyl"] + src}
+                        d1 = dict(d1, cyl=d1["cyl"] + src)
                     s2 = self._axpy(s1, d1, dt)
                     new = self._average(state, s2)
                     self.validate(new, theta_b)
@@ -360,7 +420,8 @@ class FourStrokeEngine:
         records, status, reason = [], "completed", "requested_cycles"
         deriv, rates = self.rhs(state, theta)
         record = self._new_record(0, theta, state, rates)
-        theta_end = self.theta_start + cycles * CYCLE_DEG
+        theta_end = self.theta_start + cycles * CYCLE_DEG  # ``cycles`` may be fractional
+        self._theta_stop = theta_end
         max_closure = np.zeros(3)
         while theta < theta_end - 1e-9:
             if time.monotonic() - started > wall_limit_s:
@@ -435,6 +496,10 @@ class FourStrokeEngine:
             rec.trace[f"mdot_{c.name}"] = []
         for name in self.sensors:
             rec.trace[f"p_{name}"] = []
+        for name in self.plenums:
+            rec.trace[f"p_plenum_{name}"] = []
+        for name in self.ducts:
+            rec.trace[f"a_mean_{name}"] = []
         rec._burn_x = 0.0
         self._sample(rec, state, theta, rates)
         return rec
@@ -487,6 +552,10 @@ class FourStrokeEngine:
             t[f"mdot_{c.name}"].append(-rates["exchange"][c.name].mdot_into_duct)
         for name, (duct, index) in self.sensors.items():
             t[f"p_{name}"].append(float(rates["prim"][duct]["p"][index]))
+        for name, d in self.ducts.items():
+            t[f"a_mean_{name}"].append(float(np.dot(rates["prim"][name]["a"], d.dx) / d.length))
+        for name, gas in rates["plenum_gas"].items():
+            t[f"p_plenum_{name}"].append(float(gas.p))
         if g.p > rec.p_max:
             rec.p_max, rec.theta_p_max = g.p, t["theta"][-1]
         rec.T_max = max(rec.T_max, g.T)

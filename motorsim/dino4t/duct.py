@@ -41,6 +41,7 @@ class DuctWall:
     heat_transfer: bool = False
     temperature_K: float = 300.0
     prandtl: float = 0.71
+    friction_factor: float | None = None  # constant Fanning factor (verification); None = correlation
 
 
 def physical_flux(state, ns):
@@ -253,7 +254,8 @@ class Duct:
         if self.wall.friction or self.wall.heat_transfer:
             speed = np.abs(w["u"])
             mu = sutherland_viscosity_air(w["T"])
-            cf = fanning_friction(w["rho"] * speed * self.diameter / mu)
+            cf = (fanning_friction(w["rho"] * speed * self.diameter / mu) if self.wall.friction_factor is None
+                  else np.full_like(speed, self.wall.friction_factor))
             if self.wall.friction:
                 S[:, self.ns + 1] -= cf * 0.5 * w["rho"] * w["u"] * speed * self.wall_area
             if self.wall.heat_transfer:

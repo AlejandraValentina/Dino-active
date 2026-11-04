@@ -112,7 +112,11 @@ class RestrictionResult:
 
 
 def restriction_flux(cell: EndCell, side: str, pipe_area: float, area_into_duct: float,
-                     area_out_of_duct: float, vol: VolumeGas, ns: int) -> RestrictionResult:
+                     area_out_of_duct: float, vol: VolumeGas, ns: int, *,
+                     stagnation: bool = True) -> RestrictionResult:
+    """``stagnation=True`` is QUASI_STEADY_RESTRICTION_V2: the duct->volume orifice is fed
+    with the face *stagnation* state.  ``stagnation=False`` reproduces V1 (face static
+    pressure used as total pressure), kept only to reproduce the stage-1 evidence."""
     if side not in ("left", "right"):
         raise ValueError("side must be left or right")
     n_in = 1.0 if side == "left" else -1.0
@@ -130,7 +134,12 @@ def restriction_flux(cell: EndCell, side: str, pipe_area: float, area_into_duct:
             Yd, xd, h0 = vol.Y, vol.xb, vol.h
             a_f = math.sqrt(vol.gamma * vol.R * max(vol.T - w_f * w_f / (2 * vol.cp), 1.0))
         else:
-            Yd, xd, h0 = cell.Y, cell.xb, cell.h + 0.5 * cell.u ** 2
+            if stagnation:
+                T_f = p_f / (rho_f * cell.R)
+                h0 = cell.h + cell.cp * (T_f - cell.T) + 0.5 * w_f * w_f
+            else:
+                h0 = cell.h + 0.5 * cell.u ** 2
+            Yd, xd = cell.Y, cell.xb
             a_f = ac * (p_f / pc) ** k
         mass_x = n_in * mdot
         F = np.empty(nv)
@@ -172,6 +181,17 @@ def restriction_flux(cell: EndCell, side: str, pipe_area: float, area_into_duct:
         return rho_f * w * pipe_area, w, rho_f
 
     def orifice(p):
+        if stagnation:
+            w = w_of_p(p)
+            T_f = cell.T * (p / pc) ** ((g - 1) / g)
+            if w < 0:
+                T0 = T_f + 0.5 * w * w / cell.cp
+                p0 = p * (T0 / T_f) ** (g / (g - 1))
+            else:
+                T0, p0 = T_f, p
+            if p0 > pv:
+                return -orifice_mass_flow(area_out_of_duct, p0, T0, cell.R, g, pv) if area_out_of_duct > 0 else 0.0
+            return orifice_mass_flow(area_into_duct, pv, Tv, Rv, gv, p) if area_into_duct > 0 else 0.0
         if p <= pv:
             return orifice_mass_flow(area_into_duct, pv, Tv, Rv, gv, p) if area_into_duct > 0 else 0.0
         return -orifice_mass_flow(area_out_of_duct, p, T0c, cell.R, g, pv) if area_out_of_duct > 0 else 0.0
@@ -181,12 +201,23 @@ def restriction_flux(cell: EndCell, side: str, pipe_area: float, area_into_duct:
         return face_mass_flux(p)[0] - orifice(p)
 
     lo, hi = math.log(0.5 * min(pc, pv)), math.log(2.0 * max(pc, pv))
-    for _ in range(60):
-        if residual(lo) < 0:
-            break
-        lo -= 0.7
+    xs = (2.0 - (g - 1) * wc / ac) / (g + 1) if stagnation else 0.0
+    if xs > 0.0:
+        # V2 residual has spurious roots with a supersonic face (M > 1).  The admissible
+        # branch starts at the sonic face state, closed form from the incoming characteristic.
+        p_sonic = pc * xs ** (1.0 / k)
+        lo = math.log(p_sonic)
+        if residual(lo) >= 0.0:
+            # the orifice would pass more than the duct can deliver: duct end is choked
+            m_sonic, _, rho_sonic = face_mass_flux(p_sonic)
+            return assemble(p_sonic, m_sonic, rho_sonic, "duct_to_volume", True)
     else:
-        raise RestrictionError("restriction root not bracketed below")
+        for _ in range(60):
+            if residual(lo) < 0:
+                break
+            lo -= 0.7
+        else:
+            raise RestrictionError("restriction root not bracketed below")
     for _ in range(60):
         if residual(hi) > 0:
             break
@@ -202,6 +233,10 @@ def restriction_flux(cell: EndCell, side: str, pipe_area: float, area_into_duct:
         rho_f = p_f / (Rv * max(Tv - w * w / (2 * vol.cp), 1e-3))
         branch = "volume_to_duct"
     else:
-        choked = area_out_of_duct > 0 and pv / p_f <= crit_c
+        p_up = p_f
+        if stagnation:
+            m_f = abs(w) / (ac * (p_f / pc) ** k)
+            p_up = p_f * (1 + 0.5 * (g - 1) * m_f * m_f) ** (g / (g - 1))
+        choked = area_out_of_duct > 0 and pv / p_up <= crit_c
         branch = "duct_to_volume"
     return assemble(p_f, mdot, rho_f, branch, choked)

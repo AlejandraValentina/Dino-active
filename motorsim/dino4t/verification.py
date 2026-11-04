@@ -311,12 +311,13 @@ def choked_nozzle_steady():
     ideal = orifice_mass_flow(Ae, 2e5, 300.0, up.R, up.gamma, 1e5)
     rel = abs(m_out - ideal) / ideal
     steady = abs(m_in - m_out) / ideal
-    return _case("choked_restriction_steady_flow", "duct", rel < 0.01 and steady < 1e-4,
+    return _case("choked_restriction_steady_flow", "duct", rel < 1e-3 and steady < 1e-4,
                  dict(mdot_kg_s=m_out, isentropic_choked_kg_s=ideal, relative_difference=rel,
                       inlet_outlet_relative_mismatch=steady,
-                      note="expected deficit ~0.24%: the duct->volume branch uses the static face "
-                           "pressure as upstream total pressure (M_duct ~ 0.06)"),
-                 "|mdot - mdot*| / mdot* < 1% ; |mdot_in - mdot_out| / mdot* < 1e-4",
+                      note="stage-1 value was -0.234 % and was explained away as an 'expected' hypothesis "
+                           "deficit; it was the signature of the static-as-total-pressure defect "
+                           "(removed in QUASI_STEADY_RESTRICTION_V2, now ~3e-6)"),
+                 "|mdot - mdot*| / mdot* < 0.1 % ; |mdot_in - mdot_out| / mdot* < 1e-4",
                  "isentropic choked orifice, Heywood App. C")
 
 
@@ -336,7 +337,25 @@ def _closed_engine(mix, geometry, *, combustion=None, dtheta=0.25, theta_start=-
     return FourStrokeEngine(mix, cyl, {}, [], 3000.0, max_dtheta=dtheta, theta_start=theta_start)
 
 
+def _motoring_reference(mix, air, geo, m, p0, T0, theta0=-180.0, theta1=540.0):
+    """Reversible adiabatic compression/expansion of a frozen mixture, dT/dtheta = -(R T / cv) V'/V,
+    integrated with DOP853 (independent of the engine integrator and of its energy bookkeeping)."""
+    from scipy.integrate import solve_ivp
+    R = float(mix.gas_constant(air))
+
+    def rhs(th, y):
+        T = y[0]
+        cv = float(mix.cp(air, T)) - R
+        dV = geo.piston_area * geo.dposition_dtheta(math.degrees(th))
+        return [-R * T / cv * dV / geo.volume(math.degrees(th))]
+    sol = solve_ivp(rhs, (math.radians(theta0), math.radians(theta1)), [T0], method="DOP853",
+                    rtol=1e-12, atol=1e-9, dense_output=True)
+    return lambda th_deg: m * R * sol.sol(np.radians(th_deg))[0] / geo.volume(th_deg)
+
+
 def isentropic_motoring(dthetas=(1.0, 0.5, 0.25)):
+    """Criterion (a priori): observed order >= 2 - 0.3 against EXACT/independent references and
+    p(theta) within 0.1 % of the independent ODE at the production step (0.5 deg)."""
     geo = SliderCrank(0.086, 0.086, 0.143, 11.0)
     cp_mix = air_cp_mixture(1.4, 287.0)
     errs = []
@@ -350,24 +369,31 @@ def isentropic_motoring(dthetas=(1.0, 0.5, 0.25)):
     orders = [math.log2(a / b) for a, b in zip(errs, errs[1:])]
     mix = Mixture.standard()
     air = dry_air(mix)
-    drifts, closures = [], []
-    for dth in dthetas[-2:]:
+    ref_errs, drifts, closures = [], [], []
+    for dth in dthetas:
         eng = _closed_engine(mix, geo, dtheta=dth)
         st = eng.initial_state(cylinder=dict(p=1e5, T=300.0, Y=air, xb=0.0), ducts={})
         r = eng.run(st, 1)
         tr = r["cycles"][0].trace
-        s = np.array([float(mix.entropy(air, T, p)) for T, p in zip(tr["T"], tr["p"])])
+        th, p = np.array(tr["theta"]), np.array(tr["p"])
+        m = float(r["cycles"][0].trace["mass"][0])
+        ref = _motoring_reference(mix, air, geo, m, 1e5, 300.0)
+        ref_errs.append(float(np.max(np.abs(p / np.array([ref(t) for t in th]) - 1))))
+        s = np.array([float(mix.entropy(air, T, pp)) for T, pp in zip(tr["T"], tr["p"])])
         drifts.append(float(np.max(np.abs(s - s[0])) / float(mix.cp(air, 300.0))))
         closures.append(r["closure"]["energy"])
-    s_order = math.log2(drifts[0] / drifts[1])
-    ok = orders[-1] > 1.8 and s_order > 1.8 and drifts[-1] < 1e-5 and max(closures) < 1e-12
+    ref_orders = [math.log2(a / b) for a, b in zip(ref_errs, ref_errs[1:])]
+    at_prod = ref_errs[dthetas.index(0.5)] if 0.5 in dthetas else ref_errs[-1]
+    ok = (orders[-1] >= 1.7 and ref_orders[-1] >= 1.7 and at_prod < 1e-3 and max(closures) < 1e-12)
     return _case("isentropic_motoring", "cylinder", ok,
                  dict(dtheta=list(dthetas), max_rel_pV_gamma_error=errs, observed_order=orders,
-                      thermally_perfect_entropy_drift_over_cp=drifts, entropy_drift_order=s_order,
-                      energy_closure=closures),
-                 "pV^gamma and NASA-gas entropy drift: order > 1.8; drift/cp < 1e-5 at finest; "
-                 "energy closure < 1e-12",
-                 "isentropic relations (exact)")
+                      nasa_gas_error_vs_independent_ode=ref_errs, nasa_gas_order_vs_ode=ref_orders,
+                      nasa_gas_entropy_drift_over_cp=drifts, energy_closure=closures,
+                      note="stage-1 entropy-drift threshold (1e-5) was set after seeing 3.65e-6 and is dropped; "
+                           "entropy drift is reported only"),
+                 "order >= 1.7 (pV^gamma and NASA gas vs independent ODE); NASA-gas p(theta) within 0.1 % of the "
+                 "ODE at dtheta = 0.5 deg; energy closure < 1e-12",
+                 "pV^gamma = const (exact, calorically perfect); DOP853 reversible-adiabatic ODE with NASA cp(T)")
 
 
 def burn_vs_independent_ode(dthetas=(0.5, 0.25, 0.125)):
@@ -486,21 +512,14 @@ def run_suite(out_dir, quick=False):
     started = time.monotonic()
     cases = []
     for fn in (thermo_reference, thermo_inversion, stoichiometry, geometry_checks, orifice_function,
-               hllc_vs_gas1d, sod_shock_tube, smooth_acoustic_order, well_balanced_area_change,
+               hllc_vs_gas1d, sod_shock_tube, well_balanced_area_change,
                quarter_wave_resonance, choked_nozzle_steady, isentropic_motoring, burn_vs_independent_ode):
         t = time.monotonic()
         case = fn()
         case["wall_seconds"] = time.monotonic() - t
         cases.append(case)
-    for limiter in ("first_order", "van_leer", "unlimited_central"):
-        case = smooth_acoustic_order(limiter=limiter)
-        if limiter == "first_order":
-            # Comparator only (never used in production).  The initial expectation (order > 0.8)
-            # was not met: 0.47 -> 0.63, still rising, i.e. pre-asymptotic for this pulse width.
-            # Kept visible as INFORMATIONAL instead of retuning the threshold after the fact.
-            case["informational"] = True
-            case["note"] = ("first-order comparator; initial expectation order > 0.8 not met "
-                            "(pre-asymptotic, increasing); not an acceptance criterion")
+    from .verification_stage2 import stage2_cases
+    for case in stage2_cases():
         cases.append(case)
     if quick:
         case, _ = engine_conservation_and_periodicity(max_cycles=12, dx_mm=20.0)
