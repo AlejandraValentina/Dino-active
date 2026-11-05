@@ -1,7 +1,7 @@
 {
   "schema": "MOTORSIM_PROGRAM_STATUS_V2",
   "program": "MOTORSIM_2T_COMMERCIAL_CORE",
-  "recorded_at": "2026-11-05T12:37:19+00:00",
+  "recorded_at": "2026-11-05T12:47:36+00:00",
   "continuation_baseline": "401d8d70a3c06a85c75328ed3e83af3d39c7c88c",
   "status_capture_head": "f2c6926",
   "overall": "MOTORSIM_2T_COMMERCIAL_CORE_PARTIAL",
@@ -12415,13 +12415,14 @@
       "id": "DINO4T-WINDOWS-BUILD-AND-PROVENANCE-V1",
       "description": "Build one Windows candidate from the clean integration commit and record source commit, dependency manifest and SHA-256.",
       "dependencies": [],
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
       "evidence": [
         "packaging/build_windows.py",
         "packaging/requirements-build.txt",
-        "scripts/agents/storage_preflight.py"
+        "scripts/agents/storage_preflight.py",
+        "results/dino4t-desktop-integration-v1/verification/packaged-candidate-1-failure.json"
       ],
       "write_scope": [
         "packaging/",
@@ -17644,6 +17645,12 @@
       "task": "DINO4T-DESKTOP-SOURCE-INTEGRATION-V1",
       "kind": "PRODUCT_INTEGRATION",
       "summary": "Source integration now uses the public 4T API and distinct project/results contracts; focused regressions passed, historical 2T projects/results open, and bounded 4T Desktop smoke is non-converged and source-bound. Windows package acceptance is the active gate."
+    },
+    {
+      "at": "2026-11-05T12:47:36+00:00",
+      "task": "DINO4T-WINDOWS-BUILD-AND-PROVENANCE-V1",
+      "kind": "PACKAGED_FAILURE_DIAGNOSIS",
+      "summary": "Candidate 1 built from 7a74ee4, but packaged acceptance exposed missing unittest.mock in PyInstaller hidden imports; the normal executable opens. Added a focused recipe regression and retained package/exe hashes. One corrected candidate build is required."
     }
   ],
   "legacy_gate_status": {

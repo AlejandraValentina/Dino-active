@@ -31,7 +31,7 @@ dino_a=Analysis([str(root/'packaging/dino_desktop_entry.py')],
     # checks instead of failing closed merely because source files are absent.
     *[(str(source),str(source.parent.relative_to(root)).replace('\\','/'))
       for source in sorted((root/'motorsim').rglob('*.py'))]],
-    hiddenimports=['numpy','scipy.optimize','motorsim.dino4t.api','motorsim.dino4t.config','motorsim.dino4t.runner',
+    hiddenimports=['unittest.mock','numpy','scipy.optimize','motorsim.dino4t.api','motorsim.dino4t.config','motorsim.dino4t.runner',
         'motorsim.dino4t.engine','motorsim.dino4t.duct','motorsim.dino4t.valves',
         'motorsim.dino4t.restriction','motorsim.dino4t.thermo','motorsim.dino4t.thermo_data',
         'motorsim.dino4t.combustion','motorsim.dino4t.twozone','motorsim.dino4t.equilibrium',

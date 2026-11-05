@@ -106,4 +106,4 @@ def test_windows_bundle_recipe_declares_4t_runtime_dependencies():
     requirements=Path("packaging/requirements-build.txt").read_text(encoding="utf-8")
     spec=Path("packaging/MotorSim.spec").read_text(encoding="utf-8")
     assert "numpy==2.3.0" in requirements and "scipy==1.15.2" in requirements
-    assert "'numpy','scipy.optimize'" in spec
+    assert "'unittest.mock','numpy','scipy.optimize'" in spec

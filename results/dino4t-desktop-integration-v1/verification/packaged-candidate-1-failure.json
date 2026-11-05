@@ -1,0 +1,11 @@
+{
+  "schema": "DINO4T_WINDOWS_CANDIDATE_FAILURE_V1",
+  "candidate": "MotorSim-0.1.0-rc12-windows-x64-7a74ee4d",
+  "source_commit": "7a74ee4dbf68d47e75276e405caa2591b8ad25c6",
+  "zip_sha256": "b2cb82dc39f9fbbf40079c2c0a2aaa03a538a9dba26b33721516ef4dc3af2acc",
+  "exe_sha256": "b1bac91c7c235d2a6a00e8680990e49511c400652cf910d5951649f2ccdd9299",
+  "reproduction": "Launch Dino2T.exe --verify-four-stroke-desktop with the historical 2T project and 4T summary. The packaged app opened an error dialog before writing the acceptance receipt.",
+  "failure": "ModuleNotFoundError: No module named unittest.mock",
+  "diagnosis": "The PyInstaller spec excluded this lazily imported standard-library module used by the acceptance route for controlled file dialogs. Normal Desktop startup itself opened.",
+  "resolution": "Added unittest.mock as an explicit hidden import in packaging/MotorSim.spec; keep this candidate unchanged."
+}
