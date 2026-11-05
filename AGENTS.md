@@ -22,15 +22,13 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO4T_AB_ENGINEERING_V1
-change/spec:       openspec/changes/dino4t-ab-engineering-v1/
-                   specs/dino4t-ab-engineering-v1/spec.md
-roadmap:          results/2t-commercial-core-20261002/program-status.json
-completion:        Complete a reproducible 4T Desktop A/B workflow with distinct
-                   designs, exact compatible operating conditions, periodicity
-                   gates, traceable comparisons and exports. Keep model
-                   sensitivity separate from experimental validation and
-                   predictive claims. Do not modify 2T scientific contracts.
+CURRENT_OBJECTIVE: DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1
+change/spec:       openspec/changes/platform-integration-audit-v1/
+                   specs/platform-integration-audit-v1/spec.md
+roadmap:          results/platform-integration-audit-v1/protocol.md
+completion:        Independent revision-bound audit of main and A/B branch,
+                   then traceable unified 2T+4T scientific replanning. No product
+                   or physical changes. Audit completion is not validation.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    -> current_objective, queue, gate_status, progress_log
 ```

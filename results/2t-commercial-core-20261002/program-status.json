@@ -12883,6 +12883,128 @@
       "write_scope": [
         "results/dino4t-ab-engineering-v1/windows/"
       ]
+    },
+    {
+      "id": "PA-GIT-AUTHORITY",
+      "objective": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
+      "description": "Pin Git history, planning authority and all blocker reassessments",
+      "dependencies": [],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Audit only; preserve product and scientific runtime.",
+      "owner_role": "orchestrator",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PA-ARCHITECTURE",
+      "objective": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
+      "description": "Independent integration architecture, product and provenance review",
+      "dependencies": [],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Audit only; preserve product and scientific runtime.",
+      "owner_role": "independent_read_only_reviewer",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PA-SCIENCE",
+      "objective": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
+      "description": "Independent scientific API/numerical semantics review",
+      "dependencies": [],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Audit only; preserve product and scientific runtime.",
+      "owner_role": "independent_read_only_reviewer",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PA-CONTRACTS",
+      "objective": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
+      "description": "Independent protected-contract and historical regression review",
+      "dependencies": [],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Audit only; preserve product and scientific runtime.",
+      "owner_role": "independent_read_only_reviewer",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PA-EVIDENCE",
+      "objective": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
+      "description": "Verify build/result artifacts and test acceptance claims with bounded probes",
+      "dependencies": [],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Audit only; preserve product and scientific runtime.",
+      "owner_role": "orchestrator",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PA-AUDIT-FREEZE",
+      "objective": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
+      "description": "Synthesize and commit frozen audit before changing scientific planning",
+      "dependencies": [
+        "PA-GIT-AUTHORITY",
+        "PA-ARCHITECTURE",
+        "PA-SCIENCE",
+        "PA-CONTRACTS",
+        "PA-EVIDENCE"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Audit only; preserve product and scientific runtime.",
+      "owner_role": "orchestrator",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PA-REPLAN",
+      "objective": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
+      "description": "Derive a scoped 2T+4T reliability plan and explicit supersession from the frozen audit",
+      "dependencies": [
+        "PA-AUDIT-FREEZE"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Audit only; preserve product and scientific runtime.",
+      "owner_role": "orchestrator",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "PA-FINAL-REVIEW",
+      "objective": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
+      "description": "Independent challenge of the plan, planning consistency tests and protected checks",
+      "dependencies": [
+        "PA-REPLAN"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Audit only; preserve product and scientific runtime.",
+      "owner_role": "orchestrator",
+      "write_scope": [],
+      "evidence_level": "L0"
     }
   ],
   "audit_remediation_mode": false,
@@ -13084,34 +13206,24 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO4T_AB_ENGINEERING_V1",
+    "id": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
     "state": "ACTIVE",
     "owner_approved": true,
-    "summary": "Complete and verify reproducible 4T Desktop A/B engineering comparisons without changing either engine’s physical model.",
-    "change": "openspec/changes/dino4t-ab-engineering-v1",
-    "spec": "openspec/changes/dino4t-ab-engineering-v1/specs/dino4t-ab-engineering-v1/spec.md",
-    "transitioned_from": "DINO_DESKTOP_4T_INTEGRATION_V1",
+    "summary": "Audit main and the separate 4T A/B branch before a traceable 2T+4T scientific replan; audit and documentation only, no product/physical changes.",
+    "change": "openspec/changes/platform-integration-audit-v1",
+    "spec": "openspec/changes/platform-integration-audit-v1/specs/platform-integration-audit-v1/spec.md",
+    "transitioned_from": "DINO4T_AB_ENGINEERING_V1",
     "gate_tasks": [
-      "D4AB-COMPARE-SEMANTICS",
-      "D4AB-COMPARISON-EXPORT",
-      "D4AB-COOPERATIVE-CANCEL",
-      "D4AB-PAIR-EXECUTION",
-      "D4AB-2T-REGRESSION",
-      "D4AB-PAIR-ARTIFACT-VERIFICATION",
-      "D4AB-SOURCE-DESKTOP-AB-VERIFY",
-      "D4AB-WINDOWS-BUILD-ENVIRONMENT",
-      "D4AB-WINDOWS-INPUT-MANIFEST",
-      "D4AB-WINDOWS-STORAGE-PREFLIGHT",
-      "D4AB-WINDOWS-UIA-DRIVER-PREP",
-      "D4AB-WINDOWS-CANDIDATE-BUILD",
-      "D4AB-PACKAGED-AB-COMPARE-EXPORT",
-      "D4AB-PACKAGED-CANCEL-RECOVERY",
-      "D4AB-PACKAGED-2T-COMPATIBILITY",
-      "D4AB-WINDOWS-RECIPE-CLI-VALIDATION",
-      "D4AB-WINDOWS-ENTRYPOINT-REVIEW",
-      "D4AB-WINDOWS-OUTPUT-COLLISION-CHECK"
+      "PA-GIT-AUTHORITY",
+      "PA-ARCHITECTURE",
+      "PA-SCIENCE",
+      "PA-CONTRACTS",
+      "PA-EVIDENCE",
+      "PA-AUDIT-FREEZE",
+      "PA-REPLAN",
+      "PA-FINAL-REVIEW"
     ],
-    "completion_criterion": "Two distinct preregistered 4T designs are run through DINO4T_API_V1 within the fixed budget; A/B comparison and provenance exports are exercised from the packaged Windows Desktop; targeted 2T regressions pass; no experimental validation or predictive claim."
+    "completion_criterion": "Revision-bound independent reviews, reproducible falsification/regression evidence and frozen audit precede the unified plan; old evidence and 2T/4T scientific obligations are preserved. Audit-deliverable PASS is not simulator scientific acceptance."
   },
   "objectives": [
     {
@@ -14204,10 +14316,19 @@
     },
     {
       "id": "DINO4T_AB_ENGINEERING_V1",
-      "state": "ACTIVE",
+      "state": "PASS",
       "owner_approved": true,
       "summary": "Complete and verify reproducible 4T Desktop A/B engineering comparisons without changing either engine’s physical model.",
-      "change": "openspec/changes/dino4t-ab-engineering-v1"
+      "change": "openspec/changes/dino4t-ab-engineering-v1",
+      "closure_evidence": "results/dino4t-ab-engineering-v1/windows/candidate-acceptance.json"
+    },
+    {
+      "id": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
+      "state": "ACTIVE",
+      "owner_approved": true,
+      "summary": "Audit main and the separate 4T A/B branch before a traceable 2T+4T scientific replan; audit and documentation only, no product/physical changes.",
+      "change": "openspec/changes/platform-integration-audit-v1",
+      "transitioned_from": "DINO4T_AB_ENGINEERING_V1"
     }
   ],
   "owner_decisions_pending": [
@@ -18284,6 +18405,12 @@
       "task": "D4AB-PACKAGED-2T-COMPATIBILITY",
       "kind": "task",
       "summary": "Packaged EXE opened existing 2T project, routed to 4T and back to 2T in one process; zero solver runs."
+    },
+    {
+      "at": "2026-11-05T16:40:42.204593+00:00",
+      "task": "PA-GIT-AUTHORITY",
+      "kind": "OWNER_SCOPE_ACTIVATION",
+      "summary": "Activated owner-requested read-only technical/scientific audit and subsequent unified replanning; main 5e4ba4d and A/B 8b371e2 pinned separately. Prior gate preserved; no product changes or new campaigns authorized."
     }
   ],
   "legacy_gate_status": {
@@ -18298,19 +18425,27 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO4T_AB_ENGINEERING_V1",
-    "state": "PASS",
-    "classification": "PASS_NO_PREDICTIVE_CLAIM",
-    "evidence": [
-      "results/dino4t-ab-engineering-v1/windows/candidate-acceptance.json"
-    ],
-    "gate_tasks_total": 18,
-    "gate_tasks_done": 18,
+    "objective": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
+    "state": "OPEN",
+    "classification": null,
+    "evidence": [],
+    "gate_tasks_total": 8,
+    "gate_tasks_done": 0,
     "gate_task_states": {
-      "DONE": 18
+      "IN_PROGRESS": 5,
+      "WAITING": 3
     },
-    "remaining": [],
-    "updated_at": "2026-11-05T16:01:16+00:00"
+    "remaining": [
+      "PA-GIT-AUTHORITY",
+      "PA-ARCHITECTURE",
+      "PA-SCIENCE",
+      "PA-CONTRACTS",
+      "PA-EVIDENCE",
+      "PA-AUDIT-FREEZE",
+      "PA-REPLAN",
+      "PA-FINAL-REVIEW"
+    ],
+    "updated_at": "2026-11-05T16:40:42+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -18745,6 +18880,25 @@
       },
       "remaining": [],
       "updated_at": "2026-10-26T12:33:51+00:00"
+    },
+    {
+      "reason": "Owner requests audit and only then unified scientific replanning; prior acceptance preserved verbatim",
+      "previous_gate": {
+        "objective": "DINO4T_AB_ENGINEERING_V1",
+        "state": "PASS",
+        "classification": "PASS_NO_PREDICTIVE_CLAIM",
+        "evidence": [
+          "results/dino4t-ab-engineering-v1/windows/candidate-acceptance.json"
+        ],
+        "gate_tasks_total": 18,
+        "gate_tasks_done": 18,
+        "gate_task_states": {
+          "DONE": 18
+        },
+        "remaining": [],
+        "updated_at": "2026-11-05T16:01:16+00:00"
+      },
+      "at": "2026-11-05T16:40:42.204593+00:00"
     }
   ],
   "gate_status_archive_before_dino_desktop_v3_1": {

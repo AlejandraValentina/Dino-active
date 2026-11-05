@@ -1,0 +1,100 @@
+[
+  {
+    "id": "FRPM-FULL-CAMPAIGN-EXECUTION",
+    "original_blocker": "Deferred by current owner decision: the full RPM campaign is not the current priority and has no current execution authorization. Preserve prior partial results and all three NUMERICAL_INVALID classifications.",
+    "reassessment": "Not superseded by Desktop/4T software integration. Existing data, campaign-budget or owner scope constraint persists; this audit does not reopen execution.",
+    "resolution": "PRESERVE_BLOCKED_NO_NEW_CAMPAIGN",
+    "unblock_tasks": [],
+    "no_local_unblock_reason": "No local technical change can grant authorization. Any continuation requires a future prioritized objective and explicit new authorization; do not start a campaign."
+  },
+  {
+    "id": "SPV1-POINT-EXECUTION",
+    "original_blocker": "Invocation 1 was externally terminated at 600.125 s. Three cycles and checkpoint through cycle 3 are manifest-bound and audited; cycle-0004.json.gz exists but is unmanifested. The current workflow rejects resume when any unmanifested primary exists; no run receipt was emitted before timeout.",
+    "reassessment": "Not superseded by Desktop/4T software integration. Existing data, campaign-budget or owner scope constraint persists; this audit does not reopen execution.",
+    "resolution": "PRESERVE_BLOCKED_NO_NEW_CAMPAIGN",
+    "unblock_tasks": [
+      "SPV1-CHECKPOINT-INTERRUPTION-RECOVERY"
+    ],
+    "no_local_unblock_reason": null
+  },
+  {
+    "id": "SPV1-CHECKPOINT-INTERRUPTION-RECOVERY",
+    "original_blocker": "Pertenece a DINO_2T_SCIENTIFIC_POINT_V1, no al objetivo predictivo/producto vigente. El usuario pidió postergarlo; no ejecutar ni mutar checkpoints históricos en este objetivo.",
+    "reassessment": "Not superseded by Desktop/4T software integration. Existing data, campaign-budget or owner scope constraint persists; this audit does not reopen execution.",
+    "resolution": "PRESERVE_BLOCKED_NO_NEW_CAMPAIGN",
+    "unblock_tasks": [],
+    "no_local_unblock_reason": "No existe una acción local compatible con el objetivo vigente; requiere que DINO_2T_SCIENTIFIC_POINT_V1 vuelva a ser objetivo activo."
+  },
+  {
+    "id": "CRV1-REED-SENSITIVITY-PROTOCOL",
+    "original_blocker": "Commercial Readiness V1 is frozen after owner-accepted PASS; reed sensitivity is outside the accepted functional baseline.",
+    "reassessment": "Not superseded by Desktop/4T software integration. Existing data, campaign-budget or owner scope constraint persists; this audit does not reopen execution.",
+    "resolution": "PRESERVE_BLOCKED_NO_NEW_CAMPAIGN",
+    "unblock_tasks": [],
+    "no_local_unblock_reason": "Owner explicitly froze Commercial Readiness V1 for this closeout. Revisit only under a separately scoped and approved successor objective; do not execute this protocol as part of the frozen baseline."
+  },
+  {
+    "id": "X30M-OWNER-SEND",
+    "original_blocker": "X30 is the primary experimental reference under the unified roadmap; acquisition is now prioritized in parallel. The existing request remains unsent: this planning instruction does not authorize external transmission. Missing measured geometry still blocks executable X30 configuration, not evaluation of another complete reference.",
+    "reassessment": "Not superseded by Desktop/4T software integration. Existing data, campaign-budget or owner scope constraint persists; this audit does not reopen execution.",
+    "resolution": "PRESERVE_BLOCKED_NO_NEW_CAMPAIGN",
+    "unblock_tasks": [],
+    "no_local_unblock_reason": "Requires primary geometry data from the owner or manufacturer and reprioritization of this objective. No legitimate local evidence can replace or justify inventing that geometry."
+  },
+  {
+    "id": "X30M-INPUTS",
+    "original_blocker": "Deferred: the indispensable measured crankcase free volume is unavailable, including reference angle, boundaries and inclusions. Do not substitute arbitrary assumptions.",
+    "reassessment": "Not superseded by Desktop/4T software integration. Existing data, campaign-budget or owner scope constraint persists; this audit does not reopen execution.",
+    "resolution": "PRESERVE_BLOCKED_NO_NEW_CAMPAIGN",
+    "unblock_tasks": [],
+    "no_local_unblock_reason": "Requires primary geometry data from the owner or manufacturer and reprioritization of this objective. No legitimate local evidence can replace or justify inventing that geometry."
+  },
+  {
+    "id": "X30M-CONFIG-FREEZE",
+    "original_blocker": "Deferred: the indispensable measured crankcase free volume is unavailable, including reference angle, boundaries and inclusions. Do not substitute arbitrary assumptions.",
+    "reassessment": "Not superseded by Desktop/4T software integration. Existing data, campaign-budget or owner scope constraint persists; this audit does not reopen execution.",
+    "resolution": "PRESERVE_BLOCKED_NO_NEW_CAMPAIGN",
+    "unblock_tasks": [],
+    "no_local_unblock_reason": "Requires primary geometry data from the owner or manufacturer and reprioritization of this objective. No legitimate local evidence can replace or justify inventing that geometry."
+  },
+  {
+    "id": "X30M-POINT-EXEC",
+    "original_blocker": "Deferred: the indispensable measured crankcase free volume is unavailable, including reference angle, boundaries and inclusions. Do not substitute arbitrary assumptions.",
+    "reassessment": "Not superseded by Desktop/4T software integration. Existing data, campaign-budget or owner scope constraint persists; this audit does not reopen execution.",
+    "resolution": "PRESERVE_BLOCKED_NO_NEW_CAMPAIGN",
+    "unblock_tasks": [],
+    "no_local_unblock_reason": "Requires primary geometry data from the owner or manufacturer and reprioritization of this objective. No legitimate local evidence can replace or justify inventing that geometry."
+  },
+  {
+    "id": "X30M-RESULT-VERIFY",
+    "original_blocker": "Deferred: the indispensable measured crankcase free volume is unavailable, including reference angle, boundaries and inclusions. Do not substitute arbitrary assumptions.",
+    "reassessment": "Not superseded by Desktop/4T software integration. Existing data, campaign-budget or owner scope constraint persists; this audit does not reopen execution.",
+    "resolution": "PRESERVE_BLOCKED_NO_NEW_CAMPAIGN",
+    "unblock_tasks": [],
+    "no_local_unblock_reason": "Requires primary geometry data from the owner or manufacturer and reprioritization of this objective. No legitimate local evidence can replace or justify inventing that geometry."
+  },
+  {
+    "id": "PRED-VALIDATION",
+    "original_blocker": "Cahoon MK.1 is now a source-verified partial dataset: measured/corrected brake rows and a pressure-trace candidate are available, but engine-details table and the 4400-rpm THROUGH FLOW sheet disagree on the tested exhaust geometry; absolute crankcase volume, matching test conditions, raw/correction records and uncertainties remain unestablished. No coherent blind Dino input or honest predictive comparison can be produced. Numerical mesh uncertainty also remains unresolved.",
+    "reassessment": "Not superseded by Desktop/4T software integration. Existing data, campaign-budget or owner scope constraint persists; this audit does not reopen execution.",
+    "resolution": "PRESERVE_BLOCKED_NO_NEW_CAMPAIGN",
+    "unblock_tasks": [],
+    "no_local_unblock_reason": "The public thesis has been exhausted and the remaining measured records are external. The authorized request is ready as an .eml, but no authenticated email connector is installed; no message can be sent from this session. No local assumptions can replace the missing data."
+  },
+  {
+    "id": "PRED-CORE-PERIODIC-MESH-GCI",
+    "original_blocker": "176-cell Brent scaling did not demonstrate the 2x E2 target: the only clean completed paired wall-time cycle (cycle 39) was 114.785 s bisection vs 87.168 s Brent (1.317x). Checkpoints 38/39 are numerically equivalent and conservation passes, but Brent stopped during cycle 40 at the authorized cumulative budget. Solver timing omitted rejected proposals; no complete three-cycle Brent result or reliable E1.3 cost. Existing 88/176 periodic states remain transient; GCI inadmissible.",
+    "reassessment": "Not superseded by Desktop/4T software integration. Existing data, campaign-budget or owner scope constraint persists; this audit does not reopen execution.",
+    "resolution": "PRESERVE_BLOCKED_NO_NEW_CAMPAIGN",
+    "unblock_tasks": [],
+    "no_local_unblock_reason": "The authorized 176 E2 budget is exhausted. The measured complete paired cycle is below the 2x target; solver-only cost cannot be reliably inferred because rejected proposals were not timed. E1.3's remaining 230.1685 s cannot be shown to fit its minimum three-cycle detector path with margin. No further computation is justified within current authority; another run would require new budget authorization."
+  },
+  {
+    "id": "PRED-POSTOPEN-EXTREMA-CONSERVATION-CONTEXT",
+    "original_blocker": "El usuario excluyó expresamente nuevas investigaciones de extremos/regiones angulares/refinamientos sin necesidad de producto demostrada.",
+    "reassessment": "Not superseded by Desktop/4T software integration. Existing data, campaign-budget or owner scope constraint persists; this audit does not reopen execution.",
+    "resolution": "PRESERVE_BLOCKED_NO_NEW_CAMPAIGN",
+    "unblock_tasks": [],
+    "no_local_unblock_reason": "No hay necesidad de producto demostrada que justifique continuar este diagnóstico. No reactivar sin una decisión técnica concreta vinculada a una entrega de roadmap."
+  }
+]
