@@ -108,6 +108,42 @@ def test_history_does_not_label_cancelled_run_as_completed_transient():
     assert _outcome_label({"status":"completed","periodicity":{"status":"PERIODIC_CONVERGED"}})=="Periódico"
 
 
+def test_history_loads_verified_run_references_and_shows_periodicity_tooltip(tmp_path):
+    """Presentation fixture only; exercises history loading without claiming simulation evidence."""
+    from PySide6.QtWidgets import QApplication
+    from motorsim.desktop.context import DesktopContext
+    from motorsim.desktop.four_stroke_desktop import FourStrokeResults, _curve_binding
+    from motorsim.desktop.four_stroke_project import create_project
+
+    app=QApplication.instance() or QApplication([])
+    endpoints=[_synthetic_endpoint("A"),_synthetic_endpoint("B")]
+    refs=[];variants={}
+    for endpoint_index,endpoint in enumerate(endpoints):
+        summary=endpoint["summary"];config=endpoint["config"];run_id=endpoint["reference"]["run_id"]
+        root=tmp_path/run_id;artifacts=root/"artifacts";artifacts.mkdir(parents=True)
+        summary_path=artifacts/"summary.json";config_path=artifacts/"config_resolved.json";trace_path=artifacts/"trace_last_cycle.csv"
+        summary_path.write_text(json.dumps(summary),encoding="utf-8")
+        config_path.write_text(json.dumps(config),encoding="utf-8")
+        trace_path.write_text("theta,p,p_intake_port,p_exhaust_port\n0,100000,100000,100000\n",encoding="utf-8")
+        digest=__import__("hashlib").sha256(summary_path.read_bytes()).hexdigest()
+        variant=endpoint["reference"]["variant_id"] if endpoint_index else ""
+        if endpoint_index:variants[config["identifier"]]=config
+        meta={"schema":"DINO4T_DESKTOP_RUN_V1","run_id":run_id,"result_sha256":digest,
+            "api":"DINO4T_API_V1","summary_path":str(summary_path),"config_path":str(config_path),
+            "trace_path":str(trace_path),"config_identity_sha256":summary["config_sha256"],
+            "curve_binding_sha256":_curve_binding(config)}
+        (root/"run.json").write_text(json.dumps(meta),encoding="utf-8")
+        refs.append({"run_id":run_id,"path":str(summary_path),"result_sha256":digest,
+            "config_sha256":summary["config_sha256"],"status":"completed",
+            "periodicity_status":"PERIODIC_CONVERGED","variant_id":variant})
+    project=create_project("synthetic-history",endpoints[0]["config"],variants=variants,run_references=refs)
+    widget=FourStrokeResults(DesktopContext(project))
+    assert widget.history.count()==2
+    assert "Periódico" in widget.history.item(0).text()
+    assert "Periodicidad: Periódico" in widget.history.item(0).toolTip()
+    widget.close();app.processEvents()
+
+
 def test_ab_json_csv_and_html_keep_provenance_precision_and_caveat(tmp_path,monkeypatch):
     from PySide6.QtGui import QDesktopServices
     from PySide6.QtWidgets import QApplication, QFileDialog

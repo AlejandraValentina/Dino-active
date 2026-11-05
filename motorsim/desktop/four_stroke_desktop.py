@@ -365,6 +365,7 @@ class FourStrokeResults(QWidget):
             try:
                 summary,meta=self._read(ref);self.loaded[index]=(summary,meta,ref)
                 outcome=_outcome_label(summary)
+                period=summary.get("periodicity",{}).get("status","NOT_REPORTED")
                 variant=ref.get("variant_id") or "Motor base"
                 label=f"{summary['operating_point']['rpm']:.0f} rpm · {outcome} · {variant}"
                 item=QListWidgetItem(label);item.setToolTip(f"Ejecución: {STATUS_LABELS.get(summary['status'],summary['status'])}\nPeriodicidad: {STATUS_LABELS.get(period,period)}\nRun ID: {ref['run_id']}\nConfiguración SHA-256: {summary['config_sha256']}")

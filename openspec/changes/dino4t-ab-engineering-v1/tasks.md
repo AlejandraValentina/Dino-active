@@ -3,8 +3,13 @@
 The authoritative task states are in
 `results/2t-commercial-core-20261002/program-status.json`.
 
-- [ ] Strict compatibility and eligibility for A/B performance comparisons.
-- [ ] Reproducible A/B result, CSV, and technical report exports.
-- [ ] Bounded execution cancellation/recovery decision and implementation if
-      safe at complete-cycle boundaries.
-- [ ] Two-design API run and packaged Windows Desktop acceptance.
+- [x] Strict compatibility and eligibility for A/B performance comparisons.
+- [x] Reproducible A/B result, CSV, and technical report exports.
+- [x] Bounded execution cancellation and safe-cycle behavior; restartable
+      checkpoints are not supported by the current API contract.
+- [ ] Execute the fixed two-design API pair once within the preregistered
+      720-second combined budget.
+- [ ] Build one Windows candidate from a clean, identified source state.
+- [ ] Run targeted 2T Desktop/project/result regression tests.
+- [ ] Verify the actual packaged Desktop A/B workflow with those API results,
+      including exports and cancellation behavior.
