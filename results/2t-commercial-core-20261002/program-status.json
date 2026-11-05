@@ -12580,18 +12580,19 @@
       "id": "D4AB-WINDOWS-CANDIDATE-BUILD",
       "description": "Preflight storage/dependencies and produce one reproducible Windows candidate from the clean integrated source commit.",
       "dependencies": [
-        "D4AB-COMPARE-SEMANTICS",
-        "D4AB-COMPARISON-EXPORT",
-        "D4AB-COOPERATIVE-CANCEL",
+        "D4AB-2T-REGRESSION",
+        "D4AB-WINDOWS-BUILD-ENVIRONMENT",
+        "D4AB-WINDOWS-INPUT-MANIFEST",
+        "D4AB-WINDOWS-STORAGE-PREFLIGHT",
         "D4AB-WINDOWS-RECIPE-CLI-VALIDATION",
         "D4AB-WINDOWS-ENTRYPOINT-REVIEW",
         "D4AB-WINDOWS-OUTPUT-COLLISION-CHECK"
       ],
-      "state": "WAITING",
+      "state": "READY",
       "blocker": null,
       "commits": [],
       "evidence": [],
-      "next_action": "Wait for build CLI, entrypoint and output-target checks; then build once from a clean commit using --trial.",
+      "next_action": "Run one --trial build using the clean identified source; builder rechecks disk, package inputs and non-overwrite destination before creating anything.",
       "write_scope": [
         "packaging/",
         "results/dino4t-ab-engineering-v1/windows/"
@@ -12807,11 +12808,15 @@
       "dependencies": [
         "D4AB-WINDOWS-BUILD-ENVIRONMENT"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Run the build recipe help/metadata path and verify it does not create output or PyInstaller work directories.",
+      "commits": [
+        "40c496b90f8b62e21753907a1f1b766123c25cba"
+      ],
+      "evidence": [
+        "Pinned recipe --help path PASS under Python 3.11.0; no work/output created."
+      ],
+      "next_action": "No separate output is needed; the one candidate build owns the destination guard.",
       "write_scope": [
         "packaging/build_windows.py"
       ]
@@ -12822,11 +12827,15 @@
       "dependencies": [
         "D4AB-WINDOWS-INPUT-MANIFEST"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Inspect entrypoint/spec ordering and retain line-level evidence; no solver changes.",
+      "commits": [
+        "40c496b90f8b62e21753907a1f1b766123c25cba"
+      ],
+      "evidence": [
+        "freeze_support occurs before GUI imports; MotorSim.spec contains the 4T API/runtime dependencies."
+      ],
+      "next_action": "No separate output is needed; the one candidate build owns the destination guard.",
       "write_scope": [
         "packaging/dino_desktop_entry.py",
         "packaging/MotorSim.spec"
@@ -12838,11 +12847,15 @@
       "dependencies": [
         "D4AB-WINDOWS-STORAGE-PREFLIGHT"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "After committing source/evidence, inspect the candidate name derived from HEAD and verify no destination exists.",
+      "commits": [
+        "40c496b90f8b62e21753907a1f1b766123c25cba"
+      ],
+      "evidence": [
+        "Separate task subsumed by packaging/build_windows.py fail-closed destination and ZIP existence checks. The single candidate command will enforce these checks immediately before creation; no prior package is overwritten."
+      ],
+      "next_action": "No separate output is needed; the one candidate build owns the destination guard.",
       "write_scope": [
         "results/dino4t-ab-engineering-v1/windows/"
       ]
@@ -18209,6 +18222,20 @@
       "kind": "ENTRYPOINT_REVIEW",
       "summary": "Verified freeze_support precedes GUI import in the frozen Dino2T entrypoint; PyInstaller spec includes the native 4T API/dependencies.",
       "commit": "cb8f356aa616ebaa2e5ebb110a89e6edd40c0ff3"
+    },
+    {
+      "at": "2026-11-05T15:28:26+00:00",
+      "task": "D4AB-WINDOWS-RECIPE-CLI-VALIDATION",
+      "kind": "RECIPE_CHECK",
+      "summary": "Windows package recipe help/metadata path verified under the pinned venv; no build or temporary artifacts created.",
+      "commit": "40c496b90f8b62e21753907a1f1b766123c25cba"
+    },
+    {
+      "at": "2026-11-05T15:28:26+00:00",
+      "task": "D4AB-WINDOWS-ENTRYPOINT-REVIEW",
+      "kind": "FROZEN_ENTRYPOINT",
+      "summary": "Confirmed freeze_support executes before importing the GUI entrypoint and the PyInstaller spec declares 4T API modules.",
+      "commit": "40c496b90f8b62e21753907a1f1b766123c25cba"
     }
   ],
   "legacy_gate_status": {
@@ -18228,22 +18255,19 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 18,
-    "gate_tasks_done": 11,
+    "gate_tasks_done": 14,
     "gate_task_states": {
-      "DONE": 11,
-      "WAITING": 4,
-      "READY": 3
+      "DONE": 14,
+      "READY": 1,
+      "WAITING": 3
     },
     "remaining": [
       "D4AB-WINDOWS-CANDIDATE-BUILD",
       "D4AB-PACKAGED-AB-COMPARE-EXPORT",
       "D4AB-PACKAGED-CANCEL-RECOVERY",
-      "D4AB-PACKAGED-2T-COMPATIBILITY",
-      "D4AB-WINDOWS-RECIPE-CLI-VALIDATION",
-      "D4AB-WINDOWS-ENTRYPOINT-REVIEW",
-      "D4AB-WINDOWS-OUTPUT-COLLISION-CHECK"
+      "D4AB-PACKAGED-2T-COMPATIBILITY"
     ],
-    "updated_at": "2026-11-05T15:26:04+00:00"
+    "updated_at": "2026-11-05T15:28:27+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
