@@ -239,4 +239,10 @@ def restriction_flux(cell: EndCell, side: str, pipe_area: float, area_into_duct:
             p_up = p_f * (1 + 0.5 * (g - 1) * m_f * m_f) ** (g / (g - 1))
         choked = area_out_of_duct > 0 and pv / p_up <= crit_c
         branch = "duct_to_volume"
-    return assemble(p_f, mdot, rho_f, branch, choked)
+    result = assemble(p_f, mdot, rho_f, branch, choked)
+    if stagnation and branch == "volume_to_duct" and result.mach_face > 1.0 + 1e-9:
+        # a single incoming characteristic cannot represent supersonic inflow through an
+        # unobstructed opening (that needs a nozzle): fail closed instead of returning M > 1.
+        # Outside the full-engine envelope of the example (max inflow M_face = 0.6, see audit).
+        raise RestrictionError(f"supersonic inflow face (M={result.mach_face:.3f}): outside model validity")
+    return result

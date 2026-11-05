@@ -25,6 +25,7 @@ from .duct import Duct, InadmissibleState
 from .kinematics import SliderCrank
 from .restriction import EndCell, RestrictionError, VolumeGas, restriction_flux
 from .thermo import Mixture, ThermoError
+from .twozone import TwoZoneModel
 from .valves import CYCLE_DEG, Valve, wrap
 
 RECOVERABLE = (InadmissibleState, RestrictionError, ThermoError, ValueError, OverflowError,
@@ -80,10 +81,13 @@ class CombustionSpec:
     wiebe: Wiebe
     efficiency: float = 0.98
     water_gas_k: float = 3.5
+    model: str = "single_zone"   # "single_zone" (complete combustion products) | "two_zone_equilibrium"
 
     def __post_init__(self):
         if not 0.0 <= self.efficiency <= 1.0:
             raise ValueError("combustion efficiency must lie in [0, 1]")
+        if self.model not in ("single_zone", "two_zone_equilibrium"):
+            raise ValueError("combustion model must be single_zone or two_zone_equilibrium")
 
 
 class Cylinder:
@@ -100,6 +104,8 @@ class Cylinder:
         self._t_guess = 1000.0
         self.woschni_reference = None  # (p, T, V, gamma) at IVC
         self.burn = None               # (fuel burned per unit x_b: species vector, unburned mass)
+        self.zones = (TwoZoneModel(mixture, geometry)
+                      if combustion is not None and combustion.model == "two_zone_equilibrium" else None)
 
     def state(self, p, T, Y, xb, theta):
         Y = np.asarray(Y, dtype=float)
@@ -111,7 +117,13 @@ class Cylinder:
         z[self.mix.ns + 1] = m * float(self.mix.internal_energy(Y, T))
         return z
 
+    def totals(self, z, theta):
+        """Conserved totals (species, tracer, U) whatever the state layout."""
+        return self.zones.totals(z, theta) if z.size == 2 else z
+
     def gas(self, z, theta):
+        if z.size == 2:
+            return self.zones.gas_view(z, theta)
         ns = self.mix.ns
         mi = z[:ns]
         m = mi.sum()
@@ -198,6 +210,8 @@ class CycleRecord:
     p_max: float = 0.0
     theta_p_max: float = float("nan")
     T_max: float = 0.0
+    T_b_max: float = 0.0
+    T_u_max: float = float("nan")   # only defined while an unburned zone exists (two-zone model)
     snapshots: dict = field(default_factory=dict)
     start_inventory: dict = field(default_factory=dict)
     end_inventory: dict = field(default_factory=dict)
@@ -272,7 +286,7 @@ class FourStrokeEngine:
             inv = d.inventory(state["ducts"][name])
             total[:self.ns + 1] += inv[:self.ns + 1]
             total[self.ns + 1] += inv[self.ns + 2]
-        total += state["cyl"]
+        total += self.cylinder.totals(state["cyl"], getattr(self, "_theta_now", self.theta_start))
         for z in state["plen"].values():
             total += z
         return total
@@ -280,9 +294,11 @@ class FourStrokeEngine:
     # ------------------------------------------------------------------- RHS
     def rhs(self, state, theta_abs):
         theta = wrap(theta_abs)
+        self._theta_now = theta
         ns, nv = self.ns, self.ns + 3
         prim = {name: d.primitive(state["ducts"][name]) for name, d in self.ducts.items()}
         cgas, cmass, cvol = self.cylinder.gas(state["cyl"], theta)
+        two_zone = state["cyl"].size == 2
         pgas = {k: pl.gas(state["plen"][k]) for k, pl in self.plenums.items()}
         faces, speeds, fallbacks = {}, {}, 0
         for name, d in self.ducts.items():
@@ -292,7 +308,7 @@ class FourStrokeEngine:
             F[1:-1], s[1:-1] = Fi, si
             fallbacks += nf
             faces[name], speeds[name] = F, s
-        dz = np.zeros(ns + 2)
+        dz = np.zeros(2 if two_zone else ns + 2)
         dplen = {k: np.zeros(ns + 2) for k in self.plenums}
         res_in = np.zeros(ns + 2)
         exchange = {}
@@ -308,7 +324,11 @@ class FourStrokeEngine:
             faces[c.duct.name][index] = r.flux_x
             speeds[c.duct.name][index] = abs(w["u"][index]) + w["a"][index]
             if c.volume is self.cylinder:
-                dz += r.to_volume
+                if two_zone:
+                    if a_into > 0.0 or a_out > 0.0:
+                        raise InadmissibleState("valve open while the cylinder is in the two-zone state")
+                else:
+                    dz += r.to_volume
             elif is_plenum:
                 dplen[c.volume.name] += r.to_volume
             else:
@@ -324,7 +344,7 @@ class FourStrokeEngine:
         geo = self.cylinder.geometry
         dVdt = geo.dvolume_dt(theta, self.rpm)
         piston_power = cgas.p * dVdt
-        q_loss, h_coef = 0.0, 0.0
+        q_loss, h_coef, q_u = 0.0, 0.0, 0.0
         ht = self.cylinder.heat_transfer
         if ht is not None:
             h_coef = ht.coefficient(bore_m=geo.bore_m, p_pa=cgas.p, T_K=cgas.T,
@@ -333,8 +353,21 @@ class FourStrokeEngine:
                                     gas_exchange=self.cylinder.gas_exchange(theta),
                                     combustion_phase=self.cylinder.combustion_phase(theta),
                                     reference=self.cylinder.woschni_reference, volume=cvol)
-            q_loss = ht.heat_loss_rate(h_coef, cgas.T, geo.piston_area, geo.liner_area(theta))
-        dz[ns + 1] -= piston_power + q_loss
+            if two_zone:
+                zs = self.cylinder.zones.last
+                fu, fb = zs.V_u / cvol, zs.V_b / cvol
+                a_liner = geo.liner_area(theta)
+                q_u = ht.heat_loss_rate(h_coef, zs.T_u, geo.piston_area * fu, a_liner * fu) if zs.m_u > 0.0 else 0.0
+                q_loss = q_u + ht.heat_loss_rate(h_coef, zs.T_b, geo.piston_area * fb, a_liner * fb)
+            else:
+                q_loss = ht.heat_loss_rate(h_coef, cgas.T, geo.piston_area, geo.liner_area(theta))
+        if two_zone:
+            zs = self.cylinder.zones.last
+            dz[0] = -(piston_power + q_loss)
+            # the unburned zone only loses its own share of the wall heat: ds_u = -q_u dt / (m_u T_u)
+            dz[1] = -q_u / (zs.m_u * zs.T_u) if (ht is not None and zs.m_u > 1e-9 * self.cylinder.zones.ctx.m) else 0.0
+        else:
+            dz[ns + 1] -= piston_power + q_loss
         mass_rate = sum(abs(r.mdot_into_duct) for c, r in zip(self.connections, exchange.values())
                         if c.volume is self.cylinder)
         if mass_rate > 0:
@@ -348,7 +381,8 @@ class FourStrokeEngine:
         rates = dict(reservoir_in=res_in, piston_power=piston_power, heat_loss=q_loss,
                      duct_heat=duct_heat, exchange=exchange, dt_limit=dt_limit, fallbacks=fallbacks,
                      gas=cgas, mass=cmass, volume=cvol, h=h_coef, theta=theta, prim=prim,
-                     plenum_gas={k: v[0] for k, v in pgas.items()})
+                     plenum_gas={k: v[0] for k, v in pgas.items()},
+                     zones=self.cylinder.zones.last if two_zone else None)
         return deriv, rates
 
     def burn_source(self, theta_a, theta_b, dt):
@@ -363,6 +397,8 @@ class FourStrokeEngine:
         dx = w.fraction(since_a + (theta_b - theta_a)) - w.fraction(since_a)
         if dx <= 0:
             return None, 0.0
+        if self.cylinder.zones is not None:  # zone closure carries the composition change itself
+            return None, dx
         species_per_x, unburned = self.cylinder.burn
         src = np.zeros(self.ns + 2)
         src[:self.ns] = species_per_x * dx / dt
@@ -434,7 +470,7 @@ class FourStrokeEngine:
                 break
             self._accumulate(ledger, record, rates, rates_b, dt, theta, theta_b, dx, rejected)
             state, theta = new, theta_b
-            self._on_event(state, theta, record)
+            state = self._on_event(state, theta, record)
             deriv, rates = self.rhs(state, theta)
             self._sample(record, state, theta, rates)
             closure = self.closure(ledger, inventory0, state)
@@ -475,8 +511,8 @@ class FourStrokeEngine:
 
     # ------------------------------------------------------------ bookkeeping
     def _inventories(self, state):
-        out = {"cylinder_mass": float(state["cyl"][:self.ns].sum()),
-               "cylinder_energy": float(state["cyl"][self.ns + 1])}
+        tot = self.cylinder.totals(state["cyl"], getattr(self, "_theta_now", self.theta_start))
+        out = {"cylinder_mass": float(tot[:self.ns].sum()), "cylinder_energy": float(tot[self.ns + 1])}
         for name, d in self.ducts.items():
             inv = d.inventory(state["ducts"][name])
             out[f"{name}_mass"] = float(inv[:self.ns].sum())
@@ -491,7 +527,7 @@ class FourStrokeEngine:
             rec.connection_mass[c.name] = [0.0, 0.0]
             rec.connection_species[c.name] = np.zeros(self.ns + 2)
             rec.choked_steps[c.name] = 0
-        rec.trace = {k: [] for k in ("theta", "p", "T", "V", "mass", "xb", "burn", "h", "q_loss")}
+        rec.trace = {k: [] for k in ("theta", "p", "T", "V", "mass", "xb", "burn", "h", "q_loss", "T_u", "T_b")}
         for c in self.connections:
             rec.trace[f"mdot_{c.name}"] = []
         for name in self.sensors:
@@ -556,16 +592,23 @@ class FourStrokeEngine:
             t[f"a_mean_{name}"].append(float(np.dot(rates["prim"][name]["a"], d.dx) / d.length))
         for name, gas in rates["plenum_gas"].items():
             t[f"p_plenum_{name}"].append(float(gas.p))
+        zs = rates["zones"]
+        t["T_u"].append(zs.T_u if zs is not None and zs.m_u > 0.0 else float("nan"))
+        t["T_b"].append(zs.T_b if zs is not None else g.T)
         if g.p > rec.p_max:
             rec.p_max, rec.theta_p_max = g.p, t["theta"][-1]
-        rec.T_max = max(rec.T_max, g.T)
+        rec.T_max = max(rec.T_max, g.T, t["T_b"][-1])
+        rec.T_b_max = max(rec.T_b_max, t["T_b"][-1])
+        if math.isfinite(t["T_u"][-1]):
+            rec.T_u_max = t["T_u"][-1] if not math.isfinite(rec.T_u_max) else max(rec.T_u_max, t["T_u"][-1])
 
     def _on_event(self, state, theta_abs, record):
         theta = wrap(theta_abs)
         if min(abs(theta - e) for e in self.events) > 1e-9:
-            return
+            return state
         cyl = self.cylinder
         gas, m, V = cyl.gas(state["cyl"], theta)
+        tot = cyl.totals(state["cyl"], theta)
         labels = []
         for label, valve in (("I", cyl.intake), ("E", cyl.exhaust)):
             if valve is not None:
@@ -580,13 +623,21 @@ class FourStrokeEngine:
             fuel = comb.efficiency * mi[self.mix.index(comb.fuel)]
             delta = products_change(self.mix, comb.fuel, fuel, mi[self.mix.index("O2")], comb.water_gas_k)
             cyl.burn = (delta, m * (1.0 - gas.xb))
+            if cyl.zones is not None:
+                z2 = cyl.zones.begin(state["cyl"], gas, comb.wiebe, comb.fuel, comb.efficiency)
+                if z2 is not None:
+                    state = dict(state, cyl=z2)
         if comb is not None and abs(theta - wrap(comb.wiebe.start_deg + comb.wiebe.duration_deg)) < 1e-9:
             cyl.burn = None
         if cyl.intake is not None and abs(theta - cyl.intake.lift_law.close_deg) < 1e-9:
             cyl.woschni_reference = (gas.p, gas.T, V, gas.gamma)
         for label in labels:
             record.snapshots[label] = dict(theta=theta, p=gas.p, T=gas.T, mass=m, volume=V, xb=gas.xb,
-                                           species=(state["cyl"][:self.ns]).tolist())
+                                           species=tot[:self.ns].tolist())
+        merge_at = cyl.exhaust.lift_law.open_deg if cyl.exhaust is not None else 180.0
+        if state["cyl"].size == 2 and abs(theta - wrap(merge_at)) < 1e-9:
+            state = dict(state, cyl=cyl.zones.merge(state["cyl"], theta))
+        return state
 
     def _finish_record(self, rec, keep_all):
         t = rec.trace

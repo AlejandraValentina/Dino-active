@@ -92,7 +92,7 @@ def build(config: dict, *, overrides: dict | None = None):
     c = config["combustion"]
     combustion = None if not c.get("enabled", True) else CombustionSpec(
         fuel, Wiebe(c["start_deg"], c["duration_deg"], c.get("wiebe_a", 5.0), c.get("wiebe_m", 2.0)),
-        c.get("efficiency", 0.98), c.get("water_gas_k", 3.5))
+        c.get("efficiency", 0.98), c.get("water_gas_k", 3.5), c.get("zone_model", "single_zone"))
     intake_valve, exhaust_valve = _valve(config["intake_valve"]), _valve(config["exhaust_valve"])
     cylinder = Cylinder("cylinder", mix, geometry, heat_transfer=heat, combustion=combustion,
                         intake_valves=intake_valve, exhaust_valves=exhaust_valve)

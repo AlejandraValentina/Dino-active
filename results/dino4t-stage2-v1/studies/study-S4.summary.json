@@ -1,0 +1,49 @@
+{
+  "name": "study-S4",
+  "command": [
+    "python",
+    "scripts/dino4t/run_stage2_studies.py",
+    "results/dino4t-stage2-v1/studies",
+    "S4"
+  ],
+  "started_at": "2026-11-04T16:09:45+00:00",
+  "finished_at": "2026-11-04T16:19:21+00:00",
+  "duration_s": 575.922,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "results\\dino4t-stage2-v1\\studies\\study-S4.log",
+  "log_lines": 26,
+  "log_bytes": 1919,
+  "error_lines": [
+    "8: Traceback (most recent call last):",
+    "26: ValueError: operands could not be broadcast together with shapes (18,11) (20,1) "
+  ],
+  "tail": [
+    "sens intake_Cd_forward",
+    "sens intake_Cd_reverse",
+    "sens exhaust_Cd_forward",
+    "sens intake_max_lift",
+    "sens exhaust_max_lift",
+    "sens intake_timing_shift_deg_per_pct",
+    "sens exhaust_timing_shift_deg_per_pct",
+    "Traceback (most recent call last):",
+    "  File \"C:\\Users\\ageribon.MIDES\\Dino-artifacts\\worktrees\\dino4t-foundation-v1\\scripts\\dino4t\\run_stage2_studies.py\", line 39, in <module>",
+    "    studies.sensitivity(cfg, parameters=names, rel_step=0.05, base_overrides=base, out_dir=OUT / \"S4\", progress=lambda n, e: print(\"sens\", n, flush=True))",
+    "  File \"C:\\Users\\ageribon.MIDES\\Dino-artifacts\\worktrees\\dino4t-foundation-v1\\motorsim\\dino4t\\studies.py\", line 162, in sensitivity",
+    "    o = run_operating_point(cfg, overrides=base_overrides, max_cycles=max_cycles, initial_state=state0)",
+    "        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"C:\\Users\\ageribon.MIDES\\Dino-artifacts\\worktrees\\dino4t-foundation-v1\\motorsim\\dino4t\\runner.py\", line 65, in run_operating_point",
+    "    result = engine.run(state, cycles, wall_limit_s=wall_limit_s, on_cycle=on_cycle, convergence=monitor)",
+    "             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"C:\\Users\\ageribon.MIDES\\Dino-artifacts\\worktrees\\dino4t-foundation-v1\\motorsim\\dino4t\\engine.py\", line 455, in run",
+    "    inventory0 = self.inventory(state)",
+    "                 ^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"C:\\Users\\ageribon.MIDES\\Dino-artifacts\\worktrees\\dino4t-foundation-v1\\motorsim\\dino4t\\engine.py\", line 286, in inventory",
+    "    inv = d.inventory(state[\"ducts\"][name])",
+    "          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"C:\\Users\\ageribon.MIDES\\Dino-artifacts\\worktrees\\dino4t-foundation-v1\\motorsim\\dino4t\\duct.py\", line 275, in inventory",
+    "    return (q * self.volume[:, None]).sum(axis=0)",
+    "            ~~^~~~~~~~~~~~~~~~~~~~~~",
+    "ValueError: operands could not be broadcast together with shapes (18,11) (20,1) "
+  ]
+}

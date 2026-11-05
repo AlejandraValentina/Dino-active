@@ -394,6 +394,105 @@ def open_end_shock_reflection(ratios=(1.5, 2.0)):
                  "post-shock state from Rankine-Hugoniot + reservoir contact; open end p = p_amb, simple wave u_exit")
 
 
+# ----------------------------------------------------- chemical equilibrium / two zones
+def _oracle():
+    import json
+    from pathlib import Path
+    path = Path(__file__).resolve().parents[2] / "results" / "dino4t-stage2-v1" / "oracle" / "equilibrium_reference.json"
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _charge_elements(mix, phi):
+    from .combustion import premixed_charge
+    from .equilibrium import ELEMENTS
+    y = premixed_charge(mix, "IC8H18", phi)
+    el = mix.element_masses(y[None, :])[0]
+    return y, np.array([el[mix.elements.index(e)] for e in ELEMENTS])
+
+
+def equilibrium_vs_cantera():
+    from .equilibrium import PRODUCTS, EquilibriumSolver
+    ref = _oracle()
+    mix = Mixture.standard()
+    eq = EquilibriumSolver()
+    worst, worst_rel = 0.0, 0.0
+    for c in ref["tp_grid_prod10"]:
+        _, b = _charge_elements(mix, c["phi"])
+        eq._warm = None
+        n = eq.solve(c["T"], c["p"], b)
+        y = n * eq.molar_mass
+        y /= y.sum()
+        r = np.array([c["Y"][k] for k in PRODUCTS])
+        worst = max(worst, float(np.max(np.abs(y - r))))
+        worst_rel = max(worst_rel, float(np.max(np.abs(y - r)[r > 1e-3] / r[r > 1e-3])))
+    return _case("equilibrium_solver_vs_cantera_tp", "combustion", worst < 1e-5 and worst_rel < 1e-3,
+                 dict(states=len(ref["tp_grid_prod10"]), max_abs_mass_fraction_error=worst, max_rel_error_major=worst_rel,
+                      cantera_version=ref["cantera_version"],
+                      note="same NASA-7 records in both codes: verifies the solver, not the thermodynamic data"),
+                 "max |Y - Y_cantera| < 1e-5; relative error of species with Y > 1e-3 below 0.1 %",
+                 "Cantera equilibrate('TP'), 10-species set, phi 0.8-1.2, T 1800-3000 K, p 1-60 bar")
+
+
+def two_zone_closure_vs_cantera():
+    from .equilibrium import TwoZoneClosure
+    ref = _oracle()
+    mix = Mixture.standard()
+    cl = TwoZoneClosure(mix)
+    worst = dict(p=0.0, T_u=0.0, T_b=0.0)
+    for c in ref["closure_cases"]:
+        y, b = _charge_elements(mix, c["phi"])
+        z = cl.solve(U=float(mix.internal_energy(y, c["T0"])), s_u=float(mix.entropy(y, c["T0"], c["p0"])),
+                     V=float(mix.gas_constant(y)) * c["T0"] / c["p0"], m=1.0, x_b=c["x_b"], Y_u=y, b_full=b,
+                     fuel_inert_full=0.0)
+        worst["p"] = max(worst["p"], abs(z.p / c["p"] - 1))
+        worst["T_b"] = max(worst["T_b"], abs(z.T_b / c["T_b"] - 1))
+        if c["x_b"] < 1.0:
+            worst["T_u"] = max(worst["T_u"], abs(z.T_u / c["T_u"] - 1))
+    # x_b = 1 is the constant-volume equilibrium (UV): compare with Cantera's independent UV result
+    uv_err = 0.0
+    for u in ref["uv_prod10"]:
+        if (u["T0"], u["p0"]) != (700.0, 22e5):
+            continue
+        y, b = _charge_elements(mix, u["phi"])
+        z = cl.solve(U=float(mix.internal_energy(y, 700.0)), s_u=float(mix.entropy(y, 700.0, 22e5)),
+                     V=float(mix.gas_constant(y)) * 700.0 / 22e5, m=1.0, x_b=1.0, Y_u=y, b_full=b, fuel_inert_full=0.0)
+        uv_err = max(uv_err, abs(z.T_b / u["T_final"] - 1), abs(z.p / u["p_final"] - 1))
+    ok = max(worst.values()) < 1e-6 and uv_err < 1e-6
+    return _case("two_zone_closure_vs_cantera", "combustion", ok,
+                 dict(cases=len(ref["closure_cases"]), max_rel_error=worst, uv_end_state_max_rel_error=uv_err,
+                      note="independent closure/root-finding/equilibrium (Cantera + scipy brentq) on shared NASA data; "
+                           "the trajectory of the integrated model has no independent reference (see assessment)"),
+                 "p, T_u, T_b within 1e-6 relative for x_b = 0.05..1; x_b = 1 equals Cantera UV equilibrium",
+                 "Cantera: SP for the isentropic frozen unburned zone, equilibrate('TP') + brentq for the burned zone")
+
+
+def two_zone_cylinder_temporal_order(dthetas=(1.0, 0.5, 0.25)):
+    from .combustion import Wiebe, premixed_charge
+    from .engine import CombustionSpec
+    mix = Mixture.standard()
+    geo = SliderCrank(0.086, 0.086, 0.143, 11.0)
+    charge = premixed_charge(mix, "IC8H18", 1.0)
+    probes, closures, ratio = [], [], None
+    for dth in dthetas:
+        comb = CombustionSpec("IC8H18", Wiebe(-20.0, 55.0), 0.98, model="two_zone_equilibrium")
+        eng = v._closed_engine(mix, geo, combustion=comb, dtheta=dth)
+        r = eng.run(eng.initial_state(cylinder=dict(p=1e5, T=330.0, Y=charge, xb=0.0), ducts={}), 1)
+        tr = r["cycles"][0].trace
+        th, p = np.array(tr["theta"]), np.array(tr["p"])
+        probes.append([float(np.interp(a, th, p)) for a in (-10.0, 0.0, 10.0, 40.0, 100.0)])
+        closures.append(max(r["max_closure"].values()))
+        tb, tu = np.array(tr["T_b"]), np.array(tr["T_u"])
+        ratio = (float(np.nanmax(tb)), float(np.nanmax(tu)))
+    a, b, c = probes
+    orders = [math.log2(abs(x - y) / abs(y - z)) for x, y, z in zip(a, b, c)]
+    ok = min(orders) >= 1.7 and max(closures) < 1e-12 and ratio[0] > ratio[1]
+    return _case("two_zone_closed_cylinder_temporal_order", "combustion", ok,
+                 dict(dtheta=list(dthetas), probe_angles_deg=[-10, 0, 10, 40, 100], observed_orders=orders,
+                      max_closure=closures, T_burned_max_K=ratio[0], T_unburned_max_K=ratio[1]),
+                 "all probe orders >= 1.7 (a priori: formal 2 - 0.3); ledger closure < 1e-12; T_burned > T_unburned",
+                 "Richardson on p(theta) of an adiabatic closed cylinder with piston motion and Wiebe burn")
+
+
 # --------------------------------------------------------------- engine level
 def intake_ringing_vs_webster(rpm=6000.0):
     """Free ringing of the closed-valve intake runner after IVC vs a linear horn-equation eigenfrequency."""
@@ -461,5 +560,6 @@ def stage2_cases():
              order_profiles(), fanno_friction(), wall_heat_transfer(), helmholtz_resonator()]
     cases += vessel_discharge_and_charge()
     cases += [strong_unsteady_inflow_vs_shock_contact_solution(), open_end_shock_reflection(),
+              equilibrium_vs_cantera(), two_zone_closure_vs_cantera(), two_zone_cylinder_temporal_order(),
               intake_ringing_vs_webster()]
     return cases

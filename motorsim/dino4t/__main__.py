@@ -19,6 +19,20 @@ def main(argv=None):
     run.add_argument("--phi", type=float, help="equivalence ratio override")
     run.add_argument("--cycles", type=int, help="maximum cycles")
     run.add_argument("--dx-mm", type=float)
+    sweep = sub.add_parser("sweep", help="parameter sweep with continuation (Cartesian product of --param)")
+    sweep.add_argument("config")
+    sweep.add_argument("--out", required=True)
+    sweep.add_argument("--param", action="append", required=True,
+                       help="dotted.path=start:stop:n  or  dotted.path=v1,v2,...  (repeatable)")
+    sweep.add_argument("--dx-mm", type=float)
+    sweep.add_argument("--max-cycles", type=int, default=14)
+    sens = sub.add_parser("sensitivity", help="local central-difference sensitivities (elasticities)")
+    sens.add_argument("config")
+    sens.add_argument("--out", required=True)
+    sens.add_argument("--rel-step", type=float, default=0.05)
+    sens.add_argument("--params", help="comma list; default all physical parameters")
+    sens.add_argument("--dx-mm", type=float)
+    sens.add_argument("--max-cycles", type=int, default=14)
     verify = sub.add_parser("verify", help="run the numerical verification suite")
     verify.add_argument("--out", required=True)
     verify.add_argument("--quick", action="store_true", help="skip the engine mesh-convergence study")
@@ -48,6 +62,31 @@ def main(argv=None):
                           "max_closure": s["conservation"]["max_relative_closure"],
                           "claims": s["claims"]}, indent=2))
         return 0 if s["status"] == "completed" else 1
+    if args.command == "sweep":
+        import itertools
+        from . import studies
+        axes = []
+        for spec in args.param:
+            path, values = spec.split("=", 1)
+            if ":" in values:
+                a, b, n = values.split(":")
+                axes.append([(path, p[path]) for p in studies.linspace_points(path, float(a), float(b), int(n))])
+            else:
+                axes.append([(path, float(x)) for x in values.split(",")])
+        points = [dict(combo) for combo in itertools.product(*axes)]
+        base = {"numerics": {"dx_mm": args.dx_mm}} if args.dx_mm else None
+        rows = studies.sweep(load(args.config), points, out_dir=args.out, max_cycles=args.max_cycles, base_overrides=base,
+                             progress=lambda r: print(json.dumps({k: r[k] for k in ("overrides", "status", "cycles", "imep_net_bar",
+                                                    "volumetric_efficiency_intake_valve")}, default=float), file=sys.stderr, flush=True))
+        return 0 if all(r["status"] == "completed" for r in rows) else 1
+    if args.command == "sensitivity":
+        from . import studies
+        base = {"numerics": {"dx_mm": args.dx_mm}} if args.dx_mm else None
+        res = studies.sensitivity(load(args.config), parameters=args.params.split(",") if args.params else None,
+                                  rel_step=args.rel_step, max_cycles=args.max_cycles, out_dir=args.out, base_overrides=base,
+                                  progress=lambda n, e: print(n, file=sys.stderr, flush=True))
+        print(json.dumps({"parameters": list(res["parameters"])}, indent=1))
+        return 0
     from .verification import run_suite
     report = run_suite(args.out, quick=args.quick)
     print(json.dumps({"passed": report["passed"], "failed": report["failed"]}, indent=2))

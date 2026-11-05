@@ -118,6 +118,7 @@ def cycle_indicators(record, context) -> dict:
         "isfc_g_kWh": sfc(fuel_iv, p_ind), "bsfc_g_kWh": sfc(fuel_iv, p_brake),
         "heat_loss_J": record.heat_loss, "heat_loss_fraction_of_fuel_energy": record.heat_loss / fuel_energy if fuel_energy > 0 else None,
         "p_max_bar": record.p_max / 1e5, "theta_p_max_deg": record.theta_p_max, "T_max_K": record.T_max,
+        "T_burned_max_K": record.T_b_max, "T_unburned_max_K": record.T_u_max,
         "exhaust_valve_mean_enthalpy_temperature_K": t_exh,
         "lower_heating_value_MJ_kg": lhv / 1e6,
         "mass_balance": {

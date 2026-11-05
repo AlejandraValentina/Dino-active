@@ -1,3 +1,18 @@
+> **ESTE INFORME ES DE LA ETAPA 1 Y QUEDA PARCIALMENTE SUPERADO.** La auditoría de
+> la etapa 2 ([stage2_assessment.md](stage2_assessment.md)) halló que el contorno
+> `QUASI_STEADY_RESTRICTION_V1` tenía un defecto de primer orden (−29,3 % de caudal
+> en un extremo abierto ideal, a cualquier Mach) que este informe no detectó. Los
+> números de la sección 6 (motor completo) corresponden a V1 y zona única y **no
+> deben usarse**; se conservan como procedencia y se reproducen con
+> `numerics.restriction_model = "V1"` y `combustion.zone_model = "single_zone"`.
+> Quedan **anuladas** estas afirmaciones de la etapa 1:
+>
+> * "el déficit de 0,234 % en el flujo bloqueado es el predicho por la hipótesis del
+>   contorno": era la firma del defecto (con V2 vale 3·10⁻⁶);
+> * "criterios de orden por limitador" y "umbral de deriva de entropía < 1e-5":
+>   fijados después de ver los resultados (ver §6 del nuevo informe);
+> * "ahora coincide con el 2T a 1e-13" se mantiene, pero no prueba el contorno.
+
 # Dino 4T — Informe de verificación numérica (`DINO4T_FOUNDATION_V1`)
 
 **Nivel de evidencia:** L0 (tests automatizados) + L1 (corridas de

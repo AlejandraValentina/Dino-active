@@ -22,6 +22,27 @@ CLAIMS = {
 }
 
 
+def resolved_models(config: dict) -> dict:
+    """Model identifiers actually selected by the configuration (not the static defaults)."""
+    models = dict(MODELS)
+    two_zone = config.get("combustion", {}).get("zone_model", "single_zone") == "two_zone_equilibrium"
+    models["cylinder"] = "TWO_ZONE_EQUILIBRIUM_V1" if two_zone else "SINGLE_ZONE_0D_V1"
+    models["combustion"] = "WIEBE_PRESCRIBED_BURN_TWO_ZONE_EQUILIBRIUM_V1" if two_zone else "WIEBE_SINGLE_ZONE_V1"
+    v = config.get("numerics", {}).get("restriction_model", "V2")
+    models["valve_boundary"] = f"QUASI_STEADY_RESTRICTION_{v}"
+    return models
+
+
+def _git_dirty():
+    """True when tracked files differ from HEAD (the commit alone then does not identify the code)."""
+    try:
+        out = subprocess.run(["git", "status", "--porcelain", "--untracked-files=no", "--", "."],
+                             capture_output=True, text=True, cwd=Path(__file__).parent, timeout=10)
+        return bool(out.stdout.strip()) if out.returncode == 0 else None
+    except (OSError, subprocess.SubprocessError):
+        return None
+
+
 def _git_commit():
     try:
         return subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True,
@@ -47,8 +68,22 @@ def _jsonable(value):
 
 
 def run_operating_point(config: dict, *, out_dir=None, overrides=None, max_cycles=None,
-                        wall_limit_s=3600.0, progress=None) -> dict:
+                        wall_limit_s=3600.0, progress=None, initial_state=None) -> dict:
+    """``initial_state``: converged state of a previous run of the same topology (continuation)."""
     engine, state, context = build(config, overrides=overrides)
+    warm_start = "none"
+    if initial_state is not None:
+        compatible = (set(initial_state["ducts"]) == set(state["ducts"])
+                      and all(initial_state["ducts"][k].shape == state["ducts"][k].shape for k in state["ducts"])
+                      and initial_state["cyl"].shape == state["cyl"].shape
+                      and set(initial_state["plen"]) == set(state["plen"]))
+        if compatible:
+            warm_start = "used"
+            state = {"ducts": {k: v.copy() for k, v in initial_state["ducts"].items()},
+                     "cyl": initial_state["cyl"].copy(),
+                     "plen": {k: v.copy() for k, v in initial_state["plen"].items()}}
+        else:  # e.g. a duct length change altered the number of cells: cold start, recorded in the summary
+            warm_start = "discarded_incompatible_mesh"
     num = context["config"].get("numerics", {})
     monitor = PeriodicityMonitor(context, num.get("periodicity"))
     cycles = int(max_cycles or num.get("max_cycles", 20))
@@ -64,10 +99,10 @@ def run_operating_point(config: dict, *, out_dir=None, overrides=None, max_cycle
     final = monitor.indicators[-1] if monitor.indicators else None
     summary = {
         "schema": "DINO4T_OPERATING_POINT_RESULT_V1",
-        "model_id": MODEL_ID, "models": MODELS,
+        "model_id": MODEL_ID, "models": resolved_models(context["config"]),
         "config_identifier": context["config"].get("identifier"),
         "config_sha256": context["config_hash"],
-        "code_commit": _git_commit(),
+        "code_commit": _git_commit(), "code_dirty": _git_dirty(),
         "thermo_sources": {"gri30_sha256": GRI30_SHA256, "burcat_sha256": BURCAT_SHA256, "accessed": ACCESSED},
         "provenance": {g: context["config"][g]["provenance"] for g in
                        ("geometry", "intake_valve", "exhaust_valve", "intake_duct", "exhaust_duct",
@@ -82,6 +117,7 @@ def run_operating_point(config: dict, *, out_dir=None, overrides=None, max_cycle
                           for ind in monitor.indicators],
         "conservation": {"final_relative_closure": result["closure"], "max_relative_closure": result["max_closure"]},
         "wall_seconds": result["wall_seconds"],
+        "warm_start": warm_start,
         "evidence_level": "L1_ENGINEERING_RUN",
         "claims": CLAIMS,
     }

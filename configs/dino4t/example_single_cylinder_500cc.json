@@ -69,7 +69,8 @@
   "combustion": {
     "provenance": "STANDARD_V1",
     "model": "WIEBE_SINGLE_ZONE_V1",
-    "notes": "a=5, m=2 and 50-60 deg duration are Heywood (1988) sec. 9.2.1 typical values; SOC is a calibration input.",
+    "zone_model": "two_zone_equilibrium",
+    "notes": "a=5, m=2 and 50-60 deg duration are Heywood (1988) sec. 9.2.1 typical values; SOC is a calibration input. zone_model: two_zone_equilibrium = burned gas in chemical equilibrium (10 species, NO excluded); single_zone = stage-1 complete-combustion products.",
     "enabled": true,
     "fuel": "IC8H18",
     "start_deg": -20.0,
