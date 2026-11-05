@@ -12545,9 +12545,9 @@
       "blocker": null,
       "commits": [],
       "evidence": [
-        "Superseded by decomposed execution tasks D4AB-PAIR-EXECUTION, D4AB-WINDOWS-CANDIDATE-BUILD, D4AB-2T-REGRESSION, and D4AB-PACKAGED-AB-ACCEPTANCE; no acceptance is claimed."
+        "Superseded by separately tracked pair, build, packaged A/B/export, cancellation/reopen, and 2T compatibility tasks; no Windows acceptance is yet claimed."
       ],
-      "next_action": "Historical queue item closed by decomposition; use the active gate tasks.",
+      "next_action": "Historical aggregate item closed by decomposition; use the active gate tasks.",
       "write_scope": [
         "results/dino4t-ab-engineering-v1/",
         "packaging/",
@@ -12562,11 +12562,15 @@
         "D4AB-COMPARISON-EXPORT",
         "D4AB-COOPERATIVE-CANCEL"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Run the committed bounded driver once; stop at 720 s total or per-point limits, no reruns or tolerance changes.",
+      "commits": [
+        "e09b33a79293c6ffe620253849e3439f40590f2b"
+      ],
+      "evidence": [
+        "DINO4T_AB_PAIR_EXECUTION_V1: A completed 6 cycles in 76.515 s, B completed 6 cycles in 75.812 s; pair 152.734 s including project/results. Both completed PERIODIC_CONVERGED at 6000 RPM, phi=1.0, existing tolerances, same clean source commit cb8f356aa616ebaa2e5ebb110a89e6edd40c0ff3. Strict comparison eligible; classification PERIODIC_MODEL_SENSITIVITY_ONLY."
+      ],
+      "next_action": "No repeat; use committed results in the single packaged acceptance.",
       "write_scope": [
         "scripts/dino4t/run_ab_pair_v1.py",
         "results/dino4t-ab-engineering-v1/runs/"
@@ -12578,13 +12582,16 @@
       "dependencies": [
         "D4AB-COMPARE-SEMANTICS",
         "D4AB-COMPARISON-EXPORT",
-        "D4AB-COOPERATIVE-CANCEL"
+        "D4AB-COOPERATIVE-CANCEL",
+        "D4AB-WINDOWS-RECIPE-CLI-VALIDATION",
+        "D4AB-WINDOWS-ENTRYPOINT-REVIEW",
+        "D4AB-WINDOWS-OUTPUT-COLLISION-CHECK"
       ],
-      "state": "READY",
+      "state": "WAITING",
       "blocker": null,
       "commits": [],
       "evidence": [],
-      "next_action": "Run build preflight and pinned Windows packaging once; do not rebuild a failed candidate.",
+      "next_action": "Wait for build CLI, entrypoint and output-target checks; then build once from a clean commit using --trial.",
       "write_scope": [
         "packaging/",
         "results/dino4t-ab-engineering-v1/windows/"
@@ -12598,11 +12605,15 @@
         "D4AB-COMPARISON-EXPORT",
         "D4AB-COOPERATIVE-CANCEL"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Run focused Desktop, project, and historical-result tests; classify known baseline failures without changing scientific contracts.",
+      "commits": [
+        "e09b33a79293c6ffe620253849e3439f40590f2b"
+      ],
+      "evidence": [
+        "34 passed, 1 skipped: tests/test_dino_desktop.py tests/test_project.py tests/test_example_projects.py; 231.02 s."
+      ],
+      "next_action": "No repeat; use committed results in the single packaged acceptance.",
       "write_scope": [
         "tests/test_dino_desktop.py",
         "tests/test_project.py",
@@ -12617,14 +12628,223 @@
         "D4AB-WINDOWS-CANDIDATE-BUILD",
         "D4AB-2T-REGRESSION"
       ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "Superseded by separately tracked pair, build, packaged A/B/export, cancellation/reopen, and 2T compatibility tasks; no Windows acceptance is yet claimed."
+      ],
+      "next_action": "Historical aggregate item closed by decomposition; use the active gate tasks.",
+      "write_scope": [
+        "results/dino4t-ab-engineering-v1/windows/",
+        "tests/test_dino4t_desktop_integration.py"
+      ]
+    },
+    {
+      "id": "D4AB-PAIR-ARTIFACT-VERIFICATION",
+      "description": "Independently verify the actual A/B result, resolved config, trace, project and comparison hashes and scientific qualifications.",
+      "dependencies": [
+        "D4AB-PAIR-EXECUTION"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [
+        "e09b33a79293c6ffe620253849e3439f40590f2b"
+      ],
+      "evidence": [
+        "results/dino4t-ab-engineering-v1/runs/artifact-integrity.json: PASS; both API contracts/configs and summary/config/trace hashes verified; native project reopened with 2 refs; only max_lift_mm differs; model-sensitivity-only classification."
+      ],
+      "next_action": "Consume exact saved project in packaged UI; do not rerun the pair.",
+      "write_scope": [
+        "results/dino4t-ab-engineering-v1/runs/"
+      ]
+    },
+    {
+      "id": "D4AB-SOURCE-DESKTOP-AB-VERIFY",
+      "description": "Open the saved real-result project in the source Desktop, reproduce the UI A/B comparison and exercise JSON/CSV/HTML exports without a solver run.",
+      "dependencies": [
+        "D4AB-PAIR-ARTIFACT-VERIFICATION"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [
+        "e09b33a79293c6ffe620253849e3439f40590f2b"
+      ],
+      "evidence": [
+        "scripts/dino4t/verify_ab_desktop_v1.py PASS; Desktop loaded both results, reproduced comparison ID 54598307b81a3c99069f6273093cd321229a39864adde97565f9f4a34c5b974f, exported all formats with four full-precision CSV rows. Capture: results/dino4t-ab-engineering-v1/runs/source-desktop-ab-1360x900.png (Segoe UI loaded)."
+      ],
+      "next_action": "Repeat these checks only against the packaged executable.",
+      "write_scope": [
+        "scripts/dino4t/verify_ab_desktop_v1.py",
+        "results/dino4t-ab-engineering-v1/runs/"
+      ]
+    },
+    {
+      "id": "D4AB-WINDOWS-BUILD-ENVIRONMENT",
+      "description": "Create the isolated Windows packaging environment with the exact pinned build dependencies; keep it excluded from Git and the product.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [
+        "e09b33a79293c6ffe620253849e3439f40590f2b"
+      ],
+      "evidence": [
+        ".venv-build uses Python 3.11.0; all packaging/requirements-build.txt versions installed and checked (PyInstaller 6.22.3, PySide6 6.11.2, NumPy 2.3.0, SciPy 1.15.2, pywinauto 0.6.9 among pins). .venv-build is Git-ignored."
+      ],
+      "next_action": "Use this environment for one clean rc12 TRIAL build.",
+      "write_scope": [
+        ".venv-build/"
+      ]
+    },
+    {
+      "id": "D4AB-WINDOWS-INPUT-MANIFEST",
+      "description": "Verify frozen Windows build inputs are clean, complete and reproducibly hashed before the candidate build.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [
+        "e09b33a79293c6ffe620253849e3439f40590f2b"
+      ],
+      "evidence": [
+        "Input manifest PASS: 255 files, SHA-256 cc2b065d5902f1942376efe00f6734e91a25a86f64dbaf4b1f5d89d85f1fd602; current packaged inputs match preregistered manifest. Receipt: results/dino4t-ab-engineering-v1/preregistration/windows-input-manifest-precheck.json."
+      ],
+      "next_action": "Build script will recheck the manifest before and after PyInstaller.",
+      "write_scope": [
+        "packaging/",
+        "motorsim/",
+        "examples/projects/"
+      ]
+    },
+    {
+      "id": "D4AB-WINDOWS-STORAGE-PREFLIGHT",
+      "description": "Recheck disk capacity for exactly one Windows candidate and its temporary PyInstaller work tree.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [
+        "e09b33a79293c6ffe620253849e3439f40590f2b"
+      ],
+      "evidence": [
+        "Storage preflight PASS: 1.5 GiB output + 1 GiB temp estimate, 2 GiB reserve; C: had 26,087,006,208 bytes free and 23,402,651,648 bytes projected headroom. Receipt: results/dino4t-ab-engineering-v1/preregistration/pre-build-storage-preflight.json."
+      ],
+      "next_action": "Do not build a second candidate.",
+      "write_scope": [
+        "results/dino4t-ab-engineering-v1/preregistration/"
+      ]
+    },
+    {
+      "id": "D4AB-WINDOWS-UIA-DRIVER-PREP",
+      "description": "Prepare an external UI Automation driver for the packaged 4T project, A/B exports, one-cycle-boundary cancellation, and reopen recovery.",
+      "dependencies": [
+        "D4AB-SOURCE-DESKTOP-AB-VERIFY"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [
+        "e09b33a79293c6ffe620253849e3439f40590f2b"
+      ],
+      "evidence": [
+        "tests/verify_dino4t_ab_windows.py added; syntax and pinned pywinauto/COM/Win32 imports verified. It is external acceptance tooling and is not packaged. Actual EXE run remains pending."
+      ],
+      "next_action": "Run once against the sole candidate; do not rebuild if acceptance fails.",
+      "write_scope": [
+        "tests/verify_dino4t_ab_windows.py"
+      ]
+    },
+    {
+      "id": "D4AB-PACKAGED-AB-COMPARE-EXPORT",
+      "description": "In the actual rc12 EXE, open the saved 4T project, reproduce the strict periodic A/B comparison and export JSON/CSV/HTML.",
+      "dependencies": [
+        "D4AB-WINDOWS-CANDIDATE-BUILD",
+        "D4AB-PAIR-ARTIFACT-VERIFICATION",
+        "D4AB-WINDOWS-UIA-DRIVER-PREP"
+      ],
       "state": "WAITING",
       "blocker": null,
       "commits": [],
       "evidence": [],
-      "next_action": "Open the packaged app, load the saved 4T project, compare exact runs, export all artifacts, and verify cancellation/2T regression behavior.",
+      "next_action": "Run the UIA driver against the one candidate and verify exported hashes, precision and caveat.",
       "write_scope": [
-        "results/dino4t-ab-engineering-v1/windows/",
-        "tests/test_dino4t_desktop_integration.py"
+        "results/dino4t-ab-engineering-v1/windows/"
+      ]
+    },
+    {
+      "id": "D4AB-PACKAGED-CANCEL-RECOVERY",
+      "description": "In the actual rc12 EXE, cancel at a complete-cycle boundary and verify control returns and the saved A/B project can be reopened and compared again.",
+      "dependencies": [
+        "D4AB-WINDOWS-CANDIDATE-BUILD",
+        "D4AB-PAIR-ARTIFACT-VERIFICATION",
+        "D4AB-WINDOWS-UIA-DRIVER-PREP"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Run only the short, single cancellation smoke in the packaged acceptance driver; no periodicity run.",
+      "write_scope": [
+        "results/dino4t-ab-engineering-v1/windows/"
+      ]
+    },
+    {
+      "id": "D4AB-PACKAGED-2T-COMPATIBILITY",
+      "description": "Confirm the one packaged candidate still starts Dino Desktop and retains 2T project routing alongside its 4T workspace.",
+      "dependencies": [
+        "D4AB-WINDOWS-CANDIDATE-BUILD",
+        "D4AB-2T-REGRESSION"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Use the same packaged process/session evidence; do not execute 2T solver work.",
+      "write_scope": [
+        "results/dino4t-ab-engineering-v1/windows/"
+      ]
+    },
+    {
+      "id": "D4AB-WINDOWS-RECIPE-CLI-VALIDATION",
+      "description": "Validate the pinned build recipe CLI under the isolated Python 3.11.0 environment without invoking a build.",
+      "dependencies": [
+        "D4AB-WINDOWS-BUILD-ENVIRONMENT"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Run the build recipe help/metadata path and verify it does not create output or PyInstaller work directories.",
+      "write_scope": [
+        "packaging/build_windows.py"
+      ]
+    },
+    {
+      "id": "D4AB-WINDOWS-ENTRYPOINT-REVIEW",
+      "description": "Verify the frozen Dino Desktop entrypoint calls freeze_support before GUI imports and the bundle explicitly collects the 4T API dependencies.",
+      "dependencies": [
+        "D4AB-WINDOWS-INPUT-MANIFEST"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Inspect entrypoint/spec ordering and retain line-level evidence; no solver changes.",
+      "write_scope": [
+        "packaging/dino_desktop_entry.py",
+        "packaging/MotorSim.spec"
+      ]
+    },
+    {
+      "id": "D4AB-WINDOWS-OUTPUT-COLLISION-CHECK",
+      "description": "Check the external Windows candidate destination is unused and the exact one-build output/work targets remain within the authorized storage reserve.",
+      "dependencies": [
+        "D4AB-WINDOWS-STORAGE-PREFLIGHT"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "After committing source/evidence, inspect the candidate name derived from HEAD and verify no destination exists.",
+      "write_scope": [
+        "results/dino4t-ab-engineering-v1/windows/"
       ]
     }
   ],
@@ -12839,9 +13059,20 @@
       "D4AB-COMPARISON-EXPORT",
       "D4AB-COOPERATIVE-CANCEL",
       "D4AB-PAIR-EXECUTION",
-      "D4AB-WINDOWS-CANDIDATE-BUILD",
       "D4AB-2T-REGRESSION",
-      "D4AB-PACKAGED-AB-ACCEPTANCE"
+      "D4AB-PAIR-ARTIFACT-VERIFICATION",
+      "D4AB-SOURCE-DESKTOP-AB-VERIFY",
+      "D4AB-WINDOWS-BUILD-ENVIRONMENT",
+      "D4AB-WINDOWS-INPUT-MANIFEST",
+      "D4AB-WINDOWS-STORAGE-PREFLIGHT",
+      "D4AB-WINDOWS-UIA-DRIVER-PREP",
+      "D4AB-WINDOWS-CANDIDATE-BUILD",
+      "D4AB-PACKAGED-AB-COMPARE-EXPORT",
+      "D4AB-PACKAGED-CANCEL-RECOVERY",
+      "D4AB-PACKAGED-2T-COMPATIBILITY",
+      "D4AB-WINDOWS-RECIPE-CLI-VALIDATION",
+      "D4AB-WINDOWS-ENTRYPOINT-REVIEW",
+      "D4AB-WINDOWS-OUTPUT-COLLISION-CHECK"
     ],
     "completion_criterion": "Two distinct preregistered 4T designs are run through DINO4T_API_V1 within the fixed budget; A/B comparison and provenance exports are exercised from the packaged Windows Desktop; targeted 2T regressions pass; no experimental validation or predictive claim."
   },
@@ -17908,6 +18139,76 @@
       "kind": "TEST_PLAN",
       "summary": "Targeted 2T Desktop, project and historical result regression remains queued; no 2T tests run in this objective yet.",
       "commit": "e09b33a79293c6ffe620253849e3439f40590f2b"
+    },
+    {
+      "at": "2026-11-05T15:24:21+00:00",
+      "task": "D4AB-PAIR-EXECUTION",
+      "kind": "PAIR_RUN",
+      "summary": "One fixed pair: A and B each reached PERIODIC_CONVERGED in 6 cycles; 152.734 s total under 720 s. Same clean code commit; no retries or threshold changes.",
+      "commit": "cb8f356aa616ebaa2e5ebb110a89e6edd40c0ff3"
+    },
+    {
+      "at": "2026-11-05T15:24:21+00:00",
+      "task": "D4AB-2T-REGRESSION",
+      "kind": "REGRESSION",
+      "summary": "2T Desktop/project/example regression suite: 34 passed, 1 skipped; no source physics or historic evidence changed.",
+      "commit": "cb8f356aa616ebaa2e5ebb110a89e6edd40c0ff3"
+    },
+    {
+      "at": "2026-11-05T15:24:21+00:00",
+      "task": "D4AB-PAIR-ARTIFACT-VERIFICATION",
+      "kind": "ARTIFACT_INTEGRITY",
+      "summary": "Verified both API results, config/result/trace hashes, exact single design change, native project references and sensitivity-only claims.",
+      "commit": "e09b33a79293c6ffe620253849e3439f40590f2b"
+    },
+    {
+      "at": "2026-11-05T15:24:22+00:00",
+      "task": "D4AB-SOURCE-DESKTOP-AB-VERIFY",
+      "kind": "SOURCE_DESKTOP",
+      "summary": "Source Desktop loaded saved actual A/B results, reproduced comparison ID and exported JSON/CSV/HTML; 1360x900 capture saved.",
+      "commit": "e09b33a79293c6ffe620253849e3439f40590f2b"
+    },
+    {
+      "at": "2026-11-05T15:25:25+00:00",
+      "task": "D4AB-WINDOWS-BUILD-ENVIRONMENT",
+      "kind": "BUILD_ENVIRONMENT",
+      "summary": "Pinned CPython 3.11.0 Windows x64 environment installed; all requirements match; PyInstaller/PySide6/UIA imports verified.",
+      "commit": "cb8f356aa616ebaa2e5ebb110a89e6edd40c0ff3"
+    },
+    {
+      "at": "2026-11-05T15:25:25+00:00",
+      "task": "D4AB-WINDOWS-INPUT-MANIFEST",
+      "kind": "BUILD_PROVENANCE",
+      "summary": "The 255-file packaged-input manifest is clean and matches preregistration SHA-256 cc2b065d5902f1942376efe00f6734e91a25a86f64dbaf4b1f5d89d85f1fd602.",
+      "commit": "cb8f356aa616ebaa2e5ebb110a89e6edd40c0ff3"
+    },
+    {
+      "at": "2026-11-05T15:25:25+00:00",
+      "task": "D4AB-WINDOWS-STORAGE-PREFLIGHT",
+      "kind": "STORAGE_PREFLIGHT",
+      "summary": "Pre-build storage PASS with 1.5 GiB output, 1 GiB work estimate, 2 GiB reserve and 23.40 GB projected C: headroom.",
+      "commit": "cb8f356aa616ebaa2e5ebb110a89e6edd40c0ff3"
+    },
+    {
+      "at": "2026-11-05T15:25:26+00:00",
+      "task": "D4AB-WINDOWS-UIA-DRIVER-PREP",
+      "kind": "UIA_DRIVER",
+      "summary": "External packaged-app UIA driver syntax-compiled; pywinauto, COM and Win32 imports PASS. Actual EXE run is pending.",
+      "commit": "e09b33a79293c6ffe620253849e3439f40590f2b"
+    },
+    {
+      "at": "2026-11-05T15:26:39+00:00",
+      "task": "D4AB-WINDOWS-RECIPE-CLI-VALIDATION",
+      "kind": "BUILD_RECIPE",
+      "summary": "Pinned build_windows.py --help path succeeds from .venv-build and creates no output/work target.",
+      "commit": "cb8f356aa616ebaa2e5ebb110a89e6edd40c0ff3"
+    },
+    {
+      "at": "2026-11-05T15:26:39+00:00",
+      "task": "D4AB-WINDOWS-ENTRYPOINT-REVIEW",
+      "kind": "ENTRYPOINT_REVIEW",
+      "summary": "Verified freeze_support precedes GUI import in the frozen Dino2T entrypoint; PyInstaller spec includes the native 4T API/dependencies.",
+      "commit": "cb8f356aa616ebaa2e5ebb110a89e6edd40c0ff3"
     }
   ],
   "legacy_gate_status": {
@@ -17926,20 +18227,23 @@
     "state": "OPEN",
     "classification": null,
     "evidence": [],
-    "gate_tasks_total": 7,
-    "gate_tasks_done": 3,
+    "gate_tasks_total": 18,
+    "gate_tasks_done": 11,
     "gate_task_states": {
-      "DONE": 3,
-      "READY": 3,
-      "WAITING": 1
+      "DONE": 11,
+      "WAITING": 4,
+      "READY": 3
     },
     "remaining": [
-      "D4AB-PAIR-EXECUTION",
       "D4AB-WINDOWS-CANDIDATE-BUILD",
-      "D4AB-2T-REGRESSION",
-      "D4AB-PACKAGED-AB-ACCEPTANCE"
+      "D4AB-PACKAGED-AB-COMPARE-EXPORT",
+      "D4AB-PACKAGED-CANCEL-RECOVERY",
+      "D4AB-PACKAGED-2T-COMPATIBILITY",
+      "D4AB-WINDOWS-RECIPE-CLI-VALIDATION",
+      "D4AB-WINDOWS-ENTRYPOINT-REVIEW",
+      "D4AB-WINDOWS-OUTPUT-COLLISION-CHECK"
     ],
-    "updated_at": "2026-11-05T15:02:45+00:00"
+    "updated_at": "2026-11-05T15:26:04+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

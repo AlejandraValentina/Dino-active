@@ -3,13 +3,16 @@
 The authoritative task states are in
 `results/2t-commercial-core-20261002/program-status.json`.
 
-- [x] Strict compatibility and eligibility for A/B performance comparisons.
-- [x] Reproducible A/B result, CSV, and technical report exports.
-- [x] Bounded execution cancellation and safe-cycle behavior; restartable
-      checkpoints are not supported by the current API contract.
-- [ ] Execute the fixed two-design API pair once within the preregistered
-      720-second combined budget.
-- [ ] Build one Windows candidate from a clean, identified source state.
-- [ ] Run targeted 2T Desktop/project/result regression tests.
-- [ ] Verify the actual packaged Desktop A/B workflow with those API results,
-      including exports and cancellation behavior.
+- [x] Strict eligibility and compatibility checks for periodic A/B comparisons.
+- [x] Full precision JSON/CSV exports and qualified technical report.
+- [x] Safe-cycle cancellation; restartable checkpoints explicitly unsupported.
+- [x] Execute the one preregistered A/B API pair within its 720-second cap.
+- [x] Verify result, resolved-config, trace, project, and comparison identities.
+- [x] Load the actual run project in source Desktop and exercise all A/B exports.
+- [x] Run targeted 2T project/Desktop regression tests.
+- [x] Prepare the pinned Windows build environment and external UIA verifier.
+- [ ] Build one clean, identified Dino Desktop 0.1.0-rc12 TRIAL candidate.
+- [ ] Verify packaged A/B comparison and JSON/CSV/HTML exports with the saved
+      project and actual API result artifacts.
+- [ ] Verify packaged complete-cycle cancellation and reopen recovery.
+- [ ] Verify the packaged application retains the 2T project route.
