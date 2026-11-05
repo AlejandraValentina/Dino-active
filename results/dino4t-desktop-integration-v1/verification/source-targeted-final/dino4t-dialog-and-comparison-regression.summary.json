@@ -1,0 +1,24 @@
+{
+  "name": "dino4t-dialog-and-comparison-regression",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_dino4t_desktop_integration.py::test_new_engine_dialog_creates_4t_project_from_desktop_cycle_choice",
+    "tests/test_dino4t_desktop_integration.py::test_desktop_comparison_rejects_real_one_cycle_result_against_periodic_history"
+  ],
+  "started_at": "2026-11-05T13:06:47+00:00",
+  "finished_at": "2026-11-05T13:07:05+00:00",
+  "duration_s": 17.36,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\dino4t-desktop-integration-v1\\verification\\source-targeted-final\\dino4t-dialog-and-comparison-regression.log",
+  "log_lines": 2,
+  "log_bytes": 99,
+  "error_lines": [],
+  "tail": [
+    "..                                                                       [100%]",
+    "2 passed in 16.77s"
+  ]
+}

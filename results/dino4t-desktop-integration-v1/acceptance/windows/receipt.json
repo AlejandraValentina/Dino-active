@@ -1,0 +1,119 @@
+{
+  "schema": "DINO4T_WINDOWS_DESKTOP_ACCEPTANCE_V1",
+  "status": "PASS_INTERNAL_CANDIDATE",
+  "candidate": "MotorSim-0.1.0-rc12-windows-x64-552c60ed",
+  "source_commit": "552c60ed9454a9d86ef05707c38d495d109247c3",
+  "application_version": "0.1.0-rc12",
+  "package_archive": "MotorSim-0.1.0-rc12-windows-x64-552c60ed.zip",
+  "package_sha256": "752e8e8a14819fa42277fc0667f396a3f686e647e6cf70f6b531b8e6eac637d2",
+  "package_bytes": 91465647,
+  "executable": "MotorSim/Dino2T.exe",
+  "executable_sha256": "7ca0ca86c91152b5e0f1d1de1f2bc6f5d3973703cb03e46dcb3c2dc676c7f048",
+  "build": {
+    "packaged_inputs_clean": true,
+    "source_dirty": false,
+    "input_manifest_sha256": "852adc92a6545d74ab4ebe64675b33a0ed3c349d69ca7823847a89f97e1e3895",
+    "input_count": 254,
+    "duration_seconds": 85.545,
+    "numpy": "2.3.0",
+    "scipy": "1.15.2",
+    "pyinstaller": "6.22.3",
+    "single_candidate_rebuild_after_diagnostic": true
+  },
+  "preflight": {
+    "status": "PASS",
+    "reserved_free_space_bytes": 2147483648,
+    "estimated_output_and_work_bytes": 2684354560
+  },
+  "desktop_checks": {
+    "normal_2t_window_opened": true,
+    "historical_2t_project_loaded": true,
+    "historical_2t_project_schema": "MOTORSIM_ENGINE_PROJECT_V2",
+    "historical_2t_project_sha256": "a64de7b3c68fcd73044dc301f7c2d54cf342114f54a378d36564883ec91ecd69",
+    "historical_2t_results_verified": 4,
+    "historical_2t_result_sha256": [
+      "e4c3adde5bb94aae6d22a1137f1e876d2ec8f19ef782353ff5955b7a55029123",
+      "2a5ec9be06cc793341c2e3937bb89b46ac5922c4d91134bfdf641c4a29dd3688",
+      "00d6c90718ef6a02b57c44f2221a6a564dd2b9d17fdd3481fd8650fa10748acc",
+      "67680841399d81aba86c44f54027d360476e70b7b3dd9035b93678b7756f7271"
+    ],
+    "4t_editor_geometry_edit": true,
+    "4t_escape_variant_edit": true,
+    "save_close_reopen": true,
+    "historical_4t_periodic_result_import": true,
+    "bounded_4t_desktop_run": true,
+    "csv_export": true,
+    "technical_html_report": true,
+    "run_status": "completed",
+    "periodicity_status": "NOT_CONVERGED",
+    "validation_claims": {
+      "experimental_validation": "NOT_PERFORMED",
+      "predictive_capability": "NOT_CLAIMED"
+    },
+    "runs": [
+      {
+        "run_id": "2aa0710de21a4a62bf9a06ba6e18f7aa",
+        "result_sha256": "b3177da985c48ca8cc9f5386645eab4eb8fb88347c25ff3f1c7062eba44c28dc",
+        "config_sha256": "5841bea10946f5ae73f0fd2cdd35a3525c143cb591f0105898f247664846c4be",
+        "periodicity_status": "PERIODIC_CONVERGED",
+        "imported_from_existing_result": true
+      },
+      {
+        "run_id": "e48ee635e73c4aa79e2c37ef98cbe264",
+        "result_sha256": "95f3c837c58e7854a66b1337909fe7718b8da3a5cd0a2a2e04bce0e754d26f29",
+        "config_sha256": "258675e2ef1f20029a1abf4183c0f74433d722cbeff9d413e8b04ab1089d48df",
+        "periodicity_status": "NOT_CONVERGED",
+        "imported_from_existing_result": false
+      }
+    ]
+  },
+  "screenshots": [
+    {
+      "path": "proyecto-2t-historico-1360x900.png",
+      "sha256": "cd51db328b8c66f17ef74ff405b38337eac9f1f88cf54661e7be0aa6823386c3",
+      "bytes": 50944
+    },
+    {
+      "path": "modelo-980x680.png",
+      "sha256": "1f23624fb8ad2b77c04df20f369b34327e41a13027e1a5aaced21abed823d36e",
+      "bytes": 45527
+    },
+    {
+      "path": "resultados-1360x900.png",
+      "sha256": "70d706459ec0e96fe7d64125a3efee2278f67ef654c6d35c953fc40c6a5781b6",
+      "bytes": 59740
+    },
+    {
+      "path": "historial-1920x1080.png",
+      "sha256": "a6c4e9f7014cab208d182988fa5ca0a4292ad8e8d3506fabf11b32ba9f806b1a",
+      "bytes": 62822
+    },
+    {
+      "path": "resultado-ejecucion-acotada-1360x900.png",
+      "sha256": "0421ee2ced69d5385a5bee5cf5683af5a4e13c15fe69fd337cf8ccdf53f08d5b",
+      "bytes": 61267
+    }
+  ],
+  "limitations": [
+    "4T public API currently has no cancel operation or serializable checkpoint/restart state.",
+    "No solver physics/equations changed.",
+    "4T experimental validation remains NOT_PERFORMED; predictive capability remains NOT_CLAIMED.",
+    "The 2T predictive reliability objective remains open and separate.",
+    "Internal verification candidate only; no stable-release promotion or distribution."
+  ],
+  "source_regressions": {
+    "expanded_suite": {
+      "passed": 66,
+      "skipped": 1,
+      "summary": "results/dino4t-desktop-integration-v1/verification/source-targeted-final/dino4t-desktop-source-regression-final.summary.json"
+    },
+    "focused_after_suite": {
+      "passed": 2,
+      "summary": "results/dino4t-desktop-integration-v1/verification/source-targeted-final/dino4t-dialog-and-comparison-regression.summary.json",
+      "coverage": [
+        "NewEngineDialog cycle selection creates a synthetic 4T project from Desktop",
+        "A real bounded one-cycle result is rejected for performance comparison against the historical periodic point"
+      ]
+    }
+  }
+}

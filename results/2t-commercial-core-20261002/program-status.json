@@ -1,7 +1,7 @@
 {
   "schema": "MOTORSIM_PROGRAM_STATUS_V2",
   "program": "MOTORSIM_2T_COMMERCIAL_CORE",
-  "recorded_at": "2026-11-05T12:47:36+00:00",
+  "recorded_at": "2026-11-05T13:07:30+00:00",
   "continuation_baseline": "401d8d70a3c06a85c75328ed3e83af3d39c7c88c",
   "status_capture_head": "f2c6926",
   "overall": "MOTORSIM_2T_COMMERCIAL_CORE_PARTIAL",
@@ -12407,7 +12407,8 @@
       "evidence": [
         "openspec/changes/dino4t-desktop-integration-v1/specs/dino4t-desktop-integration-v1/spec.md",
         "tests/test_dino4t_desktop_integration.py",
-        "results/dino4t-desktop-integration-v1/verification/source-targeted/dino4t-desktop-source-regression.summary.json"
+        "results/dino4t-desktop-integration-v1/verification/source-targeted/dino4t-desktop-source-regression.summary.json",
+        "results/dino4t-desktop-integration-v1/verification/source-targeted-final/dino4t-dialog-and-comparison-regression.summary.json"
       ],
       "next_action": "Source layer is implemented; acceptance now requires a packaged Windows candidate."
     },
@@ -12415,52 +12416,61 @@
       "id": "DINO4T-WINDOWS-BUILD-AND-PROVENANCE-V1",
       "description": "Build one Windows candidate from the clean integration commit and record source commit, dependency manifest and SHA-256.",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "552c60e"
+      ],
       "evidence": [
         "packaging/build_windows.py",
         "packaging/requirements-build.txt",
         "scripts/agents/storage_preflight.py",
-        "results/dino4t-desktop-integration-v1/verification/packaged-candidate-1-failure.json"
+        "results/dino4t-desktop-integration-v1/verification/packaged-candidate-1-failure.json",
+        "results/dino4t-desktop-integration-v1/acceptance/windows/receipt.json"
       ],
       "write_scope": [
         "packaging/",
         "results/dino4t-desktop-integration-v1/acceptance/"
       ],
-      "next_action": "Run the single preflighted candidate build."
+      "next_action": "Acceptance passed for the recorded internal candidate; do not promote or rebuild without a concrete defect."
     },
     {
       "id": "DINO4T-FROZEN-4T-DESKTOP-ACCEPTANCE-V1",
       "description": "On the packaged executable verify 4T model edit, variant/exhaust edit, persistence, historical import, bounded run, transient labeling, CSV and report.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "552c60e"
+      ],
       "evidence": [
         "motorsim/desktop/acceptance_smoke_4t.py",
-        "results/dino4t-desktop-integration-v1/verification/source-targeted/dino4t-desktop-source-regression.summary.json"
+        "results/dino4t-desktop-integration-v1/verification/source-targeted/dino4t-desktop-source-regression.summary.json",
+        "results/dino4t-desktop-integration-v1/acceptance/windows/receipt.json"
       ],
       "write_scope": [
         "results/dino4t-desktop-integration-v1/acceptance/"
       ],
-      "next_action": "Run against the one generated candidate; do not rebuild on a failure."
+      "next_action": "Acceptance passed for the recorded internal candidate; do not promote or rebuild without a concrete defect."
     },
     {
       "id": "DINO4T-FROZEN-2T-HISTORICAL-COMPATIBILITY-V1",
       "description": "Open the historical V2 2T project and hash-bound results through packaged Desktop, confirming the existing 2T entry/workflow remains available.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "552c60e"
+      ],
       "evidence": [
         "results/desktop-rc11-corrections/rc10-precision-after.dino2t.json",
-        "motorsim/desktop/acceptance_smoke_4t.py"
+        "motorsim/desktop/acceptance_smoke_4t.py",
+        "results/dino4t-desktop-integration-v1/acceptance/windows/receipt.json"
       ],
       "write_scope": [
         "results/dino4t-desktop-integration-v1/acceptance/"
       ],
-      "next_action": "Exercise within the same packaged process acceptance run."
+      "next_action": "Acceptance passed for the recorded internal candidate; do not promote or rebuild without a concrete defect."
     }
   ],
   "audit_remediation_mode": false,
@@ -12663,7 +12673,7 @@
   ],
   "current_objective": {
     "id": "DINO_DESKTOP_4T_INTEGRATION_V1",
-    "state": "OPEN",
+    "state": "PASS",
     "owner_approved": true,
     "summary": "Integrate the independent 4T API into the existing Dino Desktop while preserving the 2T product and scientific contracts.",
     "change": "openspec/changes/dino4t-desktop-integration-v1",
@@ -12676,7 +12686,7 @@
     ],
     "completion_criterion": "One identified packaged Windows candidate passes the bounded 4T Desktop workflow and historical 2T project/result compatibility checks; source and package hashes, test receipts and limitations are recorded. No solver equation changes, experimental validation claim or public release.",
     "scientific_state": "4T_EXPERIMENTAL_VALIDATION_NOT_PERFORMED;4T_PREDICTIVE_CAPABILITY_NOT_CLAIMED;2T_PREDICTIVE_OBJECTIVE_REMAINS_OPEN",
-    "qualification": "The source workflow is implemented and tested. Packaged Windows acceptance remains outstanding. The prior 2T predictive reliability objective and its external-data blocker are preserved, not closed or superseded scientifically."
+    "qualification": "Packaged Windows candidate passed the bounded Desktop workflows. The 2T predictive reliability objective remains separate/open; 4T experimental validation is not performed and predictive capability is not claimed."
   },
   "objectives": [
     {
@@ -13751,15 +13761,20 @@
     },
     {
       "id": "DINO_DESKTOP_4T_INTEGRATION_V1",
-      "state": "OPEN",
+      "state": "PASS",
       "owner_approved": true,
-      "summary": "Integrate the independent 4T API into the existing Dino Desktop while preserving the 2T product and scientific contracts.",
+      "summary": "Packaged Windows candidate passed the bounded Desktop workflows. The 2T predictive reliability objective remains separate/open; 4T experimental validation is not performed and predictive capability is not claimed.",
       "change": "openspec/changes/dino4t-desktop-integration-v1",
       "spec": "openspec/changes/dino4t-desktop-integration-v1/specs/dino4t-desktop-integration-v1/spec.md",
       "gate_tasks": [
         "DINO4T-WINDOWS-BUILD-AND-PROVENANCE-V1",
         "DINO4T-FROZEN-4T-DESKTOP-ACCEPTANCE-V1",
         "DINO4T-FROZEN-2T-HISTORICAL-COMPATIBILITY-V1"
+      ],
+      "classification": "DINO_DESKTOP_4T_INTERNAL_CANDIDATE_ACCEPTED",
+      "evidence": [
+        "results/dino4t-desktop-integration-v1/acceptance/windows/receipt.json",
+        "results/dino4t-desktop-integration-v1/verification/source-targeted-final/dino4t-desktop-source-regression-final.summary.json"
       ]
     }
   ],
@@ -17651,6 +17666,18 @@
       "task": "DINO4T-WINDOWS-BUILD-AND-PROVENANCE-V1",
       "kind": "PACKAGED_FAILURE_DIAGNOSIS",
       "summary": "Candidate 1 built from 7a74ee4, but packaged acceptance exposed missing unittest.mock in PyInstaller hidden imports; the normal executable opens. Added a focused recipe regression and retained package/exe hashes. One corrected candidate build is required."
+    },
+    {
+      "at": "2026-11-05T13:03:14+00:00",
+      "task": "DINO4T-DESKTOP-WINDOWS-INTEGRATION-V1",
+      "kind": "PACKAGED_ACCEPTANCE",
+      "summary": "Candidate 2 (source 552c60e) passed actual Windows GUI acceptance: 2T historical project plus four hash-verified results, 4T project/variant persistence, imported periodic history, bounded NOT_CONVERGED run, CSV/report and three window sizes. 66 tests pass, one expected external-artifact skip. No release or validation claim."
+    },
+    {
+      "at": "2026-11-05T13:07:30+00:00",
+      "task": "DINO4T-DESKTOP-SOURCE-INTEGRATION-V1",
+      "kind": "FOCUSED_REGRESSION",
+      "summary": "Additional focused source regressions passed: Desktop cycle selector creates a synthetic 4T project; comparison UI rejects a real one-cycle transient against the periodic historical result. Product code is unchanged from packaged source commit 552c60e."
     }
   ],
   "legacy_gate_status": {
@@ -17666,20 +17693,19 @@
   },
   "gate_status": {
     "objective": "DINO_DESKTOP_4T_INTEGRATION_V1",
-    "state": "OPEN",
-    "classification": null,
-    "evidence": [],
-    "gate_tasks_total": 3,
-    "gate_tasks_done": 0,
-    "gate_task_states": {
-      "READY": 3
-    },
-    "remaining": [
-      "DINO4T-WINDOWS-BUILD-AND-PROVENANCE-V1",
-      "DINO4T-FROZEN-4T-DESKTOP-ACCEPTANCE-V1",
-      "DINO4T-FROZEN-2T-HISTORICAL-COMPATIBILITY-V1"
+    "state": "PASS",
+    "classification": "DINO_DESKTOP_4T_INTERNAL_CANDIDATE_ACCEPTED",
+    "evidence": [
+      "results/dino4t-desktop-integration-v1/acceptance/windows/receipt.json",
+      "results/dino4t-desktop-integration-v1/verification/source-targeted-final/dino4t-desktop-source-regression-final.summary.json"
     ],
-    "updated_at": "2026-11-05T12:37:19+00:00"
+    "gate_tasks_total": 3,
+    "gate_tasks_done": 3,
+    "gate_task_states": {
+      "DONE": 3
+    },
+    "remaining": [],
+    "updated_at": "2026-11-05T13:03:14+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

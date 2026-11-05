@@ -1,6 +1,6 @@
 # Integración Dino 4T en Desktop
 
-Estado: integración de aplicación en prueba interna. La rama de integración conserva la historia original de `dino4t/foundation-v1`; la rama fuente y su worktree no se modifican.
+Estado: integración funcional verificada en un candidato Windows para pruebas internas. La rama de integración conserva la historia original de `dino4t/foundation-v1`; la rama fuente y su worktree no se modifican.
 
 ## Frontera de arquitectura
 
@@ -26,3 +26,21 @@ Las prestaciones solo se grafican para resultados periódicos. La comparación r
 ## Empaquetado
 
 El spec de Windows incluye explícitamente los módulos cargados de forma diferida por la API 4T y el JSON de ejemplo que consume su validador. El manifiesto de build declara los esquemas de proyecto y APIs nativas por familia. La aceptación final de la integración requiere ejecutar y probar ese binario empaquetado; las pruebas Python por sí solas no constituyen aceptación Desktop.
+
+### Candidato integrado
+
+- Candidato interno: `MotorSim-0.1.0-rc12-windows-x64-552c60ed`.
+- Fuente exacta del paquete: commit `552c60ed9454a9d86ef05707c38d495d109247c3`, árbol limpio y manifiesto de 254 entradas.
+- SHA-256 del ZIP: `752e8e8a14819fa42277fc0667f396a3f686e647e6cf70f6b531b8e6eac637d2`.
+- SHA-256 de `Dino2T.exe`: `7ca0ca86c91152b5e0f1d1de1f2bc6f5d3973703cb03e46dcb3c2dc676c7f048`.
+- Recibo y capturas: `results/dino4t-desktop-integration-v1/acceptance/windows/receipt.json`.
+- La primera distribución reveló que PyInstaller omitía `unittest.mock` usado por la ruta de aceptación. Se conservó ese candidato y su diagnóstico en `verification/packaged-candidate-1-failure.json`; el segundo paquete añadió el import explícito y pasó el recorrido.
+- La aceptación empaquetada abrió un proyecto 2T V2 histórico y verificó cuatro hashes de resultados. En el mismo proceso, abrió Desktop 4T, editó geometría y escape de una variante, guardó/reabrió el proyecto, importó el resultado periódico histórico, ejecutó un punto 4T de un ciclo, y exportó CSV e informe HTML.
+- La corrida de un ciclo terminó como `NOT_CONVERGED`; la interfaz mostró `Transitorio` y `Presión transitoria · no periódica`. El histórico conservó `PERIODIC_CONVERGED`. Ni la periodicidad ni la corrida sintética se presentan como validación experimental.
+- Suite ampliada final: 66 PASS, 1 SKIP (`tests/test_dino_desktop.py` omite la prueba IMPL2 si el artefacto externo no está configurado). Dos verificaciones focalizadas adicionales pasaron para crear 4T desde el selector de Desktop y rechazar la comparación entre el punto periódico histórico y el transitorio real de un ciclo. Las 115 fallas preexistentes de la suite general conservan su baseline en `results/dino4t-stage2-v1/audit/preexisting_failures_at_e95db4c.txt`; no se alteraron contratos científicos para modificarlas.
+
+## Funcionalidad todavía limitada
+
+- La UI impide calcular diferencias de prestaciones si una corrida no es periódica. Una prueba usa el punto histórico periódico y un punto real acotado de un ciclo para comprobar el rechazo. No hay dos configuraciones 4T distintas con resultados periódicos aceptados disponibles en los históricos para presentar una diferencia A/B de diseño con evidencia existente; no se fabricó una segunda curva.
+- La API 4T no ofrece cancelación ni checkpoint serializable, por lo que Desktop no promete reanudación/cancelación de una corrida 4T.
+- El paquete se acepta para pruebas internas solamente. No es una promoción de release ni validación científica.

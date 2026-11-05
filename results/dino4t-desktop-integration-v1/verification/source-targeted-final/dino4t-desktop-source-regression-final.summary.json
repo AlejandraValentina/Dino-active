@@ -1,0 +1,26 @@
+{
+  "name": "dino4t-desktop-source-regression-final",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_dino4t_desktop_integration.py",
+    "tests/test_dino4t_api.py",
+    "tests/test_dino_desktop.py",
+    "tests/test_desktop_technical_report.py"
+  ],
+  "started_at": "2026-11-05T12:55:49+00:00",
+  "finished_at": "2026-11-05T13:01:43+00:00",
+  "duration_s": 354.125,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\dino4t-desktop-integration-v1\\verification\\source-targeted-final\\dino4t-desktop-source-regression-final.log",
+  "log_lines": 2,
+  "log_bytes": 122,
+  "error_lines": [],
+  "tail": [
+    ".................................................s.................      [100%]",
+    "66 passed, 1 skipped in 352.66s (0:05:52)"
+  ]
+}

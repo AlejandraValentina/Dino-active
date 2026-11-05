@@ -107,3 +107,43 @@ def test_windows_bundle_recipe_declares_4t_runtime_dependencies():
     spec=Path("packaging/MotorSim.spec").read_text(encoding="utf-8")
     assert "numpy==2.3.0" in requirements and "scipy==1.15.2" in requirements
     assert "'unittest.mock','numpy','scipy.optimize'" in spec
+
+
+def test_desktop_comparison_rejects_real_one_cycle_result_against_periodic_history(tmp_path):
+    from PySide6.QtWidgets import QApplication
+    from motorsim.desktop.four_stroke_desktop import FourStrokeResults
+
+    periodic_dir=Path("results/dino4t-stage2-v1/example/4000rpm")
+    periodic=json.loads((periodic_dir/"summary.json").read_text(encoding="utf-8"))
+    config=json.loads((periodic_dir/"config_resolved.json").read_text(encoding="utf-8"))
+    bounded=engine_platform.run_api("4T",config,max_cycles=1,wall_limit_s=30.0)
+    assert periodic["periodicity"]["status"]=="PERIODIC_CONVERGED"
+    assert bounded["summary"]["periodicity"]["status"]!="PERIODIC_CONVERGED"
+
+    app=QApplication.instance() or QApplication([])
+    results=FourStrokeResults(DesktopContext(project_from_example("comparison-ui")))
+    ref_a={"run_id":"historical-periodic","result_sha256":"periodic-fixture"}
+    ref_b={"run_id":"bounded-transient","result_sha256":"bounded-api-run"}
+    results.loaded={0:(periodic,{"config_path":str(periodic_dir/"config_resolved.json")},ref_a),
+        1:(bounded["summary"],{"config_path":str(periodic_dir/"config_resolved.json")},ref_b)}
+    results.compare_a.addItem("A",0);results.compare_b.addItem("B",1)
+    results.compare_a.setCurrentIndex(0);results.compare_b.setCurrentIndex(0)
+    results.compare()
+    assert "ambas corridas deben ser periódicas" in results.compare_status.text()
+    assert results.compare_table.rowCount()==0
+    results.close();app.processEvents()
+
+
+def test_new_engine_dialog_creates_4t_project_from_desktop_cycle_choice():
+    from PySide6.QtWidgets import QApplication
+    from motorsim.desktop.new_engine_dialog import NewEngineDialog
+
+    app=QApplication.instance() or QApplication([])
+    dialog=NewEngineDialog();dialog.project_name.setText("synthetic-desktop-4t")
+    dialog.cycle.setCurrentIndex(dialog.cycle.findData("4T"));app.processEvents()
+    assert dialog.two_stroke_panel.isHidden() and not dialog.four_info.isHidden()
+    dialog._create()
+    assert dialog.project["engine_family"]=="4T"
+    assert dialog.project["base_engine"]["schema"]=="DINO4T_ENGINE_CONFIG_V1"
+    assert dialog.project["base_engine"]["geometry"]["provenance"]=="SYNTHETIC_ASSUMPTION"
+    dialog.close();app.processEvents()
