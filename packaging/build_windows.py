@@ -72,7 +72,10 @@ def main():
     work=work_base/uuid.uuid4().hex;generated=work/'inputs';generated.mkdir(parents=True)
     info=dict(app_version=APP_VERSION,source_commit=commit,trial=args.trial,
         built_utc=stamp,python=sys.version,platform=platform.platform(),architecture=platform.machine(),
-        project_format=6,result_formats=dict(two_stroke=[1,2,3],four_stroke=4),
+        project_format=6,desktop_project_schemas=dict(two_stroke="MOTORSIM_ENGINE_PROJECT_V3",
+            four_stroke="DINO_DESKTOP_ENGINE_PROJECT_4T_V1"),
+        result_formats=dict(two_stroke=[1,2,3],four_stroke="DINO4T_OPERATING_POINT_RESULT_V1"),
+        engine_apis=dict(two_stroke="DINO_ENGINEERING_RUN_V1",four_stroke="DINO4T_API_V1"),
         models=dict(two_stroke=MODEL_VERSION,four_stroke=FOUR_MODEL_VERSION),dependencies=versions,
         workflow_source_hashes=implementation_source_hashes(),
         packaged_inputs_clean=True,packaged_input_count=len(manifest['files']),

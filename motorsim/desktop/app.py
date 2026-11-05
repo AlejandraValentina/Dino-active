@@ -28,7 +28,7 @@ PAGES=(('Motor',EnginePage),('Escape',ExhaustPage),('Proyecto',ProjectPage),('Si
 class DinoDesktopWindow(QMainWindow):
     def __init__(self,project=None):
         super().__init__();self.settings=settings();self.context=DesktopContext(project or new_design_project())
-        self.setWindowTitle('Dino 2T')
+        self.setWindowTitle('Dino Desktop · 2T')
         screen=QApplication.primaryScreen();available=screen.availableGeometry() if screen else None
         width=min(1360,available.width()) if available else 1360
         height=min(900,available.height()) if available else 900
@@ -417,7 +417,13 @@ class DinoDesktopWindow(QMainWindow):
         if not self._confirm_discard():return
         dialog=NewEngineDialog(self)
         if dialog.exec()!=QDialog.DialogCode.Accepted or dialog.project is None:return
+        if dialog.project.get("engine_family")=="4T":
+            self._launch_four_stroke(dialog.project,None);return
         self.context.replace_project(dialog.project,None);self._ensure_safe_artifact_root_for_new_project();self.statusBar().showMessage('Diseño nuevo creado · valores de plantilla identificados como supuestos',6000)
+    def _launch_four_stroke(self,project,path):
+        from .four_stroke_desktop import FourStrokeDesktopWindow
+        window=FourStrokeDesktopWindow(project,parent_2t=self,path=path);self._four_stroke_window=window
+        window.show();self.hide()
     def open_file(self):
         if not self._confirm_discard():return
         path,_=QFileDialog.getOpenFileName(self,'Abrir proyecto',str(Path.home()),'Dino 2T (*.dino2t.json *.json)')
@@ -425,7 +431,10 @@ class DinoDesktopWindow(QMainWindow):
         self._open(Path(path))
     def _open(self,path):
         try:
-            project=load_project(path);self.context.replace_project(project,path)
+            project=load_project(path)
+            if project.get("engine_family")=="4T":
+                self._launch_four_stroke(project,path);return
+            self.context.replace_project(project,path)
             saved_variant=self.settings.value(f"active_variant/{project['project_id']}")
             if saved_variant in project["variants"]:self.context.select_variant(saved_variant)
             self.statusBar().showMessage(f"Proyecto {project['project_id']} abierto",4000)

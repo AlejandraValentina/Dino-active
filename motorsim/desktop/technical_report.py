@@ -577,6 +577,33 @@ def write_technical_report(path, dataset: dict, **kwargs) -> Path:
     return path
 
 
+def render_four_stroke_report(project_id: str, records: list[dict]) -> str:
+    """Render native DINO4T_API_V1 records without mapping them onto 2T fields."""
+    rows=[]
+    for item in records:
+        summary=item["summary"];ref=item["reference"];final=summary.get("final_cycle") or {}
+        periodicity=summary.get("periodicity",{}).get("status","NOT_REPORTED")
+        state=("Periódico · simulación no validada" if periodicity=="PERIODIC_CONVERGED"
+               else "No periódico · no usar como curva definitiva")
+        run_status={"completed":"Ejecución terminada","incomplete":"Ejecución incompleta","failed_numerical":"Fallo numérico"}.get(summary.get("status"),"Estado no informado")
+        claims=summary.get("claims",{})
+        calibration={"NOT_PERFORMED":"No realizado"}.get(claims.get("calibration"),claims.get("calibration"))
+        experimental={"NOT_PERFORMED":"No realizado"}.get(claims.get("experimental_validation"),claims.get("experimental_validation"))
+        predictive={"NOT_CLAIMED":"No declarado"}.get(claims.get("predictive_capability"),claims.get("predictive_capability"))
+        evidence={"L1_ENGINEERING_RUN":"Corrida de ingeniería L1"}.get(summary.get("evidence_level"),summary.get("evidence_level"))
+        values=(ref.get("run_id"),summary.get("operating_point",{}).get("rpm"),run_status,state,
+            final.get("brake_power_kW"),final.get("brake_torque_Nm"),final.get("bmep_bar"),evidence,
+            calibration,experimental,predictive,summary.get("config_sha256"),ref.get("result_sha256"),
+            summary.get("code_commit"),summary.get("code_dirty"))
+        rows.append("<tr>"+"".join(f"<td>{html.escape(str(value if value is not None else 'No disponible'))}</td>" for value in values)+"</tr>")
+    headings=("Run ID","RPM","Ejecución","Periodicidad","Potencia freno (kW)","Torque freno (N·m)","BMEP (bar)",
+        "Evidencia","Calibración","Validación experimental","Predictividad","Config SHA-256","Resultado SHA-256","Commit","Árbol sucio")
+    return ("<!doctype html><html lang='es'><meta charset='utf-8'><title>Informe Dino 4T</title><h1>Dino Desktop · motor 4T</h1>"
+        f"<p>Proyecto: {html.escape(str(project_id))}</p><p>Resultados nativos DINO4T_API_V1. Periodicidad describe estabilidad numérica y no valida un motor real. "
+        "Calibración y validación experimental no se infieren.</p><table border='1' cellspacing='0' cellpadding='5'><thead><tr>"
+        +"".join(f"<th>{html.escape(title)}</th>" for title in headings)+"</tr></thead><tbody>"+"".join(rows)+"</tbody></table></html>")
+
+
 def _cross_study_point_state_markup(point: dict) -> str:
     """Render stored execution and scientific state fields without conflating them."""
     return "<br>".join((

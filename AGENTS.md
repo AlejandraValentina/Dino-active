@@ -22,15 +22,15 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_PREDICTIVE_RELIABILITY_V1
-change/spec:       openspec/changes/predictive-reliability-v1/
-                   specs/predictive-reliability-v1/spec.md
-roadmap:          docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md
-completion:        Port law, pressure waves/design distinction, identifiable
-                   scavenging, evidence-led closures, blind measured validation,
-                   then performance/product. Experimental data in parallel.
-                   Stages require recorded scope/activation; no automatic old
-                   campaigns. Preserve rc7; no predictive claim from periodicity.
+CURRENT_OBJECTIVE: DINO_DESKTOP_4T_INTEGRATION_V1
+change/spec:       openspec/changes/dino4t-desktop-integration-v1/
+                   specs/dino4t-desktop-integration-v1/spec.md
+roadmap:          results/2t-commercial-core-20261002/program-status.json
+completion:        Integrate the native DINO4T_API_V1 through the existing
+                   Desktop, preserve 2T contracts/history, verify one packaged
+                   Windows candidate and record limitations. This product
+                   objective does not modify or claim completion of 2T
+                   predictive validation; periodicity is not validation.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    -> current_objective, queue, gate_status, progress_log
 ```

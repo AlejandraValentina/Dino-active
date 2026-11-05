@@ -6,6 +6,7 @@ import json
 import math
 from pathlib import Path
 import subprocess
+import sys
 
 import numpy as np
 
@@ -22,6 +23,17 @@ CLAIMS = {
 }
 
 
+def _packaged_build_metadata(path=None):
+    if path is None and not getattr(sys, "frozen", False):
+        return None
+    path = Path(path) if path is not None else Path(__file__).resolve().parents[1] / "build.json"
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    return value if isinstance(value, dict) else None
+
+
 def resolved_models(config: dict) -> dict:
     """Model identifiers actually selected by the configuration (not the static defaults)."""
     models = dict(MODELS)
@@ -35,6 +47,13 @@ def resolved_models(config: dict) -> dict:
 
 def _git_dirty():
     """True when tracked files differ from HEAD (the commit alone then does not identify the code)."""
+    packaged = _packaged_build_metadata()
+    if packaged is not None:
+        if not isinstance(packaged.get("source_commit"), str):
+            return None
+        if packaged.get("packaged_inputs_clean") is not True:
+            return True
+        return False
     try:
         out = subprocess.run(["git", "status", "--porcelain", "--untracked-files=no", "--", "."],
                              capture_output=True, text=True, cwd=Path(__file__).parent, timeout=10)
@@ -44,6 +63,10 @@ def _git_dirty():
 
 
 def _git_commit():
+    packaged = _packaged_build_metadata()
+    if packaged is not None:
+        commit = packaged.get("source_commit")
+        return commit if isinstance(commit, str) and len(commit) == 40 else None
     try:
         return subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True,
                               cwd=Path(__file__).parent, timeout=10).stdout.strip() or None

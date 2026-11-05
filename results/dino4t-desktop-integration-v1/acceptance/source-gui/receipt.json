@@ -1,0 +1,58 @@
+{
+  "schema": "DINO4T_DESKTOP_SOURCE_ACCEPTANCE_V1",
+  "status": "PASS",
+  "test_source": "synthetic 4T config; historical 2T project/results are read-only",
+  "engine_api": "DINO4T_API_V1",
+  "project_schema": "DINO_DESKTOP_ENGINE_PROJECT_4T_V1",
+  "historical_2t_project_schema": "MOTORSIM_ENGINE_PROJECT_V2",
+  "historical_2t_project_sha256": "a64de7b3c68fcd73044dc301f7c2d54cf342114f54a378d36564883ec91ecd69",
+  "historical_2t_result_count": 4,
+  "historical_2t_result_sha256": [
+    "e4c3adde5bb94aae6d22a1137f1e876d2ec8f19ef782353ff5955b7a55029123",
+    "2a5ec9be06cc793341c2e3937bb89b46ac5922c4d91134bfdf641c4a29dd3688",
+    "00d6c90718ef6a02b57c44f2221a6a564dd2b9d17fdd3481fd8650fa10748acc",
+    "67680841399d81aba86c44f54027d360476e70b7b3dd9035b93678b7756f7271"
+  ],
+  "synthetic_4t": {
+    "project_save_reopen": true,
+    "geometry_edit": true,
+    "escape_variant_edit": true,
+    "historical_result_import": true,
+    "bounded_desktop_run": true,
+    "run_id": "24e5b1162f104449adc7d271ebd73607",
+    "result_sha256": "5124c8e6d6975babb07f7ac6f5ab93a0041eef1ca2aa3e312a2e20c778f9438f",
+    "config_sha256": "258675e2ef1f20029a1abf4183c0f74433d722cbeff9d413e8b04ab1089d48df",
+    "execution_status": "completed",
+    "periodicity_status": "NOT_CONVERGED",
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_capability": "NOT_CLAIMED"
+  },
+  "captures": [
+    {
+      "path": "proyecto-2t-historico-1360x900.png",
+      "sha256": "c4bd78ff19c338a4ca65d7c2d3a3220c0ca37dad63e7686986c5596dc25a9f37",
+      "bytes": 50956
+    },
+    {
+      "path": "modelo-980x680.png",
+      "sha256": "1f23624fb8ad2b77c04df20f369b34327e41a13027e1a5aaced21abed823d36e",
+      "bytes": 45527
+    },
+    {
+      "path": "resultados-1360x900.png",
+      "sha256": "70d706459ec0e96fe7d64125a3efee2278f67ef654c6d35c953fc40c6a5781b6",
+      "bytes": 59740
+    },
+    {
+      "path": "historial-1920x1080.png",
+      "sha256": "a6c4e9f7014cab208d182988fa5ca0a4292ad8e8d3506fabf11b32ba9f806b1a",
+      "bytes": 62822
+    },
+    {
+      "path": "resultado-ejecucion-acotada-1360x900.png",
+      "sha256": "0421ee2ced69d5385a5bee5cf5683af5a4e13c15fe69fd337cf8ccdf53f08d5b",
+      "bytes": 61267
+    }
+  ],
+  "note": "Source GUI evidence only; final acceptance requires a packaged Windows executable."
+}

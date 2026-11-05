@@ -1,0 +1,24 @@
+{
+  "name": "4t-desktop-api-regression",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_dino4t_desktop_integration.py",
+    "tests/test_dino4t_api.py"
+  ],
+  "started_at": "2026-11-05T12:05:22+00:00",
+  "finished_at": "2026-11-05T12:06:42+00:00",
+  "duration_s": 79.953,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\dino4t-desktop-integration-v1\\verification\\source-targeted\\4t-desktop-api-regression.log",
+  "log_lines": 2,
+  "log_bytes": 110,
+  "error_lines": [],
+  "tail": [
+    ".....................                                                    [100%]",
+    "21 passed in 79.34s (0:01:19)"
+  ]
+}

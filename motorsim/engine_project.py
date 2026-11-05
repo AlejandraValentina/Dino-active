@@ -44,6 +44,10 @@ def create_project(project_id: str, base_engine: dict, *, simulation_recipes: di
 
 
 def validate_project(project: dict) -> None:
+    if isinstance(project, dict) and project.get("schema") == "DINO_DESKTOP_ENGINE_PROJECT_4T_V1":
+        from .desktop.four_stroke_project import validate_project as validate_4t_project
+        validate_4t_project(project)
+        return
     fields = {"schema", "project_id", "base_engine", "base_identity_sha256", "variants",
               "simulation_recipes", "result_references", "scientific_validation_status"}
     v2_fields = fields | {"measurement_references"}
@@ -133,6 +137,11 @@ def load_project(path: str | Path) -> dict:
         project["schema"] = SCHEMA
         project["study_references"] = []
     validate_project(project)
+    if project.get("schema") == "DINO_DESKTOP_ENGINE_PROJECT_4T_V1":
+        for ref in project["run_references"]:
+            if ref["path"].startswith(("./", ".\\")):
+                ref["path"] = str((path.resolve().parent / ref["path"]).resolve())
+        return project
     # Explicit ./ references travel with packaged examples. Legacy relative
     # paths retain their artifact-root semantics; evidence bytes are untouched.
     for ref in project["result_references"]:
@@ -150,12 +159,23 @@ def load_project(path: str | Path) -> dict:
 def duplicate_project(project: dict, *, project_id: str, display_name: str | None = None) -> dict:
     validate_project(project)
     result = deepcopy(project); result["project_id"] = project_id
-    if display_name is not None: result["base_engine"]["display_name"] = display_name
-    result["base_identity_sha256"] = identity(result["base_engine"])
+    if project.get("schema") == "DINO_DESKTOP_ENGINE_PROJECT_4T_V1":
+        if display_name is not None:
+            result["base_engine"]["identifier"] = display_name
+        from .desktop.four_stroke_project import config_identity, validate_project as validate_4t_project
+        result["base_identity_sha256"] = config_identity(result["base_engine"])
+        result["run_references"] = []
+        validate_4t_project(result)
+    else:
+        if display_name is not None: result["base_engine"]["display_name"] = display_name
+        result["base_identity_sha256"] = identity(result["base_engine"])
     return result
 
 
 def compare_project_engines(project: dict, variant_name: str) -> list[dict[str, Any]]:
     validate_project(project)
     if variant_name not in project["variants"]: raise KeyError(variant_name)
+    if project.get("schema") == "DINO_DESKTOP_ENGINE_PROJECT_4T_V1":
+        from .engine_variants import compare_configurations as compare
+        return compare(project["base_engine"], project["variants"][variant_name])
     return compare_configurations(project["base_engine"], project["variants"][variant_name])
