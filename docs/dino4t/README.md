@@ -39,7 +39,11 @@ sintético de 500 cm³ (contorno V2, combustión de dos zonas), cada punto corri
 hasta periodicidad. Son resultados **plausibles, no validados**: la geometría,
 los Cd y la fricción son supuestos y la combustión es una entrada.
 
-@@TABLE@@
+| rpm | ciclos | IMEP neto [bar] | PMEP [bar] | BMEP [bar] | η_v | P_efectiva [kW] | BSFC [g/kWh] | residuo IVC | cierre máx. |
+|---|---|---|---|---|---|---|---|---|---|
+| 4000 | 4 | 14,43 | 0,31 | 12,63 | 1,006 | 21,0 | 224 | 0,028 | 2,4e‑14 |
+| 6000 | 6 | 12,60 | 1,67 | 10,14 | 0,962 | 25,3 | 267 | 0,052 | 3,6e‑14 |
+| 8000 | 6 | 9,53 | 1,47 | 6,42 | 0,738 | 21,4 | 324 | 0,072 | 1,6e‑14 |
 
 La caída de η_v a 8000 rpm refleja el dimensionamiento de válvulas supuesto
 (su área efectiva limita el caudal), no una propiedad del modelo.
