@@ -12471,6 +12471,72 @@
         "results/dino4t-desktop-integration-v1/acceptance/"
       ],
       "next_action": "Acceptance passed for the recorded internal candidate; do not promote or rebuild without a concrete defect."
+    },
+    {
+      "id": "D4AB-COMPARE-SEMANTICS",
+      "description": "Enforce strict 4T A/B eligibility, source identity and design-only differences; classify all ineligible pairs without deltas.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Implement a pure comparison contract and regression cases for exact RPM, contexts, models, clean code, periodicity and finite metrics.",
+      "write_scope": [
+        "motorsim/desktop/four_stroke_comparison.py",
+        "motorsim/desktop/four_stroke_desktop.py",
+        "tests/test_dino4t_desktop_integration.py"
+      ]
+    },
+    {
+      "id": "D4AB-COMPARISON-EXPORT",
+      "description": "Export a reproducible selected A/B comparison with full precision, both resolved inputs, result hashes, criteria and technical report.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Add JSON/CSV and HTML comparison exports without changing the 4T project schema or source result artifacts.",
+      "write_scope": [
+        "motorsim/desktop/four_stroke_desktop.py",
+        "motorsim/desktop/technical_report.py",
+        "tests/test_dino4t_desktop_integration.py"
+      ]
+    },
+    {
+      "id": "D4AB-COOPERATIVE-CANCEL",
+      "description": "Provide safe bounded cancellation and determine whether restartable 4T checkpoints are justified by the current API contract.",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Add cancellation only at completed-cycle boundaries if it preserves complete-cycle artifacts; document any checkpoint limit rather than inventing recovery state.",
+      "write_scope": [
+        "motorsim/dino4t/api.py",
+        "motorsim/dino4t/runner.py",
+        "motorsim/dino4t/engine.py",
+        "motorsim/desktop/four_stroke_desktop.py",
+        "tests/test_dino4t_api.py"
+      ]
+    },
+    {
+      "id": "D4AB-WINDOWS-PAIR-ACCEPTANCE",
+      "description": "Run the fixed preregistered A/B pair, verify GUI comparison/export, and test one packaged Windows candidate plus 2T regressions.",
+      "dependencies": [
+        "D4AB-COMPARE-SEMANTICS",
+        "D4AB-COMPARISON-EXPORT",
+        "D4AB-COOPERATIVE-CANCEL"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Execute only after software tasks are DONE; enforce the preregistered 720-second pair budget and existing periodicity criteria.",
+      "write_scope": [
+        "results/dino4t-ab-engineering-v1/",
+        "packaging/",
+        "tests/test_dino4t_desktop_integration.py"
+      ]
     }
   ],
   "audit_remediation_mode": false,
@@ -12672,21 +12738,20 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_DESKTOP_4T_INTEGRATION_V1",
-    "state": "PASS",
+    "id": "DINO4T_AB_ENGINEERING_V1",
+    "state": "ACTIVE",
     "owner_approved": true,
-    "summary": "Integrate the independent 4T API into the existing Dino Desktop while preserving the 2T product and scientific contracts.",
-    "change": "openspec/changes/dino4t-desktop-integration-v1",
-    "spec": "openspec/changes/dino4t-desktop-integration-v1/specs/dino4t-desktop-integration-v1/spec.md",
-    "transitioned_from": "DINO_PREDICTIVE_RELIABILITY_V1",
+    "summary": "Complete and verify reproducible 4T Desktop A/B engineering comparisons without changing either engine’s physical model.",
+    "change": "openspec/changes/dino4t-ab-engineering-v1",
+    "spec": "openspec/changes/dino4t-ab-engineering-v1/specs/dino4t-ab-engineering-v1/spec.md",
+    "transitioned_from": "DINO_DESKTOP_4T_INTEGRATION_V1",
     "gate_tasks": [
-      "DINO4T-WINDOWS-BUILD-AND-PROVENANCE-V1",
-      "DINO4T-FROZEN-4T-DESKTOP-ACCEPTANCE-V1",
-      "DINO4T-FROZEN-2T-HISTORICAL-COMPATIBILITY-V1"
+      "D4AB-COMPARE-SEMANTICS",
+      "D4AB-COMPARISON-EXPORT",
+      "D4AB-COOPERATIVE-CANCEL",
+      "D4AB-WINDOWS-PAIR-ACCEPTANCE"
     ],
-    "completion_criterion": "One identified packaged Windows candidate passes the bounded 4T Desktop workflow and historical 2T project/result compatibility checks; source and package hashes, test receipts and limitations are recorded. No solver equation changes, experimental validation claim or public release.",
-    "scientific_state": "4T_EXPERIMENTAL_VALIDATION_NOT_PERFORMED;4T_PREDICTIVE_CAPABILITY_NOT_CLAIMED;2T_PREDICTIVE_OBJECTIVE_REMAINS_OPEN",
-    "qualification": "Packaged Windows candidate passed the bounded Desktop workflows. The 2T predictive reliability objective remains separate/open; 4T experimental validation is not performed and predictive capability is not claimed."
+    "completion_criterion": "Distinct 4T designs run through the native API, both are periodic under existing criteria, strict compatibility is verified, pair differences and provenance export reproducibly, and the packaged Windows workflow is checked. No experimental validation or predictive claim."
   },
   "objectives": [
     {
@@ -13776,6 +13841,13 @@
         "results/dino4t-desktop-integration-v1/acceptance/windows/receipt.json",
         "results/dino4t-desktop-integration-v1/verification/source-targeted-final/dino4t-desktop-source-regression-final.summary.json"
       ]
+    },
+    {
+      "id": "DINO4T_AB_ENGINEERING_V1",
+      "state": "ACTIVE",
+      "owner_approved": true,
+      "summary": "Complete and verify reproducible 4T Desktop A/B engineering comparisons without changing either engine’s physical model.",
+      "change": "openspec/changes/dino4t-ab-engineering-v1"
     }
   ],
   "owner_decisions_pending": [
@@ -17690,6 +17762,12 @@
       "task": "DINO-PLATFORM-MAIN-CONSOLIDATION-V1",
       "kind": "consolidation",
       "summary": "Consolidated main by fast-forward to e29f314; added branch/worktree policy. Verification on consolidated main: 67 passed, 1 skipped across Desktop/API/report regressions; 28 Dino4T stage-2 tests passed. Historical Windows rc12 receipt hash verified against package. No product-code changes, no new build, no push."
+    },
+    {
+      "at": "2026-11-05T14:19:25+00:00",
+      "task": "DINO4T-AB-PREREGISTRATION",
+      "kind": "PREREGISTRATION",
+      "summary": "Activated the explicitly authorized DINO4T_AB_ENGINEERING_V1 objective and committed a fixed two-design, two-zone, 6000 RPM synthetic pair protocol. Existing 6000 RPM run cost is 76.219 s for 6 cycles; preregistered cap is 20 cycles / 300 s per design / 720 s pair. No simulation started."
     }
   ],
   "legacy_gate_status": {
@@ -17704,20 +17782,23 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_DESKTOP_4T_INTEGRATION_V1",
-    "state": "PASS",
-    "classification": "DINO_DESKTOP_4T_INTERNAL_CANDIDATE_ACCEPTED",
-    "evidence": [
-      "results/dino4t-desktop-integration-v1/acceptance/windows/receipt.json",
-      "results/dino4t-desktop-integration-v1/verification/source-targeted-final/dino4t-desktop-source-regression-final.summary.json"
-    ],
-    "gate_tasks_total": 3,
-    "gate_tasks_done": 3,
+    "objective": "DINO4T_AB_ENGINEERING_V1",
+    "state": "OPEN",
+    "classification": null,
+    "evidence": [],
+    "gate_tasks_total": 4,
+    "gate_tasks_done": 0,
     "gate_task_states": {
-      "DONE": 3
+      "READY": 3,
+      "WAITING": 1
     },
-    "remaining": [],
-    "updated_at": "2026-11-05T13:03:14+00:00"
+    "remaining": [
+      "D4AB-COMPARE-SEMANTICS",
+      "D4AB-COMPARISON-EXPORT",
+      "D4AB-COOPERATIVE-CANCEL",
+      "D4AB-WINDOWS-PAIR-ACCEPTANCE"
+    ],
+    "updated_at": "2026-11-05T13:07:30+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
