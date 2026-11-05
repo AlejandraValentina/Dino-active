@@ -1,0 +1,125 @@
+{
+  "schema": "DINO_PLATFORM_INDEPENDENT_CONTRACT_REVIEW_V1",
+  "reviewer": "/root/contract_review",
+  "review_mode": "INDEPENDENT_REVIEW_READ_ONLY",
+  "reviewed_head": "8b371e247498f94255e88ab8d35dbae7b7c2ba6b",
+  "main": "5e4ba4d27a8156d2cf3b07d633ae92c6dea213c5",
+  "baseline": "e95db4c5af646ca53b83e14e16a3c00af0af8c75",
+  "git_status_after": "",
+  "p9": {
+    "git_blob_sha256": "79fbe9b88d26fc4af5083d65d468f59c9208535f0ab389d2f3cb9a7654b88a4d",
+    "main_blob_sha256": "79fbe9b88d26fc4af5083d65d468f59c9208535f0ab389d2f3cb9a7654b88a4d",
+    "worktree_raw_sha256": "b72efd6734cdaa076ff7027f3158d100a60337cead7ed44b580abaf7cbe80d08",
+    "worktree_lf_sha256": "79fbe9b88d26fc4af5083d65d468f59c9208535f0ab389d2f3cb9a7654b88a4d",
+    "crlf_count": 244
+  },
+  "selected_modules": [
+    "tests\\test_p4_c3_r4_return_audit.py",
+    "tests\\test_p4_c3_r5_audit.py",
+    "tests\\test_p4_c3_return_audit.py",
+    "tests\\test_p4_g2_v2_recovery.py",
+    "tests\\test_p4_r1.py",
+    "tests\\test_p4_r10.py",
+    "tests\\test_p4_r10a.py",
+    "tests\\test_p4_r11.py",
+    "tests\\test_p4_r12.py",
+    "tests\\test_p4_r13.py",
+    "tests\\test_p4_r13a.py",
+    "tests\\test_p4_r1e.py",
+    "tests\\test_p4_r9.py",
+    "tests\\test_p4_sci_04a.py",
+    "tests\\test_p4_sci_04b.py",
+    "tests\\test_p4_sci_e1r1.py",
+    "tests\\test_p5_intake_transfer_foundation.py",
+    "tests\\test_p5b14_complete_fixture.py",
+    "tests\\test_p5b_integrated_coupling.py",
+    "tests\\test_p5c_integrated.py",
+    "tests\\test_p6_species.py",
+    "tests\\test_p7_full_topology.py",
+    "tests\\test_p7_prescribed.py",
+    "tests\\test_p8_durable_audit.py",
+    "tests\\test_p8_performance.py",
+    "tests\\test_two_stroke_ports_p5c.py"
+  ],
+  "selected_tests_source_diff_e95db4c_to_main": [],
+  "baseline_115": {
+    "total": 115,
+    "failed": 83,
+    "errors": 32,
+    "clean_failed_nodeids": [
+      "tests/test_p4_g2_v2_recovery.py::test_new_durable_acquisition_reaudits_without_producer_pass",
+      "tests/test_p4_g2_v2_recovery.py::test_reacquired_terminal_states_match_historical_run_exactly",
+      "tests/test_p4_g2_v2_recovery.py::test_r2_real_closing_checkpoint_false_dt_cannot_pass_after_hash_update",
+      "tests/test_p4_r13a.py::R13ATests::test_cycle56_is_compared_against_replayed_cycle54",
+      "tests/test_p4_r13a.py::R13ATests::test_replay_gate_and_cycle56_result"
+    ],
+    "new_vs_inventory": []
+  },
+  "clean_invocation": {
+    "result": "5 failed, 296 passed, 3 skipped, 4 warnings",
+    "duration_s": 119.172,
+    "exit_code": 1,
+    "artifact_root_env": "unset"
+  },
+  "context_rechecks": {
+    "external_root_only": "2 passed, 1 failed (additional relative historical checkpoint unavailable)",
+    "r13a_original_cwd": "2 passed",
+    "g2_original_cwd_pinned_source": "1 passed",
+    "distinct_initial_failures_resolved": 5,
+    "external_g2_manifest_entries_size_sha_verified": 56,
+    "original_historical_artifacts_read_only": true
+  },
+  "conditional_skips": [
+    {
+      "test": "P4R10ATests::test_cycle_labels",
+      "missing_path": "results/p4-r10a-20260922/front_tracking_corrected.json"
+    },
+    {
+      "test": "P4R10ATests::test_plateau_vs_adjacent",
+      "missing_path": "results/p4-r10a-20260922/front_tracking_corrected.json"
+    },
+    {
+      "test": "P4R9SyntheticTests::test_original_metric_reconstruction",
+      "missing_path": "results/p4-r9-20260922/sensor_tables.json"
+    }
+  ],
+  "log_files": {
+    "p4-g2-failed-context-restored.log": {
+      "sha256": "a52d2a06e3693eeec96f8a35fded52920a5dc652eb7f9032d076b6364c9731d8",
+      "bytes": 2111
+    },
+    "p4-g2-failed-context-restored.summary.json": {
+      "sha256": "7f466e774fb00b4d7f1761f2fa253ebba0e2af7a69a1ef0da66263da39a64cf2",
+      "bytes": 3066
+    },
+    "p4-g2-historical-context-final.log": {
+      "sha256": "1215761364282d5b99db2cddb18d577c14b952e3c77d96ee0bf0c6eee9be7eed",
+      "bytes": 3424
+    },
+    "p4-g2-historical-context-final.summary.json": {
+      "sha256": "b3744178ecee31eb1c0c4585edcfd6f98df14aa1841e4258698e8666f3c3f1f0",
+      "bytes": 5147
+    },
+    "p4-p8-independent-audit.log": {
+      "sha256": "077a3d9d5eb1ff6593e5776570ada9d55b07197e70297c29b57df8d52458a941",
+      "bytes": 13965
+    },
+    "p4-p8-independent-audit.summary.json": {
+      "sha256": "95f979217b11349aff7540fec39fb07eb52ef75b86e157f47e5de884d7018a44",
+      "bytes": 9080
+    },
+    "p4-r13a-failed-historical-context.log": {
+      "sha256": "5733dfb2e44cf3b6808be5856699a99e57488c09f03f4f85557ba642bed600a9",
+      "bytes": 482
+    },
+    "p4-r13a-failed-historical-context.summary.json": {
+      "sha256": "55410e55b77e00d2305996a1789cbd3457e7e79e5d89464a153686e578d6f176",
+      "bytes": 1796
+    }
+  },
+  "limits": [
+    "No full general suite rerun; known115 exact-equality claim independently checked only for the5 selected failing nodes.",
+    "Context restoration reads existing historical artifacts in the preserved checkout; it is not a self-contained clean-checkout PASS.",
+    "No scientific campaigns, no contract/test/source/threshold changes, no reinterpretation of historical gates."
+  ]
+}

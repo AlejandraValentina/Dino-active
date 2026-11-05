@@ -1,0 +1,27 @@
+{
+  "name": "focused-api-desktop",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_dino4t_api.py",
+    "tests/test_dino4t_ab_comparison.py",
+    "tests/test_dino4t_desktop_integration.py"
+  ],
+  "started_at": "2026-11-05T16:41:55+00:00",
+  "finished_at": "2026-11-05T16:44:07+00:00",
+  "duration_s": 131.25,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\platform-integration-audit-v1\\checks\\focused\\focused-api-desktop.log",
+  "log_lines": 2,
+  "log_bytes": 111,
+  "error_lines": [],
+  "tail": [
+    "......................................                                   [100%]",
+    "38 passed in 130.49s (0:02:10)"
+  ]
+}

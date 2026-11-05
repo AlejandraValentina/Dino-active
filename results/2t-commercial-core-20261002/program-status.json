@@ -12889,11 +12889,14 @@
       "objective": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
       "description": "Pin Git history, planning authority and all blocker reassessments",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Audit only; preserve product and scientific runtime.",
+      "evidence": [
+        "results/platform-integration-audit-v1/audit-freeze.json",
+        "results/platform-integration-audit-v1/audit-report.md"
+      ],
+      "next_action": "Retain frozen audit; successor planning must cite this evidence without changing the reviewed product.",
       "owner_role": "orchestrator",
       "write_scope": [],
       "evidence_level": "L0"
@@ -12903,11 +12906,14 @@
       "objective": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
       "description": "Independent integration architecture, product and provenance review",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Audit only; preserve product and scientific runtime.",
+      "evidence": [
+        "results/platform-integration-audit-v1/audit-freeze.json",
+        "results/platform-integration-audit-v1/audit-report.md"
+      ],
+      "next_action": "Retain frozen audit; successor planning must cite this evidence without changing the reviewed product.",
       "owner_role": "independent_read_only_reviewer",
       "write_scope": [],
       "evidence_level": "L0"
@@ -12917,11 +12923,14 @@
       "objective": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
       "description": "Independent scientific API/numerical semantics review",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Audit only; preserve product and scientific runtime.",
+      "evidence": [
+        "results/platform-integration-audit-v1/audit-freeze.json",
+        "results/platform-integration-audit-v1/audit-report.md"
+      ],
+      "next_action": "Retain frozen audit; successor planning must cite this evidence without changing the reviewed product.",
       "owner_role": "independent_read_only_reviewer",
       "write_scope": [],
       "evidence_level": "L0"
@@ -12931,11 +12940,14 @@
       "objective": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
       "description": "Independent protected-contract and historical regression review",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Audit only; preserve product and scientific runtime.",
+      "evidence": [
+        "results/platform-integration-audit-v1/audit-freeze.json",
+        "results/platform-integration-audit-v1/audit-report.md"
+      ],
+      "next_action": "Retain frozen audit; successor planning must cite this evidence without changing the reviewed product.",
       "owner_role": "independent_read_only_reviewer",
       "write_scope": [],
       "evidence_level": "L0"
@@ -12945,11 +12957,14 @@
       "objective": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
       "description": "Verify build/result artifacts and test acceptance claims with bounded probes",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Audit only; preserve product and scientific runtime.",
+      "evidence": [
+        "results/platform-integration-audit-v1/audit-freeze.json",
+        "results/platform-integration-audit-v1/audit-report.md"
+      ],
+      "next_action": "Retain frozen audit; successor planning must cite this evidence without changing the reviewed product.",
       "owner_role": "orchestrator",
       "write_scope": [],
       "evidence_level": "L0"
@@ -12965,11 +12980,14 @@
         "PA-CONTRACTS",
         "PA-EVIDENCE"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Audit only; preserve product and scientific runtime.",
+      "evidence": [
+        "results/platform-integration-audit-v1/audit-freeze.json",
+        "results/platform-integration-audit-v1/audit-report.md"
+      ],
+      "next_action": "Retain frozen audit; successor planning must cite this evidence without changing the reviewed product.",
       "owner_role": "orchestrator",
       "write_scope": [],
       "evidence_level": "L0"
@@ -12981,7 +12999,7 @@
       "dependencies": [
         "PA-AUDIT-FREEZE"
       ],
-      "state": "WAITING",
+      "state": "READY",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -18411,6 +18429,42 @@
       "task": "PA-GIT-AUTHORITY",
       "kind": "OWNER_SCOPE_ACTIVATION",
       "summary": "Activated owner-requested read-only technical/scientific audit and subsequent unified replanning; main 5e4ba4d and A/B 8b371e2 pinned separately. Prior gate preserved; no product changes or new campaigns authorized."
+    },
+    {
+      "at": "2026-11-05T16:53:35.083876+00:00",
+      "task": "PA-GIT-AUTHORITY",
+      "kind": "AUDIT_EVIDENCE",
+      "summary": "Revision-bound audit frozen:19findings(10P1/9P2),3independent reports;38focusedPASS;protected296PASS5contextfail3SKIP then5contextPASS;no product fixes or new campaigns."
+    },
+    {
+      "at": "2026-11-05T16:53:35.083876+00:00",
+      "task": "PA-ARCHITECTURE",
+      "kind": "AUDIT_EVIDENCE",
+      "summary": "Revision-bound audit frozen:19findings(10P1/9P2),3independent reports;38focusedPASS;protected296PASS5contextfail3SKIP then5contextPASS;no product fixes or new campaigns."
+    },
+    {
+      "at": "2026-11-05T16:53:35.083876+00:00",
+      "task": "PA-SCIENCE",
+      "kind": "AUDIT_EVIDENCE",
+      "summary": "Revision-bound audit frozen:19findings(10P1/9P2),3independent reports;38focusedPASS;protected296PASS5contextfail3SKIP then5contextPASS;no product fixes or new campaigns."
+    },
+    {
+      "at": "2026-11-05T16:53:35.083876+00:00",
+      "task": "PA-CONTRACTS",
+      "kind": "AUDIT_EVIDENCE",
+      "summary": "Revision-bound audit frozen:19findings(10P1/9P2),3independent reports;38focusedPASS;protected296PASS5contextfail3SKIP then5contextPASS;no product fixes or new campaigns."
+    },
+    {
+      "at": "2026-11-05T16:53:35.083876+00:00",
+      "task": "PA-EVIDENCE",
+      "kind": "AUDIT_EVIDENCE",
+      "summary": "Revision-bound audit frozen:19findings(10P1/9P2),3independent reports;38focusedPASS;protected296PASS5contextfail3SKIP then5contextPASS;no product fixes or new campaigns."
+    },
+    {
+      "at": "2026-11-05T16:53:35.083876+00:00",
+      "task": "PA-AUDIT-FREEZE",
+      "kind": "AUDIT_EVIDENCE",
+      "summary": "Revision-bound audit frozen:19findings(10P1/9P2),3independent reports;38focusedPASS;protected296PASS5contextfail3SKIP then5contextPASS;no product fixes or new campaigns."
     }
   ],
   "legacy_gate_status": {
@@ -18430,22 +18484,17 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 8,
-    "gate_tasks_done": 0,
+    "gate_tasks_done": 6,
     "gate_task_states": {
-      "IN_PROGRESS": 5,
-      "WAITING": 3
+      "DONE": 6,
+      "READY": 1,
+      "WAITING": 1
     },
     "remaining": [
-      "PA-GIT-AUTHORITY",
-      "PA-ARCHITECTURE",
-      "PA-SCIENCE",
-      "PA-CONTRACTS",
-      "PA-EVIDENCE",
-      "PA-AUDIT-FREEZE",
       "PA-REPLAN",
       "PA-FINAL-REVIEW"
     ],
-    "updated_at": "2026-11-05T16:40:42+00:00"
+    "updated_at": "2026-11-05T16:53:35+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

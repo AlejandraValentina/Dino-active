@@ -1,0 +1,26 @@
+{
+  "schema": "DINO_PLATFORM_AUDIT_FREEZE_V1",
+  "date": "2026-11-05",
+  "reviewed_revisions": {
+    "main": "5e4ba4d27a8156d2cf3b07d633ae92c6dea213c5",
+    "ab": "8b371e247498f94255e88ab8d35dbae7b7c2ba6b",
+    "package_source": "07849322b8ad0115defb28de2ad5f23b8bfacd55"
+  },
+  "protocol_commit": "90e143f",
+  "audit_report_sha256": "d4164a5347b3a9218328d9cb2dfb50545b64ec6d72d61ee2c726fa6554f5bb30",
+  "findings_sha256": "d952e320464c0196b0e82358ce5a3fc0b4bd286c76d83f4b1d8e2d66629fa03a",
+  "independent_review_report_sha256": {
+    "independent-contract-review.md": "61ce9f028142d768b85cdf645c22807b07ab6967bb91583d845c4c6d375bb2ec",
+    "independent-integration-review.md": "128f869b35ae7801adbc5c4f921039270f5680b7e2bde1ab3981653845af4cb6",
+    "independent-science-review.md": "fd29c3f64870ee2b05cbc2064a4acab07a64e69751ed2ebcd65cacdce6d025e8"
+  },
+  "findings_counts": {
+    "P0_demonstrated": 0,
+    "P1": 10,
+    "P2": 9
+  },
+  "verdict": "CONDITIONAL_INTERNAL_TRIAL_OPEN_P1",
+  "future_plan_written": false,
+  "qualification": "Freeze is delivery of audit evidence, not solver or product scientific acceptance. Future planning must cite the commit containing this freeze.",
+  "runtime_product_diff": []
+}

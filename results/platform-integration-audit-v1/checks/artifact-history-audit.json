@@ -1,0 +1,228 @@
+{
+  "schema": "DINO_PLATFORM_READ_ONLY_AUDIT_V1",
+  "solver_runs": 0,
+  "revisions": {
+    "main": "5e4ba4d27a8156d2cf3b07d633ae92c6dea213c5",
+    "ab": "8b371e247498f94255e88ab8d35dbae7b7c2ba6b",
+    "package_source": "07849322b8ad0115defb28de2ad5f23b8bfacd55",
+    "main_is_ancestor_of_ab": true,
+    "ab_commits_not_in_main": "7",
+    "product_delta_main_to_ab": [
+      "motorsim/desktop/four_stroke_comparison.py",
+      "motorsim/desktop/four_stroke_desktop.py",
+      "motorsim/desktop/technical_report.py",
+      "motorsim/dino4t/api.py",
+      "motorsim/dino4t/engine.py",
+      "motorsim/dino4t/runner.py"
+    ]
+  },
+  "p9": {
+    "expected_canonical_sha256": "79fbe9b88d26fc4af5083d65d468f59c9208535f0ab389d2f3cb9a7654b88a4d",
+    "git_blobs": {
+      "5e4ba4d27a8156d2cf3b07d633ae92c6dea213c5": "79fbe9b88d26fc4af5083d65d468f59c9208535f0ab389d2f3cb9a7654b88a4d",
+      "8b371e247498f94255e88ab8d35dbae7b7c2ba6b": "79fbe9b88d26fc4af5083d65d468f59c9208535f0ab389d2f3cb9a7654b88a4d"
+    },
+    "all_match": true
+  },
+  "windows_evidence": {
+    "files": [
+      {
+        "file": "build.json",
+        "expected": "56bc757bafe15c51aa4ab607e6165197dbad5974bc48d3f30e5c50b6e323bd93",
+        "worktree_sha256": "56bc757bafe15c51aa4ab607e6165197dbad5974bc48d3f30e5c50b6e323bd93",
+        "git_blob_sha256": "d242cda18089d825a18de6401fc6812390c33750dad1f36545e5c7863fe0f954"
+      },
+      {
+        "file": "cancelled-config-resolved.json",
+        "expected": "ad03b4ad2447748bbab2a2dd65d36901cfb77563c0971ad87b5bb919c851501b",
+        "worktree_sha256": "ad03b4ad2447748bbab2a2dd65d36901cfb77563c0971ad87b5bb919c851501b",
+        "git_blob_sha256": "71c6883437f248b62223fef6c71823ccb6f480aad85f91ec6cb0f1d111623cc3"
+      },
+      {
+        "file": "cancelled-run.json",
+        "expected": "bb89f28ae898de77813d4edca9ab5a62291dad6302484ead00357b8fe1e0d33d",
+        "worktree_sha256": "bb89f28ae898de77813d4edca9ab5a62291dad6302484ead00357b8fe1e0d33d",
+        "git_blob_sha256": "ffd64663113742606cb10ff2a213958e5d1b3b0342ad554254b773c95f51b353"
+      },
+      {
+        "file": "cancelled-summary.json",
+        "expected": "1dc42ba988bc0b24dc95dbaf42f9fab9f5abad07a16b55a2870ef6908c0f7d42",
+        "worktree_sha256": "1dc42ba988bc0b24dc95dbaf42f9fab9f5abad07a16b55a2870ef6908c0f7d42",
+        "git_blob_sha256": "6f6eed3389f54b62bb31fd17f6738f606aa48294e8400cc6fc61a22725f757b7"
+      },
+      {
+        "file": "cancelled-trace-last-cycle.csv",
+        "expected": "f099bb3d790347fc91d034942ed8f35c2550569b7b6293fbe22ed60206073e1f",
+        "worktree_sha256": "f099bb3d790347fc91d034942ed8f35c2550569b7b6293fbe22ed60206073e1f",
+        "git_blob_sha256": "55c3cd15385c69b5905104dbaf636a3d76bbaec28d198c3da61080cbace6dfd8"
+      },
+      {
+        "file": "candidate-acceptance.json",
+        "expected": "c5c167ec9b89d48a7d38ed9602d4ea670fc9302ca1ef684dd94d071f275f5fb7",
+        "worktree_sha256": "c5c167ec9b89d48a7d38ed9602d4ea670fc9302ca1ef684dd94d071f275f5fb7",
+        "git_blob_sha256": "a4f68b708f2bcdefc41776d1387c5930c9c62cbf9a847cc94811a29a8f74ff6c"
+      },
+      {
+        "file": "candidate.zip.sha256",
+        "expected": "3ad7cd3c7d01b7fc614387623e8b6ac8f383b0ec129ce6935d4506ae385efa5f",
+        "worktree_sha256": "3ad7cd3c7d01b7fc614387623e8b6ac8f383b0ec129ce6935d4506ae385efa5f",
+        "git_blob_sha256": "f917374d19ea0077658cad8d91bac4c9401f763f335845b8adaf06e41e98c8ae"
+      },
+      {
+        "file": "packaged-2t-project-1360x900.png",
+        "expected": "1a7abfc144debb140b8c2f9c48df17b74f2085ef474c941fa5f2a124de2f657a",
+        "worktree_sha256": "1a7abfc144debb140b8c2f9c48df17b74f2085ef474c941fa5f2a124de2f657a",
+        "git_blob_sha256": "1a7abfc144debb140b8c2f9c48df17b74f2085ef474c941fa5f2a124de2f657a"
+      },
+      {
+        "file": "packaged-2t-routing-acceptance.json",
+        "expected": "ca0060181876dc5c7f0eebb5e5a0e2af1a9f7942e0a73037dcb8da5e5a1008e9",
+        "worktree_sha256": "ca0060181876dc5c7f0eebb5e5a0e2af1a9f7942e0a73037dcb8da5e5a1008e9",
+        "git_blob_sha256": "95c66db4229091a340e2fdcb310022ea65b4e3d0e3371a1ffdecf2aa0d283d53"
+      },
+      {
+        "file": "packaged-4t-ab-1360x900.png",
+        "expected": "4a10a0bc04527b5a3cc3fa66468d287955c88ace5e54febe49906c3514ff0127",
+        "worktree_sha256": "4a10a0bc04527b5a3cc3fa66468d287955c88ace5e54febe49906c3514ff0127",
+        "git_blob_sha256": "4a10a0bc04527b5a3cc3fa66468d287955c88ace5e54febe49906c3514ff0127"
+      },
+      {
+        "file": "packaged-4t-ab-reopened-980x680.png",
+        "expected": "77b2b62ce4c3b44161c1518414fd5710134a4f8702ab48e6e4f85df57f9bac40",
+        "worktree_sha256": "77b2b62ce4c3b44161c1518414fd5710134a4f8702ab48e6e4f85df57f9bac40",
+        "git_blob_sha256": "77b2b62ce4c3b44161c1518414fd5710134a4f8702ab48e6e4f85df57f9bac40"
+      },
+      {
+        "file": "packaged-ab-acceptance.json",
+        "expected": "7c321e8e31867c394aabaaf48fc6f33244850a4f8a6ca0404f90ec2cdce2b5ff",
+        "worktree_sha256": "7c321e8e31867c394aabaaf48fc6f33244850a4f8a6ca0404f90ec2cdce2b5ff",
+        "git_blob_sha256": "45ea2a66f0c92732c4e744b82d305b6313a34c159bb45f46f7b09f5f8f85384d"
+      },
+      {
+        "file": "packaged-comparison.csv",
+        "expected": "2230ec567eb3cddccff222a25fbe5d1cc635b4f745a6d69e57a7135169314546",
+        "worktree_sha256": "2230ec567eb3cddccff222a25fbe5d1cc635b4f745a6d69e57a7135169314546",
+        "git_blob_sha256": "9a099c600b7555b767e805185ddd70bb681a0d078e1e4c9de93670341aa5a0c7"
+      },
+      {
+        "file": "packaged-comparison.html",
+        "expected": "c0d2f29d845f723bf769913e1974b5e7190d63337e1295bbb348103750d293a5",
+        "worktree_sha256": "c0d2f29d845f723bf769913e1974b5e7190d63337e1295bbb348103750d293a5",
+        "git_blob_sha256": "d821158f42fc58fb57e8b63d8fc1e949373931df292c07543fdb673057b8b97f"
+      },
+      {
+        "file": "packaged-comparison.json",
+        "expected": "324a9a93b01cf3b77493218d0f3d88abe1d65eef01225323600be1c57153a9dc",
+        "worktree_sha256": "324a9a93b01cf3b77493218d0f3d88abe1d65eef01225323600be1c57153a9dc",
+        "git_blob_sha256": "a87525d52c50e011484c2c99e87132b3f3d95144ff215b9118e3cccfa0b71044"
+      },
+      {
+        "file": "README.md",
+        "expected": "d9af8ada49897f39b3ca3cd342d0e7e5bf368c1c92757cabb1d4c434d3b9b429",
+        "worktree_sha256": "d9af8ada49897f39b3ca3cd342d0e7e5bf368c1c92757cabb1d4c434d3b9b429",
+        "git_blob_sha256": "7cd2d87ae7aa1b67d66007adab41ee6c8d0722d76e75cb2737c6d49796a2a584"
+      }
+    ],
+    "raw_worktree_matches": 16,
+    "git_blob_matches": 3
+  },
+  "actual_ab_artifacts": [
+    {
+      "run_id": "d4ab-v1-1-119badaf3860",
+      "checks": {
+        "summary.json": {
+          "exists": true,
+          "expected": "110777f52a7337419a63d20747c78437b5aad9fdbe66d67b3d936f6f0e711412",
+          "actual": "110777f52a7337419a63d20747c78437b5aad9fdbe66d67b3d936f6f0e711412",
+          "raw_sha256": "110777f52a7337419a63d20747c78437b5aad9fdbe66d67b3d936f6f0e711412",
+          "identity_mode": "raw_bytes"
+        },
+        "config_resolved.json": {
+          "exists": true,
+          "expected": "6725fee8708c7ecc5395995fcc81176e6cceb643a276c3e82ccb8bf1117ad2ca",
+          "actual": "6725fee8708c7ecc5395995fcc81176e6cceb643a276c3e82ccb8bf1117ad2ca",
+          "raw_sha256": "a6e157aa6688a1423acbfa02d178c42037226e6a71d2faee01c69f1feb4afee2",
+          "identity_mode": "canonical_json"
+        },
+        "trace_last_cycle.csv": {
+          "exists": true,
+          "expected": "e496b347f48a4f73cf2e81272a0efeb8930bd684dafc573b04dc15b0d6efff20",
+          "actual": "e496b347f48a4f73cf2e81272a0efeb8930bd684dafc573b04dc15b0d6efff20",
+          "raw_sha256": "e496b347f48a4f73cf2e81272a0efeb8930bd684dafc573b04dc15b0d6efff20",
+          "identity_mode": "raw_bytes"
+        }
+      },
+      "summary_path_absolute": true,
+      "periodicity": "PERIODIC_CONVERGED",
+      "code_commit": "cb8f356aa616ebaa2e5ebb110a89e6edd40c0ff3"
+    },
+    {
+      "run_id": "d4ab-v1-2-f6e4c5c2f7eb",
+      "checks": {
+        "summary.json": {
+          "exists": true,
+          "expected": "d22317b3a1869fff9bd5811521108d943cd4a0c409956886efe1a973e5309673",
+          "actual": "d22317b3a1869fff9bd5811521108d943cd4a0c409956886efe1a973e5309673",
+          "raw_sha256": "d22317b3a1869fff9bd5811521108d943cd4a0c409956886efe1a973e5309673",
+          "identity_mode": "raw_bytes"
+        },
+        "config_resolved.json": {
+          "exists": true,
+          "expected": "da28bcc605174008a9fa2369daf18376390ba3b64c610bb03ee1ec0fb47f8956",
+          "actual": "da28bcc605174008a9fa2369daf18376390ba3b64c610bb03ee1ec0fb47f8956",
+          "raw_sha256": "f182d2b2985730de5579f38540025ac90d5b732f80af97a4272aab997dec37e9",
+          "identity_mode": "canonical_json"
+        },
+        "trace_last_cycle.csv": {
+          "exists": true,
+          "expected": "4671bde7fee9d84b4868b7c9311f927207c1bc4af89e4ae5535c85dce5080a5e",
+          "actual": "4671bde7fee9d84b4868b7c9311f927207c1bc4af89e4ae5535c85dce5080a5e",
+          "raw_sha256": "4671bde7fee9d84b4868b7c9311f927207c1bc4af89e4ae5535c85dce5080a5e",
+          "identity_mode": "raw_bytes"
+        }
+      },
+      "summary_path_absolute": true,
+      "periodicity": "PERIODIC_CONVERGED",
+      "code_commit": "cb8f356aa616ebaa2e5ebb110a89e6edd40c0ff3"
+    }
+  ],
+  "comparison": {
+    "id": "54598307b81a3c99069f6273093cd321229a39864adde97565f9f4a34c5b974f",
+    "classification": "PERIODIC_MODEL_SENSITIVITY_ONLY",
+    "design_changes": [
+      {
+        "path": "intake_valve.lift.max_lift_mm",
+        "a": 10.0,
+        "b": 8.0
+      }
+    ]
+  },
+  "archive": {
+    "available": true,
+    "expected_sha256": "aa0992b08514c996ca8191e863387260fee964dfcd2aff19d6582a4bdc997e03",
+    "actual_sha256": "aa0992b08514c996ca8191e863387260fee964dfcd2aff19d6582a4bdc997e03",
+    "crc_failure": null,
+    "example": {
+      "member": "MotorSim/_internal/configs/dino4t/example_single_cylinder_500cc.json",
+      "raw_sha256": "3aceee36e15b6cafe7166e2b02e15dff6b2bcbacaaa14a39095dcb08e5a7af1b",
+      "git_blob_sha256": "01cad48ca3d4b6ee777fefb08a65bb3ef5d0d8ac6691c55f0c7eedfd43d24fdb",
+      "semantic_equal_to_source": true
+    }
+  },
+  "exe": {
+    "available": true,
+    "expected_sha256": "89852dd681b0620380114ab8232649f9008a5d11cd1cb34e69d63458bc9e04d2",
+    "actual_sha256": "89852dd681b0620380114ab8232649f9008a5d11cd1cb34e69d63458bc9e04d2"
+  },
+  "package_manifest": {
+    "recorded_count": 255,
+    "recorded_sha256": "cc2b065d5902f1942376efe00f6734e91a25a86f64dbaf4b1f5d89d85f1fd602",
+    "current_raw_sha256": "a02eb1f7ad4d11afc4a04515c7b289d1ac9eea30af2a81aacac71848fd66a906",
+    "raw_input_paths_differing_from_built_tree": [
+      "motorsim/desktop/four_stroke_comparison.py"
+    ],
+    "example_in_recorded_manifest": false,
+    "example_in_current_manifest": false,
+    "note": "An exact manifest is provenance for included inputs only; false/partial coverage is a separate finding."
+  }
+}

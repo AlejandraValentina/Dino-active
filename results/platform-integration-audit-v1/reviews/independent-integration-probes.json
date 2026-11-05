@@ -1,0 +1,69 @@
+{
+  "schema": "DINO_INDEPENDENT_INTEGRATION_AUDIT_PROBES_V1",
+  "reviewed_head": "8b371e247498f94255e88ab8d35dbae7b7c2ba6b",
+  "fixture_root": "C:\\Users\\AGERIB~1.MID\\AppData\\Local\\Temp\\dino-independent-integration-audit-mmcqii9o",
+  "solver_integrations": 0,
+  "note": "Expected historical defects are being falsified; FINDINGS_REPRODUCED is not product PASS.",
+  "no_op_editor": {
+    "before": 180.12345678912345,
+    "after": 180.123456789,
+    "identity_changed": true
+  },
+  "trace_tamper": {
+    "loaded": 2,
+    "history": "6000 rpm · Periódico · Motor base",
+    "plotted_cylinder_bar": 42.0,
+    "summary_digest_preserved": true,
+    "original_trace_sha256": "e496b347f48a4f73cf2e81272a0efeb8930bd684dafc573b04dc15b0d6efff20",
+    "changed_trace_sha256": "c007f4ead638af4237e91b0c3ef606e9f4751a7dc1ca6f62c1ed3e9ca66122fb"
+  },
+  "stale_detail": {
+    "before": {
+      "loaded": 2,
+      "summary_rows": 44,
+      "pressure_series": 3
+    },
+    "after": {
+      "loaded": 0,
+      "selected_history": "Fuente no verificable · d4ab-v1-2-f6e4c5c2f7eb · [Errno 2] No such file or directory: 'C:\\\\Users\\\\AGERIB~1.MID\\\\AppData\\\\Local\\\\Temp\\\\dino-independent-integration-audit-mmcqii9o\\\\does-not-exist-summary.json'",
+      "summary_rows": 44,
+      "pressure_series": 3,
+      "first_metric": "Trabajo neto por ciclo",
+      "first_value": "592.544"
+    }
+  },
+  "pressure_axis": {
+    "series_x_key": "theta",
+    "series_has_x_label": false,
+    "shared_plot_fallback": "RPM",
+    "basis": "four_stroke_desktop.py pressure series and plot.py x_label fallback"
+  },
+  "source_dirty_scope": {
+    "root_status": "M motorsim/kinematics.py",
+    "reported_4t_code_dirty": false
+  },
+  "packaging_dirty_scope": {
+    "root_status": "M configs/dino4t/example_single_cylinder_500cc.json",
+    "ensure_packaged_inputs_clean": "accepted",
+    "fingerprint": {
+      "source_dirty": true,
+      "unrelated_dirty_entry_count": 1,
+      "unrelated_dirty_status_sha256": "e42b4f98222682ad2bd9aa886c1040bbf1867f6e28fb9d03e92d7469e094b25c"
+    }
+  },
+  "manifest_omission": {
+    "consumed_by_spec": true,
+    "present_in_manifest": false,
+    "manifest_sha256": "cc2b065d5902f1942376efe00f6734e91a25a86f64dbaf4b1f5d89d85f1fd602",
+    "count": 255
+  },
+  "reviewed_repository_status_unchanged": true,
+  "findings_reproduced": {
+    "INT-01": true,
+    "INT-02": true,
+    "INT-03": true,
+    "INT-04": true,
+    "INT-05": true
+  },
+  "result": "FINDINGS_REPRODUCED"
+}

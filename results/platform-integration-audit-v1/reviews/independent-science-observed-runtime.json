@@ -1,0 +1,66 @@
+{
+  "schema": "DINO_PLATFORM_INDEPENDENT_SCIENCE_OBSERVATIONS_V1",
+  "review": "INDEPENDENT_REVIEW",
+  "reviewed_main": "5e4ba4d27a8156d2cf3b07d633ae92c6dea213c5",
+  "reviewed_ab": "8b371e247498f94255e88ab8d35dbae7b7c2ba6b",
+  "capture_note": "Transcribed from actual independent reviewer tool output. No solver was rerun when persisting this file. No output directories were passed to these runtime probes.",
+  "false_periodicity": {
+    "input_overrides": {
+      "numerics.dx_mm": 30.0,
+      "numerics.periodicity.consecutive": 0
+    },
+    "api_options": {
+      "max_cycles": 1,
+      "wall_limit_s": 30.0
+    },
+    "validation": {
+      "valid": true,
+      "issues": [],
+      "unknown_keys": [],
+      "config_sha256": "e1f58245754b9bc0953eb89870f4f640af54ec199faabc0f08d12c35ae100c0b"
+    },
+    "ok": true,
+    "error": null,
+    "status": "completed",
+    "termination": "requested_cycles",
+    "periodicity": {
+      "status": "PERIODIC_CONVERGED",
+      "tolerances": {
+        "imep_rel": 0.002,
+        "trapped_mass_rel": 0.002,
+        "pressure_trace_rel": 0.005,
+        "mass_imbalance_rel": 0.005,
+        "consecutive": 0
+      },
+      "history": [null]
+    },
+    "cycles_run": 1,
+    "wall_seconds": 11.875
+  },
+  "warm_state": {
+    "input_overrides": {
+      "numerics.dx_mm": 30.0,
+      "combustion.zone_model": "single_zone"
+    },
+    "first_options": {
+      "max_cycles": 1,
+      "wall_limit_s": 0.03
+    },
+    "status": "incomplete",
+    "termination": "wall_limit",
+    "cycles": 0,
+    "theta_returned_by_engine": -358.5,
+    "theta_start": -360.0,
+    "state_keys": ["ducts", "cyl", "plen"],
+    "p_at_actual_Pa": 103922.3829901458,
+    "p_if_reset_to_start_Pa": 104153.97459509272,
+    "continuation_options": {
+      "max_cycles": 1,
+      "wall_limit_s": 0.000001
+    },
+    "continuation_warm_start": "used",
+    "continuation_theta": -359.0,
+    "continuation_status": "incomplete",
+    "continuation_complete_cycles": 0
+  }
+}

@@ -1,0 +1,253 @@
+{
+  "schema": "DINO_PLATFORM_AUDIT_FINDINGS_V1",
+  "product_verdict": "CONDITIONAL_INTERNAL_TRIAL_OPEN_P1",
+  "P0_demonstrated": false,
+  "findings": [
+    {
+      "id": "F01",
+      "severity": "P1",
+      "review_refs": "SCI-01",
+      "title": "False periodic success with accepted consecutive=0",
+      "affected_revisions": "main and AB",
+      "anchor": "motorsim/dino4t/cycle_analysis.py:156",
+      "evidence": "One cycle, history=[None], api.ok=True/PERIODIC_CONVERGED; 11.875-second negative diagnostic",
+      "future_closure": "Reject invalid domains and require a genuinely satisfied versioned detector",
+      "classification": "CONFIRMED",
+      "fixed_in_audit": false
+    },
+    {
+      "id": "F02",
+      "severity": "P1",
+      "review_refs": "SCI-02",
+      "title": "Summary/config scientific semantics are not bound",
+      "affected_revisions": "main validator; AB comparison adds exposure",
+      "anchor": "motorsim/dino4t/api.py:206",
+      "evidence": "Rebound copies with zero cycles, gross closure, RPM/config and model/config contradictions accepted",
+      "future_closure": "Cross-check operating/model/detector/status semantics before displaying/comparing",
+      "classification": "CONFIRMED",
+      "fixed_in_audit": false
+    },
+    {
+      "id": "F03",
+      "severity": "P1",
+      "review_refs": "SCI-03",
+      "title": "Mid-cycle state can be reused at the wrong crank phase",
+      "affected_revisions": "main and AB",
+      "anchor": "motorsim/dino4t/runner.py:93",
+      "evidence": "WALL_LIMIT state at -358.5 degrees reused at -360; same state yields different pressure",
+      "future_closure": "Reject unsafe seeds or version a complete phase/model-context restart; no exact-restart claim until verified",
+      "classification": "CONFIRMED",
+      "fixed_in_audit": false
+    },
+    {
+      "id": "F04",
+      "severity": "P1",
+      "review_refs": "SCI-04;SCI-07;SCI-08",
+      "title": "Configuration domain/type/error and discovery gaps",
+      "affected_revisions": "main and AB",
+      "anchor": "motorsim/dino4t/config.py:45",
+      "evidence": "Count1.9 truncates, bool/NaN accepted, geometry=None escapes, nested unread keys ignored; default discovery mismatch",
+      "future_closure": "Section-aware finite/type/domain validation, explicit defaults and structured errors preserving valid input semantics",
+      "classification": "CONFIRMED",
+      "fixed_in_audit": false
+    },
+    {
+      "id": "F05",
+      "severity": "P1",
+      "review_refs": "INT-01",
+      "title": "No-op editor Apply changes precise inputs",
+      "affected_revisions": "main and AB",
+      "anchor": "motorsim/desktop/four_stroke_desktop.py:202",
+      "evidence": "rod180.12345678912345 becomes180.123456789 without editing",
+      "future_closure": "No-op exact identity and targeted edits; display precision must not rewrite source data",
+      "classification": "CONFIRMED",
+      "fixed_in_audit": false
+    },
+    {
+      "id": "F06",
+      "severity": "P1",
+      "review_refs": "INT-02",
+      "title": "Verified history can plot an unbound replacement trace",
+      "affected_revisions": "main and AB",
+      "anchor": "motorsim/desktop/four_stroke_desktop.py:348",
+      "evidence": "Copied genuine summary/config plus artificial42bar trace accepted and plotted",
+      "future_closure": "Bind all primary artifacts to original expected identities and relationships",
+      "classification": "CONFIRMED",
+      "fixed_in_audit": false
+    },
+    {
+      "id": "F07",
+      "severity": "P1",
+      "review_refs": "INT-03",
+      "title": "Unverifiable refreshed history retains previous metrics/pressure",
+      "affected_revisions": "main and AB",
+      "anchor": "motorsim/desktop/four_stroke_desktop.py:360",
+      "evidence": "loaded0 yet summary44rows and3pressure series after sources become unavailable",
+      "future_closure": "Atomic invalidation/clearing on project, source or selection failure",
+      "classification": "CONFIRMED",
+      "fixed_in_audit": false
+    },
+    {
+      "id": "F08",
+      "severity": "P1",
+      "review_refs": "INT-04",
+      "title": "Package clean-input guard omits consumed native4T example",
+      "affected_revisions": "main and AB",
+      "anchor": "packaging/build_provenance.py:10",
+      "evidence": "Spec consumes configs/dino4t example;255file manifest and dirty guard omit it",
+      "future_closure": "Single complete consumed-input inventory; dirty-input negative test; candidate content separately checked",
+      "classification": "CONFIRMED",
+      "fixed_in_audit": false
+    },
+    {
+      "id": "F09",
+      "severity": "P1",
+      "review_refs": "INT-05;SCI-05",
+      "title": "Source code_dirty excludes shared imported dependencies",
+      "affected_revisions": "main and AB",
+      "anchor": "motorsim/dino4t/runner.py:48",
+      "evidence": "Isolated modified shared kinematics still reports code_dirty=False",
+      "future_closure": "Provenance closure covers actual dependencies and code/source preimages",
+      "classification": "CONFIRMED",
+      "fixed_in_audit": false
+    },
+    {
+      "id": "F10",
+      "severity": "P1",
+      "review_refs": "CR-01",
+      "title": "Clean protected assurance depends on implicit artifact conventions",
+      "affected_revisions": "historical baseline, main and AB",
+      "anchor": "tests/test_p4_g2_v2_recovery.py:466",
+      "evidence": "Clean296pass5fail3skip;all5fail pass with distinct verified artifact contexts",
+      "future_closure": "Reproducible clean-source artifact-context recipe preserving frozen tests/bytes and disclosing skips",
+      "classification": "CONFIRMED",
+      "fixed_in_audit": false
+    },
+    {
+      "id": "F11",
+      "severity": "P2",
+      "review_refs": "SCI-06",
+      "title": "CLI sensitivity success does not establish periodic endpoints",
+      "affected_revisions": "main and AB",
+      "anchor": "motorsim/dino4t/studies.py:145",
+      "evidence": "Nonperiodic stub yields parameter status=ok; historical perturbation identities incomplete",
+      "future_closure": "Per-endpoint eligibility/provenance; separate transient derivative class; do not rerun old studies automatically",
+      "classification": "CONFIRMED",
+      "fixed_in_audit": false
+    },
+    {
+      "id": "F12",
+      "severity": "P2",
+      "review_refs": "INT-06",
+      "title": "Study portability and byte preimages depend on paths/EOL",
+      "affected_revisions": "native paths on main; A/B evidence on AB",
+      "anchor": "motorsim/engine_project.py:141",
+      "evidence": "Absolute inner paths;16raw hashes pass Windows but only3Git blobs match;fresh comparison source manifest differs by EOL",
+      "future_closure": "Version portable binding/reconstruction and byte policy; preserve original hashes",
+      "classification": "CONFIRMED",
+      "fixed_in_audit": false
+    },
+    {
+      "id": "F13",
+      "severity": "P2",
+      "review_refs": "INT-07",
+      "title": "Build metadata uses legacy4T model name",
+      "affected_revisions": "main and AB",
+      "anchor": "packaging/build_windows.py:79",
+      "evidence": "Native API foundation result versus legacy three-cv/rk4 package models.four_stroke",
+      "future_closure": "Name legacy/native families explicitly and compare runtime metadata",
+      "classification": "CONFIRMED",
+      "fixed_in_audit": false
+    },
+    {
+      "id": "F14",
+      "severity": "P2",
+      "review_refs": "INT-08",
+      "title": "Pressure graph horizontal axis defaults to RPM",
+      "affected_revisions": "main and AB",
+      "anchor": "motorsim/desktop/four_stroke_desktop.py:424",
+      "evidence": "theta data sent without x_label;common plot defaultRPM",
+      "future_closure": "Explicit crank-angle units and plot semantics regression",
+      "classification": "CONFIRMED",
+      "fixed_in_audit": false
+    },
+    {
+      "id": "F15",
+      "severity": "P2",
+      "review_refs": "INT-09",
+      "title": "Execution/recovery assurance is narrower than worker/resume wording",
+      "affected_revisions": "main threading; AB cancellation evidence",
+      "anchor": "motorsim/desktop/four_stroke_desktop.py:231",
+      "evidence": "4T uses QRunnable/QThreadPool;absence MotorSimWorker cannot prove task cleanup;reopen not checkpoint resume",
+      "future_closure": "Observe actual task lifetime;document process/thread assumptions;separate reopen/restart/resume",
+      "classification": "CONFIRMED",
+      "fixed_in_audit": false
+    },
+    {
+      "id": "F16",
+      "severity": "P2",
+      "review_refs": "INT-10",
+      "title": "Terminal PASS receipt precedes shutdown verification",
+      "affected_revisions": "AB external acceptance drivers",
+      "anchor": "tests/verify_dino4t_ab_windows.py:242",
+      "evidence": "PASS written before close/wait;route script omits exit-code check",
+      "future_closure": "Terminal receipt only after final assertions;retain failed/in-progress evidence separately",
+      "classification": "CONFIRMED",
+      "fixed_in_audit": false
+    },
+    {
+      "id": "F17",
+      "severity": "P2",
+      "review_refs": "CR-02",
+      "title": "Known115 historical failure list cannot waive current regressions",
+      "affected_revisions": "foundation assurance claim;main and AB scope",
+      "anchor": "docs/dino4t/stage2_assessment.md:273",
+      "evidence": "115=83FAILED32ERROR;only exact five relevant current failures traced here;not whole-suite equivalence",
+      "future_closure": "Revision-aware node/cause baseline;broader tests on changed scopes;no protected criterion edits",
+      "classification": "CONFIRMED",
+      "fixed_in_audit": false
+    },
+    {
+      "id": "F18",
+      "severity": "P2",
+      "review_refs": "CR-03",
+      "title": "Some Stage2 studies lack exact source identity",
+      "affected_revisions": "historical4T evidence",
+      "anchor": "results/dino4t-stage2-v1/PROVENANCE.md:18",
+      "evidence": "S2/S3/S4 dirty sources and omissions explicitly disclosed",
+      "future_closure": "Retain qualification;new decisive evidence needs clean source or complete preimage under own activation",
+      "classification": "CONFIRMED",
+      "fixed_in_audit": false
+    },
+    {
+      "id": "F19",
+      "severity": "P2",
+      "review_refs": "INT architecture assessment",
+      "title": "Public architecture/discovery docs drift from implemented scope",
+      "affected_revisions": "main and AB",
+      "anchor": "docs/dino4t/integration_contract.md:1",
+      "evidence": "Docs still say no GUI/adapter;registry4T-only and2Tworkflow coexist;hardcoded discovery;possible asynchronous failed-input identity risk",
+      "future_closure": "Document actual seams and per-family contracts;reproduce static async concern before declaring defect",
+      "classification": "CONFIRMED_DOCUMENTATION_WITH_STATIC_RISK",
+      "fixed_in_audit": false
+    }
+  ],
+  "scientific_obligations": [
+    {
+      "id": "S01",
+      "obligation": "Independent integrated two-zone trajectory reference remains unresolved;isolated Cantera/equilibrium and self-convergence do not close it"
+    },
+    {
+      "id": "S02",
+      "obligation": "Numerical uncertainty remains case/model/discretization-specific;baseline4T GCI does not quantify arbitrary A/B deltas;2Tperiodic multi-mesh remains blocked"
+    },
+    {
+      "id": "S03",
+      "obligation": "Separate complete measured/calibration/blind-validation packages needed for2Tand4T;NOT_PERFORMED/NOT_CLAIMED remain"
+    },
+    {
+      "id": "S04",
+      "obligation": "L1last-cycle traces and summary ledgers are not full offline stage-flux L2replay;do not upgrade evidence levels"
+    }
+  ]
+}
