@@ -17678,6 +17678,18 @@
       "task": "DINO4T-DESKTOP-SOURCE-INTEGRATION-V1",
       "kind": "FOCUSED_REGRESSION",
       "summary": "Additional focused source regressions passed: Desktop cycle selector creates a synthetic 4T project; comparison UI rejects a real one-cycle transient against the periodic historical result. Product code is unchanged from packaged source commit 552c60e."
+    },
+    {
+      "at": "2026-11-05T13:16:25+00:00",
+      "task": "DINO-PLATFORM-MAIN-CONSOLIDATION-V1",
+      "kind": "consolidation",
+      "summary": "Fast-forwarded main to accepted Dino 2T/4T Desktop integration e29f314; original integration and 4T foundation histories retained. Clean worktree used; no push or code/physics changes. Focused integration verification in progress."
+    },
+    {
+      "at": "2026-11-05T13:26:32+00:00",
+      "task": "DINO-PLATFORM-MAIN-CONSOLIDATION-V1",
+      "kind": "consolidation",
+      "summary": "Consolidated main by fast-forward to e29f314; added branch/worktree policy. Verification on consolidated main: 67 passed, 1 skipped across Desktop/API/report regressions; 28 Dino4T stage-2 tests passed. Historical Windows rc12 receipt hash verified against package. No product-code changes, no new build, no push."
     }
   ],
   "legacy_gate_status": {
