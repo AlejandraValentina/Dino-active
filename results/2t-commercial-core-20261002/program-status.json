@@ -12476,46 +12476,60 @@
       "id": "D4AB-COMPARE-SEMANTICS",
       "description": "Enforce strict 4T A/B eligibility, source identity and design-only differences; classify all ineligible pairs without deltas.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Implement a pure comparison contract and regression cases for exact RPM, contexts, models, clean code, periodicity and finite metrics.",
+      "commits": [
+        "0027bf10802a94e7cd434165c004514cf997b88e",
+        "e09b33a79293c6ffe620253849e3439f40590f2b"
+      ],
+      "evidence": [
+        "Strict exact-context A/B eligibility, design-only differences, compatibility reasons and result identity checks implemented; 38 passed: tests/test_dino4t_api.py, tests/test_dino4t_ab_comparison.py, tests/test_dino4t_desktop_integration.py."
+      ],
+      "next_action": "Use only with actual preregistered API results in the pair acceptance.",
       "write_scope": [
         "motorsim/desktop/four_stroke_comparison.py",
         "motorsim/desktop/four_stroke_desktop.py",
-        "tests/test_dino4t_desktop_integration.py"
+        "tests/test_dino4t_ab_comparison.py"
       ]
     },
     {
       "id": "D4AB-COMPARISON-EXPORT",
       "description": "Export a reproducible selected A/B comparison with full precision, both resolved inputs, result hashes, criteria and technical report.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Add JSON/CSV and HTML comparison exports without changing the 4T project schema or source result artifacts.",
+      "commits": [
+        "0027bf10802a94e7cd434165c004514cf997b88e",
+        "e09b33a79293c6ffe620253849e3439f40590f2b"
+      ],
+      "evidence": [
+        "Full-precision JSON/CSV and traceable HTML report for eligible A/B comparisons implemented; 38 passed: tests/test_dino4t_api.py, tests/test_dino4t_ab_comparison.py, tests/test_dino4t_desktop_integration.py."
+      ],
+      "next_action": "Verify exports from packaged Desktop against actual run artifacts.",
       "write_scope": [
         "motorsim/desktop/four_stroke_desktop.py",
         "motorsim/desktop/technical_report.py",
-        "tests/test_dino4t_desktop_integration.py"
+        "tests/test_dino4t_ab_comparison.py"
       ]
     },
     {
       "id": "D4AB-COOPERATIVE-CANCEL",
       "description": "Provide safe bounded cancellation and determine whether restartable 4T checkpoints are justified by the current API contract.",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Add cancellation only at completed-cycle boundaries if it preserves complete-cycle artifacts; document any checkpoint limit rather than inventing recovery state.",
+      "commits": [
+        "0027bf10802a94e7cd434165c004514cf997b88e",
+        "e09b33a79293c6ffe620253849e3439f40590f2b"
+      ],
+      "evidence": [
+        "Safe cancellation is observed only after completed 720-degree cycles; incomplete status/artifacts preserved. No checkpoint/restart is claimed; API V1 continuation state is opaque and unversioned. 38 passed: tests/test_dino4t_api.py, tests/test_dino4t_ab_comparison.py, tests/test_dino4t_desktop_integration.py."
+      ],
+      "next_action": "Exercise cancellation behavior in packaged Desktop and verify partial result classification.",
       "write_scope": [
         "motorsim/dino4t/api.py",
-        "motorsim/dino4t/runner.py",
         "motorsim/dino4t/engine.py",
-        "motorsim/desktop/four_stroke_desktop.py",
+        "motorsim/dino4t/runner.py",
         "tests/test_dino4t_api.py"
       ]
     },
@@ -12527,14 +12541,89 @@
         "D4AB-COMPARISON-EXPORT",
         "D4AB-COOPERATIVE-CANCEL"
       ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "Superseded by decomposed execution tasks D4AB-PAIR-EXECUTION, D4AB-WINDOWS-CANDIDATE-BUILD, D4AB-2T-REGRESSION, and D4AB-PACKAGED-AB-ACCEPTANCE; no acceptance is claimed."
+      ],
+      "next_action": "Historical queue item closed by decomposition; use the active gate tasks.",
+      "write_scope": [
+        "results/dino4t-ab-engineering-v1/",
+        "packaging/",
+        "tests/test_dino4t_desktop_integration.py"
+      ]
+    },
+    {
+      "id": "D4AB-PAIR-EXECUTION",
+      "description": "Execute the single preregistered synthetic 6000 RPM A/B pair through DINO4T_API_V1 within the fixed combined budget; preserve classifications and project/result provenance.",
+      "dependencies": [
+        "D4AB-COMPARE-SEMANTICS",
+        "D4AB-COMPARISON-EXPORT",
+        "D4AB-COOPERATIVE-CANCEL"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Run the committed bounded driver once; stop at 720 s total or per-point limits, no reruns or tolerance changes.",
+      "write_scope": [
+        "scripts/dino4t/run_ab_pair_v1.py",
+        "results/dino4t-ab-engineering-v1/runs/"
+      ]
+    },
+    {
+      "id": "D4AB-WINDOWS-CANDIDATE-BUILD",
+      "description": "Preflight storage/dependencies and produce one reproducible Windows candidate from the clean integrated source commit.",
+      "dependencies": [
+        "D4AB-COMPARE-SEMANTICS",
+        "D4AB-COMPARISON-EXPORT",
+        "D4AB-COOPERATIVE-CANCEL"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Run build preflight and pinned Windows packaging once; do not rebuild a failed candidate.",
+      "write_scope": [
+        "packaging/",
+        "results/dino4t-ab-engineering-v1/windows/"
+      ]
+    },
+    {
+      "id": "D4AB-2T-REGRESSION",
+      "description": "Run targeted existing 2T Desktop/project/result regressions to verify the 4T A/B integration did not alter historical 2T workflows.",
+      "dependencies": [
+        "D4AB-COMPARE-SEMANTICS",
+        "D4AB-COMPARISON-EXPORT",
+        "D4AB-COOPERATIVE-CANCEL"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Run focused Desktop, project, and historical-result tests; classify known baseline failures without changing scientific contracts.",
+      "write_scope": [
+        "tests/test_dino_desktop.py",
+        "tests/test_project.py",
+        "tests/test_example_projects.py"
+      ]
+    },
+    {
+      "id": "D4AB-PACKAGED-AB-ACCEPTANCE",
+      "description": "Verify the single Windows executable with the actual preregistered API A/B artifacts, comparison exports, cancellation classification, and 2T compatibility evidence.",
+      "dependencies": [
+        "D4AB-PAIR-EXECUTION",
+        "D4AB-WINDOWS-CANDIDATE-BUILD",
+        "D4AB-2T-REGRESSION"
+      ],
       "state": "WAITING",
       "blocker": null,
       "commits": [],
       "evidence": [],
-      "next_action": "Execute only after software tasks are DONE; enforce the preregistered 720-second pair budget and existing periodicity criteria.",
+      "next_action": "Open the packaged app, load the saved 4T project, compare exact runs, export all artifacts, and verify cancellation/2T regression behavior.",
       "write_scope": [
-        "results/dino4t-ab-engineering-v1/",
-        "packaging/",
+        "results/dino4t-ab-engineering-v1/windows/",
         "tests/test_dino4t_desktop_integration.py"
       ]
     }
@@ -12749,9 +12838,12 @@
       "D4AB-COMPARE-SEMANTICS",
       "D4AB-COMPARISON-EXPORT",
       "D4AB-COOPERATIVE-CANCEL",
-      "D4AB-WINDOWS-PAIR-ACCEPTANCE"
+      "D4AB-PAIR-EXECUTION",
+      "D4AB-WINDOWS-CANDIDATE-BUILD",
+      "D4AB-2T-REGRESSION",
+      "D4AB-PACKAGED-AB-ACCEPTANCE"
     ],
-    "completion_criterion": "Distinct 4T designs run through the native API, both are periodic under existing criteria, strict compatibility is verified, pair differences and provenance export reproducibly, and the packaged Windows workflow is checked. No experimental validation or predictive claim."
+    "completion_criterion": "Two distinct preregistered 4T designs are run through DINO4T_API_V1 within the fixed budget; A/B comparison and provenance exports are exercised from the packaged Windows Desktop; targeted 2T regressions pass; no experimental validation or predictive claim."
   },
   "objectives": [
     {
@@ -17768,6 +17860,54 @@
       "task": "DINO4T-AB-PREREGISTRATION",
       "kind": "PREREGISTRATION",
       "summary": "Activated the explicitly authorized DINO4T_AB_ENGINEERING_V1 objective and committed a fixed two-design, two-zone, 6000 RPM synthetic pair protocol. Existing 6000 RPM run cost is 76.219 s for 6 cycles; preregistered cap is 20 cycles / 300 s per design / 720 s pair. No simulation started."
+    },
+    {
+      "at": "2026-11-05T14:56:43+00:00",
+      "task": "D4AB-COMPARE-SEMANTICS",
+      "kind": "IMPLEMENTATION",
+      "summary": "Strict 4T A/B eligibility and compatibility reasons implemented; 37 focused regression tests pass.",
+      "commit": "0027bf10802a94e7cd434165c004514cf997b88e"
+    },
+    {
+      "at": "2026-11-05T14:56:43+00:00",
+      "task": "D4AB-COMPARISON-EXPORT",
+      "kind": "IMPLEMENTATION",
+      "summary": "Full precision JSON/CSV and traceable HTML A/B exports implemented; 37 focused regression tests pass.",
+      "commit": "0027bf10802a94e7cd434165c004514cf997b88e"
+    },
+    {
+      "at": "2026-11-05T14:56:43+00:00",
+      "task": "D4AB-COOPERATIVE-CANCEL",
+      "kind": "IMPLEMENTATION",
+      "summary": "Cancellation occurs only after completed 720-degree cycles; partial artifacts retained; no restart checkpoint claimed. 37 focused regressions pass.",
+      "commit": "0027bf10802a94e7cd434165c004514cf997b88e"
+    },
+    {
+      "at": "2026-11-05T14:56:56+00:00",
+      "task": "D4AB-WINDOWS-PAIR-ACCEPTANCE",
+      "kind": "QUEUE_RECONCILIATION",
+      "summary": "Replaced broad waiting item with separately tracked pair run, one build, 2T regressions, and packaged Desktop acceptance; no acceptance claimed."
+    },
+    {
+      "at": "2026-11-05T15:02:45+00:00",
+      "task": "D4AB-PAIR-EXECUTION",
+      "kind": "RUNNER_READY",
+      "summary": "Committed one-shot, no-overwrite driver for the preregistered A/B API pair; source regressions now 38 passed. No new run started.",
+      "commit": "e09b33a79293c6ffe620253849e3439f40590f2b"
+    },
+    {
+      "at": "2026-11-05T15:02:45+00:00",
+      "task": "D4AB-WINDOWS-CANDIDATE-BUILD",
+      "kind": "PACKAGING_READY",
+      "summary": "Package task is isolated to one candidate after source verification; no package built yet.",
+      "commit": "e09b33a79293c6ffe620253849e3439f40590f2b"
+    },
+    {
+      "at": "2026-11-05T15:02:45+00:00",
+      "task": "D4AB-2T-REGRESSION",
+      "kind": "TEST_PLAN",
+      "summary": "Targeted 2T Desktop, project and historical result regression remains queued; no 2T tests run in this objective yet.",
+      "commit": "e09b33a79293c6ffe620253849e3439f40590f2b"
     }
   ],
   "legacy_gate_status": {
@@ -17786,19 +17926,20 @@
     "state": "OPEN",
     "classification": null,
     "evidence": [],
-    "gate_tasks_total": 4,
-    "gate_tasks_done": 0,
+    "gate_tasks_total": 7,
+    "gate_tasks_done": 3,
     "gate_task_states": {
+      "DONE": 3,
       "READY": 3,
       "WAITING": 1
     },
     "remaining": [
-      "D4AB-COMPARE-SEMANTICS",
-      "D4AB-COMPARISON-EXPORT",
-      "D4AB-COOPERATIVE-CANCEL",
-      "D4AB-WINDOWS-PAIR-ACCEPTANCE"
+      "D4AB-PAIR-EXECUTION",
+      "D4AB-WINDOWS-CANDIDATE-BUILD",
+      "D4AB-2T-REGRESSION",
+      "D4AB-PACKAGED-AB-ACCEPTANCE"
     ],
-    "updated_at": "2026-11-05T13:07:30+00:00"
+    "updated_at": "2026-11-05T15:02:45+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
