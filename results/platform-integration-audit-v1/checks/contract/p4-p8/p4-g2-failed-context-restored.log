@@ -1,0 +1,39 @@
+.F.                                                                      [100%]
+================================== FAILURES ===================================
+________ test_reacquired_terminal_states_match_historical_run_exactly _________
+
+    def test_reacquired_terminal_states_match_historical_run_exactly():
+        historical = Path("results/p4-g2-v2-20260929")
+        root = _evidence_root()
+        assert root.exists() and historical.exists()
+        for cycle in range(31, 51):
+            old = json.loads(gzip.decompress(
+>               (historical/f"checkpoint_cycle{cycle:03}.json.gz").read_bytes()))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_p4_g2_v2_recovery.py:472: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\pathlib.py:1050: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('results/p4-g2-v2-20260929/checkpoint_cycle031.json.gz')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'results\\p4-g2-v2-20260929\\checkpoint_cycle031.json.gz'
+
+C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\pathlib.py:1044: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/test_p4_g2_v2_recovery.py::test_reacquired_terminal_states_match_historical_run_exactly
+1 failed, 2 passed in 89.86s (0:01:29)

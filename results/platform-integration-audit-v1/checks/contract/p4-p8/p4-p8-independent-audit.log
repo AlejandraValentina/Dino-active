@@ -1,0 +1,232 @@
+........................................................................ [ 23%]
+......................................FFF............s.s................ [ 47%]
+......F...F.......s..................................................... [ 71%]
+........................................................................ [ 94%]
+................                                                         [100%]
+================================== FAILURES ===================================
+_________ test_new_durable_acquisition_reaudits_without_producer_pass _________
+
+    def test_new_durable_acquisition_reaudits_without_producer_pass():
+>       root = _evidence_root()
+               ^^^^^^^^^^^^^^^^
+
+tests\test_p4_g2_v2_recovery.py:457: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_p4_g2_v2_recovery.py:33: in _evidence_root
+    resolve_external_artifact(entry["artifact_id"], manifest_path=_G2_MANIFEST)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+artifact_id = 'P4_G2_V2_CHECKPOINT_CYCLE001.JSON'
+
+    def resolve_external_artifact(
+        artifact_id: str,
+        *,
+        manifest_path: Path = DEFAULT_MANIFEST,
+        root: str | os.PathLike[str] | None = None,
+    ) -> Path:
+        """Return an artifact path only after checking its registered size and SHA-256.
+    
+        ``root`` is injectable for tests. Normal callers use ``DINO_ARTIFACT_ROOT``.
+        Manifest paths are POSIX relative paths and may not escape the artifact root.
+        """
+        item = _entry(artifact_id, Path(manifest_path))
+        relative = item.get("expected_external_relative_path")
+        expected_hash = item.get("sha256")
+        expected_size = item.get("byte_size")
+        if not isinstance(relative, str) or not isinstance(expected_hash, str) or not isinstance(expected_size, int):
+            raise ArtifactStoreError(f"INVALID_ARTIFACT_MANIFEST_ENTRY: artifact_id={artifact_id}")
+        rel = PurePosixPath(relative)
+        if rel.is_absolute() or ".." in rel.parts or not rel.parts:
+            raise ArtifactStoreError(f"INVALID_ARTIFACT_RELATIVE_PATH: artifact_id={artifact_id} path={relative}")
+    
+        configured_root = root if root is not None else os.environ.get("DINO_ARTIFACT_ROOT")
+        if not configured_root:
+>           raise ArtifactStoreError(
+                "REQUIRED_EXTERNAL_ARTIFACT_NOT_AVAILABLE: "
+                f"artifact_id={artifact_id} expected_relative_path={relative} "
+                f"expected_sha256={expected_hash}; set DINO_ARTIFACT_ROOT"
+            )
+E           motorsim.artifact_store.ArtifactStoreError: REQUIRED_EXTERNAL_ARTIFACT_NOT_AVAILABLE: artifact_id=P4_G2_V2_CHECKPOINT_CYCLE001.JSON expected_relative_path=p4-g2-v2-ledger-recovery-20260929-retry/checkpoint_cycle001.json.gz expected_sha256=1be1a924c1667f48ab5d5c183ac5617e7cb8d00a82daf7a27a2f435519476819; set DINO_ARTIFACT_ROOT
+
+motorsim\artifact_store.py:62: ArtifactStoreError
+________ test_reacquired_terminal_states_match_historical_run_exactly _________
+
+    def test_reacquired_terminal_states_match_historical_run_exactly():
+        historical = Path("results/p4-g2-v2-20260929")
+>       root = _evidence_root()
+               ^^^^^^^^^^^^^^^^
+
+tests\test_p4_g2_v2_recovery.py:468: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_p4_g2_v2_recovery.py:33: in _evidence_root
+    resolve_external_artifact(entry["artifact_id"], manifest_path=_G2_MANIFEST)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+artifact_id = 'P4_G2_V2_CHECKPOINT_CYCLE001.JSON'
+
+    def resolve_external_artifact(
+        artifact_id: str,
+        *,
+        manifest_path: Path = DEFAULT_MANIFEST,
+        root: str | os.PathLike[str] | None = None,
+    ) -> Path:
+        """Return an artifact path only after checking its registered size and SHA-256.
+    
+        ``root`` is injectable for tests. Normal callers use ``DINO_ARTIFACT_ROOT``.
+        Manifest paths are POSIX relative paths and may not escape the artifact root.
+        """
+        item = _entry(artifact_id, Path(manifest_path))
+        relative = item.get("expected_external_relative_path")
+        expected_hash = item.get("sha256")
+        expected_size = item.get("byte_size")
+        if not isinstance(relative, str) or not isinstance(expected_hash, str) or not isinstance(expected_size, int):
+            raise ArtifactStoreError(f"INVALID_ARTIFACT_MANIFEST_ENTRY: artifact_id={artifact_id}")
+        rel = PurePosixPath(relative)
+        if rel.is_absolute() or ".." in rel.parts or not rel.parts:
+            raise ArtifactStoreError(f"INVALID_ARTIFACT_RELATIVE_PATH: artifact_id={artifact_id} path={relative}")
+    
+        configured_root = root if root is not None else os.environ.get("DINO_ARTIFACT_ROOT")
+        if not configured_root:
+>           raise ArtifactStoreError(
+                "REQUIRED_EXTERNAL_ARTIFACT_NOT_AVAILABLE: "
+                f"artifact_id={artifact_id} expected_relative_path={relative} "
+                f"expected_sha256={expected_hash}; set DINO_ARTIFACT_ROOT"
+            )
+E           motorsim.artifact_store.ArtifactStoreError: REQUIRED_EXTERNAL_ARTIFACT_NOT_AVAILABLE: artifact_id=P4_G2_V2_CHECKPOINT_CYCLE001.JSON expected_relative_path=p4-g2-v2-ledger-recovery-20260929-retry/checkpoint_cycle001.json.gz expected_sha256=1be1a924c1667f48ab5d5c183ac5617e7cb8d00a82daf7a27a2f435519476819; set DINO_ARTIFACT_ROOT
+
+motorsim\artifact_store.py:62: ArtifactStoreError
+___ test_r2_real_closing_checkpoint_false_dt_cannot_pass_after_hash_update ____
+
+tmp_path = WindowsPath('C:/Users/ageribon.MIDES/AppData/Local/Temp/pytest-of-ageribon/pytest-926/test_r2_real_closing_checkpoin0')
+
+    def test_r2_real_closing_checkpoint_false_dt_cannot_pass_after_hash_update(tmp_path):
+        """Replay the R2 finding without relying on the R2 report as an oracle."""
+        target = tmp_path/"mutated-real-evidence"
+        target.mkdir()
+>       root = _evidence_root()
+               ^^^^^^^^^^^^^^^^
+
+tests\test_p4_g2_v2_recovery.py:483: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_p4_g2_v2_recovery.py:33: in _evidence_root
+    resolve_external_artifact(entry["artifact_id"], manifest_path=_G2_MANIFEST)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+artifact_id = 'P4_G2_V2_CHECKPOINT_CYCLE001.JSON'
+
+    def resolve_external_artifact(
+        artifact_id: str,
+        *,
+        manifest_path: Path = DEFAULT_MANIFEST,
+        root: str | os.PathLike[str] | None = None,
+    ) -> Path:
+        """Return an artifact path only after checking its registered size and SHA-256.
+    
+        ``root`` is injectable for tests. Normal callers use ``DINO_ARTIFACT_ROOT``.
+        Manifest paths are POSIX relative paths and may not escape the artifact root.
+        """
+        item = _entry(artifact_id, Path(manifest_path))
+        relative = item.get("expected_external_relative_path")
+        expected_hash = item.get("sha256")
+        expected_size = item.get("byte_size")
+        if not isinstance(relative, str) or not isinstance(expected_hash, str) or not isinstance(expected_size, int):
+            raise ArtifactStoreError(f"INVALID_ARTIFACT_MANIFEST_ENTRY: artifact_id={artifact_id}")
+        rel = PurePosixPath(relative)
+        if rel.is_absolute() or ".." in rel.parts or not rel.parts:
+            raise ArtifactStoreError(f"INVALID_ARTIFACT_RELATIVE_PATH: artifact_id={artifact_id} path={relative}")
+    
+        configured_root = root if root is not None else os.environ.get("DINO_ARTIFACT_ROOT")
+        if not configured_root:
+>           raise ArtifactStoreError(
+                "REQUIRED_EXTERNAL_ARTIFACT_NOT_AVAILABLE: "
+                f"artifact_id={artifact_id} expected_relative_path={relative} "
+                f"expected_sha256={expected_hash}; set DINO_ARTIFACT_ROOT"
+            )
+E           motorsim.artifact_store.ArtifactStoreError: REQUIRED_EXTERNAL_ARTIFACT_NOT_AVAILABLE: artifact_id=P4_G2_V2_CHECKPOINT_CYCLE001.JSON expected_relative_path=p4-g2-v2-ledger-recovery-20260929-retry/checkpoint_cycle001.json.gz expected_sha256=1be1a924c1667f48ab5d5c183ac5617e7cb8d00a82daf7a27a2f435519476819; set DINO_ARTIFACT_ROOT
+
+motorsim\artifact_store.py:62: ArtifactStoreError
+_________ R13ATests.test_cycle56_is_compared_against_replayed_cycle54 _________
+
+self = <tests.test_p4_r13a.R13ATests testMethod=test_cycle56_is_compared_against_replayed_cycle54>
+
+    def test_cycle56_is_compared_against_replayed_cycle54(self):
+>       self.assertEqual(json.loads((Path("results/p4-r13a-20260923/cycle56_vs54.json")).read_text())["sensor_max"], 0.0011905119731371136)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_p4_r13a.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\pathlib.py:1058: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('results/p4-r13a-20260923/cycle56_vs54.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'results\\p4-r13a-20260923\\cycle56_vs54.json'
+
+C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\pathlib.py:1044: FileNotFoundError
+________________ R13ATests.test_replay_gate_and_cycle56_result ________________
+
+self = <tests.test_p4_r13a.R13ATests testMethod=test_replay_gate_and_cycle56_result>
+
+    def test_replay_gate_and_cycle56_result(self):
+        root=Path("results/p4-r13a-20260923")
+>       eq=json.loads((root/"replay/cycle54_replay_equivalence.json").read_text())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_p4_r13a.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\pathlib.py:1058: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('results/p4-r13a-20260923/replay/cycle54_replay_equivalence.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'results\\p4-r13a-20260923\\replay\\cycle54_replay_equivalence.json'
+
+C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\pathlib.py:1044: FileNotFoundError
+============================== warnings summary ===============================
+tests/test_p4_r10a.py::P4R10ATests::test_rhoE_formula
+tests/test_p4_r10a.py::P4R10ATests::test_rhoE_formula
+  C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-main-consolidation-v1\tests\test_p4_r10a.py:155: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+    self.assertNotAlmostEqual(float(rhoE_correct), float(rhoE_wrong))
+
+tests/test_p4_r10a.py::P4R10ATests::test_rhoE_formula
+  C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-main-consolidation-v1\tests\test_p4_r10a.py:157: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+    self.assertAlmostEqual(float(rhoE_correct), 285714, delta=1000)
+
+tests/test_p4_r10a.py::P4R10ATests::test_rhoE_formula
+  C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-main-consolidation-v1\tests\test_p4_r10a.py:158: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+    self.assertAlmostEqual(float(rhoE_wrong), 142857, delta=1000)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_p4_g2_v2_recovery.py::test_new_durable_acquisition_reaudits_without_producer_pass
+FAILED tests/test_p4_g2_v2_recovery.py::test_reacquired_terminal_states_match_historical_run_exactly
+FAILED tests/test_p4_g2_v2_recovery.py::test_r2_real_closing_checkpoint_false_dt_cannot_pass_after_hash_update
+FAILED tests/test_p4_r13a.py::R13ATests::test_cycle56_is_compared_against_replayed_cycle54
+FAILED tests/test_p4_r13a.py::R13ATests::test_replay_gate_and_cycle56_result
+5 failed, 296 passed, 3 skipped, 4 warnings in 117.32s (0:01:57)
