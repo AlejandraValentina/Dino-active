@@ -1,0 +1,831 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><title>Comparación Dino 4T A/B</title>
+<style>body{font:15px Segoe UI,Arial,sans-serif;max-width:1100px;margin:2rem auto;padding:0 1rem;color:#1c2833}table{border-collapse:collapse;width:100%;margin:1rem 0}th,td{border:1px solid #ccd4dc;padding:.55rem;text-align:left;vertical-align:top}th{background:#edf2f6}code,pre{overflow-wrap:anywhere;white-space:pre-wrap}.notice{border-left:5px solid #ba7730;background:#fff7e8;padding:1rem}</style>
+<h1>Comparación de diseño 4T A/B</h1><p>Clasificación: <b>PERIODIC_MODEL_SENSITIVITY_ONLY</b> · 6000.0 RPM · comparación ID <code>54598307b81a3c99069f6273093cd321229a39864adde97565f9f4a34c5b974f</code></p>
+<p class="notice">Diferencias calculadas por el modelo Dino 4T bajo entradas y contexto compatibles. No constituyen una mejora demostrada en un motor real. Calibración: no realizada. Validación experimental: no realizada. Capacidad predictiva: no declarada. La periodicidad es una condición numérica del modelo, no validación experimental.</p>
+<h2>Diseños y procedencia</h2><table><thead><tr><th>Extremo</th><th>Variante / corrida</th><th>Estado</th><th>Ciclos</th><th>Commit</th><th>Config SHA-256</th><th>Resultado SHA-256</th></tr></thead><tbody><tr><th>A</th><td>Motor base · d4ab-v1-1-119badaf3860</td><td>completed · PERIODIC_CONVERGED</td><td>6</td><td><code>cb8f356aa616ebaa2e5ebb110a89e6edd40c0ff3</code></td><td><code>6725fee8708c7ecc5395995fcc81176e6cceb643a276c3e82ccb8bf1117ad2ca</code></td><td><code>110777f52a7337419a63d20747c78437b5aad9fdbe66d67b3d936f6f0e711412</code></td></tr><tr><th>B</th><td>lift-8mm · d4ab-v1-2-f6e4c5c2f7eb</td><td>completed · PERIODIC_CONVERGED</td><td>6</td><td><code>cb8f356aa616ebaa2e5ebb110a89e6edd40c0ff3</code></td><td><code>da28bcc605174008a9fa2369daf18376390ba3b64c610bb03ee1ec0fb47f8956</code></td><td><code>d22317b3a1869fff9bd5811521108d943cd4a0c409956886efe1a973e5309673</code></td></tr></tbody></table>
+<p>Modelos 4T: <code>{&quot;thermodynamics&quot;: &quot;THERMALLY_PERFECT_NASA7_8_SPECIES_V1&quot;, &quot;cylinder&quot;: &quot;TWO_ZONE_EQUILIBRIUM_V1&quot;, &quot;combustion&quot;: &quot;WIEBE_PRESCRIBED_BURN_TWO_ZONE_EQUILIBRIUM_V1&quot;, &quot;heat_transfer&quot;: &quot;WOSCHNI_1967&quot;, &quot;friction&quot;: &quot;CHEN_FLYNN&quot;, &quot;valve_boundary&quot;: &quot;QUASI_STEADY_RESTRICTION_V2&quot;, &quot;duct&quot;: &quot;QUASI_1D_HLLC_MUSCL_MULTISPECIES_V1&quot;, &quot;time_integration&quot;: &quot;SSPRK2_EVENT_ALIGNED_V1&quot;}</code><br>Criterios de periodicidad: <code>{&quot;imep_rel&quot;: 0.002, &quot;trapped_mass_rel&quot;: 0.002, &quot;pressure_trace_rel&quot;: 0.005, &quot;mass_imbalance_rel&quot;: 0.005, &quot;consecutive&quot;: 2}</code></p>
+<h2>Cambios explícitos entre A y B</h2><table><thead><tr><th>Parámetro</th><th>A</th><th>B</th></tr></thead><tbody><tr><td>intake_valve.lift.max_lift_mm</td><td><code>10.0</code></td><td><code>8.0</code></td></tr></tbody></table>
+<h2>Diferencias de último ciclo periódico</h2><p>Δ = B − A. El cambio relativo usa |A| como denominador y queda indefinido si A = 0.</p><table><thead><tr><th>Métrica</th><th>A</th><th>B</th><th>Δ absoluto</th><th>Δ relativo a A</th></tr></thead><tbody><tr><td>Potencia de freno</td><td>25.3315 kW</td><td>23.5344 kW</td><td>-1.79715 kW</td><td>-7.09453%</td></tr><tr><td>Torque de freno</td><td>40.3164 N·m</td><td>37.4561 N·m</td><td>-2.86026 N·m</td><td>-7.09453%</td></tr><tr><td>BMEP</td><td>10.1416 bar</td><td>9.4221 bar</td><td>-0.719498 bar</td><td>-7.09453%</td></tr><tr><td>IMEP neto</td><td>12.5996 bar</td><td>11.8614 bar</td><td>-0.738233 bar</td><td>-5.85917%</td></tr></tbody></table>
+<h2>Registro reproducible completo</h2><details><summary>Ver configuración resuelta, criterios, hashes y resultados fuente</summary><pre>{
+  &quot;schema&quot;: &quot;DINO4T_AB_COMPARISON_V1&quot;,
+  &quot;classification&quot;: &quot;PERIODIC_MODEL_SENSITIVITY_ONLY&quot;,
+  &quot;qualification&quot;: {
+    &quot;calibration&quot;: &quot;NOT_PERFORMED&quot;,
+    &quot;experimental_validation&quot;: &quot;NOT_PERFORMED&quot;,
+    &quot;predictive_capability&quot;: &quot;NOT_CLAIMED&quot;,
+    &quot;periodicity_is_not_experimental_validation&quot;: true,
+    &quot;delta_is_not_evidence_of_real_engine_performance_improvement&quot;: true,
+    &quot;relative_delta_denominator&quot;: &quot;absolute baseline A; null when A is zero&quot;
+  },
+  &quot;operating_point&quot;: {
+    &quot;rpm&quot;: 6000.0,
+    &quot;equivalence_ratio&quot;: 1.0
+  },
+  &quot;model_id&quot;: &quot;DINO4T_FOUNDATION_V1&quot;,
+  &quot;models&quot;: {
+    &quot;thermodynamics&quot;: &quot;THERMALLY_PERFECT_NASA7_8_SPECIES_V1&quot;,
+    &quot;cylinder&quot;: &quot;TWO_ZONE_EQUILIBRIUM_V1&quot;,
+    &quot;combustion&quot;: &quot;WIEBE_PRESCRIBED_BURN_TWO_ZONE_EQUILIBRIUM_V1&quot;,
+    &quot;heat_transfer&quot;: &quot;WOSCHNI_1967&quot;,
+    &quot;friction&quot;: &quot;CHEN_FLYNN&quot;,
+    &quot;valve_boundary&quot;: &quot;QUASI_STEADY_RESTRICTION_V2&quot;,
+    &quot;duct&quot;: &quot;QUASI_1D_HLLC_MUSCL_MULTISPECIES_V1&quot;,
+    &quot;time_integration&quot;: &quot;SSPRK2_EVENT_ALIGNED_V1&quot;
+  },
+  &quot;periodicity_tolerances&quot;: {
+    &quot;imep_rel&quot;: 0.002,
+    &quot;trapped_mass_rel&quot;: 0.002,
+    &quot;pressure_trace_rel&quot;: 0.005,
+    &quot;mass_imbalance_rel&quot;: 0.005,
+    &quot;consecutive&quot;: 2
+  },
+  &quot;design_changes&quot;: [
+    {
+      &quot;path&quot;: &quot;intake_valve.lift.max_lift_mm&quot;,
+      &quot;a&quot;: 10.0,
+      &quot;b&quot;: 8.0
+    }
+  ],
+  &quot;metrics&quot;: [
+    {
+      &quot;label&quot;: &quot;Potencia de freno&quot;,
+      &quot;key&quot;: &quot;brake_power_kW&quot;,
+      &quot;unit&quot;: &quot;kW&quot;,
+      &quot;a&quot;: 25.331538046523487,
+      &quot;b&quot;: 23.534384796436555,
+      &quot;delta_b_minus_a&quot;: -1.7971532500869323,
+      &quot;relative_percent_to_abs_a&quot;: -7.094528752207268
+    },
+    {
+      &quot;label&quot;: &quot;Torque de freno&quot;,
+      &quot;key&quot;: &quot;brake_torque_Nm&quot;,
+      &quot;unit&quot;: &quot;N·m&quot;,
+      &quot;a&quot;: 40.31639496224627,
+      &quot;b&quot;: 37.45613672979627,
+      &quot;delta_b_minus_a&quot;: -2.8602582324500005,
+      &quot;relative_percent_to_abs_a&quot;: -7.094528752207259
+    },
+    {
+      &quot;label&quot;: &quot;BMEP&quot;,
+      &quot;key&quot;: &quot;bmep_bar&quot;,
+      &quot;unit&quot;: &quot;bar&quot;,
+      &quot;a&quot;: 10.14159632793245,
+      &quot;b&quot;: 9.422097860514487,
+      &quot;delta_b_minus_a&quot;: -0.7194984674179636,
+      &quot;relative_percent_to_abs_a&quot;: -7.094528752207261
+    },
+    {
+      &quot;label&quot;: &quot;IMEP neto&quot;,
+      &quot;key&quot;: &quot;imep_net_bar&quot;,
+      &quot;unit&quot;: &quot;bar&quot;,
+      &quot;a&quot;: 12.599618900746405,
+      &quot;b&quot;: 11.861386210666666,
+      &quot;delta_b_minus_a&quot;: -0.7382326900797391,
+      &quot;relative_percent_to_abs_a&quot;: -5.859166820006009
+    }
+  ],
+  &quot;endpoints&quot;: [
+    {
+      &quot;side&quot;: &quot;A&quot;,
+      &quot;run_id&quot;: &quot;d4ab-v1-1-119badaf3860&quot;,
+      &quot;variant_id&quot;: &quot;&quot;,
+      &quot;result_sha256&quot;: &quot;110777f52a7337419a63d20747c78437b5aad9fdbe66d67b3d936f6f0e711412&quot;,
+      &quot;config_sha256&quot;: &quot;6725fee8708c7ecc5395995fcc81176e6cceb643a276c3e82ccb8bf1117ad2ca&quot;,
+      &quot;trace_sha256&quot;: &quot;e496b347f48a4f73cf2e81272a0efeb8930bd684dafc573b04dc15b0d6efff20&quot;,
+      &quot;code_commit&quot;: &quot;cb8f356aa616ebaa2e5ebb110a89e6edd40c0ff3&quot;,
+      &quot;code_dirty&quot;: false,
+      &quot;api&quot;: &quot;DINO4T_API_V1&quot;,
+      &quot;model_id&quot;: &quot;DINO4T_FOUNDATION_V1&quot;,
+      &quot;models&quot;: {
+        &quot;thermodynamics&quot;: &quot;THERMALLY_PERFECT_NASA7_8_SPECIES_V1&quot;,
+        &quot;cylinder&quot;: &quot;TWO_ZONE_EQUILIBRIUM_V1&quot;,
+        &quot;combustion&quot;: &quot;WIEBE_PRESCRIBED_BURN_TWO_ZONE_EQUILIBRIUM_V1&quot;,
+        &quot;heat_transfer&quot;: &quot;WOSCHNI_1967&quot;,
+        &quot;friction&quot;: &quot;CHEN_FLYNN&quot;,
+        &quot;valve_boundary&quot;: &quot;QUASI_STEADY_RESTRICTION_V2&quot;,
+        &quot;duct&quot;: &quot;QUASI_1D_HLLC_MUSCL_MULTISPECIES_V1&quot;,
+        &quot;time_integration&quot;: &quot;SSPRK2_EVENT_ALIGNED_V1&quot;
+      },
+      &quot;thermo_sources&quot;: {
+        &quot;gri30_sha256&quot;: &quot;8d918b771aa965fe05e8c8f1f7e926a5326ebc90e7fc923ce129dc118b634dcc&quot;,
+        &quot;burcat_sha256&quot;: &quot;42a597ff852d1a2995f81d4fdca069f3cdcaef77ead5e3c66e02e80ed6699101&quot;,
+        &quot;accessed&quot;: &quot;2026-11-04&quot;
+      },
+      &quot;provenance&quot;: {
+        &quot;geometry&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+        &quot;intake_valve&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+        &quot;exhaust_valve&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+        &quot;intake_duct&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+        &quot;exhaust_duct&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+        &quot;combustion&quot;: &quot;STANDARD_V1&quot;,
+        &quot;heat_transfer&quot;: &quot;STANDARD_V1&quot;,
+        &quot;friction&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+        &quot;ambient&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;
+      },
+      &quot;run_status&quot;: &quot;completed&quot;,
+      &quot;periodicity&quot;: {
+        &quot;status&quot;: &quot;PERIODIC_CONVERGED&quot;,
+        &quot;tolerances&quot;: {
+          &quot;imep_rel&quot;: 0.002,
+          &quot;trapped_mass_rel&quot;: 0.002,
+          &quot;pressure_trace_rel&quot;: 0.005,
+          &quot;mass_imbalance_rel&quot;: 0.005,
+          &quot;consecutive&quot;: 2
+        },
+        &quot;history&quot;: [
+          null,
+          {
+            &quot;imep_rel&quot;: 0.07143117680313898,
+            &quot;trapped_mass_rel&quot;: 0.03338759837464011,
+            &quot;pressure_trace_rel&quot;: 0.03497572532969602,
+            &quot;mass_imbalance_rel&quot;: 0.07537873935067924,
+            &quot;passed&quot;: false
+          },
+          {
+            &quot;imep_rel&quot;: 0.03826195989154008,
+            &quot;trapped_mass_rel&quot;: 0.023171569163988066,
+            &quot;pressure_trace_rel&quot;: 0.026356311130010416,
+            &quot;mass_imbalance_rel&quot;: 0.0075393541668771265,
+            &quot;passed&quot;: false
+          },
+          {
+            &quot;imep_rel&quot;: 0.004333843485178835,
+            &quot;trapped_mass_rel&quot;: 0.002852659389160486,
+            &quot;pressure_trace_rel&quot;: 0.0031221649179832417,
+            &quot;mass_imbalance_rel&quot;: 0.0009963039035939393,
+            &quot;passed&quot;: false
+          },
+          {
+            &quot;imep_rel&quot;: 0.0003095317442812153,
+            &quot;trapped_mass_rel&quot;: 0.00020079740160313772,
+            &quot;pressure_trace_rel&quot;: 0.00023214377263134153,
+            &quot;mass_imbalance_rel&quot;: 4.122622256365883e-05,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;imep_rel&quot;: 1.1311521361781469e-05,
+            &quot;trapped_mass_rel&quot;: 8.745379458257003e-06,
+            &quot;pressure_trace_rel&quot;: 1.0225848249044711e-05,
+            &quot;mass_imbalance_rel&quot;: 1.7992763318667507e-06,
+            &quot;passed&quot;: true
+          }
+        ]
+      },
+      &quot;cycles_run&quot;: 6,
+      &quot;conservation&quot;: {
+        &quot;final_relative_closure&quot;: {
+          &quot;mass&quot;: 5.4578020679722876e-15,
+          &quot;energy&quot;: 3.4404478238905966e-15,
+          &quot;elements&quot;: 2.9106442088634453e-14,
+          &quot;tracer&quot;: 1.8266929370356328e-14
+        },
+        &quot;max_relative_closure&quot;: {
+          &quot;mass&quot;: 6.0684956785071145e-15,
+          &quot;energy&quot;: 7.109359115221444e-15,
+          &quot;elements&quot;: 3.597575376626585e-14
+        }
+      },
+      &quot;final_cycle&quot;: {
+        &quot;work_net_J&quot;: 629.4230518264419,
+        &quot;work_gross_J&quot;: 712.6060599353874,
+        &quot;work_pumping_J&quot;: -83.18300810894631,
+        &quot;imep_net_bar&quot;: 12.599618900746405,
+        &quot;imep_gross_bar&quot;: 14.264753658917622,
+        &quot;pmep_bar&quot;: 1.6651347581712321,
+        &quot;fmep_bar&quot;: 2.458022572813955,
+        &quot;bmep_bar&quot;: 10.14159632793245,
+        &quot;indicated_power_kW&quot;: 31.471152591322095,
+        &quot;indicated_torque_Nm&quot;: 50.08789499708222,
+        &quot;brake_power_kW&quot;: 25.331538046523487,
+        &quot;brake_torque_Nm&quot;: 40.31639496224627,
+        &quot;mechanical_efficiency&quot;: 0.7109548871594025,
+        &quot;volumetric_efficiency_intake_valve&quot;: 0.9621339766125521,
+        &quot;volumetric_efficiency_system_inlet&quot;: 0.9621342747012817,
+        &quot;air_per_cycle_mg&quot;: 568.9463946622957,
+        &quot;fuel_per_cycle_mg&quot;: 37.618687685088,
+        &quot;fuel_burned_per_cycle_mg&quot;: 36.90475712528958,
+        &quot;trapped_mass_mg&quot;: 639.8934071490629,
+        &quot;residual_gas_fraction_ivc&quot;: 0.05208418219806103,
+        &quot;trapping_efficiency&quot;: 1.0000000000000009,
+        &quot;fresh_short_circuit_fraction&quot;: 4.8261034980773585e-15,
+        &quot;intake_backflow_mg&quot;: 8.26289250977612,
+        &quot;exhaust_backflow_mg&quot;: 0.0,
+        &quot;indicated_fuel_conversion_efficiency&quot;: 0.3747280933516183,
+        &quot;brake_fuel_conversion_efficiency&quot;: 0.30162349238061215,
+        &quot;isfc_g_kWh&quot;: 215.16097205740684,
+        &quot;bsfc_g_kWh&quot;: 267.3096189769316,
+        &quot;heat_loss_J&quot;: 221.0539527546751,
+        &quot;heat_loss_fraction_of_fuel_energy&quot;: 0.1316048498751825,
+        &quot;p_max_bar&quot;: 68.75331456279103,
+        &quot;theta_p_max_deg&quot;: 14.770531219391614,
+        &quot;T_max_K&quot;: 2744.8984065110803,
+        &quot;T_burned_max_K&quot;: 2744.8984065110803,
+        &quot;T_unburned_max_K&quot;: 971.5270884907773,
+        &quot;exhaust_valve_mean_enthalpy_temperature_K&quot;: 1377.2685527121891,
+        &quot;lower_heating_value_MJ_kg&quot;: 44.650132266889415,
+        &quot;mass_balance&quot;: {
+          &quot;system_inlet_mg&quot;: 606.5652702700066,
+          &quot;system_outlet_mg&quot;: 606.5663616485411,
+          &quot;intake_valve_net_mg&quot;: 606.5650840822648,
+          &quot;exhaust_valve_net_mg&quot;: 606.5651190348688,
+          &quot;system_relative_imbalance&quot;: -1.7992763318667507e-06,
+          &quot;fuel_system_net_mg&quot;: 36.904765720059345
+        },
+        &quot;thermo_fit_range_exceeded&quot;: false,
+        &quot;steps&quot;: 2004,
+        &quot;rejected_steps&quot;: 0,
+        &quot;CA10_deg&quot;: -4.847071584732321,
+        &quot;CA50_deg&quot;: 8.373027423632253,
+        &quot;CA90_deg&quot;: 22.10982362775643
+      },
+      &quot;resolved_config&quot;: {
+        &quot;schema&quot;: &quot;DINO4T_ENGINE_CONFIG_V1&quot;,
+        &quot;identifier&quot;: &quot;dino4t-ab-v1-A-baseline&quot;,
+        &quot;description&quot;: &quot;Generic naturally aspirated single-cylinder 4-valve SI engine, ~500 cc. SYNTHETIC: representative dimensions chosen by the model developer; not a measured or commercial engine. No result obtained with this file is a validation.&quot;,
+        &quot;geometry&quot;: {
+          &quot;provenance&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+          &quot;bore_mm&quot;: 86.0,
+          &quot;stroke_mm&quot;: 86.0,
+          &quot;rod_mm&quot;: 143.0,
+          &quot;compression_ratio&quot;: 11.0
+        },
+        &quot;intake_valve&quot;: {
+          &quot;provenance&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+          &quot;count&quot;: 2,
+          &quot;diameter_mm&quot;: 32.0,
+          &quot;lift&quot;: {
+            &quot;type&quot;: &quot;harmonic&quot;,
+            &quot;open_deg&quot;: 350.0,
+            &quot;close_deg&quot;: -130.0,
+            &quot;max_lift_mm&quot;: 10.0
+          },
+          &quot;discharge_coefficient&quot;: {
+            &quot;reference_area&quot;: &quot;curtain&quot;,
+            &quot;notes&quot;: &quot;Shape typical of curtain-referenced flow-bench data (falls with L/D as the port throat takes over); values are assumptions, not bench data.&quot;,
+            &quot;l_over_d&quot;: [
+              0.0,
+              0.05,
+              0.1,
+              0.15,
+              0.2,
+              0.25,
+              0.3,
+              0.35
+            ],
+            &quot;forward&quot;: [
+              0.7,
+              0.7,
+              0.67,
+              0.62,
+              0.56,
+              0.5,
+              0.44,
+              0.39
+            ],
+            &quot;reverse&quot;: [
+              0.6,
+              0.6,
+              0.57,
+              0.52,
+              0.47,
+              0.42,
+              0.37,
+              0.33
+            ]
+          }
+        },
+        &quot;exhaust_valve&quot;: {
+          &quot;provenance&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+          &quot;count&quot;: 2,
+          &quot;diameter_mm&quot;: 27.0,
+          &quot;lift&quot;: {
+            &quot;type&quot;: &quot;harmonic&quot;,
+            &quot;open_deg&quot;: 130.0,
+            &quot;close_deg&quot;: -350.0,
+            &quot;max_lift_mm&quot;: 9.0
+          },
+          &quot;discharge_coefficient&quot;: {
+            &quot;reference_area&quot;: &quot;curtain&quot;,
+            &quot;l_over_d&quot;: [
+              0.0,
+              0.05,
+              0.1,
+              0.15,
+              0.2,
+              0.25,
+              0.3,
+              0.35
+            ],
+            &quot;forward&quot;: [
+              0.7,
+              0.7,
+              0.67,
+              0.62,
+              0.56,
+              0.5,
+              0.44,
+              0.39
+            ],
+            &quot;reverse&quot;: [
+              0.6,
+              0.6,
+              0.57,
+              0.52,
+              0.47,
+              0.42,
+              0.37,
+              0.33
+            ]
+          }
+        },
+        &quot;intake_duct&quot;: {
+          &quot;provenance&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+          &quot;segments&quot;: [
+            {
+              &quot;length_mm&quot;: 250.0,
+              &quot;start_diameter_mm&quot;: 44.0,
+              &quot;end_diameter_mm&quot;: 40.0
+            },
+            {
+              &quot;length_mm&quot;: 100.0,
+              &quot;start_diameter_mm&quot;: 40.0,
+              &quot;end_diameter_mm&quot;: 40.0
+            }
+          ],
+          &quot;open_end_cd_inflow&quot;: 0.97,
+          &quot;open_end_cd_outflow&quot;: 1.0,
+          &quot;friction&quot;: true,
+          &quot;heat_transfer&quot;: true,
+          &quot;wall_temperature_K&quot;: 320.0
+        },
+        &quot;exhaust_duct&quot;: {
+          &quot;provenance&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+          &quot;segments&quot;: [
+            {
+              &quot;length_mm&quot;: 100.0,
+              &quot;start_diameter_mm&quot;: 38.0,
+              &quot;end_diameter_mm&quot;: 38.0
+            },
+            {
+              &quot;length_mm&quot;: 600.0,
+              &quot;start_diameter_mm&quot;: 38.0,
+              &quot;end_diameter_mm&quot;: 42.0
+            },
+            {
+              &quot;length_mm&quot;: 400.0,
+              &quot;start_diameter_mm&quot;: 42.0,
+              &quot;end_diameter_mm&quot;: 42.0
+            }
+          ],
+          &quot;open_end_cd_inflow&quot;: 1.0,
+          &quot;open_end_cd_outflow&quot;: 1.0,
+          &quot;friction&quot;: true,
+          &quot;heat_transfer&quot;: true,
+          &quot;wall_temperature_K&quot;: 700.0
+        },
+        &quot;ambient&quot;: {
+          &quot;provenance&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+          &quot;intake_pressure_pa&quot;: 101325.0,
+          &quot;intake_temperature_K&quot;: 298.15,
+          &quot;exhaust_pressure_pa&quot;: 101325.0,
+          &quot;exhaust_temperature_K&quot;: 298.15
+        },
+        &quot;combustion&quot;: {
+          &quot;provenance&quot;: &quot;STANDARD_V1&quot;,
+          &quot;model&quot;: &quot;WIEBE_SINGLE_ZONE_V1&quot;,
+          &quot;zone_model&quot;: &quot;two_zone_equilibrium&quot;,
+          &quot;notes&quot;: &quot;a=5, m=2 and 50-60 deg duration are Heywood (1988) sec. 9.2.1 typical values; SOC is a calibration input. zone_model: two_zone_equilibrium = burned gas in chemical equilibrium (10 species, NO excluded); single_zone = stage-1 complete-combustion products.&quot;,
+          &quot;enabled&quot;: true,
+          &quot;fuel&quot;: &quot;IC8H18&quot;,
+          &quot;start_deg&quot;: -20.0,
+          &quot;duration_deg&quot;: 55.0,
+          &quot;wiebe_a&quot;: 5.0,
+          &quot;wiebe_m&quot;: 2.0,
+          &quot;efficiency&quot;: 0.98,
+          &quot;water_gas_k&quot;: 3.5
+        },
+        &quot;heat_transfer&quot;: {
+          &quot;provenance&quot;: &quot;STANDARD_V1&quot;,
+          &quot;model&quot;: &quot;WOSCHNI_1967&quot;,
+          &quot;notes&quot;: &quot;Woschni constants from Heywood (1988) eq. 12.19-12.20; wall temperatures are assumptions.&quot;,
+          &quot;enabled&quot;: true,
+          &quot;t_head_K&quot;: 550.0,
+          &quot;t_piston_K&quot;: 580.0,
+          &quot;t_liner_K&quot;: 420.0,
+          &quot;head_area_factor&quot;: 1.1,
+          &quot;piston_area_factor&quot;: 1.0,
+          &quot;multiplier&quot;: 1.0
+        },
+        &quot;friction&quot;: {
+          &quot;provenance&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+          &quot;model&quot;: &quot;CHEN_FLYNN&quot;,
+          &quot;notes&quot;: &quot;Coefficients chosen to give FMEP of order 1.5-2.5 bar at 4000-9000 rpm; not fitted to any engine.&quot;,
+          &quot;a_pa&quot;: 30000.0,
+          &quot;b&quot;: 0.005,
+          &quot;c_pa_s_m&quot;: 9000.0,
+          &quot;d_pa_s2_m2&quot;: 90.0
+        },
+        &quot;operating_point&quot;: {
+          &quot;rpm&quot;: 6000.0,
+          &quot;equivalence_ratio&quot;: 1.0
+        },
+        &quot;initial_conditions&quot;: {
+          &quot;cylinder_pressure_pa&quot;: 105000.0,
+          &quot;cylinder_temperature_K&quot;: 900.0,
+          &quot;exhaust_temperature_K&quot;: 700.0
+        },
+        &quot;numerics&quot;: {
+          &quot;dx_mm&quot;: 10.0,
+          &quot;cfl&quot;: 0.8,
+          &quot;max_dtheta_deg&quot;: 0.5,
+          &quot;second_order&quot;: true,
+          &quot;limiter&quot;: &quot;minmod&quot;,
+          &quot;max_cycles&quot;: 20,
+          &quot;periodicity&quot;: {
+            &quot;imep_rel&quot;: 0.002,
+            &quot;trapped_mass_rel&quot;: 0.002,
+            &quot;pressure_trace_rel&quot;: 0.005,
+            &quot;mass_imbalance_rel&quot;: 0.005,
+            &quot;consecutive&quot;: 2
+          },
+          &quot;restriction_model&quot;: &quot;V2&quot;
+        }
+      },
+      &quot;summary_path&quot;: &quot;C:\\Users\\ageribon.MIDES\\Dino-artifacts\\worktrees\\dino-platform-main-consolidation-v1\\results\\dino4t-ab-engineering-v1\\runs\\runs\\d4ab-v1-1-119badaf3860\\artifacts\\summary.json&quot;,
+      &quot;config_path&quot;: &quot;C:\\Users\\ageribon.MIDES\\Dino-artifacts\\worktrees\\dino-platform-main-consolidation-v1\\results\\dino4t-ab-engineering-v1\\runs\\runs\\d4ab-v1-1-119badaf3860\\artifacts\\config_resolved.json&quot;,
+      &quot;trace_path&quot;: &quot;C:\\Users\\ageribon.MIDES\\Dino-artifacts\\worktrees\\dino-platform-main-consolidation-v1\\results\\dino4t-ab-engineering-v1\\runs\\runs\\d4ab-v1-1-119badaf3860\\artifacts\\trace_last_cycle.csv&quot;
+    },
+    {
+      &quot;side&quot;: &quot;B&quot;,
+      &quot;run_id&quot;: &quot;d4ab-v1-2-f6e4c5c2f7eb&quot;,
+      &quot;variant_id&quot;: &quot;lift-8mm&quot;,
+      &quot;result_sha256&quot;: &quot;d22317b3a1869fff9bd5811521108d943cd4a0c409956886efe1a973e5309673&quot;,
+      &quot;config_sha256&quot;: &quot;da28bcc605174008a9fa2369daf18376390ba3b64c610bb03ee1ec0fb47f8956&quot;,
+      &quot;trace_sha256&quot;: &quot;4671bde7fee9d84b4868b7c9311f927207c1bc4af89e4ae5535c85dce5080a5e&quot;,
+      &quot;code_commit&quot;: &quot;cb8f356aa616ebaa2e5ebb110a89e6edd40c0ff3&quot;,
+      &quot;code_dirty&quot;: false,
+      &quot;api&quot;: &quot;DINO4T_API_V1&quot;,
+      &quot;model_id&quot;: &quot;DINO4T_FOUNDATION_V1&quot;,
+      &quot;models&quot;: {
+        &quot;thermodynamics&quot;: &quot;THERMALLY_PERFECT_NASA7_8_SPECIES_V1&quot;,
+        &quot;cylinder&quot;: &quot;TWO_ZONE_EQUILIBRIUM_V1&quot;,
+        &quot;combustion&quot;: &quot;WIEBE_PRESCRIBED_BURN_TWO_ZONE_EQUILIBRIUM_V1&quot;,
+        &quot;heat_transfer&quot;: &quot;WOSCHNI_1967&quot;,
+        &quot;friction&quot;: &quot;CHEN_FLYNN&quot;,
+        &quot;valve_boundary&quot;: &quot;QUASI_STEADY_RESTRICTION_V2&quot;,
+        &quot;duct&quot;: &quot;QUASI_1D_HLLC_MUSCL_MULTISPECIES_V1&quot;,
+        &quot;time_integration&quot;: &quot;SSPRK2_EVENT_ALIGNED_V1&quot;
+      },
+      &quot;thermo_sources&quot;: {
+        &quot;gri30_sha256&quot;: &quot;8d918b771aa965fe05e8c8f1f7e926a5326ebc90e7fc923ce129dc118b634dcc&quot;,
+        &quot;burcat_sha256&quot;: &quot;42a597ff852d1a2995f81d4fdca069f3cdcaef77ead5e3c66e02e80ed6699101&quot;,
+        &quot;accessed&quot;: &quot;2026-11-04&quot;
+      },
+      &quot;provenance&quot;: {
+        &quot;geometry&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+        &quot;intake_valve&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+        &quot;exhaust_valve&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+        &quot;intake_duct&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+        &quot;exhaust_duct&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+        &quot;combustion&quot;: &quot;STANDARD_V1&quot;,
+        &quot;heat_transfer&quot;: &quot;STANDARD_V1&quot;,
+        &quot;friction&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+        &quot;ambient&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;
+      },
+      &quot;run_status&quot;: &quot;completed&quot;,
+      &quot;periodicity&quot;: {
+        &quot;status&quot;: &quot;PERIODIC_CONVERGED&quot;,
+        &quot;tolerances&quot;: {
+          &quot;imep_rel&quot;: 0.002,
+          &quot;trapped_mass_rel&quot;: 0.002,
+          &quot;pressure_trace_rel&quot;: 0.005,
+          &quot;mass_imbalance_rel&quot;: 0.005,
+          &quot;consecutive&quot;: 2
+        },
+        &quot;history&quot;: [
+          null,
+          {
+            &quot;imep_rel&quot;: 0.07050271178331455,
+            &quot;trapped_mass_rel&quot;: 0.03237323422415555,
+            &quot;pressure_trace_rel&quot;: 0.03400287171880616,
+            &quot;mass_imbalance_rel&quot;: 0.07459380642631878,
+            &quot;passed&quot;: false
+          },
+          {
+            &quot;imep_rel&quot;: 0.03707438223389153,
+            &quot;trapped_mass_rel&quot;: 0.021695981674369414,
+            &quot;pressure_trace_rel&quot;: 0.024946159772296545,
+            &quot;mass_imbalance_rel&quot;: 0.010615778990021255,
+            &quot;passed&quot;: false
+          },
+          {
+            &quot;imep_rel&quot;: 0.005409101128598858,
+            &quot;trapped_mass_rel&quot;: 0.003647196439283929,
+            &quot;pressure_trace_rel&quot;: 0.004089421431389015,
+            &quot;mass_imbalance_rel&quot;: 0.0009739404036937162,
+            &quot;passed&quot;: false
+          },
+          {
+            &quot;imep_rel&quot;: 0.00032697278048089527,
+            &quot;trapped_mass_rel&quot;: 0.00021208742886039415,
+            &quot;pressure_trace_rel&quot;: 0.00024362955120678717,
+            &quot;mass_imbalance_rel&quot;: 9.62980579220998e-06,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;imep_rel&quot;: 7.933085651148424e-06,
+            &quot;trapped_mass_rel&quot;: 5.171882170185224e-06,
+            &quot;pressure_trace_rel&quot;: 5.60706198078083e-06,
+            &quot;mass_imbalance_rel&quot;: 2.5393733217123576e-06,
+            &quot;passed&quot;: true
+          }
+        ]
+      },
+      &quot;cycles_run&quot;: 6,
+      &quot;conservation&quot;: {
+        &quot;final_relative_closure&quot;: {
+          &quot;mass&quot;: 8.960283523754148e-16,
+          &quot;energy&quot;: 1.980673431874584e-15,
+          &quot;elements&quot;: 1.9698516310459074e-14,
+          &quot;tracer&quot;: 8.51226934756644e-15
+        },
+        &quot;max_relative_closure&quot;: {
+          &quot;mass&quot;: 1.549262582098358e-15,
+          &quot;energy&quot;: 6.1473639680821685e-15,
+          &quot;elements&quot;: 1.9862321298575253e-14
+        }
+      },
+      &quot;final_cycle&quot;: {
+        &quot;work_net_J&quot;: 592.5441052163578,
+        &quot;work_gross_J&quot;: 673.4629092255162,
+        &quot;work_pumping_J&quot;: -80.91880400915758,
+        &quot;imep_net_bar&quot;: 11.861386210666666,
+        &quot;imep_gross_bar&quot;: 13.481196749001885,
+        &quot;pmep_bar&quot;: 1.619810538335204,
+        &quot;fmep_bar&quot;: 2.4392883501521805,
+        &quot;bmep_bar&quot;: 9.422097860514487,
+        &quot;indicated_power_kW&quot;: 29.62720526081789,
+        &quot;indicated_torque_Nm&quot;: 47.15316167257374,
+        &quot;brake_power_kW&quot;: 23.534384796436555,
+        &quot;brake_torque_Nm&quot;: 37.45613672979627,
+        &quot;mechanical_efficiency&quot;: 0.6989066353632198,
+        &quot;volumetric_efficiency_intake_valve&quot;: 0.9096955483456532,
+        &quot;volumetric_efficiency_system_inlet&quot;: 0.9096953127417349,
+        &quot;air_per_cycle_mg&quot;: 537.9375586483651,
+        &quot;fuel_per_cycle_mg&quot;: 35.56838604978568,
+        &quot;fuel_burned_per_cycle_mg&quot;: 34.89454744015148,
+        &quot;trapped_mass_mg&quot;: 606.0990351788274,
+        &quot;residual_gas_fraction_ivc&quot;: 0.053775189502031244,
+        &quot;trapping_efficiency&quot;: 0.9999999999999998,
+        &quot;fresh_short_circuit_fraction&quot;: 3.7809622811949415e-16,
+        &quot;intake_backflow_mg&quot;: 7.0509647547729735,
+        &quot;exhaust_backflow_mg&quot;: 0.0,
+        &quot;indicated_fuel_conversion_efficiency&quot;: 0.37310732310733646,
+        &quot;brake_fuel_conversion_efficiency&quot;: 0.29637798216455996,
+        &quot;isfc_g_kWh&quot;: 216.09562672549828,
+        &quot;bsfc_g_kWh&quot;: 272.04065644115855,
+        &quot;heat_loss_J&quot;: 211.72087077073107,
+        &quot;heat_loss_fraction_of_fuel_energy&quot;: 0.13331430798788926,
+        &quot;p_max_bar&quot;: 65.00647003043602,
+        &quot;theta_p_max_deg&quot;: 14.663141816639381,
+        &quot;T_max_K&quot;: 2739.7532945366397,
+        &quot;T_burned_max_K&quot;: 2739.7532945366397,
+        &quot;T_unburned_max_K&quot;: 970.4735487898148,
+        &quot;exhaust_valve_mean_enthalpy_temperature_K&quot;: 1377.2621466737232,
+        &quot;lower_heating_value_MJ_kg&quot;: 44.650132266889415,
+        &quot;mass_balance&quot;: {
+          &quot;system_inlet_mg&quot;: 573.5057961716054,
+          &quot;system_outlet_mg&quot;: 573.5043398262868,
+          &quot;intake_valve_net_mg&quot;: 573.5059399898809,
+          &quot;exhaust_valve_net_mg&quot;: 573.5055839909293,
+          &quot;system_relative_imbalance&quot;: 2.5393733217123576e-06,
+          &quot;fuel_system_net_mg&quot;: 34.8945416600598
+        },
+        &quot;thermo_fit_range_exceeded&quot;: false,
+        &quot;steps&quot;: 1995,
+        &quot;rejected_steps&quot;: 0,
+        &quot;CA10_deg&quot;: -4.847181480898951,
+        &quot;CA50_deg&quot;: 8.373009857187437,
+        &quot;CA90_deg&quot;: 22.10803226481172
+      },
+      &quot;resolved_config&quot;: {
+        &quot;schema&quot;: &quot;DINO4T_ENGINE_CONFIG_V1&quot;,
+        &quot;identifier&quot;: &quot;lift-8mm&quot;,
+        &quot;description&quot;: &quot;Generic naturally aspirated single-cylinder 4-valve SI engine, ~500 cc. SYNTHETIC: representative dimensions chosen by the model developer; not a measured or commercial engine. No result obtained with this file is a validation.&quot;,
+        &quot;geometry&quot;: {
+          &quot;provenance&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+          &quot;bore_mm&quot;: 86.0,
+          &quot;stroke_mm&quot;: 86.0,
+          &quot;rod_mm&quot;: 143.0,
+          &quot;compression_ratio&quot;: 11.0
+        },
+        &quot;intake_valve&quot;: {
+          &quot;provenance&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+          &quot;count&quot;: 2,
+          &quot;diameter_mm&quot;: 32.0,
+          &quot;lift&quot;: {
+            &quot;type&quot;: &quot;harmonic&quot;,
+            &quot;open_deg&quot;: 350.0,
+            &quot;close_deg&quot;: -130.0,
+            &quot;max_lift_mm&quot;: 8.0
+          },
+          &quot;discharge_coefficient&quot;: {
+            &quot;reference_area&quot;: &quot;curtain&quot;,
+            &quot;notes&quot;: &quot;Shape typical of curtain-referenced flow-bench data (falls with L/D as the port throat takes over); values are assumptions, not bench data.&quot;,
+            &quot;l_over_d&quot;: [
+              0.0,
+              0.05,
+              0.1,
+              0.15,
+              0.2,
+              0.25,
+              0.3,
+              0.35
+            ],
+            &quot;forward&quot;: [
+              0.7,
+              0.7,
+              0.67,
+              0.62,
+              0.56,
+              0.5,
+              0.44,
+              0.39
+            ],
+            &quot;reverse&quot;: [
+              0.6,
+              0.6,
+              0.57,
+              0.52,
+              0.47,
+              0.42,
+              0.37,
+              0.33
+            ]
+          }
+        },
+        &quot;exhaust_valve&quot;: {
+          &quot;provenance&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+          &quot;count&quot;: 2,
+          &quot;diameter_mm&quot;: 27.0,
+          &quot;lift&quot;: {
+            &quot;type&quot;: &quot;harmonic&quot;,
+            &quot;open_deg&quot;: 130.0,
+            &quot;close_deg&quot;: -350.0,
+            &quot;max_lift_mm&quot;: 9.0
+          },
+          &quot;discharge_coefficient&quot;: {
+            &quot;reference_area&quot;: &quot;curtain&quot;,
+            &quot;l_over_d&quot;: [
+              0.0,
+              0.05,
+              0.1,
+              0.15,
+              0.2,
+              0.25,
+              0.3,
+              0.35
+            ],
+            &quot;forward&quot;: [
+              0.7,
+              0.7,
+              0.67,
+              0.62,
+              0.56,
+              0.5,
+              0.44,
+              0.39
+            ],
+            &quot;reverse&quot;: [
+              0.6,
+              0.6,
+              0.57,
+              0.52,
+              0.47,
+              0.42,
+              0.37,
+              0.33
+            ]
+          }
+        },
+        &quot;intake_duct&quot;: {
+          &quot;provenance&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+          &quot;segments&quot;: [
+            {
+              &quot;length_mm&quot;: 250.0,
+              &quot;start_diameter_mm&quot;: 44.0,
+              &quot;end_diameter_mm&quot;: 40.0
+            },
+            {
+              &quot;length_mm&quot;: 100.0,
+              &quot;start_diameter_mm&quot;: 40.0,
+              &quot;end_diameter_mm&quot;: 40.0
+            }
+          ],
+          &quot;open_end_cd_inflow&quot;: 0.97,
+          &quot;open_end_cd_outflow&quot;: 1.0,
+          &quot;friction&quot;: true,
+          &quot;heat_transfer&quot;: true,
+          &quot;wall_temperature_K&quot;: 320.0
+        },
+        &quot;exhaust_duct&quot;: {
+          &quot;provenance&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+          &quot;segments&quot;: [
+            {
+              &quot;length_mm&quot;: 100.0,
+              &quot;start_diameter_mm&quot;: 38.0,
+              &quot;end_diameter_mm&quot;: 38.0
+            },
+            {
+              &quot;length_mm&quot;: 600.0,
+              &quot;start_diameter_mm&quot;: 38.0,
+              &quot;end_diameter_mm&quot;: 42.0
+            },
+            {
+              &quot;length_mm&quot;: 400.0,
+              &quot;start_diameter_mm&quot;: 42.0,
+              &quot;end_diameter_mm&quot;: 42.0
+            }
+          ],
+          &quot;open_end_cd_inflow&quot;: 1.0,
+          &quot;open_end_cd_outflow&quot;: 1.0,
+          &quot;friction&quot;: true,
+          &quot;heat_transfer&quot;: true,
+          &quot;wall_temperature_K&quot;: 700.0
+        },
+        &quot;ambient&quot;: {
+          &quot;provenance&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+          &quot;intake_pressure_pa&quot;: 101325.0,
+          &quot;intake_temperature_K&quot;: 298.15,
+          &quot;exhaust_pressure_pa&quot;: 101325.0,
+          &quot;exhaust_temperature_K&quot;: 298.15
+        },
+        &quot;combustion&quot;: {
+          &quot;provenance&quot;: &quot;STANDARD_V1&quot;,
+          &quot;model&quot;: &quot;WIEBE_SINGLE_ZONE_V1&quot;,
+          &quot;zone_model&quot;: &quot;two_zone_equilibrium&quot;,
+          &quot;notes&quot;: &quot;a=5, m=2 and 50-60 deg duration are Heywood (1988) sec. 9.2.1 typical values; SOC is a calibration input. zone_model: two_zone_equilibrium = burned gas in chemical equilibrium (10 species, NO excluded); single_zone = stage-1 complete-combustion products.&quot;,
+          &quot;enabled&quot;: true,
+          &quot;fuel&quot;: &quot;IC8H18&quot;,
+          &quot;start_deg&quot;: -20.0,
+          &quot;duration_deg&quot;: 55.0,
+          &quot;wiebe_a&quot;: 5.0,
+          &quot;wiebe_m&quot;: 2.0,
+          &quot;efficiency&quot;: 0.98,
+          &quot;water_gas_k&quot;: 3.5
+        },
+        &quot;heat_transfer&quot;: {
+          &quot;provenance&quot;: &quot;STANDARD_V1&quot;,
+          &quot;model&quot;: &quot;WOSCHNI_1967&quot;,
+          &quot;notes&quot;: &quot;Woschni constants from Heywood (1988) eq. 12.19-12.20; wall temperatures are assumptions.&quot;,
+          &quot;enabled&quot;: true,
+          &quot;t_head_K&quot;: 550.0,
+          &quot;t_piston_K&quot;: 580.0,
+          &quot;t_liner_K&quot;: 420.0,
+          &quot;head_area_factor&quot;: 1.1,
+          &quot;piston_area_factor&quot;: 1.0,
+          &quot;multiplier&quot;: 1.0
+        },
+        &quot;friction&quot;: {
+          &quot;provenance&quot;: &quot;SYNTHETIC_ASSUMPTION&quot;,
+          &quot;model&quot;: &quot;CHEN_FLYNN&quot;,
+          &quot;notes&quot;: &quot;Coefficients chosen to give FMEP of order 1.5-2.5 bar at 4000-9000 rpm; not fitted to any engine.&quot;,
+          &quot;a_pa&quot;: 30000.0,
+          &quot;b&quot;: 0.005,
+          &quot;c_pa_s_m&quot;: 9000.0,
+          &quot;d_pa_s2_m2&quot;: 90.0
+        },
+        &quot;operating_point&quot;: {
+          &quot;rpm&quot;: 6000.0,
+          &quot;equivalence_ratio&quot;: 1.0
+        },
+        &quot;initial_conditions&quot;: {
+          &quot;cylinder_pressure_pa&quot;: 105000.0,
+          &quot;cylinder_temperature_K&quot;: 900.0,
+          &quot;exhaust_temperature_K&quot;: 700.0
+        },
+        &quot;numerics&quot;: {
+          &quot;dx_mm&quot;: 10.0,
+          &quot;cfl&quot;: 0.8,
+          &quot;max_dtheta_deg&quot;: 0.5,
+          &quot;second_order&quot;: true,
+          &quot;limiter&quot;: &quot;minmod&quot;,
+          &quot;max_cycles&quot;: 20,
+          &quot;periodicity&quot;: {
+            &quot;imep_rel&quot;: 0.002,
+            &quot;trapped_mass_rel&quot;: 0.002,
+            &quot;pressure_trace_rel&quot;: 0.005,
+            &quot;mass_imbalance_rel&quot;: 0.005,
+            &quot;consecutive&quot;: 2
+          },
+          &quot;restriction_model&quot;: &quot;V2&quot;
+        }
+      },
+      &quot;summary_path&quot;: &quot;C:\\Users\\ageribon.MIDES\\Dino-artifacts\\worktrees\\dino-platform-main-consolidation-v1\\results\\dino4t-ab-engineering-v1\\runs\\runs\\d4ab-v1-2-f6e4c5c2f7eb\\artifacts\\summary.json&quot;,
+      &quot;config_path&quot;: &quot;C:\\Users\\ageribon.MIDES\\Dino-artifacts\\worktrees\\dino-platform-main-consolidation-v1\\results\\dino4t-ab-engineering-v1\\runs\\runs\\d4ab-v1-2-f6e4c5c2f7eb\\artifacts\\config_resolved.json&quot;,
+      &quot;trace_path&quot;: &quot;C:\\Users\\ageribon.MIDES\\Dino-artifacts\\worktrees\\dino-platform-main-consolidation-v1\\results\\dino4t-ab-engineering-v1\\runs\\runs\\d4ab-v1-2-f6e4c5c2f7eb\\artifacts\\trace_last_cycle.csv&quot;
+    }
+  ],
+  &quot;comparison_id&quot;: &quot;54598307b81a3c99069f6273093cd321229a39864adde97565f9f4a34c5b974f&quot;
+}</pre></details>
+<footer><p>Dino Desktop · informe descriptivo de resultados calculados; no valida experimentalmente el motor real.</p></footer></html>

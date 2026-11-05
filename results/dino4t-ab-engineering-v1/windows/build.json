@@ -1,0 +1,1365 @@
+{
+  "app_version": "0.1.0-rc12",
+  "source_commit": "07849322b8ad0115defb28de2ad5f23b8bfacd55",
+  "trial": true,
+  "built_utc": "20261105T152851Z",
+  "python": "3.11.0 (main, Oct 24 2022, 18:26:48) [MSC v.1933 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "architecture": "AMD64",
+  "project_format": 6,
+  "desktop_project_schemas": {
+    "two_stroke": "MOTORSIM_ENGINE_PROJECT_V3",
+    "four_stroke": "DINO_DESKTOP_ENGINE_PROJECT_4T_V1"
+  },
+  "result_formats": {
+    "two_stroke": [
+      1,
+      2,
+      3
+    ],
+    "four_stroke": "DINO4T_OPERATING_POINT_RESULT_V1"
+  },
+  "engine_apis": {
+    "two_stroke": "DINO_ENGINEERING_RUN_V1",
+    "four_stroke": "DINO4T_API_V1"
+  },
+  "models": {
+    "two_stroke": "four-cv-0d-prescribed-heat-v1-external-regularized-rk4-v1",
+    "four_stroke": "three-cv-0d-prescribed-heat-720-v1-external-regularized-rk4-v1"
+  },
+  "dependencies": {
+    "altgraph": "0.17.5",
+    "packaging": "26.3",
+    "pefile": "2024.8.26",
+    "pip": "22.3",
+    "pyinstaller": "6.22.3",
+    "pyinstaller-hooks-contrib": "2026.7",
+    "numpy": "2.3.0",
+    "scipy": "1.15.2",
+    "PySide6": "6.11.2",
+    "PySide6_Addons": "6.11.2",
+    "PySide6_Essentials": "6.11.2",
+    "pywin32-ctypes": "0.2.3",
+    "setuptools": "65.5.0",
+    "shiboken6": "6.11.2",
+    "psutil": "7.0.0",
+    "pywinauto": "0.6.9",
+    "comtypes": "1.4.16",
+    "pywin32": "312",
+    "six": "1.17.0"
+  },
+  "workflow_source_hashes": {
+    "motorsim.gas_exchange_v2": "401010e2043fc14b84343cbaa4aa979b9849c6a704629b3c45ddeb4a4ccb6bf7",
+    "motorsim.engineering_point": "bdb865673955a762233e5dc91edd9b5a8dc6224b83460b7043a0ee366822e82b",
+    "motorsim.engineering_workflow": "837d4875a92d58e8c3dda3b7de7be075cd50cfea56375aabec00c7343eb3f371",
+    "motorsim._trajectory_store": "9a4a7c1b9fc01218e0b4d53ee2c26e6ac5a459c68bada0a556437294c04923e8",
+    "motorsim._evidence_io": "422f7981eaa53769ad2a9610cb8c07cb5c2e6351eba1fb820ef9a47a5b0ba5b1",
+    "motorsim.crankcase": "304f3939f13b5a7b099737825ca21dd9159ec546183af0b1da68e71ff24e33e8",
+    "motorsim.coupling": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b",
+    "motorsim.fuel_combustion": "08787a33c780cf46f35fd99bf12c774fdd95787773b51ea1c47456eeeea60eca",
+    "motorsim.gas1d.boundary": "f931664fa850a612f28998090fe9c5fe9088d621892a69a9d5eebcb9d6b17daf",
+    "motorsim.gas1d.eos": "49a4f2189a3fe87e3514e66c5a03be70ec3e932405a6dea25b6e83c23ac62286",
+    "motorsim.gas1d.mesh": "78dcdd71de7acd751e79367347e2826e4d7c81d83817f39a62728d375bcbb44e",
+    "motorsim.gas1d.open_end_plenum_v2": "4136682e95c5fe2e3666a62a84fc61d375365e66c2760b3566778bf2792df75f",
+    "motorsim.gas1d.riemann": "30ab73a693e679781e3f12b177fa02f04e13562909b9a4131a2b5c641d0321b3",
+    "motorsim.integrated_2t": "940a01563da60682493440cc8ade9bc9df8ffec4f7d6132ff66e1d2551f95566",
+    "motorsim.kinematics": "6a5895516692d5a1d2ed9712f282c989afcd7396b62bf73c96230eb1e7b6f44b",
+    "motorsim.network_components": "6a9a0939f6fc2768663dd84814301c7e8e79dce76d866ce24d1031c396825d06",
+    "motorsim.p6_species": "6ae1b154f2d02dc2ca2d984eff43032602a9c9f51901802093d5058d72a6bf72",
+    "motorsim.p7_prescribed": "3ed5a0e364e6eeb26bfd4f0a535ce116af6a0b283914499f947b5ab752c6175e",
+    "motorsim.powervalve": "41d1d7e022ffb389d847f5e00dcccf05ad8d1e9239da7b8c85e9b554a4476efe",
+    "motorsim.reed": "bab673b089c704de04590ef03762877f055dced409404757896ce7e01c8a7da9",
+    "motorsim.reed_coupling": "2043bddbb6abb0a56b08b5813a609e4e20b96290eec1b11002614711598215ab",
+    "motorsim.thermal": "ba0bfebfd1aacf9cda8accf025e16fcd6c399018cab9a20106b151e62c49734f",
+    "motorsim.two_stroke_ports": "a8ffe588aa22ab71b42946ab35b83de7fa63703a3a2a3adf59128445f27db095",
+    "motorsim.mechanical": "de71d3bacb18e7661de0ff15cbac50f1a252fc01970c7ef9aa04c8a3424d0fff",
+    "motorsim.engine_configuration": "d1f8b88640fdfa3b703c2a8e87e8872a22f6fbbeac9b4400e7a4bd3e7b0fcfce",
+    "motorsim.engine_variants": "be3d8e7c723cc1627bc30900a1d8da0e049adbaa066c06dacfe946eea4fcdfa1",
+    "motorsim.engineering_outputs": "c01c3c7195f28a67c3fb866df704d15a595d079d32be71057ab2d2c5095f5424",
+    "motorsim.reference_harness.convergence": "22df512d6e48b95b506401005b466d37038eebd888d684a287e70c1d76cd3193",
+    "motorsim.exploratory_workflow": "ac20260d0c76696fb5105e0f85b1993d23286124c6daab4cc962f7908d344cb4"
+  },
+  "packaged_inputs_clean": true,
+  "packaged_input_count": 255,
+  "packaged_input_manifest_sha256": "cc2b065d5902f1942376efe00f6734e91a25a86f64dbaf4b1f5d89d85f1fd602",
+  "packaged_inputs": [
+    {
+      "path": "examples/projects/EJEMPLO_SINTETICO_2T_COMPRESION_8_2.json",
+      "size_bytes": 2264,
+      "sha256": "a75d72603c466c32375217b138e616f501665aeca6c3d7662e5a7b565a49ca0b"
+    },
+    {
+      "path": "examples/projects/EJEMPLO_SINTETICO_2T_REFERENCIA.json",
+      "size_bytes": 2262,
+      "sha256": "26e479b4dc47d4a0c0164b9b790c949491bf33c50cc2540ce06a1d5a8e1fec9a"
+    },
+    {
+      "path": "examples/projects/EJEMPLO_SINTETICO_4T_COMPRESION_8_2.json",
+      "size_bytes": 1845,
+      "sha256": "51a0c0477f22bab65a37fdabcd61cb4b9e968512a55d8507cab8a67cbe13261a"
+    },
+    {
+      "path": "examples/projects/EJEMPLO_SINTETICO_4T_REFERENCIA.json",
+      "size_bytes": 1843,
+      "sha256": "b6c83be9bb0f1265d04ff540ba1d04fe30b2ee987bf67c4496d597b62e68c372"
+    },
+    {
+      "path": "examples/projects/dino-2t-exhaust-comparison.dino2t.json",
+      "size_bytes": 1582377,
+      "sha256": "a44ba9aef4cc567c4cb76f2608f9453cfe18dc348e5275746dc60fde304d725a"
+    },
+    {
+      "path": "examples/projects/dino-2t-starter.dino2t.json",
+      "size_bytes": 504618,
+      "sha256": "65985b9d873d386883ebd3b9b3b3a8f5876ee98f9ff2ec256d7b0c2b1282017d"
+    },
+    {
+      "path": "motorsim/__init__.py",
+      "size_bytes": 74,
+      "sha256": "dc7ec04e41fc98575e2ec9d1ae64fd3667a8075ebd91c2b480424108fab3b710"
+    },
+    {
+      "path": "motorsim/__main__.py",
+      "size_bytes": 894,
+      "sha256": "cb8250f5d412b665f4f6843c997627d2df2750aee0f9e2551d557825d4202adf"
+    },
+    {
+      "path": "motorsim/_evidence_io.py",
+      "size_bytes": 8724,
+      "sha256": "9a0904c29108d49de9ee2da6fddbcc4e8d7f8025386589b97c933508225b5488"
+    },
+    {
+      "path": "motorsim/_trajectory_store.py",
+      "size_bytes": 6878,
+      "sha256": "98f28e08f0bf62ee126f9263ce2d0ec586830e36aa5b6f33a4c782e2282073cf"
+    },
+    {
+      "path": "motorsim/adaptive.py",
+      "size_bytes": 11962,
+      "sha256": "4b86241a01fef624acb8eae8c875d9892b22c1ae10132e1888edc0e7278be8cf"
+    },
+    {
+      "path": "motorsim/artifact_store.py",
+      "size_bytes": 4502,
+      "sha256": "744b9f99419506ac4bd26cf73f527c784fece88e0e1c4b299ce132750626211e"
+    },
+    {
+      "path": "motorsim/ayuda.txt",
+      "size_bytes": 6238,
+      "sha256": "f6cc7f3ca17d41821ff59ea347d64b359f49aeb6a0bebb78055942498d203d07"
+    },
+    {
+      "path": "motorsim/checkpoint.py",
+      "size_bytes": 10307,
+      "sha256": "628a8c896224e812ce94cf23f7a30b0286cc39929d6c23a309aaf1cf7ea3c907"
+    },
+    {
+      "path": "motorsim/combustion.py",
+      "size_bytes": 11358,
+      "sha256": "776b14de737299090b60674f2151fbea7c7c4b653e733d1e280dd395696f8d68"
+    },
+    {
+      "path": "motorsim/comparison.py",
+      "size_bytes": 10083,
+      "sha256": "279448d241bd228f804bdd0fa87d4c0ca7c502b0b3a450b033ee57dd954db654"
+    },
+    {
+      "path": "motorsim/comparison_view.py",
+      "size_bytes": 13440,
+      "sha256": "63777005a041064da3da776c27c2c326ca7ade7f6f3c67a5b8fd9135b7f3ff6e"
+    },
+    {
+      "path": "motorsim/coupled.py",
+      "size_bytes": 8340,
+      "sha256": "a64c64c0c29a99ee3709fcc45b142740838537b78066336131ea1ea92adae3a8"
+    },
+    {
+      "path": "motorsim/coupling.py",
+      "size_bytes": 3789,
+      "sha256": "2cdb9985e453bbc41eaf9183dbb43c9307fb282fa9996088c47c60de3d74fe1b"
+    },
+    {
+      "path": "motorsim/coupling_adapter.py",
+      "size_bytes": 1214,
+      "sha256": "34bc543b214de01da80c8a440c35ace50139a6ed2a296b79c29e10c1452bca45"
+    },
+    {
+      "path": "motorsim/crankcase.py",
+      "size_bytes": 6231,
+      "sha256": "ad3e04278e8b4f43e208be95a1295c209103cd4c5d35663b70fed02102c576f5"
+    },
+    {
+      "path": "motorsim/design_study.py",
+      "size_bytes": 57560,
+      "sha256": "5d9cd2ab21496bbf95e687eeb10f7351d6848e3b1d6d72d61e5cb71ad3937177"
+    },
+    {
+      "path": "motorsim/desktop/__init__.py",
+      "size_bytes": 82,
+      "sha256": "d8f6c757f6e3b087166c91d0d438d6f95e4e219d32745356c8687cbe32080982"
+    },
+    {
+      "path": "motorsim/desktop/acceptance_smoke_4t.py",
+      "size_bytes": 9975,
+      "sha256": "ec0be3c308cdb25c42b3de4535af968e3d62f51bd01aa7116e3e667051fd5c4f"
+    },
+    {
+      "path": "motorsim/desktop/app.py",
+      "size_bytes": 39156,
+      "sha256": "2f6848741016144997d9777bcc28df5c4a5ca9a40f3c2c5f11ebf958c140127d"
+    },
+    {
+      "path": "motorsim/desktop/comparison_snapshot.py",
+      "size_bytes": 11640,
+      "sha256": "34b64323422f329411d38d2f337d6a62eb2980d6c22c65fd63fe2d3e019e8188"
+    },
+    {
+      "path": "motorsim/desktop/context.py",
+      "size_bytes": 7212,
+      "sha256": "4065eca17d18f53881ecbce4637094078d37c3e76d063c074913678d5a263081"
+    },
+    {
+      "path": "motorsim/desktop/engine_page.py",
+      "size_bytes": 58097,
+      "sha256": "aa4e6d91d6ba1190d4288ad52a48c3a6d93a3bf5fe42c652684917ddbb43e2ae"
+    },
+    {
+      "path": "motorsim/desktop/execution_page.py",
+      "size_bytes": 68834,
+      "sha256": "c97e01f360755c2e1d6e43f307e9723ecf7a160feb425e0826eb2ebc7596a24a"
+    },
+    {
+      "path": "motorsim/desktop/exhaust_page.py",
+      "size_bytes": 33781,
+      "sha256": "2d6e85c225a988a0a5599046eb2537d399ea64cbeb412b12788a8c02a2d55d66"
+    },
+    {
+      "path": "motorsim/desktop/four_stroke_comparison.py",
+      "size_bytes": 8896,
+      "sha256": "e34c61089f6fe9ae7f9607790e79f0e0f94a988dfe8e773b0d873054a835b292"
+    },
+    {
+      "path": "motorsim/desktop/four_stroke_desktop.py",
+      "size_bytes": 51428,
+      "sha256": "9a50e8faa3514f7bb354c3b66cbbf0edb6d49bf021d340eb0a4bb8b6657be22d"
+    },
+    {
+      "path": "motorsim/desktop/four_stroke_project.py",
+      "size_bytes": 4433,
+      "sha256": "e7147cfd0e7f7940068f204b44c615492a03748100862fa102eb452c7f91b9da"
+    },
+    {
+      "path": "motorsim/desktop/model_diagrams.py",
+      "size_bytes": 4617,
+      "sha256": "cc6b8a026bf869fea080f806836aacfd28cf0280406800f62bc11cf678ebfa64"
+    },
+    {
+      "path": "motorsim/desktop/new_engine_dialog.py",
+      "size_bytes": 6030,
+      "sha256": "21d9ae1653430e27622ce92e671a3dc730f9221b2edac15bb0735779789f0199"
+    },
+    {
+      "path": "motorsim/desktop/parametric_factorial_snapshot.py",
+      "size_bytes": 17049,
+      "sha256": "2b361a2e4655a0c19e0a3701c822241f7326759563969120222426ac620c3151"
+    },
+    {
+      "path": "motorsim/desktop/parametric_study_snapshot.py",
+      "size_bytes": 7210,
+      "sha256": "65e530f09aaec1fb86ed6528d3ca922b35cab3a5860af0e597f4011e7d797e55"
+    },
+    {
+      "path": "motorsim/desktop/performance_curves.py",
+      "size_bytes": 25929,
+      "sha256": "2b7ed0a51102cf8eb76ab73bb0e87b0aa07b666e004bc300e35de0cb8775a446"
+    },
+    {
+      "path": "motorsim/desktop/plot.py",
+      "size_bytes": 8286,
+      "sha256": "fad03cd405d05338e06a43d6bd9382cd1e21af09147a66802aa0c0284638fe90"
+    },
+    {
+      "path": "motorsim/desktop/preferences.py",
+      "size_bytes": 2278,
+      "sha256": "3eb645a7ab8208bd109062dda7931df39ff7f8cf844470539922f933d206e3d8"
+    },
+    {
+      "path": "motorsim/desktop/presentation.py",
+      "size_bytes": 8831,
+      "sha256": "0b8b9a9d4d01313b905254e153ab2ff37c6044aeaa6be018cfbf95e22308272b"
+    },
+    {
+      "path": "motorsim/desktop/project_page.py",
+      "size_bytes": 4575,
+      "sha256": "6a48936b23ed88b07d702f72320b3695fa731c09f5057f8c8768b90ca233be0c"
+    },
+    {
+      "path": "motorsim/desktop/results_page.py",
+      "size_bytes": 239386,
+      "sha256": "48ef7d422a4dae87e0034ebcb42963ad48f825f6947aee5ba27727630de39a3b"
+    },
+    {
+      "path": "motorsim/desktop/run_history.py",
+      "size_bytes": 7789,
+      "sha256": "b0e87eefed0bf1126c435bd7418a9e0cf2029af353c1d98b53843374a6a4f9ec"
+    },
+    {
+      "path": "motorsim/desktop/services.py",
+      "size_bytes": 19932,
+      "sha256": "f1d77ed6f63453a0c82e460b196963633793ca5008fdf30464da373fbcff356d"
+    },
+    {
+      "path": "motorsim/desktop/technical_report.py",
+      "size_bytes": 69035,
+      "sha256": "4b2ae2e5a8e3c018aacb503d588b082a73e12debc6c0e47af0df26ad19e0e21d"
+    },
+    {
+      "path": "motorsim/desktop/templates/single_cylinder_2t_starter_v1.json",
+      "size_bytes": 467968,
+      "sha256": "4c58c575f3fb0f22c12d378c7fed558c173e124be845847ab7064d998aab5a5d"
+    },
+    {
+      "path": "motorsim/desktop/theme.py",
+      "size_bytes": 4256,
+      "sha256": "7fffdfb92f7a6be4125db6e78f3d370822d9c64d24c0bc1046bb9f58c789f5f0"
+    },
+    {
+      "path": "motorsim/desktop/widgets/context_bar.py",
+      "size_bytes": 2764,
+      "sha256": "731b191cfd7cdbbe4f2110d2189d354e200d23e4f9a834c393384bba4a941e3c"
+    },
+    {
+      "path": "motorsim/desktop/widgets/run_history.py",
+      "size_bytes": 12957,
+      "sha256": "cc8ecc9d38e27b37e6026b3fac9dc0a0533582905b16319a144a54a4f39e9a1a"
+    },
+    {
+      "path": "motorsim/dino4t/__init__.py",
+      "size_bytes": 793,
+      "sha256": "d3f018f64d92a79078fba90b47b13294d9e994ec1060c9e3664f71f00038e432"
+    },
+    {
+      "path": "motorsim/dino4t/__main__.py",
+      "size_bytes": 5417,
+      "sha256": "25979aff2b79ebe92cf0f56ec446593fdd35dc3c9e6dcbd98f798cbf1561c084"
+    },
+    {
+      "path": "motorsim/dino4t/api.py",
+      "size_bytes": 12509,
+      "sha256": "5ba7425a8aee0ca5524171f49c857fb484920545d75b3211dd643cefa0e184d4"
+    },
+    {
+      "path": "motorsim/dino4t/closures.py",
+      "size_bytes": 3171,
+      "sha256": "a4129400f46ffff68e0fab03c697d6addaff170b4eb4559dda7ac68be46f22f8"
+    },
+    {
+      "path": "motorsim/dino4t/combustion.py",
+      "size_bytes": 6276,
+      "sha256": "87ffc06d0a6856088697ff03c334d0a1f3c0f0557d95ab7e406d0e80cca020de"
+    },
+    {
+      "path": "motorsim/dino4t/config.py",
+      "size_bytes": 8688,
+      "sha256": "9d4b115e8036607e74b1896e47d3f9ef25e7d90d2fa62b0d81338f6fc7702777"
+    },
+    {
+      "path": "motorsim/dino4t/cycle_analysis.py",
+      "size_bytes": 8456,
+      "sha256": "ac2b19b2f5c5c4d6aabd3c906080ab021cd613d4f3638470d926927e15192b14"
+    },
+    {
+      "path": "motorsim/dino4t/duct.py",
+      "size_bytes": 11649,
+      "sha256": "b7d785dff150bb7ae54b0c8e553c6a9a711a395dab4384b94385b3cb6fd80879"
+    },
+    {
+      "path": "motorsim/dino4t/engine.py",
+      "size_bytes": 32755,
+      "sha256": "bec00ca05ddb3e6040e4ba70aaeb987a97973b322bff6c78a444a49714f9b888"
+    },
+    {
+      "path": "motorsim/dino4t/equilibrium.py",
+      "size_bytes": 12377,
+      "sha256": "0b464c82b50b3d1317466d72d1e7167da2b30f51edd63457c26369a2338385d7"
+    },
+    {
+      "path": "motorsim/dino4t/kinematics.py",
+      "size_bytes": 2530,
+      "sha256": "ad2df76fdc31088f44b1edbd45338ac33beaa3067f590a63ef3cb023501ef266"
+    },
+    {
+      "path": "motorsim/dino4t/restriction.py",
+      "size_bytes": 10146,
+      "sha256": "258b443b751db5b696c0e7702a4ae302c2ce63d349ee1eecd5f6b858bd67ce8f"
+    },
+    {
+      "path": "motorsim/dino4t/runner.py",
+      "size_bytes": 7915,
+      "sha256": "b48fc6a65d75d3871b3eb2efe3408235a8350d5067a2c41f06292afd1fc0a86b"
+    },
+    {
+      "path": "motorsim/dino4t/studies.py",
+      "size_bytes": 9079,
+      "sha256": "f695cc0fe2c9d5cd0a47a3fc2e0a1e73a50b8d33511144e1c6df0b5726e7ffd0"
+    },
+    {
+      "path": "motorsim/dino4t/thermo.py",
+      "size_bytes": 10546,
+      "sha256": "a5c7f6bd0aa7975c13528bda4dd91a452c818a178e7285da3817e38174767c41"
+    },
+    {
+      "path": "motorsim/dino4t/thermo_data.py",
+      "size_bytes": 7085,
+      "sha256": "437b966333f5943a91503737e0163e1c9f9531046f0605e89b1f740155504b19"
+    },
+    {
+      "path": "motorsim/dino4t/twozone.py",
+      "size_bytes": 4467,
+      "sha256": "661bfbf010d6e2880c6c84ac99e0b2816fc75aad258eb8562b977c0e23e8d17d"
+    },
+    {
+      "path": "motorsim/dino4t/valves.py",
+      "size_bytes": 5029,
+      "sha256": "1bd975b1c2ed646e2a18e7b01f9954484cb462aa8a401c12ea10f003796c9709"
+    },
+    {
+      "path": "motorsim/dino4t/verification.py",
+      "size_bytes": 27965,
+      "sha256": "9465bbaf5906dc473d3dad8eaccf6db58c2983d78cb792bdace2a370232ea7fd"
+    },
+    {
+      "path": "motorsim/dino4t/verification_stage2.py",
+      "size_bytes": 30963,
+      "sha256": "8d7ea31b54232085ef150762f6f29998500579b5795ba067ce62b3ed710547e4"
+    },
+    {
+      "path": "motorsim/dino_desktop.py",
+      "size_bytes": 837,
+      "sha256": "1aadde5b8fa4434b92a1d1bfcb9096eca8bac1b9cc123b53a289ad27a914a225"
+    },
+    {
+      "path": "motorsim/duct_network.py",
+      "size_bytes": 3561,
+      "sha256": "29c776df614735711b627524459e5970dad6a0882fec966ea9b5c6379a64269f"
+    },
+    {
+      "path": "motorsim/ducts.py",
+      "size_bytes": 4251,
+      "sha256": "2f26ab0cefb97cd49377660a82c514a83715ed8b05918ae90c20b05df6ba1165"
+    },
+    {
+      "path": "motorsim/ducts_view.py",
+      "size_bytes": 15831,
+      "sha256": "18ac37c45b96883beb091ec88c3865de533eba4bd093a4e45a24a98ad6d52fce"
+    },
+    {
+      "path": "motorsim/engine_configuration.py",
+      "size_bytes": 10803,
+      "sha256": "e413cff8fd9178ed812cf44b0c1814fa7d3da1a24555373d7879ec07d108d9a8"
+    },
+    {
+      "path": "motorsim/engine_physics_v1.py",
+      "size_bytes": 35630,
+      "sha256": "58e14173edd8d2431ca9973fff2fcbd89077c35ba5136d4574c5afa58e600f87"
+    },
+    {
+      "path": "motorsim/engine_physics_v1_r2_semantics.py",
+      "size_bytes": 28251,
+      "sha256": "80e3d9a4402ea3724edf218d23589e1f9665a821d75aad263dbff0c6199433cf"
+    },
+    {
+      "path": "motorsim/engine_platform.py",
+      "size_bytes": 4525,
+      "sha256": "47c9be4b4c128c00c847b0cb49122130bd61b8fe30814dcff42ad9c239e8a308"
+    },
+    {
+      "path": "motorsim/engine_project.py",
+      "size_bytes": 10162,
+      "sha256": "081bb54dfed3ae50dbdcb421efc9fc391956e5643b4fbfd4deb4f7fead2d2bd4"
+    },
+    {
+      "path": "motorsim/engine_results.py",
+      "size_bytes": 7934,
+      "sha256": "ad9c76a24ef127712c12b42a1aaa6f592c228f4ab8e5ca0f986f516da51f7931"
+    },
+    {
+      "path": "motorsim/engine_variants.py",
+      "size_bytes": 10622,
+      "sha256": "17124d8904a257fcaa916726023d1db6285415bd45a59657be79f58afd59b31e"
+    },
+    {
+      "path": "motorsim/engineering_outputs.py",
+      "size_bytes": 23880,
+      "sha256": "8c91e8bee0a1595b11dfb9834890708bdbd36cc841190d32df5d3c24ac5e667c"
+    },
+    {
+      "path": "motorsim/engineering_point.py",
+      "size_bytes": 27392,
+      "sha256": "86be829938e674d6e13fad5d485e0db90ad6dbe5eefc65334c6df4efa18fe868"
+    },
+    {
+      "path": "motorsim/engineering_workflow.py",
+      "size_bytes": 11251,
+      "sha256": "c9836dbd3e6e8152b6587d4e7dab6b7c22ed0d25d0311caa2a2b7c13082ccbfd"
+    },
+    {
+      "path": "motorsim/examples.py",
+      "size_bytes": 1558,
+      "sha256": "f1af57bd6ecda10194f52dfc90ddbc5a42981172a404fe1e88041c49b0bbb6fd"
+    },
+    {
+      "path": "motorsim/exhaust1d.py",
+      "size_bytes": 8426,
+      "sha256": "b7e4919cb76b22eb5b9f56d8e34dc87bebac5ae42e5ae502363a2b702e325293"
+    },
+    {
+      "path": "motorsim/exhaust_batch.py",
+      "size_bytes": 5278,
+      "sha256": "2e81fc334e59961686f2e1ba5b6ff9dcc3c552d7da5fbba11cb0d0159f7f031e"
+    },
+    {
+      "path": "motorsim/exhaust_fast.py",
+      "size_bytes": 8087,
+      "sha256": "4e7988b3b33aa3d2aea7a199d0513810998673b6337113d888308c161350f40b"
+    },
+    {
+      "path": "motorsim/exhaust_geometry.py",
+      "size_bytes": 399,
+      "sha256": "0d892a4dc1f3f1895f0148bc8944a6e11cb395606c21451a618e2304c81c8714"
+    },
+    {
+      "path": "motorsim/exhaust_mesh_v1.py",
+      "size_bytes": 9772,
+      "sha256": "67f7553eee055e797b5df9b9120fc0bb99ce030f55cdc951a0edf498340d7760"
+    },
+    {
+      "path": "motorsim/exhaust_mesh_v2.py",
+      "size_bytes": 9777,
+      "sha256": "3279390a2c524fd0ea217c87a2fe7ebce3956f85bc2725bea03088a47e599c3c"
+    },
+    {
+      "path": "motorsim/exhaust_numba.py",
+      "size_bytes": 20334,
+      "sha256": "7d29717c790d3a00ad3fa9a57e311e7c3944b67537ae7b1fd978fe7e316917b4"
+    },
+    {
+      "path": "motorsim/exhaust_numba_fused.py",
+      "size_bytes": 714,
+      "sha256": "36cff52317a117ab0f01a698840d16c94c1eb71f2f601bbd0aa9d25a6f5e9919"
+    },
+    {
+      "path": "motorsim/exhaust_numpy.py",
+      "size_bytes": 15383,
+      "sha256": "4b941cb7e8b8ea874313a8e6de4356819b77e093883fb8b2f9e582c1ac90e554"
+    },
+    {
+      "path": "motorsim/exhaust_port.py",
+      "size_bytes": 2458,
+      "sha256": "7fa88d28c30193e5511d2df0ee3eae30fe9184276f8da12b99b9d42dfdefe454"
+    },
+    {
+      "path": "motorsim/expansion_chamber.py",
+      "size_bytes": 10312,
+      "sha256": "470376af75252906c541fbe9e6d49626248f5d30fabee339310e4505366e542e"
+    },
+    {
+      "path": "motorsim/exploratory_workflow.py",
+      "size_bytes": 53271,
+      "sha256": "3138125a6aba776f27124e6dff6d5b81b750566e72f92834176e0197961261f6"
+    },
+    {
+      "path": "motorsim/external_data.py",
+      "size_bytes": 13168,
+      "sha256": "0ee6921717dfa1f121d72eeae842f0ac23580525d29b6ebc8ef82d413e99b282"
+    },
+    {
+      "path": "motorsim/external_view.py",
+      "size_bytes": 20568,
+      "sha256": "bd81c81d38415e9d575fc7eeb83e23415ac70e4aee2c0cb9a8887c9e3e5bdb7b"
+    },
+    {
+      "path": "motorsim/fast_recipe_v1.py",
+      "size_bytes": 19753,
+      "sha256": "ff8af7a62be7662a71f927cdcae362f1781f4cf04cb0bf96301079fabca86030"
+    },
+    {
+      "path": "motorsim/four_stroke.py",
+      "size_bytes": 6863,
+      "sha256": "f1f29170430e4990e2da88c3f70bad2e789b9f89d7ff70548c724de77e014bf9"
+    },
+    {
+      "path": "motorsim/four_stroke_acceptance.py",
+      "size_bytes": 5631,
+      "sha256": "4882e869e90ec01d837355456dac7ad79a29028c7f0f70f05e3d969621a0108c"
+    },
+    {
+      "path": "motorsim/fuel.py",
+      "size_bytes": 8592,
+      "sha256": "c781b88d4d0059448ca9a79aa29fc7976b027bcac91bef5d00738ae2142803f0"
+    },
+    {
+      "path": "motorsim/fuel_combustion.py",
+      "size_bytes": 23539,
+      "sha256": "62175049e63faa30ef5d53afabec24a7a31951de65bf41a60463b85320c8fd4d"
+    },
+    {
+      "path": "motorsim/fuel_library.py",
+      "size_bytes": 25216,
+      "sha256": "1f6fd2f4adddb29961165844452f3ec87290f413b21015bff0b1bdf8e61176ea"
+    },
+    {
+      "path": "motorsim/full_rpm_evidence_impl2.py",
+      "size_bytes": 4023,
+      "sha256": "8e217dc5d4befb1b64056f5755e6b6d483289f8499fd50d7aa47466176e80b19"
+    },
+    {
+      "path": "motorsim/full_rpm_outputs_v1.py",
+      "size_bytes": 6738,
+      "sha256": "7d045009323908700d717882dbd70acdead4f4803649647189d096cbe437b37d"
+    },
+    {
+      "path": "motorsim/full_rpm_sweep_v1.py",
+      "size_bytes": 13397,
+      "sha256": "d3e99f75f575a1285c23c1ca9124e0cf8a1292426b6282ad0d9508fc4b293038"
+    },
+    {
+      "path": "motorsim/full_rpm_sweep_v1_impl2.py",
+      "size_bytes": 13974,
+      "sha256": "e0b4d142aeef37241f1530f3cb8b5f274abd314b64a9c00771d17196f2a56ad7"
+    },
+    {
+      "path": "motorsim/gas1d/__init__.py",
+      "size_bytes": 84,
+      "sha256": "e089d19bb48d3412100e75227c2749e245e9f5821239b9050c34813bda9c1dab"
+    },
+    {
+      "path": "motorsim/gas1d/boundary.py",
+      "size_bytes": 4031,
+      "sha256": "14c61660c997f5c88a316a09b4ec64d96ac69c168f2938d7a14c1c8671d9fd6c"
+    },
+    {
+      "path": "motorsim/gas1d/contact.py",
+      "size_bytes": 2184,
+      "sha256": "f631b8311847126de22d6bcebaaf0f5928b3dbf75af311eaeed8f162c37d24c5"
+    },
+    {
+      "path": "motorsim/gas1d/eos.py",
+      "size_bytes": 3160,
+      "sha256": "f3b3471e911691e7f734e31df44845d74bcb41e6d7cacec813cec2261b315233"
+    },
+    {
+      "path": "motorsim/gas1d/exact_riemann_reference_v1.py",
+      "size_bytes": 4531,
+      "sha256": "a19fb51207cbce093fed3f6d41fc223f0f12d83f408bd895da482c85b1b11877"
+    },
+    {
+      "path": "motorsim/gas1d/mesh.py",
+      "size_bytes": 3333,
+      "sha256": "48a25692786cf118cd0e060d037c01fc933b4be4ce0fe8b2148fd81b79bce40b"
+    },
+    {
+      "path": "motorsim/gas1d/methods.py",
+      "size_bytes": 427,
+      "sha256": "4247cf0cd7060286da44b594214375ade5b5cef2cea4f627b2e9c8bdb6ff65de"
+    },
+    {
+      "path": "motorsim/gas1d/open_end_plenum_v2.py",
+      "size_bytes": 6827,
+      "sha256": "3f96a64f600ce09062ce061ea3962f3ebf40c6ae3407f5d64b1e068aee7b32e7"
+    },
+    {
+      "path": "motorsim/gas1d/reference.py",
+      "size_bytes": 4163,
+      "sha256": "5035e1da546b581cc79407791081cbbb60e9631be79ca438ee9baa3cf5cfe96d"
+    },
+    {
+      "path": "motorsim/gas1d/riemann.py",
+      "size_bytes": 2821,
+      "sha256": "01036f4558b08aa4df85b8152db9ce41eca4402b6298cdd9afa6ee03c65bea87"
+    },
+    {
+      "path": "motorsim/gas1d/second_order.py",
+      "size_bytes": 11577,
+      "sha256": "e6cda6053a171ac8b136e51f1a0dfb82ff97f77653be47a2ee0bf432655d0dab"
+    },
+    {
+      "path": "motorsim/gas1d/solver.py",
+      "size_bytes": 8294,
+      "sha256": "8a9a19a11811f45b6e0765239603b169e7c807bc972c8c864cb3d76980ab3753"
+    },
+    {
+      "path": "motorsim/gas1d/spatial_reconstruction_v1.py",
+      "size_bytes": 3706,
+      "sha256": "de79569b65653b12e3035b81d07c985b896ae711e4e2770bc49a08af0a351ddd"
+    },
+    {
+      "path": "motorsim/gas1d/spatial_reconstruction_v2.py",
+      "size_bytes": 3184,
+      "sha256": "8bce58363475f459e2bed333da71a36164e42032767f869cd3aff44e353f3147"
+    },
+    {
+      "path": "motorsim/gas1d/verification.py",
+      "size_bytes": 16614,
+      "sha256": "1ab9accbe19e224d9ba3e6f12cede9be2e3aec6036456dfe8f697ad85f274679"
+    },
+    {
+      "path": "motorsim/gas_exchange_v2.py",
+      "size_bytes": 2614,
+      "sha256": "4a35a105e21275511712fec5dc67b05127a3106a08e40b2ea2dc48fa743c71ce"
+    },
+    {
+      "path": "motorsim/geometry_view.py",
+      "size_bytes": 11622,
+      "sha256": "29a2128e8dbed5cb2c00be850ce7b09f2a591eacaea91e9539bb470e7712a3c3"
+    },
+    {
+      "path": "motorsim/hybrid_exhaust.py",
+      "size_bytes": 8037,
+      "sha256": "ab2f58692d16d678d3837bd3b5a9618b7c19ba170ecba8c592a2ffcc620c746e"
+    },
+    {
+      "path": "motorsim/hybrid_fast.py",
+      "size_bytes": 6967,
+      "sha256": "e9ea6a0f4d0a2e6e585735a0964c55c89e426b0d345508c29a0c54afeaf7e748"
+    },
+    {
+      "path": "motorsim/intake.py",
+      "size_bytes": 3005,
+      "sha256": "319ebdfdf04d39ba4adfba086ccd094ddef79adbd992b406684780aee2f2fd5a"
+    },
+    {
+      "path": "motorsim/intake_view.py",
+      "size_bytes": 6657,
+      "sha256": "fb962ba539423077366392891e0a75cd822deea9fb4349994982dbcacae2c1d1"
+    },
+    {
+      "path": "motorsim/integrated_2t.py",
+      "size_bytes": 297983,
+      "sha256": "a63e942608a8e9e7f2b410768bb9f58f1057118b31f5efd850a6bbf775ae277f"
+    },
+    {
+      "path": "motorsim/kinematics.py",
+      "size_bytes": 4668,
+      "sha256": "1784f2a8d3cc0e038f0c060e22af02f33db1bfaea9ce0c5988e7775983b4a931"
+    },
+    {
+      "path": "motorsim/kt100_reference.py",
+      "size_bytes": 40623,
+      "sha256": "89e30f55833d19cbe47a8d3576d17a500aa7f4027c74f0a2e600a750cec354da"
+    },
+    {
+      "path": "motorsim/measurement_data.py",
+      "size_bytes": 16692,
+      "sha256": "f317edd94278c14eb2fbf6fb680354107edb9698f742ed742f2a9b199b4e1a27"
+    },
+    {
+      "path": "motorsim/mechanical.py",
+      "size_bytes": 10570,
+      "sha256": "0a98f8238548797c778d401cdacb4e1255baf1d9ea3be8ffdb2fbb32f86ca909"
+    },
+    {
+      "path": "motorsim/mechanical_loss_binding_v1.py",
+      "size_bytes": 8238,
+      "sha256": "dbbf634aaa691b6754fb3c685af558c5f6ea1e9c7fbb22db23e7d82e8a1d62bf"
+    },
+    {
+      "path": "motorsim/mesh_study_v1.py",
+      "size_bytes": 18678,
+      "sha256": "2662032a7f70f5807a547529d7f55d26ab5004281f08abca5330027a13295e9e"
+    },
+    {
+      "path": "motorsim/network_components.py",
+      "size_bytes": 12242,
+      "sha256": "0f8534b36a9e401ffc4abee5982bc3ef02efa386d079815631bafb440ca8e125"
+    },
+    {
+      "path": "motorsim/p5b.py",
+      "size_bytes": 64898,
+      "sha256": "2daa3fca47ff98ed7955d1ebb722219b619cd988697d88c8fe1f07e9bda1e689"
+    },
+    {
+      "path": "motorsim/p5c.py",
+      "size_bytes": 19151,
+      "sha256": "5d85190de405c2180417bfc3bdae25e07146118a5ba3c379009aac9bc60b82ee"
+    },
+    {
+      "path": "motorsim/p6_species.py",
+      "size_bytes": 40255,
+      "sha256": "8bd4e2f4c7aea46e4c4ba2dc74604e70ef83f2464b229d5d534e59efd154623f"
+    },
+    {
+      "path": "motorsim/p7_prescribed.py",
+      "size_bytes": 4733,
+      "sha256": "529e0db5877b796464fa002c7fb10127097774d70e12d73e5a8391f2aa39758c"
+    },
+    {
+      "path": "motorsim/p8_performance.py",
+      "size_bytes": 32881,
+      "sha256": "35c803269752332aaafefd65e220a4fc89b18ea36b657d8e9caf33130c948dfa"
+    },
+    {
+      "path": "motorsim/p9_pipeline.py",
+      "size_bytes": 25034,
+      "sha256": "b0aae1eecea12d0b226c3755405eed3fe14b2ff94773e66dd8284d3e28b8c917"
+    },
+    {
+      "path": "motorsim/p9_synthetic.py",
+      "size_bytes": 6785,
+      "sha256": "5656384ef716cb404790bbdcf0e06b495cf8278820595e8ce3d07ce522432424"
+    },
+    {
+      "path": "motorsim/performance.py",
+      "size_bytes": 3294,
+      "sha256": "676902cdb83e3e00e07d5e6d3162664b70c0e6fd4f0eb47f3e31cf810de7a0fe"
+    },
+    {
+      "path": "motorsim/performance_geometry_cache_v1.py",
+      "size_bytes": 2232,
+      "sha256": "51edea8d81cf6f00c822620017c136bbeee823f050246af00c77d2217fbabd02"
+    },
+    {
+      "path": "motorsim/performance_view.py",
+      "size_bytes": 24351,
+      "sha256": "ce23aae143f12ad7a1854b0fa42d8cde686d9be2f749e80d5374fb72a6bebd6a"
+    },
+    {
+      "path": "motorsim/periodic_initialization_v1.py",
+      "size_bytes": 18436,
+      "sha256": "463c21d895e8193c644c108684ca04549ad57fcc7fa4bea73e0161160989de55"
+    },
+    {
+      "path": "motorsim/periodicity.py",
+      "size_bytes": 7090,
+      "sha256": "d5c5fec1e3b8de9e4627459fe2b68b4516fcc68f855fbe3610a7fad6f01fefaf"
+    },
+    {
+      "path": "motorsim/port_connection_v1.py",
+      "size_bytes": 8396,
+      "sha256": "e856b66dabc9518fcb156baa540623837067c9ba91e6abb40470ca278b4d308b"
+    },
+    {
+      "path": "motorsim/port_connection_v2.py",
+      "size_bytes": 15895,
+      "sha256": "884b5f1e335967e83a6d8f2712352157b832e3c1b37daaef17f4bdfb3129b1f5"
+    },
+    {
+      "path": "motorsim/port_restriction_v1.py",
+      "size_bytes": 6144,
+      "sha256": "7f60003cda72681832b4877b3e621d78cf8bca9ac463074d4695fe331106453d"
+    },
+    {
+      "path": "motorsim/ports.py",
+      "size_bytes": 3133,
+      "sha256": "85752de04c82b09d0c4e1646dfd6ed3f35caa1dc3e85a0a27e0e52cbe8935122"
+    },
+    {
+      "path": "motorsim/ports_view.py",
+      "size_bytes": 11867,
+      "sha256": "98df797ff401dd4c0ff2b695615fbd4504bfbdeab77b68c8517da7e730ca9c35"
+    },
+    {
+      "path": "motorsim/power_curve.py",
+      "size_bytes": 11012,
+      "sha256": "0e19519fdfafb8e61ffd904b49c8fab758976c2f5f43f62395393ba08057af0d"
+    },
+    {
+      "path": "motorsim/power_curve_sweep.py",
+      "size_bytes": 32597,
+      "sha256": "13cebcdf17578690a833240dbe3e6e3aead3ec2e485ed0c47cc90d37ea153dc4"
+    },
+    {
+      "path": "motorsim/powervalve.py",
+      "size_bytes": 4896,
+      "sha256": "ffe4664ade53403322f336120513066d99c158ef6898e60c1eb4b3e0a37af2d7"
+    },
+    {
+      "path": "motorsim/project.py",
+      "size_bytes": 14933,
+      "sha256": "93e2307c05f708aea4b060fd623c9dd4b342f5ef9d0a44d0c8041a1561e348d0"
+    },
+    {
+      "path": "motorsim/project_case.py",
+      "size_bytes": 8279,
+      "sha256": "744e5235a4c5db2f2be1dee6db182533f46dddeade4cba44426717e821ad0180"
+    },
+    {
+      "path": "motorsim/prototype.py",
+      "size_bytes": 8958,
+      "sha256": "4bd559427c9c20aed9c8a694cc92516979e9b2ba618a6a8dc17eee728b098671"
+    },
+    {
+      "path": "motorsim/reed.py",
+      "size_bytes": 15890,
+      "sha256": "fc393fa65441a21c410420a403749c4348cdd0edfd94aca7816a606030601cb8"
+    },
+    {
+      "path": "motorsim/reed_coupling.py",
+      "size_bytes": 19431,
+      "sha256": "18f6cb36499f2ae92b2abb4857b1b8594534ed8cc62357cdfef8a22b6e58c5b5"
+    },
+    {
+      "path": "motorsim/reference_harness/__init__.py",
+      "size_bytes": 245,
+      "sha256": "42ff3cadf4252e78798c5574817b455e4c261dcb52bcfa36274f2b597e9388df"
+    },
+    {
+      "path": "motorsim/reference_harness/campaign.py",
+      "size_bytes": 9555,
+      "sha256": "b9e58b21de2c9c9c4186de428d15e97c9f9d4e1c5387ea99af49d3fcb738d056"
+    },
+    {
+      "path": "motorsim/reference_harness/checkpoint.py",
+      "size_bytes": 6091,
+      "sha256": "9542a7b2ee23748d213c2fa532f32f6f5f35cbb626bc4d969e931a541ea5b576"
+    },
+    {
+      "path": "motorsim/reference_harness/config.py",
+      "size_bytes": 8350,
+      "sha256": "4f769c2e1168ad2d0ee49c03003ef9d948f96faf053fbb25a6907deb1acd72bb"
+    },
+    {
+      "path": "motorsim/reference_harness/convergence.py",
+      "size_bytes": 18138,
+      "sha256": "5220658823de6ee30543a1add7aa5d2ee431691294650a6f8feaf872157b585f"
+    },
+    {
+      "path": "motorsim/reference_harness/evidence.py",
+      "size_bytes": 19907,
+      "sha256": "9a5eb5c5a2fd25b271aa8499573ab842f647c823888253b686c4f27952f72797"
+    },
+    {
+      "path": "motorsim/reference_harness/runtime.py",
+      "size_bytes": 18162,
+      "sha256": "1938206ef82b53352b5d6d7cc6b40877fbffbeeebbd5943512bf8e851612b3c0"
+    },
+    {
+      "path": "motorsim/reference_results.py",
+      "size_bytes": 17058,
+      "sha256": "0df5251b6a84ec37d648d23667d4f2112b5cc24035bde6c3e47ecc4a8babbcd4"
+    },
+    {
+      "path": "motorsim/reference_run.py",
+      "size_bytes": 6135,
+      "sha256": "5298de649f739189c35b44f08b80ce4a87533c6951bcc3773c87ade088eccd46"
+    },
+    {
+      "path": "motorsim/regularized_trial.py",
+      "size_bytes": 4886,
+      "sha256": "420afd74415b85737b4e52225318c25ba689864916b3f1611fb43079fb696f04"
+    },
+    {
+      "path": "motorsim/rpm_domain.py",
+      "size_bytes": 865,
+      "sha256": "28dbd32fbfc2d29747da97b0ed4bec90413c308acf6ceef4ace11dcb53c546f2"
+    },
+    {
+      "path": "motorsim/runtime.py",
+      "size_bytes": 2346,
+      "sha256": "5333776a274af2a5d7fd084c1316595b0f8ef98f22cfa98b2dca643e8adaaf77"
+    },
+    {
+      "path": "motorsim/scavenging.py",
+      "size_bytes": 21152,
+      "sha256": "b05bb4d2b272c855673ad366ada7acb701021b820793482afbb46e423ed678ed"
+    },
+    {
+      "path": "motorsim/scavenging_partition_v1.py",
+      "size_bytes": 6743,
+      "sha256": "9ee22efbcd6cd174f780df12acb0fee4260233c05c38d3d03780cf1a1b2f836b"
+    },
+    {
+      "path": "motorsim/simulation.py",
+      "size_bytes": 23235,
+      "sha256": "f88bd1d4ee09a8a086760d707d328d85ad89f52feb6856e54cc7b9cc6b9ff7eb"
+    },
+    {
+      "path": "motorsim/simulation_case.py",
+      "size_bytes": 2388,
+      "sha256": "cf05f89cba01952f6931bf1416a1294343c0cb559f1c1c61e3977ccf7060676e"
+    },
+    {
+      "path": "motorsim/simulation_view.py",
+      "size_bytes": 43022,
+      "sha256": "3caab8d7d1ae6d289723ecb9c8ca3f2111f3e6555d394d2f9bc608e03ea7544f"
+    },
+    {
+      "path": "motorsim/storage.py",
+      "size_bytes": 1662,
+      "sha256": "655f5f0c5e0b36408e89bab791caac6952020e24bd44eed0a3871cf3e3d136d4"
+    },
+    {
+      "path": "motorsim/storage_preflight.py",
+      "size_bytes": 4304,
+      "sha256": "be3737a052a879b6535669abb68143828baae177e449c4a17a9f1fd29e7e3f2f"
+    },
+    {
+      "path": "motorsim/sweep.py",
+      "size_bytes": 10980,
+      "sha256": "ef2218f8b6d627835e810fa28d0c082c7b0e32c0d385345d7fb39a65011d4b1f"
+    },
+    {
+      "path": "motorsim/sweep_view.py",
+      "size_bytes": 9988,
+      "sha256": "6eb31190bb23755e1362bbcdddae64f482df43b404665e81b1c93efeefb0d828"
+    },
+    {
+      "path": "motorsim/theme.qss",
+      "size_bytes": 6647,
+      "sha256": "dd66aa0f3a211a2bced4113ab06cca2a30624a75975702c3abdcceb34ad9a532"
+    },
+    {
+      "path": "motorsim/thermal.py",
+      "size_bytes": 12183,
+      "sha256": "857b8741eac0705e2d796df0c7ff795323fc54b1e9838f1e4dc82702d8bbf841"
+    },
+    {
+      "path": "motorsim/two_stroke_ports.py",
+      "size_bytes": 23397,
+      "sha256": "fe9f3c714ffbac824aa1c85621eb1204d0a47fd9e593c40ff5d55977a07b9e70"
+    },
+    {
+      "path": "motorsim/two_stroke_ports_p5c.py",
+      "size_bytes": 4791,
+      "sha256": "695d80a4fbaf58b931de3759ef1ba80511c2b7657ef8eb1e6a9f95a3903d587c"
+    },
+    {
+      "path": "motorsim/ui.py",
+      "size_bytes": 8236,
+      "sha256": "14001a7a8cbd3ddc2d428e34e4bc00db22e634aacd21f2ca628d73485087fc66"
+    },
+    {
+      "path": "motorsim/valves.py",
+      "size_bytes": 2052,
+      "sha256": "3ddac3b54f4271a9e0d2ef2e5f17a611415d3195667d21dd6485890b76996871"
+    },
+    {
+      "path": "motorsim/valves_view.py",
+      "size_bytes": 5712,
+      "sha256": "c987d1b51d44c4b2e7a897625bdf71fc2b9b2c7dcba4cfb38113e00d272c1d79"
+    },
+    {
+      "path": "motorsim/window.py",
+      "size_bytes": 32820,
+      "sha256": "635fecbc7574271a77348af6826b4c1b8b24e0c86db8b68235d8ea813562a543"
+    },
+    {
+      "path": "motorsim/workspaces.py",
+      "size_bytes": 15376,
+      "sha256": "eb922914aedd8b5ff89e87f3cf5af1c7f889dc7e8de1069a7d8ae0b468cff46a"
+    },
+    {
+      "path": "packaging/AVISOS.txt",
+      "size_bytes": 1580,
+      "sha256": "ebf37432ac707d9b17ed421618e399c3266c4905543464646c8a2b3470b0cc42"
+    },
+    {
+      "path": "packaging/INICIO-DINO.txt",
+      "size_bytes": 1748,
+      "sha256": "7228606880ed6446d258178f5fb878fcb9e364c1159dc3811211b092bde067d4"
+    },
+    {
+      "path": "packaging/MotorSim.spec",
+      "size_bytes": 3731,
+      "sha256": "26ac191082718cbd4ccd77fe6c082d2ffa8ae4af7a23830a5079a9a9a2f09019"
+    },
+    {
+      "path": "packaging/build_provenance.py",
+      "size_bytes": 4201,
+      "sha256": "ae6dee38dcfca7e537150476ac21deb52dacd3c736867edb2cce60f51284e716"
+    },
+    {
+      "path": "packaging/build_windows.py",
+      "size_bytes": 9714,
+      "sha256": "3cc440ffec3e91221dd1d685bf772056907004c6e8f3c69dceee723ed246705b"
+    },
+    {
+      "path": "packaging/dino_desktop_entry.py",
+      "size_bytes": 308,
+      "sha256": "5d63a6d75496ce870404c0dbadb43e9b30493a6d741fcfaad6d501ead4283769"
+    },
+    {
+      "path": "packaging/gui_entry.py",
+      "size_bytes": 94,
+      "sha256": "28c117c1dafb8b4cfee8cc93fb153c1c7c82d0b409ee44784cdea540bd481be9"
+    },
+    {
+      "path": "packaging/licenses/GPL-2.0-only.txt",
+      "size_bytes": 18431,
+      "sha256": "189b1af95d661151e054cea10c91b3d754e4de4d3fecfb074c1fb29476f7167b"
+    },
+    {
+      "path": "packaging/licenses/GPL-3.0-only.txt",
+      "size_bytes": 35821,
+      "sha256": "0b383d5a63da644f628d99c33976ea6487ed89aaa59f0b3257992deac1171e6b"
+    },
+    {
+      "path": "packaging/licenses/LGPL-3.0-only.txt",
+      "size_bytes": 7817,
+      "sha256": "7d3a95e5e06978064ed3f8e2b7c8f845e7fd8a405294727cc708f94cb83b8059"
+    },
+    {
+      "path": "packaging/licenses/SOURCES.txt",
+      "size_bytes": 575,
+      "sha256": "2ece65be0c9f85e01bcef03f6c716a9f3cc8f0ddda042395c53685b694bf93d7"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-blake2.txt",
+      "size_bytes": 24312,
+      "sha256": "5b0b1cf61ba3ec03ed13dc3f768886c4015f7ed9a629e7a207b1215c832c65ad"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-doubleconversion.txt",
+      "size_bytes": 7390,
+      "sha256": "2e4864d28f8cb14fd0fa4ff7596543eba671a0a24cc9037c48517db9ea925837"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-easing.txt",
+      "size_bytes": 7076,
+      "sha256": "38ecc9bfcbddee03ef17be00d65eca92cc217e9bc621a8c3ba348502a780f631"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-forkfd.txt",
+      "size_bytes": 6766,
+      "sha256": "ee3274ab25be23b94cb7dd6bf28e0f04970ba0d6422d985c55ea787da5542cbe"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-md4.txt",
+      "size_bytes": 12795,
+      "sha256": "7503544329f5f023688b0d82d2034a397444c53f8266d38b1aefec20e2fcf75d"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-md5.txt",
+      "size_bytes": 12667,
+      "sha256": "9f11351c847a06e3c9c782e54100acce1758c9b0364730b29b97eaa9c285fe9c"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-pcre2-sljit.txt",
+      "size_bytes": 7240,
+      "sha256": "d22a6f693dea022a1b02e41a02987f424dd02b174e54c6a4506afaa8a32f10ba"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-pcre2.txt",
+      "size_bytes": 9913,
+      "sha256": "ad666177092dd0628c5cb548630d12a0af5ffd9c57b116a846487edb7902f05d"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-qeventdispatcher-cf.txt",
+      "size_bytes": 7112,
+      "sha256": "2b11059b3ca2db249f738ef9a3e8946cf5f3398454e970960f19d90a94672d9b"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-rfc6234.txt",
+      "size_bytes": 7291,
+      "sha256": "f7a8624727c7b4589b14ccf7e471db66afde71c90d5387347f20849304b55f9f"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-sha1.txt",
+      "size_bytes": 5749,
+      "sha256": "07ac6f06ec48ff4821eab84bb4a6d8d531e45902facfcf4969c55ac3a1bbc98d"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-sha3-endian.txt",
+      "size_bytes": 6396,
+      "sha256": "6148702399e8a137554802e5cf7f138c17b66704f796e31a5d657686d984ff1d"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-sha3-keccak.txt",
+      "size_bytes": 13465,
+      "sha256": "174829d54df6205706e66525cefab47b18dbdfb47dd5dccd9f7e889dc5799957"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-siphash.txt",
+      "size_bytes": 12806,
+      "sha256": "e77f4220ac245cd51b54bc0478cb32e65950a5f0f6dddab1027c0f5c45e7f715"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-tika-mimetypes.txt",
+      "size_bytes": 16444,
+      "sha256": "e54a2af6bdae21cb67b3bd0eae8b1cd3fabc0065d4fa930c4bad025fe42a85a7"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-tinycbor.txt",
+      "size_bytes": 6673,
+      "sha256": "00f41d98bbb8b1db45039a1f088690840857f971ad07d2082a97948e609a9b09"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-tlexpected.txt",
+      "size_bytes": 13099,
+      "sha256": "71c50d8905a96dc6a82e8dbbe8148627be95badb367f85731146ad5a1e020317"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-unicode-character-database.txt",
+      "size_bytes": 7906,
+      "sha256": "f5503f3c1275fede0807e94674d864523052b1bc88ca8ba4e2bba4230a759893"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-unicode-cldr.txt",
+      "size_bytes": 8168,
+      "sha256": "602eb29ce58c0ab5b09639b163213b2e5303f8ff1ea98e41ab2860f6dc80e29d"
+    },
+    {
+      "path": "packaging/licenses/qtcore-attribution-zlib.txt",
+      "size_bytes": 7179,
+      "sha256": "096cc789bb7c08b86889d732dad9bd12c78a5622d1c7abfaa9712c8d7be973f3"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-aglfn.txt",
+      "size_bytes": 7204,
+      "sha256": "7a9164689189a7daa5ca2aeed7568fd3a8039dc548163113c15cbc3c2b3b285c"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-android-native-style.txt",
+      "size_bytes": 6036,
+      "sha256": "e6ba137b16414c36e2f103ed1fe4003944e1a80ae89c77aee8911070bd48877c"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-cocoa-platform-plugin.txt",
+      "size_bytes": 7617,
+      "sha256": "ae13ca75082eda52e64e051ab59b8f49215e9410ec5fcf04f2d3f912f1b9c7e1"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-d3d12memoryallocator.txt",
+      "size_bytes": 6909,
+      "sha256": "e7e42acd0dd82c9a01458fc54f4407edb2f6077f79713d1a2eed589f10a20476"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-dejayvu.txt",
+      "size_bytes": 14722,
+      "sha256": "1e7078e309e8485d118db3f9d78245c87c91687e88a3e48f80ccb722bf4c38ef"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-emoji-segmenter.txt",
+      "size_bytes": 16099,
+      "sha256": "5018a1d6fda2df227eaf4896628bce2f516f72a68588b5e67ed5e12a5010ba7f"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-freetype-bdf.txt",
+      "size_bytes": 8158,
+      "sha256": "7397e2e4584a54a2b01649d461987eff2f792c8da2c3352ab84536765a0e3f77"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-freetype-pcf.txt",
+      "size_bytes": 8142,
+      "sha256": "2263541d7d37b52bd11fe15f21b878f7cbbb2fc37b3cad24896d90c17dfcd526"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-freetype-zlib.txt",
+      "size_bytes": 6621,
+      "sha256": "4d980dd75ec898904fb16bbcf3d860c8d07bb196c74e986aad39107d858d21b6"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-freetype.txt",
+      "size_bytes": 34579,
+      "sha256": "540e3201882c7a1f7ee661aa621c07b9852e32a406f1861a3b944dace149a379"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-grayraster.txt",
+      "size_bytes": 32577,
+      "sha256": "722b82468595f0b57afabb0ebb9307ef8c750d9989be67342acaf1e4fae2aac7"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-harfbuzz-ng.txt",
+      "size_bytes": 8484,
+      "sha256": "57823669254c1234b1e82a5b8c234cf703089ee51b7262c46dd43d2b889dd97f"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-icc-srgb-color-profile.txt",
+      "size_bytes": 6131,
+      "sha256": "5f3f3a8413e20b34c175d4e85664cbe95ba5ce1061dc86f4721e7863f4c431ca"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-libjpeg.txt",
+      "size_bytes": 14339,
+      "sha256": "7e0e4db43c67e6b964e1bae1f144d4c9eba2754cbf9c8b63c9e77dc5518b1652"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-libpng.txt",
+      "size_bytes": 11990,
+      "sha256": "0f8557857f4e8ffed4b073a5e1ea080b031fc742467e2b4d44d5d294a688ff6d"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-md4c.txt",
+      "size_bytes": 6685,
+      "sha256": "7f548e97382edf99ed69b7c4d5237dd0a4cc28c6990e42102adb372032551b02"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-opengl-es2-headers.txt",
+      "size_bytes": 6828,
+      "sha256": "dc7de143eac3ded484ebf3158a2967e6a7e897755d14afeba186d00e48bd1b2f"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-opengl-headers.txt",
+      "size_bytes": 6801,
+      "sha256": "da21f169ad618d6011c9f9525aea75d96465f05a43a484d54af72c0ed23d30d4"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-pixman.txt",
+      "size_bytes": 6740,
+      "sha256": "9dcbaee85c023d338aeb87416bca98a35821c87657ed543c908d7a42b01dfc90"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-rhi-miniengine-d3d12-mipmap.txt",
+      "size_bytes": 6916,
+      "sha256": "39b46d05108fd96b8f57ca0f4d2413183ef34034a161b2015292eb70e1da43c5"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-smooth-scaling-algorithm.txt",
+      "size_bytes": 8767,
+      "sha256": "ad42a7460fac07858ee888631c41dde5d6b8e1c1d28986e1329b1aa0566b163b"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-vulkan-xml-spec.txt",
+      "size_bytes": 17220,
+      "sha256": "8501c480e588522207d5af07e202c6e5d85f4792bc9c71621fbf3eb8bd21a1ae"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-vulkanmemoryallocator.txt",
+      "size_bytes": 6776,
+      "sha256": "ef2e05d7ecf031db7177b3be746fe5771a8521e6408f39c6712eced5f0b5d9c2"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-webgradients.txt",
+      "size_bytes": 6613,
+      "sha256": "7b92ffbaa5dd03ea8a0e858dd9e5bfaa36ec8feb23b9f5dd307959e717e7a444"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-wintab.txt",
+      "size_bytes": 5748,
+      "sha256": "365f5b70c664f75bf05c0fa2f6cc21ed4c54799b888296e6124703fffea7f48b"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-xcb-xinput.txt",
+      "size_bytes": 7059,
+      "sha256": "c81f1d54580c822088550085410b3ca51c82f46e24222caf3d9b55d6e8190937"
+    },
+    {
+      "path": "packaging/licenses/qtgui-attribution-xserverhelper.txt",
+      "size_bytes": 7989,
+      "sha256": "48a01ee1fe954c68e90cbc2eeb65d940178acff171559ab02201659c33fcd709"
+    },
+    {
+      "path": "packaging/requirements-build.txt",
+      "size_bytes": 436,
+      "sha256": "f0ed957b73accfe77c59eaefd847ff5c2542c1112b4a5235dab688764d8de85d"
+    },
+    {
+      "path": "packaging/worker_entry.py",
+      "size_bytes": 99,
+      "sha256": "d1f6282efbd7bfc969210765b4f44b401a87f02c2162130dffe95307f6b7967e"
+    },
+    {
+      "path": "results/2t-commercial-core-20261002/fixtures/v1-prime-mesh/fixture_a_prime-mesh-0.json",
+      "size_bytes": 469070,
+      "sha256": "393f16273eb3b445acbb4d4e2d569dcad8b3db878decdbcfa2e86c3382ac221f"
+    },
+    {
+      "path": "scripts/agents/storage_preflight.py",
+      "size_bytes": 2085,
+      "sha256": "f6c060c65e63c4b0785d45a5f0471c29e9a2f3c0d108987c03c86c772b2ebf5c"
+    }
+  ],
+  "source_dirty": false,
+  "unrelated_dirty_entry_count": 0,
+  "unrelated_dirty_status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

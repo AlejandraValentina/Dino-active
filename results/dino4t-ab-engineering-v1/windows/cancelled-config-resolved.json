@@ -1,0 +1,213 @@
+{
+  "ambient": {
+    "exhaust_pressure_pa": 101325.0,
+    "exhaust_temperature_K": 298.15,
+    "intake_pressure_pa": 101325.0,
+    "intake_temperature_K": 298.15,
+    "provenance": "SYNTHETIC_ASSUMPTION"
+  },
+  "combustion": {
+    "duration_deg": 55.0,
+    "efficiency": 0.98,
+    "enabled": true,
+    "fuel": "IC8H18",
+    "model": "WIEBE_SINGLE_ZONE_V1",
+    "notes": "a=5, m=2 and 50-60 deg duration are Heywood (1988) sec. 9.2.1 typical values; SOC is a calibration input. zone_model: two_zone_equilibrium = burned gas in chemical equilibrium (10 species, NO excluded); single_zone = stage-1 complete-combustion products.",
+    "provenance": "STANDARD_V1",
+    "start_deg": -20.0,
+    "water_gas_k": 3.5,
+    "wiebe_a": 5.0,
+    "wiebe_m": 2.0,
+    "zone_model": "two_zone_equilibrium"
+  },
+  "description": "Generic naturally aspirated single-cylinder 4-valve SI engine, ~500 cc. SYNTHETIC: representative dimensions chosen by the model developer; not a measured or commercial engine. No result obtained with this file is a validation.",
+  "exhaust_duct": {
+    "friction": true,
+    "heat_transfer": true,
+    "open_end_cd_inflow": 1.0,
+    "open_end_cd_outflow": 1.0,
+    "provenance": "SYNTHETIC_ASSUMPTION",
+    "segments": [
+      {
+        "end_diameter_mm": 38.0,
+        "length_mm": 100.0,
+        "start_diameter_mm": 38.0
+      },
+      {
+        "end_diameter_mm": 42.0,
+        "length_mm": 600.0,
+        "start_diameter_mm": 38.0
+      },
+      {
+        "end_diameter_mm": 42.0,
+        "length_mm": 400.0,
+        "start_diameter_mm": 42.0
+      }
+    ],
+    "wall_temperature_K": 700.0
+  },
+  "exhaust_valve": {
+    "count": 2,
+    "diameter_mm": 27.0,
+    "discharge_coefficient": {
+      "forward": [
+        0.7,
+        0.7,
+        0.67,
+        0.62,
+        0.56,
+        0.5,
+        0.44,
+        0.39
+      ],
+      "l_over_d": [
+        0.0,
+        0.05,
+        0.1,
+        0.15,
+        0.2,
+        0.25,
+        0.3,
+        0.35
+      ],
+      "reference_area": "curtain",
+      "reverse": [
+        0.6,
+        0.6,
+        0.57,
+        0.52,
+        0.47,
+        0.42,
+        0.37,
+        0.33
+      ]
+    },
+    "lift": {
+      "close_deg": -350.0,
+      "max_lift_mm": 9.0,
+      "open_deg": 130.0,
+      "type": "harmonic"
+    },
+    "provenance": "SYNTHETIC_ASSUMPTION"
+  },
+  "friction": {
+    "a_pa": 30000.0,
+    "b": 0.005,
+    "c_pa_s_m": 9000.0,
+    "d_pa_s2_m2": 90.0,
+    "model": "CHEN_FLYNN",
+    "notes": "Coefficients chosen to give FMEP of order 1.5-2.5 bar at 4000-9000 rpm; not fitted to any engine.",
+    "provenance": "SYNTHETIC_ASSUMPTION"
+  },
+  "geometry": {
+    "bore_mm": 86.0,
+    "compression_ratio": 11.0,
+    "provenance": "SYNTHETIC_ASSUMPTION",
+    "rod_mm": 143.0,
+    "stroke_mm": 86.0
+  },
+  "heat_transfer": {
+    "enabled": true,
+    "head_area_factor": 1.1,
+    "model": "WOSCHNI_1967",
+    "multiplier": 1.0,
+    "notes": "Woschni constants from Heywood (1988) eq. 12.19-12.20; wall temperatures are assumptions.",
+    "piston_area_factor": 1.0,
+    "provenance": "STANDARD_V1",
+    "t_head_K": 550.0,
+    "t_liner_K": 420.0,
+    "t_piston_K": 580.0
+  },
+  "identifier": "dino4t-ab-v1-A-baseline",
+  "initial_conditions": {
+    "cylinder_pressure_pa": 105000.0,
+    "cylinder_temperature_K": 900.0,
+    "exhaust_temperature_K": 700.0
+  },
+  "intake_duct": {
+    "friction": true,
+    "heat_transfer": true,
+    "open_end_cd_inflow": 0.97,
+    "open_end_cd_outflow": 1.0,
+    "provenance": "SYNTHETIC_ASSUMPTION",
+    "segments": [
+      {
+        "end_diameter_mm": 40.0,
+        "length_mm": 250.0,
+        "start_diameter_mm": 44.0
+      },
+      {
+        "end_diameter_mm": 40.0,
+        "length_mm": 100.0,
+        "start_diameter_mm": 40.0
+      }
+    ],
+    "wall_temperature_K": 320.0
+  },
+  "intake_valve": {
+    "count": 2,
+    "diameter_mm": 32.0,
+    "discharge_coefficient": {
+      "forward": [
+        0.7,
+        0.7,
+        0.67,
+        0.62,
+        0.56,
+        0.5,
+        0.44,
+        0.39
+      ],
+      "l_over_d": [
+        0.0,
+        0.05,
+        0.1,
+        0.15,
+        0.2,
+        0.25,
+        0.3,
+        0.35
+      ],
+      "notes": "Shape typical of curtain-referenced flow-bench data (falls with L/D as the port throat takes over); values are assumptions, not bench data.",
+      "reference_area": "curtain",
+      "reverse": [
+        0.6,
+        0.6,
+        0.57,
+        0.52,
+        0.47,
+        0.42,
+        0.37,
+        0.33
+      ]
+    },
+    "lift": {
+      "close_deg": -130.0,
+      "max_lift_mm": 10.0,
+      "open_deg": 350.0,
+      "type": "harmonic"
+    },
+    "provenance": "SYNTHETIC_ASSUMPTION"
+  },
+  "numerics": {
+    "cfl": 0.8,
+    "dx_mm": 10.0,
+    "limiter": "minmod",
+    "max_cycles": 20,
+    "max_dtheta_deg": 0.5,
+    "periodicity": {
+      "consecutive": 2,
+      "imep_rel": 0.002,
+      "mass_imbalance_rel": 0.005,
+      "pressure_trace_rel": 0.005,
+      "trapped_mass_rel": 0.002
+    },
+    "restriction_model": "V2",
+    "second_order": true
+  },
+  "operating_point": {
+    "equivalence_ratio": 1.0,
+    "rpm": 6000.0
+  },
+  "schema": "DINO4T_ENGINE_CONFIG_V1"
+}

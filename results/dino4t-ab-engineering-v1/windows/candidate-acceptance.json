@@ -1,0 +1,141 @@
+{
+  "schema": "DINO4T_AB_WINDOWS_CANDIDATE_ACCEPTANCE_V1",
+  "result": "PASS",
+  "release_status": "TRIAL_INTERNAL_ONLY",
+  "candidate": {
+    "version": "0.1.0-rc12",
+    "source_commit": "07849322b8ad0115defb28de2ad5f23b8bfacd55",
+    "built_utc": "20261105T152851Z",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "architecture": "AMD64",
+    "packaged_inputs_clean": true,
+    "packaged_input_manifest_sha256": "cc2b065d5902f1942376efe00f6734e91a25a86f64dbaf4b1f5d89d85f1fd602",
+    "zip_path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc12-windows-x64-07849322-trial-20261105T152851Z.zip",
+    "zip_bytes": 91469604,
+    "zip_sha256": "aa0992b08514c996ca8191e863387260fee964dfcd2aff19d6582a4bdc997e03",
+    "exe_path": "C:\\Users\\ageribon.MIDES\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc12-windows-x64-07849322-trial-20261105T152851Z\\MotorSim\\Dino2T.exe",
+    "exe_sha256": "89852dd681b0620380114ab8232649f9008a5d11cd1cb34e69d63458bc9e04d2"
+  },
+  "source_pair": {
+    "comparison_id": "54598307b81a3c99069f6273093cd321229a39864adde97565f9f4a34c5b974f",
+    "classification": "PERIODIC_MODEL_SENSITIVITY_ONLY",
+    "design_changes": [
+      {
+        "path": "intake_valve.lift.max_lift_mm",
+        "a": 10.0,
+        "b": 8.0
+      }
+    ],
+    "run_ids": [
+      "d4ab-v1-1-119badaf3860",
+      "d4ab-v1-2-f6e4c5c2f7eb"
+    ],
+    "run_statuses": [
+      "completed",
+      "completed"
+    ],
+    "periodicity": [
+      "PERIODIC_CONVERGED",
+      "PERIODIC_CONVERGED"
+    ],
+    "scientific_qualification": {
+      "calibration": "NOT_PERFORMED",
+      "experimental_validation": "NOT_PERFORMED",
+      "predictive_capability": "NOT_CLAIMED",
+      "periodicity_is_not_experimental_validation": true,
+      "delta_is_not_evidence_of_real_engine_performance_improvement": true,
+      "relative_delta_denominator": "absolute baseline A; null when A is zero"
+    }
+  },
+  "packaged_4t": {
+    "receipt": "packaged-ab-acceptance.json",
+    "checks": [
+      "Packaged Dino2T.exe starts one visible main window in an isolated environment",
+      "Saved native 4T project opens with both hash-verified A/B result references",
+      "Packaged UI compares both periodic runs and preserves scientific caveat",
+      "Packaged JSON/CSV/HTML exports preserve comparison ID, precise metrics, hashes and caveat",
+      "Prior packaged cancellation is terminal, incomplete/nonconverged and left no worker process",
+      "A/B project reopened in a fresh packaged process after cancellation; saved endpoints remain comparable"
+    ],
+    "captures": [
+      {
+        "file": "packaged-4t-ab-1360x900.png",
+        "sha256": "4a10a0bc04527b5a3cc3fa66468d287955c88ace5e54febe49906c3514ff0127",
+        "size_px": [
+          1360,
+          900
+        ]
+      },
+      {
+        "file": "packaged-4t-ab-reopened-980x680.png",
+        "sha256": "77b2b62ce4c3b44161c1518414fd5710134a4f8702ab48e6e4f85df57f9bac40",
+        "size_px": [
+          980,
+          680
+        ]
+      }
+    ],
+    "exports": {
+      "json": {
+        "file": "packaged-comparison.json",
+        "sha256": "324a9a93b01cf3b77493218d0f3d88abe1d65eef01225323600be1c57153a9dc"
+      },
+      "csv": {
+        "file": "packaged-comparison.csv",
+        "sha256": "2230ec567eb3cddccff222a25fbe5d1cc635b4f745a6d69e57a7135169314546"
+      },
+      "html": {
+        "file": "packaged-comparison.html",
+        "sha256": "c0d2f29d845f723bf769913e1974b5e7190d63337e1295bbb348103750d293a5"
+      }
+    }
+  },
+  "packaged_2t_routing": {
+    "receipt": "packaged-2t-routing-acceptance.json",
+    "checks": [
+      "Packaged app opens the existing native 2T project in MODELO without solver work",
+      "The same packaged app routes the native 4T project to the 4T workspace",
+      "The same process returns to the saved 2T project with one main window"
+    ],
+    "solver_runs": 0,
+    "capture": {
+      "file": "packaged-2t-project-1360x900.png",
+      "sha256": "1a7abfc144debb140b8c2f9c48df17b74f2085ef474c941fa5f2a124de2f657a"
+    }
+  },
+  "cancellation": {
+    "run_file": "cancelled-run.json",
+    "run_sha256": "bb89f28ae898de77813d4edca9ab5a62291dad6302484ead00357b8fe1e0d33d",
+    "summary_file": "cancelled-summary.json",
+    "summary_sha256": "1dc42ba988bc0b24dc95dbaf42f9fab9f5abad07a16b55a2870ef6908c0f7d42",
+    "status": "incomplete",
+    "periodicity_status": "NOT_CONVERGED",
+    "termination": "cancelled_by_user",
+    "cycles_run": 2,
+    "orphan_worker_check": "PASS (no MotorSimWorker.exe after cancellation)"
+  },
+  "source_regressions": [
+    {
+      "suite": "Dino 4T A/B + Desktop focused regression",
+      "result": "38 passed"
+    },
+    {
+      "suite": "2T Desktop/project/example compatibility",
+      "result": "34 passed, 1 skipped"
+    },
+    {
+      "suite": "Dino 4T Stage 2 regression",
+      "result": "28 passed"
+    }
+  ],
+  "claims": {
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_capability": "NOT_CLAIMED",
+    "result_interpretation": "PERIODIC_MODEL_SENSITIVITY_ONLY; the inputs are synthetic assumptions and do not establish real-engine performance improvement."
+  },
+  "limits": [
+    "The packaged cancellation smoke is intentionally incomplete and remains NOT_CONVERGED.",
+    "No complete packaged 4T periodicity campaign was run; periodic A/B endpoints were produced by the preregistered DINO4T_API_V1 source pair.",
+    "The archive and unpacked candidate remain in the external Dino-artifacts Windows directory and were not published."
+  ]
+}

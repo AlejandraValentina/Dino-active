@@ -12588,11 +12588,17 @@
         "D4AB-WINDOWS-ENTRYPOINT-REVIEW",
         "D4AB-WINDOWS-OUTPUT-COLLISION-CHECK"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Run one --trial build using the clean identified source; builder rechecks disk, package inputs and non-overwrite destination before creating anything.",
+      "commits": [
+        "07849322b8ad0115defb28de2ad5f23b8bfacd55"
+      ],
+      "evidence": [
+        "One clean Windows 0.1.0-rc12 TRIAL built from 07849322b8ad0115defb28de2ad5f23b8bfacd55; ZIP SHA-256 aa0992b08514c996ca8191e863387260fee964dfcd2aff19d6582a4bdc997e03; manifest cc2b065d5902f1942376efe00f6734e91a25a86f64dbaf4b1f5d89d85f1fd602.",
+        "results/dino4t-ab-engineering-v1/windows/build.json",
+        "results/dino4t-ab-engineering-v1/windows/candidate.zip.sha256"
+      ],
+      "next_action": "Closed with the single identified Windows candidate; no additional build authorized or required.",
       "write_scope": [
         "packaging/",
         "results/dino4t-ab-engineering-v1/windows/"
@@ -12760,11 +12766,17 @@
         "D4AB-PAIR-ARTIFACT-VERIFICATION",
         "D4AB-WINDOWS-UIA-DRIVER-PREP"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Run the UIA driver against the one candidate and verify exported hashes, precision and caveat.",
+      "commits": [
+        "07849322b8ad0115defb28de2ad5f23b8bfacd55"
+      ],
+      "evidence": [
+        "Actual packaged EXE opened the saved native 4T project, reproduced strict periodic exact-RPM A/B and exported full-precision JSON/CSV/qualified HTML; receipt and 1360x900 screenshot retained.",
+        "results/dino4t-ab-engineering-v1/windows/packaged-ab-acceptance.json",
+        "results/dino4t-ab-engineering-v1/windows/packaged-comparison.json"
+      ],
+      "next_action": "Closed with the single identified Windows candidate; no additional build authorized or required.",
       "write_scope": [
         "results/dino4t-ab-engineering-v1/windows/"
       ]
@@ -12777,11 +12789,17 @@
         "D4AB-PAIR-ARTIFACT-VERIFICATION",
         "D4AB-WINDOWS-UIA-DRIVER-PREP"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Run only the short, single cancellation smoke in the packaged acceptance driver; no periodicity run.",
+      "commits": [
+        "07849322b8ad0115defb28de2ad5f23b8bfacd55"
+      ],
+      "evidence": [
+        "Packaged cancellation record is terminal cancelled_by_user, incomplete and NOT_CONVERGED after two cycles; no MotorSimWorker remained. Fresh packaged process reopened and compared the saved A/B endpoints at 980x680 without starting a second solver run.",
+        "results/dino4t-ab-engineering-v1/windows/cancelled-run.json",
+        "results/dino4t-ab-engineering-v1/windows/packaged-4t-ab-reopened-980x680.png"
+      ],
+      "next_action": "Closed with the single identified Windows candidate; no additional build authorized or required.",
       "write_scope": [
         "results/dino4t-ab-engineering-v1/windows/"
       ]
@@ -12793,11 +12811,17 @@
         "D4AB-WINDOWS-CANDIDATE-BUILD",
         "D4AB-2T-REGRESSION"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Use the same packaged process/session evidence; do not execute 2T solver work.",
+      "commits": [
+        "07849322b8ad0115defb28de2ad5f23b8bfacd55"
+      ],
+      "evidence": [
+        "Packaged UI opened existing native 2T project, routed to the 4T workspace, then back to 2T in the same process; solver_runs=0.",
+        "results/dino4t-ab-engineering-v1/windows/packaged-2t-routing-acceptance.json",
+        "results/dino4t-ab-engineering-v1/windows/packaged-2t-project-1360x900.png"
+      ],
+      "next_action": "Closed with the single identified Windows candidate; no additional build authorized or required.",
       "write_scope": [
         "results/dino4t-ab-engineering-v1/windows/"
       ]
@@ -18236,6 +18260,30 @@
       "kind": "FROZEN_ENTRYPOINT",
       "summary": "Confirmed freeze_support executes before importing the GUI entrypoint and the PyInstaller spec declares 4T API modules.",
       "commit": "40c496b90f8b62e21753907a1f1b766123c25cba"
+    },
+    {
+      "at": "2026-11-05T16:01:10+00:00",
+      "task": "D4AB-WINDOWS-CANDIDATE-BUILD",
+      "kind": "task",
+      "summary": "One clean rc12 TRIAL built from 07849322; ZIP and EXE hashes are recorded with the input manifest."
+    },
+    {
+      "at": "2026-11-05T16:01:10+00:00",
+      "task": "D4AB-PACKAGED-AB-COMPARE-EXPORT",
+      "kind": "task",
+      "summary": "Packaged EXE opened saved 4T A/B project, reproduced periodic exact-RPM comparison, and exported precision/provenance-preserving JSON/CSV/HTML."
+    },
+    {
+      "at": "2026-11-05T16:01:10+00:00",
+      "task": "D4AB-PACKAGED-CANCEL-RECOVERY",
+      "kind": "task",
+      "summary": "Packaged two-cycle cancellation remained incomplete/nonconverged, left no worker; a fresh EXE process reopened and compared saved periodic endpoints without rerunning solver."
+    },
+    {
+      "at": "2026-11-05T16:01:10+00:00",
+      "task": "D4AB-PACKAGED-2T-COMPATIBILITY",
+      "kind": "task",
+      "summary": "Packaged EXE opened existing 2T project, routed to 4T and back to 2T in one process; zero solver runs."
     }
   ],
   "legacy_gate_status": {
@@ -18251,23 +18299,18 @@
   },
   "gate_status": {
     "objective": "DINO4T_AB_ENGINEERING_V1",
-    "state": "OPEN",
-    "classification": null,
-    "evidence": [],
-    "gate_tasks_total": 18,
-    "gate_tasks_done": 14,
-    "gate_task_states": {
-      "DONE": 14,
-      "READY": 1,
-      "WAITING": 3
-    },
-    "remaining": [
-      "D4AB-WINDOWS-CANDIDATE-BUILD",
-      "D4AB-PACKAGED-AB-COMPARE-EXPORT",
-      "D4AB-PACKAGED-CANCEL-RECOVERY",
-      "D4AB-PACKAGED-2T-COMPATIBILITY"
+    "state": "PASS",
+    "classification": "PASS_NO_PREDICTIVE_CLAIM",
+    "evidence": [
+      "results/dino4t-ab-engineering-v1/windows/candidate-acceptance.json"
     ],
-    "updated_at": "2026-11-05T15:28:27+00:00"
+    "gate_tasks_total": 18,
+    "gate_tasks_done": 18,
+    "gate_task_states": {
+      "DONE": 18
+    },
+    "remaining": [],
+    "updated_at": "2026-11-05T16:01:16+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

@@ -11,8 +11,8 @@ The authoritative task states are in
 - [x] Load the actual run project in source Desktop and exercise all A/B exports.
 - [x] Run targeted 2T project/Desktop regression tests.
 - [x] Prepare the pinned Windows build environment and external UIA verifier.
-- [ ] Build one clean, identified Dino Desktop 0.1.0-rc12 TRIAL candidate.
-- [ ] Verify packaged A/B comparison and JSON/CSV/HTML exports with the saved
+- [x] Build one clean, identified Dino Desktop 0.1.0-rc12 TRIAL candidate.
+- [x] Verify packaged A/B comparison and JSON/CSV/HTML exports with the saved
       project and actual API result artifacts.
-- [ ] Verify packaged complete-cycle cancellation and reopen recovery.
-- [ ] Verify the packaged application retains the 2T project route.
+- [x] Verify packaged complete-cycle cancellation and reopen recovery.
+- [x] Verify the packaged application retains the 2T project route.

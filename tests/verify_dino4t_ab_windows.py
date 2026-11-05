@@ -29,6 +29,8 @@ def main() -> int:
     parser.add_argument("--project",type=Path,required=True,help="saved A/B 4T Desktop project")
     parser.add_argument("--work",type=Path,required=True,help="new external temporary acceptance directory")
     parser.add_argument("--scale",default="1.0",choices=("1.0","1.25","1.5"))
+    parser.add_argument("--prior-cancelled-run",type=Path,
+        help="reuse a previously verified packaged cancellation; skip starting another solver run")
     args=parser.parse_args()
     exe=args.exe.resolve();project=args.project.resolve();work=args.work.resolve()
     if not exe.is_file() or exe.name.lower()!="dino2t.exe":raise FileNotFoundError(f"expected packaged Dino2T.exe: {exe}")
@@ -53,6 +55,15 @@ def main() -> int:
         win32gui.EnumWindows(visit,None)
         return result
 
+    def desktop_windows():
+        result=[]
+        def visit(hwnd,_):
+            if win32gui.IsWindowVisible(hwnd):
+                pid=win32process.GetWindowThreadProcessId(hwnd)[1]
+                result.append((hwnd,win32gui.GetWindowText(hwnd),pid))
+        win32gui.EnumWindows(visit,None)
+        return result
+
     def wait(fn,seconds=30):
         deadline=time.monotonic()+seconds
         while time.monotonic()<deadline:
@@ -62,7 +73,23 @@ def main() -> int:
         raise TimeoutError("UIA timeout waiting for "+getattr(fn,"__name__","condition"))
 
     def window(fragment):
-        hwnd=wait(lambda:next((h for h,title in windows() if fragment.lower() in title.lower()),None))
+        def locate():
+            visible=windows()
+            matched=next((h for h,title in visible if fragment.lower() in title.lower()),None)
+            if matched:return matched
+            # Qt's top-level caption is not exposed by GetWindowText on every
+            # supported Windows style. In that case bind by the process-owned
+            # visible HWND and its actual UIA content instead of treating an
+            # empty title bar as an application startup failure.
+            if len(visible)!=1:return None
+            hwnd=visible[0][0];root=UIAWrapper(UIAElementInfo(hwnd))
+            content="\n".join((x.window_text()+" "+str(x.element_info.automation_id))
+                for x in descendants(root)).lower()
+            if "dino desktop" in fragment.lower() and "2t" in fragment.lower():
+                return hwnd if "abrir proyecto" in content else None
+            project_token=fragment.rsplit(" ",1)[-1].lower()
+            return hwnd if project_token in content else None
+        hwnd=wait(locate)
         return UIAWrapper(UIAElementInfo(hwnd))
 
     def descendants(w):
@@ -77,15 +104,40 @@ def main() -> int:
         raise LookupError(f"UIA control missing: {kind} {name!r}; found {[x.window_text() for x in descendants(w) if x.element_info.control_type==kind]}")
 
     def click(w,name):
-        element=control(w,"Button",name);element.set_focus();send_keys("{SPACE}");time.sleep(.15)
+        try:element=control(w,"Button",name)
+        except LookupError:
+            aliases={"Descartar":"Discard","Discard":"Descartar"}
+            if name not in aliases:raise
+            element=control(w,"Button",aliases[name])
+        # UIA InvokePattern reliably dispatches Qt actions even when Windows
+        # does not route synthetic mouse input to the foreground desktop.
+        try:element.invoke()
+        except Exception:
+            try:element.click_input()
+            except Exception:
+                element.set_focus();send_keys("{SPACE}")
+        time.sleep(.2)
 
     def file_dialog(title,path):
-        dialog=window(title)
+        # Other applications (and stale app instances from a failed test) may
+        # use the same common-dialog caption. Always bind to this EXE's dialog.
+        hwnd=wait(lambda:next((h for h,caption,pid in desktop_windows()
+            if pid==process.pid and title.lower() in caption.lower()),None),seconds=15)
+        dialog=UIAWrapper(UIAElementInfo(hwnd))
+        try:win32gui.SetForegroundWindow(dialog.handle)
+        except Exception:pass
         edit=next((x for x in descendants(dialog) if x.element_info.control_type=="Edit" and
             (x.element_info.automation_id.endswith("fileNameEdit") or x.element_info.automation_id=="1148")),None)
-        if edit is not None:edit.set_edit_text(str(path));edit.set_focus()
-        else:send_keys("^a");send_keys(str(path),with_spaces=True)
-        send_keys("{ENTER}")
+        if edit is not None:
+            edit.set_edit_text(str(path))
+            action=next((x for x in descendants(dialog)
+                if x.element_info.control_type=="Button"
+                and x.element_info.automation_id=="1"),None)
+            if action is not None:action.invoke()
+            else:edit.set_focus();send_keys("{ENTER}")
+        else:send_keys("^a");send_keys(str(path),with_spaces=True);send_keys("{ENTER}")
+        wait(lambda:not any(pid==process.pid and title.lower() in caption.lower()
+            for _,caption,pid in desktop_windows()),seconds=10)
         time.sleep(.25)
 
     def top(w,width,height):
@@ -113,7 +165,9 @@ def main() -> int:
         main_window=window("Dino Desktop · 2T");top(main_window,1360,900)
         if len(windows())!=1:raise AssertionError(f"expected one visible application window at start, got {windows()}")
         note("Packaged Dino2T.exe starts one visible main window in an isolated environment")
-        main_window.set_focus();send_keys("^o");file_dialog("Abrir proyecto",project)
+        click(main_window,"Abrir proyecto…")
+        time.sleep(.5)
+        file_dialog("Abrir proyecto",project)
         four=window("Dino Desktop · 4T · dino4t-synthetic-ab-v1");top(four,1360,900)
         if len(windows())!=1:raise AssertionError(f"expected one visible 4T window, got {windows()}")
         note("Saved native 4T project opens with both hash-verified A/B result references")
@@ -148,29 +202,47 @@ def main() -> int:
             raise AssertionError("packaged HTML report lost the scientific qualification")
         note("Packaged JSON/CSV/HTML exports preserve comparison ID, precise metrics, hashes and caveat")
 
-        simulation=control(four,"TabItem","SIMULAR");simulation.select();time.sleep(.2)
-        click(four,"Ejecutar punto 4T")
-        wait(lambda:any("Ciclo " in x.window_text() for x in descendants(four)),seconds=35)
-        click(four,"Cancelar al final del ciclo")
-        wait(lambda:control(four,"Button","Ejecutar punto 4T").is_enabled(),seconds=90)
-        if control(four,"Button","Cancelar al final del ciclo").is_enabled():
-            raise AssertionError("cancel remained enabled after terminal return")
-        note("Packaged 4T cancellation returns control only after a complete cycle")
-        click(four,"Abrir…");file_dialog("Abrir proyecto Dino",project)
-        discard=window("Cambios sin guardar");click(discard,"Descartar")
-        four=window("Dino Desktop · 4T · dino4t-synthetic-ab-v1");top(four,980,680)
-        result_tab=control(four,"TabItem","RESULTADOS");result_tab.select();time.sleep(.2)
-        compare_tab=control(four,"TabItem","Comparar");compare_tab.select();click(four,"Comparar corridas")
-        if "A/B periódicos" not in "\n".join(x.window_text() for x in descendants(four)):
-            raise AssertionError("A/B project did not recover from its saved inputs after cancellation")
-        capture(four,"packaged-4t-ab-recovered-980x680",980,680)
-        note("Existing saved periodic A/B endpoints remain usable after cancellation")
+        prior_cancel=None
+        if args.prior_cancelled_run:
+            prior_cancel=args.prior_cancelled_run.resolve()
+            run=json.loads(prior_cancel.read_text(encoding="utf-8"))
+            summary=json.loads(Path(run["summary_path"]).read_text(encoding="utf-8"))
+            if run.get("status")!="incomplete" or run.get("periodicity_status")!="NOT_CONVERGED":
+                raise AssertionError("prior cancellation record lost its incomplete/nonconverged state")
+            if summary.get("termination")!="cancelled_by_user" or summary.get("status")!="incomplete":
+                raise AssertionError("prior packaged run was not recorded as a controlled cancellation")
+            tasklist=subprocess.run(["tasklist","/FI","IMAGENAME eq MotorSimWorker.exe","/FO","CSV","/NH"],
+                capture_output=True,text=True,check=True).stdout
+            if "MotorSimWorker.exe" in tasklist:
+                raise AssertionError("orphaned MotorSimWorker remains after packaged cancellation: "+tasklist)
+            note("Prior packaged cancellation is terminal, incomplete/nonconverged and left no worker process")
+            top(four,980,680);capture(four,"packaged-4t-ab-reopened-980x680",980,680)
+            note("A/B project reopened in a fresh packaged process after cancellation; saved endpoints remain comparable")
+        else:
+            simulation=control(four,"TabItem","SIMULAR");simulation.select();time.sleep(.2)
+            click(four,"Ejecutar punto 4T")
+            wait(lambda:any("Ciclo " in x.window_text() for x in descendants(four)),seconds=35)
+            click(four,"Cancelar al final del ciclo")
+            wait(lambda:control(four,"Button","Ejecutar punto 4T").is_enabled(),seconds=90)
+            if control(four,"Button","Cancelar al final del ciclo").is_enabled():
+                raise AssertionError("cancel remained enabled after terminal return")
+            note("Packaged 4T cancellation returns control only after a complete cycle")
+            click(four,"Abrir…");file_dialog("Abrir proyecto Dino",project)
+            discard=window("Cambios sin guardar");click(discard,"Descartar")
+            four=window("Dino Desktop · 4T · dino4t-synthetic-ab-v1");top(four,980,680)
+            result_tab=control(four,"TabItem","RESULTADOS");result_tab.select();time.sleep(.2)
+            compare_tab=control(four,"TabItem","Comparar");compare_tab.select();click(four,"Comparar corridas")
+            if "A/B periódicos" not in "\n".join(x.window_text() for x in descendants(four)):
+                raise AssertionError("A/B project did not recover from its saved inputs after cancellation")
+            capture(four,"packaged-4t-ab-recovered-980x680",980,680)
+            note("Existing saved periodic A/B endpoints remain usable after cancellation")
         build_check={"source_commit":build.get("source_commit"),"packaged_inputs_clean":build.get("packaged_inputs_clean"),
             "manifest_sha256":build.get("packaged_input_manifest_sha256"),"version":build.get("app_version")}
         (work/"build-identity.json").write_text(json.dumps(build_check,indent=2)+"\n",encoding="utf-8")
         (work/"acceptance.json").write_text(json.dumps({"schema":"DINO4T_AB_PACKAGED_WINDOWS_ACCEPTANCE_V1",
             "result":"PASS","exe":str(exe),"exe_sha256":hashlib.sha256(exe.read_bytes()).hexdigest(),
             "project":str(project),"project_sha256":hashlib.sha256(project.read_bytes()).hexdigest(),
+            "prior_cancelled_run":str(prior_cancel) if prior_cancel else None,
             "build":build_check,"checks":checks,"captures":captures,
             "scientific_claims":{"experimental_validation":"NOT_PERFORMED","predictive_capability":"NOT_CLAIMED"}},
             ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
@@ -180,6 +252,8 @@ def main() -> int:
         return 0
     except Exception as exc:
         (work/"failure.txt").write_text(repr(exc),encoding="utf-8")
+        (work/"desktop-windows-failure.json").write_text(json.dumps(
+            [{"hwnd":h,"title":title,"pid":pid} for h,title,pid in desktop_windows()],indent=2)+"\n",encoding="utf-8")
         try:
             for hwnd,title in windows():
                 wrapper=UIAWrapper(UIAElementInfo(hwnd))
