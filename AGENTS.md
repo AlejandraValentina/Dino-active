@@ -25,7 +25,7 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 CURRENT_OBJECTIVE: DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1
 change/spec:       openspec/changes/platform-integration-audit-v1/
                    specs/platform-integration-audit-v1/spec.md
-roadmap:          results/platform-integration-audit-v1/protocol.md
+roadmap:          docs/roadmaps/dino-platform-scientific-reliability-v1-20261105.md
 completion:        Independent revision-bound audit of main and A/B branch,
                    then traceable unified 2T+4T scientific replanning. No product
                    or physical changes. Audit completion is not validation.

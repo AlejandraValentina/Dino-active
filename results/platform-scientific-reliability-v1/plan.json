@@ -1,0 +1,361 @@
+{
+  "schema": "DINO_PLATFORM_SCIENTIFIC_RELIABILITY_PLAN_V1",
+  "id": "DINO_PLATFORM_SCIENTIFIC_RELIABILITY_V1",
+  "date": "2026-11-05",
+  "scope": [
+    "COMMON_INFRASTRUCTURE",
+    "2T_NATIVE_PHYSICS",
+    "4T_NATIVE_PHYSICS"
+  ],
+  "audit_freeze_commit": "1db6408dd03e7302cc84332cd329c6b8ca0b21a8",
+  "audit_product_verdict": "CONDITIONAL_INTERNAL_TRIAL_OPEN_P1",
+  "planning_authorized": true,
+  "implementation_or_campaign_activation": false,
+  "authority": "Prospective scheduling successor;preserves all historical scientific contracts and decisions",
+  "tasks": [
+    {
+      "id": "C01",
+      "engine_family": "COMMON",
+      "priority": "P1",
+      "dependencies": [],
+      "audit_findings": [
+        "F01",
+        "F02",
+        "F04"
+      ],
+      "title": "Input, detector and semantic result contracts",
+      "acceptance": "Finite typed section-aware input validation; invalid detector domains fail before calculation; result/config/model/RPM/status/history agree; claims require verified evidence, valid historical inputs/results stay unchanged",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    },
+    {
+      "id": "C02",
+      "engine_family": "COMMON",
+      "priority": "P1",
+      "dependencies": [
+        "C01"
+      ],
+      "audit_findings": [
+        "F05",
+        "F07",
+        "F14"
+      ],
+      "title": "Engineering editor and scientific display integrity",
+      "acceptance": "No-op Apply preserves exact source identity; only edited cells change; unavailable selection clears all old scientific values; pressure axis is crank angle with unit",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    },
+    {
+      "id": "C03",
+      "engine_family": "COMMON",
+      "priority": "P1",
+      "dependencies": [],
+      "audit_findings": [
+        "F06",
+        "F08",
+        "F09",
+        "F12",
+        "F13"
+      ],
+      "title": "End-to-end provenance and complete build inputs",
+      "acceptance": "Summary/config/trace/metadata bindings validated; shared source closure and all bundled inputs covered; dirty omitted-input probe rejected; model names accurate; portable byte/path replay preserves original receipts",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    },
+    {
+      "id": "C04",
+      "engine_family": "COMMON",
+      "priority": "P1",
+      "dependencies": [
+        "C01"
+      ],
+      "audit_findings": [
+        "F03",
+        "F10",
+        "F15",
+        "F16"
+      ],
+      "title": "Execution lifecycle and reproducible assurance",
+      "acceptance": "Unsafe mid-cycle seeds refused or fully versioned; observe actual 4T task lifecycle; artifact recipe runs protected tests in explicit clean contexts; terminal PASS only after shutdown; reopen/restart/exact resume labeled separately",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    },
+    {
+      "id": "C05",
+      "engine_family": "COMMON",
+      "priority": "P1",
+      "dependencies": [
+        "C01",
+        "C02",
+        "C03",
+        "C04"
+      ],
+      "audit_findings": [
+        "F17",
+        "F19"
+      ],
+      "title": "Review and consolidate the trustworthy application base",
+      "acceptance": "Preserve main and A/B histories via controlled integration only after relevant regressions/review; immutable code/config/build identities; negative findings closed with new evidence; no historical package reinterpreted as a test of fixes",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    },
+    {
+      "id": "D2",
+      "engine_family": "2T",
+      "priority": "DATA",
+      "dependencies": [],
+      "audit_findings": [],
+      "title": "Complete the selected measured 2T reference package",
+      "acceptance": "Reconcile Cahoon MK.1 geometry, crankcase free volume and matched 6000 RPM records. Retain MT110S complementary role, closed extraction and actual unsent-request status. No invented geometry or duplicate search.",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    },
+    {
+      "id": "D4",
+      "engine_family": "4T",
+      "priority": "DATA",
+      "dependencies": [],
+      "audit_findings": [],
+      "title": "Define and acquire a matched measured 4T package",
+      "acceptance": "Measured geometry; valve lift, timing and forward/reverse Cd with area convention; boundary, thermal, fuel, air, lambda, friction, pressure and torque data with uncertainty. Separate calibration and held-out data.",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    },
+    {
+      "id": "N2",
+      "engine_family": "2T",
+      "priority": "NUMERICAL",
+      "dependencies": [],
+      "audit_findings": [],
+      "title": "Preserve and scope existing 2T numerical evidence",
+      "acceptance": "Map closed E1.0 port-law and periodic 44-cell exploratory evidence to exact candidates. Retain multi-mesh GCI budget block and no E1.3 activation. No repeated extrema, regions or old campaigns.",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    },
+    {
+      "id": "N4R",
+      "engine_family": "4T",
+      "priority": "NUMERICAL",
+      "dependencies": [],
+      "audit_findings": [],
+      "title": "Prepare an independent 4T integrated trajectory reference",
+      "acceptance": "Isolated independent two-zone trajectory oracle against frozen identified model/config and explicit source/artifact hashes; it can proceed without Desktop fixes or main integration. Existing flawed dirty flag is not its identity authority. New decisive criteria fixed before reference calculations.",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    },
+    {
+      "id": "N4S",
+      "engine_family": "4T",
+      "priority": "NUMERICAL",
+      "dependencies": [
+        "C01",
+        "C03",
+        "C04"
+      ],
+      "audit_findings": [
+        "F11",
+        "F18"
+      ],
+      "title": "Verify 4T study endpoint eligibility and provenance",
+      "acceptance": "Per-perturbation config/result/state/periodicity identity and numerical-noise qualification through corrected relevant contracts; preserve old dirty-source studies and do not rerun S4 automatically.",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    },
+    {
+      "id": "N4",
+      "engine_family": "4T",
+      "priority": "NUMERICAL",
+      "dependencies": [
+        "N4R",
+        "N4S"
+      ],
+      "audit_findings": [],
+      "title": "Aggregate scoped 4T numerical assurance",
+      "acceptance": "Independent integrated trajectory reference plus valid endpoint/study eligibility and provenance in a declared model/domain. Preserve all historical qualifications; no broad numerical or measured-validity claim.",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    },
+    {
+      "id": "U2",
+      "engine_family": "2T",
+      "priority": "UNCERTAINTY",
+      "dependencies": [
+        "N2"
+      ],
+      "audit_findings": [],
+      "title": "Quantify an explicitly activated 2T design difference",
+      "acceptance": "Separate temporal, spatial and model effects, periodicity and phase. Reuse evidence first; E1.3 remains blocked. Use GCI only when justified. Preserve total-difference uncertainty and covariance obligations.",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    },
+    {
+      "id": "U4",
+      "engine_family": "4T",
+      "priority": "UNCERTAINTY",
+      "dependencies": [
+        "N4"
+      ],
+      "audit_findings": [],
+      "title": "Quantify a scoped 4T design difference",
+      "acceptance": "Baseline GCI does not transfer. Define pair, endpoints and numerical controls before observing. Retain endpoint status and provenance. Report unresolved when the signal cannot be distinguished.",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    },
+    {
+      "id": "K2",
+      "engine_family": "2T",
+      "priority": "PHYSICS",
+      "dependencies": [
+        "N2",
+        "D2"
+      ],
+      "audit_findings": [],
+      "title": "Identify 2T closures from discriminating component evidence",
+      "acceptance": "Scavenging, retention and port-loss parameters need identifiable measurements. Choose one component at a time; no arbitrary simultaneous tuning to power. Keep 2T V2 and MUSCL experimental until their own adoption decision. Require relevant numerical error to be bounded and small against the calibration residual and measured uncertainty, so fitted closures cannot absorb discretization error; component/reference bounds suffice without a circular design-pair dependency.",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    },
+    {
+      "id": "K4",
+      "engine_family": "4T",
+      "priority": "PHYSICS",
+      "dependencies": [
+        "N4",
+        "D4"
+      ],
+      "audit_findings": [],
+      "title": "Identify 4T closures within native model validity",
+      "acceptance": "Calibrate prescribed combustion, heat, friction and Cd on a declared subset. Independent component benchmarks and conservation. Unsupported inflow remains fail-closed until a verified model decision. Require relevant numerical error to be bounded and small against the calibration residual and measured uncertainty, so fitted closures cannot absorb discretization error; component/reference bounds suffice without a circular design-pair dependency.",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    },
+    {
+      "id": "VAL2",
+      "engine_family": "2T",
+      "priority": "VALIDATION",
+      "dependencies": [
+        "C05",
+        "D2",
+        "U2",
+        "K2"
+      ],
+      "audit_findings": [],
+      "title": "Preregister and perform blind 2T validation",
+      "acceptance": "Preserve frozen P9 obligations and hash. New protocol/version for a new claim. Complete measured, numerical, parameter and model uncertainties. Reserve engine, escape and RPM cases. Retain old 5%/U95 targets only in their original scope.",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    },
+    {
+      "id": "VAL4",
+      "engine_family": "4T",
+      "priority": "VALIDATION",
+      "dependencies": [
+        "C05",
+        "D4",
+        "U4",
+        "K4"
+      ],
+      "audit_findings": [],
+      "title": "Preregister and perform blind 4T validation",
+      "acceptance": "Set 4T-specific outputs, domain and tolerances with dataset uncertainty before reserved results. Independent review and holdout. No inherited 2T P9 PASS or automatic 5% target.",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    },
+    {
+      "id": "PRED2",
+      "engine_family": "2T",
+      "priority": "PREDICTIVE",
+      "dependencies": [
+        "VAL2"
+      ],
+      "audit_findings": [],
+      "title": "Gate bounded 2T predictive and design claims",
+      "acceptance": "Complete total uncertainty including correlations. Use the preserved preregistered design-signal criterion only in scope. No extrapolation beyond validated domain; periodicity is insufficient.",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    },
+    {
+      "id": "PRED4",
+      "engine_family": "4T",
+      "priority": "PREDICTIVE",
+      "dependencies": [
+        "VAL4"
+      ],
+      "audit_findings": [],
+      "title": "Gate bounded 4T predictive and design claims",
+      "acceptance": "Own model, measured and numerical uncertainties and preregistered design-difference criterion. Separate from 2T; no predictive label from the synthetic six-cycle pair.",
+      "execution_state": "NOT_ACTIVATED",
+      "budget_authorization": "NONE_GRANTED_BY_THIS_PLAN",
+      "computational_policy": "Read-only preparation/isolated tests first;prior runtime projection and explicit scope/budget record before calculations;no historical budget transferred"
+    }
+  ],
+  "maturity": {
+    "2T": {
+      "software": "INTERNAL_TRIAL_SCOPED_WITH_SHARED_INTEGRATION_P1",
+      "numerical": "SCOPED_P4_P8_AND_PERIODIC44;MULTIMESH_UNRESOLVED",
+      "physical_identification": "PARTIAL_IDEALIZED_COMPONENTS",
+      "calibration": "NO_ADOPTED_COMPLETE_MEASURED_PACKAGE",
+      "experimental_validation": "NOT_PERFORMED",
+      "predictive": "NOT_CLAIMED"
+    },
+    "4T": {
+      "software": "MAIN_NATIVE_WORKFLOW;AB_BRANCH_ONLY_STRICT_COMPARISON;P1_OPEN",
+      "numerical": "STAGE2_COMPONENT_AND_BASELINE_SCOPE;API_CLASSIFICATION_P1;TRAJECTORY_ORACLE_OPEN",
+      "physical_identification": "PRESCRIBED_BURN_AND_UNIDENTIFIED_LOSSES_CD",
+      "calibration": "NOT_PERFORMED",
+      "experimental_validation": "NOT_PERFORMED",
+      "predictive": "NOT_CLAIMED"
+    }
+  },
+  "immutable_constraints": {
+    "p9_canonical_sha256": "79fbe9b88d26fc4af5083d65d468f59c9208535f0ab389d2f3cb9a7654b88a4d",
+    "no_E1_3_restart": true,
+    "no_automatic_budget_extension": true,
+    "no_automatic_model_promotion": true,
+    "no_cross_family_validity_transfer": true,
+    "preserve_historical_packages_results_preregistrations": true
+  },
+  "closure": "Each stage scoped evidence and decision;software gate cannot close numerical/experimental/predictive gates;no umbrella scientificPASSuntil every claimed family/domain meets its own preregistered evidence.",
+  "scientific_obligation_coverage": {
+    "S01": [
+      "N4R"
+    ],
+    "S02": [
+      "N2",
+      "N4R",
+      "N4S",
+      "U2",
+      "U4"
+    ],
+    "S03": [
+      "D2",
+      "D4",
+      "VAL2",
+      "VAL4"
+    ],
+    "S04": [
+      "C03",
+      "N2",
+      "N4R",
+      "N4S"
+    ]
+  }
+}

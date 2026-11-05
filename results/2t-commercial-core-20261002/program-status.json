@@ -12999,11 +12999,15 @@
       "dependencies": [
         "PA-AUDIT-FREEZE"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Audit only; preserve product and scientific runtime.",
+      "evidence": [
+        "results/platform-scientific-reliability-v1/delivery-receipt.json",
+        "results/platform-scientific-reliability-v1/review-reconciliation.json",
+        "results/platform-scientific-reliability-v1/checks/planning-consistency.json"
+      ],
+      "next_action": "Delivery complete;future product/physics/campaign work remains unactivated.",
       "owner_role": "orchestrator",
       "write_scope": [],
       "evidence_level": "L0"
@@ -13015,11 +13019,15 @@
       "dependencies": [
         "PA-REPLAN"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Audit only; preserve product and scientific runtime.",
+      "evidence": [
+        "results/platform-scientific-reliability-v1/delivery-receipt.json",
+        "results/platform-scientific-reliability-v1/review-reconciliation.json",
+        "results/platform-scientific-reliability-v1/checks/planning-consistency.json"
+      ],
+      "next_action": "Delivery complete;future product/physics/campaign work remains unactivated.",
       "owner_role": "orchestrator",
       "write_scope": [],
       "evidence_level": "L0"
@@ -13225,7 +13233,7 @@
   ],
   "current_objective": {
     "id": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
-    "state": "ACTIVE",
+    "state": "PASS",
     "owner_approved": true,
     "summary": "Audit main and the separate 4T A/B branch before a traceable 2T+4T scientific replan; audit and documentation only, no product/physical changes.",
     "change": "openspec/changes/platform-integration-audit-v1",
@@ -14312,7 +14320,9 @@
       "completion_criterion": "Unified owner roadmap docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md: port-law verification, pressure waves and numerically distinguishable design effects, identifiable scavenging, evidence-led closures, independent measured curves and exhaust-change validation, then performance/product. Data acquisition parallel; X30 preferred, not exclusive. Current authorized delivery: E2A frozen A/B wave comparison within600s, then stop; no other stage or historical campaign. Periodicity/conservation do not establish predictive capability.",
       "scientific_state": "EXPERIMENTAL_VALIDATION_NOT_PERFORMED;PREDICTIVE_ACCURACY_NOT_CLAIMED",
       "staged_plan": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md",
-      "qualification": "E2A completed DIFERENCIA NO RESUELTA within600s. Owner explicitly requests stop and decision presentation before further work; no E2B or old READY task execution authorized."
+      "qualification": "E2A completed DIFERENCIA NO RESUELTA within600s. Owner explicitly requests stop and decision presentation before further work; no E2B or old READY task execution authorized.",
+      "execution_order_superseded_by": "DINO_PLATFORM_SCIENTIFIC_RELIABILITY_V1",
+      "scientific_obligations_preserved": true
     },
     {
       "id": "DINO_DESKTOP_4T_INTEGRATION_V1",
@@ -14342,11 +14352,26 @@
     },
     {
       "id": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
-      "state": "ACTIVE",
+      "state": "PASS",
       "owner_approved": true,
       "summary": "Audit main and the separate 4T A/B branch before a traceable 2T+4T scientific replan; audit and documentation only, no product/physical changes.",
       "change": "openspec/changes/platform-integration-audit-v1",
-      "transitioned_from": "DINO4T_AB_ENGINEERING_V1"
+      "transitioned_from": "DINO4T_AB_ENGINEERING_V1",
+      "closure_evidence": "results/platform-scientific-reliability-v1/delivery-receipt.json"
+    },
+    {
+      "id": "DINO_PLATFORM_SCIENTIFIC_RELIABILITY_V1",
+      "state": "PLANNED",
+      "owner_approved": false,
+      "planning_authorized": true,
+      "execution_activated": false,
+      "summary": "Unified 2T+4T scientific reliability successor; all future stages scoped/not activated.",
+      "change": "openspec/changes/platform-scientific-reliability-v1",
+      "spec": "openspec/changes/platform-scientific-reliability-v1/specs/platform-scientific-reliability-v1/spec.md",
+      "roadmap": "docs/roadmaps/dino-platform-scientific-reliability-v1-20261105.md",
+      "plan": "results/platform-scientific-reliability-v1/plan.json",
+      "audit_freeze_commit": "1db6408dd03e7302cc84332cd329c6b8ca0b21a8",
+      "qualification": "Owner requested audit and replanning, explicitly no functional or physical changes during this evaluation. Implementation/campaign scope needs recorded activation."
     }
   ],
   "owner_decisions_pending": [
@@ -18465,6 +18490,24 @@
       "task": "PA-AUDIT-FREEZE",
       "kind": "AUDIT_EVIDENCE",
       "summary": "Revision-bound audit frozen:19findings(10P1/9P2),3independent reports;38focusedPASS;protected296PASS5contextfail3SKIP then5contextPASS;no product fixes or new campaigns."
+    },
+    {
+      "at": "2026-11-05T16:56:17.628101+00:00",
+      "task": "PA-REPLAN",
+      "kind": "AUDIT_BEFORE_PLAN",
+      "summary": "Successor planning started only after frozen audit commit 1db6408dd03e7302cc84332cd329c6b8ca0b21a8;runtime source stays8b371e2;no remediation/campaign activated."
+    },
+    {
+      "at": "2026-11-05T17:05:45.232067+00:00",
+      "task": "PA-REPLAN",
+      "kind": "PLANNING_DELIVERY",
+      "summary": "Unified 2T+4T plan follows audit freeze 1db6408. Nineteen unactivated stages cover nineteen findings. Initial independent REVISE was addressed; final science/integration planning reviews PASS. Product defects and scientific obligations remain open."
+    },
+    {
+      "at": "2026-11-05T17:05:45.232067+00:00",
+      "task": "PA-FINAL-REVIEW",
+      "kind": "PLANNING_DELIVERY",
+      "summary": "Unified 2T+4T plan follows audit freeze 1db6408. Nineteen unactivated stages cover nineteen findings. Initial independent REVISE was addressed; final science/integration planning reviews PASS. Product defects and scientific obligations remain open."
     }
   ],
   "legacy_gate_status": {
@@ -18480,21 +18523,18 @@
   },
   "gate_status": {
     "objective": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
-    "state": "OPEN",
-    "classification": null,
-    "evidence": [],
-    "gate_tasks_total": 8,
-    "gate_tasks_done": 6,
-    "gate_task_states": {
-      "DONE": 6,
-      "READY": 1,
-      "WAITING": 1
-    },
-    "remaining": [
-      "PA-REPLAN",
-      "PA-FINAL-REVIEW"
+    "state": "PASS",
+    "classification": "AUDIT_PLAN_DELIVERED_PRODUCT_P1_OPEN",
+    "evidence": [
+      "results/platform-scientific-reliability-v1/delivery-receipt.json"
     ],
-    "updated_at": "2026-11-05T16:53:35+00:00"
+    "gate_tasks_total": 8,
+    "gate_tasks_done": 8,
+    "gate_task_states": {
+      "DONE": 8
+    },
+    "remaining": [],
+    "updated_at": "2026-11-05T17:05:45+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -18518,7 +18558,20 @@
       ]
     }
   },
-  "next_objective": null,
+  "next_objective": {
+    "id": "DINO_PLATFORM_SCIENTIFIC_RELIABILITY_V1",
+    "state": "PLANNED",
+    "owner_approved": false,
+    "planning_authorized": true,
+    "execution_activated": false,
+    "summary": "Unified 2T+4T scientific reliability successor; all future stages scoped/not activated.",
+    "change": "openspec/changes/platform-scientific-reliability-v1",
+    "spec": "openspec/changes/platform-scientific-reliability-v1/specs/platform-scientific-reliability-v1/spec.md",
+    "roadmap": "docs/roadmaps/dino-platform-scientific-reliability-v1-20261105.md",
+    "plan": "results/platform-scientific-reliability-v1/plan.json",
+    "audit_freeze_commit": "1db6408dd03e7302cc84332cd329c6b8ca0b21a8",
+    "qualification": "Owner requested audit and replanning, explicitly no functional or physical changes during this evaluation. Implementation/campaign scope needs recorded activation."
+  },
   "full_rpm_sweep_precondition": "EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED",
   "full_rpm_sweep_status": "PARTIAL",
   "full_rpm_sweep_executable": true,
@@ -19071,49 +19124,139 @@
     }
   },
   "roadmap_control": {
-    "roadmap": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md",
-    "owner_decision_date": "2026-10-28",
-    "activation": "AUTHORIZED_DELIVERABLES_CLOSED_STOP",
-    "next_deliverable": "None activated. E2B exploratory and experimental reference selection delivered; no new meshes/cycles, E3 or data-acquisition messages automatically.",
-    "experimental_data_policy": "Cahoon MK1 principal; Yamaha MT110S complementary exhaust-change reference. Selection closed. Both full-engine readiness BLOCKED; original geometry and matched records required, targeted QUB request drafted and unsent. No synthetic fill, new engine search, automatic simulation or external message.",
-    "historical_ready_policy": "READY history does not authorize reviving meshes, 90-150deg studies or old campaigns outside an explicitly activated roadmap deliverable. SPV1 READY task stays intact.",
-    "stages": [
-      {
-        "id": "E1",
-        "state": "REFERENCE_VERIFICATION_CLOSED",
-        "adoption": "KEEP_EXPERIMENTAL",
-        "evidence": "results/port-flow-verification-v1/receipt.json",
-        "physical_losses_identified": false
-      },
-      {
-        "id": "E2",
-        "state": "E2B_PERIODIC_EXPLORATORY_CLOSED",
-        "evidence": "results/e2b-periodic-ab-v1/decision.json",
-        "adoption": "ADOPTAR_COMO_CANDIDATO",
-        "qualification": "A30/B32 PERIOD1 on frozen44 MUSCL V2; +5.066% modeled brake power for B, numerical power uncertainty unquantified, no predictive claim."
-      },
-      {
-        "id": "E3",
-        "state": "NOT_STARTED_BY_THIS_PLAN"
-      },
-      {
-        "id": "E4",
-        "state": "NOT_STARTED_BY_THIS_PLAN"
-      },
-      {
-        "id": "E5",
-        "state": "NOT_STARTED_BY_THIS_PLAN"
-      },
-      {
-        "id": "E6",
-        "state": "NOT_STARTED_BY_THIS_PLAN"
-      }
+    "roadmap": "docs/roadmaps/dino-platform-scientific-reliability-v1-20261105.md",
+    "scope": [
+      "COMMON",
+      "2T",
+      "4T"
     ],
-    "predictive_validation": "NOT_PERFORMED",
-    "predictive_capability": "NOT_CLAIMED",
-    "baseline_rc7": "PRESERVED",
-    "qualification": "Old gate counts summarize existing technical tasks, not completion of the six scientific/product stages. New models are not automatically promoted.",
-    "experimental_reference_selection": "results/experimental-reference-selection-v1/selection.json",
-    "experimental_data_readiness": "results/experimental-data-readiness-v1/readiness.json"
+    "audit_freeze_commit": "1db6408dd03e7302cc84332cd329c6b8ca0b21a8",
+    "activation": "AUDIT_AND_REPLAN_ONLY; FUTURE_STAGES_NOT_ACTIVATED",
+    "next_deliverable": "C01/C03 trustworthy contracts/provenance and D2/D4 data preparation are proposed priorities; no implementation or campaign is activated by the audit request.",
+    "scientific_status": {
+      "2T": {
+        "software": "INTERNAL_TRIAL_SCOPED_WITH_SHARED_INTEGRATION_P1",
+        "numerical": "SCOPED_P4_P8_AND_PERIODIC44;MULTIMESH_UNRESOLVED",
+        "physical_identification": "PARTIAL_IDEALIZED_COMPONENTS",
+        "calibration": "NO_ADOPTED_COMPLETE_MEASURED_PACKAGE",
+        "experimental_validation": "NOT_PERFORMED",
+        "predictive": "NOT_CLAIMED"
+      },
+      "4T": {
+        "software": "MAIN_NATIVE_WORKFLOW;AB_BRANCH_ONLY_STRICT_COMPARISON;P1_OPEN",
+        "numerical": "STAGE2_COMPONENT_AND_BASELINE_SCOPE;API_CLASSIFICATION_P1;TRAJECTORY_ORACLE_OPEN",
+        "physical_identification": "PRESCRIBED_BURN_AND_UNIDENTIFIED_LOSSES_CD",
+        "calibration": "NOT_PERFORMED",
+        "experimental_validation": "NOT_PERFORMED",
+        "predictive": "NOT_CLAIMED"
+      }
+    },
+    "legacy_roadmap": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md",
+    "preserved_constraints": {
+      "p9_canonical_sha256": "79fbe9b88d26fc4af5083d65d468f59c9208535f0ab389d2f3cb9a7654b88a4d",
+      "no_E1_3_restart": true,
+      "no_automatic_budget_extension": true,
+      "no_automatic_model_promotion": true,
+      "no_cross_family_validity_transfer": true,
+      "preserve_historical_packages_results_preregistrations": true
+    },
+    "planning_state": "INDEPENDENT_COHERENCE_REVIEW_PASS; EXECUTION_NOT_ACTIVATED"
+  },
+  "roadmap_control_history": [
+    {
+      "at": "2026-11-05T16:59:41.192626+00:00",
+      "reason": "Prospective scheduling supersession after frozen unified audit; old scientific decisions and budgets remain unchanged",
+      "previous": {
+        "roadmap": "docs/roadmaps/dino-2t-unified-roadmap-v1-20261028.md",
+        "owner_decision_date": "2026-10-28",
+        "activation": "AUTHORIZED_DELIVERABLES_CLOSED_STOP",
+        "next_deliverable": "None activated. E2B exploratory and experimental reference selection delivered; no new meshes/cycles, E3 or data-acquisition messages automatically.",
+        "experimental_data_policy": "Cahoon MK1 principal; Yamaha MT110S complementary exhaust-change reference. Selection closed. Both full-engine readiness BLOCKED; original geometry and matched records required, targeted QUB request drafted and unsent. No synthetic fill, new engine search, automatic simulation or external message.",
+        "historical_ready_policy": "READY history does not authorize reviving meshes, 90-150deg studies or old campaigns outside an explicitly activated roadmap deliverable. SPV1 READY task stays intact.",
+        "stages": [
+          {
+            "id": "E1",
+            "state": "REFERENCE_VERIFICATION_CLOSED",
+            "adoption": "KEEP_EXPERIMENTAL",
+            "evidence": "results/port-flow-verification-v1/receipt.json",
+            "physical_losses_identified": false
+          },
+          {
+            "id": "E2",
+            "state": "E2B_PERIODIC_EXPLORATORY_CLOSED",
+            "evidence": "results/e2b-periodic-ab-v1/decision.json",
+            "adoption": "ADOPTAR_COMO_CANDIDATO",
+            "qualification": "A30/B32 PERIOD1 on frozen44 MUSCL V2; +5.066% modeled brake power for B, numerical power uncertainty unquantified, no predictive claim."
+          },
+          {
+            "id": "E3",
+            "state": "NOT_STARTED_BY_THIS_PLAN"
+          },
+          {
+            "id": "E4",
+            "state": "NOT_STARTED_BY_THIS_PLAN"
+          },
+          {
+            "id": "E5",
+            "state": "NOT_STARTED_BY_THIS_PLAN"
+          },
+          {
+            "id": "E6",
+            "state": "NOT_STARTED_BY_THIS_PLAN"
+          }
+        ],
+        "predictive_validation": "NOT_PERFORMED",
+        "predictive_capability": "NOT_CLAIMED",
+        "baseline_rc7": "PRESERVED",
+        "qualification": "Old gate counts summarize existing technical tasks, not completion of the six scientific/product stages. New models are not automatically promoted.",
+        "experimental_reference_selection": "results/experimental-reference-selection-v1/selection.json",
+        "experimental_data_readiness": "results/experimental-data-readiness-v1/readiness.json"
+      }
+    }
+  ],
+  "platform_scientific_reliability_v1": {
+    "plan": "results/platform-scientific-reliability-v1/plan.json",
+    "audit_verdict": "CONDITIONAL_INTERNAL_TRIAL_OPEN_P1",
+    "engine_maturity": {
+      "2T": {
+        "software": "INTERNAL_TRIAL_SCOPED_WITH_SHARED_INTEGRATION_P1",
+        "numerical": "SCOPED_P4_P8_AND_PERIODIC44;MULTIMESH_UNRESOLVED",
+        "physical_identification": "PARTIAL_IDEALIZED_COMPONENTS",
+        "calibration": "NO_ADOPTED_COMPLETE_MEASURED_PACKAGE",
+        "experimental_validation": "NOT_PERFORMED",
+        "predictive": "NOT_CLAIMED"
+      },
+      "4T": {
+        "software": "MAIN_NATIVE_WORKFLOW;AB_BRANCH_ONLY_STRICT_COMPARISON;P1_OPEN",
+        "numerical": "STAGE2_COMPONENT_AND_BASELINE_SCOPE;API_CLASSIFICATION_P1;TRAJECTORY_ORACLE_OPEN",
+        "physical_identification": "PRESCRIBED_BURN_AND_UNIDENTIFIED_LOSSES_CD",
+        "calibration": "NOT_PERFORMED",
+        "experimental_validation": "NOT_PERFORMED",
+        "predictive": "NOT_CLAIMED"
+      }
+    },
+    "future_stage_ids": [
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "C05",
+      "D2",
+      "D4",
+      "N2",
+      "N4R",
+      "N4S",
+      "N4",
+      "U2",
+      "U4",
+      "K2",
+      "K4",
+      "VAL2",
+      "VAL4",
+      "PRED2",
+      "PRED4"
+    ],
+    "activation": "NOT_ACTIVATED",
+    "plan_status": "DELIVERED_REVIEWED_EXECUTION_UNACTIVATED"
   }
 }

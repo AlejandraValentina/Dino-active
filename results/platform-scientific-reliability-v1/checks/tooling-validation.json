@@ -1,0 +1,13 @@
+{
+  "schema": "DINO_AUDIT_TOOLING_VALIDATION_V1",
+  "openspec": {
+    "platform-integration-audit-v1": "PASS_STRICT",
+    "platform-scientific-reliability-v1": "PASS_STRICT"
+  },
+  "initial_tooling_failures": [
+    "Audit change was undiscoverable without proposal.md",
+    "Requirement wrapped SHALL past its first line, rejected by OpenSpec parser"
+  ],
+  "correction": "Added registration-only audit proposal and put SHALL on first requirement line;no scientific criteria changed",
+  "product_source_changes": false
+}

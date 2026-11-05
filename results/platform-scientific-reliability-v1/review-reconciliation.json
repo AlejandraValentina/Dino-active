@@ -1,0 +1,28 @@
+{
+  "schema": "DINO_PLATFORM_PLAN_INDEPENDENT_RECONCILIATION_V1",
+  "initial_science": "REVISE",
+  "science_changes": [
+    "N2 evidence map independent of Desktop/main integration",
+    "N4 split into independent N4R and relevant-contract N4S, then aggregate",
+    "K2/K4 require bounded relevant numerical error versus measured uncertainty and calibration residual"
+  ],
+  "initial_integration": "PASS with pending authoritative publication check",
+  "integration_change": "roadmap_control and supersession plus unactivated successor now explicit in program-status",
+  "final_science": "PASS_PLANNING_COHERENCE_ONLY",
+  "final_integration": "PASS_PLANNING_AND_AUTHORITY_COHERENCE_ONLY",
+  "product_findings_remain_open": true,
+  "future_execution_activated": false,
+  "reports": {
+    "independent-plan-integration-final.md": "cd8545614580fc71ce26a43ccfbdd9b1804daca6ecb03f3adae0f7ade706a048",
+    "independent-plan-integration-review.md": "8c075a611bdd0849d9a2433ef3f37cd10ddc4155db76332d7a7be8873d17403c",
+    "independent-plan-science-final.md": "917df08f960ad4e686cac3d018dc5e803ac3e630f9a24189c6906f3e07856a14",
+    "independent-plan-science-review.md": "cc5d08c49ae87a414e5ce08a885ba8a370c8f4bf7a96a106d48465d9393c0e16"
+  },
+  "post_review_editorial_id_disambiguation": {
+    "V2": "VAL2",
+    "V4": "VAL4",
+    "P2": "PRED2",
+    "P4": "PRED4"
+  },
+  "id_change_scope": "Pure local stage relabel to avoid collision with frozen P4 and native model V2; dependencies and acceptance criteria unchanged."
+}
