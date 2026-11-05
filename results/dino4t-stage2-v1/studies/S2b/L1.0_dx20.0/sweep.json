@@ -1,0 +1,256 @@
+{
+ "schema": "DINO4T_SWEEP_V1",
+ "config_identifier": "DINO4T-EXAMPLE-500CC-SYNTHETIC-V1",
+ "provenance": {
+  "geometry": "SYNTHETIC_ASSUMPTION",
+  "intake_valve": "SYNTHETIC_ASSUMPTION",
+  "exhaust_valve": "SYNTHETIC_ASSUMPTION",
+  "intake_duct": "SYNTHETIC_ASSUMPTION",
+  "exhaust_duct": "SYNTHETIC_ASSUMPTION",
+  "ambient": "SYNTHETIC_ASSUMPTION",
+  "combustion": "STANDARD_V1",
+  "heat_transfer": "STANDARD_V1",
+  "friction": "SYNTHETIC_ASSUMPTION"
+ },
+ "claims": {
+  "calibration": "NOT_PERFORMED",
+  "experimental_validation": "NOT_PERFORMED",
+  "predictive_capability": "NOT_CLAIMED"
+ },
+ "rows": [
+  {
+   "point": 0,
+   "overrides": {
+    "operating_point.rpm": 3000.0
+   },
+   "status": "completed",
+   "periodicity": "PERIODIC_CONVERGED",
+   "cycles": 5,
+   "closure": 1.7774326094979648e-14,
+   "imep_net_bar": 12.9048893575881,
+   "volumetric_efficiency_intake_valve": 0.8995966701974683,
+   "p_max_bar": 62.43804889515577,
+   "pmep_bar": 0.10748626770215453,
+   "indicated_fuel_conversion_efficiency": 0.41048835260785804,
+   "residual_gas_fraction_ivc": 0.04366334089697265,
+   "exhaust_valve_mean_enthalpy_temperature_K": 1258.339609184505,
+   "brake_power_kW": 14.30249178488425
+  },
+  {
+   "point": 1,
+   "overrides": {
+    "operating_point.rpm": 3500.0
+   },
+   "status": "completed",
+   "periodicity": "PERIODIC_CONVERGED",
+   "cycles": 4,
+   "closure": 1.723092753511745e-14,
+   "imep_net_bar": 13.48200294997885,
+   "volumetric_efficiency_intake_valve": 0.9364007482418129,
+   "p_max_bar": 64.83937942102196,
+   "pmep_bar": 0.1615617053331902,
+   "indicated_fuel_conversion_efficiency": 0.41199037603202887,
+   "residual_gas_fraction_ivc": 0.03525032794710922,
+   "exhaust_valve_mean_enthalpy_temperature_K": 1274.6430563553545,
+   "brake_power_kW": 17.28664357327794
+  },
+  {
+   "point": 2,
+   "overrides": {
+    "operating_point.rpm": 4000.0
+   },
+   "status": "completed",
+   "periodicity": "PERIODIC_CONVERGED",
+   "cycles": 6,
+   "closure": 3.058609926640966e-14,
+   "imep_net_bar": 14.424779914282773,
+   "volumetric_efficiency_intake_valve": 1.005128760699455,
+   "p_max_bar": 69.61458697734662,
+   "pmep_bar": 0.29828747453848964,
+   "indicated_fuel_conversion_efficiency": 0.41065939995859657,
+   "residual_gas_fraction_ivc": 0.028370117653504993,
+   "exhaust_valve_mean_enthalpy_temperature_K": 1293.7042981015375,
+   "brake_power_kW": 21.025315707163898
+  },
+  {
+   "point": 3,
+   "overrides": {
+    "operating_point.rpm": 4500.0
+   },
+   "status": "completed",
+   "periodicity": "PERIODIC_CONVERGED",
+   "cycles": 5,
+   "closure": 2.589852473749787e-14,
+   "imep_net_bar": 15.113309901583428,
+   "volumetric_efficiency_intake_valve": 1.0736454169944016,
+   "p_max_bar": 74.29716903408918,
+   "pmep_bar": 0.6683277622425984,
+   "indicated_fuel_conversion_efficiency": 0.40280338084292794,
+   "residual_gas_fraction_ivc": 0.019984967255210956,
+   "exhaust_valve_mean_enthalpy_temperature_K": 1320.2648611425234,
+   "brake_power_kW": 24.59892481396462
+  },
+  {
+   "point": 4,
+   "overrides": {
+    "operating_point.rpm": 5000.0
+   },
+   "status": "completed",
+   "periodicity": "PERIODIC_CONVERGED",
+   "cycles": 4,
+   "closure": 2.0608485886820407e-14,
+   "imep_net_bar": 15.056255658543048,
+   "volumetric_efficiency_intake_valve": 1.0736564168252238,
+   "p_max_bar": 74.69226605741083,
+   "pmep_bar": 0.7789138489253654,
+   "indicated_fuel_conversion_efficiency": 0.4012786468934267,
+   "residual_gas_fraction_ivc": 0.02319006106992399,
+   "exhaust_valve_mean_enthalpy_temperature_K": 1330.757248677249,
+   "brake_power_kW": 26.867632216845625
+  },
+  {
+   "point": 5,
+   "overrides": {
+    "operating_point.rpm": 5500.0
+   },
+   "status": "completed",
+   "periodicity": "PERIODIC_CONVERGED",
+   "cycles": 6,
+   "closure": 2.0991049721237408e-14,
+   "imep_net_bar": 14.040815695865007,
+   "volumetric_efficiency_intake_valve": 1.0379427050472552,
+   "p_max_bar": 73.14903687325206,
+   "pmep_bar": 1.3164473382043138,
+   "indicated_fuel_conversion_efficiency": 0.38709125385122156,
+   "residual_gas_fraction_ivc": 0.03685146650823951,
+   "exhaust_valve_mean_enthalpy_temperature_K": 1357.1908580116965,
+   "brake_power_kW": 26.862805941297616
+  },
+  {
+   "point": 6,
+   "overrides": {
+    "operating_point.rpm": 6000.0
+   },
+   "status": "completed",
+   "periodicity": "PERIODIC_CONVERGED",
+   "cycles": 5,
+   "closure": 1.4525227697535428e-14,
+   "imep_net_bar": 12.64776145864315,
+   "volumetric_efficiency_intake_valve": 0.9646363083056566,
+   "p_max_bar": 68.88151283996137,
+   "pmep_bar": 1.6536770473847786,
+   "indicated_fuel_conversion_efficiency": 0.37518412781739213,
+   "residual_gas_fraction_ivc": 0.051218366676191764,
+   "exhaust_valve_mean_enthalpy_temperature_K": 1376.8269616607643,
+   "brake_power_kW": 25.45018679770933
+  },
+  {
+   "point": 7,
+   "overrides": {
+    "operating_point.rpm": 6500.0
+   },
+   "status": "completed",
+   "periodicity": "PERIODIC_CONVERGED",
+   "cycles": 4,
+   "closure": 1.1705547594885165e-14,
+   "imep_net_bar": 11.267807440142045,
+   "volumetric_efficiency_intake_valve": 0.8779035416067582,
+   "p_max_bar": 63.46741605615356,
+   "pmep_bar": 1.7564361928893009,
+   "indicated_fuel_conversion_efficiency": 0.3672713129967872,
+   "residual_gas_fraction_ivc": 0.0634298194533501,
+   "exhaust_valve_mean_enthalpy_temperature_K": 1387.4498316071522,
+   "brake_power_kW": 23.43607346699347
+  },
+  {
+   "point": 8,
+   "overrides": {
+    "operating_point.rpm": 7000.0
+   },
+   "status": "completed",
+   "periodicity": "PERIODIC_CONVERGED",
+   "cycles": 5,
+   "closure": 1.3985307862269933e-14,
+   "imep_net_bar": 10.205094846962808,
+   "volumetric_efficiency_intake_valve": 0.787729701771376,
+   "p_max_bar": 57.020934654060824,
+   "pmep_bar": 1.5206238288184841,
+   "indicated_fuel_conversion_efficiency": 0.3707099314166641,
+   "residual_gas_fraction_ivc": 0.07192960923961758,
+   "exhaust_valve_mean_enthalpy_temperature_K": 1380.6118512917094,
+   "brake_power_kW": 21.71454617753547
+  },
+  {
+   "point": 9,
+   "overrides": {
+    "operating_point.rpm": 7500.0
+   },
+   "status": "completed",
+   "periodicity": "PERIODIC_CONVERGED",
+   "cycles": 5,
+   "closure": 2.587964027360495e-14,
+   "imep_net_bar": 10.006882669042897,
+   "volumetric_efficiency_intake_valve": 0.7660878721229991,
+   "p_max_bar": 55.43557345266304,
+   "pmep_bar": 1.4183470564330591,
+   "indicated_fuel_conversion_efficiency": 0.37377875152803336,
+   "residual_gas_fraction_ivc": 0.07259949652624885,
+   "exhaust_valve_mean_enthalpy_temperature_K": 1378.973115741268,
+   "brake_power_kW": 22.101284763235736
+  },
+  {
+   "point": 10,
+   "overrides": {
+    "operating_point.rpm": 8000.0
+   },
+   "status": "completed",
+   "periodicity": "PERIODIC_CONVERGED",
+   "cycles": 4,
+   "closure": 1.795554065235043e-14,
+   "imep_net_bar": 9.520946109560931,
+   "volumetric_efficiency_intake_valve": 0.7373338040522007,
+   "p_max_bar": 53.47236402073316,
+   "pmep_bar": 1.4705783863625643,
+   "indicated_fuel_conversion_efficiency": 0.36949653026555324,
+   "residual_gas_fraction_ivc": 0.0715113756954816,
+   "exhaust_valve_mean_enthalpy_temperature_K": 1387.3245724856279,
+   "brake_power_kW": 21.368527498360667
+  },
+  {
+   "point": 11,
+   "overrides": {
+    "operating_point.rpm": 8500.0
+   },
+   "status": "completed",
+   "periodicity": "PERIODIC_CONVERGED",
+   "cycles": 5,
+   "closure": 1.7566923683470262e-14,
+   "imep_net_bar": 8.31313919134374,
+   "volumetric_efficiency_intake_valve": 0.6557314672137619,
+   "p_max_bar": 47.73039310716031,
+   "pmep_bar": 1.4572709377327038,
+   "indicated_fuel_conversion_efficiency": 0.3627717200915401,
+   "residual_gas_fraction_ivc": 0.07567834765659755,
+   "exhaust_valve_mean_enthalpy_temperature_K": 1394.153141384781,
+   "brake_power_kW": 17.85940891329356
+  },
+  {
+   "point": 12,
+   "overrides": {
+    "operating_point.rpm": 9000.0
+   },
+   "status": "completed",
+   "periodicity": "PERIODIC_CONVERGED",
+   "cycles": 5,
+   "closure": 1.7089753190589413e-14,
+   "imep_net_bar": 7.21678699228837,
+   "volumetric_efficiency_intake_valve": 0.5739360145899549,
+   "p_max_bar": 41.900917981274176,
+   "pmep_bar": 1.3539217498649938,
+   "indicated_fuel_conversion_efficiency": 0.35981130608695433,
+   "residual_gas_fraction_ivc": 0.08593109272878663,
+   "exhaust_valve_mean_enthalpy_temperature_K": 1393.1943160630901,
+   "brake_power_kW": 14.18570042121024
+  }
+ ]
+}

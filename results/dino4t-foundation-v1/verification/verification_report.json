@@ -1,0 +1,657 @@
+{
+  "schema": "DINO4T_VERIFICATION_REPORT_V1",
+  "evidence_level": "L1_NUMERICAL_VERIFICATION",
+  "experimental_validation": "NOT_PERFORMED",
+  "passed": [
+    "thermo_species_vs_janaf",
+    "thermo_energy_inversion",
+    "stoichiometry_afr_lhv_elements",
+    "slider_crank",
+    "orifice_psi",
+    "hllc_vs_frozen_gas1d",
+    "sod_shock_tube_exact_riemann",
+    "acoustic_pulse_self_convergence_minmod",
+    "quiescent_variable_area",
+    "quarter_wave_closed_open_pipe",
+    "choked_restriction_steady_flow",
+    "isentropic_motoring",
+    "closed_cylinder_burn_vs_independent_ode",
+    "acoustic_pulse_self_convergence_van_leer",
+    "acoustic_pulse_self_convergence_unlimited_central",
+    "engine_example_dx20mm",
+    "engine_example_dx10mm",
+    "engine_example_dx5mm",
+    "engine_mesh_convergence_gci"
+  ],
+  "failed": [],
+  "informational": [
+    "acoustic_pulse_self_convergence_first_order"
+  ],
+  "cases": [
+    {
+      "name": "thermo_species_vs_janaf",
+      "category": "thermo",
+      "passed": true,
+      "metrics": {
+        "worst": {
+          "cp": 0.0018189918038066216,
+          "s": 0.0007292385915887154,
+          "hf": 0.014242336841277847
+        },
+        "values": {
+          "N2": [
+            29.071023682705935,
+            191.51224064020283,
+            0.0014299020481128757
+          ],
+          "O2": [
+            29.3781858686466,
+            205.14829805902212,
+            1.6343332034535707e-08
+          ],
+          "AR": [
+            20.786156545,
+            154.73208105028544,
+            -1.162639819085598e-15
+          ],
+          "CO2": [
+            37.135175307051746,
+            213.78626673588707,
+            -393.5077576631587
+          ],
+          "H2O": [
+            33.587518924012166,
+            188.82803949509622,
+            -241.824621620908
+          ],
+          "CO": [
+            29.14083392856248,
+            197.65631746670059,
+            -110.52936976067767
+          ],
+          "H2": [
+            28.836182535200862,
+            130.68026977641395,
+            1.3281768232584e-08
+          ]
+        }
+      },
+      "tolerance": "cp rel<0.5%, S rel<0.2%, dHf<0.1 kJ/mol",
+      "reference": "NIST-JANAF 298.15 K",
+      "wall_seconds": 0.0
+    },
+    {
+      "name": "thermo_energy_inversion",
+      "category": "thermo",
+      "passed": true,
+      "metrics": {
+        "max_abs_error_K": 9.094947017729282e-13
+      },
+      "tolerance": "|T - T(e(T))| < 1e-7 K",
+      "reference": "round trip",
+      "wall_seconds": 0.0
+    },
+    {
+      "name": "stoichiometry_afr_lhv_elements",
+      "category": "thermo",
+      "passed": true,
+      "metrics": {
+        "afr": 15.124036209865958,
+        "lhv_MJ_kg": 44.650132266889415,
+        "max_element_change_kmol": 3.469446951953614e-18,
+        "max_mass_change": 5.551115123125783e-17
+      },
+      "tolerance": "AFR 15.13 +/-0.2%, LHV 44.3 MJ/kg +/-1.5%, elements & mass < 1e-15",
+      "reference": "Heywood (1988) App. D isooctane; element balance",
+      "wall_seconds": 0.0
+    },
+    {
+      "name": "slider_crank",
+      "category": "geometry",
+      "passed": true,
+      "metrics": {
+        "position_vs_shared_kernel": 0.0,
+        "dvdtheta_fd_rel": 1.0228634605979892e-08,
+        "tdc_bdc_volume_error": 1.0842021724855044e-19
+      },
+      "tolerance": "exact reuse; FD rel<1e-6",
+      "reference": "motorsim.kinematics, central FD",
+      "wall_seconds": 0.01600000000325963
+    },
+    {
+      "name": "orifice_psi",
+      "category": "duct",
+      "passed": true,
+      "metrics": {
+        "choked": 0.6847314563772704,
+        "continuity_jump": 1.1102230246251565e-16
+      },
+      "tolerance": "psi* = 0.684731 (gamma 1.4); continuous at critical ratio",
+      "reference": "compressible orifice theory",
+      "wall_seconds": 0.0
+    },
+    {
+      "name": "hllc_vs_frozen_gas1d",
+      "category": "flux",
+      "passed": true,
+      "metrics": {
+        "max_rel_difference": 1.1330394321155813e-13,
+        "samples": 300
+      },
+      "tolerance": "max |F - F_gas1d| / scale < 1e-12 (same wave speeds)",
+      "reference": "motorsim.gas1d.riemann.hllc_flux (frozen P1)",
+      "wall_seconds": 0.061999999976251274
+    },
+    {
+      "name": "sod_shock_tube_exact_riemann",
+      "category": "duct",
+      "passed": true,
+      "metrics": {
+        "resolutions": [
+          100,
+          200,
+          400,
+          800
+        ],
+        "L1_density_error": [
+          0.008251691954950539,
+          0.004463144901696761,
+          0.0024975212992322526,
+          0.0014251000697065985
+        ],
+        "observed_order": [
+          0.886629318495942,
+          0.8375636646987842,
+          0.8094337535378607
+        ],
+        "max_relative_conservation_error": [
+          3.947743022810485e-15,
+          2.4673393892565527e-15,
+          3.947743022810494e-15,
+          8.89622740764305e-15
+        ]
+      },
+      "tolerance": "monotone L1 decrease, finest order > 0.6 (discontinuous data), conservation < 1e-13",
+      "reference": "exact Riemann solution, motorsim.gas1d.exact_riemann_reference_v1",
+      "wall_seconds": 1.2660000000032596
+    },
+    {
+      "name": "acoustic_pulse_self_convergence_minmod",
+      "category": "duct",
+      "passed": true,
+      "metrics": {
+        "resolutions": [
+          100,
+          200,
+          400,
+          800
+        ],
+        "successive_differences": [
+          10.831517042711205,
+          3.6499115899871675,
+          1.3091093364786508
+        ],
+        "observed_order": [
+          1.5693018945228108,
+          1.4792759228857402
+        ]
+      },
+      "tolerance": "observed L1 order (finest pair) > 1.35",
+      "reference": "Richardson self-convergence (smooth solution)",
+      "wall_seconds": 1.312000000034459
+    },
+    {
+      "name": "quiescent_variable_area",
+      "category": "duct",
+      "passed": true,
+      "metrics": {
+        "max_velocity_m_s": 1.7122518613918105e-13,
+        "steps": 435
+      },
+      "tolerance": "|u| < 1e-9 m/s after 5 ms",
+      "reference": "exact rest state",
+      "wall_seconds": 0.43799999996554106
+    },
+    {
+      "name": "quarter_wave_closed_open_pipe",
+      "category": "duct",
+      "passed": true,
+      "metrics": {
+        "analytic_period_s": 0.005758095476374854,
+        "measured_period_s": 0.005755661628443737,
+        "relative_error": 0.0004226828021701318,
+        "zero_crossings": 12
+      },
+      "tolerance": "|T - 4L/a| / T < 1%",
+      "reference": "linear acoustics f = a/(4L), ideal open end",
+      "wall_seconds": 11.562000000034459
+    },
+    {
+      "name": "choked_restriction_steady_flow",
+      "category": "duct",
+      "passed": true,
+      "metrics": {
+        "mdot_kg_s": 0.05851191166405579,
+        "isentropic_choked_kg_s": 0.05864897945740837,
+        "relative_difference": 0.002337087441600293,
+        "inlet_outlet_relative_mismatch": 7.987719333098058e-07,
+        "note": "expected deficit ~0.24%: the duct->volume branch uses the static face pressure as upstream total pressure (M_duct ~ 0.06)"
+      },
+      "tolerance": "|mdot - mdot*| / mdot* < 1% ; |mdot_in - mdot_out| / mdot* < 1e-4",
+      "reference": "isentropic choked orifice, Heywood App. C",
+      "wall_seconds": 18.76600000000326
+    },
+    {
+      "name": "isentropic_motoring",
+      "category": "cylinder",
+      "passed": true,
+      "metrics": {
+        "dtheta": [
+          1.0,
+          0.5,
+          0.25
+        ],
+        "max_rel_pV_gamma_error": [
+          8.412901560550523e-05,
+          2.0693163270579795e-05,
+          5.130817111065333e-06
+        ],
+        "observed_order": [
+          2.0234492630458516,
+          2.011893693918738
+        ],
+        "thermally_perfect_entropy_drift_over_cp": [
+          1.4711186296630542e-05,
+          3.6500256017547426e-06
+        ],
+        "entropy_drift_order": 2.01093510050287,
+        "energy_closure": [
+          1.322128469867103e-16,
+          5.55294472046662e-15
+        ]
+      },
+      "tolerance": "pV^gamma and NASA-gas entropy drift: order > 1.8; drift/cp < 1e-5 at finest; energy closure < 1e-12",
+      "reference": "isentropic relations (exact)",
+      "wall_seconds": 4.577999999979511
+    },
+    {
+      "name": "closed_cylinder_burn_vs_independent_ode",
+      "category": "cylinder",
+      "passed": true,
+      "metrics": {
+        "dtheta": [
+          0.5,
+          0.25,
+          0.125
+        ],
+        "max_rel_pressure_difference": [
+          1.1068476979298928e-05,
+          2.7240184893386714e-06,
+          6.423288280995197e-07
+        ],
+        "observed_order": [
+          2.022648320342132,
+          2.0843525436882384
+        ],
+        "energy_closure": [
+          4.122874886717559e-15,
+          1.4172381796109587e-15,
+          4.63823388967511e-15
+        ]
+      },
+      "tolerance": "finest max |p - p_ref|/p_max < 1e-4; order > 1.7; energy closure < 1e-12",
+      "reference": "temperature-form single-zone ODE, scipy DOP853 rtol 1e-12 (independent formulation)",
+      "wall_seconds": 7.01600000000326
+    },
+    {
+      "name": "acoustic_pulse_self_convergence_first_order",
+      "category": "duct",
+      "passed": false,
+      "metrics": {
+        "resolutions": [
+          100,
+          200,
+          400,
+          800
+        ],
+        "successive_differences": [
+          18.051990943831186,
+          13.047403777963337,
+          8.419267183924932
+        ],
+        "observed_order": [
+          0.4683951974987883,
+          0.6319961912371552
+        ]
+      },
+      "tolerance": "observed L1 order (finest pair) > 0.8",
+      "reference": "Richardson self-convergence (smooth solution)",
+      "informational": true,
+      "note": "first-order comparator; initial expectation order > 0.8 not met (pre-asymptotic, increasing); not an acceptance criterion"
+    },
+    {
+      "name": "acoustic_pulse_self_convergence_van_leer",
+      "category": "duct",
+      "passed": true,
+      "metrics": {
+        "resolutions": [
+          100,
+          200,
+          400,
+          800
+        ],
+        "successive_differences": [
+          7.815264425592467,
+          2.623083874806979,
+          0.7777451822998775
+        ],
+        "observed_order": [
+          1.5750307474718896,
+          1.753894481245215
+        ]
+      },
+      "tolerance": "observed L1 order (finest pair) > 1.6",
+      "reference": "Richardson self-convergence (smooth solution)"
+    },
+    {
+      "name": "acoustic_pulse_self_convergence_unlimited_central",
+      "category": "duct",
+      "passed": true,
+      "metrics": {
+        "resolutions": [
+          100,
+          200,
+          400,
+          800
+        ],
+        "successive_differences": [
+          8.00516055239961,
+          2.2100356647673465,
+          0.5605327957132249
+        ],
+        "observed_order": [
+          1.8568606863829622,
+          1.9791989615329002
+        ]
+      },
+      "tolerance": "observed L1 order (finest pair) > 1.9",
+      "reference": "Richardson self-convergence (smooth solution)"
+    },
+    {
+      "name": "engine_example_dx20mm",
+      "category": "engine",
+      "passed": true,
+      "metrics": {
+        "periodicity": "PERIODIC_CONVERGED",
+        "cycles": 6,
+        "closure": {
+          "mass": 3.3891620821815625e-15,
+          "energy": 5.275681815071864e-15,
+          "elements": 2.321813378621413e-14
+        },
+        "final": {
+          "work_net_J": 626.0560776180569,
+          "work_gross_J": 697.6099714187028,
+          "work_pumping_J": -71.55389380064548,
+          "imep_net_bar": 12.532219729789459,
+          "imep_gross_bar": 13.964566050974426,
+          "pmep_bar": 1.4323463211849587,
+          "fmep_bar": 2.456712168652272,
+          "bmep_bar": 10.075507561137186,
+          "indicated_power_kW": 31.302803880902843,
+          "indicated_torque_Nm": 49.81995970281852,
+          "brake_power_kW": 25.166462445366786,
+          "brake_torque_Nm": 40.053668983166716,
+          "mechanical_efficiency": 0.7215052386417788,
+          "volumetric_efficiency_intake_valve": 0.9243023786642612,
+          "volumetric_efficiency_system_inlet": 0.9243024369783226,
+          "air_per_cycle_mg": 546.5751326757113,
+          "fuel_per_cycle_mg": 36.139501724243516,
+          "fuel_burned_per_cycle_mg": 35.45189280229848,
+          "trapped_mass_mg": 613.137399170796,
+          "residual_gas_fraction_ivc": 0.04961818478620211,
+          "trapping_efficiency": 0.9999999999999991,
+          "fresh_short_circuit_fraction": 1.6745451334728726e-15,
+          "intake_backflow_mg": 6.251511632091011,
+          "exhaust_backflow_mg": 0.0,
+          "indicated_fuel_conversion_efficiency": 0.3879790951194988,
+          "brake_fuel_conversion_efficiency": 0.31192289879403085,
+          "isfc_g_kWh": 207.81238431910757,
+          "bsfc_g_kWh": 258.4833019136324,
+          "heat_loss_J": 206.13510497106364,
+          "heat_loss_fraction_of_fuel_energy": 0.1277459230222949,
+          "p_max_bar": 68.49123373045447,
+          "theta_p_max_deg": 15.0,
+          "T_max_K": 2672.916087323562,
+          "exhaust_valve_mean_enthalpy_temperature_K": 1358.3539580744534,
+          "lower_heating_value_MJ_kg": 44.650132266889415,
+          "mass_balance": {
+            "system_inlet_mg": 582.7146711627643,
+            "system_outlet_mg": 582.7157816299946,
+            "intake_valve_net_mg": 582.7146355686829,
+            "exhaust_valve_net_mg": 582.7147122426217,
+            "system_relative_imbalance": -1.9056792033511556e-06,
+            "fuel_system_net_mg": 35.45189450025677
+          },
+          "thermo_fit_range_exceeded": false,
+          "steps": 1440,
+          "rejected_steps": 0,
+          "CA10_deg": -4.84757314187028,
+          "CA50_deg": 8.373028311231646,
+          "CA90_deg": 22.110118533898543
+        },
+        "wall_seconds": 30.96899999998277
+      },
+      "tolerance": "completed, periodic (preregistered tolerances), ledger closure < 1e-12",
+      "reference": "conservation identities; cycle-to-cycle periodicity"
+    },
+    {
+      "name": "engine_example_dx10mm",
+      "category": "engine",
+      "passed": true,
+      "metrics": {
+        "periodicity": "PERIODIC_CONVERGED",
+        "cycles": 6,
+        "closure": {
+          "mass": 8.35972705201051e-15,
+          "energy": 5.7865712525148415e-15,
+          "elements": 2.225437500122687e-14
+        },
+        "final": {
+          "work_net_J": 624.3657383481069,
+          "work_gross_J": 696.5484459779277,
+          "work_pumping_J": -72.18270762982156,
+          "imep_net_bar": 12.498382979526601,
+          "imep_gross_bar": 13.943316724359516,
+          "pmep_bar": 1.444933744832929,
+          "fmep_bar": 2.4563194712478182,
+          "bmep_bar": 10.042063508278783,
+          "indicated_power_kW": 31.218286917405344,
+          "indicated_torque_Nm": 49.685446777661085,
+          "brake_power_kW": 25.08292635597628,
+          "brake_torque_Nm": 39.92071716763606,
+          "mechanical_efficiency": 0.7202062254481323,
+          "volumetric_efficiency_intake_valve": 0.9228879996798574,
+          "volumetric_efficiency_system_inlet": 0.9228880334543045,
+          "air_per_cycle_mg": 545.738756616427,
+          "fuel_per_cycle_mg": 36.08420061049486,
+          "fuel_burned_per_cycle_mg": 35.39809592852002,
+          "trapped_mass_mg": 612.6103549873875,
+          "residual_gas_fraction_ivc": 0.050256084493499956,
+          "trapping_efficiency": 0.9999999999999989,
+          "fresh_short_circuit_fraction": -3.7269143784067065e-16,
+          "intake_backflow_mg": 6.4816360019630235,
+          "exhaust_backflow_mg": 0.0,
+          "indicated_fuel_conversion_efficiency": 0.3875245539644764,
+          "brake_fuel_conversion_efficiency": 0.31136397310783,
+          "isfc_g_kWh": 208.0561347608022,
+          "bsfc_g_kWh": 258.94730214927785,
+          "heat_loss_J": 206.21048088683898,
+          "heat_loss_fraction_of_fuel_energy": 0.12798848450572536,
+          "p_max_bar": 68.41269424956367,
+          "theta_p_max_deg": 15.114799307901649,
+          "T_max_K": 2672.0539877904134,
+          "exhaust_valve_mean_enthalpy_temperature_K": 1358.8664732447494,
+          "lower_heating_value_MJ_kg": 44.650132266889415,
+          "mass_balance": {
+            "system_inlet_mg": 581.8229785182181,
+            "system_outlet_mg": 581.8250824532337,
+            "intake_valve_net_mg": 581.8229591469441,
+            "exhaust_valve_net_mg": 581.8230847782094,
+            "system_relative_imbalance": -3.616108495818056e-06,
+            "fuel_system_net_mg": 35.39809571843398
+          },
+          "thermo_fit_range_exceeded": false,
+          "steps": 1931,
+          "rejected_steps": 0,
+          "CA10_deg": -4.847307541344067,
+          "CA50_deg": 8.373007938040042,
+          "CA90_deg": 22.110241376519266
+        },
+        "wall_seconds": 42.875
+      },
+      "tolerance": "completed, periodic (preregistered tolerances), ledger closure < 1e-12",
+      "reference": "conservation identities; cycle-to-cycle periodicity"
+    },
+    {
+      "name": "engine_example_dx5mm",
+      "category": "engine",
+      "passed": true,
+      "metrics": {
+        "periodicity": "PERIODIC_CONVERGED",
+        "cycles": 6,
+        "closure": {
+          "mass": 8.224368557608473e-15,
+          "energy": 1.0474554568538462e-14,
+          "elements": 1.9766354819077945e-14
+        },
+        "final": {
+          "work_net_J": 623.3991713661459,
+          "work_gross_J": 695.8756652924817,
+          "work_pumping_J": -72.47649392633787,
+          "imep_net_bar": 12.479034505428912,
+          "imep_gross_bar": 13.929849184179973,
+          "pmep_bar": 1.4508146787511036,
+          "fmep_bar": 2.456074786834951,
+          "bmep_bar": 10.022959718593961,
+          "indicated_power_kW": 31.169958568307294,
+          "indicated_torque_Nm": 49.60852982115683,
+          "brake_power_kW": 25.035209176196506,
+          "brake_torque_Nm": 39.844772917312504,
+          "mechanical_efficiency": 0.7195311008806156,
+          "volumetric_efficiency_intake_valve": 0.921988324191213,
+          "volumetric_efficiency_system_inlet": 0.9219883426197908,
+          "air_per_cycle_mg": 545.2067442999798,
+          "fuel_per_cycle_mg": 36.04902400045695,
+          "fuel_burned_per_cycle_mg": 35.36381401658319,
+          "trapped_mass_mg": 612.2187932501646,
+          "residual_gas_fraction_ivc": 0.050575097158037124,
+          "trapping_efficiency": 1.000000000000002,
+          "fresh_short_circuit_fraction": 3.5440235436266848e-15,
+          "intake_backflow_mg": 6.573567029705204,
+          "exhaust_backflow_mg": 0.0,
+          "indicated_fuel_conversion_efficiency": 0.3873021964179221,
+          "brake_fuel_conversion_efficiency": 0.3110748922066848,
+          "isfc_g_kWh": 208.1755837391423,
+          "bsfc_g_kWh": 259.18794104791544,
+          "heat_loss_J": 206.25092921342835,
+          "heat_loss_fraction_of_fuel_energy": 0.12813850509705085,
+          "p_max_bar": 68.36375736699019,
+          "theta_p_max_deg": 14.988967157936713,
+          "T_max_K": 2671.591552190519,
+          "exhaust_valve_mean_enthalpy_temperature_K": 1359.0526811939562,
+          "lower_heating_value_MJ_kg": 44.650132266889415,
+          "mass_balance": {
+            "system_inlet_mg": 581.2557799176217,
+            "system_outlet_mg": 581.2576882928424,
+            "intake_valve_net_mg": 581.2557698923589,
+            "exhaust_valve_net_mg": 581.2558735225548,
+            "system_relative_imbalance": -3.2831935381764995e-06,
+            "fuel_system_net_mg": 35.36381358979185
+          },
+          "thermo_fit_range_exceeded": false,
+          "steps": 3885,
+          "rejected_steps": 0,
+          "CA10_deg": -4.845210466680102,
+          "CA50_deg": 8.372996709217695,
+          "CA90_deg": 22.10802286264447
+        },
+        "wall_seconds": 92.43699999997625
+      },
+      "tolerance": "completed, periodic (preregistered tolerances), ledger closure < 1e-12",
+      "reference": "conservation identities; cycle-to-cycle periodicity"
+    },
+    {
+      "name": "engine_mesh_convergence_gci",
+      "category": "engine",
+      "passed": true,
+      "metrics": {
+        "dx_mm": [
+          20.0,
+          10.0,
+          5.0
+        ],
+        "study": {
+          "imep_net_bar": {
+            "values": [
+              12.532219729789459,
+              12.498382979526601,
+              12.479034505428912
+            ],
+            "order": 0.8063712224693714,
+            "gci_fine": 0.0025882471988213905,
+            "extrapolated": 12.453195444546775,
+            "monotone": true
+          },
+          "volumetric_efficiency_intake_valve": {
+            "values": [
+              0.9243023786642612,
+              0.9228879996798574,
+              0.921988324191213
+            ],
+            "order": 0.6526921208346718,
+            "gci_fine": 0.002132059157187148,
+            "extrapolated": 0.9204157372716838,
+            "monotone": true
+          },
+          "p_max_bar": {
+            "values": [
+              68.49123373045447,
+              68.41269424956367,
+              68.36375736699019
+            ],
+            "order": 0.6824958621630407,
+            "gci_fine": 0.0014791998590104958,
+            "extrapolated": 68.28285843878324,
+            "monotone": true
+          },
+          "pmep_bar": {
+            "values": [
+              1.4323463211849587,
+              1.444933744832929,
+              1.4508146787511036
+            ],
+            "order": 1.0978658425604197,
+            "gci_fine": 0.004443195341466141,
+            "extrapolated": 1.4559716811686696,
+            "monotone": true
+          },
+          "trapped_mass_mg": {
+            "values": [
+              613.137399170796,
+              612.6103549873875,
+              612.2187932501646
+            ],
+            "order": 0.4286841175887785,
+            "gci_fine": 0.00231057898967328,
+            "extrapolated": 611.0871293455511,
+            "monotone": true
+          }
+        }
+      },
+      "tolerance": "all runs periodic & conservative; medium-fine change < 2% for every indicator",
+      "reference": "Richardson/GCI, Celik et al. (2008) J. Fluids Eng. 130:078001"
+    }
+  ],
+  "wall_seconds": 215.39100000000326
+}

@@ -1,0 +1,195 @@
+{
+  "schema": "DINO4T_OPERATING_POINT_RESULT_V1",
+  "model_id": "DINO4T_FOUNDATION_V1",
+  "models": {
+    "thermodynamics": "THERMALLY_PERFECT_NASA7_8_SPECIES_V1",
+    "cylinder": "SINGLE_ZONE_0D_V1",
+    "combustion": "WIEBE_SINGLE_ZONE_V1",
+    "heat_transfer": "WOSCHNI_1967",
+    "friction": "CHEN_FLYNN",
+    "valve_boundary": "QUASI_STEADY_RESTRICTION_V1",
+    "duct": "QUASI_1D_HLLC_MUSCL_MULTISPECIES_V1",
+    "time_integration": "SSPRK2_EVENT_ALIGNED_V1"
+  },
+  "config_identifier": "DINO4T-EXAMPLE-500CC-SYNTHETIC-V1",
+  "config_sha256": "cb89fedcf74600b99e41ae00cce0c4e061b6f490706ba86e41890aff9b834bd4",
+  "code_commit": "e95db4c5af646ca53b83e14e16a3c00af0af8c75",
+  "thermo_sources": {
+    "gri30_sha256": "8d918b771aa965fe05e8c8f1f7e926a5326ebc90e7fc923ce129dc118b634dcc",
+    "burcat_sha256": "42a597ff852d1a2995f81d4fdca069f3cdcaef77ead5e3c66e02e80ed6699101",
+    "accessed": "2026-11-04"
+  },
+  "provenance": {
+    "geometry": "SYNTHETIC_ASSUMPTION",
+    "intake_valve": "SYNTHETIC_ASSUMPTION",
+    "exhaust_valve": "SYNTHETIC_ASSUMPTION",
+    "intake_duct": "SYNTHETIC_ASSUMPTION",
+    "exhaust_duct": "SYNTHETIC_ASSUMPTION",
+    "combustion": "STANDARD_V1",
+    "heat_transfer": "STANDARD_V1",
+    "friction": "SYNTHETIC_ASSUMPTION",
+    "ambient": "SYNTHETIC_ASSUMPTION"
+  },
+  "status": "completed",
+  "termination": "periodic_converged",
+  "periodicity": {
+    "status": "PERIODIC_CONVERGED",
+    "tolerances": {
+      "imep_rel": 0.002,
+      "trapped_mass_rel": 0.002,
+      "pressure_trace_rel": 0.005,
+      "mass_imbalance_rel": 0.005,
+      "consecutive": 2
+    },
+    "history": [
+      null,
+      {
+        "imep_rel": 0.0007258806033568977,
+        "trapped_mass_rel": 0.006323145092254506,
+        "pressure_trace_rel": 0.003090500710553436,
+        "mass_imbalance_rel": 0.0680285723336318,
+        "passed": false
+      },
+      {
+        "imep_rel": 0.003461800334847782,
+        "trapped_mass_rel": 0.0030075476827079806,
+        "pressure_trace_rel": 0.0034184105941502986,
+        "mass_imbalance_rel": 0.0144462844957937,
+        "passed": false
+      },
+      {
+        "imep_rel": 0.0017777432083130804,
+        "trapped_mass_rel": 0.0010428736006758703,
+        "pressure_trace_rel": 0.0012584176031385167,
+        "mass_imbalance_rel": 0.00018206049995900565,
+        "passed": true
+      },
+      {
+        "imep_rel": 0.00014334232415436554,
+        "trapped_mass_rel": 9.525282053276714e-05,
+        "pressure_trace_rel": 0.00011315226724202902,
+        "mass_imbalance_rel": 0.0002806404705216052,
+        "passed": true
+      }
+    ]
+  },
+  "cycles_run": 5,
+  "operating_point": {
+    "rpm": 4000.0,
+    "equivalence_ratio": 1.0
+  },
+  "final_cycle": {
+    "work_net_J": 720.6167644546991,
+    "work_gross_J": 737.944625038285,
+    "work_pumping_J": -17.327860583586734,
+    "imep_net_bar": 14.42510975610366,
+    "imep_gross_bar": 14.771974141011269,
+    "pmep_bar": 0.34686438490762356,
+    "fmep_bar": 1.8073831577370756,
+    "bmep_bar": 12.617726598366586,
+    "indicated_power_kW": 24.02055881515664,
+    "indicated_torque_Nm": 57.34486006892671,
+    "brake_power_kW": 21.01092116414486,
+    "brake_torque_Nm": 50.15987943281662,
+    "mechanical_efficiency": 0.8541665777315526,
+    "volumetric_efficiency_intake_valve": 0.989739336910541,
+    "volumetric_efficiency_system_inlet": 0.9897507420169337,
+    "air_per_cycle_mg": 585.2704935889249,
+    "fuel_per_cycle_mg": 38.698036990075664,
+    "fuel_burned_per_cycle_mg": 37.94616485467172,
+    "trapped_mass_mg": 642.6752984151865,
+    "residual_gas_fraction_ivc": 0.02910765225486099,
+    "trapping_efficiency": 0.9999999999999984,
+    "fresh_short_circuit_fraction": -4.17021867563914e-15,
+    "intake_backflow_mg": 14.401405812143924,
+    "exhaust_backflow_mg": 0.03956886730166712,
+    "indicated_fuel_conversion_efficiency": 0.4170543700039751,
+    "brake_fuel_conversion_efficiency": 0.36479985985115726,
+    "isfc_g_kWh": 193.32457977118037,
+    "bsfc_g_kWh": 221.01669900764105,
+    "heat_loss_J": 229.7051147463594,
+    "heat_loss_fraction_of_fuel_energy": 0.1329410119812111,
+    "p_max_bar": 71.40943154741507,
+    "theta_p_max_deg": 15.111063903667855,
+    "T_max_K": 2661.536021266043,
+    "exhaust_valve_mean_enthalpy_temperature_K": 1287.5092622760496,
+    "lower_heating_value_MJ_kg": 44.650132266889415,
+    "mass_balance": {
+      "system_inlet_mg": 623.9757195198497,
+      "system_outlet_mg": 624.1508323593698,
+      "intake_valve_net_mg": 623.9693523748862,
+      "exhaust_valve_net_mg": 623.969700035695,
+      "system_relative_imbalance": -0.0002806404705216052,
+      "fuel_system_net_mg": 37.94663774669792
+    },
+    "thermo_fit_range_exceeded": false,
+    "steps": 2663,
+    "rejected_steps": 0,
+    "CA10_deg": -4.845330488859333,
+    "CA50_deg": 8.373012831426037,
+    "CA90_deg": 22.108714676346526
+  },
+  "cycle_history": [
+    {
+      "imep_net_bar": 14.488396038438463,
+      "pmep_bar": 0.42543710929115763,
+      "volumetric_efficiency_intake_valve": 0.9988716565085204,
+      "trapped_mass_mg": 649.3313091864621,
+      "residual_gas_fraction_ivc": 0.03019839740255189,
+      "p_max_bar": 71.95113189618687
+    },
+    {
+      "imep_net_bar": 14.49892052361617,
+      "pmep_bar": 0.35820647507894754,
+      "volumetric_efficiency_intake_valve": 0.9954254433435197,
+      "trapped_mass_mg": 645.2254931055326,
+      "residual_gas_fraction_ivc": 0.027384485150548744,
+      "p_max_bar": 71.73173400605826
+    },
+    {
+      "imep_net_bar": 14.448728155692583,
+      "pmep_bar": 0.34544178211166005,
+      "volumetric_efficiency_intake_valve": 0.9912213212937614,
+      "trapped_mass_mg": 643.2849466689189,
+      "residual_gas_fraction_ivc": 0.02857539153298286,
+      "p_max_bar": 71.4879308058253
+    },
+    {
+      "imep_net_bar": 14.423042027345039,
+      "pmep_bar": 0.3469042543414372,
+      "volumetric_efficiency_intake_valve": 0.9896031586727972,
+      "trapped_mass_mg": 642.6140817803257,
+      "residual_gas_fraction_ivc": 0.02914876101648972,
+      "p_max_bar": 71.40180531399322
+    },
+    {
+      "imep_net_bar": 14.42510975610366,
+      "pmep_bar": 0.34686438490762356,
+      "volumetric_efficiency_intake_valve": 0.989739336910541,
+      "trapped_mass_mg": 642.6752984151865,
+      "residual_gas_fraction_ivc": 0.02910765225486099,
+      "p_max_bar": 71.40943154741507
+    }
+  ],
+  "conservation": {
+    "final_relative_closure": {
+      "mass": 2.1817356516939816e-15,
+      "energy": 9.932462251430915e-15,
+      "elements": 4.7567438862939395e-15,
+      "tracer": 9.123621816174852e-15
+    },
+    "max_relative_closure": {
+      "mass": 2.3837840948229764e-15,
+      "energy": 1.1022661126073166e-14,
+      "elements": 2.2330238687189416e-14
+    }
+  },
+  "wall_seconds": 48.70300000003772,
+  "evidence_level": "L1_ENGINEERING_RUN",
+  "claims": {
+    "numerical_verification": "see docs/dino4t/verification_report.md (separate evidence)",
+    "calibration": "NOT_PERFORMED",
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_capability": "NOT_CLAIMED"
+  }
+}

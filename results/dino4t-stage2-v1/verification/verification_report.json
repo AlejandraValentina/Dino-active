@@ -1,0 +1,938 @@
+{
+  "schema": "DINO4T_VERIFICATION_REPORT_V1",
+  "evidence_level": "L1_NUMERICAL_VERIFICATION",
+  "experimental_validation": "NOT_PERFORMED",
+  "passed": [
+    "thermo_species_vs_janaf",
+    "thermo_energy_inversion",
+    "stoichiometry_afr_lhv_elements",
+    "slider_crank",
+    "orifice_psi",
+    "hllc_vs_frozen_gas1d",
+    "sod_shock_tube_exact_riemann",
+    "quiescent_variable_area",
+    "quarter_wave_closed_open_pipe",
+    "choked_restriction_steady_flow",
+    "isentropic_motoring",
+    "closed_cylinder_burn_vs_independent_ode",
+    "open_end_steady_flow_vs_isentropic_nozzle",
+    "nozzle_area_mach_steady_van_leer",
+    "nozzle_area_mach_steady_minmod",
+    "order_of_convergence_monotone_vs_extremum",
+    "fanno_flow_constant_friction_factor",
+    "wall_heat_transfer_reynolds_analogy",
+    "helmholtz_resonator_plenum_neck",
+    "vessel_discharge_vs_independent_ode",
+    "vessel_charge_vs_independent_ode",
+    "strong_unsteady_inflow_vs_shock_contact_solution",
+    "open_end_shock_reflection_vs_exact",
+    "equilibrium_solver_vs_cantera_tp",
+    "two_zone_closure_vs_cantera",
+    "two_zone_closed_cylinder_temporal_order",
+    "intake_runner_ringing_after_IVC_vs_webster_eigenfrequency",
+    "engine_example_dx20mm",
+    "engine_example_dx10mm",
+    "engine_example_dx5mm",
+    "engine_mesh_convergence_gci"
+  ],
+  "failed": [],
+  "informational": [],
+  "cases": [
+    {
+      "name": "thermo_species_vs_janaf",
+      "category": "thermo",
+      "passed": true,
+      "metrics": {
+        "worst": {
+          "cp": 0.0018189918038066216,
+          "s": 0.0007292385915887154,
+          "hf": 0.014242336841277847
+        },
+        "values": {
+          "N2": [
+            29.071023682705935,
+            191.51224064020283,
+            0.0014299020481128757
+          ],
+          "O2": [
+            29.3781858686466,
+            205.14829805902212,
+            1.6343332034535707e-08
+          ],
+          "AR": [
+            20.786156545,
+            154.73208105028544,
+            -1.162639819085598e-15
+          ],
+          "CO2": [
+            37.135175307051746,
+            213.78626673588707,
+            -393.5077576631587
+          ],
+          "H2O": [
+            33.587518924012166,
+            188.82803949509622,
+            -241.824621620908
+          ],
+          "CO": [
+            29.14083392856248,
+            197.65631746670059,
+            -110.52936976067767
+          ],
+          "H2": [
+            28.836182535200862,
+            130.68026977641395,
+            1.3281768232584e-08
+          ]
+        }
+      },
+      "tolerance": "cp rel<0.5%, S rel<0.2%, dHf<0.1 kJ/mol",
+      "reference": "NIST-JANAF 298.15 K",
+      "wall_seconds": 0.0
+    },
+    {
+      "name": "thermo_energy_inversion",
+      "category": "thermo",
+      "passed": true,
+      "metrics": {
+        "max_abs_error_K": 9.094947017729282e-13
+      },
+      "tolerance": "|T - T(e(T))| < 1e-7 K",
+      "reference": "round trip",
+      "wall_seconds": 0.01600000000325963
+    },
+    {
+      "name": "stoichiometry_afr_lhv_elements",
+      "category": "thermo",
+      "passed": true,
+      "metrics": {
+        "afr": 15.124036209865958,
+        "lhv_MJ_kg": 44.650132266889415,
+        "max_element_change_kmol": 3.469446951953614e-18,
+        "max_mass_change": 5.551115123125783e-17
+      },
+      "tolerance": "AFR 15.13 +/-0.2%, LHV 44.3 MJ/kg +/-1.5%, elements & mass < 1e-15",
+      "reference": "Heywood (1988) App. D isooctane; element balance",
+      "wall_seconds": 0.0
+    },
+    {
+      "name": "slider_crank",
+      "category": "geometry",
+      "passed": true,
+      "metrics": {
+        "position_vs_shared_kernel": 0.0,
+        "dvdtheta_fd_rel": 1.0228634605979892e-08,
+        "tdc_bdc_volume_error": 1.0842021724855044e-19
+      },
+      "tolerance": "exact reuse; FD rel<1e-6",
+      "reference": "motorsim.kinematics, central FD",
+      "wall_seconds": 0.01600000000325963
+    },
+    {
+      "name": "orifice_psi",
+      "category": "duct",
+      "passed": true,
+      "metrics": {
+        "choked": 0.6847314563772704,
+        "continuity_jump": 1.1102230246251565e-16
+      },
+      "tolerance": "psi* = 0.684731 (gamma 1.4); continuous at critical ratio",
+      "reference": "compressible orifice theory",
+      "wall_seconds": 0.0
+    },
+    {
+      "name": "hllc_vs_frozen_gas1d",
+      "category": "flux",
+      "passed": true,
+      "metrics": {
+        "max_rel_difference": 1.1330394321155813e-13,
+        "samples": 300
+      },
+      "tolerance": "max |F - F_gas1d| / scale < 1e-12 (same wave speeds)",
+      "reference": "motorsim.gas1d.riemann.hllc_flux (frozen P1)",
+      "wall_seconds": 0.07800000003771856
+    },
+    {
+      "name": "sod_shock_tube_exact_riemann",
+      "category": "duct",
+      "passed": true,
+      "metrics": {
+        "resolutions": [
+          100,
+          200,
+          400,
+          800
+        ],
+        "L1_density_error": [
+          0.008251691954950539,
+          0.004463144901696761,
+          0.0024975212992322526,
+          0.0014251000697065985
+        ],
+        "observed_order": [
+          0.886629318495942,
+          0.8375636646987842,
+          0.8094337535378607
+        ],
+        "max_relative_conservation_error": [
+          3.947743022810485e-15,
+          2.4673393892565527e-15,
+          3.947743022810494e-15,
+          8.89622740764305e-15
+        ]
+      },
+      "tolerance": "monotone L1 decrease, finest order > 0.6 (discontinuous data), conservation < 1e-13",
+      "reference": "exact Riemann solution, motorsim.gas1d.exact_riemann_reference_v1",
+      "wall_seconds": 1.327999999979511
+    },
+    {
+      "name": "quiescent_variable_area",
+      "category": "duct",
+      "passed": true,
+      "metrics": {
+        "max_velocity_m_s": 1.7122518613918105e-13,
+        "steps": 435
+      },
+      "tolerance": "|u| < 1e-9 m/s after 5 ms",
+      "reference": "exact rest state",
+      "wall_seconds": 0.5619999999762513
+    },
+    {
+      "name": "quarter_wave_closed_open_pipe",
+      "category": "duct",
+      "passed": true,
+      "metrics": {
+        "analytic_period_s": 0.005758095476374854,
+        "measured_period_s": 0.005755677308473636,
+        "relative_error": 0.00041995967436444956,
+        "zero_crossings": 12
+      },
+      "tolerance": "|T - 4L/a| / T < 1%",
+      "reference": "linear acoustics f = a/(4L), ideal open end",
+      "wall_seconds": 12.15700000000652
+    },
+    {
+      "name": "choked_restriction_steady_flow",
+      "category": "duct",
+      "passed": true,
+      "metrics": {
+        "mdot_kg_s": 0.058649153086397385,
+        "isentropic_choked_kg_s": 0.05864897945740837,
+        "relative_difference": 2.960477584079513e-06,
+        "inlet_outlet_relative_mismatch": 7.690378615691877e-07,
+        "note": "stage-1 value was -0.234 % and was explained away as an 'expected' hypothesis deficit; it was the signature of the static-as-total-pressure defect (removed in QUASI_STEADY_RESTRICTION_V2, now ~3e-6)"
+      },
+      "tolerance": "|mdot - mdot*| / mdot* < 0.1 % ; |mdot_in - mdot_out| / mdot* < 1e-4",
+      "reference": "isentropic choked orifice, Heywood App. C",
+      "wall_seconds": 19.25
+    },
+    {
+      "name": "isentropic_motoring",
+      "category": "cylinder",
+      "passed": true,
+      "metrics": {
+        "dtheta": [
+          1.0,
+          0.5,
+          0.25
+        ],
+        "max_rel_pV_gamma_error": [
+          8.412901560550523e-05,
+          2.0693163270579795e-05,
+          5.130817111065333e-06
+        ],
+        "observed_order": [
+          2.0234492630458516,
+          2.011893693918738
+        ],
+        "nasa_gas_error_vs_independent_ode": [
+          7.4986523653231e-05,
+          1.846834465490943e-05,
+          4.582243577244682e-06
+        ],
+        "nasa_gas_order_vs_ode": [
+          2.021576780979089,
+          2.0109285064267137
+        ],
+        "nasa_gas_entropy_drift_over_cp": [
+          5.973271661409767e-05,
+          1.4711186296630542e-05,
+          3.6500256017547426e-06
+        ],
+        "energy_closure": [
+          4.8918390714752626e-15,
+          1.322128469867103e-16,
+          5.55294472046662e-15
+        ],
+        "note": "stage-1 entropy-drift threshold (1e-5) was set after seeing 3.65e-6 and is dropped; entropy drift is reported only"
+      },
+      "tolerance": "order >= 1.7 (pV^gamma and NASA gas vs independent ODE); NASA-gas p(theta) within 0.1 % of the ODE at dtheta = 0.5 deg; energy closure < 1e-12",
+      "reference": "pV^gamma = const (exact, calorically perfect); DOP853 reversible-adiabatic ODE with NASA cp(T)",
+      "wall_seconds": 5.172000000020489
+    },
+    {
+      "name": "closed_cylinder_burn_vs_independent_ode",
+      "category": "cylinder",
+      "passed": true,
+      "metrics": {
+        "dtheta": [
+          0.5,
+          0.25,
+          0.125
+        ],
+        "max_rel_pressure_difference": [
+          1.1068476979298928e-05,
+          2.7240184893386714e-06,
+          6.423288280995197e-07
+        ],
+        "observed_order": [
+          2.022648320342132,
+          2.0843525436882384
+        ],
+        "energy_closure": [
+          4.122874886717559e-15,
+          1.4172381796109587e-15,
+          4.63823388967511e-15
+        ]
+      },
+      "tolerance": "finest max |p - p_ref|/p_max < 1e-4; order > 1.7; energy closure < 1e-12",
+      "reference": "temperature-form single-zone ODE, scipy DOP853 rtol 1e-12 (independent formulation)",
+      "wall_seconds": 6.98399999999674
+    },
+    {
+      "name": "open_end_steady_flow_vs_isentropic_nozzle",
+      "category": "boundary",
+      "passed": true,
+      "metrics": {
+        "rows": [
+          {
+            "p0_over_pa": 1.02,
+            "mach": 0.16843291872381358,
+            "mdot_rel_error": -7.953921096537364e-06,
+            "end_cell_p_over_pa": 1.000000001151296
+          },
+          {
+            "p0_over_pa": 1.1,
+            "mach": 0.3715215022839597,
+            "mdot_rel_error": -3.152966776553967e-11,
+            "end_cell_p_over_pa": 1.000000000000006
+          },
+          {
+            "p0_over_pa": 1.2,
+            "mach": 0.5170711949922853,
+            "mdot_rel_error": -9.059419880941277e-14,
+            "end_cell_p_over_pa": 0.9999999999999996
+          },
+          {
+            "p0_over_pa": 1.4,
+            "mach": 0.7103083613975189,
+            "mdot_rel_error": -1.9872992140790302e-14,
+            "end_cell_p_over_pa": 0.9999999999999999
+          }
+        ],
+        "worst_mdot_rel_error": 7.953921096537364e-06,
+        "stage1_defect": "V1 boundary gave -29.3 % at every Mach number"
+      },
+      "tolerance": "|mdot - mdot_exact| / mdot_exact < 0.5 % for M = 0.17..0.71",
+      "reference": "isentropic area-Mach relations (exact); thresholds = 10x observed truncation level, set a priori"
+    },
+    {
+      "name": "nozzle_area_mach_steady_van_leer",
+      "category": "duct",
+      "passed": true,
+      "metrics": {
+        "grids": [
+          30,
+          60,
+          120
+        ],
+        "L1_relative_pressure_error": [
+          0.007773763906040045,
+          0.0023663685359966127,
+          0.0006504508292635944
+        ],
+        "observed_order": [
+          1.7159385176764386,
+          1.8631628692814175
+        ]
+      },
+      "tolerance": "smooth steady solution: order >= 2 - 0.3 (a priori rule); finest L1 error < 0.2 %",
+      "reference": "exact steady isentropic area-Mach relation (throat M=0.5, subsonic throughout)"
+    },
+    {
+      "name": "nozzle_area_mach_steady_minmod",
+      "category": "duct",
+      "passed": true,
+      "metrics": {
+        "grids": [
+          30,
+          60,
+          120
+        ],
+        "L1_relative_pressure_error": [
+          0.009867243234242101,
+          0.0032502791209260227,
+          0.0009784939594166572
+        ],
+        "observed_order": [
+          1.602083456423636,
+          1.7319287665867833
+        ]
+      },
+      "tolerance": "smooth steady solution: order >= 2 - 0.3 (a priori rule); finest L1 error < 0.2 %",
+      "reference": "exact steady isentropic area-Mach relation (throat M=0.5, subsonic throughout)"
+    },
+    {
+      "name": "order_of_convergence_monotone_vs_extremum",
+      "category": "duct",
+      "passed": true,
+      "metrics": {
+        "minmod": {
+          "monotone": [
+            1.8363456721713023,
+            1.7359873494048312
+          ],
+          "pulse": [
+            1.5693018945228108,
+            1.4792759228857402
+          ]
+        },
+        "van_leer": {
+          "monotone": [
+            1.8537944282675387,
+            1.9788220047507656
+          ],
+          "pulse": [
+            1.5750307474718896,
+            1.753894481245215
+          ]
+        },
+        "mc": {
+          "monotone": [
+            1.9102162199536252,
+            1.9876754293790153
+          ],
+          "pulse": [
+            1.6623641497873307,
+            1.7205368238689864
+          ]
+        },
+        "unlimited_central": {
+          "monotone": [
+            1.9089446937987065,
+            1.9857829984938502
+          ],
+          "pulse": [
+            1.8568606863829622,
+            1.9791989615329002
+          ]
+        },
+        "first_order": {
+          "monotone": [
+            0.8336967023527149,
+            0.8944182312395832
+          ]
+        }
+      },
+      "tolerance": "monotone data: order >= formal - 0.3 (2nd order: 1.7; 1st order: 0.7 and increasing); pulse with extrema: order > 1",
+      "reference": "Richardson self-convergence; control experiment isolating extremum clipping"
+    },
+    {
+      "name": "fanno_flow_constant_friction_factor",
+      "category": "duct",
+      "passed": true,
+      "metrics": {
+        "M_inlet": 0.3,
+        "M_exit": 0.3112165924453292,
+        "max_relative_Mach_error": 0.0004792807785499829
+      },
+      "tolerance": "max |M - M_Fanno| / M < 1 %",
+      "reference": "Fanno flow relations (4fL/D, p/p*), Shapiro (1953) / White Fluid Mechanics"
+    },
+    {
+      "name": "wall_heat_transfer_reynolds_analogy",
+      "category": "duct",
+      "passed": true,
+      "metrics": {
+        "NTU": 0.3141239931146601,
+        "outlet_T0_exact": 326.842341864134,
+        "outlet_T0_model": 327.11099929689,
+        "max_error_over_dT": 0.0026865743275595834
+      },
+      "tolerance": "max |T0 - T0_exact| / (Tw - T0_in) < 1 %",
+      "reference": "exact exponential relaxation dT0/dx = (4 St/D)(Tw - T0), St = f/2 Pr^-2/3, M=0.1"
+    },
+    {
+      "name": "helmholtz_resonator_plenum_neck",
+      "category": "volume_coupling",
+      "passed": true,
+      "metrics": {
+        "f_exact_Hz": 63.95697677770943,
+        "f_lumped_Hz": 65.29341780727138,
+        "f_model_Hz": 63.945350614649485,
+        "relative_error": 0.0001817809978784974,
+        "zero_crossings": 10,
+        "mass_closure": 2.1773689103329015e-16,
+        "energy_closure": 1.1921903684806092e-15
+      },
+      "tolerance": "|f - f_exact| / f_exact < 2 % (exact: tan(kL) = A/(V k), ideal open end)",
+      "reference": "linear acoustics of a plenum + open pipe (compressible neck included)"
+    },
+    {
+      "name": "vessel_discharge_vs_independent_ode",
+      "category": "volume_coupling",
+      "passed": true,
+      "metrics": {
+        "max_error_over_initial_overpressure": 0.00162598515392805,
+        "final_p_model": 100034.4255049163,
+        "final_p_ode": 99999.99996990708,
+        "mass_closure": 2.2891528785033273e-15,
+        "energy_closure": 0.0
+      },
+      "tolerance": "max |p - p_ODE| / |p0 - p_amb| < 1.5 % (pipe dynamics/M~0.05 neglected by the ODE)",
+      "reference": "isentropic vessel ODE with orifice law, scipy DOP853 rtol 1e-10 (independent formulation)"
+    },
+    {
+      "name": "vessel_charge_vs_independent_ode",
+      "category": "volume_coupling",
+      "passed": true,
+      "metrics": {
+        "max_error_over_initial_overpressure": 0.007166750561613881,
+        "final_p_model": 99980.63667287902,
+        "final_p_ode": 100000.0000426077,
+        "mass_closure": 7.810896158881845e-16,
+        "energy_closure": 1.110206899618893e-15
+      },
+      "tolerance": "max |p - p_ODE| / |p0 - p_amb| < 1.5 % (pipe dynamics/M~0.05 neglected by the ODE)",
+      "reference": "isentropic vessel ODE with orifice law, scipy DOP853 rtol 1e-10 (independent formulation)"
+    },
+    {
+      "name": "strong_unsteady_inflow_vs_shock_contact_solution",
+      "category": "boundary",
+      "passed": true,
+      "metrics": {
+        "rows": [
+          {
+            "p0_over_p1": 1.5,
+            "mach_face_exact": 0.26389589722900075,
+            "p_face_exact": 142911.1251187286,
+            "mdot_rel_error": 0.0006354912415686975,
+            "density_L1_relative": 0.003791129395326606,
+            "plateau_pressure_rel_error": 2.6205357445130417e-05,
+            "mass_closure": 8.256863544753989e-16
+          },
+          {
+            "p0_over_p1": 2.0,
+            "mach_face_exact": 0.43053318859595274,
+            "p_face_exact": 176075.59256472293,
+            "mdot_rel_error": 0.000797982510022166,
+            "density_L1_relative": 0.005310939845060993,
+            "plateau_pressure_rel_error": 4.483095893736966e-05,
+            "mass_closure": 8.710163701553581e-16
+          },
+          {
+            "p0_over_p1": 2.5,
+            "mach_face_exact": 0.5528197108733686,
+            "p_face_exact": 203124.1206666617,
+            "mdot_rel_error": 0.0008769735730347339,
+            "density_L1_relative": 0.006674388477909455,
+            "plateau_pressure_rel_error": 4.4861581453448096e-05,
+            "mass_closure": 7.553647233375941e-16
+          }
+        ]
+      },
+      "tolerance": "face mass flow within 1 %, plateau pressure within 1 %, relative L1 density error < 2 % at t = 5 ms",
+      "reference": "exact solution: isentropic reservoir law + Rankine-Hugoniot shock + contact (p, u continuous); NOT the diaphragm Riemann problem (a reservoir is not a quiescent tube: H is not conserved)"
+    },
+    {
+      "name": "open_end_shock_reflection_vs_exact",
+      "category": "boundary",
+      "passed": true,
+      "metrics": {
+        "rows": [
+          {
+            "p0_over_p1": 1.5,
+            "exit_mach_exact": 0.5235578716059167,
+            "mdot_exact": 0.4142568680647447,
+            "mdot_model": 0.4142259652893978,
+            "mdot_rel_error": -7.459810018661805e-05,
+            "t_arrive_ms": 7.388271230595556
+          },
+          {
+            "p0_over_p1": 2.0,
+            "exit_mach_exact": 0.842543277801456,
+            "mdot_exact": 0.6653450586327223,
+            "mdot_model": 0.665336177845741,
+            "mdot_rel_error": -1.3347640996363985e-05,
+            "t_arrive_ms": 6.7226512705554375
+          }
+        ]
+      },
+      "tolerance": "plateau exit mass flow within 1 % of the exact isentropic-release value",
+      "reference": "post-shock state from Rankine-Hugoniot + reservoir contact; open end p = p_amb, simple wave u_exit"
+    },
+    {
+      "name": "equilibrium_solver_vs_cantera_tp",
+      "category": "combustion",
+      "passed": true,
+      "metrics": {
+        "states": 36,
+        "max_abs_mass_fraction_error": 6.053348324281532e-07,
+        "max_rel_error_major": 4.9464788212535774e-05,
+        "cantera_version": "3.2.0",
+        "note": "same NASA-7 records in both codes: verifies the solver, not the thermodynamic data"
+      },
+      "tolerance": "max |Y - Y_cantera| < 1e-5; relative error of species with Y > 1e-3 below 0.1 %",
+      "reference": "Cantera equilibrate('TP'), 10-species set, phi 0.8-1.2, T 1800-3000 K, p 1-60 bar"
+    },
+    {
+      "name": "two_zone_closure_vs_cantera",
+      "category": "combustion",
+      "passed": true,
+      "metrics": {
+        "cases": 24,
+        "max_rel_error": {
+          "p": 1.3098855333737447e-11,
+          "T_u": 2.779110275241692e-12,
+          "T_b": 1.3742340598810188e-11
+        },
+        "uv_end_state_max_rel_error": 1.3310685886835927e-11,
+        "note": "independent closure/root-finding/equilibrium (Cantera + scipy brentq) on shared NASA data; the trajectory of the integrated model has no independent reference (see assessment)"
+      },
+      "tolerance": "p, T_u, T_b within 1e-6 relative for x_b = 0.05..1; x_b = 1 equals Cantera UV equilibrium",
+      "reference": "Cantera: SP for the isentropic frozen unburned zone, equilibrate('TP') + brentq for the burned zone"
+    },
+    {
+      "name": "two_zone_closed_cylinder_temporal_order",
+      "category": "combustion",
+      "passed": true,
+      "metrics": {
+        "dtheta": [
+          1.0,
+          0.5,
+          0.25
+        ],
+        "probe_angles_deg": [
+          -10,
+          0,
+          10,
+          40,
+          100
+        ],
+        "observed_orders": [
+          2.0021461703687886,
+          2.00287549047615,
+          2.0047615268920875,
+          1.9181955591314435,
+          1.9034358521485895
+        ],
+        "max_closure": [
+          2.7416930983711242e-14,
+          3.1906253016131794e-14,
+          2.7577263913440547e-14
+        ],
+        "T_burned_max_K": 3294.60879617083,
+        "T_unburned_max_K": 893.3190026162861
+      },
+      "tolerance": "all probe orders >= 1.7 (a priori: formal 2 - 0.3); ledger closure < 1e-12; T_burned > T_unburned",
+      "reference": "Richardson on p(theta) of an adiabatic closed cylinder with piston motion and Wiebe burn"
+    },
+    {
+      "name": "intake_runner_ringing_after_IVC_vs_webster_eigenfrequency",
+      "category": "engine",
+      "passed": true,
+      "metrics": {
+        "f_linear_Hz": 249.29855477472583,
+        "f_fit_Hz": 247.6508130728686,
+        "relative_error": 0.006609511648979194,
+        "mean_sound_speed": 334.087810698866,
+        "window_ms": 12.631799241879182,
+        "periods_in_window": 3.1490892952049574
+      },
+      "tolerance": "|f_fit - f_linear| / f_linear < 3 % (nonlinearity, damping, T-gradients allowed for)",
+      "reference": "Webster horn equation for the actual runner geometry, closed-open, solved independently (FD eigenproblem)"
+    },
+    {
+      "name": "engine_example_dx20mm",
+      "category": "engine",
+      "passed": true,
+      "metrics": {
+        "periodicity": "PERIODIC_CONVERGED",
+        "cycles": 6,
+        "closure": {
+          "mass": 5.976710276994746e-15,
+          "energy": 3.19931582829834e-15,
+          "elements": 2.061841964113071e-14
+        },
+        "final": {
+          "work_net_J": 631.8279548559078,
+          "work_gross_J": 714.4385846121746,
+          "work_pumping_J": -82.61062975626638,
+          "imep_net_bar": 12.647759593364185,
+          "imep_gross_bar": 14.301436637856401,
+          "pmep_bar": 1.6536770444922093,
+          "fmep_bar": 2.4586635974875497,
+          "bmep_bar": 10.189095995876635,
+          "indicated_power_kW": 31.59139774279539,
+          "indicated_torque_Nm": 50.27927109948031,
+          "brake_power_kW": 25.450182055495855,
+          "brake_torque_Nm": 40.50522276720818,
+          "mechanical_efficiency": 0.7124526195435319,
+          "volumetric_efficiency_intake_valve": 0.9646362028599187,
+          "volumetric_efficiency_system_inlet": 0.9646363473705233,
+          "air_per_cycle_mg": 570.4260561612907,
+          "fuel_per_cycle_mg": 37.71652277479389,
+          "fuel_burned_per_cycle_mg": 37.000094113860854,
+          "trapped_mass_mg": 640.9722330651816,
+          "residual_gas_fraction_ivc": 0.05121852778515373,
+          "trapping_efficiency": 1.0000000000000007,
+          "fresh_short_circuit_fraction": -1.2479664260101061e-15,
+          "intake_backflow_mg": 7.929354371737741,
+          "exhaust_backflow_mg": 0.0,
+          "indicated_fuel_conversion_efficiency": 0.3751841134886793,
+          "brake_fuel_conversion_efficiency": 0.30225012740356827,
+          "isfc_g_kWh": 214.89945315924382,
+          "bsfc_g_kWh": 266.75542377885864,
+          "heat_loss_J": 221.12037602476062,
+          "heat_loss_fraction_of_fuel_energy": 0.1313029150032669,
+          "p_max_bar": 68.88151949750991,
+          "theta_p_max_deg": 15.0,
+          "T_max_K": 2745.7825698128186,
+          "T_burned_max_K": 2745.7825698128186,
+          "T_unburned_max_K": 970.8825625242266,
+          "exhaust_valve_mean_enthalpy_temperature_K": 1376.8268832409574,
+          "lower_heating_value_MJ_kg": 44.650132266889415,
+          "mass_balance": {
+            "system_inlet_mg": 608.1426700412859,
+            "system_outlet_mg": 608.1428684488026,
+            "intake_valve_net_mg": 608.1425789269472,
+            "exhaust_valve_net_mg": 608.1425245440922,
+            "system_relative_imbalance": -3.26251595928354e-07,
+            "fuel_system_net_mg": 37.00009962817831
+          },
+          "thermo_fit_range_exceeded": false,
+          "steps": 1440,
+          "rejected_steps": 0,
+          "CA10_deg": -4.84757314187028,
+          "CA50_deg": 8.373028311231646,
+          "CA90_deg": 22.110118533898543
+        },
+        "wall_seconds": 58.04700000002049
+      },
+      "tolerance": "completed, periodic (preregistered tolerances), ledger closure < 1e-12",
+      "reference": "conservation identities; cycle-to-cycle periodicity"
+    },
+    {
+      "name": "engine_example_dx10mm",
+      "category": "engine",
+      "passed": true,
+      "metrics": {
+        "periodicity": "PERIODIC_CONVERGED",
+        "cycles": 6,
+        "closure": {
+          "mass": 6.0684956785071145e-15,
+          "energy": 7.109359115221444e-15,
+          "elements": 3.597575376626585e-14
+        },
+        "final": {
+          "work_net_J": 629.4230518264419,
+          "work_gross_J": 712.6060599353874,
+          "work_pumping_J": -83.18300810894631,
+          "imep_net_bar": 12.599618900746405,
+          "imep_gross_bar": 14.264753658917622,
+          "pmep_bar": 1.6651347581712321,
+          "fmep_bar": 2.458022572813955,
+          "bmep_bar": 10.14159632793245,
+          "indicated_power_kW": 31.471152591322095,
+          "indicated_torque_Nm": 50.08789499708222,
+          "brake_power_kW": 25.331538046523487,
+          "brake_torque_Nm": 40.31639496224627,
+          "mechanical_efficiency": 0.7109548871594025,
+          "volumetric_efficiency_intake_valve": 0.9621339766125521,
+          "volumetric_efficiency_system_inlet": 0.9621342747012817,
+          "air_per_cycle_mg": 568.9463946622957,
+          "fuel_per_cycle_mg": 37.618687685088,
+          "fuel_burned_per_cycle_mg": 36.90475712528958,
+          "trapped_mass_mg": 639.8934071490629,
+          "residual_gas_fraction_ivc": 0.05208418219806103,
+          "trapping_efficiency": 1.0000000000000009,
+          "fresh_short_circuit_fraction": 4.8261034980773585e-15,
+          "intake_backflow_mg": 8.26289250977612,
+          "exhaust_backflow_mg": 0.0,
+          "indicated_fuel_conversion_efficiency": 0.3747280933516183,
+          "brake_fuel_conversion_efficiency": 0.30162349238061215,
+          "isfc_g_kWh": 215.16097205740684,
+          "bsfc_g_kWh": 267.3096189769316,
+          "heat_loss_J": 221.0539527546751,
+          "heat_loss_fraction_of_fuel_energy": 0.1316048498751825,
+          "p_max_bar": 68.75331456279103,
+          "theta_p_max_deg": 14.770531219391614,
+          "T_max_K": 2744.8984065110803,
+          "T_burned_max_K": 2744.8984065110803,
+          "T_unburned_max_K": 971.5270884907773,
+          "exhaust_valve_mean_enthalpy_temperature_K": 1377.2685527121891,
+          "lower_heating_value_MJ_kg": 44.650132266889415,
+          "mass_balance": {
+            "system_inlet_mg": 606.5652702700066,
+            "system_outlet_mg": 606.5663616485411,
+            "intake_valve_net_mg": 606.5650840822648,
+            "exhaust_valve_net_mg": 606.5651190348688,
+            "system_relative_imbalance": -1.7992763318667507e-06,
+            "fuel_system_net_mg": 36.904765720059345
+          },
+          "thermo_fit_range_exceeded": false,
+          "steps": 2004,
+          "rejected_steps": 0,
+          "CA10_deg": -4.847071584732321,
+          "CA50_deg": 8.373027423632253,
+          "CA90_deg": 22.10982362775643
+        },
+        "wall_seconds": 76.89000000001397
+      },
+      "tolerance": "completed, periodic (preregistered tolerances), ledger closure < 1e-12",
+      "reference": "conservation identities; cycle-to-cycle periodicity"
+    },
+    {
+      "name": "engine_example_dx5mm",
+      "category": "engine",
+      "passed": true,
+      "metrics": {
+        "periodicity": "PERIODIC_CONVERGED",
+        "cycles": 6,
+        "closure": {
+          "mass": 8.367730235012544e-15,
+          "energy": 1.0639981970954311e-14,
+          "elements": 3.341242180388341e-14
+        },
+        "final": {
+          "work_net_J": 628.1000355964944,
+          "work_gross_J": 711.5163856866202,
+          "work_pumping_J": -83.41635009012624,
+          "imep_net_bar": 12.573135122866853,
+          "imep_gross_bar": 14.242940857145292,
+          "pmep_bar": 1.6698057342784483,
+          "fmep_bar": 2.4576023970544965,
+          "bmep_bar": 10.115532725812358,
+          "indicated_power_kW": 31.405001779824723,
+          "indicated_torque_Nm": 49.98261271068875,
+          "brake_power_kW": 25.266436744185498,
+          "brake_torque_Nm": 40.21278302155817,
+          "mechanical_efficiency": 0.7102137702648448,
+          "volumetric_efficiency_intake_valve": 0.9606486612762524,
+          "volumetric_efficiency_system_inlet": 0.9606490417842265,
+          "air_per_cycle_mg": 568.0680712415808,
+          "fuel_per_cycle_mg": 37.56061301549608,
+          "fuel_burned_per_cycle_mg": 36.84810588882484,
+          "trapped_mass_mg": 639.199170065675,
+          "residual_gas_fraction_ivc": 0.05251960169120242,
+          "trapping_efficiency": 1.0,
+          "fresh_short_circuit_fraction": 1.790209414905313e-15,
+          "intake_backflow_mg": 8.398838988271391,
+          "exhaust_backflow_mg": 0.0,
+          "indicated_fuel_conversion_efficiency": 0.37451860463447467,
+          "brake_fuel_conversion_efficiency": 0.3013134882099149,
+          "isfc_g_kWh": 215.28132334425325,
+          "bsfc_g_kWh": 267.5846385163577,
+          "heat_loss_J": 221.01145223135782,
+          "heat_loss_fraction_of_fuel_energy": 0.13178298998075866,
+          "p_max_bar": 68.66927941089925,
+          "theta_p_max_deg": 14.721259293927687,
+          "T_max_K": 2744.431750390216,
+          "T_burned_max_K": 2744.431750390216,
+          "T_unburned_max_K": 971.8150365152902,
+          "exhaust_valve_mean_enthalpy_temperature_K": 1377.3917109429547,
+          "lower_heating_value_MJ_kg": 44.650132266889415,
+          "mass_balance": {
+            "system_inlet_mg": 605.628924138873,
+            "system_outlet_mg": 605.6298327368204,
+            "intake_valve_net_mg": 605.6286859938707,
+            "exhaust_valve_net_mg": 605.6287244867293,
+            "system_relative_imbalance": -1.5002552076025001e-06,
+            "fuel_system_net_mg": 36.84811698781927
+          },
+          "thermo_fit_range_exceeded": false,
+          "steps": 4027,
+          "rejected_steps": 0,
+          "CA10_deg": -4.845224019617311,
+          "CA50_deg": 8.373004938085677,
+          "CA90_deg": 22.108205728100348
+        },
+        "wall_seconds": 155.2970000000205
+      },
+      "tolerance": "completed, periodic (preregistered tolerances), ledger closure < 1e-12",
+      "reference": "conservation identities; cycle-to-cycle periodicity"
+    },
+    {
+      "name": "engine_mesh_convergence_gci",
+      "category": "engine",
+      "passed": true,
+      "metrics": {
+        "dx_mm": [
+          20.0,
+          10.0,
+          5.0
+        ],
+        "study": {
+          "imep_net_bar": {
+            "values": [
+              12.647759593364185,
+              12.599618900746405,
+              12.573135122866853
+            ],
+            "order": 0.8621479629796805,
+            "gci_fine": 0.003219806085704438,
+            "extrapolated": 12.540748677278861,
+            "monotone": true
+          },
+          "volumetric_efficiency_intake_valve": {
+            "values": [
+              0.9646362028599187,
+              0.9621339766125521,
+              0.9606486612762524
+            ],
+            "order": 0.7524429901768747,
+            "gci_fine": 0.0028229283452483383,
+            "extrapolated": 0.9584791874076591,
+            "monotone": true
+          },
+          "p_max_bar": {
+            "values": [
+              68.88151949750991,
+              68.75331456279103,
+              68.66927941089925
+            ],
+            "order": 0.6093869552238631,
+            "gci_fine": 0.0029103434137449768,
+            "extrapolated": 68.50939846285114,
+            "monotone": true
+          },
+          "pmep_bar": {
+            "values": [
+              1.6536770444922093,
+              1.6651347581712321,
+              1.6698057342784483
+            ],
+            "order": 1.2945232206461648,
+            "gci_fine": 0.0024065689008798178,
+            "extrapolated": 1.6730205363189485,
+            "monotone": true
+          },
+          "trapped_mass_mg": {
+            "values": [
+              640.9722330651816,
+              639.8934071490629,
+              639.199170065675
+            ],
+            "order": 0.6359617488980586,
+            "gci_fine": 0.002450714709926073,
+            "extrapolated": 637.945974218753,
+            "monotone": true
+          }
+        }
+      },
+      "tolerance": "all runs periodic & conservative; medium-fine change < 2% for every indicator",
+      "reference": "Richardson/GCI, Celik et al. (2008) J. Fluids Eng. 130:078001"
+    }
+  ],
+  "wall_seconds": 606.4220000000205
+}

@@ -1,0 +1,30 @@
+{
+  "name": "study-S3",
+  "command": [
+    "python",
+    "scripts/dino4t/run_stage2_studies.py",
+    "results/dino4t-stage2-v1/studies",
+    "S3"
+  ],
+  "started_at": "2026-11-04T16:09:44+00:00",
+  "finished_at": "2026-11-04T16:19:51+00:00",
+  "duration_s": 606.312,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\dino4t-stage2-v1\\studies\\study-S3.log",
+  "log_lines": 10,
+  "log_bytes": 2524,
+  "error_lines": [],
+  "tail": [
+    "{\"overrides\": {\"operating_point.rpm\": 4000.0, \"intake_valve.lift.open_deg\": 330.0, \"intake_valve.lift.close_deg\": -150.0}, \"status\": \"completed\", \"cycles\": 4, \"imep_net_bar\": 14.719445480490394, \"volumetric_efficiency_intake_valve\": 1.024162716846793}",
+    "{\"overrides\": {\"operating_point.rpm\": 4000.0, \"intake_valve.lift.open_deg\": 340.0, \"intake_valve.lift.close_deg\": -140.0}, \"status\": \"completed\", \"cycles\": 4, \"imep_net_bar\": 14.670602753268133, \"volumetric_efficiency_intake_valve\": 1.0210471198675877}",
+    "{\"overrides\": {\"operating_point.rpm\": 4000.0, \"intake_valve.lift.open_deg\": 350.0, \"intake_valve.lift.close_deg\": -130.0}, \"status\": \"completed\", \"cycles\": 4, \"imep_net_bar\": 14.430166461326086, \"volumetric_efficiency_intake_valve\": 1.0057013752567403}",
+    "{\"overrides\": {\"operating_point.rpm\": 4000.0, \"intake_valve.lift.open_deg\": 360.0, \"intake_valve.lift.close_deg\": -120.0}, \"status\": \"completed\", \"cycles\": 5, \"imep_net_bar\": 13.994676906505786, \"volumetric_efficiency_intake_valve\": 0.9786550833930623}",
+    "{\"overrides\": {\"operating_point.rpm\": 4000.0, \"intake_valve.lift.open_deg\": 370.0, \"intake_valve.lift.close_deg\": -110.0}, \"status\": \"completed\", \"cycles\": 6, \"imep_net_bar\": 13.398975586731574, \"volumetric_efficiency_intake_valve\": 0.9431680880289522}",
+    "{\"overrides\": {\"operating_point.rpm\": 8000.0, \"intake_valve.lift.open_deg\": 330.0, \"intake_valve.lift.close_deg\": -150.0}, \"status\": \"completed\", \"cycles\": 8, \"imep_net_bar\": 8.047614746848604, \"volumetric_efficiency_intake_valve\": 0.6260715920385376}",
+    "{\"overrides\": {\"operating_point.rpm\": 8000.0, \"intake_valve.lift.open_deg\": 340.0, \"intake_valve.lift.close_deg\": -140.0}, \"status\": \"completed\", \"cycles\": 7, \"imep_net_bar\": 8.834800977290074, \"volumetric_efficiency_intake_valve\": 0.685840831600247}",
+    "{\"overrides\": {\"operating_point.rpm\": 8000.0, \"intake_valve.lift.open_deg\": 350.0, \"intake_valve.lift.close_deg\": -130.0}, \"status\": \"completed\", \"cycles\": 6, \"imep_net_bar\": 9.518471860811465, \"volumetric_efficiency_intake_valve\": 0.7371146802640988}",
+    "{\"overrides\": {\"operating_point.rpm\": 8000.0, \"intake_valve.lift.open_deg\": 360.0, \"intake_valve.lift.close_deg\": -120.0}, \"status\": \"completed\", \"cycles\": 6, \"imep_net_bar\": 10.096861806772026, \"volumetric_efficiency_intake_valve\": 0.7804435721979974}",
+    "{\"overrides\": {\"operating_point.rpm\": 8000.0, \"intake_valve.lift.open_deg\": 370.0, \"intake_valve.lift.close_deg\": -110.0}, \"status\": \"completed\", \"cycles\": 6, \"imep_net_bar\": 10.498076789030165, \"volumetric_efficiency_intake_valve\": 0.811205081312859}"
+  ]
+}
