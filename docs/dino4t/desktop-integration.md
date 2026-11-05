@@ -19,7 +19,7 @@ Las prestaciones solo se grafican para resultados periódicos. La comparación r
 ## Límites explícitos
 
 - El alcance del solver 4T continúa siendo monocilíndrico, encendido por chispa y atmosférico según `DINO4T_API_V1`; la GUI no sugiere multicilindro, turbo, knock, inyección ni datos de banco no presentes.
-- La API 4T ofrece estado de continuación opaco dentro del proceso, pero no un checkpoint serializable ni una operación de cancelación. Desktop limita la duración de pared configurable y conserva los resultados parciales; no ofrece reanudación ni promete detener inmediatamente el cálculo.
+- La API 4T ofrece estado de continuación opaco dentro del proceso, pero no un checkpoint serializable. La evolución A/B agrega cancelación cooperativa en límites de ciclo completo y conserva el resumen/traza de ciclos completos; después de cerrar el proceso, continuar requiere iniciar otra corrida desde la configuración guardada.
 - El estado periódico es una propiedad numérica del modelo, no evidencia experimental. Calibración y validación experimental siguen `NOT_PERFORMED`; predictividad sigue `NOT_CLAIMED`.
 - No se integra exploración paramétrica 4T ni las páginas de diagnóstico 2T con semánticas distintas. El proyecto 2T y su historial siguen usando los lectores y contratos actuales.
 
@@ -44,3 +44,17 @@ El spec de Windows incluye explícitamente los módulos cargados de forma diferi
 - La UI impide calcular diferencias de prestaciones si una corrida no es periódica. Una prueba usa el punto histórico periódico y un punto real acotado de un ciclo para comprobar el rechazo. No hay dos configuraciones 4T distintas con resultados periódicos aceptados disponibles en los históricos para presentar una diferencia A/B de diseño con evidencia existente; no se fabricó una segunda curva.
 - La API 4T no ofrece cancelación ni checkpoint serializable, por lo que Desktop no promete reanudación/cancelación de una corrida 4T.
 - El paquete se acepta para pruebas internas solamente. No es una promoción de release ni validación científica.
+
+## Evolución A/B 4T en curso
+
+La rama `work/dino4t-ab-engineering-v1` desarrolla una comparación estricta de dos variantes. Los
+resultados comparables deben estar terminados y periódicos bajo los criterios guardados, tener RPM,
+contexto operativo, numerics, modelos, commit limpio y fuentes termodinámicas coincidentes. La ficha
+registra cambios de diseño, métricas A/B, diferencias absoluta/relativa, configuraciones resueltas,
+procedencia y hashes; CSV conserva floats de ida y JSON/HTML transportan el registro completo. Si
+las entradas no cumplen el contrato, la UI no calcula ni exporta deltas.
+
+La cancelación se observa al terminar un ciclo completo de 720°, una vez evaluada periodicidad.
+Conserva los ciclos completos como `incomplete` y no afirma periodicidad. No se implementa checkpoint
+serializable: el estado de continuación V1 no incluye historial del monitor ni un formato durable con
+compatibilidad de versiones. Esta limitación queda explícita; una reanudación exacta no se ofrece.

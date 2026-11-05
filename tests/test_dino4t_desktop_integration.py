@@ -122,14 +122,18 @@ def test_desktop_comparison_rejects_real_one_cycle_result_against_periodic_histo
 
     app=QApplication.instance() or QApplication([])
     results=FourStrokeResults(DesktopContext(project_from_example("comparison-ui")))
-    ref_a={"run_id":"historical-periodic","result_sha256":"periodic-fixture"}
-    ref_b={"run_id":"bounded-transient","result_sha256":"bounded-api-run"}
-    results.loaded={0:(periodic,{"config_path":str(periodic_dir/"config_resolved.json")},ref_a),
-        1:(bounded["summary"],{"config_path":str(periodic_dir/"config_resolved.json")},ref_b)}
+    ref_a={"run_id":"historical-periodic","result_sha256":"a"*64,
+        "config_sha256":periodic["config_sha256"],"variant_id":"A"}
+    ref_b={"run_id":"bounded-transient","result_sha256":"b"*64,
+        "config_sha256":bounded["summary"]["config_sha256"],"variant_id":"B"}
+    results.loaded={0:(periodic,{"api":"DINO4T_API_V1","result_sha256":ref_a["result_sha256"],
+            "config_path":str(periodic_dir/"config_resolved.json")},ref_a),
+        1:(bounded["summary"],{"api":"DINO4T_API_V1","result_sha256":ref_b["result_sha256"],
+            "config_path":str(periodic_dir/"config_resolved.json")},ref_b)}
     results.compare_a.addItem("A",0);results.compare_b.addItem("B",1)
     results.compare_a.setCurrentIndex(0);results.compare_b.setCurrentIndex(0)
     results.compare()
-    assert "ambas corridas deben ser periódicas" in results.compare_status.text()
+    assert "no alcanzó periodicidad" in results.compare_status.text()
     assert results.compare_table.rowCount()==0
     results.close();app.processEvents()
 

@@ -37,6 +37,7 @@ ERROR_CODES = {
     "MODEL_OUT_OF_VALIDITY": "the model refused a state it cannot represent (fail-closed boundary/thermo)",
     "WALL_LIMIT": "wall-clock limit reached; partial results are returned",
     "NOT_PERIODIC": "ran to the cycle limit without meeting the periodicity criteria",
+    "CANCELLED": "user requested cancellation; any returned summary contains completed cycles only",
     "INTERNAL": "unexpected exception; a defect, not a user error",
 }
 _UNIT_SUFFIXES = (("_g_kWh", "g/kWh"), ("_MJ_kg", "MJ/kg"), ("_Nm", "N*m"), ("_kW", "kW"), ("_bar", "bar"),
@@ -70,6 +71,7 @@ def capabilities() -> dict:
         "default_models": resolved_models({"combustion": {"zone_model": "two_zone_equilibrium"}}),
         "options": {"out_dir": "path or None", "overrides": "nested dict merged over the config",
                     "max_cycles": "int >= 1", "wall_limit_s": "float > 0", "on_progress": "callable(dict) or None",
+                    "cancel_event": "threading.Event-like object; observed after a completed 720-degree cycle",
                     "initial_state": "opaque continuation state from a previous run of the SAME topology",
                     "allow_unknown_keys": "bool; default False = unread config keys (typos) are rejected"},
         "claims": {"calibration": "NOT_PERFORMED", "experimental_validation": "NOT_PERFORMED",
@@ -137,7 +139,7 @@ def _path_of(message: str) -> str | None:
 
 def run(config: dict, *, out_dir=None, overrides: dict | None = None, max_cycles: int | None = None,
         wall_limit_s: float = 3600.0, on_progress: Callable[[dict], None] | None = None,
-        initial_state=None, allow_unknown_keys: bool = False) -> dict:
+        initial_state=None, allow_unknown_keys: bool = False, cancel_event=None) -> dict:
     """Run one operating point to periodicity (or the cycle/wall limit).
 
     Returns an envelope::
@@ -154,6 +156,8 @@ def run(config: dict, *, out_dir=None, overrides: dict | None = None, max_cycles
         return _fail("OPTION_INVALID", "max_cycles must be an integer >= 1")
     if not (isinstance(wall_limit_s, (int, float)) and wall_limit_s > 0):
         return _fail("OPTION_INVALID", "wall_limit_s must be > 0")
+    if cancel_event is not None and not callable(getattr(cancel_event, "is_set", None)):
+        return _fail("OPTION_INVALID", "cancel_event must provide is_set()")
     cfg = copy.deepcopy(config)
     if overrides:
         from .config import _deep_update
@@ -173,7 +177,7 @@ def run(config: dict, *, out_dir=None, overrides: dict | None = None, max_cycles
 
     try:
         out = run_operating_point(cfg, out_dir=out_dir, max_cycles=max_cycles, wall_limit_s=wall_limit_s,
-                                  progress=progress, initial_state=initial_state)
+                                  progress=progress, initial_state=initial_state, cancel_event=cancel_event)
     except Exception as exc:  # noqa: BLE001 - the API boundary converts every failure into data
         code = "MODEL_OUT_OF_VALIDITY" if type(exc).__name__ in _SOLVER_ERRORS else "INTERNAL"
         return _fail(code, f"{type(exc).__name__}: {exc}")
@@ -186,7 +190,8 @@ def run(config: dict, *, out_dir=None, overrides: dict | None = None, max_cycles
     if summary["status"] == "failed_numerical":
         error = {"code": "MODEL_OUT_OF_VALIDITY", "message": summary["termination"], "detail": None}
     elif summary["status"] == "incomplete":
-        error = {"code": "WALL_LIMIT", "message": summary["termination"], "detail": None}
+        code = "CANCELLED" if summary.get("termination") == "cancelled_by_user" else "WALL_LIMIT"
+        error = {"code": code, "message": summary["termination"], "detail": None}
     elif summary["periodicity"]["status"] != "PERIODIC_CONVERGED":
         error = {"code": "NOT_PERIODIC", "message": "cycle limit reached without periodicity", "detail": None}
     return {"api": API_VERSION, "ok": error is None, "error": error, "summary": summary,

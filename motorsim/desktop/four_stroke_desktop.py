@@ -8,12 +8,12 @@ from __future__ import annotations
 
 import csv
 import hashlib
-import html
 import json
 import math
 import os
 from pathlib import Path
 import shutil
+import threading
 import uuid
 
 from PySide6.QtCore import QObject, QRunnable, QThreadPool, Signal, Qt
@@ -28,6 +28,7 @@ from .. import engine_platform
 from ..engine_project import load_project, save_project
 from .context import DesktopContext
 from .four_stroke_project import SCHEMA, project_from_example
+from .four_stroke_comparison import build_comparison, ComparisonIneligible
 from .plot import CurvePlot
 from .preferences import artifact_root
 from .presentation import format_number, state_label
@@ -66,7 +67,8 @@ SCIENTIFIC_LABELS={"NOT_PERFORMED":"No realizado","NOT_CLAIMED":"No declarado",
     "NOT_REPORTED":"No informado","L1_ENGINEERING_RUN":"Corrida de ingeniería L1"}
 ERROR_LABELS={"CONFIG_INVALID":"Configuración rechazada","OPTION_INVALID":"Opción de ejecución inválida",
     "MODEL_OUT_OF_VALIDITY":"Punto fuera del dominio del modelo","WALL_LIMIT":"Límite de tiempo alcanzado",
-    "NOT_PERIODIC":"Ciclo completado sin periodicidad","INTERNAL":"Error interno de ejecución"}
+    "NOT_PERIODIC":"Ciclo completado sin periodicidad","CANCELLED":"Cancelación solicitada",
+    "INTERNAL":"Error interno de ejecución"}
 METRIC_LABELS={"work_net_J":"Trabajo neto por ciclo","work_gross_J":"Trabajo indicado bruto",
     "work_pumping_J":"Trabajo de bombeo","imep_net_bar":"IMEP neta","imep_gross_bar":"IMEP bruta",
     "pmep_bar":"PMEP","fmep_bar":"FMEP","bmep_bar":"BMEP de freno",
@@ -149,13 +151,9 @@ def _curve_binding(config):
     return hashlib.sha256(payload).hexdigest()
 
 
-def _comparison_context(config):
-    combustion=config.get("combustion",{})
-    op=dict(config.get("operating_point",{}));op.pop("rpm",None)
-    return {"operating_point":op,"ambient":config.get("ambient"),"fuel":combustion.get("fuel"),
-        "combustion_model":combustion.get("model"),"zone_model":combustion.get("zone_model"),
-        "heat_transfer":config.get("heat_transfer"),"friction":config.get("friction"),
-        "initial_conditions":config.get("initial_conditions"),"numerics":config.get("numerics")}
+def _outcome_label(summary):
+    if summary.get("status")!="completed":return "Incompleto"
+    return "Periódico" if summary.get("periodicity",{}).get("status")=="PERIODIC_CONVERGED" else "Transitorio · no periódico"
 
 
 class FourStrokeConfigEditor(QWidget):
@@ -232,11 +230,11 @@ class _RunSignals(QObject):
 
 class _RunTask(QRunnable):
     def __init__(self,config,out_dir,max_cycles,wall_limit):
-        super().__init__();self.config=config;self.out_dir=out_dir;self.max_cycles=max_cycles;self.wall_limit=wall_limit;self.signals=_RunSignals()
+        super().__init__();self.config=config;self.out_dir=out_dir;self.max_cycles=max_cycles;self.wall_limit=wall_limit;self.signals=_RunSignals();self.cancel_event=threading.Event()
     def run(self):
         try:
             result=engine_platform.run_api("4T",self.config,out_dir=self.out_dir,max_cycles=self.max_cycles,
-                wall_limit_s=self.wall_limit,on_progress=self.signals.progress.emit)
+                wall_limit_s=self.wall_limit,on_progress=self.signals.progress.emit,cancel_event=self.cancel_event)
             engine_platform.check_result("4T",result);self.signals.finished.emit(result)
         except Exception as exc:self.signals.failed.emit(f"{type(exc).__name__}: {exc}")
 
@@ -251,7 +249,7 @@ class FourStrokeSimulation(QWidget):
         self.cycles=QSpinBox();self.cycles.setRange(1,100);self.cycles.setValue(int(context.engine()["numerics"]["max_cycles"]))
         self.wall=QSpinBox();self.wall.setRange(10,600);self.wall.setValue(120);self.wall.setSuffix(" s")
         form.addRow("Punto operativo",self.rpm);form.addRow("Máximo de ciclos",self.cycles);form.addRow("Límite de pared",self.wall)
-        row=QHBoxLayout();root.addLayout(row);self.start=QPushButton("Ejecutar punto 4T");self.start.clicked.connect(self.execute);row.addWidget(self.start)
+        row=QHBoxLayout();root.addLayout(row);self.start=QPushButton("Ejecutar punto 4T");self.start.clicked.connect(self.execute);row.addWidget(self.start);self.cancel=QPushButton("Cancelar al final del ciclo");self.cancel.setEnabled(False);self.cancel.clicked.connect(self.cancel_run);row.addWidget(self.cancel)
         self.progress=QLabel("Listo · solo se ejecuta mediante DINO4T_API_V1");self.progress.setWordWrap(True);root.addWidget(self.progress)
         self.last_label=QLabel();self.last_label.setWordWrap(True);root.addWidget(self.last_label);root.addStretch(1)
 
@@ -262,18 +260,25 @@ class FourStrokeSimulation(QWidget):
         if not checked["valid"] or checked["unknown_keys"]:
             QMessageBox.warning(self,"Preflight 4T","La configuración requiere correcciones antes de ejecutarse.");return
         run_id=uuid.uuid4().hex;project_key=hashlib.sha256(self.context.project["project_id"].encode("utf-8")).hexdigest()[:20]
+        self.run_variant_id=self.context.selected_variant or "";self.run_project_id=self.context.project["project_id"]
         root=artifact_root()/"dino-4t-desktop-v1"/project_key/run_id
         out=root/"artifacts";out.mkdir(parents=True,exist_ok=False);self.run_dir=root
         self.task=_RunTask(config,out,int(self.cycles.value()),float(self.wall.value()))
         self.task.signals.progress.connect(self._progress);self.task.signals.finished.connect(self._finished);self.task.signals.failed.connect(self._failed)
-        self.start.setEnabled(False);self.progress.setText(f"Ejecutando {run_id} · DINO4T_API_V1 · límite {self.wall.value()} s")
+        self.start.setEnabled(False);self.cancel.setEnabled(True);self.progress.setText(f"Ejecutando {run_id} · DINO4T_API_V1 · límite {self.wall.value()} s")
         self.thread_pool.start(self.task)
 
     def _progress(self,record):
-        self.progress.setText(f"Ciclo {record.get('cycle')} · trabajo neto {format_number(record.get('work_net_J'))} J · p máx. {format_number(record.get('p_max_bar'))} bar")
+        suffix=" · se detendrá al completar este ciclo" if self.task is not None and self.task.cancel_event.is_set() else ""
+        self.progress.setText(f"Ciclo {record.get('cycle')} · trabajo neto {format_number(record.get('work_net_J'))} J · p máx. {format_number(record.get('p_max_bar'))} bar{suffix}")
+
+    def cancel_run(self):
+        if self.task is None:return
+        self.task.cancel_event.set();self.cancel.setEnabled(False)
+        self.progress.setText("Cancelación solicitada · se conservarán los ciclos completos al cerrar el actual; no hay checkpoint serializable.")
 
     def _finished(self,envelope):
-        task=self.task;self.task=None;self.start.setEnabled(True)
+        task=self.task;self.task=None;self.start.setEnabled(True);self.cancel.setEnabled(False)
         summary=envelope.get("summary")
         if summary is None:
             error=envelope.get("error") or {};record={"schema":"DINO4T_DESKTOP_API_ERROR_V1","run_id":self.run_dir.name,
@@ -286,8 +291,8 @@ class FourStrokeSimulation(QWidget):
         summary_path=self.run_dir/"artifacts"/"summary.json";raw=summary_path.read_bytes()
         result_hash=hashlib.sha256(raw).hexdigest();config_path=self.run_dir/"artifacts"/"config_resolved.json"
         resolved_config=json.loads(config_path.read_text(encoding="utf-8"))
-        meta={"schema":"DINO4T_DESKTOP_RUN_V1","run_id":self.run_dir.name,"project_id":self.context.project["project_id"],
-            "variant_id":self.context.selected_variant or "","api":envelope["api"],"result_sha256":result_hash,
+        meta={"schema":"DINO4T_DESKTOP_RUN_V1","run_id":self.run_dir.name,"project_id":self.run_project_id,
+            "variant_id":self.run_variant_id,"api":envelope["api"],"result_sha256":result_hash,
             "config_sha256":summary["config_sha256"],"config_identity_sha256":engine_platform.identity("4T",json.loads(config_path.read_text(encoding="utf-8"))),
             "curve_binding_sha256":_curve_binding(resolved_config),
             "summary_path":str(summary_path.resolve()),"config_path":str(config_path.resolve()),
@@ -299,7 +304,8 @@ class FourStrokeSimulation(QWidget):
             "config_sha256":summary["config_sha256"],"status":summary["status"],
             "periodicity_status":summary["periodicity"]["status"],"variant_id":meta["variant_id"]}
         self.context.add_run_reference(ref)
-        state="PERIÓDICO · simulación no validada" if summary["periodicity"]["status"]=="PERIODIC_CONVERGED" else "NO PERIÓDICO · resultado incompleto para prestaciones"
+        if summary.get("termination")=="cancelled_by_user":state="CANCELADA AL FIN DE CICLO · primario parcial conservado"
+        else:state="PERIÓDICO · simulación no validada" if summary["periodicity"]["status"]=="PERIODIC_CONVERGED" else "NO PERIÓDICO · resultado incompleto para prestaciones"
         if envelope.get("error"):
             code=envelope["error"].get("code");state+=f" · {ERROR_LABELS.get(code,'Aviso de ejecución')}"
         self.progress.setText(f"{state} · {summary['cycles_run']} ciclos · {summary['evidence_level']}")
@@ -308,7 +314,7 @@ class FourStrokeSimulation(QWidget):
         self.runFinished.emit(meta)
 
     def _failed(self,message):
-        self.task=None;self.start.setEnabled(True)
+        self.task=None;self.start.setEnabled(True);self.cancel.setEnabled(False)
         if self.run_dir is not None:
             record={"schema":"DINO4T_DESKTOP_INTERNAL_ERROR_V1","run_id":self.run_dir.name,"message":message}
             (self.run_dir/"internal-error.json").write_text(json.dumps(record,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
@@ -330,10 +336,13 @@ class FourStrokeResults(QWidget):
         self.power_plot=CurvePlot();detail.addTab(self.power_plot,"Potencia de freno")
         self.torque_plot=CurvePlot();detail.addTab(self.torque_plot,"Torque de freno")
         self.pressure_plot=CurvePlot();detail.addTab(self.pressure_plot,"Presiones de cilindro y conductos")
-        self.compare_tab=QWidget();compare_layout=QVBoxLayout(self.compare_tab)
-        controls=QHBoxLayout();self.compare_a=QComboBox();self.compare_b=QComboBox();self.compare_button=QPushButton("Comparar corridas");self.compare_button.clicked.connect(self.compare);controls.addWidget(QLabel("A"));controls.addWidget(self.compare_a);controls.addWidget(QLabel("B"));controls.addWidget(self.compare_b);controls.addWidget(self.compare_button);compare_layout.addLayout(controls)
-        self.compare_status=QLabel("La comparación exige RPM, contexto operativo, numerics y modelos 4T coincidentes.");compare_layout.addWidget(self.compare_status)
-        self.compare_table=QTableWidget(0,4);self.compare_table.setHorizontalHeaderLabels(["Métrica","A","B","Δ B − A"]);self.compare_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);compare_layout.addWidget(self.compare_table,1);detail.addTab(self.compare_tab,"Comparar")
+        self.compare_tab=QWidget();compare_layout=QVBoxLayout(self.compare_tab);self.comparison=None
+        controls=QHBoxLayout();self.compare_a=QComboBox();self.compare_b=QComboBox();self.compare_button=QPushButton("Comparar corridas");self.compare_button.clicked.connect(self.compare);controls.addWidget(QLabel("A"));controls.addWidget(self.compare_a,1);controls.addWidget(QLabel("B"));controls.addWidget(self.compare_b,1);controls.addWidget(self.compare_button);compare_layout.addLayout(controls)
+        self.compare_status=QLabel("La comparación requiere dos diseños distintos, corridas periódicas y contexto de cálculo idéntico.");self.compare_status.setWordWrap(True);compare_layout.addWidget(self.compare_status)
+        self.compare_table=QTableWidget(0,5);self.compare_table.setHorizontalHeaderLabels(["Métrica","A","B","Δ absoluto · B − A","Δ relativo a A"]);self.compare_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);compare_layout.addWidget(self.compare_table,1)
+        exports=QHBoxLayout();self.compare_json_button=QPushButton("Exportar ficha A/B JSON");self.compare_json_button.clicked.connect(self.export_comparison_json);self.compare_json_button.setEnabled(False);exports.addWidget(self.compare_json_button);self.compare_csv_button=QPushButton("Exportar diferencias CSV");self.compare_csv_button.clicked.connect(self.export_comparison_csv);self.compare_csv_button.setEnabled(False);exports.addWidget(self.compare_csv_button);self.compare_report_button=QPushButton("Informe técnico A/B HTML");self.compare_report_button.clicked.connect(self.export_comparison_report);self.compare_report_button.setEnabled(False);exports.addWidget(self.compare_report_button);compare_layout.addLayout(exports);detail.addTab(self.compare_tab,"Comparar")
+        self.compare_a.currentIndexChanged.connect(self._invalidate_comparison)
+        self.compare_b.currentIndexChanged.connect(self._invalidate_comparison)
         self.context.changed.connect(self.refresh);self.refresh()
 
     def _read(self,ref):
@@ -350,12 +359,12 @@ class FourStrokeResults(QWidget):
 
     def refresh(self):
         refs=self.context.project["run_references"];self.history.clear();self.loaded.clear()
+        self._invalidate_comparison()
         self.compare_a.clear();self.compare_b.clear()
         for index,ref in enumerate(refs):
             try:
                 summary,meta=self._read(ref);self.loaded[index]=(summary,meta,ref)
-                period=summary["periodicity"]["status"]
-                outcome="Periódico" if period=="PERIODIC_CONVERGED" else "Transitorio"
+                outcome=_outcome_label(summary)
                 variant=ref.get("variant_id") or "Motor base"
                 label=f"{summary['operating_point']['rpm']:.0f} rpm · {outcome} · {variant}"
                 item=QListWidgetItem(label);item.setToolTip(f"Ejecución: {STATUS_LABELS.get(summary['status'],summary['status'])}\nPeriodicidad: {STATUS_LABELS.get(period,period)}\nRun ID: {ref['run_id']}\nConfiguración SHA-256: {summary['config_sha256']}")
@@ -420,22 +429,75 @@ class FourStrokeResults(QWidget):
         self.pressure_plot.set_series(pressure,y_scale_mode="data_margin")
 
     def compare(self):
+        self.comparison=None;self.compare_table.setRowCount(0)
+        self.compare_json_button.setEnabled(False);self.compare_csv_button.setEnabled(False);self.compare_report_button.setEnabled(False)
         aidx=self.compare_a.currentData();bidx=self.compare_b.currentData()
         if aidx not in self.loaded or bidx not in self.loaded:return
         if aidx==bidx:self.compare_status.setText("Elegí dos corridas distintas para comparar.");return
         a,_,ra=self.loaded[aidx];b,_,rb=self.loaded[bidx]
-        if float(a["operating_point"]["rpm"])!=float(b["operating_point"]["rpm"]):self.compare_status.setText("No comparable: RPM distintos.");return
-        if a["models"]!=b["models"]:self.compare_status.setText("No comparable: selecciones de modelo 4T distintas.");return
-        config_a=json.loads(Path(self.loaded[aidx][1]["config_path"]).read_text(encoding="utf-8"))
-        config_b=json.loads(Path(self.loaded[bidx][1]["config_path"]).read_text(encoding="utf-8"))
-        if _comparison_context(config_a)!=_comparison_context(config_b):self.compare_status.setText("No comparable: combustible, condiciones de operación, pérdidas, condiciones iniciales o numerics no coinciden.");return
-        if a["periodicity"]["status"]!="PERIODIC_CONVERGED" or b["periodicity"]["status"]!="PERIODIC_CONVERGED":self.compare_status.setText("No se calculan diferencias de prestaciones: ambas corridas deben ser periódicas.");return
-        af=a["final_cycle"];bf=b["final_cycle"];metrics=(("Potencia freno","brake_power_kW","kW"),("Torque freno","brake_torque_Nm","N·m"),("BMEP","bmep_bar","bar"),("IMEP neto","imep_net_bar","bar"))
-        self.compare_table.setRowCount(len(metrics))
-        for row,(name,key,unit) in enumerate(metrics):
-            av=float(af[key]);bv=float(bf[key]);delta=bv-av
-            for column,text in enumerate((f"{name} ({unit})",format_number(av),format_number(bv),format_number(delta))):self.compare_table.setItem(row,column,QTableWidgetItem(text))
-        self.compare_status.setText(f"Comparación periódica del modelo 4T · RPM exacta · modelos coincidentes · validación experimental NOT_PERFORMED · {ra['run_id'][:8]} / {rb['run_id'][:8]}")
+        try:
+            endpoint_a=self._comparison_endpoint(a,ra)
+            endpoint_b=self._comparison_endpoint(b,rb)
+            comparison=build_comparison(endpoint_a,endpoint_b)
+        except (ComparisonIneligible, OSError, ValueError, KeyError, TypeError) as exc:
+            self.compare_status.setText("No comparable: "+str(exc));return
+        self.comparison=comparison
+        self.compare_table.setRowCount(len(comparison["metrics"]))
+        for row,metric in enumerate(comparison["metrics"]):
+            relative="No definido" if metric["relative_percent_to_abs_a"] is None else format_number(metric["relative_percent_to_abs_a"])+"%"
+            values=(f"{metric['label']} ({metric['unit']})",format_number(metric["a"]),format_number(metric["b"]),
+                    format_number(metric["delta_b_minus_a"]),relative)
+            for column,text in enumerate(values):self.compare_table.setItem(row,column,QTableWidgetItem(text))
+        self.compare_status.setText(f"Diferencia del modelo 4T · {format_number(comparison['operating_point']['rpm'])} RPM exactas · contexto, modelos, numerics, versión y termodinámica coinciden · A/B periódicos · diferencias calculadas, no validadas experimentalmente · ID {comparison['comparison_id'][:12]}")
+        self.compare_json_button.setEnabled(True);self.compare_csv_button.setEnabled(True);self.compare_report_button.setEnabled(True)
+
+    def _invalidate_comparison(self,*_):
+        self.comparison=None
+        if not hasattr(self,"compare_table"):return
+        self.compare_table.setRowCount(0)
+        self.compare_json_button.setEnabled(False);self.compare_csv_button.setEnabled(False);self.compare_report_button.setEnabled(False)
+        self.compare_status.setText("Seleccioná dos corridas y pulsá Comparar corridas.")
+
+    def _comparison_endpoint(self,summary,reference):
+        index=next((i for i,(_,_,ref) in self.loaded.items() if ref.get("run_id")==reference.get("run_id")),None)
+        if index is None:raise ComparisonIneligible("la corrida seleccionada ya no está cargada")
+        _,meta,ref=self.loaded[index]
+        config=json.loads(Path(meta["config_path"]).read_text(encoding="utf-8"))
+        trace=Path(meta.get("trace_path") or "");trace_hash=hashlib.sha256(trace.read_bytes()).hexdigest() if trace.is_file() else None
+        return {"summary":summary,"config":config,"meta":meta,"reference":ref,"trace_sha256":trace_hash}
+
+    def export_comparison_json(self):
+        if self.comparison is None:return
+        target,_=QFileDialog.getSaveFileName(self,"Guardar ficha A/B",str(Path.home()/"dino-4t-ab-comparison.json"),"JSON (*.json)")
+        if not target:return
+        if not target.lower().endswith(".json"):target+=".json"
+        Path(target).write_text(json.dumps(self.comparison,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
+
+    def export_comparison_csv(self):
+        if self.comparison is None:return
+        target,_=QFileDialog.getSaveFileName(self,"Exportar diferencias A/B",str(Path.home()/"dino-4t-ab-differences.csv"),"CSV (*.csv)")
+        if not target:return
+        if not target.lower().endswith(".csv"):target+=".csv"
+        a,b=self.comparison["endpoints"]
+        with open(target,"w",newline="",encoding="utf-8-sig") as stream:
+            writer=csv.writer(stream);writer.writerow(["schema","comparison_id","rpm","model_id","code_commit",
+                "run_a","config_sha256_a","result_sha256_a","run_b","config_sha256_b","result_sha256_b",
+                "metric_key","metric","unit","a_full_precision","b_full_precision","delta_b_minus_a","relative_percent_to_abs_a"])
+            for row in self.comparison["metrics"]:
+                writer.writerow([self.comparison["schema"],self.comparison["comparison_id"],
+                    repr(self.comparison["operating_point"]["rpm"]),self.comparison["model_id"],a["code_commit"],
+                    a["run_id"],a["config_sha256"],a["result_sha256"],b["run_id"],b["config_sha256"],b["result_sha256"],
+                    row["key"],row["label"],row["unit"],repr(row["a"]),repr(row["b"]),repr(row["delta_b_minus_a"]),
+                    "" if row["relative_percent_to_abs_a"] is None else repr(row["relative_percent_to_abs_a"])])
+
+    def export_comparison_report(self):
+        if self.comparison is None:return
+        target,_=QFileDialog.getSaveFileName(self,"Informe técnico A/B",str(Path.home()/"dino-4t-ab-report.html"),"HTML (*.html)")
+        if not target:return
+        if not target.lower().endswith(".html"):target+=".html"
+        from .technical_report import write_four_stroke_ab_report
+        path=write_four_stroke_ab_report(target,self.comparison)
+        QDesktopServices.openUrl(QUrl.fromLocalFile(str(path.resolve())))
 
     def export_csv(self):
         if not self.loaded:return
@@ -563,6 +625,7 @@ class FourStrokeDesktopWindow(QMainWindow):
         except Exception as exc:QMessageBox.warning(self,"No se pudo guardar",str(exc));return False
 
     def open_project(self):
+        if self._guard_active_run():return
         path,_=QFileDialog.getOpenFileName(self,"Abrir proyecto Dino",str(Path.home()),"Dino project (*.json)")
         if not path:return
         try:
@@ -577,6 +640,7 @@ class FourStrokeDesktopWindow(QMainWindow):
         except Exception as exc:QMessageBox.warning(self,"No se pudo abrir",str(exc))
 
     def switch_to_2t(self):
+        if self._guard_active_run():return
         from PySide6.QtWidgets import QFileDialog
         path,_=QFileDialog.getOpenFileName(self,"Abrir proyecto Dino 2T",str(Path.home()),"Dino 2T (*.json)")
         if not path:return
@@ -594,7 +658,15 @@ class FourStrokeDesktopWindow(QMainWindow):
         if answer==QMessageBox.StandardButton.Cancel:return False
         return self.save() if answer==QMessageBox.StandardButton.Save else True
 
+    def _guard_active_run(self):
+        if self.simulation.task is None:return False
+        self.simulation.cancel_run()
+        QMessageBox.information(self,"Ejecución 4T en curso",
+            "Se solicitó detener al completar el ciclo actual. El proyecto no se cerrará hasta guardar el resultado parcial; volvé a intentar la acción cuando termine.")
+        return True
+
     def closeEvent(self,event):
+        if self._guard_active_run():event.ignore();return
         if self.context.dirty:
             result=QMessageBox.question(self,"Cambios sin guardar","¿Guardar el proyecto antes de cerrar?",QMessageBox.StandardButton.Save|QMessageBox.StandardButton.Discard|QMessageBox.StandardButton.Cancel,QMessageBox.StandardButton.Save)
             if result==QMessageBox.StandardButton.Cancel:event.ignore();return

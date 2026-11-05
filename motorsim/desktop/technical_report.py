@@ -841,3 +841,52 @@ def write_study_comparison_report(path, comparison: dict) -> Path:
     path=Path(path)
     path.write_text(render_study_comparison_report(comparison),encoding="utf-8")
     return path
+
+
+def render_four_stroke_ab_report(comparison: dict) -> str:
+    """Render one exact, already-validated 4T A/B comparison; performs no calculations."""
+    if comparison.get("schema") != "DINO4T_AB_COMPARISON_V1":
+        raise ValueError("unsupported Dino 4T comparison schema")
+    endpoints=comparison.get("endpoints",[])
+    if len(endpoints)!=2 or [item.get("side") for item in endpoints] != ["A","B"]:
+        raise ValueError("A/B report requires exactly the ordered endpoints A and B")
+    esc=lambda value: html.escape(str(value),quote=True)
+    rows=[]
+    for row in comparison.get("metrics",[]):
+        av=row.get("a");bv=row.get("b");delta=row.get("delta_b_minus_a");relative=row.get("relative_percent_to_abs_a")
+        rows.append("<tr>"+"".join((
+            f"<td>{esc(row.get('label'))}</td>",f"<td>{esc(format_number(av))} {esc(row.get('unit'))}</td>",
+            f"<td>{esc(format_number(bv))} {esc(row.get('unit'))}</td>",
+            f"<td>{esc(format_number(delta))} {esc(row.get('unit'))}</td>",
+            f"<td>{esc(format_number(relative)+'%' if relative is not None else 'No definido')}</td>"))+"</tr>")
+    changes=[]
+    for change in comparison.get("design_changes",[]):
+        changes.append("<tr>"+"".join((f"<td>{esc(change.get('path'))}</td>",
+            f"<td><code>{esc(json.dumps(change.get('a'),ensure_ascii=False))}</code></td>",
+            f"<td><code>{esc(json.dumps(change.get('b'),ensure_ascii=False))}</code></td>"))+"</tr>")
+    endpoint_rows=[]
+    for item in endpoints:
+        endpoint_rows.append("<tr>"+"".join((f"<th>{esc(item['side'])}</th>",
+            f"<td>{esc(item.get('variant_id') or 'Motor base')} · {esc(item.get('run_id'))}</td>",
+            f"<td>{esc(item.get('run_status'))} · {esc(item.get('periodicity',{}).get('status'))}</td>",
+            f"<td>{esc(item.get('cycles_run'))}</td>",f"<td><code>{esc(item.get('code_commit'))}</code></td>",
+            f"<td><code>{esc(item.get('config_sha256'))}</code></td>",
+            f"<td><code>{esc(item.get('result_sha256'))}</code></td>"))+"</tr>")
+    payload=esc(json.dumps(comparison,ensure_ascii=False,indent=2,allow_nan=False))
+    rpm=comparison.get("operating_point",{}).get("rpm")
+    return f'''<!doctype html><html lang="es"><meta charset="utf-8"><title>Comparación Dino 4T A/B</title>
+<style>body{{font:15px Segoe UI,Arial,sans-serif;max-width:1100px;margin:2rem auto;padding:0 1rem;color:#1c2833}}table{{border-collapse:collapse;width:100%;margin:1rem 0}}th,td{{border:1px solid #ccd4dc;padding:.55rem;text-align:left;vertical-align:top}}th{{background:#edf2f6}}code,pre{{overflow-wrap:anywhere;white-space:pre-wrap}}.notice{{border-left:5px solid #ba7730;background:#fff7e8;padding:1rem}}</style>
+<h1>Comparación de diseño 4T A/B</h1><p>Clasificación: <b>{esc(comparison.get('classification'))}</b> · {esc(rpm)} RPM · comparación ID <code>{esc(comparison.get('comparison_id'))}</code></p>
+<p class="notice">Diferencias calculadas por el modelo Dino 4T bajo entradas y contexto compatibles. No constituyen una mejora demostrada en un motor real. Calibración: no realizada. Validación experimental: no realizada. Capacidad predictiva: no declarada. La periodicidad es una condición numérica del modelo, no validación experimental.</p>
+<h2>Diseños y procedencia</h2><table><thead><tr><th>Extremo</th><th>Variante / corrida</th><th>Estado</th><th>Ciclos</th><th>Commit</th><th>Config SHA-256</th><th>Resultado SHA-256</th></tr></thead><tbody>{''.join(endpoint_rows)}</tbody></table>
+<p>Modelos 4T: <code>{esc(json.dumps(comparison.get('models'),ensure_ascii=False))}</code><br>Criterios de periodicidad: <code>{esc(json.dumps(comparison.get('periodicity_tolerances'),ensure_ascii=False))}</code></p>
+<h2>Cambios explícitos entre A y B</h2><table><thead><tr><th>Parámetro</th><th>A</th><th>B</th></tr></thead><tbody>{''.join(changes)}</tbody></table>
+<h2>Diferencias de último ciclo periódico</h2><p>Δ = B − A. El cambio relativo usa |A| como denominador y queda indefinido si A = 0.</p><table><thead><tr><th>Métrica</th><th>A</th><th>B</th><th>Δ absoluto</th><th>Δ relativo a A</th></tr></thead><tbody>{''.join(rows)}</tbody></table>
+<h2>Registro reproducible completo</h2><details><summary>Ver configuración resuelta, criterios, hashes y resultados fuente</summary><pre>{payload}</pre></details>
+<footer><p>Dino Desktop · informe descriptivo de resultados calculados; no valida experimentalmente el motor real.</p></footer></html>'''
+
+
+def write_four_stroke_ab_report(path, comparison: dict) -> Path:
+    path=Path(path)
+    path.write_text(render_four_stroke_ab_report(comparison),encoding="utf-8")
+    return path

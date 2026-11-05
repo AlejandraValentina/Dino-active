@@ -448,7 +448,7 @@ class FourStrokeEngine:
 
     # ------------------------------------------------------------------ run
     def run(self, state, cycles: int, *, wall_limit_s: float = 3600.0, on_cycle=None,
-            keep_traces: str = "last", convergence=None):
+            keep_traces: str = "last", convergence=None, cancel_event=None):
         started = time.monotonic()
         theta = self.theta_start
         ledger = Ledger(self.ns)
@@ -485,6 +485,11 @@ class FourStrokeEngine:
                     records[-2].trace = {k: v for k, v in records[-2].trace.items() if k == "pressure_grid"}
                 if convergence is not None and convergence(records):
                     reason = "periodic_converged"
+                    break
+                # Cancellation is observed only after a complete 720-degree cycle;
+                # the physical step sequence and convergence checks are unchanged.
+                if cancel_event is not None and cancel_event.is_set():
+                    status, reason = "incomplete", "cancelled_by_user"
                     break
                 record = self._new_record(len(records), theta, state, rates)
         return dict(status=status, reason=reason, cycles=records, state=state, theta=theta,

@@ -24,7 +24,7 @@ from motorsim.dino4t import api
 api.capabilities()                 # qué ofrece este build (sin cómputo)
 api.validate(config)               # {"valid","issues","unknown_keys","config_sha256"}; no lanza
 api.run(config, out_dir=None, overrides=None, max_cycles=None, wall_limit_s=3600.0,
-        on_progress=None, initial_state=None, allow_unknown_keys=False)   # -> envoltorio
+        on_progress=None, initial_state=None, allow_unknown_keys=False, cancel_event=None)   # -> envoltorio
 ```
 
 Envoltorio de `run`:
@@ -106,6 +106,7 @@ ese caso el commit **no** identifica el código y la corrida no es reproducible 
 | `MODEL_OUT_OF_VALIDITY` | El modelo rechazó un estado que no sabe representar (frontera, termodinámica, paso rechazado 16 veces) | Informar que el punto de operación sale del dominio del modelo; **no** reintentar con más pasos |
 | `WALL_LIMIT` | Se alcanzó `wall_limit_s`; resultados parciales | Ofrecer continuar con `state` |
 | `NOT_PERIODIC` | Límite de ciclos sin periodicidad | Mostrar con advertencia, nunca como resultado |
+| `CANCELLED` | El usuario solicitó cancelación; se detuvo al cerrar un ciclo 720° completo y se guardaron los ciclos completos | Conservar el parcial como incompleto; periodicidad y métricas de prestaciones no se infieren |
 | `INTERNAL` | Excepción inesperada | Defecto: guardar entrada y `message` para reporte |
 
 Códigos nuevos pueden agregarse (compatibilidad aditiva): el consumidor debe tratar un código desconocido como
@@ -128,8 +129,13 @@ Códigos nuevos pueden agregarse (compatibilidad aditiva): el consumidor debe tr
 * Costo medido: ~10 s por ciclo con dx = 20 mm y dos zonas; 4–14 ciclos por punto de RPM (≈ 1–3 min por punto; un
   barrido de 8 RPM ≈ 10 min). **Debe ejecutarse fuera del hilo de la GUI.**
 * Un punto por proceso. No se ha verificado el uso concurrente en hilos del mismo proceso; usar procesos.
-* No hay cancelación cooperativa: cancelar = terminar el proceso (el resultado parcial se pierde salvo `out_dir`).
-  `wall_limit_s` es un límite, no una cancelación.
+* `cancel_event` es opcional y debe ofrecer `is_set()`. Se comprueba solo en límites de ciclo 720°,
+  después del monitor de periodicidad; no interrumpe pasos ni cambia cálculos. La envoltura devuelve
+  `error.code="CANCELLED"`, `termination="cancelled_by_user"` y un resumen `incomplete` de los ciclos
+  completos, que se escribe junto con configuración y traza si se indicó `out_dir`.
+* La API sigue sin checkpoint serializable. El `state` de continuación es opaco y vive solo en memoria;
+  Desktop conserva el parcial completo, pero una interrupción del proceso exige reiniciar desde la
+  configuración exacta. `wall_limit_s` sigue siendo un límite independiente de cancelación.
 * `on_progress(dict)` recibe `{"cycle","work_net_J","p_max_bar"}` por ciclo (no un objeto interno).
 * Barridos y sensibilidades existen como `studies.sweep` / `studies.sensitivity` y CLI (`sweep`, `sensitivity`), pero
   **no forman parte de `DINO4T_API_V1`**: la entrada para un barrido en Desktop es llamar `api.run` por punto.

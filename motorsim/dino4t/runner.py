@@ -91,7 +91,8 @@ def _jsonable(value):
 
 
 def run_operating_point(config: dict, *, out_dir=None, overrides=None, max_cycles=None,
-                        wall_limit_s=3600.0, progress=None, initial_state=None) -> dict:
+                        wall_limit_s=3600.0, progress=None, initial_state=None,
+                        cancel_event=None) -> dict:
     """``initial_state``: converged state of a previous run of the same topology (continuation)."""
     engine, state, context = build(config, overrides=overrides)
     warm_start = "none"
@@ -115,7 +116,8 @@ def run_operating_point(config: dict, *, out_dir=None, overrides=None, max_cycle
         if progress:
             progress(record)
 
-    result = engine.run(state, cycles, wall_limit_s=wall_limit_s, on_cycle=on_cycle, convergence=monitor)
+    result = engine.run(state, cycles, wall_limit_s=wall_limit_s, on_cycle=on_cycle,
+                        convergence=monitor, cancel_event=cancel_event)
     records = result["cycles"]
     if len(monitor.indicators) < len(records):  # last cycle when convergence hook did not run
         monitor(records)

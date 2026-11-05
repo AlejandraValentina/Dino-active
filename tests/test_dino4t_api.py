@@ -17,7 +17,7 @@ def test_capabilities_is_json_serialisable_and_declares_no_validation():
     assert cap["api"] == "DINO4T_API_V1" and cap["cycle"] == "4T"
     assert cap["claims"]["experimental_validation"] == "NOT_PERFORMED"
     assert cap["claims"]["predictive_capability"] == "NOT_CLAIMED"
-    assert set(api.ERROR_CODES) >= {"CONFIG_INVALID", "MODEL_OUT_OF_VALIDITY", "WALL_LIMIT", "NOT_PERIODIC"}
+    assert set(api.ERROR_CODES) >= {"CONFIG_INVALID", "MODEL_OUT_OF_VALIDITY", "WALL_LIMIT", "NOT_PERIODIC", "CANCELLED"}
 
 
 def test_validate_accepts_example_and_returns_hash():
@@ -108,3 +108,26 @@ def test_unknown_configuration_keys_are_rejected_because_they_silently_select_de
     out = api.run(c, max_cycles=1)
     assert out["error"]["code"] == "CONFIG_INVALID" and "restricton_model" in out["error"]["message"]
     assert api.validate(_cfg())["unknown_keys"] == []
+
+
+def test_user_cancellation_stops_after_complete_cycle_and_persists_partial_primary(tmp_path):
+    import threading
+
+    cancel=threading.Event();output=tmp_path/"cancelled-run"
+    result=api.run(_cfg(),out_dir=output,max_cycles=20,wall_limit_s=30.0,
+        overrides={"numerics":{"dx_mm":30.0}},cancel_event=cancel,
+        on_progress=lambda record:cancel.set())
+    assert result["error"]["code"]=="CANCELLED"
+    assert result["summary"]["status"]=="incomplete"
+    assert result["summary"]["termination"]=="cancelled_by_user"
+    assert result["summary"]["cycles_run"]==1
+    assert result["summary"]["periodicity"]["status"]=="NOT_CONVERGED"
+    assert result["state"] is not None and api.check_summary(result["summary"])==[]
+    assert (output/"summary.json").is_file()
+    assert (output/"config_resolved.json").is_file()
+    assert (output/"trace_last_cycle.csv").is_file()
+    assert not (output/"checkpoint.json").exists()
+
+
+def test_cancel_event_option_must_be_event_like():
+    assert api.run(_cfg(),max_cycles=1,cancel_event=object())["error"]["code"]=="OPTION_INVALID"
