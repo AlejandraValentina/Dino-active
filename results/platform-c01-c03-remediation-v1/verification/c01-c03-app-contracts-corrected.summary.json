@@ -1,0 +1,27 @@
+{
+  "name": "c01-c03-app-contracts-corrected",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_dino4t_ab_comparison.py",
+    "tests/test_c01_c03_native_contracts.py",
+    "tests/test_c01_c03_artifact_binding.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "started_at": "2026-11-06T13:22:27+00:00",
+  "finished_at": "2026-11-06T13:22:52+00:00",
+  "duration_s": 24.672,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\platform-c01-c03-remediation-v1\\verification\\c01-c03-app-contracts-corrected.log",
+  "log_lines": 2,
+  "log_bytes": 100,
+  "error_lines": [],
+  "tail": [
+    ".............................................................            [100%]",
+    "61 passed in 20.29s"
+  ]
+}

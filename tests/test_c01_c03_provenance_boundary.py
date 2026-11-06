@@ -9,6 +9,8 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "packaging"))
 import build_provenance as provenance
+from bundle_inputs import REQUIRED_BUILD_FILES
+from motorsim.source_provenance import REQUIRED_SOURCE_FILES
 
 
 def _git(root, *args):
@@ -27,7 +29,9 @@ def _committed_tree(root):
         "scripts/agents/storage_preflight.py",
         "results/2t-commercial-core-20261002/fixtures/v1-prime-mesh/fixture_a_prime-mesh-0.json",
     ]
-    for rel in required:
+    required += [*REQUIRED_BUILD_FILES, *REQUIRED_SOURCE_FILES,
+                 "motorsim/theme.qss", "motorsim/ayuda.txt"]
+    for rel in set(required):
         p = root / rel
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(rel + "\n", encoding="utf-8")

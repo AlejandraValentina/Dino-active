@@ -15,12 +15,12 @@ Design rules
 from __future__ import annotations
 
 import copy
-import inspect
 import re
 from typing import Callable
 
 from . import MODEL_ID
 from .config import SCHEMA as CONFIG_SCHEMA, ConfigError, canonical_hash, validate as _validate_config
+from .validation import CONFIG_VALIDATION, RESULT_VALIDATION, configuration_issues, finite
 
 API_VERSION = "DINO4T_API_V1"
 RESULT_SCHEMA = "DINO4T_OPERATING_POINT_RESULT_V1"
@@ -39,6 +39,7 @@ ERROR_CODES = {
     "NOT_PERIODIC": "ran to the cycle limit without meeting the periodicity criteria",
     "CANCELLED": "user requested cancellation; any returned summary contains completed cycles only",
     "INTERNAL": "unexpected exception; a defect, not a user error",
+    "RESULT_INVALID": "raw calculated result retained, but semantic/domain checks failed",
 }
 _UNIT_SUFFIXES = (("_g_kWh", "g/kWh"), ("_MJ_kg", "MJ/kg"), ("_Nm", "N*m"), ("_kW", "kW"), ("_bar", "bar"),
                   ("_deg", "deg"), ("_mg", "mg"), ("_K", "K"), ("_J", "J"))
@@ -68,12 +69,13 @@ def capabilities() -> dict:
             "numerics.restriction_model": ["V1", "V2"],
             "numerics.limiter": ["minmod", "van_leer", "mc", "unlimited_central"],
         },
-        "default_models": resolved_models({"combustion": {"zone_model": "two_zone_equilibrium"}}),
+        "default_models": resolved_models({}),
+        "config_validation_contract": CONFIG_VALIDATION, "result_validation_contract": RESULT_VALIDATION,
         "options": {"out_dir": "path or None", "overrides": "nested dict merged over the config",
                     "max_cycles": "int >= 1", "wall_limit_s": "float > 0", "on_progress": "callable(dict) or None",
                     "cancel_event": "threading.Event-like object; observed after a completed 720-degree cycle",
                     "initial_state": "opaque continuation state from a previous run of the SAME topology",
-                    "allow_unknown_keys": "bool; default False = unread config keys (typos) are rejected"},
+                    "allow_unknown_keys": "legacy option; unread scientific controls are always rejected"},
         "claims": {"calibration": "NOT_PERFORMED", "experimental_validation": "NOT_PERFORMED",
                    "predictive_capability": "NOT_CLAIMED"},
         "scope": ["single cylinder", "4-stroke spark ignition", "0D cylinder + quasi-1D ducts",
@@ -92,44 +94,27 @@ def validate(config: dict) -> dict:
     checked by building it); it says nothing about physical adequacy of the parameter values.
     """
     from .config import build
-    issues = []
-    if not isinstance(config, dict):
-        raise TypeError("config must be a dict")
+    issues = configuration_issues(config)
+    unknown = [issue["path"] for issue in issues if issue["code"] == "UNKNOWN_KEY"]
+    if issues:
+        return {"valid": False, "issues": issues, "unknown_keys": unknown,
+                "config_sha256": None, "validation_contract": CONFIG_VALIDATION}
     try:
         _validate_config(config)
         build(config)
     except ConfigError as exc:
         issues.append({"code": "CONFIG_INVALID", "path": _path_of(str(exc)), "message": str(exc)})
-    except (ValueError, KeyError, TypeError) as exc:  # constructors validate ranges with ValueError
+    except (ValueError, KeyError, TypeError, OverflowError) as exc:  # expected construction/domain errors
         issues.append({"code": "CONFIG_INVALID", "path": _path_of(str(exc)),
                        "message": f"{type(exc).__name__}: {exc}"})
-    unknown = unknown_keys(config) if not issues else []
     return {"valid": not issues, "issues": issues, "unknown_keys": unknown,
-            "config_sha256": canonical_hash(config) if not issues else None}
+            "config_sha256": canonical_hash(config) if not issues else None,
+            "validation_contract": CONFIG_VALIDATION}
 
 
 def unknown_keys(config: dict) -> list[str]:
-    """Dotted paths of keys the builder never reads (typically typos, which would silently fall back
-    to a default model).  Allowed = keys of the reference example configuration plus every key
-    literal read by ``config.build`` / the section specs; a key is checked within its section."""
-    from . import config as cfgmod
-    from .config import EXAMPLE_PATH, load
-    read = set(re.findall(r"[\"'](\w+)[\"']", inspect.getsource(cfgmod)))
-    ref = load(EXAMPLE_PATH)
-    found = []
-
-    def walk(node, ref_node, path):
-        if not isinstance(node, dict):
-            return
-        for key, value in node.items():
-            sub = ref_node.get(key) if isinstance(ref_node, dict) else None
-            if (not isinstance(ref_node, dict) or key not in ref_node) and key not in read:
-                found.append(".".join(path + [key]))
-            elif key not in ("segments", "lift", "discharge_coefficient", "periodicity"):
-                walk(value, sub, path + [key])
-
-    walk(config, ref, [])
-    return found
+    """Section-aware dotted paths, independent of any bundled example file."""
+    return [x["path"] for x in configuration_issues(config) if x["code"] == "UNKNOWN_KEY"]
 
 
 def _path_of(message: str) -> str | None:
@@ -152,10 +137,20 @@ def run(config: dict, *, out_dir=None, overrides: dict | None = None, max_cycles
     show it with the proper caveat instead of presenting it as a result.
     """
     from .runner import run_operating_point
-    if max_cycles is not None and (not isinstance(max_cycles, int) or max_cycles < 1):
+    if max_cycles is not None and (not isinstance(max_cycles, int) or isinstance(max_cycles, bool) or max_cycles < 1):
         return _fail("OPTION_INVALID", "max_cycles must be an integer >= 1")
-    if not (isinstance(wall_limit_s, (int, float)) and wall_limit_s > 0):
+    if not (finite(wall_limit_s) and wall_limit_s > 0):
         return _fail("OPTION_INVALID", "wall_limit_s must be > 0")
+    if overrides is not None and not isinstance(overrides, dict):
+        return _fail("OPTION_INVALID", "overrides must be an object")
+    if not isinstance(allow_unknown_keys, bool) or (on_progress is not None and not callable(on_progress)):
+        return _fail("OPTION_INVALID", "invalid allow_unknown_keys/on_progress option")
+    if not isinstance(config, dict):
+        return _fail("CONFIG_INVALID", "config must be an object")
+    if out_dir is not None:
+        from .artifacts import require_empty_output
+        try: require_empty_output(out_dir)
+        except (ValueError, OSError, TypeError) as exc: return _fail("OPTION_INVALID", str(exc))
     if cancel_event is not None and not callable(getattr(cancel_event, "is_set", None)):
         return _fail("OPTION_INVALID", "cancel_event must provide is_set()")
     cfg = copy.deepcopy(config)
@@ -165,7 +160,7 @@ def run(config: dict, *, out_dir=None, overrides: dict | None = None, max_cycles
     check = validate(cfg)
     if not check["valid"]:
         return _fail("CONFIG_INVALID", check["issues"][0]["message"], detail=check["issues"])
-    if check["unknown_keys"] and not allow_unknown_keys:
+    if check["unknown_keys"]:
         # an unread key (typo) would silently fall back to a default model: refuse instead
         return _fail("CONFIG_INVALID", f"unknown configuration keys: {check['unknown_keys']}",
                      detail=[{"code": "UNKNOWN_KEY", "path": k} for k in check["unknown_keys"]])
@@ -182,12 +177,13 @@ def run(config: dict, *, out_dir=None, overrides: dict | None = None, max_cycles
         code = "MODEL_OUT_OF_VALIDITY" if type(exc).__name__ in _SOLVER_ERRORS else "INTERNAL"
         return _fail(code, f"{type(exc).__name__}: {exc}")
     summary = out["summary"]
-    artifacts = {}
-    if out_dir is not None:
-        artifacts = {"summary": "summary.json", "config_resolved": "config_resolved.json",
-                     "trace_last_cycle": "trace_last_cycle.csv", "directory": str(out_dir)}
+    semantic_problems = check_summary(summary, config=out["context"]["config"])
+    artifacts = out.get("artifacts", {})
     error = None
-    if summary["status"] == "failed_numerical":
+    if semantic_problems:
+        error = {"code": "RESULT_INVALID", "message": "Calculated data retained but not eligible",
+                 "detail": semantic_problems}
+    elif summary["status"] == "failed_numerical":
         error = {"code": "MODEL_OUT_OF_VALIDITY", "message": summary["termination"], "detail": None}
     elif summary["status"] == "incomplete":
         code = "CANCELLED" if summary.get("termination") == "cancelled_by_user" else "WALL_LIMIT"
@@ -195,7 +191,8 @@ def run(config: dict, *, out_dir=None, overrides: dict | None = None, max_cycles
     elif summary["periodicity"]["status"] != "PERIODIC_CONVERGED":
         error = {"code": "NOT_PERIODIC", "message": "cycle limit reached without periodicity", "detail": None}
     return {"api": API_VERSION, "ok": error is None, "error": error, "summary": summary,
-            "artifacts": artifacts, "state": out["result"].get("state")}
+            "artifacts": artifacts, "state": out["result"].get("state"),
+            "result_validation": {"contract": RESULT_VALIDATION, "issues": semantic_problems}}
 
 
 def _fail(code: str, message: str, *, detail=None) -> dict:
@@ -203,16 +200,7 @@ def _fail(code: str, message: str, *, detail=None) -> dict:
             "summary": None, "artifacts": {}, "state": None}
 
 
-def check_summary(summary: dict) -> list[str]:
+def check_summary(summary: dict, *, config: dict | None = None) -> list[str]:
     """Return the list of contract violations of a result summary (empty = conforming)."""
-    problems = [f"missing key {k}" for k in RESULT_REQUIRED_KEYS if k not in summary]
-    if summary.get("schema") != RESULT_SCHEMA:
-        problems.append(f"schema != {RESULT_SCHEMA}")
-    if summary.get("status") not in RUN_STATUSES:
-        problems.append(f"status {summary.get('status')!r} not in {RUN_STATUSES}")
-    claims = summary.get("claims", {})
-    if claims.get("experimental_validation") != "NOT_PERFORMED" and not summary.get("validation_evidence"):
-        problems.append("experimental_validation claimed without validation_evidence")
-    if claims.get("predictive_capability") not in ("NOT_CLAIMED",) and not summary.get("validation_evidence"):
-        problems.append("predictive_capability claimed without validation_evidence")
-    return problems
+    from .validation import summary_issues
+    return summary_issues(summary, config=config)

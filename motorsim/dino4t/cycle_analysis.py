@@ -134,8 +134,7 @@ def cycle_indicators(record, context) -> dict:
     return out
 
 
-DEFAULT_TOLERANCES = {"imep_rel": 0.002, "trapped_mass_rel": 0.002, "pressure_trace_rel": 0.005,
-                      "mass_imbalance_rel": 0.005, "consecutive": 2}
+from .validation import DEFAULT_TOLERANCES, MIN_CYCLES, finite, tolerance_issues
 
 
 def periodicity_metrics(previous: dict, current: dict, prev_record, record) -> dict:
@@ -156,7 +155,10 @@ def periodicity_metrics(previous: dict, current: dict, prev_record, record) -> d
 class PeriodicityMonitor:
     """Callable used as ``convergence`` hook; keeps the metric history."""
 
-    def __init__(self, context, tolerances=None, min_cycles=3):
+    def __init__(self, context, tolerances=None, min_cycles=MIN_CYCLES):
+        problems = tolerance_issues({} if tolerances is None else tolerances)
+        if problems or not isinstance(min_cycles, int) or isinstance(min_cycles, bool) or min_cycles < 2:
+            raise ValueError("; ".join(problems) or "min_cycles must be an integer >= 2")
         self.context = context
         self.tol = dict(DEFAULT_TOLERANCES, **(tolerances or {}))
         self.min_cycles = min_cycles
@@ -169,12 +171,12 @@ class PeriodicityMonitor:
             self.metrics.append(None)
             return False
         m = periodicity_metrics(self.indicators[-2], self.indicators[-1], records[-2], rec)
-        ok = all(m[k] <= self.tol[k] for k in m)
+        ok = all(finite(m[k]) and m[k] >= 0 and m[k] <= self.tol[k] for k in m)
         m["passed"] = ok
         self.metrics.append(m)
         self.streak = self.streak + 1 if ok else 0
-        return len(records) >= self.min_cycles and self.streak >= self.tol["consecutive"]
+        return self.status == "PERIODIC_CONVERGED"
 
     @property
     def status(self):
-        return "PERIODIC_CONVERGED" if self.streak >= self.tol["consecutive"] else "NOT_CONVERGED"
+        return "PERIODIC_CONVERGED" if len(self.indicators) >= self.min_cycles and self.streak >= self.tol["consecutive"] else "NOT_CONVERGED"

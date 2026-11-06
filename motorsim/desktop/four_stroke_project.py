@@ -51,9 +51,13 @@ def validate_project(project: dict) -> None:
     required = {"run_id", "path", "result_sha256", "config_sha256", "status", "periodicity_status", "variant_id"}
     run_ids=set()
     for ref in project["run_references"]:
-        if not isinstance(ref, dict) or set(ref) != required or not isinstance(ref["path"], str) or not ref["path"]:
+        from .four_stroke_artifacts import REFERENCE_SCHEMA
+        fields = required | {"schema", "run_manifest_path", "run_manifest_sha256"} if isinstance(ref, dict) and ref.get("schema") == REFERENCE_SCHEMA else required
+        if not isinstance(ref, dict) or set(ref) != fields or not isinstance(ref["path"], str) or not ref["path"]:
             raise ValueError("4T run reference fields invalid")
-        for key in ("result_sha256", "config_sha256"):
+        if "schema" in ref and (not isinstance(ref["run_manifest_path"], str) or not ref["run_manifest_path"]):
+            raise ValueError("4T run manifest path invalid")
+        for key in ("result_sha256", "config_sha256", *(("run_manifest_sha256",) if "schema" in ref else ())):
             value = ref[key]
             if not isinstance(value, str) or len(value) != 64 or any(c not in "0123456789abcdef" for c in value):
                 raise ValueError(f"invalid 4T run reference {key}")

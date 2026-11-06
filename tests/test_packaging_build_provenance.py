@@ -5,6 +5,8 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "packaging"))
 import build_provenance as provenance
+from bundle_inputs import REQUIRED_BUILD_FILES
+from motorsim.source_provenance import REQUIRED_SOURCE_FILES
 
 
 def _minimal_tree(root: Path):
@@ -18,7 +20,9 @@ def _minimal_tree(root: Path):
         "scripts/agents/storage_preflight.py",
         "results/2t-commercial-core-20261002/fixtures/v1-prime-mesh/fixture_a_prime-mesh-0.json",
     ]
-    for relative in required:
+    required += [*REQUIRED_BUILD_FILES, *REQUIRED_SOURCE_FILES,
+                 "motorsim/theme.qss", "motorsim/ayuda.txt"]
+    for relative in set(required):
         path = root / relative
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(relative, encoding="utf-8")

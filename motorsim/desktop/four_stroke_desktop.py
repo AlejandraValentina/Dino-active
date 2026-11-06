@@ -145,10 +145,8 @@ def _path_label(path):
 
 
 def _curve_binding(config):
-    bound=json.loads(json.dumps(config))
-    bound.get("operating_point",{}).pop("rpm",None)
-    payload=json.dumps(bound,sort_keys=True,separators=(",",":"),ensure_ascii=False).encode("utf-8")
-    return hashlib.sha256(payload).hexdigest()
+    from .four_stroke_artifacts import curve_binding
+    return curve_binding(config)
 
 
 def _outcome_label(summary):
@@ -282,36 +280,29 @@ class FourStrokeSimulation(QWidget):
         summary=envelope.get("summary")
         if summary is None:
             error=envelope.get("error") or {};record={"schema":"DINO4T_DESKTOP_API_ERROR_V1","run_id":self.run_dir.name,
-                "api":envelope.get("api"),"error":error,"config_identity_sha256":engine_platform.identity("4T",self.context.engine()),
+                "api":envelope.get("api"),"error":error,
+                "config_identity_sha256":engine_platform.validate_config("4T",task.config).get("config_sha256") if task else None,
+                "input_configuration":task.config if task else None,
                 "persisted_artifact":str((self.run_dir/"api-error.json").resolve())}
             (self.run_dir/"api-error.json").write_text(json.dumps(record,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
             code=error.get("code","UNKNOWN");label=ERROR_LABELS.get(code,"Error de ejecución")
             self.progress.setText(f"{label} · {error.get('message','sin detalle')} · registro: {record['persisted_artifact']}")
             return
-        summary_path=self.run_dir/"artifacts"/"summary.json";raw=summary_path.read_bytes()
-        result_hash=hashlib.sha256(raw).hexdigest();config_path=self.run_dir/"artifacts"/"config_resolved.json"
-        resolved_config=json.loads(config_path.read_text(encoding="utf-8"))
-        meta={"schema":"DINO4T_DESKTOP_RUN_V1","run_id":self.run_dir.name,"project_id":self.run_project_id,
-            "variant_id":self.run_variant_id,"api":envelope["api"],"result_sha256":result_hash,
-            "config_sha256":summary["config_sha256"],"config_identity_sha256":engine_platform.identity("4T",json.loads(config_path.read_text(encoding="utf-8"))),
-            "curve_binding_sha256":_curve_binding(resolved_config),
-            "summary_path":str(summary_path.resolve()),"config_path":str(config_path.resolve()),
-            "trace_path":str((self.run_dir/"artifacts"/"trace_last_cycle.csv").resolve()),
-            "status":summary["status"],"periodicity_status":summary["periodicity"]["status"],
-            "evidence_level":summary["evidence_level"],"claims":summary["claims"]}
-        (self.run_dir/"run.json").write_text(json.dumps(meta,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-        ref={"run_id":meta["run_id"],"path":str(summary_path.resolve()),"result_sha256":result_hash,
-            "config_sha256":summary["config_sha256"],"status":summary["status"],
-            "periodicity_status":summary["periodicity"]["status"],"variant_id":meta["variant_id"]}
+        from .four_stroke_artifacts import publish_desktop_run
+        ref=publish_desktop_run(self.run_dir,envelope,self.run_project_id,self.run_variant_id)
+        result_hash=ref["result_sha256"]
         self.context.add_run_reference(ref)
+        self.runFinished.emit(ref)
         if summary.get("termination")=="cancelled_by_user":state="CANCELADA AL FIN DE CICLO · primario parcial conservado"
         else:state="PERIÓDICO · simulación no validada" if summary["periodicity"]["status"]=="PERIODIC_CONVERGED" else "NO PERIÓDICO · resultado incompleto para prestaciones"
         if envelope.get("error"):
             code=envelope["error"].get("code");state+=f" · {ERROR_LABELS.get(code,'Aviso de ejecución')}"
         self.progress.setText(f"{state} · {summary['cycles_run']} ciclos · {summary['evidence_level']}")
+        if (envelope.get("error") or {}).get("code")=="RESULT_INVALID":
+            self.last_label.setText("Datos calculados conservados · contrato o dominio incompatible; no son prestaciones elegibles.")
+            return
         final=summary.get("final_cycle") or {}
         self.last_label.setText(f"RPM {format_number(summary['operating_point']['rpm'])} · Potencia freno {format_number(final.get('brake_power_kW'))} kW · Torque {format_number(final.get('brake_torque_Nm'))} N·m\nValidación experimental: {summary['claims'].get('experimental_validation')} · Capacidad predictiva: {summary['claims'].get('predictive_capability')} · SHA-256 {result_hash}")
-        self.runFinished.emit(meta)
 
     def _failed(self,message):
         self.task=None;self.start.setEnabled(True);self.cancel.setEnabled(False)
@@ -346,32 +337,30 @@ class FourStrokeResults(QWidget):
         self.context.changed.connect(self.refresh);self.refresh()
 
     def _read(self,ref):
-        path=Path(ref["path"]);raw=path.read_bytes()
-        if hashlib.sha256(raw).hexdigest()!=ref["result_sha256"]:raise ValueError("hash del resultado no coincide con el proyecto")
-        summary=json.loads(raw);engine_platform.check_result("4T",summary)
-        if summary["config_sha256"]!=ref["config_sha256"]:raise ValueError("config_sha256 no coincide con la referencia")
-        meta_path=path.parent.parent/"run.json";meta=json.loads(meta_path.read_text(encoding="utf-8"))
-        if meta.get("schema")!="DINO4T_DESKTOP_RUN_V1" or meta.get("result_sha256")!=ref["result_sha256"]:raise ValueError("procedencia DINO4T_DESKTOP_RUN_V1 no coincide")
-        resolved=json.loads(Path(meta["config_path"]).read_text(encoding="utf-8"));checked=engine_platform.validate_config("4T",resolved)
-        if not checked["valid"] or checked["unknown_keys"] or checked["config_sha256"]!=summary["config_sha256"] or meta.get("config_identity_sha256")!=summary["config_sha256"]:
-            raise ValueError("configuración resuelta no verifica config_sha256")
-        return summary,meta
+        from .four_stroke_artifacts import assess_run_reference
+        return assess_run_reference(ref)
 
     def refresh(self):
         refs=self.context.project["run_references"];self.history.clear();self.loaded.clear()
-        self._invalidate_comparison()
-        self.compare_a.clear();self.compare_b.clear()
+        self.assessments={};self.legacy_loaded={}
+        self.summary.setRowCount(0);self.trace_table.setRowCount(0);self.pressure_plot.set_series([])
+        self._invalidate_comparison();self.compare_a.clear();self.compare_b.clear()
         for index,ref in enumerate(refs):
-            try:
-                summary,meta=self._read(ref);self.loaded[index]=(summary,meta,ref)
-                outcome=_outcome_label(summary)
-                period=summary.get("periodicity",{}).get("status","NOT_REPORTED")
+            assessed=self._read(ref);self.assessments[index]=assessed
+            if assessed.verified or assessed.classification=="LEGACY_UNVERIFIED":
+                summary,meta=assessed.summary,assessed.meta
+                outcome=_outcome_label(summary);period=summary.get("periodicity",{}).get("status","NOT_REPORTED")
                 variant=ref.get("variant_id") or "Motor base"
-                label=f"{summary['operating_point']['rpm']:.0f} rpm · {outcome} · {variant}"
-                item=QListWidgetItem(label);item.setToolTip(f"Ejecución: {STATUS_LABELS.get(summary['status'],summary['status'])}\nPeriodicidad: {STATUS_LABELS.get(period,period)}\nRun ID: {ref['run_id']}\nConfiguración SHA-256: {summary['config_sha256']}")
-                self.history.addItem(item);self.compare_a.addItem(label,index);self.compare_b.addItem(label,index)
-            except Exception as exc:
-                self.history.addItem(f"Fuente no verificable · {ref.get('run_id','?')} · {exc}")
+                prefix="" if assessed.verified else "Histórico no verificado · "
+                label=prefix+f"{summary['operating_point']['rpm']:.0f} rpm · {outcome} · {variant}"
+                item=QListWidgetItem(label)
+                item.setToolTip(f"Integridad: {assessed.classification}\nPeriodicidad: {STATUS_LABELS.get(period,period)}\nRun ID: {ref['run_id']}\n"+"; ".join(assessed.issues))
+                self.history.addItem(item)
+                if assessed.verified:
+                    self.loaded[index]=(summary,meta,ref);self.compare_a.addItem(label,index);self.compare_b.addItem(label,index)
+                else:self.legacy_loaded[index]=(summary,meta,ref)
+            else:
+                self.history.addItem(f"Datos conservados · {assessed.classification} · {ref.get('run_id','?')} · "+"; ".join(assessed.issues))
         if self.history.count():self.history.setCurrentRow(self.history.count()-1)
         self._refresh_plots()
 
@@ -389,8 +378,10 @@ class FourStrokeResults(QWidget):
         self.power_plot.set_series(power,y_scale_mode="data_margin");self.torque_plot.set_series(torque,y_scale_mode="data_margin")
 
     def select_run(self,index):
-        if index not in self.loaded:return
-        summary,meta,ref=self.loaded[index];final=summary.get("final_cycle") or {}
+        self.summary.setRowCount(0);self.trace_table.setRowCount(0);self.pressure_plot.set_series([])
+        selected=self.loaded.get(index) or getattr(self,"legacy_loaded",{}).get(index)
+        if selected is None:return
+        summary,meta,ref=selected;final=summary.get("final_cycle") or {}
         rows=[]
         for key,value in final.items():
             label=METRIC_LABELS.get(key,key.replace("_"," ").capitalize())
@@ -400,7 +391,7 @@ class FourStrokeResults(QWidget):
             shown=format_number(value) if isinstance(value,(int,float)) else str(value)
             for column,text in enumerate((name,shown,unit)):
                 item=QTableWidgetItem(text);item.setFlags(item.flags() & ~item.flags().ItemIsEditable);self.summary.setItem(row,column,item)
-        trace_rows=(("Run ID",ref["run_id"]),("Estado de periodicidad",STATUS_LABELS.get(summary["periodicity"]["status"],summary["periodicity"]["status"])),
+        trace_rows=(("Integridad de artefactos",self.assessments[index].classification),("Run ID",ref["run_id"]),("Estado de periodicidad",STATUS_LABELS.get(summary["periodicity"]["status"],summary["periodicity"]["status"])),
             ("Estado de ejecución",STATUS_LABELS.get(summary["status"],summary["status"])),("Nivel de evidencia",SCIENTIFIC_LABELS.get(summary.get("evidence_level"),summary.get("evidence_level"))),
             ("Calibración",SCIENTIFIC_LABELS.get(summary.get("claims",{}).get("calibration"),summary.get("claims",{}).get("calibration"))),
             ("Validación experimental",SCIENTIFIC_LABELS.get(summary.get("claims",{}).get("experimental_validation"),summary.get("claims",{}).get("experimental_validation"))),
@@ -413,15 +404,17 @@ class FourStrokeResults(QWidget):
                 item=QTableWidgetItem(text);item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable);self.trace_table.setItem(row,column,item)
         pressure=[];self.result_tabs.setTabText(4,"Presiones y ondas del último ciclo")
         try:
-            with open(meta["trace_path"],newline="",encoding="utf-8") as stream:
-                trace=list(csv.DictReader(stream))
+            import io
+            assessed=self.assessments[index]
+            raw=assessed.snapshot.get("raw",{}).get("trace") if assessed.verified else None
+            trace=list(csv.DictReader(io.StringIO(raw.decode("utf-8")))) if raw is not None else []
             for key,label in (("p","Cilindro"),("p_intake_port","Admisión"),("p_exhaust_port","Escape")):
                 points=[]
                 for point in trace:
                     try:value=float(point[key])/100000.0;theta=float(point["theta"])
                     except (KeyError,ValueError,TypeError):continue
                     if math.isfinite(value) and math.isfinite(theta):points.append({"theta":theta,"value":value})
-                if points:pressure.append({"name":label,"x_key":"theta","unit":"bar","points":points})
+                if points:pressure.append({"name":label,"x_key":"theta","x_label":"Ángulo de cigüeñal (°)","unit":"bar","points":points})
             period=summary["periodicity"]["status"]
             title="Presiones de último ciclo" if period=="PERIODIC_CONVERGED" else "Presión transitoria · no periódica"
             self.result_tabs.setTabText(4,title)
@@ -460,22 +453,18 @@ class FourStrokeResults(QWidget):
         self.compare_status.setText("Seleccioná dos corridas y pulsá Comparar corridas.")
 
     def _comparison_endpoint(self,summary,reference):
-        index=next((i for i,(_,_,ref) in self.loaded.items() if ref.get("run_id")==reference.get("run_id")),None)
-        if index is None:raise ComparisonIneligible("la corrida seleccionada ya no está cargada")
-        _,meta,ref=self.loaded[index]
-        config=json.loads(Path(meta["config_path"]).read_text(encoding="utf-8"))
-        trace=Path(meta.get("trace_path") or "");trace_hash=hashlib.sha256(trace.read_bytes()).hexdigest() if trace.is_file() else None
-        return {"summary":summary,"config":config,"meta":meta,"reference":ref,"trace_sha256":trace_hash}
+        from .four_stroke_artifacts import require_verified_run
+        return require_verified_run(reference).endpoint()
 
     def export_comparison_json(self):
-        if self.comparison is None:return
+        if not self._comparison_export_ready():return
         target,_=QFileDialog.getSaveFileName(self,"Guardar ficha A/B",str(Path.home()/"dino-4t-ab-comparison.json"),"JSON (*.json)")
         if not target:return
         if not target.lower().endswith(".json"):target+=".json"
         Path(target).write_text(json.dumps(self.comparison,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
 
     def export_comparison_csv(self):
-        if self.comparison is None:return
+        if not self._comparison_export_ready():return
         target,_=QFileDialog.getSaveFileName(self,"Exportar diferencias A/B",str(Path.home()/"dino-4t-ab-differences.csv"),"CSV (*.csv)")
         if not target:return
         if not target.lower().endswith(".csv"):target+=".csv"
@@ -483,16 +472,22 @@ class FourStrokeResults(QWidget):
         with open(target,"w",newline="",encoding="utf-8-sig") as stream:
             writer=csv.writer(stream);writer.writerow(["schema","comparison_id","rpm","model_id","code_commit",
                 "run_a","config_sha256_a","result_sha256_a","run_b","config_sha256_b","result_sha256_b",
-                "metric_key","metric","unit","a_full_precision","b_full_precision","delta_b_minus_a","relative_percent_to_abs_a"])
+                "metric_key","metric","unit","a_full_precision","b_full_precision","delta_b_minus_a","relative_percent_to_abs_a",
+                "comparison_policy","classification","source_qualification_a","source_qualification_b",
+                "run_manifest_sha256_a","run_manifest_sha256_b","artifacts_manifest_sha256_a","artifacts_manifest_sha256_b",
+                "artifact_origin_a_json","artifact_origin_b_json"])
             for row in self.comparison["metrics"]:
                 writer.writerow([self.comparison["schema"],self.comparison["comparison_id"],
                     repr(self.comparison["operating_point"]["rpm"]),self.comparison["model_id"],a["code_commit"],
                     a["run_id"],a["config_sha256"],a["result_sha256"],b["run_id"],b["config_sha256"],b["result_sha256"],
                     row["key"],row["label"],row["unit"],repr(row["a"]),repr(row["b"]),repr(row["delta_b_minus_a"]),
-                    "" if row["relative_percent_to_abs_a"] is None else repr(row["relative_percent_to_abs_a"])])
+                    "" if row["relative_percent_to_abs_a"] is None else repr(row["relative_percent_to_abs_a"]),
+                    self.comparison["comparison_policy"],self.comparison["classification"],a["source_qualification"],b["source_qualification"],
+                    a["run_manifest_sha256"],b["run_manifest_sha256"],a["artifacts_manifest_sha256"],b["artifacts_manifest_sha256"],
+                    json.dumps(a["artifact_origin"],sort_keys=True,ensure_ascii=False),json.dumps(b["artifact_origin"],sort_keys=True,ensure_ascii=False)])
 
     def export_comparison_report(self):
-        if self.comparison is None:return
+        if not self._comparison_export_ready():return
         target,_=QFileDialog.getSaveFileName(self,"Informe técnico A/B",str(Path.home()/"dino-4t-ab-report.html"),"HTML (*.html)")
         if not target:return
         if not target.lower().endswith(".html"):target+=".html"
@@ -500,8 +495,34 @@ class FourStrokeResults(QWidget):
         path=write_four_stroke_ab_report(target,self.comparison)
         QDesktopServices.openUrl(QUrl.fromLocalFile(str(path.resolve())))
 
+    def _verified_export_rows(self):
+        """Recheck original references before exporting any cached result."""
+        from .four_stroke_artifacts import require_verified_run
+        try:
+            for summary,_,reference in self.loaded.values():
+                current=require_verified_run(reference)
+                if current.summary!=summary:raise ValueError("El resultado cambió desde su lectura")
+        except (ValueError,OSError,KeyError,TypeError) as exc:
+            QMessageBox.warning(self,"Procedencia no verificable",str(exc))
+            return False
+        return bool(self.loaded)
+
+    def _comparison_export_ready(self):
+        if self.comparison is None:return False
+        try:
+            by_id={reference["run_id"]:(summary,reference) for summary,_,reference in self.loaded.values()}
+            endpoints=[self._comparison_endpoint(*by_id[item["run_id"]]) for item in self.comparison["endpoints"]]
+            current=build_comparison(*endpoints,policy=self.comparison["comparison_policy"])
+            if current["comparison_id"]!=self.comparison["comparison_id"]:
+                raise ValueError("La comparación cambió desde su lectura")
+        except (ValueError,OSError,KeyError,TypeError) as exc:
+            self._invalidate_comparison()
+            QMessageBox.warning(self,"Procedencia no verificable",str(exc))
+            return False
+        return True
+
     def export_csv(self):
-        if not self.loaded:return
+        if not self._verified_export_rows():return
         target,_=QFileDialog.getSaveFileName(self,"Exportar resultados 4T",str(Path.home()/"dino-4t-results.csv"),"CSV (*.csv)")
         if not target:return
         if not target.lower().endswith(".csv"):target += ".csv"
@@ -513,7 +534,7 @@ class FourStrokeResults(QWidget):
         QMessageBox.information(self,"CSV exportado",f"Se exportaron {len(self.loaded)} resultados con precisión de ida y procedencia.")
 
     def export_report(self):
-        if not self.loaded:return
+        if not self._verified_export_rows():return
         target,_=QFileDialog.getSaveFileName(self,"Informe técnico 4T",str(Path.home()/"dino-4t-report.html"),"HTML (*.html)")
         if not target:return
         if not target.lower().endswith(".html"):target += ".html"
@@ -528,6 +549,14 @@ class FourStrokeResults(QWidget):
         if not source:return
         src=Path(source)
         try:
+            from ..dino4t.artifacts import parse_json
+            selected=parse_json(src.read_bytes())
+            if selected.get("schema")=="DINO4T_RUN_REFERENCE_V2":
+                from .four_stroke_artifacts import import_reference_bundle
+                root=artifact_root()/"dino-4t-desktop-v1"/hashlib.sha256(self.context.project["project_id"].encode()).hexdigest()[:20]/uuid.uuid4().hex
+                ref=import_reference_bundle(src,root);self.context.add_run_reference(ref)
+                QMessageBox.information(self,"Referencia importada","Se verificó la cadena original de referencia, metadatos y artefactos. La integridad no acredita validación física ni autenticidad externa.")
+                return
             summary_raw=src.read_bytes();summary=json.loads(summary_raw);engine_platform.check_result("4T",summary)
             config_src=src.parent/"config_resolved.json"
             if not config_src.is_file():raise ValueError("Falta config_resolved.json; no se importan resultados sin su entrada exacta.")
@@ -553,7 +582,7 @@ class FourStrokeResults(QWidget):
             self.context.add_run_reference({"run_id":run_id,"path":str(summary_dst.resolve()),"result_sha256":digest,
                 "config_sha256":summary["config_sha256"],"status":summary["status"],
                 "periodicity_status":summary["periodicity"]["status"],"variant_id":""})
-            QMessageBox.information(self,"Histórico importado","Se conservó el resumen y su configuración exacta en una copia verificable. La fuente original permanece intacta.")
+            QMessageBox.information(self,"Histórico conservado","LEGACY_UNVERIFIED: copia conservada sin vínculo original completo de trazas/código. No habilita curvas ni comparación verificadas. La fuente original permanece intacta.")
         except Exception as exc:QMessageBox.warning(self,"Importación rechazada",f"{type(exc).__name__}: {exc}")
 
 

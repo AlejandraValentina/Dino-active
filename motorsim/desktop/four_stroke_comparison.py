@@ -8,7 +8,7 @@ import math
 
 from .. import engine_platform
 
-SCHEMA = "DINO4T_AB_COMPARISON_V1"
+SCHEMA = "DINO4T_AB_COMPARISON_V2"
 DESIGN_SECTIONS = ("geometry", "intake_valve", "exhaust_valve", "intake_duct",
                    "exhaust_duct", "intake_plenum")
 METRICS = (
@@ -62,14 +62,25 @@ def _require(condition: bool, message: str):
         raise ComparisonIneligible(message)
 
 
-def build_comparison(endpoint_a: dict, endpoint_b: dict) -> dict:
+def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
     """Validate two verified endpoint dictionaries and return a reproducible A/B record.
 
     Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
     and optionally ``trace_sha256``. The Desktop history loader verifies source
     bytes/hashes before calling this function.
     """
-    a, b = endpoint_a, endpoint_b
+    _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+    from .four_stroke_artifacts import require_verified_run
+    verified = []
+    for supplied in (endpoint_a, endpoint_b):
+        try:
+            original = require_verified_run(supplied["reference"])
+        except (ValueError, OSError, KeyError, TypeError) as exc:
+            raise ComparisonIneligible("No hay vínculo original verificable: " + str(exc)) from exc
+        _require(supplied.get("summary") == original.summary and supplied.get("config") == original.config,
+                 "El endpoint contradice los datos originales verificados")
+        verified.append(original.endpoint())
+    a, b = verified
     sa, sb = a["summary"], b["summary"]
     ca, cb = a["config"], b["config"]
     ma, mb = a["meta"], b["meta"]
@@ -77,7 +88,9 @@ def build_comparison(endpoint_a: dict, endpoint_b: dict) -> dict:
 
     for side, summary, config, meta, ref in (("A", sa, ca, ma, ra), ("B", sb, cb, mb, rb)):
         try:
-            engine_platform.check_result("4T", summary)
+            from ..dino4t import api
+            problems = api.check_summary(summary, config=config)
+            if problems: raise ValueError("; ".join(problems))
         except ValueError as exc:
             raise ComparisonIneligible(f"Resultado {side} no cumple el contrato 4T: {exc}") from exc
         _require(summary.get("status") == "completed", f"El resultado {side} no terminó correctamente")
@@ -93,6 +106,14 @@ def build_comparison(endpoint_a: dict, endpoint_b: dict) -> dict:
         _require(summary.get("code_dirty") is False and isinstance(summary.get("code_commit"), str),
                  f"La identidad del código de {side} no es reproducible")
         _require(meta.get("api") == "DINO4T_API_V1", f"La corrida {side} no declara DINO4T_API_V1")
+        if policy == "STRICT_SOURCE_V1":
+            _require(meta.get("source_qualification") == "COMPLETE_CLEAN_SOURCE_SNAPSHOT",
+                     f"La procedencia del código de {side} carece de inventario original completo; histórico no promocionado")
+            _require(isinstance(summary.get("runtime_environment"), dict) and all(isinstance(summary["runtime_environment"].get(k), str) and summary["runtime_environment"][k] for k in ("python", "implementation", "platform", "numpy", "scipy")),
+                     "Falta identidad del entorno numérico original")
+        else:
+            _require(meta.get("artifact_origin", {}).get("kind") == "EXPLICIT_LEGACY_RECEIPT_RECONSTRUCTION",
+                     "La política descriptiva requiere recibos históricos originales explícitos")
         expected_provenance = {name: config[name].get("provenance") for name in
             ("geometry", "intake_valve", "exhaust_valve", "intake_duct", "exhaust_duct",
              "combustion", "heat_transfer", "friction", "ambient")}
@@ -106,6 +127,10 @@ def build_comparison(endpoint_a: dict, endpoint_b: dict) -> dict:
     _require(sa.get("model_id") == sb.get("model_id") and sa.get("models") == sb.get("models"),
              "Los identificadores o selecciones de modelo 4T no coinciden")
     _require(sa.get("code_commit") == sb.get("code_commit"), "Los commits del solver no coinciden")
+    if policy == "STRICT_SOURCE_V1":
+        _require(sa["source_identity"]["canonical_code_inventory_sha256"] == sb["source_identity"]["canonical_code_inventory_sha256"],
+                 "Los inventarios de código originales no coinciden")
+        _require(sa["runtime_environment"] == sb["runtime_environment"], "Los entornos numéricos originales no coinciden")
     _require(sa.get("thermo_sources") == sb.get("thermo_sources"), "Las fuentes termodinámicas no coinciden")
     _require(sa.get("periodicity", {}).get("tolerances") == sb.get("periodicity", {}).get("tolerances"),
              "Los criterios de periodicidad no coinciden")
@@ -139,6 +164,12 @@ def build_comparison(endpoint_a: dict, endpoint_b: dict) -> dict:
             "side": side, "run_id": ref["run_id"], "variant_id": ref.get("variant_id") or "",
             "result_sha256": ref["result_sha256"], "config_sha256": summary["config_sha256"],
             "trace_sha256": source.get("trace_sha256"),
+            "run_manifest_sha256": ref["run_manifest_sha256"],
+            "artifacts_manifest_sha256": meta["artifacts_manifest_sha256"],
+            "artifact_origin": meta["artifact_origin"], "artifact_byte_policy": meta["artifact_byte_policy"],
+            "source_qualification": meta["source_qualification"],
+            "source_identity": summary.get("source_identity"),
+            "runtime_environment": summary.get("runtime_environment"),
             "code_commit": summary["code_commit"], "code_dirty": summary["code_dirty"],
             "api": meta.get("api"), "model_id": summary["model_id"], "models": summary["models"],
             "thermo_sources": summary["thermo_sources"], "provenance": summary["provenance"],
@@ -150,13 +181,15 @@ def build_comparison(endpoint_a: dict, endpoint_b: dict) -> dict:
         })
 
     payload = {
-        "schema": SCHEMA, "classification": "PERIODIC_MODEL_SENSITIVITY_ONLY",
+        "schema": SCHEMA, "classification": "PERIODIC_MODEL_SENSITIVITY_ONLY" if policy == "STRICT_SOURCE_V1" else "LEGACY_SOURCE_UNVERIFIED_MODEL_SENSITIVITY",
+        "comparison_policy": policy,
         "qualification": {
             "calibration": "NOT_PERFORMED", "experimental_validation": "NOT_PERFORMED",
             "predictive_capability": "NOT_CLAIMED",
             "periodicity_is_not_experimental_validation": True,
             "delta_is_not_evidence_of_real_engine_performance_improvement": True,
             "relative_delta_denominator": "absolute baseline A; null when A is zero",
+            "source_provenance": "complete original source snapshots" if policy == "STRICT_SOURCE_V1" else "legacy source identity not independently verified by artifact reconstruction",
         },
         "operating_point": sa["operating_point"], "model_id": sa["model_id"], "models": sa["models"],
         "periodicity_tolerances": sa["periodicity"]["tolerances"],

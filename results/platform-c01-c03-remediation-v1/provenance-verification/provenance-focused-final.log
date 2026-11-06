@@ -1,0 +1,50 @@
+..........................F............                                  [100%]
+================================== FAILURES ===================================
+_____________ test_ignored_static_data_cannot_be_git_bound_clean ______________
+
+tmp_path = WindowsPath('C:/Users/ageribon.MIDES/AppData/Local/Temp/pytest-of-ageribon/pytest-935/test_ignored_static_data_canno0')
+
+    def test_ignored_static_data_cannot_be_git_bound_clean(tmp_path):
+        root = _root(tmp_path)
+        (root / ".gitignore").write_text("ignored.dat\n", encoding="utf-8")
+        (root / "packaging/ignored.dat").write_bytes(b"silently ignored consumed input")
+        with pytest.raises(RuntimeError, match="ignored.dat"):
+>           provenance.ensure_packaged_inputs_clean(root)
+
+tests\test_c03_source_and_bundle_integrity.py:290: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ageribon.MIDES/AppData/Local/Temp/pytest-of-ageribon/pytest-935/test_ignored_static_data_canno0/repository')
+consumed = ()
+
+    def ensure_packaged_inputs_clean(root: Path, consumed=()) -> None:
+        """Refuse a package if any app/build input differs from the named commit."""
+        status = git_status(root, git_input_scope(root, consumed))
+        if status:
+            paths = []
+            for entry in status.decode("utf-8", errors="replace").split("\0"):
+                if len(entry) >= 4:
+                    paths.append(entry[3:])
+>           raise RuntimeError("Entradas del paquete/build con cambios locales; commit requerido: " +
+                               ", ".join(paths[:12]))
+E           RuntimeError: Entradas del paquete/build con cambios locales; commit requerido: .gitignore
+
+packaging\build_provenance.py:72: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/ageribon.MIDES/AppData/Local/Temp/pytest-of-ageribon/pytest-935/test_ignored_static_data_canno0')
+
+    def test_ignored_static_data_cannot_be_git_bound_clean(tmp_path):
+        root = _root(tmp_path)
+        (root / ".gitignore").write_text("ignored.dat\n", encoding="utf-8")
+        (root / "packaging/ignored.dat").write_bytes(b"silently ignored consumed input")
+>       with pytest.raises(RuntimeError, match="ignored.dat"):
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'ignored.dat'
+E        Input: 'Entradas del paquete/build con cambios locales; commit requerido: .gitignore'
+
+tests\test_c03_source_and_bundle_integrity.py:289: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_c03_source_and_bundle_integrity.py::test_ignored_static_data_cannot_be_git_bound_clean
+1 failed, 38 passed in 40.20s

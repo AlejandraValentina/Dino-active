@@ -114,7 +114,16 @@ def save_project(path: str | Path, project: dict) -> str:
     validate_project(project)
     target = Path(path)
     target.parent.mkdir(parents=True, exist_ok=True)
-    payload = (json.dumps(project, sort_keys=True, indent=2, ensure_ascii=False, allow_nan=False) + "\n").encode("utf-8")
+    serialized = project
+    if project.get("schema") == "DINO_DESKTOP_ENGINE_PROJECT_4T_V1":
+        serialized = deepcopy(project)
+        for ref in serialized["run_references"]:
+            if ref.get("schema") == "DINO4T_RUN_REFERENCE_V2":
+                for key in ("path", "run_manifest_path"):
+                    source = Path(ref[key])
+                    if source.is_absolute() and source.resolve().is_relative_to(target.resolve().parent):
+                        ref[key] = "./" + source.resolve().relative_to(target.resolve().parent).as_posix()
+    payload = (json.dumps(serialized, sort_keys=True, indent=2, ensure_ascii=False, allow_nan=False) + "\n").encode("utf-8")
     fd, tmp_name = tempfile.mkstemp(prefix=target.name + ".", suffix=".tmp", dir=target.parent)
     try:
         with os.fdopen(fd, "wb") as f:
@@ -139,8 +148,9 @@ def load_project(path: str | Path) -> dict:
     validate_project(project)
     if project.get("schema") == "DINO_DESKTOP_ENGINE_PROJECT_4T_V1":
         for ref in project["run_references"]:
-            if ref["path"].startswith(("./", ".\\")):
-                ref["path"] = str((path.resolve().parent / ref["path"]).resolve())
+            for key in ("path", *(("run_manifest_path",) if ref.get("schema") == "DINO4T_RUN_REFERENCE_V2" else ())):
+                if ref[key].startswith(("./", ".\\")):
+                    ref[key] = str((path.resolve().parent / ref[key]).resolve())
         return project
     # Explicit ./ references travel with packaged examples. Legacy relative
     # paths retain their artifact-root semantics; evidence bytes are untouched.

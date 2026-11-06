@@ -1,0 +1,81 @@
+.F............                                                           [100%]
+================================== FAILURES ===================================
+___ test_portable_project_reopens_after_original_bundle_location_disappears ___
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...f356aa616ebaa2e5ebb110a89e6edd40c0ff3', 'code_dirty': False, 'config_identifier': 'dino4t-ab-v1-A-baseline', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...e_commit': 'cb8f356aa616ebaa2e5ebb110a89e6edd40c0ff3', 'code_dirty': False, 'config_identifier': 'lift-8mm', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+>               original = require_verified_run(supplied["reference"])
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+motorsim\desktop\four_stroke_comparison.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+reference = {'config_sha256': '6725fee8708c7ecc5395995fcc81176e6cceb643a276c3e82ccb8bf1117ad2ca', 'path': 'C:\\Users\\ageribon.MID...tatus': 'PERIODIC_CONVERGED', 'result_sha256': '110777f52a7337419a63d20747c78437b5aad9fdbe66d67b3d936f6f0e711412', ...}
+
+    def require_verified_run(reference):
+        result = assess_run_reference(reference)
+>       if not result.verified: raise ValueError(result.classification + ": " + "; ".join(result.issues))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: UNAVAILABLE: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\ageribon.MIDES\\AppData\\Local\\Temp\\pytest-of-ageribon\\pytest-937\\test_portable_project_reopens_0\\A\\artifacts\\summary.json'
+
+motorsim\desktop\four_stroke_artifacts.py:140: ValueError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/ageribon.MIDES/AppData/Local/Temp/pytest-of-ageribon/pytest-937/test_portable_project_reopens_0')
+reconstructed = [{'config_sha256': '6725fee8708c7ecc5395995fcc81176e6cceb643a276c3e82ccb8bf1117ad2ca', 'path': 'C:\\Users\\ageribon.MI...atus': 'PERIODIC_CONVERGED', 'result_sha256': 'd22317b3a1869fff9bd5811521108d943cd4a0c409956886efe1a973e5309673', ...}]
+
+    def test_portable_project_reopens_after_original_bundle_location_disappears(tmp_path,reconstructed):
+        a,b=map(require_verified_run,reconstructed)
+        project=create_project('receipt-study',a.config,variants={b.config['identifier']:b.config},run_references=reconstructed)
+        exported=export_project_bundle(project,tmp_path/'bundle')
+        shutil.copytree(exported.parent,tmp_path/'elsewhere')
+        exported.parent.rename(tmp_path/'old-location-unavailable')
+        Path(reconstructed[0]['run_manifest_path']).parent.rename(tmp_path/'old-A-unavailable')
+        Path(reconstructed[1]['run_manifest_path']).parent.rename(tmp_path/'old-B-unavailable')
+        reopened=load_project(tmp_path/'elsewhere'/'project.dino.json')
+        aa,bb=map(require_verified_run,reopened['run_references'])
+        assert aa.reference['run_manifest_sha256']==a.reference['run_manifest_sha256']
+>       assert build_comparison(aa.endpoint(),bb.endpoint(),policy='LEGACY_RECEIPT_DESCRIPTIVE_V1')['comparison_id']==build_comparison(a.endpoint(),b.endpoint(),policy='LEGACY_RECEIPT_DESCRIPTIVE_V1')['comparison_id']
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_c01_c03_artifact_binding.py:59: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...f356aa616ebaa2e5ebb110a89e6edd40c0ff3', 'code_dirty': False, 'config_identifier': 'dino4t-ab-v1-A-baseline', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...e_commit': 'cb8f356aa616ebaa2e5ebb110a89e6edd40c0ff3', 'code_dirty': False, 'config_identifier': 'lift-8mm', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+                original = require_verified_run(supplied["reference"])
+            except (ValueError, OSError, KeyError, TypeError) as exc:
+>               raise ComparisonIneligible("No hay vínculo original verificable: " + str(exc)) from exc
+E               motorsim.desktop.four_stroke_comparison.ComparisonIneligible: No hay vínculo original verificable: UNAVAILABLE: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\ageribon.MIDES\\AppData\\Local\\Temp\\pytest-of-ageribon\\pytest-937\\test_portable_project_reopens_0\\A\\artifacts\\summary.json'
+
+motorsim\desktop\four_stroke_comparison.py:79: ComparisonIneligible
+=========================== short test summary info ===========================
+FAILED tests/test_c01_c03_artifact_binding.py::test_portable_project_reopens_after_original_bundle_location_disappears
+1 failed, 13 passed in 4.02s

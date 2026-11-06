@@ -845,7 +845,7 @@ def write_study_comparison_report(path, comparison: dict) -> Path:
 
 def render_four_stroke_ab_report(comparison: dict) -> str:
     """Render one exact, already-validated 4T A/B comparison; performs no calculations."""
-    if comparison.get("schema") != "DINO4T_AB_COMPARISON_V1":
+    if comparison.get("schema") not in ("DINO4T_AB_COMPARISON_V1", "DINO4T_AB_COMPARISON_V2"):
         raise ValueError("unsupported Dino 4T comparison schema")
     endpoints=comparison.get("endpoints",[])
     if len(endpoints)!=2 or [item.get("side") for item in endpoints] != ["A","B"]:
@@ -874,9 +874,11 @@ def render_four_stroke_ab_report(comparison: dict) -> str:
             f"<td><code>{esc(item.get('result_sha256'))}</code></td>"))+"</tr>")
     payload=esc(json.dumps(comparison,ensure_ascii=False,indent=2,allow_nan=False))
     rpm=comparison.get("operating_point",{}).get("rpm")
+    legacy_notice = "Registro histórico V1: vínculo original completo de artefactos no acreditado por este formato." if comparison.get("schema")=="DINO4T_AB_COMPARISON_V1" else "Integridad de artefactos V2; procedencia del código: "+str(comparison.get("qualification",{}).get("source_provenance","no declarada"))
     return f'''<!doctype html><html lang="es"><meta charset="utf-8"><title>Comparación Dino 4T A/B</title>
 <style>body{{font:15px Segoe UI,Arial,sans-serif;max-width:1100px;margin:2rem auto;padding:0 1rem;color:#1c2833}}table{{border-collapse:collapse;width:100%;margin:1rem 0}}th,td{{border:1px solid #ccd4dc;padding:.55rem;text-align:left;vertical-align:top}}th{{background:#edf2f6}}code,pre{{overflow-wrap:anywhere;white-space:pre-wrap}}.notice{{border-left:5px solid #ba7730;background:#fff7e8;padding:1rem}}</style>
 <h1>Comparación de diseño 4T A/B</h1><p>Clasificación: <b>{esc(comparison.get('classification'))}</b> · {esc(rpm)} RPM · comparación ID <code>{esc(comparison.get('comparison_id'))}</code></p>
+<p>{esc(legacy_notice)}</p>
 <p class="notice">Diferencias calculadas por el modelo Dino 4T bajo entradas y contexto compatibles. No constituyen una mejora demostrada en un motor real. Calibración: no realizada. Validación experimental: no realizada. Capacidad predictiva: no declarada. La periodicidad es una condición numérica del modelo, no validación experimental.</p>
 <h2>Diseños y procedencia</h2><table><thead><tr><th>Extremo</th><th>Variante / corrida</th><th>Estado</th><th>Ciclos</th><th>Commit</th><th>Config SHA-256</th><th>Resultado SHA-256</th></tr></thead><tbody>{''.join(endpoint_rows)}</tbody></table>
 <p>Modelos 4T: <code>{esc(json.dumps(comparison.get('models'),ensure_ascii=False))}</code><br>Criterios de periodicidad: <code>{esc(json.dumps(comparison.get('periodicity_tolerances'),ensure_ascii=False))}</code></p>

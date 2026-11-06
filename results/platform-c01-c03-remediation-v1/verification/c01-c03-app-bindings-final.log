@@ -1,0 +1,68 @@
+.....F....................................................               [100%]
+================================== FAILURES ===================================
+___ test_comparison_rejects_incompatible_or_incomplete_endpoint[<lambda>4] ____
+
+endpoints = <function endpoint_factory.<locals>.make at 0x000002025D8254E0>
+mutation = <function <lambda> at 0x000002025C7C2340>
+
+    @pytest.mark.parametrize('mutation',[
+        lambda s,c:s['periodicity'].update(status='NOT_CONVERGED'),
+        lambda s,c:s.update(code_dirty=True),
+        lambda s,c:s.update(code_commit='d'*40),
+        lambda s,c:s['models'].update(valve_boundary='QUASI_STEADY_RESTRICTION_V1'),
+        lambda s,c:c['numerics'].update(dx_mm=12.0),
+        lambda s,c:s['operating_point'].update(rpm=6000.0001),
+    ])
+    def test_comparison_rejects_incompatible_or_incomplete_endpoint(endpoints,mutation):
+>       a=endpoints('A');b=endpoints('B',mutate=mutation)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_dino4t_ab_comparison.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\c01_c03_fixtures.py:43: in make
+    ref = publish_desktop_run(run,{'summary':summary,'artifacts':artifacts},'synthetic-test',
+motorsim\desktop\four_stroke_artifacts.py:54: in publish_desktop_run
+    primary = verify_primary(manifest_path, artifacts["manifest_sha256"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+manifest_path = WindowsPath('C:/Users/ageribon.MIDES/AppData/Local/Temp/pytest-of-ageribon/pytest-940/test_comparison_rejects_incomp4/synthetic-B-2/artifacts/artifacts.json')
+expected_sha256 = '28c201ed39a6cd66b0e900fc83aefb990b918cb68101cc532207f88123402069'
+
+    def verify_primary(manifest_path, expected_sha256):
+        """Return a single verified byte snapshot; no file is reopened for plotting."""
+        from .config import canonical_hash
+        manifest_path = Path(manifest_path)
+        raw_manifest = manifest_path.read_bytes()
+        if not isinstance(expected_sha256, str) or sha256(raw_manifest) != expected_sha256:
+            raise ValueError("original artifact manifest digest mismatch")
+        manifest = parse_json(raw_manifest)
+        if manifest.get("schema") != SCHEMA: raise ValueError("unsupported artifact manifest")
+        if not isinstance(manifest.get("origin"), dict) or not isinstance(manifest["origin"].get("kind"), str):
+            raise ValueError("artifact origin must be explicit")
+        entries = manifest.get("artifacts")
+        if not isinstance(entries, dict) or not {"summary", "config"}.issubset(entries) or set(entries) - {"summary", "config", "trace"}:
+            raise ValueError("invalid artifact roles")
+        snapshot, paths, logical_paths = {}, {}, set()
+        for role, entry in entries.items():
+            if not isinstance(entry, dict) or type(entry.get("size_bytes")) is not int or entry["size_bytes"] < 0:
+                raise ValueError("invalid byte preimage descriptor")
+            path = safe_path(manifest_path.parent, entry.get("path"))
+            logical = entry["path"].casefold()
+            if logical in logical_paths: raise ValueError("duplicate/case-aliased artifact preimage path")
+            logical_paths.add(logical)
+            paths[role] = path
+            raw = path.read_bytes()
+            if len(raw) != entry.get("size_bytes") or sha256(raw) != entry.get("sha256"):
+                raise ValueError(f"{role} original byte identity mismatch")
+            snapshot[role] = raw
+        summary = parse_json(snapshot["summary"]); config = parse_json(snapshot["config"])
+        identity = canonical_hash(config)
+        if identity != manifest.get("config_identity_sha256") or identity != summary.get("config_sha256"):
+>           raise ValueError("manifest/config/result semantic identity mismatch")
+E           ValueError: manifest/config/result semantic identity mismatch
+
+motorsim\dino4t\artifacts.py:126: ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_dino4t_ab_comparison.py::test_comparison_rejects_incompatible_or_incomplete_endpoint[<lambda>4]
+1 failed, 57 passed in 23.17s

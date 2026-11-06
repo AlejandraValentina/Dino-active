@@ -7,7 +7,6 @@ import json
 import os
 from pathlib import Path
 import platform
-import shutil
 import struct
 import subprocess
 import sys
@@ -23,13 +22,66 @@ from motorsim.storage import load_project
 from motorsim.engine_project import load_project as load_engine_project
 from motorsim.engine_configuration import implementation_source_hashes
 from motorsim.project_case import execution_errors
-from motorsim.reference_results import MODEL_VERSION,FOUR_MODEL_VERSION
+from motorsim.source_provenance import capture_source_identity
 from scripts.agents.storage_preflight import (
     GIB, check_storage_requirements, default_artifact_root,
 )
 from build_provenance import (
     ensure_packaged_inputs_clean, input_manifest, unrelated_dirty_fingerprint,
+    copy_bound_file, copy_consumed_inputs, copy_repository_file,
+    package_model_metadata, verify_bundle_data, verify_input_snapshot,
+    verify_copied_files,
 )
+from bundle_inputs import ConsumedInput, POST_BUILD_FILES, directory_inputs
+
+
+def periodic_example_plan(path):
+    """Enumerate all optional bytes before building; later copies use this plan."""
+    if path is None:
+        return None, []
+    path=Path(path).resolve()
+    project=json.loads(path.read_text(encoding='utf-8'))
+    if not isinstance(project,dict) or not isinstance(project.get('result_references'),list):
+        raise ValueError('El proyecto periódico no declara una lista de referencias.')
+    consumed=[ConsumedInput(path,'periodic-example/project.json')]
+    refs=[];folders=set()
+    for ref in project['result_references']:
+        if not isinstance(ref,dict) or not isinstance(ref.get('path'),str):
+            raise ValueError('Referencia periódica sin ruta válida.')
+        source=Path(ref['path'])
+        if not source.is_absolute():source=path.parent/source
+        source=source.resolve()
+        result=json.loads(source.read_text(encoding='utf-8'))
+        if not isinstance(result,dict) or not isinstance(result.get('periodicity',''),str):
+            raise ValueError('Resultado periódico con clasificación inválida.')
+        if not result.get('periodicity','').startswith('PERIOD_1'):continue
+        if hashlib.sha256(source.read_bytes()).hexdigest()!=ref['artifact_sha256']:
+            raise RuntimeError('Referencia periódica alterada')
+        folder=source.parent.name
+        if folder.casefold() in folders:
+            raise RuntimeError('Dos referencias periódicas colisionan en el directorio portable: '+folder)
+        folders.add(folder.casefold())
+        consumed.extend(directory_inputs(source.parent,'periodic-example/data/'+folder,
+                                         'Ejemplos/Datos/'+folder))
+        refs.append(dict(ref,path='./Datos/'+folder+'/'+source.name))
+    if len(refs)!=6:raise RuntimeError('Se requieren seis puntos periódicos existentes')
+    project['result_references']=refs
+    return project,consumed
+
+
+def license_input_plan():
+    """External licenses are explicit raw inputs, never attributed to Git HEAD."""
+    values=[ConsumedInput(Path(sys.base_prefix)/'LICENSE.txt','licenses/python/LICENSE.txt',
+                          'Licencias/Python-LICENSE.txt')]
+    for name in ('PySide6','PySide6_Essentials','PySide6_Addons','shiboken6','pyinstaller'):
+        dist=metadata.distribution(name)
+        for file in dist.files or []:
+            if '.dist-info/' in str(file) and ('license' in str(file).lower() or Path(file).name in ('METADATA','COPYING.txt')):
+                source=Path(dist.locate_file(file))
+                if source.is_file():
+                    values.append(ConsumedInput(source,'licenses/'+name+'/'+str(file).replace('\\','/'),
+                                                'Licencias/'+name+'/'+source.name))
+    return values
 
 
 def main():
@@ -54,9 +106,14 @@ def main():
     if dirty and not args.trial:raise RuntimeError('El paquete final requiere Git limpio; registrá primero código y receta.')
     # A trial may coexist with unrelated local work, but every byte consumed by
     # PyInstaller or copied into the product must match the named commit.
-    ensure_packaged_inputs_clean(ROOT)
-    manifest=input_manifest(ROOT)
-    dirty_summary=unrelated_dirty_fingerprint(ROOT)
+    periodic_project,periodic_inputs=periodic_example_plan(args.periodic_example)
+    consumed=[*periodic_inputs,*license_input_plan()]
+    ensure_packaged_inputs_clean(ROOT,consumed)
+    manifest=input_manifest(ROOT,consumed)
+    dirty_summary=unrelated_dirty_fingerprint(ROOT,consumed)
+    source_identity=capture_source_identity(ROOT)
+    if source_identity['status']!='COMPLETE' or source_identity['dirty'] is not False:
+        raise RuntimeError('La identidad completa de las fuentes no es limpia/verificable.')
     stamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
     name=f'MotorSim-{APP_VERSION}-windows-x64-{commit[:8]}'+('-trial-'+stamp if args.trial else '')
     output_root = args.output_root or (default_artifact_root()/'Windows')
@@ -76,62 +133,55 @@ def main():
             four_stroke="DINO_DESKTOP_ENGINE_PROJECT_4T_V1"),
         result_formats=dict(two_stroke=[1,2,3],four_stroke="DINO4T_OPERATING_POINT_RESULT_V1"),
         engine_apis=dict(two_stroke="DINO_ENGINEERING_RUN_V1",four_stroke="DINO4T_API_V1"),
-        models=dict(two_stroke=MODEL_VERSION,four_stroke=FOUR_MODEL_VERSION),dependencies=versions,
+        **package_model_metadata(ROOT),dependencies=versions,
+        source_identity=source_identity,
         workflow_source_hashes=implementation_source_hashes(),
-        packaged_inputs_clean=True,packaged_input_count=len(manifest['files']),
+        packaged_inputs_clean=True,packaged_input_count=len(manifest['files'])+len(manifest['consumed_files']),
+        packaged_inputs_clean_scope='Declared repository inputs; explicit byte inputs are not Git-bound',
+        packaged_input_manifest_schema=manifest['schema'],
+        packaged_input_byte_policy=manifest['byte_policy'],
         packaged_input_manifest_sha256=manifest['sha256'],
-        packaged_inputs=manifest['files'],**dirty_summary)
+        packaged_inputs=manifest['files'],explicit_consumed_inputs=manifest['consumed_files'],**dirty_summary)
     (generated/'build.json').write_text(json.dumps(info,ensure_ascii=False,indent=2),encoding='utf-8')
+    generated_sha256=hashlib.sha256((generated/'build.json').read_bytes()).hexdigest()
     env=os.environ.copy();env['MOTORSIM_BUILD_INPUTS']=str(generated)
     subprocess.run([sys.executable,'-m','PyInstaller','--noconfirm','--distpath',str(destination),
         '--workpath',str(work/'pyinstaller'),str(ROOT/'packaging/MotorSim.spec')],cwd=ROOT,env=env,check=True)
     bundle=destination/'MotorSim'
-    shutil.copy2(generated/'build.json',bundle/'build.json')
-    shutil.copy2(ROOT/'motorsim/ayuda.txt',bundle/'LEEME.txt')
-    shutil.copy2(ROOT/'packaging/AVISOS.txt',bundle/'AVISOS.txt')
+    copied=[copy_bound_file(generated/'build.json',bundle/'build.json',generated_sha256)]
+    for relative,target in POST_BUILD_FILES:
+        copied.append(copy_repository_file(ROOT,relative,bundle/target,manifest))
     examples=bundle/'Ejemplos';examples.mkdir()
     for key,filename in PROJECT_FILES.items():
         source=ROOT/'examples/projects'/filename
         project=load_project(source)
         if project!=example_file_project(key):raise RuntimeError('Regenerá el ejemplo canónico: '+filename)
         if execution_errors(project):raise RuntimeError('Ejemplo incompatible: '+str(execution_errors(project)))
-        shutil.copy2(source,examples/filename)
+        copied.append(copy_repository_file(ROOT,source.relative_to(ROOT).as_posix(),examples/filename,manifest))
     desktop_example=ROOT/'examples/projects/dino-2t-starter.dino2t.json'
     load_engine_project(desktop_example)
-    shutil.copy2(desktop_example,examples/'desktop-dino-2t-starter.dino2t.json')
+    copied.append(copy_repository_file(ROOT,desktop_example.relative_to(ROOT).as_posix(),examples/'desktop-dino-2t-starter.dino2t.json',manifest))
     exhaust_example=ROOT/'examples/projects/dino-2t-exhaust-comparison.dino2t.json'
     load_engine_project(exhaust_example)
-    shutil.copy2(exhaust_example,examples/'desktop-dino-2t-exhaust-comparison.dino2t.json')
-    if args.periodic_example:
-        project=json.loads(args.periodic_example.read_text(encoding='utf-8'))
-        refs=[]
-        for ref in project['result_references']:
-            source=Path(ref['path'])
-            if not source.is_absolute():source=args.periodic_example.parent/source
-            result=json.loads(source.read_text(encoding='utf-8'))
-            if not result.get('periodicity','').startswith('PERIOD_1'):continue
-            if hashlib.sha256(source.read_bytes()).hexdigest()!=ref['artifact_sha256']:
-                raise RuntimeError('Referencia periódica alterada')
-            target=examples/'Datos'/source.parent.name
-            shutil.copytree(source.parent,target)
-            refs.append(dict(ref,path='./Datos/'+target.name+'/result.json'))
-        if len(refs)!=6:raise RuntimeError('Se requieren seis puntos periódicos existentes')
-        project['result_references']=refs
+    copied.append(copy_repository_file(ROOT,exhaust_example.relative_to(ROOT).as_posix(),examples/'desktop-dino-2t-exhaust-comparison.dino2t.json',manifest))
+    copied.extend(copy_consumed_inputs(bundle,consumed,manifest))
+    if periodic_project is not None:
         portable=examples/'Curvas-periodicas-125cc.dino.json'
-        portable.write_text(json.dumps(project,ensure_ascii=False,indent=2),encoding='utf-8')
+        portable.write_text(json.dumps(periodic_project,ensure_ascii=False,indent=2),encoding='utf-8')
         load_engine_project(portable)
-        shutil.copy2(ROOT/'packaging/INICIO-DINO.txt',bundle/'INICIO-DINO.txt')
-    licenses=bundle/'Licencias';shutil.copytree(ROOT/'packaging/licenses',licenses/'Qt')
-    shutil.copy2(Path(sys.base_prefix)/'LICENSE.txt',licenses/'Python-LICENSE.txt')
-    for name in ('PySide6','PySide6_Essentials','PySide6_Addons','shiboken6','pyinstaller'):
-        dist=metadata.distribution(name);out=licenses/name;out.mkdir()
-        for file in dist.files or []:
-            if '.dist-info/' in str(file) and ('license' in str(file).lower() or Path(file).name in ('METADATA','COPYING.txt')):
-                source=Path(dist.locate_file(file))
-                if source.is_file():shutil.copy2(source,out/source.name)
-    (bundle/'BUILD-DEPENDENCIES.txt').write_text('\n'.join(f'{k}=={v}' for k,v in versions.items())+'\n',encoding='utf-8')
-    if input_manifest(ROOT)['sha256']!=manifest['sha256']:
-        raise RuntimeError('Cambió una entrada del paquete durante la construcción; el candidato no es reproducible.')
+        copied.append({'path':str(portable),'sha256':hashlib.sha256(portable.read_bytes()).hexdigest()})
+        copied.append(copy_repository_file(ROOT,'packaging/INICIO-DINO.txt',bundle/'INICIO-DINO.txt',manifest))
+    licenses=bundle/'Licencias'
+    for source in (ROOT/'packaging/licenses').rglob('*'):
+        if source.is_file():
+            copied.append(copy_repository_file(ROOT,source.relative_to(ROOT).as_posix(),
+                                 licenses/'Qt'/source.relative_to(ROOT/'packaging/licenses'),manifest))
+    dependency_file=bundle/'BUILD-DEPENDENCIES.txt'
+    dependency_file.write_text('\n'.join(f'{k}=={v}' for k,v in versions.items())+'\n',encoding='utf-8')
+    copied.append({'path':str(dependency_file),'sha256':hashlib.sha256(dependency_file.read_bytes()).hexdigest()})
+    verify_bundle_data(ROOT,generated,bundle,manifest,generated_sha256)
+    verify_copied_files(copied)
+    verify_input_snapshot(ROOT,manifest,consumed)
     archive=Path(str(destination)+'.zip')
     if any('dev_orchestrator' in part.lower() for file in bundle.rglob('*') for part in file.relative_to(bundle).parts):
         raise RuntimeError('Infraestructura de desarrollo detectada en el paquete; no se genera ZIP.')
@@ -141,7 +191,8 @@ def main():
     digest=hashlib.sha256(archive.read_bytes()).hexdigest()
     archive.with_suffix('.zip.sha256').write_text(digest+'  '+archive.name+'\n',encoding='ascii')
     print(json.dumps(dict(folder=str(bundle),zip=str(archive),sha256=digest,
-        zip_bytes=archive.stat().st_size,folder_bytes=sum(p.stat().st_size for p in bundle.rglob('*') if p.is_file()),build=info),indent=2))
+        zip_bytes=archive.stat().st_size,folder_bytes=sum(p.stat().st_size for p in bundle.rglob('*') if p.is_file()),
+        build_metadata_sha256=generated_sha256,build=info),indent=2))
 
 if __name__=='__main__':
     try:main()

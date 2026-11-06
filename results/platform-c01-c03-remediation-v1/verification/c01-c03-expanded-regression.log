@@ -1,0 +1,1105 @@
+........................................................................ [ 39%]
+.......................FF.FFFFFFFFF.FF..F...F.F........F................ [ 78%]
+.......................................                                  [100%]
+================================== FAILURES ===================================
+_ test_unknown_configuration_keys_are_rejected_because_they_silently_select_defaults _
+
+    def test_unknown_configuration_keys_are_rejected_because_they_silently_select_defaults():
+        c = _cfg()
+        c["numerics"]["restricton_model"] = "V1"  # typo: would silently run V2
+        c["combustion"]["effciency"] = 0.5
+        r = api.validate(c)
+>       assert r["valid"] and set(r["unknown_keys"]) == {"numerics.restricton_model", "combustion.effciency"}
+E       assert (False)
+
+tests\test_dino4t_api.py:107: AssertionError
+_ test_user_cancellation_stops_after_complete_cycle_and_persists_partial_primary _
+
+tmp_path = WindowsPath('C:/Users/ageribon.MIDES/AppData/Local/Temp/pytest-of-ageribon/pytest-939/test_user_cancellation_stops_a0')
+
+    def test_user_cancellation_stops_after_complete_cycle_and_persists_partial_primary(tmp_path):
+        import threading
+    
+        cancel=threading.Event();output=tmp_path/"cancelled-run"
+        result=api.run(_cfg(),out_dir=output,max_cycles=20,wall_limit_s=30.0,
+            overrides={"numerics":{"dx_mm":30.0}},cancel_event=cancel,
+            on_progress=lambda record:cancel.set())
+>       assert result["error"]["code"]=="CANCELLED"
+E       AssertionError: assert 'RESULT_INVALID' == 'CANCELLED'
+E         
+E         - CANCELLED
+E         + RESULT_INVALID
+
+tests\test_dino4t_api.py:120: AssertionError
+_ test_comparison_requires_periodicity_and_reports_only_declared_design_changes _
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': 'a6d4d28a9b183b4a0b8c4d0295bd106bf26ec8e0247ca92811e1cccafccfa01e', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+>               original = require_verified_run(supplied["reference"])
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+motorsim\desktop\four_stroke_comparison.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+reference = {'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', 'result_sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'run_id': 'synthetic-A', 'variant_id': 'Baseline'}
+
+    def require_verified_run(reference):
+        result = assess_run_reference(reference)
+>       if not result.verified: raise ValueError(result.classification + ": " + "; ".join(result.issues))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'
+
+motorsim\desktop\four_stroke_artifacts.py:140: ValueError
+
+The above exception was the direct cause of the following exception:
+
+    def test_comparison_requires_periodicity_and_reports_only_declared_design_changes():
+        a=_synthetic_endpoint("A");b=_synthetic_endpoint("B")
+>       result=build_comparison(a,b)
+               ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_dino4t_ab_comparison.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': 'a6d4d28a9b183b4a0b8c4d0295bd106bf26ec8e0247ca92811e1cccafccfa01e', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+                original = require_verified_run(supplied["reference"])
+            except (ValueError, OSError, KeyError, TypeError) as exc:
+>               raise ComparisonIneligible("No hay vínculo original verificable: " + str(exc)) from exc
+E               motorsim.desktop.four_stroke_comparison.ComparisonIneligible: No hay vínculo original verificable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'
+
+motorsim\desktop\four_stroke_comparison.py:79: ComparisonIneligible
+_ test_comparison_rejects_incompatible_or_incomplete_endpoint[<lambda>-no alcanz\xf3 periodicidad] _
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': 'a6d4d28a9b183b4a0b8c4d0295bd106bf26ec8e0247ca92811e1cccafccfa01e', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+>               original = require_verified_run(supplied["reference"])
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+motorsim\desktop\four_stroke_comparison.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+reference = {'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', 'result_sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'run_id': 'synthetic-A', 'variant_id': 'Baseline'}
+
+    def require_verified_run(reference):
+        result = assess_run_reference(reference)
+>       if not result.verified: raise ValueError(result.classification + ": " + "; ".join(result.issues))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'
+
+motorsim\desktop\four_stroke_artifacts.py:140: ValueError
+
+The above exception was the direct cause of the following exception:
+
+mutation = <function <lambda> at 0x000001942FB184A0>
+reason = 'no alcanzó periodicidad'
+
+    @pytest.mark.parametrize("mutation,reason",[
+        (lambda ep:ep['summary']['periodicity'].update(status="NOT_CONVERGED"),"no alcanzó periodicidad"),
+        (lambda ep:ep['summary'].update(code_dirty=True),"no es reproducible"),
+        (lambda ep:ep['summary'].update(code_commit="d"*40),"commits del solver"),
+        (lambda ep:ep['summary']['models'].update(valve_boundary="QUASI_STEADY_RESTRICTION_V1"),"selecciones de modelo"),
+        (lambda ep:ep['config']['numerics'].update(dx_mm=12.0),"diferencias fuera"),
+        (lambda ep:ep['summary']['operating_point'].update(rpm=6000.0001),"condiciones de operación"),
+    ])
+    def test_comparison_rejects_incompatible_or_incomplete_endpoint(mutation,reason):
+        a=_synthetic_endpoint("A");b=_synthetic_endpoint("B")
+        mutation(b)
+        if reason=="diferencias fuera":
+            b['summary']['config_sha256']=engine_platform.identity("4T",b['config'])
+            b['reference']['config_sha256']=b['summary']['config_sha256']
+        if "rpm" in reason:
+            # Operating RPM is part of the result, but not the config identity.
+            pass
+        with pytest.raises(ComparisonIneligible,match=reason):
+>           build_comparison(a,b)
+
+tests\test_dino4t_ab_comparison.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': 'a6d4d28a9b183b4a0b8c4d0295bd106bf26ec8e0247ca92811e1cccafccfa01e', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+                original = require_verified_run(supplied["reference"])
+            except (ValueError, OSError, KeyError, TypeError) as exc:
+>               raise ComparisonIneligible("No hay vínculo original verificable: " + str(exc)) from exc
+E               motorsim.desktop.four_stroke_comparison.ComparisonIneligible: No hay vínculo original verificable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'
+
+motorsim\desktop\four_stroke_comparison.py:79: ComparisonIneligible
+
+During handling of the above exception, another exception occurred:
+
+mutation = <function <lambda> at 0x000001942FB184A0>
+reason = 'no alcanzó periodicidad'
+
+    @pytest.mark.parametrize("mutation,reason",[
+        (lambda ep:ep['summary']['periodicity'].update(status="NOT_CONVERGED"),"no alcanzó periodicidad"),
+        (lambda ep:ep['summary'].update(code_dirty=True),"no es reproducible"),
+        (lambda ep:ep['summary'].update(code_commit="d"*40),"commits del solver"),
+        (lambda ep:ep['summary']['models'].update(valve_boundary="QUASI_STEADY_RESTRICTION_V1"),"selecciones de modelo"),
+        (lambda ep:ep['config']['numerics'].update(dx_mm=12.0),"diferencias fuera"),
+        (lambda ep:ep['summary']['operating_point'].update(rpm=6000.0001),"condiciones de operación"),
+    ])
+    def test_comparison_rejects_incompatible_or_incomplete_endpoint(mutation,reason):
+        a=_synthetic_endpoint("A");b=_synthetic_endpoint("B")
+        mutation(b)
+        if reason=="diferencias fuera":
+            b['summary']['config_sha256']=engine_platform.identity("4T",b['config'])
+            b['reference']['config_sha256']=b['summary']['config_sha256']
+        if "rpm" in reason:
+            # Operating RPM is part of the result, but not the config identity.
+            pass
+>       with pytest.raises(ComparisonIneligible,match=reason):
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'no alcanzó periodicidad'
+E        Input: "No hay vínculo original verificable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'"
+
+tests\test_dino4t_ab_comparison.py:80: AssertionError
+_ test_comparison_rejects_incompatible_or_incomplete_endpoint[<lambda>-no es reproducible] _
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...a', 'code_dirty': True, 'config_sha256': 'a6d4d28a9b183b4a0b8c4d0295bd106bf26ec8e0247ca92811e1cccafccfa01e', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+>               original = require_verified_run(supplied["reference"])
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+motorsim\desktop\four_stroke_comparison.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+reference = {'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', 'result_sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'run_id': 'synthetic-A', 'variant_id': 'Baseline'}
+
+    def require_verified_run(reference):
+        result = assess_run_reference(reference)
+>       if not result.verified: raise ValueError(result.classification + ": " + "; ".join(result.issues))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'
+
+motorsim\desktop\four_stroke_artifacts.py:140: ValueError
+
+The above exception was the direct cause of the following exception:
+
+mutation = <function <lambda> at 0x000001942FB19EE0>
+reason = 'no es reproducible'
+
+    @pytest.mark.parametrize("mutation,reason",[
+        (lambda ep:ep['summary']['periodicity'].update(status="NOT_CONVERGED"),"no alcanzó periodicidad"),
+        (lambda ep:ep['summary'].update(code_dirty=True),"no es reproducible"),
+        (lambda ep:ep['summary'].update(code_commit="d"*40),"commits del solver"),
+        (lambda ep:ep['summary']['models'].update(valve_boundary="QUASI_STEADY_RESTRICTION_V1"),"selecciones de modelo"),
+        (lambda ep:ep['config']['numerics'].update(dx_mm=12.0),"diferencias fuera"),
+        (lambda ep:ep['summary']['operating_point'].update(rpm=6000.0001),"condiciones de operación"),
+    ])
+    def test_comparison_rejects_incompatible_or_incomplete_endpoint(mutation,reason):
+        a=_synthetic_endpoint("A");b=_synthetic_endpoint("B")
+        mutation(b)
+        if reason=="diferencias fuera":
+            b['summary']['config_sha256']=engine_platform.identity("4T",b['config'])
+            b['reference']['config_sha256']=b['summary']['config_sha256']
+        if "rpm" in reason:
+            # Operating RPM is part of the result, but not the config identity.
+            pass
+        with pytest.raises(ComparisonIneligible,match=reason):
+>           build_comparison(a,b)
+
+tests\test_dino4t_ab_comparison.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...a', 'code_dirty': True, 'config_sha256': 'a6d4d28a9b183b4a0b8c4d0295bd106bf26ec8e0247ca92811e1cccafccfa01e', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+                original = require_verified_run(supplied["reference"])
+            except (ValueError, OSError, KeyError, TypeError) as exc:
+>               raise ComparisonIneligible("No hay vínculo original verificable: " + str(exc)) from exc
+E               motorsim.desktop.four_stroke_comparison.ComparisonIneligible: No hay vínculo original verificable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'
+
+motorsim\desktop\four_stroke_comparison.py:79: ComparisonIneligible
+
+During handling of the above exception, another exception occurred:
+
+mutation = <function <lambda> at 0x000001942FB19EE0>
+reason = 'no es reproducible'
+
+    @pytest.mark.parametrize("mutation,reason",[
+        (lambda ep:ep['summary']['periodicity'].update(status="NOT_CONVERGED"),"no alcanzó periodicidad"),
+        (lambda ep:ep['summary'].update(code_dirty=True),"no es reproducible"),
+        (lambda ep:ep['summary'].update(code_commit="d"*40),"commits del solver"),
+        (lambda ep:ep['summary']['models'].update(valve_boundary="QUASI_STEADY_RESTRICTION_V1"),"selecciones de modelo"),
+        (lambda ep:ep['config']['numerics'].update(dx_mm=12.0),"diferencias fuera"),
+        (lambda ep:ep['summary']['operating_point'].update(rpm=6000.0001),"condiciones de operación"),
+    ])
+    def test_comparison_rejects_incompatible_or_incomplete_endpoint(mutation,reason):
+        a=_synthetic_endpoint("A");b=_synthetic_endpoint("B")
+        mutation(b)
+        if reason=="diferencias fuera":
+            b['summary']['config_sha256']=engine_platform.identity("4T",b['config'])
+            b['reference']['config_sha256']=b['summary']['config_sha256']
+        if "rpm" in reason:
+            # Operating RPM is part of the result, but not the config identity.
+            pass
+>       with pytest.raises(ComparisonIneligible,match=reason):
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'no es reproducible'
+E        Input: "No hay vínculo original verificable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'"
+
+tests\test_dino4t_ab_comparison.py:80: AssertionError
+_ test_comparison_rejects_incompatible_or_incomplete_endpoint[<lambda>-commits del solver] _
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': 'a6d4d28a9b183b4a0b8c4d0295bd106bf26ec8e0247ca92811e1cccafccfa01e', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+>               original = require_verified_run(supplied["reference"])
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+motorsim\desktop\four_stroke_comparison.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+reference = {'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', 'result_sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'run_id': 'synthetic-A', 'variant_id': 'Baseline'}
+
+    def require_verified_run(reference):
+        result = assess_run_reference(reference)
+>       if not result.verified: raise ValueError(result.classification + ": " + "; ".join(result.issues))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'
+
+motorsim\desktop\four_stroke_artifacts.py:140: ValueError
+
+The above exception was the direct cause of the following exception:
+
+mutation = <function <lambda> at 0x000001942FB19F80>
+reason = 'commits del solver'
+
+    @pytest.mark.parametrize("mutation,reason",[
+        (lambda ep:ep['summary']['periodicity'].update(status="NOT_CONVERGED"),"no alcanzó periodicidad"),
+        (lambda ep:ep['summary'].update(code_dirty=True),"no es reproducible"),
+        (lambda ep:ep['summary'].update(code_commit="d"*40),"commits del solver"),
+        (lambda ep:ep['summary']['models'].update(valve_boundary="QUASI_STEADY_RESTRICTION_V1"),"selecciones de modelo"),
+        (lambda ep:ep['config']['numerics'].update(dx_mm=12.0),"diferencias fuera"),
+        (lambda ep:ep['summary']['operating_point'].update(rpm=6000.0001),"condiciones de operación"),
+    ])
+    def test_comparison_rejects_incompatible_or_incomplete_endpoint(mutation,reason):
+        a=_synthetic_endpoint("A");b=_synthetic_endpoint("B")
+        mutation(b)
+        if reason=="diferencias fuera":
+            b['summary']['config_sha256']=engine_platform.identity("4T",b['config'])
+            b['reference']['config_sha256']=b['summary']['config_sha256']
+        if "rpm" in reason:
+            # Operating RPM is part of the result, but not the config identity.
+            pass
+        with pytest.raises(ComparisonIneligible,match=reason):
+>           build_comparison(a,b)
+
+tests\test_dino4t_ab_comparison.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': 'a6d4d28a9b183b4a0b8c4d0295bd106bf26ec8e0247ca92811e1cccafccfa01e', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+                original = require_verified_run(supplied["reference"])
+            except (ValueError, OSError, KeyError, TypeError) as exc:
+>               raise ComparisonIneligible("No hay vínculo original verificable: " + str(exc)) from exc
+E               motorsim.desktop.four_stroke_comparison.ComparisonIneligible: No hay vínculo original verificable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'
+
+motorsim\desktop\four_stroke_comparison.py:79: ComparisonIneligible
+
+During handling of the above exception, another exception occurred:
+
+mutation = <function <lambda> at 0x000001942FB19F80>
+reason = 'commits del solver'
+
+    @pytest.mark.parametrize("mutation,reason",[
+        (lambda ep:ep['summary']['periodicity'].update(status="NOT_CONVERGED"),"no alcanzó periodicidad"),
+        (lambda ep:ep['summary'].update(code_dirty=True),"no es reproducible"),
+        (lambda ep:ep['summary'].update(code_commit="d"*40),"commits del solver"),
+        (lambda ep:ep['summary']['models'].update(valve_boundary="QUASI_STEADY_RESTRICTION_V1"),"selecciones de modelo"),
+        (lambda ep:ep['config']['numerics'].update(dx_mm=12.0),"diferencias fuera"),
+        (lambda ep:ep['summary']['operating_point'].update(rpm=6000.0001),"condiciones de operación"),
+    ])
+    def test_comparison_rejects_incompatible_or_incomplete_endpoint(mutation,reason):
+        a=_synthetic_endpoint("A");b=_synthetic_endpoint("B")
+        mutation(b)
+        if reason=="diferencias fuera":
+            b['summary']['config_sha256']=engine_platform.identity("4T",b['config'])
+            b['reference']['config_sha256']=b['summary']['config_sha256']
+        if "rpm" in reason:
+            # Operating RPM is part of the result, but not the config identity.
+            pass
+>       with pytest.raises(ComparisonIneligible,match=reason):
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'commits del solver'
+E        Input: "No hay vínculo original verificable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'"
+
+tests\test_dino4t_ab_comparison.py:80: AssertionError
+_ test_comparison_rejects_incompatible_or_incomplete_endpoint[<lambda>-selecciones de modelo] _
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': 'a6d4d28a9b183b4a0b8c4d0295bd106bf26ec8e0247ca92811e1cccafccfa01e', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+>               original = require_verified_run(supplied["reference"])
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+motorsim\desktop\four_stroke_comparison.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+reference = {'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', 'result_sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'run_id': 'synthetic-A', 'variant_id': 'Baseline'}
+
+    def require_verified_run(reference):
+        result = assess_run_reference(reference)
+>       if not result.verified: raise ValueError(result.classification + ": " + "; ".join(result.issues))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'
+
+motorsim\desktop\four_stroke_artifacts.py:140: ValueError
+
+The above exception was the direct cause of the following exception:
+
+mutation = <function <lambda> at 0x000001942FB1A020>
+reason = 'selecciones de modelo'
+
+    @pytest.mark.parametrize("mutation,reason",[
+        (lambda ep:ep['summary']['periodicity'].update(status="NOT_CONVERGED"),"no alcanzó periodicidad"),
+        (lambda ep:ep['summary'].update(code_dirty=True),"no es reproducible"),
+        (lambda ep:ep['summary'].update(code_commit="d"*40),"commits del solver"),
+        (lambda ep:ep['summary']['models'].update(valve_boundary="QUASI_STEADY_RESTRICTION_V1"),"selecciones de modelo"),
+        (lambda ep:ep['config']['numerics'].update(dx_mm=12.0),"diferencias fuera"),
+        (lambda ep:ep['summary']['operating_point'].update(rpm=6000.0001),"condiciones de operación"),
+    ])
+    def test_comparison_rejects_incompatible_or_incomplete_endpoint(mutation,reason):
+        a=_synthetic_endpoint("A");b=_synthetic_endpoint("B")
+        mutation(b)
+        if reason=="diferencias fuera":
+            b['summary']['config_sha256']=engine_platform.identity("4T",b['config'])
+            b['reference']['config_sha256']=b['summary']['config_sha256']
+        if "rpm" in reason:
+            # Operating RPM is part of the result, but not the config identity.
+            pass
+        with pytest.raises(ComparisonIneligible,match=reason):
+>           build_comparison(a,b)
+
+tests\test_dino4t_ab_comparison.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': 'a6d4d28a9b183b4a0b8c4d0295bd106bf26ec8e0247ca92811e1cccafccfa01e', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+                original = require_verified_run(supplied["reference"])
+            except (ValueError, OSError, KeyError, TypeError) as exc:
+>               raise ComparisonIneligible("No hay vínculo original verificable: " + str(exc)) from exc
+E               motorsim.desktop.four_stroke_comparison.ComparisonIneligible: No hay vínculo original verificable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'
+
+motorsim\desktop\four_stroke_comparison.py:79: ComparisonIneligible
+
+During handling of the above exception, another exception occurred:
+
+mutation = <function <lambda> at 0x000001942FB1A020>
+reason = 'selecciones de modelo'
+
+    @pytest.mark.parametrize("mutation,reason",[
+        (lambda ep:ep['summary']['periodicity'].update(status="NOT_CONVERGED"),"no alcanzó periodicidad"),
+        (lambda ep:ep['summary'].update(code_dirty=True),"no es reproducible"),
+        (lambda ep:ep['summary'].update(code_commit="d"*40),"commits del solver"),
+        (lambda ep:ep['summary']['models'].update(valve_boundary="QUASI_STEADY_RESTRICTION_V1"),"selecciones de modelo"),
+        (lambda ep:ep['config']['numerics'].update(dx_mm=12.0),"diferencias fuera"),
+        (lambda ep:ep['summary']['operating_point'].update(rpm=6000.0001),"condiciones de operación"),
+    ])
+    def test_comparison_rejects_incompatible_or_incomplete_endpoint(mutation,reason):
+        a=_synthetic_endpoint("A");b=_synthetic_endpoint("B")
+        mutation(b)
+        if reason=="diferencias fuera":
+            b['summary']['config_sha256']=engine_platform.identity("4T",b['config'])
+            b['reference']['config_sha256']=b['summary']['config_sha256']
+        if "rpm" in reason:
+            # Operating RPM is part of the result, but not the config identity.
+            pass
+>       with pytest.raises(ComparisonIneligible,match=reason):
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'selecciones de modelo'
+E        Input: "No hay vínculo original verificable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'"
+
+tests\test_dino4t_ab_comparison.py:80: AssertionError
+_ test_comparison_rejects_incompatible_or_incomplete_endpoint[<lambda>-diferencias fuera] _
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '0f4105ad5ce494223b750bee5f436d8b7057803011f3e9a83dcff25558ca0ee1', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+>               original = require_verified_run(supplied["reference"])
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+motorsim\desktop\four_stroke_comparison.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+reference = {'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', 'result_sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'run_id': 'synthetic-A', 'variant_id': 'Baseline'}
+
+    def require_verified_run(reference):
+        result = assess_run_reference(reference)
+>       if not result.verified: raise ValueError(result.classification + ": " + "; ".join(result.issues))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'
+
+motorsim\desktop\four_stroke_artifacts.py:140: ValueError
+
+The above exception was the direct cause of the following exception:
+
+mutation = <function <lambda> at 0x000001942FB1A0C0>
+reason = 'diferencias fuera'
+
+    @pytest.mark.parametrize("mutation,reason",[
+        (lambda ep:ep['summary']['periodicity'].update(status="NOT_CONVERGED"),"no alcanzó periodicidad"),
+        (lambda ep:ep['summary'].update(code_dirty=True),"no es reproducible"),
+        (lambda ep:ep['summary'].update(code_commit="d"*40),"commits del solver"),
+        (lambda ep:ep['summary']['models'].update(valve_boundary="QUASI_STEADY_RESTRICTION_V1"),"selecciones de modelo"),
+        (lambda ep:ep['config']['numerics'].update(dx_mm=12.0),"diferencias fuera"),
+        (lambda ep:ep['summary']['operating_point'].update(rpm=6000.0001),"condiciones de operación"),
+    ])
+    def test_comparison_rejects_incompatible_or_incomplete_endpoint(mutation,reason):
+        a=_synthetic_endpoint("A");b=_synthetic_endpoint("B")
+        mutation(b)
+        if reason=="diferencias fuera":
+            b['summary']['config_sha256']=engine_platform.identity("4T",b['config'])
+            b['reference']['config_sha256']=b['summary']['config_sha256']
+        if "rpm" in reason:
+            # Operating RPM is part of the result, but not the config identity.
+            pass
+        with pytest.raises(ComparisonIneligible,match=reason):
+>           build_comparison(a,b)
+
+tests\test_dino4t_ab_comparison.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '0f4105ad5ce494223b750bee5f436d8b7057803011f3e9a83dcff25558ca0ee1', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+                original = require_verified_run(supplied["reference"])
+            except (ValueError, OSError, KeyError, TypeError) as exc:
+>               raise ComparisonIneligible("No hay vínculo original verificable: " + str(exc)) from exc
+E               motorsim.desktop.four_stroke_comparison.ComparisonIneligible: No hay vínculo original verificable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'
+
+motorsim\desktop\four_stroke_comparison.py:79: ComparisonIneligible
+
+During handling of the above exception, another exception occurred:
+
+mutation = <function <lambda> at 0x000001942FB1A0C0>
+reason = 'diferencias fuera'
+
+    @pytest.mark.parametrize("mutation,reason",[
+        (lambda ep:ep['summary']['periodicity'].update(status="NOT_CONVERGED"),"no alcanzó periodicidad"),
+        (lambda ep:ep['summary'].update(code_dirty=True),"no es reproducible"),
+        (lambda ep:ep['summary'].update(code_commit="d"*40),"commits del solver"),
+        (lambda ep:ep['summary']['models'].update(valve_boundary="QUASI_STEADY_RESTRICTION_V1"),"selecciones de modelo"),
+        (lambda ep:ep['config']['numerics'].update(dx_mm=12.0),"diferencias fuera"),
+        (lambda ep:ep['summary']['operating_point'].update(rpm=6000.0001),"condiciones de operación"),
+    ])
+    def test_comparison_rejects_incompatible_or_incomplete_endpoint(mutation,reason):
+        a=_synthetic_endpoint("A");b=_synthetic_endpoint("B")
+        mutation(b)
+        if reason=="diferencias fuera":
+            b['summary']['config_sha256']=engine_platform.identity("4T",b['config'])
+            b['reference']['config_sha256']=b['summary']['config_sha256']
+        if "rpm" in reason:
+            # Operating RPM is part of the result, but not the config identity.
+            pass
+>       with pytest.raises(ComparisonIneligible,match=reason):
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'diferencias fuera'
+E        Input: "No hay vínculo original verificable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'"
+
+tests\test_dino4t_ab_comparison.py:80: AssertionError
+_ test_comparison_rejects_incompatible_or_incomplete_endpoint[<lambda>-condiciones de operaci\xf3n] _
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': 'a6d4d28a9b183b4a0b8c4d0295bd106bf26ec8e0247ca92811e1cccafccfa01e', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+>               original = require_verified_run(supplied["reference"])
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+motorsim\desktop\four_stroke_comparison.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+reference = {'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', 'result_sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'run_id': 'synthetic-A', 'variant_id': 'Baseline'}
+
+    def require_verified_run(reference):
+        result = assess_run_reference(reference)
+>       if not result.verified: raise ValueError(result.classification + ": " + "; ".join(result.issues))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'
+
+motorsim\desktop\four_stroke_artifacts.py:140: ValueError
+
+The above exception was the direct cause of the following exception:
+
+mutation = <function <lambda> at 0x000001942FB1A160>
+reason = 'condiciones de operación'
+
+    @pytest.mark.parametrize("mutation,reason",[
+        (lambda ep:ep['summary']['periodicity'].update(status="NOT_CONVERGED"),"no alcanzó periodicidad"),
+        (lambda ep:ep['summary'].update(code_dirty=True),"no es reproducible"),
+        (lambda ep:ep['summary'].update(code_commit="d"*40),"commits del solver"),
+        (lambda ep:ep['summary']['models'].update(valve_boundary="QUASI_STEADY_RESTRICTION_V1"),"selecciones de modelo"),
+        (lambda ep:ep['config']['numerics'].update(dx_mm=12.0),"diferencias fuera"),
+        (lambda ep:ep['summary']['operating_point'].update(rpm=6000.0001),"condiciones de operación"),
+    ])
+    def test_comparison_rejects_incompatible_or_incomplete_endpoint(mutation,reason):
+        a=_synthetic_endpoint("A");b=_synthetic_endpoint("B")
+        mutation(b)
+        if reason=="diferencias fuera":
+            b['summary']['config_sha256']=engine_platform.identity("4T",b['config'])
+            b['reference']['config_sha256']=b['summary']['config_sha256']
+        if "rpm" in reason:
+            # Operating RPM is part of the result, but not the config identity.
+            pass
+        with pytest.raises(ComparisonIneligible,match=reason):
+>           build_comparison(a,b)
+
+tests\test_dino4t_ab_comparison.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': 'a6d4d28a9b183b4a0b8c4d0295bd106bf26ec8e0247ca92811e1cccafccfa01e', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+                original = require_verified_run(supplied["reference"])
+            except (ValueError, OSError, KeyError, TypeError) as exc:
+>               raise ComparisonIneligible("No hay vínculo original verificable: " + str(exc)) from exc
+E               motorsim.desktop.four_stroke_comparison.ComparisonIneligible: No hay vínculo original verificable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'
+
+motorsim\desktop\four_stroke_comparison.py:79: ComparisonIneligible
+
+During handling of the above exception, another exception occurred:
+
+mutation = <function <lambda> at 0x000001942FB1A160>
+reason = 'condiciones de operación'
+
+    @pytest.mark.parametrize("mutation,reason",[
+        (lambda ep:ep['summary']['periodicity'].update(status="NOT_CONVERGED"),"no alcanzó periodicidad"),
+        (lambda ep:ep['summary'].update(code_dirty=True),"no es reproducible"),
+        (lambda ep:ep['summary'].update(code_commit="d"*40),"commits del solver"),
+        (lambda ep:ep['summary']['models'].update(valve_boundary="QUASI_STEADY_RESTRICTION_V1"),"selecciones de modelo"),
+        (lambda ep:ep['config']['numerics'].update(dx_mm=12.0),"diferencias fuera"),
+        (lambda ep:ep['summary']['operating_point'].update(rpm=6000.0001),"condiciones de operación"),
+    ])
+    def test_comparison_rejects_incompatible_or_incomplete_endpoint(mutation,reason):
+        a=_synthetic_endpoint("A");b=_synthetic_endpoint("B")
+        mutation(b)
+        if reason=="diferencias fuera":
+            b['summary']['config_sha256']=engine_platform.identity("4T",b['config'])
+            b['reference']['config_sha256']=b['summary']['config_sha256']
+        if "rpm" in reason:
+            # Operating RPM is part of the result, but not the config identity.
+            pass
+>       with pytest.raises(ComparisonIneligible,match=reason):
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'condiciones de operación'
+E        Input: "No hay vínculo original verificable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'"
+
+tests\test_dino4t_ab_comparison.py:80: AssertionError
+__________ test_comparison_rejects_same_design_and_nonfinite_metric ___________
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+>               original = require_verified_run(supplied["reference"])
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+motorsim\desktop\four_stroke_comparison.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+reference = {'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', 'result_sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'run_id': 'synthetic-A', 'variant_id': 'Baseline'}
+
+    def require_verified_run(reference):
+        result = assess_run_reference(reference)
+>       if not result.verified: raise ValueError(result.classification + ": " + "; ".join(result.issues))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'
+
+motorsim\desktop\four_stroke_artifacts.py:140: ValueError
+
+The above exception was the direct cause of the following exception:
+
+    def test_comparison_rejects_same_design_and_nonfinite_metric():
+        a=_synthetic_endpoint("A");b=_synthetic_endpoint("B")
+        b['config']=copy.deepcopy(a['config'])
+        b['summary']['config_sha256']=a['summary']['config_sha256']
+        b['reference']['config_sha256']=a['reference']['config_sha256']
+        with pytest.raises(ComparisonIneligible,match="no tienen diferencias"):
+>           build_comparison(a,b)
+
+tests\test_dino4t_ab_comparison.py:90: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+                original = require_verified_run(supplied["reference"])
+            except (ValueError, OSError, KeyError, TypeError) as exc:
+>               raise ComparisonIneligible("No hay vínculo original verificable: " + str(exc)) from exc
+E               motorsim.desktop.four_stroke_comparison.ComparisonIneligible: No hay vínculo original verificable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'
+
+motorsim\desktop\four_stroke_comparison.py:79: ComparisonIneligible
+
+During handling of the above exception, another exception occurred:
+
+    def test_comparison_rejects_same_design_and_nonfinite_metric():
+        a=_synthetic_endpoint("A");b=_synthetic_endpoint("B")
+        b['config']=copy.deepcopy(a['config'])
+        b['summary']['config_sha256']=a['summary']['config_sha256']
+        b['reference']['config_sha256']=a['reference']['config_sha256']
+>       with pytest.raises(ComparisonIneligible,match="no tienen diferencias"):
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'no tienen diferencias'
+E        Input: "No hay vínculo original verificable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'"
+
+tests\test_dino4t_ab_comparison.py:89: AssertionError
+___________ test_relative_difference_is_undefined_for_zero_baseline ___________
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': 'a6d4d28a9b183b4a0b8c4d0295bd106bf26ec8e0247ca92811e1cccafccfa01e', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+>               original = require_verified_run(supplied["reference"])
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+motorsim\desktop\four_stroke_comparison.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+reference = {'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', 'result_sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'run_id': 'synthetic-A', 'variant_id': 'Baseline'}
+
+    def require_verified_run(reference):
+        result = assess_run_reference(reference)
+>       if not result.verified: raise ValueError(result.classification + ": " + "; ".join(result.issues))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'
+
+motorsim\desktop\four_stroke_artifacts.py:140: ValueError
+
+The above exception was the direct cause of the following exception:
+
+    def test_relative_difference_is_undefined_for_zero_baseline():
+        a=_synthetic_endpoint("A");b=_synthetic_endpoint("B")
+        a['summary']['final_cycle']['brake_power_kW']=0.0
+        b['summary']['final_cycle']['brake_power_kW']=1.0
+>       result=build_comparison(a,b)
+               ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_dino4t_ab_comparison.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+endpoint_a = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': '54db90f2fc62c54902ae2c03fe7b57ca84eee26578139477b1470154c79553bc', ...}, ...}
+endpoint_b = {'config': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325...', 'code_dirty': False, 'config_sha256': 'a6d4d28a9b183b4a0b8c4d0295bd106bf26ec8e0247ca92811e1cccafccfa01e', ...}, ...}
+
+    def build_comparison(endpoint_a: dict, endpoint_b: dict, *, policy="STRICT_SOURCE_V1") -> dict:
+        """Validate two verified endpoint dictionaries and return a reproducible A/B record.
+    
+        Each endpoint contains ``summary``, resolved ``config``, ``meta``, ``reference``
+        and optionally ``trace_sha256``. The Desktop history loader verifies source
+        bytes/hashes before calling this function.
+        """
+        _require(policy in ("STRICT_SOURCE_V1", "LEGACY_RECEIPT_DESCRIPTIVE_V1"), "Política de comparación desconocida")
+        from .four_stroke_artifacts import require_verified_run
+        verified = []
+        for supplied in (endpoint_a, endpoint_b):
+            try:
+                original = require_verified_run(supplied["reference"])
+            except (ValueError, OSError, KeyError, TypeError) as exc:
+>               raise ComparisonIneligible("No hay vínculo original verificable: " + str(exc)) from exc
+E               motorsim.desktop.four_stroke_comparison.ComparisonIneligible: No hay vínculo original verificable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'
+
+motorsim\desktop\four_stroke_comparison.py:79: ComparisonIneligible
+__ test_history_loads_verified_run_references_and_shows_periodicity_tooltip ___
+
+tmp_path = WindowsPath('C:/Users/ageribon.MIDES/AppData/Local/Temp/pytest-of-ageribon/pytest-939/test_history_loads_verified_ru0')
+
+    def test_history_loads_verified_run_references_and_shows_periodicity_tooltip(tmp_path):
+        """Presentation fixture only; exercises history loading without claiming simulation evidence."""
+        from PySide6.QtWidgets import QApplication
+        from motorsim.desktop.context import DesktopContext
+        from motorsim.desktop.four_stroke_desktop import FourStrokeResults, _curve_binding
+        from motorsim.desktop.four_stroke_project import create_project
+    
+        app=QApplication.instance() or QApplication([])
+        endpoints=[_synthetic_endpoint("A"),_synthetic_endpoint("B")]
+        refs=[];variants={}
+        for endpoint_index,endpoint in enumerate(endpoints):
+            summary=endpoint["summary"];config=endpoint["config"];run_id=endpoint["reference"]["run_id"]
+            root=tmp_path/run_id;artifacts=root/"artifacts";artifacts.mkdir(parents=True)
+            summary_path=artifacts/"summary.json";config_path=artifacts/"config_resolved.json";trace_path=artifacts/"trace_last_cycle.csv"
+            summary_path.write_text(json.dumps(summary),encoding="utf-8")
+            config_path.write_text(json.dumps(config),encoding="utf-8")
+            trace_path.write_text("theta,p,p_intake_port,p_exhaust_port\n0,100000,100000,100000\n",encoding="utf-8")
+            digest=__import__("hashlib").sha256(summary_path.read_bytes()).hexdigest()
+            variant=endpoint["reference"]["variant_id"] if endpoint_index else ""
+            if endpoint_index:variants[config["identifier"]]=config
+            meta={"schema":"DINO4T_DESKTOP_RUN_V1","run_id":run_id,"result_sha256":digest,
+                "api":"DINO4T_API_V1","summary_path":str(summary_path),"config_path":str(config_path),
+                "trace_path":str(trace_path),"config_identity_sha256":summary["config_sha256"],
+                "curve_binding_sha256":_curve_binding(config)}
+            (root/"run.json").write_text(json.dumps(meta),encoding="utf-8")
+            refs.append({"run_id":run_id,"path":str(summary_path),"result_sha256":digest,
+                "config_sha256":summary["config_sha256"],"status":"completed",
+                "periodicity_status":"PERIODIC_CONVERGED","variant_id":variant})
+        project=create_project("synthetic-history",endpoints[0]["config"],variants=variants,run_references=refs)
+        widget=FourStrokeResults(DesktopContext(project))
+        assert widget.history.count()==2
+>       assert "Periódico" in widget.history.item(0).text()
+E       AssertionError: assert 'Periódico' in 'Datos conservados · LEGACY_INCOMPATIBLE · synthetic-A · periodicity history must contain one entry per complete cycle...contradicts native config/indicator identity; final_cycle.brake_torque_Nm contradicts native config/indicator identity'
+E        +  where 'Datos conservados · LEGACY_INCOMPATIBLE · synthetic-A · periodicity history must contain one entry per complete cycle...contradicts native config/indicator identity; final_cycle.brake_torque_Nm contradicts native config/indicator identity' = <built-in method text of PySide6.QtWidgets.QListWidgetItem object at 0x0000019430D02A80>()
+E        +    where <built-in method text of PySide6.QtWidgets.QListWidgetItem object at 0x0000019430D02A80> = <PySide6.QtWidgets.QListWidgetItem object at 0x0000019430D02A80>.text
+E        +      where <PySide6.QtWidgets.QListWidgetItem object at 0x0000019430D02A80> = <built-in method item of PySide6.QtWidgets.QListWidget object at 0x0000019430CBC880>(0)
+E        +        where <built-in method item of PySide6.QtWidgets.QListWidget object at 0x0000019430CBC880> = <PySide6.QtWidgets.QListWidget(0x1942f2c16d0) at 0x0000019430CBC880>.item
+E        +          where <PySide6.QtWidgets.QListWidget(0x1942f2c16d0) at 0x0000019430CBC880> = <motorsim.desktop.four_stroke_desktop.FourStrokeResults(0x1942ea0b200) at 0x0000019401C92740>.history
+
+tests\test_dino4t_ab_comparison.py:142: AssertionError
+_______ test_ab_json_csv_and_html_keep_provenance_precision_and_caveat ________
+
+tmp_path = WindowsPath('C:/Users/ageribon.MIDES/AppData/Local/Temp/pytest-of-ageribon/pytest-939/test_ab_json_csv_and_html_keep0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000019430D51950>
+
+    def test_ab_json_csv_and_html_keep_provenance_precision_and_caveat(tmp_path,monkeypatch):
+        from PySide6.QtGui import QDesktopServices
+        from PySide6.QtWidgets import QApplication, QFileDialog
+        from motorsim.desktop.context import DesktopContext
+        from motorsim.desktop.four_stroke_desktop import FourStrokeResults
+    
+        app=QApplication.instance() or QApplication([])
+        a=_synthetic_endpoint("A");b=_synthetic_endpoint("B")
+        files=[]
+        for endpoint in (a,b):
+            root=tmp_path/endpoint['reference']['run_id'];root.mkdir()
+            summary_path=root/'summary.json';config_path=root/'config.json';trace_path=root/'trace.csv'
+            summary_path.write_text(json.dumps(endpoint['summary']),encoding='utf-8')
+            config_path.write_text(json.dumps(endpoint['config']),encoding='utf-8')
+            trace_path.write_text('theta,p\n0,100000\n',encoding='utf-8')
+            endpoint['meta'].update(summary_path=str(summary_path),config_path=str(config_path),trace_path=str(trace_path))
+            files.append(endpoint)
+        widget=FourStrokeResults(DesktopContext(project_from_example("synthetic-ab-ui")))
+        widget.loaded={index:(ep['summary'],ep['meta'],ep['reference']) for index,ep in enumerate(files)}
+        for index,ep in enumerate(files):
+            widget.compare_a.addItem(ep['reference']['variant_id'],index)
+            widget.compare_b.addItem(ep['reference']['variant_id'],index)
+        widget.compare_a.setCurrentIndex(0);widget.compare_b.setCurrentIndex(1);widget.compare()
+>       assert widget.comparison['schema']=="DINO4T_AB_COMPARISON_V1"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: 'NoneType' object is not subscriptable
+
+tests\test_dino4t_ab_comparison.py:170: TypeError
+____________ test_4t_unknown_key_is_not_silently_persisted_or_run _____________
+
+    def test_4t_unknown_key_is_not_silently_persisted_or_run():
+        config = project_from_example("unknown-key")["base_engine"]
+        config["numerics"]["typo_model"] = "V1"
+        checked = engine_platform.validate_config("4T", config)
+>       assert checked["valid"]
+E       assert False
+
+tests\test_dino4t_desktop_integration.py:40: AssertionError
+________________ test_frozen_4t_provenance_uses_build_receipt _________________
+
+tmp_path = WindowsPath('C:/Users/ageribon.MIDES/AppData/Local/Temp/pytest-of-ageribon/pytest-939/test_frozen_4t_provenance_uses0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000019430D516D0>
+
+    def test_frozen_4t_provenance_uses_build_receipt(tmp_path,monkeypatch):
+        from motorsim.dino4t import runner
+        receipt=tmp_path/"build.json"
+        payload={"source_commit":"a"*40,"trial":False,"packaged_inputs_clean":True}
+        receipt.write_text(json.dumps(payload),encoding="utf-8")
+        assert runner._packaged_build_metadata(receipt)==payload
+        monkeypatch.setattr(runner.sys,"frozen",True,raising=False)
+        monkeypatch.setattr(runner,"_packaged_build_metadata",lambda:payload)
+>       assert runner._git_commit()==payload["source_commit"] and runner._git_dirty() is False
+E       AssertionError: assert (None == 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+E        +  where None = <function _git_commit at 0x0000019430D7CB80>()
+E        +    where <function _git_commit at 0x0000019430D7CB80> = <module 'motorsim.dino4t.runner' from 'C:\\Users\\ageribon.MIDES\\Dino-artifacts\\worktrees\\dino-c01-c03-v1\\motorsim\\dino4t\\runner.py'>._git_commit
+
+tests\test_dino4t_desktop_integration.py:98: AssertionError
+_ test_desktop_comparison_rejects_real_one_cycle_result_against_periodic_history _
+
+tmp_path = WindowsPath('C:/Users/ageribon.MIDES/AppData/Local/Temp/pytest-of-ageribon/pytest-939/test_desktop_comparison_reject0')
+
+    def test_desktop_comparison_rejects_real_one_cycle_result_against_periodic_history(tmp_path):
+        from PySide6.QtWidgets import QApplication
+        from motorsim.desktop.four_stroke_desktop import FourStrokeResults
+    
+        periodic_dir=Path("results/dino4t-stage2-v1/example/4000rpm")
+        periodic=json.loads((periodic_dir/"summary.json").read_text(encoding="utf-8"))
+        config=json.loads((periodic_dir/"config_resolved.json").read_text(encoding="utf-8"))
+        bounded=engine_platform.run_api("4T",config,max_cycles=1,wall_limit_s=30.0)
+        assert periodic["periodicity"]["status"]=="PERIODIC_CONVERGED"
+        assert bounded["summary"]["periodicity"]["status"]!="PERIODIC_CONVERGED"
+    
+        app=QApplication.instance() or QApplication([])
+        results=FourStrokeResults(DesktopContext(project_from_example("comparison-ui")))
+        ref_a={"run_id":"historical-periodic","result_sha256":"a"*64,
+            "config_sha256":periodic["config_sha256"],"variant_id":"A"}
+        ref_b={"run_id":"bounded-transient","result_sha256":"b"*64,
+            "config_sha256":bounded["summary"]["config_sha256"],"variant_id":"B"}
+        results.loaded={0:(periodic,{"api":"DINO4T_API_V1","result_sha256":ref_a["result_sha256"],
+                "config_path":str(periodic_dir/"config_resolved.json")},ref_a),
+            1:(bounded["summary"],{"api":"DINO4T_API_V1","result_sha256":ref_b["result_sha256"],
+                "config_path":str(periodic_dir/"config_resolved.json")},ref_b)}
+        results.compare_a.addItem("A",0);results.compare_b.addItem("B",1)
+        results.compare_a.setCurrentIndex(0);results.compare_b.setCurrentIndex(0)
+        results.compare()
+>       assert "no alcanzó periodicidad" in results.compare_status.text()
+E       assert 'no alcanzó periodicidad' in "No comparable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'"
+E        +  where "No comparable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'" = <built-in method text of PySide6.QtWidgets.QLabel object at 0x0000019431A4E300>()
+E        +    where <built-in method text of PySide6.QtWidgets.QLabel object at 0x0000019431A4E300> = <PySide6.QtWidgets.QLabel(0x1942ec6f360) at 0x0000019431A4E300>.text
+E        +      where <PySide6.QtWidgets.QLabel(0x1942ec6f360) at 0x0000019431A4E300> = <motorsim.desktop.four_stroke_desktop.FourStrokeResults(0x1942efa8390) at 0x000001947FF56280>.compare_status
+
+tests\test_dino4t_desktop_integration.py:136: AssertionError
+___________________________ test_platform_contract ____________________________
+
+coarse_run = ({'artifacts': {'config_resolved': 'config_resolved.json', 'directory': 'C:\\Users\\ageribon.MIDES\\AppData\\Local\\Te...t_open_end': 84})], ...}, WindowsPath('C:/Users/ageribon.MIDES/AppData/Local/Temp/pytest-of-ageribon/pytest-939/d4t0'))
+
+    def test_platform_contract(coarse_run):
+        from motorsim import engine_platform
+        assert engine_platform.families() == ("4T",)
+>       engine_platform.check_summary(coarse_run[0]["summary"])
+
+tests\test_dino4t_engine.py:83: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+motorsim\engine_platform.py:115: in check_summary
+    check_result("4T", summary)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cycle = '4T'
+result = {'claims': {'calibration': 'NOT_PERFORMED', 'experimental_validation': 'NOT_PERFORMED', 'numerical_verification': 'see...49df914cea4864870123d434c4c30c6f3d', 'code_dirty': True, 'config_identifier': 'DINO4T-EXAMPLE-500CC-SYNTHETIC-V1', ...}
+
+    def check_result(cycle: str, result: dict) -> None:
+        """Check the native result against its family-specific public API."""
+        if cycle == "4T":
+            api = _REGISTRY[cycle]()
+            if "summary" in result and "api" in result:
+                summary = result.get("summary")
+                if summary is not None and api.check_summary(summary):
+                    raise ValueError(f"{api.API_VERSION} result invalid: {api.check_summary(summary)}")
+                if result.get("api") != api.API_VERSION:
+                    raise ValueError("4T result does not declare DINO4T_API_V1")
+            else:
+                problems = api.check_summary(result)
+                if problems:
+>                   raise ValueError(f"{api.RESULT_SCHEMA} invalid: {problems}")
+E                   ValueError: DINO4T_OPERATING_POINT_RESULT_V1 invalid: ['source_identity is incomplete', 'source_identity contains unresolved capture issues', 'source_identity changed during execution']
+
+motorsim\engine_platform.py:108: ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_dino4t_api.py::test_unknown_configuration_keys_are_rejected_because_they_silently_select_defaults
+FAILED tests/test_dino4t_api.py::test_user_cancellation_stops_after_complete_cycle_and_persists_partial_primary
+FAILED tests/test_dino4t_ab_comparison.py::test_comparison_requires_periodicity_and_reports_only_declared_design_changes
+FAILED tests/test_dino4t_ab_comparison.py::test_comparison_rejects_incompatible_or_incomplete_endpoint[<lambda>-no alcanz\xf3 periodicidad]
+FAILED tests/test_dino4t_ab_comparison.py::test_comparison_rejects_incompatible_or_incomplete_endpoint[<lambda>-no es reproducible]
+FAILED tests/test_dino4t_ab_comparison.py::test_comparison_rejects_incompatible_or_incomplete_endpoint[<lambda>-commits del solver]
+FAILED tests/test_dino4t_ab_comparison.py::test_comparison_rejects_incompatible_or_incomplete_endpoint[<lambda>-selecciones de modelo]
+FAILED tests/test_dino4t_ab_comparison.py::test_comparison_rejects_incompatible_or_incomplete_endpoint[<lambda>-diferencias fuera]
+FAILED tests/test_dino4t_ab_comparison.py::test_comparison_rejects_incompatible_or_incomplete_endpoint[<lambda>-condiciones de operaci\xf3n]
+FAILED tests/test_dino4t_ab_comparison.py::test_comparison_rejects_same_design_and_nonfinite_metric
+FAILED tests/test_dino4t_ab_comparison.py::test_relative_difference_is_undefined_for_zero_baseline
+FAILED tests/test_dino4t_ab_comparison.py::test_history_loads_verified_run_references_and_shows_periodicity_tooltip
+FAILED tests/test_dino4t_ab_comparison.py::test_ab_json_csv_and_html_keep_provenance_precision_and_caveat
+FAILED tests/test_dino4t_desktop_integration.py::test_4t_unknown_key_is_not_silently_persisted_or_run
+FAILED tests/test_dino4t_desktop_integration.py::test_frozen_4t_provenance_uses_build_receipt
+FAILED tests/test_dino4t_desktop_integration.py::test_desktop_comparison_rejects_real_one_cycle_result_against_periodic_history
+FAILED tests/test_dino4t_engine.py::test_platform_contract - ValueError: DINO...
+17 failed, 166 passed in 433.99s (0:07:13)

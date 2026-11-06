@@ -4,6 +4,7 @@ from __future__ import annotations
 import csv
 import json
 import math
+import platform
 from pathlib import Path
 import subprocess
 import sys
@@ -37,9 +38,14 @@ def _packaged_build_metadata(path=None):
 def resolved_models(config: dict) -> dict:
     """Model identifiers actually selected by the configuration (not the static defaults)."""
     models = dict(MODELS)
-    two_zone = config.get("combustion", {}).get("zone_model", "single_zone") == "two_zone_equilibrium"
+    combustion_enabled = config.get("combustion", {}).get("enabled", True)
+    two_zone = combustion_enabled and config.get("combustion", {}).get("zone_model", "single_zone") == "two_zone_equilibrium"
     models["cylinder"] = "TWO_ZONE_EQUILIBRIUM_V1" if two_zone else "SINGLE_ZONE_0D_V1"
     models["combustion"] = "WIEBE_PRESCRIBED_BURN_TWO_ZONE_EQUILIBRIUM_V1" if two_zone else "WIEBE_SINGLE_ZONE_V1"
+    if not combustion_enabled: models["combustion"] = "DISABLED"
+    if not config.get("heat_transfer", {}).get("enabled", True): models["heat_transfer"] = "DISABLED"
+    if not config.get("numerics", {}).get("second_order", True):
+        models["duct"] = "QUASI_1D_HLLC_FIRST_ORDER_MULTISPECIES_V1"
     v = config.get("numerics", {}).get("restriction_model", "V2")
     models["valve_boundary"] = f"QUASI_STEADY_RESTRICTION_{v}"
     return models
@@ -47,31 +53,16 @@ def resolved_models(config: dict) -> dict:
 
 def _git_dirty():
     """True when tracked files differ from HEAD (the commit alone then does not identify the code)."""
-    packaged = _packaged_build_metadata()
-    if packaged is not None:
-        if not isinstance(packaged.get("source_commit"), str):
-            return None
-        if packaged.get("packaged_inputs_clean") is not True:
-            return True
-        return False
-    try:
-        out = subprocess.run(["git", "status", "--porcelain", "--untracked-files=no", "--", "."],
-                             capture_output=True, text=True, cwd=Path(__file__).parent, timeout=10)
-        return bool(out.stdout.strip()) if out.returncode == 0 else None
-    except (OSError, subprocess.SubprocessError):
-        return None
+    return _source_identity()["dirty"]
 
 
 def _git_commit():
-    packaged = _packaged_build_metadata()
-    if packaged is not None:
-        commit = packaged.get("source_commit")
-        return commit if isinstance(commit, str) and len(commit) == 40 else None
-    try:
-        return subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True,
-                              cwd=Path(__file__).parent, timeout=10).stdout.strip() or None
-    except (OSError, subprocess.SubprocessError):
-        return None
+    return _source_identity()["code_commit"]
+
+
+def _source_identity():
+    from ..source_provenance import capture_source_identity
+    return capture_source_identity(Path(__file__).resolve().parents[2], build_metadata=_packaged_build_metadata())
 
 
 def _jsonable(value):
@@ -94,6 +85,9 @@ def run_operating_point(config: dict, *, out_dir=None, overrides=None, max_cycle
                         wall_limit_s=3600.0, progress=None, initial_state=None,
                         cancel_event=None) -> dict:
     """``initial_state``: converged state of a previous run of the same topology (continuation)."""
+    from .artifacts import publish_primary, require_empty_output
+    if out_dir is not None: require_empty_output(out_dir)
+    source_identity = _source_identity()
     engine, state, context = build(config, overrides=overrides)
     warm_start = "none"
     if initial_state is not None:
@@ -118,6 +112,14 @@ def run_operating_point(config: dict, *, out_dir=None, overrides=None, max_cycle
 
     result = engine.run(state, cycles, wall_limit_s=wall_limit_s, on_cycle=on_cycle,
                         convergence=monitor, cancel_event=cancel_event)
+    ending_identity = _source_identity()
+    stable = (source_identity.get("inventory_sha256") == ending_identity.get("inventory_sha256")
+              and source_identity.get("code_commit") == ending_identity.get("code_commit"))
+    source_identity["stable_during_run"] = stable
+    if not stable:
+        source_identity["status"] = "INCOMPLETE"; source_identity["dirty"] = True
+        source_identity.setdefault("issues", []).append("SOURCE_CHANGED_DURING_RUN")
+        source_identity["ending_identity"] = ending_identity
     records = result["cycles"]
     if len(monitor.indicators) < len(records):  # last cycle when convergence hook did not run
         monitor(records)
@@ -127,13 +129,18 @@ def run_operating_point(config: dict, *, out_dir=None, overrides=None, max_cycle
         "model_id": MODEL_ID, "models": resolved_models(context["config"]),
         "config_identifier": context["config"].get("identifier"),
         "config_sha256": context["config_hash"],
-        "code_commit": _git_commit(), "code_dirty": _git_dirty(),
+        "code_commit": source_identity.get("code_commit"), "code_dirty": source_identity.get("dirty"),
+        "source_identity": source_identity,
+        "runtime_environment": {"python": platform.python_version(), "implementation": platform.python_implementation(),
+                                "platform": platform.platform(), "numpy": np.__version__,
+                                "scipy": __import__("scipy").__version__},
         "thermo_sources": {"gri30_sha256": GRI30_SHA256, "burcat_sha256": BURCAT_SHA256, "accessed": ACCESSED},
         "provenance": {g: context["config"][g]["provenance"] for g in
                        ("geometry", "intake_valve", "exhaust_valve", "intake_duct", "exhaust_duct",
                         "combustion", "heat_transfer", "friction", "ambient")},
         "status": result["status"], "termination": result["reason"],
-        "periodicity": {"status": monitor.status, "tolerances": monitor.tol, "history": monitor.metrics},
+        "periodicity": {"status": monitor.status, "tolerances": monitor.tol, "history": monitor.metrics,
+                        "detector": {"schema": "DINO4T_PERIODICITY_DECISION_V2", "min_cycles": monitor.min_cycles}},
         "cycles_run": len(records),
         "operating_point": context["config"]["operating_point"],
         "final_cycle": final,
@@ -147,14 +154,9 @@ def run_operating_point(config: dict, *, out_dir=None, overrides=None, max_cycle
         "claims": CLAIMS,
     }
     summary = _jsonable(summary)
-    if out_dir is not None:
-        out = Path(out_dir)
-        out.mkdir(parents=True, exist_ok=True)
-        (out / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
-        (out / "config_resolved.json").write_text(json.dumps(context["config"], indent=2), encoding="utf-8")
-        if records:
-            write_trace_csv(records[-1].trace, out / "trace_last_cycle.csv")
-    return {"summary": summary, "records": records, "engine": engine, "context": context, "result": result}
+    artifacts = publish_primary(out_dir, summary, context["config"], records[-1].trace if records else None) if out_dir is not None else {}
+    return {"summary": summary, "records": records, "engine": engine, "context": context, "result": result,
+            "artifacts": artifacts}
 
 
 def write_trace_csv(trace: dict, path):

@@ -1,0 +1,25 @@
+{
+  "name": "provenance-policy-fixture-recheck",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_c03_source_and_bundle_integrity.py::test_ignored_static_data_cannot_be_git_bound_clean",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "started_at": "2026-11-06T12:58:54+00:00",
+  "finished_at": "2026-11-06T12:58:56+00:00",
+  "duration_s": 2.36,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\platform-c01-c03-remediation-v1\\provenance-verification\\provenance-policy-fixture-recheck.log",
+  "log_lines": 2,
+  "log_bytes": 98,
+  "error_lines": [],
+  "tail": [
+    ".                                                                        [100%]",
+    "1 passed in 1.81s"
+  ]
+}

@@ -37,7 +37,7 @@ def test_4t_unknown_key_is_not_silently_persisted_or_run():
     config = project_from_example("unknown-key")["base_engine"]
     config["numerics"]["typo_model"] = "V1"
     checked = engine_platform.validate_config("4T", config)
-    assert checked["valid"]
+    assert not checked["valid"]
     assert "numerics.typo_model" in checked["unknown_keys"]
     with pytest.raises(ValueError):
         from motorsim.desktop.four_stroke_project import create_project
@@ -95,11 +95,11 @@ def test_frozen_4t_provenance_uses_build_receipt(tmp_path,monkeypatch):
     assert runner._packaged_build_metadata(receipt)==payload
     monkeypatch.setattr(runner.sys,"frozen",True,raising=False)
     monkeypatch.setattr(runner,"_packaged_build_metadata",lambda:payload)
-    assert runner._git_commit()==payload["source_commit"] and runner._git_dirty() is False
+    assert runner._git_commit() is None and runner._git_dirty() is None
     payload["trial"]=True
-    assert runner._git_commit()==payload["source_commit"] and runner._git_dirty() is False
+    assert runner._git_commit() is None and runner._git_dirty() is None
     payload["packaged_inputs_clean"]=False
-    assert runner._git_dirty() is True
+    assert runner._git_dirty() is None  # legacy flags cannot establish original preimages
 
 
 def test_windows_bundle_recipe_declares_4t_runtime_dependencies():
@@ -133,7 +133,7 @@ def test_desktop_comparison_rejects_real_one_cycle_result_against_periodic_histo
     results.compare_a.addItem("A",0);results.compare_b.addItem("B",1)
     results.compare_a.setCurrentIndex(0);results.compare_b.setCurrentIndex(0)
     results.compare()
-    assert "no alcanzó periodicidad" in results.compare_status.text()
+    assert "vínculo original verificable" in results.compare_status.text()  # unbound refs fail before metric comparison
     assert results.compare_table.rowCount()==0
     results.close();app.processEvents()
 

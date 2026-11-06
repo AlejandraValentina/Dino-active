@@ -32,24 +32,22 @@ class ConfigError(ValueError):
 
 
 def canonical_hash(config: dict) -> str:
-    return hashlib.sha256(json.dumps(config, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    return hashlib.sha256(json.dumps(config, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
 
 
 def load(path) -> dict:
+    from .artifacts import parse_json
     with open(path, encoding="utf-8") as fh:
-        config = json.load(fh)
+        config = parse_json(fh.read())
     validate(config)
     return config
 
 
 def validate(config: dict) -> None:
-    if config.get("schema") != SCHEMA:
-        raise ConfigError(f"schema must be {SCHEMA}")
-    for group in GROUPS_WITH_PROVENANCE:
-        if group not in config:
-            raise ConfigError(f"missing section {group}")
-        if config[group].get("provenance") not in PROVENANCE:
-            raise ConfigError(f"{group}.provenance must be one of {sorted(PROVENANCE)}")
+    from .validation import configuration_issues
+    issues = configuration_issues(config)
+    if issues:
+        raise ConfigError(issues[0]["message"])
 
 
 def _lift_law(spec):
@@ -62,7 +60,7 @@ def _lift_law(spec):
 
 def _valve(spec):
     cd = spec["discharge_coefficient"]
-    return Valve(_lift_law(spec["lift"]), spec["diameter_mm"] * 1e-3, int(spec["count"]),
+    return Valve(_lift_law(spec["lift"]), spec["diameter_mm"] * 1e-3, spec["count"],
                  FlowCoefficients(tuple(cd["l_over_d"]), tuple(cd["forward"]), tuple(cd["reverse"])),
                  cd.get("reference_area", "curtain"))
 
