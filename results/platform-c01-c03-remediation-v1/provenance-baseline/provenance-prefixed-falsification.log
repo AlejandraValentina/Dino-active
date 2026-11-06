@@ -1,0 +1,45 @@
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+______________ test_native_four_stroke_example_is_manifest_bound ______________
+
+    def test_native_four_stroke_example_is_manifest_bound():
+        root = Path(__file__).resolve().parents[1]
+        paths = {item["path"] for item in provenance.input_manifest(root)["files"]}
+>       assert "configs/dino4t/example_single_cylinder_500cc.json" in paths
+E       AssertionError: assert 'configs/dino4t/example_single_cylinder_500cc.json' in {'examples/projects/EJEMPLO_SINTETICO_2T_COMPRESION_8_2.json', 'examples/projects/EJEMPLO_SINTETICO_2T_REFERENCIA.json...son', 'examples/projects/dino-2t-exhaust-comparison.dino2t.json', 'examples/projects/dino-2t-starter.dino2t.json', ...}
+
+tests\test_c01_c03_provenance_boundary.py:43: AssertionError
+__________ test_dirty_consumed_four_stroke_example_fails_clean_guard __________
+
+tmp_path = WindowsPath('C:/Users/ageribon.MIDES/AppData/Local/Temp/pytest-of-ageribon/pytest-929/test_dirty_consumed_four_strok0')
+
+    def test_dirty_consumed_four_stroke_example_fails_clean_guard(tmp_path):
+        _committed_tree(tmp_path)
+        (tmp_path / "configs/dino4t/example_single_cylinder_500cc.json").write_text(
+            "uncommitted consumed geometry\n", encoding="utf-8")
+>       with pytest.raises(RuntimeError, match="example_single_cylinder_500cc"):
+E       Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\test_c01_c03_provenance_boundary.py:50: Failed
+____ test_four_stroke_runner_cannot_call_modified_shared_dependency_clean _____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000263449442D0>
+tmp_path = WindowsPath('C:/Users/ageribon.MIDES/AppData/Local/Temp/pytest-of-ageribon/pytest-929/test_four_stroke_runner_cannot0')
+
+    def test_four_stroke_runner_cannot_call_modified_shared_dependency_clean(monkeypatch, tmp_path):
+        from motorsim.dino4t import runner
+        _committed_tree(tmp_path)
+        monkeypatch.setattr(runner, "__file__", str(tmp_path / "motorsim/dino4t/runner.py"))
+        monkeypatch.setattr(runner, "_packaged_build_metadata", lambda: None)
+        (tmp_path / "motorsim/kinematics.py").write_text("modified shared numerical dependency\n", encoding="utf-8")
+>       assert runner._git_dirty() is True
+E       AssertionError: assert False is True
+E        +  where False = <function _git_dirty at 0x00000263726D0860>()
+E        +    where <function _git_dirty at 0x00000263726D0860> = <module 'motorsim.dino4t.runner' from 'C:\\Users\\ageribon.MIDES\\Dino-artifacts\\worktrees\\dino-c01-c03-v1\\motorsim\\dino4t\\runner.py'>._git_dirty
+
+tests\test_c01_c03_provenance_boundary.py:60: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_c01_c03_provenance_boundary.py::test_native_four_stroke_example_is_manifest_bound
+FAILED tests/test_c01_c03_provenance_boundary.py::test_dirty_consumed_four_stroke_example_fails_clean_guard
+FAILED tests/test_c01_c03_provenance_boundary.py::test_four_stroke_runner_cannot_call_modified_shared_dependency_clean
+3 failed in 2.78s

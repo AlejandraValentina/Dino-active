@@ -1,0 +1,16 @@
+{
+  "schema": "DINO_C03_NATIVE_MODEL_METADATA_BASELINE_V1",
+  "baseline_commit": "353e3f04ca17c59c660ca5b5269a5b9a1755d0b1",
+  "build_models_expression": "models=dict(two_stroke=MODEL_VERSION,four_stroke=FOUR_MODEL_VERSION)",
+  "current_models": {
+    "two_stroke": "four-cv-0d-prescribed-heat-v1-external-regularized-rk4-v1",
+    "four_stroke": "three-cv-0d-prescribed-heat-720-v1-external-regularized-rk4-v1"
+  },
+  "native_four_stroke_model_id": "DINO4T_FOUNDATION_V1",
+  "native_four_stroke_matches_build_label": false,
+  "source_anchors": [
+    "packaging/build_windows.py:79",
+    "motorsim/reference_results.py:24",
+    "motorsim/dino4t/__init__.py:9"
+  ]
+}

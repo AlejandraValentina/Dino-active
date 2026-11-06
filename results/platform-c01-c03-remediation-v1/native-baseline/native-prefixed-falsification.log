@@ -1,0 +1,182 @@
+FFFFFFFFFF                                                               [100%]
+================================== FAILURES ===================================
+____ test_invalid_native_inputs_cannot_be_runnable[intake_valve-count-1.9] ____
+
+section = 'intake_valve', key = 'count', value = 1.9
+
+    @pytest.mark.parametrize('section,key,value', [
+        ('intake_valve', 'count', 1.9), ('intake_valve', 'count', True),
+        ('friction', 'a_pa', float('nan')), ('numerics', 'max_cycles', True),
+    ])
+    def test_invalid_native_inputs_cannot_be_runnable(section, key, value):
+        cfg = config.load(config.EXAMPLE_PATH)
+        cfg[section][key] = value
+        checked = api.validate(cfg)
+>       assert not checked['valid'] and checked['config_sha256'] is None
+E       assert (not True)
+
+tests\test_c01_c03_native_contracts.py:27: AssertionError
+___ test_invalid_native_inputs_cannot_be_runnable[intake_valve-count-True] ____
+
+section = 'intake_valve', key = 'count', value = True
+
+    @pytest.mark.parametrize('section,key,value', [
+        ('intake_valve', 'count', 1.9), ('intake_valve', 'count', True),
+        ('friction', 'a_pa', float('nan')), ('numerics', 'max_cycles', True),
+    ])
+    def test_invalid_native_inputs_cannot_be_runnable(section, key, value):
+        cfg = config.load(config.EXAMPLE_PATH)
+        cfg[section][key] = value
+        checked = api.validate(cfg)
+>       assert not checked['valid'] and checked['config_sha256'] is None
+E       assert (not True)
+
+tests\test_c01_c03_native_contracts.py:27: AssertionError
+______ test_invalid_native_inputs_cannot_be_runnable[friction-a_pa-nan] _______
+
+section = 'friction', key = 'a_pa', value = nan
+
+    @pytest.mark.parametrize('section,key,value', [
+        ('intake_valve', 'count', 1.9), ('intake_valve', 'count', True),
+        ('friction', 'a_pa', float('nan')), ('numerics', 'max_cycles', True),
+    ])
+    def test_invalid_native_inputs_cannot_be_runnable(section, key, value):
+        cfg = config.load(config.EXAMPLE_PATH)
+        cfg[section][key] = value
+        checked = api.validate(cfg)
+>       assert not checked['valid'] and checked['config_sha256'] is None
+E       assert (not True)
+
+tests\test_c01_c03_native_contracts.py:27: AssertionError
+___ test_invalid_native_inputs_cannot_be_runnable[numerics-max_cycles-True] ___
+
+section = 'numerics', key = 'max_cycles', value = True
+
+    @pytest.mark.parametrize('section,key,value', [
+        ('intake_valve', 'count', 1.9), ('intake_valve', 'count', True),
+        ('friction', 'a_pa', float('nan')), ('numerics', 'max_cycles', True),
+    ])
+    def test_invalid_native_inputs_cannot_be_runnable(section, key, value):
+        cfg = config.load(config.EXAMPLE_PATH)
+        cfg[section][key] = value
+        checked = api.validate(cfg)
+>       assert not checked['valid'] and checked['config_sha256'] is None
+E       assert (not True)
+
+tests\test_c01_c03_native_contracts.py:27: AssertionError
+___ test_malformed_section_returns_config_error_instead_of_attribute_error ____
+
+    def test_malformed_section_returns_config_error_instead_of_attribute_error():
+        cfg = config.load(config.EXAMPLE_PATH); cfg['geometry'] = None
+>       checked = api.validate(cfg)
+                  ^^^^^^^^^^^^^^^^^
+
+tests\test_c01_c03_native_contracts.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+motorsim\dino4t\api.py:99: in validate
+    _validate_config(config)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 101325.0, 'intake...aust_duct': {'friction': True, 'heat_transfer': True, 'open_end_cd_inflow': 1.0, 'open_end_cd_outflow': 1.0, ...}, ...}
+
+    def validate(config: dict) -> None:
+        if config.get("schema") != SCHEMA:
+            raise ConfigError(f"schema must be {SCHEMA}")
+        for group in GROUPS_WITH_PROVENANCE:
+            if group not in config:
+                raise ConfigError(f"missing section {group}")
+>           if config[group].get("provenance") not in PROVENANCE:
+               ^^^^^^^^^^^^^^^^^
+E           AttributeError: 'NoneType' object has no attribute 'get'
+
+motorsim\dino4t\config.py:51: AttributeError
+__________________ test_nested_unread_controls_are_rejected ___________________
+
+    def test_nested_unread_controls_are_rejected():
+        cfg = config.load(config.EXAMPLE_PATH)
+        cfg['intake_valve']['lift']['typo_ignored'] = 42
+        cfg['numerics']['bore_mm'] = 123
+        checked = api.validate(cfg)
+>       assert not checked['valid']
+E       assert not True
+
+tests\test_c01_c03_native_contracts.py:42: AssertionError
+____ test_periodicity_property_cannot_disagree_with_minimum_cycle_decision ____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000010AAE788050>
+
+    def test_periodicity_property_cannot_disagree_with_minimum_cycle_decision(monkeypatch):
+        from motorsim.dino4t import cycle_analysis as ca
+        monkeypatch.setattr(ca, 'cycle_indicators', lambda *args: {})
+        monkeypatch.setattr(ca, 'periodicity_metrics', lambda *args: {
+            key: 0.0 for key in ('imep_rel', 'trapped_mass_rel', 'pressure_trace_rel', 'mass_imbalance_rel')})
+        monitor = ca.PeriodicityMonitor({}, {'consecutive': 1}, min_cycles=3)
+        assert monitor([SimpleNamespace()]) is False
+        assert monitor([SimpleNamespace(), SimpleNamespace()]) is False
+>       assert monitor.status == 'NOT_CONVERGED'
+E       AssertionError: assert 'PERIODIC_CONVERGED' == 'NOT_CONVERGED'
+E         
+E         - NOT_CONVERGED
+E         + PERIODIC_CONVERGED
+
+tests\test_c01_c03_native_contracts.py:54: AssertionError
+___________ test_periodic_summary_requires_actual_cycle_comparisons ___________
+
+    def test_periodic_summary_requires_actual_cycle_comparisons():
+        summary, _ = real_endpoint()
+        summary['cycles_run'] = 0; summary['periodicity']['history'] = []
+>       assert api.check_summary(summary)
+E       AssertionError: assert []
+E        +  where [] = <function check_summary at 0x0000010AAEA38400>({'claims': {'calibration': 'NOT_PERFORMED', 'experimental_validation': 'NOT_PERFORMED', 'numerical_verification': 'see...: 'cb8f356aa616ebaa2e5ebb110a89e6edd40c0ff3', 'code_dirty': False, 'config_identifier': 'dino4t-ab-v1-A-baseline', ...})
+E        +    where <function check_summary at 0x0000010AAEA38400> = api.check_summary
+
+tests\test_c01_c03_native_contracts.py:60: AssertionError
+_______ test_real_historical_summary_and_exact_config_remain_compatible _______
+
+    def test_real_historical_summary_and_exact_config_remain_compatible():
+        summary, cfg = real_endpoint()
+>       assert api.check_summary(summary, config=cfg) == []
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: check_summary() got an unexpected keyword argument 'config'
+
+tests\test_c01_c03_native_contracts.py:65: TypeError
+________ test_unbound_replacement_trace_cannot_be_plotted_as_verified _________
+
+tmp_path = WindowsPath('C:/Users/ageribon.MIDES/AppData/Local/Temp/pytest-of-ageribon/pytest-930/test_unbound_replacement_trace0')
+
+    def test_unbound_replacement_trace_cannot_be_plotted_as_verified(tmp_path):
+        from PySide6.QtWidgets import QApplication
+        from motorsim.desktop.context import DesktopContext
+        from motorsim.desktop.four_stroke_desktop import FourStrokeResults, _curve_binding
+        from motorsim.desktop.four_stroke_project import create_project
+        app = QApplication.instance() or QApplication([])
+        summary, cfg = real_endpoint()
+        run = tmp_path/'legacy'; artifacts = run/'artifacts'; artifacts.mkdir(parents=True)
+        sp=artifacts/'summary.json'; cp=artifacts/'config_resolved.json'; tp=artifacts/'trace.csv'
+        sp.write_text(json.dumps(summary),encoding='utf-8'); cp.write_text(json.dumps(cfg),encoding='utf-8')
+        tp.write_text('theta,p\n0,4200000\n',encoding='utf-8')
+        digest=hashlib.sha256(sp.read_bytes()).hexdigest()
+        meta={'schema':'DINO4T_DESKTOP_RUN_V1','run_id':'legacy','api':'DINO4T_API_V1',
+              'result_sha256':digest,'config_identity_sha256':summary['config_sha256'],
+              'summary_path':str(sp),'config_path':str(cp),'trace_path':str(tp),'curve_binding_sha256':_curve_binding(cfg)}
+        (run/'run.json').write_text(json.dumps(meta),encoding='utf-8')
+        ref={'run_id':'legacy','path':str(sp),'result_sha256':digest,'config_sha256':summary['config_sha256'],
+             'status':summary['status'],'periodicity_status':summary['periodicity']['status'],'variant_id':''}
+        widget=FourStrokeResults(DesktopContext(create_project('legacy',cfg,run_references=[ref])))
+>       assert not widget.loaded and not widget.pressure_plot.series
+E       AssertionError: assert (not {0: ({'claims': {'calibration': 'NOT_PERFORMED', 'experimental_validation': 'NOT_PERFORMED', 'numerical_verification':...tus': 'PERIODIC_CONVERGED', 'result_sha256': '862759983ccec50482a5a5e984ad5269c4678ae33185804a207798884f1d96e1', ...})})
+E        +  where {0: ({'claims': {'calibration': 'NOT_PERFORMED', 'experimental_validation': 'NOT_PERFORMED', 'numerical_verification':...tus': 'PERIODIC_CONVERGED', 'result_sha256': '862759983ccec50482a5a5e984ad5269c4678ae33185804a207798884f1d96e1', ...})} = <motorsim.desktop.four_stroke_desktop.FourStrokeResults(0x10aadbdf890) at 0x0000010AAEE5F500>.loaded
+
+tests\test_c01_c03_native_contracts.py:89: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_c01_c03_native_contracts.py::test_invalid_native_inputs_cannot_be_runnable[intake_valve-count-1.9]
+FAILED tests/test_c01_c03_native_contracts.py::test_invalid_native_inputs_cannot_be_runnable[intake_valve-count-True]
+FAILED tests/test_c01_c03_native_contracts.py::test_invalid_native_inputs_cannot_be_runnable[friction-a_pa-nan]
+FAILED tests/test_c01_c03_native_contracts.py::test_invalid_native_inputs_cannot_be_runnable[numerics-max_cycles-True]
+FAILED tests/test_c01_c03_native_contracts.py::test_malformed_section_returns_config_error_instead_of_attribute_error
+FAILED tests/test_c01_c03_native_contracts.py::test_nested_unread_controls_are_rejected
+FAILED tests/test_c01_c03_native_contracts.py::test_periodicity_property_cannot_disagree_with_minimum_cycle_decision
+FAILED tests/test_c01_c03_native_contracts.py::test_periodic_summary_requires_actual_cycle_comparisons
+FAILED tests/test_c01_c03_native_contracts.py::test_real_historical_summary_and_exact_config_remain_compatible
+FAILED tests/test_c01_c03_native_contracts.py::test_unbound_replacement_trace_cannot_be_plotted_as_verified
+10 failed in 1.68s

@@ -1,0 +1,36 @@
+{
+  "schema": "DINO_C01_C03_OWNER_SCOPE_V1",
+  "date": "2026-11-06",
+  "baseline": "353e3f04ca17c59c660ca5b5269a5b9a1755d0b1",
+  "findings": [
+    "F01",
+    "F02",
+    "F04",
+    "F06",
+    "F08",
+    "F09",
+    "F12",
+    "F13"
+  ],
+  "owner_activation": "Explicit current user request; no operative status/OpenSpec mutation due parallel DeepSeek ownership",
+  "prohibited_scopes": [
+    "results/2t-commercial-core-20261002/program-status.json",
+    "openspec/",
+    "test_cae_ui",
+    "B1.2",
+    "other worktrees"
+  ],
+  "scientific_rules": [
+    "No physical equations/integrator changes",
+    "No tolerance relaxation",
+    "No historical evidence rewrite",
+    "Signed friction coefficients allowed if actual computed loss is valid; no new calibrated-domain policy",
+    "New validation/manifest contracts versioned; incompatible historical input retained with explicit classification"
+  ],
+  "budgets": {
+    "each_falsification_or_test_invocation_max_seconds": 600,
+    "new_periodic_or_GCI_campaigns": 0,
+    "windows_builds": 0
+  },
+  "read_only_status_sha256": "89d738200b421d92d81201cfc9858146c3d5ff07d3885759fd2fa4cb46c4d5d7"
+}
