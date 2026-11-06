@@ -18,6 +18,10 @@ from .exhaust_page import ExhaustPage
 from .project_page import ProjectPage
 from .results_page import ResultsPage
 from .execution_page import ExecutionPage
+from .four_stroke_context import FourStrokeContext
+from .four_stroke_workspace import FourStrokeWorkspace
+from .four_stroke_execution import FourStrokeExecution
+from .four_stroke_results import FourStrokeResultsPage
 from .widgets.context_bar import ContextBar
 from .preferences import settings, repository_root_containing
 from .theme import stylesheet
@@ -61,6 +65,7 @@ class DinoDesktopWindow(QMainWindow):
             button=QPushButton(text);button.clicked.connect(callback);project_actions.addWidget(button)
         self.explorer_button=QPushButton("Variantes y corridas…");self.explorer_button.clicked.connect(self._toggle_explorer);project_actions.addWidget(self.explorer_button)
         self.traceability_button=QPushButton("Trazabilidad…");self.traceability_button.clicked.connect(self._toggle_traceability);project_actions.addWidget(self.traceability_button)
+        self.four_stroke_button=QPushButton("Modo 4T 0D…");self.four_stroke_button.setToolTip("Abrir el modo 4T 0D de referencia sintética");self.four_stroke_button.clicked.connect(self.show_four_stroke_mode);project_actions.addWidget(self.four_stroke_button)
         project_actions.addStretch();layout.addLayout(project_actions)
         self.mode_stack=QStackedWidget();layout.addWidget(self.mode_stack,1)
         self.pages=[page_type(self.context) for _,page_type in PAGES]
@@ -186,12 +191,155 @@ class DinoDesktopWindow(QMainWindow):
         self.execution_dialog_scroll=QScrollArea();self.execution_dialog_scroll.setWidgetResizable(True);self.execution_dialog_scroll.setFrameShape(QScrollArea.Shape.NoFrame);self.execution_dialog_tabs.addTab(self.execution_dialog_scroll,"Preparar")
         self.execution_dialog.finished.connect(self._restore_execution_page)
         self.component_nav.currentChanged.connect(self._component_selected)
-        self._refresh_component_states();layout.addWidget(self.simulation_strip);self.setCentralWidget(shell)
+        self._refresh_component_states();layout.addWidget(self.simulation_strip)
+        self._build_four_stroke_shell(shell)
         self.stack=self.component_stack
         self.nav=self.component_nav
         self.nav.setCurrentIndex(8)
         self.statusBar().showMessage('Listo')
         self.toolbar=QToolBar('Proyecto',self);self.toolbar.setMovable(False);self.addToolBar(self.toolbar)
+    def _build_four_stroke_shell(self,shell):
+        self.four_stroke_context=FourStrokeContext()
+        self.four_stroke_workspace=FourStrokeWorkspace(self.four_stroke_context)
+        self.four_stroke_results=FourStrokeResultsPage()
+        self.four_stroke_execution=FourStrokeExecution(self.four_stroke_context,self)
+        page=QWidget();page.setObjectName("fourStrokeShell")
+        layout=QVBoxLayout(page);layout.setContentsMargins(12,8,12,8);layout.setSpacing(8)
+        top=QHBoxLayout()
+        self.four_stroke_indicator=QLabel("MODO 4T 0D · REFERENCIA SINTÉTICA · NOT_VALIDATED")
+        self.four_stroke_indicator.setObjectName("fourStrokeModeIndicator")
+        top.addWidget(self.four_stroke_indicator)
+        self.four_stroke_dirty=QLabel()
+        top.addWidget(self.four_stroke_dirty)
+        top.addStretch(1)
+        for text,callback in (("Volver a 2T",self.show_two_stroke_mode),
+                              ("Nuevo 4T…",self.new_four_stroke_file),
+                              ("Abrir 4T…",self.open_four_stroke_file),
+                              ("Guardar 4T",self.save_four_stroke_file)):
+            button=QPushButton(text);button.clicked.connect(callback);top.addWidget(button)
+        layout.addLayout(top)
+        run_row=QHBoxLayout()
+        self.four_stroke_run_button=QPushButton("Ejecutar 4T")
+        self.four_stroke_run_button.setObjectName("fourStrokeRun")
+        self.four_stroke_run_button.clicked.connect(self.start_four_stroke_run)
+        self.four_stroke_cancel_button=QPushButton("Cancelar 4T")
+        self.four_stroke_cancel_button.setEnabled(False)
+        self.four_stroke_cancel_button.clicked.connect(lambda *_: self.four_stroke_execution.cancel())
+        self.four_stroke_progress=QProgressBar();self.four_stroke_progress.setRange(0,0)
+        self.four_stroke_progress.setVisible(False);self.four_stroke_progress.setMaximumWidth(220)
+        self.four_stroke_status=QLabel("4T listo · sin corrida activa")
+        self.four_stroke_status.setWordWrap(True)
+        run_row.addWidget(self.four_stroke_run_button);run_row.addWidget(self.four_stroke_cancel_button)
+        run_row.addWidget(self.four_stroke_progress);run_row.addWidget(self.four_stroke_status,1)
+        layout.addLayout(run_row)
+        self.four_stroke_tabs=QTabWidget()
+        self.four_stroke_tabs.addTab(self.four_stroke_workspace,"Diseño 4T")
+        self.four_stroke_tabs.addTab(self.four_stroke_results,"Resultados 4T")
+        layout.addWidget(self.four_stroke_tabs,1)
+        self.four_stroke_context.changed.connect(self._four_stroke_state_changed)
+        self.four_stroke_execution.started.connect(self._four_stroke_started)
+        self.four_stroke_execution.progress.connect(self._four_stroke_progress)
+        self.four_stroke_execution.finished.connect(self._four_stroke_finished)
+        self.four_stroke_execution.failed.connect(self._four_stroke_failed)
+        self.project_mode_stack=QStackedWidget()
+        self.project_mode_stack.addWidget(shell)
+        self.project_mode_stack.addWidget(page)
+        self.setCentralWidget(self.project_mode_stack)
+    def _four_stroke_active(self):
+        return hasattr(self,"project_mode_stack") and self.project_mode_stack.currentIndex()==1
+    def show_four_stroke_mode(self,*_):
+        self.project_mode_stack.setCurrentIndex(1)
+        self._four_stroke_state_changed()
+        self.statusBar().showMessage("Modo 4T 0D de referencia · SYNTHETIC_REFERENCE_0D · NOT_VALIDATED",6000)
+    def show_two_stroke_mode(self,*_):
+        self.project_mode_stack.setCurrentIndex(0)
+        self._state_changed()
+    def _four_stroke_state_changed(self,*_):
+        if not hasattr(self,"four_stroke_context"):return
+        mark=' · cambios sin guardar' if self.four_stroke_context.dirty else ''
+        self.four_stroke_dirty.setText(mark)
+        if self._four_stroke_active():
+            self.setWindowTitle(f"Dino 4T 0D — {self.four_stroke_context.name}{mark}")
+    def _confirm_discard_four_stroke(self):
+        if not self.four_stroke_context.dirty:return True
+        result=QMessageBox.question(self,'Cambios 4T pendientes','¿Guardar los cambios del proyecto 4T antes de continuar?',QMessageBox.StandardButton.Save|QMessageBox.StandardButton.Discard|QMessageBox.StandardButton.Cancel,QMessageBox.StandardButton.Save)
+        if result==QMessageBox.StandardButton.Cancel:return False
+        if result==QMessageBox.StandardButton.Save:return self.save_four_stroke_file()
+        return True
+    def new_four_stroke_file(self):
+        if not self._confirm_discard_four_stroke():return
+        self.four_stroke_context.new_project()
+        self.four_stroke_results.clear_result()
+        self.show_four_stroke_mode()
+        self.statusBar().showMessage('Proyecto 4T nuevo · referencia sintética sin validación experimental',6000)
+    def open_four_stroke_file(self):
+        if not self._confirm_discard_four_stroke():return
+        path,_=QFileDialog.getOpenFileName(self,'Abrir proyecto 4T',str(Path.home()),'Dino 4T 0D (*.dino4t.json *.json)')
+        if not path:return
+        try:
+            self.four_stroke_context.open(path)
+            self.four_stroke_results.clear_result()
+            self.show_four_stroke_mode()
+            self.statusBar().showMessage(f"Proyecto 4T {self.four_stroke_context.name} abierto",4000)
+        except Exception as exc:QMessageBox.warning(self,'No se pudo abrir el proyecto 4T',f'{type(exc).__name__}: {exc}')
+    def save_four_stroke_file(self):
+        if self.four_stroke_context.path is None:return self.save_four_stroke_as()
+        try:
+            target=self.four_stroke_context.save()
+            self.statusBar().showMessage(f'Proyecto 4T guardado en {target}',4000)
+            return True
+        except Exception as exc:QMessageBox.warning(self,'No se pudo guardar el proyecto 4T',f'{type(exc).__name__}: {exc}');return False
+    def save_four_stroke_as(self):
+        path,_=QFileDialog.getSaveFileName(self,'Guardar proyecto 4T como',str(Path.home()/'nuevo.dino4t.json'),'Dino 4T 0D (*.dino4t.json)')
+        if not path:return False
+        target=Path(path)
+        if target.suffix.lower()!='.json':target=Path(str(target)+'.dino4t.json')
+        try:
+            target=self.four_stroke_context.save(target)
+            self.statusBar().showMessage(f'Proyecto 4T guardado en {target}',4000)
+            return True
+        except Exception as exc:QMessageBox.warning(self,'No se pudo guardar el proyecto 4T',f'{type(exc).__name__}: {exc}');return False
+    def start_four_stroke_run(self):
+        for page in (self.four_stroke_workspace.geometry,self.four_stroke_workspace.valves,self.four_stroke_workspace.ducts):
+            if not page.apply():
+                self.four_stroke_tabs.setCurrentWidget(self.four_stroke_workspace)
+                self.four_stroke_workspace.tabs.setCurrentWidget(page)
+                self.four_stroke_status.setText('Corregí los campos 4T antes de ejecutar.')
+                return
+        try:
+            self.four_stroke_execution.start()
+        except Exception as exc:
+            self.four_stroke_status.setText(f'No se pudo iniciar la corrida 4T: {exc}')
+    def _four_stroke_started(self,output):
+        self.four_stroke_run_button.setEnabled(False);self.four_stroke_cancel_button.setEnabled(True)
+        self.four_stroke_progress.setVisible(True);self.four_stroke_status.setText(f'Ejecutando 4T · {output}')
+    def _four_stroke_progress(self,event):
+        cycle=event.get('cycle');angle=event.get('angle_deg')
+        if cycle is None:self.four_stroke_status.setText('Ejecutando 4T…')
+        else:
+            try:angle_text=f"{float(angle):.0f}°"
+            except (TypeError,ValueError):angle_text='—'
+            self.four_stroke_status.setText(f'Ejecutando 4T · ciclo {cycle} · {angle_text}')
+    def _four_stroke_finished(self,result):
+        self.four_stroke_run_button.setEnabled(True);self.four_stroke_cancel_button.setEnabled(False)
+        self.four_stroke_progress.setVisible(False)
+        if result.get('cancelled'):
+            self.four_stroke_status.setText('Corrida 4T cancelada; se conserva el último checkpoint completo.')
+            return
+        if result.get('error'):
+            self.four_stroke_status.setText(f"La corrida 4T falló: {result['error']}")
+            return
+        manifest=result.get('manifest')
+        if manifest and self.four_stroke_results.load_manifest(manifest):
+            self.four_stroke_tabs.setCurrentWidget(self.four_stroke_results)
+            self.four_stroke_status.setText(f"4T terminado ({result.get('status') or 'sin estado'}) · resultado de referencia cargado")
+        elif manifest:
+            self.four_stroke_status.setText('La corrida 4T terminó, pero el manifiesto no se pudo leer.')
+        else:
+            self.four_stroke_status.setText(f"La corrida 4T terminó sin manifiesto ({result.get('status') or 'sin estado'}).")
+    def _four_stroke_failed(self,message):
+        self.four_stroke_run_button.setEnabled(True);self.four_stroke_cancel_button.setEnabled(False)
+        self.four_stroke_progress.setVisible(False);self.four_stroke_status.setText(f'La corrida 4T falló: {message}')
     def _update_strip(self,*_):
         if not hasattr(self,"pages"):return
         execution=self.pages[3]
@@ -346,13 +494,17 @@ class DinoDesktopWindow(QMainWindow):
             action=QAction(label,self);action.setShortcut(shortcut);action.triggered.connect(callback);menu.addAction(action);self.actions[key]=action
             if key=='open':menu.addSeparator()
         menu.addSeparator();imp=menu.addAction('Importar configuración…',self.import_configuration);exp=menu.addAction('Exportar configuración…',self.export_configuration)
+        menu.addSeparator()
+        for label,callback in (('Nuevo 4T 0D…',self.new_four_stroke_file),('Abrir 4T 0D…',self.open_four_stroke_file),('Guardar 4T 0D…',self.save_four_stroke_file)):
+            menu.addAction(label,callback)
         self._action('Nuevo',self.new_file);self._action('Abrir',self.open_file);self._action('Guardar',self.save_file,QKeySequence.StandardKey.Save)
         self._action('Guardar como',self.save_as)
         view=self.menuBar().addMenu('Vista');toggle=view.addAction('Evidencia y provenance');toggle.setCheckable(True);toggle.toggled.connect(self.evidence_dock.setVisible)
         self.evidence_dock.visibilityChanged.connect(toggle.setChecked)
     def _state_changed(self):
         mark=' • Cambios sin guardar' if self.context.dirty else ''
-        self.setWindowTitle(f"Dino 2T — {self.context.project['project_id']}{mark}")
+        if not self._four_stroke_active():
+            self.setWindowTitle(f"Dino 2T — {self.context.project['project_id']}{mark}")
         if hasattr(self,"context_bar"):
             self._refresh_project_tree()
             self.context_bar.set_context(self.context.project,self.context.selected_variant,self.context.dirty)
@@ -472,6 +624,9 @@ class DinoDesktopWindow(QMainWindow):
                 except OSError:pass
     def closeEvent(self,event):
         if not self._confirm_discard():event.ignore();return
+        if hasattr(self,"four_stroke_context") and self.four_stroke_context.dirty and not self._confirm_discard_four_stroke():event.ignore();return
+        if hasattr(self,"four_stroke_execution") and self.four_stroke_execution.running:
+            self.four_stroke_execution.cancel()
         execution=self.pages[3]
         if getattr(execution,"task",None) is not None:
             # Closing the application is an explicit stop request; the engine
