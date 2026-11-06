@@ -6,7 +6,16 @@ import json
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 
+# build_provenance is also loaded directly by the read-only audit script via
+# spec_from_file_location. In that mode the packaging directory is not
+# necessarily on sys.path, so bind the sibling module explicitly.
+_PACKAGING_ROOT = str(Path(__file__).resolve().parent)
+_REPOSITORY_ROOT = str(Path(__file__).resolve().parents[1])
+for _path in (_PACKAGING_ROOT, _REPOSITORY_ROOT):
+    if _path not in sys.path:
+        sys.path.insert(0, _path)
 from bundle_inputs import (ConsumedInput, bundle_data_inputs, git_input_scope,
                            repository_input_paths)
 from motorsim.source_provenance import SOURCE_POLICY_FILES

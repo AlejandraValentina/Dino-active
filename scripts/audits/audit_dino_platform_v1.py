@@ -76,8 +76,16 @@ def audit(root: Path) -> dict:
     spec.loader.exec_module(module)
     current_manifest = module.input_manifest(root)
     current_by_path = {item["path"]: item for item in current_manifest["files"]}
+    # C03 added the additive role/path classification. Compare all fields that
+    # the historical receipt actually recorded, and report additive paths
+    # separately instead of treating every entry as a mismatch.
+    recorded_paths = {x["path"] for x in build["packaged_inputs"]}
+    current_paths = set(current_by_path)
     differing = [x["path"] for x in build["packaged_inputs"]
-                 if current_by_path.get(x["path"]) != x]
+                 if not isinstance(current_by_path.get(x["path"]), dict)
+                 or any(current_by_path[x["path"]].get(k) != v for k, v in x.items())]
+    missing_from_current = sorted(recorded_paths - current_paths)
+    added_in_current = sorted(current_paths - recorded_paths)
     example_path = "configs/dino4t/example_single_cylinder_500cc.json"
     p9 = {rev: digest(git("show", f"{rev}:{P9}")) for rev in (MAIN, AB)}
     return {"schema": "DINO_PLATFORM_READ_ONLY_AUDIT_V1", "solver_runs": 0,
@@ -98,6 +106,9 @@ def audit(root: Path) -> dict:
         "package_manifest": {"recorded_count": build["packaged_input_count"],
             "recorded_sha256": build["packaged_input_manifest_sha256"], "current_raw_sha256": current_manifest["sha256"],
             "raw_input_paths_differing_from_built_tree": differing,
+            "recorded_paths_missing_from_current": missing_from_current,
+            "current_paths_not_recorded": added_in_current,
+            "comparison_policy": "recorded fields subset; additive C03 role/path fields ignored for legacy mismatch",
             "example_in_recorded_manifest": any(x["path"] == example_path for x in build["packaged_inputs"]),
             "example_in_current_manifest": any(x["path"] == example_path for x in current_manifest["files"]),
             "note": "An exact manifest is provenance for included inputs only; false/partial coverage is a separate finding."}}

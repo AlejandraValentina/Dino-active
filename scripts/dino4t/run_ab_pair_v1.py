@@ -18,8 +18,8 @@ sys.path.insert(0, str(ROOT))
 
 from motorsim import engine_platform
 from motorsim.dino4t import api
+from motorsim.desktop.four_stroke_artifacts import assess_run_reference, publish_desktop_run
 from motorsim.desktop.four_stroke_comparison import ComparisonIneligible, build_comparison
-from motorsim.desktop.four_stroke_desktop import _curve_binding
 from motorsim.desktop.four_stroke_project import create_project, load_example
 from motorsim.engine_project import save_project
 
@@ -69,26 +69,20 @@ def _endpoint(config: dict, variant_id: str, out_root: Path, pair_started: float
         _atomic_json(run_root / "api-error.json", record)
         return record
 
-    summary_path = artifacts / "summary.json"
-    config_path = artifacts / "config_resolved.json"
-    trace_path = artifacts / "trace_last_cycle.csv"
-    result_hash = _sha(summary_path)
-    resolved = json.loads(config_path.read_text(encoding="utf-8"))
-    meta = {
-        "schema": "DINO4T_DESKTOP_RUN_V1", "run_id": run_id,
-        "project_id": "dino4t-synthetic-ab-v1", "variant_id": variant_id,
-        "api": envelope["api"], "result_sha256": result_hash,
-        "config_sha256": summary["config_sha256"],
-        "config_identity_sha256": engine_platform.identity("4T", resolved),
-        "curve_binding_sha256": _curve_binding(resolved),
-        "summary_path": str(summary_path.resolve()), "config_path": str(config_path.resolve()),
-        "trace_path": str(trace_path.resolve()), "status": summary["status"],
-        "periodicity_status": summary["periodicity"]["status"],
-        "evidence_level": summary["evidence_level"], "claims": summary["claims"],
-    }
-    _atomic_json(run_root / "run.json", meta)
-    return {**record, "result_sha256": result_hash, "config_sha256": summary["config_sha256"],
-            "run_root": str(run_root.resolve()), "meta": meta}
+    reference = publish_desktop_run(run_root, envelope, "dino4t-synthetic-ab-v1",
+                                    variant_id, run_id=run_id)
+    assessment = assess_run_reference(reference)
+    if not assessment.verified:
+        raise ValueError("fresh V2 endpoint is not verified: " + "; ".join(assessment.issues))
+    summary = assessment.summary
+    meta = assessment.meta
+    result_hash = meta["result_sha256"]
+    record.update({"summary": summary, "result_sha256": result_hash,
+                   "config_sha256": summary["config_sha256"],
+                   "run_root": str(run_root.resolve()), "meta": meta,
+                   "reference": reference,
+                   "source_qualification": meta.get("source_qualification")})
+    return record
 
 
 def execute(out_root: Path) -> dict:
@@ -110,6 +104,8 @@ def execute(out_root: Path) -> dict:
             raise ValueError(f"preregistered config invalid before run: {checked}")
 
     receipt = {"schema": "DINO4T_AB_PAIR_EXECUTION_V1", "protocol": PROTOCOL,
+        "artifact_format": {"run": "DINO4T_DESKTOP_RUN_V2",
+                            "reference": "DINO4T_RUN_REFERENCE_V2"},
         "protocol_path": "results/dino4t-ab-engineering-v1/preregistration/AB_PAIR_PROTOCOL_V1.md",
         "source_base_config": str(BASE_CONFIG.relative_to(ROOT)),
         "source_base_config_sha256": _sha(BASE_CONFIG),
@@ -135,19 +131,14 @@ def execute(out_root: Path) -> dict:
     receipt["runs"].append(run_b)
     endpoints_for_compare = []
     for run in (run_a, run_b):
-        meta = run.get("meta")
-        if not meta:
+        reference = run.get("reference")
+        if not reference:
             continue
-        summary_path = Path(meta["summary_path"])
-        summary = json.loads(summary_path.read_text(encoding="utf-8"))
-        config = json.loads(Path(meta["config_path"]).read_text(encoding="utf-8"))
-        trace = Path(meta["trace_path"])
-        reference = {"run_id": meta["run_id"], "path": str(summary_path.resolve()),
-            "result_sha256": meta["result_sha256"], "config_sha256": meta["config_sha256"],
-            "status": meta["status"], "periodicity_status": meta["periodicity_status"],
-            "variant_id": meta["variant_id"]}
-        endpoints_for_compare.append({"summary": summary, "config": config, "meta": meta,
-            "reference": reference, "trace_sha256": _sha(trace) if trace.exists() else None})
+        assessment = assess_run_reference(reference)
+        if not assessment.verified:
+            run["verification_error"] = "; ".join(assessment.issues)
+            continue
+        endpoints_for_compare.append(assessment.endpoint())
     refs = [endpoint["reference"] for endpoint in endpoints_for_compare]
     project = create_project("dino4t-synthetic-ab-v1", config_a,
         variants={"lift-8mm": config_b}, run_references=refs,

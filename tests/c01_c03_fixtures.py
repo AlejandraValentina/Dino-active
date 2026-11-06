@@ -34,8 +34,11 @@ def endpoint_factory(root):
         f['brake_power_kW'] = watts/1000; f['brake_torque_Nm'] = watts/(2*math.pi*rpm/60)
         f['bmep_bar'] = watts/(displacement*rpm/120)/1e5
         f['imep_net_bar'] = f['bmep_bar'] + f['fmep_bar']; f['work_net_J'] = f['imep_net_bar']*1e5*displacement
+        if summary.get('cycle_history'):
+            summary['cycle_history'][-1]['imep_net_bar'] = f['imep_net_bar']
         if mutate: mutate(summary,config)
         summary['config_sha256'] = canonical_hash(config)
+        summary['config_identifier'] = config['identifier']
         run = root/f'synthetic-{side}-{serial}'
         artifacts = publish_primary(run/'artifacts',summary,config,
             {'theta':[0.,360.,720.], 'p':[100000.,200000.,100000.],

@@ -53,6 +53,7 @@ def main(argv=None):
 
         out = run_operating_point(load(args.config), out_dir=args.out, overrides=overrides or None,
                                   max_cycles=args.cycles, progress=progress)
+        from . import api
         s = out["summary"]
         f = s["final_cycle"] or {}
         print(json.dumps({"status": s["status"], "periodicity": s["periodicity"]["status"],
@@ -60,6 +61,9 @@ def main(argv=None):
                           "bmep_bar": f.get("bmep_bar"), "brake_power_kW": f.get("brake_power_kW"),
                           "volumetric_efficiency": f.get("volumetric_efficiency_intake_valve"),
                           "max_closure": s["conservation"]["max_relative_closure"],
+                          "source_identity": s.get("source_identity"),
+                          "runtime_environment": s.get("runtime_environment"),
+                          "contract_issues": api.check_summary(s, config=out["context"]["config"]),
                           "claims": s["claims"]}, indent=2))
         return 0 if s["status"] == "completed" else 1
     if args.command == "sweep":

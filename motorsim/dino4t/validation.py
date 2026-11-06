@@ -5,6 +5,8 @@ import json
 import math
 import re
 
+from .thermo_data import ACCESSED, BURCAT_SHA256, GRI30_SHA256
+
 CONFIG_VALIDATION = "DINO4T_CONFIG_VALIDATION_V2"
 RESULT_VALIDATION = "DINO4T_RESULT_VALIDATION_V2"
 PROVENANCE = ("MEASURED", "DOCUMENTED", "STANDARD_V1", "SYNTHETIC_ASSUMPTION", "CALIBRATED")
@@ -13,6 +15,10 @@ DEFAULT_TOLERANCES = dict(zip(METRIC_KEYS, (.002, .002, .005, .005)), consecutiv
 MIN_CYCLES = 3
 ASSURANCE_PROFILE = "DINO4T_ROUNDOFF_ASSURANCE_PROFILE_V1"
 MAX_RELATIVE_CLOSURE = 1e-12  # scoped native regression admission, not a universal accuracy guarantee
+CYCLE_HISTORY_KEYS = ("imep_net_bar", "pmep_bar", "volumetric_efficiency_intake_valve",
+                      "trapped_mass_mg", "residual_gas_fraction_ivc", "p_max_bar")
+EVIDENCE_LEVELS = frozenset({"L1_ENGINEERING_RUN"})
+WARM_START_VALUES = frozenset({"none", "used", "discarded_incompatible_mesh"})
 
 
 def finite(value):
@@ -172,6 +178,13 @@ def summary_issues(summary, config=None):
     commit = summary.get("code_commit")
     if commit is not None and (not isinstance(commit, str) or not re.fullmatch(r"[0-9a-f]{40}", commit)):
         issues.append("code_commit is neither a complete Git identity nor explicitly unknown")
+    if summary.get("evidence_level") not in EVIDENCE_LEVELS:
+        issues.append("evidence_level is not a supported native engineering level")
+    if summary.get("warm_start") not in WARM_START_VALUES:
+        issues.append("warm_start is not a supported continuation state")
+    identifier = summary.get("config_identifier")
+    if identifier is not None and not isinstance(identifier, str):
+        issues.append("config_identifier must be text or null")
     status = summary.get("status"); termination = summary.get("termination")
     if status not in RUN_STATUSES: issues.append("invalid run status")
     if not isinstance(termination, str) or not termination: issues.append("invalid termination")
@@ -230,6 +243,28 @@ def summary_issues(summary, config=None):
         if all(finite(final.get(k)) for k in ("imep_net_bar", "fmep_bar", "bmep_bar")) and not math.isclose(
                 final["bmep_bar"], final["imep_net_bar"] - final["fmep_bar"], rel_tol=1e-12, abs_tol=1e-12):
             issues.append("BMEP contradicts net IMEP minus FMEP")
+    cycle_history = summary.get("cycle_history")
+    if not isinstance(cycle_history, list):
+        issues.append("cycle_history must be a list")
+    elif len(cycle_history) == n:
+        for index, entry in enumerate(cycle_history):
+            if not isinstance(entry, dict) or set(entry) != set(CYCLE_HISTORY_KEYS):
+                issues.append(f"cycle_history[{index}] must contain exactly the declared indicators")
+                continue
+            for key in CYCLE_HISTORY_KEYS:
+                if not finite(entry.get(key)):
+                    issues.append(f"cycle_history[{index}].{key} must be finite")
+                elif key in ("trapped_mass_mg", "p_max_bar") and entry[key] <= 0:
+                    issues.append(f"cycle_history[{index}].{key} must be positive")
+                elif key == "residual_gas_fraction_ivc" and entry[key] < 0:
+                    issues.append(f"cycle_history[{index}].{key} must be nonnegative")
+        if n and isinstance(final, dict) and cycle_history:
+            last = cycle_history[-1]
+            if isinstance(last, dict):
+                for key in CYCLE_HISTORY_KEYS:
+                    if finite(last.get(key)) and finite(final.get(key)) and not math.isclose(
+                            last[key], final[key], rel_tol=1e-12, abs_tol=1e-12):
+                        issues.append(f"cycle_history[-1].{key} contradicts final_cycle")
     conservation = summary.get("conservation")
     if not isinstance(conservation, dict): issues.append("conservation must be an object")
     else:
@@ -252,8 +287,10 @@ def summary_issues(summary, config=None):
         else:
             if summary.get("config_sha256") != canonical_hash(config): issues.append("config identity mismatch")
             if summary.get("operating_point") != config["operating_point"]: issues.append("operating point contradicts config")
+            if summary.get("config_identifier") != config.get("identifier"):
+                issues.append("config_identifier contradicts resolved config")
             actual = summary.get("models", {}); expected = resolved_models(config)
-            if not isinstance(actual, dict) or any(actual.get(k) != v for k, v in expected.items()):
+            if not isinstance(actual, dict) or set(actual) != set(expected) or any(actual.get(k) != v for k, v in expected.items()):
                 issues.append("selected models contradict resolved config")
             expected_tol = dict(DEFAULT_TOLERANCES, **config.get("numerics", {}).get("periodicity", {}))
             if tol != expected_tol: issues.append("detector tolerances contradict resolved config")
@@ -282,16 +319,17 @@ def summary_issues(summary, config=None):
     if not isinstance(summary.get("models"), dict): issues.append("models must be an object")
     if summary.get("code_dirty") is not None and not isinstance(summary.get("code_dirty"), bool): issues.append("code_dirty must be bool or unknown")
     sources = summary.get("thermo_sources")
-    if not isinstance(sources, dict): issues.append("thermo_sources must be an object")
+    if not isinstance(sources, dict) or set(sources) != {"gri30_sha256", "burcat_sha256", "accessed"}:
+        issues.append("thermo_sources must contain exactly the registered source identities")
     else:
-        for key in ("gri30_sha256", "burcat_sha256"):
-            value = sources.get(key)
-            if not isinstance(value, str) or len(value) != 64 or any(c not in "0123456789abcdef" for c in value):
-                issues.append("invalid thermochemistry source digest: " + key)
+        for key, expected in (("gri30_sha256", GRI30_SHA256), ("burcat_sha256", BURCAT_SHA256),
+                              ("accessed", ACCESSED)):
+            if sources.get(key) != expected:
+                issues.append("thermochemistry source identity mismatch: " + key)
     if "source_identity" in summary:
         from ..source_provenance import validate_source_identity
         identity = summary["source_identity"]
-        issues.extend(validate_source_identity(identity))
+        issues.extend(validate_source_identity(identity, require_complete=False))
         if isinstance(identity, dict) and (identity.get("code_commit") != summary.get("code_commit") or identity.get("dirty") is not summary.get("code_dirty")):
             issues.append("source identity contradicts summary code origin")
     return issues

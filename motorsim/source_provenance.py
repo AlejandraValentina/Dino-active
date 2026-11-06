@@ -122,37 +122,53 @@ def _commit(value):
     return value if isinstance(value, str) and re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", value) else None
 
 
-def validate_source_identity(record) -> list[str]:
+def validate_source_identity(record, *, require_complete: bool = True) -> list[str]:
     """Pure historical-record validation; never substitutes current source files.
 
     This checks declared closure anchors and internal byte-manifest integrity.
     It is not a signature or an independent proof of the claimed Git ancestry.
+    ``require_complete=False`` admits an explicit INCOMPLETE identity so a valid
+    numeric result can still be published with an unverified source
+    qualification; strict comparison consumers must require complete source.
     """
     if not isinstance(record, dict):
         return ["source_identity must be an object"]
     problems = []
     if record.get("schema") != SCHEMA:
         problems.append("source_identity schema is unsupported")
-    if record.get("status") != "COMPLETE":
+    if record.get("status") not in {"COMPLETE", "INCOMPLETE"}:
+        problems.append("source_identity status is unsupported")
+    complete = record.get("status") == "COMPLETE"
+    if require_complete and not complete:
         problems.append("source_identity is incomplete")
-    if record.get("stable_during_capture") is not True:
-        problems.append("source_identity capture was not stable")
-    if record.get("origin") not in {"GIT_WORKTREE", "PACKAGED_PREIMAGES"}:
-        problems.append("source_identity has no verified source origin")
-    if _commit(record.get("code_commit")) is None:
-        problems.append("source_identity commit is invalid")
-    if type(record.get("dirty")) is not bool:
-        problems.append("source_identity dirty state is unknown/invalid")
-    if record.get("origin") == "PACKAGED_PREIMAGES" and record.get("dirty") is not False:
-        problems.append("packaged source snapshot is not clean")
+    if complete:
+        if record.get("stable_during_capture") is not True:
+            problems.append("source_identity capture was not stable")
+        if record.get("origin") not in {"GIT_WORKTREE", "PACKAGED_PREIMAGES"}:
+            problems.append("source_identity has no verified source origin")
+        if _commit(record.get("code_commit")) is None:
+            problems.append("source_identity commit is invalid")
+        if type(record.get("dirty")) is not bool:
+            problems.append("source_identity dirty state is unknown/invalid")
+        if record.get("origin") == "PACKAGED_PREIMAGES" and record.get("dirty") is not False:
+            problems.append("packaged source snapshot is not clean")
+        if not isinstance(record.get("issues"), list) or record.get("issues"):
+            problems.append("source_identity contains unresolved capture issues")
+        if "stable_during_run" in record and record["stable_during_run"] is not True:
+            problems.append("source_identity changed during execution")
+        if record.get("reproducible_by_commit") is not (record.get("dirty") is False):
+            problems.append("source_identity commit reproducibility disagrees with dirty state")
+    else:
+        if not isinstance(record.get("issues"), list):
+            problems.append("source_identity issues must be a list")
+        if record.get("dirty") is not None and type(record.get("dirty")) is not bool:
+            problems.append("source_identity dirty state is invalid")
+        if record.get("code_commit") is not None and _commit(record.get("code_commit")) is None:
+            problems.append("source_identity commit is invalid")
     if record.get("byte_policy") != BYTE_POLICY:
         problems.append("source_identity byte policy is unsupported")
-    if not isinstance(record.get("issues"), list) or record.get("issues"):
-        problems.append("source_identity contains unresolved capture issues")
-    if "stable_during_run" in record and record["stable_during_run"] is not True:
-        problems.append("source_identity changed during execution")
-    if record.get("reproducible_by_commit") is not (record.get("dirty") is False):
-        problems.append("source_identity commit reproducibility disagrees with dirty state")
+    if not complete:
+        return problems
     files = record.get("files")
     if not isinstance(files, list) or not files:
         return [*problems, "source_identity files are missing"]

@@ -49,17 +49,32 @@ def apply_overrides(config: dict, flat: dict) -> dict:
     return out
 
 
+def _source_qualification(summary: dict) -> str:
+    identity = summary.get("source_identity")
+    if isinstance(identity, dict) and identity.get("status") == "COMPLETE" and summary.get("code_dirty") is False:
+        return "COMPLETE_CLEAN_SOURCE_SNAPSHOT"
+    return "DIRTY_OR_UNKNOWN_SOURCE" if isinstance(identity, dict) else "SOURCE_IDENTITY_UNVERIFIED"
+
+
 def sweep(config: dict, points: list[dict], *, indicators=DEFAULT_INDICATORS, max_cycles=14,
           continuation=True, out_dir=None, base_overrides=None, progress=None) -> list[dict]:
-    rows, state = [], None
+    from . import api
+    rows, state, base_summary = [], None, None
     for i, flat in enumerate(points):
         cfg = apply_overrides(config, flat)
         out = run_operating_point(cfg, overrides=base_overrides, max_cycles=max_cycles,
                                   initial_state=state if continuation else None)
         s = out["summary"]
+        if base_summary is None:
+            base_summary = s
         final = s["final_cycle"] or {}
+        issues = api.check_summary(s, config=out["context"]["config"])
         row = dict(point=i, overrides=flat, status=s["status"], periodicity=s["periodicity"]["status"],
                    cycles=s["cycles_run"], closure=max(s["conservation"]["max_relative_closure"].values()),
+                   source_qualification=_source_qualification(s),
+                   source_identity_status=(s.get("source_identity") or {}).get("status")
+                   if isinstance(s.get("source_identity"), dict) else None,
+                   contract_issues=issues,
                    **{k: final.get(k) for k in indicators})
         rows.append(row)
         if s["status"] == "completed" and continuation:
@@ -72,6 +87,8 @@ def sweep(config: dict, points: list[dict], *, indicators=DEFAULT_INDICATORS, ma
         (out / "sweep.json").write_text(json.dumps(_jsonable(dict(
             schema="DINO4T_SWEEP_V1", config_identifier=config.get("identifier"),
             provenance={g: config[g]["provenance"] for g in config if isinstance(config[g], dict) and "provenance" in config[g]},
+            source_identity=base_summary.get("source_identity") if base_summary else None,
+            runtime_environment=base_summary.get("runtime_environment") if base_summary else None,
             claims=dict(calibration="NOT_PERFORMED", experimental_validation="NOT_PERFORMED",
                         predictive_capability="NOT_CLAIMED"), rows=rows)), indent=1), encoding="utf-8")
         cols = ["point", "status", "periodicity", "cycles", "closure", *indicators]
@@ -148,12 +165,18 @@ def sensitivity(config: dict, *, parameters=None, indicators=DEFAULT_INDICATORS,
     (so rel_step=0.05 -> 5 deg) and report d y / d(deg) instead of an elasticity."""
     table = {**PHYSICAL_PARAMETERS, **NUMERICAL_PARAMETERS}
     names = list(parameters or PHYSICAL_PARAMETERS)
+    from . import api
     base = run_operating_point(config, overrides=base_overrides, max_cycles=max_cycles)
     if base["summary"]["status"] != "completed":
         raise RuntimeError("base case failed: " + base["summary"]["termination"])
-    y0 = {k: base["summary"]["final_cycle"][k] for k in indicators}
+    base_summary = base["summary"]
+    y0 = {k: base_summary["final_cycle"][k] for k in indicators}
     state0 = base["result"]["state"]
-    result = dict(base=y0, rel_step=rel_step, parameters={}, base_periodicity=base["summary"]["periodicity"]["status"])
+    result = dict(base=y0, rel_step=rel_step, parameters={}, base_periodicity=base_summary["periodicity"]["status"],
+                  source_identity=base_summary.get("source_identity"),
+                  runtime_environment=base_summary.get("runtime_environment"),
+                  source_qualification=_source_qualification(base_summary),
+                  contract_issues=api.check_summary(base_summary, config=base["context"]["config"]))
     for name in names:
         maker = table[name]
         ys = {}
