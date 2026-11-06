@@ -33,6 +33,8 @@ class FourStrokeShellTests(unittest.TestCase):
         self.assertEqual(self.window.project_mode_stack.currentIndex(), 0)
         self.assertTrue(self.window.windowTitle().startswith("Dino 2T"))
         self.assertEqual(self.window.four_stroke_workspace.tabs.count(), 3)
+        self.assertEqual(self.window.four_stroke_tabs.count(), 3)
+        self.assertEqual(self.window.four_stroke_tabs.tabText(2), "Curva RPM 4T")
 
     def test_switch_to_4t_updates_title_indicator_and_back(self):
         self.window.show_four_stroke_mode()
@@ -86,6 +88,16 @@ class FourStrokeShellTests(unittest.TestCase):
         self.window.start_four_stroke_run()
         self.assertIn("Corregí", self.window.four_stroke_status.text())
         self.assertFalse(self.window.four_stroke_execution.running)
+
+    def test_curve_uses_same_workspace_validation(self):
+        self.window.show_four_stroke_mode()
+        self.window.four_stroke_curve.start_edit.setText("2500")
+        self.window.four_stroke_curve.end_edit.setText("3500")
+        self.window.four_stroke_curve.step_edit.setText("500")
+        self.window.four_stroke_workspace.geometry.bore.setText("no-numero")
+        self.window.four_stroke_curve.start_curve()
+        self.assertIn("Corregí", self.window.four_stroke_curve.status.text())
+        self.assertFalse(self.window.four_stroke_curve.execution.running)
 
 
 if __name__ == "__main__":

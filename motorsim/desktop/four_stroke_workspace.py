@@ -271,6 +271,13 @@ class FourStrokeWorkspace(QWidget):
         self.ducts.load(project)
         self._refresh_status()
 
+    def apply_all(self) -> bool:
+        for page in (self.geometry, self.valves, self.ducts):
+            if not page.apply():
+                self.tabs.setCurrentWidget(page)
+                return False
+        return True
+
     def _refresh_status(self):
         errors = self.context.execution_errors()
         if errors:

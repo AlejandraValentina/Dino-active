@@ -10,7 +10,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication
 from motorsim.window import MainWindow
-from motorsim.artifact_store import resolve_external_artifact
+from motorsim.artifact_store import ArtifactStoreError, resolve_external_artifact
 from motorsim.examples import PROJECT_FILES
 from motorsim.storage import load_project
 from motorsim.project import ProjectError
@@ -60,7 +60,7 @@ class CAETests(unittest.TestCase):
             self.assertEqual(w.project(),before);self.assertTrue(w.dirty)
     def test_invalid_rpm_and_sweep_keep_drafts_and_contract(self):
         w=self.w;w.load_example_file('2t-reference');v=w.simulation_view
-        for raw in ('abc','3000.5','2499','3501'):
+        for raw in ('abc','3000.5','2499','15001'):
             v.rpm_edit.setText(raw);v.check_inputs()
             self.assertEqual(v.rpm_edit.text(),raw);self.assertEqual(v.rpm_edit.property('state'),'error')
             with self.assertRaises(ProjectError):v._rpms()
@@ -84,8 +84,11 @@ class CAETests(unittest.TestCase):
             result_dir=Path(folder)
             for name in ('manifest.json','case.json','summary.json'):
                 shutil.copyfile(GUI_RESULT_FIXTURE/name,result_dir/name)
-            samples=resolve_external_artifact(
-                'FOUR_STROKE_GUI_POINT02_SAMPLES',manifest_path=GUI_ARTIFACT_MANIFEST)
+            try:
+                samples=resolve_external_artifact(
+                    'FOUR_STROKE_GUI_POINT02_SAMPLES',manifest_path=GUI_ARTIFACT_MANIFEST)
+            except ArtifactStoreError as exc:
+                self.skipTest(f'artifact externo no disponible: {exc}')
             shutil.copyfile(samples,result_dir/'samples.json')
             v.open_result(path=result_dir/'manifest.json')
             previous=v.context_table.values['Geometría'].text();points=list(v.angle_plot.points)

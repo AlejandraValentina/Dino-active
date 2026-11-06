@@ -22,6 +22,7 @@ from .four_stroke_context import FourStrokeContext
 from .four_stroke_workspace import FourStrokeWorkspace
 from .four_stroke_execution import FourStrokeExecution
 from .four_stroke_results import FourStrokeResultsPage
+from .four_stroke_curve import FourStrokeCurvePage
 from .widgets.context_bar import ContextBar
 from .preferences import settings, repository_root_containing
 from .theme import stylesheet
@@ -202,6 +203,7 @@ class DinoDesktopWindow(QMainWindow):
         self.four_stroke_context=FourStrokeContext()
         self.four_stroke_workspace=FourStrokeWorkspace(self.four_stroke_context)
         self.four_stroke_results=FourStrokeResultsPage()
+        self.four_stroke_curve=FourStrokeCurvePage(self.four_stroke_context,self.four_stroke_workspace)
         self.four_stroke_execution=FourStrokeExecution(self.four_stroke_context,self)
         page=QWidget();page.setObjectName("fourStrokeShell")
         layout=QVBoxLayout(page);layout.setContentsMargins(12,8,12,8);layout.setSpacing(8)
@@ -235,6 +237,7 @@ class DinoDesktopWindow(QMainWindow):
         self.four_stroke_tabs=QTabWidget()
         self.four_stroke_tabs.addTab(self.four_stroke_workspace,"Diseño 4T")
         self.four_stroke_tabs.addTab(self.four_stroke_results,"Resultados 4T")
+        self.four_stroke_tabs.addTab(self.four_stroke_curve,"Curva RPM 4T")
         layout.addWidget(self.four_stroke_tabs,1)
         self.four_stroke_context.changed.connect(self._four_stroke_state_changed)
         self.four_stroke_execution.started.connect(self._four_stroke_started)
@@ -300,12 +303,10 @@ class DinoDesktopWindow(QMainWindow):
             return True
         except Exception as exc:QMessageBox.warning(self,'No se pudo guardar el proyecto 4T',f'{type(exc).__name__}: {exc}');return False
     def start_four_stroke_run(self):
-        for page in (self.four_stroke_workspace.geometry,self.four_stroke_workspace.valves,self.four_stroke_workspace.ducts):
-            if not page.apply():
-                self.four_stroke_tabs.setCurrentWidget(self.four_stroke_workspace)
-                self.four_stroke_workspace.tabs.setCurrentWidget(page)
-                self.four_stroke_status.setText('Corregí los campos 4T antes de ejecutar.')
-                return
+        if not self.four_stroke_workspace.apply_all():
+            self.four_stroke_tabs.setCurrentWidget(self.four_stroke_workspace)
+            self.four_stroke_status.setText('Corregí los campos 4T antes de ejecutar.')
+            return
         try:
             self.four_stroke_execution.start()
         except Exception as exc:
@@ -627,6 +628,8 @@ class DinoDesktopWindow(QMainWindow):
         if hasattr(self,"four_stroke_context") and self.four_stroke_context.dirty and not self._confirm_discard_four_stroke():event.ignore();return
         if hasattr(self,"four_stroke_execution") and self.four_stroke_execution.running:
             self.four_stroke_execution.cancel()
+        if hasattr(self,"four_stroke_curve") and self.four_stroke_curve.execution.running:
+            self.four_stroke_curve.execution.cancel()
         execution=self.pages[3]
         if getattr(execution,"task",None) is not None:
             # Closing the application is an explicit stop request; the engine
