@@ -1,0 +1,58 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+_ test_desktop_comparison_rejects_real_one_cycle_result_against_periodic_history _
+
+tmp_path = WindowsPath('C:/Users/ageribon.MIDES/AppData/Local/Temp/pytest-of-ageribon/pytest-947/test_desktop_comparison_reject0')
+
+    def test_desktop_comparison_rejects_real_one_cycle_result_against_periodic_history(tmp_path):
+        from PySide6.QtWidgets import QApplication
+        from motorsim.desktop.four_stroke_desktop import FourStrokeResults
+        from motorsim.desktop.four_stroke_artifacts import publish_desktop_run
+        from motorsim.desktop.four_stroke_project import create_project
+        from c01_c03_fixtures import endpoint_factory
+    
+        # Original bound synthetic periodic endpoint tests presentation only. The
+        # second endpoint is a real bounded native run, not an in-memory fake ref.
+        periodic=endpoint_factory(tmp_path/'synthetic')('A')
+        config=periodic['config']
+        run_dir=tmp_path/'bounded-transient'
+        bounded=engine_platform.run_api("4T",config,out_dir=run_dir/'artifacts',max_cycles=1,wall_limit_s=30.0)
+        assert periodic['summary']['periodicity']['status']=='PERIODIC_CONVERGED'
+        assert bounded['summary']['periodicity']['status']!='PERIODIC_CONVERGED'
+        ref_b=publish_desktop_run(run_dir,bounded,'comparison-ui','B')
+>       project=create_project('comparison-ui',config,variants={'B':config},
+            run_references=[periodic['reference'],ref_b])
+
+tests\test_dino4t_desktop_integration.py:128: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+motorsim\desktop\four_stroke_project.py:23: in create_project
+    validate_project(project)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+project = {'base_engine': {'ambient': {'exhaust_pressure_pa': 101325.0, 'exhaust_temperature_K': 298.15, 'intake_pressure_pa': 1...ca5150c700a4db04c38d50134bf584581819572b59b793b25dc17e780d', 'engine_family': '4T', 'project_id': 'comparison-ui', ...}
+
+    def validate_project(project: dict) -> None:
+        from .. import engine_platform
+        fields = {"schema", "project_id", "engine_family", "base_engine", "base_identity_sha256",
+                  "variants", "run_references", "scientific_validation_status"}
+        if not isinstance(project, dict) or project.get("schema") != SCHEMA or set(project) != fields:
+            raise ValueError("4T desktop project schema/fields invalid")
+        if project.get("engine_family") != "4T" or not isinstance(project.get("project_id"), str) or not project["project_id"].strip():
+            raise ValueError("4T project identity invalid")
+        for engine in [project["base_engine"], *project["variants"].values()]:
+            check = engine_platform.validate_config("4T", engine)
+            if not check["valid"] or check["unknown_keys"]:
+                raise ValueError(f"invalid 4T engine configuration: {check['issues']} {check['unknown_keys']}")
+        if project["base_identity_sha256"] != config_identity(project["base_engine"]):
+            raise ValueError("4T project base configuration identity mismatch")
+        if not isinstance(project["variants"], dict) or not isinstance(project["run_references"], list):
+            raise ValueError("4T variants and run references must be collections")
+        for name, config in project["variants"].items():
+            if not isinstance(name, str) or not name.strip() or config.get("identifier") != name:
+>               raise ValueError("4T variant identifier mismatch")
+E               ValueError: 4T variant identifier mismatch
+
+motorsim\desktop\four_stroke_project.py:50: ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_dino4t_desktop_integration.py::test_desktop_comparison_rejects_real_one_cycle_result_against_periodic_history
+1 failed, 1 passed in 14.84s

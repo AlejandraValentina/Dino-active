@@ -112,28 +112,26 @@ def test_windows_bundle_recipe_declares_4t_runtime_dependencies():
 def test_desktop_comparison_rejects_real_one_cycle_result_against_periodic_history(tmp_path):
     from PySide6.QtWidgets import QApplication
     from motorsim.desktop.four_stroke_desktop import FourStrokeResults
+    from motorsim.desktop.four_stroke_artifacts import publish_desktop_run
+    from motorsim.desktop.four_stroke_project import create_project
+    from c01_c03_fixtures import endpoint_factory
 
-    periodic_dir=Path("results/dino4t-stage2-v1/example/4000rpm")
-    periodic=json.loads((periodic_dir/"summary.json").read_text(encoding="utf-8"))
-    config=json.loads((periodic_dir/"config_resolved.json").read_text(encoding="utf-8"))
-    bounded=engine_platform.run_api("4T",config,max_cycles=1,wall_limit_s=30.0)
-    assert periodic["periodicity"]["status"]=="PERIODIC_CONVERGED"
-    assert bounded["summary"]["periodicity"]["status"]!="PERIODIC_CONVERGED"
-
+    # Original bound synthetic periodic endpoint tests presentation only. The
+    # second endpoint is a real bounded native run, not an in-memory fake ref.
+    periodic=endpoint_factory(tmp_path/'synthetic')('A')
+    config=periodic['config']
+    run_dir=tmp_path/'bounded-transient'
+    bounded=engine_platform.run_api("4T",config,out_dir=run_dir/'artifacts',max_cycles=1,wall_limit_s=30.0)
+    assert periodic['summary']['periodicity']['status']=='PERIODIC_CONVERGED'
+    assert bounded['summary']['periodicity']['status']!='PERIODIC_CONVERGED'
+    ref_b=publish_desktop_run(run_dir,bounded,'comparison-ui')
+    project=create_project('comparison-ui',config,run_references=[periodic['reference'],ref_b])
     app=QApplication.instance() or QApplication([])
-    results=FourStrokeResults(DesktopContext(project_from_example("comparison-ui")))
-    ref_a={"run_id":"historical-periodic","result_sha256":"a"*64,
-        "config_sha256":periodic["config_sha256"],"variant_id":"A"}
-    ref_b={"run_id":"bounded-transient","result_sha256":"b"*64,
-        "config_sha256":bounded["summary"]["config_sha256"],"variant_id":"B"}
-    results.loaded={0:(periodic,{"api":"DINO4T_API_V1","result_sha256":ref_a["result_sha256"],
-            "config_path":str(periodic_dir/"config_resolved.json")},ref_a),
-        1:(bounded["summary"],{"api":"DINO4T_API_V1","result_sha256":ref_b["result_sha256"],
-            "config_path":str(periodic_dir/"config_resolved.json")},ref_b)}
-    results.compare_a.addItem("A",0);results.compare_b.addItem("B",1)
-    results.compare_a.setCurrentIndex(0);results.compare_b.setCurrentIndex(0)
+    results=FourStrokeResults(DesktopContext(project))
+    assert len(results.loaded)==2
+    results.compare_a.setCurrentIndex(0);results.compare_b.setCurrentIndex(1)
     results.compare()
-    assert "vínculo original verificable" in results.compare_status.text()  # unbound refs fail before metric comparison
+    assert 'no alcanzó periodicidad' in results.compare_status.text()
     assert results.compare_table.rowCount()==0
     results.close();app.processEvents()
 

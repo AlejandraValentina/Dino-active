@@ -1,0 +1,29 @@
+{
+  "name": "c01-c03-project-report-compatibility",
+  "command": [
+    "python",
+    "-u",
+    "-m",
+    "pytest",
+    "tests/test_engine_configuration_v1.py",
+    "tests/test_dino_desktop.py",
+    "tests/test_desktop_technical_report.py",
+    "tests/test_four_stroke.py",
+    "tests/test_four_stroke_integration.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "started_at": "2026-11-06T13:24:55+00:00",
+  "finished_at": "2026-11-06T13:27:55+00:00",
+  "duration_s": 180.047,
+  "exit_code": 124,
+  "timed_out": true,
+  "log_path": "results\\platform-c01-c03-remediation-v1\\verification\\c01-c03-project-report-compatibility.log",
+  "log_lines": 1,
+  "log_bytes": 19,
+  "error_lines": [],
+  "tail": [
+    "..................."
+  ]
+}

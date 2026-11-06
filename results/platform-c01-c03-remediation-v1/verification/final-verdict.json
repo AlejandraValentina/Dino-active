@@ -1,0 +1,222 @@
+{
+  "schema": "DINO_C01_C03_SCOPED_ACCEPTANCE_V1",
+  "source_revision": "0f81453598a2d047f908103c56fb462ef5f46221",
+  "C01": "PASS_SOURCE_SCOPED",
+  "C03": "PASS_SOURCE_INFRASTRUCTURE_SCOPED",
+  "product_release_acceptance": "NOT_PERFORMED",
+  "global_audit_reissued": false,
+  "findings": {
+    "F01": "CORRECTED_SOURCE",
+    "F02": "CORRECTED_SOURCE",
+    "F04": "CORRECTED_SOURCE",
+    "F06": "CORRECTED_SOURCE",
+    "F08": "CORRECTED_SOURCE",
+    "F09": "CORRECTED_SOURCE",
+    "F12": "CORRECTED_SOURCE",
+    "F13": "CORRECTED_SOURCE"
+  },
+  "independent_review": "PASS_AT_FROZEN_SOURCE_HASHES",
+  "remaining_qualifications": {
+    "F08": "New EXE not built or content-verified; source and recipe only",
+    "F09": "Application source preimages and runtime versions; raw third-party binary attestation not performed",
+    "UI_REGRESSION_VERIFICATION": "One Windows access violation in broader offscreen GUI run; same seven-test group passes on baseline and candidate in isolation. Cause unresolved; whole28 suite not claimed PASS.",
+    "historical_artifacts": "Unbound/source-unverified data retained with explicit legacy qualification",
+    "C02_C04_B12": "Outside scope; no merge of parallel work",
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_capability": "NOT_CLAIMED"
+  },
+  "verification_runs": [
+    {
+      "name": "artifact-binding-development",
+      "exit_code": 1,
+      "timed_out": false,
+      "duration_s": 7.688,
+      "summary": "verification/artifact-binding-development.summary.json",
+      "summary_sha256": "4dff7ab155133d3fc6455f3d1d408a1689497fb6083abb1b173663035ac115e0",
+      "tail": [
+        "1 failed, 13 passed in 4.02s"
+      ]
+    },
+    {
+      "name": "c01-c03-app-bindings-final",
+      "exit_code": 1,
+      "timed_out": false,
+      "duration_s": 24.015,
+      "summary": "verification/c01-c03-app-bindings-final.summary.json",
+      "summary_sha256": "8a35becef6d76998cb96eb44d29bff26f6755f6c243c71ff0ca451d44cd875fb",
+      "tail": [
+        "1 failed, 57 passed in 23.17s"
+      ]
+    },
+    {
+      "name": "c01-c03-app-contracts-corrected",
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_s": 24.672,
+      "summary": "verification/c01-c03-app-contracts-corrected.summary.json",
+      "summary_sha256": "3039ab354a3e05e8295c35fd3a717d187c1e952f2f2842db1668756e81f0b89e",
+      "tail": [
+        "61 passed in 20.29s"
+      ]
+    },
+    {
+      "name": "c01-c03-bound-transient-comparison-final",
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_s": 16.094,
+      "summary": "verification/c01-c03-bound-transient-comparison-final.summary.json",
+      "summary_sha256": "246c0fd0d5eb98d8f46f3f264ec20de33f1f964b4b4fba43efd1a05c7567c51c",
+      "tail": [
+        "2 passed in 15.49s"
+      ]
+    },
+    {
+      "name": "c01-c03-desktop-baseline-crash-contrast",
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_s": 139.984,
+      "summary": "verification/c01-c03-desktop-baseline-crash-contrast.summary.json",
+      "summary_sha256": "b2b8b3f5a4e883db3a98529304ee1a7c6c38003f8ca5bf0885440f047c0d87fb",
+      "tail": [
+        "================ 7 passed, 21 deselected in 139.25s (0:02:19) ================="
+      ]
+    },
+    {
+      "name": "c01-c03-desktop-complete-regression",
+      "exit_code": 3221225477,
+      "timed_out": false,
+      "duration_s": 95.141,
+      "summary": "verification/c01-c03-desktop-complete-regression.summary.json",
+      "summary_sha256": "50abf0c3b54a4ef1b4bc0bf6f2f7ab5204a7af76797c9b1490aa12069ff404af",
+      "tail": [
+        "  File \"<frozen runpy>\", line 198 in _run_module_as_main"
+      ]
+    },
+    {
+      "name": "c01-c03-desktop-isolated-crash-recheck",
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_s": 140.031,
+      "summary": "verification/c01-c03-desktop-isolated-crash-recheck.summary.json",
+      "summary_sha256": "076b39fdb7340c0c061262f0344e228782bae889c097c6ef96d2ef5f0fdd1813",
+      "tail": [
+        "================ 7 passed, 21 deselected in 139.30s (0:02:19) ================="
+      ]
+    },
+    {
+      "name": "c01-c03-desktop-timeout-triage",
+      "exit_code": 124,
+      "timed_out": true,
+      "duration_s": 90.031,
+      "summary": "verification/c01-c03-desktop-timeout-triage.summary.json",
+      "summary_sha256": "8fc7395ce8eb8cff64d73b7b941a5be11479db3fd1ac338b280c88cb16bb2583",
+      "tail": [
+        "tests/test_dino_desktop.py::DinoDesktopTests::test_legacy_project_v2_migrates_with_measurements_and_empty_studies "
+      ]
+    },
+    {
+      "name": "c01-c03-expanded-regression",
+      "exit_code": 1,
+      "timed_out": false,
+      "duration_s": 434.64,
+      "summary": "verification/c01-c03-expanded-regression.summary.json",
+      "summary_sha256": "af2bced57ef865331b9079b4d4bdaf6bfe80877984c439ec914eeb430ba5751f",
+      "tail": [
+        "17 failed, 166 passed in 433.99s (0:07:13)"
+      ]
+    },
+    {
+      "name": "c01-c03-final-assertions-recheck",
+      "exit_code": 1,
+      "timed_out": false,
+      "duration_s": 21.047,
+      "summary": "verification/c01-c03-final-assertions-recheck.summary.json",
+      "summary_sha256": "36c03afa6a6333c6f5d6cefe0d6afadcdc35376cd828b1c356e41ef8eeeba56c",
+      "tail": [
+        "1 failed, 1 passed in 14.84s"
+      ]
+    },
+    {
+      "name": "c01-c03-fixed-source-regression",
+      "exit_code": 1,
+      "timed_out": false,
+      "duration_s": 445.5,
+      "summary": "verification/c01-c03-fixed-source-regression.summary.json",
+      "summary_sha256": "91894840ad8f5b5356f64466a93252ef8aa0d580ad3d4af57391afe9bcc6d9ed",
+      "tail": [
+        "2 failed, 187 passed in 444.81s (0:07:24)"
+      ]
+    },
+    {
+      "name": "c01-c03-project-compatibility-focused",
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_s": 30.828,
+      "summary": "verification/c01-c03-project-compatibility-focused.summary.json",
+      "summary_sha256": "6791128cd3f6e5ed667c9f67c415ef3bb8f81249ca9da81b735336f2fe05fb41",
+      "tail": [
+        "============================= 47 passed in 30.21s ============================="
+      ]
+    },
+    {
+      "name": "c01-c03-project-report-compatibility",
+      "exit_code": 124,
+      "timed_out": true,
+      "duration_s": 180.047,
+      "summary": "verification/c01-c03-project-report-compatibility.summary.json",
+      "summary_sha256": "c7e28dfd005c1096f15ea9a44ed7b83b18d5c7698db9b89e5d896999fece4456",
+      "tail": [
+        "..................."
+      ]
+    },
+    {
+      "name": "c01-c03-protected-context-regression",
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_s": 206.063,
+      "summary": "verification/c01-c03-protected-context-regression.summary.json",
+      "summary_sha256": "243aaa4d4150c925f18a18071e2bcbf0b55bad58a6165c1c159ef4d815a37439",
+      "tail": [
+        "301 passed, 3 skipped, 4 warnings in 197.85s (0:03:17)"
+      ]
+    },
+    {
+      "name": "c01-c03-targeted-development",
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_s": 9.578,
+      "summary": "verification/c01-c03-targeted-development.summary.json",
+      "summary_sha256": "14ecdb84d0d27a74524ee8b936fa66ca938293beb44396edb44fe5165aa5bf9c",
+      "tail": [
+        "43 passed in 4.69s"
+      ]
+    },
+    {
+      "name": "c03-preserved-producer-verification",
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_s": 0.766,
+      "summary": "verification/c03-preserved-producer-verification.summary.json",
+      "summary_sha256": "5e66e31035fe2c33a936608c649c4b2193dcd264eb586699eb826d21969d88d3",
+      "tail": [
+        "{\"classification\": \"VERIFIED\", \"source\": \"COMPLETE_CLEAN_SOURCE_SNAPSHOT\", \"cycles\": 1, \"periodicity\": \"NOT_CONVERGED\", \"new_solver_runs\": 0}"
+      ]
+    },
+    {
+      "name": "c03-provenance-final",
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_s": 33.25,
+      "summary": "verification/c03-provenance-final.summary.json",
+      "summary_sha256": "56c953ae408e4e85f60c3aa6ab9510193ad4b9dfcca0bc4e5b3b42904983f18d",
+      "tail": [
+        "39 passed in 32.64s"
+      ]
+    }
+  ],
+  "historical_results_modified": false,
+  "windows_builds": 0,
+  "merge": false,
+  "push": false,
+  "protected_scientific_contracts_modified": false
+}

@@ -106,7 +106,8 @@ def test_unknown_configuration_keys_are_rejected_because_they_silently_select_de
     r = api.validate(c)
     assert not r["valid"] and set(r["unknown_keys"]) == {"numerics.restricton_model", "combustion.effciency"}
     out = api.run(c, max_cycles=1)
-    assert out["error"]["code"] == "CONFIG_INVALID" and "restricton_model" in out["error"]["message"]
+    assert out["error"]["code"] == "CONFIG_INVALID"
+    assert {issue["path"] for issue in out["error"]["detail"]} == {"numerics.restricton_model", "combustion.effciency"}
     assert api.validate(_cfg())["unknown_keys"] == []
 
 

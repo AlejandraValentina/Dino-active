@@ -1,0 +1,59 @@
+........................................................................ [ 38%]
+............................F.......................F................... [ 76%]
+.............................................                            [100%]
+================================== FAILURES ===================================
+_ test_unknown_configuration_keys_are_rejected_because_they_silently_select_defaults _
+
+    def test_unknown_configuration_keys_are_rejected_because_they_silently_select_defaults():
+        c = _cfg()
+        c["numerics"]["restricton_model"] = "V1"  # typo: would silently run V2
+        c["combustion"]["effciency"] = 0.5
+        r = api.validate(c)
+        assert not r["valid"] and set(r["unknown_keys"]) == {"numerics.restricton_model", "combustion.effciency"}
+        out = api.run(c, max_cycles=1)
+>       assert out["error"]["code"] == "CONFIG_INVALID" and "restricton_model" in out["error"]["message"]
+E       AssertionError: assert ('CONFIG_INVALID' == 'CONFIG_INVALID'
+E         
+E           CONFIG_INVALID and 'restricton_model' in 'combustion.effciency: unknown or misplaced field')
+
+tests\test_dino4t_api.py:109: AssertionError
+_ test_desktop_comparison_rejects_real_one_cycle_result_against_periodic_history _
+
+tmp_path = WindowsPath('C:/Users/ageribon.MIDES/AppData/Local/Temp/pytest-of-ageribon/pytest-943/test_desktop_comparison_reject0')
+
+    def test_desktop_comparison_rejects_real_one_cycle_result_against_periodic_history(tmp_path):
+        from PySide6.QtWidgets import QApplication
+        from motorsim.desktop.four_stroke_desktop import FourStrokeResults
+    
+        periodic_dir=Path("results/dino4t-stage2-v1/example/4000rpm")
+        periodic=json.loads((periodic_dir/"summary.json").read_text(encoding="utf-8"))
+        config=json.loads((periodic_dir/"config_resolved.json").read_text(encoding="utf-8"))
+        bounded=engine_platform.run_api("4T",config,max_cycles=1,wall_limit_s=30.0)
+        assert periodic["periodicity"]["status"]=="PERIODIC_CONVERGED"
+        assert bounded["summary"]["periodicity"]["status"]!="PERIODIC_CONVERGED"
+    
+        app=QApplication.instance() or QApplication([])
+        results=FourStrokeResults(DesktopContext(project_from_example("comparison-ui")))
+        ref_a={"run_id":"historical-periodic","result_sha256":"a"*64,
+            "config_sha256":periodic["config_sha256"],"variant_id":"A"}
+        ref_b={"run_id":"bounded-transient","result_sha256":"b"*64,
+            "config_sha256":bounded["summary"]["config_sha256"],"variant_id":"B"}
+        results.loaded={0:(periodic,{"api":"DINO4T_API_V1","result_sha256":ref_a["result_sha256"],
+                "config_path":str(periodic_dir/"config_resolved.json")},ref_a),
+            1:(bounded["summary"],{"api":"DINO4T_API_V1","result_sha256":ref_b["result_sha256"],
+                "config_path":str(periodic_dir/"config_resolved.json")},ref_b)}
+        results.compare_a.addItem("A",0);results.compare_b.addItem("B",1)
+        results.compare_a.setCurrentIndex(0);results.compare_b.setCurrentIndex(0)
+        results.compare()
+>       assert "vínculo original verificable" in results.compare_status.text()  # unbound refs fail before metric comparison
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       assert 'vínculo original verificable' in "No comparable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'"
+E        +  where "No comparable: CORRUPT_OR_INCOMPATIBLE: KeyError: 'path'" = <built-in method text of PySide6.QtWidgets.QLabel object at 0x000001E2CC8F1380>()
+E        +    where <built-in method text of PySide6.QtWidgets.QLabel object at 0x000001E2CC8F1380> = <PySide6.QtWidgets.QLabel(0x1e2cb66a0d0) at 0x000001E2CC8F1380>.text
+E        +      where <PySide6.QtWidgets.QLabel(0x1e2cb66a0d0) at 0x000001E2CC8F1380> = <motorsim.desktop.four_stroke_desktop.FourStrokeResults(0x1e2ca0d7320) at 0x000001E2CC2A9D00>.compare_status
+
+tests\test_dino4t_desktop_integration.py:136: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_dino4t_api.py::test_unknown_configuration_keys_are_rejected_because_they_silently_select_defaults
+FAILED tests/test_dino4t_desktop_integration.py::test_desktop_comparison_rejects_real_one_cycle_result_against_periodic_history
+2 failed, 187 passed in 444.81s (0:07:24)

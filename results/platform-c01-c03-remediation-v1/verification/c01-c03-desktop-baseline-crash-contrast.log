@@ -1,0 +1,66 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.0, pytest-8.4.1, pluggy-1.5.0 -- C:\Users\ageribon\AppData\Local\Programs\Python\Python311\python.exe
+rootdir: C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-audit-v1
+configfile: pytest.ini
+plugins: anyio-4.14.2, cov-7.1.0, mock-3.15.1
+collecting ... collected 28 items / 21 deselected / 7 selected
+
+tests/test_dino_desktop.py::DinoDesktopTests::test_ab_comparison_labels_max_cycles_as_transient_not_confirmed_gain PASSED [ 14%]
+tests/test_dino_desktop.py::DinoDesktopTests::test_advanced_exhaust_mesh_collapses_and_expands_without_changing_counts PASSED [ 28%]
+tests/test_dino_desktop.py::DinoDesktopTests::test_async_boundary_returns_data_and_errors_without_ui_shutdown PASSED [ 42%]
+tests/test_dino_desktop.py::DinoDesktopTests::test_custom_engine_intake_transfer_reeds_persist_and_reach_solver PASSED [ 57%]
+tests/test_dino_desktop.py::DinoDesktopTests::test_design_workbench_modes_reuse_editors_and_keep_traceability_accessible PASSED [ 71%]
+tests/test_dino_desktop.py::DinoDesktopTests::test_desktop_imports_measured_dynodata_persists_and_compares_exact_rpm PASSED [ 85%]
+tests/test_dino_desktop.py::DinoDesktopTests::test_desktop_synthetic_custom_engine_ab_roundtrip_one_cycle Timeout (0:01:00)!
+Thread 0x000076e8 (most recent call first):
+  File "C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-audit-v1\motorsim\two_stroke_ports.py", line 11 in validate
+  File "C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-audit-v1\motorsim\two_stroke_ports.py", line 345 in area_at
+  File "C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-audit-v1\motorsim\two_stroke_ports.py", line 412 in <genexpr>
+  File "C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-audit-v1\motorsim\two_stroke_ports.py", line 412 in compile_duct_profiles
+  File "C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-audit-v1\motorsim\two_stroke_ports.py", line 438 in _derived
+  File "C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-audit-v1\motorsim\two_stroke_ports.py", line 448 in to_dict
+  File "C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-audit-v1\motorsim\integrated_2t.py", line 573 in to_dict
+  File "C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-audit-v1\motorsim\integrated_2t.py", line 1414 in _configuration_identity
+  File "C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-audit-v1\motorsim\integrated_2t.py", line 981 in __init__
+  File "C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-audit-v1\motorsim\integrated_2t.py", line 1359 in from_configuration_dict
+  File "C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-audit-v1\motorsim\engine_configuration.py", line 100 in validate_native
+  File "C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-audit-v1\motorsim\engine_configuration.py", line 157 in validate
+  File "C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-audit-v1\motorsim\engine_configuration.py", line 166 in identity
+  File "C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-audit-v1\motorsim\desktop\exhaust_page.py", line 342 in _overlay_sections
+  File "C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-audit-v1\motorsim\desktop\exhaust_page.py", line 235 in refresh
+  File "C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-audit-v1\motorsim\desktop\context.py", line 32 in select_variant
+  File "C:\Users\ageribon.MIDES\Dino-artifacts\worktrees\dino-platform-audit-v1\tests\test_dino_desktop.py", line 360 in test_desktop_synthetic_custom_engine_ab_roundtrip_one_cycle
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\unittest\case.py", line 579 in _callTestMethod
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\unittest\case.py", line 623 in run
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\unittest\case.py", line 678 in __call__
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\_pytest\unittest.py", line 351 in runtest
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\_pytest\runner.py", line 178 in pytest_runtest_call
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\pluggy\_callers.py", line 103 in _multicall
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\pluggy\_manager.py", line 120 in _hookexec
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\pluggy\_hooks.py", line 513 in __call__
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\_pytest\runner.py", line 246 in <lambda>
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\_pytest\runner.py", line 344 in from_call
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\_pytest\runner.py", line 245 in call_and_report
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\_pytest\runner.py", line 136 in runtestprotocol
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\_pytest\runner.py", line 117 in pytest_runtest_protocol
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\pluggy\_callers.py", line 103 in _multicall
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\pluggy\_manager.py", line 120 in _hookexec
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\pluggy\_hooks.py", line 513 in __call__
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\_pytest\main.py", line 367 in pytest_runtestloop
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\pluggy\_callers.py", line 103 in _multicall
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\pluggy\_manager.py", line 120 in _hookexec
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\pluggy\_hooks.py", line 513 in __call__
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\_pytest\main.py", line 343 in _main
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\_pytest\main.py", line 289 in wrap_session
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\_pytest\main.py", line 336 in pytest_cmdline_main
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\pluggy\_callers.py", line 103 in _multicall
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\pluggy\_manager.py", line 120 in _hookexec
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\pluggy\_hooks.py", line 513 in __call__
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\_pytest\config\__init__.py", line 175 in main
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\_pytest\config\__init__.py", line 201 in console_main
+  File "C:\Users\ageribon\AppData\Local\Programs\Python\Python311\Lib\site-packages\pytest\__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main
+PASSED [100%]
+
+================ 7 passed, 21 deselected in 139.25s (0:02:19) =================

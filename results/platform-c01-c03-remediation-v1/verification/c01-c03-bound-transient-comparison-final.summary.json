@@ -1,0 +1,27 @@
+{
+  "name": "c01-c03-bound-transient-comparison-final",
+  "command": [
+    "python",
+    "-u",
+    "-m",
+    "pytest",
+    "tests/test_dino4t_api.py::test_unknown_configuration_keys_are_rejected_because_they_silently_select_defaults",
+    "tests/test_dino4t_desktop_integration.py::test_desktop_comparison_rejects_real_one_cycle_result_against_periodic_history",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "started_at": "2026-11-06T13:33:46+00:00",
+  "finished_at": "2026-11-06T13:34:02+00:00",
+  "duration_s": 16.094,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\platform-c01-c03-remediation-v1\\verification\\c01-c03-bound-transient-comparison-final.log",
+  "log_lines": 2,
+  "log_bytes": 99,
+  "error_lines": [],
+  "tail": [
+    "..                                                                       [100%]",
+    "2 passed in 15.49s"
+  ]
+}

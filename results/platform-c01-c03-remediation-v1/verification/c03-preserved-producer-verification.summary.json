@@ -1,0 +1,19 @@
+{
+  "name": "c03-preserved-producer-verification",
+  "command": [
+    "python",
+    "results/platform-c01-c03-remediation-v1/verification/verify_preserved_bundle.py"
+  ],
+  "started_at": "2026-11-06T13:36:53+00:00",
+  "finished_at": "2026-11-06T13:36:54+00:00",
+  "duration_s": 0.766,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\platform-c01-c03-remediation-v1\\verification\\c03-preserved-producer-verification.log",
+  "log_lines": 1,
+  "log_bytes": 142,
+  "error_lines": [],
+  "tail": [
+    "{\"classification\": \"VERIFIED\", \"source\": \"COMPLETE_CLEAN_SOURCE_SNAPSHOT\", \"cycles\": 1, \"periodicity\": \"NOT_CONVERGED\", \"new_solver_runs\": 0}"
+  ]
+}

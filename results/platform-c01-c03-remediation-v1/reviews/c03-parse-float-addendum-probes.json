@@ -1,0 +1,28 @@
+{
+  "changed_reviewed_files": [],
+  "observations": {
+    "overflow_positive": {
+      "rejected": true,
+      "type": "ValueError",
+      "message": "nonfinite JSON number: 1e999"
+    },
+    "overflow_negative": {
+      "rejected": true,
+      "type": "ValueError",
+      "message": "nonfinite JSON number: -1e999"
+    },
+    "nested_overflow": {
+      "rejected": true,
+      "type": "ValueError",
+      "message": "nonfinite JSON number: 1e999"
+    },
+    "NaN": {
+      "rejected": true,
+      "type": "ValueError",
+      "message": "nonfinite JSON token: NaN"
+    },
+    "normal_values_preserved": true,
+    "negative_zero_preserved": true
+  },
+  "solver_integrations": 0
+}
