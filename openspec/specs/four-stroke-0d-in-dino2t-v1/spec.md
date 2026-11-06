@@ -1,7 +1,10 @@
 # four-stroke-0d-in-dino2t-v1 Specification
 
 ## Purpose
-TBD - created by archiving change four-stroke-0d-in-dino2t-v1. Update Purpose after archive.
+Definir el modo 4T 0D de referencia dentro de Dino como un flujo separado del
+2T: proyecto propio, workspace de geometría/válvulas/conductos, ejecución con el
+worker existente y resultados estrictos, sin comparación cross-cycle ni claim
+predictivo.
 ## Requirements
 ### Requirement: Documento 4T de referencia independiente
 El sistema SHALL persistir proyectos 4T con el schema

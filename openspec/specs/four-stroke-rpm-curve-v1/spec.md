@@ -1,7 +1,9 @@
 # four-stroke-rpm-curve-v1 Specification
 
 ## Purpose
-TBD - created by archiving change four-stroke-rpm-curve-v1. Update Purpose after archive.
+Definir la curva RPM 4T de referencia en Dino, reutilizando el sweep y el
+manifiesto 4T existentes, con lectura estricta de la serie y sin comparación
+con 2T ni claim de validación experimental.
 ## Requirements
 ### Requirement: Barrido RPM 4T validado
 El sistema SHALL construir una serie 4T de 2 a 5 puntos con RPM enteros
