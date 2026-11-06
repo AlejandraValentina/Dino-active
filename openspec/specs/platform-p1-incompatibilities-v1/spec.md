@@ -1,7 +1,10 @@
 # platform-p1-incompatibilities-v1 Specification
 
 ## Purpose
-TBD - created by archiving change platform-p1-incompatibilities-v1. Update Purpose after archive.
+Definir la compatibilidad P1 entre los contratos nativos endurecidos C01/C03 y
+sus consumidores: productor A/B V2, auditoría read-only reproducible, binding
+semántico F02 e identidad de fuente incompleta explícita F09, sin cambiar
+física, tolerancias ni evidencia histórica.
 ## Requirements
 ### Requirement: Productor A/B compatible con V2
 El sistema SHALL publicar cada endpoint A/B con `DINO4T_DESKTOP_RUN_V2` y
