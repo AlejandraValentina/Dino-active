@@ -45,6 +45,8 @@ class FourStrokeCurveExecution(QObject):
         self._finished_data = None
         self._last_error = None
         self._cancel_requested = False
+        self._reservation = None
+        self._terminal = False
 
     @property
     def running(self) -> bool:
@@ -99,27 +101,70 @@ class FourStrokeCurveExecution(QObject):
     def start(self, rpms, output=None):
         if self.running:
             raise FourStrokeCurveRunError("Ya hay una curva 4T en curso.")
-        target, request, normalized = self.prepare(rpms, output)
-        executable, prefix, working_directory = worker_command()
-        process = QProcess(self)
-        process.setWorkingDirectory(working_directory)
-        process.setProgram(executable)
-        process.setArguments([*prefix, "--output", str(target), "--control-stdin",
-                              "--sweep-input", str(request)])
-        process.readyReadStandardOutput.connect(self._read_stdout)
-        process.readyReadStandardError.connect(self._read_stderr)
-        process.finished.connect(self._on_finished)
-        process.errorOccurred.connect(self._on_error)
-        self._process = process
-        self._buffer = b""
-        self._stderr = b""
-        self._series_path = None
-        self._finished_data = None
-        self._last_error = None
-        self._cancel_requested = False
-        process.start()
+        try:
+            self._reservation = self.context.begin_execution("curva 4T")
+        except Exception as exc:
+            raise FourStrokeCurveRunError(str(exc)) from exc
+        try:
+            target, request, normalized = self.prepare(rpms, output)
+            executable, prefix, working_directory = worker_command()
+            process = QProcess(self)
+            process.setWorkingDirectory(working_directory)
+            process.setProgram(executable)
+            process.setArguments([*prefix, "--output", str(target), "--control-stdin",
+                                  "--sweep-input", str(request)])
+            process.readyReadStandardOutput.connect(self._read_stdout)
+            process.readyReadStandardError.connect(self._read_stderr)
+            process.finished.connect(self._on_finished)
+            process.errorOccurred.connect(self._on_error)
+            self._process = process
+            self._buffer = b""
+            self._stderr = b""
+            self._series_path = None
+            self._finished_data = None
+            self._last_error = None
+            self._cancel_requested = False
+            self._terminal = False
+            process.start()
+        except Exception:
+            self._discard_request()
+            self._release()
+            raise
         self.started.emit(str(target))
         return target
+
+    def _discard_request(self):
+        if self._request_path is not None:
+            try:
+                self._request_path.unlink()
+            except OSError:
+                pass
+            self._request_path = None
+
+    def _release(self):
+        if self._reservation is not None:
+            self.context.end_execution(self._reservation)
+            self._reservation = None
+
+    def shutdown(self, timeout_ms: int = 10000) -> bool:
+        """Cancel and wait for the sweep worker; never leave an orphan behind."""
+        process = self._process
+        if process is None:
+            self._discard_request()
+            self._release()
+            return True
+        self._cancel_requested = True
+        try:
+            process.write(b"cancel\n")
+        except Exception:
+            pass
+        if process.state() != QProcess.ProcessState.NotRunning:
+            if not process.waitForFinished(timeout_ms):
+                process.kill()
+                process.waitForFinished(3000)
+        if self._process is process:
+            self._on_finished(process.exitCode(), process.exitStatus())
+        return self._process is None
 
     def cancel(self):
         if not self.running or self._cancel_requested:
@@ -161,6 +206,9 @@ class FourStrokeCurveExecution(QObject):
                 self._last_error = str(event.get("message") or "Error del worker 4T.")
 
     def _on_finished(self, code, exit_status):
+        if self._terminal:
+            return
+        self._terminal = True
         self._read_stdout()
         self._read_stderr()
         state = (self._finished_data or {}).get("state")
@@ -186,24 +234,25 @@ class FourStrokeCurveExecution(QObject):
         }
         process = self._process
         self._process = None
-        if self._request_path is not None:
-            try:
-                self._request_path.unlink()
-            except OSError:
-                pass
-            self._request_path = None
+        self._discard_request()
+        self._release()
         if process is not None:
             process.deleteLater()
         self.finished.emit(result)
 
     def _on_error(self, error):
+        if self._terminal:
+            return
+        self._terminal = True
         message = self._process.errorString() if self._process is not None else str(error)
         self._last_error = message
-        self.failed.emit(message)
-        if self._process is not None:
-            process = self._process
-            self._process = None
+        process = self._process
+        self._process = None
+        self._discard_request()
+        self._release()
+        if process is not None:
             process.deleteLater()
+        self.failed.emit(message)
 
 
 class FourStrokeCurvePage(QWidget):

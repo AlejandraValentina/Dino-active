@@ -237,7 +237,9 @@ class _RunSignals(QObject):
 
 class _RunTask(QRunnable):
     def __init__(self,config,out_dir,max_cycles,wall_limit):
-        super().__init__();self.config=config;self.out_dir=out_dir;self.max_cycles=max_cycles;self.wall_limit=wall_limit;self.signals=_RunSignals();self.cancel_event=threading.Event()
+        super().__init__();self.setAutoDelete(False)
+        self.config=config;self.out_dir=out_dir;self.max_cycles=max_cycles;self.wall_limit=wall_limit
+        self.signals=_RunSignals();self.cancel_event=threading.Event();self.token=uuid.uuid4().hex
     def run(self):
         try:
             result=engine_platform.run_api("4T",self.config,out_dir=self.out_dir,max_cycles=self.max_cycles,
@@ -249,7 +251,7 @@ class _RunTask(QRunnable):
 class FourStrokeSimulation(QWidget):
     runFinished=Signal(dict)
     def __init__(self,context):
-        super().__init__();self.context=context;self.thread_pool=QThreadPool.globalInstance();self.task=None;self.run_dir=None
+        super().__init__();self.context=context;self.thread_pool=QThreadPool.globalInstance();self.task=None;self._task_token=None;self.run_dir=None
         root=QVBoxLayout(self);form=QFormLayout();root.addLayout(form)
         self.rpm=QDoubleSpinBox();self.rpm.setRange(1,30000);self.rpm.setDecimals(0);self.rpm.setSuffix(" rpm")
         self.rpm.setValue(float(context.engine()["operating_point"]["rpm"]))
@@ -270,12 +272,31 @@ class FourStrokeSimulation(QWidget):
         self.run_variant_id=self.context.selected_variant or "";self.run_project_id=self.context.project["project_id"]
         root=artifact_root()/"dino-4t-desktop-v1"/project_key/run_id
         out=root/"artifacts";out.mkdir(parents=True,exist_ok=False);self.run_dir=root
-        self.task=_RunTask(config,out,int(self.cycles.value()),float(self.wall.value()))
-        self.task.signals.progress.connect(self._progress);self.task.signals.finished.connect(self._finished);self.task.signals.failed.connect(self._failed)
+        task=_RunTask(config,out,int(self.cycles.value()),float(self.wall.value()))
+        self.task=task;self._task_token=task.token
+        token=task.token
+        task.signals.progress.connect(lambda record,token=token:self._progress(token,record))
+        task.signals.finished.connect(lambda envelope,token=token:self._finished(token,envelope))
+        task.signals.failed.connect(lambda message,token=token:self._failed(token,message))
         self.start.setEnabled(False);self.cancel.setEnabled(True);self.progress.setText(f"Ejecutando {run_id} · DINO4T_API_V1 · límite {self.wall.value()} s")
-        self.thread_pool.start(self.task)
+        try:
+            self.thread_pool.start(task)
+        except Exception as exc:
+            self.task=None;self._task_token=None;self.start.setEnabled(True);self.cancel.setEnabled(False)
+            self.progress.setText("No se pudo iniciar la corrida 4T: "+str(exc))
 
-    def _progress(self,record):
+    def shutdown(self,timeout_ms=10000):
+        """Cancel and wait for the pool task; True only when no task remains."""
+        if self.task is None:return True
+        self.cancel_run()
+        finished=self.thread_pool.waitForDone(timeout_ms)
+        if finished:
+            # Deliver any queued finished/failed callback before the window dies.
+            QApplication.processEvents()
+        return finished and self.task is None
+
+    def _progress(self,token,record):
+        if token != self._task_token:return
         suffix=" · se detendrá al completar este ciclo" if self.task is not None and self.task.cancel_event.is_set() else ""
         self.progress.setText(f"Ciclo {record.get('cycle')} · trabajo neto {format_number(record.get('work_net_J'))} J · p máx. {format_number(record.get('p_max_bar'))} bar{suffix}")
 
@@ -284,8 +305,9 @@ class FourStrokeSimulation(QWidget):
         self.task.cancel_event.set();self.cancel.setEnabled(False)
         self.progress.setText("Cancelación solicitada · se conservarán los ciclos completos al cerrar el actual; no hay checkpoint serializable.")
 
-    def _finished(self,envelope):
-        task=self.task;self.task=None;self.start.setEnabled(True);self.cancel.setEnabled(False)
+    def _finished(self,token,envelope):
+        if token != self._task_token:return
+        task=self.task;self.task=None;self._task_token=None;self.start.setEnabled(True);self.cancel.setEnabled(False)
         summary=envelope.get("summary")
         if summary is None:
             error=envelope.get("error") or {};record={"schema":"DINO4T_DESKTOP_API_ERROR_V1","run_id":self.run_dir.name,
@@ -297,11 +319,19 @@ class FourStrokeSimulation(QWidget):
             code=error.get("code","UNKNOWN");label=ERROR_LABELS.get(code,"Error de ejecución")
             self.progress.setText(f"{label} · {error.get('message','sin detalle')} · registro: {record['persisted_artifact']}")
             return
-        from .four_stroke_artifacts import publish_desktop_run
-        ref=publish_desktop_run(self.run_dir,envelope,self.run_project_id,self.run_variant_id)
-        result_hash=ref["result_sha256"]
-        self.context.add_run_reference(ref)
-        self.runFinished.emit(ref)
+        try:
+            from .four_stroke_artifacts import publish_desktop_run
+            ref=publish_desktop_run(self.run_dir,envelope,self.run_project_id,self.run_variant_id)
+            result_hash=ref["result_sha256"]
+            self.context.add_run_reference(ref)
+            self.runFinished.emit(ref)
+        except Exception as exc:
+            record={"schema":"DINO4T_DESKTOP_INTERNAL_ERROR_V1","run_id":self.run_dir.name,
+                    "message":f"{type(exc).__name__}: {exc}"}
+            (self.run_dir/"internal-error.json").write_text(
+                json.dumps(record,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+            self.progress.setText("No se pudo publicar el resultado 4T: "+str(exc))
+            return
         if summary.get("termination")=="cancelled_by_user":state="CANCELADA AL FIN DE CICLO · primario parcial conservado"
         else:state="PERIÓDICO · simulación no validada" if summary["periodicity"]["status"]=="PERIODIC_CONVERGED" else "NO PERIÓDICO · resultado incompleto para prestaciones"
         if envelope.get("error"):
@@ -313,8 +343,9 @@ class FourStrokeSimulation(QWidget):
         final=summary.get("final_cycle") or {}
         self.last_label.setText(f"RPM {format_number(summary['operating_point']['rpm'])} · Potencia freno {format_number(final.get('brake_power_kW'))} kW · Torque {format_number(final.get('brake_torque_Nm'))} N·m\nValidación experimental: {summary['claims'].get('experimental_validation')} · Capacidad predictiva: {summary['claims'].get('predictive_capability')} · SHA-256 {result_hash}")
 
-    def _failed(self,message):
-        self.task=None;self.start.setEnabled(True);self.cancel.setEnabled(False)
+    def _failed(self,token,message):
+        if token != self._task_token:return
+        self.task=None;self._task_token=None;self.start.setEnabled(True);self.cancel.setEnabled(False)
         if self.run_dir is not None:
             record={"schema":"DINO4T_DESKTOP_INTERNAL_ERROR_V1","run_id":self.run_dir.name,"message":message}
             (self.run_dir/"internal-error.json").write_text(json.dumps(record,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
@@ -717,7 +748,10 @@ class FourStrokeDesktopWindow(QMainWindow):
         return True
 
     def closeEvent(self,event):
-        if self._guard_active_run():event.ignore();return
+        if self.simulation.task is not None and not self.simulation.shutdown():
+            QMessageBox.information(self,"Ejecución 4T en curso",
+                "La corrida no terminó dentro del tiempo de cierre; se mantiene la ventana para no dejar un worker huérfano.")
+            event.ignore();return
         if self.context.dirty:
             result=QMessageBox.question(self,"Cambios sin guardar","¿Guardar el proyecto antes de cerrar?",QMessageBox.StandardButton.Save|QMessageBox.StandardButton.Discard|QMessageBox.StandardButton.Cancel,QMessageBox.StandardButton.Save)
             if result==QMessageBox.StandardButton.Cancel:event.ignore();return

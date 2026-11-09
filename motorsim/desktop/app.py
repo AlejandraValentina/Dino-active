@@ -627,9 +627,13 @@ class DinoDesktopWindow(QMainWindow):
         if not self._confirm_discard():event.ignore();return
         if hasattr(self,"four_stroke_context") and self.four_stroke_context.dirty and not self._confirm_discard_four_stroke():event.ignore();return
         if hasattr(self,"four_stroke_execution") and self.four_stroke_execution.running:
-            self.four_stroke_execution.cancel()
+            if not self.four_stroke_execution.shutdown():
+                self.statusBar().showMessage('El worker 4T no terminó; cierre cancelado para no dejar procesos huérfanos.')
+                event.ignore();return
         if hasattr(self,"four_stroke_curve") and self.four_stroke_curve.execution.running:
-            self.four_stroke_curve.execution.cancel()
+            if not self.four_stroke_curve.execution.shutdown():
+                self.statusBar().showMessage('La curva 4T no terminó; cierre cancelado para no dejar procesos huérfanos.')
+                event.ignore();return
         execution=self.pages[3]
         if getattr(execution,"task",None) is not None:
             # Closing the application is an explicit stop request; the engine

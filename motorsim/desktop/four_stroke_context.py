@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from dataclasses import fields, replace
 from pathlib import Path
+import uuid
 
 from PySide6.QtCore import QObject, Signal
 
@@ -16,6 +17,7 @@ class FourStrokeContext(QObject):
     changed = Signal()
     project_changed = Signal(object)
     saved = Signal(object)
+    execution_changed = Signal(bool)
 
     def __init__(self, project: FourStrokeProject | None = None,
                  path: str | Path | None = None):
@@ -24,6 +26,39 @@ class FourStrokeContext(QObject):
         self.project.validate()
         self.path = Path(path) if path is not None else None
         self.dirty = False
+        self._execution_kind = None
+        self._execution_token = None
+
+    @property
+    def execution_active(self) -> bool:
+        return self._execution_kind is not None
+
+    @property
+    def execution_kind(self):
+        return self._execution_kind
+
+    def begin_execution(self, kind: str) -> str:
+        """Reserve the single 4T worker slot; returns the token for release."""
+        if self._execution_kind is not None:
+            raise FourStrokeProjectError(
+                f"Ya hay una ejecución 4T activa ({self._execution_kind}).")
+        token = uuid.uuid4().hex
+        self._execution_kind = str(kind)
+        self._execution_token = token
+        self.execution_changed.emit(True)
+        return token
+
+    def end_execution(self, token) -> None:
+        if token is None or token != self._execution_token:
+            return
+        self._execution_kind = None
+        self._execution_token = None
+        self.execution_changed.emit(False)
+
+    def _require_idle(self) -> None:
+        if self._execution_kind is not None:
+            raise FourStrokeProjectError(
+                "No se puede modificar el proyecto 4T durante una ejecución.")
 
     @property
     def name(self) -> str:
@@ -44,6 +79,7 @@ class FourStrokeContext(QObject):
         self.project.validate_for_execution()
 
     def update(self, **changes) -> FourStrokeProject:
+        self._require_idle()
         allowed = {item.name for item in fields(FourStrokeProject)}
         unknown = set(changes) - allowed
         if unknown:
@@ -57,6 +93,7 @@ class FourStrokeContext(QObject):
 
     def replace_project(self, project: FourStrokeProject,
                         path: str | Path | None = None) -> None:
+        self._require_idle()
         project.validate()
         self.project = project
         self.path = Path(path) if path is not None else None
