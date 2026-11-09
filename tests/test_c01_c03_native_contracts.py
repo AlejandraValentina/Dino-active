@@ -182,8 +182,12 @@ def test_finished_signal_uses_persisted_reference_and_never_undefined_metadata(t
         ('summary','summary.json'),('config','config_resolved.json'),('trace','trace_last_cycle.csv')]}
     artifacts=publish_primary(run/'artifacts',summary,cfg,raw_primary=raw,origin={'kind':'SYNTHETIC_CONTRACT_FIXTURE'})
     widget=FourStrokeSimulation(DesktopContext(create_project('finish-contract',cfg)))
-    widget.task=SimpleNamespace(config=cfg);widget.run_dir=run;widget.run_project_id='finish-contract';widget.run_variant_id=''
+    token='finish-contract-token'
+    widget.task=SimpleNamespace(config=cfg);widget._task_token=token
+    widget.run_dir=run;widget.run_project_id='finish-contract';widget.run_variant_id=''
     events=[];widget.runFinished.connect(events.append)
-    widget._finished({'api':api.API_VERSION,'summary':summary,'artifacts':artifacts,'error':None})
-    assert events and events[0]['schema']=='DINO4T_RUN_REFERENCE_V2'
-    widget.close();app.processEvents()
+    try:
+        widget._finished(token,{'api':api.API_VERSION,'summary':summary,'artifacts':artifacts,'error':None})
+        assert events and events[0]['schema']=='DINO4T_RUN_REFERENCE_V2'
+    finally:
+        widget.close();app.processEvents()
