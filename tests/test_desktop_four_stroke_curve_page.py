@@ -63,6 +63,15 @@ class FourStrokeCurvePageTests(unittest.TestCase):
         self.assertEqual(self.page.step_edit.text(), "333")
         self.assertFalse(self.page.execution.running)
 
+    def test_partial_series_marks_nonconverged_points_and_never_plots_them(self):
+        loaded = loaded_series()
+        loaded["index"]["state"] = "stopped"
+        loaded["index"]["points"][0]["state"] = "not_converged"
+        self.page.show_series(loaded)
+        self.assertEqual(self.page.table.item(0, 1).text(), "not_converged")
+        self.assertEqual(len(self.page.plot.points), 1)
+        self.assertEqual(self.page.plot.points[0], (3000, 12.5))
+
     def test_clear_removes_series(self):
         self.page.show_series(loaded_series())
         self.page.clear()

@@ -8,7 +8,8 @@ import uuid
 from PySide6.QtCore import QObject, Signal
 
 from ..four_stroke_project import (FourStrokeProject, FourStrokeProjectError,
-                                   load_project, save_project, starter_project)
+                                   load_project, save_project, starter_project,
+                                   with_curve_reference)
 
 
 class FourStrokeContext(QObject):
@@ -100,6 +101,14 @@ class FourStrokeContext(QObject):
         self.dirty = False
         self.project_changed.emit(project)
         self.changed.emit()
+
+    def attach_curve_reference(self, reference: dict) -> FourStrokeProject:
+        self._require_idle()
+        candidate = with_curve_reference(self.project, reference)
+        self.project = candidate
+        self.dirty = True
+        self.changed.emit()
+        return candidate
 
     def new_project(self, *, name: str | None = None, rpm: int | None = 3000) -> None:
         self.replace_project(starter_project(name=name, rpm=rpm), None)

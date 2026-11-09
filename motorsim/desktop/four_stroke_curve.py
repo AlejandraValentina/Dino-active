@@ -1,9 +1,13 @@
 """Curva RPM 4T de referencia: barrido QProcess sobre el worker existente."""
 from __future__ import annotations
 
+from datetime import datetime, timezone
+import hashlib
 import json
 from pathlib import Path
+import shutil
 import tempfile
+import uuid
 
 from PySide6.QtCore import QObject, QProcess, QTimer, Signal
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel,
@@ -11,14 +15,17 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel,
                                QTableWidgetItem, QHeaderView, QProgressBar,
                                QGroupBox, QFormLayout)
 
-from ..four_stroke_project import FourStrokeProjectError
+from ..four_stroke_project import (CURVE_REFERENCE_SCHEMA, FOUR_MODEL_VERSION,
+                                   FourStrokeProjectError, assess_curve_reference,
+                                   project_identity, validate_curve_reference)
 from ..project import ProjectError
-from ..reference_results import ResultError, new_output_path, project_inputs
+from ..reference_results import ResultError, project_inputs
 from ..rpm_domain import validate_rpm
 from ..runtime import worker_command
 from ..sweep import load_sweep, plan_rpms
 from .four_stroke_results import FourStrokeCurve
 from .four_stroke_workspace import REFERENCE_BANNER
+from .preferences import default_artifact_root
 
 
 class FourStrokeCurveRunError(RuntimeError):
@@ -47,6 +54,8 @@ class FourStrokeCurveExecution(QObject):
         self._cancel_requested = False
         self._reservation = None
         self._terminal = False
+        self._project_identity = None
+        self._project_path = None
 
     @property
     def running(self) -> bool:
@@ -80,6 +89,8 @@ class FourStrokeCurveExecution(QObject):
                 raise ProjectError("Curva 4T: RPM ascendentes y paso exacto.")
             project = self.context.project
             project.validate_for_execution()
+            self._project_identity = project_identity(project)
+            self._project_path = self.context.path
             inputs = project_inputs(project.to_project(), self._origin(), rpm=rpms[0])
         except (FourStrokeProjectError, ResultError, ProjectError, ValueError) as exc:
             raise FourStrokeCurveRunError(str(exc)) from exc
@@ -95,8 +106,14 @@ class FourStrokeCurveExecution(QObject):
             Path(name).unlink(missing_ok=True)
             raise
         self._request_path = Path(name)
-        self._output = Path(output) if output is not None else new_output_path()
+        self._output = Path(output) if output is not None else self._default_output()
         return self._output, self._request_path, rpms
+
+    @staticmethod
+    def _default_output() -> Path:
+        root = default_artifact_root() / "dino-4t-reference-curves"
+        return root / (datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-")
+                       + uuid.uuid4().hex[:10])
 
     def start(self, rpms, output=None):
         if self.running:
@@ -205,6 +222,45 @@ class FourStrokeCurveExecution(QObject):
             elif kind == "error":
                 self._last_error = str(event.get("message") or "Error del worker 4T.")
 
+    def _series_reference(self, series_path, series):
+        base = self._project_path.parent if self._project_path is not None else None
+        if base is None:
+            return None, "Guardá el proyecto 4T antes de vincular la curva."
+        index = series["index"]
+        series_id = index["series_id"]
+        source = Path(series_path).parent
+        destination = base / "curves" / series_id
+        try:
+            source_series = source / "series.json"
+            destination_series = destination / "series.json"
+            if destination.exists():
+                if (not destination_series.is_file()
+                        or hashlib.sha256(destination_series.read_bytes()).hexdigest()
+                        != hashlib.sha256(source_series.read_bytes()).hexdigest()):
+                    return None, "Ya existe una copia distinta de esta serie."
+            else:
+                total = sum(item.stat().st_size for item in source.rglob("*")
+                            if item.is_file())
+                if total > 128 * 1024 * 1024:
+                    return None, "La serie 4T excede 128 MiB para vincularla al proyecto."
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copytree(source, destination)
+            reference = {
+                "schema": CURVE_REFERENCE_SCHEMA,
+                "series_path": destination_series.relative_to(base).as_posix(),
+                "series_sha256": hashlib.sha256(destination_series.read_bytes()).hexdigest(),
+                "series_id": series_id,
+                "project_sha256": self._project_identity,
+                "status": index["state"],
+                "model_version": FOUR_MODEL_VERSION,
+                "created_at": datetime.now(timezone.utc).isoformat(),
+                "rpms": list(index["rpms"]),
+            }
+            validate_curve_reference(reference)
+            return reference, None
+        except (OSError, ValueError, KeyError, TypeError, FourStrokeProjectError) as exc:
+            return None, f"{type(exc).__name__}: {exc}"
+
     def _on_finished(self, code, exit_status):
         if self._terminal:
             return
@@ -222,6 +278,24 @@ class FourStrokeCurveExecution(QObject):
                 series = load_sweep(self._series_path)
             except ResultError as exc:
                 error = str(exc)
+        reference = None
+        assessment = None
+        attach_error = None
+        stale = False
+        if series is not None:
+            try:
+                current_identity = project_identity(self.context.project)
+            except FourStrokeProjectError as exc:
+                current_identity = None
+                attach_error = str(exc)
+            if (self._project_path != self.context.path
+                    or current_identity != self._project_identity):
+                stale = True
+                attach_error = ("La configuración cambió durante la curva; "
+                                "la serie no se vinculó al proyecto.")
+            else:
+                reference, attach_error = self._series_reference(
+                    self._series_path, series)
         result = {
             "code": code,
             "exit_status": int(getattr(exit_status, "value", exit_status)),
@@ -231,11 +305,25 @@ class FourStrokeCurveExecution(QObject):
             "output": self._output,
             "cancelled": self._cancel_requested,
             "error": error,
+            "reference": reference,
+            "assessment": assessment,
+            "attach_error": attach_error,
+            "stale": stale,
         }
         process = self._process
         self._process = None
         self._discard_request()
         self._release()
+        if reference is not None:
+            try:
+                self.context.attach_curve_reference(reference)
+                base = self.context.path.parent if self.context.path is not None else None
+                assessment = assess_curve_reference(self.context.project, reference,
+                                                    base_dir=base)
+                result["assessment"] = assessment
+            except Exception as exc:
+                result["attach_error"] = f"{type(exc).__name__}: {exc}"
+                result["reference"] = None
         if process is not None:
             process.deleteLater()
         self.finished.emit(result)
@@ -310,6 +398,9 @@ class FourStrokeCurvePage(QWidget):
         self.execution.progress.connect(self._progress)
         self.execution.finished.connect(self._finished)
         self.execution.failed.connect(self._failed)
+        self.context.changed.connect(self.refresh_references)
+        self.context.project_changed.connect(lambda *_: self.refresh_references())
+        self.refresh_references()
 
     def _rpms(self):
         def integer(edit, label):
@@ -322,6 +413,9 @@ class FourStrokeCurvePage(QWidget):
                          integer(self.step_edit, "Paso"), "4T")
 
     def start_curve(self):
+        if self.context.execution_active:
+            self.status.setText("Hay una ejecución 4T activa; espere a que termine antes de calcular la curva.")
+            return
         if self.workspace is not None and not self.workspace.apply_all():
             self.status.setText("Corregí Geometría, Válvulas o Conductos antes de calcular.")
             return
@@ -335,6 +429,8 @@ class FourStrokeCurvePage(QWidget):
         self.run_button.setEnabled(False)
         self.cancel_button.setEnabled(True)
         self.progress.setVisible(True)
+        self.table.setRowCount(0)
+        self.plot.set_points([])
         self.status.setText(f"Ejecutando curva 4T · {target}")
 
     def _progress(self, event):
@@ -356,16 +452,58 @@ class FourStrokeCurvePage(QWidget):
         if result.get("error"):
             self.status.setText(f"La curva 4T falló: {result['error']}")
             return
-        if result.get("cancelled"):
-            self.status.setText("Curva 4T cancelada; se conservan los puntos completos.")
         series = result.get("series")
         if series is None:
-            if not result.get("cancelled"):
+            if result.get("cancelled"):
+                self.status.setText("Curva 4T cancelada; no se produjo una serie legible.")
+            else:
                 self.status.setText("La curva 4T terminó sin series legibles.")
             return
+        if result.get("stale"):
+            self.show_series(series, plot=False)
+            self.status.setText("Curva 4T obsoleta: la configuración cambió durante la "
+                                "corrida; la serie no se vinculó al proyecto.")
+            return
         self.show_series(series)
-        self.status.setText(f"Curva 4T · {series['index']['state']} · "
-                            f"{len(series['results'])} puntos")
+        cancelled = " · cancelada" if result.get("cancelled") else ""
+        index = series["index"]
+        if result.get("reference") is not None:
+            assessment = result.get("assessment") or {}
+            kind = "completa" if assessment.get("state") == "FRESH_COMPLETE" else "parcial"
+            self.status.setText(f"Curva 4T {kind} · {index['state']} · "
+                                f"{len(series['results'])} puntos · vinculada al proyecto{cancelled}")
+        else:
+            reason = result.get("attach_error") or "no vinculada al proyecto"
+            self.status.setText(f"Curva 4T · {index['state']} · "
+                                f"{len(series['results'])} puntos · {reason}{cancelled}")
+
+    def refresh_references(self):
+        """Restore the latest fresh reference; never present a stale one as current."""
+        if self.execution.running:
+            return
+        references = self.context.project.curve_references
+        if not references:
+            return
+        reference = references[-1]
+        base = self.context.path.parent if self.context.path is not None else None
+        assessment = assess_curve_reference(self.context.project, reference, base_dir=base)
+        if assessment["state"] in ("FRESH_COMPLETE", "FRESH_PARTIAL") and assessment.get("series"):
+            self.show_series(assessment["series"])
+            kind = "completa" if assessment["state"] == "FRESH_COMPLETE" else "parcial"
+            self.status.setText(f"Curva 4T {kind} restaurada · {reference['status']} · "
+                                f"{len(assessment['series']['results'])} puntos")
+            return
+        messages = {
+            "STALE_PROJECT": "obsoleta: el proyecto cambió desde que se calculó",
+            "STALE_IN_PROGRESS": "obsoleta: la serie quedó en ejecución",
+            "UNAVAILABLE": "no disponible: falta series.json",
+            "CORRUPT": "corrupta o ajena al proyecto",
+            "UNBOUND_PROJECT": "guardá el proyecto para resolver la serie",
+        }
+        self.table.setRowCount(0)
+        self.plot.set_points([])
+        self.status.setText("Curva 4T no vigente · "
+                            + messages.get(assessment["state"], assessment["state"]))
 
     def _failed(self, message):
         self.run_button.setEnabled(True)
@@ -373,7 +511,7 @@ class FourStrokeCurvePage(QWidget):
         self.progress.setVisible(False)
         self.status.setText(f"La curva 4T falló: {message}")
 
-    def show_series(self, loaded):
+    def show_series(self, loaded, *, plot=True):
         index = loaded["index"]
         results = loaded["results"]
         self.table.setRowCount(len(index["rpms"]))
@@ -393,9 +531,9 @@ class FourStrokeCurvePage(QWidget):
             self.table.setItem(row, 4, QTableWidgetItem(
                 "-" if not timing else f"{timing.get('integration_seconds', 0):.6g}"))
             self.table.setItem(row, 5, QTableWidgetItem(str(record.get("result") or "-")))
-            if w_c is not None:
+            if w_c is not None and record.get("state") == "converged":
                 points.append((rpm, w_c))
-        self.plot.set_points(points)
+        self.plot.set_points(points if plot else [])
 
     def clear(self):
         self.table.setRowCount(0)
