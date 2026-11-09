@@ -43,7 +43,8 @@ puntos convergidos se grafican. El proyecto nativo
 Secuencia verificada: `main 5e4ba4d` → A/B `8b371e2` → auditoría `353e3f0` →
 P1 `05b7a82` → C01/C03 `2fc8d70` → C02/C04 `fa81e9c` → C05 prep
 (`668b20b`, `fd43f73`, `d1fbce7`, `f93714b`, `edba678`, `fb48277`,
-`0b9e137`, `8be8196`, `ffc89b3`, `b92b744`, `0ca4221`, `5012405`). La
+`0b9e137`, `8be8196`, `ffc89b3`, `b92b744`, `0ca4221`, `5012405`,
+`bd33c78`). La
 integración es fast-forward y conserva todas las historias. No se ejecuta
 merge, push ni build en esta etapa. La aceptación Windows empaquetada requiere
 una autorización y un candidato nuevos; el paquete A/B previo no se

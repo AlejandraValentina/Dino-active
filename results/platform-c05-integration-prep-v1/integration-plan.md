@@ -30,8 +30,8 @@ conflictos.
 | 7 | `668b20b`, `fd43f73`, `d1fbce7` | base previa de la rama C05: 4T 0D, curva RPM y documentación |
 | 8 | `f93714b`, `edba678`, `fb48277`, `0b9e137`, `8be8196`, `ffc89b3`, `b92b744` | C05 prep: F03/F15/F16/A2-03 en fuente y correcciones de la revisión independiente |
 
-HEAD de la rama de preparación: `5012405` (registro C05 en `0ca4221` y logs en
-`5012405`, sobre `b92b744`). La ascendencia se verifica con
+HEAD de la rama de preparación: `bd33c78` (registro C05 en `0ca4221`, logs
+`5012405` y alineación del objetivo `bd33c78`, sobre `b92b744`). La ascendencia se verifica con
 `git merge-base --is-ancestor main HEAD`; no hay commits de merge.
 
 ## 2. Incompatibilidades residuales
