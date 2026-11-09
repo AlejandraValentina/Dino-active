@@ -13394,7 +13394,7 @@
   ],
   "current_objective": {
     "id": "DINO_PLATFORM_C05_INTEGRATION_PREP_V1",
-    "state": "IN_PROGRESS",
+    "state": "PASS",
     "owner_approved": true,
     "summary": "Close F03/F15/F16/A2-03 at source and prepare a verifiable controlled C05 integration; no merge/build/campaign.",
     "change": "openspec/changes/platform-c05-integration-prep-v1",
@@ -13409,7 +13409,14 @@
       "C05-REGRESSION",
       "C05-INDEPENDENT-REVIEW"
     ],
-    "completion_criterion": "F03/F15/F16/A2-03 closed with source tests, focused and protected regression evidence, independent read-only review, and a documented fast-forward integration plan. Source prep PASS is not Windows packaged acceptance and is not a scientific claim."
+    "completion_criterion": "F03/F15/F16/A2-03 closed with source tests, focused and protected regression evidence, independent read-only review, and a documented fast-forward integration plan. Source prep PASS is not Windows packaged acceptance and is not a scientific claim.",
+    "classification": "C05_SOURCE_PREP_COMPLETE_WINDOWS_ACCEPTANCE_PENDING",
+    "closure_evidence": [
+      "results/platform-c05-integration-prep-v1/integration-plan.md",
+      "results/platform-c05-integration-prep-v1/verification/c05-focused-final2.summary.json",
+      "results/platform-c05-integration-prep-v1/verification/c05-protected-final.summary.json",
+      "results/platform-c05-integration-prep-v1/reviews/independent-c05-review.md"
+    ]
   },
   "objectives": [
     {
