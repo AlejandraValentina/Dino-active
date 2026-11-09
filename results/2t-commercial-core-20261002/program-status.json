@@ -13031,6 +13031,167 @@
       "owner_role": "orchestrator",
       "write_scope": [],
       "evidence_level": "L0"
+    },
+    {
+      "id": "C05-F03",
+      "objective": "DINO_PLATFORM_C05_INTEGRATION_PREP_V1",
+      "description": "Validate 4T continuation phase/model/configuration and distinguish continuation, warm start and exact restart.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [
+        "edba678"
+      ],
+      "evidence": [
+        "tests/test_platform_c05_resume.py"
+      ],
+      "next_action": "Closed at source; exact restart remains NOT_SUPPORTED.",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "C05-F15",
+      "objective": "DINO_PLATFORM_C05_INTEGRATION_PREP_V1",
+      "description": "Harden QRunnable/QProcess lifecycle, single-worker reservation, cancellation and close during execution.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [
+        "fb48277"
+      ],
+      "evidence": [
+        "tests/test_platform_c05_qt_lifecycle.py"
+      ],
+      "next_action": "Closed at source with fake process/thread fixtures.",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "C05-F16",
+      "objective": "DINO_PLATFORM_C05_INTEGRATION_PREP_V1",
+      "description": "Publish terminal acceptance PASS only after wait, exit code 0 and process/thread verification.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [
+        "0b9e137"
+      ],
+      "evidence": [
+        "tests/test_platform_c05_terminal_acceptance.py"
+      ],
+      "next_action": "Closed at source; packaged Windows acceptance remains pending.",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "C05-A2-03",
+      "objective": "DINO_PLATFORM_C05_INTEGRATION_PREP_V1",
+      "description": "Bind 4T 0D project, configuration, RPM curve and results; persist, reopen and classify stale/partial series.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [
+        "f93714b",
+        "8be8196"
+      ],
+      "evidence": [
+        "tests/test_four_stroke_curve_reference.py",
+        "tests/test_desktop_four_stroke_curve_binding.py",
+        "tests/test_desktop_four_stroke_curve_page.py"
+      ],
+      "next_action": "Closed at source; native 4T project remains separate.",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "C05-INTEGRATION-PLAN",
+      "objective": "DINO_PLATFORM_C05_INTEGRATION_PREP_V1",
+      "description": "Document the fast-forward integration sequence, residual incompatibilities and verifiable acceptance criteria.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/platform-c05-integration-prep-v1/integration-plan.md",
+        "results/platform-c05-integration-prep-v1/scope.json"
+      ],
+      "next_action": "Plan ready; no merge executed.",
+      "owner_role": "implementation",
+      "write_scope": [
+        "results/platform-c05-integration-prep-v1/",
+        "openspec/changes/platform-c05-integration-prep-v1/"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "C05-REGRESSION",
+      "objective": "DINO_PLATFORM_C05_INTEGRATION_PREP_V1",
+      "description": "Run focused C01-C05, API/A-B/Desktop, Stage2, packaging and protected regression evidence.",
+      "dependencies": [
+        "C05-F03",
+        "C05-F15",
+        "C05-F16",
+        "C05-A2-03",
+        "C05-INTEGRATION-PLAN"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [
+        "ffc89b3"
+      ],
+      "evidence": [
+        "results/platform-c05-integration-prep-v1/verification/c05-focused-final2.summary.json",
+        "results/platform-c05-integration-prep-v1/verification/c05-protected-final.summary.json"
+      ],
+      "next_action": "Closed: 249 PASS + 1 SKIP focused; 301 PASS + 3 SKIP protected; exit 0.",
+      "owner_role": "implementation",
+      "write_scope": [
+        "results/platform-c05-integration-prep-v1/verification/"
+      ],
+      "evidence_level": "L1"
+    },
+    {
+      "id": "C05-INDEPENDENT-REVIEW",
+      "objective": "DINO_PLATFORM_C05_INTEGRATION_PREP_V1",
+      "description": "Independent read-only review of changed scopes, evidence and residual risks.",
+      "dependencies": [
+        "C05-REGRESSION"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/platform-c05-integration-prep-v1/reviews/independent-c05-review.md"
+      ],
+      "next_action": "Independent review APPROVE after b92b744; residual risks recorded.",
+      "owner_role": "skeptic",
+      "write_scope": [
+        "results/platform-c05-integration-prep-v1/reviews/"
+      ],
+      "evidence_level": "L3"
+    },
+    {
+      "id": "C05-WINDOWS-ACCEPTANCE",
+      "objective": "DINO_PLATFORM_C05_INTEGRATION_PREP_V1",
+      "description": "Packaged Windows acceptance of the post-C05 source: build, UIA, cancellation, exports and resource closure.",
+      "dependencies": [
+        "C05-REGRESSION"
+      ],
+      "state": "BLOCKED_LOCAL",
+      "blocker": "No owner-authorized Windows build/candidate exists for the post-C05 source; the prior A/B package predates these changes.",
+      "commits": [],
+      "evidence": [],
+      "next_action": "Requires a separately authorized build and candidate.",
+      "owner_role": "implementation",
+      "write_scope": [
+        "results/platform-c05-integration-prep-v1/windows/"
+      ],
+      "evidence_level": "L3",
+      "no_local_unblock_reason": "The blocker is owner build authorization, not a locally resolvable engineering task; no build is authorized in C05 prep."
     }
   ],
   "audit_remediation_mode": false,
@@ -13232,24 +13393,23 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
-    "state": "PASS",
+    "id": "DINO_PLATFORM_C05_INTEGRATION_PREP_V1",
+    "state": "IN_PROGRESS",
     "owner_approved": true,
-    "summary": "Audit main and the separate 4T A/B branch before a traceable 2T+4T scientific replan; audit and documentation only, no product/physical changes.",
-    "change": "openspec/changes/platform-integration-audit-v1",
-    "spec": "openspec/changes/platform-integration-audit-v1/specs/platform-integration-audit-v1/spec.md",
-    "transitioned_from": "DINO4T_AB_ENGINEERING_V1",
+    "summary": "Close F03/F15/F16/A2-03 at source and prepare a verifiable controlled C05 integration; no merge/build/campaign.",
+    "change": "openspec/changes/platform-c05-integration-prep-v1",
+    "spec": "openspec/changes/platform-c05-integration-prep-v1/specs/platform-c05-integration-prep-v1/spec.md",
+    "transitioned_from": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
     "gate_tasks": [
-      "PA-GIT-AUTHORITY",
-      "PA-ARCHITECTURE",
-      "PA-SCIENCE",
-      "PA-CONTRACTS",
-      "PA-EVIDENCE",
-      "PA-AUDIT-FREEZE",
-      "PA-REPLAN",
-      "PA-FINAL-REVIEW"
+      "C05-F03",
+      "C05-F15",
+      "C05-F16",
+      "C05-A2-03",
+      "C05-INTEGRATION-PLAN",
+      "C05-REGRESSION",
+      "C05-INDEPENDENT-REVIEW"
     ],
-    "completion_criterion": "Revision-bound independent reviews, reproducible falsification/regression evidence and frozen audit precede the unified plan; old evidence and 2T/4T scientific obligations are preserved. Audit-deliverable PASS is not simulator scientific acceptance."
+    "completion_criterion": "F03/F15/F16/A2-03 closed with source tests, focused and protected regression evidence, independent read-only review, and a documented fast-forward integration plan. Source prep PASS is not Windows packaged acceptance and is not a scientific claim."
   },
   "objectives": [
     {
@@ -14372,6 +14532,32 @@
       "plan": "results/platform-scientific-reliability-v1/plan.json",
       "audit_freeze_commit": "1db6408dd03e7302cc84332cd329c6b8ca0b21a8",
       "qualification": "Owner requested audit and replanning, explicitly no functional or physical changes during this evaluation. Implementation/campaign scope needs recorded activation."
+    },
+    {
+      "id": "DINO_PLATFORM_C05_INTEGRATION_PREP_V1",
+      "state": "PASS",
+      "owner_approved": true,
+      "summary": "Close F03/F15/F16/A2-03 at source and prepare a verifiable controlled C05 integration; no merge/build/campaign.",
+      "change": "openspec/changes/platform-c05-integration-prep-v1",
+      "spec": "openspec/changes/platform-c05-integration-prep-v1/specs/platform-c05-integration-prep-v1/spec.md",
+      "transitioned_from": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
+      "gate_tasks": [
+        "C05-F03",
+        "C05-F15",
+        "C05-F16",
+        "C05-A2-03",
+        "C05-INTEGRATION-PLAN",
+        "C05-REGRESSION",
+        "C05-INDEPENDENT-REVIEW"
+      ],
+      "completion_criterion": "F03/F15/F16/A2-03 closed with source tests, focused and protected regression evidence, independent read-only review, and a documented fast-forward integration plan. Source prep PASS is not Windows packaged acceptance and is not a scientific claim.",
+      "classification": "C05_SOURCE_PREP_COMPLETE_WINDOWS_ACCEPTANCE_PENDING",
+      "closure_evidence": [
+        "results/platform-c05-integration-prep-v1/integration-plan.md",
+        "results/platform-c05-integration-prep-v1/verification/c05-focused-final2.summary.json",
+        "results/platform-c05-integration-prep-v1/verification/c05-protected-final.summary.json",
+        "results/platform-c05-integration-prep-v1/reviews/independent-c05-review.md"
+      ]
     }
   ],
   "owner_decisions_pending": [
@@ -18508,6 +18694,42 @@
       "task": "PA-FINAL-REVIEW",
       "kind": "PLANNING_DELIVERY",
       "summary": "Unified 2T+4T plan follows audit freeze 1db6408. Nineteen unactivated stages cover nineteen findings. Initial independent REVISE was addressed; final science/integration planning reviews PASS. Product defects and scientific obligations remain open."
+    },
+    {
+      "at": "2026-11-09T16:21:35+00:00",
+      "task": "C05-F03",
+      "kind": "task",
+      "summary": "F03 closed: phase/topology/config context; continuation vs warm_start; exact restart NOT_SUPPORTED; 5 resume tests pass."
+    },
+    {
+      "at": "2026-11-09T16:21:36+00:00",
+      "task": "C05-F15",
+      "kind": "task",
+      "summary": "F15 closed: QRunnable token/no-auto-delete, single-worker reservation, QProcess shutdown; 6 lifecycle tests pass."
+    },
+    {
+      "at": "2026-11-09T16:21:36+00:00",
+      "task": "C05-F16",
+      "kind": "task",
+      "summary": "F16 closed: terminal receipt helper PASS only after wait/exit code/resources; error/timeout/incomplete retained; 6 tests pass."
+    },
+    {
+      "at": "2026-11-09T16:21:36+00:00",
+      "task": "C05-A2-03",
+      "kind": "task",
+      "summary": "A2-03 closed: curve references by project identity, project-local persistence, reopen, partial/stale/corrupt states; native 4T separate."
+    },
+    {
+      "at": "2026-11-09T16:21:36+00:00",
+      "task": "C05-REGRESSION",
+      "kind": "task",
+      "summary": "Focused 242 PASS 1 SKIP; protected 301 PASS 3 SKIP; exit 0; evidence under results/platform-c05-integration-prep-v1/verification."
+    },
+    {
+      "at": "2026-11-09T18:58:43+00:00",
+      "task": "C05-INDEPENDENT-REVIEW",
+      "kind": "task",
+      "summary": "Independent read-only review APPROVE after b92b744; F03 warm_start/studies, F16 probe and save-path findings resolved; Windows acceptance pending."
     }
   ],
   "legacy_gate_status": {
@@ -18522,19 +18744,19 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
+    "objective": "DINO_PLATFORM_C05_INTEGRATION_PREP_V1",
     "state": "PASS",
-    "classification": "AUDIT_PLAN_DELIVERED_PRODUCT_P1_OPEN",
+    "classification": "C05_SOURCE_PREP_COMPLETE_WINDOWS_ACCEPTANCE_PENDING",
     "evidence": [
-      "results/platform-scientific-reliability-v1/delivery-receipt.json"
+      "results/platform-c05-integration-prep-v1/integration-plan.md"
     ],
-    "gate_tasks_total": 8,
-    "gate_tasks_done": 8,
+    "gate_tasks_total": 7,
+    "gate_tasks_done": 7,
     "gate_task_states": {
-      "DONE": 8
+      "DONE": 7
     },
     "remaining": [],
-    "updated_at": "2026-11-05T17:05:45+00:00"
+    "updated_at": "2026-11-09T18:58:44+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -18610,7 +18832,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-11-04T21:25:54+00:00",
+  "updated_at": "2026-11-09T00:00:00+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -19256,7 +19478,7 @@
       "PRED2",
       "PRED4"
     ],
-    "activation": "NOT_ACTIVATED",
-    "plan_status": "DELIVERED_REVIEWED_EXECUTION_UNACTIVATED"
+    "activation": "C05_SOURCE_PREP_COMPLETE",
+    "plan_status": "C05_SOURCE_PREP_COMPLETE_WINDOWS_ACCEPTANCE_PENDING"
   }
 }

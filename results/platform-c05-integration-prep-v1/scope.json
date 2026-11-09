@@ -1,0 +1,26 @@
+{
+  "schema": "DINO_PLATFORM_C05_INTEGRATION_PREP_SCOPE_V1",
+  "objective": "DINO_PLATFORM_C05_INTEGRATION_PREP_V1",
+  "base_branch": "fix/dino-platform-c05-prep-v1",
+  "integration_target": "main",
+  "integration_kind": "FAST_FORWARD_ONLY",
+  "main_revision": "5e4ba4d27a8156d2cf3b07d633ae92c6dea213c5",
+  "ab_revision": "8b371e247498f94255e88ab8d35dbae7b7c2ba6b",
+  "audit_revision": "353e3f04ca17c59c660ca5b5269a5b9a1755d0b1",
+  "scope": ["F03", "F15", "F16", "A2-03", "C05_INTEGRATION_PLAN"],
+  "excluded": [
+    "merge to main",
+    "push",
+    "distribution build",
+    "scientific campaign",
+    "P0-P9 or physical changes",
+    "historical evidence reinterpretation"
+  ],
+  "windows_acceptance": "PENDING_AUTHORIZED_BUILD",
+  "source_acceptance": "C05_PREP_ONLY",
+  "scientific_claims": {
+    "calibration": "NOT_PERFORMED",
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_capability": "NOT_CLAIMED"
+  }
+}

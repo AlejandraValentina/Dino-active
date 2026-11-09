@@ -22,13 +22,14 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1
-change/spec:       openspec/changes/platform-integration-audit-v1/
-                   specs/platform-integration-audit-v1/spec.md
+CURRENT_OBJECTIVE: DINO_PLATFORM_C05_INTEGRATION_PREP_V1
+change/spec:       openspec/changes/platform-c05-integration-prep-v1/
+                   specs/platform-c05-integration-prep-v1/spec.md
 roadmap:          docs/roadmaps/dino-platform-scientific-reliability-v1-20261105.md
-completion:        Independent revision-bound audit of main and A/B branch,
-                   then traceable unified 2T+4T scientific replanning. No product
-                   or physical changes. Audit completion is not validation.
+completion:        Close F03/F15/F16/A2-03 at source with tests, regression and
+                   independent review, and document a reproducible fast-forward
+                   C05 integration plan. Source prep PASS is not packaged
+                   Windows acceptance and is not a scientific claim.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    -> current_objective, queue, gate_status, progress_log
 ```
