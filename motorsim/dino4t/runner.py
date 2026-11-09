@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
 import math
 import platform
@@ -82,19 +83,73 @@ def _jsonable(value):
 
 
 STATE_CONTEXT_SCHEMA = "DINO4T_STATE_CONTEXT_V1"
+STATE_CONTEXT_FIELDS = {"schema", "state", "theta_deg", "phase_deg", "cycles_completed",
+                        "model_id", "complete_cycle", "config_sha256", "topology_sha256",
+                        "source_status", "source_termination"}
+
+
+def _finite_number(value):
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+
+
+def _array_signature(value):
+    shape = getattr(value, "shape", None)
+    if shape is None:
+        return None
+    return {"shape": [int(item) for item in shape],
+            "dtype": str(getattr(value, "dtype", "unknown"))}
+
+
+def state_topology(state):
+    """Topology only: keys, array shapes and dtypes, never physical values."""
+    return {"ducts": {key: _array_signature(value)
+                      for key, value in (state.get("ducts") or {}).items()},
+            "cyl": _array_signature(state.get("cyl")),
+            "plen": {key: _array_signature(value)
+                     for key, value in (state.get("plen") or {}).items()}}
+
+
+def topology_sha256(state):
+    payload = json.dumps(state_topology(state), sort_keys=True, separators=(",", ":"),
+                         ensure_ascii=True, allow_nan=False)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def _phase_deg(theta, theta_start):
+    return float((float(theta) - float(theta_start)) % 720.0)
+
+
+def _at_cycle_boundary(phase):
+    return math.isclose(float(phase) % 720.0, 0.0, abs_tol=1e-9)
 
 
 def _state_context(result, engine, config_sha256):
     theta = float(result["theta"])
-    boundary = math.isclose((theta - engine.theta_start) % 720.0, 0.0, abs_tol=1e-9)
-    return {"schema": STATE_CONTEXT_SCHEMA, "state": result["state"],
-            "theta_deg": theta, "model_id": MODEL_ID,
-            "complete_cycle": result["status"] == "completed" and boundary,
-            "config_sha256": config_sha256}
+    phase = _phase_deg(theta, engine.theta_start)
+    return {
+        "schema": STATE_CONTEXT_SCHEMA,
+        "state": result["state"],
+        "theta_deg": theta,
+        "phase_deg": phase,
+        "cycles_completed": len(result["cycles"]),
+        "model_id": MODEL_ID,
+        "complete_cycle": (result["status"] == "completed"
+                           and bool(result["cycles"])
+                           and _at_cycle_boundary(phase)),
+        "config_sha256": config_sha256,
+        "topology_sha256": topology_sha256(result["state"]),
+        "source_status": result["status"],
+        "source_termination": result["reason"],
+    }
 
 
-def validate_initial_state(initial_state):
-    """Accept only an explicit, completed-cycle state context; never a raw mid-cycle dict."""
+def validate_initial_state(initial_state, *, engine=None, expected_state=None):
+    """Accept only an explicit, completed-cycle state context; never a raw mid-cycle dict.
+
+    A context carries the phase, model, configuration and topology identity needed to
+    distinguish a same-configuration continuation from a different-configuration warm
+    start.  Exact mid-cycle restart is not representable here.
+    """
     if not isinstance(initial_state, dict) or initial_state.get("schema") != STATE_CONTEXT_SCHEMA:
         raise ValueError("initial_state must be a DINO4T_STATE_CONTEXT_V1 from a completed cycle")
     if initial_state.get("complete_cycle") is not True:
@@ -104,7 +159,45 @@ def validate_initial_state(initial_state):
     raw = initial_state.get("state")
     if not isinstance(raw, dict) or not {"ducts", "cyl", "plen"} <= set(raw):
         raise ValueError("initial_state state payload is incomplete")
+    theta = initial_state.get("theta_deg")
+    phase = initial_state.get("phase_deg")
+    if not _finite_number(theta) or not _finite_number(phase):
+        raise ValueError("initial_state phase context is missing or invalid")
+    if not _at_cycle_boundary(phase):
+        raise ValueError("initial_state is not at a complete-cycle boundary")
+    if engine is not None:
+        actual = _phase_deg(theta, engine.theta_start)
+        if not _at_cycle_boundary(actual):
+            raise ValueError("initial_state phase is incompatible with the configured cycle start")
+        recorded = initial_state.get("topology_sha256")
+        if not isinstance(recorded, str) or len(recorded) != 64:
+            raise ValueError("initial_state topology identity is missing or invalid")
+        if expected_state is not None and recorded != topology_sha256(expected_state):
+            raise ValueError("initial_state topology does not match the configured mesh")
     return raw
+
+
+def initial_state_assessment(config: dict, initial_state):
+    """Classify an initial state before any solver work.
+
+    ``continuation`` = same exact configuration at a cycle boundary;
+    ``warm_start`` = different configuration with an identical state topology.
+    There is no exact-restart capability and none is claimed here.
+    """
+    from .config import build
+    engine, state, context = build(config)
+    try:
+        raw = validate_initial_state(initial_state, engine=engine, expected_state=state)
+    except ValueError as exc:
+        return {"valid": False, "kind": None, "error": str(exc), "state": None}
+    same_config = initial_state.get("config_sha256") == context["config_hash"]
+    return {"valid": True, "kind": "continuation" if same_config else "warm_start",
+            "error": None, "state": raw, "context": context,
+            "same_config": same_config,
+            "source_config_sha256": initial_state.get("config_sha256"),
+            "theta_deg": initial_state.get("theta_deg"),
+            "phase_deg": initial_state.get("phase_deg"),
+            "cycles_completed": initial_state.get("cycles_completed")}
 
 
 def run_operating_point(config: dict, *, out_dir=None, overrides=None, max_cycles=None,
@@ -116,19 +209,25 @@ def run_operating_point(config: dict, *, out_dir=None, overrides=None, max_cycle
     source_identity = _source_identity()
     engine, state, context = build(config, overrides=overrides)
     warm_start = "none"
+    initial_state_context = None
     if initial_state is not None:
-        raw_state = validate_initial_state(initial_state)
-        compatible = (set(raw_state["ducts"]) == set(state["ducts"])
-                      and all(raw_state["ducts"][k].shape == state["ducts"][k].shape for k in state["ducts"])
-                      and raw_state["cyl"].shape == state["cyl"].shape
-                      and set(raw_state["plen"]) == set(state["plen"]))
-        if compatible:
-            warm_start = "used"
-            state = {"ducts": {k: v.copy() for k, v in raw_state["ducts"].items()},
-                     "cyl": raw_state["cyl"].copy(),
-                     "plen": {k: v.copy() for k, v in raw_state["plen"].items()}}
-        else:  # e.g. a duct length change altered the number of cells: cold start, recorded in the summary
-            warm_start = "discarded_incompatible_mesh"
+        raw_state = validate_initial_state(initial_state, engine=engine, expected_state=state)
+        same_config = initial_state.get("config_sha256") == context["config_hash"]
+        kind = "continuation" if same_config else "warm_start"
+        warm_start = "continuation" if same_config else "warm_start_different_config"
+        state = {"ducts": {k: v.copy() for k, v in raw_state["ducts"].items()},
+                 "cyl": raw_state["cyl"].copy(),
+                 "plen": {k: v.copy() for k, v in raw_state["plen"].items()}}
+        initial_state_context = {
+            "schema": "DINO4T_INITIAL_STATE_V1",
+            "kind": kind,
+            "exact_restart_claim": "NOT_SUPPORTED",
+            "source_config_sha256": initial_state.get("config_sha256"),
+            "theta_deg": initial_state.get("theta_deg"),
+            "phase_deg": initial_state.get("phase_deg"),
+            "cycles_completed": initial_state.get("cycles_completed"),
+            "topology_match": True,
+        }
     num = context["config"].get("numerics", {})
     monitor = PeriodicityMonitor(context, num.get("periodicity"))
     cycles = int(max_cycles or num.get("max_cycles", 20))
@@ -177,6 +276,7 @@ def run_operating_point(config: dict, *, out_dir=None, overrides=None, max_cycle
         "conservation": {"final_relative_closure": result["closure"], "max_relative_closure": result["max_closure"]},
         "wall_seconds": result["wall_seconds"],
         "warm_start": warm_start,
+        "initial_state_context": initial_state_context,
         "evidence_level": "L1_ENGINEERING_RUN",
         "claims": CLAIMS,
     }

@@ -136,7 +136,8 @@ def run(config: dict, *, out_dir=None, overrides: dict | None = None, max_cycles
     ``ok=False`` with ``error.code == "NOT_PERIODIC"`` and the summary still attached, so that a GUI can
     show it with the proper caveat instead of presenting it as a result.
     """
-    from .runner import run_operating_point, validate_initial_state
+    from .runner import (initial_state_assessment, run_operating_point,
+                         validate_initial_state)
     if max_cycles is not None and (not isinstance(max_cycles, int) or isinstance(max_cycles, bool) or max_cycles < 1):
         return _fail("OPTION_INVALID", "max_cycles must be an integer >= 1")
     if not (finite(wall_limit_s) and wall_limit_s > 0):
@@ -169,6 +170,10 @@ def run(config: dict, *, out_dir=None, overrides: dict | None = None, max_cycles
         # an unread key (typo) would silently fall back to a default model: refuse instead
         return _fail("CONFIG_INVALID", f"unknown configuration keys: {check['unknown_keys']}",
                      detail=[{"code": "UNKNOWN_KEY", "path": k} for k in check["unknown_keys"]])
+    if initial_state is not None:
+        assessment = initial_state_assessment(cfg, initial_state)
+        if not assessment["valid"]:
+            return _fail("OPTION_INVALID", assessment["error"])
 
     def progress(record):
         if on_progress is not None:

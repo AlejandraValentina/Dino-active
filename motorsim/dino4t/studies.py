@@ -1,8 +1,9 @@
 """Engineering studies on top of the operating-point runner: parameter sweeps and local sensitivities.
 
 * ``sweep``: run a list of override dictionaries; each converged state seeds the next point
-  (continuation), which cuts the cycles needed per point.  Results carry the provenance of the
-  base configuration and the override of every point.
+  as an explicit warm start (different configuration, same state topology), never as an exact
+  restart.  Results carry the provenance of the base configuration and the override of every
+  point.
 * ``sensitivity``: central finite differences of chosen indicators with respect to chosen physical
   parameters (relative step), reported as elasticities  d ln y / d ln x.  Physical and numerical
   parameters are kept separate: the first say how much a result depends on an input that may be
@@ -71,6 +72,7 @@ def sweep(config: dict, points: list[dict], *, indicators=DEFAULT_INDICATORS, ma
         issues = api.check_summary(s, config=out["context"]["config"])
         row = dict(point=i, overrides=flat, status=s["status"], periodicity=s["periodicity"]["status"],
                    cycles=s["cycles_run"], closure=max(s["conservation"]["max_relative_closure"].values()),
+                   initial_state=(s.get("initial_state_context") or {}).get("kind", "cold_start"),
                    source_qualification=_source_qualification(s),
                    source_identity_status=(s.get("source_identity") or {}).get("status")
                    if isinstance(s.get("source_identity"), dict) else None,

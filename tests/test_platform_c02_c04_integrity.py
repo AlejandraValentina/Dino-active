@@ -44,7 +44,9 @@ def test_raw_or_midcycle_state_is_rejected_without_solver():
            "complete_cycle": False, "model_id": runner.MODEL_ID}
     with pytest.raises(ValueError, match="mid-cycle"):
         runner.validate_initial_state(mid)
-    good = {**mid, "complete_cycle": True}
+    good = {**mid, "complete_cycle": True, "theta_deg": 0.0, "phase_deg": 0.0,
+            "cycles_completed": 1, "config_sha256": "a" * 64,
+            "topology_sha256": "b" * 64}
     assert runner.validate_initial_state(good) is state
     config = json.loads((ROOT / "configs/dino4t/example_single_cylinder_500cc.json").read_text(encoding="utf-8"))
     envelope = api.run(config, initial_state=state, max_cycles=1)
