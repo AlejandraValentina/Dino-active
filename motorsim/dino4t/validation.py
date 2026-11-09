@@ -18,7 +18,8 @@ MAX_RELATIVE_CLOSURE = 1e-12  # scoped native regression admission, not a univer
 CYCLE_HISTORY_KEYS = ("imep_net_bar", "pmep_bar", "volumetric_efficiency_intake_valve",
                       "trapped_mass_mg", "residual_gas_fraction_ivc", "p_max_bar")
 EVIDENCE_LEVELS = frozenset({"L1_ENGINEERING_RUN"})
-WARM_START_VALUES = frozenset({"none", "used", "discarded_incompatible_mesh"})
+WARM_START_VALUES = frozenset({"none", "used", "discarded_incompatible_mesh",
+                               "continuation", "warm_start_different_config"})
 
 
 def finite(value):

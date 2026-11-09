@@ -20,7 +20,7 @@ import json
 import math
 from pathlib import Path
 
-from .runner import _jsonable, run_operating_point
+from .runner import _jsonable, initial_state_assessment, run_operating_point
 
 DEFAULT_INDICATORS = ("imep_net_bar", "volumetric_efficiency_intake_valve", "p_max_bar", "pmep_bar",
                       "indicated_fuel_conversion_efficiency", "residual_gas_fraction_ivc",
@@ -50,6 +50,31 @@ def apply_overrides(config: dict, flat: dict) -> dict:
     return out
 
 
+def _effective_config(config: dict, base_overrides) -> dict:
+    cfg = copy.deepcopy(config)
+    if base_overrides:
+        from .config import _deep_update
+        _deep_update(cfg, copy.deepcopy(base_overrides))
+    return cfg
+
+
+def _seed_for(config: dict, base_overrides, state):
+    """Return (seed, discarded_reason) for a study point.
+
+    A topology-changing override is safe but cannot reuse the previous mesh
+    state; it falls back to an explicit cold start and records why.  An unsafe
+    phase/model state still raises instead of silently starting cold.
+    """
+    if state is None:
+        return None, None
+    assessment = initial_state_assessment(_effective_config(config, base_overrides), state)
+    if assessment["valid"]:
+        return state, None
+    if assessment.get("cold_start"):
+        return None, assessment["error"]
+    raise ValueError(assessment["error"])
+
+
 def _source_qualification(summary: dict) -> str:
     identity = summary.get("source_identity")
     if isinstance(identity, dict) and identity.get("status") == "COMPLETE" and summary.get("code_dirty") is False:
@@ -63,8 +88,9 @@ def sweep(config: dict, points: list[dict], *, indicators=DEFAULT_INDICATORS, ma
     rows, state, base_summary = [], None, None
     for i, flat in enumerate(points):
         cfg = apply_overrides(config, flat)
+        seed, discarded = _seed_for(cfg, base_overrides, state if continuation else None)
         out = run_operating_point(cfg, overrides=base_overrides, max_cycles=max_cycles,
-                                  initial_state=state if continuation else None)
+                                  initial_state=seed)
         s = out["summary"]
         if base_summary is None:
             base_summary = s
@@ -73,6 +99,7 @@ def sweep(config: dict, points: list[dict], *, indicators=DEFAULT_INDICATORS, ma
         row = dict(point=i, overrides=flat, status=s["status"], periodicity=s["periodicity"]["status"],
                    cycles=s["cycles_run"], closure=max(s["conservation"]["max_relative_closure"].values()),
                    initial_state=(s.get("initial_state_context") or {}).get("kind", "cold_start"),
+                   initial_state_discarded=discarded,
                    source_qualification=_source_qualification(s),
                    source_identity_status=(s.get("source_identity") or {}).get("status")
                    if isinstance(s.get("source_identity"), dict) else None,
@@ -182,14 +209,21 @@ def sensitivity(config: dict, *, parameters=None, indicators=DEFAULT_INDICATORS,
     for name in names:
         maker = table[name]
         ys = {}
+        discarded = []
         for sign in (+1, -1):
             cfg = apply_overrides(config, maker(config, 1.0 + sign * rel_step))
-            o = run_operating_point(cfg, overrides=base_overrides, max_cycles=max_cycles, initial_state=state0)
+            seed, reason = _seed_for(cfg, base_overrides, state0)
+            if reason:
+                discarded.append(reason)
+            o = run_operating_point(cfg, overrides=base_overrides, max_cycles=max_cycles,
+                                    initial_state=seed)
             ys[sign] = o["summary"]["final_cycle"] if o["summary"]["status"] == "completed" else None
         if ys[1] is None or ys[-1] is None:
             result["parameters"][name] = dict(status="failed")
             continue
         entry = {}
+        if discarded:
+            entry["initial_state_discarded"] = "; ".join(discarded)
         for k in indicators:
             if "shift" in name:
                 entry[k] = (ys[1][k] - ys[-1][k]) / (2 * rel_step * 100.0)

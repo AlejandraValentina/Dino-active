@@ -1,4 +1,5 @@
 """F03: contexto de reanudación 4T, fase, identidad y compatibilidad de configuración."""
+from copy import deepcopy
 import json
 from pathlib import Path
 
@@ -94,13 +95,13 @@ def test_same_configuration_is_a_continuation_without_exact_restart_claim():
     config = bounded_config()
     first = runner.run_operating_point(config, max_cycles=1, wall_limit_s=120.0)
     assert first["state_context"]["complete_cycle"] is True
-    second = runner.run_operating_point(
-        config, max_cycles=1, wall_limit_s=120.0,
-        initial_state=first["state_context"])
+    second = api.run(config, max_cycles=1, wall_limit_s=120.0,
+                     initial_state=first["state_context"])
     summary = second["summary"]
     assert summary["warm_start"] == "continuation"
     assert summary["initial_state_context"]["kind"] == "continuation"
     assert summary["initial_state_context"]["exact_restart_claim"] == "NOT_SUPPORTED"
+    assert second["result_validation"]["issues"] == []
 
 
 def test_cycle_boundary_continuation_agrees_with_continuous_run_to_roundoff():
@@ -127,3 +128,35 @@ def test_cycle_boundary_continuation_agrees_with_continuous_run_to_roundoff():
     for key in left["plen"]:
         np.testing.assert_allclose(left["plen"][key], right["plen"][key],
                                    rtol=1e-10, atol=1e-8)
+
+def test_summary_accepts_the_continuation_vocabulary(tmp_path):
+    from c01_c03_fixtures import endpoint_factory
+    endpoint = endpoint_factory(tmp_path / "fixtures")("A")
+    summary, config = deepcopy(endpoint["summary"]), endpoint["config"]
+    for value in ("none", "used", "discarded_incompatible_mesh",
+                  "continuation", "warm_start_different_config"):
+        summary["warm_start"] = value
+        assert api.check_summary(summary, config=config) == []
+
+
+def test_seed_helper_treats_topology_mismatch_as_cold_start(monkeypatch):
+    from motorsim.dino4t import studies
+    monkeypatch.setattr(studies, "initial_state_assessment",
+                        lambda cfg, state: {"valid": False, "cold_start": True,
+                                            "error": "topology"})
+    seed, reason = studies._seed_for({}, None, object())
+    assert seed is None and reason == "topology"
+    monkeypatch.setattr(studies, "initial_state_assessment",
+                        lambda cfg, state: {"valid": False, "cold_start": False,
+                                            "error": "mid-cycle"})
+    with pytest.raises(ValueError, match="mid-cycle"):
+        studies._seed_for({}, None, object())
+
+
+def test_sweep_cold_starts_when_an_override_changes_topology():
+    from motorsim.dino4t import studies
+    rows = studies.sweep(bounded_config(), [{}, {"numerics.dx_mm": 10.0}],
+                         max_cycles=1)
+    assert rows[0]["status"] == "completed"
+    assert rows[1]["status"] == "completed"
+    assert rows[1]["initial_state_discarded"] is not None

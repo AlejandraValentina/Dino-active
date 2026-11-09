@@ -1,10 +1,13 @@
 """F16: receipt PASS sólo después de terminación, exit code y recursos cerrados."""
 from pathlib import Path
+from types import SimpleNamespace
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
-from motorsim.desktop.acceptance_terminal import finalize_acceptance
+from motorsim.desktop.acceptance_terminal import (default_worker_probe,
+                                                   finalize_acceptance)
 
 
 class FakeProcess:
@@ -103,6 +106,34 @@ class TerminalAcceptanceTests(unittest.TestCase):
             worker_probe=lambda image: ["TASKLIST_UNAVAILABLE: test"])
         self.assertEqual(record["result"], "FAIL")
         self.assertFalse((Path(self.work) / "acceptance.json").exists())
+
+    def test_previous_pass_is_invalidated_by_a_non_pass_run(self):
+        process = FakeProcess(1)
+        self.work = tempfile.mkdtemp()
+        old = Path(self.work) / "acceptance.json"
+        old.write_text('{"result":"PASS"}', encoding="utf-8")
+        record = finalize_acceptance(self.work, PAYLOAD, process=process,
+                                     worker_probe=lambda image: [])
+        self.assertEqual(record["result"], "FAIL")
+        self.assertFalse(old.exists())
+        self.assertTrue(list(Path(self.work).glob("acceptance-superseded-*.json")))
+
+    def test_worker_probe_rejects_tasklist_error_and_empty_output(self):
+        with patch("motorsim.desktop.acceptance_terminal.sys.platform", "win32"):
+            with patch("motorsim.desktop.acceptance_terminal.subprocess.run",
+                       return_value=SimpleNamespace(returncode=1, stdout="", stderr="boom")):
+                self.assertTrue(default_worker_probe("MotorSimWorker.exe"))
+            with patch("motorsim.desktop.acceptance_terminal.subprocess.run",
+                       return_value=SimpleNamespace(returncode=0, stdout="", stderr="")):
+                self.assertTrue(default_worker_probe("MotorSimWorker.exe"))
+
+    def test_windows_scripts_use_the_terminal_helper(self):
+        root = Path(__file__).resolve().parents[1]
+        for name in ("verify_dino4t_ab_windows.py",
+                     "verify_dino_2t_4t_route_windows.py"):
+            source = (root / "tests" / name).read_text(encoding="utf-8")
+            self.assertIn("finalize_acceptance", source)
+            self.assertNotIn('(work/"acceptance.json").write_text', source)
 
 
 if __name__ == "__main__":

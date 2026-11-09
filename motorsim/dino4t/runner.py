@@ -187,13 +187,18 @@ def initial_state_assessment(config: dict, initial_state):
     from .config import build
     engine, state, context = build(config)
     try:
-        raw = validate_initial_state(initial_state, engine=engine, expected_state=state)
+        raw = validate_initial_state(initial_state, engine=engine)
     except ValueError as exc:
-        return {"valid": False, "kind": None, "error": str(exc), "state": None}
+        return {"valid": False, "kind": None, "error": str(exc), "state": None,
+                "cold_start": False}
+    if initial_state.get("topology_sha256") != topology_sha256(state):
+        return {"valid": False, "kind": None,
+                "error": "initial_state topology does not match the configured mesh",
+                "state": None, "cold_start": True}
     same_config = initial_state.get("config_sha256") == context["config_hash"]
     return {"valid": True, "kind": "continuation" if same_config else "warm_start",
             "error": None, "state": raw, "context": context,
-            "same_config": same_config,
+            "same_config": same_config, "cold_start": False,
             "source_config_sha256": initial_state.get("config_sha256"),
             "theta_deg": initial_state.get("theta_deg"),
             "phase_deg": initial_state.get("phase_deg"),

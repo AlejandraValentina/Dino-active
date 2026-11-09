@@ -123,6 +123,9 @@ class FourStrokeContext(QObject):
         target = Path(path) if path is not None else self.path
         if target is None:
             raise FourStrokeProjectError("Elegí un archivo para guardar el proyecto 4T.")
+        if self._execution_kind is not None and (self.path is None or target != self.path):
+            raise FourStrokeProjectError(
+                "No se puede cambiar la ruta del proyecto 4T durante una ejecución.")
         save_project(target, self.project)
         self.path = target
         self.dirty = False

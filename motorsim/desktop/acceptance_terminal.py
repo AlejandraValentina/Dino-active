@@ -27,8 +27,21 @@ def default_worker_probe(image: str = "MotorSimWorker.exe"):
             capture_output=True, text=True, timeout=10, check=False)
     except (OSError, subprocess.SubprocessError) as exc:
         return [f"TASKLIST_UNAVAILABLE: {type(exc).__name__}: {exc}"]
-    output = (result.stdout or "").lower()
-    return [image] if image.lower() in output else []
+    if result.returncode != 0:
+        detail = (result.stderr or "").strip()[:200]
+        return [f"TASKLIST_FAILED: exit {result.returncode}: {detail}"]
+    output = (result.stdout or "").strip()
+    if not output:
+        return ["TASKLIST_EMPTY_OUTPUT"]
+    return [image] if image.lower() in output.lower() else []
+
+
+def _invalidate_previous_pass(work: Path, acceptance_name: str) -> None:
+    target = work / acceptance_name
+    if not target.is_file():
+        return
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+    target.replace(work / f"acceptance-superseded-{stamp}.json")
 
 
 def _terminate(process, timeout=5):
@@ -87,6 +100,7 @@ def finalize_acceptance(work, payload: dict, *, process, timeout: float = 15.0,
     """
     work = Path(work)
     work.mkdir(parents=True, exist_ok=True)
+    _invalidate_previous_pass(work, acceptance_name)
     try:
         exit_code = process.wait(timeout=timeout)
     except subprocess.TimeoutExpired:

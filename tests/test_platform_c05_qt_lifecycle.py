@@ -59,6 +59,15 @@ class QtLifecycleTests(unittest.TestCase):
         self.context.update(bore_mm=55.0)
         self.assertEqual(self.context.project.bore_mm, 55.0)
 
+    def test_save_as_is_blocked_during_execution(self):
+        token = self.context.begin_execution("prueba")
+        try:
+            with tempfile.TemporaryDirectory() as folder:
+                with self.assertRaises(FourStrokeProjectError):
+                    self.context.save(Path(folder) / "otro.json")
+        finally:
+            self.context.end_execution(token)
+
     def test_point_and_curve_cannot_run_concurrently(self):
         point = FourStrokeExecution(self.context)
         curve = FourStrokeCurveExecution(self.context)
