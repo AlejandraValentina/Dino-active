@@ -54,13 +54,6 @@ def test_raw_or_midcycle_state_is_rejected_without_solver():
     assert envelope["summary"] is None
 
 
-def test_terminal_acceptance_receipt_is_written_after_process_wait():
-    source = (ROOT / "tests/verify_dino4t_ab_windows.py").read_text(encoding="utf-8")
-    wait = source.index("process.wait(timeout=15)")
-    receipt = source.index('(work/"acceptance.json").write_text')
-    assert wait < receipt
-
-
 def test_verified_pressure_uses_crank_angle_and_refresh_clears_stale(tmp_path, monkeypatch):
     endpoint = endpoint_factory(tmp_path / "fixtures")("A")
     project = create_project("c02-results", endpoint["config"],

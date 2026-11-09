@@ -7,7 +7,14 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 import time
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from motorsim.desktop.acceptance_terminal import finalize_acceptance
 
 import win32con
 import win32gui
@@ -125,15 +132,17 @@ def main() -> int:
             raise AssertionError("packaged project router did not return to the 2T workspace")
         if len(app_windows())!=1:raise AssertionError("switching engine projects opened an extra app window")
         note("The same process returns to the saved 2T project with one main window")
-        receipt={"schema":"DINO_2T_4T_PACKAGED_ROUTING_ACCEPTANCE_V1","result":"PASS",
+        payload={"schema":"DINO_2T_4T_PACKAGED_ROUTING_ACCEPTANCE_V1",
             "exe":str(exe),"exe_sha256":hashlib.sha256(exe.read_bytes()).hexdigest(),
             "project_2t":str(project2),"project_2t_sha256":hashlib.sha256(project2.read_bytes()).hexdigest(),
             "project_4t":str(project4),"project_4t_sha256":hashlib.sha256(project4.read_bytes()).hexdigest(),
             "build":{"source_commit":build.get("source_commit"),"packaged_inputs_clean":build.get("packaged_inputs_clean"),
                 "manifest_sha256":build.get("packaged_input_manifest_sha256"),"version":build.get("app_version")},
             "checks":checks,"captures":captures,"solver_runs":0}
-        (work/"acceptance.json").write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-        win32gui.PostMessage(window.handle,win32con.WM_CLOSE,0,0);process.wait(timeout=15)
+        win32gui.PostMessage(window.handle,win32con.WM_CLOSE,0,0)
+        record=finalize_acceptance(work,payload,process=process,timeout=15)
+        if record["result"]!="PASS":
+            raise RuntimeError(f"terminal acceptance {record['result']}: {record['terminal_verification']['issues']}")
         print(json.dumps({"result":"PASS","acceptance":str(work/"acceptance.json"),"checks":checks},ensure_ascii=False))
         return 0
     except Exception as exc:

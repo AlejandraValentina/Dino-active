@@ -129,6 +129,15 @@ def main(argv=None):
         if len(reopened["run_references"])!=2:raise AssertionError("run history not persisted through reopen")
 
     window.context.dirty=False;window.close();app.processEvents()
+    from PySide6.QtCore import QThreadPool
+    if not QThreadPool.globalInstance().waitForDone(10000):
+        raise AssertionError("4T worker threads did not terminate before the terminal receipt")
+    if hasattr(window,"simulation") and window.simulation.task is not None:
+        raise AssertionError("4T simulation still has an active task at terminal receipt")
+    from .acceptance_terminal import default_worker_probe
+    workers=default_worker_probe()
+    if workers:
+        raise AssertionError("orphan or unverifiable worker process at terminal receipt: "+repr(workers))
     receipt={"schema":"DINO4T_DESKTOP_ACCEPTANCE_SMOKE_V1","project_path":str(project_path),
         "engine_family":"4T","configuration_schema":source_config["schema"],
         "starter_config_identity_sha256":identity("4T",source_config),"variant_edit_verified":True,

@@ -15,6 +15,12 @@ import subprocess
 import sys
 import time
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from motorsim.desktop.acceptance_terminal import finalize_acceptance
+
 import win32con
 import win32gui
 import win32process
@@ -239,17 +245,18 @@ def main() -> int:
         build_check={"source_commit":build.get("source_commit"),"packaged_inputs_clean":build.get("packaged_inputs_clean"),
             "manifest_sha256":build.get("packaged_input_manifest_sha256"),"version":build.get("app_version")}
         (work/"build-identity.json").write_text(json.dumps(build_check,indent=2)+"\n",encoding="utf-8")
-        win32gui.PostMessage(four.handle,win32con.WM_CLOSE,0,0);process.wait(timeout=15)
-        if process.returncode!=0:raise RuntimeError(f"packaged process exit code {process.returncode}")
+        win32gui.PostMessage(four.handle,win32con.WM_CLOSE,0,0)
         # Terminal PASS is written only after the packaged process has actually
-        # exited; a close request or a still-running worker is not acceptance.
-        (work/"acceptance.json").write_text(json.dumps({"schema":"DINO4T_AB_PACKAGED_WINDOWS_ACCEPTANCE_V1",
-            "result":"PASS","exe":str(exe),"exe_sha256":hashlib.sha256(exe.read_bytes()).hexdigest(),
+        # exited, exit code 0 and no MotorSimWorker.exe remains.
+        payload={"schema":"DINO4T_AB_PACKAGED_WINDOWS_ACCEPTANCE_V1",
+            "exe":str(exe),"exe_sha256":hashlib.sha256(exe.read_bytes()).hexdigest(),
             "project":str(project),"project_sha256":hashlib.sha256(project.read_bytes()).hexdigest(),
             "prior_cancelled_run":str(prior_cancel) if prior_cancel else None,
             "build":build_check,"checks":checks,"captures":captures,
-            "scientific_claims":{"experimental_validation":"NOT_PERFORMED","predictive_capability":"NOT_CLAIMED"}},
-            ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+            "scientific_claims":{"experimental_validation":"NOT_PERFORMED","predictive_capability":"NOT_CLAIMED"}}
+        record=finalize_acceptance(work,payload,process=process,timeout=15)
+        if record["result"]!="PASS":
+            raise RuntimeError(f"terminal acceptance {record['result']}: {record['terminal_verification']['issues']}")
         print(json.dumps({"result":"PASS","acceptance":str(work/"acceptance.json"),"checks":checks},ensure_ascii=False))
         return 0
     except Exception as exc:
