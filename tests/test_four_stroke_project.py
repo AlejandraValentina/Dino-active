@@ -66,7 +66,8 @@ class FourStrokeProjectTests(unittest.TestCase):
         extra["ports"] = []
         with self.assertRaises(FourStrokeProjectError):
             FourStrokeProject.from_dict(extra)
-        self.assertEqual(FourStrokeProject.from_dict(data), starter_project())
+        expected = replace(starter_project(), provenance=data["provenance"])
+        self.assertEqual(FourStrokeProject.from_dict(data), expected)
 
     def test_invalid_geometry_rpm_and_provenance_are_rejected(self):
         base = starter_project()

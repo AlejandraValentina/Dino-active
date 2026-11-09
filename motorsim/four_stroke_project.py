@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 import os
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import tempfile
 
 from .four_stroke import execution_errors as four_stroke_execution_errors
@@ -25,10 +25,166 @@ DEFAULT_RPM = 3000
 
 PROVENANCE_FIELDS = {"origin", "created_at", "model_version", "classification",
                      "scientific_status"}
+CURVE_REFERENCE_FIELDS = {"schema", "series_path", "series_sha256", "series_id",
+                          "project_sha256", "status", "model_version", "created_at", "rpms"}
+CURVE_REFERENCE_SCHEMA = "MOTORSIM_4T_REFERENCE_CURVE_V1"
+CURVE_REFERENCE_STATUSES = {"converged", "cancelled", "stopped"}
+CURVE_ASSESSMENT_STATES = {"FRESH_COMPLETE", "FRESH_PARTIAL", "STALE_PROJECT",
+                           "STALE_IN_PROGRESS", "UNAVAILABLE", "CORRUPT",
+                           "UNBOUND_PROJECT"}
 
 
 class FourStrokeProjectError(ValueError):
     """Proyecto 4T ilegible, incompleto para ejecutar o fuera de contrato."""
+
+
+def _hex_digest(value, key: str) -> str:
+    if not isinstance(value, str) or len(value) != 64 or any(c not in "0123456789abcdef" for c in value):
+        raise FourStrokeProjectError(f"Hash de referencia de curva 4T inválido: {key}.")
+    return value
+
+
+def _curve_path(value) -> PurePosixPath:
+    if not isinstance(value, str) or not value or "\\" in value:
+        raise FourStrokeProjectError("Ruta de serie 4T inválida: debe ser relativa POSIX.")
+    path = PurePosixPath(value)
+    if path.is_absolute() or ".." in path.parts or path.name != "series.json":
+        raise FourStrokeProjectError("Ruta de serie 4T inválida: sólo series.json relativo al proyecto.")
+    return path
+
+
+def validate_curve_reference(reference) -> None:
+    if not isinstance(reference, dict) or set(reference) != CURVE_REFERENCE_FIELDS:
+        raise FourStrokeProjectError("Referencia de curva 4T incompleta.")
+    if reference["schema"] != CURVE_REFERENCE_SCHEMA:
+        raise FourStrokeProjectError("Schema de referencia de curva 4T no admitido.")
+    _curve_path(reference["series_path"])
+    series_id = reference["series_id"]
+    if (not isinstance(series_id, str) or len(series_id) != 32
+            or any(c not in "0123456789abcdef" for c in series_id)):
+        raise FourStrokeProjectError("Identidad de la serie 4T inválida.")
+    _hex_digest(reference["series_sha256"], "series_sha256")
+    _hex_digest(reference["project_sha256"], "project_sha256")
+    if reference["status"] not in CURVE_REFERENCE_STATUSES:
+        raise FourStrokeProjectError("Estado de referencia de curva 4T inválido.")
+    if reference["model_version"] != FOUR_MODEL_VERSION:
+        raise FourStrokeProjectError("Modelo de referencia de curva 4T inválido.")
+    if not isinstance(reference["created_at"], str) or not reference["created_at"].strip():
+        raise FourStrokeProjectError("Fecha de referencia de curva 4T inválida.")
+    rpms = reference["rpms"]
+    if (not isinstance(rpms, list) or not 2 <= len(rpms) <= 5
+            or any(type(x) is not int for x in rpms)):
+        raise FourStrokeProjectError("RPM de referencia de curva 4T inválidos.")
+    step = rpms[1] - rpms[0]
+    if step <= 0 or any(b - a != step for a, b in zip(rpms, rpms[1:])):
+        raise FourStrokeProjectError("RPM de referencia de curva 4T no ascendentes o irregulares.")
+    for rpm in rpms:
+        try:
+            validate_rpm(rpm, "4T")
+        except ProjectError as exc:
+            raise FourStrokeProjectError(str(exc)) from exc
+
+
+def project_identity(project: "FourStrokeProject") -> str:
+    data = project.to_dict()
+    data.pop("curve_references", None)
+    return hashlib.sha256(json.dumps(data, sort_keys=True, separators=(",", ":"),
+                                     ensure_ascii=False, allow_nan=False).encode("utf-8")).hexdigest()
+
+
+def with_curve_reference(project: "FourStrokeProject", reference,
+                         *, max_references: int = 8) -> "FourStrokeProject":
+    """Return a project with the reference linked; same series_id is replaced, not duplicated."""
+    validate_curve_reference(reference)
+    current = [dict(item) for item in project.curve_references
+               if item.get("series_id") != reference["series_id"]]
+    current.append(dict(reference))
+    return replace(project, curve_references=tuple(current[-max_references:]))
+
+
+def assess_curve_reference(project: "FourStrokeProject", reference, *,
+                           base_dir=None) -> dict:
+    """Classify a curve reference without modifying the project or the series.
+
+    ``base_dir`` is the directory containing the saved project. A reference is
+    only portable and checkable when the project has been saved next to its
+    ``curves/<series_id>/series.json`` directory.
+    """
+    result = {"state": "CORRUPT", "issues": [], "reference": dict(reference),
+              "path": None, "series": None}
+    try:
+        validate_curve_reference(reference)
+    except FourStrokeProjectError as exc:
+        result["issues"] = [str(exc)]
+        return result
+    if base_dir is None:
+        result.update(state="UNBOUND_PROJECT",
+                      issues=["El proyecto no está guardado; no se puede resolver la serie 4T."])
+        return result
+    try:
+        identity = project_identity(project)
+    except FourStrokeProjectError as exc:
+        result["issues"] = [str(exc)]
+        return result
+    if reference["project_sha256"] != identity:
+        result.update(state="STALE_PROJECT",
+                      issues=["La referencia corresponde a otra configuración del proyecto."])
+        return result
+    try:
+        base = Path(base_dir).resolve()
+        target = (base / Path(reference["series_path"])).resolve()
+        if not target.is_relative_to(base):
+            result.update(state="CORRUPT", issues=["La referencia escapa del directorio del proyecto."])
+            return result
+        result["path"] = target
+        if not target.is_file():
+            result.update(state="UNAVAILABLE", issues=["No se encontró series.json."])
+            return result
+        raw = target.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != reference["series_sha256"]:
+            result.update(state="CORRUPT", issues=["El hash de series.json no coincide."])
+            return result
+        from .sweep import load_sweep
+        loaded = load_sweep(target)
+    except FourStrokeProjectError as exc:
+        result["issues"] = [str(exc)]
+        return result
+    except Exception as exc:  # ResultError/OSError/ValueError from strict readers
+        result.update(state="CORRUPT", issues=[f"{type(exc).__name__}: {exc}"])
+        return result
+    index = loaded["index"]
+    if (index["series_id"] != reference["series_id"]
+            or index["rpms"] != reference["rpms"]):
+        result.update(state="CORRUPT",
+                      issues=["La serie no coincide con la identidad o los RPM registrados."])
+        return result
+    if index["state"] == "running":
+        result.update(state="STALE_IN_PROGRESS",
+                      issues=["La serie quedó en ejecución y no es un resultado terminal."])
+        return result
+    if index["state"] != reference["status"]:
+        result.update(state="CORRUPT",
+                      issues=["El estado de la serie no coincide con la referencia."])
+        return result
+    for point in loaded["results"]:
+        if point is None:
+            continue
+        manifest = point.get("manifest") or {}
+        if manifest.get("model_version") != FOUR_MODEL_VERSION:
+            result.update(state="CORRUPT",
+                          issues=["Un punto de la serie declara otro modelo 4T."])
+            return result
+    if index["state"] == "converged":
+        state = "FRESH_COMPLETE"
+    elif index["state"] in CURVE_REFERENCE_STATUSES:
+        state = "FRESH_PARTIAL"
+    else:
+        result.update(state="STALE_IN_PROGRESS",
+                      issues=["La serie quedó en ejecución y no es un resultado terminal."])
+        return result
+    result.update(state=state, series=loaded,
+                  issues=[] if state == "FRESH_COMPLETE" else ["Serie parcial: no todos los puntos convergieron."])
+    return result
 
 
 def default_provenance(origin: str = "new") -> dict:
@@ -55,6 +211,7 @@ class FourStrokeProject:
     ducts: Ducts = field(default_factory=lambda: Ducts(reference=FOUR_DUCT_REFERENCE))
     rpm: int | None = None
     provenance: dict = field(default_factory=default_provenance)
+    curve_references: tuple[dict, ...] = ()
 
     def validate(self) -> None:
         if not isinstance(self.name, str) or not self.name.strip():
@@ -94,6 +251,10 @@ class FourStrokeProject:
                 or self.provenance["classification"] != CLASSIFICATION
                 or self.provenance["scientific_status"] != SCIENTIFIC_STATUS):
             raise FourStrokeProjectError("Procedencia 4T inválida.")
+        if not isinstance(self.curve_references, tuple):
+            raise FourStrokeProjectError("Referencias de curva 4T inválidas.")
+        for reference in self.curve_references:
+            validate_curve_reference(reference)
 
     def execution_errors(self) -> list[str]:
         try:
@@ -157,7 +318,7 @@ class FourStrokeProject:
 
     def to_dict(self) -> dict:
         self.validate()
-        return {
+        data = {
             "schema": SCHEMA,
             "version": VERSION,
             "name": self.name,
@@ -180,6 +341,9 @@ class FourStrokeProject:
             "scientific_status": SCIENTIFIC_STATUS,
             "provenance": dict(self.provenance),
         }
+        if self.curve_references:
+            data["curve_references"] = [dict(item) for item in self.curve_references]
+        return data
 
     @classmethod
     def from_dict(cls, data: object) -> "FourStrokeProject":
@@ -187,7 +351,7 @@ class FourStrokeProject:
             raise FourStrokeProjectError("El archivo 4T debe contener un objeto JSON.")
         required = {"schema", "version", "name", "cycle", "geometry", "valves", "ducts",
                     "operating_point", "classification", "scientific_status", "provenance"}
-        if set(data) != required:
+        if set(data) not in (required, required | {"curve_references"}):
             raise FourStrokeProjectError("Campos del proyecto 4T inválidos.")
         if data["schema"] != SCHEMA or data["version"] != VERSION:
             raise FourStrokeProjectError("Schema o versión del proyecto 4T no admitidos.")
@@ -209,6 +373,9 @@ class FourStrokeProject:
         provenance = data["provenance"]
         if not isinstance(provenance, dict) or set(provenance) != PROVENANCE_FIELDS:
             raise FourStrokeProjectError("Procedencia 4T inválida.")
+        references = data.get("curve_references", [])
+        if not isinstance(references, list):
+            raise FourStrokeProjectError("Referencias de curva 4T inválidas.")
         try:
             project = cls(
                 name=data["name"],
@@ -223,6 +390,7 @@ class FourStrokeProject:
                 ducts=Ducts.from_dict(data["ducts"]),
                 rpm=operating["rpm"],
                 provenance=dict(provenance),
+                curve_references=tuple(references),
             )
         except ProjectError as exc:
             raise FourStrokeProjectError(str(exc)) from exc
