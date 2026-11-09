@@ -86,7 +86,8 @@ def main(argv=None):
     save_project(project_path,window.context.project)
     if len(load_project(project_path)["run_references"])!=1:raise AssertionError("historical import did not persist")
     window.results.refresh()
-    if not window.results.loaded:raise AssertionError("imported historical result not loadable")
+    if not (window.results.loaded or getattr(window.results,"legacy_loaded",{})):
+        raise AssertionError("imported historical result not loadable")
     history_labels=[window.results.history.item(i).text() for i in range(window.results.history.count())]
     if any(label.startswith("Fuente no verificable") for label in history_labels):
         raise AssertionError("history rendered an imported result as unverifiable: "+" | ".join(history_labels))
@@ -106,7 +107,7 @@ def main(argv=None):
         if any(label.startswith("Fuente no verificable") for label in history_labels):
             raise AssertionError("history rendered a completed run as unverifiable: "+" | ".join(history_labels))
         if run_record["periodicity_status"]=="PERIODIC_CONVERGED":raise AssertionError("one-cycle smoke unexpectedly claimed periodic convergence")
-        if not any(summary["periodicity"]["status"]=="PERIODIC_CONVERGED" for summary,_,_ in window.results.loaded.values()):
+        if not any(summary["periodicity"]["status"]=="PERIODIC_CONVERGED" for summary,_,_ in [*window.results.loaded.values(),*getattr(window.results,"legacy_loaded",{}).values()]):
             raise AssertionError("historical periodic result missing from results view")
         window.tabs.setCurrentIndex(2);app.processEvents()
         capture("resultado-ejecucion-acotada",1360,900,2)

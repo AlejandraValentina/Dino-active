@@ -78,7 +78,7 @@ def sweep(config: dict, points: list[dict], *, indicators=DEFAULT_INDICATORS, ma
                    **{k: final.get(k) for k in indicators})
         rows.append(row)
         if s["status"] == "completed" and continuation:
-            state = out["result"]["state"]
+            state = out.get("state_context")
         if progress:
             progress(row)
     if out_dir is not None:
@@ -171,7 +171,7 @@ def sensitivity(config: dict, *, parameters=None, indicators=DEFAULT_INDICATORS,
         raise RuntimeError("base case failed: " + base["summary"]["termination"])
     base_summary = base["summary"]
     y0 = {k: base_summary["final_cycle"][k] for k in indicators}
-    state0 = base["result"]["state"]
+    state0 = base.get("state_context")
     result = dict(base=y0, rel_step=rel_step, parameters={}, base_periodicity=base_summary["periodicity"]["status"],
                   source_identity=base_summary.get("source_identity"),
                   runtime_environment=base_summary.get("runtime_environment"),

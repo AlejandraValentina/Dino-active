@@ -81,25 +81,52 @@ def _jsonable(value):
     return value
 
 
+STATE_CONTEXT_SCHEMA = "DINO4T_STATE_CONTEXT_V1"
+
+
+def _state_context(result, engine, config_sha256):
+    theta = float(result["theta"])
+    boundary = math.isclose((theta - engine.theta_start) % 720.0, 0.0, abs_tol=1e-9)
+    return {"schema": STATE_CONTEXT_SCHEMA, "state": result["state"],
+            "theta_deg": theta, "model_id": MODEL_ID,
+            "complete_cycle": result["status"] == "completed" and boundary,
+            "config_sha256": config_sha256}
+
+
+def validate_initial_state(initial_state):
+    """Accept only an explicit, completed-cycle state context; never a raw mid-cycle dict."""
+    if not isinstance(initial_state, dict) or initial_state.get("schema") != STATE_CONTEXT_SCHEMA:
+        raise ValueError("initial_state must be a DINO4T_STATE_CONTEXT_V1 from a completed cycle")
+    if initial_state.get("complete_cycle") is not True:
+        raise ValueError("mid-cycle initial_state is unsafe; resume only from a completed 720-degree cycle")
+    if initial_state.get("model_id") != MODEL_ID:
+        raise ValueError("initial_state model identity does not match the native 4T model")
+    raw = initial_state.get("state")
+    if not isinstance(raw, dict) or not {"ducts", "cyl", "plen"} <= set(raw):
+        raise ValueError("initial_state state payload is incomplete")
+    return raw
+
+
 def run_operating_point(config: dict, *, out_dir=None, overrides=None, max_cycles=None,
                         wall_limit_s=3600.0, progress=None, initial_state=None,
                         cancel_event=None) -> dict:
-    """``initial_state``: converged state of a previous run of the same topology (continuation)."""
+    """``initial_state``: explicit cycle-boundary state context from a previous run."""
     from .artifacts import publish_primary, require_empty_output
     if out_dir is not None: require_empty_output(out_dir)
     source_identity = _source_identity()
     engine, state, context = build(config, overrides=overrides)
     warm_start = "none"
     if initial_state is not None:
-        compatible = (set(initial_state["ducts"]) == set(state["ducts"])
-                      and all(initial_state["ducts"][k].shape == state["ducts"][k].shape for k in state["ducts"])
-                      and initial_state["cyl"].shape == state["cyl"].shape
-                      and set(initial_state["plen"]) == set(state["plen"]))
+        raw_state = validate_initial_state(initial_state)
+        compatible = (set(raw_state["ducts"]) == set(state["ducts"])
+                      and all(raw_state["ducts"][k].shape == state["ducts"][k].shape for k in state["ducts"])
+                      and raw_state["cyl"].shape == state["cyl"].shape
+                      and set(raw_state["plen"]) == set(state["plen"]))
         if compatible:
             warm_start = "used"
-            state = {"ducts": {k: v.copy() for k, v in initial_state["ducts"].items()},
-                     "cyl": initial_state["cyl"].copy(),
-                     "plen": {k: v.copy() for k, v in initial_state["plen"].items()}}
+            state = {"ducts": {k: v.copy() for k, v in raw_state["ducts"].items()},
+                     "cyl": raw_state["cyl"].copy(),
+                     "plen": {k: v.copy() for k, v in raw_state["plen"].items()}}
         else:  # e.g. a duct length change altered the number of cells: cold start, recorded in the summary
             warm_start = "discarded_incompatible_mesh"
     num = context["config"].get("numerics", {})
@@ -156,7 +183,7 @@ def run_operating_point(config: dict, *, out_dir=None, overrides=None, max_cycle
     summary = _jsonable(summary)
     artifacts = publish_primary(out_dir, summary, context["config"], records[-1].trace if records else None) if out_dir is not None else {}
     return {"summary": summary, "records": records, "engine": engine, "context": context, "result": result,
-            "artifacts": artifacts}
+            "artifacts": artifacts, "state_context": _state_context(result, engine, context["config_hash"])}
 
 
 def write_trace_csv(trace: dict, path):

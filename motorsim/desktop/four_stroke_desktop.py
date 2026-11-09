@@ -158,7 +158,7 @@ class FourStrokeConfigEditor(QWidget):
     configApplied = Signal()
 
     def __init__(self, context):
-        super().__init__(); self.context=context; self.tables={}; self._loading=False
+        super().__init__(); self.context=context; self.tables={}; self._loading=False; self._original={}
         root=QVBoxLayout(self);self.notice=QLabel();self.notice.setWordWrap(True);root.addWidget(self.notice)
         self.sections=QTabWidget();root.addWidget(self.sections,1)
         self.validate_button=QPushButton("Validar y aplicar configuración")
@@ -168,7 +168,7 @@ class FourStrokeConfigEditor(QWidget):
     def refresh(self):
         config=self.context.engine();self._loading=True
         while self.sections.count(): self.sections.removeTab(0)
-        self.tables.clear()
+        self.tables.clear();self._original.clear()
         for section, value in config.items():
             if section in {"schema", "identifier", "description"}: continue
             table=QTableWidget();table.setColumnCount(3);table.setHorizontalHeaderLabels(["Parámetro del esquema 4T", "Valor", "Procedencia del grupo"])
@@ -180,6 +180,7 @@ class FourStrokeConfigEditor(QWidget):
             for row,(path,original) in enumerate(rows):
                 key=QTableWidgetItem(_path_label(path));key.setFlags(key.flags() & ~Qt.ItemFlag.ItemIsEditable)
                 cell=QTableWidgetItem(self._display(original));cell.setData(256,path)
+                self._original[path]=original
                 provenance=value.get("provenance","sin provenance declarada por el esquema") if isinstance(value,dict) else "sin provenance declarada por el esquema"
                 provenance_item=QTableWidgetItem(DISPLAY_VALUES.get(str(provenance),str(provenance)));provenance_item.setFlags(provenance_item.flags() & ~Qt.ItemFlag.ItemIsEditable)
                 table.setItem(row,0,key);table.setItem(row,1,cell);table.setItem(row,2,provenance_item)
@@ -197,7 +198,7 @@ class FourStrokeConfigEditor(QWidget):
 
     @staticmethod
     def _display(value):
-        if isinstance(value,float): return format(value,".12g")
+        if isinstance(value,float): return format(value,".17g")
         if isinstance(value,bool): return "true" if value else "false"
         if value is None: return ""
         return DISPLAY_VALUES.get(str(value),str(value))
@@ -208,13 +209,21 @@ class FourStrokeConfigEditor(QWidget):
         try:
             for table in self.tables.values():
                 for row in range(table.rowCount()):
-                    item=table.item(row,1);path=item.data(256);original=_get_path(self.context.engine(),path)
+                    item=table.item(row,1);path=tuple(item.data(256));original=self._original.get(path)
+                    if original is None and path not in self._original: original=_get_path(self.context.engine(),path)
+                    # A no-op Apply must not rewrite untouched source values. Only a
+                    # cell whose text differs from the loaded display is re-typed.
+                    if item.text()==self._display(original):
+                        continue
                     _set_path(doc,path,_as_typed(item.text(),original,_path_label(path)))
             checked=engine_platform.validate_config("4T",doc)
             if not checked["valid"] or checked["unknown_keys"]:
                 details="\n".join(item.get("message",item.get("path","clave desconocida")) for item in checked["issues"])
                 if checked["unknown_keys"]: details += "\nClaves no reconocidas: "+", ".join(checked["unknown_keys"])
                 raise ValueError(details or "La API 4T rechazó la configuración.")
+            if doc == self.context.engine():
+                self.notice.setText(f"Configuración sin cambios · SHA-256 {checked['config_sha256']} · no se reescribió ningún valor de origen.")
+                return
             self.context.replace_engine(doc)
             self.notice.setText(f"Configuración válida · SHA-256 {checked['config_sha256']} · La API confirma que es ejecutable; no expresa adecuación física ni validación experimental.")
             self.configApplied.emit()
@@ -495,17 +504,28 @@ class FourStrokeResults(QWidget):
         path=write_four_stroke_ab_report(target,self.comparison)
         QDesktopServices.openUrl(QUrl.fromLocalFile(str(path.resolve())))
 
+    def _export_rows(self):
+        rows = [(summary, meta, reference, "VERIFIED")
+                for summary, meta, reference in self.loaded.values()]
+        rows.extend((summary, meta, reference, "LEGACY_UNVERIFIED")
+                    for summary, meta, reference in getattr(self, "legacy_loaded", {}).values())
+        return rows
+
     def _verified_export_rows(self):
         """Recheck original references before exporting any cached result."""
-        from .four_stroke_artifacts import require_verified_run
+        from .four_stroke_artifacts import assess_run_reference, require_verified_run
         try:
-            for summary,_,reference in self.loaded.values():
-                current=require_verified_run(reference)
-                if current.summary!=summary:raise ValueError("El resultado cambió desde su lectura")
+            rows = self._export_rows()
+            for summary, _, reference, kind in rows:
+                current = require_verified_run(reference) if kind == "VERIFIED" else assess_run_reference(reference)
+                if kind == "LEGACY_UNVERIFIED" and not current.classification.startswith("LEGACY_"):
+                    raise ValueError("el histórico cambió de clasificación")
+                if current.summary != summary:
+                    raise ValueError("El resultado cambió desde su lectura")
         except (ValueError,OSError,KeyError,TypeError) as exc:
             QMessageBox.warning(self,"Procedencia no verificable",str(exc))
             return False
-        return bool(self.loaded)
+        return bool(rows)
 
     def _comparison_export_ready(self):
         if self.comparison is None:return False
@@ -523,15 +543,16 @@ class FourStrokeResults(QWidget):
 
     def export_csv(self):
         if not self._verified_export_rows():return
+        rows=self._export_rows()
         target,_=QFileDialog.getSaveFileName(self,"Exportar resultados 4T",str(Path.home()/"dino-4t-results.csv"),"CSV (*.csv)")
         if not target:return
         if not target.lower().endswith(".csv"):target += ".csv"
-        keys=sorted({key for summary,_,_ in self.loaded.values() for key in (summary.get("final_cycle") or {})})
+        keys=sorted({key for summary,_,_,_ in rows for key in (summary.get("final_cycle") or {})})
         with open(target,"w",newline="",encoding="utf-8-sig") as stream:
-            writer=csv.writer(stream);writer.writerow(["schema","run_id","variant_id","rpm","status","periodicity","evidence_level","config_sha256","result_sha256",*keys])
-            for summary,meta,ref in self.loaded.values():
-                final=summary.get("final_cycle") or {};writer.writerow([summary["schema"],ref["run_id"],ref["variant_id"],repr(summary["operating_point"]["rpm"]),summary["status"],summary["periodicity"]["status"],summary["evidence_level"],summary["config_sha256"],ref["result_sha256"],*[repr(final.get(k,"")) for k in keys]])
-        QMessageBox.information(self,"CSV exportado",f"Se exportaron {len(self.loaded)} resultados con precisión de ida y procedencia.")
+            writer=csv.writer(stream);writer.writerow(["schema","run_id","variant_id","rpm","status","periodicity","evidence_level","integrity_classification","source_qualification","config_sha256","result_sha256",*keys])
+            for summary,meta,ref,kind in rows:
+                final=summary.get("final_cycle") or {};writer.writerow([summary["schema"],ref["run_id"],ref["variant_id"],repr(summary["operating_point"]["rpm"]),summary["status"],summary["periodicity"]["status"],summary["evidence_level"],kind,meta.get("source_qualification",kind),summary["config_sha256"],ref["result_sha256"],*[repr(final.get(k,"")) for k in keys]])
+        QMessageBox.information(self,"CSV exportado",f"Se exportaron {len(rows)} resultados con precisión de ida y procedencia.")
 
     def export_report(self):
         if not self._verified_export_rows():return
@@ -540,7 +561,7 @@ class FourStrokeResults(QWidget):
         if not target.lower().endswith(".html"):target += ".html"
         from .technical_report import render_four_stroke_report
         report=render_four_stroke_report(self.context.project["project_id"],[
-            {"summary":summary,"meta":meta,"reference":ref} for summary,meta,ref in self.loaded.values()])
+            {"summary":summary,"meta":meta,"reference":ref} for summary,meta,ref,_kind in self._export_rows()])
         Path(target).write_text(report,encoding="utf-8")
         QDesktopServices.openUrl(QUrl.fromLocalFile(str(Path(target).resolve())))
 

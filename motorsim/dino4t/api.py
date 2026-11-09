@@ -136,7 +136,7 @@ def run(config: dict, *, out_dir=None, overrides: dict | None = None, max_cycles
     ``ok=False`` with ``error.code == "NOT_PERIODIC"`` and the summary still attached, so that a GUI can
     show it with the proper caveat instead of presenting it as a result.
     """
-    from .runner import run_operating_point
+    from .runner import run_operating_point, validate_initial_state
     if max_cycles is not None and (not isinstance(max_cycles, int) or isinstance(max_cycles, bool) or max_cycles < 1):
         return _fail("OPTION_INVALID", "max_cycles must be an integer >= 1")
     if not (finite(wall_limit_s) and wall_limit_s > 0):
@@ -153,6 +153,11 @@ def run(config: dict, *, out_dir=None, overrides: dict | None = None, max_cycles
         except (ValueError, OSError, TypeError) as exc: return _fail("OPTION_INVALID", str(exc))
     if cancel_event is not None and not callable(getattr(cancel_event, "is_set", None)):
         return _fail("OPTION_INVALID", "cancel_event must provide is_set()")
+    if initial_state is not None:
+        try:
+            validate_initial_state(initial_state)
+        except ValueError as exc:
+            return _fail("OPTION_INVALID", str(exc))
     cfg = copy.deepcopy(config)
     if overrides:
         from .config import _deep_update
@@ -191,7 +196,8 @@ def run(config: dict, *, out_dir=None, overrides: dict | None = None, max_cycles
     elif summary["periodicity"]["status"] != "PERIODIC_CONVERGED":
         error = {"code": "NOT_PERIODIC", "message": "cycle limit reached without periodicity", "detail": None}
     return {"api": API_VERSION, "ok": error is None, "error": error, "summary": summary,
-            "artifacts": artifacts, "state": out["result"].get("state"),
+            "artifacts": artifacts, "state": out.get("state_context"),
+            "state_context": out.get("state_context"),
             "result_validation": {"contract": RESULT_VALIDATION, "issues": semantic_problems}}
 
 

@@ -239,6 +239,10 @@ def main() -> int:
         build_check={"source_commit":build.get("source_commit"),"packaged_inputs_clean":build.get("packaged_inputs_clean"),
             "manifest_sha256":build.get("packaged_input_manifest_sha256"),"version":build.get("app_version")}
         (work/"build-identity.json").write_text(json.dumps(build_check,indent=2)+"\n",encoding="utf-8")
+        win32gui.PostMessage(four.handle,win32con.WM_CLOSE,0,0);process.wait(timeout=15)
+        if process.returncode!=0:raise RuntimeError(f"packaged process exit code {process.returncode}")
+        # Terminal PASS is written only after the packaged process has actually
+        # exited; a close request or a still-running worker is not acceptance.
         (work/"acceptance.json").write_text(json.dumps({"schema":"DINO4T_AB_PACKAGED_WINDOWS_ACCEPTANCE_V1",
             "result":"PASS","exe":str(exe),"exe_sha256":hashlib.sha256(exe.read_bytes()).hexdigest(),
             "project":str(project),"project_sha256":hashlib.sha256(project.read_bytes()).hexdigest(),
@@ -246,8 +250,6 @@ def main() -> int:
             "build":build_check,"checks":checks,"captures":captures,
             "scientific_claims":{"experimental_validation":"NOT_PERFORMED","predictive_capability":"NOT_CLAIMED"}},
             ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-        win32gui.PostMessage(four.handle,win32con.WM_CLOSE,0,0);process.wait(timeout=15)
-        if process.returncode!=0:raise RuntimeError(f"packaged process exit code {process.returncode}")
         print(json.dumps({"result":"PASS","acceptance":str(work/"acceptance.json"),"checks":checks},ensure_ascii=False))
         return 0
     except Exception as exc:
