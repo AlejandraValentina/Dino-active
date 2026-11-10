@@ -17,7 +17,7 @@
   — verificar: file:docs/commercial/release_policy.md
 - [x] CP0-REGRESSION — suites C01–C05, producto y Windows.
   — verificar: test:python -m pytest tests/test_commercial_product.py tests/test_platform_c05_resume.py tests/test_platform_c05_qt_lifecycle.py tests/test_platform_c05_terminal_acceptance.py -q
-- [ ] CP0-WINDOWS — candidato Windows subsequent a CP0 y aceptación de about/
+- [x] CP0-WINDOWS — candidato Windows subsequent a CP0 y aceptación de about/
   diagnóstico/recuperación.
   — verificar: pending:authorized Windows candidate
 

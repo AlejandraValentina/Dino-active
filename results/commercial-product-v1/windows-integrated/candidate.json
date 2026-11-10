@@ -1,0 +1,54 @@
+{
+  "schema": "DINO_COMMERCIAL_INTEGRATED_WINDOWS_CANDIDATE_V1",
+  "app_version": "0.1.0-rc12",
+  "source_commit": "f45d60bf728d6c47838e38514854476a3a02e516",
+  "integration_commits": ["7ed8566", "ace5956", "2fb5cd7", "f45d60b"],
+  "trial": false,
+  "built_utc": "20261110T142221Z",
+  "package_folder": "E:/Dino-artifacts/Windows/MotorSim-0.1.0-rc12-windows-x64-f45d60bf",
+  "package_zip": "E:/Dino-artifacts/Windows/MotorSim-0.1.0-rc12-windows-x64-f45d60bf.zip",
+  "package_zip_sha256": "f05b00c8d3695e6fcc212672a4563e573031002f98b272bf4b6fa9fe48d7f1e9",
+  "package_zip_bytes": 91583636,
+  "dino2t_exe_sha256": "e94f9b38646be7aa97c72284e5daa7588482c4f8312916d86608d904ebeabe5a",
+  "motorsimworker_exe_sha256": "3a138301e98561687cfed9f88602ebad9b0340383fbda844a6837529a081890e",
+  "build_json_sha256": "8ef72899bea5bc09f2759877305672ce1e159a2f9c455f92d55b687471e4812d",
+  "packaged_input_count": 284,
+  "packaged_input_manifest_sha256": "08b6596d971770d5d88bee78e76ace9528ae7842d5bf60823c6060febccc73d1",
+  "source_dirty": false,
+  "features": [
+    "unified 2T / native 4T / 4T 0D navigation",
+    "configurable native 4T RPM power/torque curves",
+    "CP0 About, diagnostics, recent projects and recovery",
+    "recovery restores as a copy without binding the original save path",
+    "autosave/recovery root honors DINO_ARTIFACT_ROOT/DINO_RECOVERY_ROOT"
+  ],
+  "acceptance": {
+    "about_all_three_modes": "PASS",
+    "diagnostics_all_three_modes": "PASS",
+    "unified_project_router": "PASS",
+    "recent_projects_per_family": "PASS",
+    "native_rpm_curve_tab": "PASS",
+    "recovery_all_three_modes": "PASS",
+    "recovery_copy_semantics": "PASS",
+    "originals_unchanged": "PASS",
+    "process_closure": "PASS"
+  },
+  "joint_regression": {
+    "path": "results/commercial-product-v1/verification/integrated-commercial-unified.summary.json",
+    "result": "271 passed, 1 skipped",
+    "exit_code": 0
+  },
+  "scientific_claims": {
+    "calibration": "NOT_PERFORMED",
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_capability": "NOT_CLAIMED"
+  },
+  "evidence": {
+    "acceptance": "acceptance.json",
+    "diagnostics_2t": "diagnostico-2t.zip",
+    "diagnostics_4t0d": "diagnostico-4t0d.zip",
+    "diagnostics_4tnative": "diagnostico-4tnative.zip",
+    "build": "candidate-build.json",
+    "zip_sha256": "candidate-zip.sha256"
+  }
+}

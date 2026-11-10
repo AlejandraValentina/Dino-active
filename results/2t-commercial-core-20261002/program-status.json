@@ -13324,11 +13324,16 @@
       "dependencies": [
         "CP0-REGRESSION"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Authorized build + packaged CP0 acceptance; keep candidate on E:.",
+      "commits": [
+        "f45d60b"
+      ],
+      "evidence": [
+        "results/commercial-product-v1/windows-integrated/candidate.json",
+        "results/commercial-product-v1/verification/integrated-commercial-windows-build3.summary.json"
+      ],
+      "next_action": "Closed: integrated candidate built from f45d60b on E:.",
       "owner_role": "implementation",
       "write_scope": [
         "results/commercial-product-v1/windows/"
@@ -13342,11 +13347,15 @@
       "dependencies": [
         "CP0-WINDOWS-BUILD"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Run after CP0-WINDOWS-BUILD.",
+      "evidence": [
+        "results/commercial-product-v1/windows-integrated/acceptance.md",
+        "results/commercial-product-v1/windows-integrated/acceptance.json",
+        "results/commercial-product-v1/verification/integrated-commercial-windows-acceptance.summary.json"
+      ],
+      "next_action": "Closed: packaged About/diagnostics/recent/recovery PASS in 2T, 4T 0D and native 4T.",
       "owner_role": "implementation",
       "write_scope": [
         "results/commercial-product-v1/windows/"
@@ -13448,6 +13457,33 @@
       "owner_role": "implementation",
       "write_scope": [],
       "evidence_level": "L0"
+    },
+    {
+      "id": "INTEGRATION-CP0-UNIFIED",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP0_V1",
+      "description": "Integrate CP0 commercial hardening with unified 2T/native 4T/4T 0D navigation and configurable RPM curves.",
+      "dependencies": [
+        "CP0-REGRESSION"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [
+        "7ed8566",
+        "ace5956",
+        "2fb5cd7",
+        "f45d60b"
+      ],
+      "evidence": [
+        "results/commercial-product-v1/verification/integrated-commercial-unified.summary.json",
+        "results/commercial-product-v1/windows-integrated/acceptance.md"
+      ],
+      "next_action": "Closed: integration branch preserves both histories and recognizes the native 4T workspace.",
+      "owner_role": "integration",
+      "write_scope": [
+        "motorsim/desktop/app.py",
+        "tests/test_commercial_unified_integration.py"
+      ],
+      "evidence_level": "L3"
     }
   ],
   "audit_remediation_mode": false,
@@ -13664,7 +13700,8 @@
       "CP1-BATCH-QUEUE",
       "CP1-COMPARISON-LEGACY-UX"
     ],
-    "completion_criterion": "CP1 workflows complete with UAT and regression; no scientific claim."
+    "completion_criterion": "CP1 workflows complete with UAT and regression; no scientific claim.",
+    "classification": "CP0_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED"
   },
   "objectives": [
     {
@@ -14861,7 +14898,7 @@
         "CP0-REGRESSION"
       ],
       "completion_criterion": "CP0 source tasks complete with tests and regression; Windows CP0 candidate and about/diagnostics/recovery packaged acceptance remain a queued release step.",
-      "classification": "CP0_SOURCE_COMPLETE_WINDOWS_PENDING"
+      "classification": "CP0_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED"
     }
   ],
   "owner_decisions_pending": [
@@ -19058,6 +19095,18 @@
       "task": "CP0-REGRESSION",
       "kind": "task",
       "summary": "CP0 focused regression 50 PASS 1 SKIP; release policy and roadmap registered."
+    },
+    {
+      "at": "2026-11-10T14:44:54+00:00",
+      "task": "CP0-WINDOWS-ACCEPTANCE",
+      "kind": "task",
+      "summary": "Integrated candidate f45d60b PASS: About/diagnostics/recent/recovery in 2T, 4T 0D and native 4T; recovery copy semantics; no orphan processes."
+    },
+    {
+      "at": "2026-11-10T14:44:54+00:00",
+      "task": "INTEGRATION-CP0-UNIFIED",
+      "kind": "task",
+      "summary": "CP0 merged with unified 2T/native4T/4T0D UI; 271 PASS 1 SKIP joint regression; packaged candidate f45d60b accepted."
     }
   ],
   "legacy_gate_status": {

@@ -1,0 +1,32 @@
+{
+  "name": "integrated-commercial-windows-acceptance",
+  "command": [
+    ".\\.venv-build\\Scripts\\python.exe",
+    "tests\\verify_c05_commercial_integrated_windows.py",
+    "--exe",
+    "E:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc12-windows-x64-f45d60bf\\MotorSim\\Dino2T.exe",
+    "--work",
+    "E:\\Dino-artifacts\\c05-windows-acceptance\\integrated-commercial"
+  ],
+  "started_at": "2026-11-10T14:41:02+00:00",
+  "finished_at": "2026-11-10T14:42:54+00:00",
+  "duration_s": 111.938,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\commercial-product-v1\\verification\\integrated-commercial-windows-acceptance.log",
+  "log_lines": 10,
+  "log_bytes": 1273,
+  "error_lines": [],
+  "tail": [
+    "PASS About opens and preserves scientific status in all three modes",
+    "PASS Diagnostics export completes in all three modes",
+    "PASS Unified router opens 2T, 4T 0D and native 4T projects",
+    "PASS Recent projects are recorded independently for 2T, 4T 0D and native 4T",
+    "PASS Unified native 4T workspace exposes the RPM power/torque curve",
+    "PASS All three recovery drafts are offered and accepted",
+    "PASS Recovered drafts restore in 2T, 4T 0D and native 4T modes",
+    "PASS Recovered drafts require Save As in all three modes (no original path bound)",
+    "PASS Recovery did not modify any original project file",
+    "{\"result\": \"PASS\", \"acceptance\": \"E:\\\\Dino-artifacts\\\\c05-windows-acceptance\\\\integrated-commercial\\\\acceptance.json\", \"checks\": [\"About opens and preserves scientific status in all three modes\", \"Diagnostics export completes in all three modes\", \"Unified router opens 2T, 4T 0D and native 4T project"
+  ]
+}
