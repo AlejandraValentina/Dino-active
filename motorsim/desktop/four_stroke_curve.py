@@ -377,6 +377,10 @@ class FourStrokeCurvePage(QWidget):
         self.cancel_button.clicked.connect(lambda *_: self.execution.cancel())
         row.addWidget(self.run_button); row.addWidget(self.cancel_button)
         form.addRow(row)
+        domain_notice=QLabel('Modelo 4T 0D de referencia: 2500–3500 RPM y 2–5 puntos por contrato. '
+                             'Para curvas amplias de potencia y torque, utilizá Motor 4T nativo. '
+                             'No son modelos intercambiables.')
+        domain_notice.setWordWrap(True);form.addRow(domain_notice)
         self.progress = QProgressBar(); self.progress.setRange(0, 0)
         self.progress.setVisible(False); self.progress.setMaximumWidth(220)
         form.addRow("Progreso", self.progress)

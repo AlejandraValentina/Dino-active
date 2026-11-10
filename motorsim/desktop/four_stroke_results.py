@@ -1,7 +1,7 @@
 """Vista de resultados 4T 0D; lectura estricta, sin claim predictivo."""
 from __future__ import annotations
 
-from PySide6.QtCore import QLineF, Qt
+from PySide6.QtCore import QLineF, QPointF, Qt
 from PySide6.QtGui import QColor, QPainter, QPen
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel,
                                QGroupBox, QFormLayout, QTabWidget)
@@ -62,7 +62,9 @@ class FourStrokeCurve(QWidget):
         previous = None
         for point in self.points:
             current = screen(point)
-            if previous is not None:
+            if not getattr(self, 'connect_points', True):
+                painter.drawEllipse(QPointF(current[0], current[1]), 3.5, 3.5)
+            elif previous is not None:
                 painter.drawLine(QLineF(previous[0], previous[1], current[0], current[1]))
             previous = current
 

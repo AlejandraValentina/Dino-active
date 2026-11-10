@@ -52,6 +52,15 @@ class DinoDesktopWindow(QMainWindow):
         self.context_bar=ContextBar();self.context_bar.setObjectName("contextBar")
         self.context_bar.variant_selected.connect(self.context.select_variant);layout.addWidget(self.context_bar)
         mode_row=QHBoxLayout();mode_row.setContentsMargins(18,9,18,10);mode_row.setSpacing(12)
+        mode_row.addWidget(QLabel("TIPO DE MOTOR"))
+        self.engine_selector=QComboBox();self.engine_selector.setObjectName("engineFamilySelector")
+        self.engine_selector.addItem("Motor 2 tiempos", "2T")
+        self.engine_selector.addItem("Motor 4 tiempos · nativo", "4T")
+        self.engine_selector.addItem("4T 0D · referencia no validada", "4T_REFERENCE")
+        self.engine_selector.setMinimumWidth(235)
+        self.engine_selector.setToolTip("Proyectos distintos con una navegación común; los modelos científicos siguen separados.")
+        self.engine_selector.currentIndexChanged.connect(self._engine_family_changed)
+        mode_row.addWidget(self.engine_selector)
         mode_label=QLabel("MODO DE TRABAJO");mode_label.setObjectName("workspaceModeLabel");mode_row.addWidget(mode_label)
         self.design_mode=QPushButton("MODELO");self.design_mode.setCheckable(True);self.design_mode.setChecked(True);self.design_mode.setObjectName("modeDesign")
         self.simulate_mode=QPushButton("SIMULAR");self.simulate_mode.setCheckable(True);self.simulate_mode.setObjectName("modeSimulate")
@@ -66,9 +75,11 @@ class DinoDesktopWindow(QMainWindow):
             button=QPushButton(text);button.clicked.connect(callback);project_actions.addWidget(button)
         self.explorer_button=QPushButton("Variantes y corridas…");self.explorer_button.clicked.connect(self._toggle_explorer);project_actions.addWidget(self.explorer_button)
         self.traceability_button=QPushButton("Trazabilidad…");self.traceability_button.clicked.connect(self._toggle_traceability);project_actions.addWidget(self.traceability_button)
-        self.four_stroke_button=QPushButton("Modo 4T 0D…");self.four_stroke_button.setToolTip("Abrir el modo 4T 0D de referencia sintética");self.four_stroke_button.clicked.connect(self.show_four_stroke_mode);project_actions.addWidget(self.four_stroke_button)
+        self.four_stroke_button=QPushButton("Referencia 4T 0D");self.four_stroke_button.setToolTip("También disponible desde Tipo de motor");self.four_stroke_button.clicked.connect(self.show_four_stroke_mode);project_actions.addWidget(self.four_stroke_button)
+        self.four_stroke_button.hide()
         project_actions.addStretch();layout.addLayout(project_actions)
-        self.mode_stack=QStackedWidget();layout.addWidget(self.mode_stack,1)
+        self.project_mode_stack=QStackedWidget();layout.addWidget(self.project_mode_stack,1)
+        self.mode_stack=QStackedWidget();self.project_mode_stack.addWidget(self.mode_stack)
         self.pages=[page_type(self.context) for _,page_type in PAGES]
         self.pages[0].component_state_changed.connect(self._refresh_component_states)
         self.pages[1].component_state_changed.connect(self._refresh_component_states)
@@ -244,19 +255,54 @@ class DinoDesktopWindow(QMainWindow):
         self.four_stroke_execution.progress.connect(self._four_stroke_progress)
         self.four_stroke_execution.finished.connect(self._four_stroke_finished)
         self.four_stroke_execution.failed.connect(self._four_stroke_failed)
-        self.project_mode_stack=QStackedWidget()
-        self.project_mode_stack.addWidget(shell)
         self.project_mode_stack.addWidget(page)
-        self.setCentralWidget(self.project_mode_stack)
+        from .native_four_stroke_workspace import NativeFourStrokeWorkspace
+        self.native_four_stroke=NativeFourStrokeWorkspace(self)
+        self.project_mode_stack.addWidget(self.native_four_stroke)
+        self.native_four_stroke.context.changed.connect(self._native_four_stroke_state_changed)
+        self.setCentralWidget(shell)
     def _four_stroke_active(self):
         return hasattr(self,"project_mode_stack") and self.project_mode_stack.currentIndex()==1
+    def _native_four_stroke_active(self):
+        return hasattr(self,"project_mode_stack") and self.project_mode_stack.currentIndex()==2
+    def _engine_family_changed(self,index):
+        family=self.engine_selector.itemData(index)
+        if family in ("2T","4T","4T_REFERENCE"):
+            self._activate_engine_family(family)
+    def _activate_engine_family(self,family):
+        indices={"2T":0,"4T_REFERENCE":1,"4T":2}
+        if family not in indices:raise ValueError("Tipo de motor no reconocido")
+        self.project_mode_stack.setCurrentIndex(indices[family])
+        self.engine_selector.blockSignals(True)
+        self.engine_selector.setCurrentIndex(self.engine_selector.findData(family))
+        self.engine_selector.blockSignals(False)
+        is_2t=family=="2T"
+        self.context_bar.setVisible(is_2t)
+        self.simulation_strip.setVisible(is_2t)
+        self.explorer_button.setVisible(is_2t)
+        self.traceability_button.setVisible(is_2t)
+        for name in ('import_config_action','export_config_action','evidence_toggle_action'):
+            if hasattr(self,name):getattr(self,name).setEnabled(is_2t)
+        self.explorer_dock.setVisible(False)
+        self.evidence_dock.setVisible(False)
+        current=0 if self.design_mode.isChecked() else (1 if self.analysis_mode.isChecked() else 2)
+        self.set_workspace_mode(current)
+        if is_2t:self._state_changed()
+        elif family=="4T_REFERENCE":self._four_stroke_state_changed()
+        else:self._native_four_stroke_state_changed()
     def show_four_stroke_mode(self,*_):
-        self.project_mode_stack.setCurrentIndex(1)
-        self._four_stroke_state_changed()
+        self._activate_engine_family("4T_REFERENCE")
         self.statusBar().showMessage("Modo 4T 0D de referencia · SYNTHETIC_REFERENCE_0D · NOT_VALIDATED",6000)
+    def show_native_four_stroke_mode(self,*_):
+        self._activate_engine_family("4T")
+        self.statusBar().showMessage("Motor 4T nativo · validación experimental NO REALIZADA",6000)
     def show_two_stroke_mode(self,*_):
-        self.project_mode_stack.setCurrentIndex(0)
-        self._state_changed()
+        self._activate_engine_family("2T")
+    def _native_four_stroke_state_changed(self,*_):
+        if not hasattr(self,"native_four_stroke") or not self._native_four_stroke_active():return
+        context=self.native_four_stroke.context
+        mark=" · cambios sin guardar" if context.dirty else ""
+        self.setWindowTitle(f"Dino Desktop · 4T nativo · {context.project['project_id']}{mark}")
     def _four_stroke_state_changed(self,*_):
         if not hasattr(self,"four_stroke_context"):return
         mark=' · cambios sin guardar' if self.four_stroke_context.dirty else ''
@@ -378,7 +424,15 @@ class DinoDesktopWindow(QMainWindow):
         self._update_strip()
     def set_workspace_mode(self,index):
         index=index if index in (0,1,2) else 0
-        self.mode_stack.setCurrentIndex(index);self.design_mode.setChecked(index==0);self.analysis_mode.setChecked(index==1);self.simulate_mode.setChecked(index==2)
+        self.design_mode.setChecked(index==0);self.analysis_mode.setChecked(index==1);self.simulate_mode.setChecked(index==2)
+        if self._native_four_stroke_active():
+            self.native_four_stroke.set_workspace_mode(index)
+            return
+        if self._four_stroke_active():
+            # 4T 0D remains explicitly synthetic: design / results / reference curve.
+            self.four_stroke_tabs.setCurrentIndex({0:0,1:1,2:2}[index])
+            return
+        self.mode_stack.setCurrentIndex(index)
         self.history_toggle.hide()
         self.settings.setValue("workspace_mode",index)
         if index==1:self.analysis_history.activate()
@@ -494,7 +548,8 @@ class DinoDesktopWindow(QMainWindow):
         for key,label,shortcut,callback in [('new','Nuevo proyecto',QKeySequence.StandardKey.New,self.new_file),('open','Abrir…',QKeySequence.StandardKey.Open,self.open_file),('save','Guardar',QKeySequence.StandardKey.Save,self.save_file),('save_as','Guardar como…',QKeySequence.StandardKey.SaveAs,self.save_as)]:
             action=QAction(label,self);action.setShortcut(shortcut);action.triggered.connect(callback);menu.addAction(action);self.actions[key]=action
             if key=='open':menu.addSeparator()
-        menu.addSeparator();imp=menu.addAction('Importar configuración…',self.import_configuration);exp=menu.addAction('Exportar configuración…',self.export_configuration)
+        menu.addSeparator();imp=menu.addAction('Importar configuración 2T…',self.import_configuration);exp=menu.addAction('Exportar configuración 2T…',self.export_configuration)
+        self.import_config_action=imp;self.export_config_action=exp
         menu.addSeparator()
         for label,callback in (('Nuevo 4T 0D…',self.new_four_stroke_file),('Abrir 4T 0D…',self.open_four_stroke_file),('Guardar 4T 0D…',self.save_four_stroke_file)):
             menu.addAction(label,callback)
@@ -502,6 +557,7 @@ class DinoDesktopWindow(QMainWindow):
         self._action('Guardar como',self.save_as)
         view=self.menuBar().addMenu('Vista');toggle=view.addAction('Evidencia y provenance');toggle.setCheckable(True);toggle.toggled.connect(self.evidence_dock.setVisible)
         self.evidence_dock.visibilityChanged.connect(toggle.setChecked)
+        self.evidence_toggle_action=toggle
     def _state_changed(self):
         mark=' • Cambios sin guardar' if self.context.dirty else ''
         if not self._four_stroke_active():
@@ -560,6 +616,43 @@ class DinoDesktopWindow(QMainWindow):
     def _restore_settings(self):
         geometry=self.settings.value('window_geometry')
         if geometry:self.restoreGeometry(geometry)
+    def _confirm_discard_active(self):
+        if self._native_four_stroke_active():return self._confirm_discard_native()
+        if self._four_stroke_active():return self._confirm_discard_four_stroke()
+        return self._confirm_discard()
+    def _confirm_discard_native(self):
+        context=self.native_four_stroke.context
+        if not context.dirty:return True
+        answer=QMessageBox.question(self,"Cambios 4T pendientes",
+            "¿Guardar el proyecto 4T nativo antes de sustituirlo?",
+            QMessageBox.StandardButton.Save|QMessageBox.StandardButton.Discard|QMessageBox.StandardButton.Cancel,
+            QMessageBox.StandardButton.Save)
+        if answer==QMessageBox.StandardButton.Cancel:return False
+        return self._save_native_project() if answer==QMessageBox.StandardButton.Save else True
+    def _save_native_project(self,path=None):
+        context=self.native_four_stroke.context
+        if self.native_four_stroke.running:
+            QMessageBox.warning(self,"Motor 4T en ejecución","Terminá la corrida antes de guardar.")
+            return False
+        target=Path(path) if path is not None else context.path
+        if target is None:
+            requested,_=QFileDialog.getSaveFileName(self,"Guardar motor 4T nativo",
+                str(Path.home()/"nuevo-4t.dino.json"),"Dino project (*.dino.json *.json)")
+            if not requested:return False
+            target=Path(requested)
+        if target.suffix.lower()!=".json":target=Path(str(target)+".dino.json")
+        try:
+            save_project(target,context.project)
+            context.path=target;context.dirty=False;context.changed.emit()
+            self.statusBar().showMessage(f"Motor 4T guardado en {target}",4000)
+            return True
+        except Exception as exc:
+            QMessageBox.warning(self,"No se pudo guardar el motor 4T",str(exc))
+            return False
+    def _save_native_as(self):
+        requested,_=QFileDialog.getSaveFileName(self,"Guardar motor 4T como",
+            str(Path.home()/"motor-4t.dino.json"),"Dino project (*.dino.json *.json)")
+        return self._save_native_project(requested) if requested else False
     def _confirm_discard(self):
         if not self.context.dirty:return True
         result=QMessageBox.question(self,'Cambios pendientes','¿Guardar los cambios del proyecto antes de continuar?',QMessageBox.StandardButton.Save|QMessageBox.StandardButton.Discard|QMessageBox.StandardButton.Cancel,QMessageBox.StandardButton.Save)
@@ -567,36 +660,58 @@ class DinoDesktopWindow(QMainWindow):
         if result==QMessageBox.StandardButton.Save:return self.save_file()
         return True
     def new_file(self):
-        if not self._confirm_discard():return
+        if not self._confirm_discard_active():return
         dialog=NewEngineDialog(self)
         if dialog.exec()!=QDialog.DialogCode.Accepted or dialog.project is None:return
         if dialog.project.get("engine_family")=="4T":
-            self._launch_four_stroke(dialog.project,None);return
-        self.context.replace_project(dialog.project,None);self._ensure_safe_artifact_root_for_new_project();self.statusBar().showMessage('Diseño nuevo creado · valores de plantilla identificados como supuestos',6000)
-    def _launch_four_stroke(self,project,path):
-        from .four_stroke_desktop import FourStrokeDesktopWindow
-        window=FourStrokeDesktopWindow(project,parent_2t=self,path=path);self._four_stroke_window=window
-        window.show();self.hide()
+            self._launch_four_stroke(dialog.project,None,confirmed=self._native_four_stroke_active());return
+        if (self._native_four_stroke_active() or self._four_stroke_active()) and not self._confirm_discard():return
+        self.context.replace_project(dialog.project,None)
+        self.show_two_stroke_mode()
+        self._ensure_safe_artifact_root_for_new_project()
+        self.statusBar().showMessage('Diseño nuevo creado · valores de plantilla identificados como supuestos',6000)
+    def _launch_four_stroke(self,project,path,*,confirmed=False):
+        # The native 4T editor is a workspace in this window, not another app.
+        if not confirmed and not self._confirm_discard_native():return False
+        if self.native_four_stroke.running:
+            QMessageBox.warning(self,"Motor 4T en ejecución","Terminá la corrida actual antes de abrir otro proyecto.")
+            return False
+        self.native_four_stroke.replace_project(project,Path(path) if path else None)
+        self.show_native_four_stroke_mode()
+        return True
     def open_file(self):
-        if not self._confirm_discard():return
-        path,_=QFileDialog.getOpenFileName(self,'Abrir proyecto',str(Path.home()),'Dino 2T (*.dino2t.json *.json)')
+        path,_=QFileDialog.getOpenFileName(self,'Abrir proyecto Dino',str(Path.home()),'Proyectos Dino (*.dino2t.json *.dino4t.json *.dino.json *.json)')
         if not path:return
         self._open(Path(path))
     def _open(self,path):
         try:
+            # Reference 4T 0D has a separate, versioned schema; it is not native 4T.
+            raw=json.loads(Path(path).read_text(encoding="utf-8"))
+            if raw.get("schema")=="MOTORSIM_4T_REFERENCE_PROJECT_V1":
+                if not self._confirm_discard_four_stroke():return
+                self.four_stroke_context.open(path)
+                self.four_stroke_results.clear_result()
+                self.show_four_stroke_mode()
+                return
             project=load_project(path)
             if project.get("engine_family")=="4T":
                 self._launch_four_stroke(project,path);return
+            if not self._confirm_discard():return
             self.context.replace_project(project,path)
             saved_variant=self.settings.value(f"active_variant/{project['project_id']}")
             if saved_variant in project["variants"]:self.context.select_variant(saved_variant)
+            self.show_two_stroke_mode()
             self.statusBar().showMessage(f"Proyecto {project['project_id']} abierto",4000)
         except Exception as exc:QMessageBox.warning(self,'No se pudo abrir el proyecto',f'{type(exc).__name__}: {exc}')
     def save_file(self):
+        if self._native_four_stroke_active():return self._save_native_project()
+        if self._four_stroke_active():return self.save_four_stroke_file()
         if self.context.path is None:return self.save_as()
         try:save_project(self.context.path,self.context.project);self.context.dirty=False;self.context.changed.emit();self.statusBar().showMessage('Proyecto guardado',3500);return True
         except Exception as exc:QMessageBox.warning(self,'No se pudo guardar',f'{type(exc).__name__}: {exc}');return False
     def save_as(self):
+        if self._native_four_stroke_active():return self._save_native_as()
+        if self._four_stroke_active():return self.save_four_stroke_as()
         path,_=QFileDialog.getSaveFileName(self,'Guardar proyecto como',str(Path.home()/'nuevo.dino2t.json'),'Dino 2T (*.dino2t.json)')
         if not path:return False
         target=Path(path)
@@ -633,6 +748,10 @@ class DinoDesktopWindow(QMainWindow):
         if hasattr(self,"four_stroke_curve") and self.four_stroke_curve.execution.running:
             if not self.four_stroke_curve.execution.shutdown():
                 self.statusBar().showMessage('La curva 4T no terminó; cierre cancelado para no dejar procesos huérfanos.')
+                event.ignore();return
+        if hasattr(self,"native_four_stroke") and self.native_four_stroke.running:
+            if not self.native_four_stroke.shutdown():
+                self.statusBar().showMessage('El solver nativo 4T sigue activo; cierre cancelado.')
                 event.ignore();return
         execution=self.pages[3]
         if getattr(execution,"task",None) is not None:

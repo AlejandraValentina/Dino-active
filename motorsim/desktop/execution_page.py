@@ -296,9 +296,12 @@ class ExecutionPage(QWidget):
         from ..power_curve_sweep import prepare_power_curve,run_power_curve
         dialog=QDialog(self);dialog.setWindowTitle("Preparar curva RPM · EXPLORATORY")
         form=QFormLayout(dialog)
-        start=QSpinBox();start.setRange(2500,15000);start.setSingleStep(100);start.setValue(3000)
-        stop=QSpinBox();stop.setRange(2500,15000);stop.setSingleStep(100);stop.setValue(6000)
+        from ..rpm_domain import PUBLIC_DOMAINS
+        low_rpm,high_rpm=PUBLIC_DOMAINS['2T']
+        start=QSpinBox();start.setRange(low_rpm,high_rpm);start.setSingleStep(500);start.setValue(low_rpm)
+        stop=QSpinBox();stop.setRange(low_rpm,high_rpm);stop.setSingleStep(500);stop.setValue(min(13000,high_rpm))
         step=QSpinBox();step.setRange(1,5000);step.setSingleStep(100);step.setValue(500)
+        for spin in (start,stop):spin.setToolTip(f'Dominio público 2T habilitado: {low_rpm}–{high_rpm} RPM; no es un límite físico universal.')
         cycles=QSpinBox();cycles.setRange(1,111);cycles.setValue(24)
         point_budget=QSpinBox();point_budget.setRange(1,600);point_budget.setValue(int(self.budget.value()))
         total_budget=QSpinBox();total_budget.setRange(1,3600);total_budget.setValue(1800)
@@ -322,6 +325,9 @@ class ExecutionPage(QWidget):
             ("Horizonte máximo por punto",cycles),("Presupuesto por punto (s)",point_budget),
             ("Presupuesto total de esta invocación (s)",total_budget),("Memoria RSS máxima (MiB)",memory)):
             form.addRow(label,widget)
+        domain_note=QLabel(f'Dominio 2T habilitado actualmente: {low_rpm}–{high_rpm} RPM. '
+                           'No es el límite físico universal de un motor 2T; valores inferiores requieren ampliar la validación del solver.')
+        domain_note.setWordWrap(True);form.addRow(domain_note)
         form.addRow(QLabel("Cada punto usa el solver integrado y su checkpoint. Auditoría según el modo del motor; no se extrapolan gaps."))
         buttons=QDialogButtonBox(QDialogButtonBox.StandardButton.Ok|QDialogButtonBox.StandardButton.Cancel)
         buttons.button(QDialogButtonBox.StandardButton.Ok).setText("Preflight y continuar…")
