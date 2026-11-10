@@ -25,6 +25,8 @@ from .four_stroke_results import FourStrokeResultsPage
 from .four_stroke_curve import FourStrokeCurvePage
 from .widgets.context_bar import ContextBar
 from .preferences import settings, repository_root_containing
+from .product import (AboutDialog, RecentProjects, RecoveryController,
+                      create_diagnostics_bundle, product_info)
 from .theme import stylesheet
 from .presentation import state_label
 
@@ -46,7 +48,11 @@ class DinoDesktopWindow(QMainWindow):
         self._build_ui();self._build_actions();self.toolbar.hide();self.context.changed.connect(self._state_changed)
         self.context.variant_changed.connect(self._variant_changed)
         self._restore_settings();self._state_changed();self._select_baseline(self.context_bar.baseline.currentData())
+        self.recent=RecentProjects(self.settings)
+        self.recovery_2t=RecoveryController("2T",self.context,lambda:self.context.project,self)
+        self.recovery_4t=RecoveryController("4T0D",self.four_stroke_context,lambda:self.four_stroke_context.project.to_dict(),self)
         if project is None:self._ensure_safe_artifact_root_for_new_project()
+        QTimer.singleShot(0,self._offer_recoveries)
     def _build_ui(self):
         shell=QWidget();layout=QVBoxLayout(shell);layout.setContentsMargins(0,0,0,0);layout.setSpacing(0)
         self.context_bar=ContextBar();self.context_bar.setObjectName("contextBar")
@@ -279,16 +285,24 @@ class DinoDesktopWindow(QMainWindow):
         if not self._confirm_discard_four_stroke():return
         path,_=QFileDialog.getOpenFileName(self,'Abrir proyecto 4T',str(Path.home()),'Dino 4T 0D (*.dino4t.json *.json)')
         if not path:return
+        self._open_four_stroke_path(Path(path))
+    def _open_four_stroke_path(self,path):
+        if not self._confirm_discard_four_stroke():return False
         try:
             self.four_stroke_context.open(path)
             self.four_stroke_results.clear_result()
             self.show_four_stroke_mode()
+            self.recent.add("4T0D",path)
             self.statusBar().showMessage(f"Proyecto 4T {self.four_stroke_context.name} abierto",4000)
-        except Exception as exc:QMessageBox.warning(self,'No se pudo abrir el proyecto 4T',f'{type(exc).__name__}: {exc}')
+            return True
+        except Exception as exc:
+            QMessageBox.warning(self,'No se pudo abrir el proyecto 4T',f'{type(exc).__name__}: {exc}')
+            return False
     def save_four_stroke_file(self):
         if self.four_stroke_context.path is None:return self.save_four_stroke_as()
         try:
             target=self.four_stroke_context.save()
+            self.recent.add("4T0D",target);self.recovery_4t.clear()
             self.statusBar().showMessage(f'Proyecto 4T guardado en {target}',4000)
             return True
         except Exception as exc:QMessageBox.warning(self,'No se pudo guardar el proyecto 4T',f'{type(exc).__name__}: {exc}');return False
@@ -299,6 +313,7 @@ class DinoDesktopWindow(QMainWindow):
         if target.suffix.lower()!='.json':target=Path(str(target)+'.dino4t.json')
         try:
             target=self.four_stroke_context.save(target)
+            self.recent.add("4T0D",target);self.recovery_4t.clear()
             self.statusBar().showMessage(f'Proyecto 4T guardado en {target}',4000)
             return True
         except Exception as exc:QMessageBox.warning(self,'No se pudo guardar el proyecto 4T',f'{type(exc).__name__}: {exc}');return False
@@ -498,10 +513,18 @@ class DinoDesktopWindow(QMainWindow):
         menu.addSeparator()
         for label,callback in (('Nuevo 4T 0D…',self.new_four_stroke_file),('Abrir 4T 0D…',self.open_four_stroke_file),('Guardar 4T 0D…',self.save_four_stroke_file)):
             menu.addAction(label,callback)
+        menu.addSeparator()
+        self.recent_2t_menu=menu.addMenu('Proyectos recientes 2T')
+        self.recent_4t_menu=menu.addMenu('Proyectos recientes 4T 0D')
+        self.recent_2t_menu.aboutToShow.connect(self._refresh_recent_menus)
+        self.recent_4t_menu.aboutToShow.connect(self._refresh_recent_menus)
         self._action('Nuevo',self.new_file);self._action('Abrir',self.open_file);self._action('Guardar',self.save_file,QKeySequence.StandardKey.Save)
         self._action('Guardar como',self.save_as)
         view=self.menuBar().addMenu('Vista');toggle=view.addAction('Evidencia y provenance');toggle.setCheckable(True);toggle.toggled.connect(self.evidence_dock.setVisible)
         self.evidence_dock.visibilityChanged.connect(toggle.setChecked)
+        help_menu=self.menuBar().addMenu('Ayuda')
+        help_menu.addAction('Acerca de Dino…',self.show_about)
+        help_menu.addAction('Exportar diagnóstico…',self.export_diagnostics)
     def _state_changed(self):
         mark=' • Cambios sin guardar' if self.context.dirty else ''
         if not self._four_stroke_active():
@@ -560,6 +583,63 @@ class DinoDesktopWindow(QMainWindow):
     def _restore_settings(self):
         geometry=self.settings.value('window_geometry')
         if geometry:self.restoreGeometry(geometry)
+    def _offer_recoveries(self):
+        self._offer_recovery("2T", self._restore_2t_recovery)
+        self._offer_recovery("4T0D", self._restore_4t_recovery)
+    def _offer_recovery(self, family, restore):
+        entries=RecoveryController.pending(family)
+        if not entries:return
+        entry=entries[0]
+        answer=QMessageBox.question(self,"Borrador de recuperación",
+            f"Se encontró un borrador de {family} sin guardar. ¿Abrirlo como copia recuperada?",
+            QMessageBox.StandardButton.Yes|QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.Yes)
+        if answer==QMessageBox.StandardButton.Yes:
+            try:restore(entry)
+            except Exception as exc:QMessageBox.warning(self,"No se pudo recuperar",f"{type(exc).__name__}: {exc}")
+        else:RecoveryController.discard(family,entry.get("project_id"))
+    def _restore_2t_recovery(self, entry):
+        path=Path(entry["original_path"]) if entry.get("original_path") else None
+        self.context.replace_project(entry["project"],path)
+        self.context.dirty=True;self.context.changed.emit()
+        if path:self.recent.add("2T",path)
+        self.statusBar().showMessage("Borrador 2T recuperado; guardá para conservarlo.",7000)
+    def _restore_4t_recovery(self, entry):
+        from ..four_stroke_project import FourStrokeProject
+        path=Path(entry["original_path"]) if entry.get("original_path") else None
+        self.four_stroke_context.replace_project(FourStrokeProject.from_dict(entry["project"]),path)
+        self.four_stroke_context.dirty=True;self.four_stroke_context.changed.emit()
+        if path:self.recent.add("4T0D",path)
+        self.show_four_stroke_mode()
+        self.statusBar().showMessage("Borrador 4T 0D recuperado; guardá para conservarlo.",7000)
+    def _refresh_recent_menus(self):
+        for menu,family,callback in ((self.recent_2t_menu,"2T",self._open_recent_2t),
+                                     (self.recent_4t_menu,"4T0D",self._open_recent_4t)):
+            menu.clear();paths=self.recent.items(family)
+            if not paths:
+                action=menu.addAction("Sin proyectos recientes");action.setEnabled(False);continue
+            for path in paths:
+                action=menu.addAction(path);action.triggered.connect(lambda checked=False,p=path:callback(p))
+    def _open_recent_2t(self, path):
+        if not self._confirm_discard():return
+        self._open(Path(path))
+    def _open_recent_4t(self, path):
+        self._open_four_stroke_path(Path(path))
+    def show_about(self):
+        AboutDialog(product_info(),self).exec()
+    def export_diagnostics(self):
+        path,_=QFileDialog.getSaveFileName(self,"Exportar diagnóstico",
+            str(Path.home()/"dino-diagnostico.zip"),"ZIP (*.zip)")
+        if not path:return
+        include=QMessageBox.question(self,"Diagnóstico",
+            "¿Incluir el proyecto actual en el ZIP? El archivo puede contener datos de ingeniería.",
+            QMessageBox.StandardButton.Yes|QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No)
+        active=self.four_stroke_context.project if self._four_stroke_active() else self.context.project
+        project=active.to_dict() if hasattr(active,"to_dict") else active
+        try:target=create_diagnostics_bundle(path,include_project=include==QMessageBox.StandardButton.Yes,project=project)
+        except Exception as exc:QMessageBox.warning(self,"No se pudo exportar",f"{type(exc).__name__}: {exc}");return
+        QMessageBox.information(self,"Diagnóstico exportado",f"Se guardó en:\n{target}")
     def _confirm_discard(self):
         if not self.context.dirty:return True
         result=QMessageBox.question(self,'Cambios pendientes','¿Guardar los cambios del proyecto antes de continuar?',QMessageBox.StandardButton.Save|QMessageBox.StandardButton.Discard|QMessageBox.StandardButton.Cancel,QMessageBox.StandardButton.Save)
@@ -588,20 +668,21 @@ class DinoDesktopWindow(QMainWindow):
             if project.get("engine_family")=="4T":
                 self._launch_four_stroke(project,path);return
             self.context.replace_project(project,path)
+            self.recent.add("2T",path)
             saved_variant=self.settings.value(f"active_variant/{project['project_id']}")
             if saved_variant in project["variants"]:self.context.select_variant(saved_variant)
             self.statusBar().showMessage(f"Proyecto {project['project_id']} abierto",4000)
         except Exception as exc:QMessageBox.warning(self,'No se pudo abrir el proyecto',f'{type(exc).__name__}: {exc}')
     def save_file(self):
         if self.context.path is None:return self.save_as()
-        try:save_project(self.context.path,self.context.project);self.context.dirty=False;self.context.changed.emit();self.statusBar().showMessage('Proyecto guardado',3500);return True
+        try:save_project(self.context.path,self.context.project);self.context.dirty=False;self.context.changed.emit();self.recent.add("2T",self.context.path);self.recovery_2t.clear();self.statusBar().showMessage('Proyecto guardado',3500);return True
         except Exception as exc:QMessageBox.warning(self,'No se pudo guardar',f'{type(exc).__name__}: {exc}');return False
     def save_as(self):
         path,_=QFileDialog.getSaveFileName(self,'Guardar proyecto como',str(Path.home()/'nuevo.dino2t.json'),'Dino 2T (*.dino2t.json)')
         if not path:return False
         target=Path(path)
         if target.suffix.lower()!='.json':target=Path(str(target)+'.dino2t.json')
-        try:save_project(target,self.context.project);self.context.path=target;self.context.dirty=False;self.context.changed.emit();self.statusBar().showMessage('Proyecto guardado',3500);return True
+        try:save_project(target,self.context.project);self.context.path=target;self.context.dirty=False;self.context.changed.emit();self.recent.add("2T",target);self.recovery_2t.clear();self.statusBar().showMessage('Proyecto guardado',3500);return True
         except Exception as exc:QMessageBox.warning(self,'No se pudo guardar',f'{type(exc).__name__}: {exc}');return False
     def import_configuration(self):
         path,_=QFileDialog.getOpenFileName(self,'Importar configuración de motor',str(Path.home()),'Engine configuration (*.json)')

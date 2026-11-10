@@ -16,7 +16,7 @@ import shutil
 import threading
 import uuid
 
-from PySide6.QtCore import QObject, QRunnable, QThreadPool, Signal, Qt
+from PySide6.QtCore import QObject, QRunnable, QThreadPool, Signal, Qt, QTimer
 from PySide6.QtWidgets import (QApplication, QComboBox, QDoubleSpinBox, QFileDialog,
     QFormLayout, QHBoxLayout, QLabel, QMainWindow, QMessageBox, QPushButton,
     QSpinBox, QTabWidget, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget,
@@ -32,6 +32,8 @@ from .four_stroke_comparison import build_comparison, ComparisonIneligible
 from .plot import CurvePlot
 from .preferences import artifact_root
 from .presentation import format_number, state_label
+from .product import (AboutDialog, RecentProjects, RecoveryController,
+                      create_diagnostics_bundle, product_info)
 
 SECTION_LABELS={"geometry":"Cilindro y geometría","intake_valve":"Válvula de admisión",
     "exhaust_valve":"Válvula de escape","intake_duct":"Admisión","exhaust_duct":"Escape",
@@ -656,6 +658,15 @@ class FourStrokeDesktopWindow(QMainWindow):
         self.results=FourStrokeResults(self.context);self.tabs.addTab(self.results,"RESULTADOS")
         self.context.changed.connect(self._refresh_title);self.setCentralWidget(central)
         self._refresh_title()
+        self.recent=RecentProjects()
+        self.recovery=RecoveryController("4Tnative",self.context,lambda:self.context.project,self)
+        file_menu=self.menuBar().addMenu("Archivo")
+        self.recent_menu=file_menu.addMenu("Proyectos recientes 4T")
+        self.recent_menu.aboutToShow.connect(self._refresh_recent_menu)
+        help_menu=self.menuBar().addMenu("Ayuda")
+        help_menu.addAction("Acerca de Dino…",self.show_about)
+        help_menu.addAction("Exportar diagnóstico…",self.export_diagnostics)
+        QTimer.singleShot(0,self._offer_recovery)
 
     def _build_model_page(self):
         page=QWidget();layout=QHBoxLayout(page);split=QSplitter();layout.addWidget(split)
@@ -691,6 +702,50 @@ class FourStrokeDesktopWindow(QMainWindow):
         try:self.context.delete_variant(name)
         except Exception as exc:QMessageBox.warning(self,"No se pudo eliminar",str(exc))
 
+    def _refresh_recent_menu(self):
+        self.recent_menu.clear();paths=self.recent.items("4Tnative")
+        if not paths:
+            action=self.recent_menu.addAction("Sin proyectos recientes");action.setEnabled(False);return
+        for path in paths:
+            action=self.recent_menu.addAction(path);action.triggered.connect(lambda checked=False,p=path:self._open_recent(p))
+    def _open_recent(self,path):
+        if self._guard_active_run():return
+        try:
+            project=load_project(path)
+            if project.get("engine_family","2T")!="4T":raise ValueError("El proyecto reciente no es 4T.")
+            if not self._confirm_discard():return
+            self.context.replace_project(project,Path(path));self.recent.add("4Tnative",path);self.editor.refresh();self.results.refresh()
+            self.recent.add("4Tnative",path);self._refresh_title()
+        except Exception as exc:QMessageBox.warning(self,"No se pudo abrir",f"{type(exc).__name__}: {exc}")
+    def _offer_recovery(self):
+        entries=RecoveryController.pending("4Tnative")
+        if not entries:return
+        entry=entries[0]
+        answer=QMessageBox.question(self,"Borrador de recuperación",
+            "Se encontró un borrador 4T sin guardar. ¿Abrirlo como copia recuperada?",
+            QMessageBox.StandardButton.Yes|QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.Yes)
+        if answer==QMessageBox.StandardButton.Yes:
+            try:
+                path=Path(entry["original_path"]) if entry.get("original_path") else None
+                self.context.replace_project(entry["project"],path)
+                self.context.dirty=True;self.context.changed.emit();self.editor.refresh();self.results.refresh()
+                if path:self.recent.add("4Tnative",path)
+                self._refresh_title()
+            except Exception as exc:QMessageBox.warning(self,"No se pudo recuperar",f"{type(exc).__name__}: {exc}")
+        else:RecoveryController.discard("4Tnative",entry.get("project_id"))
+    def show_about(self):
+        AboutDialog(product_info(),self).exec()
+    def export_diagnostics(self):
+        path,_=QFileDialog.getSaveFileName(self,"Exportar diagnóstico",str(Path.home()/"dino-4t-diagnostico.zip"),"ZIP (*.zip)")
+        if not path:return
+        include=QMessageBox.question(self,"Diagnóstico",
+            "¿Incluir el proyecto actual en el ZIP? El archivo puede contener datos de ingeniería.",
+            QMessageBox.StandardButton.Yes|QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No)
+        try:target=create_diagnostics_bundle(path,include_project=include==QMessageBox.StandardButton.Yes,project=self.context.project)
+        except Exception as exc:QMessageBox.warning(self,"No se pudo exportar",f"{type(exc).__name__}: {exc}");return
+        QMessageBox.information(self,"Diagnóstico exportado",f"Se guardó en:\n{target}")
     def _refresh_title(self):
         mark=" · cambios sin guardar" if self.context.dirty else ""
         self.setWindowTitle(f"Dino Desktop · 4T · {self.context.project['project_id']}{mark}")
@@ -703,7 +758,7 @@ class FourStrokeDesktopWindow(QMainWindow):
             if not path.endswith(".json"):path+=".dino.json"
             self.context.path=Path(path)
         try:
-            save_project(self.context.path,self.context.project);self.context.dirty=False;self.context.changed.emit();return True
+            save_project(self.context.path,self.context.project);self.context.dirty=False;self.context.changed.emit();self.recent.add("4Tnative",self.context.path);self.recovery.clear();return True
         except Exception as exc:QMessageBox.warning(self,"No se pudo guardar",str(exc));return False
 
     def open_project(self):
