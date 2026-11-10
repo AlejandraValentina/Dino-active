@@ -373,6 +373,7 @@ class FourStrokeResults(QWidget):
         self.compare_tab=QWidget();compare_layout=QVBoxLayout(self.compare_tab);self.comparison=None
         controls=QHBoxLayout();self.compare_a=QComboBox();self.compare_b=QComboBox();self.compare_button=QPushButton("Comparar corridas");self.compare_button.clicked.connect(self.compare);controls.addWidget(QLabel("A"));controls.addWidget(self.compare_a,1);controls.addWidget(QLabel("B"));controls.addWidget(self.compare_b,1);controls.addWidget(self.compare_button);compare_layout.addLayout(controls)
         self.compare_status=QLabel("La comparación requiere dos diseños distintos, corridas periódicas y contexto de cálculo idéntico.");self.compare_status.setWordWrap(True);compare_layout.addWidget(self.compare_status)
+        self.compare_guide_button=QPushButton("Guía de comparación");self.compare_guide_button.clicked.connect(self.show_comparison_guide);compare_layout.addWidget(self.compare_guide_button)
         self.compare_table=QTableWidget(0,5);self.compare_table.setHorizontalHeaderLabels(["Métrica","A","B","Δ absoluto · B − A","Δ relativo a A"]);self.compare_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);compare_layout.addWidget(self.compare_table,1)
         exports=QHBoxLayout();self.compare_json_button=QPushButton("Exportar ficha A/B JSON");self.compare_json_button.clicked.connect(self.export_comparison_json);self.compare_json_button.setEnabled(False);exports.addWidget(self.compare_json_button);self.compare_csv_button=QPushButton("Exportar diferencias CSV");self.compare_csv_button.clicked.connect(self.export_comparison_csv);self.compare_csv_button.setEnabled(False);exports.addWidget(self.compare_csv_button);self.compare_report_button=QPushButton("Informe técnico A/B HTML");self.compare_report_button.clicked.connect(self.export_comparison_report);self.compare_report_button.setEnabled(False);exports.addWidget(self.compare_report_button);self.compare_report_pdf_button=QPushButton("Informe técnico A/B PDF");self.compare_report_pdf_button.clicked.connect(self.export_comparison_report_pdf);self.compare_report_pdf_button.setEnabled(False);exports.addWidget(self.compare_report_pdf_button);compare_layout.addLayout(exports);detail.addTab(self.compare_tab,"Comparar")
         self.compare_a.currentIndexChanged.connect(self._invalidate_comparison)
@@ -487,6 +488,10 @@ class FourStrokeResults(QWidget):
             for column,text in enumerate(values):self.compare_table.setItem(row,column,QTableWidgetItem(text))
         self.compare_status.setText(f"Diferencia del modelo 4T · {format_number(comparison['operating_point']['rpm'])} RPM exactas · contexto, modelos, numerics, versión y termodinámica coinciden · A/B periódicos · diferencias calculadas, no validadas experimentalmente · ID {comparison['comparison_id'][:12]}")
         self.compare_json_button.setEnabled(True);self.compare_csv_button.setEnabled(True);self.compare_report_button.setEnabled(True);self.compare_report_pdf_button.setEnabled(True)
+
+    def show_comparison_guide(self):
+        from .legacy_ux import show_comparison_guide
+        show_comparison_guide(self,"4T nativo")
 
     def _invalidate_comparison(self,*_):
         self.comparison=None
@@ -637,6 +642,9 @@ class FourStrokeResults(QWidget):
             config_raw=config_src.read_bytes();config=json.loads(config_raw);check=engine_platform.validate_config("4T",config)
             if not check["valid"] or check["unknown_keys"] or check["config_sha256"]!=summary["config_sha256"]:
                 raise ValueError("La configuración asociada no coincide con config_sha256 del resultado.")
+            from .legacy_ux import show_legacy_import_notice
+            show_legacy_import_notice(self,src,classification="LEGACY_UNVERIFIED",
+                detail="Origen: resumen DINO4T_OPERATING_POINT_RESULT_V1 con configuración asociada.")
             run_id=uuid.uuid4().hex;root=artifact_root()/"dino-4t-desktop-v1"/hashlib.sha256(self.context.project["project_id"].encode()).hexdigest()[:20]/run_id
             artifacts=root/"artifacts";artifacts.mkdir(parents=True,exist_ok=False)
             summary_dst=artifacts/"summary.json";config_dst=artifacts/"config_resolved.json"

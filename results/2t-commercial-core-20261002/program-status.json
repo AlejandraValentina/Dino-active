@@ -13449,11 +13449,14 @@
       "dependencies": [
         "CP1-PROJECT-BUNDLES"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Implement batch/queue.",
+      "evidence": [
+        "tests/test_desktop_batch_queue.py 4 PASS",
+        "results/commercial-product-v1/verification/cp1-batch-legacy.summary.json 41 PASS"
+      ],
+      "next_action": null,
       "owner_role": "implementation",
       "write_scope": [],
       "evidence_level": "L0"
@@ -13465,11 +13468,14 @@
       "dependencies": [
         "CP1-PROJECT-BUNDLES"
       ],
-      "state": "WAITING",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Implement comparison/legacy UX improvements.",
+      "evidence": [
+        "tests/test_desktop_legacy_ux.py 3 PASS",
+        "results/commercial-product-v1/verification/cp1-batch-legacy.summary.json 41 PASS"
+      ],
+      "next_action": null,
       "owner_role": "implementation",
       "write_scope": [],
       "evidence_level": "L0"
@@ -13523,6 +13529,76 @@
         "results/commercial-product-v1/baseline.json"
       ],
       "evidence_level": "L3"
+    },
+    {
+      "id": "CP1-REGRESSION",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+      "description": "CP1-focused source regression plus full-suite residual triage.",
+      "dependencies": [
+        "CP1-UNDO-REDO",
+        "CP1-PROJECT-BUNDLES",
+        "CP1-PDF-REPORT",
+        "CP1-TEMPLATES-ONBOARDING",
+        "CP1-BATCH-QUEUE",
+        "CP1-COMPARISON-LEGACY-UX"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/commercial-product-v1/verification/cp1-regression-no-external-view.summary.json (3692 passed, 89 failed, 57 errors pre-existing residual)",
+        "results/commercial-product-v1/verification/cp1-regression-triage.json",
+        "70 CP1-focused tests PASS"
+      ],
+      "next_action": null,
+      "owner_role": "verification",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "CP1-DOCS",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+      "description": "Document CP1 workflows, limits and acceptance boundaries in roadmap/README.",
+      "dependencies": [
+        "CP1-UNDO-REDO",
+        "CP1-PROJECT-BUNDLES",
+        "CP1-PDF-REPORT",
+        "CP1-TEMPLATES-ONBOARDING",
+        "CP1-BATCH-QUEUE",
+        "CP1-COMPARISON-LEGACY-UX"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "docs/roadmaps/dino-commercial-product-v1-20261110.md",
+        "openspec/changes/commercial-product-v1/tasks.md"
+      ],
+      "next_action": null,
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "CP1-WINDOWS-UAT",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+      "description": "Separate Windows candidate acceptance for CP1 workflows; never reuse CP0 accepted hashes.",
+      "dependencies": [
+        "CP1-UNDO-REDO",
+        "CP1-PROJECT-BUNDLES",
+        "CP1-PDF-REPORT",
+        "CP1-TEMPLATES-ONBOARDING",
+        "CP1-BATCH-QUEUE",
+        "CP1-COMPARISON-LEGACY-UX"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Build a new CP1 candidate and verify undo/redo, PDF, onboarding, bundles, batch and legacy UX; require CP1-REGRESSION evidence first.",
+      "owner_role": "verification",
+      "write_scope": [],
+      "evidence_level": "L1"
     }
   ],
   "audit_remediation_mode": false,
@@ -19180,6 +19256,30 @@
       "task": "CP1-PROJECT-BUNDLES",
       "kind": "task",
       "summary": "Portable ZIP bundles for 2T, native 4T and 4T 0D implemented with project/artifact hash verification, portable relative paths and legacy classification preservation; 20 focused tests PASS."
+    },
+    {
+      "at": "2026-11-10T15:52:03+00:00",
+      "task": "CP1-BATCH-QUEUE",
+      "kind": "task",
+      "summary": "Bounded 4T 0D curve queue with budget, cancel, resume and JSON persistence added; 41 focused tests PASS."
+    },
+    {
+      "at": "2026-11-10T15:52:03+00:00",
+      "task": "CP1-COMPARISON-LEGACY-UX",
+      "kind": "task",
+      "summary": "Exact-comparison guide and explicit legacy-import notice added for 2T and native 4T; classification preserved without promotion."
+    },
+    {
+      "at": "2026-11-10T17:25:12+00:00",
+      "task": "CP1-REGRESSION",
+      "kind": "task",
+      "summary": "CP1-focused regression 70 PASS; full-suite residual 89F/57E triaged as pre-existing/environmental with no CP1 attribution."
+    },
+    {
+      "at": "2026-11-10T17:25:12+00:00",
+      "task": "CP1-DOCS",
+      "kind": "task",
+      "summary": "CP1 source status, scientific limits and Windows acceptance boundary documented; residual regression triage linked."
     }
   ],
   "legacy_gate_status": {
@@ -19195,20 +19295,18 @@
   },
   "gate_status": {
     "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
-    "state": "OPEN",
-    "classification": null,
-    "evidence": [],
-    "gate_tasks_total": 6,
-    "gate_tasks_done": 4,
-    "gate_task_states": {
-      "DONE": 4,
-      "WAITING": 2
-    },
-    "remaining": [
-      "CP1-BATCH-QUEUE",
-      "CP1-COMPARISON-LEGACY-UX"
+    "state": "REVIEW",
+    "classification": "CP1_SOURCE_COMPLETE_WINDOWS_PENDING",
+    "evidence": [
+      "cp1-regression-no-external-view.summary.json; cp1-regression-triage.json; cp1-wave1.summary.json; cp1-bundles.summary.json; cp1-batch-legacy.summary.json"
     ],
-    "updated_at": "2026-11-10T15:36:12+00:00"
+    "gate_tasks_total": 6,
+    "gate_tasks_done": 6,
+    "gate_task_states": {
+      "DONE": 6
+    },
+    "remaining": [],
+    "updated_at": "2026-11-10T17:25:13+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

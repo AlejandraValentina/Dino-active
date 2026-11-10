@@ -42,6 +42,23 @@ declarar con precisión qué está validado y qué no.
 - CP1 comienza sobre esta base; ramas originales CP0 y UI unificada se
   conservan.
 
+## 2ter. CP1 - estado de fuente (2026-11-10)
+
+- Implementado en `feat/commercial-product-cp1`: undo/redo acotado por contexto
+  (2T, 4T 0D, 4T nativo), bundles portables con hashes y política legacy,
+  informes PDF, guía/plantillas de inicio, cola 4T 0D con presupuesto,
+  cancelación/reanudación y guía de comparación/importación legacy explícita.
+- Regresión enfocada CP1: **70 PASS**. Evidencia en
+  `results/commercial-product-v1/verification/`.
+- La suite completa conserva fallos preexistentes/de entorno (fixtures locales
+  ausentes, expectativas de texto antiguas, `external_view` Qt); el triaje está
+  en `results/commercial-product-v1/verification/cp1-regression-triage.json`.
+  No se atribuye ningún fallo residual a CP1.
+- Aceptación Windows CP1: **PENDIENTE**, separada de la fuente. No se reutiliza
+  el hash del candidato CP0 aceptado ni se declara release comercial.
+- Sin claims científicos: calibración `NOT_PERFORMED`, validación experimental
+  `NOT_PERFORMED`, predictiva `NOT_CLAIMED`.
+
 ## 3. Fases y dependencias
 
 | Fase | Depende de | Objetivo observable |

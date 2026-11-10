@@ -1,0 +1,29 @@
+{
+  "name": "cp1-batch-legacy",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_desktop_batch_queue.py",
+    "tests/test_desktop_legacy_ux.py",
+    "tests/test_desktop_project_bundles.py",
+    "tests/test_dino4t_ab_comparison.py",
+    "tests/test_desktop_technical_report.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "started_at": "2026-11-10T15:50:04+00:00",
+  "finished_at": "2026-11-10T15:51:50+00:00",
+  "duration_s": 105.891,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\commercial-product-v1\\verification\\cp1-batch-legacy.log",
+  "log_lines": 2,
+  "log_bytes": 111,
+  "error_lines": [],
+  "tail": [
+    ".........................................                                [100%]",
+    "41 passed in 103.94s (0:01:43)"
+  ]
+}

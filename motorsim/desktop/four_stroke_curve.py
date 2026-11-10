@@ -375,7 +375,9 @@ class FourStrokeCurvePage(QWidget):
         self.cancel_button = QPushButton("Cancelar")
         self.cancel_button.setEnabled(False)
         self.cancel_button.clicked.connect(lambda *_: self.execution.cancel())
-        row.addWidget(self.run_button); row.addWidget(self.cancel_button)
+        self.batch_button=QPushButton("Cola de curvas…")
+        self.batch_button.clicked.connect(self.open_batch_queue)
+        row.addWidget(self.run_button); row.addWidget(self.cancel_button); row.addWidget(self.batch_button)
         form.addRow(row)
         domain_notice=QLabel('Modelo 4T 0D de referencia: 2500–3500 RPM y 2–5 puntos por contrato. '
                              'Para curvas amplias de potencia y torque, utilizá Motor 4T nativo. '
@@ -428,6 +430,10 @@ class FourStrokeCurvePage(QWidget):
             self.execution.start(rpms)
         except (ProjectError, FourStrokeProjectError, FourStrokeCurveRunError, ValueError) as exc:
             self.status.setText(str(exc))
+
+    def open_batch_queue(self):
+        from .batch_queue import BatchQueueDialog
+        BatchQueueDialog(self.context,self).exec()
 
     def _started(self, target):
         self.run_button.setEnabled(False)

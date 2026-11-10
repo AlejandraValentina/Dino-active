@@ -33,8 +33,10 @@ Orden: (undo/redo, PDF, onboarding) → bundles → (batch, comparación/legacy)
   - verificar: test:python -m pytest tests/test_desktop_pdf_report.py tests/test_desktop_technical_report.py tests/test_dino4t_ab_comparison.py -q
 - [x] CP1-TEMPLATES-ONBOARDING - guía breve, ejemplos sintéticos 2T/4T nativo/4T 0D y verificación de primeros pasos.
   - verificar: test:python -m pytest tests/test_desktop_onboarding.py -q
-- [ ] CP1-BATCH-QUEUE
-- [ ] CP1-COMPARISON-LEGACY-UX
+- [x] CP1-BATCH-QUEUE - cola 4T 0D acotada (20 curvas/100 puntos), presupuesto, cancelación, reanudación y persistencia JSON; los flujos 2T/nativo conservan sus barridos/estudios acotados existentes.
+  - verificar: test:python -m pytest tests/test_desktop_batch_queue.py -q
+- [x] CP1-COMPARISON-LEGACY-UX - guía de comparación exacta y aviso explícito de importación legacy con clasificación conservada y sin promoción.
+  - verificar: test:python -m pytest tests/test_desktop_legacy_ux.py -q
 
 ## CP2 — operación comercial
 

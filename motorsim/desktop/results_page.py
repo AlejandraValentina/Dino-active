@@ -981,6 +981,9 @@ class ResultsPage(QWidget):
         self.export_study_comparison_pdf_button=QPushButton("Exportar comparación PDF.")
         self.export_study_comparison_pdf_button.clicked.connect(self.export_study_comparison_pdf)
         comparison_bar.addWidget(self.export_study_comparison_pdf_button)
+        self.compare_guide_button=QPushButton("Guía de comparación")
+        self.compare_guide_button.clicked.connect(self.show_study_comparison_guide)
+        comparison_bar.addWidget(self.compare_guide_button)
         self.export_study_comparison_csv_button=QPushButton("Exportar comparación CSV…")
         self.export_study_comparison_csv_button.setToolTip("CSV con filas pareadas y no pareadas, estados, valores observados y procedencia SHA-256.")
         self.export_study_comparison_csv_button.clicked.connect(self.export_study_comparison_csv)
@@ -1567,6 +1570,10 @@ class ResultsPage(QWidget):
             return True
         except (OSError,RuntimeError,TypeError,ValueError) as exc:
             QMessageBox.warning(self,"No se pudo exportar la comparación PDF",str(exc));return False
+
+    def show_study_comparison_guide(self):
+        from .legacy_ux import show_comparison_guide
+        show_comparison_guide(self,"2T")
 
     def export_study_comparison_csv(self):
         if not self.study_comparison:return False
