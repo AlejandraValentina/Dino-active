@@ -22,14 +22,14 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_PLATFORM_C05_INTEGRATION_PREP_V1
-change/spec:       openspec/changes/platform-c05-integration-prep-v1/
-                   specs/platform-c05-integration-prep-v1/spec.md
-roadmap:          docs/roadmaps/dino-platform-scientific-reliability-v1-20261105.md
-completion:        Close F03/F15/F16/A2-03 at source with tests, regression and
-                   independent review; accept the packaged Windows candidate
-                   9298cb66; perform the controlled fast-forward to main.
-                   Source/Windows acceptance is not a scientific claim.
+CURRENT_OBJECTIVE: DINO_COMMERCIAL_PRODUCT_CP1_V1
+change/spec:       openspec/changes/commercial-product-v1/
+                   specs/commercial-product-v1/spec.md
+roadmap:          docs/roadmaps/dino-commercial-product-v1-20261110.md
+completion:        CP0 commercial hardening is source-complete; implement CP1
+                   workflow completeness (undo/redo, portable bundles, PDF,
+                   onboarding, batch, comparison/legacy UX). CP3 validation is
+                   data-gated and no scientific claim follows from product work.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    -> current_objective, queue, gate_status, progress_log
 ```
