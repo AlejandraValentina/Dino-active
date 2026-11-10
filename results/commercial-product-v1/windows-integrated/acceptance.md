@@ -8,7 +8,7 @@ Fecha: 2026-11-10. Rama de integración:
 | Dato | Valor |
 |---|---|
 | Commit fuente | `f45d60bf728d6c47838e38514854476a3a02e516` |
-| Integración | `7ed8566` + `ace5956` + `2fb5cd7` + `f45d60b` |
+| Integración | `9e3858e` + `7ed8566` + `ace5956` + `2fb5cd7` + `f45d60b` |
 | Versión | `0.1.0-rc12` |
 | Trial | `false` |
 | Build UTC | `20261110T142221Z` |
