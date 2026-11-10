@@ -15,7 +15,7 @@ from PySide6.QtWidgets import (QDialog, QDialogButtonBox, QLabel, QTabWidget,
                                QTextBrowser, QVBoxLayout, QWidget)
 
 from ..runtime import APP_VERSION, build_info
-from .preferences import default_artifact_root, settings
+from .preferences import default_artifact_root, repository_root_containing, settings
 
 SCIENTIFIC_STATUS = {
     "calibration": "NOT_PERFORMED",
@@ -27,6 +27,27 @@ PROJECT_SCHEMAS = {
     "4T_0D": "MOTORSIM_4T_REFERENCE_PROJECT_V1",
     "4T_native": "DINO_DESKTOP_ENGINE_PROJECT_4T_V1",
 }
+
+
+def recovery_root() -> Path:
+    """Recovery/autosave root outside the repository, honoring E: policy overrides.
+
+    ``DINO_RECOVERY_ROOT`` is the most specific override; otherwise the durable
+    ``DINO_ARTIFACT_ROOT`` (or the normal artifact root) is used.  A root inside
+    a Git worktree is rejected so recovery never dirties the source tree.
+    """
+    explicit = os.environ.get("DINO_RECOVERY_ROOT")
+    artifact = os.environ.get("DINO_ARTIFACT_ROOT")
+    if explicit:
+        root = Path(explicit).expanduser()
+    elif artifact:
+        root = Path(artifact).expanduser() / "recovery"
+    else:
+        root = default_artifact_root() / "recovery"
+    if repository_root_containing(root) is not None:
+        root = default_artifact_root() / "recovery"
+    root.mkdir(parents=True, exist_ok=True)
+    return root
 
 
 def _build_metadata() -> dict:
@@ -296,9 +317,7 @@ class RecoveryController(QObject):
         self.timer.start()
 
     def _root(self) -> Path:
-        root = default_artifact_root() / "recovery"
-        root.mkdir(parents=True, exist_ok=True)
-        return root
+        return recovery_root()
 
     def _project_id(self) -> str:
         project = getattr(self.context, "project", {})
@@ -345,7 +364,7 @@ class RecoveryController(QObject):
 
     @classmethod
     def pending(cls, family) -> list[dict]:
-        root = default_artifact_root() / "recovery"
+        root = recovery_root()
         if not root.is_dir():
             return []
         entries = []

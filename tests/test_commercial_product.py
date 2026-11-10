@@ -13,7 +13,7 @@ from motorsim.desktop.four_stroke_context import FourStrokeContext
 from motorsim.desktop.four_stroke_desktop import FourStrokeDesktopWindow
 from motorsim.desktop.four_stroke_project import project_from_example
 from motorsim.desktop.product import (AboutDialog, RecentProjects, RecoveryController,
-                                      create_diagnostics_bundle, product_info)
+                                      create_diagnostics_bundle, product_info, recovery_root)
 from motorsim.desktop.services import new_design_project
 from motorsim.four_stroke_project import save_project, starter_project
 
@@ -128,4 +128,32 @@ def test_native_4t_window_exposes_about_and_diagnostics(tmp_path, monkeypatch):
         assert "Proyectos recientes 4T" in labels
     finally:
         window.context.dirty = False
+        window.close()
+
+
+def test_recovery_root_honors_the_durable_artifact_override(tmp_path, monkeypatch):
+    monkeypatch.delenv("DINO_RECOVERY_ROOT", raising=False)
+    monkeypatch.setenv("DINO_ARTIFACT_ROOT", str(tmp_path / "artifacts"))
+    root = recovery_root()
+    assert root == (tmp_path / "artifacts" / "recovery").resolve()
+    assert "repos" not in root.parts
+
+
+def test_recovery_restores_without_binding_the_original_path(tmp_path, monkeypatch):
+    monkeypatch.setenv("DINO_ARTIFACT_ROOT", str(tmp_path / "artifacts"))
+    window = DinoDesktopWindow(new_design_project("recovery-copy"))
+    try:
+        original = tmp_path / "original.dino2t.json"
+        window._restore_2t_recovery({"project": new_design_project("recovery-copy"),
+                                     "original_path": str(original)})
+        assert window.context.path is None
+        assert window.context.dirty is True
+        reference = starter_project(rpm=3000).to_dict()
+        window._restore_4t_recovery({"project": reference,
+                                     "original_path": str(tmp_path / "original.dino4t.json")})
+        assert window.four_stroke_context.path is None
+        assert window.four_stroke_context.dirty is True
+    finally:
+        window.context.dirty = False
+        window.four_stroke_context.dirty = False
         window.close()

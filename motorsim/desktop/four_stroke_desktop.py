@@ -727,11 +727,12 @@ class FourStrokeDesktopWindow(QMainWindow):
             QMessageBox.StandardButton.Yes)
         if answer==QMessageBox.StandardButton.Yes:
             try:
-                path=Path(entry["original_path"]) if entry.get("original_path") else None
-                self.context.replace_project(entry["project"],path)
+                # Recovery is a copy: no original save path is bound.
+                self.context.replace_project(entry["project"],None)
                 self.context.dirty=True;self.context.changed.emit();self.editor.refresh();self.results.refresh()
-                if path:self.recent.add("4Tnative",path)
                 self._refresh_title()
+                QMessageBox.information(self,"Borrador recuperado",
+                    "El borrador se abrió como copia sin ruta; usá Guardar como para conservarlo.")
             except Exception as exc:QMessageBox.warning(self,"No se pudo recuperar",f"{type(exc).__name__}: {exc}")
         else:RecoveryController.discard("4Tnative",entry.get("project_id"))
     def show_about(self):

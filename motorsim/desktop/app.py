@@ -599,19 +599,19 @@ class DinoDesktopWindow(QMainWindow):
             except Exception as exc:QMessageBox.warning(self,"No se pudo recuperar",f"{type(exc).__name__}: {exc}")
         else:RecoveryController.discard(family,entry.get("project_id"))
     def _restore_2t_recovery(self, entry):
-        path=Path(entry["original_path"]) if entry.get("original_path") else None
-        self.context.replace_project(entry["project"],path)
+        # Recovery is a copy: do not bind the original path, so Save cannot
+        # silently overwrite the file the user was working on.
+        self.context.replace_project(entry["project"],None)
         self.context.dirty=True;self.context.changed.emit()
-        if path:self.recent.add("2T",path)
-        self.statusBar().showMessage("Borrador 2T recuperado; guardá para conservarlo.",7000)
+        self.statusBar().showMessage(
+            "Borrador 2T recuperado como copia sin ruta; usá Guardar como para conservarlo.",7000)
     def _restore_4t_recovery(self, entry):
         from ..four_stroke_project import FourStrokeProject
-        path=Path(entry["original_path"]) if entry.get("original_path") else None
-        self.four_stroke_context.replace_project(FourStrokeProject.from_dict(entry["project"]),path)
+        self.four_stroke_context.replace_project(FourStrokeProject.from_dict(entry["project"]),None)
         self.four_stroke_context.dirty=True;self.four_stroke_context.changed.emit()
-        if path:self.recent.add("4T0D",path)
         self.show_four_stroke_mode()
-        self.statusBar().showMessage("Borrador 4T 0D recuperado; guardá para conservarlo.",7000)
+        self.statusBar().showMessage(
+            "Borrador 4T 0D recuperado como copia sin ruta; usá Guardar como para conservarlo.",7000)
     def _refresh_recent_menus(self):
         for menu,family,callback in ((self.recent_2t_menu,"2T",self._open_recent_2t),
                                      (self.recent_4t_menu,"4T0D",self._open_recent_4t)):
