@@ -1,0 +1,12 @@
+PASS Packaged Dino2T.exe starts one visible main window in an isolated environment
+PASS Saved native 4T project opens with both hash-verified A/B result references
+Traceback (most recent call last):
+  File "E:\dino\worktrees\dino-platform-c05-prep-v1\tests\verify_dino4t_ab_windows.py", line 279, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "E:\dino\worktrees\dino-platform-c05-prep-v1\tests\verify_dino4t_ab_windows.py", line 189, in main
+    raise AssertionError("A/B eligibility/claim qualification not visible in packaged UI: "+text[:1200])
+AssertionError: A/B eligibility/claim qualification not visible in packaged UI: DINO DESKTOP  ·  MOTOR 4T  ·  dino4t-synthetic-ab-v1
+A
+B
+Seleccioná dos corridas y pulsá Comparar corridas.

@@ -1,0 +1,27 @@
+{
+  "name": "c05-win-frozen-worker",
+  "command": [
+    ".\\.venv-build\\Scripts\\python.exe",
+    "tests\\verify_c05_frozen_worker_windows.py",
+    "--worker",
+    "E:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc12-windows-x64-9298cb66\\MotorSim\\MotorSimWorker.exe",
+    "--examples",
+    "E:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc12-windows-x64-9298cb66\\MotorSim\\Ejemplos",
+    "--work",
+    "E:\\Dino-artifacts\\c05-windows-acceptance\\frozen-worker",
+    "--timeout",
+    "900"
+  ],
+  "started_at": "2026-11-10T11:25:00+00:00",
+  "finished_at": "2026-11-10T11:27:02+00:00",
+  "duration_s": 121.594,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\platform-c05-integration-prep-v1\\verification\\c05-win-frozen-worker.log",
+  "log_lines": 1,
+  "log_bytes": 122,
+  "error_lines": [],
+  "tail": [
+    "{\"result\": \"PASS\", \"receipt\": \"E:\\\\Dino-artifacts\\\\c05-windows-acceptance\\\\frozen-worker\\\\frozen-worker-acceptance.json\"}"
+  ]
+}

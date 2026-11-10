@@ -1,0 +1,45 @@
+{
+  "schema": "DINO_C05_4T_CURVE_PACKAGED_ACCEPTANCE_V1",
+  "result": "PASS",
+  "exe": "E:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc12-windows-x64-9298cb66\\MotorSim\\Dino2T.exe",
+  "exe_sha256": "a1be876c7231ba2ccfabf66c040983c0db099625d7a409dedd29dedf87d1a54c",
+  "project": "E:\\Dino-artifacts\\c05-windows-acceptance\\curve\\proyecto-c05-4t.dino4t.json",
+  "project_sha256": "f801167e7f85c855660031df0e7cdb629a966b3d748c71cb56a780efa26e2ee1",
+  "checks": [
+    "Packaged app opens the saved 4T 0D reference project",
+    "Packaged 4T 0D curve completed and linked three RPM points",
+    "4T curve reference is project-local, hash-bound and persisted",
+    "Saved 4T project reopened with its curve reference restored",
+    "Cancelled 4T curve is terminal, partial and persisted without a worker"
+  ],
+  "captures": [
+    {
+      "path": "E:\\Dino-artifacts\\c05-windows-acceptance\\curve\\c05-4t-curve-complete-1360x900.png",
+      "sha256": "a09a74f89c3692ccaebf88694526963650af040a4221550d50ea77762bd50bb7",
+      "size_px": [
+        1360,
+        900
+      ]
+    },
+    {
+      "path": "E:\\Dino-artifacts\\c05-windows-acceptance\\curve\\c05-4t-curve-reopened-1360x900.png",
+      "sha256": "cc28c2cfb03b1077a67014370deeae07f25cbe63e695d54ca72c2f33cca39a52",
+      "size_px": [
+        1360,
+        900
+      ]
+    },
+    {
+      "path": "E:\\Dino-artifacts\\c05-windows-acceptance\\curve\\c05-4t-curve-cancelled-1360x900.png",
+      "sha256": "af22a450145c3df62601e1fc15ee722469031bcccec8c97a10c05da8f0358acb",
+      "size_px": [
+        1360,
+        900
+      ]
+    }
+  ],
+  "scientific_claims": {
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_capability": "NOT_CLAIMED"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "DINO_2T_4T_PACKAGED_ROUTING_ACCEPTANCE_V1",
+  "exe": "E:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc12-windows-x64-9298cb66\\MotorSim\\Dino2T.exe",
+  "exe_sha256": "a1be876c7231ba2ccfabf66c040983c0db099625d7a409dedd29dedf87d1a54c",
+  "project_2t": "E:\\dino\\worktrees\\dino-platform-c05-prep-v1\\examples\\projects\\dino-2t-exhaust-comparison.dino2t.json",
+  "project_2t_sha256": "a44ba9aef4cc567c4cb76f2608f9453cfe18dc348e5275746dc60fde304d725a",
+  "project_4t": "E:\\dino\\worktrees\\dino-platform-c05-prep-v1\\results\\dino4t-ab-engineering-v1\\runs\\dino4t-synthetic-ab-v1.dino.json",
+  "project_4t_sha256": "c7d96cb2feb84f3fe7f6669ccacb02d32d42d94f44d1bbf8a86cdf0980cbad03",
+  "build": {
+    "source_commit": "9298cb6602485d138972ac603336bf43df0d6f57",
+    "packaged_inputs_clean": true,
+    "manifest_sha256": "6fb4aa682e2034f0b5359a7ce76ecb266050521c23f42e0fb32e5aba4b66a259",
+    "version": "0.1.0-rc12"
+  },
+  "checks": [
+    "Packaged app opens the existing native 2T project in MODELO without solver work",
+    "The same packaged app routes the native 4T project to the 4T workspace",
+    "The same process returns to the saved 2T project with one main window"
+  ],
+  "captures": [
+    {
+      "path": "E:\\Dino-artifacts\\c05-windows-acceptance\\route\\packaged-2t-project-1360x900.png",
+      "sha256": "73a5961c4a612b93514e1f55e72174ea96d0b3261683b148fe5dc33d2072be3a",
+      "size_px": [
+        1360,
+        900
+      ]
+    }
+  ],
+  "solver_runs": 0,
+  "result": "PASS",
+  "exit_code": 0,
+  "terminal_verification": {
+    "process_wait": true,
+    "exit_code_zero": true,
+    "worker_check": "CLEAN",
+    "issues": [],
+    "verified_at": "2026-11-10T10:28:46.583231+00:00"
+  }
+}

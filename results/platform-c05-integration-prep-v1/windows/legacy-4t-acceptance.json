@@ -1,0 +1,25 @@
+{
+  "schema": "DINO_C05_LEGACY_4T_PACKAGED_ACCEPTANCE_V1",
+  "result": "PASS",
+  "exe": "E:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc12-windows-x64-9298cb66\\MotorSim\\Dino2T.exe",
+  "exe_sha256": "a1be876c7231ba2ccfabf66c040983c0db099625d7a409dedd29dedf87d1a54c",
+  "project": "E:\\dino\\worktrees\\dino-platform-c05-prep-v1\\results\\dino4t-ab-engineering-v1\\runs\\dino4t-synthetic-ab-v1.dino.json",
+  "project_sha256": "c7d96cb2feb84f3fe7f6669ccacb02d32d42d94f44d1bbf8a86cdf0980cbad03",
+  "checks": [
+    "Native 4T project opens with both endpoints explicitly LEGACY_UNVERIFIED",
+    "Traceability exposes integrity, run identity, configuration hash and code commit",
+    "CSV export retains both legacy records, classification and result hashes",
+    "HTML report retains scientific claim qualifications",
+    "Fresh packaged process reopens the project and preserves legacy history"
+  ],
+  "exports": {
+    "csv": "E:\\Dino-artifacts\\c05-windows-acceptance\\legacy4t\\resultados-legacy.csv",
+    "csv_sha256": "daef858482a148f16d3481dca2f0afb3054bee40c376d2ad663b047bdfa908de",
+    "html": "E:\\Dino-artifacts\\c05-windows-acceptance\\legacy4t\\resultados-legacy.html",
+    "html_sha256": "c666db294933344e22caeb3090cc4a7d9ecb62168787e3530ce56be71b47cf97"
+  },
+  "scientific_claims": {
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_capability": "NOT_CLAIMED"
+  }
+}

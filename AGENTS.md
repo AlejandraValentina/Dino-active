@@ -27,9 +27,9 @@ change/spec:       openspec/changes/platform-c05-integration-prep-v1/
                    specs/platform-c05-integration-prep-v1/spec.md
 roadmap:          docs/roadmaps/dino-platform-scientific-reliability-v1-20261105.md
 completion:        Close F03/F15/F16/A2-03 at source with tests, regression and
-                   independent review, and document a reproducible fast-forward
-                   C05 integration plan. Source prep PASS is not packaged
-                   Windows acceptance and is not a scientific claim.
+                   independent review; accept the packaged Windows candidate
+                   9298cb66; perform the controlled fast-forward to main.
+                   Source/Windows acceptance is not a scientific claim.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    -> current_objective, queue, gate_status, progress_log
 ```

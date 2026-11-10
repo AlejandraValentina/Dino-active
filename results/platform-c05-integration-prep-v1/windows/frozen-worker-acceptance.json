@@ -1,0 +1,116 @@
+{
+  "schema": "DINO_C05_FROZEN_WORKER_ACCEPTANCE_V1",
+  "result": "PASS",
+  "worker": "E:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc12-windows-x64-9298cb66\\MotorSim\\MotorSimWorker.exe",
+  "worker_sha256": "e56d2eea235b167e2b94d786ab4e17caadcc6c82e9b971d7dbba0daf03e418a6",
+  "examples": "E:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc12-windows-x64-9298cb66\\MotorSim\\Ejemplos",
+  "checks": [
+    "Frozen 2T reference point converged",
+    "Frozen 2T reference curve converged three of three points",
+    "Frozen 4T reference point converged with model metadata",
+    "Frozen 4T reference curve converged three of three points",
+    "No MotorSimWorker.exe remained after terminal waits"
+  ],
+  "runs": [
+    {
+      "schema": "DINO_C05_FROZEN_WORKER_RUN_V1",
+      "name": "2T reference point",
+      "worker": "E:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc12-windows-x64-9298cb66\\MotorSim\\MotorSimWorker.exe",
+      "worker_sha256": "e56d2eea235b167e2b94d786ab4e17caadcc6c82e9b971d7dbba0daf03e418a6",
+      "arguments": [
+        "--cycle",
+        "2T",
+        "--output",
+        "E:\\Dino-artifacts\\c05-windows-acceptance\\frozen-worker\\worker-2t\\output"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "terminal_verification": {
+        "process_wait": true,
+        "exit_code_zero": true,
+        "worker_check": "CLEAN",
+        "issues": [],
+        "verified_at": "2026-11-10T11:25:15.120577+00:00"
+      }
+    },
+    {
+      "schema": "DINO_C05_FROZEN_WORKER_RUN_V1",
+      "name": "2T reference curve",
+      "worker": "E:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc12-windows-x64-9298cb66\\MotorSim\\MotorSimWorker.exe",
+      "worker_sha256": "e56d2eea235b167e2b94d786ab4e17caadcc6c82e9b971d7dbba0daf03e418a6",
+      "arguments": [
+        "--cycle",
+        "2T",
+        "--output",
+        "E:\\Dino-artifacts\\c05-windows-acceptance\\frozen-worker\\worker-2t-curve\\output",
+        "--sweep-input",
+        "E:\\Dino-artifacts\\c05-windows-acceptance\\frozen-worker\\worker-2t-curve\\request.json"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "terminal_verification": {
+        "process_wait": true,
+        "exit_code_zero": true,
+        "worker_check": "CLEAN",
+        "issues": [],
+        "verified_at": "2026-11-10T11:25:57.171479+00:00"
+      }
+    },
+    {
+      "schema": "DINO_C05_FROZEN_WORKER_RUN_V1",
+      "name": "4T reference point",
+      "worker": "E:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc12-windows-x64-9298cb66\\MotorSim\\MotorSimWorker.exe",
+      "worker_sha256": "e56d2eea235b167e2b94d786ab4e17caadcc6c82e9b971d7dbba0daf03e418a6",
+      "arguments": [
+        "--cycle",
+        "4T",
+        "--output",
+        "E:\\Dino-artifacts\\c05-windows-acceptance\\frozen-worker\\worker-4t-point\\output",
+        "--project-input",
+        "E:\\Dino-artifacts\\c05-windows-acceptance\\frozen-worker\\worker-4t-point\\request.json"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "terminal_verification": {
+        "process_wait": true,
+        "exit_code_zero": true,
+        "worker_check": "CLEAN",
+        "issues": [],
+        "verified_at": "2026-11-10T11:26:12.641971+00:00"
+      }
+    },
+    {
+      "schema": "DINO_C05_FROZEN_WORKER_RUN_V1",
+      "name": "4T reference curve",
+      "worker": "E:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc12-windows-x64-9298cb66\\MotorSim\\MotorSimWorker.exe",
+      "worker_sha256": "e56d2eea235b167e2b94d786ab4e17caadcc6c82e9b971d7dbba0daf03e418a6",
+      "arguments": [
+        "--cycle",
+        "4T",
+        "--output",
+        "E:\\Dino-artifacts\\c05-windows-acceptance\\frozen-worker\\worker-4t-curve\\output",
+        "--sweep-input",
+        "E:\\Dino-artifacts\\c05-windows-acceptance\\frozen-worker\\worker-4t-curve\\request.json"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "terminal_verification": {
+        "process_wait": true,
+        "exit_code_zero": true,
+        "worker_check": "CLEAN",
+        "issues": [],
+        "verified_at": "2026-11-10T11:26:59.900399+00:00"
+      }
+    }
+  ],
+  "outputs": {
+    "2t_manifest_sha256": "e746f0c4ec6618d7e67c43ba0ef24ea9d02c83fae0cebea56a99f8e8e7d74e4b",
+    "2t_series_sha256": "882ec62fca83937b745530e2c3c06c26b33dda69e713537a470abb5a17c45330",
+    "4t_manifest_sha256": "d7017aef6d5cf3256ff0b627befe81ad6de4fc4fe49763b594b43ffd421c0025",
+    "4t_series_sha256": "5b08014cbb863704c458d953f93bb2334476ce70e40cd477d2c03b3247c7a293"
+  },
+  "scientific_claims": {
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_capability": "NOT_CLAIMED"
+  }
+}

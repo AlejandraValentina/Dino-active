@@ -92,16 +92,18 @@ git merge-base --is-ancestor main HEAD   # exit 0
 git rev-list --count main..HEAD          # commits preservados
 ```
 
-No se ejecuta `git merge`, `git push` ni build.
+No se ejecuta `git merge` ni `git push`; el build de aceptación se ejecutó
+sólo para el candidato Windows y no se publica.
 
 ## 4. Distinción de estado
 
 - **Aceptado a nivel fuente:** F03/F15/F16/A2-03 con contratos y tests propios.
 - **Verificado en ejecución local:** suites focalizadas, servidores falsos de
   proceso/hilo y reapertura de proyectos; no es validación física.
-- **Pendiente para aceptación Windows completa:** build, paquete, UIA y
-  verificación de recursos en un candidato nuevo. Sin ese candidato, C05 no se
-  declara integrado en `main`.
+  - **Aceptado en Windows empaquetado:** candidato no-trial `9298cb66`
+  (ZIP SHA-256 `6668ca33…ece4e43`) con worker congelado 2T/4T, ruteo,
+  curva RPM 4T, cancelación, exportaciones, trazabilidad y cierre de recursos.
+  Ver `windows/c05-windows-acceptance.md`.
 - **Sin claim científico:** calibración `NOT_PERFORMED`, validación
   experimental `NOT_PERFORMED`, predictiva `NOT_CLAIMED`.
 
@@ -109,8 +111,11 @@ No se ejecuta `git merge`, `git push` ni build.
 ## 5. Cierre de esta etapa
 
 - Gate `DINO_PLATFORM_C05_INTEGRATION_PREP_V1`: **PASS** con clasificación
-  `C05_SOURCE_PREP_COMPLETE_WINDOWS_ACCEPTANCE_PENDING`.
-- `C05-WINDOWS-ACCEPTANCE`: `BLOCKED_LOCAL`, porque no existe autorización de
-  build/candidato para el código posterior a C05.
-- Este cierre es de preparación y fuente; no declara C05 integrado en `main`
-  ni aceptado en Windows.
+  `C05_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED`.
+- `C05-WINDOWS-ACCEPTANCE`: **DONE**; evidencia en
+  `windows/c05-windows-acceptance.md` y los recibos de este directorio.
+- Integración: fast-forward controlado de `main` al cierre de C05, con
+  ascendencia verificada y árbol limpio. No se hace push.
+- El candidato Windows queda identificado por el commit fuente `9298cb6`; los
+  scripts de aceptación y la evidencia son posteriores y no forman parte del
+  paquete.

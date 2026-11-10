@@ -1,0 +1,30 @@
+{
+  "name": "c05-win-curve",
+  "command": [
+    ".\\.venv-build\\Scripts\\python.exe",
+    "tests\\verify_c05_four_stroke_curve_windows.py",
+    "--exe",
+    "E:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc12-windows-x64-9298cb66\\MotorSim\\Dino2T.exe",
+    "--work",
+    "E:\\Dino-artifacts\\c05-windows-acceptance\\curve",
+    "--timeout",
+    "300"
+  ],
+  "started_at": "2026-11-10T11:13:47+00:00",
+  "finished_at": "2026-11-10T11:15:08+00:00",
+  "duration_s": 80.906,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\platform-c05-integration-prep-v1\\verification\\c05-win-curve.log",
+  "log_lines": 6,
+  "log_bytes": 765,
+  "error_lines": [],
+  "tail": [
+    "PASS Packaged app opens the saved 4T 0D reference project",
+    "PASS Packaged 4T 0D curve completed and linked three RPM points",
+    "PASS 4T curve reference is project-local, hash-bound and persisted",
+    "PASS Saved 4T project reopened with its curve reference restored",
+    "PASS Cancelled 4T curve is terminal, partial and persisted without a worker",
+    "{\"result\": \"PASS\", \"acceptance\": \"E:\\\\Dino-artifacts\\\\c05-windows-acceptance\\\\curve\\\\acceptance.json\", \"checks\": [\"Packaged app opens the saved 4T 0D reference project\", \"Packaged 4T 0D curve completed and linked three RPM points\", \"4T curve reference is project-local, hash-bound and persisted\", \"Sa"
+  ]
+}

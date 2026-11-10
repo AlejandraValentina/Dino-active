@@ -1,0 +1,46 @@
+{
+  "schema": "DINO_C05_WINDOWS_CANDIDATE_V1",
+  "app_version": "0.1.0-rc12",
+  "source_commit": "9298cb6602485d138972ac603336bf43df0d6f57",
+  "trial": false,
+  "built_utc": "20261110T102500Z",
+  "package_folder": "E:/Dino-artifacts/Windows/MotorSim-0.1.0-rc12-windows-x64-9298cb66",
+  "package_zip": "E:/Dino-artifacts/Windows/MotorSim-0.1.0-rc12-windows-x64-9298cb66.zip",
+  "package_zip_sha256": "6668ca33b20dffdc28d3c3ebd88d1c234919f9b15f03bdcb387f4cd72ece4e43",
+  "package_zip_bytes": 91564443,
+  "dino2t_exe_sha256": "a1be876c7231ba2ccfabf66c040983c0db099625d7a409dedd29dedf87d1a54c",
+  "motorsimworker_exe_sha256": "e56d2eea235b167e2b94d786ab4e17caadcc6c82e9b971d7dbba0daf03e418a6",
+  "build_json_sha256": "507813975f1ef09d317a305c5c4516fa6b5f4b1df8c47d31b4e1020bd9dc8df2",
+  "packaged_input_count": 281,
+  "packaged_input_manifest_sha256": "6fb4aa682e2034f0b5359a7ce76ecb266050521c23f42e0fb32e5aba4b66a259",
+  "source_dirty": false,
+  "acceptance": {
+    "frozen_worker_2t_point": "PASS",
+    "frozen_worker_2t_curve": "PASS",
+    "frozen_worker_4t_point": "PASS",
+    "frozen_worker_4t_curve": "PASS",
+    "route_2t_4t_2t": "PASS",
+    "four_stroke_curve_complete_persist_reopen": "PASS",
+    "four_stroke_curve_cancel_partial": "PASS",
+    "legacy_4t_history_traceability_exports_reopen": "PASS",
+    "strict_ab_comparison_with_historical_endpoints": "NOT_RUN_LEGACY_ENDPOINTS_FAIL_CLOSED"
+  },
+  "process_closure": {
+    "no_orphan_motorsimworker": true,
+    "no_orphan_dino2t": true,
+    "application_error_events_found": false
+  },
+  "scientific_claims": {
+    "calibration": "NOT_PERFORMED",
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_capability": "NOT_CLAIMED"
+  },
+  "evidence": {
+    "build": "candidate-build.json",
+    "zip_sha256": "candidate-zip.sha256",
+    "frozen_worker": "frozen-worker-acceptance.json",
+    "route": "route-2t-4t-acceptance.json",
+    "four_stroke_curve": "four-stroke-curve-acceptance.json",
+    "legacy_4t": "legacy-4t-acceptance.json"
+  }
+}

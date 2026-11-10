@@ -13181,17 +13181,23 @@
       "dependencies": [
         "C05-REGRESSION"
       ],
-      "state": "BLOCKED_LOCAL",
-      "blocker": "No owner-authorized Windows build/candidate exists for the post-C05 source; the prior A/B package predates these changes.",
+      "state": "DONE",
+      "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Requires a separately authorized build and candidate.",
+      "evidence": [
+        "results/platform-c05-integration-prep-v1/windows/c05-windows-acceptance.md",
+        "results/platform-c05-integration-prep-v1/windows/candidate.json",
+        "results/platform-c05-integration-prep-v1/windows/frozen-worker-acceptance.json",
+        "results/platform-c05-integration-prep-v1/windows/route-2t-4t-acceptance.json",
+        "results/platform-c05-integration-prep-v1/windows/four-stroke-curve-acceptance.json",
+        "results/platform-c05-integration-prep-v1/windows/legacy-4t-acceptance.json"
+      ],
+      "next_action": "Closed: packaged Windows candidate 9298cb66 PASS for the requested scope; strict A/B with historical legacy endpoints remains fail-closed and was not rerun.",
       "owner_role": "implementation",
       "write_scope": [
         "results/platform-c05-integration-prep-v1/windows/"
       ],
-      "evidence_level": "L3",
-      "no_local_unblock_reason": "The blocker is owner build authorization, not a locally resolvable engineering task; no build is authorized in C05 prep."
+      "evidence_level": "L3"
     }
   ],
   "audit_remediation_mode": false,
@@ -13410,7 +13416,7 @@
       "C05-INDEPENDENT-REVIEW"
     ],
     "completion_criterion": "F03/F15/F16/A2-03 closed with source tests, focused and protected regression evidence, independent read-only review, and a documented fast-forward integration plan. Source prep PASS is not Windows packaged acceptance and is not a scientific claim.",
-    "classification": "C05_SOURCE_PREP_COMPLETE_WINDOWS_ACCEPTANCE_PENDING",
+    "classification": "C05_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED",
     "closure_evidence": [
       "results/platform-c05-integration-prep-v1/integration-plan.md",
       "results/platform-c05-integration-prep-v1/verification/c05-focused-final2.summary.json",
@@ -14558,7 +14564,7 @@
         "C05-INDEPENDENT-REVIEW"
       ],
       "completion_criterion": "F03/F15/F16/A2-03 closed with source tests, focused and protected regression evidence, independent read-only review, and a documented fast-forward integration plan. Source prep PASS is not Windows packaged acceptance and is not a scientific claim.",
-      "classification": "C05_SOURCE_PREP_COMPLETE_WINDOWS_ACCEPTANCE_PENDING",
+      "classification": "C05_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED",
       "closure_evidence": [
         "results/platform-c05-integration-prep-v1/integration-plan.md",
         "results/platform-c05-integration-prep-v1/verification/c05-focused-final2.summary.json",
@@ -18737,6 +18743,12 @@
       "task": "C05-INDEPENDENT-REVIEW",
       "kind": "task",
       "summary": "Independent read-only review APPROVE after b92b744; F03 warm_start/studies, F16 probe and save-path findings resolved; Windows acceptance pending."
+    },
+    {
+      "at": "2026-11-10T11:30:28+00:00",
+      "task": "C05-WINDOWS-ACCEPTANCE",
+      "kind": "task",
+      "summary": "Candidate 9298cb66 non-trial PASS: frozen worker 2T/4T points+curves, route, 4T curve persist/reopen/cancel, legacy traceability+CSV/HTML, no orphan processes; no AppError events."
     }
   ],
   "legacy_gate_status": {
@@ -18753,9 +18765,9 @@
   "gate_status": {
     "objective": "DINO_PLATFORM_C05_INTEGRATION_PREP_V1",
     "state": "PASS",
-    "classification": "C05_SOURCE_PREP_COMPLETE_WINDOWS_ACCEPTANCE_PENDING",
+    "classification": "C05_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED",
     "evidence": [
-      "results/platform-c05-integration-prep-v1/integration-plan.md"
+      "results/platform-c05-integration-prep-v1/windows/c05-windows-acceptance.md"
     ],
     "gate_tasks_total": 7,
     "gate_tasks_done": 7,
@@ -18763,7 +18775,7 @@
       "DONE": 7
     },
     "remaining": [],
-    "updated_at": "2026-11-09T18:58:44+00:00"
+    "updated_at": "2026-11-10T11:30:29+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -18839,7 +18851,7 @@
   },
   "campaigns_started": 1,
   "campaign_runtime_status": "IMPL2_EXTENSION_COMPLETE_WITH_NUMERICAL_INVALID_POINTS",
-  "updated_at": "2026-11-09T00:00:00+00:00",
+  "updated_at": "2026-11-10T00:00:00+00:00",
   "full_rpm_sweep_impl2_campaign_readiness": {
     "state": "READY_FOR_CAMPAIGN_DECISION",
     "classification": "FULL_RPM_SWEEP_IMPL2_READY_FOR_CAMPAIGN_DECISION",
@@ -19486,6 +19498,6 @@
       "PRED4"
     ],
     "activation": "C05_SOURCE_PREP_COMPLETE",
-    "plan_status": "C05_SOURCE_PREP_COMPLETE_WINDOWS_ACCEPTANCE_PENDING"
+    "plan_status": "C05_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED"
   }
 }

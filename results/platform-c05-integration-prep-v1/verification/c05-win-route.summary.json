@@ -1,0 +1,30 @@
+{
+  "name": "c05-win-route",
+  "command": [
+    ".\\.venv-build\\Scripts\\python.exe",
+    "tests\\verify_dino_2t_4t_route_windows.py",
+    "--exe",
+    "E:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc12-windows-x64-9298cb66\\MotorSim\\Dino2T.exe",
+    "--project-2t",
+    "examples\\projects\\dino-2t-exhaust-comparison.dino2t.json",
+    "--project-4t",
+    "results\\dino4t-ab-engineering-v1\\runs\\dino4t-synthetic-ab-v1.dino.json",
+    "--work",
+    "E:\\Dino-artifacts\\c05-windows-acceptance\\route"
+  ],
+  "started_at": "2026-11-10T10:28:19+00:00",
+  "finished_at": "2026-11-10T10:28:46+00:00",
+  "duration_s": 27.437,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\platform-c05-integration-prep-v1\\verification\\c05-win-route.log",
+  "log_lines": 4,
+  "log_bytes": 581,
+  "error_lines": [],
+  "tail": [
+    "PASS Packaged app opens the existing native 2T project in MODELO without solver work",
+    "PASS The same packaged app routes the native 4T project to the 4T workspace",
+    "PASS The same process returns to the saved 2T project with one main window",
+    "{\"result\": \"PASS\", \"acceptance\": \"E:\\\\Dino-artifacts\\\\c05-windows-acceptance\\\\route\\\\acceptance.json\", \"checks\": [\"Packaged app opens the existing native 2T project in MODELO without solver work\", \"The same packaged app routes the native 4T project to the 4T workspace\", \"The same process returns to "
+  ]
+}
