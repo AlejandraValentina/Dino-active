@@ -10,8 +10,10 @@
     {
       "id": "CP0",
       "title": "Commercial hardening",
-      "dependencies": ["C05"],
-      "execution_state": "IN_PROGRESS",
+      "dependencies": [
+        "C05"
+      ],
+      "execution_state": "SOURCE_COMPLETE_WINDOWS_PENDING",
       "budget_authorization": "LOCAL_ENGINEERING_ONLY",
       "tasks": [
         "CP0-PRODUCT-INFO",
@@ -28,33 +30,66 @@
     {
       "id": "CP1",
       "title": "Workflow completeness",
-      "dependencies": ["CP0"],
-      "execution_state": "NOT_ACTIVATED",
-      "tasks": ["CP1-UNDO-REDO", "CP1-PROJECT-BUNDLES", "CP1-PDF-REPORT", "CP1-TEMPLATES-ONBOARDING", "CP1-BATCH-QUEUE", "CP1-COMPARISON-LEGACY-UX"],
+      "dependencies": [
+        "CP0"
+      ],
+      "execution_state": "IN_PROGRESS",
+      "tasks": [
+        "CP1-UNDO-REDO",
+        "CP1-PROJECT-BUNDLES",
+        "CP1-PDF-REPORT",
+        "CP1-TEMPLATES-ONBOARDING",
+        "CP1-BATCH-QUEUE",
+        "CP1-COMPARISON-LEGACY-UX"
+      ],
       "acceptance": "Undo/redo, portable bundles, PDF, onboarding/templates, batch and comparison/legacy UX with UAT."
     },
     {
       "id": "CP2",
       "title": "Commercial operations",
-      "dependencies": ["CP1"],
+      "dependencies": [
+        "CP1"
+      ],
       "execution_state": "NOT_ACTIVATED",
-      "tasks": ["CP2-INSTALLER-PORTABLE", "CP2-UPDATE-CHANNEL", "CP2-LICENSING", "CP2-PRIVACY-TELEMETRY", "CP2-SUPPORT-RELEASE-NOTES"],
+      "tasks": [
+        "CP2-INSTALLER-PORTABLE",
+        "CP2-UPDATE-CHANNEL",
+        "CP2-LICENSING",
+        "CP2-PRIVACY-TELEMETRY",
+        "CP2-SUPPORT-RELEASE-NOTES"
+      ],
       "acceptance": "Installer/portable, update policy, owner-selected licensing/activation, privacy, support and release notes."
     },
     {
       "id": "CP3",
       "title": "Measured data and validation",
-      "dependencies": ["CP0", "MEASURED_DATA"],
+      "dependencies": [
+        "CP0",
+        "MEASURED_DATA"
+      ],
       "execution_state": "DATA_GATED",
-      "tasks": ["CP3-D2-MEASURED-2T", "CP3-D4-MEASURED-4T", "CP3-VAL2-VAL4", "CP3-PRED2-PRED4"],
+      "tasks": [
+        "CP3-D2-MEASURED-2T",
+        "CP3-D4-MEASURED-4T",
+        "CP3-VAL2-VAL4",
+        "CP3-PRED2-PRED4"
+      ],
       "acceptance": "Measured packages, preregistered validation, uncertainty and bounded predictive claims. No invented parameters."
     },
     {
       "id": "CP4",
       "title": "Commercial acceptance",
-      "dependencies": ["CP2", "CP3_FOR_CLAIMS"],
+      "dependencies": [
+        "CP2",
+        "CP3_FOR_CLAIMS"
+      ],
       "execution_state": "NOT_ACTIVATED",
-      "tasks": ["CP4-UAT", "CP4-STABILITY-PERFORMANCE", "CP4-SECURITY-PRIVACY", "CP4-OWNER-RELEASE-DECISION"],
+      "tasks": [
+        "CP4-UAT",
+        "CP4-STABILITY-PERFORMANCE",
+        "CP4-SECURITY-PRIVACY",
+        "CP4-OWNER-RELEASE-DECISION"
+      ],
       "acceptance": "UAT, stability/performance, security/privacy, distribution and explicit owner release decision."
     }
   ],

@@ -1,0 +1,32 @@
+{
+  "name": "c05-cp0-commercial",
+  "command": [
+    "python",
+    "-u",
+    "-m",
+    "pytest",
+    "tests/test_commercial_product.py",
+    "tests/test_platform_c05_qt_lifecycle.py",
+    "tests/test_platform_c05_terminal_acceptance.py",
+    "tests/test_desktop_four_stroke_shell.py",
+    "tests/test_desktop_four_stroke_results.py",
+    "tests/test_desktop_four_stroke_context.py",
+    "tests/test_dino4t_desktop_integration.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "started_at": "2026-11-10T13:01:51+00:00",
+  "finished_at": "2026-11-10T13:03:07+00:00",
+  "duration_s": 75.672,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\commercial-product-v1\\verification\\c05-cp0-commercial.log",
+  "log_lines": 2,
+  "log_bytes": 121,
+  "error_lines": [],
+  "tail": [
+    "................................s..................                      [100%]",
+    "50 passed, 1 skipped in 74.40s (0:01:14)"
+  ]
+}

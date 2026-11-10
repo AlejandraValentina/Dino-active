@@ -13199,6 +13199,255 @@
         "results/platform-c05-integration-prep-v1/windows/"
       ],
       "evidence_level": "L3"
+    },
+    {
+      "id": "CP0-PRODUCT-INFO",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP0_V1",
+      "description": "About/product identity, build/commit, scientific status, licenses and support in 2T/4T.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "tests/test_commercial_product.py",
+        "motorsim/desktop/product.py"
+      ],
+      "next_action": "Closed at source.",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "CP0-DIAGNOSTICS",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP0_V1",
+      "description": "Exportable diagnostics ZIP without credentials or automatic telemetry.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "tests/test_commercial_product.py",
+        "motorsim/desktop/product.py"
+      ],
+      "next_action": "Closed at source.",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "CP0-RECENT-PROJECTS",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP0_V1",
+      "description": "Bounded recent-project lists per family with missing-path pruning.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "tests/test_commercial_product.py",
+        "motorsim/desktop/product.py"
+      ],
+      "next_action": "Closed at source.",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "CP0-AUTOSAVE-RECOVERY",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP0_V1",
+      "description": "Autosave outside the repository and recover-as-copy without overwriting originals.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "tests/test_commercial_product.py",
+        "motorsim/desktop/product.py"
+      ],
+      "next_action": "Closed at source.",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "CP0-CLOSE-SAFE",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP0_V1",
+      "description": "Safe close with active execution and no orphan workers.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "tests/test_platform_c05_qt_lifecycle.py",
+        "tests/verify_c05_native_4t_cancel_windows.py"
+      ],
+      "next_action": "Closed with C05 lifecycle evidence.",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "CP0-RELEASE-POLICY",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP0_V1",
+      "description": "Versioning, channels, EULA/licenses, support and candidate checklist.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "docs/commercial/release_policy.md"
+      ],
+      "next_action": "Owner decisions on licensing/update channel remain for CP2.",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "CP0-REGRESSION",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP0_V1",
+      "description": "Commercial product and desktop regression.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/commercial-product-v1/verification/c05-cp0-commercial.summary.json"
+      ],
+      "next_action": "Closed: 50 PASS + 1 SKIP.",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L1"
+    },
+    {
+      "id": "CP0-WINDOWS-BUILD",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP0_V1",
+      "description": "Build a post-CP0 Windows candidate and run packaged about/diagnostics/recovery acceptance.",
+      "dependencies": [
+        "CP0-REGRESSION"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Authorized build + packaged CP0 acceptance; keep candidate on E:.",
+      "owner_role": "implementation",
+      "write_scope": [
+        "results/commercial-product-v1/windows/"
+      ],
+      "evidence_level": "L3"
+    },
+    {
+      "id": "CP0-WINDOWS-ACCEPTANCE",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP0_V1",
+      "description": "Packaged Windows CP0 acceptance: about, diagnostics, recent projects and recovery.",
+      "dependencies": [
+        "CP0-WINDOWS-BUILD"
+      ],
+      "state": "WAITING",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Run after CP0-WINDOWS-BUILD.",
+      "owner_role": "implementation",
+      "write_scope": [
+        "results/commercial-product-v1/windows/"
+      ],
+      "evidence_level": "L3"
+    },
+    {
+      "id": "CP1-UNDO-REDO",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+      "description": "Bounded undo/redo per context with cleanup on save/project change.",
+      "dependencies": [
+        "CP0-REGRESSION"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Implement undo/redo for 2T, 4T 0D and native 4T.",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "CP1-PROJECT-BUNDLES",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+      "description": "Portable 2T/4T project bundles with project, results, config, traces and hashes.",
+      "dependencies": [
+        "CP0-REGRESSION"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Implement portable export/import without legacy promotion.",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "CP1-PDF-REPORT",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+      "description": "PDF technical report in addition to HTML/CSV.",
+      "dependencies": [
+        "CP0-REGRESSION"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Implement PDF export with scientific caveats.",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "CP1-TEMPLATES-ONBOARDING",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+      "description": "Starter projects, examples, brief guide and first-run checks.",
+      "dependencies": [
+        "CP0-REGRESSION"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Implement onboarding/templates.",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "CP1-BATCH-QUEUE",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+      "description": "Bounded batch/queue with budget, cancellation and resume.",
+      "dependencies": [
+        "CP0-REGRESSION"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Implement batch/queue.",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "CP1-COMPARISON-LEGACY-UX",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+      "description": "Comparison pair/context guidance and explicit legacy import UX.",
+      "dependencies": [
+        "CP0-REGRESSION"
+      ],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Implement comparison/legacy UX improvements.",
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
     }
   ],
   "audit_remediation_mode": false,
@@ -13400,30 +13649,22 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_PLATFORM_C05_INTEGRATION_PREP_V1",
-    "state": "PASS",
+    "id": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+    "state": "IN_PROGRESS",
     "owner_approved": true,
-    "summary": "Close F03/F15/F16/A2-03 at source and prepare a verifiable controlled C05 integration; no merge/build/campaign.",
-    "change": "openspec/changes/platform-c05-integration-prep-v1",
-    "spec": "openspec/changes/platform-c05-integration-prep-v1/specs/platform-c05-integration-prep-v1/spec.md",
-    "transitioned_from": "DINO_PLATFORM_INTEGRATION_AUDIT_REPLAN_V1",
+    "summary": "Workflow completeness: undo/redo, portable project bundles, PDF reports, onboarding/templates, batch and comparison/legacy UX.",
+    "change": "openspec/changes/commercial-product-v1",
+    "spec": "openspec/changes/commercial-product-v1/specs/commercial-product-v1/spec.md",
+    "plan": "results/commercial-product-v1/plan.json",
     "gate_tasks": [
-      "C05-F03",
-      "C05-F15",
-      "C05-F16",
-      "C05-A2-03",
-      "C05-INTEGRATION-PLAN",
-      "C05-REGRESSION",
-      "C05-INDEPENDENT-REVIEW"
+      "CP1-UNDO-REDO",
+      "CP1-PROJECT-BUNDLES",
+      "CP1-PDF-REPORT",
+      "CP1-TEMPLATES-ONBOARDING",
+      "CP1-BATCH-QUEUE",
+      "CP1-COMPARISON-LEGACY-UX"
     ],
-    "completion_criterion": "F03/F15/F16/A2-03 closed with source tests, focused and protected regression evidence, independent read-only review, and a documented fast-forward integration plan. Source prep PASS is not Windows packaged acceptance and is not a scientific claim.",
-    "classification": "C05_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED",
-    "closure_evidence": [
-      "results/platform-c05-integration-prep-v1/integration-plan.md",
-      "results/platform-c05-integration-prep-v1/verification/c05-focused-final2.summary.json",
-      "results/platform-c05-integration-prep-v1/verification/c05-protected-final.summary.json",
-      "results/platform-c05-integration-prep-v1/reviews/independent-c05-review.md"
-    ]
+    "completion_criterion": "CP1 workflows complete with UAT and regression; no scientific claim."
   },
   "objectives": [
     {
@@ -14572,6 +14813,55 @@
         "results/platform-c05-integration-prep-v1/verification/c05-protected-final.summary.json",
         "results/platform-c05-integration-prep-v1/reviews/independent-c05-review.md"
       ]
+    },
+    {
+      "id": "DINO_COMMERCIAL_PRODUCT_V1",
+      "state": "IN_PROGRESS",
+      "owner_approved": true,
+      "summary": "Commercial desktop product roadmap: CP0 hardening, CP1 workflows, CP2 operations, CP3 data/validation (data-gated), CP4 acceptance.",
+      "change": "openspec/changes/commercial-product-v1",
+      "spec": "openspec/changes/commercial-product-v1/specs/commercial-product-v1/spec.md",
+      "roadmap": "docs/roadmaps/dino-commercial-product-v1-20261110.md",
+      "plan": "results/commercial-product-v1/plan.json",
+      "qualification": "Commercial functionality is not scientific validation; CP3 requires measured data."
+    },
+    {
+      "id": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+      "state": "IN_PROGRESS",
+      "owner_approved": true,
+      "summary": "Workflow completeness: undo/redo, portable project bundles, PDF reports, onboarding/templates, batch and comparison/legacy UX.",
+      "change": "openspec/changes/commercial-product-v1",
+      "spec": "openspec/changes/commercial-product-v1/specs/commercial-product-v1/spec.md",
+      "plan": "results/commercial-product-v1/plan.json",
+      "gate_tasks": [
+        "CP1-UNDO-REDO",
+        "CP1-PROJECT-BUNDLES",
+        "CP1-PDF-REPORT",
+        "CP1-TEMPLATES-ONBOARDING",
+        "CP1-BATCH-QUEUE",
+        "CP1-COMPARISON-LEGACY-UX"
+      ],
+      "completion_criterion": "CP1 workflows complete with UAT and regression; no scientific claim."
+    },
+    {
+      "id": "DINO_COMMERCIAL_PRODUCT_CP0_V1",
+      "state": "PASS",
+      "owner_approved": true,
+      "summary": "Commercial hardening: product identity/about, diagnostics, recent projects, autosave/recovery, safe close and release policy.",
+      "change": "openspec/changes/commercial-product-v1",
+      "spec": "openspec/changes/commercial-product-v1/specs/commercial-product-v1/spec.md",
+      "plan": "results/commercial-product-v1/plan.json",
+      "gate_tasks": [
+        "CP0-PRODUCT-INFO",
+        "CP0-DIAGNOSTICS",
+        "CP0-RECENT-PROJECTS",
+        "CP0-AUTOSAVE-RECOVERY",
+        "CP0-CLOSE-SAFE",
+        "CP0-RELEASE-POLICY",
+        "CP0-REGRESSION"
+      ],
+      "completion_criterion": "CP0 source tasks complete with tests and regression; Windows CP0 candidate and about/diagnostics/recovery packaged acceptance remain a queued release step.",
+      "classification": "CP0_SOURCE_COMPLETE_WINDOWS_PENDING"
     }
   ],
   "owner_decisions_pending": [
@@ -18756,6 +19046,18 @@
       "task": "C05-WINDOWS-ACCEPTANCE",
       "kind": "task",
       "summary": "Native 4T QRunnable cancellation at cycle boundary PASS: terminal partial result, no orphan worker, saved project unchanged."
+    },
+    {
+      "at": "2026-11-10T13:03:47+00:00",
+      "task": "CP0-PRODUCT-INFO",
+      "kind": "task",
+      "summary": "CP0 commercial hardening implemented: About/product identity, diagnostics ZIP, recent projects and autosave/recovery with 6 tests."
+    },
+    {
+      "at": "2026-11-10T13:03:47+00:00",
+      "task": "CP0-REGRESSION",
+      "kind": "task",
+      "summary": "CP0 focused regression 50 PASS 1 SKIP; release policy and roadmap registered."
     }
   ],
   "legacy_gate_status": {
@@ -18770,19 +19072,24 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_PLATFORM_C05_INTEGRATION_PREP_V1",
-    "state": "PASS",
-    "classification": "C05_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED",
-    "evidence": [
-      "results/platform-c05-integration-prep-v1/windows/c05-windows-acceptance.md"
-    ],
-    "gate_tasks_total": 7,
-    "gate_tasks_done": 7,
+    "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+    "state": "OPEN",
+    "classification": null,
+    "evidence": [],
+    "gate_tasks_total": 6,
+    "gate_tasks_done": 0,
     "gate_task_states": {
-      "DONE": 7
+      "READY": 6
     },
-    "remaining": [],
-    "updated_at": "2026-11-10T11:30:29+00:00"
+    "remaining": [
+      "CP1-UNDO-REDO",
+      "CP1-PROJECT-BUNDLES",
+      "CP1-PDF-REPORT",
+      "CP1-TEMPLATES-ONBOARDING",
+      "CP1-BATCH-QUEUE",
+      "CP1-COMPARISON-LEGACY-UX"
+    ],
+    "updated_at": "2026-11-10T13:08:03+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -18806,20 +19113,7 @@
       ]
     }
   },
-  "next_objective": {
-    "id": "DINO_PLATFORM_SCIENTIFIC_RELIABILITY_V1",
-    "state": "PLANNED",
-    "owner_approved": false,
-    "planning_authorized": true,
-    "execution_activated": false,
-    "summary": "Unified 2T+4T scientific reliability successor; all future stages scoped/not activated.",
-    "change": "openspec/changes/platform-scientific-reliability-v1",
-    "spec": "openspec/changes/platform-scientific-reliability-v1/specs/platform-scientific-reliability-v1/spec.md",
-    "roadmap": "docs/roadmaps/dino-platform-scientific-reliability-v1-20261105.md",
-    "plan": "results/platform-scientific-reliability-v1/plan.json",
-    "audit_freeze_commit": "1db6408dd03e7302cc84332cd329c6b8ca0b21a8",
-    "qualification": "Owner requested audit and replanning, explicitly no functional or physical changes during this evaluation. Implementation/campaign scope needs recorded activation."
-  },
+  "next_objective": null,
   "full_rpm_sweep_precondition": "EXPLICIT_MECHANICAL_LOSS_MODEL_REQUIRED",
   "full_rpm_sweep_status": "PARTIAL",
   "full_rpm_sweep_executable": true,
