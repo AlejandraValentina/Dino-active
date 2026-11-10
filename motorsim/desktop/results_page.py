@@ -14,7 +14,8 @@ from .plot import CurvePlot
 from .performance_curves import PowerCurvePanel
 from .services import load_results,run_background
 from .preferences import artifact_root,impl2_historical_report_candidate,settings
-from .technical_report import write_technical_report
+from .technical_report import (write_technical_report,write_technical_report_pdf,
+    write_study_comparison_report_pdf)
 from .parametric_study_snapshot import SNAPSHOT_SCHEMA as PARAMETRIC_STUDY_SNAPSHOT_SCHEMA
 from .parametric_factorial_snapshot import SNAPSHOT_SCHEMA as PARAMETRIC_FACTORIAL_SNAPSHOT_SCHEMA
 from .comparison_snapshot import SNAPSHOT_SCHEMA as CROSS_STUDY_CSV_SNAPSHOT_SCHEMA
@@ -782,6 +783,9 @@ class ResultsPage(QWidget):
         self.export_report_button=QPushButton("Exportar informe técnico HTML…");self.export_report_button.setObjectName("exportTechnicalReport")
         self.export_report_button.setToolTip("Informe local autosuficiente con origen, estados, pares exactos, gráficos y registros originales seleccionados.")
         self.export_report_button.clicked.connect(self.export_technical_report);controls.addWidget(self.export_report_button)
+        self.export_report_pdf_button=QPushButton("Exportar informe técnico PDF.");self.export_report_pdf_button.setObjectName("exportTechnicalReportPdf")
+        self.export_report_pdf_button.setToolTip("PDF paginado del mismo informe técnico, con la misma procedencia y límites científicos.")
+        self.export_report_pdf_button.clicked.connect(self.export_technical_report_pdf);controls.addWidget(self.export_report_pdf_button)
         self.export_table_button=QPushButton("Exportar tabla CSV");self.export_table_button.setToolTip("Reportes históricos: CSV + JSON compañero para reabrir. Corridas exploratorias: tabla de consulta; conservar los artifacts originales.");self.export_table_button.clicked.connect(self.export_csv);controls.addWidget(self.export_table_button)
         self.export_plot_button=QPushButton("Exportar gráfico PNG");self.export_plot_button.clicked.connect(self.export_png);controls.addWidget(self.export_plot_button)
         self.point_table=QTableWidget(0,8);self.point_table.setHorizontalHeaderLabels(["Variante","RPM","Estado","Período","Auditoría","Ciclos","Balance","BMEP"]);self.point_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.point_table.horizontalHeader().setMinimumSectionSize(48);self.point_table.setMinimumHeight(125);self.point_table.setMaximumHeight(190);self.point_table.currentCellChanged.connect(self._point_row_selected);root.addWidget(self.point_table)
@@ -974,6 +978,9 @@ class ResultsPage(QWidget):
         self.export_study_comparison_button=QPushButton("Exportar comparación HTML…")
         self.export_study_comparison_button.clicked.connect(self.export_study_comparison)
         comparison_bar.addWidget(self.export_study_comparison_button)
+        self.export_study_comparison_pdf_button=QPushButton("Exportar comparación PDF.")
+        self.export_study_comparison_pdf_button.clicked.connect(self.export_study_comparison_pdf)
+        comparison_bar.addWidget(self.export_study_comparison_pdf_button)
         self.export_study_comparison_csv_button=QPushButton("Exportar comparación CSV…")
         self.export_study_comparison_csv_button.setToolTip("CSV con filas pareadas y no pareadas, estados, valores observados y procedencia SHA-256.")
         self.export_study_comparison_csv_button.clicked.connect(self.export_study_comparison_csv)
@@ -1547,6 +1554,19 @@ class ResultsPage(QWidget):
             return True
         except (OSError,TypeError,ValueError) as exc:
             QMessageBox.warning(self,"No se pudo exportar la comparación",str(exc));return False
+
+    def export_study_comparison_pdf(self):
+        if not self.study_comparison:return False
+        default=Path(self.context.path).with_suffix(".comparacion-estudios.pdf") if self.context.path else Path.cwd()/"dino-comparacion-estudios.pdf"
+        path,_=QFileDialog.getSaveFileName(self,"Exportar comparación paramétrica PDF",str(default),"Informe PDF (*.pdf)")
+        if not path:return False
+        if not path.lower().endswith('.pdf'):path+='.pdf'
+        try:
+            write_study_comparison_report_pdf(path,self.study_comparison)
+            self.study_comparison_notice.setText(f"Comparación PDF exportada: {Path(path).name} — conserva procedencia y estados por punto.")
+            return True
+        except (OSError,RuntimeError,TypeError,ValueError) as exc:
+            QMessageBox.warning(self,"No se pudo exportar la comparación PDF",str(exc));return False
 
     def export_study_comparison_csv(self):
         if not self.study_comparison:return False
@@ -2955,27 +2975,44 @@ class ResultsPage(QWidget):
             else:
                 self.path_label.setText("Tabla CSV exportada para consulta. Para reabrir corridas exploratorias, conservá result.json y sus artifacts originales.")
         except (OSError,ValueError) as exc:QMessageBox.warning(self,"Error de escritura",str(exc))
+    def _technical_report_args(self):
+        selected=[self.variants.item(i).text() for i in range(self.variants.count())
+                  if self.variants.item(i).checkState()==Qt.CheckState.Checked]
+        return dict(source_kind=getattr(self,'source_kind','UNKNOWN'),
+            selected_variants=selected,source_path=self.source,
+            active_project_id=self.context.project.get('project_id'),
+            design_study_manifest=getattr(self,'design_study_manifest',None),
+            design_study_manifest_path=getattr(self,'design_study_manifest_path',None),
+            design_study_manifest_sha256=getattr(self,'design_study_manifest_sha256',None),
+            design_study_reference=getattr(self,'design_study_reference',None),
+            factorial_effects=_factorial_effects_from_study(
+                getattr(self,'design_study_manifest',None),(self.dataset or {}).get('points',[])))
+
     def export_technical_report(self):
         if not self.dataset:return False
         default=Path(self.source).with_suffix('.informe.html') if self.source else Path.cwd()/'dino-informe-tecnico.html'
         path,_=QFileDialog.getSaveFileName(self,"Exportar informe técnico autosuficiente",str(default),"Informe HTML (*.html)")
         if not path:return False
-        selected=[self.variants.item(i).text() for i in range(self.variants.count())
-                  if self.variants.item(i).checkState()==Qt.CheckState.Checked]
         try:
-            write_technical_report(path,self.dataset,source_kind=getattr(self,'source_kind','UNKNOWN'),
-                selected_variants=selected,source_path=self.source,
-                active_project_id=self.context.project.get('project_id'),
-                design_study_manifest=getattr(self,'design_study_manifest',None),
-                design_study_manifest_path=getattr(self,'design_study_manifest_path',None),
-                design_study_manifest_sha256=getattr(self,'design_study_manifest_sha256',None),
-                design_study_reference=getattr(self,'design_study_reference',None),
-                factorial_effects=_factorial_effects_from_study(
-                    getattr(self,'design_study_manifest',None),(self.dataset or {}).get('points',[])))
+            write_technical_report(path,self.dataset,**self._technical_report_args())
             self.path_label.setText(f"Informe técnico autosuficiente exportado: {Path(path).name}")
             return True
         except (OSError,TypeError,ValueError) as exc:
             QMessageBox.warning(self,"No se pudo exportar el informe técnico",str(exc));return False
+
+    def export_technical_report_pdf(self):
+        if not self.dataset:return False
+        default=Path(self.source).with_suffix('.informe.pdf') if self.source else Path.cwd()/'dino-informe-tecnico.pdf'
+        path,_=QFileDialog.getSaveFileName(self,"Exportar informe técnico PDF",str(default),"Informe PDF (*.pdf)")
+        if not path:return False
+        if not path.lower().endswith('.pdf'):path+='.pdf'
+        try:
+            write_technical_report_pdf(path,self.dataset,**self._technical_report_args())
+            self.path_label.setText(f"Informe técnico PDF exportado: {Path(path).name}")
+            return True
+        except (OSError,RuntimeError,TypeError,ValueError) as exc:
+            QMessageBox.warning(self,"No se pudo exportar el informe PDF",str(exc));return False
+
     def export_png(self):
         path,_=QFileDialog.getSaveFileName(self,"Exportar gráfico","dino-curva.png","PNG (*.png)")
         if path:

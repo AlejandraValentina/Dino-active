@@ -89,7 +89,7 @@ def test_ab_json_csv_and_html_keep_provenance_precision_and_caveat(tmp_path,monk
     widget.compare_a.setCurrentIndex(1)
     assert widget.comparison is None and not widget.compare_json_button.isEnabled()
     widget.compare_a.setCurrentIndex(0);widget.compare()
-    json_path=tmp_path/'pair.json';csv_path=tmp_path/'pair.csv';html_path=tmp_path/'pair.html'
+    json_path=tmp_path/'pair.json';csv_path=tmp_path/'pair.csv';html_path=tmp_path/'pair.html';pdf_path=tmp_path/'pair.pdf'
     monkeypatch.setattr(QFileDialog,'getSaveFileName',lambda *args:(str(json_path),''))
     widget.export_comparison_json()
     loaded=json.loads(json_path.read_text(encoding='utf-8'))
@@ -106,6 +106,9 @@ def test_ab_json_csv_and_html_keep_provenance_precision_and_caveat(tmp_path,monk
     widget.export_comparison_report()
     report=html_path.read_text(encoding='utf-8')
     assert 'No constituyen una mejora demostrada' in report and 'SYNTHETIC_ASSUMPTION' in report
+    monkeypatch.setattr(QFileDialog,'getSaveFileName',lambda *args:(str(pdf_path),''))
+    widget.export_comparison_report_pdf()
+    assert pdf_path.read_bytes().startswith(b'%PDF')
     widget.close();app.processEvents()
 
 

@@ -360,7 +360,8 @@ class FourStrokeResults(QWidget):
         top=QHBoxLayout();root.addLayout(top);self.refresh_button=QPushButton("Actualizar historial");self.refresh_button.clicked.connect(self.refresh);top.addWidget(self.refresh_button)
         self.import_button=QPushButton("Importar histórico 4T…");self.import_button.clicked.connect(self.import_historical);top.addWidget(self.import_button)
         self.export_button=QPushButton("Exportar CSV");self.export_button.clicked.connect(self.export_csv);top.addWidget(self.export_button)
-        self.report_button=QPushButton("Informe técnico HTML");self.report_button.clicked.connect(self.export_report);top.addWidget(self.report_button);top.addStretch()
+        self.report_button=QPushButton("Informe técnico HTML");self.report_button.clicked.connect(self.export_report);top.addWidget(self.report_button)
+        self.report_pdf_button=QPushButton("Informe técnico PDF");self.report_pdf_button.clicked.connect(self.export_report_pdf);top.addWidget(self.report_pdf_button);top.addStretch()
         splitter=QSplitter();root.addWidget(splitter,1)
         self.history=QListWidget();self.history.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff);self.history.currentRowChanged.connect(self.select_run);splitter.addWidget(self.history)
         detail=QTabWidget();self.result_tabs=detail;splitter.addWidget(detail);splitter.setStretchFactor(1,1)
@@ -373,7 +374,7 @@ class FourStrokeResults(QWidget):
         controls=QHBoxLayout();self.compare_a=QComboBox();self.compare_b=QComboBox();self.compare_button=QPushButton("Comparar corridas");self.compare_button.clicked.connect(self.compare);controls.addWidget(QLabel("A"));controls.addWidget(self.compare_a,1);controls.addWidget(QLabel("B"));controls.addWidget(self.compare_b,1);controls.addWidget(self.compare_button);compare_layout.addLayout(controls)
         self.compare_status=QLabel("La comparación requiere dos diseños distintos, corridas periódicas y contexto de cálculo idéntico.");self.compare_status.setWordWrap(True);compare_layout.addWidget(self.compare_status)
         self.compare_table=QTableWidget(0,5);self.compare_table.setHorizontalHeaderLabels(["Métrica","A","B","Δ absoluto · B − A","Δ relativo a A"]);self.compare_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);compare_layout.addWidget(self.compare_table,1)
-        exports=QHBoxLayout();self.compare_json_button=QPushButton("Exportar ficha A/B JSON");self.compare_json_button.clicked.connect(self.export_comparison_json);self.compare_json_button.setEnabled(False);exports.addWidget(self.compare_json_button);self.compare_csv_button=QPushButton("Exportar diferencias CSV");self.compare_csv_button.clicked.connect(self.export_comparison_csv);self.compare_csv_button.setEnabled(False);exports.addWidget(self.compare_csv_button);self.compare_report_button=QPushButton("Informe técnico A/B HTML");self.compare_report_button.clicked.connect(self.export_comparison_report);self.compare_report_button.setEnabled(False);exports.addWidget(self.compare_report_button);compare_layout.addLayout(exports);detail.addTab(self.compare_tab,"Comparar")
+        exports=QHBoxLayout();self.compare_json_button=QPushButton("Exportar ficha A/B JSON");self.compare_json_button.clicked.connect(self.export_comparison_json);self.compare_json_button.setEnabled(False);exports.addWidget(self.compare_json_button);self.compare_csv_button=QPushButton("Exportar diferencias CSV");self.compare_csv_button.clicked.connect(self.export_comparison_csv);self.compare_csv_button.setEnabled(False);exports.addWidget(self.compare_csv_button);self.compare_report_button=QPushButton("Informe técnico A/B HTML");self.compare_report_button.clicked.connect(self.export_comparison_report);self.compare_report_button.setEnabled(False);exports.addWidget(self.compare_report_button);self.compare_report_pdf_button=QPushButton("Informe técnico A/B PDF");self.compare_report_pdf_button.clicked.connect(self.export_comparison_report_pdf);self.compare_report_pdf_button.setEnabled(False);exports.addWidget(self.compare_report_pdf_button);compare_layout.addLayout(exports);detail.addTab(self.compare_tab,"Comparar")
         self.compare_a.currentIndexChanged.connect(self._invalidate_comparison)
         self.compare_b.currentIndexChanged.connect(self._invalidate_comparison)
         self.context.changed.connect(self.refresh);self.refresh()
@@ -466,7 +467,7 @@ class FourStrokeResults(QWidget):
 
     def compare(self):
         self.comparison=None;self.compare_table.setRowCount(0)
-        self.compare_json_button.setEnabled(False);self.compare_csv_button.setEnabled(False);self.compare_report_button.setEnabled(False)
+        self.compare_json_button.setEnabled(False);self.compare_csv_button.setEnabled(False);self.compare_report_button.setEnabled(False);self.compare_report_pdf_button.setEnabled(False)
         aidx=self.compare_a.currentData();bidx=self.compare_b.currentData()
         if aidx not in self.loaded or bidx not in self.loaded:return
         if aidx==bidx:self.compare_status.setText("Elegí dos corridas distintas para comparar.");return
@@ -485,13 +486,13 @@ class FourStrokeResults(QWidget):
                     format_number(metric["delta_b_minus_a"]),relative)
             for column,text in enumerate(values):self.compare_table.setItem(row,column,QTableWidgetItem(text))
         self.compare_status.setText(f"Diferencia del modelo 4T · {format_number(comparison['operating_point']['rpm'])} RPM exactas · contexto, modelos, numerics, versión y termodinámica coinciden · A/B periódicos · diferencias calculadas, no validadas experimentalmente · ID {comparison['comparison_id'][:12]}")
-        self.compare_json_button.setEnabled(True);self.compare_csv_button.setEnabled(True);self.compare_report_button.setEnabled(True)
+        self.compare_json_button.setEnabled(True);self.compare_csv_button.setEnabled(True);self.compare_report_button.setEnabled(True);self.compare_report_pdf_button.setEnabled(True)
 
     def _invalidate_comparison(self,*_):
         self.comparison=None
         if not hasattr(self,"compare_table"):return
         self.compare_table.setRowCount(0)
-        self.compare_json_button.setEnabled(False);self.compare_csv_button.setEnabled(False);self.compare_report_button.setEnabled(False)
+        self.compare_json_button.setEnabled(False);self.compare_csv_button.setEnabled(False);self.compare_report_button.setEnabled(False);self.compare_report_pdf_button.setEnabled(False)
         self.compare_status.setText("Seleccioná dos corridas y pulsá Comparar corridas.")
 
     def _comparison_endpoint(self,summary,reference):
@@ -535,6 +536,15 @@ class FourStrokeResults(QWidget):
         if not target.lower().endswith(".html"):target+=".html"
         from .technical_report import write_four_stroke_ab_report
         path=write_four_stroke_ab_report(target,self.comparison)
+        QDesktopServices.openUrl(QUrl.fromLocalFile(str(path.resolve())))
+
+    def export_comparison_report_pdf(self):
+        if not self._comparison_export_ready():return
+        target,_=QFileDialog.getSaveFileName(self,"Informe técnico A/B PDF",str(Path.home()/"dino-4t-ab-report.pdf"),"PDF (*.pdf)")
+        if not target:return
+        if not target.lower().endswith(".pdf"):target+=".pdf"
+        from .technical_report import write_four_stroke_ab_report_pdf
+        path=write_four_stroke_ab_report_pdf(target,self.comparison)
         QDesktopServices.openUrl(QUrl.fromLocalFile(str(path.resolve())))
 
     def _export_rows(self):
@@ -597,6 +607,16 @@ class FourStrokeResults(QWidget):
             {"summary":summary,"meta":meta,"reference":ref} for summary,meta,ref,_kind in self._export_rows()])
         Path(target).write_text(report,encoding="utf-8")
         QDesktopServices.openUrl(QUrl.fromLocalFile(str(Path(target).resolve())))
+
+    def export_report_pdf(self):
+        if not self._verified_export_rows():return
+        target,_=QFileDialog.getSaveFileName(self,"Informe técnico 4T PDF",str(Path.home()/"dino-4t-report.pdf"),"PDF (*.pdf)")
+        if not target:return
+        if not target.lower().endswith(".pdf"):target += ".pdf"
+        from .technical_report import write_four_stroke_report_pdf
+        path=write_four_stroke_report_pdf(target,self.context.project["project_id"],[
+            {"summary":summary,"meta":meta,"reference":ref} for summary,meta,ref,_kind in self._export_rows()])
+        QDesktopServices.openUrl(QUrl.fromLocalFile(str(path.resolve())))
 
     def import_historical(self):
         source,_=QFileDialog.getOpenFileName(self,"Importar resumen nativo 4T",str(Path.home()),"DINO4T_OPERATING_POINT_RESULT_V1 (*.json)")

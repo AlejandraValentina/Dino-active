@@ -28,8 +28,10 @@ Orden: (undo/redo, PDF, onboarding) → bundles → (batch, comparación/legacy)
 - [x] CP1-UNDO-REDO - historia acotada por contexto (2T, 4T 0D y 4T nativo), limpieza al guardar/cambiar de proyecto y acciones de edición.
   - verificar: test:python -m pytest tests/test_desktop_history.py -q
 - [ ] CP1-PROJECT-BUNDLES
-- [ ] CP1-PDF-REPORT
-- [ ] CP1-TEMPLATES-ONBOARDING
+- [x] CP1-PDF-REPORT - PDF paginado del informe técnico 2T, 4T nativo, A/B y comparación de estudios, con los mismos límites científicos.
+  - verificar: test:python -m pytest tests/test_desktop_pdf_report.py tests/test_desktop_technical_report.py tests/test_dino4t_ab_comparison.py -q
+- [x] CP1-TEMPLATES-ONBOARDING - guía breve, ejemplos sintéticos 2T/4T nativo/4T 0D y verificación de primeros pasos.
+  - verificar: test:python -m pytest tests/test_desktop_onboarding.py -q
 - [ ] CP1-BATCH-QUEUE
 - [ ] CP1-COMPARISON-LEGACY-UX
 

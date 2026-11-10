@@ -19,6 +19,7 @@ from .project_page import ProjectPage
 from .results_page import ResultsPage
 from .execution_page import ExecutionPage
 from .four_stroke_context import FourStrokeContext
+from .four_stroke_project import project_from_example
 from .four_stroke_workspace import FourStrokeWorkspace
 from .four_stroke_execution import FourStrokeExecution
 from .four_stroke_results import FourStrokeResultsPage
@@ -27,6 +28,7 @@ from .widgets.context_bar import ContextBar
 from .preferences import settings, repository_root_containing
 from .product import (AboutDialog, RecentProjects, RecoveryController,
                       create_diagnostics_bundle, product_info)
+from .onboarding import OnboardingDialog
 from .theme import stylesheet
 from .presentation import state_label
 
@@ -329,6 +331,28 @@ class DinoDesktopWindow(QMainWindow):
         self.four_stroke_results.clear_result()
         self.show_four_stroke_mode()
         self.statusBar().showMessage('Proyecto 4T nuevo · referencia sintética sin validación experimental',6000)
+    def new_example_2t(self):
+        if not self._confirm_discard_active():return
+        if self._active_context() is not self.context and not self._confirm_discard():return
+        self.context.replace_project(new_design_project("demo-2t-sintetico"),None)
+        self.show_two_stroke_mode()
+        self.statusBar().showMessage("Ejemplo 2T sintético creado — sin validación experimental",6000)
+
+    def new_example_native_4t(self):
+        if not self._confirm_discard_active():return
+        if self._active_context() is not self.native_four_stroke.context and not self._confirm_discard_native():return
+        self.native_four_stroke.replace_project(project_from_example("demo-4t-nativo-sintetico"),None)
+        self.show_native_four_stroke_mode()
+        self.statusBar().showMessage("Ejemplo 4T nativo sintético creado — sin validación experimental",6000)
+
+    def new_example_4t_0d(self):
+        if not self._confirm_discard_active():return
+        if self._active_context() is not self.four_stroke_context and not self._confirm_discard_four_stroke():return
+        self.four_stroke_context.new_project(name="demo-4t-0d-sintetico",rpm=3000)
+        self.four_stroke_results.clear_result()
+        self.show_four_stroke_mode()
+        self.statusBar().showMessage("Ejemplo 4T 0D sintético creado — sin validación experimental",6000)
+
     def open_four_stroke_file(self):
         if not self._confirm_discard_four_stroke():return
         path,_=QFileDialog.getOpenFileName(self,'Abrir proyecto 4T',str(Path.home()),'Dino 4T 0D (*.dino4t.json *.json)')
@@ -591,6 +615,7 @@ class DinoDesktopWindow(QMainWindow):
         help_menu=self.menuBar().addMenu('Ayuda')
         about_action=help_menu.addAction('Acerca de Dino…',self.show_about)
         about_action.setShortcut(QKeySequence.HelpContents)
+        help_menu.addAction('Guía de inicio y plantillas…',self.show_onboarding)
         diagnostics_action=help_menu.addAction('Exportar diagnóstico…',self.export_diagnostics)
         diagnostics_action.setShortcut(QKeySequence("Ctrl+Shift+D"))
         self.evidence_toggle_action=toggle
@@ -738,6 +763,9 @@ class DinoDesktopWindow(QMainWindow):
         except Exception as exc:QMessageBox.warning(self,"No se pudo abrir",f"{type(exc).__name__}: {exc}")
     def show_about(self):
         AboutDialog(product_info(),self).exec()
+
+    def show_onboarding(self):
+        OnboardingDialog(self,self).exec()
     def export_diagnostics(self):
         path,_=QFileDialog.getSaveFileName(self,"Exportar diagnóstico",
             str(Path.home()/"dino-diagnostico.zip"),"ZIP (*.zip)")

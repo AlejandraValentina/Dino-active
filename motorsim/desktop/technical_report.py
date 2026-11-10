@@ -892,3 +892,35 @@ def write_four_stroke_ab_report(path, comparison: dict) -> Path:
     path=Path(path)
     path.write_text(render_four_stroke_ab_report(comparison),encoding="utf-8")
     return path
+
+
+def write_technical_report_pdf(path, dataset: dict, **kwargs) -> Path:
+    from .pdf_report import write_html_pdf
+    target=Path(path)
+    write_html_pdf(target, render_technical_report(dataset, **kwargs),
+                   title="Informe técnico Dino 2T")
+    return target
+
+
+def write_study_comparison_report_pdf(path, comparison: dict) -> Path:
+    from .pdf_report import write_html_pdf
+    target=Path(path)
+    write_html_pdf(target, render_study_comparison_report(comparison),
+                   title="Comparación de estudios Dino 2T")
+    return target
+
+
+def write_four_stroke_report_pdf(path, project_id: str, records: list[dict]) -> Path:
+    from .pdf_report import write_html_pdf
+    target=Path(path)
+    write_html_pdf(target, render_four_stroke_report(project_id, records),
+                   title="Informe técnico Dino 4T")
+    return target
+
+
+def write_four_stroke_ab_report_pdf(path, comparison: dict) -> Path:
+    from .pdf_report import write_html_pdf
+    target=Path(path)
+    write_html_pdf(target, render_four_stroke_ab_report(comparison),
+                   title="Comparación Dino 4T A/B")
+    return target

@@ -1,0 +1,32 @@
+{
+  "name": "cp1-wave1",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_desktop_history.py",
+    "tests/test_desktop_pdf_report.py",
+    "tests/test_desktop_onboarding.py",
+    "tests/test_desktop_technical_report.py",
+    "tests/test_desktop_unified_engine_navigation.py",
+    "tests/test_commercial_product.py",
+    "tests/test_commercial_unified_integration.py",
+    "tests/test_dino4t_ab_comparison.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "started_at": "2026-11-10T15:24:58+00:00",
+  "finished_at": "2026-11-10T15:28:23+00:00",
+  "duration_s": 204.891,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\commercial-product-v1\\verification\\cp1-wave1.log",
+  "log_lines": 2,
+  "log_bytes": 111,
+  "error_lines": [],
+  "tail": [
+    "..........................................................               [100%]",
+    "58 passed in 201.65s (0:03:21)"
+  ]
+}

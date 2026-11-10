@@ -13406,11 +13406,16 @@
       "dependencies": [
         "CP0-REGRESSION"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Implement PDF export with scientific caveats.",
+      "evidence": [
+        "tests/test_desktop_pdf_report.py 3 PASS",
+        "tests/test_desktop_technical_report.py 19 PASS",
+        "tests/test_dino4t_ab_comparison.py 13 PASS",
+        "results/commercial-product-v1/verification/cp1-wave1.summary.json 58 PASS"
+      ],
+      "next_action": null,
       "owner_role": "implementation",
       "write_scope": [],
       "evidence_level": "L0"
@@ -13422,11 +13427,14 @@
       "dependencies": [
         "CP0-REGRESSION"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Implement onboarding/templates.",
+      "evidence": [
+        "tests/test_desktop_onboarding.py 3 PASS",
+        "results/commercial-product-v1/verification/cp1-wave1.summary.json 58 PASS"
+      ],
+      "next_action": null,
       "owner_role": "implementation",
       "write_scope": [],
       "evidence_level": "L0"
@@ -19151,6 +19159,18 @@
       "task": "CP1-UNDO-REDO",
       "kind": "task",
       "summary": "Bounded undo/redo implemented for 2T, 4T 0D and native 4T with mode-routed edit actions, history limit, and cleanup on save/project change; 32 focused tests PASS."
+    },
+    {
+      "at": "2026-11-10T15:28:32+00:00",
+      "task": "CP1-PDF-REPORT",
+      "kind": "task",
+      "summary": "PDF export added for 2T, native 4T, A/B and cross-study reports; 58 focused tests PASS."
+    },
+    {
+      "at": "2026-11-10T15:28:32+00:00",
+      "task": "CP1-TEMPLATES-ONBOARDING",
+      "kind": "task",
+      "summary": "Onboarding guide, synthetic 2T/native 4T/4T 0D examples and first-step checks added; 58 focused tests PASS."
     }
   ],
   "legacy_gate_status": {
@@ -19170,20 +19190,18 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 6,
-    "gate_tasks_done": 1,
+    "gate_tasks_done": 3,
     "gate_task_states": {
-      "DONE": 1,
-      "READY": 3,
+      "DONE": 3,
+      "READY": 1,
       "WAITING": 2
     },
     "remaining": [
       "CP1-PROJECT-BUNDLES",
-      "CP1-PDF-REPORT",
-      "CP1-TEMPLATES-ONBOARDING",
       "CP1-BATCH-QUEUE",
       "CP1-COMPARISON-LEGACY-UX"
     ],
-    "updated_at": "2026-11-10T15:12:52+00:00"
+    "updated_at": "2026-11-10T15:28:32+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

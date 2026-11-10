@@ -475,6 +475,10 @@ def test_results_page_exports_hash_bound_rpm_envelope_report(tmp_path):
     report=destination.read_text(encoding="utf-8")
     assert "RPM_ENVELOPE_V1" in report and "synthetic-envelope-run" in report
     assert "Límite de ciclos" in report and "Ciclos insuficientes" in report
+    pdf_destination=tmp_path/"envelope-report.pdf"
+    with patch.object(QFileDialog,"getSaveFileName",return_value=(str(pdf_destination),"PDF")):
+        assert page.export_technical_report_pdf()
+    assert pdf_destination.read_bytes().startswith(b"%PDF")
     page.close();APP.processEvents()
 
 
