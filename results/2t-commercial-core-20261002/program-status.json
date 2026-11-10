@@ -13369,11 +13369,16 @@
       "dependencies": [
         "CP0-REGRESSION"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Implement undo/redo for 2T, 4T 0D and native 4T.",
+      "evidence": [
+        "tests/test_desktop_history.py 5 PASS",
+        "tests/test_desktop_four_stroke_context.py",
+        "tests/test_desktop_unified_engine_navigation.py",
+        "tests/test_desktop_technical_report.py 32 PASS combined"
+      ],
+      "next_action": null,
       "owner_role": "implementation",
       "write_scope": [],
       "evidence_level": "L0"
@@ -13385,7 +13390,7 @@
       "dependencies": [
         "CP1-UNDO-REDO"
       ],
-      "state": "WAITING",
+      "state": "READY",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -19140,6 +19145,12 @@
       "task": "CONSOLIDATE-MAIN-CP0",
       "kind": "task",
       "summary": "main ff-only to 864f47f; CP0+unified UI+RPM curves integrated; 271/1 evidence reused; no push."
+    },
+    {
+      "at": "2026-11-10T15:12:51+00:00",
+      "task": "CP1-UNDO-REDO",
+      "kind": "task",
+      "summary": "Bounded undo/redo implemented for 2T, 4T 0D and native 4T with mode-routed edit actions, history limit, and cleanup on save/project change; 32 focused tests PASS."
     }
   ],
   "legacy_gate_status": {
@@ -19159,19 +19170,20 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 6,
-    "gate_tasks_done": 0,
+    "gate_tasks_done": 1,
     "gate_task_states": {
-      "READY": 6
+      "DONE": 1,
+      "READY": 3,
+      "WAITING": 2
     },
     "remaining": [
-      "CP1-UNDO-REDO",
       "CP1-PROJECT-BUNDLES",
       "CP1-PDF-REPORT",
       "CP1-TEMPLATES-ONBOARDING",
       "CP1-BATCH-QUEUE",
       "CP1-COMPARISON-LEGACY-UX"
     ],
-    "updated_at": "2026-11-10T13:08:03+00:00"
+    "updated_at": "2026-11-10T15:12:52+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

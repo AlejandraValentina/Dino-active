@@ -297,6 +297,7 @@ class DinoDesktopWindow(QMainWindow):
         if is_2t:self._state_changed()
         elif family=="4T_REFERENCE":self._four_stroke_state_changed()
         else:self._native_four_stroke_state_changed()
+        self._refresh_history_actions()
     def show_four_stroke_mode(self,*_):
         self._activate_engine_family("4T_REFERENCE")
         self.statusBar().showMessage("Modo 4T 0D de referencia · SYNTHETIC_REFERENCE_0D · NOT_VALIDATED",6000)
@@ -580,12 +581,42 @@ class DinoDesktopWindow(QMainWindow):
         self._action('Guardar como',self.save_as)
         view=self.menuBar().addMenu('Vista');toggle=view.addAction('Evidencia y provenance');toggle.setCheckable(True);toggle.toggled.connect(self.evidence_dock.setVisible)
         self.evidence_dock.visibilityChanged.connect(toggle.setChecked)
+        edit_menu=self.menuBar().addMenu('Edición')
+        self.undo_action=QAction('Deshacer',self);self.undo_action.setShortcut(QKeySequence.Undo)
+        self.undo_action.triggered.connect(self._undo_active);edit_menu.addAction(self.undo_action)
+        self.redo_action=QAction('Rehacer',self);self.redo_action.setShortcut(QKeySequence.Redo)
+        self.redo_action.triggered.connect(self._redo_active);edit_menu.addAction(self.redo_action)
+        for context in (self.context,self.four_stroke_context,self.native_four_stroke.context):
+            context.changed.connect(self._refresh_history_actions)
         help_menu=self.menuBar().addMenu('Ayuda')
         about_action=help_menu.addAction('Acerca de Dino…',self.show_about)
         about_action.setShortcut(QKeySequence.HelpContents)
         diagnostics_action=help_menu.addAction('Exportar diagnóstico…',self.export_diagnostics)
         diagnostics_action.setShortcut(QKeySequence("Ctrl+Shift+D"))
         self.evidence_toggle_action=toggle
+    def _active_context(self):
+        if self._native_four_stroke_active():return self.native_four_stroke.context
+        if self._four_stroke_active():return self.four_stroke_context
+        return self.context
+
+    def _refresh_history_actions(self,*_):
+        if not hasattr(self,'undo_action'):return
+        context=self._active_context()
+        self.undo_action.setEnabled(context.can_undo)
+        self.redo_action.setEnabled(context.can_redo)
+
+    def _undo_active(self,*_):
+        context=self._active_context()
+        if context.undo():
+            self.statusBar().showMessage('Deshacer aplicado',2500)
+        self._refresh_history_actions()
+
+    def _redo_active(self,*_):
+        context=self._active_context()
+        if context.redo():
+            self.statusBar().showMessage('Rehacer aplicado',2500)
+        self._refresh_history_actions()
+
     def _state_changed(self):
         mark=' • Cambios sin guardar' if self.context.dirty else ''
         if not self._four_stroke_active() and not self._native_four_stroke_active():
@@ -750,7 +781,7 @@ class DinoDesktopWindow(QMainWindow):
         try:
             save_project(target,context.project)
             context.path=target;context.dirty=False;context.changed.emit()
-            self.recent.add("4Tnative",target);self.recovery_native.clear()
+            self.recent.add("4Tnative",target);self.recovery_native.clear();self.native_four_stroke.context.clear_history();self._refresh_history_actions()
             self.statusBar().showMessage(f"Motor 4T guardado en {target}",4000)
             return True
         except Exception as exc:
@@ -818,7 +849,7 @@ class DinoDesktopWindow(QMainWindow):
         if self._native_four_stroke_active():return self._save_native_project()
         if self._four_stroke_active():return self.save_four_stroke_file()
         if self.context.path is None:return self.save_as()
-        try:save_project(self.context.path,self.context.project);self.context.dirty=False;self.context.changed.emit();self.recent.add("2T",self.context.path);self.recovery_2t.clear();self.statusBar().showMessage('Proyecto guardado',3500);return True
+        try:save_project(self.context.path,self.context.project);self.context.dirty=False;self.context.changed.emit();self.recent.add("2T",self.context.path);self.recovery_2t.clear();self.context.clear_history();self._refresh_history_actions();self.statusBar().showMessage('Proyecto guardado',3500);return True
         except Exception as exc:QMessageBox.warning(self,'No se pudo guardar',f'{type(exc).__name__}: {exc}');return False
     def save_as(self):
         if self._native_four_stroke_active():return self._save_native_as()
@@ -827,7 +858,7 @@ class DinoDesktopWindow(QMainWindow):
         if not path:return False
         target=Path(path)
         if target.suffix.lower()!='.json':target=Path(str(target)+'.dino2t.json')
-        try:save_project(target,self.context.project);self.context.path=target;self.context.dirty=False;self.context.changed.emit();self.recent.add("2T",target);self.recovery_2t.clear();self.statusBar().showMessage('Proyecto guardado',3500);return True
+        try:save_project(target,self.context.project);self.context.path=target;self.context.dirty=False;self.context.changed.emit();self.recent.add("2T",target);self.recovery_2t.clear();self.context.clear_history();self._refresh_history_actions();self.statusBar().showMessage('Proyecto guardado',3500);return True
         except Exception as exc:QMessageBox.warning(self,'No se pudo guardar',f'{type(exc).__name__}: {exc}');return False
     def import_configuration(self):
         path,_=QFileDialog.getOpenFileName(self,'Importar configuración de motor',str(Path.home()),'Engine configuration (*.json)')

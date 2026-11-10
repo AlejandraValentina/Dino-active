@@ -25,7 +25,8 @@
 
 Orden: (undo/redo, PDF, onboarding) → bundles → (batch, comparación/legacy).
 
-- [ ] CP1-UNDO-REDO
+- [x] CP1-UNDO-REDO - historia acotada por contexto (2T, 4T 0D y 4T nativo), limpieza al guardar/cambiar de proyecto y acciones de edición.
+  - verificar: test:python -m pytest tests/test_desktop_history.py -q
 - [ ] CP1-PROJECT-BUNDLES
 - [ ] CP1-PDF-REPORT
 - [ ] CP1-TEMPLATES-ONBOARDING

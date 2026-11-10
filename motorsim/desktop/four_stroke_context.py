@@ -1,6 +1,7 @@
 """Estado editable del proyecto 4T 0D de referencia, separado del contexto 2T."""
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import fields, replace
 from pathlib import Path
 import uuid
@@ -29,6 +30,68 @@ class FourStrokeContext(QObject):
         self.dirty = False
         self._execution_kind = None
         self._execution_token = None
+        self._undo = []
+        self._redo = []
+        self._history_limit = 50
+        self._restoring = False
+
+    @property
+    def can_undo(self) -> bool:
+        return bool(self._undo)
+
+    @property
+    def can_redo(self) -> bool:
+        return bool(self._redo)
+
+    def _record_history(self):
+        if self._restoring:
+            return
+        self._undo.append(deepcopy(self.project))
+        if len(self._undo) > self._history_limit:
+            self._undo.pop(0)
+        self._redo.clear()
+
+    def clear_history(self):
+        self._undo.clear(); self._redo.clear()
+
+    def _restore_history(self, snapshot):
+        snapshot.validate()
+        self.project = deepcopy(snapshot)
+        self.dirty = True
+        self.project_changed.emit(self.project)
+        self.changed.emit()
+
+    def undo(self):
+        self._require_idle()
+        if not self._undo:
+            return False
+        current = deepcopy(self.project)
+        snapshot = self._undo.pop()
+        self._redo.append(current)
+        if len(self._redo) > self._history_limit:
+            self._redo.pop(0)
+        self._restoring = True
+        try:
+            self._restore_history(snapshot)
+        finally:
+            self._restoring = False
+        return True
+
+    def redo(self):
+        self._require_idle()
+        if not self._redo:
+            return False
+        current = deepcopy(self.project)
+        snapshot = self._redo.pop()
+        self._undo.append(current)
+        if len(self._undo) > self._history_limit:
+            self._undo.pop(0)
+        self._restoring = True
+        try:
+            self._restore_history(snapshot)
+        finally:
+            self._restoring = False
+        return True
 
     @property
     def execution_active(self) -> bool:
@@ -87,6 +150,7 @@ class FourStrokeContext(QObject):
             raise FourStrokeProjectError(f"Campos 4T desconocidos: {sorted(unknown)}")
         candidate = replace(self.project, **changes)
         candidate.validate()
+        self._record_history()
         self.project = candidate
         self.dirty = True
         self.changed.emit()
@@ -99,12 +163,14 @@ class FourStrokeContext(QObject):
         self.project = project
         self.path = Path(path) if path is not None else None
         self.dirty = False
+        self.clear_history()
         self.project_changed.emit(project)
         self.changed.emit()
 
     def attach_curve_reference(self, reference: dict) -> FourStrokeProject:
         self._require_idle()
         candidate = with_curve_reference(self.project, reference)
+        self._record_history()
         self.project = candidate
         self.dirty = True
         self.changed.emit()
@@ -129,6 +195,7 @@ class FourStrokeContext(QObject):
         save_project(target, self.project)
         self.path = target
         self.dirty = False
+        self.clear_history()
         self.saved.emit(target)
         self.changed.emit()
         return target

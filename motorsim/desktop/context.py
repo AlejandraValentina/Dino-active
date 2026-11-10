@@ -14,6 +14,7 @@ class DesktopContext(QObject):
     def __init__(self, project):
         super().__init__(); self.project=deepcopy(project); self.path=None; self.dirty=False
         self._selected_variant=None; validate_project(self.project)
+        self._undo=[]; self._redo=[]; self._history_limit=50; self._restoring=False
 
     @property
     def selected_variant(self):
@@ -22,6 +23,68 @@ class DesktopContext(QObject):
     @selected_variant.setter
     def selected_variant(self, name):
         self.select_variant(name)
+
+    @property
+    def can_undo(self):
+        return bool(self._undo)
+
+    @property
+    def can_redo(self):
+        return bool(self._redo)
+
+    def _history_snapshot(self):
+        return (deepcopy(self.project), self._selected_variant)
+
+    def _record_history(self):
+        if self._restoring:
+            return
+        self._undo.append(self._history_snapshot())
+        if len(self._undo) > self._history_limit:
+            self._undo.pop(0)
+        self._redo.clear()
+
+    def clear_history(self):
+        self._undo.clear(); self._redo.clear()
+
+    def _restore_history(self, snapshot):
+        project, selected = snapshot
+        candidate = deepcopy(project)
+        validate_project(candidate)
+        self.project = candidate
+        self._selected_variant = selected if selected in self.project["variants"] else None
+        self.dirty = True
+        self.variant_changed.emit(self._selected_variant)
+        self.changed.emit()
+
+    def undo(self):
+        if not self._undo:
+            return False
+        current = self._history_snapshot()
+        snapshot = self._undo.pop()
+        self._redo.append(current)
+        if len(self._redo) > self._history_limit:
+            self._redo.pop(0)
+        self._restoring = True
+        try:
+            self._restore_history(snapshot)
+        finally:
+            self._restoring = False
+        return True
+
+    def redo(self):
+        if not self._redo:
+            return False
+        current = self._history_snapshot()
+        snapshot = self._redo.pop()
+        self._undo.append(current)
+        if len(self._undo) > self._history_limit:
+            self._undo.pop(0)
+        self._restoring = True
+        try:
+            self._restore_history(snapshot)
+        finally:
+            self._restoring = False
+        return True
 
     def select_variant(self, name):
         if name is not None and name not in self.project["variants"]:
@@ -52,6 +115,7 @@ class DesktopContext(QObject):
         if cycle != self.engine_family:
             raise ValueError("No se puede cambiar el ciclo de un proyecto existente; creá un proyecto del otro tipo.")
         name=self.selected_variant if variant_name is None else variant_name
+        self._record_history()
         if name is None:
             self.project["base_engine"]=deepcopy(engine)
             self.project["base_identity_sha256"]=engine_identity(cycle, engine)
@@ -83,6 +147,7 @@ class DesktopContext(QObject):
             variant["display_name"]=name
             variant["provenance"]={**variant["provenance"],"variant_parent_identity":get_identity("2T", source)}
         self._validate_engine(variant)
+        self._record_history()
         self.project["variants"][name]=variant
         self.dirty=True
         self.select_variant(name)
@@ -93,10 +158,12 @@ class DesktopContext(QObject):
         if old_name not in self.project["variants"]:
             raise KeyError(f"No existe la variante {old_name!r}")
         name=self._variant_name(new_name,self.project["variants"],current=old_name)
-        variant=self.project["variants"].pop(old_name)
+        variant=deepcopy(self.project["variants"][old_name])
         if self.engine_family == "4T": variant["identifier"] = name
         else: variant["display_name"]=name
         self._validate_engine(variant)
+        self._record_history()
+        del self.project["variants"][old_name]
         self.project["variants"][name]=variant
         if self._selected_variant==old_name:
             self._selected_variant=name
@@ -110,6 +177,7 @@ class DesktopContext(QObject):
         refs=self.project.get("result_references",self.project.get("run_references",[]))
         if refs:
             raise ValueError("El proyecto contiene referencias externas de corridas sin asociación de variante verificable; no se quitará la variante. Los artifacts se conservan.")
+        self._record_history()
         del self.project["variants"][name]
         if self._selected_variant==name:
             self._selected_variant=None
@@ -118,12 +186,14 @@ class DesktopContext(QObject):
 
     def set_project_name(self, name):
         name=self._variant_name(name,{},current=self.project["project_id"])
+        self._record_history()
         self.project["project_id"]=name
         self.dirty=True;self.changed.emit()
 
     def replace_project(self, project, path=None):
         validate_project(project); self.project=deepcopy(project); self.path=path
         self._selected_variant=None; self.dirty=False
+        self.clear_history()
         self.variant_changed.emit(None); self.changed.emit()
 
     def add_study_reference(self, reference):
@@ -140,6 +210,7 @@ class DesktopContext(QObject):
         if index is None:refs.append(deepcopy(reference))
         else:refs[index]=deepcopy(reference)
         validate_project(candidate)
+        self._record_history()
         self.project=candidate;self.dirty=True;self.changed.emit()
         return True
 
@@ -153,5 +224,6 @@ class DesktopContext(QObject):
         if index is None: refs.append(deepcopy(reference))
         else: refs[index]=deepcopy(reference)
         validate_4t_project(candidate)
+        self._record_history()
         self.project=candidate;self.dirty=True;self.changed.emit()
         return True
