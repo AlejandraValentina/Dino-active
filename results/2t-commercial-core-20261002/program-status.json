@@ -13190,7 +13190,8 @@
         "results/platform-c05-integration-prep-v1/windows/frozen-worker-acceptance.json",
         "results/platform-c05-integration-prep-v1/windows/route-2t-4t-acceptance.json",
         "results/platform-c05-integration-prep-v1/windows/four-stroke-curve-acceptance.json",
-        "results/platform-c05-integration-prep-v1/windows/legacy-4t-acceptance.json"
+        "results/platform-c05-integration-prep-v1/windows/legacy-4t-acceptance.json",
+        "results/platform-c05-integration-prep-v1/windows/native-4t-cancel-acceptance.json"
       ],
       "next_action": "Closed: packaged Windows candidate 9298cb66 PASS for the requested scope; strict A/B with historical legacy endpoints remains fail-closed and was not rerun.",
       "owner_role": "implementation",
@@ -18749,6 +18750,12 @@
       "task": "C05-WINDOWS-ACCEPTANCE",
       "kind": "task",
       "summary": "Candidate 9298cb66 non-trial PASS: frozen worker 2T/4T points+curves, route, 4T curve persist/reopen/cancel, legacy traceability+CSV/HTML, no orphan processes; no AppError events."
+    },
+    {
+      "at": "2026-11-10T12:01:54+00:00",
+      "task": "C05-WINDOWS-ACCEPTANCE",
+      "kind": "task",
+      "summary": "Native 4T QRunnable cancellation at cycle boundary PASS: terminal partial result, no orphan worker, saved project unchanged."
     }
   ],
   "legacy_gate_status": {

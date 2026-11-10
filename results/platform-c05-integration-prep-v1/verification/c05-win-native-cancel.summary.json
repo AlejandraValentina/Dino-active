@@ -1,0 +1,25 @@
+{
+  "name": "c05-win-native-cancel",
+  "command": [
+    ".\\.venv-build\\Scripts\\python.exe",
+    "tests\\verify_c05_native_4t_cancel_windows.py",
+    "--exe",
+    "E:\\Dino-artifacts\\Windows\\MotorSim-0.1.0-rc12-windows-x64-9298cb66\\MotorSim\\Dino2T.exe",
+    "--project",
+    "results\\dino4t-ab-engineering-v1\\runs\\dino4t-synthetic-ab-v1.dino.json",
+    "--work",
+    "E:\\Dino-artifacts\\c05-windows-acceptance\\native-cancel"
+  ],
+  "started_at": "2026-11-10T11:52:50+00:00",
+  "finished_at": "2026-11-10T11:53:46+00:00",
+  "duration_s": 55.843,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\platform-c05-integration-prep-v1\\verification\\c05-win-native-cancel.log",
+  "log_lines": 1,
+  "log_bytes": 117,
+  "error_lines": [],
+  "tail": [
+    "{\"result\": \"PASS\", \"acceptance\": \"E:\\\\Dino-artifacts\\\\c05-windows-acceptance\\\\native-cancel\\\\run1\\\\acceptance.json\"}"
+  ]
+}

@@ -47,6 +47,7 @@ exporta CSV/HTML, muestra trazabilidad y cierra sin workers huérfanos.
 | Exportación CSV | `legacy-4t-results.csv` | PASS, dos filas legacy con hashes |
 | Informe HTML | `legacy-4t-report.html` | PASS, `No realizado` / `No declarado` |
 | Reapertura en proceso nuevo | `legacy-4t-acceptance.json` | PASS, historial legacy conservado |
+| Cancelación nativa 4T (QRunnable) | `native-4t-cancel-acceptance.json` | PASS, terminal al final del ciclo, sin worker, proyecto sin cambios |
 | Cierre de recursos | todos los recibos | PASS, sin `MotorSimWorker.exe` ni `Dino2T.exe` |
 
 Las capturas de la curva 4T (completa, reabierta y cancelada) y la captura 2T
@@ -103,4 +104,5 @@ común.
 - `four-stroke-curve-*.png` — capturas de la curva.
 - `legacy-4t-acceptance.json` — histórico legacy, trazabilidad y reapertura.
 - `legacy-4t-results.csv`, `legacy-4t-report.html` — exportaciones.
+- `native-4t-cancel-acceptance.json` — cancelación nativa 4T y cierre limpio.
 - `route-2t-project-1360x900.png` — captura del ruteo 2T.
