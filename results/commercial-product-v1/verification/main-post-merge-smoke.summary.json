@@ -1,0 +1,29 @@
+{
+  "name": "main-post-merge-smoke",
+  "command": [
+    "python",
+    "-u",
+    "-m",
+    "pytest",
+    "tests/test_commercial_product.py",
+    "tests/test_commercial_unified_integration.py",
+    "tests/test_desktop_unified_engine_navigation.py",
+    "tests/test_platform_c05_terminal_acceptance.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "started_at": "2026-11-10T14:55:24+00:00",
+  "finished_at": "2026-11-10T14:56:52+00:00",
+  "duration_s": 88.0,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\commercial-product-v1\\verification\\main-post-merge-smoke.log",
+  "log_lines": 2,
+  "log_bytes": 110,
+  "error_lines": [],
+  "tail": [
+    "...........................                                              [100%]",
+    "27 passed in 86.84s (0:01:26)"
+  ]
+}

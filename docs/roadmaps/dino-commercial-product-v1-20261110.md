@@ -27,6 +27,21 @@ declarar con precisión qué está validado y qué no.
 | Windows | Candidato `9298cb66` PASS para el alcance C05; sin publicación |
 | Validación | Experimental `NOT_PERFORMED`; calibración `NOT_PERFORMED`; predictiva `NOT_CLAIMED` |
 
+
+## 2bis. Base consolidada (2026-11-10)
+
+- `main` local = `864f47fa692dc12a6265ed09e1e1b1308d7c81c3`, integrado por
+  fast-forward desde `integrate/commercial-unified-ui-v1`; sin push.
+- CP0: **fuente + Windows empaquetado aceptados**; candidato
+  `MotorSim-0.1.0-rc12-windows-x64-f45d60bf` (fuente `f45d60b`, no-trial,
+  `INTERNAL_ENGINEERING_CANDIDATE`, sin validación científica).
+- Regresión conjunta: **271 PASS / 1 SKIP**. Aceptación Windows en
+  `results/commercial-product-v1/windows-integrated/`.
+- `trial: false` es una bandera de build limpio, no un release comercial ni una
+  validación. La predictiva sigue `NOT_CLAIMED`.
+- CP1 comienza sobre esta base; ramas originales CP0 y UI unificada se
+  conservan.
+
 ## 3. Fases y dependencias
 
 | Fase | Depende de | Objetivo observable |
@@ -146,11 +161,13 @@ de validación o predictivos.
 
 ## 11. Orden de implementación
 
-1. CP0 completo y aceptado en Windows.
-2. CP1 undo/redo + bundles + PDF.
-3. CP2 licenciamiento/instalador/update según decisión del dueño.
-4. CP3 en paralelo cuando lleguen datos; no bloquear CP0–CP2.
-5. CP4 aceptación comercial.
+1. CP0 completo y aceptado en Windows (hecho).
+2. CP1-A: undo/redo, PDF y plantillas/onboarding (independientes entre sí).
+3. CP1-B: bundles portables 2T/4T (depende de undo/redo para historial estable).
+4. CP1-C: cola de simulaciones y comparación/legacy UX (dependen de bundles).
+5. CP2 licenciamiento/instalador/update según decisión del dueño.
+6. CP3 en paralelo cuando lleguen datos; no bloquear CP0–CP2.
+7. CP4 aceptación comercial.
 
 El plan machine-readable está en
 `results/commercial-product-v1/plan.json`; la cola operativa en

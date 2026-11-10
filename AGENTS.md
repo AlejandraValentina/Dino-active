@@ -26,10 +26,11 @@ CURRENT_OBJECTIVE: DINO_COMMERCIAL_PRODUCT_CP1_V1
 change/spec:       openspec/changes/commercial-product-v1/
                    specs/commercial-product-v1/spec.md
 roadmap:          docs/roadmaps/dino-commercial-product-v1-20261110.md
-completion:        CP0 commercial hardening is source-complete; implement CP1
-                   workflow completeness (undo/redo, portable bundles, PDF,
-                   onboarding, batch, comparison/legacy UX). CP3 validation is
-                   data-gated and no scientific claim follows from product work.
+completion:        CP0 is source+Windows accepted on main 864f47f; implement
+                   CP1 workflow completeness in order: undo/redo + PDF +
+                   onboarding, then portable bundles, then batch and
+                   comparison/legacy UX. CP3 validation is data-gated and no
+                   scientific claim follows from product work.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    -> current_objective, queue, gate_status, progress_log
 ```

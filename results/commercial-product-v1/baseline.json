@@ -1,0 +1,36 @@
+{
+  "schema": "DINO_COMMERCIAL_DEVELOPMENT_BASE_V1",
+  "date": "2026-11-10",
+  "main_commit": "864f47fa692dc12a6265ed09e1e1b1308d7c81c3",
+  "integration_branch": "integrate/commercial-unified-ui-v1",
+  "integration_method": "git merge --ff-only",
+  "pushes": 0,
+  "preserved_branches": {
+    "feat/commercial-product-cp0": "08a453f274c56d48fe7e48f060ef95c6fa6ba4c7",
+    "feat/dino-unified-ui-rpm-v1": "7095c708a39309d7f697ca4715d34c2622c8d703",
+    "integrate/commercial-unified-ui-v1": "864f47fa692dc12a6265ed09e1e1b1308d7c81c3"
+  },
+  "cp0_classification": "CP0_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED",
+  "windows_candidate": {
+    "source_commit": "f45d60bf728d6c47838e38514854476a3a02e516",
+    "package": "MotorSim-0.1.0-rc12-windows-x64-f45d60bf.zip",
+    "zip_sha256": "f05b00c8d3695e6fcc212672a4563e573031002f98b272bf4b6fa9fe48d7f1e9",
+    "exe_sha256": "e94f9b38646be7aa97c72284e5daa7588482c4f8312916d86608d904ebeabe5a",
+    "worker_sha256": "3a138301e98561687cfed9f88602ebad9b0340383fbda844a6837529a081890e",
+    "acceptance": "results/commercial-product-v1/windows-integrated/acceptance.md",
+    "build_classification": "INTERNAL_ENGINEERING_CANDIDATE",
+    "trial_flag": false,
+    "trial_flag_meaning": "clean packaged build; not commercial release or scientific validation"
+  },
+  "regression": {
+    "path": "results/commercial-product-v1/verification/integrated-commercial-unified.summary.json",
+    "result": "271 passed, 1 skipped",
+    "exit_code": 0
+  },
+  "next_objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+  "scientific_status": {
+    "calibration": "NOT_PERFORMED",
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_capability": "NOT_CLAIMED"
+  }
+}

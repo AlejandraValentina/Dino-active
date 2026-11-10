@@ -2,7 +2,7 @@
   "schema": "DINO_COMMERCIAL_PRODUCT_PLAN_V1",
   "id": "DINO_COMMERCIAL_PRODUCT_V1",
   "date": "2026-11-10",
-  "base_main": "e6c19085d939824cadeb4b7632defbc8e6e298a8",
+  "base_main": "864f47fa692dc12a6265ed09e1e1b1308d7c81c3",
   "baseline": "DINO_COMMERCIAL_READINESS_V1_PASS_FUNCTIONAL_TRIAL_RC7",
   "technical_candidate": "9298cb6602485d138972ac603336bf43df0d6f57",
   "separation": "COMMERCIAL_FUNCTIONALITY_IS_NOT_SCIENTIFIC_VALIDATION",
@@ -25,15 +25,32 @@
         "CP0-REGRESSION",
         "CP0-WINDOWS"
       ],
-      "acceptance": "About/identity, diagnostics, recent projects, autosave/recovery, close-safe, release policy, tests and Windows candidate. Windows candidate f45d60b PASS in all three modes.",
+      "acceptance": "CP0 source and packaged Windows accepted; candidate f45d60b PASS in all three modes.",
       "windows_candidate": "f45d60bf728d6c47838e38514854476a3a02e516"
     },
     {
       "id": "CP1",
       "title": "Workflow completeness",
-      "dependencies": [
-        "CP0"
-      ],
+      "dependencies": {
+        "CP1-UNDO-REDO": [
+          "CP0"
+        ],
+        "CP1-PDF-REPORT": [
+          "CP0"
+        ],
+        "CP1-TEMPLATES-ONBOARDING": [
+          "CP0"
+        ],
+        "CP1-PROJECT-BUNDLES": [
+          "CP1-UNDO-REDO"
+        ],
+        "CP1-BATCH-QUEUE": [
+          "CP1-PROJECT-BUNDLES"
+        ],
+        "CP1-COMPARISON-LEGACY-UX": [
+          "CP1-PROJECT-BUNDLES"
+        ]
+      },
       "execution_state": "IN_PROGRESS",
       "tasks": [
         "CP1-UNDO-REDO",
@@ -43,7 +60,21 @@
         "CP1-BATCH-QUEUE",
         "CP1-COMPARISON-LEGACY-UX"
       ],
-      "acceptance": "Undo/redo, portable bundles, PDF, onboarding/templates, batch and comparison/legacy UX with UAT."
+      "acceptance": "Undo/redo, portable bundles, PDF, onboarding/templates, batch and comparison/legacy UX with UAT.",
+      "order": [
+        [
+          "CP1-UNDO-REDO",
+          "CP1-PDF-REPORT",
+          "CP1-TEMPLATES-ONBOARDING"
+        ],
+        [
+          "CP1-PROJECT-BUNDLES"
+        ],
+        [
+          "CP1-BATCH-QUEUE",
+          "CP1-COMPARISON-LEGACY-UX"
+        ]
+      ]
     },
     {
       "id": "CP2",
@@ -99,5 +130,12 @@
     "calibration": "NOT_PERFORMED",
     "experimental_validation": "NOT_PERFORMED",
     "predictive_capability": "NOT_CLAIMED"
+  },
+  "development_base": {
+    "main_commit": "864f47fa692dc12a6265ed09e1e1b1308d7c81c3",
+    "integration_branch": "integrate/commercial-unified-ui-v1",
+    "windows_candidate_source": "f45d60bf728d6c47838e38514854476a3a02e516",
+    "windows_acceptance": "results/commercial-product-v1/windows-integrated/acceptance.md",
+    "joint_regression": "results/commercial-product-v1/verification/integrated-commercial-unified.summary.json"
   }
 }

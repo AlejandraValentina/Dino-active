@@ -23,6 +23,8 @@
 
 ## CP1 — completitud de flujo
 
+Orden: (undo/redo, PDF, onboarding) → bundles → (batch, comparación/legacy).
+
 - [ ] CP1-UNDO-REDO
 - [ ] CP1-PROJECT-BUNDLES
 - [ ] CP1-PDF-REPORT

@@ -56,6 +56,15 @@ Recibo: `acceptance.json`. Diagnostics exportados:
   `DINO_ARTIFACT_ROOT`, y evita escribir dentro de un worktree Git. En la
   aceptación se usó la raíz de artefactos en E:.
 
+
+## Clasificación del build
+
+`trial: false` en `build.json` significa **build empaquetado limpio** (no es un
+paquete TRIAL de árbol sucio). No significa release comercial, validación
+experimental ni capacidad predictiva. La clasificación de producto de este
+candidato es `INTERNAL_ENGINEERING_CANDIDATE`; calibración y validación siguen
+`NOT_PERFORMED` y la predictiva `NOT_CLAIMED`.
+
 ## Nota de transparencia
 
 Un intento previo de automatización dejó un proceso `Dino2T` de prueba vivo

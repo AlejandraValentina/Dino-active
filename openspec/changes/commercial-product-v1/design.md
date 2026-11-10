@@ -49,3 +49,16 @@ de release; CP2 implementa el modelo elegido sin DRM improvisado.
 - El producto puede venderse como herramienta TRIAL/engineering sin CP3, pero
   no como simulador validado.
 - No se modifican P0–P9, ecuaciones, tolerancias ni evidencia histórica.
+
+### 6. CP1 — orden y dependencias
+La base es `main = 864f47f` con CP0 y la navegación unificada integrados.
+CP1 se implementa en tres olas:
+1. `CP1-UNDO-REDO`, `CP1-PDF-REPORT` y `CP1-TEMPLATES-ONBOARDING` (paralelas).
+2. `CP1-PROJECT-BUNDLES` (depende de undo/redo para que el historial no
+   interfiera con la exportación/importación).
+3. `CP1-BATCH-QUEUE` y `CP1-COMPARISON-LEGACY-UX` (dependen de bundles para
+   persistencia y procedencia de trabajos/resultados).
+
+Cada componente exige pruebas funcionales, negativas, persistencia y
+compatibilidad. La aceptación Windows de CP1 es separada de la aceptación en
+fuente y no se infiere de una UI que sólo muestra la función.

@@ -23,6 +23,15 @@ científicos, ecuaciones, tolerancias ni evidencia histórica.
 - El rollback consiste en conservar el paquete anterior y no borrar artefactos
   históricos; no se reescriben resultados.
 
+
+## 2bis. Qué significa `trial: false`
+
+`trial` es una bandera de **build**: `false` indica un paquete construido desde
+un árbol limpio y con inputs identificados. No es una clasificación comercial
+ni científica. Un candidato `trial: false` sigue siendo
+`INTERNAL_ENGINEERING_CANDIDATE` hasta CP4; no acredita calibración, validación
+experimental ni capacidad predictiva.
+
 ## 3. Licencias y EULA
 
 - La aplicación incluye avisos de terceros (Qt/PySide6, Python, PyInstaller,

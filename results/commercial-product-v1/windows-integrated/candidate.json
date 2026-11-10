@@ -2,7 +2,13 @@
   "schema": "DINO_COMMERCIAL_INTEGRATED_WINDOWS_CANDIDATE_V1",
   "app_version": "0.1.0-rc12",
   "source_commit": "f45d60bf728d6c47838e38514854476a3a02e516",
-  "integration_commits": ["9e3858e", "7ed8566", "ace5956", "2fb5cd7", "f45d60b"],
+  "integration_commits": [
+    "9e3858e",
+    "7ed8566",
+    "ace5956",
+    "2fb5cd7",
+    "f45d60b"
+  ],
   "trial": false,
   "built_utc": "20261110T142221Z",
   "package_folder": "E:/Dino-artifacts/Windows/MotorSim-0.1.0-rc12-windows-x64-f45d60bf",
@@ -50,5 +56,10 @@
     "diagnostics_4tnative": "diagnostico-4tnative.zip",
     "build": "candidate-build.json",
     "zip_sha256": "candidate-zip.sha256"
-  }
+  },
+  "build_classification": "CLEAN_PACKAGED_ENGINEERING_CANDIDATE",
+  "trial_flag_meaning": "false = clean packaged build, not a dirty-tree trial build; it is not a commercial release and not scientific validation",
+  "commercial_release": false,
+  "scientific_validation": "NOT_PERFORMED",
+  "predictive_capability": "NOT_CLAIMED"
 }

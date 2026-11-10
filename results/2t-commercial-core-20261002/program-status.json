@@ -13333,7 +13333,7 @@
         "results/commercial-product-v1/windows-integrated/candidate.json",
         "results/commercial-product-v1/verification/integrated-commercial-windows-build3.summary.json"
       ],
-      "next_action": "Closed: integrated candidate built from f45d60b on E:.",
+      "next_action": "Closed: integrated candidate built from f45d60b.",
       "owner_role": "implementation",
       "write_scope": [
         "results/commercial-product-v1/windows/"
@@ -13383,9 +13383,9 @@
       "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
       "description": "Portable 2T/4T project bundles with project, results, config, traces and hashes.",
       "dependencies": [
-        "CP0-REGRESSION"
+        "CP1-UNDO-REDO"
       ],
-      "state": "READY",
+      "state": "WAITING",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -13431,9 +13431,9 @@
       "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
       "description": "Bounded batch/queue with budget, cancellation and resume.",
       "dependencies": [
-        "CP0-REGRESSION"
+        "CP1-PROJECT-BUNDLES"
       ],
-      "state": "READY",
+      "state": "WAITING",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -13447,9 +13447,9 @@
       "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
       "description": "Comparison pair/context guidance and explicit legacy import UX.",
       "dependencies": [
-        "CP0-REGRESSION"
+        "CP1-PROJECT-BUNDLES"
       ],
-      "state": "READY",
+      "state": "WAITING",
       "blocker": null,
       "commits": [],
       "evidence": [],
@@ -13482,6 +13482,29 @@
       "write_scope": [
         "motorsim/desktop/app.py",
         "tests/test_commercial_unified_integration.py"
+      ],
+      "evidence_level": "L3"
+    },
+    {
+      "id": "CONSOLIDATE-MAIN-CP0",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP0_V1",
+      "description": "Controlled fast-forward of integrate/commercial-unified-ui-v1 into local main; preserve CP0, unified navigation and RPM curves.",
+      "dependencies": [
+        "INTEGRATION-CP0-UNIFIED"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [
+        "864f47f"
+      ],
+      "evidence": [
+        "results/commercial-product-v1/baseline.json",
+        "results/commercial-product-v1/verification/main-post-merge-smoke.summary.json"
+      ],
+      "next_action": "Closed: main local at 864f47f; no push; original branches preserved.",
+      "owner_role": "orchestrator",
+      "write_scope": [
+        "results/commercial-product-v1/baseline.json"
       ],
       "evidence_level": "L3"
     }
@@ -14898,7 +14921,11 @@
         "CP0-REGRESSION"
       ],
       "completion_criterion": "CP0 source tasks complete with tests and regression; Windows CP0 candidate and about/diagnostics/recovery packaged acceptance remain a queued release step.",
-      "classification": "CP0_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED"
+      "classification": "CP0_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED",
+      "closure_evidence": [
+        "results/commercial-product-v1/windows-integrated/acceptance.md",
+        "results/commercial-product-v1/verification/integrated-commercial-unified.summary.json"
+      ]
     }
   ],
   "owner_decisions_pending": [
@@ -19107,6 +19134,12 @@
       "task": "INTEGRATION-CP0-UNIFIED",
       "kind": "task",
       "summary": "CP0 merged with unified 2T/native4T/4T0D UI; 271 PASS 1 SKIP joint regression; packaged candidate f45d60b accepted."
+    },
+    {
+      "at": "2026-11-10T14:59:05+00:00",
+      "task": "CONSOLIDATE-MAIN-CP0",
+      "kind": "task",
+      "summary": "main ff-only to 864f47f; CP0+unified UI+RPM curves integrated; 271/1 evidence reused; no push."
     }
   ],
   "legacy_gate_status": {
@@ -19849,5 +19882,11 @@
     ],
     "activation": "C05_SOURCE_PREP_COMPLETE",
     "plan_status": "C05_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED"
+  },
+  "commercial_development_base": {
+    "main_commit": "864f47fa692dc12a6265ed09e1e1b1308d7c81c3",
+    "integration_branch": "integrate/commercial-unified-ui-v1",
+    "windows_candidate_source": "f45d60bf728d6c47838e38514854476a3a02e516",
+    "baseline": "results/commercial-product-v1/baseline.json"
   }
 }
