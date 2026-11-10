@@ -581,8 +581,10 @@ class DinoDesktopWindow(QMainWindow):
         view=self.menuBar().addMenu('Vista');toggle=view.addAction('Evidencia y provenance');toggle.setCheckable(True);toggle.toggled.connect(self.evidence_dock.setVisible)
         self.evidence_dock.visibilityChanged.connect(toggle.setChecked)
         help_menu=self.menuBar().addMenu('Ayuda')
-        help_menu.addAction('Acerca de Dino…',self.show_about)
-        help_menu.addAction('Exportar diagnóstico…',self.export_diagnostics)
+        about_action=help_menu.addAction('Acerca de Dino…',self.show_about)
+        about_action.setShortcut(QKeySequence.HelpContents)
+        diagnostics_action=help_menu.addAction('Exportar diagnóstico…',self.export_diagnostics)
+        diagnostics_action.setShortcut(QKeySequence("Ctrl+Shift+D"))
         self.evidence_toggle_action=toggle
     def _state_changed(self):
         mark=' • Cambios sin guardar' if self.context.dirty else ''
@@ -797,7 +799,9 @@ class DinoDesktopWindow(QMainWindow):
                 if not self._confirm_discard_four_stroke():return
                 self.four_stroke_context.open(path)
                 self.four_stroke_results.clear_result()
+                self.recent.add("4T0D",path)
                 self.show_four_stroke_mode()
+                self.statusBar().showMessage(f"Proyecto 4T 0D {self.four_stroke_context.name} abierto",4000)
                 return
             project=load_project(path)
             if project.get("engine_family")=="4T":

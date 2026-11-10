@@ -9,7 +9,8 @@ from motorsim.desktop.app import DinoDesktopWindow
 from motorsim.desktop.four_stroke_project import project_from_example
 from motorsim.desktop.product import AboutDialog
 from motorsim.desktop.services import new_design_project
-from motorsim.four_stroke_project import starter_project
+from motorsim.engine_project import save_project as save_engine_project
+from motorsim.four_stroke_project import save_project as save_reference_project, starter_project
 
 APP = QApplication.instance() or QApplication([])
 
@@ -103,6 +104,46 @@ def test_about_dialog_is_reachable_from_the_unified_shell(tmp_path, monkeypatch)
         with patch.object(AboutDialog, "exec", return_value=0) as executed:
             window.show_about()
             executed.assert_called_once()
+    finally:
+        window.context.dirty = False
+        window.four_stroke_context.dirty = False
+        window.native_four_stroke.context.dirty = False
+        window.close()
+
+
+def test_recent_projects_are_recorded_for_all_three_modes(tmp_path, monkeypatch):
+    window = make_window(tmp_path, monkeypatch, "recent-unified")
+    try:
+        p2t = tmp_path / "recent-2t.dino2t.json"
+        save_engine_project(p2t, new_design_project("recent-2t"))
+        p0d = tmp_path / "recent-4t0d.dino4t.json"
+        save_reference_project(p0d, starter_project(name="recent-4t0d", rpm=3000))
+        pnative = tmp_path / "recent-native.dino.json"
+        save_engine_project(pnative, project_from_example("recent-native"))
+        window._open(p2t)
+        window._open(p0d)
+        window._open(pnative)
+        assert str(p2t.resolve()) in window.recent.items("2T")
+        assert str(p0d.resolve()) in window.recent.items("4T0D")
+        assert str(pnative.resolve()) in window.recent.items("4Tnative")
+    finally:
+        window.context.dirty = False
+        window.four_stroke_context.dirty = False
+        window.native_four_stroke.context.dirty = False
+        window.close()
+
+
+def test_commercial_help_actions_have_safe_shortcuts(tmp_path, monkeypatch):
+    window = make_window(tmp_path, monkeypatch, "shortcuts-unified")
+    try:
+        actions = {}
+        for top in window.menuBar().actions():
+            menu = top.menu()
+            if menu is not None:
+                for action in menu.actions():
+                    actions[action.text()] = action
+        assert actions["Acerca de Dino…"].shortcut().toString() == "F1"
+        assert actions["Exportar diagnóstico…"].shortcut().toString() == "Ctrl+Shift+D"
     finally:
         window.context.dirty = False
         window.four_stroke_context.dirty = False
