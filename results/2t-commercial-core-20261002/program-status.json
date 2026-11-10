@@ -13390,11 +13390,14 @@
       "dependencies": [
         "CP1-UNDO-REDO"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Implement portable export/import without legacy promotion.",
+      "evidence": [
+        "tests/test_desktop_project_bundles.py 5 PASS",
+        "results/commercial-product-v1/verification/cp1-bundles.summary.json 20 PASS"
+      ],
+      "next_action": null,
       "owner_role": "implementation",
       "write_scope": [],
       "evidence_level": "L0"
@@ -19171,6 +19174,12 @@
       "task": "CP1-TEMPLATES-ONBOARDING",
       "kind": "task",
       "summary": "Onboarding guide, synthetic 2T/native 4T/4T 0D examples and first-step checks added; 58 focused tests PASS."
+    },
+    {
+      "at": "2026-11-10T15:36:11+00:00",
+      "task": "CP1-PROJECT-BUNDLES",
+      "kind": "task",
+      "summary": "Portable ZIP bundles for 2T, native 4T and 4T 0D implemented with project/artifact hash verification, portable relative paths and legacy classification preservation; 20 focused tests PASS."
     }
   ],
   "legacy_gate_status": {
@@ -19190,18 +19199,16 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 6,
-    "gate_tasks_done": 3,
+    "gate_tasks_done": 4,
     "gate_task_states": {
-      "DONE": 3,
-      "READY": 1,
+      "DONE": 4,
       "WAITING": 2
     },
     "remaining": [
-      "CP1-PROJECT-BUNDLES",
       "CP1-BATCH-QUEUE",
       "CP1-COMPARISON-LEGACY-UX"
     ],
-    "updated_at": "2026-11-10T15:28:32+00:00"
+    "updated_at": "2026-11-10T15:36:12+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

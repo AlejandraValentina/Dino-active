@@ -29,6 +29,7 @@ from .preferences import settings, repository_root_containing
 from .product import (AboutDialog, RecentProjects, RecoveryController,
                       create_diagnostics_bundle, product_info)
 from .onboarding import OnboardingDialog
+from .project_bundles import write_project_bundle,import_bundle
 from .theme import stylesheet
 from .presentation import state_label
 
@@ -595,6 +596,9 @@ class DinoDesktopWindow(QMainWindow):
         for label,callback in (('Nuevo 4T 0D…',self.new_four_stroke_file),('Abrir 4T 0D…',self.open_four_stroke_file),('Guardar 4T 0D…',self.save_four_stroke_file)):
             menu.addAction(label,callback)
         menu.addSeparator()
+        menu.addAction('Exportar bundle portable…',self.export_project_bundle)
+        menu.addAction('Importar bundle portable…',self.import_project_bundle)
+        menu.addSeparator()
         self.recent_2t_menu=menu.addMenu('Proyectos recientes 2T')
         self.recent_4t_menu=menu.addMenu('Proyectos recientes 4T 0D')
         self.recent_native_menu=menu.addMenu('Proyectos recientes 4T nativo')
@@ -888,6 +892,52 @@ class DinoDesktopWindow(QMainWindow):
         if target.suffix.lower()!='.json':target=Path(str(target)+'.dino2t.json')
         try:save_project(target,self.context.project);self.context.path=target;self.context.dirty=False;self.context.changed.emit();self.recent.add("2T",target);self.recovery_2t.clear();self.context.clear_history();self._refresh_history_actions();self.statusBar().showMessage('Proyecto guardado',3500);return True
         except Exception as exc:QMessageBox.warning(self,'No se pudo guardar',f'{type(exc).__name__}: {exc}');return False
+    def export_project_bundle(self):
+        if self._native_four_stroke_active():
+            family="4T_native";project=self.native_four_stroke.context.project;path=self.native_four_stroke.context.path
+            label=str(project.get("project_id") or "proyecto-4t-nativo")
+        elif self._four_stroke_active():
+            family="4T_0D";project=self.four_stroke_context.project;path=self.four_stroke_context.path
+            label=str(project.name)
+        else:
+            family="2T";project=self.context.project;path=self.context.path
+            label=str(project.get("project_id") or "proyecto-2t")
+        default=Path(path).with_suffix('.dinobundle') if path else Path.home()/f"{label}.dinobundle"
+        target,_=QFileDialog.getSaveFileName(self,"Exportar bundle portable",str(default),"Bundle portable (*.dinobundle *.zip)")
+        if not target:return
+        if not target.lower().endswith((".dinobundle",".zip")):target+=".dinobundle"
+        try:
+            bundle=write_project_bundle(target,project,family=family,project_path=path)
+            QMessageBox.information(self,"Bundle exportado",f"Se guardó {bundle.name} con proyecto, artifacts referenciados y hashes SHA-256 verificables.")
+        except (OSError,TypeError,ValueError,FileNotFoundError) as exc:
+            QMessageBox.warning(self,"No se pudo exportar el bundle",f"{type(exc).__name__}: {exc}")
+
+    def import_project_bundle(self):
+        if not self._confirm_discard_active():return
+        source,_=QFileDialog.getOpenFileName(self,"Importar bundle portable",str(Path.home()),"Bundle Dino (*.dinobundle *.zip)")
+        if not source:return
+        parent=QFileDialog.getExistingDirectory(self,"Carpeta donde extraer el bundle",str(Path(source).parent))
+        if not parent:return
+        stem=Path(source).stem;destination=Path(parent)/stem;index=1
+        while destination.exists():
+            destination=Path(parent)/f"{stem}-{index}";index+=1
+        try:
+            imported=import_bundle(source,destination)
+        except (OSError,TypeError,ValueError,KeyError,FileNotFoundError,FileExistsError) as exc:
+            QMessageBox.warning(self,"No se pudo importar el bundle",f"{type(exc).__name__}: {exc}");return
+        family=imported["manifest"]["family"];project=imported["project"];path=imported["project_path"]
+        if family=="2T":
+            self.context.replace_project(project,path);self.show_two_stroke_mode()
+        elif family=="4T_native":
+            self.native_four_stroke.replace_project(project,path);self.show_native_four_stroke_mode()
+        elif family=="4T_0D":
+            self.four_stroke_context.replace_project(project,path);self.four_stroke_results.clear_result();self.show_four_stroke_mode()
+        else:
+            QMessageBox.warning(self,"Bundle no admitido",f"Familia desconocida: {family}");return
+        if imported["legacy_reference_count"]:
+            QMessageBox.warning(self,"Bundle con referencias legacy",f"Se importaron {imported['legacy_reference_count']} referencias legacy sin promoción. Conserve su clasificación y verifique los artifacts originales.")
+        else:
+            QMessageBox.information(self,"Bundle importado",f"Proyecto y artifacts verificados en {destination}.")
     def import_configuration(self):
         path,_=QFileDialog.getOpenFileName(self,'Importar configuración de motor',str(Path.home()),'Engine configuration (*.json)')
         if not path:return
