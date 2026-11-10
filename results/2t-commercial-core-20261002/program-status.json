@@ -13591,11 +13591,16 @@
         "CP1-BATCH-QUEUE",
         "CP1-COMPARISON-LEGACY-UX"
       ],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Build a new CP1 candidate and verify undo/redo, PDF, onboarding, bundles, batch and legacy UX; require CP1-REGRESSION evidence first.",
+      "evidence": [
+        "results/commercial-product-v1/windows-cp1/acceptance.json",
+        "results/commercial-product-v1/windows-cp1/candidate.json",
+        "results/commercial-product-v1/windows-cp1/acceptance.md",
+        "results/commercial-product-v1/verification/cp1-windows-build2.summary.json"
+      ],
+      "next_action": null,
       "owner_role": "verification",
       "write_scope": [],
       "evidence_level": "L1"
@@ -19280,6 +19285,12 @@
       "task": "CP1-DOCS",
       "kind": "task",
       "summary": "CP1 source status, scientific limits and Windows acceptance boundary documented; residual regression triage linked."
+    },
+    {
+      "at": "2026-11-10T17:33:12+00:00",
+      "task": "CP1-WINDOWS-UAT",
+      "kind": "task",
+      "summary": "Packaged Windows candidate 7fe6220b PASS for CP1 workflow acceptance: undo/redo, PDF, onboarding, bundles, comparison/legacy and bounded queue; no scientific claim."
     }
   ],
   "legacy_gate_status": {
@@ -19295,10 +19306,10 @@
   },
   "gate_status": {
     "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
-    "state": "REVIEW",
-    "classification": "CP1_SOURCE_COMPLETE_WINDOWS_PENDING",
+    "state": "PASS",
+    "classification": "CP1_SOURCE_AND_WINDOWS_WORKFLOW_ACCEPTED",
     "evidence": [
-      "cp1-regression-no-external-view.summary.json; cp1-regression-triage.json; cp1-wave1.summary.json; cp1-bundles.summary.json; cp1-batch-legacy.summary.json"
+      "results/commercial-product-v1/windows-cp1/acceptance.json; results/commercial-product-v1/windows-cp1/candidate.json; results/commercial-product-v1/verification/cp1-regression-triage.json"
     ],
     "gate_tasks_total": 6,
     "gate_tasks_done": 6,
@@ -19306,7 +19317,7 @@
       "DONE": 6
     },
     "remaining": [],
-    "updated_at": "2026-11-10T17:25:13+00:00"
+    "updated_at": "2026-11-10T17:33:12+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
