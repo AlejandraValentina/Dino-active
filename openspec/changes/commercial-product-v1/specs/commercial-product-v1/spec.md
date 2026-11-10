@@ -49,3 +49,8 @@ SHALL NOT dejar workers huérfanos ni destruir widgets con callbacks pendientes.
 El sistema SHALL declarar calibración, validación experimental y capacidad
 predictiva como estados separados. SHALL NOT presentar CP0–CP2 como validación
 ni usar supuestos sintéticos para cerrar CP3.
+
+#### Scenario: Producto TRIAL/engineering
+- **WHEN** no existen datos medidos ni validación preregistrada
+- **THEN** la aplicación declara TRIAL/engineering y no presenta una función
+  comercial como validación experimental o predictiva.
