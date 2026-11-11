@@ -1,0 +1,42 @@
+{
+  "name": "combined-focused-first",
+  "command": [
+    "python",
+    "-u",
+    "-m",
+    "pytest",
+    "tests/test_frontend_commercial_integration.py",
+    "tests/test_frontend_workflow_remediation.py",
+    "tests/test_frontend_integrity_remediation.py",
+    "tests/test_desktop_project_bundles.py",
+    "tests/test_desktop_four_stroke_shell.py",
+    "tests/test_desktop_four_stroke_workspace.py",
+    "tests/test_platform_c05_qt_lifecycle.py",
+    "tests/test_dino4t_desktop_integration.py",
+    "tests/test_commercial_product.py",
+    "tests/test_commercial_unified_integration.py",
+    "tests/test_desktop_cp1_acceptance.py",
+    "tests/test_desktop_cp2_acceptance.py",
+    "tests/test_desktop_onboarding.py",
+    "tests/test_desktop_license_ui.py",
+    "tests/test_licensing.py",
+    "-q",
+    "--tb=short",
+    "--basetemp",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/pytest-focused-1"
+  ],
+  "started_at": "2026-11-11T16:24:33+00:00",
+  "finished_at": "2026-11-11T16:32:04+00:00",
+  "duration_s": 451.328,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\frontend-commercial-integration-v1\\verification\\combined-focused-first.log",
+  "log_lines": 3,
+  "log_bytes": 191,
+  "error_lines": [],
+  "tail": [
+    "........................................................................ [ 75%]",
+    ".......................                                                  [100%]",
+    "95 passed in 445.96s (0:07:25)"
+  ]
+}

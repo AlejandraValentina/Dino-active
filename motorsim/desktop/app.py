@@ -59,6 +59,9 @@ class DinoDesktopWindow(QMainWindow):
         if project is None:self._ensure_safe_artifact_root_for_new_project()
         from .workspace_experience import WorkspaceExperience
         self.experience=WorkspaceExperience(self)
+        self.native_four_stroke.simulation.runningChanged.connect(self._refresh_history_actions)
+        self.native_four_stroke.curve.runningChanged.connect(self._refresh_history_actions)
+        self.four_stroke_context.execution_changed.connect(self._refresh_history_actions)
         QTimer.singleShot(0,self._offer_recoveries)
     def _build_ui(self):
         shell=QWidget();layout=QVBoxLayout(shell);layout.setContentsMargins(0,0,0,0);layout.setSpacing(0)
@@ -639,10 +642,17 @@ class DinoDesktopWindow(QMainWindow):
     def _refresh_history_actions(self,*_):
         if not hasattr(self,'undo_action'):return
         context=self._active_context()
-        self.undo_action.setEnabled(context.can_undo)
-        self.redo_action.setEnabled(context.can_redo)
+        busy=self._history_execution_active()
+        self.undo_action.setEnabled(context.can_undo and not busy)
+        self.redo_action.setEnabled(context.can_redo and not busy)
+
+    def _history_execution_active(self):
+        return ((self._native_four_stroke_active() and self.native_four_stroke.running)
+                or (self._four_stroke_active() and self.four_stroke_context.execution_active))
 
     def _undo_active(self,*_):
+        if self._history_execution_active():
+            self.statusBar().showMessage('Termine o cancele la corrida antes de deshacer la configuración.',5000);return
         context=self._active_context()
         if self._four_stroke_active() and not self.experience.ensure_reference('Deshacer'):return
         if context.undo():
@@ -650,6 +660,8 @@ class DinoDesktopWindow(QMainWindow):
         self._refresh_history_actions()
 
     def _redo_active(self,*_):
+        if self._history_execution_active():
+            self.statusBar().showMessage('Termine o cancele la corrida antes de rehacer la configuración.',5000);return
         context=self._active_context()
         if self._four_stroke_active() and not self.experience.ensure_reference('Rehacer'):return
         if context.redo():
@@ -792,7 +804,7 @@ class DinoDesktopWindow(QMainWindow):
 
     def show_license(self):
         from .license_dialog import LicenseDialog
-        LicenseDialog(self,self).exec()
+        LicenseDialog(self).exec()
         self._refresh_license_label()
     def check_for_updates(self, path=None):
         from .update_policy import check_update,load_manifest

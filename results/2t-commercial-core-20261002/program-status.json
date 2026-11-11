@@ -16791,49 +16791,62 @@
       "id": "FWI-CONFLICT",
       "objective": "DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1",
       "description": "Consolidate controller state without historical state loss",
-      "state": "READY",
+      "state": "DONE",
       "dependencies": [],
       "blocker": null,
-      "commits": [],
-      "evidence": [],
+      "commits": [
+        "4c6535f"
+      ],
+      "evidence": [
+        "results/frontend-commercial-integration-v1/state-consolidation.json"
+      ],
       "write_scope": [],
-      "next_action": "Consolidate controller state without historical state loss"
+      "next_action": "State consolidated and both parent histories retained."
     },
     {
       "id": "FWI-COMPAT",
       "objective": "DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1",
       "description": "Review and adapt automatic application merge",
-      "state": "READY",
+      "state": "DONE",
       "dependencies": [],
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "tests/test_frontend_commercial_integration.py",
+        "results/frontend-commercial-integration-v1/source-first/acceptance.json"
+      ],
       "write_scope": [],
-      "next_action": "Review and adapt automatic application merge"
+      "next_action": "Functional checks pass; clean revision-bound source gate remains separate."
     },
     {
       "id": "FWI-TESTS",
       "objective": "DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1",
       "description": "Combined frontend/CP0-CP2/protected and inherited differential regressions",
-      "state": "READY",
+      "state": "DONE",
       "dependencies": [],
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "results/frontend-commercial-integration-v1/verification/combined-focused-first.summary.json",
+        "results/frontend-commercial-integration-v1/verification/integrated-protected.summary.json",
+        "results/frontend-commercial-integration-v1/general-regression.json"
+      ],
       "write_scope": [],
-      "next_action": "Combined frontend/CP0-CP2/protected and inherited differential regressions"
+      "next_action": "Functional checks pass; clean revision-bound source gate remains separate."
     },
     {
       "id": "FWI-SOURCE-GUI",
       "objective": "DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1",
       "description": "Real Windows source workflows for all families and commercial functions",
-      "state": "READY",
+      "state": "DONE",
       "dependencies": [],
       "blocker": null,
       "commits": [],
-      "evidence": [],
+      "evidence": [
+        "results/frontend-commercial-integration-v1/source-first/acceptance.json"
+      ],
       "write_scope": [],
-      "next_action": "Real Windows source workflows for all families and commercial functions"
+      "next_action": "Functional checks pass; clean revision-bound source gate remains separate."
     },
     {
       "id": "FWI-SOURCE-ACCEPT",
@@ -20847,6 +20860,24 @@
       "task": "FWI-CONFLICT",
       "kind": "task",
       "summary": "Three-way controller consolidation against d44305c: 577 inherited queue records preserved, no shared conflicting task edits, union of progress records, both parent gates retained. New integration objective;12 inherited scientific blockers reassessed and preserved. Originals untouched."
+    },
+    {
+      "at": "2026-11-11T16:28:35+00:00",
+      "task": "FWI-COMPAT",
+      "kind": "task",
+      "summary": "Automatic app merge reviewed: CP2 license label/menu coexist with F1 shell. Fixed inherited LicenseDialog positional-argument defect; guard undo/redo during native/reference workers. Added combined license-state/save/menu/shortcut regressions and real source/frozen acceptance route. Version rc13."
+    },
+    {
+      "at": "2026-11-11T16:33:34+00:00",
+      "task": "FWI-TESTS",
+      "kind": "task",
+      "summary": "Combined source regressions:95 PASS; protected301 PASS+3 SKIP. Four general preregistration-preflight failures reproduced identically on main f97469b and integration; GENERAL_REGRESSION_NOT_GREEN retained. No scientific fixtures/contracts changed."
+    },
+    {
+      "at": "2026-11-11T16:33:35+00:00",
+      "task": "FWI-SOURCE-GUI",
+      "kind": "task",
+      "summary": "Real Windows Qt walkthrough:47 checks PASS,25 captures; real2T/native/0D workers, reference queue, draft guard,87mm native input, portable source-denied closure, save failure/recovery, legacy/eligible synthetic A/B,PDF,CP2 license states/manual update and reopen. Clean-gate rerun next."
     }
   ],
   "integration_parent_states": {
@@ -20951,20 +20982,17 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 8,
-    "gate_tasks_done": 0,
+    "gate_tasks_done": 4,
     "gate_task_states": {
-      "READY": 8
+      "DONE": 4,
+      "READY": 4
     },
     "remaining": [
-      "FWI-CONFLICT",
-      "FWI-COMPAT",
-      "FWI-TESTS",
-      "FWI-SOURCE-GUI",
       "FWI-SOURCE-ACCEPT",
       "FWI-BUILD",
       "FWI-WINDOWS",
       "FWI-RELEASE-REVIEW"
     ],
-    "updated_at": "2026-11-11T16:18:10+00:00"
+    "updated_at": "2026-11-11T16:33:35+00:00"
   }
 }

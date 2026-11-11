@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="6" time="4.506" timestamp="2026-11-11T13:26:01.590721-03:00" hostname="PC-21206"><testcase classname="tests.scientific_stage1.test_periodicity_preflight" name="test_bound_preflight_passes_without_solver_steps" time="3.868"><failure message="RuntimeError: FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes">tests\scientific_stage1\test_periodicity_preflight.py:18: in test_bound_preflight_passes_without_solver_steps
+    result = runner.run(execute=False, preregistration_sha256=None, resume=False)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\diagnostics\stage1\run_stage1_periodicity_focal_v1.py:96: in run
+    validate_binding(protocol, effective, check, runner_sha256=source_file_hash,
+scripts\diagnostics\stage1\run_stage1_periodicity_focal_v1.py:84: in validate_binding
+    raise RuntimeError("FAIL_CLOSED preregistration binding mismatch: " + ", ".join(mismatches))
+E   RuntimeError: FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes</failure></testcase><testcase classname="tests.scientific_stage1.test_periodicity_preflight" name="test_repository_artifact_root_fails_closed" time="0.001" /><testcase classname="tests.scientific_stage1.test_periodicity_preflight" name="test_preregistered_hash_mismatch_fails_closed_before_solver" time="0.014"><failure message="AssertionError: Regex pattern did not match.&#10; Regex: 'exact preregistration SHA-256'&#10; Input: 'FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes'">tests\scientific_stage1\test_periodicity_preflight.py:40: in test_preregistered_hash_mismatch_fails_closed_before_solver
+    runner.run(execute=True, preregistration_sha256="0" * 64, resume=False)
+scripts\diagnostics\stage1\run_stage1_periodicity_focal_v1.py:96: in run
+    validate_binding(protocol, effective, check, runner_sha256=source_file_hash,
+scripts\diagnostics\stage1\run_stage1_periodicity_focal_v1.py:84: in validate_binding
+    raise RuntimeError("FAIL_CLOSED preregistration binding mismatch: " + ", ".join(mismatches))
+E   RuntimeError: FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes
+
+During handling of the above exception, another exception occurred:
+tests\scientific_stage1\test_periodicity_preflight.py:39: in test_preregistered_hash_mismatch_fails_closed_before_solver
+    with pytest.raises(RuntimeError, match="exact preregistration SHA-256"):
+E   AssertionError: Regex pattern did not match.
+E    Regex: 'exact preregistration SHA-256'
+E    Input: 'FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes'</failure></testcase><testcase classname="tests.scientific_stage1.test_periodicity_preflight" name="test_missing_resume_checkpoint_fails_closed" time="0.013"><failure message="AssertionError: Regex pattern did not match.&#10; Regex: 'prior report and point checkpoint'&#10; Input: 'FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes'">tests\scientific_stage1\test_periodicity_preflight.py:48: in test_missing_resume_checkpoint_fails_closed
+    runner.run(execute=True, preregistration_sha256=protocol_sha, resume=True)
+scripts\diagnostics\stage1\run_stage1_periodicity_focal_v1.py:96: in run
+    validate_binding(protocol, effective, check, runner_sha256=source_file_hash,
+scripts\diagnostics\stage1\run_stage1_periodicity_focal_v1.py:84: in validate_binding
+    raise RuntimeError("FAIL_CLOSED preregistration binding mismatch: " + ", ".join(mismatches))
+E   RuntimeError: FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes
+
+During handling of the above exception, another exception occurred:
+tests\scientific_stage1\test_periodicity_preflight.py:47: in test_missing_resume_checkpoint_fails_closed
+    with pytest.raises(RuntimeError, match="prior report and point checkpoint"):
+E   AssertionError: Regex pattern did not match.
+E    Regex: 'prior report and point checkpoint'
+E    Input: 'FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes'</failure></testcase><testcase classname="tests.scientific_stage1.test_periodicity_preflight" name="test_solver_source_identity_mismatch_fails_closed" time="0.007" /><testcase classname="tests.scientific_stage1.test_periodicity_preflight" name="test_invalid_preflight_is_rejected_before_execution" time="0.009"><failure message="AssertionError: Regex pattern did not match.&#10; Regex: 'preflight did not PASS with zero steps'&#10; Input: 'FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes'">tests\scientific_stage1\test_periodicity_preflight.py:72: in test_invalid_preflight_is_rejected_before_execution
+    runner.run(execute=False, preregistration_sha256=None, resume=False)
+scripts\diagnostics\stage1\run_stage1_periodicity_focal_v1.py:96: in run
+    validate_binding(protocol, effective, check, runner_sha256=source_file_hash,
+scripts\diagnostics\stage1\run_stage1_periodicity_focal_v1.py:84: in validate_binding
+    raise RuntimeError("FAIL_CLOSED preregistration binding mismatch: " + ", ".join(mismatches))
+E   RuntimeError: FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes
+
+During handling of the above exception, another exception occurred:
+tests\scientific_stage1\test_periodicity_preflight.py:71: in test_invalid_preflight_is_rejected_before_execution
+    with pytest.raises(RuntimeError, match="preflight did not PASS with zero steps"):
+E   AssertionError: Regex pattern did not match.
+E    Regex: 'preflight did not PASS with zero steps'
+E    Input: 'FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes'</failure></testcase></testsuite></testsuites>

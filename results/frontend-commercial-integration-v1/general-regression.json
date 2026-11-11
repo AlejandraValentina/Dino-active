@@ -1,0 +1,45 @@
+{
+  "schema": "DINO_INTEGRATION_GENERAL_REGRESSION_V1",
+  "classification": "GENERAL_REGRESSION_NOT_GREEN",
+  "baseline": "f97469ba6705555e73f6624482564d193e43a101",
+  "comparison_scope": "Six preregistered-preflight tests; four inherited failures and two passes in each branch.",
+  "baseline_failures": {
+    "tests.scientific_stage1.test_periodicity_preflight::test_bound_preflight_passes_without_solver_steps": {
+      "kind": "failure",
+      "message": "RuntimeError: FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes"
+    },
+    "tests.scientific_stage1.test_periodicity_preflight::test_preregistered_hash_mismatch_fails_closed_before_solver": {
+      "kind": "failure",
+      "message": "AssertionError: Regex pattern did not match.\n Regex: 'exact preregistration SHA-256'\n Input: 'FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes'"
+    },
+    "tests.scientific_stage1.test_periodicity_preflight::test_missing_resume_checkpoint_fails_closed": {
+      "kind": "failure",
+      "message": "AssertionError: Regex pattern did not match.\n Regex: 'prior report and point checkpoint'\n Input: 'FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes'"
+    },
+    "tests.scientific_stage1.test_periodicity_preflight::test_invalid_preflight_is_rejected_before_execution": {
+      "kind": "failure",
+      "message": "AssertionError: Regex pattern did not match.\n Regex: 'preflight did not PASS with zero steps'\n Input: 'FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes'"
+    }
+  },
+  "integration_failures": {
+    "tests.scientific_stage1.test_periodicity_preflight::test_bound_preflight_passes_without_solver_steps": {
+      "kind": "failure",
+      "message": "RuntimeError: FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes"
+    },
+    "tests.scientific_stage1.test_periodicity_preflight::test_preregistered_hash_mismatch_fails_closed_before_solver": {
+      "kind": "failure",
+      "message": "AssertionError: Regex pattern did not match.\n Regex: 'exact preregistration SHA-256'\n Input: 'FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes'"
+    },
+    "tests.scientific_stage1.test_periodicity_preflight::test_missing_resume_checkpoint_fails_closed": {
+      "kind": "failure",
+      "message": "AssertionError: Regex pattern did not match.\n Regex: 'prior report and point checkpoint'\n Input: 'FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes'"
+    },
+    "tests.scientific_stage1.test_periodicity_preflight::test_invalid_preflight_is_rejected_before_execution": {
+      "kind": "failure",
+      "message": "AssertionError: Regex pattern did not match.\n Regex: 'preflight did not PASS with zero steps'\n Input: 'FAIL_CLOSED preregistration binding mismatch: identity_sha256, solver_source_hashes'"
+    }
+  },
+  "new_observed_failure_ids": [],
+  "historical_full_suite": "results/commercial-product-v1/verification/differential/differential-report.json",
+  "limit": "Full general suite has historical failures and was not rerun as a complete campaign. Zero new failures applies only to this differential subset and the separately reported relevant integration suites. No scientific contract altered."
+}
