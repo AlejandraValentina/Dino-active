@@ -10,7 +10,9 @@
       "failed": 89,
       "errors": 57,
       "skipped": 10
-    }
+    },
+    "process_exit_code": 3221226505,
+    "process_exit_note": "0xC0000409 after JUnit was written; treated as inherited teardown/environment issue, not a CP1 test failure."
   },
   "cp1": {
     "commit": "d44305c",
@@ -1842,7 +1844,8 @@
   "verdict": "NO_CP1_REGRESSION_DETECTED; GENERAL_REGRESSION_NOT_GREEN",
   "notes": [
     "The 9 baseline-only outcomes pass when the baseline failure set is rerun in isolation on clean CP1; they are order/fixture-sensitive, not CP1 regressions.",
-    "Causes for all 137 common failures match between baseline and CP1."
+    "Causes for all 137 common failures match between baseline and CP1.",
+    "Baseline full-suite process exited with 0xC0000409 after JUnit completion; CP1 full run exited normally (pytest code 1 with failures). This teardown difference is recorded as inherited/environmental and not attributed to CP1."
   ],
   "classification_counts": {
     "inherited_frozen_evidence_or_source_hash_mismatch": 43,
