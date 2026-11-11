@@ -1,0 +1,90 @@
+{
+  "schema": "DINO_CP1_DIFFERENTIAL_AUDIT_CLOSURE_V1",
+  "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+  "closed_at": "2026-11-11T12:29:34+00:00",
+  "decision": "CLOSED_NO_CP1_REGRESSION",
+  "main": {
+    "previous_commit": "48b3afe",
+    "merged_commit": "613dfd5",
+    "merge_type": "fast_forward",
+    "branch": "feat/commercial-product-cp1"
+  },
+  "post_merge_source_smoke": {
+    "result": "PASS",
+    "tests": 71,
+    "summary": "results/commercial-product-v1/verification/main-post-cp1-smoke.summary.json"
+  },
+  "post_merge_packaged_acceptance": {
+    "result": "PASS",
+    "candidate": "results/commercial-product-v1/windows-cp1-main/candidate.json",
+    "receipt": "results/commercial-product-v1/windows-cp1-main/acceptance.json"
+  },
+  "differential": {
+    "baseline_commit": "48b3afe",
+    "cp1_commit": "d44305c",
+    "baseline_failures": 146,
+    "cp1_full_failures": 146,
+    "cp1_only_failures": 0,
+    "identical_failure_ids_total": 146,
+    "common_failure_causes_identical": true,
+    "order_sensitive_ids": 9,
+    "report": "results/commercial-product-v1/verification/differential/differential-report.json"
+  },
+  "general_regression_status": "NOT_GREEN",
+  "closure_criteria": [
+    {
+      "criterion": "zero CP1-only failures",
+      "status": "PASS"
+    },
+    {
+      "criterion": "failure set not larger than baseline",
+      "status": "PASS"
+    },
+    {
+      "criterion": "common failure causes compared",
+      "status": "PASS"
+    },
+    {
+      "criterion": "post-merge source smoke",
+      "status": "PASS"
+    },
+    {
+      "criterion": "post-merge packaged acceptance",
+      "status": "PASS"
+    },
+    {
+      "criterion": "residual IDs mapped to owner/category",
+      "status": "PASS"
+    },
+    {
+      "criterion": "external_view incident tracked independently",
+      "status": "OPEN_INDEPENDENT"
+    }
+  ],
+  "open_incidents": [
+    {
+      "id": "DINO-INC-EXTVIEW-001",
+      "status": "OPEN_INDEPENDENT",
+      "path": "results/commercial-product-v1/incidents/external-view-access-violation.json",
+      "owner": "external-view fix"
+    },
+    {
+      "id": "DINO-DEF-DESKTOP-001",
+      "status": "TRIAGE",
+      "path": "tests/test_dino_desktop.py::DinoDesktopTests::test_execution_page_dispatches_ab_curve_as_independent_rpm_workers",
+      "owner": "desktop execution page"
+    },
+    {
+      "id": "DINO-INC-BASELINE-TEARDOWN-001",
+      "status": "TRIAGE",
+      "path": "results/commercial-product-v1/verification/differential/diff-main-48b3afe.summary.json",
+      "owner": "environment/inherited"
+    }
+  ],
+  "scientific_claims": {
+    "calibration": "NOT_PERFORMED",
+    "experimental_validation": "NOT_PERFORMED",
+    "predictive_capability": "NOT_CLAIMED"
+  },
+  "next": "CP2 may start from main 613dfd5; fix external_view separately before CP4/release."
+}

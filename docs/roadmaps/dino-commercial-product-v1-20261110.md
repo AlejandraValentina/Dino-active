@@ -65,6 +65,13 @@ declarar con precisión qué está validado y qué no.
   **NOT_GREEN**; el crash de `external_view` se conserva como incidencia
   independiente. Evidencia: `results/commercial-product-v1/verification/differential/`.
 
+- Cierre 2026-11-11: CP1 integrado a `main` por fast-forward `48b3afe` →
+  `613dfd5`; smoke post-merge **71 PASS** y aceptación Windows empaquetada
+  **PASS**. Decisión: `CLOSED_NO_CP1_REGRESSION`; regresión general
+  `NOT_GREEN`. `external_view` sigue como incidencia independiente. Registro:
+  `results/commercial-product-v1/verification/differential/audit-closure.json`.
+
+
 
 ## 3. Fases y dependencias
 

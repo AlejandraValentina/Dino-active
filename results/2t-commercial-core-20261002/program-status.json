@@ -13828,7 +13828,7 @@
   ],
   "current_objective": {
     "id": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
-    "state": "IN_PROGRESS",
+    "state": "PASS",
     "owner_approved": true,
     "summary": "Workflow completeness: undo/redo, portable project bundles, PDF reports, onboarding/templates, batch and comparison/legacy UX.",
     "change": "openspec/changes/commercial-product-v1",
@@ -13843,7 +13843,7 @@
       "CP1-COMPARISON-LEGACY-UX"
     ],
     "completion_criterion": "CP1 workflows complete with UAT and regression; no scientific claim.",
-    "classification": "CP0_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED"
+    "classification": "CP1_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED_GENERAL_REGRESSION_NOT_GREEN"
   },
   "objectives": [
     {
@@ -15006,7 +15006,7 @@
     },
     {
       "id": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
-      "state": "IN_PROGRESS",
+      "state": "PASS",
       "owner_approved": true,
       "summary": "Workflow completeness: undo/redo, portable project bundles, PDF reports, onboarding/templates, batch and comparison/legacy UX.",
       "change": "openspec/changes/commercial-product-v1",
@@ -15020,7 +15020,8 @@
         "CP1-BATCH-QUEUE",
         "CP1-COMPARISON-LEGACY-UX"
       ],
-      "completion_criterion": "CP1 workflows complete with UAT and regression; no scientific claim."
+      "completion_criterion": "CP1 workflows complete with UAT and regression; no scientific claim.",
+      "classification": "CP1_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED_GENERAL_REGRESSION_NOT_GREEN"
     },
     {
       "id": "DINO_COMMERCIAL_PRODUCT_CP0_V1",
@@ -19319,6 +19320,12 @@
       "task": "CP1-DIFFERENTIAL-REGRESSION-AUDIT",
       "kind": "task",
       "summary": "Baseline 48b3afe full suite: 146 failures (89F/57E). CP1 full: 145 (89F/56E), zero CP1-only failures. 137 common failures have identical causes; external_view crash reproduced on both and retained as independent incident. General regression remains NOT_GREEN."
+    },
+    {
+      "at": "2026-11-11T12:29:34+00:00",
+      "task": "CP1-DIFFERENTIAL-CLOSURE",
+      "kind": "decision",
+      "summary": "CP1 fast-forwarded to main 613dfd5 after differential audit; 71 post-merge source smoke PASS and packaged Windows acceptance PASS. No CP1-only failures; general regression NOT_GREEN and external_view incident remain independent."
     }
   ],
   "legacy_gate_status": {
@@ -19338,7 +19345,10 @@
     "classification": "CP1_SOURCE_AND_WINDOWS_WORKFLOW_ACCEPTED_GENERAL_REGRESSION_NOT_GREEN",
     "evidence": [
       "results/commercial-product-v1/windows-cp1/acceptance.json; results/commercial-product-v1/windows-cp1/candidate.json; results/commercial-product-v1/verification/cp1-regression-triage.json",
-      "results/commercial-product-v1/verification/differential/differential-report.json"
+      "results/commercial-product-v1/verification/differential/differential-report.json",
+      "results/commercial-product-v1/verification/main-post-cp1-smoke.summary.json",
+      "results/commercial-product-v1/windows-cp1-main/acceptance.json",
+      "results/commercial-product-v1/verification/differential/audit-closure.json"
     ],
     "gate_tasks_total": 6,
     "gate_tasks_done": 6,
@@ -20079,5 +20089,13 @@
     "updated_at": "2026-11-11T11:56:34+00:00",
     "identical_failure_ids_total": 146,
     "order_sensitive_ids": 9
+  },
+  "differential_audit_closure": {
+    "status": "CLOSED_NO_CP1_REGRESSION",
+    "main_commit": "613dfd5",
+    "report": "results/commercial-product-v1/verification/differential/audit-closure.json",
+    "general_regression_status": "NOT_GREEN",
+    "external_view_incident": "OPEN_INDEPENDENT",
+    "closed_at": "2026-11-11T12:29:34+00:00"
   }
 }
