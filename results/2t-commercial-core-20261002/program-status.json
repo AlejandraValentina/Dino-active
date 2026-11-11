@@ -13626,6 +13626,89 @@
       "owner_role": "verification",
       "write_scope": [],
       "evidence_level": "L0"
+    },
+    {
+      "id": "CP2-INSTALLER-PORTABLE",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP2_V1",
+      "description": "Portable Windows release layout, checksums and uninstall policy.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "docs/commercial/portable_release.md",
+        "results/commercial-product-v1/windows-cp1-main/candidate.json"
+      ],
+      "next_action": null,
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "CP2-UPDATE-CHANNEL",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP2_V1",
+      "description": "Manual opt-in update manifest validation; no network or auto-update.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "motorsim/desktop/update_policy.py",
+        "tests/test_desktop_update_policy.py 3 PASS",
+        "docs/commercial/privacy.md"
+      ],
+      "next_action": null,
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "CP2-PRIVACY-TELEMETRY",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP2_V1",
+      "description": "No telemetry by default; manual diagnostic and privacy policy.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "docs/commercial/privacy.md",
+        "docs/commercial/support.md"
+      ],
+      "next_action": null,
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "CP2-SUPPORT-RELEASE-NOTES",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP2_V1",
+      "description": "Support procedure and release notes.",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "docs/commercial/support.md",
+        "docs/commercial/release_notes.md"
+      ],
+      "next_action": null,
+      "owner_role": "implementation",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "CP2-LICENSING",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP2_V1",
+      "description": "Owner-selected licensing/activation model.",
+      "dependencies": [],
+      "state": "WAITING",
+      "blocker": "owner_licensing_decision",
+      "commits": [],
+      "evidence": [],
+      "next_action": "Owner decision required: perpetual vs subscription/activation; no DRM or price invented.",
+      "owner_role": "owner",
+      "write_scope": [],
+      "evidence_level": "L0"
     }
   ],
   "audit_remediation_mode": false,
@@ -13827,23 +13910,22 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
-    "state": "PASS",
+    "id": "DINO_COMMERCIAL_PRODUCT_CP2_V1",
+    "state": "IN_PROGRESS",
     "owner_approved": true,
-    "summary": "Workflow completeness: undo/redo, portable project bundles, PDF reports, onboarding/templates, batch and comparison/legacy UX.",
+    "summary": "Commercial operations: portable release, manual update policy, privacy, support/release notes; licensing/activation pending owner decision.",
     "change": "openspec/changes/commercial-product-v1",
     "spec": "openspec/changes/commercial-product-v1/specs/commercial-product-v1/spec.md",
     "plan": "results/commercial-product-v1/plan.json",
     "gate_tasks": [
-      "CP1-UNDO-REDO",
-      "CP1-PROJECT-BUNDLES",
-      "CP1-PDF-REPORT",
-      "CP1-TEMPLATES-ONBOARDING",
-      "CP1-BATCH-QUEUE",
-      "CP1-COMPARISON-LEGACY-UX"
+      "CP2-INSTALLER-PORTABLE",
+      "CP2-UPDATE-CHANNEL",
+      "CP2-PRIVACY-TELEMETRY",
+      "CP2-SUPPORT-RELEASE-NOTES",
+      "CP2-LICENSING"
     ],
-    "completion_criterion": "CP1 workflows complete with UAT and regression; no scientific claim.",
-    "classification": "CP1_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED_GENERAL_REGRESSION_NOT_GREEN"
+    "completion_criterion": "CP2 operational readiness with owner-selected licensing/activation; no scientific claim.",
+    "classification": null
   },
   "objectives": [
     {
@@ -15046,6 +15128,24 @@
         "results/commercial-product-v1/windows-integrated/acceptance.md",
         "results/commercial-product-v1/verification/integrated-commercial-unified.summary.json"
       ]
+    },
+    {
+      "id": "DINO_COMMERCIAL_PRODUCT_CP2_V1",
+      "state": "IN_PROGRESS",
+      "owner_approved": true,
+      "summary": "Commercial operations: portable release, manual update policy, privacy, support/release notes; licensing/activation pending owner decision.",
+      "change": "openspec/changes/commercial-product-v1",
+      "spec": "openspec/changes/commercial-product-v1/specs/commercial-product-v1/spec.md",
+      "plan": "results/commercial-product-v1/plan.json",
+      "gate_tasks": [
+        "CP2-INSTALLER-PORTABLE",
+        "CP2-UPDATE-CHANNEL",
+        "CP2-PRIVACY-TELEMETRY",
+        "CP2-SUPPORT-RELEASE-NOTES",
+        "CP2-LICENSING"
+      ],
+      "completion_criterion": "CP2 operational readiness with owner-selected licensing/activation; no scientific claim.",
+      "classification": null
     }
   ],
   "owner_decisions_pending": [
@@ -15433,6 +15533,29 @@
       "resolved_at": "2026-11-03T16:05:35+00:00",
       "owner_instruction": "2026-11-03: no reabrir E1.3 ni ampliar presupuestos numéricos sin autorización.",
       "resolution": "KEEP_E1_3_BLOCKED_NO_ADDITIONAL_COMPUTE"
+    },
+    {
+      "id": "OWNER-LICENSING-DECISION",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP2_V1",
+      "question": "¿Qué modelo de licenciamiento/activación debe implementarse?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Licencia perpetua con activación offline y modo TRIAL",
+          "consequence": "Implementable sin servidor; requiere emisión de claves y recuperación."
+        },
+        {
+          "id": "B",
+          "label": "Suscripción con activación online",
+          "consequence": "Requiere servicio, disponibilidad y política de privacidad adicional."
+        }
+      ],
+      "recommendation": "A para CP2 inicial, con TRIAL/engineering y sin bloquear exportación de proyectos; B queda para una fase posterior.",
+      "evidence": [
+        "docs/commercial/release_policy.md",
+        "docs/commercial/privacy.md"
+      ],
+      "state": "PENDING"
     }
   ],
   "hard_stop": null,
@@ -19332,6 +19455,12 @@
       "task": "INHERITED-INCIDENT-TRIAGE",
       "kind": "task",
       "summary": "external_view access violation corrected as a test defect (Qt class patch); desktop A/B curve IndexError corrected as a test fixture assumption. 43 PASS / 2 SKIP in both files. Baseline teardown remains triage; general regression NOT_GREEN."
+    },
+    {
+      "at": "2026-11-11T12:45:41+00:00",
+      "task": "CP2-START",
+      "kind": "decision",
+      "summary": "CP2 activated: portable release, manual update check, privacy, support and release notes implemented; licensing/activation remains an owner decision."
     }
   ],
   "legacy_gate_status": {
@@ -19346,24 +19475,20 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
-    "state": "PASS",
-    "classification": "CP1_SOURCE_AND_WINDOWS_WORKFLOW_ACCEPTED_GENERAL_REGRESSION_NOT_GREEN",
-    "evidence": [
-      "results/commercial-product-v1/windows-cp1/acceptance.json; results/commercial-product-v1/windows-cp1/candidate.json; results/commercial-product-v1/verification/cp1-regression-triage.json",
-      "results/commercial-product-v1/verification/differential/differential-report.json",
-      "results/commercial-product-v1/verification/main-post-cp1-smoke.summary.json",
-      "results/commercial-product-v1/windows-cp1-main/acceptance.json",
-      "results/commercial-product-v1/verification/differential/audit-closure.json"
-    ],
-    "gate_tasks_total": 6,
-    "gate_tasks_done": 6,
+    "objective": "DINO_COMMERCIAL_PRODUCT_CP2_V1",
+    "state": "OPEN",
+    "classification": null,
+    "evidence": [],
+    "gate_tasks_total": 5,
+    "gate_tasks_done": 4,
     "gate_task_states": {
-      "DONE": 6
+      "DONE": 4,
+      "WAITING": 1
     },
-    "remaining": [],
-    "updated_at": "2026-11-11T11:56:53+00:00",
-    "general_regression_status": "NOT_GREEN"
+    "remaining": [
+      "CP2-LICENSING"
+    ],
+    "updated_at": "2026-11-11T12:45:41+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

@@ -13,6 +13,17 @@ científicos, ecuaciones, tolerancias ni evidencia histórica.
 - Los proyectos 2T, 4T 0D y 4T nativo mantienen sus schemas versionados; un
   cambio incompatible exige nueva versión y migración explícita.
 
+## 1bis. CP2 - operación comercial
+
+- Release portable: [portable_release.md](portable_release.md).
+- Actualización manual/opt-in: el manifiesto se valida localmente desde
+  **Ayuda → Buscar actualización…**; no hay auto-update ni descarga silenciosa.
+- Privacidad: [privacy.md](privacy.md).
+- Soporte: [support.md](support.md).
+- Notas: [release_notes.md](release_notes.md).
+- Licenciamiento/activación: decisión del dueño; hasta entonces el producto es
+  `INTERNAL_ENGINEERING_CANDIDATE`.
+
 ## 2. Canales y actualización
 
 - **TRIAL/engineering:** candidato no publicado, uso interno o piloto.

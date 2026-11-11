@@ -622,6 +622,7 @@ class DinoDesktopWindow(QMainWindow):
         help_menu.addAction('Guía de inicio y plantillas…',self.show_onboarding)
         diagnostics_action=help_menu.addAction('Exportar diagnóstico…',self.export_diagnostics)
         diagnostics_action.setShortcut(QKeySequence("Ctrl+Shift+D"))
+        help_menu.addAction('Buscar actualización…',self.check_for_updates)
         self.evidence_toggle_action=toggle
     def _active_context(self):
         if self._native_four_stroke_active():return self.native_four_stroke.context
@@ -770,6 +771,23 @@ class DinoDesktopWindow(QMainWindow):
 
     def show_onboarding(self):
         OnboardingDialog(self,self).exec()
+    def check_for_updates(self, path=None):
+        from .update_policy import check_update,load_manifest
+        if path is None:
+            path,_=QFileDialog.getOpenFileName(self,"Buscar actualización (manual)",str(Path.home()),"Manifest de actualización (*.json)")
+            if not path:return False
+        try:
+            info=product_info();manifest=load_manifest(path)
+            result=check_update(manifest,current_version=info["version"],current_commit=info.get("source_commit") or "")
+        except (OSError,ValueError,TypeError) as exc:
+            QMessageBox.warning(self,"Actualización no válida",str(exc));return False
+        if result["status"]=="UPDATE_AVAILABLE":
+            QMessageBox.information(self,"Actualización disponible",f"Candidato {result['candidate_version']} ({result['channel']}) en {result['candidate_commit']}.\nZIP SHA-256: {result['zip_sha256']}\n\nLa descarga e instalación son manuales; Dino no actualiza ni envía datos automáticamente.")
+        elif result["status"]=="UP_TO_DATE":
+            QMessageBox.information(self,"Dino actualizado",f"La build actual coincide con {result['candidate_version']} ({result['candidate_commit']}).")
+        else:
+            QMessageBox.information(self,"Sin actualización aplicable",f"Estado: {result['status']}. Actual: {result['current_version']} ({result['current_commit']}); candidato: {result['candidate_version']} ({result['candidate_commit']}).")
+        return True
     def export_diagnostics(self):
         path,_=QFileDialog.getSaveFileName(self,"Exportar diagnóstico",
             str(Path.home()/"dino-diagnostico.zip"),"ZIP (*.zip)")

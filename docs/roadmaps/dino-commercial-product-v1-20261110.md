@@ -149,6 +149,16 @@ declarar con precisión qué está validado y qué no.
 - Soporte: diagnóstico, contacto, SLA y base de conocimiento.
 - Release notes y política de compatibilidad de proyectos/resultados.
 
+## 6bis. CP2 - estado de avance (2026-11-11)
+
+- Portable ZIP documentado y con hashes; sin instalador/registro.
+- Comprobación manual de actualización desde un manifiesto local.
+- Privacidad sin telemetría y soporte/release notes documentados.
+- **Pendiente:** licenciamiento/activación, decisión del dueño (A: perpetua con
+  activación offline/TRIAL; B: suscripción online). Recomendación: A para CP2.
+- Regresión general sigue `NOT_GREEN`; incidencias `external_view` y
+  `desktop IndexError` corregidas como defectos de test.
+
 ## 7. CP3 — datos y validación (data-gated)
 
 No se puede cerrar con software ni con supuestos inventados.

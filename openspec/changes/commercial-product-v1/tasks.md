@@ -40,11 +40,15 @@ Orden: (undo/redo, PDF, onboarding) → bundles → (batch, comparación/legacy)
 
 ## CP2 — operación comercial
 
-- [ ] CP2-INSTALLER-PORTABLE
-- [ ] CP2-UPDATE-CHANNEL
-- [ ] CP2-LICENSING (decisión del dueño)
-- [ ] CP2-PRIVACY-TELEMETRY
-- [ ] CP2-SUPPORT-RELEASE-NOTES
+- [x] CP2-INSTALLER-PORTABLE - ZIP portable con hashes, sin instalador ni registro; desinstalación = borrar carpeta.
+  - verificar: file:docs/commercial/portable_release.md
+- [x] CP2-UPDATE-CHANNEL - manifiesto local, comprobación manual opt-in y sin auto-update.
+  - verificar: test:python -m pytest tests/test_desktop_update_policy.py -q
+- [ ] CP2-LICENSING (decisión del dueño) - opciones A/B registradas; pendiente.
+- [x] CP2-PRIVACY-TELEMETRY - sin telemetría por defecto; diagnóstico manual.
+  - verificar: file:docs/commercial/privacy.md
+- [x] CP2-SUPPORT-RELEASE-NOTES - soporte, límites y notas.
+  - verificar: file:docs/commercial/support.md; file:docs/commercial/release_notes.md
 
 ## CP3 — datos y validación (data-gated)
 
