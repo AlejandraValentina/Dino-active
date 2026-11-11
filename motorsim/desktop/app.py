@@ -51,6 +51,7 @@ class DinoDesktopWindow(QMainWindow):
         self._build_ui();self._build_actions();self.toolbar.hide();self.context.changed.connect(self._state_changed)
         self.context.variant_changed.connect(self._variant_changed)
         self._restore_settings();self._state_changed();self._select_baseline(self.context_bar.baseline.currentData())
+        self.license_label=QLabel();self.statusBar().addPermanentWidget(self.license_label);self._refresh_license_label()
         self.recent=RecentProjects(self.settings)
         self.recovery_2t=RecoveryController("2T",self.context,lambda:self.context.project,self)
         self.recovery_4t=RecoveryController("4T0D",self.four_stroke_context,lambda:self.four_stroke_context.project.to_dict(),self)
@@ -620,6 +621,7 @@ class DinoDesktopWindow(QMainWindow):
         about_action=help_menu.addAction('Acerca de Dino…',self.show_about)
         about_action.setShortcut(QKeySequence.HelpContents)
         help_menu.addAction('Guía de inicio y plantillas…',self.show_onboarding)
+        help_menu.addAction('Licencia…',self.show_license)
         diagnostics_action=help_menu.addAction('Exportar diagnóstico…',self.export_diagnostics)
         diagnostics_action.setShortcut(QKeySequence("Ctrl+Shift+D"))
         help_menu.addAction('Buscar actualización…',self.check_for_updates)
@@ -771,6 +773,20 @@ class DinoDesktopWindow(QMainWindow):
 
     def show_onboarding(self):
         OnboardingDialog(self,self).exec()
+
+    def _refresh_license_label(self):
+        try:
+            from ..licensing.license import license_status
+            status=license_status();self.license_label.setText(status.get("label","SIN LICENCIA"))
+            self.license_label.setToolTip("Licencia del producto independiente de la versión y del estado científico.")
+        except Exception as exc:
+            self.license_label.setText("LICENCIA NO DISPONIBLE")
+            self.license_label.setToolTip(str(exc))
+
+    def show_license(self):
+        from .license_dialog import LicenseDialog
+        LicenseDialog(self,self).exec()
+        self._refresh_license_label()
     def check_for_updates(self, path=None):
         from .update_policy import check_update,load_manifest
         if path is None:

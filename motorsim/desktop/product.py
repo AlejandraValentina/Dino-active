@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (QDialog, QDialogButtonBox, QLabel, QTabWidget,
                                QTextBrowser, QVBoxLayout, QWidget)
 
 from ..runtime import APP_VERSION, build_info
+from ..licensing.license import license_status
 from .preferences import default_artifact_root, repository_root_containing, settings
 
 SCIENTIFIC_STATUS = {
@@ -124,6 +125,7 @@ class AboutDialog(QDialog):
         tabs.addTab(_text_page(self._product_text(info)), "Producto")
         tabs.addTab(_text_page(self._build_text(info)), "Build y procedencia")
         tabs.addTab(_text_page(self._science_text(info)), "Estado científico")
+        tabs.addTab(_text_page(self._license_state_text()), "Licencia")
         tabs.addTab(_text_page(self._license_text(info)), "Licencias")
         tabs.addTab(_text_page(self._support_text(info)), "Soporte")
         layout.addWidget(tabs, 1)
@@ -141,6 +143,27 @@ class AboutDialog(QDialog):
                 "Dino es una herramienta de ingeniería. La funcionalidad comercial "
                 "no equivale a validación experimental, calibración ni capacidad "
                 "predictiva.")
+
+    @staticmethod
+    def _license_state_text():
+        try:
+            status = license_status()
+        except Exception as exc:
+            return f"Estado de licencia no disponible: {type(exc).__name__}: {exc}\n\nLos proyectos y resultados siguen accesibles."
+        lines = [status.get("label", "SIN LICENCIA"),
+                 f"Producto: {status.get('product', 'Dino Desktop')}",
+                 "Alcance: licencia del producto; no modifica el estado científico.",
+                 f"Acceso a proyectos/resultados: {'sí' if status.get('core_access_allowed') else 'no'}"]
+        if status.get("license_id"):
+            lines.extend([f"Licencia: {status['license_id']}",
+                          f"Cliente: {status.get('customer') or 'No informado'}",
+                          f"Emitida: {status.get('issued_at')}"])
+        else:
+            trial = status.get("trial") or {}
+            lines.append(f"TRIAL: {trial.get('days_remaining', '—')} días restantes")
+        if status.get("error"):
+            lines.append(f"Error de licencia: {status['error']}")
+        return "\n".join(lines)
 
     @staticmethod
     def _build_text(info):

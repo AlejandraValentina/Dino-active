@@ -6,6 +6,10 @@ from .desktop.app import DinoDesktopWindow
 from .runtime import APP_VERSION, unexpected_error
 
 def main():
+    if "--verify-cp2-acceptance" in sys.argv:
+        index=sys.argv.index("--verify-cp2-acceptance")
+        from .desktop.acceptance_cp2 import main as acceptance_main
+        return acceptance_main(sys.argv[index+1:])
     if "--verify-cp1-acceptance" in sys.argv:
         index=sys.argv.index("--verify-cp1-acceptance")
         from .desktop.acceptance_cp1 import main as acceptance_main

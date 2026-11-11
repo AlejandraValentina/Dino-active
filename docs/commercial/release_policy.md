@@ -21,8 +21,8 @@ científicos, ecuaciones, tolerancias ni evidencia histórica.
 - Privacidad: [privacy.md](privacy.md).
 - Soporte: [support.md](support.md).
 - Notas: [release_notes.md](release_notes.md).
-- Licenciamiento/activación: decisión del dueño; hasta entonces el producto es
-  `INTERNAL_ENGINEERING_CANDIDATE`.
+- Licenciamiento/activación: opción A autorizada (perpetua, offline, TRIAL);
+  arquitectura y custodia en [licensing.md](licensing.md).
 
 ## 2. Canales y actualización
 
