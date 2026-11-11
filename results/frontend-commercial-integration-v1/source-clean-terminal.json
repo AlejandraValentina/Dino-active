@@ -1,0 +1,66 @@
+{
+  "schema": "DINO_OWNED_PROCESS_TERMINAL_V1",
+  "command": [
+    "E:\\dino\\worktrees\\dino-frontend-commercial-v1\\.venv-build\\Scripts\\python.exe",
+    "-m",
+    "motorsim.dino_desktop",
+    "--verify-frontend-commercial",
+    "--output",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/source-clean",
+    "--fixtures",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/fixtures"
+  ],
+  "exit_code": 1,
+  "timed_out": false,
+  "duration_s": 68.109,
+  "observed_children": [
+    {
+      "pid": 22820,
+      "created_at": 1794414843.8259187,
+      "name": "python.exe"
+    },
+    {
+      "pid": 29040,
+      "created_at": 1794414895.6138186,
+      "name": "git.exe"
+    },
+    {
+      "pid": 24028,
+      "created_at": 1794414895.6316764,
+      "name": "git.exe"
+    },
+    {
+      "pid": 37924,
+      "created_at": 1794414895.7117376,
+      "name": "git.exe"
+    },
+    {
+      "pid": 20880,
+      "created_at": 1794414895.7306626,
+      "name": "git.exe"
+    },
+    {
+      "pid": 18236,
+      "created_at": 1794414895.933338,
+      "name": "git.exe"
+    },
+    {
+      "pid": 18528,
+      "created_at": 1794414895.9548843,
+      "name": "git.exe"
+    },
+    {
+      "pid": 38436,
+      "created_at": 1794414906.431602,
+      "name": "git.exe"
+    },
+    {
+      "pid": 17776,
+      "created_at": 1794414906.4505284,
+      "name": "git.exe"
+    }
+  ],
+  "remaining_owned_processes": [],
+  "scope": "Only this parent tree; concurrent work preserved",
+  "result": "FAIL"
+}

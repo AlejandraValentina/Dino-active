@@ -16795,29 +16795,39 @@
       "dependencies": [],
       "blocker": null,
       "commits": [
-        "4c6535f"
+        "4c6535f",
+        "51709f9",
+        "8712f29"
       ],
       "evidence": [
-        "results/frontend-commercial-integration-v1/state-consolidation.json"
+        "results/frontend-commercial-integration-v1/state-consolidation.json",
+        "results/frontend-commercial-integration-v1/acceptance.json"
       ],
       "write_scope": [],
-      "next_action": "State consolidated and both parent histories retained."
+      "next_action": "Accepted integrated engineering candidate retained on isolated branch; no main merge or publication.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_GENERAL_NOT_GREEN_UAT_PENDING"
     },
     {
       "id": "FWI-COMPAT",
       "objective": "DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1",
       "description": "Review and adapt automatic application merge",
-      "state": "REVIEW",
+      "state": "DONE",
       "dependencies": [],
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "4c6535f",
+        "51709f9",
+        "8712f29"
+      ],
       "evidence": [
         "tests/test_frontend_commercial_integration.py",
-        "results/frontend-commercial-integration-v1/source-first/acceptance.json"
+        "results/frontend-commercial-integration-v1/source-first/acceptance.json",
+        "results/frontend-commercial-integration-v1/acceptance.json"
       ],
       "write_scope": [],
-      "next_action": "Repeat clean Qt gate after correcting native-curve callback dispatch.",
-      "reopened_reason": "Clean acceptance exposed native curve progress/on_progress adapter mismatch; first cancellation did not reach API dispatch."
+      "next_action": "Accepted integrated engineering candidate retained on isolated branch; no main merge or publication.",
+      "reopened_reason": "Clean acceptance exposed native curve progress/on_progress adapter mismatch; first cancellation did not reach API dispatch.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_GENERAL_NOT_GREEN_UAT_PENDING"
     },
     {
       "id": "FWI-TESTS",
@@ -16826,77 +16836,117 @@
       "state": "DONE",
       "dependencies": [],
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "4c6535f",
+        "51709f9",
+        "8712f29"
+      ],
       "evidence": [
         "results/frontend-commercial-integration-v1/verification/combined-focused-first.summary.json",
         "results/frontend-commercial-integration-v1/verification/integrated-protected.summary.json",
-        "results/frontend-commercial-integration-v1/general-regression.json"
+        "results/frontend-commercial-integration-v1/general-regression.json",
+        "results/frontend-commercial-integration-v1/acceptance.json"
       ],
       "write_scope": [],
-      "next_action": "Functional checks pass; clean revision-bound source gate remains separate."
+      "next_action": "Accepted integrated engineering candidate retained on isolated branch; no main merge or publication.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_GENERAL_NOT_GREEN_UAT_PENDING"
     },
     {
       "id": "FWI-SOURCE-GUI",
       "objective": "DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1",
       "description": "Real Windows source workflows for all families and commercial functions",
-      "state": "REVIEW",
+      "state": "DONE",
       "dependencies": [],
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "4c6535f",
+        "51709f9",
+        "8712f29"
+      ],
       "evidence": [
-        "results/frontend-commercial-integration-v1/source-first/acceptance.json"
+        "results/frontend-commercial-integration-v1/source-first/acceptance.json",
+        "results/frontend-commercial-integration-v1/acceptance.json"
       ],
       "write_scope": [],
-      "next_action": "Repeat clean Qt gate after correcting native-curve callback dispatch.",
-      "reopened_reason": "Clean acceptance exposed native curve progress/on_progress adapter mismatch; first cancellation did not reach API dispatch."
+      "next_action": "Accepted integrated engineering candidate retained on isolated branch; no main merge or publication.",
+      "reopened_reason": "Clean acceptance exposed native curve progress/on_progress adapter mismatch; first cancellation did not reach API dispatch.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_GENERAL_NOT_GREEN_UAT_PENDING"
     },
     {
       "id": "FWI-SOURCE-ACCEPT",
       "objective": "DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1",
       "description": "Review source gate and freeze clean build inputs",
-      "state": "READY",
+      "state": "DONE",
       "dependencies": [],
       "blocker": null,
-      "commits": [],
-      "evidence": [],
+      "commits": [
+        "4c6535f",
+        "51709f9",
+        "8712f29"
+      ],
+      "evidence": [
+        "results/frontend-commercial-integration-v1/acceptance.json"
+      ],
       "write_scope": [],
-      "next_action": "Review source gate and freeze clean build inputs"
+      "next_action": "Accepted integrated engineering candidate retained on isolated branch; no main merge or publication.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_GENERAL_NOT_GREEN_UAT_PENDING"
     },
     {
       "id": "FWI-BUILD",
       "objective": "DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1",
       "description": "Reproducible integrated Windows candidate with hashes",
-      "state": "READY",
+      "state": "DONE",
       "dependencies": [],
       "blocker": null,
-      "commits": [],
-      "evidence": [],
+      "commits": [
+        "4c6535f",
+        "51709f9",
+        "8712f29"
+      ],
+      "evidence": [
+        "results/frontend-commercial-integration-v1/acceptance.json"
+      ],
       "write_scope": [],
-      "next_action": "Reproducible integrated Windows candidate with hashes"
+      "next_action": "Accepted integrated engineering candidate retained on isolated branch; no main merge or publication.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_GENERAL_NOT_GREEN_UAT_PENDING"
     },
     {
       "id": "FWI-WINDOWS",
       "objective": "DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1",
       "description": "Packaged real Qt acceptance, isolated roots and worker shutdown",
-      "state": "READY",
+      "state": "DONE",
       "dependencies": [],
       "blocker": null,
-      "commits": [],
-      "evidence": [],
+      "commits": [
+        "4c6535f",
+        "51709f9",
+        "8712f29"
+      ],
+      "evidence": [
+        "results/frontend-commercial-integration-v1/acceptance.json"
+      ],
       "write_scope": [],
-      "next_action": "Packaged real Qt acceptance, isolated roots and worker shutdown"
+      "next_action": "Accepted integrated engineering candidate retained on isolated branch; no main merge or publication.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_GENERAL_NOT_GREEN_UAT_PENDING"
     },
     {
       "id": "FWI-RELEASE-REVIEW",
       "objective": "DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1",
       "description": "Receipt, limitations, main recommendation and final gate",
-      "state": "READY",
+      "state": "DONE",
       "dependencies": [],
       "blocker": null,
-      "commits": [],
-      "evidence": [],
+      "commits": [
+        "4c6535f",
+        "51709f9",
+        "8712f29"
+      ],
+      "evidence": [
+        "results/frontend-commercial-integration-v1/acceptance.json"
+      ],
       "write_scope": [],
-      "next_action": "Receipt, limitations, main recommendation and final gate"
+      "next_action": "Accepted integrated engineering candidate retained on isolated branch; no main merge or publication.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_GENERAL_NOT_GREEN_UAT_PENDING"
     }
   ],
   "progress_log": [
@@ -20886,6 +20936,18 @@
       "task": "FWI-COMPAT",
       "kind": "task",
       "summary": "Clean source gate rejected native curve: progress keyword caused TypeError before cancellation. Corrected adapter to public on_progress without changing API/solver. Strict-signature regression plus related integration tests:23 PASS. Repeat real clean GUI gate before building."
+    },
+    {
+      "at": "2026-11-11T17:24:35+00:00",
+      "task": "FWI-WINDOWS",
+      "kind": "task",
+      "summary": "WINDOWS_ACCEPTED rc13 from clean8712f29:47 actual frozen Qt checks, CP1+CP2 receipts,12 external UIA Invoke recovery checks and all-family recent settings PASS. ZIP/3 executables/input manifest/11 modules verified. No owned workers remain. Keyboard UIA harness explicitly unaccepted, UAT pending."
+    },
+    {
+      "at": "2026-11-11T17:24:35+00:00",
+      "task": "FWI-RELEASE-REVIEW",
+      "kind": "task",
+      "summary": "SELF_REVIEW closure:SOURCE_ACCEPTED + WINDOWS_ACCEPTED; GENERAL_REGRESSION_NOT_GREEN,PENDING_UAT,SCIENTIFIC_VALIDATION_NOT_PERFORMED preserved. Main f97469b and frontend9b7392e unchanged; no push/publication. Recommend separately reviewed functional main integration with limitations retained."
     }
   ],
   "integration_parent_states": {
@@ -20968,7 +21030,7 @@
   },
   "current_objective": {
     "id": "DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1",
-    "state": "IN_PROGRESS",
+    "state": "COMPLETE",
     "owner_approved": true,
     "change": "openspec/changes/frontend-commercial-integration-v1",
     "spec": "openspec/changes/frontend-commercial-integration-v1/specs/frontend-commercial-integration-v1/spec.md",
@@ -20982,28 +21044,37 @@
       "FWI-BUILD",
       "FWI-WINDOWS",
       "FWI-RELEASE-REVIEW"
-    ]
+    ],
+    "classification": "FRONTEND_CP0_CP2_SOURCE_AND_WINDOWS_ACCEPTED"
   },
   "gate_status": {
     "objective": "DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1",
-    "state": "OPEN",
-    "classification": null,
-    "evidence": [],
-    "gate_tasks_total": 8,
-    "gate_tasks_done": 2,
-    "gate_task_states": {
-      "DONE": 2,
-      "REVIEW": 2,
-      "READY": 4
-    },
-    "remaining": [
-      "FWI-COMPAT",
-      "FWI-SOURCE-GUI",
-      "FWI-SOURCE-ACCEPT",
-      "FWI-BUILD",
-      "FWI-WINDOWS",
-      "FWI-RELEASE-REVIEW"
+    "state": "PASS",
+    "classification": "FRONTEND_CP0_CP2_WINDOWS_ACCEPTED_GENERAL_NOT_GREEN_UAT_PENDING",
+    "evidence": [
+      "results/frontend-commercial-integration-v1/acceptance.json",
+      "docs/frontend-commercial-integration-v1/README.md"
     ],
-    "updated_at": "2026-11-11T16:38:37+00:00"
+    "gate_tasks_total": 8,
+    "gate_tasks_done": 8,
+    "gate_task_states": {
+      "DONE": 8
+    },
+    "remaining": [],
+    "updated_at": "2026-11-11T17:24:35+00:00"
+  },
+  "frontend_commercial_integration_acceptance": {
+    "source_commit": "8712f290ff7c1485cd0417101426aa4e80fc5205",
+    "states": {
+      "SOURCE_ACCEPTED": true,
+      "WINDOWS_ACCEPTED": true,
+      "GENERAL_REGRESSION_NOT_GREEN": true,
+      "PENDING_UAT": true,
+      "SCIENTIFIC_VALIDATION_NOT_PERFORMED": true
+    },
+    "receipt": "results/frontend-commercial-integration-v1/acceptance.json",
+    "candidate": "results/frontend-commercial-integration-v1/candidate.json",
+    "review": "SELF_REVIEW",
+    "external_keyboard_route": "NOT_ACCEPTED_LOCAL_HARNESS; stable packaged Qt and external UIA Invoke recovery accepted separately."
   }
 }

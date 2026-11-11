@@ -1,0 +1,41 @@
+{
+  "name": "uia-pattern-probe",
+  "command": [
+    "E:\\dino\\worktrees\\dino-frontend-commercial-v1\\.venv-build\\Scripts\\python.exe",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/tools/uia_pattern_probe.py"
+  ],
+  "started_at": "2026-11-11T17:09:46+00:00",
+  "finished_at": "2026-11-11T17:09:56+00:00",
+  "duration_s": 10.453,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "E:\\Dino-artifacts\\frontend-commercial-integration-v1\\verification\\uia-pattern-probe.log",
+  "log_lines": 16,
+  "log_bytes": 1038,
+  "error_lines": [
+    "1: Traceback (most recent call last):",
+    "5:     raise IndexError(\"item '{0}' not found\".format(item))",
+    "6: IndexError: item '1' not found",
+    "10: Traceback (most recent call last):",
+    "15:     raise IndexError(\"item '{0}' not found or can't be accessed\".format(item))",
+    "16: IndexError: item '1' not found or can't be accessed"
+  ],
+  "tail": [
+    "Traceback (most recent call last):",
+    "  File \"E:\\dino\\worktrees\\dino-frontend-commercial-v1\\.venv-build\\Lib\\site-packages\\pywinauto\\controls\\uia_controls.py\", line 238, in select",
+    "    self._select(item)",
+    "  File \"E:\\dino\\worktrees\\dino-frontend-commercial-v1\\.venv-build\\Lib\\site-packages\\pywinauto\\controls\\uiawrapper.py\", line 678, in _select",
+    "    raise IndexError(\"item '{0}' not found\".format(item))",
+    "IndexError: item '1' not found",
+    "",
+    "During handling of the above exception, another exception occurred:",
+    "",
+    "Traceback (most recent call last):",
+    "  File \"E:\\Dino-artifacts\\frontend-commercial-integration-v1\\tools\\uia_pattern_probe.py\", line 27, in <module>",
+    "    combo.select(index);time.sleep(.6);print('SELECT',index,win32gui.GetWindowText(h),flush=True)",
+    "    ^^^^^^^^^^^^^^^^^^^",
+    "  File \"E:\\dino\\worktrees\\dino-frontend-commercial-v1\\.venv-build\\Lib\\site-packages\\pywinauto\\controls\\uia_controls.py\", line 263, in select",
+    "    raise IndexError(\"item '{0}' not found or can't be accessed\".format(item))",
+    "IndexError: item '1' not found or can't be accessed"
+  ]
+}

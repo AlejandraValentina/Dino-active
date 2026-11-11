@@ -1,0 +1,46 @@
+{
+  "name": "packaged-external-windows-v3",
+  "command": [
+    "python",
+    "scripts/frontend_commercial/run_acceptance.py",
+    "--receipt",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/external-windows-v3-terminal.json",
+    "--timeout",
+    "600",
+    "--",
+    "E:\\dino\\worktrees\\dino-frontend-commercial-v1\\.venv-build\\Scripts\\python.exe",
+    "scripts/frontend_commercial/verify_external_windows.py",
+    "--exe",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/Windows/MotorSim-0.1.0-rc13-windows-x64-8712f290/MotorSim/Dino2T.exe",
+    "--work",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/external-windows-v3"
+  ],
+  "started_at": "2026-11-11T16:56:22+00:00",
+  "finished_at": "2026-11-11T16:56:56+00:00",
+  "duration_s": 33.25,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "E:\\Dino-artifacts\\frontend-commercial-integration-v1\\verification\\packaged-external-windows-v3.log",
+  "log_lines": 12,
+  "log_bytes": 1688,
+  "error_lines": [
+    "3: Traceback (most recent call last):",
+    "10:     raise TimeoutError(\"UIA timeout\")",
+    "11: TimeoutError: UIA timeout",
+    "12: {\"schema\": \"DINO_OWNED_PROCESS_TERMINAL_V1\", \"command\": [\"E:\\\\dino\\\\worktrees\\\\dino-frontend-commercial-v1\\\\.venv-build\\\\Scripts\\\\python.exe\", \"scripts/frontend_commercial/verify_external_windows.py\", \"--exe\", \"E:/Dino-artifacts/frontend-commercial-integration-v1/Windows/MotorSim-0.1.0-rc13-windows-"
+  ],
+  "tail": [
+    "PASS About opens and preserves scientific status in all three modes",
+    "FILE_DIALOG Exportar diagnóstico Guardar 1 E:\\Dino-artifacts\\frontend-commercial-integration-v1\\external-windows-v3\\diagnostico-2t.zip",
+    "Traceback (most recent call last):",
+    "  File \"E:\\dino\\worktrees\\dino-frontend-commercial-v1\\scripts\\frontend_commercial\\verify_external_windows.py\", line 477, in <module>",
+    "    raise SystemExit(main())",
+    "                     ^^^^^^",
+    "  File \"E:\\dino\\worktrees\\dino-frontend-commercial-v1\\scripts\\frontend_commercial\\verify_external_windows.py\", line 316, in main",
+    "    wait(lambda: target.is_file(), 10)",
+    "  File \"E:\\dino\\worktrees\\dino-frontend-commercial-v1\\scripts\\frontend_commercial\\verify_external_windows.py\", line 95, in wait",
+    "    raise TimeoutError(\"UIA timeout\")",
+    "TimeoutError: UIA timeout",
+    "{\"schema\": \"DINO_OWNED_PROCESS_TERMINAL_V1\", \"command\": [\"E:\\\\dino\\\\worktrees\\\\dino-frontend-commercial-v1\\\\.venv-build\\\\Scripts\\\\python.exe\", \"scripts/frontend_commercial/verify_external_windows.py\", \"--exe\", \"E:/Dino-artifacts/frontend-commercial-integration-v1/Windows/MotorSim-0.1.0-rc13-windows-"
+  ]
+}

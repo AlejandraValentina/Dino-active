@@ -1,0 +1,29 @@
+{
+  "schema": "DINO_OWNED_PROCESS_TERMINAL_V1",
+  "command": [
+    "E:\\dino\\worktrees\\dino-frontend-commercial-v1\\.venv-build\\Scripts\\python.exe",
+    "scripts/frontend_commercial/verify_external_windows.py",
+    "--exe",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/Windows/MotorSim-0.1.0-rc13-windows-x64-8712f290/MotorSim/Dino2T.exe",
+    "--work",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/external-windows-v6"
+  ],
+  "exit_code": 1,
+  "timed_out": false,
+  "duration_s": 11.484,
+  "observed_children": [
+    {
+      "pid": 12684,
+      "created_at": 1794416681.3582227,
+      "name": "python.exe"
+    },
+    {
+      "pid": 30108,
+      "created_at": 1794416683.9600816,
+      "name": "Dino2T.exe"
+    }
+  ],
+  "remaining_owned_processes": [],
+  "scope": "Only this parent tree; concurrent work preserved",
+  "result": "FAIL"
+}

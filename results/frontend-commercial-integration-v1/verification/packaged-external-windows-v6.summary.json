@@ -1,0 +1,48 @@
+{
+  "name": "packaged-external-windows-v6",
+  "command": [
+    "python",
+    "scripts/frontend_commercial/run_acceptance.py",
+    "--receipt",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/external-windows-v6-terminal.json",
+    "--timeout",
+    "600",
+    "--",
+    "E:\\dino\\worktrees\\dino-frontend-commercial-v1\\.venv-build\\Scripts\\python.exe",
+    "scripts/frontend_commercial/verify_external_windows.py",
+    "--exe",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/Windows/MotorSim-0.1.0-rc13-windows-x64-8712f290/MotorSim/Dino2T.exe",
+    "--work",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/external-windows-v6"
+  ],
+  "started_at": "2026-11-11T17:04:41+00:00",
+  "finished_at": "2026-11-11T17:04:52+00:00",
+  "duration_s": 11.672,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "E:\\Dino-artifacts\\frontend-commercial-integration-v1\\verification\\packaged-external-windows-v6.log",
+  "log_lines": 16,
+  "log_bytes": 1904,
+  "error_lines": [
+    "1: Traceback (most recent call last):",
+    "16: {\"schema\": \"DINO_OWNED_PROCESS_TERMINAL_V1\", \"command\": [\"E:\\\\dino\\\\worktrees\\\\dino-frontend-commercial-v1\\\\.venv-build\\\\Scripts\\\\python.exe\", \"scripts/frontend_commercial/verify_external_windows.py\", \"--exe\", \"E:/Dino-artifacts/frontend-commercial-integration-v1/Windows/MotorSim-0.1.0-rc13-windows-"
+  ],
+  "tail": [
+    "Traceback (most recent call last):",
+    "  File \"E:\\dino\\worktrees\\dino-frontend-commercial-v1\\scripts\\frontend_commercial\\verify_external_windows.py\", line 496, in <module>",
+    "    raise SystemExit(main())",
+    "                     ^^^^^^",
+    "  File \"E:\\dino\\worktrees\\dino-frontend-commercial-v1\\scripts\\frontend_commercial\\verify_external_windows.py\", line 296, in main",
+    "    select_engine(main_window, index)",
+    "  File \"E:\\dino\\worktrees\\dino-frontend-commercial-v1\\scripts\\frontend_commercial\\verify_external_windows.py\", line 235, in select_engine",
+    "    send_keys(\"{HOME}\")",
+    "  File \"E:\\dino\\worktrees\\dino-frontend-commercial-v1\\scripts\\frontend_commercial\\verify_external_windows.py\", line 108, in send_keys",
+    "    focus(owned[0][0])",
+    "  File \"E:\\dino\\worktrees\\dino-frontend-commercial-v1\\scripts\\frontend_commercial\\verify_external_windows.py\", line 100, in focus",
+    "    HwndWrapper(handle).set_focus()",
+    "  File \"E:\\dino\\worktrees\\dino-frontend-commercial-v1\\.venv-build\\Lib\\site-packages\\pywinauto\\controls\\hwndwrapper.py\", line 1319, in set_focus",
+    "    win32gui.SetForegroundWindow(self.handle)",
+    "pywintypes.error: (0, 'SetForegroundWindow', 'No error message is available')",
+    "{\"schema\": \"DINO_OWNED_PROCESS_TERMINAL_V1\", \"command\": [\"E:\\\\dino\\\\worktrees\\\\dino-frontend-commercial-v1\\\\.venv-build\\\\Scripts\\\\python.exe\", \"scripts/frontend_commercial/verify_external_windows.py\", \"--exe\", \"E:/Dino-artifacts/frontend-commercial-integration-v1/Windows/MotorSim-0.1.0-rc13-windows-"
+  ]
+}

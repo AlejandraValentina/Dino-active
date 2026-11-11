@@ -1,0 +1,64 @@
+{
+  "schema": "DINO_OWNED_PROCESS_TERMINAL_V1",
+  "command": [
+    "E:\\dino\\worktrees\\dino-frontend-commercial-v1\\.venv-build\\Scripts\\python.exe",
+    "scripts/frontend_commercial/verify_recovery_windows.py",
+    "--exe",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/Windows/MotorSim-0.1.0-rc13-windows-x64-8712f290/MotorSim/Dino2T.exe",
+    "--work",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/recovery-invoke-v2"
+  ],
+  "exit_code": 0,
+  "timed_out": false,
+  "duration_s": 57.391,
+  "observed_children": [
+    {
+      "pid": 36852,
+      "created_at": 1794417460.8636363,
+      "name": "python.exe"
+    },
+    {
+      "pid": 33624,
+      "created_at": 1794417462.4777255,
+      "name": "Dino2T.exe"
+    },
+    {
+      "pid": 30268,
+      "created_at": 1794417467.940745,
+      "name": "cmd.exe"
+    },
+    {
+      "pid": 36016,
+      "created_at": 1794417467.9741635,
+      "name": "conhost.exe"
+    },
+    {
+      "pid": 41348,
+      "created_at": 1794417486.4102824,
+      "name": "Dino2T.exe"
+    },
+    {
+      "pid": 20188,
+      "created_at": 1794417491.8243768,
+      "name": "cmd.exe"
+    },
+    {
+      "pid": 34096,
+      "created_at": 1794417491.8793116,
+      "name": "conhost.exe"
+    },
+    {
+      "pid": 35632,
+      "created_at": 1794417502.5170388,
+      "name": "Dino2T.exe"
+    },
+    {
+      "pid": 27616,
+      "created_at": 1794417507.7965703,
+      "name": "cmd.exe"
+    }
+  ],
+  "remaining_owned_processes": [],
+  "scope": "Only this parent tree; concurrent work preserved",
+  "result": "PASS"
+}

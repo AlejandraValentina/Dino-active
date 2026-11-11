@@ -1,0 +1,30 @@
+{
+  "name": "integrated-packaged-qt",
+  "command": [
+    "python",
+    "E:/dino/worktrees/dino-frontend-commercial-v1/scripts/frontend_commercial/run_acceptance.py",
+    "--receipt",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/packaged-terminal.json",
+    "--timeout",
+    "600",
+    "--",
+    "E:\\Dino-artifacts\\frontend-commercial-integration-v1\\Windows\\MotorSim-0.1.0-rc13-windows-x64-8712f290\\MotorSim\\Dino2T.exe",
+    "--verify-frontend-commercial",
+    "--output",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/packaged-qt",
+    "--fixtures",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/fixtures"
+  ],
+  "started_at": "2026-11-11T16:46:08+00:00",
+  "finished_at": "2026-11-11T16:48:52+00:00",
+  "duration_s": 163.093,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "E:\\Dino-artifacts\\frontend-commercial-integration-v1\\verification\\integrated-packaged-qt.log",
+  "log_lines": 1,
+  "log_bytes": 1299,
+  "error_lines": [],
+  "tail": [
+    "{\"schema\": \"DINO_OWNED_PROCESS_TERMINAL_V1\", \"command\": [\"E:\\\\Dino-artifacts\\\\frontend-commercial-integration-v1\\\\Windows\\\\MotorSim-0.1.0-rc13-windows-x64-8712f290\\\\MotorSim\\\\Dino2T.exe\", \"--verify-frontend-commercial\", \"--output\", \"E:/Dino-artifacts/frontend-commercial-integration-v1/packaged-qt\", "
+  ]
+}

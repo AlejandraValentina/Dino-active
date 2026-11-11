@@ -1,0 +1,28 @@
+{
+  "name": "packaged-cp2",
+  "command": [
+    "python",
+    "E:/dino/worktrees/dino-frontend-commercial-v1/scripts/frontend_commercial/run_acceptance.py",
+    "--receipt",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/packaged-cp2-terminal.json",
+    "--timeout",
+    "150",
+    "--",
+    "E:\\Dino-artifacts\\frontend-commercial-integration-v1\\Windows\\MotorSim-0.1.0-rc13-windows-x64-8712f290\\MotorSim\\Dino2T.exe",
+    "--verify-cp2-acceptance",
+    "--output",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/packaged-cp2"
+  ],
+  "started_at": "2026-11-11T16:50:12+00:00",
+  "finished_at": "2026-11-11T16:50:20+00:00",
+  "duration_s": 7.703,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "E:\\Dino-artifacts\\frontend-commercial-integration-v1\\verification\\packaged-cp2.log",
+  "log_lines": 1,
+  "log_bytes": 629,
+  "error_lines": [],
+  "tail": [
+    "{\"schema\": \"DINO_OWNED_PROCESS_TERMINAL_V1\", \"command\": [\"E:\\\\Dino-artifacts\\\\frontend-commercial-integration-v1\\\\Windows\\\\MotorSim-0.1.0-rc13-windows-x64-8712f290\\\\MotorSim\\\\Dino2T.exe\", \"--verify-cp2-acceptance\", \"--output\", \"E:/Dino-artifacts/frontend-commercial-integration-v1/packaged-cp2\"], \"ex"
+  ]
+}

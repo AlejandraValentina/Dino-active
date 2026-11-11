@@ -1,0 +1,37 @@
+{
+  "name": "packaged-recovery-invoke-v2",
+  "command": [
+    "python",
+    "scripts/frontend_commercial/run_acceptance.py",
+    "--receipt",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/recovery-invoke-v2-terminal.json",
+    "--timeout",
+    "260",
+    "--",
+    "E:\\dino\\worktrees\\dino-frontend-commercial-v1\\.venv-build\\Scripts\\python.exe",
+    "scripts/frontend_commercial/verify_recovery_windows.py",
+    "--exe",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/Windows/MotorSim-0.1.0-rc13-windows-x64-8712f290/MotorSim/Dino2T.exe",
+    "--work",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/recovery-invoke-v2"
+  ],
+  "started_at": "2026-11-11T17:17:40+00:00",
+  "finished_at": "2026-11-11T17:18:38+00:00",
+  "duration_s": 57.578,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "E:\\Dino-artifacts\\frontend-commercial-integration-v1\\verification\\packaged-recovery-invoke-v2.log",
+  "log_lines": 8,
+  "log_bytes": 2680,
+  "error_lines": [],
+  "tail": [
+    "PASS 2T restored by actual recovery prompt",
+    "PASS 2T Save As, original bytes and clean exit",
+    "PASS 4T0D restored by actual recovery prompt",
+    "PASS 4T0D Save As, original bytes and clean exit",
+    "PASS 4Tnative restored by actual recovery prompt",
+    "PASS 4Tnative Save As, original bytes and clean exit",
+    "{\"schema\": \"DINO_PACKAGED_RECOVERY_UIA_V1\", \"result\": \"PASS\", \"checks\": {\"2T_restored\": true, \"2T_requires_save_as\": true, \"2T_original_intact\": true, \"2T_closed\": true, \"4T0D_restored\": true, \"4T0D_requires_save_as\": true, \"4T0D_original_intact\": true, \"4T0D_closed\": true, \"4Tnative_restored\": true",
+    "{\"schema\": \"DINO_OWNED_PROCESS_TERMINAL_V1\", \"command\": [\"E:\\\\dino\\\\worktrees\\\\dino-frontend-commercial-v1\\\\.venv-build\\\\Scripts\\\\python.exe\", \"scripts/frontend_commercial/verify_recovery_windows.py\", \"--exe\", \"E:/Dino-artifacts/frontend-commercial-integration-v1/Windows/MotorSim-0.1.0-rc13-windows-"
+  ]
+}

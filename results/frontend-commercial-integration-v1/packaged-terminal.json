@@ -1,0 +1,69 @@
+{
+  "schema": "DINO_OWNED_PROCESS_TERMINAL_V1",
+  "command": [
+    "E:\\Dino-artifacts\\frontend-commercial-integration-v1\\Windows\\MotorSim-0.1.0-rc13-windows-x64-8712f290\\MotorSim\\Dino2T.exe",
+    "--verify-frontend-commercial",
+    "--output",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/packaged-qt",
+    "--fixtures",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/fixtures"
+  ],
+  "exit_code": 0,
+  "timed_out": false,
+  "duration_s": 160.703,
+  "observed_children": [
+    {
+      "pid": 1456,
+      "created_at": 1794415572.3640947,
+      "name": "cmd.exe"
+    },
+    {
+      "pid": 34256,
+      "created_at": 1794415572.402126,
+      "name": "conhost.exe"
+    },
+    {
+      "pid": 38196,
+      "created_at": 1794415609.1816928,
+      "name": "cmd.exe"
+    },
+    {
+      "pid": 20096,
+      "created_at": 1794415609.2173424,
+      "name": "conhost.exe"
+    },
+    {
+      "pid": 42628,
+      "created_at": 1794415656.9874113,
+      "name": "MotorSimWorker.exe"
+    },
+    {
+      "pid": 40412,
+      "created_at": 1794415657.2968009,
+      "name": "conhost.exe"
+    },
+    {
+      "pid": 35064,
+      "created_at": 1794415672.9351475,
+      "name": "cmd.exe"
+    },
+    {
+      "pid": 42892,
+      "created_at": 1794415694.4278476,
+      "name": "MotorSimWorker.exe"
+    },
+    {
+      "pid": 24888,
+      "created_at": 1794415694.4483693,
+      "name": "conhost.exe"
+    },
+    {
+      "pid": 30192,
+      "created_at": 1794415710.611051,
+      "name": "cmd.exe"
+    }
+  ],
+  "remaining_owned_processes": [],
+  "scope": "Only this parent tree; concurrent work preserved",
+  "result": "PASS"
+}

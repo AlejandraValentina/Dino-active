@@ -1,0 +1,34 @@
+{
+  "name": "uia-pattern-probe-2",
+  "command": [
+    "E:\\dino\\worktrees\\dino-frontend-commercial-v1\\.venv-build\\Scripts\\python.exe",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/tools/uia_pattern_probe_2.py"
+  ],
+  "started_at": "2026-11-11T17:11:45+00:00",
+  "finished_at": "2026-11-11T17:11:48+00:00",
+  "duration_s": 2.844,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "E:\\Dino-artifacts\\frontend-commercial-integration-v1\\verification\\uia-pattern-probe-2.log",
+  "log_lines": 13,
+  "log_bytes": 825,
+  "error_lines": [
+    "1: Traceback (most recent call last):",
+    "9: Traceback (most recent call last):"
+  ],
+  "tail": [
+    "Traceback (most recent call last):",
+    "  File \"E:\\Dino-artifacts\\frontend-commercial-integration-v1\\tools\\uia_pattern_probe_2.py\", line 25, in <module>",
+    "    combo=next(x for x in w.descendants() if x.element_info.automation_id.endswith('engineFamilySelector'))",
+    "          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "StopIteration",
+    "",
+    "During handling of the above exception, another exception occurred:",
+    "",
+    "Traceback (most recent call last):",
+    "  File \"E:\\Dino-artifacts\\frontend-commercial-integration-v1\\tools\\uia_pattern_probe_2.py\", line 32, in <module>",
+    "    if p.poll() is None:win32gui.PostMessage(h,win32con.WM_CLOSE,0,0)",
+    "                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "pywintypes.error: (1400, 'PostMessage', 'El identificador de la ventana no es válido.')"
+  ]
+}

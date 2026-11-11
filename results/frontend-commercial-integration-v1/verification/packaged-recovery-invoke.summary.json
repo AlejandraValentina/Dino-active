@@ -1,0 +1,45 @@
+{
+  "name": "packaged-recovery-invoke",
+  "command": [
+    "python",
+    "scripts/frontend_commercial/run_acceptance.py",
+    "--receipt",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/recovery-invoke-terminal.json",
+    "--timeout",
+    "260",
+    "--",
+    "E:\\dino\\worktrees\\dino-frontend-commercial-v1\\.venv-build\\Scripts\\python.exe",
+    "scripts/frontend_commercial/verify_recovery_windows.py",
+    "--exe",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/Windows/MotorSim-0.1.0-rc13-windows-x64-8712f290/MotorSim/Dino2T.exe",
+    "--work",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/recovery-invoke"
+  ],
+  "started_at": "2026-11-11T17:16:29+00:00",
+  "finished_at": "2026-11-11T17:17:11+00:00",
+  "duration_s": 42.047,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "E:\\Dino-artifacts\\frontend-commercial-integration-v1\\verification\\packaged-recovery-invoke.log",
+  "log_lines": 11,
+  "log_bytes": 1570,
+  "error_lines": [
+    "1: Traceback (most recent call last):",
+    "9:     raise TimeoutError('UIA Invoke acceptance timeout')",
+    "10: TimeoutError: UIA Invoke acceptance timeout",
+    "11: {\"schema\": \"DINO_OWNED_PROCESS_TERMINAL_V1\", \"command\": [\"E:\\\\dino\\\\worktrees\\\\dino-frontend-commercial-v1\\\\.venv-build\\\\Scripts\\\\python.exe\", \"scripts/frontend_commercial/verify_recovery_windows.py\", \"--exe\", \"E:/Dino-artifacts/frontend-commercial-integration-v1/Windows/MotorSim-0.1.0-rc13-windows-"
+  ],
+  "tail": [
+    "Traceback (most recent call last):",
+    "  File \"E:\\dino\\worktrees\\dino-frontend-commercial-v1\\scripts\\frontend_commercial\\verify_recovery_windows.py\", line 101, in <module>",
+    "    if __name__=='__main__':raise SystemExit(main())",
+    "                                             ^^^^^^",
+    "  File \"E:\\dino\\worktrees\\dino-frontend-commercial-v1\\scripts\\frontend_commercial\\verify_recovery_windows.py\", line 61, in main",
+    "    prompt=wait(lambda:locate('Borrador de recuperación'))",
+    "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"E:\\dino\\worktrees\\dino-frontend-commercial-v1\\scripts\\frontend_commercial\\verify_recovery_windows.py\", line 32, in wait",
+    "    raise TimeoutError('UIA Invoke acceptance timeout')",
+    "TimeoutError: UIA Invoke acceptance timeout",
+    "{\"schema\": \"DINO_OWNED_PROCESS_TERMINAL_V1\", \"command\": [\"E:\\\\dino\\\\worktrees\\\\dino-frontend-commercial-v1\\\\.venv-build\\\\Scripts\\\\python.exe\", \"scripts/frontend_commercial/verify_recovery_windows.py\", \"--exe\", \"E:/Dino-artifacts/frontend-commercial-integration-v1/Windows/MotorSim-0.1.0-rc13-windows-"
+  ]
+}
