@@ -735,7 +735,7 @@ class DinoDesktopWindow(QMainWindow):
         self.statusBar().showMessage(
             "Borrador 4T 0D recuperado como copia sin ruta; usá Guardar como para conservarlo.",7000)
     def _restore_native_recovery(self, entry):
-        self.native_four_stroke.replace_project(entry["project"],None)
+        if not self.native_four_stroke.replace_project(entry["project"],None):return False
         self.native_four_stroke.context.dirty=True
         self.native_four_stroke.context.changed.emit()
         self.show_native_four_stroke_mode()
@@ -791,6 +791,7 @@ class DinoDesktopWindow(QMainWindow):
         return self._confirm_discard()
     def _confirm_discard_native(self):
         context=self.native_four_stroke.context
+        if not context.prepare_operation('Cerrar o sustituir el motor 4T'):return False
         if not context.dirty:return True
         answer=QMessageBox.question(self,"Cambios 4T pendientes",
             "¿Guardar el proyecto 4T nativo antes de sustituirlo?",
@@ -800,17 +801,18 @@ class DinoDesktopWindow(QMainWindow):
         return self._save_native_project() if answer==QMessageBox.StandardButton.Save else True
     def _save_native_project(self,path=None):
         context=self.native_four_stroke.context
+        if not context.prepare_operation('Guardar proyecto 4T'):return False
         if self.native_four_stroke.running:
             QMessageBox.warning(self,"Motor 4T en ejecución","Terminá la corrida antes de guardar.")
             return False
-        target=Path(path) if path is not None else context.path
-        if target is None:
-            requested,_=QFileDialog.getSaveFileName(self,"Guardar motor 4T nativo",
-                str(Path.home()/"nuevo-4t.dino.json"),"Dino project (*.dino.json *.json)")
-            if not requested:return False
-            target=Path(requested)
-        if target.suffix.lower()!=".json":target=Path(str(target)+".dino.json")
         try:
+            value=path if path is not None else context.path
+            if value is None:
+                value,_=QFileDialog.getSaveFileName(self,"Guardar motor 4T nativo",
+                    str(Path.home()/"nuevo-4t.dino.json"),"Dino project (*.dino.json *.json)")
+                if not value:return False
+            target=Path(value)
+            if target.suffix.lower()!=".json":target=Path(str(target)+".dino.json")
             save_project(target,context.project)
             context.path=target;context.dirty=False;context.changed.emit()
             self.recent.add("4Tnative",target);self.recovery_native.clear();self.native_four_stroke.context.clear_history();self._refresh_history_actions()
@@ -846,7 +848,7 @@ class DinoDesktopWindow(QMainWindow):
         if self.native_four_stroke.running:
             QMessageBox.warning(self,"Motor 4T en ejecución","Terminá la corrida actual antes de abrir otro proyecto.")
             return False
-        self.native_four_stroke.replace_project(project,Path(path) if path else None)
+        if not self.native_four_stroke.replace_project(project,Path(path) if path else None):return False
         if path:self.recent.add("4Tnative",path)
         self.show_native_four_stroke_mode()
         return True
@@ -893,6 +895,8 @@ class DinoDesktopWindow(QMainWindow):
         try:save_project(target,self.context.project);self.context.path=target;self.context.dirty=False;self.context.changed.emit();self.recent.add("2T",target);self.recovery_2t.clear();self.context.clear_history();self._refresh_history_actions();self.statusBar().showMessage('Proyecto guardado',3500);return True
         except Exception as exc:QMessageBox.warning(self,'No se pudo guardar',f'{type(exc).__name__}: {exc}');return False
     def export_project_bundle(self):
+        context=self._active_context()
+        if hasattr(context,'prepare_operation') and not context.prepare_operation('Exportar proyecto'):return
         if self._native_four_stroke_active():
             family="4T_native";project=self.native_four_stroke.context.project;path=self.native_four_stroke.context.path
             label=str(project.get("project_id") or "proyecto-4t-nativo")
@@ -929,7 +933,8 @@ class DinoDesktopWindow(QMainWindow):
         if family=="2T":
             self.context.replace_project(project,path);self.show_two_stroke_mode()
         elif family=="4T_native":
-            self.native_four_stroke.replace_project(project,path);self.show_native_four_stroke_mode()
+            if not self.native_four_stroke.replace_project(project,path):return
+            self.show_native_four_stroke_mode()
         elif family=="4T_0D":
             self.four_stroke_context.replace_project(project,path);self.four_stroke_results.clear_result();self.show_four_stroke_mode()
         else:
@@ -959,6 +964,7 @@ class DinoDesktopWindow(QMainWindow):
                 try:tmp.unlink(missing_ok=True)
                 except OSError:pass
     def closeEvent(self,event):
+        if hasattr(self,'native_four_stroke') and not self._confirm_discard_native():event.ignore();return
         if not self._confirm_discard():event.ignore();return
         if hasattr(self,"four_stroke_context") and self.four_stroke_context.dirty and not self._confirm_discard_four_stroke():event.ignore();return
         if hasattr(self,"four_stroke_execution") and self.four_stroke_execution.running:

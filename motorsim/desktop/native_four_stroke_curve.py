@@ -341,6 +341,7 @@ class NativeFourStrokeCurvePage(QWidget):
         return self.task is not None
 
     def start_curve(self):
+        if not self.context.prepare_operation('Calcular curva 4T'):return
         if self.running or self.native_simulation.task is not None:
             self.status.setText("Ya hay una ejecución 4T activa.")
             return

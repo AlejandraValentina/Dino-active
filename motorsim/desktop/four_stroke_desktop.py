@@ -158,16 +158,48 @@ def _outcome_label(summary):
 
 class FourStrokeConfigEditor(QWidget):
     configApplied = Signal()
+    draftChanged = Signal(bool)
 
     def __init__(self, context):
-        super().__init__(); self.context=context; self.tables={}; self._loading=False; self._original={}
+        super().__init__(); self.context=context; self.tables={}; self._loading=False; self._original={};self._applying=False
         root=QVBoxLayout(self);self.notice=QLabel();self.notice.setWordWrap(True);root.addWidget(self.notice)
         self.sections=QTabWidget();root.addWidget(self.sections,1)
         self.validate_button=QPushButton("Validar y aplicar configuración")
         self.validate_button.clicked.connect(self.apply);root.addWidget(self.validate_button)
         self.context.changed.connect(self.refresh);self.refresh()
+        self.context.set_edit_guard(self.ensure_applied)
 
-    def refresh(self):
+    @property
+    def has_pending_changes(self):
+        return any(table.item(row,1).text()!=self._display(self._original[tuple(table.item(row,1).data(256))])
+                   for table in self.tables.values() for row in range(table.rowCount()))
+
+    def _draft_changed(self,*_):
+        if self._loading:return
+        pending=self.has_pending_changes
+        self.draftChanged.emit(pending);self.context.draft_changed.emit()
+        if pending:self.notice.setText('Edición pendiente de aplicar. Guardar o ejecutar requiere resolver este borrador; la configuración aplicada todavía no cambió.')
+
+    def discard_draft(self):
+        self.refresh(force=True)
+        self.draftChanged.emit(False);self.context.draft_changed.emit()
+
+    def ensure_applied(self, operation):
+        if not self.has_pending_changes:return True
+        dialog=QMessageBox(QMessageBox.Icon.Question,'Cambios sin aplicar',
+            f'{operation}: hay una edición del motor sin aplicar. Elegí qué configuración conservar.',
+            QMessageBox.StandardButton.NoButton,self)
+        apply=dialog.addButton('Aplicar y continuar',QMessageBox.ButtonRole.AcceptRole)
+        discard=dialog.addButton('Descartar borrador',QMessageBox.ButtonRole.DestructiveRole)
+        cancel=dialog.addButton('Cancelar',QMessageBox.ButtonRole.RejectRole)
+        dialog.setDefaultButton(cancel);dialog.exec()
+        if dialog.clickedButton() is apply:return bool(self.apply())
+        if dialog.clickedButton() is discard:self.discard_draft();return True
+        return False
+
+    def refresh(self,force=False):
+        # Publishing a result is not an instruction to erase a user's draft.
+        if not force and not self._applying and self.has_pending_changes:return
         config=self.context.engine();self._loading=True
         while self.sections.count(): self.sections.removeTab(0)
         self.tables.clear();self._original.clear()
@@ -187,6 +219,7 @@ class FourStrokeConfigEditor(QWidget):
                 provenance_item=QTableWidgetItem(DISPLAY_VALUES.get(str(provenance),str(provenance)));provenance_item.setFlags(provenance_item.flags() & ~Qt.ItemFlag.ItemIsEditable)
                 table.setItem(row,0,key);table.setItem(row,1,cell);table.setItem(row,2,provenance_item)
             self.tables[section]=table;self.sections.addTab(table,SECTION_LABELS.get(section,section.replace("_"," ").title()))
+            table.itemChanged.connect(self._draft_changed)
         checked=engine_platform.validate_config("4T",config)
         unknown=checked.get("unknown_keys",[])
         label="Válida para ejecución" if checked["valid"] and not unknown else "Requiere corrección"
@@ -206,7 +239,7 @@ class FourStrokeConfigEditor(QWidget):
         return DISPLAY_VALUES.get(str(value),str(value))
 
     def apply(self):
-        if self._loading:return
+        if self._loading:return False
         doc=json.loads(json.dumps(self.context.engine()))
         try:
             for table in self.tables.values():
@@ -225,12 +258,17 @@ class FourStrokeConfigEditor(QWidget):
                 raise ValueError(details or "La API 4T rechazó la configuración.")
             if doc == self.context.engine():
                 self.notice.setText(f"Configuración sin cambios · SHA-256 {checked['config_sha256']} · no se reescribió ningún valor de origen.")
-                return
-            self.context.replace_engine(doc)
+                return True
+            self._applying=True
+            try:self.context.replace_engine(doc)
+            finally:self._applying=False
             self.notice.setText(f"Configuración válida · SHA-256 {checked['config_sha256']} · La API confirma que es ejecutable; no expresa adecuación física ni validación experimental.")
             self.configApplied.emit()
+            self.draftChanged.emit(False);self.context.draft_changed.emit()
+            return True
         except Exception as exc:
             QMessageBox.warning(self,"Configuración 4T inválida",str(exc))
+            return False
 
 
 class _RunSignals(QObject):
@@ -252,6 +290,7 @@ class _RunTask(QRunnable):
 
 class FourStrokeSimulation(QWidget):
     runFinished=Signal(dict)
+    runningChanged=Signal(bool)
     def __init__(self,context):
         super().__init__();self.context=context;self.thread_pool=QThreadPool.globalInstance();self.task=None;self._task_token=None;self.run_dir=None
         root=QVBoxLayout(self);form=QFormLayout();root.addLayout(form)
@@ -266,6 +305,7 @@ class FourStrokeSimulation(QWidget):
 
     def execute(self):
         if self.task is not None:return
+        if not self.context.prepare_operation('Ejecutar punto 4T'):return
         config=json.loads(json.dumps(self.context.engine()));config["operating_point"]["rpm"]=float(self.rpm.value())
         checked=engine_platform.validate_config("4T",config)
         if not checked["valid"] or checked["unknown_keys"]:
@@ -281,11 +321,13 @@ class FourStrokeSimulation(QWidget):
         task.signals.finished.connect(lambda envelope,token=token:self._finished(token,envelope))
         task.signals.failed.connect(lambda message,token=token:self._failed(token,message))
         self.start.setEnabled(False);self.cancel.setEnabled(True);self.progress.setText(f"Ejecutando {run_id} · DINO4T_API_V1 · límite {self.wall.value()} s")
+        self.runningChanged.emit(True)
         try:
             self.thread_pool.start(task)
         except Exception as exc:
             self.task=None;self._task_token=None;self.start.setEnabled(True);self.cancel.setEnabled(False)
             self.progress.setText("No se pudo iniciar la corrida 4T: "+str(exc))
+            self.runningChanged.emit(False)
 
     def shutdown(self,timeout_ms=10000):
         """Cancel and wait for the pool task; True only when no task remains."""
@@ -310,6 +352,7 @@ class FourStrokeSimulation(QWidget):
     def _finished(self,token,envelope):
         if token != self._task_token:return
         task=self.task;self.task=None;self._task_token=None;self.start.setEnabled(True);self.cancel.setEnabled(False)
+        self.runningChanged.emit(False)
         summary=envelope.get("summary")
         if summary is None:
             error=envelope.get("error") or {};record={"schema":"DINO4T_DESKTOP_API_ERROR_V1","run_id":self.run_dir.name,
@@ -348,6 +391,7 @@ class FourStrokeSimulation(QWidget):
     def _failed(self,token,message):
         if token != self._task_token:return
         self.task=None;self._task_token=None;self.start.setEnabled(True);self.cancel.setEnabled(False)
+        self.runningChanged.emit(False)
         if self.run_dir is not None:
             record={"schema":"DINO4T_DESKTOP_INTERNAL_ERROR_V1","run_id":self.run_dir.name,"message":message}
             (self.run_dir/"internal-error.json").write_text(json.dumps(record,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")

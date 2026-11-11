@@ -13721,11 +13721,13 @@
       "objective": "DINO_FRONTEND_REMEDIATION_V1",
       "description": "Re-evaluate P0 causes and freeze application integrity invariants",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Re-evaluate P0 causes and freeze application integrity invariants",
+      "evidence": [
+        "docs/frontend-remediation-v1/p0-causes.md"
+      ],
+      "next_action": "Continue authorized remediation objective.",
       "owner_role": "implementation",
       "write_scope": [],
       "evidence_level": "L0"
@@ -13735,11 +13737,14 @@
       "objective": "DINO_FRONTEND_REMEDIATION_V1",
       "description": "Protect native drafts and submitted configuration identity",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Protect native drafts and submitted configuration identity",
+      "evidence": [
+        "tests/test_frontend_integrity_remediation.py",
+        "results/frontend-remediation-v1/verification/frm-p0-integrity.summary.json"
+      ],
+      "next_action": "Continue authorized remediation objective.",
       "owner_role": "implementation",
       "write_scope": [],
       "evidence_level": "L0"
@@ -13749,11 +13754,14 @@
       "objective": "DINO_FRONTEND_REMEDIATION_V1",
       "description": "Transport complete immutable native artifact closures with honest partial/legacy status",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Transport complete immutable native artifact closures with honest partial/legacy status",
+      "evidence": [
+        "tests/test_frontend_integrity_remediation.py",
+        "results/frontend-remediation-v1/verification/frm-p0-integrity.summary.json"
+      ],
+      "next_action": "Continue authorized remediation objective.",
       "owner_role": "implementation",
       "write_scope": [],
       "evidence_level": "L0"
@@ -13763,11 +13771,14 @@
       "objective": "DINO_FRONTEND_REMEDIATION_V1",
       "description": "Normalize imported project paths and preserve work on save errors",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Normalize imported project paths and preserve work on save errors",
+      "evidence": [
+        "tests/test_frontend_integrity_remediation.py",
+        "results/frontend-remediation-v1/verification/frm-p0-integrity.summary.json"
+      ],
+      "next_action": "Continue authorized remediation objective.",
       "owner_role": "implementation",
       "write_scope": [],
       "evidence_level": "L0"
@@ -19596,6 +19607,12 @@
       "task": "UXA-REVIEW",
       "kind": "task",
       "summary": "SELF_REVIEW complete: 24 delivery checks PASS, source/fixtures unchanged, P9 frozen blob+LF contract intact. Main unchanged. All audit deliverables delivered; HTML browser UAT unavailable, SVGs visually inspected. Product/scientific acceptance not granted."
+    },
+    {
+      "at": "2026-11-11T11:51:52+00:00",
+      "task": "FRM-CAUSES",
+      "kind": "task",
+      "summary": "Six failing-before regressions reproduce native draft bypass/loss, incomplete portable closure and str-path save failure. Structural fixes now IMPLEMENTED; 30 focused tests PASS. Live/source acceptance and packaged Windows status remain separate."
     }
   ],
   "legacy_gate_status": {
@@ -19615,15 +19632,12 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 11,
-    "gate_tasks_done": 0,
+    "gate_tasks_done": 4,
     "gate_task_states": {
-      "READY": 11
+      "DONE": 4,
+      "READY": 7
     },
     "remaining": [
-      "FRM-CAUSES",
-      "FRM-P0-EDIT",
-      "FRM-P0-BUNDLE",
-      "FRM-P0-SAVE",
       "FRM-CONTEXT",
       "FRM-EDITORS",
       "FRM-FLOWS",
@@ -19632,7 +19646,7 @@
       "FRM-REGRESSION",
       "FRM-LIVE-UAT"
     ],
-    "updated_at": "2026-11-11T11:41:50.810937+00:00"
+    "updated_at": "2026-11-11T11:51:52+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

@@ -89,7 +89,9 @@ def assess_run_reference(reference):
             # A legacy summary digest says nothing about the original trace.
             meta_path = path.parent.parent / "run.json"
             meta = parse_json(meta_path.read_bytes()); result.meta = meta
-            config = parse_json(Path(meta["config_path"]).read_bytes()); result.config = config
+            companion=path.parent/'config_resolved.json'
+            config_path=companion if companion.is_file() else Path(meta['config_path'])
+            config = parse_json(config_path.read_bytes()); result.config = config
             issues = api.check_summary(summary, config=config)
             result.classification = "LEGACY_INCOMPATIBLE" if issues else "LEGACY_UNVERIFIED"
             result.issues = issues or ["original metadata/trace binding absent; no verified pressure curve or A/B eligibility"]

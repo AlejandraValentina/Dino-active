@@ -1,0 +1,27 @@
+{
+  "name": "frm-p0-integrity",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_frontend_integrity_remediation.py",
+    "tests/test_desktop_project_bundles.py",
+    "tests/test_platform_c05_qt_lifecycle.py",
+    "tests/test_desktop_four_stroke_context.py",
+    "--tb=short"
+  ],
+  "started_at": "2026-11-11T11:50:35+00:00",
+  "finished_at": "2026-11-11T11:51:04+00:00",
+  "duration_s": 28.5,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\frontend-remediation-v1\\verification\\frm-p0-integrity.log",
+  "log_lines": 2,
+  "log_bytes": 100,
+  "error_lines": [],
+  "tail": [
+    "..............................                                           [100%]",
+    "30 passed in 25.97s"
+  ]
+}
