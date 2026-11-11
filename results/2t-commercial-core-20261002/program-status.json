@@ -13604,6 +13604,96 @@
       "owner_role": "verification",
       "write_scope": [],
       "evidence_level": "L1"
+    },
+    {
+      "id": "UXA-SCOPE",
+      "objective": "DINO_FRONTEND_UX_AUDIT_V1",
+      "description": "Freeze integrated source, audit scope and isolated environment",
+      "dependencies": [],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/frontend-audit-v1/plan.json",
+        "results/frontend-audit-v1/scope.json"
+      ],
+      "next_action": "Frozen d44305c; isolated Windows source GUI running.",
+      "owner_role": "orchestrator",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "UXA-WALKTHROUGHS",
+      "objective": "DINO_FRONTEND_UX_AUDIT_V1",
+      "description": "Observe real 2T/native4T/reference4T routes with durable evidence",
+      "dependencies": [],
+      "state": "IN_PROGRESS",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Record live Qt mouse/keyboard walkthroughs.",
+      "owner_role": "orchestrator",
+      "write_scope": [
+        "results/frontend-audit-v1/captures/",
+        "audit_tools/frontend_audit/"
+      ],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "UXA-DIAGNOSIS",
+      "objective": "DINO_FRONTEND_UX_AUDIT_V1",
+      "description": "Build evidence-backed seven-category UX/UI diagnosis",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Build evidence-backed seven-category UX/UI diagnosis",
+      "owner_role": "orchestrator",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "UXA-DESIGN",
+      "objective": "DINO_FRONTEND_UX_AUDIT_V1",
+      "description": "Propose coherent information architecture and visual wireframes",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Propose coherent information architecture and visual wireframes",
+      "owner_role": "orchestrator",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "UXA-BACKLOG",
+      "objective": "DINO_FRONTEND_UX_AUDIT_V1",
+      "description": "Prioritize scoped improvements, dependencies and acceptance",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Prioritize scoped improvements, dependencies and acceptance",
+      "owner_role": "orchestrator",
+      "write_scope": [],
+      "evidence_level": "L0"
+    },
+    {
+      "id": "UXA-REVIEW",
+      "objective": "DINO_FRONTEND_UX_AUDIT_V1",
+      "description": "Self-review coverage, limitations, compatibility and delivery integrity",
+      "dependencies": [],
+      "state": "READY",
+      "blocker": null,
+      "commits": [],
+      "evidence": [],
+      "next_action": "Self-review coverage, limitations, compatibility and delivery integrity",
+      "owner_role": "orchestrator",
+      "write_scope": [],
+      "evidence_level": "L0"
     }
   ],
   "audit_remediation_mode": false,
@@ -13805,23 +13895,22 @@
     "MOTORSIM_2T_COMMERCIAL_CORE_STATUS_V1"
   ],
   "current_objective": {
-    "id": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+    "id": "DINO_FRONTEND_UX_AUDIT_V1",
     "state": "IN_PROGRESS",
     "owner_approved": true,
-    "summary": "Workflow completeness: undo/redo, portable project bundles, PDF reports, onboarding/templates, batch and comparison/legacy UX.",
-    "change": "openspec/changes/commercial-product-v1",
-    "spec": "openspec/changes/commercial-product-v1/specs/commercial-product-v1/spec.md",
-    "plan": "results/commercial-product-v1/plan.json",
+    "summary": "Owner-authorized isolated frontend UX/UI audit and redesign, no product implementation.",
+    "change": "openspec/changes/frontend-ux-audit-v1",
+    "spec": "openspec/changes/frontend-ux-audit-v1/specs/frontend-ux-audit-v1/spec.md",
+    "plan": "results/frontend-audit-v1/plan.json",
     "gate_tasks": [
-      "CP1-UNDO-REDO",
-      "CP1-PROJECT-BUNDLES",
-      "CP1-PDF-REPORT",
-      "CP1-TEMPLATES-ONBOARDING",
-      "CP1-BATCH-QUEUE",
-      "CP1-COMPARISON-LEGACY-UX"
+      "UXA-SCOPE",
+      "UXA-WALKTHROUGHS",
+      "UXA-DIAGNOSIS",
+      "UXA-DESIGN",
+      "UXA-BACKLOG",
+      "UXA-REVIEW"
     ],
-    "completion_criterion": "CP1 workflows complete with UAT and regression; no scientific claim.",
-    "classification": "CP0_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED"
+    "completion_criterion": "Deliver diagnosis, observed routes, wireframes, prioritized backlog and critical evaluation."
   },
   "objectives": [
     {
@@ -19291,6 +19380,12 @@
       "task": "CP1-WINDOWS-UAT",
       "kind": "task",
       "summary": "Packaged Windows candidate 7fe6220b PASS for CP1 workflow acceptance: undo/redo, PDF, onboarding, bundles, comparison/legacy and bounded queue; no scientific claim."
+    },
+    {
+      "at": "2026-11-11T10:45:23+00:00",
+      "task": "UXA-SCOPE",
+      "kind": "task",
+      "summary": "Frozen integrated CP0+CP1+unified UI at d44305c in isolated audit worktree. Owner scope replaces CP1 implementation here; blockers retained outside scope. Real Windows Qt GUI uses isolated settings/artifacts."
     }
   ],
   "legacy_gate_status": {
@@ -19305,19 +19400,25 @@
     "source_change": "openspec/changes/two-stroke-v1-closure/"
   },
   "gate_status": {
-    "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
-    "state": "PASS",
-    "classification": "CP1_SOURCE_AND_WINDOWS_WORKFLOW_ACCEPTED",
-    "evidence": [
-      "results/commercial-product-v1/windows-cp1/acceptance.json; results/commercial-product-v1/windows-cp1/candidate.json; results/commercial-product-v1/verification/cp1-regression-triage.json"
-    ],
+    "objective": "DINO_FRONTEND_UX_AUDIT_V1",
+    "state": "OPEN",
+    "classification": null,
+    "evidence": [],
     "gate_tasks_total": 6,
-    "gate_tasks_done": 6,
+    "gate_tasks_done": 1,
     "gate_task_states": {
-      "DONE": 6
+      "DONE": 1,
+      "IN_PROGRESS": 1,
+      "READY": 4
     },
-    "remaining": [],
-    "updated_at": "2026-11-10T17:33:12+00:00"
+    "remaining": [
+      "UXA-WALKTHROUGHS",
+      "UXA-DIAGNOSIS",
+      "UXA-DESIGN",
+      "UXA-BACKLOG",
+      "UXA-REVIEW"
+    ],
+    "updated_at": "2026-11-11T10:45:23+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -20034,5 +20135,41 @@
     "integration_branch": "integrate/commercial-unified-ui-v1",
     "windows_candidate_source": "f45d60bf728d6c47838e38514854476a3a02e516",
     "baseline": "results/commercial-product-v1/baseline.json"
+  },
+  "frontend_audit_prior_operational_snapshot": {
+    "current_objective": {
+      "id": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+      "state": "IN_PROGRESS",
+      "owner_approved": true,
+      "summary": "Workflow completeness: undo/redo, portable project bundles, PDF reports, onboarding/templates, batch and comparison/legacy UX.",
+      "change": "openspec/changes/commercial-product-v1",
+      "spec": "openspec/changes/commercial-product-v1/specs/commercial-product-v1/spec.md",
+      "plan": "results/commercial-product-v1/plan.json",
+      "gate_tasks": [
+        "CP1-UNDO-REDO",
+        "CP1-PROJECT-BUNDLES",
+        "CP1-PDF-REPORT",
+        "CP1-TEMPLATES-ONBOARDING",
+        "CP1-BATCH-QUEUE",
+        "CP1-COMPARISON-LEGACY-UX"
+      ],
+      "completion_criterion": "CP1 workflows complete with UAT and regression; no scientific claim.",
+      "classification": "CP0_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED"
+    },
+    "gate_status": {
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+      "state": "PASS",
+      "classification": "CP1_SOURCE_AND_WINDOWS_WORKFLOW_ACCEPTED",
+      "evidence": [
+        "results/commercial-product-v1/windows-cp1/acceptance.json; results/commercial-product-v1/windows-cp1/candidate.json; results/commercial-product-v1/verification/cp1-regression-triage.json"
+      ],
+      "gate_tasks_total": 6,
+      "gate_tasks_done": 6,
+      "gate_task_states": {
+        "DONE": 6
+      },
+      "remaining": [],
+      "updated_at": "2026-11-10T17:33:12+00:00"
+    }
   }
 }
