@@ -22,14 +22,14 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_FRONTEND_UX_AUDIT_V1
-change/spec:       openspec/changes/frontend-ux-audit-v1/
-                   specs/frontend-ux-audit-v1/spec.md
-roadmap:          docs/frontend-audit-v1/backlog.md
-completion:        Owner-authorized research/design audit of frozen integrated
-                   CP0+CP1+unified UI revision d44305c. Real GUI evidence,
-                   diagnosis, wireframes, prioritized backlog and critical review.
-                   No product/scientific changes or Windows build.
+CURRENT_OBJECTIVE: DINO_FRONTEND_REMEDIATION_V1
+change/spec:       openspec/changes/frontend-remediation-v1/
+                   specs/frontend-remediation-v1/spec.md
+roadmap:          docs/frontend-remediation-v1/architecture-and-roadmap.md
+completion:        Owner-authorized F0 structural P0 fixes and F1 coherent source
+                   workflows with tests/live GUI evidence. Keep IMPLEMENTED,
+                   SOURCE_ACCEPTED, WINDOWS_ACCEPTED and PENDING_UAT distinct.
+                   No solver/scientific changes, push or main merge.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    -> current_objective, queue, gate_status, progress_log
 ```
