@@ -60,7 +60,7 @@ declarar con precisión qué está validado y qué no.
   `NOT_PERFORMED`, predictiva `NOT_CLAIMED`.
 
 - Auditoría diferencial (2026-11-10): baseline `48b3afe` 146 fallos (89F/57E);
-  CP1 `d44305c` 145 fallos (89F/56E), **cero fallos exclusivos de CP1**. Los 137
+  CP1 `d44305c` 146 fallos (89F/57E), **cero fallos exclusivos de CP1**. Los 137
   fallos comunes tienen causa idéntica. La regresión general permanece
   **NOT_GREEN**; el crash de `external_view` se conserva como incidencia
   independiente. Evidencia: `results/commercial-product-v1/verification/differential/`.

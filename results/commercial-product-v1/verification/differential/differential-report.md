@@ -3,10 +3,10 @@
 - Baseline: `48b3afe` (fresh worktree, full suite, JUnit).
 - CP1: `d44305c` (full-suite log from `c4fe6a2`; clean CP1 worktree subset with JUnit).
 - Baseline failures: 146 (89 failures, 57 errors); 3669 passed; 10 skipped; process exited `0xC0000409` after JUnit completion (inherited teardown issue).
-- CP1 full failures: 145 (89 failures, 56 errors); 3692 passed; 10 skipped.
-- CP1-only failures (regressions): **0**.
-- Baseline-only outcomes that pass in isolation on CP1: **9** (order/fixture-sensitive).
-- Common failure causes are identical for all 137 common failures.
+- CP1 full failures: 146 (89 failures, 57 errors); 3692 passed; 10 skipped.
+- CP1-only failure IDs vs baseline: **0**; all 146 full-suite failure IDs are identical.
+- Order-sensitive IDs: **9**; they fail in both full-suite runs but pass when rerun in isolation on both commits.
+- Common isolated failure causes are identical for all 137 remaining common failures.
 - Baseline teardown crash (`0xC0000409`) is inherited/environmental; CP1 full run exited normally.
 
 ## Verdict
