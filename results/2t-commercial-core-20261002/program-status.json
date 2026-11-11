@@ -16807,7 +16807,7 @@
       "id": "FWI-COMPAT",
       "objective": "DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1",
       "description": "Review and adapt automatic application merge",
-      "state": "DONE",
+      "state": "REVIEW",
       "dependencies": [],
       "blocker": null,
       "commits": [],
@@ -16816,7 +16816,8 @@
         "results/frontend-commercial-integration-v1/source-first/acceptance.json"
       ],
       "write_scope": [],
-      "next_action": "Functional checks pass; clean revision-bound source gate remains separate."
+      "next_action": "Repeat clean Qt gate after correcting native-curve callback dispatch.",
+      "reopened_reason": "Clean acceptance exposed native curve progress/on_progress adapter mismatch; first cancellation did not reach API dispatch."
     },
     {
       "id": "FWI-TESTS",
@@ -16838,7 +16839,7 @@
       "id": "FWI-SOURCE-GUI",
       "objective": "DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1",
       "description": "Real Windows source workflows for all families and commercial functions",
-      "state": "DONE",
+      "state": "REVIEW",
       "dependencies": [],
       "blocker": null,
       "commits": [],
@@ -16846,7 +16847,8 @@
         "results/frontend-commercial-integration-v1/source-first/acceptance.json"
       ],
       "write_scope": [],
-      "next_action": "Functional checks pass; clean revision-bound source gate remains separate."
+      "next_action": "Repeat clean Qt gate after correcting native-curve callback dispatch.",
+      "reopened_reason": "Clean acceptance exposed native curve progress/on_progress adapter mismatch; first cancellation did not reach API dispatch."
     },
     {
       "id": "FWI-SOURCE-ACCEPT",
@@ -20878,6 +20880,12 @@
       "task": "FWI-SOURCE-GUI",
       "kind": "task",
       "summary": "Real Windows Qt walkthrough:47 checks PASS,25 captures; real2T/native/0D workers, reference queue, draft guard,87mm native input, portable source-denied closure, save failure/recovery, legacy/eligible synthetic A/B,PDF,CP2 license states/manual update and reopen. Clean-gate rerun next."
+    },
+    {
+      "at": "2026-11-11T16:38:37+00:00",
+      "task": "FWI-COMPAT",
+      "kind": "task",
+      "summary": "Clean source gate rejected native curve: progress keyword caused TypeError before cancellation. Corrected adapter to public on_progress without changing API/solver. Strict-signature regression plus related integration tests:23 PASS. Repeat real clean GUI gate before building."
     }
   ],
   "integration_parent_states": {
@@ -20982,17 +20990,20 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 8,
-    "gate_tasks_done": 4,
+    "gate_tasks_done": 2,
     "gate_task_states": {
-      "DONE": 4,
+      "DONE": 2,
+      "REVIEW": 2,
       "READY": 4
     },
     "remaining": [
+      "FWI-COMPAT",
+      "FWI-SOURCE-GUI",
       "FWI-SOURCE-ACCEPT",
       "FWI-BUILD",
       "FWI-WINDOWS",
       "FWI-RELEASE-REVIEW"
     ],
-    "updated_at": "2026-11-11T16:33:35+00:00"
+    "updated_at": "2026-11-11T16:38:37+00:00"
   }
 }

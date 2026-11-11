@@ -93,3 +93,18 @@ def test_reference_shortcuts_are_disabled_while_execution_reserved(window):
         window._undo_active()
         assert context.name=='pending history'
     finally:context.end_execution(token)
+
+
+def test_native_curve_calls_public_callback_parameter(tmp_path,monkeypatch):
+    from motorsim.desktop.native_four_stroke_curve import _NativeCurveTask
+    from motorsim.desktop.four_stroke_project import project_from_example
+    from motorsim import engine_platform
+    called=[]
+    def public_api(cycle,config,*,out_dir,max_cycles,wall_limit_s,cancel_event,on_progress):
+        called.append(config['operating_point']['rpm']);on_progress({'cycle':1})
+        return {'summary':None,'error':{'code':'SYNTHETIC_TRANSPORT_TEST_ONLY'}}
+    monkeypatch.setattr(engine_platform,'run_api',public_api)
+    task=_NativeCurveTask(project_from_example('callback')['base_engine'],'callback','',[6000,6500],1,10,tmp_path/'curve')
+    task.run()
+    assert called==[6000,6500]
+    assert all(row['state']=='NO_RESULT' for row in task.rows)

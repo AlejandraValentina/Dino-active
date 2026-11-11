@@ -1,0 +1,42 @@
+{
+  "schema": "DINO_NATIVE_CURVE_CALLBACK_INCIDENT_V1",
+  "observed_source": "51709f99d53478dd8a88659503de6b3d28a5f258",
+  "classification": "APPLICATION_ADAPTER_DEFECT",
+  "evidence": {
+    "schema": "DINO4T_NATIVE_RPM_CURVE_V1",
+    "state": "PARTIAL",
+    "project_id": "demo-4t-nativo-sintetico",
+    "config_sha256": "fbbdc093ca7f1bba7a3e3c99197af872d01b7392d0c2e0a5996e2ca3c087ca82",
+    "rpms": [
+      6000,
+      6500
+    ],
+    "rows": [
+      {
+        "rpm": 6000,
+        "state": "ERROR",
+        "brake_power_kW": null,
+        "brake_torque_Nm": null,
+        "reason": "TypeError: run() got an unexpected keyword argument 'progress'",
+        "run_path": "E:\\Dino-artifacts\\frontend-commercial-integration-v1\\source-clean\\artifacts\\dino-4t-native-curves\\cd573466c2bc13a5ce55\\20261111-163510-2743deaf0b\\point-01-6000"
+      },
+      {
+        "rpm": 6500,
+        "state": "ERROR",
+        "brake_power_kW": null,
+        "brake_torque_Nm": null,
+        "reason": "TypeError: run() got an unexpected keyword argument 'progress'",
+        "run_path": "E:\\Dino-artifacts\\frontend-commercial-integration-v1\\source-clean\\artifacts\\dino-4t-native-curves\\cd573466c2bc13a5ce55\\20261111-163510-2743deaf0b\\point-02-6500"
+      }
+    ],
+    "source": "DINO4T_API_V1",
+    "claims": {
+      "experimental_validation": "NOT_PERFORMED",
+      "predictive_capability": "NOT_CLAIMED"
+    }
+  },
+  "cause": "Adapter passed progress=on_cycle to the public 4T runner, whose callback option is on_progress. Both RPM rows returned TypeError before the cancellation timer on the clean run.",
+  "resolution": "Use on_progress at the application adapter call. Add strict-signature callback regression; rerun real cancellation before source/build acceptance.",
+  "prior_acceptance_limit": "First loaded run cancelled before reaching the API and passed with zero points; it did not exercise the broken callback dispatch.",
+  "scientific_changes": false
+}

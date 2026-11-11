@@ -1,0 +1,272 @@
+{
+  "schema": "DINO_FRONTEND_COMMERCIAL_QT_ACCEPTANCE_V1",
+  "result": "FAIL",
+  "frozen": false,
+  "product": {
+    "schema": "DINO_PRODUCT_INFO_V1",
+    "product": "Dino Desktop",
+    "version": "0.1.0-rc13",
+    "source_commit": "fuentes; sin identificación de paquete",
+    "trial": true,
+    "build": {
+      "app_version": "0.1.0-rc13",
+      "source_commit": "fuentes; sin identificación de paquete"
+    },
+    "project_schemas": {
+      "2T": "MOTORSIM_ENGINE_PROJECT_V3",
+      "4T_0D": "MOTORSIM_4T_REFERENCE_PROJECT_V1",
+      "4T_native": "DINO_DESKTOP_ENGINE_PROJECT_4T_V1"
+    },
+    "scientific_status": {
+      "calibration": "NOT_PERFORMED",
+      "experimental_validation": "NOT_PERFORMED",
+      "predictive_capability": "NOT_CLAIMED"
+    },
+    "licenses": [
+      "GPL-2.0-only.txt",
+      "GPL-3.0-only.txt",
+      "LGPL-3.0-only.txt",
+      "SOURCES.txt",
+      "qtcore-attribution-blake2.txt",
+      "qtcore-attribution-doubleconversion.txt",
+      "qtcore-attribution-easing.txt",
+      "qtcore-attribution-forkfd.txt",
+      "qtcore-attribution-md4.txt",
+      "qtcore-attribution-md5.txt",
+      "qtcore-attribution-pcre2-sljit.txt",
+      "qtcore-attribution-pcre2.txt",
+      "qtcore-attribution-qeventdispatcher-cf.txt",
+      "qtcore-attribution-rfc6234.txt",
+      "qtcore-attribution-sha1.txt",
+      "qtcore-attribution-sha3-endian.txt",
+      "qtcore-attribution-sha3-keccak.txt",
+      "qtcore-attribution-siphash.txt",
+      "qtcore-attribution-tika-mimetypes.txt",
+      "qtcore-attribution-tinycbor.txt",
+      "qtcore-attribution-tlexpected.txt",
+      "qtcore-attribution-unicode-character-database.txt",
+      "qtcore-attribution-unicode-cldr.txt",
+      "qtcore-attribution-zlib.txt",
+      "qtgui-attribution-aglfn.txt",
+      "qtgui-attribution-android-native-style.txt",
+      "qtgui-attribution-cocoa-platform-plugin.txt",
+      "qtgui-attribution-d3d12memoryallocator.txt",
+      "qtgui-attribution-dejayvu.txt",
+      "qtgui-attribution-emoji-segmenter.txt",
+      "qtgui-attribution-freetype-bdf.txt",
+      "qtgui-attribution-freetype-pcf.txt",
+      "qtgui-attribution-freetype-zlib.txt",
+      "qtgui-attribution-freetype.txt",
+      "qtgui-attribution-grayraster.txt",
+      "qtgui-attribution-harfbuzz-ng.txt",
+      "qtgui-attribution-icc-srgb-color-profile.txt",
+      "qtgui-attribution-libjpeg.txt",
+      "qtgui-attribution-libpng.txt",
+      "qtgui-attribution-md4c.txt",
+      "qtgui-attribution-opengl-es2-headers.txt",
+      "qtgui-attribution-opengl-headers.txt",
+      "qtgui-attribution-pixman.txt",
+      "qtgui-attribution-rhi-miniengine-d3d12-mipmap.txt",
+      "qtgui-attribution-smooth-scaling-algorithm.txt",
+      "qtgui-attribution-vulkan-xml-spec.txt",
+      "qtgui-attribution-vulkanmemoryallocator.txt",
+      "qtgui-attribution-webgradients.txt",
+      "qtgui-attribution-wintab.txt",
+      "qtgui-attribution-xcb-xinput.txt",
+      "qtgui-attribution-xserverhelper.txt"
+    ],
+    "support": "Soporte: distribuidor autorizado y documentación de la licencia.",
+    "generated_at": "2026-11-11T16:35:11.423187+00:00"
+  },
+  "qt_platform": "windows",
+  "checks": {
+    "windows_qt": true,
+    "cp2_and_frontend_present": true,
+    "undo_redo": true,
+    "save_2t": true,
+    "real_2t_started": true,
+    "2t_terminal_link": true,
+    "save_2t_with_result": true,
+    "2t_portable_result_bytes": true,
+    "native_pending_cannot_submit": true,
+    "result_notification_preserves_draft": true,
+    "native_apply": true,
+    "native_save": true,
+    "native_exact_input_and_lock": true,
+    "native_shortcut_lock": true,
+    "late_native_progress_ignored": true,
+    "real_native_result": true,
+    "native_bundle_without_origin": true,
+    "save_after_import": true,
+    "edit_for_failure": true,
+    "save_failure_keeps_original": true,
+    "recovery_snapshot": true,
+    "recovery_copy_available": true,
+    "native_cancelled": false
+  },
+  "captures": {
+    "01-integrated-2t": {
+      "path": "01-integrated-2t.png",
+      "sha256": "9e8d9f133d416625ef8a6de172465658668e36d8ff90d5329231e26c3bb66a03"
+    },
+    "02-license-menu": {
+      "path": "02-license-menu.png",
+      "sha256": "74fc39e2232a2e52d04b6de7b1b6f42a57358da8cff8835cadfd8de8d08458df"
+    },
+    "03-2t-confirm": {
+      "path": "03-2t-confirm.png",
+      "sha256": "e1309a6d823ce2aff0609243561253e6889cd7c300a918fbf06479c3100ba679"
+    },
+    "04-2t-real-result": {
+      "path": "04-2t-real-result.png",
+      "sha256": "8784b22b6d03f2b3f956fded78e989021ea60e777a1aa6e32b615da7cb653767"
+    },
+    "05-native-draft-cancel": {
+      "path": "05-native-draft-cancel.png",
+      "sha256": "7c6497a47f23e84cb7c86b3185f5894f3f2acec56debb543b3947da31d1be510"
+    },
+    "06-native-running": {
+      "path": "06-native-running.png",
+      "sha256": "e908d9013748d1b3f59d28e48eeaad1a3ae2756c1c624f80e647be67a99966f1"
+    },
+    "07-native-real-result": {
+      "path": "07-native-real-result.png",
+      "sha256": "ea3e90678dacf2fcc43414f18ec2473d82c440971737cd25f6bfa29e2078c5b6"
+    },
+    "08-export-receipt": {
+      "path": "08-export-receipt.png",
+      "sha256": "8f4bd92bb9b313389cf87c5a7f0080bf5f775dcf1fc2ce011562d814c1be1a59"
+    },
+    "09-import-receipt": {
+      "path": "09-import-receipt.png",
+      "sha256": "995320f226337bcb8494fdd820f0e84418801254d409f63d96ac8907b61efd8a"
+    },
+    "10-save-failure": {
+      "path": "10-save-failure.png",
+      "sha256": "99d1fc24ee0e1ae833cd18a48f2faee4b8d185608150ed391da08dc5af422657"
+    }
+  },
+  "events": [
+    {
+      "check": "windows_qt",
+      "passed": true,
+      "at": "2026-11-11T16:34:10.836686+00:00"
+    },
+    {
+      "check": "cp2_and_frontend_present",
+      "passed": true,
+      "at": "2026-11-11T16:34:10.836686+00:00"
+    },
+    {
+      "check": "undo_redo",
+      "passed": true,
+      "at": "2026-11-11T16:34:27.425409+00:00"
+    },
+    {
+      "check": "save_2t",
+      "passed": true,
+      "at": "2026-11-11T16:34:31.021217+00:00"
+    },
+    {
+      "check": "real_2t_started",
+      "passed": true,
+      "at": "2026-11-11T16:34:34.076998+00:00"
+    },
+    {
+      "check": "2t_terminal_link",
+      "passed": true,
+      "at": "2026-11-11T16:34:49.088568+00:00"
+    },
+    {
+      "check": "save_2t_with_result",
+      "passed": true,
+      "at": "2026-11-11T16:34:52.853782+00:00"
+    },
+    {
+      "check": "2t_portable_result_bytes",
+      "passed": true,
+      "at": "2026-11-11T16:34:53.849149+00:00"
+    },
+    {
+      "check": "native_pending_cannot_submit",
+      "passed": true,
+      "at": "2026-11-11T16:34:54.477155+00:00"
+    },
+    {
+      "check": "result_notification_preserves_draft",
+      "passed": true,
+      "at": "2026-11-11T16:34:54.477155+00:00"
+    },
+    {
+      "check": "native_apply",
+      "passed": true,
+      "at": "2026-11-11T16:34:54.780156+00:00"
+    },
+    {
+      "check": "native_save",
+      "passed": true,
+      "at": "2026-11-11T16:34:55.285517+00:00"
+    },
+    {
+      "check": "native_exact_input_and_lock",
+      "passed": true,
+      "at": "2026-11-11T16:34:55.328517+00:00"
+    },
+    {
+      "check": "native_shortcut_lock",
+      "passed": true,
+      "at": "2026-11-11T16:34:55.328517+00:00"
+    },
+    {
+      "check": "late_native_progress_ignored",
+      "passed": true,
+      "at": "2026-11-11T16:35:06.938367+00:00"
+    },
+    {
+      "check": "real_native_result",
+      "passed": true,
+      "at": "2026-11-11T16:35:06.989338+00:00"
+    },
+    {
+      "check": "native_bundle_without_origin",
+      "passed": true,
+      "at": "2026-11-11T16:35:08.614636+00:00"
+    },
+    {
+      "check": "save_after_import",
+      "passed": true,
+      "at": "2026-11-11T16:35:09.092614+00:00"
+    },
+    {
+      "check": "edit_for_failure",
+      "passed": true,
+      "at": "2026-11-11T16:35:09.460605+00:00"
+    },
+    {
+      "check": "save_failure_keeps_original",
+      "passed": true,
+      "at": "2026-11-11T16:35:09.644328+00:00"
+    },
+    {
+      "check": "recovery_snapshot",
+      "passed": true,
+      "at": "2026-11-11T16:35:09.647329+00:00"
+    },
+    {
+      "check": "recovery_copy_available",
+      "passed": true,
+      "at": "2026-11-11T16:35:09.648328+00:00"
+    },
+    {
+      "check": "native_cancelled",
+      "passed": false,
+      "at": "2026-11-11T16:35:11.006181+00:00"
+    }
+  ],
+  "issues": [
+    "Traceback (most recent call last):\n  File \"E:\\dino\\worktrees\\dino-frontend-commercial-v1\\motorsim\\desktop\\acceptance_frontend_commercial.py\", line 150, in main\n    note('native_cancelled',bool(curve.manifest_path) if hasattr(curve,'manifest_path') else 'CANCELLED' in curve.status.text())\n  File \"E:\\dino\\worktrees\\dino-frontend-commercial-v1\\motorsim\\desktop\\acceptance_frontend_commercial.py\", line 48, in note\n    if not value:raise AssertionError(key)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: native_cancelled\n"
+  ],
+  "fixture_policy": "Comparison endpoints synthetic presentation only; license keys ephemeral test-only; real bounded solver runs are integration evidence, not validation.",
+  "scientific_validation": "NOT_PERFORMED",
+  "human_uat": "PENDING_UAT"
+}

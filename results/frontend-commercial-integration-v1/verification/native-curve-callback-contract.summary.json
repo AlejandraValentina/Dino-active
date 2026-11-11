@@ -1,0 +1,29 @@
+{
+  "name": "native-curve-callback-contract",
+  "command": [
+    "python",
+    "-u",
+    "-m",
+    "pytest",
+    "tests/test_frontend_commercial_integration.py",
+    "tests/test_dino4t_desktop_integration.py",
+    "tests/test_desktop_four_stroke_curve_execution.py",
+    "-q",
+    "--tb=short",
+    "--basetemp",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/pytest-callback"
+  ],
+  "started_at": "2026-11-11T16:36:18+00:00",
+  "finished_at": "2026-11-11T16:37:58+00:00",
+  "duration_s": 99.36,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\frontend-commercial-integration-v1\\verification\\native-curve-callback-contract.log",
+  "log_lines": 2,
+  "log_bytes": 110,
+  "error_lines": [],
+  "tail": [
+    ".......................                                                  [100%]",
+    "23 passed in 98.15s (0:01:38)"
+  ]
+}

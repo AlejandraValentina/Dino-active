@@ -199,7 +199,7 @@ class _NativeCurveTask(QRunnable):
                     envelope = engine_platform.run_api(
                         "4T", config, out_dir=run_dir/"artifacts",
                         max_cycles=self.max_cycles, wall_limit_s=self.wall_limit,
-                        cancel_event=self.cancel_event, progress=on_cycle,
+                        cancel_event=self.cancel_event, on_progress=on_cycle,
                     )
                     summary = envelope.get("summary")
                     if summary is not None:
