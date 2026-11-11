@@ -1,0 +1,24 @@
+{
+  "name": "frm-workflow-check",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_frontend_workflow_remediation.py",
+    "tests/test_frontend_integrity_remediation.py",
+    "-q",
+    "--tb=short"
+  ],
+  "started_at": "2026-11-11T12:14:53+00:00",
+  "finished_at": "2026-11-11T12:15:50+00:00",
+  "duration_s": 57.047,
+  "exit_code": 4294967295,
+  "timed_out": false,
+  "log_path": "results\\frontend-remediation-v1\\verification\\frm-workflow-check.log",
+  "log_lines": 1,
+  "log_bytes": 7,
+  "error_lines": [],
+  "tail": [
+    "..F.F.."
+  ]
+}

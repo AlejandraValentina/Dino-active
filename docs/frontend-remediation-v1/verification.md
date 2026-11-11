@@ -36,6 +36,13 @@ error. En resultados 2T compactos persisten controles densos y recorte inferior:
 UX-018 queda parcial. No se declara aceptación universal de resoluciones,
 escalado, lector de pantalla o alto contraste.
 
+`r01–r35` documentan el recorrido durante la implementación incremental. Tras
+los últimos ajustes de orden de componentes, mayúsculas de unidades, cabecera
+por eventos y cierre 0D protegido, `r36–r37` se tomaron en un proceso nuevo con
+el contenido de fuente finalmente fijado en `cc5a12d`. Las 58 pruebas integradas
+finales cubren ese contenido. Los hashes de las capturas no significan que todas
+se hayan tomado sobre una única revisión intermedia idéntica.
+
 ## Regresiones y diagnósticos
 
 Los resúmenes completos, con comandos y resultados, están en
@@ -55,6 +62,10 @@ la fuente final.
   deprecación NumPy. Usa los módulos de este worktree y evidencia histórica
   registrada, leída desde su contexto original.
 - La regresión comercial/CP1/onboarding final pasó 18 pruebas.
+- La regresión integrada final de frontend pasó 58 pruebas sobre la fuente
+  entregada. Ver `frm-source-acceptance-final.summary.json`; los otros dos
+  conjuntos finales son `frm-commercial-regression-final` y
+  `frm-protected-accepted`. No se suman como pruebas únicas: sus alcances se solapan.
 
 Se retienen también los diagnósticos fallidos: intento sin pytest en el entorno
 de build, dos errores iniciales en nombres del fixture, nombre de módulo de test
@@ -76,3 +87,10 @@ aceptación representativa humana y accesibilidad. La revisión es SELF_REVIEW.
 Los hashes de evidencia preservada y del código de aplicación están en el recibo.
 P9 conserva tanto el blob Git como su hash canónico LF. No se modificaron solvers,
 ecuaciones, tolerancias, contratos, umbrales ni evidencia histórica.
+
+El primer recibo exigía que el puntero global main siguiera en su valor inicial;
+ese supuesto no era válido para trabajo concurrente. El reflog muestra avances
+externos de CP1/CP2 hasta `f97469b`. Se conserva ese dato y se comprueba en su lugar
+el aislamiento de la rama y que su incremento no está integrado en main. No se
+restauró ni modificó main para satisfacer el recibo. Integrar las dos líneas de
+trabajo queda fuera del gate fuente de esta rama.

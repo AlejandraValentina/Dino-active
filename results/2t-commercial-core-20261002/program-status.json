@@ -13723,14 +13723,19 @@
       "dependencies": [],
       "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [
-        "docs/frontend-remediation-v1/p0-causes.md"
+      "commits": [
+        "4295423",
+        "cc5a12d"
       ],
-      "next_action": "Continue authorized remediation objective.",
+      "evidence": [
+        "docs/frontend-remediation-v1/p0-causes.md",
+        "results/frontend-remediation-v1/acceptance.json"
+      ],
+      "next_action": "F0/F1 source increment accepted; advanced items and packaged/human acceptance remain in the roadmap.",
       "owner_role": "implementation",
       "write_scope": [],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "classification": "SOURCE_ACCEPTED_F0_F1"
     },
     {
       "id": "FRM-P0-EDIT",
@@ -13739,15 +13744,20 @@
       "dependencies": [],
       "state": "DONE",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "4295423",
+        "cc5a12d"
+      ],
       "evidence": [
         "tests/test_frontend_integrity_remediation.py",
-        "results/frontend-remediation-v1/verification/frm-p0-integrity.summary.json"
+        "results/frontend-remediation-v1/verification/frm-p0-integrity.summary.json",
+        "results/frontend-remediation-v1/acceptance.json"
       ],
-      "next_action": "Continue authorized remediation objective.",
+      "next_action": "F0/F1 source increment accepted; advanced items and packaged/human acceptance remain in the roadmap.",
       "owner_role": "implementation",
       "write_scope": [],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "classification": "SOURCE_ACCEPTED_F0_F1"
     },
     {
       "id": "FRM-P0-BUNDLE",
@@ -13756,15 +13766,20 @@
       "dependencies": [],
       "state": "DONE",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "4295423",
+        "cc5a12d"
+      ],
       "evidence": [
         "tests/test_frontend_integrity_remediation.py",
-        "results/frontend-remediation-v1/verification/frm-p0-integrity.summary.json"
+        "results/frontend-remediation-v1/verification/frm-p0-integrity.summary.json",
+        "results/frontend-remediation-v1/acceptance.json"
       ],
-      "next_action": "Continue authorized remediation objective.",
+      "next_action": "F0/F1 source increment accepted; advanced items and packaged/human acceptance remain in the roadmap.",
       "owner_role": "implementation",
       "write_scope": [],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "classification": "SOURCE_ACCEPTED_F0_F1"
     },
     {
       "id": "FRM-P0-SAVE",
@@ -13773,74 +13788,102 @@
       "dependencies": [],
       "state": "DONE",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "4295423",
+        "cc5a12d"
+      ],
       "evidence": [
         "tests/test_frontend_integrity_remediation.py",
-        "results/frontend-remediation-v1/verification/frm-p0-integrity.summary.json"
+        "results/frontend-remediation-v1/verification/frm-p0-integrity.summary.json",
+        "results/frontend-remediation-v1/acceptance.json"
       ],
-      "next_action": "Continue authorized remediation objective.",
+      "next_action": "F0/F1 source increment accepted; advanced items and packaged/human acceptance remain in the roadmap.",
       "owner_role": "implementation",
       "write_scope": [],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "classification": "SOURCE_ACCEPTED_F0_F1"
     },
     {
       "id": "FRM-CONTEXT",
       "objective": "DINO_FRONTEND_REMEDIATION_V1",
       "description": "Persistent active project/model/variant/revision and navigation",
       "dependencies": [],
-      "state": "REVIEW",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
+      "commits": [
+        "4295423",
+        "cc5a12d"
+      ],
       "evidence": [
         "docs/frontend-remediation-v1/architecture-and-roadmap.md",
-        "results/frontend-remediation-v1/captures/r36-final-reopened-native-compact.png"
+        "results/frontend-remediation-v1/captures/r36-final-reopened-native-compact.png",
+        "results/frontend-remediation-v1/acceptance.json"
       ],
-      "next_action": "Continue authorized remediation objective.",
+      "next_action": "F0/F1 source increment accepted; advanced items and packaged/human acceptance remain in the roadmap.",
       "owner_role": "implementation",
       "write_scope": [],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "classification": "SOURCE_ACCEPTED_F0_F1"
     },
     {
       "id": "FRM-EDITORS",
       "objective": "DINO_FRONTEND_REMEDIATION_V1",
       "description": "Physical-component forms, contextual errors and readable active-context help",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Physical-component forms, contextual errors and readable active-context help",
+      "commits": [
+        "4295423",
+        "cc5a12d"
+      ],
+      "evidence": [
+        "results/frontend-remediation-v1/acceptance.json"
+      ],
+      "next_action": "F0/F1 source increment accepted; advanced items and packaged/human acceptance remain in the roadmap.",
       "owner_role": "implementation",
       "write_scope": [],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "classification": "SOURCE_ACCEPTED_F0_F1"
     },
     {
       "id": "FRM-FLOWS",
       "objective": "DINO_FRONTEND_REMEDIATION_V1",
       "description": "Simulation plans, terminal result access and comparison guidance",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Simulation plans, terminal result access and comparison guidance",
+      "commits": [
+        "4295423",
+        "cc5a12d"
+      ],
+      "evidence": [
+        "results/frontend-remediation-v1/acceptance.json"
+      ],
+      "next_action": "F0/F1 source increment accepted; advanced items and packaged/human acceptance remain in the roadmap.",
       "owner_role": "implementation",
       "write_scope": [],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "classification": "SOURCE_ACCEPTED_F0_F1"
     },
     {
       "id": "FRM-PORTABILITY-UX",
       "objective": "DINO_FRONTEND_REMEDIATION_V1",
       "description": "Preview portable contents and report import availability honestly",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Preview portable contents and report import availability honestly",
+      "commits": [
+        "4295423",
+        "cc5a12d"
+      ],
+      "evidence": [
+        "results/frontend-remediation-v1/acceptance.json"
+      ],
+      "next_action": "F0/F1 source increment accepted; advanced items and packaged/human acceptance remain in the roadmap.",
       "owner_role": "implementation",
       "write_scope": [],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "classification": "SOURCE_ACCEPTED_F0_F1"
     },
     {
       "id": "FRM-ARCH-ROADMAP",
@@ -13849,42 +13892,59 @@
       "dependencies": [],
       "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [
-        "docs/frontend-remediation-v1/architecture-and-roadmap.md"
+      "commits": [
+        "4295423",
+        "cc5a12d"
       ],
-      "next_action": "Continue authorized remediation objective.",
+      "evidence": [
+        "docs/frontend-remediation-v1/architecture-and-roadmap.md",
+        "results/frontend-remediation-v1/acceptance.json"
+      ],
+      "next_action": "F0/F1 source increment accepted; advanced items and packaged/human acceptance remain in the roadmap.",
       "owner_role": "implementation",
       "write_scope": [],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "classification": "SOURCE_ACCEPTED_F0_F1"
     },
     {
       "id": "FRM-REGRESSION",
       "objective": "DINO_FRONTEND_REMEDIATION_V1",
       "description": "Negative integrity checks and scoped/protected regressions",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Negative integrity checks and scoped/protected regressions",
+      "commits": [
+        "4295423",
+        "cc5a12d"
+      ],
+      "evidence": [
+        "results/frontend-remediation-v1/acceptance.json"
+      ],
+      "next_action": "F0/F1 source increment accepted; advanced items and packaged/human acceptance remain in the roadmap.",
       "owner_role": "implementation",
       "write_scope": [],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "classification": "SOURCE_ACCEPTED_F0_F1"
     },
     {
       "id": "FRM-LIVE-UAT",
       "objective": "DINO_FRONTEND_REMEDIATION_V1",
       "description": "Real source GUI workflows and compact/large visual evidence",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
-      "commits": [],
-      "evidence": [],
-      "next_action": "Real source GUI workflows and compact/large visual evidence",
+      "commits": [
+        "4295423",
+        "cc5a12d"
+      ],
+      "evidence": [
+        "results/frontend-remediation-v1/acceptance.json"
+      ],
+      "next_action": "F0/F1 source increment accepted; advanced items and packaged/human acceptance remain in the roadmap.",
       "owner_role": "implementation",
       "write_scope": [],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "classification": "SOURCE_ACCEPTED_F0_F1"
     }
   ],
   "audit_remediation_mode": false,
@@ -14087,7 +14147,7 @@
   ],
   "current_objective": {
     "id": "DINO_FRONTEND_REMEDIATION_V1",
-    "state": "IN_PROGRESS",
+    "state": "COMPLETE",
     "owner_approved": true,
     "summary": "Owner-authorized P0 structural fixes and coherent source frontend evolution.",
     "change": "openspec/changes/frontend-remediation-v1",
@@ -19630,6 +19690,20 @@
       "task": "FRM-CONTEXT",
       "kind": "task",
       "summary": "Integrated F1 source increment ready for final regression: common identity/navigation, physical native forms, guarded drafts for 2T/0D, result access/linking, RPM budgets, comparison preflight and portable preview. Source GUI evidence captured; packaged/human acceptance remains separate."
+    },
+    {
+      "at": "2026-11-11T16:09:27+00:00",
+      "task": "FRM-REGRESSION",
+      "kind": "task",
+      "summary": "SOURCE_ACCEPTED F0/F1: 58 frontend tests,18 commercial/CP1/onboarding tests,301 protected PASS+3 skipped; P9 blob/LF intact, scientific source/contracts unchanged. 37 real Windows source GUI captures; synthetic eligible A/B fixture labelled, no experimental validation.",
+      "commit": "cc5a12d"
+    },
+    {
+      "at": "2026-11-11T16:09:27+00:00",
+      "task": "FRM-LIVE-UAT",
+      "kind": "task",
+      "summary": "Source walkthroughs covered draft cancel/apply, real 87mm native solver input, 2T terminal link, 0D result, native cancel, portable UI import/save, negative save and process reopen. Windows candidate NOT_BUILT; human UAT pending. Concurrent main advance recorded; no integration performed.",
+      "commit": "cc5a12d"
     }
   ],
   "legacy_gate_status": {
@@ -19645,25 +19719,19 @@
   },
   "gate_status": {
     "objective": "DINO_FRONTEND_REMEDIATION_V1",
-    "state": "OPEN",
-    "classification": null,
-    "evidence": [],
-    "gate_tasks_total": 11,
-    "gate_tasks_done": 5,
-    "gate_task_states": {
-      "DONE": 5,
-      "REVIEW": 1,
-      "READY": 5
-    },
-    "remaining": [
-      "FRM-CONTEXT",
-      "FRM-EDITORS",
-      "FRM-FLOWS",
-      "FRM-PORTABILITY-UX",
-      "FRM-REGRESSION",
-      "FRM-LIVE-UAT"
+    "state": "PASS",
+    "classification": "FRONTEND_F0_F1_SOURCE_ACCEPTED_WINDOWS_UAT_PENDING",
+    "evidence": [
+      "results/frontend-remediation-v1/acceptance.json",
+      "docs/frontend-remediation-v1/architecture-and-roadmap.md"
     ],
-    "updated_at": "2026-11-11T16:04:52+00:00"
+    "gate_tasks_total": 11,
+    "gate_tasks_done": 11,
+    "gate_task_states": {
+      "DONE": 11
+    },
+    "remaining": [],
+    "updated_at": "2026-11-11T16:09:27+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -20435,5 +20503,19 @@
     ],
     "completion_criterion": "Deliver diagnosis, observed routes, wireframes, prioritized backlog and critical evaluation.",
     "classification": "AUDIT_DELIVERABLES_COMPLETE_PRODUCT_NOT_ACCEPTED"
+  },
+  "frontend_remediation_acceptance": {
+    "scope": "F0 integrity and F1 coherent source workflow",
+    "lifecycle": {
+      "IMPLEMENTED": true,
+      "SOURCE_ACCEPTED": true,
+      "WINDOWS_ACCEPTED": false,
+      "PENDING_UAT": true
+    },
+    "receipt": "results/frontend-remediation-v1/acceptance.json",
+    "roadmap": "docs/frontend-remediation-v1/architecture-and-roadmap.md",
+    "outstanding": "Advanced UX roadmap, human accessibility UAT, matching Windows candidate, future integration with concurrently advanced main.",
+    "scientific_validation": "NOT_PERFORMED",
+    "review": "SELF_REVIEW"
   }
 }

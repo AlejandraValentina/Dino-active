@@ -1,0 +1,35 @@
+{
+  "name": "frm-source-final-focused",
+  "command": [
+    "python",
+    "-u",
+    "-m",
+    "pytest",
+    "tests/test_frontend_workflow_remediation.py",
+    "tests/test_frontend_integrity_remediation.py",
+    "tests/test_project_bundles.py",
+    "tests/test_desktop_four_stroke_shell.py",
+    "tests/test_desktop_four_stroke_workspace.py",
+    "tests/test_platform_c05_qt_lifecycle.py",
+    "tests/test_dino4t_desktop_integration.py",
+    "-q",
+    "--tb=short"
+  ],
+  "started_at": "2026-11-11T12:17:34+00:00",
+  "finished_at": "2026-11-11T12:17:34+00:00",
+  "duration_s": 0.469,
+  "exit_code": 4,
+  "timed_out": false,
+  "log_path": "results\\frontend-remediation-v1\\verification\\frm-source-final-focused.log",
+  "log_lines": 4,
+  "log_bytes": 90,
+  "error_lines": [
+    "3: ERROR: file or directory not found: tests/test_project_bundles.py"
+  ],
+  "tail": [
+    "",
+    "no tests ran in 0.00s",
+    "ERROR: file or directory not found: tests/test_project_bundles.py",
+    ""
+  ]
+}

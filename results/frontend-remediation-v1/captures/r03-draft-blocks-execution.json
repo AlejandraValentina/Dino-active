@@ -1,0 +1,668 @@
+{
+  "tag": "r03-draft-blocks-execution",
+  "title": "Cambios sin aplicar",
+  "platform": "windows",
+  "size": [
+    500,
+    112
+  ],
+  "screen_dpr": 1.0,
+  "widgets": [
+    {
+      "id": 2164799497024,
+      "cls": "QComboBox",
+      "name": "engineFamilySelector",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Proyectos distintos con una navegación común; los modelos científicos siguen separados.",
+      "rect": [
+        126,
+        53,
+        235,
+        36
+      ],
+      "items": [
+        "Motor 2 tiempos",
+        "Motor 4 tiempos · nativo",
+        "4T 0D · referencia no validada"
+      ],
+      "current": 1
+    },
+    {
+      "id": 2164817112576,
+      "cls": "QComboBox",
+      "name": "nativeField_geometry_provenance",
+      "enabled": true,
+      "accessible": "Fuente declarada de estos datos",
+      "tooltip": "Cilindro y geometría · procedencia\nValor aplicado exacto: Supuesto sintético\nLa validación de aplicación usa el contrato del modelo; no acredita validación experimental.",
+      "rect": [
+        209,
+        31,
+        878,
+        36
+      ],
+      "items": [
+        "Supuesto sintético",
+        "Estándar V1",
+        "Medido",
+        "Documentado",
+        "Calibrado"
+      ],
+      "current": 0
+    },
+    {
+      "id": 2166170059456,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        147,
+        61,
+        29
+      ],
+      "text": "Biela (mm)"
+    },
+    {
+      "id": 2166127248896,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Elegí Guardar como para conservar el proyecto.",
+      "rect": [
+        1076,
+        5,
+        350,
+        34
+      ],
+      "text": "Borrador sin aplicar\nValidación experimental no realizada"
+    },
+    {
+      "id": 2166132559680,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        110,
+        78,
+        29
+      ],
+      "text": "Carrera (mm)"
+    },
+    {
+      "id": 2166170843968,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        73,
+        88,
+        29
+      ],
+      "text": "Diámetro (mm)"
+    },
+    {
+      "id": 2166127209600,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        9,
+        1101,
+        17
+      ],
+      "text": "Edición pendiente de aplicar. Guardar o ejecutar requiere resolver este borrador; la configuración aplicada todavía no cambió."
+    },
+    {
+      "id": 2166169499648,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        31,
+        191,
+        29
+      ],
+      "text": "Fuente declarada de estos datos"
+    },
+    {
+      "id": 2166133388288,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        8,
+        1075,
+        17
+      ],
+      "text": "Magnitudes del componente · las unidades y las fuentes se conservan. Aplicá los cambios antes de guardar o ejecutar."
+    },
+    {
+      "id": 2166127422080,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        14,
+        5,
+        525,
+        34
+      ],
+      "text": "Proyecto: nuevo-motor-4t\n4T nativo · nuevo-motor-4t-motor"
+    },
+    {
+      "id": 2166170060032,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        184,
+        141,
+        29
+      ],
+      "text": "Relación de compresión"
+    },
+    {
+      "id": 2164799497088,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        18,
+        53,
+        96,
+        36
+      ],
+      "text": "TIPO DE MOTOR"
+    },
+    {
+      "id": 2166127248256,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Identidad completa de la configuración aplicada:\n81b7d8ae793cacc2b15e7df3d238a8e58961e8e1d9b5bf424b1d008c0c3d977f",
+      "rect": [
+        545,
+        5,
+        525,
+        34
+      ],
+      "text": "Variante: Motor base\nConfiguración aplicada: 81b7d8ae793c"
+    },
+    {
+      "id": 2166127064704,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        9,
+        256,
+        17
+      ],
+      "text": "Variantes del motor 4T"
+    },
+    {
+      "id": 2166095051008,
+      "cls": "QLabel",
+      "name": "nativeFourStrokeIndicator",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        8,
+        1416,
+        17
+      ],
+      "text": "MOTOR 4T NATIVO · DINO4T_API_V1 · VALIDACIÓN EXPERIMENTAL NO REALIZADA"
+    },
+    {
+      "id": 2166169498240,
+      "cls": "QLabel",
+      "name": "qt_msgbox_label",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        62,
+        11,
+        427,
+        34
+      ],
+      "text": "Ejecutar punto 4T: hay una edición del motor sin aplicar. Elegí qué configuración conservar."
+    },
+    {
+      "id": 2166170759616,
+      "cls": "QLabel",
+      "name": "qt_msgboxex_icon_label",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        11,
+        11,
+        32,
+        32
+      ],
+      "text": ""
+    },
+    {
+      "id": 2164799495552,
+      "cls": "QLabel",
+      "name": "workspaceModeLabel",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        373,
+        53,
+        140,
+        36
+      ],
+      "text": "MODO DE TRABAJO"
+    },
+    {
+      "id": 2166127156672,
+      "cls": "QLineEdit",
+      "name": "nativeField_geometry_bore_mm",
+      "enabled": true,
+      "accessible": "diámetro (mm)",
+      "tooltip": "Cilindro y geometría · diámetro (mm)\nValor aplicado exacto: 86\nLa validación de aplicación usa el contrato del modelo; no acredita validación experimental.",
+      "rect": [
+        209,
+        73,
+        878,
+        31
+      ],
+      "text": "87"
+    },
+    {
+      "id": 2166133710848,
+      "cls": "QLineEdit",
+      "name": "nativeField_geometry_compression_ratio",
+      "enabled": true,
+      "accessible": "relación de compresión",
+      "tooltip": "Cilindro y geometría · relación de compresión\nValor aplicado exacto: 11\nLa validación de aplicación usa el contrato del modelo; no acredita validación experimental.",
+      "rect": [
+        209,
+        184,
+        878,
+        31
+      ],
+      "text": "11"
+    },
+    {
+      "id": 2166127058816,
+      "cls": "QLineEdit",
+      "name": "nativeField_geometry_rod_mm",
+      "enabled": true,
+      "accessible": "biela (mm)",
+      "tooltip": "Cilindro y geometría · biela (mm)\nValor aplicado exacto: 143\nLa validación de aplicación usa el contrato del modelo; no acredita validación experimental.",
+      "rect": [
+        209,
+        147,
+        878,
+        31
+      ],
+      "text": "143"
+    },
+    {
+      "id": 2166127051968,
+      "cls": "QLineEdit",
+      "name": "nativeField_geometry_stroke_mm",
+      "enabled": true,
+      "accessible": "carrera (mm)",
+      "tooltip": "Cilindro y geometría · carrera (mm)\nValor aplicado exacto: 86\nLa validación de aplicación usa el contrato del modelo; no acredita validación experimental.",
+      "rect": [
+        209,
+        110,
+        878,
+        31
+      ],
+      "text": "86"
+    },
+    {
+      "id": 2166127053312,
+      "cls": "QListWidget",
+      "name": "nativeFourStrokeVariants",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        32,
+        256,
+        430
+      ],
+      "items": []
+    },
+    {
+      "id": 2164799492928,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        127,
+        101,
+        120,
+        35
+      ],
+      "text": "Abrir proyecto…"
+    },
+    {
+      "id": 2166134110400,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        116,
+        9,
+        134,
+        35
+      ],
+      "text": "Aplicar y continuar"
+    },
+    {
+      "id": 2166169619200,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        402,
+        9,
+        76,
+        35
+      ],
+      "text": "Cancelar"
+    },
+    {
+      "id": 2164814933888,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        444,
+        101,
+        149,
+        35
+      ],
+      "text": "Contenido portable…"
+    },
+    {
+      "id": 2166127058688,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "Corridas del proyecto y alcance de colas",
+      "tooltip": "",
+      "rect": [
+        321,
+        101,
+        123,
+        35
+      ],
+      "text": "Corridas y cola…"
+    },
+    {
+      "id": 2166134240256,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        256,
+        9,
+        140,
+        35
+      ],
+      "text": "Descartar borrador"
+    },
+    {
+      "id": 2164911812224,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        509,
+        256,
+        35
+      ],
+      "text": "Duplicar variante…"
+    },
+    {
+      "id": 2166130474432,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        550,
+        256,
+        35
+      ],
+      "text": "Eliminar variante"
+    },
+    {
+      "id": 2164799488640,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        247,
+        101,
+        74,
+        35
+      ],
+      "text": "Guardar"
+    },
+    {
+      "id": 2166127063360,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        468,
+        256,
+        35
+      ],
+      "text": "Motor base"
+    },
+    {
+      "id": 2164799488320,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        14,
+        101,
+        113,
+        35
+      ],
+      "text": "Nuevo motor…"
+    },
+    {
+      "id": 2166127057856,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        550,
+        1101,
+        35
+      ],
+      "text": "Validar y aplicar configuración"
+    },
+    {
+      "id": 2166133715456,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        221,
+        1075,
+        35
+      ],
+      "text": "Ver datos avanzados del componente"
+    },
+    {
+      "id": 2164799495360,
+      "cls": "QPushButton",
+      "name": "modeAnalysis",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        773,
+        53,
+        123,
+        36
+      ],
+      "text": "RESULTADOS"
+    },
+    {
+      "id": 2164799498496,
+      "cls": "QPushButton",
+      "name": "modeDesign",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        525,
+        53,
+        112,
+        36
+      ],
+      "text": "MODELO"
+    },
+    {
+      "id": 2164799494976,
+      "cls": "QPushButton",
+      "name": "modeSimulate",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        649,
+        53,
+        112,
+        36
+      ],
+      "text": "SIMULAR"
+    },
+    {
+      "id": 2166126974912,
+      "cls": "QTabWidget",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        32,
+        1101,
+        512
+      ],
+      "tabs": [
+        "Cilindro y geometría",
+        "Válvula de admisión",
+        "Válvula de escape",
+        "Admisión",
+        "Escape",
+        "Ambiente",
+        "Combustión",
+        "Transferencia de calor",
+        "Pérdidas mecánicas",
+        "Punto operativo",
+        "Condiciones iniciales",
+        "Avanzado · cálculo"
+      ],
+      "current": 0
+    },
+    {
+      "id": 2166170760768,
+      "cls": "QToolButton",
+      "name": "ScrollLeftButton",
+      "enabled": false,
+      "accessible": "Scroll Left",
+      "tooltip": "",
+      "rect": [
+        1070,
+        0,
+        16,
+        42
+      ],
+      "text": ""
+    },
+    {
+      "id": 2166132561344,
+      "cls": "QToolButton",
+      "name": "ScrollRightButton",
+      "enabled": true,
+      "accessible": "Scroll Right",
+      "tooltip": "",
+      "rect": [
+        1085,
+        0,
+        16,
+        42
+      ],
+      "text": ""
+    }
+  ]
+}

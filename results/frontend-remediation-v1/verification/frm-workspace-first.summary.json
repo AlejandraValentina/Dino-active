@@ -1,0 +1,28 @@
+{
+  "name": "frm-workspace-first",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_frontend_integrity_remediation.py",
+    "tests/test_desktop_project_bundles.py",
+    "tests/test_commercial_product.py",
+    "tests/test_commercial_unified_integration.py",
+    "tests/test_desktop_cp1_acceptance.py",
+    "--tb=short"
+  ],
+  "started_at": "2026-11-11T12:02:59+00:00",
+  "finished_at": "2026-11-11T12:05:08+00:00",
+  "duration_s": 128.594,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\frontend-remediation-v1\\verification\\frm-workspace-first.log",
+  "log_lines": 2,
+  "log_bytes": 111,
+  "error_lines": [],
+  "tail": [
+    "...............................                                          [100%]",
+    "31 passed in 126.98s (0:02:06)"
+  ]
+}

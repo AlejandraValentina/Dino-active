@@ -1,0 +1,640 @@
+{
+  "tag": "r30-save-failure-visible",
+  "title": "No se pudo guardar el motor 4T",
+  "platform": "windows",
+  "size": [
+    500,
+    129
+  ],
+  "screen_dpr": 1.0,
+  "widgets": [
+    {
+      "id": 2164799497024,
+      "cls": "QComboBox",
+      "name": "engineFamilySelector",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Proyectos distintos con una navegación común; los modelos científicos siguen separados.",
+      "rect": [
+        126,
+        53,
+        235,
+        36
+      ],
+      "items": [
+        "Motor 2 tiempos",
+        "Motor 4 tiempos · nativo",
+        "4T 0D · referencia no validada"
+      ],
+      "current": 1
+    },
+    {
+      "id": 2166285279168,
+      "cls": "QComboBox",
+      "name": "nativeField_ambient_provenance",
+      "enabled": true,
+      "accessible": "Fuente declarada de estos datos",
+      "tooltip": "Ambiente · procedencia\nValor aplicado exacto: Supuesto sintético\nLa validación de aplicación usa el contrato del modelo; no acredita validación experimental.",
+      "rect": [
+        209,
+        179,
+        798,
+        36
+      ],
+      "items": [
+        "Supuesto sintético",
+        "Estándar V1",
+        "Medido",
+        "Documentado",
+        "Calibrado"
+      ],
+      "current": 0
+    },
+    {
+      "id": 2166127248896,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "E:\\Dino-artifacts\\frontend-remediation-v1-20261111\\ui-imports\\native-through-ui\\project.json",
+      "rect": [
+        1016,
+        5,
+        330,
+        34
+      ],
+      "text": "Cambios sin guardar\nValidación experimental no realizada"
+    },
+    {
+      "id": 2166127209600,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        9,
+        1021,
+        34
+      ],
+      "text": "Configuración válida · SHA-256 074c9c23f2dc827a962a4c262e2a12bba3fdca238e93f2e218e9ebbfe83b9954 · La API confirma que es ejecutable; no expresa adecuación física ni validación experimental."
+    },
+    {
+      "id": 2166134101952,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        179,
+        191,
+        29
+      ],
+      "text": "Fuente declarada de estos datos"
+    },
+    {
+      "id": 2166285279104,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        8,
+        995,
+        17
+      ],
+      "text": "Magnitudes del componente · las unidades y las fuentes se conservan. Aplicá los cambios antes de guardar o ejecutar."
+    },
+    {
+      "id": 2166396083456,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        105,
+        146,
+        29
+      ],
+      "text": "Presión de admisión (pa)"
+    },
+    {
+      "id": 2166393561920,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        31,
+        134,
+        29
+      ],
+      "text": "Presión de escape (pa)"
+    },
+    {
+      "id": 2166127422080,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        14,
+        5,
+        495,
+        34
+      ],
+      "text": "Proyecto: nuevo-motor-4t\n4T nativo · nuevo-motor-4t-motor"
+    },
+    {
+      "id": 2164799497088,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        18,
+        53,
+        96,
+        36
+      ],
+      "text": "TIPO DE MOTOR"
+    },
+    {
+      "id": 2166350178944,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        142,
+        168,
+        29
+      ],
+      "text": "Temperatura de admisión (k)"
+    },
+    {
+      "id": 2166395264448,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        68,
+        156,
+        29
+      ],
+      "text": "Temperatura de escape (k)"
+    },
+    {
+      "id": 2166127248256,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Identidad completa de la configuración aplicada:\n074c9c23f2dc827a962a4c262e2a12bba3fdca238e93f2e218e9ebbfe83b9954",
+      "rect": [
+        515,
+        5,
+        495,
+        34
+      ],
+      "text": "Variante: Motor base\nConfiguración aplicada: 074c9c23f2dc"
+    },
+    {
+      "id": 2166127064704,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        9,
+        256,
+        17
+      ],
+      "text": "Variantes del motor 4T"
+    },
+    {
+      "id": 2166095051008,
+      "cls": "QLabel",
+      "name": "nativeFourStrokeIndicator",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        8,
+        1336,
+        17
+      ],
+      "text": "MOTOR 4T NATIVO · DINO4T_API_V1 · VALIDACIÓN EXPERIMENTAL NO REALIZADA"
+    },
+    {
+      "id": 2164815143488,
+      "cls": "QLabel",
+      "name": "qt_msgbox_label",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        62,
+        11,
+        427,
+        51
+      ],
+      "text": "[WinError 5] Acceso denegado: 'E:\\\\Dino-artifacts\\\\frontend-remediation-v1-20261111\\\\blocked-save.json.mxconlmu.tmp' -> 'E:\\\\Dino-artifacts\\\\frontend-remediation-v1-20261111\\\\blocked-save.json'"
+    },
+    {
+      "id": 2166193934784,
+      "cls": "QLabel",
+      "name": "qt_msgboxex_icon_label",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        11,
+        11,
+        32,
+        32
+      ],
+      "text": ""
+    },
+    {
+      "id": 2164799495552,
+      "cls": "QLabel",
+      "name": "workspaceModeLabel",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        373,
+        53,
+        140,
+        36
+      ],
+      "text": "MODO DE TRABAJO"
+    },
+    {
+      "id": 2166285277632,
+      "cls": "QLineEdit",
+      "name": "nativeField_ambient_exhaust_pressure_pa",
+      "enabled": true,
+      "accessible": "presión de escape (Pa)",
+      "tooltip": "Ambiente · presión de escape (Pa)\nValor aplicado exacto: 101325\nLa validación de aplicación usa el contrato del modelo; no acredita validación experimental.",
+      "rect": [
+        209,
+        31,
+        798,
+        31
+      ],
+      "text": "101325"
+    },
+    {
+      "id": 2166169966656,
+      "cls": "QLineEdit",
+      "name": "nativeField_ambient_exhaust_temperature_K",
+      "enabled": true,
+      "accessible": "temperatura de escape (K)",
+      "tooltip": "Ambiente · temperatura de escape (K)\nValor aplicado exacto: 298.14999999999998\nLa validación de aplicación usa el contrato del modelo; no acredita validación experimental.",
+      "rect": [
+        209,
+        68,
+        798,
+        31
+      ],
+      "text": "298.15"
+    },
+    {
+      "id": 2166285280576,
+      "cls": "QLineEdit",
+      "name": "nativeField_ambient_intake_pressure_pa",
+      "enabled": true,
+      "accessible": "presión de admisión (Pa)",
+      "tooltip": "Ambiente · presión de admisión (Pa)\nValor aplicado exacto: 101325\nLa validación de aplicación usa el contrato del modelo; no acredita validación experimental.",
+      "rect": [
+        209,
+        105,
+        798,
+        31
+      ],
+      "text": "101325"
+    },
+    {
+      "id": 2166285285760,
+      "cls": "QLineEdit",
+      "name": "nativeField_ambient_intake_temperature_K",
+      "enabled": true,
+      "accessible": "temperatura de admisión (K)",
+      "tooltip": "Ambiente · temperatura de admisión (K)\nValor aplicado exacto: 298.14999999999998\nLa validación de aplicación usa el contrato del modelo; no acredita validación experimental.",
+      "rect": [
+        209,
+        142,
+        798,
+        31
+      ],
+      "text": "298.15"
+    },
+    {
+      "id": 2166127053312,
+      "cls": "QListWidget",
+      "name": "nativeFourStrokeVariants",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        32,
+        256,
+        413
+      ],
+      "items": [
+        "Escape ensayo"
+      ]
+    },
+    {
+      "id": 2164799492928,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        127,
+        101,
+        120,
+        35
+      ],
+      "text": "Abrir proyecto…"
+    },
+    {
+      "id": 2164814933888,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        444,
+        101,
+        149,
+        35
+      ],
+      "text": "Contenido portable…"
+    },
+    {
+      "id": 2166127058688,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "Corridas del proyecto y alcance de colas",
+      "tooltip": "",
+      "rect": [
+        321,
+        101,
+        123,
+        35
+      ],
+      "text": "Corridas y cola…"
+    },
+    {
+      "id": 2164911812224,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        492,
+        256,
+        35
+      ],
+      "text": "Duplicar variante…"
+    },
+    {
+      "id": 2166130474432,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        533,
+        256,
+        35
+      ],
+      "text": "Eliminar variante"
+    },
+    {
+      "id": 2164799488640,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        247,
+        101,
+        74,
+        35
+      ],
+      "text": "Guardar"
+    },
+    {
+      "id": 2166127063360,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        451,
+        256,
+        35
+      ],
+      "text": "Motor base"
+    },
+    {
+      "id": 2164799488320,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        14,
+        101,
+        113,
+        35
+      ],
+      "text": "Nuevo motor…"
+    },
+    {
+      "id": 2166171175424,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        434,
+        9,
+        44,
+        35
+      ],
+      "text": "OK"
+    },
+    {
+      "id": 2166127057856,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        533,
+        1021,
+        35
+      ],
+      "text": "Validar y aplicar configuración"
+    },
+    {
+      "id": 2164799385344,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        221,
+        995,
+        35
+      ],
+      "text": "Ver datos avanzados del componente"
+    },
+    {
+      "id": 2164799495360,
+      "cls": "QPushButton",
+      "name": "modeAnalysis",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        773,
+        53,
+        123,
+        36
+      ],
+      "text": "RESULTADOS"
+    },
+    {
+      "id": 2164799498496,
+      "cls": "QPushButton",
+      "name": "modeDesign",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        525,
+        53,
+        112,
+        36
+      ],
+      "text": "MODELO"
+    },
+    {
+      "id": 2164799494976,
+      "cls": "QPushButton",
+      "name": "modeSimulate",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        649,
+        53,
+        112,
+        36
+      ],
+      "text": "SIMULAR"
+    },
+    {
+      "id": 2166126974912,
+      "cls": "QTabWidget",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        49,
+        1021,
+        478
+      ],
+      "tabs": [
+        "Ambiente",
+        "Combustión",
+        "Escape",
+        "Válvula de escape",
+        "Pérdidas mecánicas",
+        "Cilindro y geometría",
+        "Transferencia de calor",
+        "Condiciones iniciales",
+        "Admisión",
+        "Válvula de admisión",
+        "Avanzado · cálculo",
+        "Punto operativo"
+      ],
+      "current": 0
+    },
+    {
+      "id": 2166133541248,
+      "cls": "QToolButton",
+      "name": "ScrollLeftButton",
+      "enabled": false,
+      "accessible": "Scroll Left",
+      "tooltip": "",
+      "rect": [
+        990,
+        0,
+        16,
+        42
+      ],
+      "text": ""
+    },
+    {
+      "id": 2166170834304,
+      "cls": "QToolButton",
+      "name": "ScrollRightButton",
+      "enabled": true,
+      "accessible": "Scroll Right",
+      "tooltip": "",
+      "rect": [
+        1005,
+        0,
+        16,
+        42
+      ],
+      "text": ""
+    }
+  ]
+}

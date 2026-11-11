@@ -1,0 +1,42 @@
+{
+  "name": "frm-closure-diagnostic-v4",
+  "command": [
+    "python",
+    "-u",
+    "-m",
+    "pytest",
+    "tests/test_frontend_workflow_remediation.py",
+    "tests/test_frontend_integrity_remediation.py",
+    "tests/test_desktop_project_bundles.py",
+    "tests/test_desktop_four_stroke_shell.py",
+    "-vv",
+    "--tb=short",
+    "-o",
+    "faulthandler_timeout=45"
+  ],
+  "started_at": "2026-11-11T16:00:38+00:00",
+  "finished_at": "2026-11-11T16:03:08+00:00",
+  "duration_s": 150.047,
+  "exit_code": 124,
+  "timed_out": true,
+  "log_path": "results\\frontend-remediation-v1\\verification\\frm-closure-diagnostic-v4.log",
+  "log_lines": 14,
+  "log_bytes": 1039,
+  "error_lines": [],
+  "tail": [
+    "============================= test session starts =============================",
+    "platform win32 -- Python 3.11.0, pytest-8.4.1, pluggy-1.5.0 -- C:\\Users\\ageribon\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    "cachedir: .pytest_cache",
+    "rootdir: E:\\dino\\worktrees\\dino-frontend-remediation-v1",
+    "configfile: pytest.ini",
+    "plugins: anyio-4.14.2, cov-7.1.0, mock-3.15.1",
+    "collecting ... collected 33 items",
+    "",
+    "tests/test_frontend_workflow_remediation.py::test_header_and_help_follow_active_context PASSED [  3%]",
+    "tests/test_frontend_workflow_remediation.py::test_physical_form_preserves_precision_until_edit PASSED [  6%]",
+    "tests/test_frontend_workflow_remediation.py::test_reference_apply_all_is_atomic_and_keeps_invalid_draft PASSED [  9%]",
+    "tests/test_frontend_workflow_remediation.py::test_pending_reference_cancel_blocks_substitution_and_export PASSED [ 12%]",
+    "tests/test_frontend_workflow_remediation.py::test_new_reference_model_is_explicit PASSED [ 15%]",
+    "tests/test_frontend_workflow_remediation.py::test_native_comparison_guides_distinct_eligible_pair "
+  ]
+}
