@@ -1,0 +1,384 @@
+{
+  "tag": "p06-native4t-point",
+  "title": "Dino Desktop · 4T nativo · nuevo-motor-4t",
+  "platform": "windows",
+  "size": [
+    1360,
+    860
+  ],
+  "screen_dpr": 1.0,
+  "widgets": [
+    {
+      "id": 1488028065856,
+      "cls": "QComboBox",
+      "name": "engineFamilySelector",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Proyectos distintos con una navegación común; los modelos científicos siguen separados.",
+      "rect": [
+        126,
+        9,
+        235,
+        36
+      ],
+      "items": [
+        "Motor 2 tiempos",
+        "Motor 4 tiempos · nativo",
+        "4T 0D · referencia no validada"
+      ],
+      "current": 1
+    },
+    {
+      "id": 1487202446976,
+      "cls": "QDoubleSpinBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        117,
+        9,
+        1208,
+        36
+      ],
+      "text": "6000 rpm",
+      "value": 6000.0
+    },
+    {
+      "id": 1487209300416,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        179,
+        1316,
+        17
+      ],
+      "text": ""
+    },
+    {
+      "id": 1487202394432,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        156,
+        1316,
+        17
+      ],
+      "text": "Listo · solo se ejecuta mediante DINO4T_API_V1"
+    },
+    {
+      "id": 1487229024320,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        83,
+        92,
+        26
+      ],
+      "text": "Límite de pared"
+    },
+    {
+      "id": 1487207916352,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        51,
+        102,
+        26
+      ],
+      "text": "Máximo de ciclos"
+    },
+    {
+      "id": 1487250369472,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        9,
+        93,
+        29
+      ],
+      "text": "Punto operativo"
+    },
+    {
+      "id": 1488028068224,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        18,
+        9,
+        96,
+        36
+      ],
+      "text": "TIPO DE MOTOR"
+    },
+    {
+      "id": 1486420794496,
+      "cls": "QLabel",
+      "name": "nativeFourStrokeIndicator",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        8,
+        1336,
+        17
+      ],
+      "text": "MOTOR 4T NATIVO · DINO4T_API_V1 · VALIDACIÓN EXPERIMENTAL NO REALIZADA"
+    },
+    {
+      "id": 1488028073216,
+      "cls": "QLabel",
+      "name": "workspaceModeLabel",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        373,
+        9,
+        140,
+        36
+      ],
+      "text": "MODO DE TRABAJO"
+    },
+    {
+      "id": 1487250378816,
+      "cls": "QLineEdit",
+      "name": "qt_spinbox_lineedit",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1,
+        1,
+        1187,
+        24
+      ],
+      "text": "120 s"
+    },
+    {
+      "id": 1487250280960,
+      "cls": "QLineEdit",
+      "name": "qt_spinbox_lineedit",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1,
+        1,
+        1187,
+        24
+      ],
+      "text": "20"
+    },
+    {
+      "id": 1487250334464,
+      "cls": "QLineEdit",
+      "name": "qt_spinbox_lineedit",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        6,
+        6,
+        1169,
+        24
+      ],
+      "text": "6000 rpm"
+    },
+    {
+      "id": 1488028065408,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        127,
+        57,
+        120,
+        35
+      ],
+      "text": "Abrir proyecto…"
+    },
+    {
+      "id": 1487202583296,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": false,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        670,
+        115,
+        655,
+        35
+      ],
+      "text": "Cancelar al final del ciclo"
+    },
+    {
+      "id": 1487195328064,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        115,
+        655,
+        35
+      ],
+      "text": "Ejecutar punto 4T"
+    },
+    {
+      "id": 1488028058752,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        247,
+        57,
+        74,
+        35
+      ],
+      "text": "Guardar"
+    },
+    {
+      "id": 1488028060480,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        14,
+        57,
+        113,
+        35
+      ],
+      "text": "Nuevo motor…"
+    },
+    {
+      "id": 1488028066880,
+      "cls": "QPushButton",
+      "name": "modeAnalysis",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        773,
+        9,
+        123,
+        36
+      ],
+      "text": "RESULTADOS"
+    },
+    {
+      "id": 1488028065728,
+      "cls": "QPushButton",
+      "name": "modeDesign",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        525,
+        9,
+        112,
+        36
+      ],
+      "text": "MODELO"
+    },
+    {
+      "id": 1488028067264,
+      "cls": "QPushButton",
+      "name": "modeSimulate",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        649,
+        9,
+        112,
+        36
+      ],
+      "text": "SIMULAR"
+    },
+    {
+      "id": 1486792708800,
+      "cls": "QSpinBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        117,
+        83,
+        1208,
+        26
+      ],
+      "text": "120 s",
+      "value": 120
+    },
+    {
+      "id": 1487202390400,
+      "cls": "QSpinBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        117,
+        51,
+        1208,
+        26
+      ],
+      "text": "20",
+      "value": 20
+    },
+    {
+      "id": 1487202547392,
+      "cls": "QTabWidget",
+      "name": "nativeFourStrokeSimulationTabs",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        0,
+        0,
+        1336,
+        679
+      ],
+      "tabs": [
+        "Punto operativo",
+        "Curva de potencia / torque"
+      ],
+      "current": 0
+    }
+  ]
+}

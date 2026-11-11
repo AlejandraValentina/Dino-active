@@ -1,0 +1,546 @@
+{
+  "tag": "10-native4t-curve",
+  "title": "Dino 2T — dino-2t-nuevo",
+  "platform": "windows",
+  "size": [
+    1360,
+    860
+  ],
+  "screen_dpr": 1.0,
+  "widgets": [
+    {
+      "id": 1357400958784,
+      "cls": "QAbstractButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        6,
+        6,
+        0,
+        39
+      ],
+      "text": ""
+    },
+    {
+      "id": 1358238970944,
+      "cls": "QComboBox",
+      "name": "engineFamilySelector",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Proyectos distintos con una navegación común; los modelos científicos siguen separados.",
+      "rect": [
+        126,
+        9,
+        235,
+        36
+      ],
+      "items": [
+        "Motor 2 tiempos",
+        "Motor 4 tiempos · nativo",
+        "4T 0D · referencia no validada"
+      ],
+      "current": 1
+    },
+    {
+      "id": 1357394713984,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        789,
+        34,
+        122,
+        26
+      ],
+      "text": "Ciclos máx."
+    },
+    {
+      "id": 1357400279616,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        276,
+        34,
+        123,
+        26
+      ],
+      "text": "Fin"
+    },
+    {
+      "id": 1357400279488,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        34,
+        122,
+        26
+      ],
+      "text": "Inicio"
+    },
+    {
+      "id": 1357400279744,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        533,
+        34,
+        122,
+        26
+      ],
+      "text": "Paso"
+    },
+    {
+      "id": 1359356302144,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        159,
+        1316,
+        17
+      ],
+      "text": "Sin barrido nativo 4T. Los resultados no convergidos no se grafican."
+    },
+    {
+      "id": 1358238970048,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        18,
+        9,
+        96,
+        36
+      ],
+      "text": "TIPO DE MOTOR"
+    },
+    {
+      "id": 1357400280192,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1046,
+        34,
+        122,
+        26
+      ],
+      "text": "Tiempo/punto (s)"
+    },
+    {
+      "id": 1357400278656,
+      "cls": "QLabel",
+      "name": "nativeFourStrokeCurveNotice",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        9,
+        1316,
+        17
+      ],
+      "text": "4T NATIVO · DINO4T_API_V1 · barrido exploratorio no validado. 500–15.000 RPM es un rango de interfaz, NO un dominio de fiabilidad física demostrado. Cada punto requiere convergencia propia."
+    },
+    {
+      "id": 1357394747264,
+      "cls": "QLabel",
+      "name": "nativeFourStrokeIndicator",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        8,
+        1336,
+        17
+      ],
+      "text": "MOTOR 4T NATIVO · DINO4T_API_V1 · VALIDACIÓN EXPERIMENTAL NO REALIZADA"
+    },
+    {
+      "id": 1358238958912,
+      "cls": "QLabel",
+      "name": "workspaceModeLabel",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        373,
+        9,
+        140,
+        36
+      ],
+      "text": "MODO DE TRABAJO"
+    },
+    {
+      "id": 1357400751168,
+      "cls": "QLineEdit",
+      "name": "qt_spinbox_lineedit",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1,
+        1,
+        101,
+        24
+      ],
+      "text": "1000 RPM"
+    },
+    {
+      "id": 1357400956736,
+      "cls": "QLineEdit",
+      "name": "qt_spinbox_lineedit",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1,
+        1,
+        101,
+        24
+      ],
+      "text": "120"
+    },
+    {
+      "id": 1357400714752,
+      "cls": "QLineEdit",
+      "name": "qt_spinbox_lineedit",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1,
+        1,
+        101,
+        24
+      ],
+      "text": "13000 RPM"
+    },
+    {
+      "id": 1357400749888,
+      "cls": "QLineEdit",
+      "name": "qt_spinbox_lineedit",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1,
+        1,
+        102,
+        24
+      ],
+      "text": "24"
+    },
+    {
+      "id": 1357400738560,
+      "cls": "QLineEdit",
+      "name": "qt_spinbox_lineedit",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1,
+        1,
+        101,
+        24
+      ],
+      "text": "500 RPM"
+    },
+    {
+      "id": 1358238967872,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        127,
+        57,
+        120,
+        35
+      ],
+      "text": "Abrir proyecto…"
+    },
+    {
+      "id": 1357394750400,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": false,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        171,
+        66,
+        76,
+        35
+      ],
+      "text": "Cancelar"
+    },
+    {
+      "id": 1358238967104,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        247,
+        57,
+        74,
+        35
+      ],
+      "text": "Guardar"
+    },
+    {
+      "id": 1358238959808,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        14,
+        57,
+        113,
+        35
+      ],
+      "text": "Nuevo motor…"
+    },
+    {
+      "id": 1358238971072,
+      "cls": "QPushButton",
+      "name": "modeAnalysis",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        773,
+        9,
+        123,
+        36
+      ],
+      "text": "RESULTADOS"
+    },
+    {
+      "id": 1358238972480,
+      "cls": "QPushButton",
+      "name": "modeDesign",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        525,
+        9,
+        112,
+        36
+      ],
+      "text": "MODELO"
+    },
+    {
+      "id": 1358238973824,
+      "cls": "QPushButton",
+      "name": "modeSimulate",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        649,
+        9,
+        112,
+        36
+      ],
+      "text": "SIMULAR"
+    },
+    {
+      "id": 1357394579392,
+      "cls": "QPushButton",
+      "name": "nativeCurveOpen",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        253,
+        66,
+        160,
+        35
+      ],
+      "text": "Abrir curva guardada…"
+    },
+    {
+      "id": 1357400280448,
+      "cls": "QPushButton",
+      "name": "nativeCurveRun",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        66,
+        145,
+        35
+      ],
+      "text": "Calcular curva nativa"
+    },
+    {
+      "id": 1357400280000,
+      "cls": "QSpinBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1174,
+        34,
+        122,
+        26
+      ],
+      "text": "120",
+      "value": 120
+    },
+    {
+      "id": 1357400279872,
+      "cls": "QSpinBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        917,
+        34,
+        123,
+        26
+      ],
+      "text": "24",
+      "value": 24
+    },
+    {
+      "id": 1357400279232,
+      "cls": "QSpinBox",
+      "name": "nativeCurveEndRpm",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        405,
+        34,
+        122,
+        26
+      ],
+      "text": "13000 RPM",
+      "value": 13000
+    },
+    {
+      "id": 1357400279104,
+      "cls": "QSpinBox",
+      "name": "nativeCurveStartRpm",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        148,
+        34,
+        122,
+        26
+      ],
+      "text": "1000 RPM",
+      "value": 1000
+    },
+    {
+      "id": 1357400279360,
+      "cls": "QSpinBox",
+      "name": "nativeCurveStepRpm",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        661,
+        34,
+        122,
+        26
+      ],
+      "text": "500 RPM",
+      "value": 500
+    },
+    {
+      "id": 1359147024768,
+      "cls": "QTabWidget",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        339,
+        1316,
+        288
+      ],
+      "tabs": [
+        "Potencia",
+        "Torque"
+      ],
+      "current": 0
+    },
+    {
+      "id": 1357394744320,
+      "cls": "QTabWidget",
+      "name": "nativeFourStrokeSimulationTabs",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        0,
+        0,
+        1336,
+        679
+      ],
+      "tabs": [
+        "Punto operativo",
+        "Curva de potencia / torque"
+      ],
+      "current": 1
+    },
+    {
+      "id": 1357400281088,
+      "cls": "QTableWidget",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        182,
+        1316,
+        151
+      ],
+      "headers": [
+        "RPM",
+        "Periodicidad",
+        "Potencia freno [kW]",
+        "Torque freno [N·m]"
+      ],
+      "rows": []
+    }
+  ]
+}

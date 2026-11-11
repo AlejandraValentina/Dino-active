@@ -4,7 +4,7 @@ import sys
 import urllib.request
 
 request = urllib.request.Request('http://127.0.0.1:18763/',
-    json.dumps({'code': sys.stdin.read()}).encode('utf-8'),
+    json.dumps({'code': sys.stdin.buffer.read().decode('utf-8')}).encode('utf-8'),
     {'Content-Type': 'application/json'})
 with urllib.request.urlopen(request, timeout=55) as response:
     print(response.read().decode('utf-8'))

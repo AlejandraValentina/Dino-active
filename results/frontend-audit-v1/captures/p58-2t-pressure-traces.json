@@ -1,0 +1,762 @@
+{
+  "tag": "p58-2t-pressure-traces",
+  "title": "Dino 2T — audit-2t",
+  "platform": "windows",
+  "size": [
+    1360,
+    860
+  ],
+  "screen_dpr": 1.0,
+  "widgets": [
+    {
+      "id": 1488012209856,
+      "cls": "QComboBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        34,
+        280,
+        36
+      ],
+      "items": [
+        "Presión absoluta escape · celda 0 (bar abs)",
+        "Flujo escape · cara 0 (kg/s)",
+        "Presión absoluta cilindro (bar abs)"
+      ],
+      "current": 0
+    },
+    {
+      "id": 1488012207424,
+      "cls": "QComboBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        306,
+        34,
+        115,
+        36
+      ],
+      "items": [
+        "Todas las RPM",
+        "3000 RPM"
+      ],
+      "current": 1
+    },
+    {
+      "id": 1488028066688,
+      "cls": "QComboBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        720,
+        7,
+        205,
+        36
+      ],
+      "items": [
+        "Motor 2T nuevo"
+      ],
+      "current": 0
+    },
+    {
+      "id": 1488028062272,
+      "cls": "QComboBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1007,
+        7,
+        142,
+        36
+      ],
+      "items": [
+        "Motor base"
+      ],
+      "current": 0
+    },
+    {
+      "id": 1488028065856,
+      "cls": "QComboBox",
+      "name": "engineFamilySelector",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Proyectos distintos con una navegación común; los modelos científicos siguen separados.",
+      "rect": [
+        126,
+        59,
+        235,
+        36
+      ],
+      "items": [
+        "Motor 2 tiempos",
+        "Motor 4 tiempos · nativo",
+        "4T 0D · referencia no validada"
+      ],
+      "current": 0
+    },
+    {
+      "id": 1486421036928,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        297,
+        5,
+        145,
+        51
+      ],
+      "text": "3000 rpm · 1 ciclos · 30 s"
+    },
+    {
+      "id": 1488028065664,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        935,
+        7,
+        62,
+        36
+      ],
+      "text": "Baseline ···"
+    },
+    {
+      "id": 1488028149056,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "1 ciclos guardados · Ciclos insuficientes",
+      "rect": [
+        448,
+        5,
+        444,
+        51
+      ],
+      "text": "Checkpoint: 1 ciclos guardados · Ciclos insuficientes"
+    },
+    {
+      "id": 1488012209600,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        427,
+        34,
+        850,
+        36
+      ],
+      "text": "Conservación interna · sin auditoría independiente · muestras aceptadas"
+    },
+    {
+      "id": 1488028062720,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1289,
+        7,
+        59,
+        36
+      ],
+      "text": "Guardado"
+    },
+    {
+      "id": 1488027934848,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        4,
+        5,
+        1297,
+        17
+      ],
+      "text": "Las señales se muestran cuando las corridas contienen primarios compatibles. Un reporte agregado de curvas no contiene trazas ni geometría adicional."
+    },
+    {
+      "id": 1488012212800,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        325,
+        1257,
+        17
+      ],
+      "text": "Mapa discreto posición × ángulo · escala 96161–1.0876e+05 · celdas reales en bandas proporcionales · muestras exactas, sin interpolar."
+    },
+    {
+      "id": 1488012204736,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        76,
+        1257,
+        17
+      ],
+      "text": "Series: base · 3000 RPM · ciclo 1"
+    },
+    {
+      "id": 1488028068224,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        18,
+        59,
+        96,
+        36
+      ],
+      "text": "TIPO DE MOTOR"
+    },
+    {
+      "id": 1488028147904,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Terminada · Límite de ciclos · no convergida",
+      "rect": [
+        12,
+        5,
+        105,
+        51
+      ],
+      "text": "Terminada · Límite de ciclos · no convergida"
+    },
+    {
+      "id": 1488028070208,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        626,
+        7,
+        84,
+        36
+      ],
+      "text": "Variante activa"
+    },
+    {
+      "id": 1488012200896,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        554,
+        414,
+        35
+      ],
+      "text": "kW · los estados sin valor permanecen como huecos · sin interpolación"
+    },
+    {
+      "id": 1488007069888,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        243,
+        5,
+        48,
+        51
+      ],
+      "text": "—"
+    },
+    {
+      "id": 1488028069248,
+      "cls": "QLabel",
+      "name": "contextProject",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        7,
+        604,
+        36
+      ],
+      "text": "Proyecto: audit-2t"
+    },
+    {
+      "id": 1488027576832,
+      "cls": "QLabel",
+      "name": "metricCard",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Código original: NOT_PERFORMED\nRecomputada: False. Detalle completo en Trazabilidad.",
+      "rect": [
+        1010,
+        10,
+        326,
+        52
+      ],
+      "text": "Auditoría\nNo realizada"
+    },
+    {
+      "id": 1488027576000,
+      "cls": "QLabel",
+      "name": "metricCard",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        677,
+        10,
+        327,
+        52
+      ],
+      "text": "BMEP\n-455.03 kPa · TRANSITORIO, NO CONVERGIDO"
+    },
+    {
+      "id": 1488027567744,
+      "cls": "QLabel",
+      "name": "metricCard",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        10,
+        327,
+        52
+      ],
+      "text": "Potencia\n-2.8355 kW · TRANSITORIO, NO CONVERGIDO"
+    },
+    {
+      "id": 1488027582144,
+      "cls": "QLabel",
+      "name": "metricCard",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        345,
+        10,
+        326,
+        52
+      ],
+      "text": "Torque\n-9.0256 N·m · TRANSITORIO, NO CONVERGIDO"
+    },
+    {
+      "id": 1488028070656,
+      "cls": "QLabel",
+      "name": "modeBadge",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1159,
+        7,
+        120,
+        36
+      ],
+      "text": "EXPLORATORIO"
+    },
+    {
+      "id": 1488027572480,
+      "cls": "QLabel",
+      "name": "notice",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        68,
+        1324,
+        37
+      ],
+      "text": "Resultado exploratorio / importado · base · 3000 RPM · Límite de ciclos · no convergida · periodicidad Ciclos insuficientes · balance interno · máx. residuo relativo 6.97e-16"
+    },
+    {
+      "id": 1488028073216,
+      "cls": "QLabel",
+      "name": "workspaceModeLabel",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        373,
+        59,
+        140,
+        36
+      ],
+      "text": "MODO DE TRABAJO"
+    },
+    {
+      "id": 1488028267648,
+      "cls": "QListWidget",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        152,
+        1324,
+        36
+      ],
+      "items": [
+        "base"
+      ]
+    },
+    {
+      "id": 1488027572608,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        356,
+        111,
+        204,
+        35
+      ],
+      "text": "Abrir corridas EXPLORATORY…"
+    },
+    {
+      "id": 1488028065408,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        127,
+        107,
+        120,
+        35
+      ],
+      "text": "Abrir proyecto…"
+    },
+    {
+      "id": 1488012206080,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": false,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1146,
+        13,
+        76,
+        35
+      ],
+      "text": "Cancelar"
+    },
+    {
+      "id": 1488027578880,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        169,
+        111,
+        181,
+        35
+      ],
+      "text": "Evidencia IMPL2 histórica…"
+    },
+    {
+      "id": 1488012198912,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1185,
+        554,
+        151,
+        35
+      ],
+      "text": "Exportar gráfico PNG"
+    },
+    {
+      "id": 1488012108032,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        594,
+        1257,
+        35
+      ],
+      "text": "Exportar muestras x–θ CSV"
+    },
+    {
+      "id": 1488012273536,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Reportes históricos: CSV + JSON compañero para reabrir. Corridas exploratorias: tabla de consulta; conservar los artifacts originales.",
+      "rect": [
+        1043,
+        554,
+        136,
+        35
+      ],
+      "text": "Exportar tabla CSV"
+    },
+    {
+      "id": 1488028058752,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        247,
+        107,
+        74,
+        35
+      ],
+      "text": "Guardar"
+    },
+    {
+      "id": 1488027571392,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Histórico/tabla: CSV + JSON compañero en la misma carpeta; también admite reporte JSON. Corridas: result.json y sus artefactos originales.",
+      "rect": [
+        12,
+        111,
+        151,
+        35
+      ],
+      "text": "Importar resultados…"
+    },
+    {
+      "id": 1488028024640,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Barrido RPM y recuperación",
+      "rect": [
+        1228,
+        13,
+        120,
+        35
+      ],
+      "text": "Más opciones"
+    },
+    {
+      "id": 1488028060480,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        14,
+        107,
+        113,
+        35
+      ],
+      "text": "Nuevo motor…"
+    },
+    {
+      "id": 1488028073536,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        471,
+        107,
+        106,
+        35
+      ],
+      "text": "Trazabilidad…"
+    },
+    {
+      "id": 1488028067968,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        321,
+        107,
+        150,
+        35
+      ],
+      "text": "Variantes y corridas…"
+    },
+    {
+      "id": 1488012210048,
+      "cls": "QPushButton",
+      "name": "exportTechnicalReport",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Informe local autosuficiente con origen, estados, pares exactos, gráficos y registros originales seleccionados.",
+      "rect": [
+        615,
+        554,
+        217,
+        35
+      ],
+      "text": "Exportar informe técnico HTML…"
+    },
+    {
+      "id": 1488012207872,
+      "cls": "QPushButton",
+      "name": "exportTechnicalReportPdf",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "PDF paginado del mismo informe técnico, con la misma procedencia y límites científicos.",
+      "rect": [
+        838,
+        554,
+        199,
+        35
+      ],
+      "text": "Exportar informe técnico PDF."
+    },
+    {
+      "id": 1488028066880,
+      "cls": "QPushButton",
+      "name": "modeAnalysis",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        773,
+        59,
+        123,
+        36
+      ],
+      "text": "RESULTADOS"
+    },
+    {
+      "id": 1488028065728,
+      "cls": "QPushButton",
+      "name": "modeDesign",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        525,
+        59,
+        112,
+        36
+      ],
+      "text": "MODELO"
+    },
+    {
+      "id": 1488028067264,
+      "cls": "QPushButton",
+      "name": "modeSimulate",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        649,
+        59,
+        112,
+        36
+      ],
+      "text": "SIMULAR"
+    },
+    {
+      "id": 1488028152384,
+      "cls": "QPushButton",
+      "name": "prepareRunPanel",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        898,
+        13,
+        86,
+        35
+      ],
+      "text": "Preparar…"
+    },
+    {
+      "id": 1488027842688,
+      "cls": "QPushButton",
+      "name": "primaryAction",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        990,
+        13,
+        150,
+        35
+      ],
+      "text": "Iniciar corrida…"
+    },
+    {
+      "id": 1488027929216,
+      "cls": "QTabWidget",
+      "name": "resultViews",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        194,
+        1324,
+        354
+      ],
+      "tabs": [
+        "Curvas",
+        "Variables",
+        "Presiones y ondas",
+        "Comparar",
+        "Mediciones",
+        "Trazabilidad"
+      ],
+      "current": 2
+    }
+  ]
+}

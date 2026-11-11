@@ -1,0 +1,801 @@
+{
+  "tag": "p48-reference4t-queue-empty",
+  "title": "Cola de curvas 4T 0D",
+  "platform": "windows",
+  "size": [
+    769,
+    520
+  ],
+  "screen_dpr": 1.0,
+  "widgets": [
+    {
+      "id": 1487308206976,
+      "cls": "QAbstractButton",
+      "name": "qt_tableview_cornerbutton",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        6,
+        6,
+        0,
+        39
+      ],
+      "text": ""
+    },
+    {
+      "id": 1488012401152,
+      "cls": "QAbstractButton",
+      "name": "qt_tableview_cornerbutton",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        6,
+        6,
+        0,
+        39
+      ],
+      "text": ""
+    },
+    {
+      "id": 1488028065856,
+      "cls": "QComboBox",
+      "name": "engineFamilySelector",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Proyectos distintos con una navegación común; los modelos científicos siguen separados.",
+      "rect": [
+        126,
+        9,
+        235,
+        36
+      ],
+      "items": [
+        "Motor 2 tiempos",
+        "Motor 4 tiempos · nativo",
+        "4T 0D · referencia no validada"
+      ],
+      "current": 2
+    },
+    {
+      "id": 1488028311808,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        351,
+        8,
+        131,
+        35
+      ],
+      "text": " · cambios sin guardar"
+    },
+    {
+      "id": 1488028344192,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        212,
+        51,
+        1136,
+        35
+      ],
+      "text": "4T listo · sin corrida activa"
+    },
+    {
+      "id": 1487251118016,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        11,
+        11,
+        747,
+        34
+      ],
+      "text": "Cola acotada de curvas 4T 0D. Cada curva usa 2-5 RPM; el presupuesto y la cancelación son límites de ejecución, no validación científica."
+    },
+    {
+      "id": 1487229105024,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        11,
+        451,
+        747,
+        17
+      ],
+      "text": "Cola vacía. Agregue curvas para ejecutar."
+    },
+    {
+      "id": 1488028260736,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        121,
+        40,
+        17
+      ],
+      "text": "Estado"
+    },
+    {
+      "id": 1488028340864,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        152,
+        34,
+        16,
+        35
+      ],
+      "text": "Fin"
+    },
+    {
+      "id": 1486421044352,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        80,
+        121,
+        1216,
+        17
+      ],
+      "text": "Incremento: debe ser un entero positivo."
+    },
+    {
+      "id": 1488028344064,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        34,
+        30,
+        35
+      ],
+      "text": "Inicio"
+    },
+    {
+      "id": 1488011897856,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        75,
+        1276,
+        17
+      ],
+      "text": "Modelo 4T 0D de referencia: 2500–3500 RPM y 2–5 puntos por contrato. Para curvas amplias de potencia y torque, utilizá Motor 4T nativo. No son modelos intercambiables."
+    },
+    {
+      "id": 1488028345344,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        270,
+        34,
+        28,
+        35
+      ],
+      "text": "Paso"
+    },
+    {
+      "id": 1487308207552,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        11,
+        88,
+        119,
+        26
+      ],
+      "text": "Presupuesto de cola"
+    },
+    {
+      "id": 1487250334016,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        98,
+        54,
+        17
+      ],
+      "text": "Progreso"
+    },
+    {
+      "id": 1487229025408,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        11,
+        51,
+        95,
+        29
+      ],
+      "text": "RPM de la curva"
+    },
+    {
+      "id": 1488028068224,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        18,
+        9,
+        96,
+        36
+      ],
+      "text": "TIPO DE MOTOR"
+    },
+    {
+      "id": 1488028337344,
+      "cls": "QLabel",
+      "name": "fourStrokeCurveBanner",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        9,
+        1316,
+        17
+      ],
+      "text": "4T 0D REFERENCIA · SYNTHETIC_REFERENCE_0D · NOT_VALIDATED"
+    },
+    {
+      "id": 1488028347456,
+      "cls": "QLabel",
+      "name": "fourStrokeModeIndicator",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        8,
+        331,
+        35
+      ],
+      "text": "MODO 4T 0D · REFERENCIA SINTÉTICA · NOT_VALIDATED"
+    },
+    {
+      "id": 1488028073216,
+      "cls": "QLabel",
+      "name": "workspaceModeLabel",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        373,
+        9,
+        140,
+        36
+      ],
+      "text": "MODO DE TRABAJO"
+    },
+    {
+      "id": 1488028351360,
+      "cls": "QLineEdit",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        56,
+        36,
+        90,
+        31
+      ],
+      "text": "2500"
+    },
+    {
+      "id": 1487251112512,
+      "cls": "QLineEdit",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        136,
+        51,
+        622,
+        31
+      ],
+      "text": "2500,3000,3500"
+    },
+    {
+      "id": 1488028342464,
+      "cls": "QLineEdit",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        174,
+        36,
+        90,
+        31
+      ],
+      "text": "3500"
+    },
+    {
+      "id": 1488028347904,
+      "cls": "QLineEdit",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        304,
+        36,
+        90,
+        31
+      ],
+      "text": "500"
+    },
+    {
+      "id": 1487230221888,
+      "cls": "QLineEdit",
+      "name": "qt_spinbox_lineedit",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1,
+        1,
+        601,
+        24
+      ],
+      "text": "600 s"
+    },
+    {
+      "id": 1488028022080,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1166,
+        8,
+        82,
+        35
+      ],
+      "text": "Abrir 4T…"
+    },
+    {
+      "id": 1487229096960,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        273,
+        120,
+        153,
+        35
+      ],
+      "text": "Abrir cola guardada…"
+    },
+    {
+      "id": 1488028065408,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        127,
+        57,
+        120,
+        35
+      ],
+      "text": "Abrir proyecto…"
+    },
+    {
+      "id": 1487251120512,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        11,
+        120,
+        109,
+        35
+      ],
+      "text": "Agregar curva"
+    },
+    {
+      "id": 1487229092480,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": false,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        526,
+        120,
+        76,
+        35
+      ],
+      "text": "Cancelar"
+    },
+    {
+      "id": 1488028343360,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": false,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1093,
+        34,
+        76,
+        35
+      ],
+      "text": "Cancelar"
+    },
+    {
+      "id": 1486421033024,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": false,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        110,
+        51,
+        94,
+        35
+      ],
+      "text": "Cancelar 4T"
+    },
+    {
+      "id": 1488012404544,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        689,
+        0,
+        58,
+        35
+      ],
+      "text": "Close"
+    },
+    {
+      "id": 1488028019520,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1175,
+        34,
+        121,
+        35
+      ],
+      "text": "Cola de curvas…"
+    },
+    {
+      "id": 1488028058752,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        247,
+        57,
+        74,
+        35
+      ],
+      "text": "Guardar"
+    },
+    {
+      "id": 1488028317248,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1256,
+        8,
+        92,
+        35
+      ],
+      "text": "Guardar 4T"
+    },
+    {
+      "id": 1487229098944,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": false,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        432,
+        120,
+        88,
+        35
+      ],
+      "text": "Iniciar cola"
+    },
+    {
+      "id": 1488027571136,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1067,
+        8,
+        91,
+        35
+      ],
+      "text": "Nuevo 4T…"
+    },
+    {
+      "id": 1488028060480,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        14,
+        57,
+        113,
+        35
+      ],
+      "text": "Nuevo motor…"
+    },
+    {
+      "id": 1488028154048,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        126,
+        120,
+        141,
+        35
+      ],
+      "text": "Quitar seleccionada"
+    },
+    {
+      "id": 1487229094528,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        608,
+        120,
+        150,
+        35
+      ],
+      "text": "Reanudar pendientes"
+    },
+    {
+      "id": 1488028314816,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        968,
+        8,
+        91,
+        35
+      ],
+      "text": "Volver a 2T"
+    },
+    {
+      "id": 1488028346112,
+      "cls": "QPushButton",
+      "name": "fourStrokeCurveRun",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        980,
+        34,
+        107,
+        35
+      ],
+      "text": "Calcular curva"
+    },
+    {
+      "id": 1488028318400,
+      "cls": "QPushButton",
+      "name": "fourStrokeRun",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        51,
+        90,
+        35
+      ],
+      "text": "Ejecutar 4T"
+    },
+    {
+      "id": 1488028066880,
+      "cls": "QPushButton",
+      "name": "modeAnalysis",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        773,
+        9,
+        123,
+        36
+      ],
+      "text": "RESULTADOS"
+    },
+    {
+      "id": 1488028065728,
+      "cls": "QPushButton",
+      "name": "modeDesign",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        525,
+        9,
+        112,
+        36
+      ],
+      "text": "MODELO"
+    },
+    {
+      "id": 1488028067264,
+      "cls": "QPushButton",
+      "name": "modeSimulate",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        649,
+        9,
+        112,
+        36
+      ],
+      "text": "SIMULAR"
+    },
+    {
+      "id": 1487251128128,
+      "cls": "QSpinBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        136,
+        88,
+        622,
+        26
+      ],
+      "text": "600 s",
+      "value": 600
+    },
+    {
+      "id": 1488028309056,
+      "cls": "QTabWidget",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        94,
+        1336,
+        616
+      ],
+      "tabs": [
+        "Diseño 4T",
+        "Resultados 4T",
+        "Curva RPM 4T"
+      ],
+      "current": 2
+    },
+    {
+      "id": 1487229094400,
+      "cls": "QTableWidget",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        11,
+        161,
+        747,
+        284
+      ],
+      "headers": [
+        "Curva RPM",
+        "Estado",
+        "Serie / error"
+      ],
+      "rows": []
+    },
+    {
+      "id": 1488028343168,
+      "cls": "QTableWidget",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        196,
+        1316,
+        132
+      ],
+      "headers": [
+        "RPM",
+        "Estado",
+        "W_C [J]",
+        "p_max [kPa]",
+        "Integración [s]",
+        "Punto"
+      ],
+      "rows": []
+    }
+  ]
+}

@@ -13627,72 +13627,94 @@
       "objective": "DINO_FRONTEND_UX_AUDIT_V1",
       "description": "Observe real 2T/native4T/reference4T routes with durable evidence",
       "dependencies": [],
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Record live Qt mouse/keyboard walkthroughs.",
-      "owner_role": "orchestrator",
-      "write_scope": [
-        "results/frontend-audit-v1/captures/",
-        "audit_tools/frontend_audit/"
+      "evidence": [
+        "docs/frontend-audit-v1/metodologia.md",
+        "results/frontend-audit-v1/evidence-index.json",
+        "results/frontend-audit-v1/evidence/interactions-pinned.jsonl"
       ],
-      "evidence_level": "L0"
+      "next_action": "Research/design delivered; proposed implementation not activated.",
+      "owner_role": "orchestrator",
+      "write_scope": [],
+      "evidence_level": "L0",
+      "qualification": "Revision-bound UX research; no product or scientific acceptance."
     },
     {
       "id": "UXA-DIAGNOSIS",
       "objective": "DINO_FRONTEND_UX_AUDIT_V1",
       "description": "Build evidence-backed seven-category UX/UI diagnosis",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Build evidence-backed seven-category UX/UI diagnosis",
+      "evidence": [
+        "docs/frontend-audit-v1/diagnostico.md",
+        "results/frontend-audit-v1/findings.json"
+      ],
+      "next_action": "Research/design delivered; proposed implementation not activated.",
       "owner_role": "orchestrator",
       "write_scope": [],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "qualification": "Revision-bound UX research; no product or scientific acceptance."
     },
     {
       "id": "UXA-DESIGN",
       "objective": "DINO_FRONTEND_UX_AUDIT_V1",
       "description": "Propose coherent information architecture and visual wireframes",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Propose coherent information architecture and visual wireframes",
+      "evidence": [
+        "docs/frontend-audit-v1/rediseño.md",
+        "docs/frontend-audit-v1/wireframes.html",
+        "docs/frontend-audit-v1/wireframes/modelo.svg",
+        "results/frontend-audit-v1/prototype-qa.json"
+      ],
+      "next_action": "Research/design delivered; proposed implementation not activated.",
       "owner_role": "orchestrator",
       "write_scope": [],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "qualification": "Revision-bound UX research; no product or scientific acceptance."
     },
     {
       "id": "UXA-BACKLOG",
       "objective": "DINO_FRONTEND_UX_AUDIT_V1",
       "description": "Prioritize scoped improvements, dependencies and acceptance",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Prioritize scoped improvements, dependencies and acceptance",
+      "evidence": [
+        "docs/frontend-audit-v1/backlog.md",
+        "results/frontend-audit-v1/findings.json"
+      ],
+      "next_action": "Research/design delivered; proposed implementation not activated.",
       "owner_role": "orchestrator",
       "write_scope": [],
-      "evidence_level": "L0"
+      "evidence_level": "L0",
+      "qualification": "Revision-bound UX research; no product or scientific acceptance."
     },
     {
       "id": "UXA-REVIEW",
       "objective": "DINO_FRONTEND_UX_AUDIT_V1",
       "description": "Self-review coverage, limitations, compatibility and delivery integrity",
       "dependencies": [],
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Self-review coverage, limitations, compatibility and delivery integrity",
+      "evidence": [
+        "docs/frontend-audit-v1/self-review.md",
+        "results/frontend-audit-v1/delivery-check.json"
+      ],
+      "next_action": "Finish SELF_REVIEW and close audit-deliverable gate only.",
       "owner_role": "orchestrator",
-      "write_scope": [],
+      "write_scope": [
+        "docs/frontend-audit-v1/self-review.md",
+        "results/frontend-audit-v1/delivery-check.json"
+      ],
       "evidence_level": "L0"
     }
   ],
@@ -19386,6 +19408,30 @@
       "task": "UXA-SCOPE",
       "kind": "task",
       "summary": "Frozen integrated CP0+CP1+unified UI at d44305c in isolated audit worktree. Owner scope replaces CP1 implementation here; blockers retained outside scope. Real Windows Qt GUI uses isolated settings/artifacts."
+    },
+    {
+      "at": "2026-11-11T11:28:22+00:00",
+      "task": "UXA-WALKTHROUGHS",
+      "kind": "task",
+      "summary": "Real Windows Qt6.11.2 walkthroughs: 2T/native4T/reference0D, errors, curves, cancel, PDF, bundles, legacy, recovery and compact layouts. 74 pinned captures; preliminary Qt6.10 excluded. No product changes."
+    },
+    {
+      "at": "2026-11-11T11:28:22+00:00",
+      "task": "UXA-DIAGNOSIS",
+      "kind": "task",
+      "summary": "23 evidence-linked findings: 3 P0,11 P1,7 P2,2 P3. P0: native unapplied draft executed/lost, incomplete portable bundle, Save after native import fails. Distinguish observations, proposals and verification gaps."
+    },
+    {
+      "at": "2026-11-11T11:28:22+00:00",
+      "task": "UXA-DESIGN",
+      "kind": "task",
+      "summary": "Research proposal: persistent project/model/variant/revision, component tree, common study/jobs/results/comparison flows. Three rendered SVG wireframes and illustrative HTML; browser UAT unavailable. No redesign implemented."
+    },
+    {
+      "at": "2026-11-11T11:28:22+00:00",
+      "task": "UXA-BACKLOG",
+      "kind": "task",
+      "summary": "23 proposed tickets include affected components, frontend/application-backend ownership, dependencies, acceptance and verification. Incremental IA reorganization recommended; scientific cores/contracts preserved."
     }
   ],
   "legacy_gate_status": {
@@ -19405,20 +19451,15 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 6,
-    "gate_tasks_done": 1,
+    "gate_tasks_done": 5,
     "gate_task_states": {
-      "DONE": 1,
-      "IN_PROGRESS": 1,
-      "READY": 4
+      "DONE": 5,
+      "IN_PROGRESS": 1
     },
     "remaining": [
-      "UXA-WALKTHROUGHS",
-      "UXA-DIAGNOSIS",
-      "UXA-DESIGN",
-      "UXA-BACKLOG",
       "UXA-REVIEW"
     ],
-    "updated_at": "2026-11-11T10:45:23+00:00"
+    "updated_at": "2026-11-11T11:28:22+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

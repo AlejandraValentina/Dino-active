@@ -1,0 +1,980 @@
+{
+  "tag": "07-new-motor-4t",
+  "title": "Crear proyecto de motor",
+  "platform": "windows",
+  "size": [
+    560,
+    605
+  ],
+  "screen_dpr": 1.0,
+  "widgets": [
+    {
+      "id": 1358238973120,
+      "cls": "QComboBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        720,
+        7,
+        205,
+        36
+      ],
+      "items": [
+        "Motor nuevo · diseño editable"
+      ],
+      "current": 0
+    },
+    {
+      "id": 1358238973632,
+      "cls": "QComboBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1007,
+        7,
+        142,
+        36
+      ],
+      "items": [
+        "Motor base"
+      ],
+      "current": 0
+    },
+    {
+      "id": 1358243781504,
+      "cls": "QComboBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        183,
+        131,
+        1081,
+        36
+      ],
+      "items": [
+        "Diagnóstico breve · 1 ciclo",
+        "Observar periodicidad · 24 ciclos",
+        "Configuración avanzada · elegir horizonte"
+      ],
+      "current": 0
+    },
+    {
+      "id": 1358243898368,
+      "cls": "QComboBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        144,
+        268,
+        405,
+        36
+      ],
+      "items": [
+        "Dos tiempos (2T)",
+        "Cuatro tiempos (4T)"
+      ],
+      "current": 1
+    },
+    {
+      "id": 1358238970944,
+      "cls": "QComboBox",
+      "name": "engineFamilySelector",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Proyectos distintos con una navegación común; los modelos científicos siguen separados.",
+      "rect": [
+        126,
+        59,
+        235,
+        36
+      ],
+      "items": [
+        "Motor 2 tiempos",
+        "Motor 4 tiempos · nativo",
+        "4T 0D · referencia no validada"
+      ],
+      "current": 0
+    },
+    {
+      "id": 1358243790144,
+      "cls": "QDoubleSpinBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        183,
+        57,
+        1081,
+        36
+      ],
+      "text": "3000,000 RPM",
+      "value": 3000.0
+    },
+    {
+      "id": 1358243694336,
+      "cls": "QDoubleSpinBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        183,
+        213,
+        1081,
+        36
+      ],
+      "text": "60 s",
+      "value": 60.0
+    },
+    {
+      "id": 1358243705664,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        183,
+        255,
+        1081,
+        34
+      ],
+      "text": "1 ciclos · Presupuesto actual 60 s alcanza la estimación orientativa de hasta 36 s; no garantiza terminar. fallback conservador de 30 s/ciclo; aún sin historial comparable. Cambiar el preset nunca cambia el presupuesto."
+    },
+    {
+      "id": 1358243893056,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        142,
+        5,
+        145,
+        35
+      ],
+      "text": "3000 rpm · 1 ciclos · 60 s"
+    },
+    {
+      "id": 1358238971008,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        935,
+        7,
+        62,
+        36
+      ],
+      "text": "Baseline ···"
+    },
+    {
+      "id": 1358243895808,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "—",
+      "rect": [
+        293,
+        5,
+        599,
+        35
+      ],
+      "text": "Checkpoint: —"
+    },
+    {
+      "id": 1358243696448,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        183,
+        336,
+        1081,
+        17
+      ],
+      "text": "EXPLORATORY · 1 worker · conservación; auditoría según modo de ejecución"
+    },
+    {
+      "id": 1357400652992,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        11,
+        376,
+        538,
+        177
+      ],
+      "text": "El proyecto 4T comienza con la configuración DINO4T_API_V1 de ejemplo, etiquetada como sintética. En MODELO se editan válvulas, distribución, cilindro, admisión, escape y combustión."
+    },
+    {
+      "id": 1357394616704,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        255,
+        127,
+        29
+      ],
+      "text": "Estimación orientativa"
+    },
+    {
+      "id": 1357400740288,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        11,
+        268,
+        40,
+        29
+      ],
+      "text": "Familia"
+    },
+    {
+      "id": 1358238970752,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1289,
+        7,
+        59,
+        36
+      ],
+      "text": "Guardado"
+    },
+    {
+      "id": 1357400957056,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        99,
+        157,
+        26
+      ],
+      "text": "Horizonte (máx. 111 ciclos)"
+    },
+    {
+      "id": 1358243894976,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "LISTO · preparado",
+      "rect": [
+        12,
+        5,
+        105,
+        35
+      ],
+      "text": "LISTO · preparado"
+    },
+    {
+      "id": 1357400952704,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        336,
+        36,
+        17
+      ],
+      "text": "Modo"
+    },
+    {
+      "id": 1358243785216,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        183,
+        173,
+        1081,
+        34
+      ],
+      "text": "Modo de ingeniería: balances internos, muestras físicas y checkpoints. Sin replay ni auditoría independiente. Potencia transitoria identificada como no convergida; sin validación predictiva."
+    },
+    {
+      "id": 1357400703424,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        34,
+        96,
+        17
+      ],
+      "text": "Motor / variante"
+    },
+    {
+      "id": 1358243781696,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        183,
+        34,
+        1081,
+        17
+      ],
+      "text": "Motor base"
+    },
+    {
+      "id": 1357400574848,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        11,
+        231,
+        111,
+        29
+      ],
+      "text": "Nombre del motor"
+    },
+    {
+      "id": 1357400783424,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        11,
+        194,
+        127,
+        29
+      ],
+      "text": "Nombre del proyecto"
+    },
+    {
+      "id": 1358243700416,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        24,
+        558,
+        950,
+        35
+      ],
+      "text": "Preflight PASS · 3000 RPM · 0 pasos · 44 celdas · pérdidas explícitas · combustible configurado · AFR 11.5"
+    },
+    {
+      "id": 1357400772224,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        131,
+        114,
+        29
+      ],
+      "text": "Preset de horizonte"
+    },
+    {
+      "id": 1357400780224,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        213,
+        136,
+        29
+      ],
+      "text": "Presupuesto de tiempo"
+    },
+    {
+      "id": 1357400718016,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        57,
+        27,
+        29
+      ],
+      "text": "RPM"
+    },
+    {
+      "id": 1357400714752,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        173,
+        132,
+        29
+      ],
+      "text": "Resultados esperables"
+    },
+    {
+      "id": 1358238970048,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        18,
+        59,
+        96,
+        36
+      ],
+      "text": "TIPO DE MOTOR"
+    },
+    {
+      "id": 1358238973056,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        626,
+        7,
+        84,
+        36
+      ],
+      "text": "Variante activa"
+    },
+    {
+      "id": 1358243904704,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        123,
+        5,
+        13,
+        35
+      ],
+      "text": "—"
+    },
+    {
+      "id": 1358238972288,
+      "cls": "QLabel",
+      "name": "contextProject",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        7,
+        604,
+        36
+      ],
+      "text": "Proyecto: dino-2t-nuevo"
+    },
+    {
+      "id": 1358221227200,
+      "cls": "QLabel",
+      "name": "modeBadge",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1159,
+        7,
+        120,
+        36
+      ],
+      "text": "EXPLORATORIO"
+    },
+    {
+      "id": 1358243780608,
+      "cls": "QLabel",
+      "name": "notice",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        24,
+        79,
+        1284,
+        53
+      ],
+      "text": "EXPLORATORY produce evidencia provisional, sin claim de validación. VERIFIED permanece bloqueado hasta contar con contrato, preregistro y autorización coincidentes. No se ejecutan campañas históricas."
+    },
+    {
+      "id": 1357400198720,
+      "cls": "QLabel",
+      "name": "notice",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        11,
+        11,
+        538,
+        177
+      ],
+      "text": "Elegí el ciclo del motor. Dino Desktop conserva proyectos y solvers 2T y 4T separados. Las plantillas iniciales son sintéticas."
+    },
+    {
+      "id": 1358243789504,
+      "cls": "QLabel",
+      "name": "title",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        24,
+        20,
+        1284,
+        53
+      ],
+      "text": "Simulación local"
+    },
+    {
+      "id": 1358238958912,
+      "cls": "QLabel",
+      "name": "workspaceModeLabel",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        373,
+        59,
+        140,
+        36
+      ],
+      "text": "MODO DE TRABAJO"
+    },
+    {
+      "id": 1357400210624,
+      "cls": "QLineEdit",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        144,
+        231,
+        405,
+        31
+      ],
+      "text": "Motor 4T nuevo"
+    },
+    {
+      "id": 1357400198208,
+      "cls": "QLineEdit",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        144,
+        194,
+        405,
+        31
+      ],
+      "text": "dino-proyecto-nuevo"
+    },
+    {
+      "id": 1357400750976,
+      "cls": "QLineEdit",
+      "name": "qt_spinbox_lineedit",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1,
+        1,
+        1060,
+        24
+      ],
+      "text": "1"
+    },
+    {
+      "id": 1357400742784,
+      "cls": "QLineEdit",
+      "name": "qt_spinbox_lineedit",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        6,
+        6,
+        1042,
+        24
+      ],
+      "text": "3000,000 RPM"
+    },
+    {
+      "id": 1357400751104,
+      "cls": "QLineEdit",
+      "name": "qt_spinbox_lineedit",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        6,
+        6,
+        1042,
+        24
+      ],
+      "text": "60 s"
+    },
+    {
+      "id": 1358238967872,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        127,
+        107,
+        120,
+        35
+      ],
+      "text": "Abrir proyecto…"
+    },
+    {
+      "id": 1358243699840,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        183,
+        295,
+        1081,
+        35
+      ],
+      "text": "Aplicar presupuesto sugerido (máx. 600 s)"
+    },
+    {
+      "id": 1357400961088,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        474,
+        0,
+        64,
+        35
+      ],
+      "text": "Cancel"
+    },
+    {
+      "id": 1358238969984,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": false,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1146,
+        5,
+        76,
+        35
+      ],
+      "text": "Cancelar"
+    },
+    {
+      "id": 1358243697664,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        24,
+        517,
+        1284,
+        35
+      ],
+      "text": "Configuración avanzada ▸"
+    },
+    {
+      "id": 1357400653056,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        354,
+        0,
+        114,
+        35
+      ],
+      "text": "Crear proyecto"
+    },
+    {
+      "id": 1358243697920,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Preflight y barrido exploratorio acotado con el motor integrado",
+      "rect": [
+        1077,
+        558,
+        99,
+        35
+      ],
+      "text": "Curva RPM…"
+    },
+    {
+      "id": 1358238967104,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        247,
+        107,
+        74,
+        35
+      ],
+      "text": "Guardar"
+    },
+    {
+      "id": 1358238962240,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Barrido RPM y recuperación",
+      "rect": [
+        1228,
+        5,
+        120,
+        35
+      ],
+      "text": "Más opciones"
+    },
+    {
+      "id": 1358238959808,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        14,
+        107,
+        113,
+        35
+      ],
+      "text": "Nuevo motor…"
+    },
+    {
+      "id": 1358243699392,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1182,
+        558,
+        126,
+        35
+      ],
+      "text": "Reanudar curva…"
+    },
+    {
+      "id": 1358243698816,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": false,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        980,
+        558,
+        91,
+        35
+      ],
+      "text": "Reanudar…"
+    },
+    {
+      "id": 1358238967360,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        471,
+        107,
+        106,
+        35
+      ],
+      "text": "Trazabilidad…"
+    },
+    {
+      "id": 1358238961984,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        321,
+        107,
+        150,
+        35
+      ],
+      "text": "Variantes y corridas…"
+    },
+    {
+      "id": 1358238971072,
+      "cls": "QPushButton",
+      "name": "modeAnalysis",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        773,
+        59,
+        123,
+        36
+      ],
+      "text": "RESULTADOS"
+    },
+    {
+      "id": 1358238972480,
+      "cls": "QPushButton",
+      "name": "modeDesign",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        525,
+        59,
+        112,
+        36
+      ],
+      "text": "MODELO"
+    },
+    {
+      "id": 1358238973824,
+      "cls": "QPushButton",
+      "name": "modeSimulate",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        649,
+        59,
+        112,
+        36
+      ],
+      "text": "SIMULAR"
+    },
+    {
+      "id": 1358243894912,
+      "cls": "QPushButton",
+      "name": "prepareRunPanel",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        898,
+        5,
+        86,
+        35
+      ],
+      "text": "Preparar…"
+    },
+    {
+      "id": 1358243695872,
+      "cls": "QPushButton",
+      "name": "primaryAction",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        990,
+        5,
+        150,
+        35
+      ],
+      "text": "Iniciar corrida…"
+    },
+    {
+      "id": 1358243786880,
+      "cls": "QSpinBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        183,
+        99,
+        1081,
+        26
+      ],
+      "text": "1",
+      "value": 1
+    }
+  ]
+}

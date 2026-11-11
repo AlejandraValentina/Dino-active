@@ -141,12 +141,13 @@ def main():
                      value=combo.currentText()))
 
     def enter(widget, text):
+        name = widget.objectName()
         widget.setFocus()
         QTest.keyClick(widget, Qt.Key.Key_A, Qt.KeyboardModifier.ControlModifier)
         QTest.keyClicks(widget, str(text))
         QTest.keyClick(widget, Qt.Key.Key_Tab)
         QTest.qWait(100)
-        journal(dict(kind='keyboard-entry', name=widget.objectName(), text=str(text)))
+        journal(dict(kind='keyboard-entry', name=name, text=str(text)))
 
     def by_text(text):
         found = [w for w in app.allWidgets() if w.isVisible() and
