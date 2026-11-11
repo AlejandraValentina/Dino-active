@@ -2,7 +2,7 @@
   "schema": "DINO_INCIDENT_V1",
   "id": "DINO-INC-EXTVIEW-001",
   "severity": "high",
-  "status": "OPEN_INDEPENDENT",
+  "status": "CORRECTED_TEST_DEFECT",
   "title": "external_view ImportDialog access violation under Qt offscreen/test teardown",
   "component": "motorsim/external_view.py:88 ImportDialog.__init__",
   "test": "tests/test_external_data.py::test_import_confirm_roundtrip_unknown_conditions_and_previous_preserved",
@@ -29,5 +29,12 @@
   "classification": "INHERITED_PRODUCT_DEFECT_CANDIDATE",
   "cp1_attribution": "NOT_CP1",
   "notes": "Reproduced before and after CP1. Do not mark CP1 general regression green. Diagnosis should focus on QDialog/QScrollArea/QPushButton lifetime or parent destruction in the legacy external view path; not bundled into CP1 fixes.",
-  "next_action": "Create a minimal Qt reproducer with ImportDialog parent lifetime and fix separately before including external_data in the green suite."
+  "next_action": "Keep the regression test; do not restore class-level patching of Qt methods.",
+  "corrected_at": "2026-11-11T12:43:07+00:00",
+  "root_cause": "Unit test patched PySide6 QDialog.exec on the ImportDialog class with unittest.mock; this corrupted the Qt binding and produced an access violation while constructing the next ImportDialog. The product ImportDialog path itself was not the cause.",
+  "resolution": "Replaced the class-level exec patch with the real embedded import dialog and an explicit reject() to exercise the rejection path.",
+  "verification": [
+    "tests/test_external_data.py 16 PASS 1 SKIP",
+    "tests/test_dino_desktop.py + tests/test_external_data.py 43 PASS 2 SKIP"
+  ]
 }

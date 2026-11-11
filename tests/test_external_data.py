@@ -226,8 +226,8 @@ class ExternalWindowTests(unittest.TestCase):
         self.assertEqual(wizard.result(),QDialog.DialogCode.Accepted)
         self.dialog.open_import(path=wizard.imported['path']);previous=self.dialog.external
         source=self.root/'draft.csv';source.write_bytes(RAW)
-        with patch('motorsim.external_view.ImportDialog.exec',return_value=QDialog.DialogCode.Rejected):
-            self.dialog.import_csv(path=source)
+        self.dialog.import_csv(path=source)
+        self.dialog.import_dialog.reject()
         self.assertIs(self.dialog.external,previous)
         self.dialog.open_import(path=self.root/'bad.json');self.assertIs(self.dialog.external,previous)
         bad=ImportDialog(b'rpm,value\n2500,NaN',self.dialog)

@@ -1,0 +1,18 @@
+{
+  "schema": "DINO_INCIDENT_V1",
+  "id": "DINO-DEF-DESKTOP-001",
+  "severity": "medium",
+  "status": "CORRECTED_TEST_FIXTURE",
+  "title": "ExecutionPage A/B curve test supplied fewer preflights than requested RPM points",
+  "component": "tests/test_dino_desktop.py:550",
+  "test": "tests/test_dino_desktop.py::DinoDesktopTests::test_execution_page_dispatches_ab_curve_as_independent_rpm_workers",
+  "symptom": "IndexError: list index out of range at execution_page.py:400",
+  "root_cause": "The test relied on dialog defaults while its prepare_power_curve mock returned only seven point_preflights; the dialog default range produces more RPM points.",
+  "resolution": "The test now sets curveStartRpm=3000, curveStopRpm=6000 and curveStepRpm=500 explicitly, matching the seven preflights it supplies.",
+  "verification": [
+    "single test PASS",
+    "tests/test_dino_desktop.py 26 PASS 1 SKIP"
+  ],
+  "cp1_attribution": "NOT_CP1",
+  "created_at": "2026-11-11T12:43:07+00:00"
+}

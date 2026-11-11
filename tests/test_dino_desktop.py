@@ -13,7 +13,7 @@ from unittest.mock import patch
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 from copy import deepcopy
 from PySide6.QtCore import Qt,QTimer
-from PySide6.QtWidgets import QApplication,QDialog,QLabel,QMessageBox,QTableWidget,QTableWidgetItem,QPlainTextEdit,QFileDialog,QComboBox
+from PySide6.QtWidgets import QApplication,QDialog,QLabel,QMessageBox,QTableWidget,QTableWidgetItem,QPlainTextEdit,QFileDialog,QComboBox,QSpinBox
 from PySide6.QtTest import QTest
 import desktop_qsettings_isolation  # noqa: F401
 
@@ -553,6 +553,9 @@ class DinoDesktopTests(unittest.TestCase):
         page=ExecutionPage(context)
         calls={}
         def accept_ab(dialog):
+            dialog.findChild(QSpinBox,"curveStartRpm").setValue(3000)
+            dialog.findChild(QSpinBox,"curveStopRpm").setValue(6000)
+            dialog.findChild(QSpinBox,"curveStepRpm").setValue(500)
             choice=dialog.findChild(QComboBox,"curveABParallelVariant")
             choice.setCurrentIndex(choice.findData("B_header_plus20"))
             return QDialog.DialogCode.Accepted

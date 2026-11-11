@@ -19326,6 +19326,12 @@
       "task": "CP1-DIFFERENTIAL-CLOSURE",
       "kind": "decision",
       "summary": "CP1 fast-forwarded to main 613dfd5 after differential audit; 71 post-merge source smoke PASS and packaged Windows acceptance PASS. No CP1-only failures; general regression NOT_GREEN and external_view incident remain independent."
+    },
+    {
+      "at": "2026-11-11T12:43:07+00:00",
+      "task": "INHERITED-INCIDENT-TRIAGE",
+      "kind": "task",
+      "summary": "external_view access violation corrected as a test defect (Qt class patch); desktop A/B curve IndexError corrected as a test fixture assumption. 43 PASS / 2 SKIP in both files. Baseline teardown remains triage; general regression NOT_GREEN."
     }
   ],
   "legacy_gate_status": {
@@ -20088,7 +20094,14 @@
     "external_view_incident": "results/commercial-product-v1/incidents/external-view-access-violation.json",
     "updated_at": "2026-11-11T11:56:34+00:00",
     "identical_failure_ids_total": 146,
-    "order_sensitive_ids": 9
+    "order_sensitive_ids": 9,
+    "corrected_incidents": [
+      "DINO-INC-EXTVIEW-001",
+      "DINO-DEF-DESKTOP-001"
+    ],
+    "open_incidents": [
+      "DINO-INC-BASELINE-TEARDOWN-001"
+    ]
   },
   "differential_audit_closure": {
     "status": "CLOSED_NO_CP1_REGRESSION",

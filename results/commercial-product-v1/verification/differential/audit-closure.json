@@ -64,19 +64,19 @@
   "open_incidents": [
     {
       "id": "DINO-INC-EXTVIEW-001",
-      "status": "OPEN_INDEPENDENT",
+      "status": "CORRECTED_TEST_DEFECT",
       "path": "results/commercial-product-v1/incidents/external-view-access-violation.json",
       "owner": "external-view fix"
     },
     {
       "id": "DINO-DEF-DESKTOP-001",
-      "status": "TRIAGE",
-      "path": "tests/test_dino_desktop.py::DinoDesktopTests::test_execution_page_dispatches_ab_curve_as_independent_rpm_workers",
+      "status": "CORRECTED_TEST_FIXTURE",
+      "path": "results/commercial-product-v1/incidents/desktop-execution-indexerror.json",
       "owner": "desktop execution page"
     },
     {
       "id": "DINO-INC-BASELINE-TEARDOWN-001",
-      "status": "TRIAGE",
+      "status": "OPEN_TRIAGE",
       "path": "results/commercial-product-v1/verification/differential/diff-main-48b3afe.summary.json",
       "owner": "environment/inherited"
     }
@@ -86,5 +86,11 @@
     "experimental_validation": "NOT_PERFORMED",
     "predictive_capability": "NOT_CLAIMED"
   },
-  "next": "CP2 may start from main 613dfd5; fix external_view separately before CP4/release."
+  "next": "CP2 may start from main 613dfd5; fix external_view separately before CP4/release.",
+  "post_closure_corrections": {
+    "external_view": "CORRECTED_TEST_DEFECT",
+    "desktop_indexerror": "CORRECTED_TEST_FIXTURE",
+    "baseline_teardown": "OPEN_TRIAGE",
+    "verification": "tests/test_dino_desktop.py + tests/test_external_data.py 43 PASS 2 SKIP"
+  }
 }
