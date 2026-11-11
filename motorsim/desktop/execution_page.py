@@ -83,6 +83,10 @@ class ExecutionPage(QWidget):
         self.resume_sweep=QPushButton("Reanudar curva…");self.resume_sweep.clicked.connect(self.resume_power_curve);actions.addWidget(self.resume_sweep)
         self.cancel=QPushButton("Cancelar"); self.cancel.setEnabled(False); self.cancel.clicked.connect(self.cancel_run); actions.addWidget(self.cancel)
         self.history=SimpleNamespace(entries=[],artifact_root=self.artifact_root)
+        self.last_result_paths=[];self.last_result_project_id=None
+        self.view_result=QPushButton('Ver resultado de la última corrida')
+        self.view_result.setEnabled(False);self.view_result.clicked.connect(lambda *_:self.open_runs_requested.emit(self.last_result_paths))
+        root.addWidget(self.view_result)
         self.context.changed.connect(self.refresh)
         self.progress_signal.connect(self._progress)
         self.rpm.valueChanged.connect(self.refresh); self.cycles.valueChanged.connect(self.refresh)
@@ -134,6 +138,8 @@ class ExecutionPage(QWidget):
                          budget_seconds=self.budget.value(),memory_limit_mib=self.memory.value())
 
     def refresh(self,*_):
+        if self.last_result_project_id is not None and self.last_result_project_id!=self.context.project['project_id']:
+            self.last_result_paths=[];self.last_result_project_id=None;self.view_result.setEnabled(False)
         try:
             engine=self._engine();visible_variant=self.context.selected_variant or "Motor base"
             self.engine_label.setText(visible_variant)
@@ -258,6 +264,7 @@ class ExecutionPage(QWidget):
         return dialog.clickedButton() is accept
 
     def start_run(self, *, resume):
+        if not self.context.prepare_operation('Ejecutar simulación 2T'):return
         self.active_sweep_settings=None
         if self.task is not None:return
         if repository_root_containing(self.artifact_root) is not None:
@@ -291,6 +298,7 @@ class ExecutionPage(QWidget):
 
     def start_power_curve(self):
         """Prepare and explicitly confirm a bounded exploratory RPM sweep."""
+        if not self.context.prepare_operation('Preparar curva RPM 2T'):return
         if self.task is not None:return
         from ..power_curve import plan_rpm_range
         from ..power_curve_sweep import prepare_power_curve,run_power_curve
@@ -325,6 +333,15 @@ class ExecutionPage(QWidget):
             ("Horizonte máximo por punto",cycles),("Presupuesto por punto (s)",point_budget),
             ("Presupuesto total de esta invocación (s)",total_budget),("Memoria RSS máxima (MiB)",memory)):
             form.addRow(label,widget)
+        plan_label=QLabel();plan_label.setWordWrap(True);form.addRow('Plan de ejecución',plan_label)
+        def update_plan(*_):
+            try:
+                grid=plan_rpm_range(start.value(),stop.value(),step.value())
+                count=len(grid)*(2 if parallel_variant.currentData() is not None else 1)
+                plan_label.setText(f'{count} puntos · RPM {grid} · presupuesto por punto {point_budget.value()} s · total {total_budget.value()} s. El presupuesto no es una estimación de duración.')
+            except Exception as exc:plan_label.setText('Revisá el rango: '+str(exc))
+        for spin in (start,stop,step,point_budget,total_budget):spin.valueChanged.connect(update_plan)
+        parallel_variant.currentIndexChanged.connect(update_plan);update_plan()
         domain_note=QLabel(f'Dominio 2T habilitado actualmente: {low_rpm}–{high_rpm} RPM. '
                            'No es el límite físico universal de un motor 2T; valores inferiores requieren ampliar la validación del solver.')
         domain_note.setWordWrap(True);form.addRow(domain_note)
@@ -797,6 +814,21 @@ class ExecutionPage(QWidget):
         self.state_changed.emit()
 
     def _done(self,result):
+        import hashlib,json
+        self.last_result_project_id=result.get('bindings',{}).get('project_id',self.context.project['project_id'])
+        self.last_result_paths=[str(p['run_directory']) for p in result.get('points',[]) if p.get('run_directory')]
+        if not self.last_result_paths and result.get('artifact_directory'):
+            directory=Path(result['artifact_directory']);result_file=directory/'result.json'
+            self.last_result_paths=[str(directory)]
+            try:
+                raw=result_file.read_bytes();stored=json.loads(raw)
+                if stored.get('bindings',{}).get('project_id')==self.context.project['project_id']:
+                    self.context.add_result_reference(dict(path=str(result_file),
+                        identity_sha256=stored['bindings']['identity_sha256'],
+                        artifact_sha256=hashlib.sha256(raw).hexdigest(),classification=stored['classification']))
+            except (OSError,ValueError,KeyError) as exc:
+                self.output.appendPlainText('Resultado conservado; no se pudo vincular al proyecto: '+str(exc))
+        self.view_result.setEnabled(bool(self.last_result_paths))
         self.status_text=f"Terminada · {state_label(result.get('classification','clasificación no informada'))}"
         if isinstance(result.get("points"),list):
             if result.get('bindings',{}).get('project_id')==self.context.project['project_id']:

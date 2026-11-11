@@ -22,15 +22,13 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_COMMERCIAL_PRODUCT_CP1_V1
-change/spec:       openspec/changes/commercial-product-v1/
-                   specs/commercial-product-v1/spec.md
-roadmap:          docs/roadmaps/dino-commercial-product-v1-20261110.md
-completion:        CP0 is source+Windows accepted on main 864f47f; implement
-                   CP1 workflow completeness in order: undo/redo + PDF +
-                   onboarding, then portable bundles, then batch and
-                   comparison/legacy UX. CP3 validation is data-gated and no
-                   scientific claim follows from product work.
+CURRENT_OBJECTIVE: DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1
+change/spec:       openspec/changes/frontend-commercial-integration-v1/
+                   specs/frontend-commercial-integration-v1/spec.md
+roadmap:          docs/frontend-commercial-integration-v1/README.md
+completion:        Controlled F0/F1 + CP0-CP2 integration, combined source and
+                   packaged Windows acceptance. General suite status remains
+                   explicit; no solver/scientific changes, main merge or push.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    -> current_objective, queue, gate_status, progress_log
 ```

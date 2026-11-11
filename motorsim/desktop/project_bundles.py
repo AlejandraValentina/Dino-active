@@ -8,10 +8,12 @@ import json
 import os
 from pathlib import Path, PurePosixPath
 import tempfile
+import shutil
 import uuid
 import zipfile
 
-BUNDLE_SCHEMA = "DINO_PORTABLE_PROJECT_BUNDLE_V1"
+BUNDLE_SCHEMA = "DINO_PORTABLE_PROJECT_BUNDLE_V2"
+LEGACY_BUNDLE_SCHEMA = "DINO_PORTABLE_PROJECT_BUNDLE_V1"
 FAMILIES = {"2T", "4T_native", "4T_0D"}
 PROJECT_NAME = "project.json"
 MANIFEST_NAME = "manifest.json"
@@ -30,7 +32,7 @@ def _safe_member(name: str) -> str:
     if not isinstance(name, str) or not name or "\\" in name:
         raise ValueError("ruta de bundle inválida")
     path = PurePosixPath(name)
-    if path.is_absolute() or ".." in path.parts or path.as_posix() in {
+    if path.is_absolute() or not path.parts or any(':' in part or '\x00' in part for part in path.parts) or ".." in path.parts or path.as_posix() in {
             PROJECT_NAME, MANIFEST_NAME, README_NAME}:
         raise ValueError("ruta de bundle inválida")
     return path.as_posix()
@@ -101,7 +103,8 @@ def write_project_bundle(path, project, *, family: str, project_path=None,
     files: list[dict] = []
     warnings: list[str] = []
     sources: dict[str, Path] = {}
-    _write_project(family, data, project_path, files, warnings, sources)
+    from .portable_artifacts import collect_project
+    data,files,payloads,warnings,assessments=collect_project(project,family,project_path)
     project_bytes = (json.dumps(data, sort_keys=True, indent=2, ensure_ascii=False,
                                 allow_nan=False) + "\n").encode("utf-8")
     manifest = {
@@ -113,9 +116,11 @@ def write_project_bundle(path, project, *, family: str, project_path=None,
         "project_id": data.get("project_id") or data.get("name"),
         "project_sha256": _sha256(project_bytes),
         "files": sorted(files, key=lambda item: item["path"]),
-        "legacy_reference_count": _legacy_count(family, data),
+        "legacy_reference_count": sum(bool(a.get('legacy')) for a in assessments),
         "legacy_policy": "PRESERVE_CLASSIFICATION_NEVER_PROMOTE",
         "warnings": warnings,
+        "references": assessments,
+        "availability": "PARTIAL" if warnings else "COMPLETE",
     }
     readme = _readme(manifest)
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -128,7 +133,7 @@ def write_project_bundle(path, project, *, family: str, project_path=None,
                                                        ensure_ascii=False, allow_nan=False) + "\n").encode("utf-8"))
             bundle.writestr(README_NAME, readme.encode("utf-8"))
             for entry in manifest["files"]:
-                bundle.write(sources[entry["path"]], entry["path"])
+                bundle.writestr(entry['path'],payloads[entry['path']])
         os.replace(tmp_name, target)
     finally:
         try:
@@ -160,11 +165,15 @@ def _readme(manifest: dict) -> str:
 def inspect_bundle(path) -> tuple[dict, bytes]:
     """Validate a bundle without extracting it."""
     with zipfile.ZipFile(path) as bundle:
+        from .portable_artifacts import MAX_BYTES
+        listing=bundle.infolist()
+        if sum(i.file_size for i in listing)>MAX_BYTES:raise ValueError('El bundle supera el límite de 512 MiB sin comprimir')
+        if len({i.filename.casefold() for i in listing})!=len(listing):raise ValueError('El bundle contiene rutas duplicadas o ambiguas')
         names = set(bundle.namelist())
         if MANIFEST_NAME not in names or PROJECT_NAME not in names:
             raise ValueError("el bundle no contiene manifest.json y project.json")
         manifest = json.loads(bundle.read(MANIFEST_NAME).decode("utf-8"))
-        if manifest.get("schema") != BUNDLE_SCHEMA or manifest.get("family") not in FAMILIES:
+        if manifest.get("schema") not in {BUNDLE_SCHEMA,LEGACY_BUNDLE_SCHEMA} or manifest.get("family") not in FAMILIES:
             raise ValueError("manifest de bundle no admitido")
         expected = {PROJECT_NAME, MANIFEST_NAME, README_NAME}
         if any(_safe_member(item["path"]) in expected for item in manifest.get("files", [])):
@@ -186,11 +195,10 @@ def inspect_bundle(path) -> tuple[dict, bytes]:
         return manifest, project_raw
 
 
-def import_bundle(path, destination=None) -> dict:
+def _import_new_directory(path, target) -> dict:
     """Validate, extract and load a portable bundle without promoting legacy results."""
     manifest, _project_raw = inspect_bundle(path)
     source = Path(path)
-    target = Path(destination) if destination is not None else source.with_suffix("")
     if target.exists() and any(target.iterdir()):
         raise FileExistsError(f"La carpeta de importación no está vacía: {target}")
     target.mkdir(parents=True, exist_ok=True)
@@ -214,5 +222,47 @@ def import_bundle(path, destination=None) -> dict:
     else:
         from ..engine_project import load_project
     project = load_project(project_file)
-    return {"manifest": manifest, "project": project, "project_path": str(project_file),
-            "destination": str(target), "legacy_reference_count": manifest.get("legacy_reference_count", 0)}
+    availability=manifest.get('availability','UNASSESSED_LEGACY_BUNDLE')
+    assessments=[]
+    if manifest['family']=='4T_native':
+        from .four_stroke_artifacts import assess_run_reference
+        for ref in project['run_references']:
+            assessment=assess_run_reference(ref)
+            assessments.append(dict(run_id=ref['run_id'],integrity=assessment.classification,
+                execution=ref['status'],periodicity=ref['periodicity_status'],issues=assessment.issues))
+        if any(a['integrity'] not in {'VERIFIED','LEGACY_UNVERIFIED'} for a in assessments):availability='PARTIAL'
+    return {"manifest": manifest, "project": project, "project_path": project_file,
+            "destination": str(target), "legacy_reference_count": manifest.get("legacy_reference_count", 0),
+            'availability':availability,'assessments':assessments}
+
+
+def import_bundle(path, destination=None) -> dict:
+    """Prepare a new import atomically; never write into an existing project."""
+    source=Path(path)
+    target=Path(destination) if destination is not None else source.with_suffix('')
+    if target.exists():raise FileExistsError('Elegí una carpeta nueva para importar; no se sobrescriben originales.')
+    inspect_bundle(source)
+    target.parent.mkdir(parents=True,exist_ok=True)
+    staging=Path(tempfile.mkdtemp(prefix='.dino-import-',dir=target.parent))
+    try:
+        result=_import_new_directory(source,staging)
+        if target.exists():raise FileExistsError('La carpeta de destino apareció durante la importación.')
+        os.rename(staging,target)
+        # Re-resolve only editable outer references, never primary metadata.
+        if result['manifest']['family']=='4T_0D':
+            from ..four_stroke_project import load_project
+        else:from ..engine_project import load_project
+        result.update(project=load_project(target/PROJECT_NAME),project_path=target/PROJECT_NAME,destination=str(target))
+        if result['manifest']['family']=='4T_native':
+            from .four_stroke_artifacts import assess_run_reference
+            result['assessments']=[]
+            for ref in result['project']['run_references']:
+                assessment=assess_run_reference(ref)
+                result['assessments'].append(dict(run_id=ref['run_id'],integrity=assessment.classification,
+                    execution=ref['status'],periodicity=ref['periodicity_status'],issues=assessment.issues))
+        return result
+    finally:
+        if staging.exists():
+            # Delete only this operation's newly created staging directory.
+            assert staging.resolve().parent==target.parent.resolve() and staging.name.startswith('.dino-import-')
+            shutil.rmtree(staging)

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from pathlib import Path
 from PySide6.QtCore import QObject, Signal
 
 from ..engine_configuration import validate as validate_2t, identity as identity_2t
@@ -11,10 +12,19 @@ from ..engine_platform import cycle_of, validate_config, identity as engine_iden
 class DesktopContext(QObject):
     changed = Signal()
     variant_changed = Signal(object)
+    draft_changed = Signal()
     def __init__(self, project):
         super().__init__(); self.project=deepcopy(project); self.path=None; self.dirty=False
         self._selected_variant=None; validate_project(self.project)
         self._undo=[]; self._redo=[]; self._history_limit=50; self._restoring=False
+        self._edit_guard=None
+
+    def set_edit_guard(self, guard):
+        """An application editor resolves draft state before an explicit command."""
+        self._edit_guard=guard
+
+    def prepare_operation(self, operation):
+        return self._edit_guard is None or bool(self._edit_guard(operation))
 
     @property
     def selected_variant(self):
@@ -57,6 +67,7 @@ class DesktopContext(QObject):
         self.changed.emit()
 
     def undo(self):
+        if not self.prepare_operation('Deshacer'):return False
         if not self._undo:
             return False
         current = self._history_snapshot()
@@ -72,6 +83,7 @@ class DesktopContext(QObject):
         return True
 
     def redo(self):
+        if not self.prepare_operation('Rehacer'):return False
         if not self._redo:
             return False
         current = self._history_snapshot()
@@ -91,6 +103,10 @@ class DesktopContext(QObject):
             raise KeyError(f"unknown variant {name!r}")
         if name == self._selected_variant:
             return
+        if not self.prepare_operation('Cambiar de variante'):
+            self.variant_changed.emit(self._selected_variant)
+            self.changed.emit()
+            return False
         self._selected_variant=name
         self.variant_changed.emit(name)
         self.changed.emit()
@@ -132,6 +148,7 @@ class DesktopContext(QObject):
         return name
 
     def duplicate_variant(self, source_name, new_name):
+        if not self.prepare_operation('Duplicar variante'):return None
         from copy import deepcopy
         from ..engine_platform import identity as get_identity
         if source_name is None:
@@ -154,6 +171,7 @@ class DesktopContext(QObject):
         return name
 
     def rename_variant(self, old_name, new_name):
+        if not self.prepare_operation('Renombrar variante'):return None
         from ..engine_platform import cycle_of
         if old_name not in self.project["variants"]:
             raise KeyError(f"No existe la variante {old_name!r}")
@@ -172,6 +190,7 @@ class DesktopContext(QObject):
         return name
 
     def delete_variant(self, name):
+        if not self.prepare_operation('Eliminar variante'):return False
         if name not in self.project["variants"]:
             raise KeyError(f"No existe la variante {name!r}")
         refs=self.project.get("result_references",self.project.get("run_references",[]))
@@ -191,10 +210,13 @@ class DesktopContext(QObject):
         self.dirty=True;self.changed.emit()
 
     def replace_project(self, project, path=None):
-        validate_project(project); self.project=deepcopy(project); self.path=path
+        validate_project(project)
+        if not self.prepare_operation('Abrir otro proyecto'):return False
+        self.project=deepcopy(project); self.path=Path(path) if path is not None else None
         self._selected_variant=None; self.dirty=False
         self.clear_history()
         self.variant_changed.emit(None); self.changed.emit()
+        return True
 
     def add_study_reference(self, reference):
         """Register a verified external study manifest without embedding its data."""
@@ -226,4 +248,12 @@ class DesktopContext(QObject):
         validate_4t_project(candidate)
         self._record_history()
         self.project=candidate;self.dirty=True;self.changed.emit()
+        return True
+
+    def add_result_reference(self, reference):
+        if self.engine_family!='2T':raise ValueError('La referencia no pertenece a un proyecto 2T')
+        candidate=deepcopy(self.project)
+        if any(ref['path']==reference['path'] for ref in candidate['result_references']):return False
+        candidate['result_references'].append(deepcopy(reference));validate_project(candidate)
+        self._record_history();self.project=candidate;self.dirty=True;self.changed.emit()
         return True

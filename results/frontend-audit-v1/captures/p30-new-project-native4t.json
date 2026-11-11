@@ -1,0 +1,768 @@
+{
+  "tag": "p30-new-project-native4t",
+  "title": "Crear proyecto de motor",
+  "platform": "windows",
+  "size": [
+    560,
+    605
+  ],
+  "screen_dpr": 1.0,
+  "widgets": [
+    {
+      "id": 1488028066688,
+      "cls": "QComboBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        720,
+        7,
+        205,
+        36
+      ],
+      "items": [
+        "Motor nuevo · diseño editable"
+      ],
+      "current": 0
+    },
+    {
+      "id": 1488028062272,
+      "cls": "QComboBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1007,
+        7,
+        142,
+        36
+      ],
+      "items": [
+        "Motor base"
+      ],
+      "current": 0
+    },
+    {
+      "id": 1487228849920,
+      "cls": "QComboBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        144,
+        268,
+        405,
+        36
+      ],
+      "items": [
+        "Dos tiempos (2T)",
+        "Cuatro tiempos (4T)"
+      ],
+      "current": 1
+    },
+    {
+      "id": 1488028285888,
+      "cls": "QComboBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        65,
+        85,
+        97,
+        36
+      ],
+      "items": [
+        "Motor base"
+      ],
+      "current": 0
+    },
+    {
+      "id": 1488028065856,
+      "cls": "QComboBox",
+      "name": "engineFamilySelector",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Proyectos distintos con una navegación común; los modelos científicos siguen separados.",
+      "rect": [
+        126,
+        59,
+        235,
+        36
+      ],
+      "items": [
+        "Motor 2 tiempos",
+        "Motor 4 tiempos · nativo",
+        "4T 0D · referencia no validada"
+      ],
+      "current": 0
+    },
+    {
+      "id": 1488028023552,
+      "cls": "QComboBox",
+      "name": "modelComponentSelector",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        158,
+        0,
+        270,
+        36
+      ],
+      "items": [
+        "Listo · Resumen",
+        "Listo · Cilindro y culata",
+        "Listo · Cárter",
+        "Listo · Admisión",
+        "Listo · Conductos de transferencia",
+        "Listo · Lumbreras y transferencias",
+        "Listo · Escape",
+        "Listo · Combustión",
+        "Listo · Pérdidas",
+        "Listo · Proyecto",
+        "Listo · Avanzado"
+      ],
+      "current": 6
+    },
+    {
+      "id": 1488028285376,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        0,
+        196,
+        1306,
+        155
+      ],
+      "text": "#1 Tramo 1 · L 83 mm · Ø 37.5 → 37.5 mm · — · escala común A/B; clic en perfil o tabla"
+    },
+    {
+      "id": 1486421036928,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        177,
+        5,
+        145,
+        35
+      ],
+      "text": "3000 rpm · 1 ciclos · 60 s"
+    },
+    {
+      "id": 1488028206976,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        85,
+        47,
+        36
+      ],
+      "text": "Baseline"
+    },
+    {
+      "id": 1488028065664,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        935,
+        7,
+        62,
+        36
+      ],
+      "text": "Baseline ···"
+    },
+    {
+      "id": 1488028274240,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        34,
+        129,
+        136
+      ],
+      "text": "Baseline: base\nGeometría coincidente con la baseline.\nLongitud total: 1079.0 → 1079.0 mm\nVolumen interno: 3692.91 → 3692.91 cm³\nDiferencia geométrica únicamente; no estima prestaciones."
+    },
+    {
+      "id": 1488028149056,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "—",
+      "rect": [
+        328,
+        5,
+        564,
+        35
+      ],
+      "text": "Checkpoint: —"
+    },
+    {
+      "id": 1488028019200,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        14,
+        0,
+        137,
+        36
+      ],
+      "text": "Componente del motor"
+    },
+    {
+      "id": 1487228855552,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        11,
+        376,
+        538,
+        177
+      ],
+      "text": "El proyecto 4T comienza con la configuración DINO4T_API_V1 de ejemplo, etiquetada como sintética. En MODELO se editan válvulas, distribución, cilindro, admisión, escape y combustión."
+    },
+    {
+      "id": 1487228825216,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        11,
+        268,
+        40,
+        29
+      ],
+      "text": "Familia"
+    },
+    {
+      "id": 1488028062720,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1289,
+        7,
+        59,
+        36
+      ],
+      "text": "Guardado"
+    },
+    {
+      "id": 1488028147904,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "LISTO · preparado",
+      "rect": [
+        12,
+        5,
+        105,
+        35
+      ],
+      "text": "LISTO · preparado"
+    },
+    {
+      "id": 1487229258752,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        11,
+        231,
+        111,
+        29
+      ],
+      "text": "Nombre del motor"
+    },
+    {
+      "id": 1487229196352,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        11,
+        194,
+        127,
+        29
+      ],
+      "text": "Nombre del proyecto"
+    },
+    {
+      "id": 1488028260800,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        62,
+        1308,
+        17
+      ],
+      "text": "Perfil y tabla por tramo. Los deltas geométricos no estiman prestaciones."
+    },
+    {
+      "id": 1488028068224,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        18,
+        59,
+        96,
+        36
+      ],
+      "text": "TIPO DE MOTOR"
+    },
+    {
+      "id": 1488028070208,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        626,
+        7,
+        84,
+        36
+      ],
+      "text": "Variante activa"
+    },
+    {
+      "id": 1488007069888,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        123,
+        5,
+        48,
+        35
+      ],
+      "text": "—"
+    },
+    {
+      "id": 1488028069248,
+      "cls": "QLabel",
+      "name": "contextProject",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        7,
+        604,
+        36
+      ],
+      "text": "Proyecto: dino-2t-nuevo"
+    },
+    {
+      "id": 1488028070656,
+      "cls": "QLabel",
+      "name": "modeBadge",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1159,
+        7,
+        120,
+        36
+      ],
+      "text": "EXPLORATORIO"
+    },
+    {
+      "id": 1487228859456,
+      "cls": "QLabel",
+      "name": "notice",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        11,
+        11,
+        538,
+        177
+      ],
+      "text": "Elegí el ciclo del motor. Dino Desktop conserva proyectos y solvers 2T y 4T separados. Las plantillas iniciales son sintéticas."
+    },
+    {
+      "id": 1488027554944,
+      "cls": "QLabel",
+      "name": "title",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        10,
+        1308,
+        46
+      ],
+      "text": "Escape"
+    },
+    {
+      "id": 1488028073216,
+      "cls": "QLabel",
+      "name": "workspaceModeLabel",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        373,
+        59,
+        140,
+        36
+      ],
+      "text": "MODO DE TRABAJO"
+    },
+    {
+      "id": 1487228850752,
+      "cls": "QLineEdit",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        144,
+        231,
+        405,
+        31
+      ],
+      "text": "Motor 4T nuevo"
+    },
+    {
+      "id": 1487228846784,
+      "cls": "QLineEdit",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        144,
+        194,
+        405,
+        31
+      ],
+      "text": "dino-proyecto-nuevo"
+    },
+    {
+      "id": 1488028065408,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        127,
+        107,
+        120,
+        35
+      ],
+      "text": "Abrir proyecto…"
+    },
+    {
+      "id": 1487250301760,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        474,
+        0,
+        64,
+        35
+      ],
+      "text": "Cancel"
+    },
+    {
+      "id": 1488012206080,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": false,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1146,
+        5,
+        76,
+        35
+      ],
+      "text": "Cancelar"
+    },
+    {
+      "id": 1487228854592,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        354,
+        0,
+        114,
+        35
+      ],
+      "text": "Crear proyecto"
+    },
+    {
+      "id": 1488007036160,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        168,
+        85,
+        163,
+        35
+      ],
+      "text": "Estaciones avanzadas ▸"
+    },
+    {
+      "id": 1488028058752,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        247,
+        107,
+        74,
+        35
+      ],
+      "text": "Guardar"
+    },
+    {
+      "id": 1488028211136,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": false,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        527,
+        651,
+        35
+      ],
+      "text": "Guardar en variante actual"
+    },
+    {
+      "id": 1488028024640,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Barrido RPM y recuperación",
+      "rect": [
+        1228,
+        5,
+        120,
+        35
+      ],
+      "text": "Más opciones"
+    },
+    {
+      "id": 1488028060480,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        14,
+        107,
+        113,
+        35
+      ],
+      "text": "Nuevo motor…"
+    },
+    {
+      "id": 1488028073536,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        471,
+        107,
+        106,
+        35
+      ],
+      "text": "Trazabilidad…"
+    },
+    {
+      "id": 1488028067968,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        321,
+        107,
+        150,
+        35
+      ],
+      "text": "Variantes y corridas…"
+    },
+    {
+      "id": 1488028066880,
+      "cls": "QPushButton",
+      "name": "modeAnalysis",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        773,
+        59,
+        123,
+        36
+      ],
+      "text": "RESULTADOS"
+    },
+    {
+      "id": 1488028065728,
+      "cls": "QPushButton",
+      "name": "modeDesign",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        525,
+        59,
+        112,
+        36
+      ],
+      "text": "MODELO"
+    },
+    {
+      "id": 1488028067264,
+      "cls": "QPushButton",
+      "name": "modeSimulate",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        649,
+        59,
+        112,
+        36
+      ],
+      "text": "SIMULAR"
+    },
+    {
+      "id": 1488028152384,
+      "cls": "QPushButton",
+      "name": "prepareRunPanel",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        898,
+        5,
+        86,
+        35
+      ],
+      "text": "Preparar…"
+    },
+    {
+      "id": 1488028218496,
+      "cls": "QPushButton",
+      "name": "primaryAction",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        669,
+        527,
+        651,
+        35
+      ],
+      "text": "Guardar como nueva variante…"
+    },
+    {
+      "id": 1488027842688,
+      "cls": "QPushButton",
+      "name": "primaryAction",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        990,
+        5,
+        150,
+        35
+      ],
+      "text": "Iniciar corrida…"
+    },
+    {
+      "id": 1488012112704,
+      "cls": "QTabWidget",
+      "name": "exhaustViews",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        127,
+        1308,
+        394
+      ],
+      "tabs": [
+        "Perfil y cotas A/B",
+        "Tabla de tramos",
+        "Avanzado"
+      ],
+      "current": 0
+    }
+  ]
+}

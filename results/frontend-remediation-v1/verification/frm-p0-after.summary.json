@@ -1,0 +1,25 @@
+{
+  "name": "frm-p0-after",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_frontend_integrity_remediation.py",
+    "tests/test_desktop_project_bundles.py",
+    "--tb=short"
+  ],
+  "started_at": "2026-11-11T11:48:19+00:00",
+  "finished_at": "2026-11-11T11:48:45+00:00",
+  "duration_s": 26.281,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\frontend-remediation-v1\\verification\\frm-p0-after.log",
+  "log_lines": 2,
+  "log_bytes": 100,
+  "error_lines": [],
+  "tail": [
+    "...........                                                              [100%]",
+    "11 passed in 25.28s"
+  ]
+}

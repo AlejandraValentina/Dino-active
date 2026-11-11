@@ -1,0 +1,68 @@
+{
+  "schema": "DINO_STATE_CONSOLIDATION_V1",
+  "parents": [
+    "f97469ba6705555e73f6624482564d193e43a101",
+    "9b7392e3073a443c424377bf01cf05563fdc8d34"
+  ],
+  "common_ancestor": "d44305c24ec81d9b767305d319a660c0c034e5c9",
+  "semantic_shared_queue_conflicts": [],
+  "preserved_parent_queue_items": 577,
+  "preserved_progress_entries": 651,
+  "conflicting_keys": [
+    "queue",
+    "progress_log",
+    "current_objective",
+    "gate_status"
+  ],
+  "policy": "Three-way keyed queue union and distinct progress records; both parent objectives/gates retained. New owner-authorized integration objective, never scientific-state reinterpretation.",
+  "blocker_reassessment": [
+    {
+      "id": "FRPM-FULL-CAMPAIGN-EXECUTION",
+      "assessment": "Unchanged: integration of frontend/commercial code does not provide missing experimental inputs or authorize deferred scientific campaigns."
+    },
+    {
+      "id": "SPV1-POINT-EXECUTION",
+      "assessment": "Unchanged: integration of frontend/commercial code does not provide missing experimental inputs or authorize deferred scientific campaigns."
+    },
+    {
+      "id": "SPV1-CHECKPOINT-INTERRUPTION-RECOVERY",
+      "assessment": "Unchanged: integration of frontend/commercial code does not provide missing experimental inputs or authorize deferred scientific campaigns."
+    },
+    {
+      "id": "CRV1-REED-SENSITIVITY-PROTOCOL",
+      "assessment": "Unchanged: integration of frontend/commercial code does not provide missing experimental inputs or authorize deferred scientific campaigns."
+    },
+    {
+      "id": "X30M-OWNER-SEND",
+      "assessment": "Unchanged: integration of frontend/commercial code does not provide missing experimental inputs or authorize deferred scientific campaigns."
+    },
+    {
+      "id": "X30M-INPUTS",
+      "assessment": "Unchanged: integration of frontend/commercial code does not provide missing experimental inputs or authorize deferred scientific campaigns."
+    },
+    {
+      "id": "X30M-CONFIG-FREEZE",
+      "assessment": "Unchanged: integration of frontend/commercial code does not provide missing experimental inputs or authorize deferred scientific campaigns."
+    },
+    {
+      "id": "X30M-POINT-EXEC",
+      "assessment": "Unchanged: integration of frontend/commercial code does not provide missing experimental inputs or authorize deferred scientific campaigns."
+    },
+    {
+      "id": "X30M-RESULT-VERIFY",
+      "assessment": "Unchanged: integration of frontend/commercial code does not provide missing experimental inputs or authorize deferred scientific campaigns."
+    },
+    {
+      "id": "PRED-VALIDATION",
+      "assessment": "Unchanged: integration of frontend/commercial code does not provide missing experimental inputs or authorize deferred scientific campaigns."
+    },
+    {
+      "id": "PRED-CORE-PERIODIC-MESH-GCI",
+      "assessment": "Unchanged: integration of frontend/commercial code does not provide missing experimental inputs or authorize deferred scientific campaigns."
+    },
+    {
+      "id": "PRED-POSTOPEN-EXTREMA-CONSERVATION-CONTEXT",
+      "assessment": "Unchanged: integration of frontend/commercial code does not provide missing experimental inputs or authorize deferred scientific campaigns."
+    }
+  ]
+}

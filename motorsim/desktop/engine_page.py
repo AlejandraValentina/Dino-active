@@ -61,7 +61,7 @@ class PortAreaPlot(QWidget):
 class EnginePage(QWidget):
     component_state_changed=Signal()
     def __init__(self,context):
-        super().__init__();self.context=context;self.loading=False;self._last_edited_component=None
+        super().__init__();self.context=context;self.loading=False;self._last_edited_component=None;self._applying=False
         root=QVBoxLayout(self);root.setContentsMargins(12,10,12,10);root.setSpacing(7)
         title=QLabel("Motor");title.setObjectName("title");root.addWidget(title)
         title.setToolTip("Geometría y distribución derivada del modelo actual.")
@@ -163,7 +163,7 @@ class EnginePage(QWidget):
         self.validation=QLabel();self.validation.setWordWrap(True);self.validation.setObjectName("notice");root.addWidget(self.validation)
         buttons=QHBoxLayout();root.addLayout(buttons)
         self.apply_button=QPushButton("Validar y aplicar cambios");self.apply_button.setObjectName("primaryAction");self.apply_button.clicked.connect(self.apply);buttons.addWidget(self.apply_button)
-        self.revert_button=QPushButton("Descartar edición");self.revert_button.clicked.connect(self.refresh);buttons.addWidget(self.revert_button);buttons.addStretch(1)
+        self.revert_button=QPushButton("Descartar edición");self.revert_button.clicked.connect(self.discard_draft);buttons.addWidget(self.revert_button);buttons.addStretch(1)
         # Separate the existing editors without introducing project fields.
         title.hide()
         def move_field(widget,target):
@@ -236,7 +236,12 @@ class EnginePage(QWidget):
         item=self.ducts.item(row,1)
         self._mark_component(8 if item and item.text()=='transfer' else 4,'modificado')
 
-    def refresh(self):
+    def discard_draft(self):
+        self._last_edited_component=None
+        self.refresh(force=True)
+
+    def refresh(self,*_,force=False):
+        if self._last_edited_component is not None and not force and not self._applying:return
         self.loading=True
         self._angle_error=None
         try:
@@ -463,6 +468,7 @@ class EnginePage(QWidget):
         self.provenance_label.setText(" · ".join(parts))
 
     def edit_provenance(self):
+        if not self.context.prepare_operation('Clasificar fuentes de datos'):return
         doc=deepcopy(self.context.engine());current=doc.setdefault("provenance",{}).setdefault("design_inputs",{})
         dialog=QDialog(self);dialog.setWindowTitle("Origen de los datos del motor");layout=QVBoxLayout(dialog)
         layout.addWidget(QLabel("Clasificá cada dato según su fuente. Los cambios se guardan en la provenance del motor."))
@@ -617,7 +623,11 @@ class EnginePage(QWidget):
                 native["initial_chambers"]["species"][name]=[mass*target/total for mass in old]
             doc["native_configuration_sha256"]=sha256(native)
             doc["provenance"]={**doc["provenance"],"desktop_initial_state_policy":"PRESERVE_PRIMITIVE_STATE_AND_SPECIES_FRACTIONS_ON_GEOMETRY_EDIT; SYNTHETIC_ASSUMPTION"}
-            validate(doc);self.context.replace_engine(doc);self.validation.setText("Validación correcta sin pasos de solver.\nCambios aplicados como borrador sintético; provenance disponible en Evidencia.")
+            validate(doc)
+            self._applying=True
+            try:self.context.replace_engine(doc)
+            finally:self._applying=False
+            self.validation.setText("Validación correcta sin pasos de solver.\nCambios aplicados como borrador sintético; provenance disponible en Evidencia.")
             for i,name in enumerate(self.component_names):self.component_tabs.setTabText(i,f"{name} · válido")
             self._last_edited_component=None
             self.component_state_changed.emit()

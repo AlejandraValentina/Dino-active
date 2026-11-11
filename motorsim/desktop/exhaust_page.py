@@ -110,7 +110,7 @@ class ExhaustProfile(QWidget):
 class ExhaustPage(QWidget):
     component_state_changed=Signal()
     def __init__(self,context):
-        super().__init__();self.context=context;self.loading=False;self.edit_state="complete"
+        super().__init__();self.context=context;self.loading=False;self.edit_state="complete";self._applying=False;self._preparing=False
         root=QVBoxLayout(self);root.setContentsMargins(12,10,12,10);root.setSpacing(6)
         self.title=QLabel("Escape");self.title.setObjectName("title");root.addWidget(self.title)
         self.intro=QLabel("Perfil y tabla por tramo. Los deltas geométricos no estiman prestaciones.");root.addWidget(self.intro)
@@ -194,7 +194,12 @@ class ExhaustPage(QWidget):
             widget=self.mesh_table.cellWidget(row,1)
             if widget:self.mesh_table.removeCellWidget(row,1);widget.deleteLater()
 
-    def refresh(self):
+    def discard_draft(self):
+        self.refresh(force=True)
+        self.component_state_changed.emit()
+
+    def refresh(self,*_,force=False):
+        if not force and not self._applying and self.edit_state in {'modified','invalid'}:return
         try:
             self.edit_state="complete"
             self._refresh_overlay_options()
@@ -438,24 +443,38 @@ class ExhaustPage(QWidget):
             self.diff.setText(self._engineering_diff(self.context.engine()))
 
     def save_current(self):
+        self._preparing=True
+        try:ready=self.context.prepare_operation('Aplicar geometría de escape')
+        finally:self._preparing=False
+        if not ready:return False
         name=self.context.selected_variant
         if name is None:
             QMessageBox.information(self,"Motor base","El motor base se conserva. Usá ‘Guardar como nueva variante’ para crear una copia editable.");return False
         try:
-            edited=self._draft();edited["display_name"]=name;validate(edited);self.context.replace_engine(edited,variant_name=name)
+            edited=self._draft();edited["display_name"]=name;validate(edited)
+            self._applying=True
+            try:self.context.replace_engine(edited,variant_name=name)
+            finally:self._applying=False
             self.edit_state="complete"
             self.diff.setText(f"Geometría guardada en {name}. No se ejecutó el solver.\n"+self._mesh_summary(edited));return True
         except Exception as exc:self.diff.setText(f"No se aplicó la geometría: {type(exc).__name__}: {exc}");return False
 
     def save_as_new(self,*,name=None):
+        self._preparing=True
+        try:ready=self.context.prepare_operation('Crear variante de escape')
+        finally:self._preparing=False
+        if not ready:return False
         if name is None:
             name,ok=QInputDialog.getText(self,"Nueva variante de escape","Nombre de la variante:",text=f"Escape {len(self.context.project['variants'])+1}")
             if not ok:return False
         try:
             source=self.context.engine();edited=self._draft();edited["display_name"]=name.strip()
             edited["provenance"]={**edited["provenance"],"variant_parent_identity":identity(source)};validate(edited)
-            self.context.duplicate_variant(self.context.selected_variant,name)
-            self.context.replace_engine(edited,variant_name=name.strip())
+            self._applying=True
+            try:
+                if self.context.duplicate_variant(self.context.selected_variant,name) is None:return False
+                self.context.replace_engine(edited,variant_name=name.strip())
+            finally:self._applying=False
             self.edit_state="complete"
             changes=compare_configurations(source,edited)
             self.diff.setText(f"Variante {name.strip()} guardada · {len(changes)} diferencias · sin pasos del solver.\n"+self._mesh_summary(edited));return True

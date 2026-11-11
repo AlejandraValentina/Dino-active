@@ -1,0 +1,741 @@
+{
+  "tag": "p33-2t-applied-edit",
+  "title": "Dino 2T — audit-2t • Cambios sin guardar",
+  "platform": "windows",
+  "size": [
+    1360,
+    860
+  ],
+  "screen_dpr": 1.0,
+  "widgets": [
+    {
+      "id": 1488028066688,
+      "cls": "QComboBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        657,
+        7,
+        205,
+        36
+      ],
+      "items": [
+        "Motor 2T nuevo"
+      ],
+      "current": 0
+    },
+    {
+      "id": 1488028062272,
+      "cls": "QComboBox",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        944,
+        7,
+        142,
+        36
+      ],
+      "items": [
+        "Motor base"
+      ],
+      "current": 0
+    },
+    {
+      "id": 1488028065856,
+      "cls": "QComboBox",
+      "name": "engineFamilySelector",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Proyectos distintos con una navegación común; los modelos científicos siguen separados.",
+      "rect": [
+        126,
+        59,
+        235,
+        36
+      ],
+      "items": [
+        "Motor 2 tiempos",
+        "Motor 4 tiempos · nativo",
+        "4T 0D · referencia no validada"
+      ],
+      "current": 0
+    },
+    {
+      "id": 1488028023552,
+      "cls": "QComboBox",
+      "name": "modelComponentSelector",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        158,
+        0,
+        270,
+        36
+      ],
+      "items": [
+        "Listo · Resumen",
+        "Editado · Cilindro y culata",
+        "Listo · Cárter",
+        "Listo · Admisión",
+        "Listo · Conductos de transferencia",
+        "Listo · Lumbreras y transferencias",
+        "Listo · Escape",
+        "Listo · Combustión",
+        "Listo · Pérdidas",
+        "Listo · Proyecto",
+        "Listo · Avanzado"
+      ],
+      "current": 1
+    },
+    {
+      "id": 1488028071104,
+      "cls": "QDoubleSpinBox",
+      "name": "engine_bore_mm",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        189,
+        120,
+        150,
+        36
+      ],
+      "text": "57,00",
+      "value": 57.0
+    },
+    {
+      "id": 1488011898880,
+      "cls": "QDoubleSpinBox",
+      "name": "engine_cylinder_compression_ratio",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        189,
+        246,
+        150,
+        36
+      ],
+      "text": "17,71",
+      "value": 17.71
+    },
+    {
+      "id": 1488011902144,
+      "cls": "QDoubleSpinBox",
+      "name": "engine_rod_length_mm",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        189,
+        204,
+        150,
+        36
+      ],
+      "text": "110,00",
+      "value": 110.0
+    },
+    {
+      "id": 1488028057728,
+      "cls": "QDoubleSpinBox",
+      "name": "engine_stroke_mm",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        189,
+        162,
+        150,
+        36
+      ],
+      "text": "50,60",
+      "value": 50.6
+    },
+    {
+      "id": 1486421036928,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        177,
+        5,
+        145,
+        35
+      ],
+      "text": "3000 rpm · 1 ciclos · 60 s"
+    },
+    {
+      "id": 1488028065664,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        872,
+        7,
+        62,
+        36
+      ],
+      "text": "Baseline ···"
+    },
+    {
+      "id": 1488028062720,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1226,
+        7,
+        122,
+        36
+      ],
+      "text": "Cambios sin guardar"
+    },
+    {
+      "id": 1487229164672,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        162,
+        78,
+        29
+      ],
+      "text": "Carrera (mm)"
+    },
+    {
+      "id": 1488028149056,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "—",
+      "rect": [
+        328,
+        5,
+        564,
+        35
+      ],
+      "text": "Checkpoint: —"
+    },
+    {
+      "id": 1488028019200,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        14,
+        0,
+        137,
+        36
+      ],
+      "text": "Componente del motor"
+    },
+    {
+      "id": 1487250766784,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        246,
+        163,
+        29
+      ],
+      "text": "Compresión geométrica (:1)"
+    },
+    {
+      "id": 1487250894592,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        120,
+        135,
+        29
+      ],
+      "text": "Diámetro cilindro (mm)"
+    },
+    {
+      "id": 1487229978624,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        34,
+        122,
+        29
+      ],
+      "text": "Esquema del cilindro"
+    },
+    {
+      "id": 1488028147904,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "LISTO · preparado",
+      "rect": [
+        12,
+        5,
+        105,
+        35
+      ],
+      "text": "LISTO · preparado"
+    },
+    {
+      "id": 1487229173376,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        20,
+        204,
+        117,
+        29
+      ],
+      "text": "Longitud biela (mm)"
+    },
+    {
+      "id": 1488028068224,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        18,
+        59,
+        96,
+        36
+      ],
+      "text": "TIPO DE MOTOR"
+    },
+    {
+      "id": 1488028070208,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        563,
+        7,
+        84,
+        36
+      ],
+      "text": "Variante activa"
+    },
+    {
+      "id": 1488011902720,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Distribución calculada por transiciones de área efectiva del backend; no son controles inversos.",
+      "rect": [
+        9,
+        388,
+        1288,
+        51
+      ],
+      "text": "Ø 57 × 50.6 mm · biela 110 mm · 129.119 cm³\nCompresión 17.71:1 · cámara derivada 7.72705 cm³\nCárter PMI 356.08 cm³ · compresión primaria 1.36261:1"
+    },
+    {
+      "id": 1488007069888,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        123,
+        5,
+        48,
+        35
+      ],
+      "text": "—"
+    },
+    {
+      "id": 1488028069248,
+      "cls": "QLabel",
+      "name": "contextProject",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        7,
+        541,
+        36
+      ],
+      "text": "Proyecto: audit-2t"
+    },
+    {
+      "id": 1488028070656,
+      "cls": "QLabel",
+      "name": "modeBadge",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1096,
+        7,
+        120,
+        36
+      ],
+      "text": "EXPLORATORIO"
+    },
+    {
+      "id": 1488012102848,
+      "cls": "QLabel",
+      "name": "notice",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "VALIDATED_NO_SOLVER_STEPS",
+      "rect": [
+        12,
+        466,
+        1308,
+        54
+      ],
+      "text": "Validación correcta sin pasos de solver.\nCambios aplicados como borrador sintético; provenance disponible en Evidencia."
+    },
+    {
+      "id": 1488028073216,
+      "cls": "QLabel",
+      "name": "workspaceModeLabel",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        373,
+        59,
+        140,
+        36
+      ],
+      "text": "MODO DE TRABAJO"
+    },
+    {
+      "id": 1487228809408,
+      "cls": "QLineEdit",
+      "name": "qt_spinbox_lineedit",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        6,
+        6,
+        111,
+        24
+      ],
+      "text": "110,00"
+    },
+    {
+      "id": 1487229310784,
+      "cls": "QLineEdit",
+      "name": "qt_spinbox_lineedit",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        6,
+        6,
+        111,
+        24
+      ],
+      "text": "17,71"
+    },
+    {
+      "id": 1488028338304,
+      "cls": "QLineEdit",
+      "name": "qt_spinbox_lineedit",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        6,
+        6,
+        111,
+        24
+      ],
+      "text": "50,60"
+    },
+    {
+      "id": 1487229136576,
+      "cls": "QLineEdit",
+      "name": "qt_spinbox_lineedit",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        6,
+        6,
+        111,
+        24
+      ],
+      "text": "57,00"
+    },
+    {
+      "id": 1488028065408,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        127,
+        107,
+        120,
+        35
+      ],
+      "text": "Abrir proyecto…"
+    },
+    {
+      "id": 1488012206080,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": false,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        1146,
+        5,
+        76,
+        35
+      ],
+      "text": "Cancelar"
+    },
+    {
+      "id": 1488012113024,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        193,
+        527,
+        128,
+        35
+      ],
+      "text": "Descartar edición"
+    },
+    {
+      "id": 1488028058752,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        247,
+        107,
+        74,
+        35
+      ],
+      "text": "Guardar"
+    },
+    {
+      "id": 1488028024640,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Barrido RPM y recuperación",
+      "rect": [
+        1228,
+        5,
+        120,
+        35
+      ],
+      "text": "Más opciones"
+    },
+    {
+      "id": 1488028060480,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        14,
+        107,
+        113,
+        35
+      ],
+      "text": "Nuevo motor…"
+    },
+    {
+      "id": 1488028073536,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        471,
+        107,
+        106,
+        35
+      ],
+      "text": "Trazabilidad…"
+    },
+    {
+      "id": 1488028067968,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        321,
+        107,
+        150,
+        35
+      ],
+      "text": "Variantes y corridas…"
+    },
+    {
+      "id": 1488028066880,
+      "cls": "QPushButton",
+      "name": "modeAnalysis",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        773,
+        59,
+        123,
+        36
+      ],
+      "text": "RESULTADOS"
+    },
+    {
+      "id": 1488028065728,
+      "cls": "QPushButton",
+      "name": "modeDesign",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        525,
+        59,
+        112,
+        36
+      ],
+      "text": "MODELO"
+    },
+    {
+      "id": 1488028067264,
+      "cls": "QPushButton",
+      "name": "modeSimulate",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        649,
+        59,
+        112,
+        36
+      ],
+      "text": "SIMULAR"
+    },
+    {
+      "id": 1488028152384,
+      "cls": "QPushButton",
+      "name": "prepareRunPanel",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        898,
+        5,
+        86,
+        35
+      ],
+      "text": "Preparar…"
+    },
+    {
+      "id": 1488027842688,
+      "cls": "QPushButton",
+      "name": "primaryAction",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        990,
+        5,
+        150,
+        35
+      ],
+      "text": "Iniciar corrida…"
+    },
+    {
+      "id": 1488012111552,
+      "cls": "QPushButton",
+      "name": "primaryAction",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        527,
+        174,
+        35
+      ],
+      "text": "Validar y aplicar cambios"
+    },
+    {
+      "id": 1488028068288,
+      "cls": "QTabWidget",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        10,
+        1308,
+        449
+      ],
+      "tabs": [
+        "Cilindro y culata · válido",
+        "Lumbreras y transferencias · válido",
+        "Pérdidas · válido",
+        "Combustión · válido",
+        "Admisión · válido",
+        "Cárter · válido",
+        "Resumen · válido",
+        "Avanzado · válido",
+        "Conductos de transferencia · válido"
+      ],
+      "current": 0
+    }
+  ]
+}

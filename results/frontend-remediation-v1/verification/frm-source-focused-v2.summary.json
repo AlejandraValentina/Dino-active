@@ -1,0 +1,31 @@
+{
+  "name": "frm-source-focused-v2",
+  "command": [
+    "python",
+    "-u",
+    "-m",
+    "pytest",
+    "tests/test_frontend_workflow_remediation.py",
+    "tests/test_frontend_integrity_remediation.py",
+    "tests/test_desktop_project_bundles.py",
+    "tests/test_desktop_four_stroke_shell.py",
+    "tests/test_desktop_four_stroke_workspace.py",
+    "tests/test_platform_c05_qt_lifecycle.py",
+    "tests/test_dino4t_desktop_integration.py",
+    "-q",
+    "--tb=short"
+  ],
+  "started_at": "2026-11-11T12:17:55+00:00",
+  "finished_at": "2026-11-11T12:20:47+00:00",
+  "duration_s": 171.953,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\frontend-remediation-v1\\verification\\frm-source-focused-v2.log",
+  "log_lines": 2,
+  "log_bytes": 111,
+  "error_lines": [],
+  "tail": [
+    ".......................................................                  [100%]",
+    "55 passed in 169.73s (0:02:49)"
+  ]
+}

@@ -1,0 +1,379 @@
+{
+  "tag": "p64-recovered-copy",
+  "title": "Dino Desktop · 4T nativo · nuevo-motor-4t · cambios sin guardar",
+  "platform": "windows",
+  "size": [
+    1440,
+    837
+  ],
+  "screen_dpr": 1.0,
+  "widgets": [
+    {
+      "id": 1487250886016,
+      "cls": "QComboBox",
+      "name": "engineFamilySelector",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "Proyectos distintos con una navegación común; los modelos científicos siguen separados.",
+      "rect": [
+        126,
+        9,
+        235,
+        36
+      ],
+      "items": [
+        "Motor 2 tiempos",
+        "Motor 4 tiempos · nativo",
+        "4T 0D · referencia no validada"
+      ],
+      "current": 1
+    },
+    {
+      "id": 1487434320512,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        18,
+        9,
+        96,
+        36
+      ],
+      "text": "TIPO DE MOTOR"
+    },
+    {
+      "id": 1487229089216,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        9,
+        256,
+        17
+      ],
+      "text": "Variantes del motor 4T"
+    },
+    {
+      "id": 1487434978240,
+      "cls": "QLabel",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        9,
+        1101,
+        68
+      ],
+      "text": "nuevo-motor-4t-motor · Válida para ejecución · Cilindro y geometría: Supuesto sintético · Válvula de admisión: Supuesto sintético · Válvula de escape: Supuesto sintético · Admisión: Supuesto sintético · Escape: Supuesto sintético · Ambiente: Supuesto sintético · Combustión: Estándar V1 · Transferencia de calor: Estándar V1 · Pérdidas mecánicas: Supuesto sintético\nEl formulario usa el esquema versionado de configuración 4T. No agrega ni elimina válvulas, secciones o parámetros fuera del esquema del solver. Una configuración ejecutable no equivale a validación física."
+    },
+    {
+      "id": 1487229909120,
+      "cls": "QLabel",
+      "name": "nativeFourStrokeIndicator",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        12,
+        8,
+        1416,
+        17
+      ],
+      "text": "MOTOR 4T NATIVO · DINO4T_API_V1 · VALIDACIÓN EXPERIMENTAL NO REALIZADA"
+    },
+    {
+      "id": 1487434698240,
+      "cls": "QLabel",
+      "name": "workspaceModeLabel",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        373,
+        9,
+        140,
+        36
+      ],
+      "text": "MODO DE TRABAJO"
+    },
+    {
+      "id": 1487229090112,
+      "cls": "QListWidget",
+      "name": "nativeFourStrokeVariants",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        32,
+        256,
+        474
+      ],
+      "items": [
+        "Escape-Audit"
+      ]
+    },
+    {
+      "id": 1487229595008,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        127,
+        57,
+        120,
+        35
+      ],
+      "text": "Abrir proyecto…"
+    },
+    {
+      "id": 1487447536960,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        553,
+        256,
+        35
+      ],
+      "text": "Duplicar variante…"
+    },
+    {
+      "id": 1487308280640,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        594,
+        256,
+        35
+      ],
+      "text": "Eliminar variante"
+    },
+    {
+      "id": 1487209282048,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        247,
+        57,
+        74,
+        35
+      ],
+      "text": "Guardar"
+    },
+    {
+      "id": 1487434740928,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        512,
+        256,
+        35
+      ],
+      "text": "Motor base"
+    },
+    {
+      "id": 1487229592256,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        14,
+        57,
+        113,
+        35
+      ],
+      "text": "Nuevo motor…"
+    },
+    {
+      "id": 1487434126336,
+      "cls": "QPushButton",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        594,
+        1101,
+        35
+      ],
+      "text": "Validar y aplicar configuración"
+    },
+    {
+      "id": 1487229590976,
+      "cls": "QPushButton",
+      "name": "modeAnalysis",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        773,
+        9,
+        123,
+        36
+      ],
+      "text": "RESULTADOS"
+    },
+    {
+      "id": 1487229589888,
+      "cls": "QPushButton",
+      "name": "modeDesign",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        525,
+        9,
+        112,
+        36
+      ],
+      "text": "MODELO"
+    },
+    {
+      "id": 1487229590016,
+      "cls": "QPushButton",
+      "name": "modeSimulate",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        649,
+        9,
+        112,
+        36
+      ],
+      "text": "SIMULAR"
+    },
+    {
+      "id": 1487434739008,
+      "cls": "QTabWidget",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        9,
+        83,
+        1101,
+        505
+      ],
+      "tabs": [
+        "Ambiente",
+        "Combustión",
+        "Escape",
+        "Válvula de escape",
+        "Pérdidas mecánicas",
+        "Cilindro y geometría",
+        "Transferencia de calor",
+        "Condiciones iniciales",
+        "Admisión",
+        "Válvula de admisión",
+        "Numerics",
+        "Punto operativo"
+      ],
+      "current": 0
+    },
+    {
+      "id": 1487309049536,
+      "cls": "QTableWidget",
+      "name": "",
+      "enabled": true,
+      "accessible": "",
+      "tooltip": "",
+      "rect": [
+        0,
+        0,
+        1099,
+        462
+      ],
+      "headers": [
+        "Parámetro del esquema 4T",
+        "Valor",
+        "Procedencia del grupo"
+      ],
+      "rows": [
+        [
+          "Ambiente · presión de escape (Pa)",
+          "101325",
+          "Supuesto sintético"
+        ],
+        [
+          "Ambiente · temperatura de escape (K)",
+          "298.14999999999998",
+          "Supuesto sintético"
+        ],
+        [
+          "Ambiente · presión de admisión (Pa)",
+          "101325",
+          "Supuesto sintético"
+        ],
+        [
+          "Ambiente · temperatura de admisión (K)",
+          "298.14999999999998",
+          "Supuesto sintético"
+        ],
+        [
+          "Ambiente · procedencia",
+          "Supuesto sintético",
+          "Supuesto sintético"
+        ]
+      ]
+    },
+    {
+      "id": 1487422691328,
+      "cls": "QToolButton",
+      "name": "ScrollLeftButton",
+      "enabled": false,
+      "accessible": "Scroll Left",
+      "tooltip": "",
+      "rect": [
+        1070,
+        0,
+        16,
+        42
+      ],
+      "text": ""
+    },
+    {
+      "id": 1487422457856,
+      "cls": "QToolButton",
+      "name": "ScrollRightButton",
+      "enabled": true,
+      "accessible": "Scroll Right",
+      "tooltip": "",
+      "rect": [
+        1085,
+        0,
+        16,
+        42
+      ],
+      "text": ""
+    }
+  ]
+}

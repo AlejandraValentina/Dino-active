@@ -72,6 +72,7 @@ class NativeFourStrokeWorkspace(QWidget):
         self.simulation_pages.addTab(self.curve, 'Curva de potencia / torque')
         self.stack.addWidget(self.simulation_pages)
         self.curve.runningChanged.connect(self._curve_running_changed)
+        self.simulation.runningChanged.connect(self._curve_running_changed)
         self.simulation.runFinished.connect(lambda *_: self.results.refresh())
         self.variant_list.currentTextChanged.connect(self._select_variant)
         self.context.changed.connect(self._refresh_variants)
@@ -83,10 +84,14 @@ class NativeFourStrokeWorkspace(QWidget):
         return self.simulation.task is not None or self.curve.running
 
     def _curve_running_changed(self, running):
+        running=self.running
         self.editor.setEnabled(not running)
         self.variant_list.setEnabled(not running)
         for button in self.variant_buttons:button.setEnabled(not running)
         self.simulation.start.setEnabled(not running)
+        for field in (self.simulation.rpm,self.simulation.cycles,self.simulation.wall,
+                      self.curve.start_rpm,self.curve.end_rpm,self.curve.step_rpm,self.curve.cycles,self.curve.wall):
+            field.setEnabled(not running)
 
     def shutdown(self, timeout_ms=10000):
         if self.curve.running and not self.curve.shutdown(timeout_ms):
@@ -103,7 +108,7 @@ class NativeFourStrokeWorkspace(QWidget):
     def replace_project(self, project, path=None):
         if self.running:
             raise RuntimeError("La corrida 4T debe terminar antes de cambiar de proyecto.")
-        self.context.replace_project(project, path)
+        if not self.context.replace_project(project, path):return False
         self.editor.refresh()
         self.results.refresh()
         self.curve.table.setRowCount(0)
@@ -114,6 +119,7 @@ class NativeFourStrokeWorkspace(QWidget):
         self.simulation.rpm.setValue(float(config["operating_point"]["rpm"]))
         self.simulation.cycles.setValue(int(config["numerics"]["max_cycles"]))
         self._refresh_variants()
+        return True
 
     def _refresh_variants(self):
         selected = self.context.selected_variant

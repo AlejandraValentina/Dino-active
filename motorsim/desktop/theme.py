@@ -29,6 +29,8 @@ def stylesheet() -> str:
         QPushButton#modeDesign:hover,QPushButton#modeSimulate:hover,QPushButton#modeAnalysis:hover {{background:#24364a;border-color:#6591b3;}}
         QPushButton#modeDesign:checked,QPushButton#modeSimulate:checked,QPushButton#modeAnalysis:checked {{background:#145579;border:2px solid #43c5f5;color:#ffffff;}}
         QLineEdit,QDoubleSpinBox,QComboBox,QTableWidget,QPlainTextEdit,QListWidget {{background:{c['panel_deep']};border:1px solid #30435a;border-radius:4px;padding:5px;selection-background-color:#17638c;}}
+        QTextBrowser,QTextEdit {{background:{c['panel_deep']};color:{c['text']};border:1px solid #30435a;padding:8px;selection-background-color:#17638c;}}
+        QPushButton:focus,QComboBox:focus,QLineEdit:focus {{border:2px solid #43c5f5;}}
         QHeaderView::section {{background:#26394d;color:#f0f6fc;font-weight:600;padding:7px 5px;border-right:1px solid #3b5067;}}
         QTableWidget {{alternate-background-color:#182536;color:{c['text']};gridline-color:#33465b;}}
         QTableView::item {{color:{c['text']};}}
