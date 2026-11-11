@@ -1,5 +1,19 @@
 # Dino Commercial - notas de release
 
+## CP2 - operación comercial (2026-11-11)
+
+- Licencia perpetua offline con firma Ed25519 y clave pública embebida; la
+  clave privada queda en custodia del emisor y no se distribuye.
+- Activación por archivo firmado, sin red ni telemetría.
+- Modo TRIAL configurable; por defecto 30 días de ingeniería.
+- Reinstalación/recuperación por reimportación del mismo archivo de licencia.
+- Estado visible en barra, Ayuda → Licencia y Acerca de Dino.
+- Actualización manual/opt-in por manifiesto local; sin auto-update.
+- Un error de licencia no bloquea proyectos, resultados ni exportaciones.
+- Candidato Windows CP2 empaquetado PASS.
+- Políticas pendientes: duración comercial definitiva del TRIAL y alcance de
+  actualizaciones incluidas.
+
 ## CP1 - workflow completeness (2026-11-11)
 
 - Undo/redo acotado en 2T, 4T 0D y 4T nativo.

@@ -44,7 +44,9 @@ Orden: (undo/redo, PDF, onboarding) → bundles → (batch, comparación/legacy)
   - verificar: file:docs/commercial/portable_release.md
 - [x] CP2-UPDATE-CHANNEL - manifiesto local, comprobación manual opt-in y sin auto-update.
   - verificar: test:python -m pytest tests/test_desktop_update_policy.py -q
-- [ ] CP2-LICENSING (decisión del dueño) - opciones A/B registradas; pendiente.
+- [x] CP2-LICENSING - opción A: Ed25519 offline, perpetua, TRIAL fallback, reinstalación, estado visible y sin bloqueo de proyectos.
+  - verificar: test:python -m pytest tests/test_licensing.py tests/test_desktop_license_ui.py -q
+  - política pendiente: duración TRIAL y alcance de actualizaciones.
 - [x] CP2-PRIVACY-TELEMETRY - sin telemetría por defecto; diagnóstico manual.
   - verificar: file:docs/commercial/privacy.md
 - [x] CP2-SUPPORT-RELEASE-NOTES - soporte, límites y notas.

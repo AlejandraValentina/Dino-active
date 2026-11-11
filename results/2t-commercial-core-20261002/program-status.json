@@ -13701,11 +13701,17 @@
       "objective": "DINO_COMMERCIAL_PRODUCT_CP2_V1",
       "description": "Owner-selected licensing/activation model.",
       "dependencies": [],
-      "state": "WAITING",
-      "blocker": "owner_licensing_decision",
+      "state": "DONE",
+      "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Owner decision required: perpetual vs subscription/activation; no DRM or price invented.",
+      "evidence": [
+        "tests/test_licensing.py 8 PASS",
+        "tests/test_desktop_license_ui.py 2 PASS",
+        "tests/test_desktop_cp2_acceptance.py 1 PASS",
+        "results/commercial-product-v1/windows-cp2/acceptance.json",
+        "docs/commercial/licensing.md"
+      ],
+      "next_action": null,
       "owner_role": "owner",
       "write_scope": [],
       "evidence_level": "L0"
@@ -13911,7 +13917,7 @@
   ],
   "current_objective": {
     "id": "DINO_COMMERCIAL_PRODUCT_CP2_V1",
-    "state": "IN_PROGRESS",
+    "state": "PASS",
     "owner_approved": true,
     "summary": "Commercial operations: portable release, manual update policy, privacy, support/release notes; licensing/activation pending owner decision.",
     "change": "openspec/changes/commercial-product-v1",
@@ -13925,7 +13931,7 @@
       "CP2-LICENSING"
     ],
     "completion_criterion": "CP2 operational readiness with owner-selected licensing/activation; no scientific claim.",
-    "classification": null
+    "classification": "CP2_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED_POLICY_PENDING"
   },
   "objectives": [
     {
@@ -15131,7 +15137,7 @@
     },
     {
       "id": "DINO_COMMERCIAL_PRODUCT_CP2_V1",
-      "state": "IN_PROGRESS",
+      "state": "PASS",
       "owner_approved": true,
       "summary": "Commercial operations: portable release, manual update policy, privacy, support/release notes; licensing/activation pending owner decision.",
       "change": "openspec/changes/commercial-product-v1",
@@ -15145,7 +15151,7 @@
         "CP2-LICENSING"
       ],
       "completion_criterion": "CP2 operational readiness with owner-selected licensing/activation; no scientific claim.",
-      "classification": null
+      "classification": "CP2_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED_POLICY_PENDING"
     }
   ],
   "owner_decisions_pending": [
@@ -15554,6 +15560,61 @@
       "evidence": [
         "docs/commercial/release_policy.md",
         "docs/commercial/privacy.md"
+      ],
+      "state": "PENDING"
+    },
+    {
+      "id": "OWNER-TRIAL-DURATION",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP2_V1",
+      "question": "¿Duración comercial definitiva del modo TRIAL?",
+      "options": [
+        {
+          "id": "A",
+          "label": "30 días",
+          "consequence": "Valor por defecto actual de ingeniería."
+        },
+        {
+          "id": "B",
+          "label": "14 días",
+          "consequence": "Prueba más corta; menos fricción comercial, menos evaluación."
+        },
+        {
+          "id": "C",
+          "label": "45 días",
+          "consequence": "Más evaluación; mayor exposición sin licencia."
+        }
+      ],
+      "recommendation": "Mantener 30 días hasta validación comercial; configurable por despliegue con DINO_TRIAL_DAYS.",
+      "evidence": [
+        "docs/commercial/licensing.md"
+      ],
+      "state": "PENDING"
+    },
+    {
+      "id": "OWNER-UPDATE-SCOPE",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP2_V1",
+      "question": "¿Qué actualizaciones incluye la licencia perpetua?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Actualizaciones de la misma versión mayor incluidas",
+          "consequence": "Modelo simple y mantenible; requiere política de fin de soporte."
+        },
+        {
+          "id": "B",
+          "label": "Actualizaciones por ventana temporal",
+          "consequence": "Requiere entitlement y control de fechas."
+        },
+        {
+          "id": "C",
+          "label": "Sin actualizaciones incluidas",
+          "consequence": "Máxima separación comercial; mayor coste de soporte."
+        }
+      ],
+      "recommendation": "A para la V1, con política de fin de soporte documentada; no codificar fechas ni bloqueos todavía.",
+      "evidence": [
+        "docs/commercial/release_policy.md",
+        "docs/commercial/licensing.md"
       ],
       "state": "PENDING"
     }
@@ -19461,6 +19522,12 @@
       "task": "CP2-START",
       "kind": "decision",
       "summary": "CP2 activated: portable release, manual update check, privacy, support and release notes implemented; licensing/activation remains an owner decision."
+    },
+    {
+      "at": "2026-11-11T13:09:46+00:00",
+      "task": "CP2-LICENSING",
+      "kind": "task",
+      "summary": "Owner option A implemented: Ed25519 offline perpetual licenses, trial fallback, reinstall/recovery, visible status, manual updates and no project blocking. Source 11 PASS and packaged CP2 acceptance PASS; trial duration/update scope remain policy decisions."
     }
   ],
   "legacy_gate_status": {
@@ -19476,19 +19543,18 @@
   },
   "gate_status": {
     "objective": "DINO_COMMERCIAL_PRODUCT_CP2_V1",
-    "state": "OPEN",
-    "classification": null,
-    "evidence": [],
-    "gate_tasks_total": 5,
-    "gate_tasks_done": 4,
-    "gate_task_states": {
-      "DONE": 4,
-      "WAITING": 1
-    },
-    "remaining": [
-      "CP2-LICENSING"
+    "state": "PASS",
+    "classification": "CP2_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED_POLICY_PENDING",
+    "evidence": [
+      "results/commercial-product-v1/windows-cp2/acceptance.json; tests/test_licensing.py 8 PASS; tests/test_desktop_license_ui.py 2 PASS"
     ],
-    "updated_at": "2026-11-11T12:45:41+00:00"
+    "gate_tasks_total": 5,
+    "gate_tasks_done": 5,
+    "gate_task_states": {
+      "DONE": 5
+    },
+    "remaining": [],
+    "updated_at": "2026-11-11T13:09:47+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",

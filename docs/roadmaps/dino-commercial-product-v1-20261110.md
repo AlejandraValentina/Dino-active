@@ -154,8 +154,13 @@ declarar con precisión qué está validado y qué no.
 - Portable ZIP documentado y con hashes; sin instalador/registro.
 - Comprobación manual de actualización desde un manifiesto local.
 - Privacidad sin telemetría y soporte/release notes documentados.
-- **Pendiente:** licenciamiento/activación, decisión del dueño (A: perpetua con
-  activación offline/TRIAL; B: suscripción online). Recomendación: A para CP2.
+- **Licenciamiento/activación:** opción A autorizada e implementada:
+  Ed25519 offline, licencia perpetua, TRIAL fallback, reinstalación y estado
+  visible. Candidato Windows CP2 empaquetado PASS.
+- **Políticas pendientes:** duración comercial final del TRIAL y alcance de
+  actualizaciones incluidas; documentadas en `docs/commercial/licensing.md`.
+- Gate CP2: **PASS** con clasificación
+  `CP2_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED_POLICY_PENDING`.
 - Regresión general sigue `NOT_GREEN`; incidencias `external_view` y
   `desktop IndexError` corregidas como defectos de test.
 
