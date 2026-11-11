@@ -249,3 +249,11 @@ class DesktopContext(QObject):
         self._record_history()
         self.project=candidate;self.dirty=True;self.changed.emit()
         return True
+
+    def add_result_reference(self, reference):
+        if self.engine_family!='2T':raise ValueError('La referencia no pertenece a un proyecto 2T')
+        candidate=deepcopy(self.project)
+        if any(ref['path']==reference['path'] for ref in candidate['result_references']):return False
+        candidate['result_references'].append(deepcopy(reference));validate_project(candidate)
+        self._record_history();self.project=candidate;self.dirty=True;self.changed.emit()
+        return True

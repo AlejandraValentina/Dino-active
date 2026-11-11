@@ -1,7 +1,7 @@
 """Workspace 4T 0D de referencia: geometría, válvulas y conductos."""
 from __future__ import annotations
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt,Signal
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit,
                                QPushButton, QFormLayout, QGroupBox, QTabWidget,
                                QTableWidget, QTableWidgetItem, QHeaderView)
@@ -240,6 +240,7 @@ class FourStrokeDuctsPage(QWidget):
 
 class FourStrokeWorkspace(QWidget):
     """Workspace 4T autocontenido; el shell 2T no comparte sus páginas."""
+    applied=Signal()
 
     def __init__(self, context, parent=None):
         super().__init__(parent)
@@ -272,10 +273,17 @@ class FourStrokeWorkspace(QWidget):
         self._refresh_status()
 
     def apply_all(self) -> bool:
+        from copy import deepcopy
+        original=deepcopy(self.context.project);dirty=self.context.dirty
+        undo=deepcopy(self.context._undo);redo=deepcopy(self.context._redo)
         for page in (self.geometry, self.valves, self.ducts):
             if not page.apply():
+                self.context.project=original;self.context.dirty=dirty
+                self.context._undo=undo;self.context._redo=redo
+                self.context.changed.emit()
                 self.tabs.setCurrentWidget(page)
                 return False
+        self.applied.emit()
         return True
 
     def _refresh_status(self):

@@ -37,8 +37,8 @@ def guide_html() -> str:
 def first_steps_status(window) -> list[dict]:
     """Return presentation-only checks for the current desktop state."""
     context = getattr(window, "context", None)
-    project = getattr(context, "project", {}) or {}
     active = window._active_context() if hasattr(window, "_active_context") else context
+    project=getattr(active,'project',{}) or {}
     if active is getattr(window, "four_stroke_context", None):
         family = "4T_0D"
         engine_ready = getattr(active, "project", None) is not None
@@ -48,19 +48,17 @@ def first_steps_status(window) -> list[dict]:
             engine_ready = bool(active.engine())
         except (AttributeError, KeyError, TypeError):
             engine_ready = False
-    result_ready = False
-    dataset = getattr(getattr(window, "results", None), "dataset", None)
-    if dataset:
-        result_ready = True
-    if getattr(getattr(window, "four_stroke_results", None), "result", None):
-        result_ready = True
+    result_ready=False
+    if family=='2T':result_ready=bool(getattr(getattr(window,'results',None),'dataset',None))
+    elif family=='4T_0D':result_ready=bool(getattr(getattr(window,'four_stroke_results',None),'result',None))
     native = getattr(window, "native_four_stroke", None)
-    if native is not None and getattr(getattr(native, "results", None), "loaded", None):
+    if family=='4T' and native is not None and getattr(getattr(native, "results", None), "loaded", None):
         result_ready = True
+    project_id=project.get('project_id') if isinstance(project,dict) else getattr(project,'name',None)
     return [
         {"label": "Proyecto con identidad",
-         "ok": bool(project.get("project_id") or getattr(active, "name", None)),
-         "detail": str(project.get("project_id") or getattr(active, "name", "sin proyecto"))},
+         "ok": bool(project_id),
+         "detail": str(project_id or 'Sin proyecto')},
         {"label": "Familia y motor activos", "ok": engine_ready,
          "detail": family},
         {"label": "Resultado o ejecución disponibles", "ok": result_ready,
@@ -69,9 +67,10 @@ def first_steps_status(window) -> list[dict]:
 
 
 def status_html(window) -> str:
+    from html import escape
     rows = "".join(
         f"<tr><td>{'OK' if item['ok'] else 'Pendiente'}</td>"
-        f"<td>{item['label']}</td><td>{item['detail']}</td></tr>"
+        f"<td>{escape(item['label'])}</td><td>{escape(item['detail'])}</td></tr>"
         for item in first_steps_status(window))
     return ("<h3>Verificación de primeros pasos</h3><table border='1' "
             "cellspacing='0' cellpadding='4'><tr><th>Estado</th><th>Paso</th>"

@@ -28,7 +28,7 @@ class NewEngineDialog(QDialog):
         form=QFormLayout();root.addLayout(form)
         self.project_name=QLineEdit("dino-proyecto-nuevo");form.addRow("Nombre del proyecto",self.project_name)
         self.engine_name=QLineEdit("Motor nuevo");form.addRow("Nombre del motor",self.engine_name)
-        self.cycle=QComboBox();self.cycle.addItem("Dos tiempos (2T)","2T");self.cycle.addItem("Cuatro tiempos (4T)","4T");form.addRow("Familia",self.cycle)
+        self.cycle=QComboBox();self.cycle.addItem("Dos tiempos (2T)","2T");self.cycle.addItem("Cuatro tiempos (4T)","4T");self.cycle.addItem('4T 0D · referencia sintética','4T_REFERENCE');form.addRow("Familia y modelo",self.cycle)
         self.two_stroke_panel=QWidget();two_form=QFormLayout(self.two_stroke_panel);root.addWidget(self.two_stroke_panel)
         self.inputs={};self.sources={}
         for key,label,unit,low,high,default in self.FIELDS:
@@ -57,13 +57,18 @@ class NewEngineDialog(QDialog):
         self.derived.setText(f"Cilindrada: {swept:.2f} cm³ · Cámara compatible con CR: {clearance:.2f} cm³ · Compresión primaria: {primary:.2f}:1")
 
     def _cycle_changed(self,*_):
-        four=self.cycle.currentData()=="4T";self.two_stroke_panel.setVisible(not four);self.four_info.setVisible(four)
+        four=self.cycle.currentData()!="2T";self.two_stroke_panel.setVisible(not four);self.four_info.setVisible(four)
+        self.four_info.setText('Referencia sintética 4T 0D: geometría, válvulas y conductos. Usa su propio modelo y no sustituye al 4T nativo.' if self.cycle.currentData()=='4T_REFERENCE' else '4T nativo: configuración DINO4T_API_V1 de ejemplo, sintética. En MODELO se editan cilindro, válvulas, distribución, admisión, escape y combustión.')
         self.engine_name.setText("Motor 4T nuevo" if four else "Motor 2T nuevo")
 
     def _create(self):
         try:
             name=self.project_name.text().strip()
             if not name:raise ValueError("Ingresá un nombre de proyecto.")
+            if self.cycle.currentData()=='4T_REFERENCE':
+                from ..four_stroke_project import starter_project
+                self.project=starter_project(name=name,rpm=3000).to_dict()
+                self.accept();return
             if self.cycle.currentData()=="4T":
                 from .four_stroke_project import project_from_example,config_identity
                 self.project=project_from_example(name)

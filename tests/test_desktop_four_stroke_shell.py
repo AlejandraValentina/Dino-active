@@ -24,6 +24,10 @@ class FourStrokeShellTests(unittest.TestCase):
         self.window = DinoDesktopWindow(new_design_project("shell-4t"))
 
     def tearDown(self):
+        # Tests that deliberately leave invalid form text must explicitly
+        # discard that draft before closing now that close protects edits.
+        self.window.four_stroke_workspace.refresh(self.window.four_stroke_context.project)
+        self.window.experience.reference_loaded()
         self.window.four_stroke_context.dirty = False
         self.window.context.dirty = False
         self.window.close()

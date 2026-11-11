@@ -253,6 +253,13 @@ def import_bundle(path, destination=None) -> dict:
             from ..four_stroke_project import load_project
         else:from ..engine_project import load_project
         result.update(project=load_project(target/PROJECT_NAME),project_path=target/PROJECT_NAME,destination=str(target))
+        if result['manifest']['family']=='4T_native':
+            from .four_stroke_artifacts import assess_run_reference
+            result['assessments']=[]
+            for ref in result['project']['run_references']:
+                assessment=assess_run_reference(ref)
+                result['assessments'].append(dict(run_id=ref['run_id'],integrity=assessment.classification,
+                    execution=ref['status'],periodicity=ref['periodicity_status'],issues=assessment.issues))
         return result
     finally:
         if staging.exists():

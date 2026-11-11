@@ -39,7 +39,7 @@ SECTION_LABELS={"geometry":"Cilindro y geometría","intake_valve":"Válvula de a
     "exhaust_valve":"Válvula de escape","intake_duct":"Admisión","exhaust_duct":"Escape",
     "ambient":"Ambiente","combustion":"Combustión","heat_transfer":"Transferencia de calor",
     "friction":"Pérdidas mecánicas","operating_point":"Punto operativo",
-    "initial_conditions":"Condiciones iniciales","numerics":"Numerics"}
+    "initial_conditions":"Condiciones iniciales","numerics":"Avanzado · cálculo"}
 FIELD_LABELS={"provenance":"procedencia","bore_mm":"diámetro (mm)","stroke_mm":"carrera (mm)",
     "rod_mm":"biela (mm)","compression_ratio":"relación de compresión","count":"cantidad",
     "diameter_mm":"diámetro (mm)","open_deg":"apertura (°)","close_deg":"cierre (°)",
@@ -161,7 +161,7 @@ class FourStrokeConfigEditor(QWidget):
     draftChanged = Signal(bool)
 
     def __init__(self, context):
-        super().__init__(); self.context=context; self.tables={}; self._loading=False; self._original={};self._applying=False
+        super().__init__(); self.context=context; self.tables={}; self._loading=False; self._original={};self._applying=False;self.fields={}
         root=QVBoxLayout(self);self.notice=QLabel();self.notice.setWordWrap(True);root.addWidget(self.notice)
         self.sections=QTabWidget();root.addWidget(self.sections,1)
         self.validate_button=QPushButton("Validar y aplicar configuración")
@@ -201,9 +201,12 @@ class FourStrokeConfigEditor(QWidget):
         # Publishing a result is not an instruction to erase a user's draft.
         if not force and not self._applying and self.has_pending_changes:return
         config=self.context.engine();self._loading=True
-        while self.sections.count(): self.sections.removeTab(0)
-        self.tables.clear();self._original.clear()
-        for section, value in config.items():
+        while self.sections.count():
+            old=self.sections.widget(0);self.sections.removeTab(0);old.deleteLater()
+        self.tables.clear();self._original.clear();self.fields.clear()
+        for section in dict.fromkeys([*SECTION_LABELS,*config]):
+            if section not in config:continue
+            value=config[section]
             if section in {"schema", "identifier", "description"}: continue
             table=QTableWidget();table.setColumnCount(3);table.setHorizontalHeaderLabels(["Parámetro del esquema 4T", "Valor", "Procedencia del grupo"])
             table.setAlternatingRowColors(True);table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectItems)
@@ -218,7 +221,9 @@ class FourStrokeConfigEditor(QWidget):
                 provenance=value.get("provenance","sin provenance declarada por el esquema") if isinstance(value,dict) else "sin provenance declarada por el esquema"
                 provenance_item=QTableWidgetItem(DISPLAY_VALUES.get(str(provenance),str(provenance)));provenance_item.setFlags(provenance_item.flags() & ~Qt.ItemFlag.ItemIsEditable)
                 table.setItem(row,0,key);table.setItem(row,1,cell);table.setItem(row,2,provenance_item)
-            self.tables[section]=table;self.sections.addTab(table,SECTION_LABELS.get(section,section.replace("_"," ").title()))
+            from .native_parameter_form import section_form
+            self.tables[section]=table
+            self.sections.addTab(section_form(self,section,table),SECTION_LABELS.get(section,section.replace("_"," ").title()))
             table.itemChanged.connect(self._draft_changed)
         checked=engine_platform.validate_config("4T",config)
         unknown=checked.get("unknown_keys",[])
@@ -250,13 +255,18 @@ class FourStrokeConfigEditor(QWidget):
                     # cell whose text differs from the loaded display is re-typed.
                     if item.text()==self._display(original):
                         continue
-                    _set_path(doc,path,_as_typed(item.text(),original,_path_label(path)))
+                    try:_set_path(doc,path,_as_typed(item.text(),original,_path_label(path)))
+                    except (ValueError,TypeError):
+                        self.sections.setCurrentIndex(list(self.tables).index(path[0]))
+                        if path in self.fields:self.fields[path].setFocus()
+                        raise ValueError(_path_label(path)+': ingresá un valor válido con la unidad indicada; la configuración aplicada no se modificó.')
             checked=engine_platform.validate_config("4T",doc)
             if not checked["valid"] or checked["unknown_keys"]:
                 details="\n".join(item.get("message",item.get("path","clave desconocida")) for item in checked["issues"])
                 if checked["unknown_keys"]: details += "\nClaves no reconocidas: "+", ".join(checked["unknown_keys"])
                 raise ValueError(details or "La API 4T rechazó la configuración.")
             if doc == self.context.engine():
+                self.discard_draft()
                 self.notice.setText(f"Configuración sin cambios · SHA-256 {checked['config_sha256']} · no se reescribió ningún valor de origen.")
                 return True
             self._applying=True
@@ -267,6 +277,7 @@ class FourStrokeConfigEditor(QWidget):
             self.draftChanged.emit(False);self.context.draft_changed.emit()
             return True
         except Exception as exc:
+            self.notice.setText('Cambios no aplicados: '+str(exc))
             QMessageBox.warning(self,"Configuración 4T inválida",str(exc))
             return False
 
@@ -298,10 +309,11 @@ class FourStrokeSimulation(QWidget):
         self.rpm.setValue(float(context.engine()["operating_point"]["rpm"]))
         self.cycles=QSpinBox();self.cycles.setRange(1,100);self.cycles.setValue(int(context.engine()["numerics"]["max_cycles"]))
         self.wall=QSpinBox();self.wall.setRange(10,600);self.wall.setValue(120);self.wall.setSuffix(" s")
-        form.addRow("Punto operativo",self.rpm);form.addRow("Máximo de ciclos",self.cycles);form.addRow("Límite de pared",self.wall)
+        form.addRow("Punto operativo",self.rpm);form.addRow("Máximo de ciclos",self.cycles);form.addRow("Presupuesto de tiempo",self.wall)
         row=QHBoxLayout();root.addLayout(row);self.start=QPushButton("Ejecutar punto 4T");self.start.clicked.connect(self.execute);row.addWidget(self.start);self.cancel=QPushButton("Cancelar al final del ciclo");self.cancel.setEnabled(False);self.cancel.clicked.connect(self.cancel_run);row.addWidget(self.cancel)
         self.progress=QLabel("Listo · solo se ejecuta mediante DINO4T_API_V1");self.progress.setWordWrap(True);root.addWidget(self.progress)
         self.last_label=QLabel();self.last_label.setWordWrap(True);root.addWidget(self.last_label);root.addStretch(1)
+        self.submitted_identity=QLabel();self.submitted_identity.setWordWrap(True);root.insertWidget(1,self.submitted_identity)
 
     def execute(self):
         if self.task is not None:return
@@ -321,6 +333,8 @@ class FourStrokeSimulation(QWidget):
         task.signals.finished.connect(lambda envelope,token=token:self._finished(token,envelope))
         task.signals.failed.connect(lambda message,token=token:self._failed(token,message))
         self.start.setEnabled(False);self.cancel.setEnabled(True);self.progress.setText(f"Ejecutando {run_id} · DINO4T_API_V1 · límite {self.wall.value()} s")
+        self.submitted_identity.setText(f"Configuración enviada: {checked['config_sha256'][:12]} · {self.rpm.value():g} RPM · máximo {self.cycles.value()} ciclos. La entrada de esta corrida queda fijada.")
+        self.submitted_identity.setToolTip(checked['config_sha256'])
         self.runningChanged.emit(True)
         try:
             self.thread_pool.start(task)
@@ -450,6 +464,7 @@ class FourStrokeResults(QWidget):
             else:
                 self.history.addItem(f"Datos conservados · {assessed.classification} · {ref.get('run_id','?')} · "+"; ".join(assessed.issues))
         if self.history.count():self.history.setCurrentRow(self.history.count()-1)
+        self._invalidate_comparison()
         self._refresh_plots()
 
     def _refresh_plots(self):
@@ -542,7 +557,19 @@ class FourStrokeResults(QWidget):
         if not hasattr(self,"compare_table"):return
         self.compare_table.setRowCount(0)
         self.compare_json_button.setEnabled(False);self.compare_csv_button.setEnabled(False);self.compare_report_button.setEnabled(False);self.compare_report_pdf_button.setEnabled(False)
-        self.compare_status.setText("Seleccioná dos corridas y pulsá Comparar corridas.")
+        self.compare_button.setEnabled(False)
+        aidx=self.compare_a.currentData();bidx=self.compare_b.currentData()
+        if aidx not in self.loaded or bidx not in self.loaded:
+            self.compare_status.setText('Faltan dos corridas con integridad verificada. Los históricos no verificados se conservan sin habilitar comparación.');return
+        if aidx==bidx:
+            self.compare_status.setText('Elegí dos corridas distintas para comparar.');return
+        try:
+            a,_,ra=self.loaded[aidx];b,_,rb=self.loaded[bidx]
+            build_comparison(self._comparison_endpoint(a,ra),self._comparison_endpoint(b,rb))
+        except (ComparisonIneligible,OSError,ValueError,KeyError,TypeError) as exc:
+            self.compare_status.setText('No comparable: '+str(exc));return
+        self.compare_button.setEnabled(True)
+        self.compare_status.setText('Par elegible por el contrato vigente. Comparar vuelve a comprobar los artefactos antes de calcular diferencias; no acredita validación experimental.')
 
     def _comparison_endpoint(self,summary,reference):
         from .four_stroke_artifacts import require_verified_run

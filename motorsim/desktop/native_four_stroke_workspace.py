@@ -89,6 +89,9 @@ class NativeFourStrokeWorkspace(QWidget):
         self.variant_list.setEnabled(not running)
         for button in self.variant_buttons:button.setEnabled(not running)
         self.simulation.start.setEnabled(not running)
+        for field in (self.simulation.rpm,self.simulation.cycles,self.simulation.wall,
+                      self.curve.start_rpm,self.curve.end_rpm,self.curve.step_rpm,self.curve.cycles,self.curve.wall):
+            field.setEnabled(not running)
 
     def shutdown(self, timeout_ms=10000):
         if self.curve.running and not self.curve.shutdown(timeout_ms):

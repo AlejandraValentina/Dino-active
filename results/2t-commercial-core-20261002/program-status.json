@@ -13788,11 +13788,14 @@
       "objective": "DINO_FRONTEND_REMEDIATION_V1",
       "description": "Persistent active project/model/variant/revision and navigation",
       "dependencies": [],
-      "state": "READY",
+      "state": "REVIEW",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Persistent active project/model/variant/revision and navigation",
+      "evidence": [
+        "docs/frontend-remediation-v1/architecture-and-roadmap.md",
+        "results/frontend-remediation-v1/captures/r36-final-reopened-native-compact.png"
+      ],
+      "next_action": "Continue authorized remediation objective.",
       "owner_role": "implementation",
       "write_scope": [],
       "evidence_level": "L0"
@@ -13844,11 +13847,13 @@
       "objective": "DINO_FRONTEND_REMEDIATION_V1",
       "description": "Independent re-evaluation, incremental architecture and per-finding roadmap",
       "dependencies": [],
-      "state": "READY",
+      "state": "DONE",
       "blocker": null,
       "commits": [],
-      "evidence": [],
-      "next_action": "Independent re-evaluation, incremental architecture and per-finding roadmap",
+      "evidence": [
+        "docs/frontend-remediation-v1/architecture-and-roadmap.md"
+      ],
+      "next_action": "Continue authorized remediation objective.",
       "owner_role": "implementation",
       "write_scope": [],
       "evidence_level": "L0"
@@ -19613,6 +19618,18 @@
       "task": "FRM-CAUSES",
       "kind": "task",
       "summary": "Six failing-before regressions reproduce native draft bypass/loss, incomplete portable closure and str-path save failure. Structural fixes now IMPLEMENTED; 30 focused tests PASS. Live/source acceptance and packaged Windows status remain separate."
+    },
+    {
+      "at": "2026-11-11T12:30:50+00:00",
+      "task": "FRM-ARCH-ROADMAP",
+      "kind": "task",
+      "summary": "SELF_REVIEW recommends retained Qt Widgets with command-bound drafts, family adapters and immutable artifact transport. Per-finding roadmap distinguishes covered, partial, F2/F3 and human UAT; no independent review or scientific claim."
+    },
+    {
+      "at": "2026-11-11T16:04:52+00:00",
+      "task": "FRM-CONTEXT",
+      "kind": "task",
+      "summary": "Integrated F1 source increment ready for final regression: common identity/navigation, physical native forms, guarded drafts for 2T/0D, result access/linking, RPM budgets, comparison preflight and portable preview. Source GUI evidence captured; packaged/human acceptance remains separate."
     }
   ],
   "legacy_gate_status": {
@@ -19632,21 +19649,21 @@
     "classification": null,
     "evidence": [],
     "gate_tasks_total": 11,
-    "gate_tasks_done": 4,
+    "gate_tasks_done": 5,
     "gate_task_states": {
-      "DONE": 4,
-      "READY": 7
+      "DONE": 5,
+      "REVIEW": 1,
+      "READY": 5
     },
     "remaining": [
       "FRM-CONTEXT",
       "FRM-EDITORS",
       "FRM-FLOWS",
       "FRM-PORTABILITY-UX",
-      "FRM-ARCH-ROADMAP",
       "FRM-REGRESSION",
       "FRM-LIVE-UAT"
     ],
-    "updated_at": "2026-11-11T11:51:52+00:00"
+    "updated_at": "2026-11-11T16:04:52+00:00"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
