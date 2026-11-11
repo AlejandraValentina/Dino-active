@@ -1,0 +1,33 @@
+{
+  "schema": "DINO_INCIDENT_V1",
+  "id": "DINO-INC-EXTVIEW-001",
+  "severity": "high",
+  "status": "OPEN_INDEPENDENT",
+  "title": "external_view ImportDialog access violation under Qt offscreen/test teardown",
+  "component": "motorsim/external_view.py:88 ImportDialog.__init__",
+  "test": "tests/test_external_data.py::test_import_confirm_roundtrip_unknown_conditions_and_previous_preserved",
+  "symptom": "Windows fatal exception: access violation (0xC0000005)",
+  "reproduced_on": [
+    {
+      "commit": "48b3afe",
+      "worktree": "E:\\dino\\worktrees\\dino-cp1-diff-main",
+      "command": "python -m pytest tests/test_external_data.py -q -p no:cacheprovider"
+    },
+    {
+      "commit": "d44305c",
+      "worktree": "E:\\dino\\worktrees\\dino-commercial-integrated-v1",
+      "command": "python -m pytest tests/test_external_data.py -q -p no:cacheprovider"
+    }
+  ],
+  "stack": [
+    "Windows fatal exception: access violation",
+    "Current thread ...",
+    "File \"motorsim/external_view.py\", line 88 in __init__",
+    "File \"motorsim/external_view.py\", line 231 in import_csv",
+    "File \"tests/test_external_data.py\", line 230 in test_import_confirm_roundtrip_unknown_conditions_and_previous_preserved"
+  ],
+  "classification": "INHERITED_PRODUCT_DEFECT_CANDIDATE",
+  "cp1_attribution": "NOT_CP1",
+  "notes": "Reproduced before and after CP1. Do not mark CP1 general regression green. Diagnosis should focus on QDialog/QScrollArea/QPushButton lifetime or parent destruction in the legacy external view path; not bundled into CP1 fixes.",
+  "next_action": "Create a minimal Qt reproducer with ImportDialog parent lifetime and fix separately before including external_data in the green suite."
+}

@@ -54,10 +54,17 @@ declarar con precisión qué está validado y qué no.
   ausentes, expectativas de texto antiguas, `external_view` Qt); el triaje está
   en `results/commercial-product-v1/verification/cp1-regression-triage.json`.
   No se atribuye ningún fallo residual a CP1.
-- Aceptación Windows CP1: **PENDIENTE**, separada de la fuente. No se reutiliza
+- Aceptación Windows CP1: **PASS** para el candidato `7fe6220b` (workflow, no UAT humano). No se reutiliza
   el hash del candidato CP0 aceptado ni se declara release comercial.
 - Sin claims científicos: calibración `NOT_PERFORMED`, validación experimental
   `NOT_PERFORMED`, predictiva `NOT_CLAIMED`.
+
+- Auditoría diferencial (2026-11-10): baseline `48b3afe` 146 fallos (89F/57E);
+  CP1 `d44305c` 145 fallos (89F/56E), **cero fallos exclusivos de CP1**. Los 137
+  fallos comunes tienen causa idéntica. La regresión general permanece
+  **NOT_GREEN**; el crash de `external_view` se conserva como incidencia
+  independiente. Evidencia: `results/commercial-product-v1/verification/differential/`.
+
 
 ## 3. Fases y dependencias
 

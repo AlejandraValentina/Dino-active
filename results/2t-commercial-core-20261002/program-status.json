@@ -13604,6 +13604,28 @@
       "owner_role": "verification",
       "write_scope": [],
       "evidence_level": "L1"
+    },
+    {
+      "id": "CP1-DIFFERENTIAL-REGRESSION-AUDIT",
+      "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+      "description": "Differential full-suite regression audit of CP1 against main 48b3afe by test ID and cause.",
+      "dependencies": [
+        "CP1-REGRESSION"
+      ],
+      "state": "DONE",
+      "blocker": null,
+      "commits": [],
+      "evidence": [
+        "results/commercial-product-v1/verification/differential/differential-report.json",
+        "results/commercial-product-v1/verification/differential/differential-report.md",
+        "results/commercial-product-v1/verification/differential/main-48b3afe.junit.xml",
+        "results/commercial-product-v1/verification/differential/cp1-clean-failures.junit.xml",
+        "results/commercial-product-v1/incidents/external-view-access-violation.json"
+      ],
+      "next_action": null,
+      "owner_role": "verification",
+      "write_scope": [],
+      "evidence_level": "L0"
     }
   ],
   "audit_remediation_mode": false,
@@ -19291,6 +19313,12 @@
       "task": "CP1-WINDOWS-UAT",
       "kind": "task",
       "summary": "Packaged Windows candidate 7fe6220b PASS for CP1 workflow acceptance: undo/redo, PDF, onboarding, bundles, comparison/legacy and bounded queue; no scientific claim."
+    },
+    {
+      "at": "2026-11-11T11:56:34+00:00",
+      "task": "CP1-DIFFERENTIAL-REGRESSION-AUDIT",
+      "kind": "task",
+      "summary": "Baseline 48b3afe full suite: 146 failures (89F/57E). CP1 full: 145 (89F/56E), zero CP1-only failures. 137 common failures have identical causes; external_view crash reproduced on both and retained as independent incident. General regression remains NOT_GREEN."
     }
   ],
   "legacy_gate_status": {
@@ -19307,9 +19335,10 @@
   "gate_status": {
     "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
     "state": "PASS",
-    "classification": "CP1_SOURCE_AND_WINDOWS_WORKFLOW_ACCEPTED",
+    "classification": "CP1_SOURCE_AND_WINDOWS_WORKFLOW_ACCEPTED_GENERAL_REGRESSION_NOT_GREEN",
     "evidence": [
-      "results/commercial-product-v1/windows-cp1/acceptance.json; results/commercial-product-v1/windows-cp1/candidate.json; results/commercial-product-v1/verification/cp1-regression-triage.json"
+      "results/commercial-product-v1/windows-cp1/acceptance.json; results/commercial-product-v1/windows-cp1/candidate.json; results/commercial-product-v1/verification/cp1-regression-triage.json",
+      "results/commercial-product-v1/verification/differential/differential-report.json"
     ],
     "gate_tasks_total": 6,
     "gate_tasks_done": 6,
@@ -19317,7 +19346,8 @@
       "DONE": 6
     },
     "remaining": [],
-    "updated_at": "2026-11-10T17:33:12+00:00"
+    "updated_at": "2026-11-11T11:56:53+00:00",
+    "general_regression_status": "NOT_GREEN"
   },
   "r2_gate_status": {
     "objective": "MOTORSIM_2T_V1_CLOSURE_R2",
@@ -20034,5 +20064,18 @@
     "integration_branch": "integrate/commercial-unified-ui-v1",
     "windows_candidate_source": "f45d60bf728d6c47838e38514854476a3a02e516",
     "baseline": "results/commercial-product-v1/baseline.json"
+  },
+  "general_regression_status": {
+    "objective": "DINO_COMMERCIAL_PRODUCT_CP1_V1",
+    "status": "NOT_GREEN",
+    "baseline_commit": "48b3afe",
+    "cp1_commit": "d44305c",
+    "baseline_failures": 146,
+    "cp1_full_failures": 145,
+    "cp1_only_failures": 0,
+    "common_failure_causes_identical": true,
+    "report": "results/commercial-product-v1/verification/differential/differential-report.json",
+    "external_view_incident": "results/commercial-product-v1/incidents/external-view-access-violation.json",
+    "updated_at": "2026-11-11T11:56:34+00:00"
   }
 }
