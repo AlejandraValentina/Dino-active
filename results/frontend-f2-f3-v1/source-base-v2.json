@@ -1,0 +1,474 @@
+{
+  "schema": "DINO_FRONTEND_COMMERCIAL_QT_ACCEPTANCE_V1",
+  "result": "PASS",
+  "frozen": false,
+  "product": {
+    "schema": "DINO_PRODUCT_INFO_V1",
+    "product": "Dino Desktop",
+    "version": "0.1.0-rc14",
+    "source_commit": "fuentes; sin identificación de paquete",
+    "trial": true,
+    "build": {
+      "app_version": "0.1.0-rc14",
+      "source_commit": "fuentes; sin identificación de paquete"
+    },
+    "project_schemas": {
+      "2T": "MOTORSIM_ENGINE_PROJECT_V3",
+      "4T_0D": "MOTORSIM_4T_REFERENCE_PROJECT_V1",
+      "4T_native": "DINO_DESKTOP_ENGINE_PROJECT_4T_V1"
+    },
+    "scientific_status": {
+      "calibration": "NOT_PERFORMED",
+      "experimental_validation": "NOT_PERFORMED",
+      "predictive_capability": "NOT_CLAIMED"
+    },
+    "licenses": [
+      "GPL-2.0-only.txt",
+      "GPL-3.0-only.txt",
+      "LGPL-3.0-only.txt",
+      "SOURCES.txt",
+      "qtcore-attribution-blake2.txt",
+      "qtcore-attribution-doubleconversion.txt",
+      "qtcore-attribution-easing.txt",
+      "qtcore-attribution-forkfd.txt",
+      "qtcore-attribution-md4.txt",
+      "qtcore-attribution-md5.txt",
+      "qtcore-attribution-pcre2-sljit.txt",
+      "qtcore-attribution-pcre2.txt",
+      "qtcore-attribution-qeventdispatcher-cf.txt",
+      "qtcore-attribution-rfc6234.txt",
+      "qtcore-attribution-sha1.txt",
+      "qtcore-attribution-sha3-endian.txt",
+      "qtcore-attribution-sha3-keccak.txt",
+      "qtcore-attribution-siphash.txt",
+      "qtcore-attribution-tika-mimetypes.txt",
+      "qtcore-attribution-tinycbor.txt",
+      "qtcore-attribution-tlexpected.txt",
+      "qtcore-attribution-unicode-character-database.txt",
+      "qtcore-attribution-unicode-cldr.txt",
+      "qtcore-attribution-zlib.txt",
+      "qtgui-attribution-aglfn.txt",
+      "qtgui-attribution-android-native-style.txt",
+      "qtgui-attribution-cocoa-platform-plugin.txt",
+      "qtgui-attribution-d3d12memoryallocator.txt",
+      "qtgui-attribution-dejayvu.txt",
+      "qtgui-attribution-emoji-segmenter.txt",
+      "qtgui-attribution-freetype-bdf.txt",
+      "qtgui-attribution-freetype-pcf.txt",
+      "qtgui-attribution-freetype-zlib.txt",
+      "qtgui-attribution-freetype.txt",
+      "qtgui-attribution-grayraster.txt",
+      "qtgui-attribution-harfbuzz-ng.txt",
+      "qtgui-attribution-icc-srgb-color-profile.txt",
+      "qtgui-attribution-libjpeg.txt",
+      "qtgui-attribution-libpng.txt",
+      "qtgui-attribution-md4c.txt",
+      "qtgui-attribution-opengl-es2-headers.txt",
+      "qtgui-attribution-opengl-headers.txt",
+      "qtgui-attribution-pixman.txt",
+      "qtgui-attribution-rhi-miniengine-d3d12-mipmap.txt",
+      "qtgui-attribution-smooth-scaling-algorithm.txt",
+      "qtgui-attribution-vulkan-xml-spec.txt",
+      "qtgui-attribution-vulkanmemoryallocator.txt",
+      "qtgui-attribution-webgradients.txt",
+      "qtgui-attribution-wintab.txt",
+      "qtgui-attribution-xcb-xinput.txt",
+      "qtgui-attribution-xserverhelper.txt"
+    ],
+    "support": "Soporte: distribuidor autorizado y documentación de la licencia.",
+    "generated_at": "2026-11-12T12:02:30.755935+00:00"
+  },
+  "qt_platform": "windows",
+  "checks": {
+    "windows_qt": true,
+    "cp2_and_frontend_present": true,
+    "undo_redo": true,
+    "save_2t": true,
+    "real_2t_started": true,
+    "2t_terminal_link": true,
+    "save_2t_with_result": true,
+    "2t_portable_result_bytes": true,
+    "native_pending_cannot_submit": true,
+    "result_notification_preserves_draft": true,
+    "native_apply": true,
+    "native_save": true,
+    "native_exact_input_and_lock": true,
+    "native_shortcut_lock": true,
+    "late_native_progress_ignored": true,
+    "real_native_result": true,
+    "native_bundle_without_origin": true,
+    "save_after_import": true,
+    "edit_for_failure": true,
+    "save_failure_keeps_original": true,
+    "recovery_snapshot": true,
+    "recovery_copy_available": true,
+    "native_cancelled": true,
+    "reference_error_visible": true,
+    "reference_save": true,
+    "real_reference_queue": true,
+    "real_reference_point": true,
+    "eligible_pair_preflight": true,
+    "eligible_synthetic_comparison": true,
+    "pdf_report": true,
+    "legacy_not_promoted": true,
+    "legacy_comparison_disabled": true,
+    "license_state_TRIAL": true,
+    "save_allowed_TRIAL": true,
+    "license_state_TRIAL_EXPIRED": true,
+    "save_allowed_TRIAL_EXPIRED": true,
+    "license_state_INVALID_LICENSE": true,
+    "save_allowed_INVALID_LICENSE": true,
+    "offline_activation": true,
+    "license_state_LICENSED": true,
+    "save_allowed_LICENSED": true,
+    "manual_offline_update": true,
+    "diagnostic_zip": true,
+    "context_all_families": true,
+    "close_window": true,
+    "reopen_imported": true,
+    "workers_idle": true
+  },
+  "captures": {
+    "01-integrated-2t": {
+      "path": "01-integrated-2t.png",
+      "sha256": "679e1f6e5f02b2548d241e969c99d4a84082fa67112481623768313ed8111b56"
+    },
+    "02-license-menu": {
+      "path": "02-license-menu.png",
+      "sha256": "74fc39e2232a2e52d04b6de7b1b6f42a57358da8cff8835cadfd8de8d08458df"
+    },
+    "03-2t-confirm": {
+      "path": "03-2t-confirm.png",
+      "sha256": "f55bbeb80d9d824086931d6de810f0e35d6cd8ee4b8534ec15b5fef12615d4d7"
+    },
+    "04-2t-real-result": {
+      "path": "04-2t-real-result.png",
+      "sha256": "c0f7930438dee383ecb59ef8cc65b6d60fbfa700cf355265455fe431b8037f65"
+    },
+    "05-native-draft-cancel": {
+      "path": "05-native-draft-cancel.png",
+      "sha256": "7c6497a47f23e84cb7c86b3185f5894f3f2acec56debb543b3947da31d1be510"
+    },
+    "06-native-running": {
+      "path": "06-native-running.png",
+      "sha256": "723a8a50a75311be8017b661ab08957aed20252221ac0a2f5e5073953e860f71"
+    },
+    "07-native-real-result": {
+      "path": "07-native-real-result.png",
+      "sha256": "72dbf68723dcae69f2d3c5c4c6c2b1d73eb36b6f3ce20b95cc4e16ec08aee6b8"
+    },
+    "08-export-receipt": {
+      "path": "08-export-receipt.png",
+      "sha256": "8f4bd92bb9b313389cf87c5a7f0080bf5f775dcf1fc2ce011562d814c1be1a59"
+    },
+    "09-import-receipt": {
+      "path": "09-import-receipt.png",
+      "sha256": "c56fa5bea5ea21d92965def5c09bd0c2ad6f6fce86716afb6b52c4ff0f26b1f8"
+    },
+    "10-save-failure": {
+      "path": "10-save-failure.png",
+      "sha256": "dd81ab9e30d695e929b216086291e8032dc345c6ab98071173173b948be1928a"
+    },
+    "11-native-cancelled": {
+      "path": "11-native-cancelled.png",
+      "sha256": "c2af1f4855830c5115bfdeb329d43f51ff89b8826dc7e7f4f4a17e0b64a7e2fe"
+    },
+    "12-reference-queue": {
+      "path": "12-reference-queue.png",
+      "sha256": "0358f1e948adde3bde53cf191f927bc2725f6fa479668c1a09e7244cf74820b0"
+    },
+    "13-reference-result": {
+      "path": "13-reference-result.png",
+      "sha256": "cef9e84f5fe8b89c9c8f9f5d343c53f1383eca81ec8c9170c6c2ff69de509a30"
+    },
+    "14-synthetic-presentation-comparison": {
+      "path": "14-synthetic-presentation-comparison.png",
+      "sha256": "2bab41474d8e0d6c651ecfd3630321d550987be238e9422f0073376339383461"
+    },
+    "15-legacy-preserved": {
+      "path": "15-legacy-preserved.png",
+      "sha256": "8a953ed3bbe1600ec09ef43ec5b5643035579dff613eb04d8a0cfc949feb734b"
+    },
+    "17-license-TRIAL": {
+      "path": "17-license-TRIAL.png",
+      "sha256": "d7767c88476f37c28af452e1fb33440850040f9bcd3830d2f0ee1a8faea47e1e"
+    },
+    "17-license-TRIAL_EXPIRED": {
+      "path": "17-license-TRIAL_EXPIRED.png",
+      "sha256": "354db5bf9ae0229d9540acfbe0bd1b46a5d0ae2e6704255151ecb02b2264cff6"
+    },
+    "17-license-INVALID_LICENSE": {
+      "path": "17-license-INVALID_LICENSE.png",
+      "sha256": "030e7c244bbec1992dc6d0ef13af992d9eb6387c62a50b8c1bd7c330ccfec624"
+    },
+    "16-offline-activation": {
+      "path": "16-offline-activation.png",
+      "sha256": "3c57d630ed984cc090677695df32a94007796b54c9f0c00f8cd2a3c1cfe70fa2"
+    },
+    "17-license-LICENSED": {
+      "path": "17-license-LICENSED.png",
+      "sha256": "1b86941d4c33a61a555bfa59a3dcde694ac1ee1a33b718cec99d4bc13ea87c05"
+    },
+    "18-manual-update": {
+      "path": "18-manual-update.png",
+      "sha256": "c16740cdc49d7d76b8ef48287be306767b8c0ba840c157cbe8d3ffb934fef207"
+    },
+    "19-about": {
+      "path": "19-about.png",
+      "sha256": "4ccf5b7661bde1ba51bd21368a8f27e1d8a608806482e83df659b46ac3295986"
+    },
+    "20-onboarding": {
+      "path": "20-onboarding.png",
+      "sha256": "6548cef681c4ea56081696c7d4fb269300d9c9ff0b0abb44d832fa3415ec8475"
+    },
+    "21-compact": {
+      "path": "21-compact.png",
+      "sha256": "f8bfd6bc62221e9c2a8fd162dd15d61a69398874a1d8e157efa4a5e500b2183a"
+    },
+    "22-reopened": {
+      "path": "22-reopened.png",
+      "sha256": "d9e0bebb2426b1ac50eae0a3c5dfd97c24bb50a85636c250c5024a5e3edc346e"
+    }
+  },
+  "events": [
+    {
+      "check": "windows_qt",
+      "passed": true,
+      "at": "2026-11-12T12:00:09.971691+00:00"
+    },
+    {
+      "check": "cp2_and_frontend_present",
+      "passed": true,
+      "at": "2026-11-12T12:00:09.971691+00:00"
+    },
+    {
+      "check": "undo_redo",
+      "passed": true,
+      "at": "2026-11-12T12:00:25.989758+00:00"
+    },
+    {
+      "check": "save_2t",
+      "passed": true,
+      "at": "2026-11-12T12:00:29.651525+00:00"
+    },
+    {
+      "check": "real_2t_started",
+      "passed": true,
+      "at": "2026-11-12T12:00:32.833851+00:00"
+    },
+    {
+      "check": "2t_terminal_link",
+      "passed": true,
+      "at": "2026-11-12T12:00:47.622958+00:00"
+    },
+    {
+      "check": "save_2t_with_result",
+      "passed": true,
+      "at": "2026-11-12T12:00:51.400371+00:00"
+    },
+    {
+      "check": "2t_portable_result_bytes",
+      "passed": true,
+      "at": "2026-11-12T12:00:52.397939+00:00"
+    },
+    {
+      "check": "native_pending_cannot_submit",
+      "passed": true,
+      "at": "2026-11-12T12:00:53.036953+00:00"
+    },
+    {
+      "check": "result_notification_preserves_draft",
+      "passed": true,
+      "at": "2026-11-12T12:00:53.037957+00:00"
+    },
+    {
+      "check": "native_apply",
+      "passed": true,
+      "at": "2026-11-12T12:00:53.353950+00:00"
+    },
+    {
+      "check": "native_save",
+      "passed": true,
+      "at": "2026-11-12T12:00:53.782953+00:00"
+    },
+    {
+      "check": "native_exact_input_and_lock",
+      "passed": true,
+      "at": "2026-11-12T12:00:53.831956+00:00"
+    },
+    {
+      "check": "native_shortcut_lock",
+      "passed": true,
+      "at": "2026-11-12T12:00:53.831956+00:00"
+    },
+    {
+      "check": "late_native_progress_ignored",
+      "passed": true,
+      "at": "2026-11-12T12:01:05.427724+00:00"
+    },
+    {
+      "check": "real_native_result",
+      "passed": true,
+      "at": "2026-11-12T12:01:05.464696+00:00"
+    },
+    {
+      "check": "native_bundle_without_origin",
+      "passed": true,
+      "at": "2026-11-12T12:01:07.265718+00:00"
+    },
+    {
+      "check": "save_after_import",
+      "passed": true,
+      "at": "2026-11-12T12:01:07.807144+00:00"
+    },
+    {
+      "check": "edit_for_failure",
+      "passed": true,
+      "at": "2026-11-12T12:01:08.299875+00:00"
+    },
+    {
+      "check": "save_failure_keeps_original",
+      "passed": true,
+      "at": "2026-11-12T12:01:08.570876+00:00"
+    },
+    {
+      "check": "recovery_snapshot",
+      "passed": true,
+      "at": "2026-11-12T12:01:08.572877+00:00"
+    },
+    {
+      "check": "recovery_copy_available",
+      "passed": true,
+      "at": "2026-11-12T12:01:08.573925+00:00"
+    },
+    {
+      "check": "native_cancelled",
+      "passed": true,
+      "at": "2026-11-12T12:01:21.722431+00:00"
+    },
+    {
+      "check": "reference_error_visible",
+      "passed": true,
+      "at": "2026-11-12T12:01:22.678021+00:00"
+    },
+    {
+      "check": "reference_save",
+      "passed": true,
+      "at": "2026-11-12T12:01:22.905890+00:00"
+    },
+    {
+      "check": "real_reference_queue",
+      "passed": true,
+      "at": "2026-11-12T12:01:56.867568+00:00"
+    },
+    {
+      "check": "real_reference_point",
+      "passed": true,
+      "at": "2026-11-12T12:02:14.671753+00:00"
+    },
+    {
+      "check": "eligible_pair_preflight",
+      "passed": true,
+      "at": "2026-11-12T12:02:16.754361+00:00"
+    },
+    {
+      "check": "eligible_synthetic_comparison",
+      "passed": true,
+      "at": "2026-11-12T12:02:17.239396+00:00"
+    },
+    {
+      "check": "pdf_report",
+      "passed": true,
+      "at": "2026-11-12T12:02:17.756726+00:00"
+    },
+    {
+      "check": "legacy_not_promoted",
+      "passed": true,
+      "at": "2026-11-12T12:02:18.619780+00:00"
+    },
+    {
+      "check": "legacy_comparison_disabled",
+      "passed": true,
+      "at": "2026-11-12T12:02:18.619780+00:00"
+    },
+    {
+      "check": "license_state_TRIAL",
+      "passed": true,
+      "at": "2026-11-12T12:02:19.008837+00:00"
+    },
+    {
+      "check": "save_allowed_TRIAL",
+      "passed": true,
+      "at": "2026-11-12T12:02:19.516521+00:00"
+    },
+    {
+      "check": "license_state_TRIAL_EXPIRED",
+      "passed": true,
+      "at": "2026-11-12T12:02:19.833514+00:00"
+    },
+    {
+      "check": "save_allowed_TRIAL_EXPIRED",
+      "passed": true,
+      "at": "2026-11-12T12:02:20.392005+00:00"
+    },
+    {
+      "check": "license_state_INVALID_LICENSE",
+      "passed": true,
+      "at": "2026-11-12T12:02:20.734151+00:00"
+    },
+    {
+      "check": "save_allowed_INVALID_LICENSE",
+      "passed": true,
+      "at": "2026-11-12T12:02:21.293250+00:00"
+    },
+    {
+      "check": "offline_activation",
+      "passed": true,
+      "at": "2026-11-12T12:02:21.837324+00:00"
+    },
+    {
+      "check": "license_state_LICENSED",
+      "passed": true,
+      "at": "2026-11-12T12:02:21.851324+00:00"
+    },
+    {
+      "check": "save_allowed_LICENSED",
+      "passed": true,
+      "at": "2026-11-12T12:02:22.339683+00:00"
+    },
+    {
+      "check": "manual_offline_update",
+      "passed": true,
+      "at": "2026-11-12T12:02:22.572325+00:00"
+    },
+    {
+      "check": "diagnostic_zip",
+      "passed": true,
+      "at": "2026-11-12T12:02:22.825098+00:00"
+    },
+    {
+      "check": "context_all_families",
+      "passed": true,
+      "at": "2026-11-12T12:02:23.115374+00:00"
+    },
+    {
+      "check": "close_window",
+      "passed": true,
+      "at": "2026-11-12T12:02:23.121359+00:00"
+    },
+    {
+      "check": "reopen_imported",
+      "passed": true,
+      "at": "2026-11-12T12:02:29.930614+00:00"
+    },
+    {
+      "check": "workers_idle",
+      "passed": true,
+      "at": "2026-11-12T12:02:30.247499+00:00"
+    }
+  ],
+  "issues": [],
+  "fixture_policy": "Comparison endpoints synthetic presentation only; license keys ephemeral test-only; real bounded solver runs are integration evidence, not validation.",
+  "scientific_validation": "NOT_PERFORMED",
+  "human_uat": "PENDING_UAT"
+}

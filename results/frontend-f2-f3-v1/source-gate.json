@@ -1,27 +1,27 @@
 {
   "schema": "DINO_FRONTEND_F23_SOURCE_GATE_V1",
   "status": "SOURCE_ACCEPTED",
-  "source_commit": "d4fc244e3d84fa80475f5cc02b4cbcaf3ddb4783",
+  "source_commit": "e9a817c3ea447d8ca33dbb7f39153cca4410f51b",
   "product_trees": {
-    "motorsim": "02b3f7dd272ffa1c8d1d7ae9733279362ada824f",
+    "motorsim": "095ff40b3134178bdcba05ffc62160d1e9cfe170",
     "packaging": "3f5c4bc2123ed295db95db2a920dc6a1f7c93acf"
   },
   "checks": {
-    "source-base-clean": true,
-    "source-f23-clean": true,
+    "source-base-v2": true,
+    "source-f23-v2": true,
     "clean_git_source": true
   },
   "evidence": {
-    "source-base-clean": {
-      "path": "source-base-clean\\acceptance.json",
-      "sha256": "1e50c5f5d4d7703878cac785a4d89d543d2413b91b019158cec8147fe0250143",
+    "source-base-v2": {
+      "path": "source-base-v2\\acceptance.json",
+      "sha256": "4650ab168c1177a71abcbf0899d728c087a3ce6b4dd413e9fc6abf0140368022",
       "checks": 47,
       "captures": 25
     },
-    "source-f23-clean": {
-      "path": "source-f23-clean\\acceptance.json",
-      "sha256": "7eb86b2a8be847b2c9b4a21d3c63ecacb45f709db070f3f6a856d20ea2639550",
-      "checks": 76,
+    "source-f23-v2": {
+      "path": "source-f23-v2\\acceptance.json",
+      "sha256": "edb855791d1065cd90f50ac02d6f576b153745d4e10eb50513b4bcddb38f0b43",
+      "checks": 78,
       "captures": 17
     }
   },

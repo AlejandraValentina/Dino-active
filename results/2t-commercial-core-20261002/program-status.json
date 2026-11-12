@@ -17059,15 +17059,16 @@
       "id": "F23-RECOVERY",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Recovery selector with identity and read-only preview",
-      "state": "REVIEW",
+      "state": "DONE",
       "dependencies": [],
       "write_scope": [],
       "blocker": null,
       "evidence": [
-        "results/frontend-f2-f3-v1/source-gate.json"
+        "results/frontend-f2-f3-v1/source-gate.json",
+        "results/frontend-f2-f3-v1/verification/reference-key-v2.summary.json"
       ],
       "next_action": "Recovery selector with identity and read-only preview",
-      "classification": "REFERENCE_DATACLASS_IDENTITY_RECHECK"
+      "classification": "SOURCE_ACCEPTED_REFERENCE_RECOVERY_V2"
     },
     {
       "id": "F23-PRODUCTIVITY",
@@ -17087,33 +17088,35 @@
       "id": "F23-SOURCE",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Full source workflows, negatives and regression",
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "dependencies": [],
-      "write_scope": [
-        "results/frontend-f2-f3-v1/source-gate.json"
-      ],
+      "write_scope": [],
       "blocker": null,
       "evidence": [
-        "results/frontend-f2-f3-v1/source-gate.json"
+        "results/frontend-f2-f3-v1/source-gate.json",
+        "results/frontend-f2-f3-v1/verification/reference-key-v2.summary.json"
       ],
       "next_action": "Full source workflows, negatives and regression",
-      "classification": "REFERENCE_RECOVERY_CORRECTION_RECHECK"
+      "classification": "SOURCE_ACCEPTED_REFERENCE_RECOVERY_V2"
     },
     {
       "id": "F23-BUILD",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Clean grouped Windows candidate and manifest",
-      "state": "WAITING",
+      "state": "IN_PROGRESS",
       "dependencies": [
         "F23-SOURCE"
       ],
-      "write_scope": [],
+      "write_scope": [
+        "results/frontend-f2-f3-v1/candidate.json",
+        "results/frontend-f2-f3-v1/build.json"
+      ],
       "blocker": null,
       "evidence": [
         "results/frontend-f2-f3-v1/candidate.json",
         "results/frontend-f2-f3-v1/build.json"
       ],
-      "next_action": "Clean pinned Windows rc14 build; validate exact product trees against d4fc244",
+      "next_action": "Corrected clean rc14 with distinct reference recovery keys",
       "classification": "PRIOR_CANDIDATE_PRESERVED_SUPERSEDED_BY_CORRECTION"
     },
     {
@@ -17203,6 +17206,17 @@
       "blocker": null,
       "evidence": [],
       "next_action": "Reconcile all23 findings with evidence and remaining dependencies"
+    },
+    {
+      "id": "F23-RECEIPTS",
+      "objective": "DINO_FRONTEND_F2_F3_V1",
+      "state": "READY",
+      "description": "Verify receipt hashes, source/package equality and owned process termination",
+      "dependencies": [],
+      "write_scope": [],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Run final receipt verifier"
     }
   ],
   "progress_log": [
@@ -21256,6 +21270,12 @@
       "task": "F23-RECOVERY",
       "kind": "task",
       "summary": "Final visual review found reference dataclass autosaves sharing generic proyecto ID. Fixed public name identity, V2 digest filename avoiding sanitized-name collisions, and legacy human preview.26 targeted CP0/CP1/CP2/source tests PASS. First rc14 retained; corrected source and Windows replay required."
+    },
+    {
+      "at": "2026-11-12T12:07:01+00:00",
+      "task": "F23-SOURCE",
+      "kind": "task",
+      "summary": "Corrected clean e9a817c source:47base+78F2/F3 checks PASS, including distinct actual reference drafts and names.26 targeted CP0/CP1/CP2 tests PASS. V1 drafts remain intact; Windows candidate with V2 reference storage key follows."
     }
   ],
   "integration_parent_states": {
@@ -21359,7 +21379,8 @@
       "F23-CONTRACT",
       "F23-STORAGE",
       "F23-VISUAL-REVIEW",
-      "F23-BACKLOG"
+      "F23-BACKLOG",
+      "F23-RECEIPTS"
     ]
   },
   "gate_status": {
@@ -21398,7 +21419,7 @@
   },
   "frontend_f2_f3_acceptance": {
     "implementation": "IMPLEMENTED",
-    "source": "PENDING_RECHECK_REFERENCE_RECOVERY",
+    "source": "SOURCE_ACCEPTED_REFERENCE_RECOVERY_V2",
     "windows": "PENDING_CORRECTED_CANDIDATE",
     "human_uat": "PENDING_UAT",
     "scientific_validation": "NOT_PERFORMED",

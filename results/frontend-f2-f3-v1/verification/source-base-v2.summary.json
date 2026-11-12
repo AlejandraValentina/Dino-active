@@ -1,0 +1,35 @@
+{
+  "name": "source-base-v2",
+  "command": [
+    "python",
+    "scripts/frontend_commercial/run_acceptance.py",
+    "--receipt",
+    "E:/Dino-artifacts/frontend-f2-f3-v1/source-base-v2-terminal.json",
+    "--timeout",
+    "560",
+    "--",
+    "E:/dino/worktrees/dino-commercial-integrated-v1/.venv-build/Scripts/python.exe",
+    "-m",
+    "motorsim.dino_desktop",
+    "--verify-frontend-commercial",
+    "--output",
+    "E:/Dino-artifacts/frontend-f2-f3-v1/source-base-v2",
+    "--fixtures",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/fixtures"
+  ],
+  "started_at": "2026-11-12T12:00:02+00:00",
+  "finished_at": "2026-11-12T12:02:31+00:00",
+  "duration_s": 148.781,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "E:\\Dino-artifacts\\frontend-f2-f3-v1\\verification\\source-base-v2.log",
+  "log_lines": 4,
+  "log_bytes": 2767,
+  "error_lines": [],
+  "tail": [
+    "{\"cycle\": 1, \"work_J\": -43.6056052842375, \"heat_J\": 22.47642363631749, \"pmax_Pa\": 4304413.67015572, \"wall_s\": 8.692356299958192, \"streak\": 0}",
+    "{\"status\": \"MAX_CYCLES_NONCONVERGED\", \"cycles_completed\": 1, \"wall_s\": 9.288902999949642, \"solver_step_wall_s\": 7.992911699344404, \"processing_wall_s\": 0.533015901222825, \"peak_rss_mib\": 395.61328125, \"failure\": null}",
+    "{\"result\": \"PASS\", \"receipt\": \"E:\\\\Dino-artifacts\\\\frontend-f2-f3-v1\\\\source-base-v2\\\\acceptance.json\", \"checks\": 47, \"issues\": []}",
+    "{\"schema\": \"DINO_OWNED_PROCESS_TERMINAL_V1\", \"command\": [\"E:/dino/worktrees/dino-commercial-integrated-v1/.venv-build/Scripts/python.exe\", \"-m\", \"motorsim.dino_desktop\", \"--verify-frontend-commercial\", \"--output\", \"E:/Dino-artifacts/frontend-f2-f3-v1/source-base-v2\", \"--fixtures\", \"E:/Dino-artifacts"
+  ]
+}

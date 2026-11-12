@@ -1,0 +1,235 @@
+{
+  "schema": "DINO_FRONTEND_F23_APPLICATION_ACCEPTANCE_V1",
+  "result": "PASS",
+  "frozen": false,
+  "product": {
+    "schema": "DINO_PRODUCT_INFO_V1",
+    "product": "Dino Desktop",
+    "version": "0.1.0-rc14",
+    "source_commit": "fuentes; sin identificación de paquete",
+    "trial": true,
+    "build": {
+      "app_version": "0.1.0-rc14",
+      "source_commit": "fuentes; sin identificación de paquete"
+    },
+    "project_schemas": {
+      "2T": "MOTORSIM_ENGINE_PROJECT_V3",
+      "4T_0D": "MOTORSIM_4T_REFERENCE_PROJECT_V1",
+      "4T_native": "DINO_DESKTOP_ENGINE_PROJECT_4T_V1"
+    },
+    "scientific_status": {
+      "calibration": "NOT_PERFORMED",
+      "experimental_validation": "NOT_PERFORMED",
+      "predictive_capability": "NOT_CLAIMED"
+    },
+    "licenses": [
+      "GPL-2.0-only.txt",
+      "GPL-3.0-only.txt",
+      "LGPL-3.0-only.txt",
+      "SOURCES.txt",
+      "qtcore-attribution-blake2.txt",
+      "qtcore-attribution-doubleconversion.txt",
+      "qtcore-attribution-easing.txt",
+      "qtcore-attribution-forkfd.txt",
+      "qtcore-attribution-md4.txt",
+      "qtcore-attribution-md5.txt",
+      "qtcore-attribution-pcre2-sljit.txt",
+      "qtcore-attribution-pcre2.txt",
+      "qtcore-attribution-qeventdispatcher-cf.txt",
+      "qtcore-attribution-rfc6234.txt",
+      "qtcore-attribution-sha1.txt",
+      "qtcore-attribution-sha3-endian.txt",
+      "qtcore-attribution-sha3-keccak.txt",
+      "qtcore-attribution-siphash.txt",
+      "qtcore-attribution-tika-mimetypes.txt",
+      "qtcore-attribution-tinycbor.txt",
+      "qtcore-attribution-tlexpected.txt",
+      "qtcore-attribution-unicode-character-database.txt",
+      "qtcore-attribution-unicode-cldr.txt",
+      "qtcore-attribution-zlib.txt",
+      "qtgui-attribution-aglfn.txt",
+      "qtgui-attribution-android-native-style.txt",
+      "qtgui-attribution-cocoa-platform-plugin.txt",
+      "qtgui-attribution-d3d12memoryallocator.txt",
+      "qtgui-attribution-dejayvu.txt",
+      "qtgui-attribution-emoji-segmenter.txt",
+      "qtgui-attribution-freetype-bdf.txt",
+      "qtgui-attribution-freetype-pcf.txt",
+      "qtgui-attribution-freetype-zlib.txt",
+      "qtgui-attribution-freetype.txt",
+      "qtgui-attribution-grayraster.txt",
+      "qtgui-attribution-harfbuzz-ng.txt",
+      "qtgui-attribution-icc-srgb-color-profile.txt",
+      "qtgui-attribution-libjpeg.txt",
+      "qtgui-attribution-libpng.txt",
+      "qtgui-attribution-md4c.txt",
+      "qtgui-attribution-opengl-es2-headers.txt",
+      "qtgui-attribution-opengl-headers.txt",
+      "qtgui-attribution-pixman.txt",
+      "qtgui-attribution-rhi-miniengine-d3d12-mipmap.txt",
+      "qtgui-attribution-smooth-scaling-algorithm.txt",
+      "qtgui-attribution-vulkan-xml-spec.txt",
+      "qtgui-attribution-vulkanmemoryallocator.txt",
+      "qtgui-attribution-webgradients.txt",
+      "qtgui-attribution-wintab.txt",
+      "qtgui-attribution-xcb-xinput.txt",
+      "qtgui-attribution-xserverhelper.txt"
+    ],
+    "support": "Soporte: distribuidor autorizado y documentación de la licencia.",
+    "generated_at": "2026-11-12T12:01:50.180554+00:00"
+  },
+  "checks": {
+    "windows_platform": true,
+    "schematic_keyboard_routes_to_ports": true,
+    "editor_selection_updates_schematic": true,
+    "capture_01-2t-components": true,
+    "queue_add_2t": true,
+    "queue_add_native": true,
+    "queue_add_cancel_pending": true,
+    "capture_01b-point-queue": true,
+    "queue_blocks_interactive_native": true,
+    "real_serial_queue_completed": true,
+    "queue_results_bound": true,
+    "queue_persistence": true,
+    "queue_add_cancel_active": true,
+    "real_active_queue_cancelled": true,
+    "queue_native_saved": true,
+    "queue_two_stroke_saved": true,
+    "external_result_bound": true,
+    "external_classification_preserved": true,
+    "invalid_external_result_rejected": true,
+    "bound_project_saved": true,
+    "qualified_power_explorer_available": true,
+    "2t_exact_sample_cursor": true,
+    "real_samples_csv": true,
+    "capture_02-2t-explorer": true,
+    "real_trace_available": true,
+    "trace_keyboard_zoom_preserves_data": true,
+    "trace_reset": true,
+    "trace_pan_preserves_original_samples": true,
+    "trace_png_export": true,
+    "capture_03-2t-trace-cursor": true,
+    "expanded_cursor_has_visible_values": true,
+    "capture_03b-expanded-trace": true,
+    "native_component_route": true,
+    "native_rename_and_references": true,
+    "native_rename_undo": true,
+    "capture_04-native-components": true,
+    "native_variants_saved": true,
+    "eligible_ab_overlay": true,
+    "synthetic_origin_visible": true,
+    "capture_05-native-ab-pressure": true,
+    "capture_05b-expanded-ab": true,
+    "same_run_pair_rejected": true,
+    "reference_component_route": true,
+    "capture_06-reference-components": true,
+    "reference_actual_samples": true,
+    "capture_07-reference-cursor": true,
+    "reference_projects_have_distinct_recovery_paths": true,
+    "reference_recovery_keeps_names": true,
+    "2t_980_actual_size": true,
+    "2t_980_header": true,
+    "capture_08-2t-980": true,
+    "2t_1280_actual_size": true,
+    "2t_1280_header": true,
+    "capture_08-2t-1280": true,
+    "native_980_actual_size": true,
+    "native_980_header": true,
+    "capture_08-native-980": true,
+    "native_1280_actual_size": true,
+    "native_1280_header": true,
+    "capture_08-native-1280": true,
+    "reference_980_actual_size": true,
+    "reference_980_header": true,
+    "capture_08-reference-980": true,
+    "reference_1280_actual_size": true,
+    "reference_1280_header": true,
+    "capture_08-reference-1280": true,
+    "recovery_selector_is_real_dialog": true,
+    "recovery_all_families": true,
+    "recovery_preview": true,
+    "capture_09-recovery-preview": true,
+    "defer_preserves_all_drafts": true,
+    "recovery_copy_has_no_original_path": true,
+    "recovery_save_as_cancelled": true,
+    "recovery_original_bytes_intact": true,
+    "recovered_copy_saved": true,
+    "window_closed": true,
+    "queue_reopens_after_window_close": true,
+    "recovery_persistence_reopen": true
+  },
+  "captures": {
+    "01-2t-components": {
+      "file": "01-2t-components.png",
+      "sha256": "806690c63e0cba826f5c99d9bc26d16b033b3525433729483b3fec13b155a5a8"
+    },
+    "01b-point-queue": {
+      "file": "01b-point-queue.png",
+      "sha256": "ed04121463d657f6d6918c527bf968ab6a78614b9d820ef294708a75366e2046"
+    },
+    "02-2t-explorer": {
+      "file": "02-2t-explorer.png",
+      "sha256": "65261b4e8b6758afe2a64f36bd2081ea447ed61914e563c516fd98c91d80bf61"
+    },
+    "03-2t-trace-cursor": {
+      "file": "03-2t-trace-cursor.png",
+      "sha256": "56549a711e373c0ee5888ea6ff22e9f344df4c599d0520cd681e34b258d8c139"
+    },
+    "03b-expanded-trace": {
+      "file": "03b-expanded-trace.png",
+      "sha256": "5596e4875aa17544589e52030f4eb84b7ba2f9dd8327fe51406505f56f6941ef"
+    },
+    "04-native-components": {
+      "file": "04-native-components.png",
+      "sha256": "c29dce87b52e1057d911181808a24addb8603ddd46d1c244fa5523e1f92efb9b"
+    },
+    "05-native-ab-pressure": {
+      "file": "05-native-ab-pressure.png",
+      "sha256": "b1fbcacb9223e065ba3b78f72afd2b86d8f971d5449cce41ac1b4dc6e19ba3c7"
+    },
+    "05b-expanded-ab": {
+      "file": "05b-expanded-ab.png",
+      "sha256": "88381a719f868eec0b001710b7921eb2baa1cc6308820b19aee02000b6ded532"
+    },
+    "06-reference-components": {
+      "file": "06-reference-components.png",
+      "sha256": "7e843a15928f539d6cb62b2564145bf0faf9c95a6e85a84c9834191999417d4d"
+    },
+    "07-reference-cursor": {
+      "file": "07-reference-cursor.png",
+      "sha256": "99e1592a9d99690837b648e93d8686a1b2a13ba33569b2d1e518902c30c0c62a"
+    },
+    "08-2t-980": {
+      "file": "08-2t-980.png",
+      "sha256": "7c58e9fe50748a7cd1f7ed505987148be406867456244bf5ce614a9e2c933c3f"
+    },
+    "08-2t-1280": {
+      "file": "08-2t-1280.png",
+      "sha256": "c6edf7c21344c6b2e8c96a27c16e374acb8fe53ea61c1ccfd75cc8280c86a57b"
+    },
+    "08-native-980": {
+      "file": "08-native-980.png",
+      "sha256": "9288607c83a3b2ca923dbd8a6f61387a8541ed5f4d9b50389b243604d4b6ae67"
+    },
+    "08-native-1280": {
+      "file": "08-native-1280.png",
+      "sha256": "962ad36a6d848b5502bd4562fc142cfad79b9d5d1ebfe82ac1e8ed488f9adad7"
+    },
+    "08-reference-980": {
+      "file": "08-reference-980.png",
+      "sha256": "e308a97b599629b18f45cfe8c827b27f02ab43f94e2d09b44433c41acdc386ed"
+    },
+    "08-reference-1280": {
+      "file": "08-reference-1280.png",
+      "sha256": "4c4f8908ac9eaeba087d3046b96af05cb2e97d897f690c242ae14dbdc2db90aa"
+    },
+    "09-recovery-preview": {
+      "file": "09-recovery-preview.png",
+      "sha256": "3900c36d6f1a1a3cee05b9a8496bf7d370df47e897304e085eb86467deed4eb2"
+    }
+  },
+  "issues": [],
+  "human_uat": "PENDING_UAT",
+  "scientific_validation": "NOT_PERFORMED",
+  "fixture_policy": "Real engineering integration runs plus explicitly synthetic native comparison fixtures; no experimental claims."
+}
