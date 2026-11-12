@@ -6,6 +6,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QDialog,QVBoxLayout,QHBoxLayout,QLabel,QPushButton,QTableWidget,QTableWidgetItem,QHeaderView,QPlainTextEdit,QMessageBox,QFileDialog
 from .engineering_jobs import EngineeringJobs,snapshot_job
 from .preferences import artifact_root,settings
+from .presentation import state_label
 
 
 class JobCoordinator:
@@ -98,8 +99,9 @@ class JobCoordinator:
         def refresh():
             row=table.currentRow();table.setRowCount(len(manager.items))
             for r,item in enumerate(manager.items):
-                values=(item['family']+' · '+item['project_id'],item['variant'] or 'Base',item['rpm'],f"{item['cycles']} / {item['wall']:g}s",item['status'],(item.get('result') or {}).get('classification') or item.get('error') or item.get('progress'),item['configuration_sha256'][:12])
-                for c,value in enumerate(values):table.setItem(r,c,QTableWidgetItem(str(value or '—')))
+                values=(item['family']+' · '+item['project_id'],item['variant'] or 'Base',item['rpm'],f"{item['cycles']} / {item['wall']:g}s",{'PENDING':'Pendiente','RUNNING':'En ejecución','COMPLETED':'Finalizado','FAILED':'Fallido','CANCELLED':'Cancelado','INTERRUPTED':'Interrumpido'}[item['status']],state_label((item.get('result') or {}).get('classification')) if item.get('result') else item.get('error') or item.get('progress'),item['configuration_sha256'][:12])
+                for c,value in enumerate(values):
+                    cell=QTableWidgetItem(str(value or '—'));cell.setToolTip(item['status']+' · '+item['configuration_sha256']);table.setItem(r,c,cell)
             if row>=0:table.selectRow(row)
             pending=[i for i in manager.items if i['status']=='PENDING'];summary.setText((manager.error+'\n' if manager.error else '')+f"{len(pending)} pendientes · suma de límites por punto: {sum(i['wall'] for i in pending):g}s, más preparación/escritura; duración real desconocida. Cola {'pausada' if manager.paused else 'activa'}.")
         def inspect():

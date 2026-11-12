@@ -1949,12 +1949,17 @@ class ResultsPage(QWidget):
     def choose_exploratory(self):
         paths,_=QFileDialog.getOpenFileNames(self,"Abrir corridas EXPLORATORY",str(artifact_root()),"Ejecución Dino (result.json)")
         if paths:self.open_runs(paths)
+    def _next_load_token(self):
+        self._load_generation=getattr(self,'_load_generation',0)+1
+        return self._load_generation
+
     def open_runs(self,paths):
         """Load one or more indexed runs through the full independent importer."""
         if paths:
             self.path_label.setText("Verificando artifacts EXPLORATORY…")
             from ..power_curve import import_curve_runs
-            run_background(import_curve_runs,paths,on_done=self._loaded_exploratory,on_error=self._exploratory_failed)
+            token=self._next_load_token()
+            run_background(import_curve_runs,paths,on_done=lambda data:self._loaded_exploratory(data) if token==self._load_generation else None,on_error=lambda message:self._exploratory_failed(message) if token==self._load_generation else None)
 
     def open_design_study(self,manifest_path,verified_reference=None):
         """Open only the study's saved points and join metrics by their run IDs."""
@@ -2502,6 +2507,7 @@ class ResultsPage(QWidget):
     def _exploratory_failed(self,message):
         self.path_label.setText("Ejecución EXPLORATORY inválida");self.trace_group.hide();QMessageBox.warning(self,"Artifact exploratorio inválido",message)
     def load(self,path,*,historical=False):
+        token=self._next_load_token()
         path=Path(path)
         if path.suffix.lower() in {".json",".csv"}:
             try:
@@ -2511,6 +2517,7 @@ class ResultsPage(QWidget):
             except (OSError,ValueError):pass
         self.loading=True;self.trace_group.hide();self.path_label.setText(f"Cargando {path}…")
         def done(data):
+            if token!=self._load_generation:return
             if data.get("schema")==CROSS_STUDY_CSV_SNAPSHOT_SCHEMA:
                 self._show_cross_study_csv_snapshot(data,path)
                 return
@@ -2538,6 +2545,7 @@ class ResultsPage(QWidget):
                 item=QListWidgetItem(name);item.setFlags(item.flags()|Qt.ItemFlag.ItemIsUserCheckable);item.setCheckState(Qt.CheckState.Checked);self.variants.addItem(item)
             self.variants.blockSignals(False);self._project_context_changed();self.loading=False;self.redraw();self._baseline_changed();self._dataset_summary();self.evidence_updated.emit()
         def fail(message):
+            if token!=self._load_generation:return
             self.loading=False;self.path_label.setText("No se pudieron cargar los datos; selección anterior conservada")
             QMessageBox.warning(self,"Importación inválida",'No se pudo validar el CSV o reporte seleccionado. Los snapshots paramétricos son de sólo lectura; los CSV históricos conservan su JSON compañero.\n\nDetalle: '+message)
         run_background(load_results,path,on_done=done,on_error=fail)

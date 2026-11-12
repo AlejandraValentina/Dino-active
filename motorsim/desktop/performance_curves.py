@@ -247,7 +247,7 @@ class PowerCurvePanel(QGroupBox):
             for widget in widgets:layout.removeWidget(widget);box.addWidget(widget)
             self.views.addTab(page,label)
         from .plot import CurvePlot
-        self.sample_plot=CurvePlot();self.sample_plot.setObjectName('powerExactSamples')
+        self.sample_plot=CurvePlot();self.sample_plot.setObjectName('powerExactSamples');self.sample_plot.pointSelected.connect(lambda point:self.pointSelected.emit(point.get('row',point)))
         self.views.addTab(self.sample_plot,'Explorar muestras')
         layout.addWidget(self.views,1)
         self.views.tabBar().hide()
@@ -303,7 +303,7 @@ class PowerCurvePanel(QGroupBox):
         # One physical unit per explorer axis. Retain absent values and metadata.
         metric='power' if self.power_toggle.isChecked() else 'torque'
         self.sample_plot.set_series([dict(name=curve['name'],unit=unit if metric=='power' else 'N·m',
-            connect=False,points=[dict(point,value=point.get(metric)) for point in curve['points']]) for curve in self.curves],y_scale_mode='data_margin')
+            connect=False,points=[dict(point,value=point.get(metric),status=point.get(metric+'_status'),reason=point.get(metric+'_reason')) for point in curve['points']]) for curve in self.curves],y_scale_mode='data_margin')
         self.sample_plot.setAccessibleDescription('Potencia' if metric=='power' else 'Torque')
         self.rows = [point for curve in self.curves for point in curve["points"]]
         self.provenance.setText(

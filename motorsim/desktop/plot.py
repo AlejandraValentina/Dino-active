@@ -217,10 +217,17 @@ class CurvePlot(QWidget):
         except (OSError,ValueError) as exc:QMessageBox.warning(self,'No se pudo exportar',str(exc))
 
     def write_samples(self,path):
-        import csv,json
-        with open(path,'w',encoding='utf-8-sig',newline='') as stream:
-            writer=csv.writer(stream);writer.writerow(['series','x_label','x','value','unit','status_or_reason','original_sample_json'])
-            for row in self.sample_rows():writer.writerow([*row[:6],json.dumps(row[6],ensure_ascii=False,sort_keys=True)])
+        import csv,json,os,tempfile
+        from pathlib import Path
+        target=Path(path)
+        fd,temporary=tempfile.mkstemp(prefix=target.name+'.',suffix='.tmp',dir=target.parent)
+        try:
+            with os.fdopen(fd,'w',encoding='utf-8-sig',newline='') as stream:
+                writer=csv.writer(stream);writer.writerow(['series','x_label','x','value','unit','status_or_reason','original_sample_json'])
+                for row in self.sample_rows():writer.writerow([*row[:6],json.dumps(row[6],ensure_ascii=False,sort_keys=True,allow_nan=False)])
+            os.replace(temporary,target)
+        finally:
+            Path(temporary).unlink(missing_ok=True)
 
     def export_image(self,*_):
         path,_=QFileDialog.getSaveFileName(self,'Exportar vista del gráfico','','PNG (*.png)')

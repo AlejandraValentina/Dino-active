@@ -65,12 +65,14 @@ def test_exact_variant_differences_preserve_precision_and_array_paths():
 
 @pytest.fixture(scope='module')
 def window(tmp_path_factory):
-    root=tmp_path_factory.mktemp('f23');os.environ['DINO_ARTIFACT_ROOT']=str(root/'artifacts');os.environ['DINO_RECOVERY_ROOT']=str(root/'recovery')
-    w=DinoDesktopWindow();w.show();APP.processEvents()
-    yield w
-    w.native_four_stroke.editor.discard_draft();w.pages[0].discard_draft();w.pages[1].discard_draft();w.four_stroke_workspace.refresh(w.four_stroke_context.project);w.experience.reference_loaded()
-    for c in (w.context,w.native_four_stroke.context,w.four_stroke_context):c.dirty=False
-    w.close();APP.processEvents()
+    root=tmp_path_factory.mktemp('f23')
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setenv('DINO_ARTIFACT_ROOT',str(root/'artifacts'));patch.setenv('DINO_RECOVERY_ROOT',str(root/'recovery'))
+        w=DinoDesktopWindow();w.show();APP.processEvents()
+        yield w
+        w.native_four_stroke.editor.discard_draft();w.pages[0].discard_draft();w.pages[1].discard_draft();w.four_stroke_workspace.refresh(w.four_stroke_context.project);w.experience.reference_loaded()
+        for c in (w.context,w.native_four_stroke.context,w.four_stroke_context):c.dirty=False
+        w.close();APP.processEvents()
 
 
 def test_component_navigation_all_families_and_reverse_selection(window):
@@ -81,6 +83,8 @@ def test_component_navigation_all_families_and_reverse_selection(window):
     w.show_native_four_stroke_mode();nav.activate('exhaust_valve');assert w.native_four_stroke.editor.sections.currentIndex()==list(w.native_four_stroke.editor.tables).index('exhaust_valve')
     w.show_four_stroke_mode();nav.activate('intake');assert w.four_stroke_workspace.tabs.currentIndex()==2
     assert 'sintética' in nav.family.text()
+    nav.activate('exhaust_valve');APP.processEvents();assert APP.focusWidget() is next(iter(w.four_stroke_workspace.valves.fields['exhaust'].values()))
+    assert nav.map.selected=='exhaust_valve'
 
 
 def test_native_rename_preserves_historical_references_and_undo(window,monkeypatch):
@@ -133,3 +137,27 @@ def test_application_queue_freezes_input_and_excludes_interactive_native(window)
         assert not getattr(native.context,'queued_execution_active',False)
     finally:
         release.set();manager.shutdown(2000);QThreadPool.globalInstance().waitForDone(2000);manager.executor=previous
+
+
+def test_late_result_import_never_overwrites_latest_request(window,monkeypatch):
+    calls=[];seen=[];errors=[];page=window.results
+    monkeypatch.setattr('motorsim.desktop.results_page.run_background',lambda *args,**kwargs:calls.append(kwargs))
+    monkeypatch.setattr(page,'_loaded_exploratory',seen.append);monkeypatch.setattr(page,'_exploratory_failed',errors.append)
+    page.open_runs(['first']);page.open_runs(['second']);calls[1]['on_done']('new');calls[0]['on_done']('old');calls[0]['on_error']('old error')
+    assert seen==['new'] and not errors
+    page.load('missing-legacy.json');calls[1]['on_done']('late second');assert seen==['new']
+
+
+def test_invalid_sample_export_preserves_previous_file(tmp_path):
+    plot=CurvePlot();plot.set_series([dict(name='invalid fixture',points=[dict(rpm=1000,value=float('nan'))])])
+    path=tmp_path/'existing.csv';path.write_bytes(b'original export')
+    with pytest.raises(ValueError):plot.write_samples(path)
+    assert path.read_bytes()==b'original export'
+
+
+def test_power_sample_explorer_links_original_row_with_qualification():
+    from motorsim.desktop.performance_curves import PowerCurvePanel
+    panel=PowerCurvePanel();row=dict(variant_id='A',rpm=1000,mode='ENGINEERING_EXPLORATORY',classification='MAX_CYCLES_NONCONVERGED',transient_estimates={'brake_power':1.25,'brake_torque':3.0})
+    panel.exploratory_toggle.setChecked(True);panel.set_dataset(dict(points=[row],provenance='SYNTHETIC_APPLICATION_TEST',experimental_validation='NOT_PERFORMED'),{'A'})
+    seen=[];panel.pointSelected.connect(seen.append);key(panel.sample_plot,Qt.Key.Key_Right)
+    assert seen and seen[0]==row and 'TRANSIENT_ESTIMATE' in panel.sample_plot.readout.text()

@@ -1,0 +1,31 @@
+{
+  "name": "physical-navigation-final",
+  "command": [
+    "python",
+    "-u",
+    "-m",
+    "pytest",
+    "tests/test_frontend_engineering_jobs.py",
+    "tests/test_frontend_f2_f3.py",
+    "tests/test_desktop_four_stroke_workspace.py",
+    "-q",
+    "--tb=short",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "E:/Dino-artifacts/frontend-f2-f3-v1/pytest-physical-navigation"
+  ],
+  "started_at": "2026-11-12T11:18:57+00:00",
+  "finished_at": "2026-11-12T11:19:17+00:00",
+  "duration_s": 19.922,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\frontend-f2-f3-v1\\verification\\physical-navigation-final.log",
+  "log_lines": 2,
+  "log_bytes": 100,
+  "error_lines": [],
+  "tail": [
+    "............................                                             [100%]",
+    "28 passed in 19.12s"
+  ]
+}

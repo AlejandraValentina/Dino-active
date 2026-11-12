@@ -4,7 +4,7 @@ from __future__ import annotations
 from PySide6.QtCore import Qt,Signal
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit,
                                QPushButton, QFormLayout, QGroupBox, QTabWidget,
-                               QTableWidget, QTableWidgetItem, QHeaderView)
+                               QTableWidget, QTableWidgetItem, QHeaderView, QScrollArea)
 
 from ..four_stroke_project import FourStrokeProject, FourStrokeProjectError
 from ..project import (DUCT_FIELDS, FOUR_DUCT_REFERENCE, DuctSegment, Ducts,
@@ -111,7 +111,8 @@ class FourStrokeValvesPage(QWidget):
                 widget = _line(None)
                 widget.setObjectName(f"fsValve_{side}_{key}")
                 self.fields[side][key] = widget
-                form.addRow(f"{key} [mm/°]", widget)
+                unit='°' if key.endswith('_deg') else 'mm'
+                label=f'{VALVE_FIELDS[key]} [{unit}]';widget.setAccessibleName(title+' · '+label);form.addRow(label,widget)
             layout.addWidget(box)
         self.error = QLabel()
         self.error.setWordWrap(True)
@@ -255,9 +256,8 @@ class FourStrokeWorkspace(QWidget):
         self.geometry = FourStrokeGeometryPage(context)
         self.valves = FourStrokeValvesPage(context)
         self.ducts = FourStrokeDuctsPage(context)
-        self.tabs.addTab(self.geometry, "Geometría")
-        self.tabs.addTab(self.valves, "Válvulas")
-        self.tabs.addTab(self.ducts, "Conductos")
+        for page,label in ((self.geometry,'Geometría'),(self.valves,'Válvulas'),(self.ducts,'Conductos')):
+            scroll=QScrollArea();scroll.setWidgetResizable(True);scroll.setFrameShape(QScrollArea.Shape.NoFrame);scroll.setWidget(page);self.tabs.addTab(scroll,label)
         layout.addWidget(self.tabs, 1)
         self.status = QLabel()
         self.status.setWordWrap(True)

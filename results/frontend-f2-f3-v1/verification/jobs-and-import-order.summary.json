@@ -1,0 +1,30 @@
+{
+  "name": "jobs-and-import-order",
+  "command": [
+    "python",
+    "-u",
+    "-m",
+    "pytest",
+    "tests/test_frontend_engineering_jobs.py",
+    "tests/test_frontend_f2_f3.py",
+    "-q",
+    "--tb=short",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "E:/Dino-artifacts/frontend-f2-f3-v1/pytest-import-order"
+  ],
+  "started_at": "2026-11-12T11:11:32+00:00",
+  "finished_at": "2026-11-12T11:11:52+00:00",
+  "duration_s": 20.281,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\frontend-f2-f3-v1\\verification\\jobs-and-import-order.log",
+  "log_lines": 2,
+  "log_bytes": 100,
+  "error_lines": [],
+  "tail": [
+    "..................                                                       [100%]",
+    "18 passed in 19.49s"
+  ]
+}

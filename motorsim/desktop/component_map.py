@@ -1,8 +1,8 @@
 """Topological component navigator. Routes only to public frontend editors."""
 from dataclasses import dataclass
-from PySide6.QtCore import Qt, QPointF
+from PySide6.QtCore import Qt, QPointF, QObject, QEvent
 from PySide6.QtGui import QPainter,QColor,QPen,QAction
-from PySide6.QtWidgets import QWidget,QToolButton,QLabel,QVBoxLayout,QDockWidget,QLineEdit,QAbstractSpinBox
+from PySide6.QtWidgets import QWidget,QToolButton,QLabel,QVBoxLayout,QDockWidget,QLineEdit,QAbstractSpinBox,QScrollArea
 
 
 @dataclass(frozen=True)
@@ -23,7 +23,7 @@ class ComponentMap(QWidget):
         super().__init__(parent);self.components=components;self.buttons={};self.selected=None
         self.setMinimumSize(270,280)
         for component in components:
-            button=QToolButton(self);button.setText(component.label);button.setCheckable(True)
+            button=QToolButton(self);button.setText({'cylinder':'Cilindro /\npistón','crankcase':'Cárter /\nbiela','transfer':'Transf.','intake_valve':'Válvula\nadmisión','exhaust_valve':'Válvula\nescape','geometry':'Biela /\ncompresión'}.get(component.key,component.label));button.setCheckable(True)
             button.setAccessibleName('Editar '+component.label);button.setToolTip('Seleccionar '+component.label+' y abrir sus parámetros')
             button.clicked.connect(lambda _,key=component.key:activate(key));self.buttons[component.key]=button
 
@@ -44,20 +44,24 @@ class ComponentMap(QWidget):
         # Schematic connectivity, not dimensional or simulated positions.
         edges=(('intake','crankcase'),('crankcase','transfer'),('transfer','ports'),('ports','cylinder'),('cylinder','exhaust'),('combustion','cylinder')) if 'crankcase' in self.buttons else (('intake','intake_valve'),('intake_valve','cylinder'),('cylinder','exhaust_valve'),('exhaust_valve','exhaust'),('cylinder','geometry'))
         for a,b in edges:
+            energy=a=='combustion';mechanical=b=='geometry'
+            painter.setPen(QPen(QColor('#f6bd60' if energy else '#718ba6' if mechanical else '#43c5f5'),2,Qt.PenStyle.DashLine if energy or mechanical else Qt.PenStyle.SolidLine))
             painter.drawLine(QPointF(self.buttons[a].geometry().center()),QPointF(self.buttons[b].geometry().center()))
-        painter.setPen(QPen(QColor('#43c5f5'),2));painter.drawRect(round(.44*w),round(.58*h),round(.14*w),round(.08*h))
+        painter.setPen(QPen(QColor('#718ba6'),2));painter.drawRect(round(.44*w),round(.58*h),round(.14*w),round(.08*h))
         painter.drawLine(round(.51*w),round(.66*h),round(.51*w),round(.75*h))
         painter.end()
 
 
-class ComponentNavigator:
+class ComponentNavigator(QObject):
     def __init__(self,window):
+        super().__init__(window);self._field_components={}
         self.window=window;self.dock=QDockWidget('Componentes del motor',window)
         self.dock.setObjectName('physicalComponentNavigator');self.dock.setMinimumWidth(285)
         body=QWidget();layout=QVBoxLayout(body)
         self.family=QLabel();self.family.setWordWrap(True);layout.addWidget(self.family)
         self.map=ComponentMap(TWO,self.activate);layout.addWidget(self.map,1)
         self.detail=QLabel();self.detail.setWordWrap(True);self.detail.setTextFormat(Qt.TextFormat.PlainText);self.detail.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse);layout.addWidget(self.detail)
+        legend=QLabel('Gas: azul · combustión: ámbar · cinemática: gris');legend.setWordWrap(True);layout.addWidget(legend)
         note=QLabel('Esquema funcional, sin escala. Seleccioná un componente para editar. Los valores son los aplicados; el borrador permanece en el formulario.');note.setWordWrap(True);layout.addWidget(note)
         self.dock.setWidget(body);window.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea,self.dock)
         self.action=self.dock.toggleViewAction();self.action.setText('Componentes del motor');self.action.setShortcut('Ctrl+Shift+M');next(a.menu() for a in window.menuBar().actions() if a.text()=='Vista').addAction(self.action)
@@ -94,6 +98,14 @@ class ComponentNavigator:
             tabs.setCurrentIndex(index);target=tabs.currentWidget()
         fields=target.findChildren(QLineEdit)+target.findChildren(QAbstractSpinBox)
         field=next((f for f in fields if f.isVisible() and f.isEnabled()),None)
+        if w._four_stroke_active():
+            workspace=w.four_stroke_workspace
+            if key in ('intake_valve','exhaust_valve'):field=next(iter(workspace.valves.fields[key.split('_')[0]].values()))
+            elif key in ('intake','exhaust'):
+                duct=getattr(workspace.ducts,key);field=duct.table if duct.table.rowCount() else duct.add_button
+            elif key=='geometry':field=workspace.geometry.rod
+            elif key=='cylinder':field=workspace.geometry.bore
+        if isinstance(target,QScrollArea) and field:target.ensureWidgetVisible(field)
         if field:field.setFocus(Qt.FocusReason.ShortcutFocusReason)
         self.map.select(key);self.refresh_detail(key)
 
@@ -113,8 +125,22 @@ class ComponentNavigator:
         if self.map.components!=components:
             layout=self.map.parentWidget().layout();old=self.map;self.map=ComponentMap(components,self.activate);layout.replaceWidget(old,self.map);old.deleteLater()
         self.family.setText('4T nativo' if native else '4T 0D · referencia sintética' if reference else '2T integrado')
-        self.follow_editor()
+        self._bind_fields();self.follow_editor()
 
     def refresh_detail(self,key):
         from .component_adapters import applied_component_summary
         self.detail.setText(applied_component_summary(self.window,key))
+
+    def _bind_fields(self):
+        w=self.window;self._field_components={}
+        for side,fields in w.four_stroke_workspace.valves.fields.items():
+            for field in fields.values():self._field_components[id(field)]=side+'_valve';field.installEventFilter(self)
+        for path,field in w.native_four_stroke.editor.fields.items():
+            key=dict(geometry='geometry' if path[-1]=='rod_mm' else 'cylinder',intake_valve='intake_valve',exhaust_valve='exhaust_valve',intake_duct='intake',exhaust_duct='exhaust').get(path[0])
+            if key:self._field_components[id(field)]=key;field.installEventFilter(self)
+
+    def eventFilter(self,watched,event):
+        if event.type()==QEvent.Type.FocusIn:
+            key=self._field_components.get(id(watched))
+            if key and key in self.map.buttons:self.map.select(key);self.refresh_detail(key)
+        return False

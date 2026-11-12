@@ -13,8 +13,8 @@ def main(argv=None):
     parser=argparse.ArgumentParser();parser.add_argument('--output',type=Path,required=True);parser.add_argument('--baseline',type=Path,required=True);parser.add_argument('--fixtures',type=Path,required=True)
     args=parser.parse_args(argv);root=args.output.resolve();root.mkdir(parents=True,exist_ok=False)
     for name,folder in (('DINO_ARTIFACT_ROOT','artifacts'),('DINO_RECOVERY_ROOT','recovery'),('DINO_TEST_SETTINGS_ROOT','settings'),('DINO_LICENSE_ROOT','license'),('LOCALAPPDATA','localappdata')):os.environ[name]=str(root/folder)
-    from PySide6.QtCore import Qt,QEvent,QTimer,QThreadPool
-    from PySide6.QtGui import QKeyEvent
+    from PySide6.QtCore import Qt,QEvent,QTimer,QThreadPool,QPointF
+    from PySide6.QtGui import QKeyEvent,QMouseEvent
     from PySide6.QtWidgets import QApplication,QFileDialog,QMessageBox,QInputDialog
     from .app import DinoDesktopWindow
     from .services import new_design_project,_TASKS
@@ -76,7 +76,7 @@ def main(argv=None):
             window.experience.bind_external_result();wait(lambda:not _TASKS.tasks)
         note('invalid_external_result_rejected',bool(errors) and len(window.context.project['result_references'])==initial_reference_count+1)
         window.context.path=root/'bound-2t.json';note('bound_project_saved',window.save_file())
-        window.set_workspace_mode(1);navigator.dock.hide();window.results.open_runs([str(result_path.parent)]);wait(lambda:window.results.dataset is not None)
+        window.set_workspace_mode(1);navigator.dock.hide();window.results.open_runs([str(result_path.parent)]);wait(lambda:not _TASKS.tasks and window.results.dataset is not None)
         window.results.power_curves.exploratory_toggle.setChecked(True)
         explorer=window.results.power_curves.sample_plot;window.results.power_curves.view_selector.setCurrentIndex(2)
         note('qualified_power_explorer_available',bool(explorer.sample_rows()))
@@ -89,6 +89,14 @@ def main(argv=None):
         values=deepcopy(trace.series);key(trace,Qt.Key.Key_Right);before=trace._axis_ranges(trace._points());key(trace,Qt.Key.Key_Plus);after=trace._axis_ranges(trace._points())
         note('trace_keyboard_zoom_preserves_data',after[1]-after[0]<before[1]-before[0] and trace.series==values)
         key(trace,Qt.Key.Key_Home);note('trace_reset',trace._viewport is None)
+        bounds=trace._axis_ranges(trace._points());center=QPointF(trace.rect().center())
+        app.sendEvent(trace,QMouseEvent(QEvent.Type.MouseButtonPress,center,Qt.MouseButton.MiddleButton,Qt.MouseButton.MiddleButton,Qt.KeyboardModifier.NoModifier))
+        app.sendEvent(trace,QMouseEvent(QEvent.Type.MouseMove,center+QPointF(25,10),Qt.MouseButton.NoButton,Qt.MouseButton.MiddleButton,Qt.KeyboardModifier.NoModifier))
+        app.sendEvent(trace,QMouseEvent(QEvent.Type.MouseButtonRelease,center+QPointF(25,10),Qt.MouseButton.MiddleButton,Qt.MouseButton.NoButton,Qt.KeyboardModifier.NoModifier))
+        note('trace_pan_preserves_original_samples',trace._viewport is not None and trace._viewport[0]!=bounds[0] and trace.series==values)
+        key(trace,Qt.Key.Key_Home)
+        with patch.object(QFileDialog,'getSaveFileName',return_value=(str(root/'trace-export.png'),'')):trace.export_image()
+        note('trace_png_export',(root/'trace-export.png').read_bytes().startswith(b'\x89PNG'))
         capture('03-2t-trace-cursor')
         # Native linked selection, rename, history, exact differences, and eligible A/B.
         window._open(args.baseline/'native.json');window.set_workspace_mode(0);navigator.dock.show();navigator.activate('exhaust_valve')

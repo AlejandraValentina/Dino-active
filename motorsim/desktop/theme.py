@@ -50,6 +50,8 @@ def stylesheet() -> str:
         QGroupBox#inspector {{border:0;border-left:1px solid #2b3b4d;border-radius:0;margin:0;padding:12px;}}
         QToolButton {{background:#20344a;color:#e5edf6;border:1px solid #526b84;border-radius:4px;padding:4px;}}
         QToolButton:checked {{background:#145579;color:#ffffff;border:2px solid #43c5f5;}}
+        QToolButton:focus {{border:2px solid #ffffff;}}
+        QTableCornerButton::section {{background:#26394d;border:1px solid #3b5067;}}
         QStatusBar {{background:#0b1119;color:#9db2c7;}}
         QComboBox,QSpinBox,QDoubleSpinBox {{color:#eff6ff;min-height:24px;}}
         QProgressBar {{background:{c['panel_deep']};border:1px solid #354a61;border-radius:4px;text-align:center;color:#eff6ff;}}
