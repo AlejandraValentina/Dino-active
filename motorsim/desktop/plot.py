@@ -1,24 +1,29 @@
 """Small interactive gap-preserving Qt plot; no scientific interpolation."""
 from __future__ import annotations
 import math
-from PySide6.QtCore import QPointF, Signal, Qt
+from PySide6.QtCore import QPointF, Signal, Qt, QSize
 from PySide6.QtGui import QColor, QPainter, QPen, QFont, QFontMetrics
 from PySide6.QtWidgets import (QWidget, QHBoxLayout, QToolButton, QLabel, QFileDialog,
-    QDialog, QVBoxLayout, QTableWidget, QTableWidgetItem, QHeaderView, QMessageBox)
+    QDialog, QVBoxLayout, QTableWidget, QTableWidgetItem, QHeaderView, QMessageBox, QMenu, QApplication)
 from .presentation import format_number
 
 
 class CurvePlot(QWidget):
     pointSelected = Signal(object)
     COLORS=["#43c5f5","#f59e0b","#a78bfa","#34d399","#fb7185"]
-    def __init__(self,parent=None):
-        super().__init__(parent); self.series=[]; self.selected=None;self.y_scale_mode="include_zero";self.axis_y_bounds=None;self.y_ticks=();self.setMinimumHeight(260); self.setMouseTracking(True); self._viewport=None; self._drag=None; self._selection_key=None
+    def __init__(self,parent=None,*,expanded=False):
+        super().__init__(parent); self.series=[]; self.selected=None;self.y_scale_mode="include_zero";self.axis_y_bounds=None;self.y_ticks=();self.setMinimumHeight(180 if not expanded else 320); self.setMouseTracking(True); self._viewport=None; self._drag=None; self._selection_key=None
         self.setMinimumWidth(350)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.setAccessibleName("Gráfico de muestras: flechas inspeccionan; más/menos amplían; Inicio restaura")
         self.tools=QWidget(self); row=QHBoxLayout(self.tools); row.setContentsMargins(2,0,2,0)
-        for text,tip,callback in (("+","Ampliar vista (+)",lambda:self.zoom(.7)),("−","Alejar vista (-)",lambda:self.zoom(1/.7)),("Restablecer","Restablecer vista (Inicio)",self.reset_view),("Muestras…","Inspeccionar muestras y ausencias",self.show_samples),("CSV…","Exportar todas las muestras, incluidas ausencias",self.export_samples),("PNG…","Exportar vista actual",self.export_image)):
+        row.setSpacing(4)
+        commands=[('+','Ampliar vista (+)',lambda:self.zoom(.7)),('−','Alejar vista (-)',lambda:self.zoom(1/.7)),('Restablecer','Restablecer vista (Inicio)',self.reset_view),('Muestras…','Inspeccionar muestras y ausencias',self.show_samples)]
+        if not expanded:commands.append(('Ampliar','Abrir exploración en ventana amplia',self.show_expanded))
+        for text,tip,callback in commands:
             button=QToolButton();button.setText(text);button.setToolTip(tip);button.setAccessibleName(tip);button.clicked.connect(callback);row.addWidget(button)
+        export=QToolButton();export.setText('Exportar');export.setAccessibleName('Exportar muestras CSV o vista PNG');export.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup);menu=QMenu(export);export.setMenu(menu)
+        menu.addAction('Muestras originales CSV…',self.export_samples);menu.addAction('Vista actual PNG…',self.export_image);row.addWidget(export)
         row.addStretch()
         self.readout=QLabel("Flechas: muestras · rueda: zoom · arrastrar con botón central: desplazar",self)
         self.readout.setTextFormat(Qt.TextFormat.PlainText);self.readout.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
@@ -232,3 +237,24 @@ class CurvePlot(QWidget):
     def export_image(self,*_):
         path,_=QFileDialog.getSaveFileName(self,'Exportar vista del gráfico','','PNG (*.png)')
         if path and not self.grab().save(path,'PNG'):QMessageBox.warning(self,'No se pudo exportar','No se pudo escribir la imagen.')
+
+    def sizeHint(self):return QSize(650,320)
+
+    def minimumSizeHint(self):return QSize(350,180)
+
+    def show_expanded(self,*_):
+        from copy import deepcopy
+        snapshot=deepcopy(self.series)
+        dialog=QDialog(self);dialog.setWindowTitle('Explorar gráfico · instantánea sin interpolación');dialog.resize(1050,650)
+        screen=QApplication.primaryScreen()
+        if screen:
+            area=screen.availableGeometry();dialog.resize(min(1050,area.width()-40),min(650,area.height()-60))
+        root=QVBoxLayout(dialog);label=QLabel('Instantánea de las muestras al abrir. Las unidades y calificaciones se conservan. Flechas: cursor · rueda: zoom · botón central: desplazar.');label.setWordWrap(True);root.addWidget(label)
+        plot=CurvePlot(dialog,expanded=True);plot.set_series(snapshot,y_scale_mode=self.y_scale_mode);plot._viewport=self._viewport;root.addWidget(plot,1)
+        def selected(point):
+            if self.series!=snapshot:return
+            series_index=next((i for i,s in enumerate(plot.series) if id(s)==plot._selection_key[0]),None)
+            if series_index is None:return
+            index=plot._selection_key[1];series=self.series[series_index];self._selection_key=(id(series),index);self.selected=(series.get('name'),index);self.pointSelected.emit(series['points'][index]);self.update()
+        plot.pointSelected.connect(selected);dialog.exec()
+        if self.series==snapshot:self._viewport=plot._viewport;self.update()

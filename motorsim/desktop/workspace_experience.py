@@ -91,8 +91,11 @@ class WorkspaceExperience:
         from .component_map import ComponentNavigator
         self.components=ComponentNavigator(window)
         from PySide6.QtGui import QAction
+        self.shortcut_actions=[]
         for text,shortcut,callback in (('Modelo','Ctrl+1',lambda:window.set_workspace_mode(0)),('Simular','Ctrl+2',lambda:window.set_workspace_mode(2)),('Resultados','Ctrl+3',lambda:window.set_workspace_mode(1)),('Corridas del proyecto','Ctrl+Shift+R',self.show_runs),('Diferencias de variante','Ctrl+Shift+D',self.show_variant_diff),('Recuperar borrador…','Ctrl+Shift+O',window._offer_recoveries)):
             action=QAction(text,window);action.setShortcut(shortcut);action.triggered.connect(callback);window.addAction(action)
+            menu_name='Archivo' if text.startswith('Recuperar') else 'Vista'
+            next(a.menu() for a in window.menuBar().actions() if a.text()==menu_name).addAction(action);self.shortcut_actions.append(action)
         self.diff_button=QPushButton('Diferencias…');self.diff_button.setToolTip('Comparar la configuración aplicada con el motor base (Ctrl+Shift+D)')
         self.diff_button.clicked.connect(self.show_variant_diff);actions.insertWidget(max(0,actions.count()-1),self.diff_button)
         # Keep primary commands visible; secondary tools share a compact menu.
@@ -203,7 +206,10 @@ class WorkspaceExperience:
             self.saved.setText(state+f"\nCola: {job['family']} · {job['rpm']:g} RPM · entrada {job['configuration_sha256'][:12]}")
         self.saved.setToolTip(str(info['path'] or 'Elegí Guardar como para conservar el proyecto.'))
         self.diff_button.setEnabled(not w._four_stroke_active())
-        for action,button in self.tool_actions:action.setEnabled(button.isEnabled())
+        for action in self.shortcut_actions:
+            if action.text()=='Diferencias de variante':action.setEnabled(self.diff_button.isEnabled())
+        for action,button in self.tool_actions:action.setEnabled(button.isEnabled());button.hide()
+        w.four_stroke_button.hide()
         reference=w._four_stroke_active()
         simulate=reference and w.simulate_mode.isChecked()
         w.four_stroke_run_button.setVisible(simulate);w.four_stroke_cancel_button.setVisible(simulate)

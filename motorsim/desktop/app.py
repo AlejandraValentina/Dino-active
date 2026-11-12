@@ -738,11 +738,26 @@ class DinoDesktopWindow(QMainWindow):
         if picker.exec() and picker.selected_entry:self._restore_recovery_entry(picker.selected_entry)
 
     def _restore_recovery_entry(self,entry):
-        restore={'2T':self._restore_2t_recovery,'4T0D':self._restore_4t_recovery,'4Tnative':self._restore_native_recovery}.get(entry.get('family'))
-        if restore is None:return
-        if not self._confirm_discard():return
-        try:restore(entry)
-        except Exception as exc:QMessageBox.warning(self,'No se pudo recuperar',f'{type(exc).__name__}: {exc}')
+        family=entry.get('family');restore={'2T':self._restore_2t_recovery,'4T0D':self._restore_4t_recovery,'4Tnative':self._restore_native_recovery}.get(family)
+        if restore is None:return False
+        # Validate before asking to discard anything. Guard the target context,
+        # including an inactive engine with unsaved applied changes.
+        try:
+            if family=='4T0D':
+                from ..four_stroke_project import FourStrokeProject
+                FourStrokeProject.from_dict(entry['project'])
+            else:
+                from ..engine_project import validate_project
+                validate_project(entry['project'])
+        except (ValueError,KeyError,TypeError) as exc:
+            QMessageBox.warning(self,'No se pudo recuperar',str(exc));return False
+        previous=self.engine_selector.currentData()
+        self._activate_engine_family({'2T':'2T','4T0D':'4T_REFERENCE','4Tnative':'4T'}[family])
+        guard={'2T':self._confirm_discard,'4T0D':self._confirm_discard_four_stroke,'4Tnative':self._confirm_discard_native}[family]
+        if not guard():self._activate_engine_family(previous);return False
+        try:return restore(entry) is not False
+        except Exception as exc:
+            self._activate_engine_family(previous);QMessageBox.warning(self,'No se pudo recuperar',f'{type(exc).__name__}: {exc}');return False
 
     def _offer_recovery(self,family,restore):
         from .recovery_picker import RecoveryPicker
@@ -750,8 +765,7 @@ class DinoDesktopWindow(QMainWindow):
         if not entries:return
         picker=RecoveryPicker(entries,self)
         if picker.exec() and picker.selected_entry:
-            try:restore(picker.selected_entry)
-            except Exception as exc:QMessageBox.warning(self,'No se pudo recuperar',str(exc))
+            self._restore_recovery_entry(picker.selected_entry)
 
     def _restore_2t_recovery(self, entry):
         # Recovery is a copy: do not bind the original path, so Save cannot
@@ -764,6 +778,7 @@ class DinoDesktopWindow(QMainWindow):
         from ..four_stroke_project import FourStrokeProject
         self.four_stroke_context.replace_project(FourStrokeProject.from_dict(entry["project"]),None)
         self.four_stroke_context.dirty=True;self.four_stroke_context.changed.emit()
+        self.four_stroke_results.clear_result()
         self.show_four_stroke_mode()
         self.statusBar().showMessage(
             "Borrador 4T 0D recuperado como copia sin ruta; usá Guardar como para conservarlo.",7000)

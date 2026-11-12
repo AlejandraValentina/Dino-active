@@ -1,0 +1,40 @@
+{
+  "name": "source-application-f23-final",
+  "command": [
+    "python",
+    "scripts/frontend_commercial/run_acceptance.py",
+    "--receipt",
+    "E:/Dino-artifacts/frontend-f2-f3-v1/source-f23-final-terminal.json",
+    "--timeout",
+    "560",
+    "--",
+    "E:/dino/worktrees/dino-commercial-integrated-v1/.venv-build/Scripts/python.exe",
+    "-m",
+    "motorsim.dino_desktop",
+    "--verify-frontend-f23",
+    "--output",
+    "E:/Dino-artifacts/frontend-f2-f3-v1/source-f23-final",
+    "--baseline",
+    "E:/Dino-artifacts/frontend-f2-f3-v1/source-base",
+    "--fixtures",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/fixtures"
+  ],
+  "started_at": "2026-11-12T11:20:30+00:00",
+  "finished_at": "2026-11-12T11:22:12+00:00",
+  "duration_s": 102.063,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "results\\frontend-f2-f3-v1\\verification\\source-application-f23-final.log",
+  "log_lines": 4,
+  "log_bytes": 2994,
+  "error_lines": [
+    "3: {\"result\": \"FAIL\", \"checks\": 66, \"issues\": [\"Traceback (most recent call last):\\n  File \\\"E:\\\\dino\\\\worktrees\\\\dino-frontend-f2-f3-v1\\\\motorsim\\\\desktop\\\\acceptance_frontend_f23.py\\\", line 150, in main\\n    note('recovery_persistence_reopen',window.native_four_stroke.context.path==root/'recovered-co",
+    "4: {\"schema\": \"DINO_OWNED_PROCESS_TERMINAL_V1\", \"command\": [\"E:/dino/worktrees/dino-commercial-integrated-v1/.venv-build/Scripts/python.exe\", \"-m\", \"motorsim.dino_desktop\", \"--verify-frontend-f23\", \"--output\", \"E:/Dino-artifacts/frontend-f2-f3-v1/source-f23-final\", \"--baseline\", \"E:/Dino-artifacts/fron"
+  ],
+  "tail": [
+    "{\"cycle\": 1, \"work_J\": -43.6056052842375, \"heat_J\": 22.47642363631749, \"pmax_Pa\": 4304413.67015572, \"wall_s\": 8.807370899943635, \"streak\": 0}",
+    "{\"status\": \"MAX_CYCLES_NONCONVERGED\", \"cycles_completed\": 1, \"wall_s\": 9.481307300040498, \"solver_step_wall_s\": 7.602155000553466, \"processing_wall_s\": 0.5109216016717255, \"peak_rss_mib\": 397.78515625, \"failure\": null}",
+    "{\"result\": \"FAIL\", \"checks\": 66, \"issues\": [\"Traceback (most recent call last):\\n  File \\\"E:\\\\dino\\\\worktrees\\\\dino-frontend-f2-f3-v1\\\\motorsim\\\\desktop\\\\acceptance_frontend_f23.py\\\", line 150, in main\\n    note('recovery_persistence_reopen',window.native_four_stroke.context.path==root/'recovered-co",
+    "{\"schema\": \"DINO_OWNED_PROCESS_TERMINAL_V1\", \"command\": [\"E:/dino/worktrees/dino-commercial-integrated-v1/.venv-build/Scripts/python.exe\", \"-m\", \"motorsim.dino_desktop\", \"--verify-frontend-f23\", \"--output\", \"E:/Dino-artifacts/frontend-f2-f3-v1/source-f23-final\", \"--baseline\", \"E:/Dino-artifacts/fron"
+  ]
+}

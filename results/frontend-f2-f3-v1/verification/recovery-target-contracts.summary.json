@@ -1,0 +1,32 @@
+{
+  "name": "recovery-target-contracts",
+  "command": [
+    "python",
+    "-u",
+    "-m",
+    "pytest",
+    "tests/test_frontend_engineering_jobs.py",
+    "tests/test_frontend_f2_f3.py",
+    "tests/test_desktop_cp1_acceptance.py",
+    "tests/test_desktop_cp2_acceptance.py",
+    "-q",
+    "--tb=short",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "E:/Dino-artifacts/frontend-f2-f3-v1/pytest-recovery-guard"
+  ],
+  "started_at": "2026-11-12T11:31:15+00:00",
+  "finished_at": "2026-11-12T11:32:05+00:00",
+  "duration_s": 49.266,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\frontend-f2-f3-v1\\verification\\recovery-target-contracts.log",
+  "log_lines": 2,
+  "log_bytes": 100,
+  "error_lines": [],
+  "tail": [
+    "........................                                                 [100%]",
+    "24 passed in 48.37s"
+  ]
+}

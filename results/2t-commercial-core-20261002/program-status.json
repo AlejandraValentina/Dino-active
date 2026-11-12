@@ -17152,6 +17152,53 @@
       ],
       "next_action": "Source and Windows actual job workflows",
       "classification": "IMPLEMENTED_ACCEPTANCE_PENDING"
+    },
+    {
+      "id": "F23-CONTRACT",
+      "objective": "DINO_FRONTEND_F2_F3_V1",
+      "description": "Protected regression and unchanged scientific scope",
+      "state": "DONE",
+      "dependencies": [],
+      "write_scope": [],
+      "blocker": null,
+      "evidence": [
+        "results/frontend-f2-f3-v1/verification/protected-regression.summary.json"
+      ],
+      "next_action": "Protected regression and unchanged scientific scope",
+      "classification": "PROTECTED_301_PASS_3_SKIP_NO_SCIENTIFIC_CHANGES"
+    },
+    {
+      "id": "F23-STORAGE",
+      "objective": "DINO_FRONTEND_F2_F3_V1",
+      "description": "Storage admission and clean packaging inputs",
+      "state": "READY",
+      "dependencies": [],
+      "write_scope": [],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Storage admission and clean packaging inputs"
+    },
+    {
+      "id": "F23-VISUAL-REVIEW",
+      "objective": "DINO_FRONTEND_F2_F3_V1",
+      "description": "Visual before after and compact review",
+      "state": "READY",
+      "dependencies": [],
+      "write_scope": [],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Visual before after and compact review"
+    },
+    {
+      "id": "F23-BACKLOG",
+      "objective": "DINO_FRONTEND_F2_F3_V1",
+      "description": "Reconcile all23 findings with evidence and remaining dependencies",
+      "state": "READY",
+      "dependencies": [],
+      "write_scope": [],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Reconcile all23 findings with evidence and remaining dependencies"
     }
   ],
   "progress_log": [
@@ -21175,6 +21222,18 @@
       "task": "F23-SOURCE",
       "kind": "task",
       "summary": "Base application47 PASS. Extended real jobs passed but cursor checked before reload completion; generation-guarded readers and full-load wait added. Root isolation fixed CP2 modal;21 PASS. Physical routes, units, queue ownership, atomic CSV and exact samples28 PASS."
+    },
+    {
+      "at": "2026-11-12T11:28:27+00:00",
+      "task": "F23-SOURCE",
+      "kind": "task",
+      "summary": "Combined regression120 PASS after fixture root isolation. Extended app66 checks reached recovery/reopen; harness seeded comparison context instead of renamed native project, corrected seed without relaxing assertions. Visual review adds expanded charts, readable map labels and scrollable applied details."
+    },
+    {
+      "at": "2026-11-12T11:36:24+00:00",
+      "task": "F23-CONTRACT",
+      "kind": "task",
+      "summary": "Protected P4-P8 regression301 PASS+3 SKIP,4 inherited NumPy warnings. Product diff restricted to desktop adapters/runtime entrypoints. Expanded chart tests39 PASS; recovery target guard and CP1/CP2 group24 PASS. Final application replay precedes one grouped clean Windows build."
     }
   ],
   "integration_parent_states": {
@@ -21274,7 +21333,11 @@
       "F23-SOURCE",
       "F23-BUILD",
       "F23-WINDOWS",
-      "F23-REVIEW"
+      "F23-REVIEW",
+      "F23-CONTRACT",
+      "F23-STORAGE",
+      "F23-VISUAL-REVIEW",
+      "F23-BACKLOG"
     ]
   },
   "gate_status": {

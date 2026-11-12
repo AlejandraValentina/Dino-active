@@ -161,3 +161,25 @@ def test_power_sample_explorer_links_original_row_with_qualification():
     panel.exploratory_toggle.setChecked(True);panel.set_dataset(dict(points=[row],provenance='SYNTHETIC_APPLICATION_TEST',experimental_validation='NOT_PERFORMED'),{'A'})
     seen=[];panel.pointSelected.connect(seen.append);key(panel.sample_plot,Qt.Key.Key_Right)
     assert seen and seen[0]==row and 'TRANSIENT_ESTIMATE' in panel.sample_plot.readout.text()
+
+
+def test_expanded_chart_is_same_renderer_and_keeps_original_samples(monkeypatch):
+    from PySide6.QtWidgets import QDialog
+    plot=CurvePlot();series=[dict(name='source',unit='Pa',points=[dict(rpm=1,value=10),dict(rpm=2,value=None,reason='NOT_CONVERGED')])];plot.set_series(series);seen=[];plot.pointSelected.connect(seen.append)
+    def inspect(dialog):
+        expanded=dialog.findChild(CurvePlot);assert expanded is not None and expanded.series==series
+        key(expanded,Qt.Key.Key_Right);expanded.zoom(.5);return 0
+    monkeypatch.setattr(QDialog,'exec',inspect);plot.show_expanded()
+    assert seen==[series[0]['points'][0]] and plot._viewport is not None and plot.series==series
+
+
+def test_recovery_guards_inactive_target_and_validates_before_discard(window,monkeypatch):
+    from PySide6.QtWidgets import QMessageBox
+    from motorsim.desktop.four_stroke_project import project_from_example
+    w=window;w.show_two_stroke_mode();context=w.native_four_stroke.context;before=deepcopy(context.project);context.dirty=True;questions=[];warnings=[]
+    monkeypatch.setattr(QMessageBox,'question',lambda *a,**kw:(questions.append(a[1]),QMessageBox.StandardButton.Cancel)[1])
+    monkeypatch.setattr(QMessageBox,'warning',lambda *a,**kw:warnings.append(a[2]))
+    assert not w._restore_recovery_entry(dict(family='4Tnative',project=project_from_example('recover-other')))
+    assert questions and '4T' in questions[-1] and context.project==before and context.dirty and w._active_context() is w.context
+    questions.clear();assert not w._restore_recovery_entry(dict(family='4Tnative',project={}))
+    assert warnings and not questions and context.project==before

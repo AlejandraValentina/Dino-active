@@ -21,7 +21,7 @@ FOUR=(*COMMON,Component('intake_valve','Válvula adm.',.03,.04),Component('exhau
 class ComponentMap(QWidget):
     def __init__(self,components,activate,parent=None):
         super().__init__(parent);self.components=components;self.buttons={};self.selected=None
-        self.setMinimumSize(270,280)
+        self.setMinimumSize(270,240)
         for component in components:
             button=QToolButton(self);button.setText({'cylinder':'Cilindro /\npistón','crankcase':'Cárter /\nbiela','transfer':'Transf.','intake_valve':'Válvula\nadmisión','exhaust_valve':'Válvula\nescape','geometry':'Biela /\ncompresión'}.get(component.key,component.label));button.setCheckable(True)
             button.setAccessibleName('Editar '+component.label);button.setToolTip('Seleccionar '+component.label+' y abrir sus parámetros')
@@ -60,7 +60,8 @@ class ComponentNavigator(QObject):
         body=QWidget();layout=QVBoxLayout(body)
         self.family=QLabel();self.family.setWordWrap(True);layout.addWidget(self.family)
         self.map=ComponentMap(TWO,self.activate);layout.addWidget(self.map,1)
-        self.detail=QLabel();self.detail.setWordWrap(True);self.detail.setTextFormat(Qt.TextFormat.PlainText);self.detail.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse);layout.addWidget(self.detail)
+        self.detail=QLabel();self.detail.setWordWrap(True);self.detail.setTextFormat(Qt.TextFormat.PlainText);self.detail.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse);self.detail.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.detail_scroll=QScrollArea();self.detail_scroll.setWidgetResizable(True);self.detail_scroll.setFrameShape(QScrollArea.Shape.NoFrame);self.detail_scroll.setMinimumHeight(130);self.detail_scroll.setMaximumHeight(220);self.detail_scroll.setWidget(self.detail);layout.addWidget(self.detail_scroll)
         legend=QLabel('Gas: azul · combustión: ámbar · cinemática: gris');legend.setWordWrap(True);layout.addWidget(legend)
         note=QLabel('Esquema funcional, sin escala. Seleccioná un componente para editar. Los valores son los aplicados; el borrador permanece en el formulario.');note.setWordWrap(True);layout.addWidget(note)
         self.dock.setWidget(body);window.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea,self.dock)

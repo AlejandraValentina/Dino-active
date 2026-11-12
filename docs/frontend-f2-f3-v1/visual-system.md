@@ -9,3 +9,6 @@ Chart tools share plus/minus/reset, exact-sample readout, original sample table,
 Native A/B metrics and pressure use tabs; report exports use a two-column layout. Component dock is explicitly opened so compact windows retain editor width. Native widgets supply focus and accessible names; screen-reader/high-contrast/scaling acceptance remains human UAT, never inferred from programmatic labels.
 
 Recovery previews read serialized data without running models. Posponer never discards. Open is a copy without an original path; save therefore requires SaveAs. Deferred entries remain available after restart.
+
+
+Visual QA led to an explicit expanded-chart window using the same renderer and frozen received samples. Its cursor can update the original selection only while source samples still match. Embedded charts retain scroll support; the expanded view supplies sufficient room for axes, exact values and units. Applied component details scroll independently, without hiding model limits. Secondary toolbar actions are kept in the menu after family switches. Recovery validates the incoming document before any discard prompt and guards the destination model, including an inactive context; Cancel preserves both project and prior active family.

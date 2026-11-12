@@ -35,7 +35,8 @@ def main(argv=None):
     def key(widget,value,mod=Qt.KeyboardModifier.NoModifier,text=''):
         widget.setFocus();app.sendEvent(widget,QKeyEvent(QEvent.Type.KeyPress,value,mod,text));app.sendEvent(widget,QKeyEvent(QEvent.Type.KeyRelease,value,mod,text));app.processEvents()
     def capture(name,target=None):
-        app.processEvents();path=root/(name+'.png');note('capture_'+name,(target or window).grab().save(str(path)))
+        for _ in range(3):app.processEvents();time.sleep(.02)
+        path=root/(name+'.png');note('capture_'+name,(target or window).grab().save(str(path)))
         captures[name]=dict(file=path.name,sha256=hashlib.sha256(path.read_bytes()).hexdigest())
     def clean():
         window.native_four_stroke.editor.discard_draft();window.pages[0].discard_draft();window.pages[1].discard_draft();window.four_stroke_workspace.refresh(window.four_stroke_context.project);window.experience.reference_loaded()
@@ -98,6 +99,9 @@ def main(argv=None):
         with patch.object(QFileDialog,'getSaveFileName',return_value=(str(root/'trace-export.png'),'')):trace.export_image()
         note('trace_png_export',(root/'trace-export.png').read_bytes().startswith(b'\x89PNG'))
         capture('03-2t-trace-cursor')
+        def inspect_expanded():
+            modal=app.activeModalWidget();plot=modal.findChild(type(trace));key(plot,Qt.Key.Key_Right);note('expanded_cursor_has_visible_values',bool(plot.readout.text()) and plot.readout.isVisible());capture('03b-expanded-trace',modal);modal.accept()
+        QTimer.singleShot(50,inspect_expanded);trace.show_expanded()
         # Native linked selection, rename, history, exact differences, and eligible A/B.
         window._open(args.baseline/'native.json');window.set_workspace_mode(0);navigator.dock.show();navigator.activate('exhaust_valve')
         native=window.native_four_stroke;note('native_component_route',native.editor.sections.currentIndex()==list(native.editor.tables).index('exhaust_valve'))
@@ -112,6 +116,9 @@ def main(argv=None):
         note('eligible_ab_overlay',results.comparison is not None and len(results.compare_pressure.series)==2)
         note('synthetic_origin_visible',all('SYNTHETIC' in str(p) for s in results.compare_pressure.series for p in s['points']))
         results.compare_views.setCurrentIndex(1);key(results.compare_pressure,Qt.Key.Key_Right);capture('05-native-ab-pressure')
+        def inspect_ab():
+            modal=app.activeModalWidget();plot=modal.findChild(type(results.compare_pressure));key(plot,Qt.Key.Key_Right);capture('05b-expanded-ab',modal);modal.accept()
+        QTimer.singleShot(50,inspect_ab);results.compare_pressure.show_expanded()
         results.compare_b.setCurrentIndex(results.compare_a.currentIndex());note('same_run_pair_rejected',not results.compare_button.isEnabled() and not results.compare_pressure.series)
         # Real reference execution remains independent from native.
         window._open(args.baseline/'reference.json');window.set_workspace_mode(0);navigator.dock.show();navigator.activate('intake_valve')
@@ -123,10 +130,11 @@ def main(argv=None):
             switch();navigator.dock.hide()
             for width,height in ((980,680),(1280,720)):
                 window.resize(width,height);window.set_workspace_mode(0);app.processEvents()
+                note(f'{family}_{width}_actual_size',window.width()<=width and window.height()<=height)
                 note(f'{family}_{width}_header',window.project_header.isVisible() and window.project_header.geometry().width()<=window.centralWidget().width())
                 capture(f'08-{family}-{width}')
         # Recovery preview in the actual application. Deferred drafts survive.
-        clean();window.show_two_stroke_mode();window.context.path=root/'bound-2t.json'
+        clean();window._open(root/'native-variants.json');window.show_two_stroke_mode();window.context.path=root/'bound-2t.json'
         window.show_native_four_stroke_mode();native.context.path=root/'native-variants.json'
         controllers=(window.recovery_2t,window.recovery_native,window.recovery_4t)
         for controller in controllers:controller.context.dirty=True;controller.autosave();controller.context.dirty=False
@@ -147,6 +155,7 @@ def main(argv=None):
         window=DinoDesktopWindow(new_design_project('reopen-f23'));window.show()
         QTimer.singleShot(50,lambda:app.activeModalWidget().reject() if isinstance(app.activeModalWidget(),RecoveryPicker) else None)
         app.processEvents();window._open(root/'recovered-copy.json')
+        note('queue_reopens_after_window_close',window.experience.jobs.manager is not None and len(window.experience.jobs.manager.items)>=4 and window.experience.jobs.manager.paused)
         note('recovery_persistence_reopen',window.native_four_stroke.context.path==root/'recovered-copy.json' and 'variant-after' in window.native_four_stroke.context.project['variants'])
     except Exception:issues.append(traceback.format_exc())
     finally:
