@@ -1,0 +1,39 @@
+{
+  "schema": "DINO_PACKAGED_RECOVERY_UIA_V1",
+  "result": "PASS",
+  "checks": {
+    "2T_restored": true,
+    "2T_requires_save_as": true,
+    "2T_original_intact": true,
+    "2T_closed": true,
+    "4T0D_restored": true,
+    "4T0D_requires_save_as": true,
+    "4T0D_original_intact": true,
+    "4T0D_closed": true,
+    "4Tnative_restored": true,
+    "4Tnative_requires_save_as": true,
+    "4Tnative_original_intact": true,
+    "4Tnative_closed": true
+  },
+  "processes": [
+    {
+      "family": "2T",
+      "exit_code": 0,
+      "original_sha256": "1822bd12264b77f3c32bceb94726bf4de7a007546e2ef83c6e28e1243593d37c"
+    },
+    {
+      "family": "4T0D",
+      "exit_code": 0,
+      "original_sha256": "b0ca6443e63db31cc00eeebd0d917601b4cb91b5dd31e7010edc31af4e6f5dbe"
+    },
+    {
+      "family": "4Tnative",
+      "exit_code": 0,
+      "original_sha256": "5a2edc5cd202d7e3da663b2936d97a3e5ddea3822b26ebc2a2c91554f6239b5f"
+    }
+  ],
+  "exe": "E:\\Dino-artifacts\\frontend-f2-f3-v1\\Windows\\MotorSim-0.1.0-rc14-windows-x64-b00a5653\\MotorSim\\Dino2T.exe",
+  "exe_sha256": "a7e78215a11b8628649811b3b5e8a7dbc3ac5a33d9feb31bcc1736b5394afe8f",
+  "method": "External UIA Invoke and scoped WM_CLOSE; no global input/focus or filename typing",
+  "scientific_validation": "NOT_PERFORMED"
+}

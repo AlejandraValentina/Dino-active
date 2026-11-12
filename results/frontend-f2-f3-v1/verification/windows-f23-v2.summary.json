@@ -1,0 +1,32 @@
+{
+  "name": "windows-f23-v2",
+  "command": [
+    "python",
+    "E:/dino/worktrees/dino-frontend-f2-f3-v1/scripts/frontend_commercial/run_acceptance.py",
+    "--receipt",
+    "E:/Dino-artifacts/frontend-f2-f3-v1/windows-f23-v2-terminal.json",
+    "--timeout",
+    "560",
+    "--",
+    "E:/Dino-artifacts/frontend-f2-f3-v1/Windows/MotorSim-0.1.0-rc14-windows-x64-b00a5653/MotorSim/Dino2T.exe",
+    "--verify-frontend-f23",
+    "--output",
+    "E:/Dino-artifacts/frontend-f2-f3-v1/windows-f23-v2",
+    "--baseline",
+    "E:/Dino-artifacts/frontend-f2-f3-v1/windows-base-v2",
+    "--fixtures",
+    "E:/Dino-artifacts/frontend-commercial-integration-v1/fixtures"
+  ],
+  "started_at": "2026-11-12T12:14:15+00:00",
+  "finished_at": "2026-11-12T12:16:04+00:00",
+  "duration_s": 108.672,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "E:\\Dino-artifacts\\frontend-f2-f3-v1\\verification\\windows-f23-v2.log",
+  "log_lines": 1,
+  "log_bytes": 892,
+  "error_lines": [],
+  "tail": [
+    "{\"schema\": \"DINO_OWNED_PROCESS_TERMINAL_V1\", \"command\": [\"E:/Dino-artifacts/frontend-f2-f3-v1/Windows/MotorSim-0.1.0-rc14-windows-x64-b00a5653/MotorSim/Dino2T.exe\", \"--verify-frontend-f23\", \"--output\", \"E:/Dino-artifacts/frontend-f2-f3-v1/windows-f23-v2\", \"--baseline\", \"E:/Dino-artifacts/frontend-f2"
+  ]
+}

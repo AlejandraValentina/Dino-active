@@ -1,0 +1,361 @@
+{
+  "schema": "DINO_FRONTEND_F23_FINDINGS_V1",
+  "original_audit_revision": "d44305c24ec81d9b767305d319a660c0c034e5c9",
+  "baseline": "97e40bd",
+  "counts": {
+    "CLOSED": 12,
+    "PARTIAL": 10,
+    "PENDING_UAT": 1
+  },
+  "findings": [
+    {
+      "id": "UX-001",
+      "priority": "P0",
+      "title": "Una edición nativa sin aplicar puede perderse y ejecutarse el modelo anterior",
+      "status": "CLOSED",
+      "implemented": "Guardia de borradores y entrada inmutable preservadas; fuente/Windows prueban edición87mm, cancelar, ejecución y eventos tardíos.",
+      "remaining": "",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-002",
+      "priority": "P0",
+      "title": "El bundle nativo no transporta la cadena completa de resultados",
+      "status": "CLOSED",
+      "implemented": "Cierre transitivo portable de primarios, metadatos y trazas preservado, incluido origen inaccesible.",
+      "remaining": "",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-003",
+      "priority": "P0",
+      "title": "Guardar un proyecto nativo importado falla sin aviso visible",
+      "status": "CLOSED",
+      "implemented": "Guardar tras importar funciona; fallos visibles preservan original y dirty.",
+      "remaining": "",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-004",
+      "priority": "P1",
+      "title": "El contexto activo desaparece en los espacios nativos de ejecución y resultados",
+      "status": "CLOSED",
+      "implemented": "Cabecera común de proyecto/modelo/variante/identidad aplicada/guardado en los tres espacios.",
+      "remaining": "",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-005",
+      "priority": "P1",
+      "title": "4T 0D duplica navegación y acciones de proyecto",
+      "status": "CLOSED",
+      "implemented": "Navegación MODELO/SIMULAR/RESULTADOS y selector de familia comunes; referencia0D identificada.",
+      "remaining": "",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-006",
+      "priority": "P1",
+      "title": "El editor nativo expone el esquema como formulario principal",
+      "status": "CLOSED",
+      "implemented": "Formularios físicos tipados por componente con unidades y procedencia; esquema disponible como avanzado.",
+      "remaining": "",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-007",
+      "priority": "P1",
+      "title": "La validación nativa devuelve errores de conversión sin ubicación útil",
+      "status": "PARTIAL",
+      "implemented": "Contexto de componente/campo y errores visibles mejorados; catálogo general incompleto.",
+      "remaining": "Completar el catálogo de restricciones y errores de backend con campo, unidad y acción para todas las categorías; conservar el detalle original.",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-008",
+      "priority": "P1",
+      "title": "La guía inicial tiene texto claro sobre fondo blanco",
+      "status": "CLOSED",
+      "implemented": "Documentos y controles de ayuda usan la paleta de contraste común.",
+      "remaining": "",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-009",
+      "priority": "P1",
+      "title": "Primeros pasos mezcla el proyecto 2T con el contexto nativo",
+      "status": "CLOSED",
+      "implemented": "Guía de primeros pasos consulta el contexto activo; no usa resultados2T para acreditar4T.",
+      "remaining": "",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-010",
+      "priority": "P1",
+      "title": "La corrida 2T terminada no conduce directamente a su resultado",
+      "status": "PARTIAL",
+      "implemented": "Botón de último resultado y asociación automática de salidas publicadas; se limpia al cambiar de proyecto.",
+      "remaining": "La apertura directa cubre resultados publicados. Falta unificar acciones siguientes y acceso a diagnósticos para todos los terminales sin resultado publicable.",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-011",
+      "priority": "P1",
+      "title": "El bundle 2T puede omitir el resultado que está en pantalla sin anticiparlo",
+      "status": "CLOSED",
+      "implemented": "Vinculación explícita de resultados2T por importer público y hashes, rechazo de inválidos, deduplicación y preview portable.",
+      "remaining": "",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-012",
+      "priority": "P1",
+      "title": "Las curvas RPM se preparan de tres formas y el coste agregado no siempre es visible",
+      "status": "PARTIAL",
+      "implemented": "Planes de RPM/coste y entradas congeladas visibles, con capacidades por familia.",
+      "remaining": "Unificar el preparador de punto/curva entre familias; hoy existen vista común de trabajo, planes explícitos y cola de puntos, con controles de barrido propios.",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-013",
+      "priority": "P1",
+      "title": "La cola de trabajos disponible sólo cubre curvas de referencia 4T 0D",
+      "status": "PARTIAL",
+      "implemented": "Trabajos seriales2T/nativos con ledger atómico, lock de autoridad, cancelar/pausar, recuperación INTERRUPTED, nuevo/abrir cola y vínculo a curvas0D.",
+      "remaining": "La cola persistente admite puntos2T/nativos y enlaza la cola de curvas0D. No hay una única cola durable de todos los barridos ni reanudación nativa por checkpoint.",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-014",
+      "priority": "P1",
+      "title": "La comparación requiere descubrir por separado pares, contexto y cambios de diseño",
+      "status": "PARTIAL",
+      "implemented": "Preflight de pares nativos, overlay de presión sólo para pares elegibles re-verificados y diferencias exactas de variante.",
+      "remaining": "Vincular visualmente los cambios de configuración del par A/B elegido; las diferencias actuales de variante comparan con base y la elegibilidad nativa conserva su contrato estricto.",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-015",
+      "priority": "P2",
+      "title": "Falta una vista de motor coordinada con el editor de componentes",
+      "status": "CLOSED",
+      "implemented": "Mapa funcional seleccionable2T/nativo/0D, enlaces de gas/cinemática, parámetros aplicados y coordinación con formulario/foco.",
+      "remaining": "",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-016",
+      "priority": "P2",
+      "title": "Inspección gráfica avanzada insuficiente para explorar muestras exactas",
+      "status": "CLOSED",
+      "implemented": "Renderer compartido: zoom, pan, cursor exacto, unidades, ausencias, ventana amplia, CSV atómico y PNG.2T conserva su vista dual y añade explorador de una métrica.",
+      "remaining": "",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-017",
+      "priority": "P2",
+      "title": "Los términos técnicos y los ejes de confianza necesitan una presentación común",
+      "status": "PARTIAL",
+      "implemented": "Estados conservados en cabecera, corridas, tablas y metadatos; todavía hay presentaciones heterogéneas.",
+      "remaining": "Completar el catálogo común de ejecución/periodicidad/integridad/validación y calificación contextual de exportaciones; conservar estados originales.",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-018",
+      "priority": "P2",
+      "title": "Los diseños compactos requieren redistribuir contenido y navegación",
+      "status": "PARTIAL",
+      "implemented": "Acciones primarias y menú de herramientas, scroll físico0D, panel de componentes opcional, A/B por pestañas, gráficos ampliados y dimensiones reales verificadas.",
+      "remaining": "Conservar la mejora probada en980x680/1280x720 y ampliar UAT de paneles avanzados, fuentes grandes y escalado; los gráficos amplían en una ventana propia.",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-019",
+      "priority": "P2",
+      "title": "La decisión de recuperación carece de identidad y previsualización",
+      "status": "CLOSED",
+      "implemented": "Selector con modelo, nombre, fecha, origen, preview, posponer y copia sin ruta. Guardia del contexto destino. Referencias dataclass aisladas con claveV2; legacy legible sin reescribir.",
+      "remaining": "",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-020",
+      "priority": "P2",
+      "title": "Falta una aceptación de accesibilidad de los recorridos completos",
+      "status": "PENDING_UAT",
+      "implemented": "Nombres accesibles y foco visible, cursores por teclado, rutas de componente y UIA externa de recuperación de tres familias.",
+      "remaining": "UAT de teclado integral, Narrador/lector de pantalla, alto contraste y escalado150/200%; UIA de recuperación y teclado Qt no sustituyen esa aceptación.",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-021",
+      "priority": "P2",
+      "title": "Las acciones de variantes no son equivalentes entre 2T y nativo",
+      "status": "PARTIAL",
+      "implemented": "Operaciones nativas duplicar/renombrar/eliminar, undo/redo y diferencias de configuración, conservando referencias históricas.",
+      "remaining": "Unificar el explorador visual de variantes entre2T/nativo; renombrar nativo, historia y diferencias exactas están implementados.",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-022",
+      "priority": "P3",
+      "title": "Terminología, puntuación y codificación tienen detalles inconsistentes",
+      "status": "PARTIAL",
+      "implemented": "Unidades y etiquetas físicas corregidas, acciones nuevas en español y códigos técnicos disponibles.",
+      "remaining": "Completar vocabulario español en estados avanzados y diagnósticos sin ocultar códigos científicos originales.",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    },
+    {
+      "id": "UX-023",
+      "priority": "P3",
+      "title": "La jerarquía visual dedica demasiado espacio a avisos repetidos",
+      "status": "PARTIAL",
+      "implemented": "Herramientas secundarias agrupadas y gráficos/tablas por vistas; continúan avisos repetidos en algunos modelos.",
+      "remaining": "Reducir avisos duplicados con una jerarquía contextual uniforme, conservando límites y calificaciones científicas.",
+      "evidence": [
+        "source-gate.json",
+        "windows-acceptance.json",
+        "acceptance.json"
+      ],
+      "scientific_claim": "NOT_PERFORMED",
+      "human_uat": "PENDING_UAT"
+    }
+  ],
+  "closure_policy": "CLOSED only for the stated functional outcome under source and actual Windows acceptance; human/scientific acceptance remains separate. Partial findings retain explicit work.",
+  "status": "RECONCILED_SOURCE_AND_WINDOWS_ACCEPTED",
+  "build_commit": "b00a5653ecd9000cd2530bf22c15603dc6acceaf",
+  "source_commit": "e9a817c3ea447d8ca33dbb7f39153cca4410f51b"
+}

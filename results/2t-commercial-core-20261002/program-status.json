@@ -2832,7 +2832,7 @@
     },
     {
       "id": "DINO_FRONTEND_F2_F3_V1",
-      "state": "ACTIVE",
+      "state": "COMPLETE",
       "owner_approved": true,
       "change": "openspec/changes/frontend-f2-f3-v1",
       "spec": "openspec/changes/frontend-f2-f3-v1/specs/frontend-f2-f3-v1/spec.md",
@@ -2845,11 +2845,18 @@
         "F23-RESULTS",
         "F23-RECOVERY",
         "F23-PRODUCTIVITY",
+        "F23-JOBS",
         "F23-SOURCE",
         "F23-BUILD",
         "F23-WINDOWS",
-        "F23-REVIEW"
-      ]
+        "F23-REVIEW",
+        "F23-CONTRACT",
+        "F23-STORAGE",
+        "F23-VISUAL-REVIEW",
+        "F23-BACKLOG",
+        "F23-RECEIPTS"
+      ],
+      "classification": "FRONTEND_F2_F3_WINDOWS_ACCEPTED_GENERAL_DEBT_UAT_PENDING"
     }
   ],
   "full_rpm_sweep_precondition_status": "RESOLVED",
@@ -16997,7 +17004,8 @@
         "results/frontend-f2-f3-v1/consolidation.json",
         "docs/frontend-f2-f3-v1/architecture.md"
       ],
-      "next_action": "Consolidation, architecture and blocker reassessment"
+      "next_action": "Accepted scoped engineering candidate; remaining partial findings and human UAT are explicit in backlog.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_NO_SCIENTIFIC_CLAIM"
     },
     {
       "id": "F23-COMPONENTS",
@@ -17010,8 +17018,8 @@
       "evidence": [
         "results/frontend-f2-f3-v1/source-gate.json"
       ],
-      "next_action": "Linked physical component schematics for all families",
-      "classification": "SOURCE_ACCEPTED_WINDOWS_PENDING"
+      "next_action": "Accepted scoped engineering candidate; remaining partial findings and human UAT are explicit in backlog.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_NO_SCIENTIFIC_CLAIM"
     },
     {
       "id": "F23-CHARTS",
@@ -17024,8 +17032,8 @@
       "evidence": [
         "results/frontend-f2-f3-v1/source-gate.json"
       ],
-      "next_action": "Exact sample inspection, viewport and exports across plots",
-      "classification": "SOURCE_ACCEPTED_WINDOWS_PENDING"
+      "next_action": "Accepted scoped engineering candidate; remaining partial findings and human UAT are explicit in backlog.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_NO_SCIENTIFIC_CLAIM"
     },
     {
       "id": "F23-VARIANTS",
@@ -17038,8 +17046,8 @@
       "evidence": [
         "results/frontend-f2-f3-v1/source-gate.json"
       ],
-      "next_action": "Variant exploration, rename and explicit configuration differences",
-      "classification": "SOURCE_ACCEPTED_WINDOWS_PENDING"
+      "next_action": "Accepted scoped engineering candidate; remaining partial findings and human UAT are explicit in backlog.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_NO_SCIENTIFIC_CLAIM"
     },
     {
       "id": "F23-RESULTS",
@@ -17052,8 +17060,8 @@
       "evidence": [
         "results/frontend-f2-f3-v1/source-gate.json"
       ],
-      "next_action": "External result binding and run exploration",
-      "classification": "SOURCE_ACCEPTED_WINDOWS_PENDING"
+      "next_action": "Accepted scoped engineering candidate; remaining partial findings and human UAT are explicit in backlog.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_NO_SCIENTIFIC_CLAIM"
     },
     {
       "id": "F23-RECOVERY",
@@ -17067,8 +17075,8 @@
         "results/frontend-f2-f3-v1/source-gate.json",
         "results/frontend-f2-f3-v1/verification/reference-key-v2.summary.json"
       ],
-      "next_action": "Recovery selector with identity and read-only preview",
-      "classification": "SOURCE_ACCEPTED_REFERENCE_RECOVERY_V2"
+      "next_action": "Accepted scoped engineering candidate; remaining partial findings and human UAT are explicit in backlog.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_NO_SCIENTIFIC_CLAIM"
     },
     {
       "id": "F23-PRODUCTIVITY",
@@ -17081,8 +17089,8 @@
       "evidence": [
         "results/frontend-f2-f3-v1/source-gate.json"
       ],
-      "next_action": "Keyboard, compact layouts and coherent visual hierarchy",
-      "classification": "SOURCE_ACCEPTED_WINDOWS_PENDING"
+      "next_action": "Accepted scoped engineering candidate; remaining partial findings and human UAT are explicit in backlog.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_NO_SCIENTIFIC_CLAIM"
     },
     {
       "id": "F23-SOURCE",
@@ -17096,8 +17104,8 @@
         "results/frontend-f2-f3-v1/source-gate.json",
         "results/frontend-f2-f3-v1/verification/reference-key-v2.summary.json"
       ],
-      "next_action": "Full source workflows, negatives and regression",
-      "classification": "SOURCE_ACCEPTED_REFERENCE_RECOVERY_V2"
+      "next_action": "Accepted scoped engineering candidate; remaining partial findings and human UAT are explicit in backlog.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_NO_SCIENTIFIC_CLAIM"
     },
     {
       "id": "F23-BUILD",
@@ -17112,35 +17120,38 @@
       "evidence": [
         "results/frontend-f2-f3-v1/candidate.json"
       ],
-      "next_action": "Corrected clean rc14 with distinct reference recovery keys",
-      "classification": "CORRECTED_CLEAN_RC14_CANDIDATE"
+      "next_action": "Accepted scoped engineering candidate; remaining partial findings and human UAT are explicit in backlog.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_NO_SCIENTIFIC_CLAIM"
     },
     {
       "id": "F23-WINDOWS",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Packaged workflow acceptance",
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "dependencies": [
         "F23-BUILD"
       ],
-      "write_scope": [
-        "results/frontend-f2-f3-v1/windows-acceptance.json"
-      ],
+      "write_scope": [],
       "blocker": null,
-      "evidence": [],
-      "next_action": "Repeat actual frozen workflows plus reference isolation and external UIA",
-      "classification": "PRIOR_CANDIDATE_ALL_PLANNED_CHECKS_PASS_NEW_ISOLATION_CASE_REQUIRED"
+      "evidence": [
+        "results/frontend-f2-f3-v1/acceptance.json"
+      ],
+      "next_action": "Accepted scoped engineering candidate; remaining partial findings and human UAT are explicit in backlog.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_NO_SCIENTIFIC_CLAIM"
     },
     {
       "id": "F23-REVIEW",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "23 findings, evidence and honest acceptance classification",
-      "state": "READY",
+      "state": "DONE",
       "dependencies": [],
       "write_scope": [],
       "blocker": null,
-      "evidence": [],
-      "next_action": "23 findings, evidence and honest acceptance classification"
+      "evidence": [
+        "results/frontend-f2-f3-v1/acceptance.json"
+      ],
+      "next_action": "Accepted scoped engineering candidate; remaining partial findings and human UAT are explicit in backlog.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_NO_SCIENTIFIC_CLAIM"
     },
     {
       "id": "F23-JOBS",
@@ -17153,8 +17164,8 @@
       "evidence": [
         "results/frontend-f2-f3-v1/source-gate.json"
       ],
-      "next_action": "Source and Windows actual job workflows",
-      "classification": "SOURCE_ACCEPTED_WINDOWS_PENDING"
+      "next_action": "Accepted scoped engineering candidate; remaining partial findings and human UAT are explicit in backlog.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_NO_SCIENTIFIC_CLAIM"
     },
     {
       "id": "F23-CONTRACT",
@@ -17167,8 +17178,8 @@
       "evidence": [
         "results/frontend-f2-f3-v1/verification/protected-regression.summary.json"
       ],
-      "next_action": "Protected regression and unchanged scientific scope",
-      "classification": "PROTECTED_301_PASS_3_SKIP_NO_SCIENTIFIC_CHANGES"
+      "next_action": "Accepted scoped engineering candidate; remaining partial findings and human UAT are explicit in backlog.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_NO_SCIENTIFIC_CLAIM"
     },
     {
       "id": "F23-STORAGE",
@@ -17181,40 +17192,50 @@
       "evidence": [
         "results/frontend-f2-f3-v1/storage-preflight.json"
       ],
-      "next_action": "Storage admission and clean packaging inputs"
+      "next_action": "Accepted scoped engineering candidate; remaining partial findings and human UAT are explicit in backlog.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_NO_SCIENTIFIC_CLAIM"
     },
     {
       "id": "F23-VISUAL-REVIEW",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Visual before after and compact review",
-      "state": "READY",
+      "state": "DONE",
       "dependencies": [],
       "write_scope": [],
       "blocker": null,
-      "evidence": [],
-      "next_action": "Visual before after and compact review"
+      "evidence": [
+        "results/frontend-f2-f3-v1/acceptance.json"
+      ],
+      "next_action": "Accepted scoped engineering candidate; remaining partial findings and human UAT are explicit in backlog.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_NO_SCIENTIFIC_CLAIM"
     },
     {
       "id": "F23-BACKLOG",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Reconcile all23 findings with evidence and remaining dependencies",
-      "state": "READY",
+      "state": "DONE",
       "dependencies": [],
       "write_scope": [],
       "blocker": null,
-      "evidence": [],
-      "next_action": "Reconcile all23 findings with evidence and remaining dependencies"
+      "evidence": [
+        "results/frontend-f2-f3-v1/acceptance.json"
+      ],
+      "next_action": "Accepted scoped engineering candidate; remaining partial findings and human UAT are explicit in backlog.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_NO_SCIENTIFIC_CLAIM"
     },
     {
       "id": "F23-RECEIPTS",
       "objective": "DINO_FRONTEND_F2_F3_V1",
-      "state": "READY",
+      "state": "DONE",
       "description": "Verify receipt hashes, source/package equality and owned process termination",
       "dependencies": [],
       "write_scope": [],
       "blocker": null,
-      "evidence": [],
-      "next_action": "Run final receipt verifier"
+      "evidence": [
+        "results/frontend-f2-f3-v1/acceptance.json"
+      ],
+      "next_action": "Accepted scoped engineering candidate; remaining partial findings and human UAT are explicit in backlog.",
+      "classification": "SOURCE_AND_WINDOWS_ACCEPTED_NO_SCIENTIFIC_CLAIM"
     }
   ],
   "progress_log": [
@@ -21280,6 +21301,24 @@
       "task": "F23-BUILD",
       "kind": "task",
       "summary": "Corrected rc14 b00a565 clean build PASS; source trees match accepted e9a817c, all changed module bytes match bundle. Prior552a candidate and rc13 preserved. Repeating actual Windows acceptance with reference draft isolation checks."
+    },
+    {
+      "at": "2026-11-12T12:24:01+00:00",
+      "task": "F23-WINDOWS",
+      "kind": "task",
+      "summary": "WINDOWS_ACCEPTED corrected rc14b00a565:47base+78F2/F3,CP1 14,CP2 8,externalUIA recovery12 PASS. Distinct0D draft paths/names verified in actual frozen app; no owned processes or Python workers remain."
+    },
+    {
+      "at": "2026-11-12T12:24:01+00:00",
+      "task": "F23-BACKLOG",
+      "kind": "task",
+      "summary": "23findings reconciled:12CLOSED,10PARTIAL,1PENDING_UAT. Universal curve queue/planner, common variants/state catalogue and full accessibility remain explicit. Standalone before/after visual evidence includes original frozen captures and hashes."
+    },
+    {
+      "at": "2026-11-12T12:24:01+00:00",
+      "task": "F23-REVIEW",
+      "kind": "task",
+      "summary": "SELF_REVIEW receipt36/36PASS:source/build trees and module bytes, ZIP/EXEs,protected tests,P9,licensing,rc13/prior candidate preserved,only owned workers terminal. No push or scientific claims. Final sourcee9a817c and clean buildb00a565 accepted; human UAT/general debt remain."
     }
   ],
   "integration_parent_states": {
@@ -21362,7 +21401,7 @@
   },
   "current_objective": {
     "id": "DINO_FRONTEND_F2_F3_V1",
-    "state": "ACTIVE",
+    "state": "COMPLETE",
     "owner_approved": true,
     "change": "openspec/changes/frontend-f2-f3-v1",
     "spec": "openspec/changes/frontend-f2-f3-v1/specs/frontend-f2-f3-v1/spec.md",
@@ -21385,27 +21424,23 @@
       "F23-VISUAL-REVIEW",
       "F23-BACKLOG",
       "F23-RECEIPTS"
-    ]
+    ],
+    "classification": "FRONTEND_F2_F3_WINDOWS_ACCEPTED_GENERAL_DEBT_UAT_PENDING"
   },
   "gate_status": {
     "objective": "DINO_FRONTEND_F2_F3_V1",
-    "state": "OPEN",
-    "gate_tasks_total": 11,
-    "gate_tasks_done": 0,
-    "remaining": [
-      "F23-PLAN",
-      "F23-COMPONENTS",
-      "F23-CHARTS",
-      "F23-VARIANTS",
-      "F23-RESULTS",
-      "F23-RECOVERY",
-      "F23-PRODUCTIVITY",
-      "F23-SOURCE",
-      "F23-BUILD",
-      "F23-WINDOWS",
-      "F23-REVIEW"
+    "state": "PASS",
+    "classification": "FRONTEND_F2_F3_WINDOWS_ACCEPTED_GENERAL_DEBT_UAT_PENDING",
+    "evidence": [
+      "results/frontend-f2-f3-v1/acceptance.json"
     ],
-    "updated_at": "2026-11-12T10:37:03.871366+00:00"
+    "gate_tasks_total": 17,
+    "gate_tasks_done": 17,
+    "gate_task_states": {
+      "DONE": 17
+    },
+    "remaining": [],
+    "updated_at": "2026-11-12T12:24:02+00:00"
   },
   "frontend_commercial_integration_acceptance": {
     "source_commit": "8712f290ff7c1485cd0417101426aa4e80fc5205",
@@ -21423,10 +21458,21 @@
   },
   "frontend_f2_f3_acceptance": {
     "implementation": "IMPLEMENTED",
-    "source": "SOURCE_ACCEPTED_REFERENCE_RECOVERY_V2",
-    "windows": "PENDING_CORRECTED_CANDIDATE",
+    "source": "SOURCE_ACCEPTED",
+    "windows": "WINDOWS_ACCEPTED",
     "human_uat": "PENDING_UAT",
     "scientific_validation": "NOT_PERFORMED",
-    "general_regression": "GENERAL_REGRESSION_NOT_GREEN_INHERITED"
+    "predictive_capability": "NOT_CLAIMED",
+    "general_regression": "GENERAL_REGRESSION_NOT_GREEN_INHERITED",
+    "build_commit": "b00a5653ecd9000cd2530bf22c15603dc6acceaf",
+    "validated_implementation_commit": "e9a817c3ea447d8ca33dbb7f39153cca4410f51b",
+    "receipt": "results/frontend-f2-f3-v1/acceptance.json",
+    "findings_counts": {
+      "CLOSED": 12,
+      "PARTIAL": 10,
+      "PENDING_UAT": 1
+    },
+    "review": "SELF_REVIEW",
+    "push": false
   }
 }

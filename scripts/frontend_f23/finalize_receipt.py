@@ -41,7 +41,8 @@ def main():
     checks['scientific_sources_unchanged']=all(p.startswith('motorsim/desktop/') or p in {'motorsim/runtime.py','motorsim/dino_desktop.py'} for p in changed)
     checks['licensing_implementation_unchanged']=not git('diff',BASE,commit,'--','motorsim/licensing','motorsim/desktop/license_dialog.py','packaging/licenses').strip()
     protected=read(ROOT/'results/platform-integration-audit-v1/checks/contract/contract-integrity.json')['selected_modules']
-    checks['protected_tests_unchanged']=not git('diff',BASE,commit,'--',*[p.replace('\\','/') for p in protected]).strip()
+    protected_paths=[p.replace(chr(92),'/') for p in protected]
+    checks['protected_tests_unchanged']=not git('diff',BASE,commit,'--',*protected_paths).strip() and not git('diff',BASE,'--',*protected_paths).strip()
     checks['p9_frozen']=hashlib.sha256(git('show',commit+':'+P9)).hexdigest()==P9_SHA and hashlib.sha256((ROOT/P9).read_bytes().replace(b'\r\n',b'\n')).hexdigest()==P9_SHA
     checks['main_contains_consolidated_rc13']=subprocess.run(['git','merge-base','--is-ancestor',BASE,'main'],cwd=ROOT).returncode==0
     checks['prior_branches_preserved']=git('rev-parse','integration/dino-frontend-commercial-v1').decode().strip()==BASE and git('rev-parse','feat/dino-frontend-remediation-v1').decode().strip()=='9b7392e3073a443c424377bf01cf05563fdc8d34'

@@ -1,0 +1,211 @@
+{
+  "schema": "DINO_FRONTEND_F23_ACCEPTANCE_V1",
+  "status": "WINDOWS_ACCEPTED",
+  "source_commit": "b00a5653ecd9000cd2530bf22c15603dc6acceaf",
+  "validated_implementation_commit": "e9a817c3ea447d8ca33dbb7f39153cca4410f51b",
+  "branch": "feat/dino-frontend-f2-f3-v1",
+  "checks": {
+    "source-base-v2": true,
+    "source-f23-v2": true,
+    "windows-base-v2": true,
+    "windows-base_actual_frozen": true,
+    "windows-base_no_python_worker": true,
+    "windows-f23-v2": true,
+    "windows-f23_actual_frozen": true,
+    "windows-f23_no_python_worker": true,
+    "windows-cp1-v2": true,
+    "windows-cp2-v2": true,
+    "windows-recovery-uia-v2": true,
+    "reference_recovery_isolation_in_actual_candidate": true,
+    "source_gate": true,
+    "source_product_trees_match_build": true,
+    "clean_build": true,
+    "module_bytes_match": true,
+    "product_source_unchanged_since_build": true,
+    "zip_executables_unchanged": true,
+    "packaged_input_manifest_digest": true,
+    "no_issued_licenses_or_private_keys": true,
+    "rc13_zip_unchanged": true,
+    "superseded_rc14_preserved": true,
+    "scientific_sources_unchanged": true,
+    "licensing_implementation_unchanged": true,
+    "protected_tests_unchanged": true,
+    "p9_frozen": true,
+    "main_contains_consolidated_rc13": true,
+    "prior_branches_preserved": true,
+    "no_unresolved_merge": true,
+    "final-combined-source": true,
+    "protected-regression": true,
+    "reference-key-v2": true,
+    "all23_findings_explicit": true,
+    "visual_artifacts_verified": true,
+    "general_debt_preserved": true,
+    "owned_processes_terminal": true
+  },
+  "evidence": {
+    "source-base": {
+      "path": "source-base-v2\\acceptance.json",
+      "sha256": "4650ab168c1177a71abcbf0899d728c087a3ce6b4dd413e9fc6abf0140368022",
+      "checks": 47,
+      "captures": 25
+    },
+    "source-f23": {
+      "path": "source-f23-v2\\acceptance.json",
+      "sha256": "edb855791d1065cd90f50ac02d6f576b153745d4e10eb50513b4bcddb38f0b43",
+      "checks": 78,
+      "captures": 17
+    },
+    "windows-base": {
+      "path": "windows-base-v2\\acceptance.json",
+      "sha256": "d69d9176db1448734d9eca3798be081179bd3ac4ef6cdf3858c0cdde4c983e9c",
+      "checks": 47,
+      "captures": 25
+    },
+    "windows-f23": {
+      "path": "windows-f23-v2\\acceptance.json",
+      "sha256": "f02d507afee696f8d18d01c721f1c1f8d505b7e93ab5da85aa8dd45bfe31206c",
+      "checks": 78,
+      "captures": 17
+    },
+    "windows-cp1": {
+      "path": "windows-cp1-v2\\acceptance.json",
+      "sha256": "02a4601bf7362d633945107e0d28805a0ec8591188cf30d696c1a95599fe7ca9",
+      "checks": 14,
+      "captures": 0
+    },
+    "windows-cp2": {
+      "path": "windows-cp2-v2\\acceptance.json",
+      "sha256": "832a42201739184e879335e92ac0d0afa5c84eceae3eae42dd6e020aafd11d3b",
+      "checks": 8,
+      "captures": 0
+    },
+    "windows-recovery-uia": {
+      "path": "windows-recovery-uia-v2\\acceptance.json",
+      "sha256": "595fb77e56bcd8449302229cd1c1a3a86e5cd505491217792d8585d399384170",
+      "checks": 12,
+      "captures": 0
+    },
+    "final-combined-source": {
+      "path": "results\\frontend-f2-f3-v1\\verification\\final-combined-source.summary.json",
+      "sha256": "7c1b18a8ea1da4ff9e8f4a60ecd84934006847aa412dd85f8adb86512ab7b497",
+      "tail": [
+        "........................................................................ [ 60%]",
+        "................................................                         [100%]",
+        "120 passed in 396.35s (0:06:36)"
+      ]
+    },
+    "protected-regression": {
+      "path": "results\\frontend-f2-f3-v1\\verification\\protected-regression.summary.json",
+      "sha256": "fcd20dceff8aa5a3ba093a3d21db5494c182d9ee29b7ef800d1c1d9243d4037f",
+      "tail": [
+        "PINNED_SOURCE_ROOT E:\\dino\\worktrees\\dino-frontend-f2-f3-v1",
+        "HISTORICAL_ARTIFACT_CWD E:\\dino\\Dino-active",
+        "EXTERNAL_ARTIFACT_ROOT E:/Dino-artifacts",
+        "........................................................................ [ 23%]",
+        ".....................................................s.s................ [ 47%]",
+        "..................s..................................................... [ 71%]",
+        "........................................................................ [ 94%]",
+        "................                                                         [100%]",
+        "============================== warnings summary ===============================",
+        "tests/test_p4_r10a.py::P4R10ATests::test_rhoE_formula",
+        "tests/test_p4_r10a.py::P4R10ATests::test_rhoE_formula",
+        "  E:\\dino\\worktrees\\dino-frontend-f2-f3-v1\\tests\\test_p4_r10a.py:155: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)",
+        "    self.assertNotAlmostEqual(float(rhoE_correct), float(rhoE_wrong))",
+        "",
+        "tests/test_p4_r10a.py::P4R10ATests::test_rhoE_formula",
+        "  E:\\dino\\worktrees\\dino-frontend-f2-f3-v1\\tests\\test_p4_r10a.py:157: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)",
+        "    self.assertAlmostEqual(float(rhoE_correct), 285714, delta=1000)",
+        "",
+        "tests/test_p4_r10a.py::P4R10ATests::test_rhoE_formula",
+        "  E:\\dino\\worktrees\\dino-frontend-f2-f3-v1\\tests\\test_p4_r10a.py:158: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)",
+        "    self.assertAlmostEqual(float(rhoE_wrong), 142857, delta=1000)",
+        "",
+        "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+        "301 passed, 3 skipped, 4 warnings in 180.96s (0:03:00)"
+      ]
+    },
+    "reference-key-v2": {
+      "path": "results\\frontend-f2-f3-v1\\verification\\reference-key-v2.summary.json",
+      "sha256": "2eebb8823d1af91967888f16d39708849aef9514a71f444333616d93ee76edfb",
+      "tail": [
+        "..........................                                               [100%]",
+        "26 passed in 66.51s (0:01:06)"
+      ]
+    }
+  },
+  "candidate": {
+    "schema": "DINO_FRONTEND_F23_WINDOWS_CANDIDATE_V1",
+    "version": "0.1.0-rc14",
+    "source_commit": "b00a5653ecd9000cd2530bf22c15603dc6acceaf",
+    "validated_implementation_commit": "e9a817c3ea447d8ca33dbb7f39153cca4410f51b",
+    "product_trees_unchanged": true,
+    "folder": "E:\\Dino-artifacts\\frontend-f2-f3-v1\\Windows\\MotorSim-0.1.0-rc14-windows-x64-b00a5653\\MotorSim",
+    "zip": "E:\\Dino-artifacts\\frontend-f2-f3-v1\\Windows\\MotorSim-0.1.0-rc14-windows-x64-b00a5653.zip",
+    "zip_sha256": "fda74a5c9113948bcbee366a9a65886e3acf7a84b9115d1c3bc75b7f191f87c4",
+    "zip_bytes": 91670657,
+    "executables": {
+      "Dino2T.exe": "a7e78215a11b8628649811b3b5e8a7dbc3ac5a33d9feb31bcc1736b5394afe8f",
+      "MotorSim.exe": "23ca22d30627ed8309432b0bb80c7a3dcabf01cfa13c4f17bf0e11c98f9caf69",
+      "MotorSimWorker.exe": "5d43101d42a3f6bf98bb07afd72d322862f844233a8f79dd4c3b0e50853ebac6"
+    },
+    "module_bytes_match": [
+      "motorsim/desktop/acceptance_frontend_f23.py",
+      "motorsim/desktop/app.py",
+      "motorsim/desktop/comparison_plot.py",
+      "motorsim/desktop/component_adapters.py",
+      "motorsim/desktop/component_map.py",
+      "motorsim/desktop/engineering_jobs.py",
+      "motorsim/desktop/four_stroke_curve.py",
+      "motorsim/desktop/four_stroke_desktop.py",
+      "motorsim/desktop/four_stroke_results.py",
+      "motorsim/desktop/four_stroke_workspace.py",
+      "motorsim/desktop/job_coordinator.py",
+      "motorsim/desktop/native_four_stroke_curve.py",
+      "motorsim/desktop/native_four_stroke_workspace.py",
+      "motorsim/desktop/performance_curves.py",
+      "motorsim/desktop/plot.py",
+      "motorsim/desktop/product.py",
+      "motorsim/desktop/recovery_picker.py",
+      "motorsim/desktop/result_binding.py",
+      "motorsim/desktop/results_page.py",
+      "motorsim/desktop/theme.py",
+      "motorsim/desktop/variant_explorer.py",
+      "motorsim/desktop/workspace_experience.py",
+      "motorsim/dino_desktop.py",
+      "motorsim/runtime.py"
+    ],
+    "build_metadata_sha256": "8b6352d55ec5c1507f30409267cdbc24a249cdabc9a279eac7482ab2b5d00fb6",
+    "state": "WINDOWS_ACCEPTED",
+    "supersedes": "552a56732cb0116fbb988b8eefecb9ae19b2a22c",
+    "superseded_reason": "Reference dataclass recovery identity and sanitized filename isolation V2"
+  },
+  "states": {
+    "IMPLEMENTED": true,
+    "SOURCE_ACCEPTED": true,
+    "WINDOWS_ACCEPTED": true,
+    "PENDING_UAT": true,
+    "SCIENTIFIC_VALIDATION_NOT_PERFORMED": true,
+    "GENERAL_REGRESSION_NOT_GREEN": true
+  },
+  "review": "SELF_REVIEW",
+  "owned_processes_remaining": [],
+  "findings_counts": {
+    "CLOSED": 12,
+    "PARTIAL": 10,
+    "PENDING_UAT": 1
+  },
+  "main_consolidation": {
+    "timestamp": "2026-11-12T10:37:03.871366+00:00",
+    "procedure": "git merge --ff-only integration/dino-frontend-commercial-v1",
+    "main_before": "f97469ba6705555e73f6624482564d193e43a101",
+    "main_after": "97e40bd8e272943cb6818b7ba9f9e8bac60f837c",
+    "main_clean_before": true,
+    "ancestor_verified": true,
+    "rc13_zip_sha256": "5c5b24e4960be4b27e4cce6a62142fecba8e246bee533242763aff9fb30ceac9",
+    "rc13_rebuilt": false,
+    "push": false,
+    "cp3_cp4_untouched": true
+  },
+  "scope": "Frontend/application engineering acceptance; native/reference remain separate. Real bounded runs are integration evidence, synthetic A/B fixtures remain synthetic. No full general-suite, human accessibility, CP3/CP4 or scientific validation claim.",
+  "push_performed": false
+}
