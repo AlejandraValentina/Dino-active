@@ -17101,26 +17101,29 @@
       "id": "F23-BUILD",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Clean grouped Windows candidate and manifest",
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "dependencies": [],
-      "write_scope": [
+      "write_scope": [],
+      "blocker": null,
+      "evidence": [
         "results/frontend-f2-f3-v1/candidate.json",
         "results/frontend-f2-f3-v1/build.json"
       ],
-      "blocker": null,
-      "evidence": [],
-      "next_action": "Clean pinned Windows rc14 build; validate exact product trees against d4fc244"
+      "next_action": "Clean pinned Windows rc14 build; validate exact product trees against d4fc244",
+      "classification": "CLEAN_RC14_CANDIDATE"
     },
     {
       "id": "F23-WINDOWS",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Packaged workflow acceptance",
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "dependencies": [],
-      "write_scope": [],
+      "write_scope": [
+        "results/frontend-f2-f3-v1/windows-acceptance.json"
+      ],
       "blocker": null,
       "evidence": [],
-      "next_action": "Packaged workflow acceptance"
+      "next_action": "Actual frozen base/F2/F3, CP1/CP2 and external UIA recovery"
     },
     {
       "id": "F23-REVIEW",
@@ -21236,6 +21239,12 @@
       "task": "F23-SOURCE",
       "kind": "task",
       "summary": "SOURCE_ACCEPTED clean d4fc244:47 base+76 F2/F3 real Windows Qt checks, exact dimensions, real queued executions/cancellation, expanded samples, recovery SaveAs and reopen. Build follows with identical motorsim/packaging tree IDs; human/scientific acceptance remain pending."
+    },
+    {
+      "at": "2026-11-12T11:46:13+00:00",
+      "task": "F23-BUILD",
+      "kind": "task",
+      "summary": "Clean rc14 built from552a567, motorsim/packaging trees identical to source-accepted d4fc244. All changed packaged module bytes match checkout; manifest and EXE/ZIP hashes recorded. Actual frozen Windows acceptance now in progress."
     }
   ],
   "integration_parent_states": {
