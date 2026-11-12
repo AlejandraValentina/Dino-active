@@ -30,7 +30,7 @@ def stylesheet() -> str:
         QPushButton#modeDesign:checked,QPushButton#modeSimulate:checked,QPushButton#modeAnalysis:checked {{background:#145579;border:2px solid #43c5f5;color:#ffffff;}}
         QLineEdit,QDoubleSpinBox,QComboBox,QTableWidget,QPlainTextEdit,QListWidget {{background:{c['panel_deep']};border:1px solid #30435a;border-radius:4px;padding:5px;selection-background-color:#17638c;}}
         QTextBrowser,QTextEdit {{background:{c['panel_deep']};color:{c['text']};border:1px solid #30435a;padding:8px;selection-background-color:#17638c;}}
-        QPushButton:focus,QComboBox:focus,QLineEdit:focus {{border:2px solid #43c5f5;}}
+        QPushButton:focus,QToolButton:focus,QComboBox:focus,QLineEdit:focus,QSpinBox:focus,QDoubleSpinBox:focus,QTableWidget:focus {{border:2px solid #43c5f5;}}
         QHeaderView::section {{background:#26394d;color:#f0f6fc;font-weight:600;padding:7px 5px;border-right:1px solid #3b5067;}}
         QTableWidget {{alternate-background-color:#182536;color:{c['text']};gridline-color:#33465b;}}
         QTableView::item {{color:{c['text']};}}
@@ -48,6 +48,8 @@ def stylesheet() -> str:
         QWidget#contextBar {{background:{c['panel']};border-bottom:1px solid #31455b;}}
         QLabel#modeBadge {{background:#4b3514;color:#ffd58a;border:1px solid #76551d;border-radius:8px;padding:4px 9px;font-weight:600;}}
         QGroupBox#inspector {{border:0;border-left:1px solid #2b3b4d;border-radius:0;margin:0;padding:12px;}}
+        QToolButton {{background:#20344a;color:#e5edf6;border:1px solid #526b84;border-radius:4px;padding:4px;}}
+        QToolButton:checked {{background:#145579;color:#ffffff;border:2px solid #43c5f5;}}
         QStatusBar {{background:#0b1119;color:#9db2c7;}}
         QComboBox,QSpinBox,QDoubleSpinBox {{color:#eff6ff;min-height:24px;}}
         QProgressBar {{background:{c['panel_deep']};border:1px solid #354a61;border-radius:4px;text-align:center;color:#eff6ff;}}

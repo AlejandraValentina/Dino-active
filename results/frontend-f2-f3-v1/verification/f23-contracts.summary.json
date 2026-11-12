@@ -1,0 +1,45 @@
+{
+  "name": "f23-contracts",
+  "command": [
+    "python",
+    "-u",
+    "-m",
+    "pytest",
+    "tests/test_frontend_f2_f3.py",
+    "tests/test_frontend_integrity_remediation.py",
+    "tests/test_frontend_commercial_integration.py",
+    "tests/test_desktop_four_stroke_curve_execution.py",
+    "-q",
+    "--tb=short",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "E:/Dino-artifacts/frontend-f2-f3-v1/pytest-contracts"
+  ],
+  "started_at": "2026-11-12T10:45:04+00:00",
+  "finished_at": "2026-11-12T10:47:00+00:00",
+  "duration_s": 115.875,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "results\\frontend-f2-f3-v1\\verification\\f23-contracts.log",
+  "log_lines": 12,
+  "log_bytes": 1111,
+  "error_lines": [
+    "6: E   AssertionError: assert 'sintética' in '2T integrado'",
+    "11: FAILED tests/test_frontend_f2_f3.py::test_component_navigation_all_families_and_reverse_selection"
+  ],
+  "tail": [
+    ".....F.........................                                          [100%]",
+    "================================== FAILURES ===================================",
+    "________ test_component_navigation_all_families_and_reverse_selection _________",
+    "tests\\test_frontend_f2_f3.py:83: in test_component_navigation_all_families_and_reverse_selection",
+    "    assert 'sintética' in nav.family.text()",
+    "E   AssertionError: assert 'sintética' in '2T integrado'",
+    "E    +  where '2T integrado' = <built-in method text of PySide6.QtWidgets.QLabel object at 0x0000024FD1918340>()",
+    "E    +    where <built-in method text of PySide6.QtWidgets.QLabel object at 0x0000024FD1918340> = <PySide6.QtWidgets.QLabel(0x24fd33bcac0) at 0x0000024FD1918340>.text",
+    "E    +      where <PySide6.QtWidgets.QLabel(0x24fd33bcac0) at 0x0000024FD1918340> = <motorsim.desktop.component_map.ComponentNavigator object at 0x0000024FCFF0A6D0>.family",
+    "=========================== short test summary info ===========================",
+    "FAILED tests/test_frontend_f2_f3.py::test_component_navigation_all_families_and_reverse_selection",
+    "1 failed, 30 passed in 111.28s (0:01:51)"
+  ]
+}

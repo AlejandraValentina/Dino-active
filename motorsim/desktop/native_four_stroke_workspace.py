@@ -50,6 +50,8 @@ class NativeFourStrokeWorkspace(QWidget):
         for label, callback in (
             ("Motor base", lambda: self.context.select_variant(None)),
             ("Duplicar variante…", self.duplicate_variant),
+            ("Renombrar variante…", self.rename_variant),
+            ("Diferencias con motor base…", self.show_variant_diff),
             ("Eliminar variante", self.delete_variant),
         ):
             button = QPushButton(label)
@@ -151,3 +153,15 @@ class NativeFourStrokeWorkspace(QWidget):
             self.context.delete_variant(name)
         except Exception as exc:
             QMessageBox.warning(self, "No se pudo eliminar la variante", str(exc))
+
+    def rename_variant(self):
+        old=self.context.selected_variant
+        if old is None:return
+        name,accepted=QInputDialog.getText(self,'Renombrar variante 4T','Nombre:',text=old)
+        if accepted:
+            try:self.context.rename_variant(old,name)
+            except (ValueError,KeyError) as exc:QMessageBox.warning(self,'No se pudo renombrar',str(exc))
+
+    def show_variant_diff(self):
+        from .variant_explorer import show_variant_diff
+        show_variant_diff(self,self.context.project['base_engine'],self.context.engine(),self.context.selected_variant or 'Motor base')

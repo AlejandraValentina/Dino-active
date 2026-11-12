@@ -3,7 +3,7 @@ import json
 import os
 import tempfile
 from pathlib import Path
-from PySide6.QtCore import QSettings,Qt,QThreadPool,QTimer,QElapsedTimer
+from PySide6.QtCore import QSettings,Qt,QThreadPool,QTimer,QElapsedTimer,Signal
 from PySide6.QtGui import QAction,QKeySequence,QGuiApplication
 from PySide6.QtWidgets import (QMainWindow,QWidget,QHBoxLayout,QVBoxLayout,QListWidget,QListWidgetItem,
     QStackedWidget,QLabel,QToolBar,QFileDialog,QMessageBox,QApplication,QSplitter,QScrollArea,
@@ -36,6 +36,7 @@ from .presentation import state_label
 PAGES=(('Motor',EnginePage),('Escape',ExhaustPage),('Proyecto',ProjectPage),('Simulación',ExecutionPage),('Resultados',ResultsPage))
 
 class DinoDesktopWindow(QMainWindow):
+    engine_family_changed=Signal(str)
     def __init__(self,project=None):
         super().__init__();self.settings=settings();self.context=DesktopContext(project or new_design_project())
         self.setWindowTitle('Dino Desktop · 2T')
@@ -307,6 +308,7 @@ class DinoDesktopWindow(QMainWindow):
         elif family=="4T_REFERENCE":self._four_stroke_state_changed()
         else:self._native_four_stroke_state_changed()
         self._refresh_history_actions()
+        self.engine_family_changed.emit(family)
     def show_four_stroke_mode(self,*_):
         self._activate_engine_family("4T_REFERENCE")
         self.statusBar().showMessage("Modo 4T 0D de referencia · SYNTHETIC_REFERENCE_0D · NOT_VALIDATED",6000)
@@ -400,6 +402,8 @@ class DinoDesktopWindow(QMainWindow):
             return True
         except Exception as exc:QMessageBox.warning(self,'No se pudo guardar el proyecto 4T',f'{type(exc).__name__}: {exc}');return False
     def start_four_stroke_run(self):
+        if getattr(self.four_stroke_context,'queued_execution_active',False):
+            self.statusBar().showMessage('La cola de ingeniería está activa; pausá o cancelá sus puntos antes de iniciar una referencia.',7000);return
         if not self.four_stroke_workspace.apply_all():
             self.four_stroke_tabs.setCurrentWidget(self.four_stroke_workspace)
             self.four_stroke_status.setText('Corregí los campos 4T antes de ejecutar.')
@@ -727,21 +731,28 @@ class DinoDesktopWindow(QMainWindow):
         geometry=self.settings.value('window_geometry')
         if geometry:self.restoreGeometry(geometry)
     def _offer_recoveries(self):
-        self._offer_recovery("2T", self._restore_2t_recovery)
-        self._offer_recovery("4T0D", self._restore_4t_recovery)
-        self._offer_recovery("4Tnative", self._restore_native_recovery)
-    def _offer_recovery(self, family, restore):
+        from .recovery_picker import RecoveryPicker
+        entries=[entry for family in ('2T','4T0D','4Tnative') for entry in RecoveryController.pending(family)]
+        if not entries:return
+        picker=RecoveryPicker(entries,self)
+        if picker.exec() and picker.selected_entry:self._restore_recovery_entry(picker.selected_entry)
+
+    def _restore_recovery_entry(self,entry):
+        restore={'2T':self._restore_2t_recovery,'4T0D':self._restore_4t_recovery,'4Tnative':self._restore_native_recovery}.get(entry.get('family'))
+        if restore is None:return
+        if not self._confirm_discard():return
+        try:restore(entry)
+        except Exception as exc:QMessageBox.warning(self,'No se pudo recuperar',f'{type(exc).__name__}: {exc}')
+
+    def _offer_recovery(self,family,restore):
+        from .recovery_picker import RecoveryPicker
         entries=RecoveryController.pending(family)
         if not entries:return
-        entry=entries[0]
-        answer=QMessageBox.question(self,"Borrador de recuperación",
-            f"Se encontró un borrador de {family} sin guardar. ¿Abrirlo como copia recuperada?",
-            QMessageBox.StandardButton.Yes|QMessageBox.StandardButton.No,
-            QMessageBox.StandardButton.Yes)
-        if answer==QMessageBox.StandardButton.Yes:
-            try:restore(entry)
-            except Exception as exc:QMessageBox.warning(self,"No se pudo recuperar",f"{type(exc).__name__}: {exc}")
-        else:RecoveryController.discard(family,entry.get("project_id"))
+        picker=RecoveryPicker(entries,self)
+        if picker.exec() and picker.selected_entry:
+            try:restore(picker.selected_entry)
+            except Exception as exc:QMessageBox.warning(self,'No se pudo recuperar',str(exc))
+
     def _restore_2t_recovery(self, entry):
         # Recovery is a copy: do not bind the original path, so Save cannot
         # silently overwrite the file the user was working on.
@@ -1041,6 +1052,9 @@ class DinoDesktopWindow(QMainWindow):
                 try:tmp.unlink(missing_ok=True)
                 except OSError:pass
     def closeEvent(self,event):
+        if hasattr(self,'experience') and self.experience.jobs.running:
+            if not self.experience.jobs.manager.shutdown():
+                self.statusBar().showMessage('La cola sigue cerrando el ciclo actual; cierre cancelado.');event.ignore();return
         if hasattr(self,'native_four_stroke') and not self._confirm_discard_native():event.ignore();return
         if not self._confirm_discard():event.ignore();return
         if hasattr(self,"four_stroke_context") and not self._confirm_discard_four_stroke():event.ignore();return

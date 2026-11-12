@@ -1,0 +1,44 @@
+{
+  "name": "integrated-job-contracts",
+  "command": [
+    "python",
+    "-u",
+    "-m",
+    "pytest",
+    "tests/test_frontend_engineering_jobs.py",
+    "tests/test_frontend_f2_f3.py",
+    "-q",
+    "--tb=short",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "E:/Dino-artifacts/frontend-f2-f3-v1/pytest-integrated-jobs"
+  ],
+  "started_at": "2026-11-12T11:01:56+00:00",
+  "finished_at": "2026-11-12T11:02:15+00:00",
+  "duration_s": 19.328,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "results\\frontend-f2-f3-v1\\verification\\integrated-job-contracts.log",
+  "log_lines": 13,
+  "log_bytes": 870,
+  "error_lines": [
+    "6: E   AssertionError: assert (not False and 'CANCELLED' == 'COMPLETED'",
+    "12: FAILED tests/test_frontend_f2_f3.py::test_application_queue_freezes_input_and_excludes_interactive_native"
+  ],
+  "tail": [
+    "...............F                                                         [100%]",
+    "================================== FAILURES ===================================",
+    "____ test_application_queue_freezes_input_and_excludes_interactive_native _____",
+    "tests\\test_frontend_f2_f3.py:132: in test_application_queue_freezes_input_and_excludes_interactive_native",
+    "    assert not manager.running and manager.items[-1]['status']=='COMPLETED'",
+    "E   AssertionError: assert (not False and 'CANCELLED' == 'COMPLETED'",
+    "E    +  where False = <motorsim.desktop.engineering_jobs.EngineeringJobs(0x223fdb53510) at 0x00000223FBB39E00>.running",
+    "E     ",
+    "E     - COMPLETED",
+    "E     + CANCELLED)",
+    "=========================== short test summary info ===========================",
+    "FAILED tests/test_frontend_f2_f3.py::test_application_queue_freezes_input_and_excludes_interactive_native",
+    "1 failed, 15 passed in 18.59s"
+  ]
+}

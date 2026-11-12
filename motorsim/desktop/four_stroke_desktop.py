@@ -20,7 +20,7 @@ from PySide6.QtCore import QObject, QRunnable, QThreadPool, Signal, Qt, QTimer
 from PySide6.QtWidgets import (QApplication, QComboBox, QDoubleSpinBox, QFileDialog,
     QFormLayout, QHBoxLayout, QLabel, QMainWindow, QMessageBox, QPushButton,
     QSpinBox, QTabWidget, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget,
-    QListWidget, QListWidgetItem, QHeaderView, QLineEdit, QSplitter, QAbstractItemView)
+    QListWidget, QListWidgetItem, QHeaderView, QLineEdit, QSplitter, QAbstractItemView, QGridLayout)
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtCore import QUrl
 
@@ -316,6 +316,8 @@ class FourStrokeSimulation(QWidget):
         self.submitted_identity=QLabel();self.submitted_identity.setWordWrap(True);root.insertWidget(1,self.submitted_identity)
 
     def execute(self):
+        if getattr(self.context,'queued_execution_active',False):
+            self.progress.setText('Cola de ingeniería activa; pausá o cancelá sus puntos antes de ejecutar.');return
         if self.task is not None:return
         if not self.context.prepare_operation('Ejecutar punto 4T'):return
         config=json.loads(json.dumps(self.context.engine()));config["operating_point"]["rpm"]=float(self.rpm.value())
@@ -432,8 +434,12 @@ class FourStrokeResults(QWidget):
         controls=QHBoxLayout();self.compare_a=QComboBox();self.compare_b=QComboBox();self.compare_button=QPushButton("Comparar corridas");self.compare_button.clicked.connect(self.compare);controls.addWidget(QLabel("A"));controls.addWidget(self.compare_a,1);controls.addWidget(QLabel("B"));controls.addWidget(self.compare_b,1);controls.addWidget(self.compare_button);compare_layout.addLayout(controls)
         self.compare_status=QLabel("La comparación requiere dos diseños distintos, corridas periódicas y contexto de cálculo idéntico.");self.compare_status.setWordWrap(True);compare_layout.addWidget(self.compare_status)
         self.compare_guide_button=QPushButton("Guía de comparación");self.compare_guide_button.clicked.connect(self.show_comparison_guide);compare_layout.addWidget(self.compare_guide_button)
-        self.compare_table=QTableWidget(0,5);self.compare_table.setHorizontalHeaderLabels(["Métrica","A","B","Δ absoluto · B − A","Δ relativo a A"]);self.compare_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);compare_layout.addWidget(self.compare_table,1)
-        exports=QHBoxLayout();self.compare_json_button=QPushButton("Exportar ficha A/B JSON");self.compare_json_button.clicked.connect(self.export_comparison_json);self.compare_json_button.setEnabled(False);exports.addWidget(self.compare_json_button);self.compare_csv_button=QPushButton("Exportar diferencias CSV");self.compare_csv_button.clicked.connect(self.export_comparison_csv);self.compare_csv_button.setEnabled(False);exports.addWidget(self.compare_csv_button);self.compare_report_button=QPushButton("Informe técnico A/B HTML");self.compare_report_button.clicked.connect(self.export_comparison_report);self.compare_report_button.setEnabled(False);exports.addWidget(self.compare_report_button);self.compare_report_pdf_button=QPushButton("Informe técnico A/B PDF");self.compare_report_pdf_button.clicked.connect(self.export_comparison_report_pdf);self.compare_report_pdf_button.setEnabled(False);exports.addWidget(self.compare_report_pdf_button);compare_layout.addLayout(exports);detail.addTab(self.compare_tab,"Comparar")
+        self.compare_table=QTableWidget(0,5);self.compare_table.setHorizontalHeaderLabels(["Métrica","A","B","Δ absoluto · B − A","Δ relativo a A"]);self.compare_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch);self.compare_views=QTabWidget();self.compare_views.addTab(self.compare_table,'Métricas exactas')
+        self.compare_pressure=CurvePlot();self.compare_pressure.setObjectName('eligibleABPressureOverlay');self.compare_views.addTab(self.compare_pressure,'Presión A/B');compare_layout.addWidget(self.compare_views,1)
+        exports=QGridLayout()
+        for i,(attribute,label,callback) in enumerate((('compare_json_button','Ficha A/B JSON',self.export_comparison_json),('compare_csv_button','Diferencias CSV',self.export_comparison_csv),('compare_report_button','Informe A/B HTML',self.export_comparison_report),('compare_report_pdf_button','Informe A/B PDF',self.export_comparison_report_pdf))):
+            button=QPushButton(label);setattr(self,attribute,button);button.clicked.connect(callback);button.setEnabled(False);exports.addWidget(button,i//2,i%2)
+        compare_layout.addLayout(exports);detail.addTab(self.compare_tab,'Comparar')
         self.compare_a.currentIndexChanged.connect(self._invalidate_comparison)
         self.compare_b.currentIndexChanged.connect(self._invalidate_comparison)
         self.context.changed.connect(self.refresh);self.refresh()
@@ -539,6 +545,9 @@ class FourStrokeResults(QWidget):
         except (ComparisonIneligible, OSError, ValueError, KeyError, TypeError) as exc:
             self.compare_status.setText("No comparable: "+str(exc));return
         self.comparison=comparison
+        from .comparison_plot import comparison_pressure_series
+        try:self.compare_pressure.set_series(comparison_pressure_series((ra,rb),comparison),y_scale_mode='data_margin')
+        except (OSError,ValueError,KeyError,TypeError):self.compare_pressure.set_series([])
         self.compare_table.setRowCount(len(comparison["metrics"]))
         for row,metric in enumerate(comparison["metrics"]):
             relative="No definido" if metric["relative_percent_to_abs_a"] is None else format_number(metric["relative_percent_to_abs_a"])+"%"
@@ -555,6 +564,7 @@ class FourStrokeResults(QWidget):
     def _invalidate_comparison(self,*_):
         self.comparison=None
         if not hasattr(self,"compare_table"):return
+        self.compare_pressure.set_series([])
         self.compare_table.setRowCount(0)
         self.compare_json_button.setEnabled(False);self.compare_csv_button.setEnabled(False);self.compare_report_button.setEnabled(False);self.compare_report_pdf_button.setEnabled(False)
         self.compare_button.setEnabled(False)

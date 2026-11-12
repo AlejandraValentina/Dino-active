@@ -11,3 +11,10 @@ Application commands own external binding, recovery-copy selection and variants.
 Design references: Qt keyboard focus and accessibility (https://doc.qt.io/qt-6/focus.html and https://doc.qt.io/qt-6/accessible.html); ParaView data selection with linked chart elements (https://docs.paraview.org/en/v5.9.1/UsersGuide/selectingData.html). Adopt explicit selection plus tabular values, native focus and keyboard alternatives. This is a design inference, not a claim of equivalent engineering capability.
 
 Delivery: linked components; charts; variants/results/recovery; compact navigation; combined application acceptance; one grouped Windows candidate;23finding review. Each increment carries tests and durable queue state.
+
+
+## Durable engineering points
+
+EngineeringJobs serializes2T/native4T point jobs over public run_exploratory/run_api. Canonical configuration bytes and SHA256, family, project, variant and budgets are frozen before execution. Output remains in public artifact formats; project references attach only to matching project/base identity. No automatic run restart. RUNNING recovered from disk becomes durable INTERRUPTED; the user can inspect the preserved artifacts. Native checkpoints are not claimed.
+
+Queue state writes use atomic replacement. Storage admission sums256MiB per pending point plus the shared reserve; numerical thresholds stay unchanged. Interactive executors are excluded while serial jobs run; queued callbacks are bound tojob IDs. Close requests cancellation and waits for a complete-cycle boundary; it refuses closure when a worker remains active. Existing0D curve queue retains its process runner and contract and is reached from the shared job window.

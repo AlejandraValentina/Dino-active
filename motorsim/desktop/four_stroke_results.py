@@ -11,62 +11,20 @@ from ..simulation import FOUR_LAYOUT
 from .four_stroke_workspace import REFERENCE_BANNER
 
 
-class FourStrokeCurve(QWidget):
-    def __init__(self, title, xlabel, ylabel, parent=None):
+from .plot import CurvePlot
+
+
+class FourStrokeCurve(CurvePlot):
+    """Presentation adapter for the existing 4T tuple contract."""
+    def __init__(self,title,xlabel,ylabel,parent=None):
         super().__init__(parent)
-        self.title = title
-        self.xlabel = xlabel
-        self.ylabel = ylabel
-        self.points = []
-        self.setMinimumHeight(240)
-        self.setObjectName("fourStrokeCurve")
+        self.title=title;self.xlabel=xlabel;self.ylabel=ylabel;self.points=[]
+        self.connect_points=True;self.setObjectName('fourStrokeCurve')
 
-    def set_points(self, points):
-        self.points = list(points)
-        self.update()
-
-    def paintEvent(self, event):
-        painter = QPainter(self)
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
-        painter.fillRect(self.rect(), QColor("#101a28"))
-        painter.setPen(QColor("#d8edff"))
-        painter.drawText(12, 20, self.title)
-        area = self.rect().adjusted(62, 32, -18, -48)
-        if not self.points:
-            painter.setPen(QColor("#8ba3bd"))
-            painter.drawText(area, Qt.AlignmentFlag.AlignCenter, "Sin muestras 4T")
-            return
-        xs = [point[0] for point in self.points]
-        ys = [point[1] for point in self.points]
-        xmin, xmax = min(xs), max(xs)
-        ymin, ymax = min(ys), max(ys)
-        if xmax == xmin:
-            xmax = xmin + 1.0
-        if ymax == ymin:
-            ymax = ymin + 1.0
-        painter.setPen(QPen(QColor("#45607a"), 1))
-        painter.drawLine(area.left(), area.bottom(), area.right(), area.bottom())
-        painter.drawLine(area.left(), area.top(), area.left(), area.bottom())
-        painter.setPen(QColor("#8ba3bd"))
-        painter.drawText(area.left(), self.rect().bottom() - 18, self.xlabel)
-        painter.drawText(8, area.top() + 12, self.ylabel)
-        painter.drawText(area.left() - 8, area.bottom() + 18, f"{xmin:.4g}")
-        painter.drawText(area.right() - 42, area.bottom() + 18, f"{xmax:.4g}")
-        painter.drawText(8, area.top() + 30, f"{ymax:.4g}")
-        painter.drawText(8, area.bottom() - 2, f"{ymin:.4g}")
-        def screen(point):
-            x = area.left() + (point[0] - xmin) / (xmax - xmin) * area.width()
-            y = area.bottom() - (point[1] - ymin) / (ymax - ymin) * area.height()
-            return x, y
-        painter.setPen(QPen(QColor("#6fd3ff"), 2))
-        previous = None
-        for point in self.points:
-            current = screen(point)
-            if not getattr(self, 'connect_points', True):
-                painter.drawEllipse(QPointF(current[0], current[1]), 3.5, 3.5)
-            elif previous is not None:
-                painter.drawLine(QLineF(previous[0], previous[1], current[0], current[1]))
-            previous = current
+    def set_points(self,points):
+        self.points=list(points)
+        self.set_series([dict(name=self.title,x_key='x',x_label=self.xlabel,unit=self.ylabel,
+            connect=self.connect_points,points=[dict(x=x,value=y) for x,y in self.points])],y_scale_mode='data_margin')
 
 
 class FourStrokeResultsPage(QWidget):

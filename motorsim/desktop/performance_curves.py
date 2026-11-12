@@ -246,9 +246,12 @@ class PowerCurvePanel(QGroupBox):
             page=QWidget();box=QVBoxLayout(page);box.setContentsMargins(0,0,0,0)
             for widget in widgets:layout.removeWidget(widget);box.addWidget(widget)
             self.views.addTab(page,label)
+        from .plot import CurvePlot
+        self.sample_plot=CurvePlot();self.sample_plot.setObjectName('powerExactSamples')
+        self.views.addTab(self.sample_plot,'Explorar muestras')
         layout.addWidget(self.views,1)
         self.views.tabBar().hide()
-        self.view_selector=QComboBox();self.view_selector.addItems(['Gráfico','Puntos y diferencias'])
+        self.view_selector=QComboBox();self.view_selector.addItems(['Gráfico','Puntos y diferencias','Explorar muestras'])
         self.view_selector.setMinimumWidth(0);self.view_selector.setMaximumWidth(180)
         self.view_selector.currentIndexChanged.connect(self.views.setCurrentIndex)
         self.view_selector.currentIndexChanged.connect(lambda *_:self._fit_view())
@@ -287,6 +290,7 @@ class PowerCurvePanel(QGroupBox):
             self.curves = []
             self.rows = []
             self.plot.set_series([], power_unit=self.unit_selector.currentData())
+            self.sample_plot.set_series([])
             self.points.setRowCount(0)
             self.comparison.setRowCount(0)
             self.peaks.setText("Potencia máxima: —    Torque máximo: —")
@@ -296,6 +300,11 @@ class PowerCurvePanel(QGroupBox):
             include_exploratory=self.exploratory_toggle.isChecked())
         self.plot.set_series(self.curves, power_unit=unit,
             show_power=self.power_toggle.isChecked(), show_torque=self.torque_toggle.isChecked())
+        # One physical unit per explorer axis. Retain absent values and metadata.
+        metric='power' if self.power_toggle.isChecked() else 'torque'
+        self.sample_plot.set_series([dict(name=curve['name'],unit=unit if metric=='power' else 'N·m',
+            connect=False,points=[dict(point,value=point.get(metric)) for point in curve['points']]) for curve in self.curves],y_scale_mode='data_margin')
+        self.sample_plot.setAccessibleDescription('Potencia' if metric=='power' else 'Torque')
         self.rows = [point for curve in self.curves for point in curve["points"]]
         self.provenance.setText(
             f"{state_label(self.dataset.get('provenance', 'sin provenance'))} · "

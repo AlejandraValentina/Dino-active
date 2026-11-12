@@ -341,6 +341,8 @@ class NativeFourStrokeCurvePage(QWidget):
         return self.task is not None
 
     def start_curve(self):
+        if getattr(self.context,'queued_execution_active',False):
+            self.status.setText('Cola de ingeniería activa; pausá o cancelá sus puntos antes de ejecutar.');return
         if not self.context.prepare_operation('Calcular curva 4T'):return
         if self.running or self.native_simulation.task is not None:
             self.status.setText("Ya hay una ejecución 4T activa.")
@@ -449,11 +451,12 @@ class NativeFourStrokeCurvePage(QWidget):
             "-" if row["brake_torque_Nm"] is None else f"{row['brake_torque_Nm']:.6g}",
         )):
             self.table.setItem(index,column,QTableWidgetItem(str(value)))
-        points=[row for row in self._rows if row["state"]=="PERIODIC_CONVERGED"]
-        self.power_plot.set_points([(r["rpm"],r["brake_power_kW"]) for r in points
-                                    if r["brake_power_kW"] is not None])
-        self.torque_plot.set_points([(r["rpm"],r["brake_torque_Nm"]) for r in points
-                                     if r["brake_torque_Nm"] is not None])
+        points=self._rows
+        # Retain every real attempted RPM, including unavailable metrics and reason.
+        for plot,metric in ((self.power_plot,'brake_power_kW'),(self.torque_plot,'brake_torque_Nm')):
+            plot.points=[(r['rpm'],r[metric]) for r in points if r['state']=='PERIODIC_CONVERGED' and r[metric] is not None]
+            plot.set_series([dict(name=plot.title,x_label='RPM',unit=plot.ylabel,connect=False,
+                points=[dict(rpm=r['rpm'],value=r[metric] if r['state']=='PERIODIC_CONVERGED' else None,status=r['state'],reason=r.get('reason','')) for r in points])],y_scale_mode='data_margin')
 
     def _completed(self,token,result):
         if token!=self._token:return

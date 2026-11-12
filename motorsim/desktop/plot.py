@@ -3,7 +3,8 @@ from __future__ import annotations
 import math
 from PySide6.QtCore import QPointF, Signal, Qt
 from PySide6.QtGui import QColor, QPainter, QPen, QFont, QFontMetrics
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import (QWidget, QHBoxLayout, QToolButton, QLabel, QFileDialog,
+    QDialog, QVBoxLayout, QTableWidget, QTableWidgetItem, QHeaderView, QMessageBox)
 from .presentation import format_number
 
 
@@ -11,16 +12,23 @@ class CurvePlot(QWidget):
     pointSelected = Signal(object)
     COLORS=["#43c5f5","#f59e0b","#a78bfa","#34d399","#fb7185"]
     def __init__(self,parent=None):
-        super().__init__(parent); self.series=[]; self.selected=None;self.y_scale_mode="include_zero";self.axis_y_bounds=None;self.y_ticks=();self.setMinimumHeight(260); self.setMouseTracking(True)
+        super().__init__(parent); self.series=[]; self.selected=None;self.y_scale_mode="include_zero";self.axis_y_bounds=None;self.y_ticks=();self.setMinimumHeight(260); self.setMouseTracking(True); self._viewport=None; self._drag=None; self._selection_key=None
+        self.setMinimumWidth(350)
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        self.setAccessibleName("Gráfico de muestras: flechas inspeccionan; más/menos amplían; Inicio restaura")
+        self.tools=QWidget(self); row=QHBoxLayout(self.tools); row.setContentsMargins(2,0,2,0)
+        for text,tip,callback in (("+","Ampliar vista (+)",lambda:self.zoom(.7)),("−","Alejar vista (-)",lambda:self.zoom(1/.7)),("Restablecer","Restablecer vista (Inicio)",self.reset_view),("Muestras…","Inspeccionar muestras y ausencias",self.show_samples),("CSV…","Exportar todas las muestras, incluidas ausencias",self.export_samples),("PNG…","Exportar vista actual",self.export_image)):
+            button=QToolButton();button.setText(text);button.setToolTip(tip);button.setAccessibleName(tip);button.clicked.connect(callback);row.addWidget(button)
+        row.addStretch()
+        self.readout=QLabel("Flechas: muestras · rueda: zoom · arrastrar con botón central: desplazar",self)
+        self.readout.setTextFormat(Qt.TextFormat.PlainText);self.readout.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.pointSelected.connect(self._inspect_selected)
     def set_series(self,series,*,y_scale_mode="include_zero"):
         if y_scale_mode not in {"include_zero","data_margin","nonnegative_data_margin"}:raise ValueError("unknown y-axis scale mode")
-        self.series=series;self.selected=None;self.y_scale_mode=y_scale_mode;self.update()
+        self.series=list(series);self.selected=None;self._selection_key=None;self._viewport=None;self.readout.setText("Flechas: muestras · rueda: zoom · botón central: desplazar");self.y_scale_mode=y_scale_mode;self.update()
     def _points(self):
-        return [(s, i, p) for s in self.series for i,p in enumerate(s.get("points",[]))
-                if p.get("value") is not None and
-                math.isfinite(float(p["value"])) and
-                p.get(s.get("x_key","rpm")) is not None and
-                math.isfinite(float(p[s.get("x_key","rpm")]))]
+        return [(s,i,p) for s in self.series for i,p in enumerate(s.get('points',[])) if self._finite(s,p)]
+
     def _axis_ranges(self,allp):
         if not allp:self.axis_y_bounds=None;self.y_ticks=();return None
         xs=[float(p[s.get("x_key","rpm")]) for s,_,p in allp]
@@ -36,6 +44,7 @@ class CurvePlot(QWidget):
         if xmax==xmin:xmax=xmin+1
         if ymax==ymin:
             margin=max(abs(ymin)*.05,1.0);ymin-=margin;ymax+=margin
+        if self._viewport is not None:xmin,xmax,ymin,ymax=self._viewport
         self.axis_y_bounds=(ymin,ymax)
         self.y_ticks=tuple(ymin+(ymax-ymin)*i/4 for i in range(5))
         return xmin,xmax,ymin,ymax
@@ -45,11 +54,11 @@ class CurvePlot(QWidget):
                 and math.isfinite(float(p[s.get("x_key","rpm")]))]
     def paintEvent(self,event):
         painter=QPainter(self); painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-        painter.fillRect(self.rect(),QColor("#101a28")); rect=self.rect().adjusted(76,18,-18,-40)
+        painter.fillRect(self.rect(),QColor("#101a28")); rect=self.rect().adjusted(76,56,-18,-64)
         allp=self._points()
         if self.series:
             painter.setFont(QFont("Segoe UI",8));metrics=QFontMetrics(painter.font())
-            legend_x=rect.left();legend_y=2;legend_right=rect.right()
+            legend_x=rect.left();legend_y=32;legend_right=rect.right()
             for index,series in enumerate(self.series):
                 color=QColor("#f6bd60" if series.get("role")=="baseline" else self.COLORS[index%len(self.COLORS)])
                 label=str(series.get("name") or f"Serie {index+1}")
@@ -91,27 +100,32 @@ class CurvePlot(QWidget):
             y=rect.bottom()-(tick-ymin)/(ymax-ymin)*rect.height()
             label=format_number(tick,5)
             painter.drawText(2,round(y)-7,68,14,Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignVCenter,label)
+        painter.save();painter.setClipRect(rect.adjusted(-1,-1,1,1))
         for si,series in enumerate(self.series):
             baseline=series.get("role")=="baseline"
             pen=QPen(QColor("#f6bd60" if baseline else self.COLORS[si%len(self.COLORS)]),2,
                      Qt.PenStyle.DashLine if baseline else Qt.PenStyle.SolidLine); painter.setPen(pen)
             previous=None
             for index,point in enumerate(series.get("points",[])):
-                if point.get("value") is None: previous=None; continue
+                if not self._finite(series,point): previous=None; continue
                 current=pos(series,point)
                 if previous is not None and series.get("connect",True):painter.drawLine(previous,current)
                 if index % max(1,len(series.get('points',[]))//35)==0:
                     painter.setBrush(QColor(self.COLORS[si%len(self.COLORS)]));painter.drawEllipse(current,2.5,2.5)
-                if self.selected==(series.get("name"),index):painter.drawEllipse(current,7,7)
+                if self._selection_key==(id(series),index):painter.drawEllipse(current,7,7)
                 previous=current
+        painter.restore()
         painter.setFont(QFont("Segoe UI",9));painter.setPen(QColor("#cad8e7"))
         painter.drawText(rect.left(),rect.bottom()+26,f"{xlabel}  {format_number(xmin)} — {format_number(xmax)}")
         if missing:painter.drawText(rect.left(),rect.bottom()+38,"Los puntos sin valor se omiten; la curva no se conecta ni se interpola.")
         painter.drawText(6,rect.top()+12,self.series[0].get("unit","") if self.series else "")
         painter.end()
     def mousePressEvent(self,event):
+        if event.button()==Qt.MouseButton.MiddleButton:
+            self._drag=event.position();return
         if event.button()!=Qt.MouseButton.LeftButton:return
-        rect=self.rect().adjusted(76,18,-18,-40); allp=self._points()
+        self.setFocus()
+        rect=self.rect().adjusted(76,56,-18,-64); allp=self._points()
         if not allp:return
         xmin,xmax,ymin,ymax=self._axis_ranges(allp)
         near=None;distance=1e9
@@ -120,4 +134,94 @@ class CurvePlot(QWidget):
             d=(event.position().x()-x)**2+(event.position().y()-y)**2
             if d<distance:near=(s,i,p);distance=d
         if near and distance<400:
-            self.selected=(near[0].get("name"),near[1]);self.pointSelected.emit(near[2]);self.update()
+            self._selection_key=(id(near[0]),near[1]);self.selected=(near[0].get("name"),near[1]);self.pointSelected.emit(near[2]);self.update()
+
+    @staticmethod
+    def _finite(series,point):
+        try:return math.isfinite(float(point['value'])) and math.isfinite(float(point[series.get('x_key','rpm')]))
+        except (ValueError,TypeError,KeyError):return False
+
+    def resizeEvent(self,event):
+        self.tools.setGeometry(0,0,self.width(),28)
+        self.readout.setGeometry(6,max(0,self.height()-24),max(0,self.width()-12),22)
+        super().resizeEvent(event)
+
+    def reset_view(self,*_):
+        self._viewport=None;self.update()
+
+    def zoom(self,factor,anchor=None):
+        bounds=self._axis_ranges(self._points())
+        if not bounds:return
+        x0,x1,y0,y1=bounds
+        ax,ay=anchor or ((x0+x1)/2,(y0+y1)/2)
+        candidate=(ax+(x0-ax)*factor,ax+(x1-ax)*factor,ay+(y0-ay)*factor,ay+(y1-ay)*factor)
+        if all(math.isfinite(v) for v in candidate) and candidate[1]-candidate[0]>1e-12 and candidate[3]-candidate[2]>1e-12:
+            self._viewport=candidate;self.update()
+
+    def wheelEvent(self,event):
+        area=self.rect().adjusted(76,56,-18,-64);bounds=self._axis_ranges(self._points())
+        if not bounds or not area.contains(event.position().toPoint()):return super().wheelEvent(event)
+        x0,x1,y0,y1=bounds
+        anchor=(x0+(event.position().x()-area.left())/area.width()*(x1-x0),y1-(event.position().y()-area.top())/area.height()*(y1-y0))
+        self.zoom(.8 if event.angleDelta().y()>0 else 1.25,anchor);event.accept()
+
+    def mouseMoveEvent(self,event):
+        if self._drag is None:return super().mouseMoveEvent(event)
+        bounds=self._axis_ranges(self._points())
+        if not bounds:return
+        area=self.rect().adjusted(76,56,-18,-64);x0,x1,y0,y1=bounds
+        dx=(event.position().x()-self._drag.x())/max(1,area.width())*(x1-x0)
+        dy=(event.position().y()-self._drag.y())/max(1,area.height())*(y1-y0)
+        self._viewport=(x0-dx,x1-dx,y0+dy,y1+dy);self._drag=event.position();self.update()
+
+    def mouseReleaseEvent(self,event):
+        self._drag=None;super().mouseReleaseEvent(event)
+
+    def keyPressEvent(self,event):
+        key=event.key()
+        if key==Qt.Key.Key_Home:self.reset_view();return
+        if key in (Qt.Key.Key_Plus,Qt.Key.Key_Equal):self.zoom(.7);return
+        if key==Qt.Key.Key_Minus:self.zoom(1/.7);return
+        if key in (Qt.Key.Key_Left,Qt.Key.Key_Right):
+            points=self._points()
+            if not points:return
+            current=next((n for n,(s,i,p) in enumerate(points) if self._selection_key==(id(s),i)), -1 if key==Qt.Key.Key_Right else 0)
+            s,i,p=points[(current+(1 if key==Qt.Key.Key_Right else -1))%len(points)]
+            self._selection_key=(id(s),i);self.selected=(s.get('name'),i);self.pointSelected.emit(p);self.update();return
+        super().keyPressEvent(event)
+
+    def _inspect_selected(self,point):
+        series=next((s for s in self.series if id(s)==(self._selection_key or (None,))[0]),{})
+        key=series.get('x_key','rpm');label=series.get('x_label','RPM')
+        status=point.get('reason') or point.get('status') or point.get('classification') or ''
+        self.readout.setText(f"{series.get('name','')} · {label}: {point.get(key)} · {point.get('value')} {series.get('unit','')} · {status}")
+        self.readout.setToolTip(self.readout.text());self.setAccessibleDescription(self.readout.text())
+
+    def sample_rows(self):
+        return [(str(s.get('name','')),str(s.get('x_label','RPM')),p.get(s.get('x_key','rpm')),p.get('value'),s.get('unit',''),p.get('reason') or p.get('status') or p.get('classification') or '',p)
+                for s in self.series for p in s.get('points',[])]
+
+    def show_samples(self,*_):
+        dialog=QDialog(self);dialog.setWindowTitle('Muestras originales · sin interpolación');dialog.resize(850,450)
+        layout=QVBoxLayout(dialog);layout.addWidget(QLabel('Valores recibidos del resultado; vacío significa ausente. La selección no modifica su calificación.'))
+        rows=self.sample_rows();table=QTableWidget(len(rows),6);table.setHorizontalHeaderLabels(['Serie','Eje X','X','Valor','Unidad','Estado / motivo'])
+        table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers);table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        for r,row in enumerate(rows):
+            for c,value in enumerate(row[:6]):table.setItem(r,c,QTableWidgetItem('' if value is None else str(value)))
+        layout.addWidget(table);dialog.exec()
+
+    def export_samples(self,*_):
+        path,_=QFileDialog.getSaveFileName(self,'Exportar muestras originales','','CSV (*.csv)')
+        if not path:return
+        try:self.write_samples(path)
+        except (OSError,ValueError) as exc:QMessageBox.warning(self,'No se pudo exportar',str(exc))
+
+    def write_samples(self,path):
+        import csv,json
+        with open(path,'w',encoding='utf-8-sig',newline='') as stream:
+            writer=csv.writer(stream);writer.writerow(['series','x_label','x','value','unit','status_or_reason','original_sample_json'])
+            for row in self.sample_rows():writer.writerow([*row[:6],json.dumps(row[6],ensure_ascii=False,sort_keys=True)])
+
+    def export_image(self,*_):
+        path,_=QFileDialog.getSaveFileName(self,'Exportar vista del gráfico','','PNG (*.png)')
+        if path and not self.grab().save(path,'PNG'):QMessageBox.warning(self,'No se pudo exportar','No se pudo escribir la imagen.')

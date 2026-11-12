@@ -1,0 +1,29 @@
+{
+  "name": "initial-interactions",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_frontend_workflow_remediation.py",
+    "tests/test_frontend_commercial_integration.py",
+    "tests/test_desktop_four_stroke_shell.py",
+    "-q",
+    "--tb=short",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "E:/Dino-artifacts/frontend-f2-f3-v1/pytest-initial"
+  ],
+  "started_at": "2026-11-12T10:40:08+00:00",
+  "finished_at": "2026-11-12T10:41:09+00:00",
+  "duration_s": 60.563,
+  "exit_code": 15,
+  "timed_out": false,
+  "log_path": "results\\frontend-f2-f3-v1\\verification\\initial-interactions.log",
+  "log_lines": 1,
+  "log_bytes": 6,
+  "error_lines": [],
+  "tail": [
+    "......"
+  ]
+}

@@ -3,7 +3,7 @@ import hashlib
 import json
 from PySide6.QtCore import Qt,QTimer
 from PySide6.QtWidgets import (QWidget,QLabel,QHBoxLayout,QVBoxLayout,QPushButton,
-    QDialog,QTableWidget,QTableWidgetItem,QHeaderView,QMessageBox,QLineEdit)
+    QDialog,QTableWidget,QTableWidgetItem,QHeaderView,QMessageBox,QLineEdit,QFileDialog,QToolButton,QMenu)
 
 
 def descriptor(window):
@@ -76,7 +76,7 @@ class WorkspaceExperience:
         window.native_four_stroke.context.draft_changed.connect(self.refresh)
         window.pages[0].component_state_changed.connect(self.refresh)
         window.pages[1].component_state_changed.connect(self.refresh)
-        window.engine_selector.currentIndexChanged.connect(self.refresh)
+        window.engine_family_changed.connect(self.refresh)
         window.four_stroke_context.project_changed.connect(self.reference_loaded)
         window.four_stroke_workspace.applied.connect(self.reference_loaded)
         for field in self.reference_fields:field.textEdited.connect(self.refresh)
@@ -88,6 +88,26 @@ class WorkspaceExperience:
                        window.native_four_stroke.curve.runningChanged,
                        window.four_stroke_context.execution_changed,window.pages[3].state_changed):
             signal.connect(self.refresh)
+        from .component_map import ComponentNavigator
+        self.components=ComponentNavigator(window)
+        from PySide6.QtGui import QAction
+        for text,shortcut,callback in (('Modelo','Ctrl+1',lambda:window.set_workspace_mode(0)),('Simular','Ctrl+2',lambda:window.set_workspace_mode(2)),('Resultados','Ctrl+3',lambda:window.set_workspace_mode(1)),('Corridas del proyecto','Ctrl+Shift+R',self.show_runs),('Diferencias de variante','Ctrl+Shift+D',self.show_variant_diff),('Recuperar borrador…','Ctrl+Shift+O',window._offer_recoveries)):
+            action=QAction(text,window);action.setShortcut(shortcut);action.triggered.connect(callback);window.addAction(action)
+        self.diff_button=QPushButton('Diferencias…');self.diff_button.setToolTip('Comparar la configuración aplicada con el motor base (Ctrl+Shift+D)')
+        self.diff_button.clicked.connect(self.show_variant_diff);actions.insertWidget(max(0,actions.count()-1),self.diff_button)
+        # Keep primary commands visible; secondary tools share a compact menu.
+        self.tool_actions=[];tools=QToolButton();tools.setText('Herramientas');tools.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup);menu=QMenu(tools);tools.setMenu(menu)
+        primary={actions.itemAt(i).widget() for i in range(3)}|{self.runs_button}
+        for i in range(actions.count()):
+            button=actions.itemAt(i).widget()
+            if button is None or button in primary:continue
+            button.hide()
+            if button is window.four_stroke_button:continue
+            action=menu.addAction(button.text());action.triggered.connect(button.click);self.tool_actions.append((action,button))
+        components=QToolButton();components.setDefaultAction(self.components.action);components.setText('Componentes')
+        actions.insertWidget(max(0,actions.count()-1),components);actions.insertWidget(max(0,actions.count()-1),tools)
+        from .job_coordinator import JobCoordinator
+        self.jobs=JobCoordinator(window)
         self.install_plan_previews()
         self.refresh()
 
@@ -147,6 +167,8 @@ class WorkspaceExperience:
         return resolve_draft(self.window,operation,apply,discard)
 
     def ensure_two_stroke(self,operation):
+        if getattr(self.window.context,'queued_execution_active',False):
+            QMessageBox.information(self.window,'Cola activa','Pausá o cancelá la cola de puntos antes de iniciar otra operación 2T.');return False
         editor=self.window.pages[0]
         def apply():
             editor.apply()
@@ -176,7 +198,12 @@ class WorkspaceExperience:
             self.saved.setText(state+'\nReferencia 0D en ejecución')
         elif not w._four_stroke_active() and not w._native_four_stroke_active() and w.pages[3].task is not None:
             self.saved.setText(state+'\nSimulación 2T en ejecución')
+        if hasattr(self,'jobs') and self.jobs.running:
+            job=self.jobs.manager.task.job
+            self.saved.setText(state+f"\nCola: {job['family']} · {job['rpm']:g} RPM · entrada {job['configuration_sha256'][:12]}")
         self.saved.setToolTip(str(info['path'] or 'Elegí Guardar como para conservar el proyecto.'))
+        self.diff_button.setEnabled(not w._four_stroke_active())
+        for action,button in self.tool_actions:action.setEnabled(button.isEnabled())
         reference=w._four_stroke_active()
         simulate=reference and w.simulate_mode.isChecked()
         w.four_stroke_run_button.setVisible(simulate);w.four_stroke_cancel_button.setVisible(simulate)
@@ -240,7 +267,41 @@ class WorkspaceExperience:
                         if Path(p).name=='result.json':w.results.open_runs([p])
                         else:w.results.load(p)
                     add(['Corrida vinculada al proyecto','—','Consultar resultado',ref['classification']],open_link)
+        if not w._native_four_stroke_active() and not w._four_stroke_active():
+            bind=QPushButton('Vincular resultado externo verificado…');bind.clicked.connect(lambda *_:(dialog.accept(),self.bind_external_result()));root.addWidget(bind)
+        jobs=QPushButton('Cola persistente de puntos 2T / 4T nativo…');jobs.clicked.connect(lambda *_:(dialog.accept(),self.jobs.show()));root.addWidget(jobs)
         if not table.rowCount():root.addWidget(QLabel('Todavía no hay corridas disponibles. Prepará un punto o abrí resultados existentes.'))
-        root.addWidget(QLabel('La cola de varios trabajos actual admite 4T 0D. Los barridos 2T/nativos conservan sus controles y límites propios.'))
+        root.addWidget(QLabel('Puntos 2T/nativos: cola persistente con entradas congeladas. Curvas0D: cola de referencia. Los barridos y la reanudación conservan sus capacidades propias.'))
         close=QPushButton('Cerrar');close.clicked.connect(dialog.reject);root.addWidget(close)
         dialog.exec()
+
+    def show_variant_diff(self):
+        w=self.window
+        if w._four_stroke_active():return
+        context=w._active_context()
+        from .variant_explorer import show_variant_diff
+        show_variant_diff(w,context.project['base_engine'],context.engine(),context.selected_variant or 'Motor base')
+
+    def bind_external_result(self):
+        w=self.window
+        if w._native_four_stroke_active() or w._four_stroke_active():return
+        paths,_=QFileDialog.getOpenFileNames(w,'Vincular resultados 2T · no modifica los originales','','Resultados (result.json)')
+        if not paths:return
+        if not self.ensure_two_stroke('Vincular resultados externos'):return
+        from .result_binding import verified_references
+        from .services import run_background
+        context=w.context;project_id=context.project['project_id'];project_snapshot=context.project
+        def complete(payload):
+            if context.project is not project_snapshot or context.project['project_id']!=project_id:
+                QMessageBox.warning(w,'Proyecto cambiado','La verificación terminó para otro proyecto; no se vinculó ningún resultado.');return
+            refs,_=payload
+            from copy import deepcopy
+            from ..engine_project import validate_project
+            candidate=deepcopy(context.project)
+            known={r['path'] for r in candidate['result_references']}
+            candidate['result_references'].extend(r for r in refs if r['path'] not in known)
+            try:validate_project(candidate)
+            except (ValueError,KeyError) as exc:QMessageBox.warning(w,'No se pudo vincular',str(exc));return
+            for ref in refs:context.add_result_reference(ref)
+            w.statusBar().showMessage(f'{len(refs)} resultados verificados y vinculados; su clasificación se conserva.',7000)
+        run_background(verified_references,paths,on_done=complete,on_error=lambda exc:QMessageBox.warning(w,'Resultado no vinculable',str(exc)))

@@ -1,0 +1,42 @@
+{
+  "name": "f23-visual-contracts",
+  "command": [
+    "python",
+    "-u",
+    "-m",
+    "pytest",
+    "tests/test_frontend_f2_f3.py",
+    "tests/test_desktop_four_stroke_shell.py",
+    "tests/test_desktop_four_stroke_workspace.py",
+    "tests/test_desktop_four_stroke_curve_execution.py",
+    "-q",
+    "--tb=short",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "E:/Dino-artifacts/frontend-f2-f3-v1/pytest-visual"
+  ],
+  "started_at": "2026-11-12T10:50:24+00:00",
+  "finished_at": "2026-11-12T10:51:19+00:00",
+  "duration_s": 54.953,
+  "exit_code": 1,
+  "timed_out": false,
+  "log_path": "results\\frontend-f2-f3-v1\\verification\\f23-visual-contracts.log",
+  "log_lines": 10,
+  "log_bytes": 792,
+  "error_lines": [
+    "9: FAILED tests/test_frontend_f2_f3.py::test_native_overlay_reverifies_pair_and_keeps_synthetic_origin"
+  ],
+  "tail": [
+    ".......F....................                                             [100%]",
+    "================================== FAILURES ===================================",
+    "_______ test_native_overlay_reverifies_pair_and_keeps_synthetic_origin ________",
+    "tests\\test_frontend_f2_f3.py:102: in test_native_overlay_reverifies_pair_and_keeps_synthetic_origin",
+    "    assert all('SYNTHETIC' in str(p) for s in series for p in s['points'])",
+    "E   assert False",
+    "E    +  where False = all(<generator object test_native_overlay_reverifies_pair_and_keeps_synthetic_origin.<locals>.<genexpr> at 0x000002182BC9BC40>)",
+    "=========================== short test summary info ===========================",
+    "FAILED tests/test_frontend_f2_f3.py::test_native_overlay_reverifies_pair_and_keeps_synthetic_origin",
+    "1 failed, 27 passed in 53.79s"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "name": "jobs-interaction-final",
+  "command": [
+    "python",
+    "-u",
+    "-m",
+    "pytest",
+    "tests/test_frontend_engineering_jobs.py",
+    "tests/test_frontend_f2_f3.py",
+    "-q",
+    "--tb=short",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "E:/Dino-artifacts/frontend-f2-f3-v1/pytest-jobs-final"
+  ],
+  "started_at": "2026-11-12T11:03:05+00:00",
+  "finished_at": "2026-11-12T11:03:24+00:00",
+  "duration_s": 19.047,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "results\\frontend-f2-f3-v1\\verification\\jobs-interaction-final.log",
+  "log_lines": 2,
+  "log_bytes": 100,
+  "error_lines": [],
+  "tail": [
+    "................                                                         [100%]",
+    "16 passed in 18.30s"
+  ]
+}

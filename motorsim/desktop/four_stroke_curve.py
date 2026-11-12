@@ -116,6 +116,7 @@ class FourStrokeCurveExecution(QObject):
                        + uuid.uuid4().hex[:10])
 
     def start(self, rpms, output=None):
+        if getattr(self.context,'queued_execution_active',False):raise FourStrokeCurveRunError('La cola de ingeniería está activa; pausá o cancelá sus puntos.')
         if self.running:
             raise FourStrokeCurveRunError("Ya hay una curva 4T en curso.")
         try:
