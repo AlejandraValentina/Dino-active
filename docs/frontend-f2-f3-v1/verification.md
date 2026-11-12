@@ -17,3 +17,8 @@ Clean implementationd4fc244:47base +76extended real Windows Qt source checks PAS
 Combined source120PASS; subsequent targeted39PASS and24PASS overlap those regressions and cover later presentation/recovery changes. Protected301PASS+3SKIP,4inherited NumPy warnings. These counts are not summed into unique tests. The first timed-out/failed attempts remain preserved and are not acceptance evidence.
 
 Evidence-only commits afterd4fc244 may precede packaging: motorsim/ and packaging/ Git tree IDs must remain identical. The Windows build and actual frozen receipts bind the candidate revision explicitly.
+
+
+Final capture review found a reference0D autosave collision: RecoveryController read dict identifiers only, but FourStrokeContext.project is a dataclass. Distinct references therefore shared4T0D-proyecto.json. Corrected identity from the public name and introduced a reference-onlyV2 filename key with a digest of the exact name so Windows sanitization cannot merge different names. LegacyV1 entries stay readable and unmodified; the selector derives their human name from serialized project data. Tests cover distinct names, colliding sanitized names, independent clear and legacy preview. This is an application-storage fix, not a scientific schema change.
+
+The first rc14-552a5673 passed47base,76F2/F3,14CP1,8CP2 and12externalUIA checks. It is preserved as a superseded candidate because those checks did not cover multiple reference-project drafts. The corrected candidate must pass the added application case and repeat Windows acceptance; no old binary or receipt is rewritten.

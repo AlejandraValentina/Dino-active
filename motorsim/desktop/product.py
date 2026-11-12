@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 import json
+import hashlib
 import os
 from pathlib import Path
 import platform
@@ -348,10 +349,20 @@ class RecoveryController(QObject):
             value = project.get("project_id") or project.get("name")
             if isinstance(value, str) and value.strip():
                 return value.strip()
+        # Reference0D uses a public dataclass rather than the desktop dict.
+        value = getattr(project, "name", None)
+        if isinstance(value, str) and value.strip():
+            return value.strip()
         return "proyecto"
 
     def path(self) -> Path:
-        safe = "".join(c if c.isalnum() or c in "-_." else "_" for c in self._project_id())
+        identifier = self._project_id()
+        safe = "".join(c if c.isalnum() or c in "-_." else "_" for c in identifier)
+        if self.family == "4T0D":
+            # V2 filename key preserves legacy V1 drafts and avoids two distinct
+            # reference names collapsing to the same sanitized Windows filename.
+            digest = hashlib.sha256(("REFERENCE_RECOVERY_KEY_V2\0" + identifier).encode("utf-8")).hexdigest()[:12]
+            return self._root() / f"{self.family}-v2-{safe[:60]}-{digest}.json"
         return self._root() / f"{self.family}-{safe[:80]}.json"
 
     def autosave(self) -> Path | None:

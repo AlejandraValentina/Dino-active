@@ -125,6 +125,15 @@ def main(argv=None):
         note('reference_component_route',window.four_stroke_workspace.tabs.currentIndex()==1 and 'sintética' in navigator.family.text())
         capture('06-reference-components');navigator.dock.hide();window.start_four_stroke_run();wait(lambda:not window.four_stroke_execution.running)
         reference_plot=window.four_stroke_results.angle;note('reference_actual_samples',bool(reference_plot._points()));window.set_workspace_mode(1);key(reference_plot,Qt.Key.Key_Right);capture('07-reference-cursor')
+        # Reference0D is a dataclass: each named project must retain its own draft.
+        from ..four_stroke_project import starter_project
+        previous_reference=deepcopy(window.four_stroke_context.project);previous_path=window.four_stroke_context.path;draft_paths=[]
+        for name in ('Recuperación referencia A','Recuperación referencia B'):
+            window.four_stroke_context.replace_project(starter_project(name=name,rpm=3000),None);window.four_stroke_context.dirty=True
+            draft_paths.append(window.recovery_4t.autosave());window.four_stroke_context.dirty=False
+        note('reference_projects_have_distinct_recovery_paths',draft_paths[0]!=draft_paths[1] and all(path.exists() for path in draft_paths))
+        note('reference_recovery_keeps_names',{'Recuperación referencia A','Recuperación referencia B'}.issubset({e['project_id'] for e in RecoveryController.pending('4T0D')}))
+        window.four_stroke_context.replace_project(previous_reference,previous_path)
         # Compact resolutions and controls: actual application layouts, not isolated widgets.
         for family,switch in (('2t',window.show_two_stroke_mode),('native',window.show_native_four_stroke_mode),('reference',window.show_four_stroke_mode)):
             switch();navigator.dock.hide()

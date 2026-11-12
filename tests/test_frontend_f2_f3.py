@@ -183,3 +183,22 @@ def test_recovery_guards_inactive_target_and_validates_before_discard(window,mon
     assert questions and '4T' in questions[-1] and context.project==before and context.dirty and w._active_context() is w.context
     questions.clear();assert not w._restore_recovery_entry(dict(family='4Tnative',project={}))
     assert warnings and not questions and context.project==before
+
+
+def test_reference_recovery_separates_projects_and_displays_legacy_name(tmp_path,monkeypatch):
+    from motorsim.desktop.product import RecoveryController
+    from motorsim.desktop.four_stroke_context import FourStrokeContext
+    from motorsim.four_stroke_project import starter_project
+    monkeypatch.setenv('DINO_RECOVERY_ROOT',str(tmp_path/'recovery'))
+    contexts=[FourStrokeContext(starter_project(name=name,rpm=3000)) for name in ('Referencia A','Referencia B','Referencia/A','Referencia?A')]
+    controllers=[RecoveryController('4T0D',c,lambda c=c:c.project.to_dict()) for c in contexts]
+    try:
+        for c in contexts:c.dirty=True
+        paths=[controller.autosave() for controller in controllers]
+        assert len(set(paths))==4 and all(p.exists() for p in paths)
+        entries=RecoveryController.pending('4T0D');assert {e['project_id'] for e in entries}=={'Referencia A','Referencia B','Referencia/A','Referencia?A'}
+        legacy=dict(entries[0],project_id='proyecto');before=deepcopy(legacy);picker=RecoveryPicker([legacy])
+        assert picker.table.item(0,1).text()==legacy['project']['name'] and legacy==before
+        controllers[0].clear();assert not paths[0].exists() and paths[1].exists()
+    finally:
+        for controller in controllers:controller.timer.stop()

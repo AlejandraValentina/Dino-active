@@ -17059,7 +17059,7 @@
       "id": "F23-RECOVERY",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Recovery selector with identity and read-only preview",
-      "state": "DONE",
+      "state": "REVIEW",
       "dependencies": [],
       "write_scope": [],
       "blocker": null,
@@ -17067,7 +17067,7 @@
         "results/frontend-f2-f3-v1/source-gate.json"
       ],
       "next_action": "Recovery selector with identity and read-only preview",
-      "classification": "SOURCE_ACCEPTED_WINDOWS_PENDING"
+      "classification": "REFERENCE_DATACLASS_IDENTITY_RECHECK"
     },
     {
       "id": "F23-PRODUCTIVITY",
@@ -17087,22 +17087,26 @@
       "id": "F23-SOURCE",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Full source workflows, negatives and regression",
-      "state": "DONE",
+      "state": "IN_PROGRESS",
       "dependencies": [],
-      "write_scope": [],
+      "write_scope": [
+        "results/frontend-f2-f3-v1/source-gate.json"
+      ],
       "blocker": null,
       "evidence": [
         "results/frontend-f2-f3-v1/source-gate.json"
       ],
       "next_action": "Full source workflows, negatives and regression",
-      "classification": "SOURCE_ACCEPTED_WINDOWS_PENDING"
+      "classification": "REFERENCE_RECOVERY_CORRECTION_RECHECK"
     },
     {
       "id": "F23-BUILD",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Clean grouped Windows candidate and manifest",
-      "state": "DONE",
-      "dependencies": [],
+      "state": "WAITING",
+      "dependencies": [
+        "F23-SOURCE"
+      ],
       "write_scope": [],
       "blocker": null,
       "evidence": [
@@ -17110,20 +17114,21 @@
         "results/frontend-f2-f3-v1/build.json"
       ],
       "next_action": "Clean pinned Windows rc14 build; validate exact product trees against d4fc244",
-      "classification": "CLEAN_RC14_CANDIDATE"
+      "classification": "PRIOR_CANDIDATE_PRESERVED_SUPERSEDED_BY_CORRECTION"
     },
     {
       "id": "F23-WINDOWS",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Packaged workflow acceptance",
-      "state": "IN_PROGRESS",
-      "dependencies": [],
-      "write_scope": [
-        "results/frontend-f2-f3-v1/windows-acceptance.json"
+      "state": "WAITING",
+      "dependencies": [
+        "F23-BUILD"
       ],
+      "write_scope": [],
       "blocker": null,
       "evidence": [],
-      "next_action": "Actual frozen base/F2/F3, CP1/CP2 and external UIA recovery"
+      "next_action": "Actual frozen base/F2/F3, CP1/CP2 and external UIA recovery",
+      "classification": "PRIOR_CANDIDATE_ALL_PLANNED_CHECKS_PASS_NEW_ISOLATION_CASE_REQUIRED"
     },
     {
       "id": "F23-REVIEW",
@@ -21245,6 +21250,12 @@
       "task": "F23-BUILD",
       "kind": "task",
       "summary": "Clean rc14 built from552a567, motorsim/packaging trees identical to source-accepted d4fc244. All changed packaged module bytes match checkout; manifest and EXE/ZIP hashes recorded. Actual frozen Windows acceptance now in progress."
+    },
+    {
+      "at": "2026-11-12T11:59:58+00:00",
+      "task": "F23-RECOVERY",
+      "kind": "task",
+      "summary": "Final visual review found reference dataclass autosaves sharing generic proyecto ID. Fixed public name identity, V2 digest filename avoiding sanitized-name collisions, and legacy human preview.26 targeted CP0/CP1/CP2/source tests PASS. First rc14 retained; corrected source and Windows replay required."
     }
   ],
   "integration_parent_states": {
@@ -21387,8 +21398,8 @@
   },
   "frontend_f2_f3_acceptance": {
     "implementation": "IMPLEMENTED",
-    "source": "SOURCE_ACCEPTED",
-    "windows": "PENDING",
+    "source": "PENDING_RECHECK_REFERENCE_RECOVERY",
+    "windows": "PENDING_CORRECTED_CANDIDATE",
     "human_uat": "PENDING_UAT",
     "scientific_validation": "NOT_PERFORMED",
     "general_regression": "GENERAL_REGRESSION_NOT_GREEN_INHERITED"

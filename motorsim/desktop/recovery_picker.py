@@ -13,7 +13,10 @@ class RecoveryPicker(QDialog):
         self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers);self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows);self.table.setSelectionMode(QTableWidget.SelectionMode.SingleSelection)
         self.table.setAccessibleName('Borradores disponibles');self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         for r,e in enumerate(entries):
-            for c,key in enumerate(('family','project_id','saved_at','original_path')):self.table.setItem(r,c,QTableWidgetItem(str(e.get(key) or 'Sin archivo')))
+            for c,key in enumerate(('family','project_id','saved_at','original_path')):
+                value=e.get(key)
+                if key=='project_id' and isinstance(e.get('project'),dict):value=e['project'].get('project_id') or e['project'].get('name') or value
+                self.table.setItem(r,c,QTableWidgetItem(str(value or 'Sin archivo')))
         layout.addWidget(self.table,1);self.preview=QPlainTextEdit();self.preview.setReadOnly(True);self.preview.setAccessibleName('Vista previa de configuración recuperable');layout.addWidget(self.preview,1)
         row=QHBoxLayout();layout.addLayout(row);self.open_button=QPushButton('Abrir copia recuperada');self.open_button.clicked.connect(self.open_selected);row.addWidget(self.open_button)
         later=QPushButton('Posponer');later.clicked.connect(self.reject);row.addWidget(later)

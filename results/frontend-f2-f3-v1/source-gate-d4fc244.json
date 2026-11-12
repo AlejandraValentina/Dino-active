@@ -1,0 +1,31 @@
+{
+  "schema": "DINO_FRONTEND_F23_SOURCE_GATE_V1",
+  "status": "SOURCE_ACCEPTED",
+  "source_commit": "d4fc244e3d84fa80475f5cc02b4cbcaf3ddb4783",
+  "product_trees": {
+    "motorsim": "02b3f7dd272ffa1c8d1d7ae9733279362ada824f",
+    "packaging": "3f5c4bc2123ed295db95db2a920dc6a1f7c93acf"
+  },
+  "checks": {
+    "source-base-clean": true,
+    "source-f23-clean": true,
+    "clean_git_source": true
+  },
+  "evidence": {
+    "source-base-clean": {
+      "path": "source-base-clean\\acceptance.json",
+      "sha256": "1e50c5f5d4d7703878cac785a4d89d543d2413b91b019158cec8147fe0250143",
+      "checks": 47,
+      "captures": 25
+    },
+    "source-f23-clean": {
+      "path": "source-f23-clean\\acceptance.json",
+      "sha256": "7eb86b2a8be847b2c9b4a21d3c63ecacb45f709db070f3f6a856d20ea2639550",
+      "checks": 76,
+      "captures": 17
+    }
+  },
+  "human_uat": "PENDING_UAT",
+  "scientific_validation": "NOT_PERFORMED",
+  "general_regression": "GENERAL_REGRESSION_NOT_GREEN_INHERITED_NOT_FULLY_RERUN"
+}

@@ -1,0 +1,32 @@
+{
+  "name": "reference-recovery-isolation",
+  "command": [
+    "python",
+    "-u",
+    "-m",
+    "pytest",
+    "tests/test_frontend_f2_f3.py",
+    "tests/test_commercial_product.py",
+    "tests/test_desktop_cp1_acceptance.py",
+    "tests/test_desktop_cp2_acceptance.py",
+    "-q",
+    "--tb=short",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "E:/Dino-artifacts/frontend-f2-f3-v1/pytest-reference-recovery"
+  ],
+  "started_at": "2026-11-12T11:54:30+00:00",
+  "finished_at": "2026-11-12T11:55:38+00:00",
+  "duration_s": 68.282,
+  "exit_code": 0,
+  "timed_out": false,
+  "log_path": "E:\\Dino-artifacts\\frontend-f2-f3-v1\\verification\\reference-recovery-isolation.log",
+  "log_lines": 2,
+  "log_bytes": 110,
+  "error_lines": [],
+  "tail": [
+    "..........................                                               [100%]",
+    "26 passed in 67.10s (0:01:07)"
+  ]
+}
