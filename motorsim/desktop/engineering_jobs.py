@@ -3,7 +3,7 @@ from __future__ import annotations
 from copy import deepcopy
 import hashlib,json,math,os,tempfile,threading,uuid
 from pathlib import Path
-from PySide6.QtCore import QObject,Signal,QRunnable,QThreadPool,QTimer,QElapsedTimer
+from PySide6.QtCore import QObject,Signal,QRunnable,QThreadPool,QTimer,QElapsedTimer,QLockFile
 from PySide6.QtWidgets import QApplication
 from .preferences import repository_root_containing
 
@@ -59,7 +59,13 @@ class EngineeringJobs(QObject):
     def __init__(self,path,artifact_root,parent=None,executor=execute_job):
         super().__init__(parent);self.path=Path(path);self.root=Path(artifact_root);self.items=[];self.task=None;self.active_id=None;self.paused=True;self.executor=executor;self.error='';self._retired=[]
         if repository_root_containing(self.path) is not None or repository_root_containing(self.root) is not None:raise ValueError('La cola y sus resultados deben quedar fuera del repositorio')
-        if self.path.exists():self.load()
+        self.path.parent.mkdir(parents=True,exist_ok=True)
+        self._lock=QLockFile(str(self.path)+'.lock');self._lock.setStaleLockTime(0)
+        if not self._lock.tryLock(0):raise ValueError('Otra ventana o proceso es dueño de esta cola; elegí otra cola o cerrá esa instancia')
+        try:
+            if self.path.exists():self.load()
+        except Exception:
+            self._lock.unlock();raise
     @property
     def running(self):return self.task is not None
     def load(self):
@@ -75,7 +81,11 @@ class EngineeringJobs(QObject):
         if len({i['job_id'] for i in checked})!=len(checked):raise ValueError('ID de trabajo duplicado')
         self.items=checked;self.paused=True
         if recovered:self.save()
+    def close(self):
+        if self.running:raise RuntimeError('La cola sigue ejecutando; no se puede liberar su autoridad')
+        self._lock.unlock()
     def save(self):
+        if not self._lock.isLocked():raise ValueError('La cola ya está cerrada; volvé a abrirla antes de modificarla')
         self.path.parent.mkdir(parents=True,exist_ok=True)
         fd,temp=tempfile.mkstemp(prefix=self.path.name+'.',suffix='.tmp',dir=self.path.parent)
         try:

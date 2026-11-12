@@ -1,20 +1,34 @@
 """Qt application adapter for durable point jobs; model contracts stay separate."""
 from copy import deepcopy
+from pathlib import Path
 import json
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QDialog,QVBoxLayout,QHBoxLayout,QLabel,QPushButton,QTableWidget,QTableWidgetItem,QHeaderView,QPlainTextEdit,QMessageBox
+from PySide6.QtWidgets import QDialog,QVBoxLayout,QHBoxLayout,QLabel,QPushButton,QTableWidget,QTableWidgetItem,QHeaderView,QPlainTextEdit,QMessageBox,QFileDialog
 from .engineering_jobs import EngineeringJobs,snapshot_job
-from .preferences import artifact_root
+from .preferences import artifact_root,settings
 
 
 class JobCoordinator:
     def __init__(self,window):
         self.window=window;self.error='';self.manager=None
         root=artifact_root()
-        try:self.manager=EngineeringJobs(root/'frontend-engineering-jobs-v1'/'queue.json',root,window)
+        try:self.manager=EngineeringJobs(settings().value('frontend_queue_path') or root/'frontend-engineering-jobs-v1'/'queue.json',root,window)
         except (OSError,ValueError,KeyError,TypeError) as exc:self.error='Cola conservada sin modificar; no se pudo abrir: '+str(exc)
         if self.manager:
             self.manager.resultReady.connect(self.attach_result);self.manager.runningChanged.connect(self.lock_execution)
+    def choose_queue(self,new=False):
+        if self.running:raise ValueError('Terminá o cancelá el trabajo actual antes de cambiar la cola')
+        picker=QFileDialog.getSaveFileName if new else QFileDialog.getOpenFileName
+        path,_=picker(self.window,'Nueva cola' if new else 'Abrir cola','','Cola de puntos (*.json)')
+        if not path:return
+        target=Path(path)
+        if new and target.exists():raise ValueError('El archivo ya existe; usá Abrir cola. No se sobrescribió.')
+        if self.manager and target.resolve()==self.manager.path.resolve():return
+        manager=EngineeringJobs(target,artifact_root(),self.window)
+        if self.manager:self.manager.close()
+        self.manager=manager;self.error='';manager.resultReady.connect(self.attach_result);manager.runningChanged.connect(self.lock_execution)
+        settings().setValue('frontend_queue_path',str(target))
+
     @property
     def running(self):return bool(self.manager and self.manager.running)
     def lock_execution(self,running):
@@ -69,6 +83,12 @@ class JobCoordinator:
     def show(self):
         w=self.window;dialog=QDialog(w);dialog.setWindowTitle('Cola de puntos de ingeniería');dialog.resize(1000,650);layout=QVBoxLayout(dialog)
         info=QLabel('Puntos 2T y 4T nativo con entradas congeladas. Ejecución serial; terminar un trabajo no demuestra periodicidad ni validación. Los interrumpidos no se reanudan automáticamente. La cola de curvas0D conserva su contrato propio.');info.setWordWrap(True);layout.addWidget(info)
+        def choose(new):
+            try:self.choose_queue(new);dialog.accept()
+            except (ValueError,OSError,KeyError) as exc:QMessageBox.warning(dialog,'No se pudo abrir la cola',str(exc))
+        selection=QHBoxLayout();layout.addLayout(selection)
+        for text,new in (('Nueva cola…',True),('Abrir cola…',False)):
+            button=QPushButton(text);button.clicked.connect(lambda _,n=new:choose(n));selection.addWidget(button)
         if self.manager is None:layout.addWidget(QLabel(self.error));dialog.exec();return
         manager=self.manager;summary=QLabel();summary.setWordWrap(True);layout.addWidget(summary)
         table=QTableWidget(0,7);table.setHorizontalHeaderLabels(['Modelo / proyecto','Variante','RPM','Ciclos / límite','Ejecución','Resultado','Entrada'])

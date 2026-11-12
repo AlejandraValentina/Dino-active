@@ -1080,6 +1080,7 @@ class DinoDesktopWindow(QMainWindow):
         if not QThreadPool.globalInstance().waitForDone(10000):
             self.statusBar().showMessage('Una lectura sigue activa; cierre cancelado para conservar la interfaz estable.')
             event.ignore();return
+        if hasattr(self,'experience') and self.experience.jobs.manager:self.experience.jobs.manager.close()
         self.settings.setValue('window_geometry',self.saveGeometry());self.settings.setValue('last_page',self.component_nav.currentIndex())
         super().closeEvent(event)
     def showEvent(self,event):

@@ -44,14 +44,14 @@ def test_cancel_pending_and_active_preserves_qualification(tmp_path):
 
 
 def test_interruption_is_durable_and_never_auto_resumed(tmp_path):
-    path=tmp_path/'queue.json';q=EngineeringJobs(path,tmp_path);q.add(job());q.items[0]['status']='RUNNING';q.save()
+    path=tmp_path/'queue.json';q=EngineeringJobs(path,tmp_path);q.add(job());q.items[0]['status']='RUNNING';q.save();q.close()
     recovered=EngineeringJobs(path,tmp_path)
     assert recovered.paused and not recovered.running and recovered.items[0]['status']=='INTERRUPTED'
     assert json.loads(path.read_text(encoding='utf-8'))['items'][0]['status']=='INTERRUPTED'
 
 
 def test_corrupt_input_is_rejected_without_rewriting_ledger(tmp_path):
-    path=tmp_path/'queue.json';q=EngineeringJobs(path,tmp_path);q.add(job());data=json.loads(path.read_text(encoding='utf-8'));data['items'][0]['configuration']='{}';path.write_text(json.dumps(data));before=path.read_bytes()
+    path=tmp_path/'queue.json';q=EngineeringJobs(path,tmp_path);q.add(job());data=json.loads(path.read_text(encoding='utf-8'));data['items'][0]['configuration']='{}';path.write_text(json.dumps(data));before=path.read_bytes();q.close()
     with pytest.raises(ValueError):EngineeringJobs(path,tmp_path)
     assert path.read_bytes()==before
 
@@ -74,3 +74,12 @@ def test_stale_callbacks_cannot_update_another_job(tmp_path):
     q._progress('not-the-active-id',{'cycle':999});q._terminal('not-the-active-id',{},None)
     assert q.running and q.items[0]==before
     release.set();wait(lambda:not q.running);QThreadPool.globalInstance().waitForDone(2000)
+
+
+def test_second_writer_is_rejected_until_owner_closes(tmp_path):
+    path=tmp_path/'queue.json';q=EngineeringJobs(path,tmp_path);q.add(job());before=path.read_bytes()
+    with pytest.raises(ValueError,match='dueño'):EngineeringJobs(path,tmp_path)
+    assert path.read_bytes()==before
+    q.close();reopened=EngineeringJobs(path,tmp_path);assert len(reopened.items)==1
+    with pytest.raises(ValueError):q.save()
+    reopened.close()

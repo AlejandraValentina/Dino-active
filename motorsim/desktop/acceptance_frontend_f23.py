@@ -59,7 +59,7 @@ def main(argv=None):
         note('real_serial_queue_completed',[i['status'] for i in manager.items]==['COMPLETED','COMPLETED','CANCELLED'])
         note('queue_results_bound',bool(window.context.project['result_references']) and bool(window.native_four_stroke.context.project['run_references']))
         from .engineering_jobs import EngineeringJobs
-        loaded=EngineeringJobs(manager.path,manager.root);note('queue_persistence',[(i['job_id'],i['configuration_sha256'],i['status']) for i in loaded.items]==[(i['job_id'],i['configuration_sha256'],i['status']) for i in manager.items])
+        loaded=json.loads(manager.path.read_text(encoding='utf-8'));note('queue_persistence',[(i['job_id'],i['configuration_sha256'],i['status']) for i in loaded['items']]==[(i['job_id'],i['configuration_sha256'],i['status']) for i in manager.items])
         window.show_native_four_stroke_mode();window.native_four_stroke.simulation.cycles.setValue(100);note('queue_add_cancel_active',jobs.enqueue_current());jobs.start();QTimer.singleShot(100,lambda:manager.cancel(manager.active_id) if manager.active_id else None)
         wait(lambda:not manager.running,30);note('real_active_queue_cancelled',manager.items[-1]['status']=='CANCELLED')
         note('queue_native_saved',window._save_native_project(root/'queued-native.json'))

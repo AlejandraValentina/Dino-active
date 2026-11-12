@@ -17093,11 +17093,16 @@
       "id": "F23-SOURCE",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Full source workflows, negatives and regression",
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "dependencies": [],
-      "write_scope": [],
+      "write_scope": [
+        "results/frontend-f2-f3-v1/verification",
+        "motorsim/desktop/acceptance_frontend_f23.py"
+      ],
       "blocker": null,
-      "evidence": [],
+      "evidence": [
+        "results/frontend-f2-f3-v1/verification/source-application-base.summary.json"
+      ],
       "next_action": "Full source workflows, negatives and regression"
     },
     {
@@ -21158,6 +21163,12 @@
       "at": "2026-11-12T11:03:04.933684+00:00",
       "task": "F23-JOBS",
       "summary": "Linked component routes, shared exact-sample exploration, eligible native pressure overlay, explicit binding/recovery, compact tools and durable serial point queue implemented. 17 interaction PASS; lifecycle6 PASS. Integrated/source/Windows acceptance pending."
+    },
+    {
+      "at": "2026-11-12T11:08:55+00:00",
+      "task": "F23-JOBS",
+      "kind": "task",
+      "summary": "17 job/interaction checks PASS, including single-writer lock and safe close. Base real Windows Qt source workflows47 PASS on ec398d2. Extended F2/F3 application and combined regression pending."
     }
   ],
   "integration_parent_states": {
