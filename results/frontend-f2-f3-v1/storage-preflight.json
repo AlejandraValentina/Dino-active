@@ -1,0 +1,29 @@
+{
+  "schema": "DINO_STORAGE_PREFLIGHT_V1",
+  "status": "PASS",
+  "targets": [
+    "E:\\Dino-artifacts\\frontend-f2-f3-v1\\Windows",
+    "E:\\Dino-artifacts\\frontend-f2-f3-v1\\build-work"
+  ],
+  "volumes": [
+    {
+      "volume": "E:\\",
+      "free_bytes": 7351676928,
+      "reserve_bytes": 2147483648,
+      "estimated_write_bytes": 2684354560,
+      "targets": [
+        {
+          "path": "E:\\Dino-artifacts\\frontend-f2-f3-v1\\Windows",
+          "estimated_write_bytes": 1610612736
+        },
+        {
+          "path": "E:\\Dino-artifacts\\frontend-f2-f3-v1\\build-work",
+          "estimated_write_bytes": 1073741824
+        }
+      ],
+      "required_free_bytes": 4831838208,
+      "headroom_after_estimate_bytes": 4667322368,
+      "status": "PASS"
+    }
+  ]
+}

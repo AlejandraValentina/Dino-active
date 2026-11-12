@@ -17003,118 +17003,113 @@
       "id": "F23-COMPONENTS",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Linked physical component schematics for all families",
-      "state": "REVIEW",
+      "state": "DONE",
       "dependencies": [],
       "write_scope": [],
       "blocker": null,
       "evidence": [
-        "tests/test_frontend_f2_f3.py",
-        "tests/test_frontend_engineering_jobs.py"
+        "results/frontend-f2-f3-v1/source-gate.json"
       ],
       "next_action": "Linked physical component schematics for all families",
-      "classification": "IMPLEMENTED_ACCEPTANCE_PENDING"
+      "classification": "SOURCE_ACCEPTED_WINDOWS_PENDING"
     },
     {
       "id": "F23-CHARTS",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Exact sample inspection, viewport and exports across plots",
-      "state": "REVIEW",
+      "state": "DONE",
       "dependencies": [],
       "write_scope": [],
       "blocker": null,
       "evidence": [
-        "tests/test_frontend_f2_f3.py",
-        "tests/test_frontend_engineering_jobs.py"
+        "results/frontend-f2-f3-v1/source-gate.json"
       ],
       "next_action": "Exact sample inspection, viewport and exports across plots",
-      "classification": "IMPLEMENTED_ACCEPTANCE_PENDING"
+      "classification": "SOURCE_ACCEPTED_WINDOWS_PENDING"
     },
     {
       "id": "F23-VARIANTS",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Variant exploration, rename and explicit configuration differences",
-      "state": "REVIEW",
+      "state": "DONE",
       "dependencies": [],
       "write_scope": [],
       "blocker": null,
       "evidence": [
-        "tests/test_frontend_f2_f3.py",
-        "tests/test_frontend_engineering_jobs.py"
+        "results/frontend-f2-f3-v1/source-gate.json"
       ],
       "next_action": "Variant exploration, rename and explicit configuration differences",
-      "classification": "IMPLEMENTED_ACCEPTANCE_PENDING"
+      "classification": "SOURCE_ACCEPTED_WINDOWS_PENDING"
     },
     {
       "id": "F23-RESULTS",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "External result binding and run exploration",
-      "state": "REVIEW",
+      "state": "DONE",
       "dependencies": [],
       "write_scope": [],
       "blocker": null,
       "evidence": [
-        "tests/test_frontend_f2_f3.py",
-        "tests/test_frontend_engineering_jobs.py"
+        "results/frontend-f2-f3-v1/source-gate.json"
       ],
       "next_action": "External result binding and run exploration",
-      "classification": "IMPLEMENTED_ACCEPTANCE_PENDING"
+      "classification": "SOURCE_ACCEPTED_WINDOWS_PENDING"
     },
     {
       "id": "F23-RECOVERY",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Recovery selector with identity and read-only preview",
-      "state": "REVIEW",
+      "state": "DONE",
       "dependencies": [],
       "write_scope": [],
       "blocker": null,
       "evidence": [
-        "tests/test_frontend_f2_f3.py",
-        "tests/test_frontend_engineering_jobs.py"
+        "results/frontend-f2-f3-v1/source-gate.json"
       ],
       "next_action": "Recovery selector with identity and read-only preview",
-      "classification": "IMPLEMENTED_ACCEPTANCE_PENDING"
+      "classification": "SOURCE_ACCEPTED_WINDOWS_PENDING"
     },
     {
       "id": "F23-PRODUCTIVITY",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Keyboard, compact layouts and coherent visual hierarchy",
-      "state": "REVIEW",
+      "state": "DONE",
       "dependencies": [],
       "write_scope": [],
       "blocker": null,
       "evidence": [
-        "tests/test_frontend_f2_f3.py",
-        "tests/test_frontend_engineering_jobs.py"
+        "results/frontend-f2-f3-v1/source-gate.json"
       ],
       "next_action": "Keyboard, compact layouts and coherent visual hierarchy",
-      "classification": "IMPLEMENTED_ACCEPTANCE_PENDING"
+      "classification": "SOURCE_ACCEPTED_WINDOWS_PENDING"
     },
     {
       "id": "F23-SOURCE",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Full source workflows, negatives and regression",
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "dependencies": [],
-      "write_scope": [
-        "results/frontend-f2-f3-v1/verification",
-        "motorsim/desktop/acceptance_frontend_f23.py"
-      ],
+      "write_scope": [],
       "blocker": null,
       "evidence": [
-        "results/frontend-f2-f3-v1/verification/source-application-base.summary.json"
+        "results/frontend-f2-f3-v1/source-gate.json"
       ],
-      "next_action": "Full source workflows, negatives and regression"
+      "next_action": "Full source workflows, negatives and regression",
+      "classification": "SOURCE_ACCEPTED_WINDOWS_PENDING"
     },
     {
       "id": "F23-BUILD",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Clean grouped Windows candidate and manifest",
-      "state": "READY",
+      "state": "IN_PROGRESS",
       "dependencies": [],
-      "write_scope": [],
+      "write_scope": [
+        "results/frontend-f2-f3-v1/candidate.json",
+        "results/frontend-f2-f3-v1/build.json"
+      ],
       "blocker": null,
       "evidence": [],
-      "next_action": "Clean grouped Windows candidate and manifest"
+      "next_action": "Clean pinned Windows rc14 build; validate exact product trees against d4fc244"
     },
     {
       "id": "F23-WINDOWS",
@@ -17142,16 +17137,15 @@
       "id": "F23-JOBS",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Durable immutable 2T/native point jobs, lifecycle, storage and real executor acceptance",
-      "state": "REVIEW",
+      "state": "DONE",
       "dependencies": [],
       "write_scope": [],
       "blocker": null,
       "evidence": [
-        "tests/test_frontend_f2_f3.py",
-        "tests/test_frontend_engineering_jobs.py"
+        "results/frontend-f2-f3-v1/source-gate.json"
       ],
       "next_action": "Source and Windows actual job workflows",
-      "classification": "IMPLEMENTED_ACCEPTANCE_PENDING"
+      "classification": "SOURCE_ACCEPTED_WINDOWS_PENDING"
     },
     {
       "id": "F23-CONTRACT",
@@ -17171,11 +17165,13 @@
       "id": "F23-STORAGE",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Storage admission and clean packaging inputs",
-      "state": "READY",
+      "state": "DONE",
       "dependencies": [],
       "write_scope": [],
       "blocker": null,
-      "evidence": [],
+      "evidence": [
+        "results/frontend-f2-f3-v1/storage-preflight.json"
+      ],
       "next_action": "Storage admission and clean packaging inputs"
     },
     {
@@ -21234,6 +21230,12 @@
       "task": "F23-CONTRACT",
       "kind": "task",
       "summary": "Protected P4-P8 regression301 PASS+3 SKIP,4 inherited NumPy warnings. Product diff restricted to desktop adapters/runtime entrypoints. Expanded chart tests39 PASS; recovery target guard and CP1/CP2 group24 PASS. Final application replay precedes one grouped clean Windows build."
+    },
+    {
+      "at": "2026-11-12T11:41:38+00:00",
+      "task": "F23-SOURCE",
+      "kind": "task",
+      "summary": "SOURCE_ACCEPTED clean d4fc244:47 base+76 F2/F3 real Windows Qt checks, exact dimensions, real queued executions/cancellation, expanded samples, recovery SaveAs and reopen. Build follows with identical motorsim/packaging tree IDs; human/scientific acceptance remain pending."
     }
   ],
   "integration_parent_states": {
@@ -21373,5 +21375,13 @@
     "candidate": "results/frontend-commercial-integration-v1/candidate.json",
     "review": "SELF_REVIEW",
     "external_keyboard_route": "NOT_ACCEPTED_LOCAL_HARNESS; stable packaged Qt and external UIA Invoke recovery accepted separately."
+  },
+  "frontend_f2_f3_acceptance": {
+    "implementation": "IMPLEMENTED",
+    "source": "SOURCE_ACCEPTED",
+    "windows": "PENDING",
+    "human_uat": "PENDING_UAT",
+    "scientific_validation": "NOT_PERFORMED",
+    "general_regression": "GENERAL_REGRESSION_NOT_GREEN_INHERITED"
   }
 }
