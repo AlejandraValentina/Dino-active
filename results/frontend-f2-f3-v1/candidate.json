@@ -1,17 +1,17 @@
 {
   "schema": "DINO_FRONTEND_F23_WINDOWS_CANDIDATE_V1",
   "version": "0.1.0-rc14",
-  "source_commit": "552a56732cb0116fbb988b8eefecb9ae19b2a22c",
-  "validated_implementation_commit": "d4fc244e3d84fa80475f5cc02b4cbcaf3ddb4783",
+  "source_commit": "b00a5653ecd9000cd2530bf22c15603dc6acceaf",
+  "validated_implementation_commit": "e9a817c3ea447d8ca33dbb7f39153cca4410f51b",
   "product_trees_unchanged": true,
-  "folder": "E:\\Dino-artifacts\\frontend-f2-f3-v1\\Windows\\MotorSim-0.1.0-rc14-windows-x64-552a5673\\MotorSim",
-  "zip": "E:\\Dino-artifacts\\frontend-f2-f3-v1\\Windows\\MotorSim-0.1.0-rc14-windows-x64-552a5673.zip",
-  "zip_sha256": "b6be5c61c42122d7d85a3e7c7c0a25aca73c7826aefcada7b7ae10d83fbf6195",
-  "zip_bytes": 91670313,
+  "folder": "E:\\Dino-artifacts\\frontend-f2-f3-v1\\Windows\\MotorSim-0.1.0-rc14-windows-x64-b00a5653\\MotorSim",
+  "zip": "E:\\Dino-artifacts\\frontend-f2-f3-v1\\Windows\\MotorSim-0.1.0-rc14-windows-x64-b00a5653.zip",
+  "zip_sha256": "fda74a5c9113948bcbee366a9a65886e3acf7a84b9115d1c3bc75b7f191f87c4",
+  "zip_bytes": 91670657,
   "executables": {
-    "Dino2T.exe": "a4dd45269f91406b3fb8201e2ea3e7b1919651fdb5b1e0354e104e7e726d624d",
-    "MotorSim.exe": "b07febc0d9b8cde14608928f24fb5699965ab465a95e291cba8227b71658ebdc",
-    "MotorSimWorker.exe": "90e7c09339df20d75cdbaafb4b358845dd8ef59695cea18d684b9d44991c1b18"
+    "Dino2T.exe": "a7e78215a11b8628649811b3b5e8a7dbc3ac5a33d9feb31bcc1736b5394afe8f",
+    "MotorSim.exe": "23ca22d30627ed8309432b0bb80c7a3dcabf01cfa13c4f17bf0e11c98f9caf69",
+    "MotorSimWorker.exe": "5d43101d42a3f6bf98bb07afd72d322862f844233a8f79dd4c3b0e50853ebac6"
   },
   "module_bytes_match": [
     "motorsim/desktop/acceptance_frontend_f23.py",
@@ -29,6 +29,7 @@
     "motorsim/desktop/native_four_stroke_workspace.py",
     "motorsim/desktop/performance_curves.py",
     "motorsim/desktop/plot.py",
+    "motorsim/desktop/product.py",
     "motorsim/desktop/recovery_picker.py",
     "motorsim/desktop/result_binding.py",
     "motorsim/desktop/results_page.py",
@@ -38,6 +39,8 @@
     "motorsim/dino_desktop.py",
     "motorsim/runtime.py"
   ],
-  "build_metadata_sha256": "363633f421bffc4584924c9dc384f3b91f07309c158bd40079abc65260b79384",
-  "state": "WINDOWS_ACCEPTANCE_PENDING"
+  "build_metadata_sha256": "8b6352d55ec5c1507f30409267cdbc24a249cdabc9a279eac7482ab2b5d00fb6",
+  "state": "WINDOWS_ACCEPTANCE_PENDING",
+  "supersedes": "552a56732cb0116fbb988b8eefecb9ae19b2a22c",
+  "superseded_reason": "Reference dataclass recovery identity and sanitized filename isolation V2"
 }

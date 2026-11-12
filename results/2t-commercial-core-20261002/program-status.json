@@ -17103,34 +17103,32 @@
       "id": "F23-BUILD",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Clean grouped Windows candidate and manifest",
-      "state": "IN_PROGRESS",
+      "state": "DONE",
       "dependencies": [
         "F23-SOURCE"
       ],
-      "write_scope": [
-        "results/frontend-f2-f3-v1/candidate.json",
-        "results/frontend-f2-f3-v1/build.json"
-      ],
+      "write_scope": [],
       "blocker": null,
       "evidence": [
-        "results/frontend-f2-f3-v1/candidate.json",
-        "results/frontend-f2-f3-v1/build.json"
+        "results/frontend-f2-f3-v1/candidate.json"
       ],
       "next_action": "Corrected clean rc14 with distinct reference recovery keys",
-      "classification": "PRIOR_CANDIDATE_PRESERVED_SUPERSEDED_BY_CORRECTION"
+      "classification": "CORRECTED_CLEAN_RC14_CANDIDATE"
     },
     {
       "id": "F23-WINDOWS",
       "objective": "DINO_FRONTEND_F2_F3_V1",
       "description": "Packaged workflow acceptance",
-      "state": "WAITING",
+      "state": "IN_PROGRESS",
       "dependencies": [
         "F23-BUILD"
       ],
-      "write_scope": [],
+      "write_scope": [
+        "results/frontend-f2-f3-v1/windows-acceptance.json"
+      ],
       "blocker": null,
       "evidence": [],
-      "next_action": "Actual frozen base/F2/F3, CP1/CP2 and external UIA recovery",
+      "next_action": "Repeat actual frozen workflows plus reference isolation and external UIA",
       "classification": "PRIOR_CANDIDATE_ALL_PLANNED_CHECKS_PASS_NEW_ISOLATION_CASE_REQUIRED"
     },
     {
@@ -21276,6 +21274,12 @@
       "task": "F23-SOURCE",
       "kind": "task",
       "summary": "Corrected clean e9a817c source:47base+78F2/F3 checks PASS, including distinct actual reference drafts and names.26 targeted CP0/CP1/CP2 tests PASS. V1 drafts remain intact; Windows candidate with V2 reference storage key follows."
+    },
+    {
+      "at": "2026-11-12T12:10:34+00:00",
+      "task": "F23-BUILD",
+      "kind": "task",
+      "summary": "Corrected rc14 b00a565 clean build PASS; source trees match accepted e9a817c, all changed module bytes match bundle. Prior552a candidate and rc13 preserved. Repeating actual Windows acceptance with reference draft isolation checks."
     }
   ],
   "integration_parent_states": {
