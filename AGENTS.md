@@ -22,13 +22,11 @@ Reglas detalladas: [docs/gasdynamic/autonomous_engineering_mode.md](docs/gasdyna
 ## 1. CURRENT_OBJECTIVE
 
 ```
-CURRENT_OBJECTIVE: DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1
-change/spec:       openspec/changes/frontend-commercial-integration-v1/
-                   specs/frontend-commercial-integration-v1/spec.md
-roadmap:          docs/frontend-commercial-integration-v1/README.md
-completion:        Controlled F0/F1 + CP0-CP2 integration, combined source and
-                   packaged Windows acceptance. General suite status remains
-                   explicit; no solver/scientific changes, main merge or push.
+CURRENT_OBJECTIVE: DINO_FRONTEND_F2_F3_V1
+change/spec:       openspec/changes/frontend-f2-f3-v1/specs/frontend-f2-f3-v1/spec.md
+roadmap:          docs/frontend-f2-f3-v1/architecture.md
+completion:        F2/F3 coherent frontend workflows, source and Windows evidence;
+                   no solver changes, no scientific validation claim or push.
 durable queue:     results/2t-commercial-core-20261002/program-status.json
                    -> current_objective, queue, gate_status, progress_log
 ```

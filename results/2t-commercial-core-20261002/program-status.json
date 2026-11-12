@@ -1423,6 +1423,22 @@
         "updated_at": "2026-11-05T16:01:16+00:00"
       },
       "at": "2026-11-05T16:40:42.204593+00:00"
+    },
+    {
+      "objective": "DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1",
+      "state": "PASS",
+      "classification": "FRONTEND_CP0_CP2_WINDOWS_ACCEPTED_GENERAL_NOT_GREEN_UAT_PENDING",
+      "evidence": [
+        "results/frontend-commercial-integration-v1/acceptance.json",
+        "docs/frontend-commercial-integration-v1/README.md"
+      ],
+      "gate_tasks_total": 8,
+      "gate_tasks_done": 8,
+      "gate_task_states": {
+        "DONE": 8
+      },
+      "remaining": [],
+      "updated_at": "2026-11-11T17:24:35+00:00"
     }
   ],
   "commercial_development_base": {
@@ -2813,6 +2829,27 @@
       ],
       "completion_criterion": "CP2 operational readiness with owner-selected licensing/activation; no scientific claim.",
       "classification": "CP2_SOURCE_AND_PACKAGED_WINDOWS_ACCEPTED_POLICY_PENDING"
+    },
+    {
+      "id": "DINO_FRONTEND_F2_F3_V1",
+      "state": "ACTIVE",
+      "owner_approved": true,
+      "change": "openspec/changes/frontend-f2-f3-v1",
+      "spec": "openspec/changes/frontend-f2-f3-v1/specs/frontend-f2-f3-v1/spec.md",
+      "completion_criterion": "Coherent F2/F3 interaction increments, full source and clean Windows workflows; limitations and all 23 findings explicit; no scientific changes.",
+      "gate_tasks": [
+        "F23-PLAN",
+        "F23-COMPONENTS",
+        "F23-CHARTS",
+        "F23-VARIANTS",
+        "F23-RESULTS",
+        "F23-RECOVERY",
+        "F23-PRODUCTIVITY",
+        "F23-SOURCE",
+        "F23-BUILD",
+        "F23-WINDOWS",
+        "F23-REVIEW"
+      ]
     }
   ],
   "full_rpm_sweep_precondition_status": "RESOLVED",
@@ -16947,6 +16984,130 @@
       "write_scope": [],
       "next_action": "Accepted integrated engineering candidate retained on isolated branch; no main merge or publication.",
       "classification": "SOURCE_AND_WINDOWS_ACCEPTED_GENERAL_NOT_GREEN_UAT_PENDING"
+    },
+    {
+      "id": "F23-PLAN",
+      "objective": "DINO_FRONTEND_F2_F3_V1",
+      "description": "Consolidation, architecture and blocker reassessment",
+      "state": "DONE",
+      "dependencies": [],
+      "write_scope": [],
+      "blocker": null,
+      "evidence": [
+        "results/frontend-f2-f3-v1/consolidation.json",
+        "docs/frontend-f2-f3-v1/architecture.md"
+      ],
+      "next_action": "Consolidation, architecture and blocker reassessment"
+    },
+    {
+      "id": "F23-COMPONENTS",
+      "objective": "DINO_FRONTEND_F2_F3_V1",
+      "description": "Linked physical component schematics for all families",
+      "state": "READY",
+      "dependencies": [],
+      "write_scope": [],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Linked physical component schematics for all families"
+    },
+    {
+      "id": "F23-CHARTS",
+      "objective": "DINO_FRONTEND_F2_F3_V1",
+      "description": "Exact sample inspection, viewport and exports across plots",
+      "state": "READY",
+      "dependencies": [],
+      "write_scope": [],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Exact sample inspection, viewport and exports across plots"
+    },
+    {
+      "id": "F23-VARIANTS",
+      "objective": "DINO_FRONTEND_F2_F3_V1",
+      "description": "Variant exploration, rename and explicit configuration differences",
+      "state": "READY",
+      "dependencies": [],
+      "write_scope": [],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Variant exploration, rename and explicit configuration differences"
+    },
+    {
+      "id": "F23-RESULTS",
+      "objective": "DINO_FRONTEND_F2_F3_V1",
+      "description": "External result binding and run exploration",
+      "state": "READY",
+      "dependencies": [],
+      "write_scope": [],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "External result binding and run exploration"
+    },
+    {
+      "id": "F23-RECOVERY",
+      "objective": "DINO_FRONTEND_F2_F3_V1",
+      "description": "Recovery selector with identity and read-only preview",
+      "state": "READY",
+      "dependencies": [],
+      "write_scope": [],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Recovery selector with identity and read-only preview"
+    },
+    {
+      "id": "F23-PRODUCTIVITY",
+      "objective": "DINO_FRONTEND_F2_F3_V1",
+      "description": "Keyboard, compact layouts and coherent visual hierarchy",
+      "state": "READY",
+      "dependencies": [],
+      "write_scope": [],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Keyboard, compact layouts and coherent visual hierarchy"
+    },
+    {
+      "id": "F23-SOURCE",
+      "objective": "DINO_FRONTEND_F2_F3_V1",
+      "description": "Full source workflows, negatives and regression",
+      "state": "READY",
+      "dependencies": [],
+      "write_scope": [],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Full source workflows, negatives and regression"
+    },
+    {
+      "id": "F23-BUILD",
+      "objective": "DINO_FRONTEND_F2_F3_V1",
+      "description": "Clean grouped Windows candidate and manifest",
+      "state": "READY",
+      "dependencies": [],
+      "write_scope": [],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Clean grouped Windows candidate and manifest"
+    },
+    {
+      "id": "F23-WINDOWS",
+      "objective": "DINO_FRONTEND_F2_F3_V1",
+      "description": "Packaged workflow acceptance",
+      "state": "READY",
+      "dependencies": [],
+      "write_scope": [],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "Packaged workflow acceptance"
+    },
+    {
+      "id": "F23-REVIEW",
+      "objective": "DINO_FRONTEND_F2_F3_V1",
+      "description": "23 findings, evidence and honest acceptance classification",
+      "state": "READY",
+      "dependencies": [],
+      "write_scope": [],
+      "blocker": null,
+      "evidence": [],
+      "next_action": "23 findings, evidence and honest acceptance classification"
     }
   ],
   "progress_log": [
@@ -20948,6 +21109,11 @@
       "task": "FWI-RELEASE-REVIEW",
       "kind": "task",
       "summary": "SELF_REVIEW closure:SOURCE_ACCEPTED + WINDOWS_ACCEPTED; GENERAL_REGRESSION_NOT_GREEN,PENDING_UAT,SCIENTIFIC_VALIDATION_NOT_PERFORMED preserved. Main f97469b and frontend9b7392e unchanged; no push/publication. Recommend separately reviewed functional main integration with limitations retained."
+    },
+    {
+      "at": "2026-11-12T10:37:03.871366+00:00",
+      "task": "F23-PLAN",
+      "summary": "Owner authorized local main FF97e40bd and F2/F3. Isolated E worktree; rc13 immutable; CP3/CP4 separate. All 12 inherited blockers reassessed, no frontend unblock."
     }
   ],
   "integration_parent_states": {
@@ -21029,39 +21195,45 @@
     }
   },
   "current_objective": {
-    "id": "DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1",
-    "state": "COMPLETE",
+    "id": "DINO_FRONTEND_F2_F3_V1",
+    "state": "ACTIVE",
     "owner_approved": true,
-    "change": "openspec/changes/frontend-commercial-integration-v1",
-    "spec": "openspec/changes/frontend-commercial-integration-v1/specs/frontend-commercial-integration-v1/spec.md",
-    "completion_criterion": "Combined F0/F1 + CP0-CP2 source and matching clean packaged Windows acceptance; preserve general regression non-green and human/scientific pending states.",
+    "change": "openspec/changes/frontend-f2-f3-v1",
+    "spec": "openspec/changes/frontend-f2-f3-v1/specs/frontend-f2-f3-v1/spec.md",
+    "completion_criterion": "Coherent F2/F3 interaction increments, full source and clean Windows workflows; limitations and all 23 findings explicit; no scientific changes.",
     "gate_tasks": [
-      "FWI-CONFLICT",
-      "FWI-COMPAT",
-      "FWI-TESTS",
-      "FWI-SOURCE-GUI",
-      "FWI-SOURCE-ACCEPT",
-      "FWI-BUILD",
-      "FWI-WINDOWS",
-      "FWI-RELEASE-REVIEW"
-    ],
-    "classification": "FRONTEND_CP0_CP2_SOURCE_AND_WINDOWS_ACCEPTED"
+      "F23-PLAN",
+      "F23-COMPONENTS",
+      "F23-CHARTS",
+      "F23-VARIANTS",
+      "F23-RESULTS",
+      "F23-RECOVERY",
+      "F23-PRODUCTIVITY",
+      "F23-SOURCE",
+      "F23-BUILD",
+      "F23-WINDOWS",
+      "F23-REVIEW"
+    ]
   },
   "gate_status": {
-    "objective": "DINO_FRONTEND_COMMERCIAL_INTEGRATION_V1",
-    "state": "PASS",
-    "classification": "FRONTEND_CP0_CP2_WINDOWS_ACCEPTED_GENERAL_NOT_GREEN_UAT_PENDING",
-    "evidence": [
-      "results/frontend-commercial-integration-v1/acceptance.json",
-      "docs/frontend-commercial-integration-v1/README.md"
+    "objective": "DINO_FRONTEND_F2_F3_V1",
+    "state": "OPEN",
+    "gate_tasks_total": 11,
+    "gate_tasks_done": 0,
+    "remaining": [
+      "F23-PLAN",
+      "F23-COMPONENTS",
+      "F23-CHARTS",
+      "F23-VARIANTS",
+      "F23-RESULTS",
+      "F23-RECOVERY",
+      "F23-PRODUCTIVITY",
+      "F23-SOURCE",
+      "F23-BUILD",
+      "F23-WINDOWS",
+      "F23-REVIEW"
     ],
-    "gate_tasks_total": 8,
-    "gate_tasks_done": 8,
-    "gate_task_states": {
-      "DONE": 8
-    },
-    "remaining": [],
-    "updated_at": "2026-11-11T17:24:35+00:00"
+    "updated_at": "2026-11-12T10:37:03.871366+00:00"
   },
   "frontend_commercial_integration_acceptance": {
     "source_commit": "8712f290ff7c1485cd0417101426aa4e80fc5205",
